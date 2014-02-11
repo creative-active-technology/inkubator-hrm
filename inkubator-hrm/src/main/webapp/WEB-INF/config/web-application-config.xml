@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd
+         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+    <context:property-placeholder location="classpath*:application.properties" />
+    <import resource="common-config.xml"/>
+    <import resource="webmvc-config.xml" />
+    <import resource="webflow-config.xml" />
+    <!--<import resource="rest-security-config.xml"/>-->
+    <import resource="security-config.xml"/>
+    <import resource="webcore-config.xml"/>
+    <import resource="data-access-config_tomcat.xml"/>
+    <import resource="web-messaging-config.xml"/>
+    <import resource="email-sender-config.xml"/>
+    <!--<import resource="web_service_rest.xml"/>-->
+    
+   
+   
+        
+    
+    <util:map id="gender" map-class="java.util.HashMap">
+        <entry key="L" value="Laki-Laki"/>
+        <entry key="M" value="Perempuan"/>
+    </util:map>
+    <util:map id="bahasa" map-class="java.util.HashMap"  >
+        <entry key=" IN - Indonesia" value="in"/>
+        <entry key=" EN - English" value="en"/>
+    </util:map>
+    <!--<util:properties id="" value-type="java.util.Date">-->
+    <bean id="tglSekarang" class="java.util.Date" lazy-init="true"/>
+</beans>

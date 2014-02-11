@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="
+           http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+           http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+
+    <!-- Configure Spring Security -->
+    <security:http auto-config="false" use-expressions="true">
+        <security:form-login login-page="/" authentication-success-handler-ref="myHandlerSuccessLogin"
+                                      authentication-failure-url="/?login_error=1" always-use-default-target="true"/>
+        <security:intercept-url pattern="/flow-protected/**" access="hasAnyRole('ROLE_ADMIN_IDM','ROLE_USER_IDM')"/>
+        <security:intercept-url pattern="/protected/**" access="hasAnyRole('ROLE_ADMIN_IDM','ROLE_USER_IDM')"/>
+        <security:session-management>
+            <security:concurrency-control max-sessions="1" error-if-maximum-exceeded="true" session-registry-alias="sessionRegistry"/>
+        </security:session-management>
+        <security:custom-filter ref="logoutFilter" position="LOGOUT_FILTER"/>
+        <!--<security:logout invalidate-session="true" delete-cookies="JSESSIONID" logout-url="/logout.htm" logout-success-url="logoutSuccessHandler"/>-->
+    </security:http>
+    <bean id="myHandlerSuccessLogin" class="com.csl.idm.util.CustomAuthenticationSuccessHandler" lazy-init="true"/> 
+    <bean id="logoutFilter" class="org.springframework.security.web.authentication.logout.LogoutFilter">
+        <constructor-arg index="0" value="/"/>
+        <constructor-arg index="1">
+            <list>
+                <bean id="authenticationLogoutSuccessHandler" class="com.csl.idm.util.CustomAuthenticationLogoutSuccessHandler"/>
+                <bean id="securityContextLogoutHandler" class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler"/>
+            </list>
+        </constructor-arg>
+        <property name="filterProcessesUrl" value="/logout.htm"/>
+    </bean>
+    <security:authentication-manager>
+        <security:authentication-provider>
+            <!--<security:password-encoder hash="sha-256" />-->
+            <security:user-service>
+                <security:user name="master.admin" password="12345" authorities="ROLE_ADMIN_IDM" />
+            </security:user-service>
+        </security:authentication-provider>
+        <security:authentication-provider user-service-ref="userDetailsService" >
+            <security:password-encoder hash="sha-256" />
+        </security:authentication-provider>
+    </security:authentication-manager>
+    <security:global-method-security jsr250-annotations="enabled" pre-post-annotations="enabled" />
+        
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basenames">
+            <list>
+                <value>messages</value>
+            </list>
+        </property>
+    </bean>
+    <bean id="sessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl"/>
+</beans>
