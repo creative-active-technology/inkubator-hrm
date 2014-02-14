@@ -1,0 +1,172 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>#{appmsg['global.header_app']}</title>
+        <link rel="stylesheet" href="${request.contextPath}/resources/css/hr_content_css.css" type="text/css" media="screen" />
+        <link rel="stylesheet" href="${request.contextPath}/resources/css/tabmenu.css" type="text/css" media="screen" />
+        <link rel="shortcut icon" href="${request.contextPath}/hr.ico" type="image/x-icon" />
+    </h:head>
+    <h:body>
+        <div id="art-page-background-middle-texture" >
+            <div id="header_content">
+                <div id="header_namaPT" style="margin-left: 20px">
+                    <h:panelGrid columns="1">
+                        <h:outputLabel value="HR Management" style="text-align: left;color: #ff9900;font-family:Trebuchet MS" />        
+                        <h:outputLabel value="#{appmsg['global.namaPT']}" style="font-size: 11px!important" />
+                    </h:panelGrid>
+                </div>
+                <div style="float: right">                
+                    <h:panelGrid columns="2" style="padding-top: 6px">
+                        <h:outputLabel value="Selamat Datang, Deni Husni FR.  Anda login pada 12 Desember 2030" 
+                                       style="font-size: 18px;font-family: Tempus Sans ITC;color: #ffffff;margin-right: 60px"/> 
+                        <h:form>
+                            <h:panelGroup style="margin-right: 250px">
+                                <h:panelGrid columns="4" cellpadding="3" >
+                                    <h:commandLink id="printerLogId">
+                                        <h:graphicImage library="images" name="printer.png" width="36" height="36" /> 
+                                    </h:commandLink>
+                                    <h:commandLink id="printerLogId1">
+                                        <h:graphicImage library="images" name="help_system.png" width="36" height="36" /> 
+                                    </h:commandLink>
+                                    <h:commandLink id="printerLogId3">
+                                        <h:graphicImage library="images" name="user.png" width="36" height="36" /> 
+                                    </h:commandLink>
+                                    <h:outputLink id="printerLogId2" style="margin-left: 30px" value="${request.contextPath}/logout.htm">
+                                        <h:graphicImage library="images" name="logout.png" width="36" height="36" /> 
+                                    </h:outputLink>
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:form>
+                    </h:panelGrid>
+                </div>
+            </div>
+            <div style="clear: both"/>
+            <!--<p:separator style="margin-left: 10px;margin-right: 10px;margin-top: 0px"/>-->
+            <div style="margin-left: 10px;margin-right: 10px">
+                <ul id="tabmenu" >
+                    <li id="home">
+                        <a href="home.htm"><h:outputLabel value="Home"/></a>
+                        <ul>
+                            <li><a><h:outputLabel value="Clik Here to Customize the Dashboard"/></a></li>
+                            <li><a> <img src="../images/logo_login.png" /></a></li></ul>
+
+                        <!--<ul>-->
+                        <!--                        <li>Sub menu 1-->
+                        <!--                                                <ul>
+                                                                            <li><a href="?111">Tab menu 1-1-1</a></li>
+                                                                            <li><a href="?112">Tab menu 1-1-2</a></li>
+                                                                            <li><a href="?113">Tab menu 1-1-3</a></li>
+                                                                            <li><a href="?114">Tab menu 1-1-4</a></li>
+                                                                        </ul>
+                                                                    </li>
+                                                                    <li><a href="?12">Sub menu 2</a>
+                                                                        <ul>
+                                                                            <li><a href="?121">Tab menu 1-2-1</a></li>
+                                                                            <li><a href="?122">Tab menu 1-2-2</a></li>
+                                                                        </ul>
+                                                                    </li>
+                                                                    <li><a href="?13">Sub menu 3</a></li>-->
+                        <!--</li>-->
+                        <!--</ul>-->
+                    </li>
+                    <li>
+                        <h:outputLabel value="User Acount"/>
+                        <ul>
+                            <li id="p22" ><a href="home_1.htm"><h:outputLabel value="User Data" rendered="true"/></a>  
+                            </li>
+                            <li ><a href="?22"><h:outputLabel value="Role Data"/></a>  
+                            </li>
+                            <li><a href="?23"><h:outputLabel value="Department Data" rendered="false"/></a>  
+                            </li>
+                            <li><a href="?24"><h:outputLabel value="Position Data"/></a>  
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="?2"><h:outputLabel value="Aproval Matrix" rendered="true"/></a>
+                        <ul>
+                            <li><p:commandLink value="sfdsfdsf" rendered="false"/></li>
+                            <li><a href="?32"><h:outputLabel value="Approval Parameter"/></a></li>
+                        </ul>
+                    </li>
+                    <li><a href="?4">Contact Us</a></li>
+                </ul>
+                <h:form style="margin: 10px">  
+                    <p:growl id="growl" showDetail="true"/>  
+
+                    <h3>Simple Panel</h3>  
+                    <p:panel header="F.C. Barcelona" footer="Visca el Barca!">  
+                        <h:outputText value="FC Barcelona is one of only three clubs never to have been relegated from La Liga and is the most successful club in Spanish football along with Real Madrid,  
+                                      having won twenty La Liga titles, a record twenty-five Spanish Cups, eight Spanish Super Cups, four Eva Duarte Cups and two League Cups.  
+                                      They are also one of the most successful clubs  in European football having won fourteen official major trophies in total,  
+                                      including ten UEFA competitions. They have won three UEFA Champions League titles, a record four UEFA Cup Winners' Cups,  
+                                      a record three InterCities Fairs Cups (the forerunner to the UEFA Europa League), three UEFA Super Cups and one FIFA Club World Cup.  
+                                      The club is also the only European side to have played continental football in every season since its inception in 1955." />  
+                    </p:panel>  
+
+                    <h3>Advanced Panel</h3>  
+                    <p:panel id="pnl" header="About Barca" toggleable="true" closable="true" toggleSpeed="500" closeSpeed="500" widgetVar="panel">  
+
+                        <p:ajax event="close" listener="#{panelBean.handleClose}" update="growl" />  
+                        <p:ajax event="toggle" listener="#{panelBean.handleToggle}" update="growl" />  
+
+                        <h:outputText value="FC Barcelona is one of only three clubs never to have been relegated from La Liga and is the most successful club in Spanish football along with Real Madrid,  
+                                      having won twenty La Liga titles, a record twenty-five Spanish Cups, eight Spanish Super Cups, four Eva Duarte Cups and two League Cups.  
+                                      They are also one of the most successful clubs  in European football having won fourteen official major trophies in total,  
+                                      including ten UEFA competitions. They have won three UEFA Champions League titles, a record four UEFA Cup Winners' Cups,  
+                                      a record three InterCities Fairs Cups (the forerunner to the UEFA Europa League), three UEFA Super Cups and one FIFA Club World Cup.  
+                                      The club is also the only European side to have played continental football in every season since its inception in 1955." />  
+
+                        <f:facet name="options">  
+                            <p:menu>  
+                                <p:submenu label="Settings">  
+                                    <p:menuitem value="Toggle" url="#" icon="ui-icon-newwin" onclick="panel.toggle()"/>  
+                                    <p:menuitem value="Remove" url="#" icon="ui-icon-close" onclick="panel.close()"/>  
+                                </p:submenu>  
+                            </p:menu>  
+                        </f:facet>  
+                    </p:panel>  
+
+                    <h3>Custom Actions</h3>  
+                    <p:panel header="F.C. Barcelona">  
+                        <h:outputText value="FC Barcelona is one of only three clubs never to have been relegated from La Liga and is the most successful club in Spanish football along with Real Madrid,  
+                                      having won twenty La Liga titles, a record twenty-five Spanish Cups, eight Spanish Super Cups, four Eva Duarte Cups and two League Cups.  
+                                      They are also one of the most successful clubs  in European football having won fourteen official major trophies in total,  
+                                      including ten UEFA competitions. They have won three UEFA Champions League titles, a record four UEFA Cup Winners' Cups,  
+                                      a record three InterCities Fairs Cups (the forerunner to the UEFA Europa League), three UEFA Super Cups and one FIFA Club World Cup.  
+                                      The club is also the only European side to have played continental football in every season since its inception in 1955." />  
+
+                        <f:facet name="actions">  
+                            <h:commandLink styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default">  
+                                <h:outputText styleClass="ui-icon ui-icon-help" />  
+                            </h:commandLink>  
+                            <h:commandLink styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default">  
+                                <h:outputText styleClass="ui-icon ui-icon-star" />  
+                            </h:commandLink>  
+                        </f:facet>  
+                    </p:panel>  
+
+                    <h3>Horizontal Toggle</h3>  
+                    <p:panel header="F.C. Barcelona" toggleable="true" toggleOrientation="horizontal">  
+                        <h:outputText value="FC Barcelona is one of only three clubs never to have been relegated from La Liga and is the most successful club in Spanish football along with Real Madrid,  
+                                      having won twenty La Liga titles, a record twenty-five Spanish Cups, eight Spanish Super Cups, four Eva Duarte Cups and two League Cups.  
+                                      They are also one of the most successful clubs  in European football having won fourteen official major trophies in total,  
+                                      including ten UEFA competitions. They have won three UEFA Champions League titles, a record four UEFA Cup Winners' Cups,  
+                                      a record three InterCities Fairs Cups (the forerunner to the UEFA Europa League), three UEFA Super Cups and one FIFA Club World Cup.  
+                                      The club is also the only European side to have played continental football in every season since its inception in 1955." />  
+                    </p:panel>  
+
+                </h:form>  
+            </div>
+        </div>
+        <h:outputScript library="js" name="tabmenu.js" />
+        <script> tabmenu.select("home");</script>
+    </h:body>
+</html>
+

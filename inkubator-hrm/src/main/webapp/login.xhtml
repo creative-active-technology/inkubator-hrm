@@ -1,0 +1,210 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>#{appmsg['global.header_app']}</title>
+        <link rel="stylesheet" href="${request.contextPath}/resources/css/hr_css.css" type="text/css" media="screen" />
+        <link rel="shortcut icon" href="./hr.ico" type="image/x-icon" />
+    </h:head>
+    <h:body>
+        <div id="art-page-background-middle-texture" >
+            <!--<div id="art-page-background-glare">-->
+            <div id="header_login">
+                <div id="header_namaPT">
+                    <h:panelGrid columns="1">
+                        <h:outputLabel value="HR Management" style="text-align: left;color: #ff9900;font-family:Trebuchet MS" />        
+                        <h:outputLabel value="#{appmsg['global.namaPT']}" style="font-size: 11px!important" />
+                    </h:panelGrid>
+
+                </div>
+                <div style="float: right">
+                    <h:form id="pilihanBahasaForm" >
+                        <h:inputHidden value="#{loginController.bahasaTerpilih}"/>
+                        <h:panelGrid columns="4" style="padding-top: 18px">
+                            <h:outputLabel style="color: #ffffff;font-family: Verdana;margin-right: 5px;" 
+                                           value="#{appmsg['loginform.pilihan_bahasa']} :"/>
+                            <p:selectOneMenu id="pilihanBahasa" value="#{loginController.bahasaTerpilih}"
+                                             required="true" label="#{appmsg['loginform.pilihan_bahasa']}"
+                                             style="font-family: Verdana;width: 130px;text-align: left" >
+                                <f:selectItems value="#{bahasa}"/>
+                                <p:ajax listener="#{loginController.doChageLanguange()}" update="pilihanBahasaForm,:loginForm"/>
+                            </p:selectOneMenu>
+                            <h:outputLabel style="color: #ffffff;font-family: Verdana;margin-right: 2px;font-weight: bold" value="|"/>
+                            <h:outputLabel value="#{tglSekarang}" style="color: #ffffff;font-family: Verdana;margin-right: 10px">
+                                <f:convertDateTime pattern ="dd-MMMM-yyyy" timeZone="GMT+7"/>
+                            </h:outputLabel> 
+                        </h:panelGrid>
+                    </h:form>
+                </div>
+            </div>
+            <div id="box_bg">
+                <h:form id="loginForm" prependId="false">
+                    <p:growl id="loginGrowl" life="5000" showDetail="true" escape="false" />
+                    <div style="margin-top: 15px;font-family:Trebuchet MS;font-size: 18px;font-weight: bold;margin-bottom: 20px;
+                         color: #245485">
+                        <h:outputLabel value="#{appmsg['loginform.header']}" style="margin-left: 20px"/>
+                        <h:outputLabel value="#{appmsg['global.title']}" style="float: right;margin-right: 20px;font-size: 20px !important;font-weight: bold"/>
+                        <p:separator style="margin-left: 20px;margin-right: 20px;margin-top: 5px"/>
+                    </div>
+                    <p:commandButton value="#{appmsg['loginform.facebook']}" style="margin-left: 190px;margin-top: 7px" icon="img-button-facebook"/>
+                    <p:commandButton value="#{appmsg['loginform.tweeter']}" style="margin-left: 5px" icon="img-button-twitter"/>
+                    <h:panelGrid columns="2" style="margin-top: 10px;margin-left: 20px;" cellspacing="5" >
+                        <p:graphicImage value="./resources/images/logo_login.png" height="136px" width="136px" style="margin-right: 10px" />
+                        <h:panelGrid columns="3" cellpadding="3" style="margin-left: 5px">
+                            <h:outputLabel for="j_username" value="#{appmsg['loginform.userid']}" style="font-weight: bold;
+                                           font-family: Trebuchet MS;color: #003366" escape="false"/>
+                            <p:outputLabel value=":" style="font-weight: bold;color: #003366" escape="false"/>
+                            <p:focus for="j_username">
+                                <p:inputText  requiredMessage="#{appmsg['loginform.userid_mandatory']}" value="#{loginController.userId}"
+                                              id="j_username" required="true" label="#{appmsg['loginform.userid']}" validatorMessage="#{appmsg['loginform.userid_max']}"
+                                              style="width: 240px">
+                                    <f:validateLength maximum="20"/>
+                                </p:inputText>
+                            </p:focus>
+                            <h:outputLabel for="j_password" value="#{appmsg['loginform.password']}" style="font-weight: bold;
+                                           font-family: Trebuchet MS;color: #003366" escape="false"/>
+                            <p:outputLabel value=":" style="font-weight: bold;color: #003366" escape="false"  />
+                            <p:password id="j_password"  validatorMessage="#{appmsg['loginform.password_max']}" value="#{loginController.password}"
+                                        requiredMessage="#{appmsg['loginform.password_mandatory']}"
+                                        required="true" style="width: 240px">
+                                <f:validateLength minimum="5" maximum="25"/>
+                            </p:password>
+                            <h:outputLabel value="#{appmsg['loginform.remember_me']}" style="font-weight: bold;
+                                           font-family: Trebuchet MS;color: #003366" escape="false"/>
+                            <p:outputLabel value=":" style="font-weight: bold;color: #003366" escape="false"/>
+                            <p:selectBooleanCheckbox />
+                            <p:outputLabel/>
+                            <p:outputLabel/>
+                            <p:commandButton icon="ui-icon-locked" value="#{appmsg['loginform.login']}" action="#{loginController.doLogin()}"
+                                             id="loginId" ajax="false" type="submit" 
+                                             update="loginForm" 
+                                             style="width: 85px" />
+<!--                            <f:facet name="footer">
+                               
+                            </f:facet>-->
+                             <p:defaultCommand target="loginId" />
+                            <p:watermark for="j_username" value="#{appmsg['loginform.watermark_id']}"/>
+                            <p:watermark for="j_password" value="#{appmsg['loginform.watermark_password']}" />
+                            <pe:tooltip for="loginId" value="#{appmsg['loginform.tooltips']}" showEffect="slideToggle"  
+                                        hideEffect="slideToggle" showDelay="1" myPosition="left center" atPosition="right center"/>
+                        </h:panelGrid>
+                    </h:panelGrid>
+                    <div style="margin-left: 120px;margin-right: 30px;font-size: 15px!important;color: #006600;font-family: Verdana!important">
+                        <c:if test="${not empty param.login_error or not empty param.session_expired}">
+                            <c:if test="${not empty param.login_error}">
+                                <p:outputLabel value="#{appmsg['loginform.failed']}"
+                                               style="color: #990000;font-family: Verdana;font-weight: bold;font-size: 14px!important" escape="false"/>
+                                <br/>
+                                <p:outputLabel value="Alasan: #{sessionScope.SPRING_SECURITY_LAST_EXCEPTION.message}."
+                                               style="color: #990000;font-family: Trebuchet MS;font-weight: bold;font-size: 14px!important" escape="false"/>
+
+                            </c:if>
+                            <c:if test="${not empty param.session_expired}">
+                                <p:outputLabel value="Your Action attempt was not successful, try again !"
+                                               style="color: #990000;font-family: Verdana;font-weight: bold;font-size: 14px!important" escape="false"/>
+                                <br/>
+                                <p:outputLabel value="Alasan Session Expired"
+                                               style="color: #990000;font-family: Verdana;font-weight: bold;font-size: 14px!important" escape="false"/>
+                            </c:if>
+                        </c:if>
+                        <c:if test="${empty param.login_error and empty session_expired}">
+                            <c:if test="${empty param.session_expired}">
+                                <p:outputLabel value="#{appmsg['loginform.info1']}"
+                                               style="color: #003366;font-size: 14px!important;font-family: Verdana" escape="false"/>
+                                <br/>
+                                <p:outputLabel value="#{appmsg['loginform.info2']}"
+                                               style="color: #003366;font-size: 14px!important;font-family: Verdana" escape="false"/>
+                            </c:if> 
+                        </c:if> 
+                        <br/>
+                        <br/>
+                    </div>
+
+                </h:form>
+
+                <!--</c:if>-->
+                <div align="center" style="margin-top: 40px;font-size: 14px!important;
+                     font-family: Verdana !important;color:#ff9900!important ">
+                    <h:form>
+                        <h:panelGrid columns="11" cellspacing="15">
+                            <h:outputLink id="aboutId" value="${request.contextPath}/about.htm" title="Clik to see who we are!" style="color: #003366;text-decoration: none">About</h:outputLink>
+                            <h:outputLabel value="|" style="font-family: Verdana;color: #003366" escape="false"/>
+                            <h:outputLink id="contactId" value="${request.contextPath}/about.htm" title="Clik to see who we are!" style="color: #003366;text-decoration: none">Contact</h:outputLink>
+                            <h:outputLabel value="|" style="font-family: Verdana;color: #003366" escape="false"/>
+                            <p:commandLink id="configId" value="Config" style="font-family: Verdana!important;font-size: 14px!important;color: #003366;text-decoration: none" onclick="resetDialog.show()"/>
+                            <h:outputLabel value="|" style="font-family: Verdana;color: #003366" escape="false"/>
+                            <p:commandLink id="monitoringId" value="Monitoring" style="font-family: Verdana!important;font-size: 14px!important;color: #003366;text-decoration: none"/>
+                            <h:outputLabel value="|" style="font-family: Verdana;color: #003366" escape="false"/>
+                            <p:commandLink id="resetId" value="Reset Password" 
+                                           style="font-family: Verdana!important;font-size: 14px!important; color: #003366;text-decoration: none" oncomplete="resetDialog.show();"/>
+                            <h:outputLabel value="|" style="font-family: Verdana;color: #003366" escape="false"/>
+                            <h:outputLink  id="helpId" value="${request.contextPath}/about.htm" title="Clik to see who we are!" style="color: #003366;text-decoration: none">Help</h:outputLink>
+                        </h:panelGrid>
+                        <pe:tooltip for="aboutId" value="What is Pustaka Paradigm" showEffect="slideToggle"  
+                                    hideEffect="slideToggle" showDelay="1"  myPosition="top center" atPosition="bottom center"/>
+                        <pe:tooltip for="contactId" value="Who we are" showEffect="slideToggle"  
+                                    hideEffect="slideToggle" showDelay="1"  myPosition="top center" atPosition="bottom center"/>
+                        <pe:tooltip for="configId" value="Click to config the application" showEffect="slideToggle"  
+                                    hideEffect="slideToggle" showDelay="1"  myPosition="top center" atPosition="bottom center"/>
+                        <pe:tooltip for="monitoringId" value="Monitor log,activity, and error" showEffect="slideToggle"  
+                                    hideEffect="slideToggle" showDelay="1"  myPosition="top center" atPosition="bottom center"/>
+                        <pe:tooltip for="resetId" value="Click to reset your password" showEffect="slideToggle"  
+                                    hideEffect="slideToggle" showDelay="1"  myPosition="top center" atPosition="bottom center"/>
+                        <pe:tooltip for="helpId" value="Need Help? Click Me!" showEffect="slideToggle"  
+                                    hideEffect="slideToggle" showDelay="1"  myPosition="top center" atPosition="bottom center"/>
+
+                    </h:form>
+                </div>
+            </div>
+        </div>
+        <!--</div>-->
+        <p:dialog id="resetId" widgetVar="resetDialog" modal="true" width="400" height="150" header="Reset Password Form"
+                  draggable="false" hideEffect="puff" showEffect="clip" appendTo="@(body)"
+                  dynamic="true" resizable="false">
+            <p:growl id="resetgrowl" life="6000" showDetail="true" escape="false" showSummary="true" globalOnly="false"/>
+            <h:form id="resetForm">
+                <div align="justify">
+                    <h:outputLabel value="Silahkan masukan alamat email Anda yang digunakan waktu mendaftar di aplikasi ini."/>
+                </div>
+
+                <h:panelGrid columns="3" style="margin-top: 20px;margin-bottom: 15px">
+                    <h:outputLabel for="emailId" value="Email" style="font-weight: bold;
+                                   font-family: Trebuchet MS;color: #003366" escape="false"/>
+                    <p:outputLabel value=":" style="font-weight: bold;color: #003366" escape="false"/>
+                    <p:inputText   requiredMessage="Silahkan masukkan email address"  value="#{loginController.emailAddress}"  title="Email Address"
+                                   id="emailId" required="true" label="Email Address" validatorMessage="#{appmsg['loginform.userid_max']}"
+                                   style="width: 310px">
+                        <f:validateLength maximum="100"/>
+                    </p:inputText>
+                    <p:focus for="emailId"/>
+                </h:panelGrid>
+                <p:separator/>
+                <div align="right">
+                    <!--<p:messages id="messagesId"/>-->
+                    <p:commandButton icon="ui-icon-mail-closed" value="Submit"
+                                     action="#{loginController.doResetPassword()}" id="submitId"
+                                     update=":resetgrowl,emailId" ajax="true" oncomplete="handleUpdateRequest(args)"
+                                     style="margin-top: 5px;margin-right: 10px;width: 80px" />
+
+                </div> 
+                <pe:tooltip for="submitId" value="Click to reset password!" showEffect="slideToggle"  
+                            hideEffect="slideToggle" showDelay="1"  myPosition="right center" atPosition="left center"/>
+            </h:form>
+
+        </p:dialog>
+        <!--<h:outputScript library="js" name="jquery.session.js" />-->
+    </h:body>
+    <script type="text/javascript">
+        function handleUpdateRequest(args) {
+            if (args.validationFailed || !args.emailIsExist) {
+                jQuery('#resetId').effect("shake", {times: 3}, 75);
+            } else {
+                resetDialog.hide();
+            }
+        }
+    </script>
+</html>

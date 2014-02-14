@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="
+      	http://www.springframework.org/schema/webflow
+      	http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd" start-state="start">
+
+    <secured attributes="ROLE_ADMIN_ALL,ROLE_ADMIN_IDM" match="any"/>
+<!--    <on-start>
+        <evaluate expression="usersController.crateUserSerchParameter()" result="flowScope.userSearchParam"/>
+        <set name="flowScope.param" value="requestParameters.otherParam" type="java.lang.String" />
+        <evaluate expression="spiUserFlowController.createSpiUserModel(flowRequestContext)" result="flowScope.userModel"/> 
+    </on-start>
+    <view-state id="start" view="create_user.xhtml">
+        <transition on="next" to="add_other" />  
+        <transition on="close" to="end"/>
+    </view-state>
+    <view-state id="add_other" view="add_other.xhtml">
+        <transition on="next" to="add_role" />
+        <transition on="back" to="start" />
+    </view-state>
+    <view-state id="add_role" view="add_role.xhtml">
+        <on-render>
+            <evaluate expression="spiUserFlowController.toAddRole(flowRequestContext)"/> 
+        </on-render>
+        <transition on="back" to="add_other" />  
+        <transition on="next" to="send_notification" />  
+    </view-state>
+    <view-state id="send_notification" view="send_notification.xhtml">
+        <transition on="save" to="verifikasi_save" />  
+        <transition on="back" to="add_role" />  
+    </view-state>	
+    
+        
+    <action-state id="verifikasi_save">
+        <evaluate expression="spiUserFlowController.doSave(flowRequestContext)"/>
+        <transition on="yes" to="sukses_save"/>
+        <transition on="no" to="send_notification"/>
+    </action-state >	
+    
+    <end-state id="sukses_save" view="externalRedirect:contextRelative:/protected/user_detail.htm?execution=s#{userModel.spiUser.id}"/>
+    <end-state id="end" view="externalRedirect:contextRelative:/protected/list_user.htm" />-->
+</flow>

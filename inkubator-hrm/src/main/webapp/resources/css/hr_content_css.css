@@ -1,0 +1,84 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Feb 13, 2014, 11:19:51 AM
+    Author     : Deni Husni FR
+*/
+body
+{
+    margin:0 auto;
+    padding:0
+}
+root
+{
+    display:block
+}
+.ui-widget,.ui-widget .ui-widget
+{
+    font-size:11px!important;
+    font-family: Verdana!important;
+}
+#art-page-background-middle-texture
+{
+    position:absolute;
+    background-image: url(../images/squairy_light.png);
+    background-color:#ccffff;
+    background-repeat:repeat;
+    background-position:top left;
+    background-attachment:fixed;
+    width:100%;
+    min-height:100%;
+    overflow:visible;
+    font-size: 11px !important;
+    font-family: Verdana!important;
+}
+
+#header_content
+{
+    background:none repeat scroll 0 0 #006699 ;
+    /*box-shadow:0 -1px rgba(255,255,255,.05) inset,0 1px rgba(0,0,0,.05);*/
+    /*position:relative;*/
+    text-align:left;
+    z-index:1;
+    height:67px;
+    font-family: Verdana!important;
+    
+}
+#header_namaPT{
+    float: left;
+    padding-top: 8px;
+    margin-left: 10px;
+    font-size: 22px!important;
+    color: #ffffff;
+    text-shadow:0 1px rgba(0,0,0,.1);
+    /*font-family:Verdana;*/
+}
+#box_bg
+{
+    border:3px solid #006666;
+    background-image: url(../images/greyzz.png);
+    background-repeat: repeat;
+    /*background:#f5f4f4;*/
+    width:600px;
+    -webkit-border-radius:3px;
+    -moz-border-radius:3px;
+    border-radius:5px;
+    height:330px;
+    box-shadow:0 2px 2px rgba(0,0,0,.2),0 1px 5px rgba(0,0,0,.2),0 0 0 8px rgba(255,255,204,.8);
+    top:50%;
+    position:fixed;
+    margin-top:-150px;
+    left:50%;
+    margin-left:-302px;
+}
+.img-button-facebook
+{
+    background-image:url(../images/facebook.png)!important
+}
+.img-button-twitter
+{
+    background-image:url(../images/twitter.png)!important
+}

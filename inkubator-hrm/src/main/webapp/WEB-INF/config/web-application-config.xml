@@ -3,19 +3,26 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:util="http://www.springframework.org/schema/util"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
-         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd
-         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd
+         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
     <context:property-placeholder location="classpath*:application.properties" />
     <import resource="common-config.xml"/>
+    <import resource="data-access-config_tomcat.xml"/>
+    <import resource="email-sender-config.xml"/>
+    <import resource="webcore-config.xml"/>
     <import resource="webmvc-config.xml" />
     <import resource="webflow-config.xml" />
-    <!--<import resource="rest-security-config.xml"/>-->
+    <import resource="security-config.xml"/>
+     
+<!--    <import resource="webmvc-config.xml" />
+    <import resource="webflow-config.xml" />
+    <import resource="rest-security-config.xml"/>
     <import resource="security-config.xml"/>
     <import resource="webcore-config.xml"/>
-    <import resource="data-access-config_tomcat.xml"/>
-    <import resource="web-messaging-config.xml"/>
-    <import resource="email-sender-config.xml"/>
+   
+    <import resource="web-messaging-config.xml"/>-->
+   
     <!--<import resource="web_service_rest.xml"/>-->
     
    

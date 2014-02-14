@@ -2,18 +2,12 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
-          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
 
    
-    
-    <bean class="com.csl.web.core.util.UploadUtil" id="uploadUtil" lazy-init="true" >
+    <bean class="com.inkubator.webcore.util.FacesIO" id="facesIO" lazy-init="true" >
         <property name="pathUpload" value="${webcore.util.path_upload}"/>
+        <property name="bufferSize" value="${webcore.util.buffer_size}"/>
     </bean>
-    
-     <bean class="com.csl.web.core.util.ObjectLoaderUtil" id="objectLoaderUtil" lazy-init="true" >
-        <property name="pathUpload" value="${webcore.util.path_upload}"/>
-    </bean>
-    
-    
 </beans>
