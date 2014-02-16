@@ -1,0 +1,135 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>#{appmsg['global.header_app']}</title>
+        <link rel="stylesheet" href="${request.contextPath}/resources/css/hr_content_css.css" type="text/css" media="screen" />
+        <link rel="stylesheet" href="${request.contextPath}/resources/css/tabmenu.css" type="text/css" media="screen" />
+        <link rel="shortcut icon" href="${request.contextPath}/hr.ico" type="image/x-icon" />
+        <title><ui:insert name="windowTitle"/></title>
+    </h:head>
+    <h:body>
+        <h:form>
+            <p:idleMonitor timeout="1740000" onidle="gl.show()"/>
+            <p:dialog header="#{appmsg['master_layout.session_information']}" widgetVar="infoSession" modal="true" 
+                      id="infoSessionId"
+                      appendTo="@(body)" resizable="false" closable="false" style="width: 400px;height: 120px">
+                <div align="center">
+                    <h:outputLabel value="#{appmsg['master_layout.session_expired']}" style="margin-top: 5px"/>
+                </div>
+                <br/>
+                <div align="center">
+                    <h:panelGrid columns="1">
+                        <p:graphicImage library="images" name="session_wait.gif" style="width: 64px;height: 64px"/>
+                        <p:button href="${request.contextPath}/logout.htm" value="#{appmsg['global.ok']}" icon="ui-icon-power" style="width: 64px;margin-top: 5px"
+                                  title="#{appmsg['global.ok']}"/>
+                    </h:panelGrid>
+                </div>
+            </p:dialog>
+        </h:form>
+
+        <div id="art-page-background-middle-texture" >
+            <div id="header_content">
+                <div id="header_namaPT" style="margin-left: 20px">
+                    <h:panelGrid columns="1">
+                        <h:outputLabel value="#{appmsg['global.application_name']}" style="text-align: left;color: #ff9900;font-family:Trebuchet MS" />        
+                        <h:outputLabel value="#{appmsg['global.namaPT']}" style="font-size: 12px!important;color: #003366"/>
+                    </h:panelGrid>
+                </div>
+                <div style="float: right">                
+                    <h:panelGrid columns="2" style="padding-top: 8px">
+                        <h:outputLabel value="#{appmsg['global.welcome']}, #{userContext.userName}.  #{appmsg['homelogin_info.info']}  #{login_date}" 
+                                       style="font-size: 18px;font-family: Tempus Sans ITC;color: #003366;margin-right: 60px"/> 
+                        <h:form>
+                            <h:panelGroup style="margin-right: 220px">
+                                <h:panelGrid columns="4" cellpadding="3" >
+                                    <h:commandLink id="printerId">
+                                        <h:graphicImage library="images" name="printer.png" width="36" height="36" /> 
+                                    </h:commandLink>
+                                    <h:commandLink id="helpId">
+                                        <h:graphicImage library="images" name="help_system.png" width="36" height="36" /> 
+                                    </h:commandLink>
+                                    <h:commandLink id="userId">
+                                        <h:graphicImage library="images" name="user.png" width="36" height="36" /> 
+                                    </h:commandLink>
+                                    <h:outputLink id="logoutId" style="margin-left: 30px" value="${request.contextPath}/logout.htm">
+                                        <h:graphicImage library="images" name="logout.png" width="36" height="36" /> 
+                                    </h:outputLink>
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:form>
+                    </h:panelGrid>
+                </div>
+            </div>
+            <div style="clear: both"/>
+            <p:separator style="margin-top: 0px"/>
+            <div style="margin-left: 10px;margin-right: 10px;margin-top: 0px">
+                <ul id="tabmenu" >
+                    <li id="home">
+                        <a href="home.htm"><h:outputLabel value="Home" /></a>
+                        <ul>
+                            <li><a><h:outputLabel value="Clik Here to Customize the Dashboard"/></a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="?2"><h:outputLabel value="Master Data" rendered="true" /></a>
+                        <ul>
+                            <li id="p22" ><a href="home_1.htm"><h:outputLabel value="Branch" rendered="true"/></a>  
+                            </li>
+                            <li ><a href="?22"><h:outputLabel value="Department"/></a>  
+                            </li>
+                            <li><a href="?23"><h:outputLabel value="Position" rendered="true"/></a>  
+                            </li>
+                            <!--                            <li><a href="?24"><h:outputLabel value="Position Data"/></a>  
+                                                        </li>-->
+                        </ul>
+                    </li>
+                    <li>
+                        <h:outputLabel value="Employee"/>
+                        <ul>
+                            <li id="p22" ><a href="home_1.htm"><h:outputLabel value="List User" rendered="true"/></a>  
+                            </li>
+                            <li ><a href="?22"><h:outputLabel value="List Role"/></a>  
+                            </li>
+                            <li id="p22" ><a><h:outputLabel value="|" rendered="true" style="text-decoration: none"/></a></li>
+                            <li id="p22" ><a href="home_1.htm"><h:outputLabel value="User" rendered="true"/></a>  
+                            </li>
+                            <li ><a href="?22"><h:outputLabel value="Role"/></a>  
+                            </li>
+                            <li><a href="?23"><h:outputLabel value="Application" rendered="true"/></a>  
+                            </li>
+                            <!--                            <li><a href="?23"><h:outputLabel value="List Application" rendered="true"/></a>  
+                                                        </li>-->
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="?2"><h:outputLabel value="Approval Matrix" rendered="true"/></a>
+                        <ul>
+                            <li id="p22" ><a href="home_1.htm"><h:outputLabel value="Approval Definition" rendered="true"/></a>  
+                            </li>
+                            <li ><a href="?22"><h:outputLabel value="Approval Parameter"/></a>  
+                            </li>
+                            <!--                            <li><a href="?23"><h:outputLabel value="Position" rendered="true"/></a>  
+                                                        </li>-->
+                            <!--                            <li><a href="?24"><h:outputLabel value="Position Data"/></a>  
+                                                        </li>-->
+                        </ul>
+                    </li>
+                    <li><a href="?4">Contact Us</a></li>
+                </ul>
+
+            </div>
+            <ui:insert name="center" />
+
+        </div>
+
+
+    </h:body>
+</html>
+

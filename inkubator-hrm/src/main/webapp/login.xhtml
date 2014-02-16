@@ -16,10 +16,9 @@
             <div id="header_login">
                 <div id="header_namaPT">
                     <h:panelGrid columns="1">
-                        <h:outputLabel value="HR Management" style="text-align: left;color: #ff9900;font-family:Trebuchet MS" />        
-                        <h:outputLabel value="#{appmsg['global.namaPT']}" style="font-size: 11px!important" />
+                        <h:outputLabel value="#{appmsg['global.application_name']}" style="text-align: left;color: #ff9900;font-family:Trebuchet MS" />        
+                        <h:outputLabel value="#{appmsg['global.namaPT']}" style="font-size: 12px!important" />
                     </h:panelGrid>
-
                 </div>
                 <div style="float: right">
                     <h:form id="pilihanBahasaForm" >
@@ -83,10 +82,7 @@
                                              id="loginId" ajax="false" type="submit" 
                                              update="loginForm" 
                                              style="width: 85px" />
-<!--                            <f:facet name="footer">
-                               
-                            </f:facet>-->
-                             <p:defaultCommand target="loginId" />
+                            <p:defaultCommand target="loginId" />
                             <p:watermark for="j_username" value="#{appmsg['loginform.watermark_id']}"/>
                             <p:watermark for="j_password" value="#{appmsg['loginform.watermark_password']}" />
                             <pe:tooltip for="loginId" value="#{appmsg['loginform.tooltips']}" showEffect="slideToggle"  
