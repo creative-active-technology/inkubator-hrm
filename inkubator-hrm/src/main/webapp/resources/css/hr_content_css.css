@@ -12,8 +12,8 @@ body
     margin:0 auto;
     padding:0;
     position:absolute;
-    background-image: url(../images/squairy_light.png);
-    background-color:#ccffff;
+    background-image: url(../images/greyzz.png);
+    background-color:#ffffff;
     background-repeat:repeat;
     background-position:top left;
     background-attachment:fixed;
@@ -33,15 +33,15 @@ root
 #art-page-background-middle-texture
 {
 
-    font-size: 11px !important;
+    font-size: 11px!important;
     font-family: Verdana!important;
 }
 
 #header_content
 {
-    /*background:none repeat scroll 0 0 #006699 ;*/
-    /*box-shadow:0 -1px rgba(255,255,255,.05) inset,0 1px rgba(0,0,0,.05);*/
-    /*position:relative;*/
+    background:none repeat scroll 0 0 #006699 ;
+    box-shadow:0 -1px rgba(255,255,255,.05) inset,0 1px rgba(0,0,0,.05);
+    position:relative;
     text-align:left;
     z-index:1;
     height:67px;

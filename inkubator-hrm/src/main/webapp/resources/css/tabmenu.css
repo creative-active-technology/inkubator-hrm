@@ -1,4 +1,14 @@
-    
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Feb 16, 2014, 9:35:47 AM
+    Author     : Deni Husni FR
+*/
+
+
 ul#tabmenu
 {
     /*width:100%;*/
@@ -17,7 +27,7 @@ ul#tabmenu:after
 {
     content:'.'; height: 0; clear: both; display: block; visibility: hidden;
 }
-        
+
 ul#tabmenu li
 {
     display:inline;
@@ -25,7 +35,7 @@ ul#tabmenu li
     margin-top:0;margin-bottom:0;
     margin-left:5px;margin-right:0px;
 }
-        
+
 /*Main menu links*/
 ul#tabmenu li a
 {
@@ -39,7 +49,7 @@ ul#tabmenu li a
     text-decoration:none;
     display:inline-block; 
     outline:0;
-    
+
     border:1px solid #00CCFF;
     border-bottom:none;
     background:#2e90bd;
@@ -65,7 +75,7 @@ ul#tabmenu li.active a
 ul#tabmenu li.active a:hover {
     color:green;
 }*/
-        
+
 /* Secondary level sub-menu
 ----------------------------------------------------------*/
 ul#tabmenu li.active ul, ul#tabmenu>li:first-child>ul
@@ -80,7 +90,7 @@ ul#tabmenu li.active ul, ul#tabmenu>li:first-child>ul
     z-index:3;
     border-radius:3px;
 }
-        
+
 ul#tabmenu li ul
 {
     display: none;
@@ -91,7 +101,7 @@ ul#tabmenu li li
 {
     margin-left: 0px;
 }
-     
+
 /*Sub-menu links*/
 ul#tabmenu ul li a
 {
@@ -101,7 +111,7 @@ ul#tabmenu ul li a
     font-size:12px;
     font-weight:normal;
     font-family:Verdana;
-    line-height:27px;
+    line-height:25px;
     margin: 0; border: 0; top: 0;
     background: transparent;
 }
@@ -109,14 +119,16 @@ ul#tabmenu li.active li a, ul#tabmenu li.active li a:hover {
     color:#FFFFFF;
     border: 0;
     background: transparent;
+
 }
 
 ul#tabmenu ul li.subActive a, ul#tabmenu ul li a:hover
 {
-    text-decoration: underline;
-    color:#0066CC;
+    /*text-decoration: underline;*/
+    color: #006600 !important;
+    /*font-weight: bold;*/
 }
-  
+
 ul#tabmenu li.dummy a
 {
     display:none;    
@@ -132,7 +144,7 @@ ul#tabmenu ul li li
 ul#tabmenu ul li li a
 {
     line-height:22px;
-    padding: 0; 
+    padding: 2px!important; 
     white-space: nowrap;
     font-size:12px;
     font-weight:normal;
@@ -171,8 +183,10 @@ ul#tabmenu li.active ul ul
     position: absolute;
     z-index: 4;
     border-radius: 0 0 4px 4px;
+
 }
 ul#tabmenu li.active li
 {
     position: relative;
 }
+

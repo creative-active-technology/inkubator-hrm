@@ -85,7 +85,8 @@ public class LoginController extends BaseController {
     }
 
     @PostConstruct
-    public void loginInitialization() {
+    @Override
+    public void initialization() {
         if (FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE) == null) {
             bahasaTerpilih = "in";
             FacesUtil.setSessionAttribute(HRMConstant.BAHASA_ACTIVE, bahasaTerpilih);

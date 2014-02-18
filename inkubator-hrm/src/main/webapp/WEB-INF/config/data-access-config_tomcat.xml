@@ -59,13 +59,13 @@
                 <prop key="hibernate.show_sql">false</prop>
                 <prop key="hibernate.format_sql">true</prop>
                 <prop key="hibernate.current_session_context_class">com.inkubator.datacore.util.TransactionAwareSessionContext</prop>
-                <prop key="hibernate.cache.use_query_cache">true</prop>
+<!--                <prop key="hibernate.cache.use_query_cache">true</prop>
                 <prop key="hibernate.cache.use_second_level_cache">true</prop>
                 <prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop>
-                <prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</prop>
+                <prop key="hibernate.cache.region.factory_class">org.hibernatme.cache.ehcache.EhCacheRegionFactory</prop>
                 <prop key="hibernate.cache.provider_configuration_file_resource_path">hibernate_ehcache.xml</prop>
                 <prop key="hibernate.generate_statistics">true</prop>
-                <prop key="org.hibernate.envers.audit_table_suffix">_audit</prop>
+                <prop key="org.hibernate.envers.audit_table_suffix">_audit</prop>-->
             </props>
         </property>
     </bean>

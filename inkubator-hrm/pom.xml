@@ -30,6 +30,17 @@
             <groupId>com.inkubator</groupId>
             <artifactId>data-core</artifactId>
             <version>1.0-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.enterprise</groupId>
+                    <artifactId>cdi-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency> 
+            <groupId>com.inkubator</groupId>
+            <artifactId>entity-service-hrm</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency> 
             <groupId>com.inkubator</groupId>

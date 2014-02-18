@@ -9,22 +9,26 @@
     <!-- Configure Spring Security -->
     <security:http auto-config="false" use-expressions="true">
         <security:form-login login-page="/" authentication-success-handler-ref="myHandlerSuccessLogin"
-                                      authentication-failure-url="/?login_error=1" always-use-default-target="true"/>
+                             authentication-failure-url="/?login_error=1" always-use-default-target="true"/>
+        <security:intercept-url pattern="/protected/*" access="isAuthenticated()"/>
         <security:intercept-url pattern="/flow-protected/**" access="hasAnyRole('ROLE_ADMIN_HRM','ROLE_USER_HRM')"/>
         <security:intercept-url pattern="/protected/**" access="hasAnyRole('ROLE_ADMIN_HRM','ROLE_USER_HRM')"/>
         <security:session-management>
             <security:concurrency-control max-sessions="1" error-if-maximum-exceeded="true" session-registry-alias="sessionRegistry"/>
         </security:session-management>
-        <security:custom-filter ref="logoutFilter" position="LOGOUT_FILTER"/>
-        <!--<security:logout invalidate-session="true" delete-cookies="JSESSIONID" logout-url="/logout.htm" logout-success-url="logoutSuccessHandler"/>-->
+        <security:custom-filter ref="logoutFilter" position="LOGOUT_FILTER" />
+        <!--<security:logout invalidate-session="true" delete-cookies="JSESSIONID" logout-url="/logout.htm"/>-->
     </security:http>
-    <bean id="myHandlerSuccessLogin" class="com.inkubator.securitycore.util.AuthenticationSuccessHandler" lazy-init="true"/> 
+    <bean id="myHandlerSuccessLogin" class="com.inkubator.hrm.util.CustomAuthenticationSuccessHandler" lazy-init="true"/> 
     <bean id="logoutFilter" class="org.springframework.security.web.authentication.logout.LogoutFilter">
         <constructor-arg index="0" value="/"/>
         <constructor-arg index="1">
             <list>
                 <bean id="authenticationLogoutSuccessHandler" class="com.inkubator.securitycore.util.AuthenticationLogoutSuccessHandler"/>
-                <bean id="securityContextLogoutHandler" class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler"/>
+                <bean id="securityContextLogoutHandler" class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler">
+                    <property name="clearAuthentication" value="true"/>
+                    <property name="invalidateHttpSession" value="true"/>
+                </bean>
             </list>
         </constructor-arg>
         <property name="filterProcessesUrl" value="/logout.htm"/>
@@ -36,7 +40,7 @@
                 <security:user name="master.admin" password="12345" authorities="ROLE_ADMIN_HRM" />
             </security:user-service>
         </security:authentication-provider>
-<!--        <security:authentication-provider user-service-ref="userDetailsService" >
+        <!--        <security:authentication-provider user-service-ref="userDetailsService" >
             <security:password-encoder hash="sha-256" />
         </security:authentication-provider>-->
     </security:authentication-manager>

@@ -14,4 +14,6 @@ public class HRMConstant {
     public static final String SPRING_SECURITY_CHECK = "j_spring_security_check";
     public static final String BAHASA_ACTIVE = "bahasa_active";
     public static final String LOGIN_DATE = "login_date";
+    public static final String USER_LOGIN_ID = "user_login_id";
+    public static final String NOTIFICATION_CHANEL_SOCKET="/notificationsLogin";
 }

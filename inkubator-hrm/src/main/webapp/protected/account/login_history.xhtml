@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <div style="margin-top: 10px;margin-left: 20px;margin-right: 20px;font-family: Verdana!important">
+                    <h:form>
+                        <p:toolbar>
+                            <p:toolbarGroup align="left">
+                                <p:outputLabel value="Cari Data" style="margin-left: 5px;margin-right: 10px"/>
+                                <p:outputLabel value=":"  style="margin-right: 5px"/>
+                                <p:inputText style="width: 250px!important;margin-right: 5px" placeholder="Pencarian Berdasarkan User ID"
+                                             title="Pencarian Berdasarkan User ID" id="inputPencarianId"/>
+                                <p:commandButton value="Search" icon="ui-icon-search" title="Go To seacrh Data"  id="pencarianId"/>
+                                <p:separator/>
+                                <p:commandButton value="Advacne Search" icon="ui-icon-zoomin" title="Go to Advance Search" />
+                                <p:focus for="inputPencarianId"/>
+                                <p:defaultCommand target="pencarianId"/>
+                            </p:toolbarGroup>
+                            <p:toolbarGroup align="right">
+                                <p:commandButton value="Export to XLS" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel"/>
+                                <p:commandButton value="Export to PDF" style="margin-right: 5px" icon="ui-icon-image" title="Export Table to PDF"/>
+                                <p:commandButton value="Print" icon="ui-icon-print" title="Print Table"/>
+                                <p:separator/>
+                                <p:commandButton value="Close" icon="ui-icon-home" style="margin-right: 5px" title="Close and Go to Home"/>
+
+                            </p:toolbarGroup>
+                        </p:toolbar>
+                    </h:form>
+
+
+                </div>
+                <h:outputScript library="js" name="tabmenu.js" />
+                <script> tabmenu.select("loginHistory");</script>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+
