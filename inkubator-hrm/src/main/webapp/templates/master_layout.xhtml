@@ -94,13 +94,13 @@
             <div style="margin-left: 10px;margin-right: 10px;margin-top: 0px">
                 <ul id="tabmenu" >
                     <li id="home">
-                        <a href="${request.contextPath}/protected/home.htm"><h:outputLabel value="#{appmsg['global.home']}" title="Home" /></a>
+                        <a href="${request.contextPath}/protected/home.htm"><h:graphicImage library="images" name="home.png" width="16" height="16" style="margin-right: 3px;vertical-align: middle"/><h:outputLabel value="#{appmsg['global.home']}" title="Home"  /></a>
                         <ul>
-                            <li><a><h:outputLabel value="#{appmsg['global.dashboard']}" style="font-weight: bold"/></a></li>
+                            <li><a><h:outputLabel value="#{appmsg['global.dashboard']}"/></a></li>
                         </ul>
                     </li>
                     <li>
-                        <a><h:outputLabel value="Admin Modul" rendered="true" /></a>
+                        <a><h:graphicImage library="images" name="admin.png" width="16" height="16" style="margin-right: 3px;vertical-align: middle"/><h:outputLabel value="Admin Modul" rendered="true" /></a>
                         <ul>
                             <!--                            <li><a><h:outputLabel value="Account" rendered="true"/></a>  
                                                             <ul>
@@ -163,7 +163,7 @@
                         </ul>
                     </li>
                     <li>
-                        <h:outputLabel value="Account"/>
+                        <h:graphicImage library="images" name="user_accounts.png" width="16" height="16" style="margin-right: 3px;vertical-align: middle"/><h:outputLabel value="Account"/>
                         <ul>
 
 
@@ -172,8 +172,12 @@
                             <li><a><h:outputLabel value="|" rendered="true" style="text-decoration: none"/></a></li>
                             <li id="loginHistory" ><a href="${request.contextPath}/protected/account/login_history.htm"><h:outputLabel value="Login History" rendered="true"/></a>  
                             </li>
+
                             <li><a><h:outputLabel value="|" rendered="true" style="text-decoration: none"/></a></li>
-                              <li id="userPage" ><a href="home_1.htm"><h:outputLabel value="Password History" rendered="true"/></a>  
+                            <li id="userPage" ><a href="home_1.htm"><h:outputLabel value="Password History" rendered="true"/></a>  
+                            </li>
+                            <li><a><h:outputLabel value="|" rendered="true" style="text-decoration: none"/></a></li>
+                            <li id="complexityPage" ><a href="${request.contextPath}/protected/account/password_configuration.htm"><h:outputLabel value="Password Configuration" rendered="true"/></a>  
                             </li>
                             <li><a><h:outputLabel value="|" rendered="true" style="text-decoration: none"/></a></li>
                             <li id="userPage" ><a href="home_1.htm"><h:outputLabel value="User" rendered="true"/></a>  
@@ -184,7 +188,7 @@
                         </ul>
                     </li>
                     <li>
-                        <a href="?2"><h:outputLabel value="Approval Matrix" rendered="true"/></a>
+                        <a href="?2"><h:graphicImage library="images" name="approval_matrix.png" width="16" height="16" style="margin-right: 3px;vertical-align: middle"/><h:outputLabel value="Approval Matrix" rendered="true"/></a>
                         <ul>
                             <li id="p22" ><a href="home_1.htm"><h:outputLabel value="Approval Definition" rendered="true"/></a>  
                             </li>
@@ -195,7 +199,7 @@
                     </li>
 
                     <li>
-                        <a href="?2"><h:outputLabel value="My Company" rendered="true"/></a>
+                        <a href="?2"><h:graphicImage library="images" name="my_company.png" width="16" height="16" style="margin-right: 3px;vertical-align: middle"/><h:outputLabel value="My Company" rendered="true"/></a>
                         <ul>
                             <li id="p22" ><a href="home_1.htm"><h:outputLabel value="Approval Definition" rendered="true"/></a>  
                             </li>
@@ -204,7 +208,7 @@
                         </ul>
                     </li>
 
-                    <li><a href="?4">Contact Us</a></li>
+                    <li><a href="?4"><h:graphicImage library="images" name="contact.png" width="16" height="16" style="margin-right: 3px;vertical-align: middle"/>Contact Us</a></li>
                 </ul>
 
             </div>

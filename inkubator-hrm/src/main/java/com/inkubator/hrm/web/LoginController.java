@@ -98,8 +98,8 @@ public class LoginController extends BaseController {
 
     public void doChageLanguange() {
         FacesUtil.setSessionAttribute(HRMConstant.BAHASA_ACTIVE, bahasaTerpilih);
-        String bahasa = (String) FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE);
-        FacesUtil.getFacesContext().getViewRoot().setLocale(new Locale(bahasa));
+        String bahasa1 = (String) FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE);
+        FacesUtil.getFacesContext().getViewRoot().setLocale(new Locale(bahasa1));
     }
 
     public String doLogin() {
@@ -109,7 +109,7 @@ public class LoginController extends BaseController {
         try {
             dispatcher.forward((ServletRequest) context.getRequest(), (ServletResponse) context.getResponse());
         } catch (ServletException | IOException ex) {
-            logger.error("Error", ex);
+            LOGGER.error("Error", ex);
         }
         FacesUtil.setSessionAttribute(HRMConstant.LOGIN_DATE, dateFormatter.getDateFullAsStringsWithActiveLocale(new Date(),
                 new Locale(bahasaTerpilih)));

@@ -3,7 +3,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
     <h:head>
         <title>IGNORED</title>
     </h:head>
@@ -13,33 +15,154 @@
                 Home
             </ui:define>
             <ui:define name="center">
-                <div style="margin-top: 10px;margin-left: 20px;margin-right: 20px;font-family: Verdana!important">
-                    <h:form>
-                        <p:toolbar>
-                            <p:toolbarGroup align="left">
-                                <p:outputLabel value="Cari Data" style="margin-left: 5px;margin-right: 10px"/>
-                                <p:outputLabel value=":"  style="margin-right: 5px"/>
-                                <p:inputText style="width: 250px!important;margin-right: 5px" placeholder="Pencarian Berdasarkan User ID"
-                                             title="Pencarian Berdasarkan User ID" id="inputPencarianId"/>
-                                <p:commandButton value="Search" icon="ui-icon-search" title="Go To seacrh Data"  id="pencarianId"/>
+                <pe:layout fullPage="false" style="width: 97%; height: 480px;margin-left: 20px;margin-top: 10px"> 
+                    <pe:layoutPane position="east" size="215" resizable="false">  
+
+                        <f:facet name="header">  
+                            <h:outputText value="Statistic Login History" style="font-family: Trebuchet MS;font-size: 12px;font-weight: bold"/>  
+                        </f:facet>  
+                        <h:form>
+                            <h:panelGrid columns="4" style="margin-left: 5px">
+                                <p:outputLabel value="Bulan"/>
+                                <p:selectOneMenu>
+                                    <f:selectItem  itemValue="1" itemLabel="1"/>
+                                    <f:selectItem  itemValue="2" itemLabel="2"/>
+                                    <f:selectItem  itemValue="3" itemLabel="3"/>
+                                    <f:selectItem  itemValue="4" itemLabel="4"/>
+                                    <f:selectItem  itemValue="5" itemLabel="5"/>
+                                    <f:selectItem  itemValue="6" itemLabel="6"/>
+                                    <f:selectItem  itemValue="7" itemLabel="7"/>
+                                    <f:selectItem  itemValue="8" itemLabel="8"/>
+                                </p:selectOneMenu>
+                                <p:outputLabel value="Tahun"/>
+                                <p:selectOneMenu>
+                                    <f:selectItem  itemValue="2013" itemLabel="2013"/>
+                                    <f:selectItem  itemValue="2014" itemLabel="2014"/>
+                                    <f:selectItem  itemValue="2015" itemLabel="2015"/>
+                                    <f:selectItem  itemValue="2016" itemLabel="2016"/>
+                                </p:selectOneMenu>
+                            </h:panelGrid>
+                            <p:pieChart id="custom" value="#{loginHistoryController.pieModel}" legendPosition="s" fill="false" showDataLabels="true"
+                                        legendCols="3"
+                                        style="width:200px;height:250px" sliceMargin="5" diameter="130" />
+
+                            <p:panel header="Login Information" style="width: 175px;margin-left: 10px;margin-top: -10px" >
+                                <h:panelGrid columns="3">
+                                    <h:outputLabel value="Total Login" />
+                                    <h:outputLabel value=":" />
+                                    <h:outputLabel value="#{loginHistoryController.totalLogin}" />
+                                </h:panelGrid>
                                 <p:separator/>
-                                <p:commandButton value="Advacne Search" icon="ui-icon-zoomin" title="Go to Advance Search" />
-                                <p:focus for="inputPencarianId"/>
-                                <p:defaultCommand target="pencarianId"/>
-                            </p:toolbarGroup>
-                            <p:toolbarGroup align="right">
-                                <p:commandButton value="Export to XLS" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel"/>
-                                <p:commandButton value="Export to PDF" style="margin-right: 5px" icon="ui-icon-image" title="Export Table to PDF"/>
-                                <p:commandButton value="Print" icon="ui-icon-print" title="Print Table"/>
-                                <p:separator/>
-                                <p:commandButton value="Close" icon="ui-icon-home" style="margin-right: 5px" title="Close and Go to Home"/>
+                                <h:panelGrid columns="3">
+                                    <h:outputLabel value="Tahun Ini" />
+                                    <h:outputLabel value=":" />
+                                    <h:outputLabel value="#{loginHistoryController.totalLoginTahun}" />
+                                    <h:outputLabel value="Bulan Ini" />
+                                    <h:outputLabel value=":" />
+                                    <h:outputLabel value="#{loginHistoryController.totalLoginBulan}" />
+                                    <h:outputLabel value="Minggu Ini" />
+                                    <h:outputLabel value=":" />
+                                    <h:outputLabel value="#{loginHistoryController.totalLogingMinggu}" />
+                                    <h:outputLabel value="Hari Ini" />
+                                    <h:outputLabel value=":" />
+                                    <h:outputLabel value="#{loginHistoryController.totalLogingHari}" />
+                                </h:panelGrid>
+                            </p:panel>
+                        </h:form>
+                    </pe:layoutPane>  
+                    <pe:layoutPane position="center">  
+                        <f:facet name="header">  
+                            <h:outputText value="List of Login History" style="font-family: Trebuchet MS;font-size: 12px;font-weight: bold"/>  
+                        </f:facet>  
+                        <h:form>
+                            <div style="font-family: Verdana!important;margin-top: 5px">
+                                <p:toolbar>
+                                    <p:toolbarGroup align="left">
+                                        <p:outputLabel value="Cari Data" style="margin-left: 5px;margin-right: 10px"/>
+                                        <p:outputLabel value=":"  style="margin-right: 5px"/>
+                                        <p:inputText style="width: 250px!important;margin-right: 5px" value="#{loginHistoryController.loginHistorySearchParameter.userName}"
+                                                     placeholder="Pencarian Berdasarkan User ID"
+                                                     title="Pencarian Berdasarkan User ID" id="inputPencarianId"/>
+                                        <p:commandButton value="Search" icon="ui-icon-search" title="Go To seacrh Data"  id="pencarianId"/>
+                                        <p:separator/>
+                                        <p:commandButton value="Advacne Search" icon="ui-icon-zoomin" title="Go to Advance Search" />
+                                        <p:focus for="inputPencarianId"/>
+                                        <p:defaultCommand target="pencarianId"/>
+                                    </p:toolbarGroup>
+                                    <p:toolbarGroup align="right">
+                                        <p:commandButton value="Export to XLS" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel"/>
+                                        <p:commandButton value="Export to PDF" style="margin-right: 5px" icon="ui-icon-image" title="Export Table to PDF"/>
+                                        <p:commandButton value="Print" icon="ui-icon-print" title="Print Table"/>
+                                        <p:separator/>
+                                        <p:commandButton value="Close" icon="ui-icon-home" style="margin-right: 5px" title="Close and Go to Home"/>
 
-                            </p:toolbarGroup>
-                        </p:toolbar>
-                    </h:form>
+                                    </p:toolbarGroup>
+                                </p:toolbar>
+                            </div>
+                            <div style="margin-top: 10px">
+                                <p:dataTable  var="loginHistoryData"  value="#{loginHistoryController.lazyDataLoginHistory}" lazy="true" paginator="true" pageLinks="7"
+                                              paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                              id="tableLoginHistory" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31"
+                                              rowIndexVar="no">
+                                    <f:facet name="header">  
+                                        <h:outputText value="Daftar Riwayat Login" />
+                                    </f:facet> 
+                                    <p:column style="text-align: center;width: 25px">
+                                        <f:facet name="header">  
+                                            <h:outputText value="No." />
+                                        </f:facet>
+                                        <h:outputLabel value="#{no+1}." />
+                                    </p:column>
+                                    <p:column sortBy="#{loginHistoryData.userName}" style="width: 200px">
+                                        <f:facet name="header">  
+                                            <h:outputText value="User ID"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{loginHistoryData.userName}"/>
+                                    </p:column>
+                                    <p:column sortBy="#{loginHistoryData.loginDate}" style="width: 180px">
+                                        <f:facet name="header">
+                                            <h:outputText value="Login Date"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{loginHistoryData.loginDate}">
+                                            <f:convertDateTime pattern ="dd-MMMM-yyyy  hh:mm:ss" timeZone="GMT+7"/>
+                                        </h:outputLabel>
+                                    </p:column>
+                                    <p:column sortBy="#{loginHistoryData.logOutDate}" style="width: 180px">
+                                        <f:facet name="header">
+                                            <h:outputText value="Logout Date"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{loginHistoryData.logOutDate}">
+                                            <f:convertDateTime pattern ="dd-MMMM-yyyy  hh:mm:ss" timeZone="GMT+7"/>
+                                        </h:outputLabel>
+                                    </p:column>
+                                    <p:column sortBy="#{loginHistoryData.ipAddress}" style="width: 180px">
+                                        <f:facet name="header">
+                                            <h:outputText value="Ip Address"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{loginHistoryData.ipAddress}"/>
+                                    </p:column>
+                                    <p:column sortBy="#{loginHistoryData.bahasa}" style="text-align: center">
+                                        <f:facet name="header">
+                                            <h:outputText value="Bahasa"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{loginHistoryData.bahasa}"/>
+                                    </p:column>
+                                    <f:facet name="footer">
+                                        Total Data : #{loginHistoryController.lazyDataLoginHistory.rowCount} Data
+                                    </f:facet>  
+                                </p:dataTable>
+                                <p:blockUI block="tableLoginHistory" trigger="tableLoginHistory" >
+                                    <h:graphicImage library="images" name="loading.gif"/>
+                                </p:blockUI>
+                            </div>
+                        </h:form>
+                    </pe:layoutPane>  
+                </pe:layout>  
 
 
-                </div>
+
+
+
                 <h:outputScript library="js" name="tabmenu.js" />
                 <script> tabmenu.select("loginHistory");</script>
             </ui:define>

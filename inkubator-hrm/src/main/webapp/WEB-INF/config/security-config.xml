@@ -24,11 +24,12 @@
         <constructor-arg index="0" value="/"/>
         <constructor-arg index="1">
             <list>
-                <bean id="authenticationLogoutSuccessHandler" class="com.inkubator.securitycore.util.AuthenticationLogoutSuccessHandler"/>
+                <bean id="authenticationLogoutSuccessHandler" class="com.inkubator.hrm.util.CustomAuthenticationLogoutSuccessHandler"/>
                 <bean id="securityContextLogoutHandler" class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler">
                     <property name="clearAuthentication" value="true"/>
                     <property name="invalidateHttpSession" value="true"/>
                 </bean>
+                 
             </list>
         </constructor-arg>
         <property name="filterProcessesUrl" value="/logout.htm"/>
@@ -38,6 +39,7 @@
             <!--<security:password-encoder hash="sha-256" />-->
             <security:user-service>
                 <security:user name="master.admin" password="12345" authorities="ROLE_ADMIN_HRM" />
+                <security:user name="deni.fahri" password="12345" authorities="ROLE_ADMIN_HRM" />
             </security:user-service>
         </security:authentication-provider>
         <!--        <security:authentication-provider user-service-ref="userDetailsService" >

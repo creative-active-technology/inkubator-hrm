@@ -47,7 +47,7 @@ public class CustomAuthenticationSuccessHandler extends AuthenticationSuccessHan
             LOGGER.info("Success Login");
             response.sendRedirect(request.getContextPath() + "/protected/home.htm");
         } catch (Exception ex) {
-            logger.error("Error", ex);
+            LOGGER.error("Error", ex);
         }
 
     }

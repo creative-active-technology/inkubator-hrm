@@ -76,11 +76,23 @@ root
     left:50%;
     margin-left:-302px;
 }
-.img-button-facebook
-{
-    background-image:url(../images/facebook.png)!important
+
+.ui-datatable-odd {
+    background-color: #e1f0f0 !important;
+    border: 1px solid #a6c9e2 !important;
+    /*border: 1px !important;*/
 }
-.img-button-twitter
+.ui-datatable-even {
+    /*background-color: #e1f0f0 !important;*/
+    border: 1px solid #a6c9e2 !important;
+    /*border: 1px !important;*/
+}
+.ui-widget-content{
+    background-image: none !important;   
+}
+.companyHeaderGrid td,.companyHeaderGrid tr
 {
-    background-image:url(../images/twitter.png)!important
+    border:0px;
+    padding:5px 6px;
+    background:transparent;
 }

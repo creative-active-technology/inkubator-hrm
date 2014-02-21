@@ -69,6 +69,7 @@ ul#tabmenu li.active a
     padding-bottom:1px;
     background: #91C05F;
     color:#EEEEEE;
+   
 }
 
 /* You can set active tab's style when hovered
@@ -119,12 +120,13 @@ ul#tabmenu li.active li a, ul#tabmenu li.active li a:hover {
     color:#FFFFFF;
     border: 0;
     background: transparent;
+    
 
 }
 
 ul#tabmenu ul li.subActive a, ul#tabmenu ul li a:hover
 {
-    /*text-decoration: underline;*/
+    text-decoration: underline;
     color: #006600 !important;
     /*font-weight: bold;*/
 }
