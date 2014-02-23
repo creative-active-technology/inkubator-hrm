@@ -12,8 +12,10 @@ import com.inkubator.hrm.web.lazymodel.LoginHistoryLazyModel;
 import com.inkubator.hrm.web.search.LoginHistorySearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
-import java.util.Locale;
+import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -38,6 +40,24 @@ public class LoginHistoryController extends BaseController {
     private Long totalLoginBulan;
     private Long totalLogingMinggu;
     private Long totalLogingHari;
+    List<Integer> period = new ArrayList<>();
+    List<Integer> tahunPeriod = new ArrayList<>();
+
+    public List<Integer> getTahunPeriod() {
+        return tahunPeriod;
+    }
+
+    public void setTahunPeriod(List<Integer> tahunPeriod) {
+        this.tahunPeriod = tahunPeriod;
+    }
+
+    public List<Integer> getPeriod() {
+        return period;
+    }
+
+    public void setPeriod(List<Integer> period) {
+        this.period = period;
+    }
 
     public Long getTotalLogin() {
         try {
@@ -68,7 +88,7 @@ public class LoginHistoryController extends BaseController {
 
     public Long getTotalLogingMinggu() {
         try {
-            totalLogingMinggu = this.loginHistoryService.getTotalLoginThisMonth();
+            totalLogingMinggu = this.loginHistoryService.getTotalLoginThisWeek();
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -98,8 +118,6 @@ public class LoginHistoryController extends BaseController {
 
     public LazyDataModel<LoginHistory> getLazyDataLoginHistory() {
         if (lazyDataLoginHistory == null) {
-            System.out.println("nilai " + loginHistorySearchParameter);
-            System.out.println("nilai service " + loginHistoryService);
             lazyDataLoginHistory = new LoginHistoryLazyModel(loginHistorySearchParameter, loginHistoryService);
         }
         return lazyDataLoginHistory;
@@ -120,9 +138,13 @@ public class LoginHistoryController extends BaseController {
     @PostConstruct
     @Override
     public void initialization() {
-        System.out.println("tereksekusiisis");
-        bahasa = (String) FacesUtil.getSessionAttribute("bahasa_active");
-        FacesUtil.getFacesContext().getViewRoot().setLocale(new Locale(bahasa));
+        super.initialization();
+        for (int i = 1; i <= 12; i++) {
+            period.add(i);
+        }
+        for (int i = 2013; i <= 2030; i++) {
+            tahunPeriod.add(i);
+        }
         loginHistorySearchParameter = new LoginHistorySearchParameter();
         pieModel = new PieChartModel();
         if (FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString().equalsIgnoreCase("en")) {
@@ -141,4 +163,12 @@ public class LoginHistoryController extends BaseController {
 
     }
 
+    public void doSearch() {
+        lazyDataLoginHistory = null;
+    }
+
+    @PreDestroy
+    public void onPostClose() {
+        System.out.println("Bersih-bersih");
+    }
 }

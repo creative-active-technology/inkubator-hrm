@@ -96,3 +96,23 @@ root
     padding:5px 6px;
     background:transparent;
 }
+
+.ui-growl-title
+{
+    font:18px "Lucida Console"!important;
+    color:#900;
+    text-align:left
+}
+.ui-growl-message p
+{
+    font:12px Verdana!important;
+    color:#036
+}
+.ui-growl
+{
+    position:fixed;
+    top:13%
+}
+.ui-panelgrid, .ui-panelgrid-header{
+    text-align: left!important;
+}

@@ -34,7 +34,7 @@ public class LoginController extends BaseController {
 
     private String userId;
     private String password;
-    private String emailAddress;
+//    private String emailAddress;
     private String bahasaTerpilih;
     private Map<String, String> pilihanBahasa = new HashMap<>();
     @ManagedProperty(value = "#{dateFormatter}")
@@ -56,13 +56,13 @@ public class LoginController extends BaseController {
         this.password = password;
     }
 
-    public String getEmailAddress() {
-        return emailAddress;
-    }
-
-    public void setEmailAddress(String emailAddress) {
-        this.emailAddress = emailAddress;
-    }
+//    public String getEmailAddress() {
+//        return emailAddress;
+//    }
+//
+//    public void setEmailAddress(String emailAddress) {
+//        this.emailAddress = emailAddress;
+//    }
 
     public String getBahasaTerpilih() {
         return bahasaTerpilih;

@@ -14,6 +14,8 @@
         <title><ui:insert name="windowTitle"/></title>
     </h:head>
     <h:body>
+        <p:socket onMessage="handleLogin" channel="/notificationsLogin" />
+        <p:growl widgetVar="loginNotification" showDetail="true" showSummary="true" life="2500" /> 
         <h:form>
             <p:idleMonitor timeout="1740000" onidle="gl.show()"/>
             <p:dialog header="#{appmsg['master_layout.session_information']}" widgetVar="infoSession" modal="true" 
@@ -170,6 +172,12 @@
                             <li id="userPage" ><a href="home_1.htm"><h:outputLabel value="List User" rendered="true"/></a>  
                             </li>
                             <li><a><h:outputLabel value="|" rendered="true" style="text-decoration: none"/></a></li>
+                            <li id="userPage" ><a href="home_1.htm"><h:outputLabel value="User" rendered="true"/></a>  
+                            </li>
+                            <li><a><h:outputLabel value="|" rendered="true" style="text-decoration: none"/></a></li>
+                            <li ><a href="rolePage"><h:outputLabel value="Role"/></a>  
+                            </li>
+                            <li><a><h:outputLabel value="|" rendered="true" style="text-decoration: none"/></a></li>
                             <li id="loginHistory" ><a href="${request.contextPath}/protected/account/login_history.htm"><h:outputLabel value="Login History" rendered="true"/></a>  
                             </li>
 
@@ -179,11 +187,9 @@
                             <li><a><h:outputLabel value="|" rendered="true" style="text-decoration: none"/></a></li>
                             <li id="complexityPage" ><a href="${request.contextPath}/protected/account/password_configuration.htm"><h:outputLabel value="Password Configuration" rendered="true"/></a>  
                             </li>
+
                             <li><a><h:outputLabel value="|" rendered="true" style="text-decoration: none"/></a></li>
-                            <li id="userPage" ><a href="home_1.htm"><h:outputLabel value="User" rendered="true"/></a>  
-                            </li>
-                            <li><a><h:outputLabel value="|" rendered="true" style="text-decoration: none"/></a></li>
-                            <li ><a href="rolePage"><h:outputLabel value="Role"/></a>  
+                            <li ><a href="rolePage"><h:outputLabel value="Notification Activity"/></a>  
                             </li>
                         </ul>
                     </li>
@@ -210,13 +216,14 @@
 
                     <li><a href="?4"><h:graphicImage library="images" name="contact.png" width="16" height="16" style="margin-right: 3px;vertical-align: middle"/>Contact Us</a></li>
                 </ul>
-
             </div>
             <ui:insert name="center" />
-
+            <div style="margin-left: 22px;margin-right: 22px;;margin-bottom: 6px">
+                <h:outputLabel value="HRM - PT. Indonesia Inkubator Teknologi" style="font-size: 11px;font-weight: bold;font-family:Trebuchet MS "/>   
+                <h:outputLabel value="Copyright © 2014. All Rights Reserved" style="font-size: 11px;font-weight: bold;float: right;font-family: Trebuchet MS"/>   
+            </div>
         </div>
-
-
+        <h:outputScript library="js" name="login_socket.js"/>
     </h:body>
 </html>
 
