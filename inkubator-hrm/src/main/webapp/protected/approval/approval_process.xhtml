@@ -1,0 +1,235 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <pe:layout fullPage="false" style="width: 97%; height: 100%;margin-left: 20px;
+                           margin-top: 10px;min-height: 480px;margin-bottom: 8px"> 
+                    <pe:layoutPane position="east" size="270" resizable="false" maxWidth="100%" maxHeight="100%" maxSize="100%">  
+                        <f:facet name="header">  
+                            <h:outputText value="Help and Informations" style="font-family: Trebuchet MS;font-size: 12px;font-weight: bold"/>  
+                        </f:facet>  
+                        <p:panelGrid columns="2" style="margin-left: 5px;margin-right: 5px;margin-top: 5px">
+                            <f:facet name="header">  
+                                <h:outputText value="Role Information" style="font-family: Trebuchet MS;font-size: 12px;font-weight: bold"/>  
+                            </f:facet>
+
+                            <h:outputLabel value="Expired Period"/>
+                            <h:outputLabel value="Menyatakan berapa lama sebuah password dari accoount tertentu kadaluarsa dan hari di barukan.
+                                           Satuan Exxpired Period dalam bulan." />
+                            <h:outputLabel value="Expired Notification"/>
+                            <h:outputLabel value="Menyatakan berapa lama sebuah password dari accoount tertentu kadaluarsa dan hari di barukan.
+                                           Satuan Exxpired Period dalam bulan." />
+                            <h:outputLabel value="Notifationi Period"/>
+                            <h:outputLabel value="Menyatakan berapa lama sebuah password dari accoount tertentu kadaluarsa dan hari di barukan.
+                                           Satuan Exxpired Period dalam bulan." />
+                            <h:outputLabel value="Password must Different"/>
+                            <h:outputLabel value="Menyatakan berapa lama sebuah password dari accoount tertentu kadaluarsa dan hari di barukan.
+                                           Satuan Exxpired Period dalam bulan." />
+
+                        </p:panelGrid>
+                        <p:panelGrid columns="2"  style="margin-left: 5px;margin-right:5px;margin-bottom: 5px;text-align: left" styleClass="header_panel">
+                            <f:facet name="header">  
+                                <h:outputText value="Password Complexity Help" style="font-family: Trebuchet MS;font-size: 12px;font-weight: bold"/>  
+                            </f:facet>
+
+                            <h:outputLabel value="Maximum Character"/>
+                            <h:outputLabel value="Menyatakan berapa lama sebuah password dari accoount tertentu kadaluarsa dan hari di barukan.
+                                           Satuan Exxpired Period dalam bulan." />
+                            <h:outputLabel value="Expired Notification"/>
+                            <h:outputLabel value="Menyatakan berapa lama sebuah password dari accoount tertentu kadaluarsa dan hari di barukan.
+                                           Satuan Exxpired Period dalam bulan." />
+                            <h:outputLabel value="Notifationi Period"/>
+                            <h:outputLabel value="Menyatakan berapa lama sebuah password dari accoount tertentu kadaluarsa dan hari di barukan.
+                                           Satuan Exxpired Period dalam bulan." />
+                            <h:outputLabel value="Password must Different"/>
+                            <h:outputLabel value="Menyatakan berapa lama sebuah password dari accoount tertentu kadaluarsa dan hari di barukan.
+                                           Satuan Exxpired Period dalam bulan." />
+
+                        </p:panelGrid>
+                    </pe:layoutPane>  
+                    <pe:layoutPane position="center" maxWidth="100%" maxHeight="100%" maxSize="100%">  
+                        <f:facet name="header">  
+                            <h:outputText value="Appropal Process" style="font-family: Trebuchet MS;font-size: 12px;font-weight: bold"/>  
+                        </f:facet> 
+                        <p:growl id ="roleFormGrowlId" showSummary="true" showDetail="true" globalOnly="true" escape="true" life="4000" sticky="true"/>
+
+                        <h:form id="roleFormId">
+                            <div>
+                                <h:outputLabel value="Approval Process Information" style="margin-left: 23px;font-size: 13px;font-weight: bold;margin-top: 10px;float: left;padding-top: 5px"/>
+                                <p:commandButton value="Close" style="width: 75px;float: right;margin-top: 10px;margin-right: 20px" icon="ui-icon-home"  title="Close and Back to Home" action="#{roleController.doClose()}" immediate="true"/>
+                            </div >
+                            <div style="clear: both"/>
+                            <p:separator style="margin-left: 20px;margin-right: 20px;"/>
+                            <h:panelGrid columns="4" style="margin-left: 30px;margin-top: 10px;margin-bottom: 10px" >
+                                <p:outputLabel value="Role Name" style="font-weight: bold" for="roleNameId"/>
+                                <p:outputLabel value=":"/>
+                                <p:inputText  id="roleNameId" style="width: 250px" value="#{roleController.roleName}" required="true" title="Role Name" label="Role Name"
+                                              onkeyup="this.value = this.value.toUpperCase()"/>
+                                <p:message for="roleNameId" />
+
+                                <p:outputLabel value="Deskription" style="font-weight: bold"/>
+                                <p:outputLabel value=":"/>
+                                <p:inputTextarea id="description" rows="5" cols="30" counter="counter" maxlength="500" value="#{roleController.description}"
+                                                 style="width: 250px; height: 90px;" counterTemplate="{0} sisa karakter" autoResize="true" label="sdfsdfsdfdsf" title="sdfsdfdsf"/>
+                                <p:message for="description"/>
+
+                                <h:outputText />
+                                <h:outputText />
+                                <h:outputText id="counter" />
+                            </h:panelGrid>
+                            <p:focus for="roleNameId"/>
+                            <h:panelGrid columns="4" style="margin-left: 20px;margin-top: 10px;margin-bottom: 10px">
+                                <p:button href="/protected/account/role.htm" value="New" icon="ui-icon-document" style="width: 75px" />
+                                <p:commandButton value="Save" style="width: 75px" icon="ui-icon-disk"  title="Save Password Configuration" action="#{roleController.doSave()}" 
+                                                 update="roleFormId,:roleFormGrowlId,:roleTableId" id="saveBtnRoleId"/>
+                                <p:commandButton value="Reset" icon="ui-icon-refresh" title="Reset"  process="@this" 
+                                                 style="width:75px;"  update="roleFormId">
+                                    <p:resetInput target="roleFormId"/>
+                                </p:commandButton>
+
+                            </h:panelGrid>
+                        </h:form>
+                        <div style="margin-top: 30px">
+                            <h:outputLabel value="Role List" style="margin-left: 23px;font-size: 13px;font-weight: bold"/>
+                        </div>
+                        <p:separator style="margin-left: 20px;margin-right: 20px;margin-bottom: 10px"/>
+                        <h:form id="roleTableId">
+                            <p:toolbar style="margin-left: 20px;margin-right: 20px">
+                                <p:toolbarGroup align="left">
+                                    <p:outputLabel value="Cari Data" style="margin-left: 5px;margin-right: 10px"/>
+                                    <p:outputLabel value=":"  style="margin-right: 5px"/>
+                                    <p:inputText style="width: 250px!important;margin-right: 5px" value="#{roleController.hrmRoleSearchParameter.roleName}"
+                                                 placeholder="Pencarian Berdasarkan Role Name" onkeyup="changeCommand()"
+                                                 title="Pencarian Berdasarkan Role Name" id="inputPencarianId"/>
+                                    <p:commandButton value="Search" icon="ui-icon-search" title="Go To seacrh Data" 
+                                                     id="pencarianId" action="#{roleController.doSearch()}" widgetVar="btn" update="tableRoleId"/>
+                                    <p:separator/>
+                                    <!--                                    <p:commandButton value="Advacne Search" icon="ui-icon-zoomin" title="Go to Advance Search" />-->
+
+                                </p:toolbarGroup>
+                                <p:toolbarGroup align="right">
+                                    <p:commandButton value="Export to XLS" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false">
+                                        <!--<p:dataExporter target="tableRoleId" type="pdf" pageOnly="true" selectionOnly="true" fileName="List_Role"/>-->
+                                        <pe:exporter target="tableRoleId" type="xlsx" pageOnly="true" selectionOnly="true" fileName="List_Role"/>
+                                    </p:commandButton>
+                                    <p:commandButton value="Export to PDF" style="margin-right: 5px" icon="ui-icon-image" title="Export Table to PDF" ajax="false">
+                                        <pe:exporter target="tableRoleId" type="pdf" pageOnly="true" selectionOnly="true" fileName="List_Role"/>
+                                    </p:commandButton>
+                                    <p:commandButton value="Print" icon="ui-icon-print" title="Print Table">
+                                        <p:printer target="tableRoleId" />
+                                    </p:commandButton>
+
+                                </p:toolbarGroup>
+                            </p:toolbar>
+                            <p:defaultCommand target="pencarianId"/>
+                            <div style="margin-top: 10px;margin-bottom: 10px;margin-left: 20px;margin-right: 20px">
+
+                                <p:dataTable  var="roleData"  value="#{roleController.lazyDataHrmRole}" lazy="true" paginator="true" pageLinks="7"
+                                              paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                              id="tableRoleId" rows="5" rowsPerPageTemplate="5,7,11,15,21,25,31"
+                                              rowIndexVar="no">
+                                    <f:facet name="header">  
+                                        <h:outputText value="Daftar Role" />
+                                    </f:facet> 
+                                    <p:column style="text-align: center;width: 25px">
+                                        <f:facet name="header">  
+                                            <h:outputText value="No." />
+                                        </f:facet>
+                                        <h:outputLabel value="#{no+1}." />
+                                    </p:column>
+                                    <p:column sortBy="#{roleData.roleName}" style="width: 200px">
+                                        <f:facet name="header">  
+                                            <h:outputText value="Role Name"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{roleData.roleName}"/>
+                                    </p:column>
+                                    <p:column sortBy="#{roleData.description}" style="width: 200px">
+                                        <f:facet name="header">  
+                                            <h:outputText value="Description"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{roleData.description}"/>
+                                    </p:column>
+                                    <p:column headerText="Action" style="width: 120px;text-align: center" exportable="false" >
+
+                                        <p:commandButton  icon="ui-icon-zoomin" title="Detail" label="Detail" style="font-size: 10px!important"
+                                                          action="#{roleController.doDetail()}" >
+                                            <f:setPropertyActionListener value="#{roleData}" target="#{roleController.selectedHrmRole}" />
+                                        </p:commandButton>
+                                        -
+                                        <p:commandButton  icon="ui-icon-trash" title="Delete" label="Delete"  style="font-size: 9px!important"
+                                                          oncomplete="confirmDialogHrmRole.show();" onclick="statusDialogHrmRole.show();" update=":confirmDialogHrmRoleId" >
+                                            <f:setPropertyActionListener value="#{roleData}" target="#{roleController.selectedHrmRole}" />
+                                        </p:commandButton>
+                                        -
+                                        <p:commandButton  icon="ui-icon-folder-open" title="Edit" label="Edit" style="font-size: 9px!important" update=":roleFormId"
+                                                          action="#{roleController.doEdit()}"  >
+                                            <f:setPropertyActionListener value="#{roleData}" target="#{roleController.selectedHrmRole}" />
+                                        </p:commandButton>
+                                    </p:column>
+                                    <f:facet name="footer">
+                                        <p:outputLabel value="Total Data :"/><p:outputLabel value="#{roleController.lazyDataHrmRole.rowCount}"/><p:outputLabel value="Data" style="margin-left: 3px"/>
+                                    </f:facet>
+                                </p:dataTable>
+                                <p:blockUI block="roleTableId" trigger="tableRoleId,pencarianId,:deleteDialogIdSpiProduct:yesId" >
+                                    <h:panelGrid columns="2">
+                                        <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
+                                        <h:outputLabel value="Data sedang diproses" style="font-size: 12px;color: #006699;margin-left: 3px"/>
+                                    </h:panelGrid>
+                                </p:blockUI>
+
+                            </div>
+                        </h:form>
+                        <p:dialog widgetVar="confirmDialogHrmRole" header="Konfirmasi" modal="true" width="450" dynamic="true" onShow="statusDialogHrmRole.hide()"
+                                  appendTo="@(body)" resizable="false" id="confirmDialogHrmRoleId" >
+                            <h:form id="deleteDialogIdSpiProduct">
+                                <div align="center">
+                                    <div align="center">
+                                        <h:panelGrid columns="2" style="text-align: justify">
+                                            <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
+                                            <h:panelGroup>
+                                                <h:panelGrid style="text-align: center">
+                                                    <p:outputLabel value="#{appmsg['global.delete.confirm']}" style="color: #cc0000;font-weight: bold;font-size: 13px!important"/>
+                                                </h:panelGrid>
+                                            </h:panelGroup>
+                                        </h:panelGrid>
+                                    </div>
+                                    <h:panelGrid  columns="3">
+                                        <p:outputLabel value="Role Name"  style="font-weight: bold"/>
+                                        <p:outputLabel value=":"  style="font-weight: bold"/>
+                                        <p:outputLabel value="#{roleController.selectedHrmRole.roleName}"/>
+                                    </h:panelGrid>
+                                    <p:separator/>
+                                    <p:commandButton value="#{appmsg['global.yes']}" action="#{roleController.doDelete()}" update=":roleTableId" id="yesId"
+                                                     oncomplete="confirmDialogHrmRole.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                                    <p:commandButton value="#{appmsg['global.no']}" oncomplete="confirmDialogHrmRole.hide()" icon="ui-icon-close" />
+
+                                </div>
+                            </h:form>
+                        </p:dialog>
+                        <p:dialog modal="true" widgetVar="statusDialogHrmRole" header="#{appmsg['global.waiting_satu']}" draggable="false" closable="false" resizable="false">
+                            <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
+                        </p:dialog>
+                    </pe:layoutPane>  
+                </pe:layout>
+                <h:outputScript library="js" name="tabmenu.js" />
+                <script> tabmenu.select("rolePage");</script>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+
