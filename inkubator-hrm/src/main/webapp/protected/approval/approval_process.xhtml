@@ -74,11 +74,15 @@
                             <div style="clear: both"/>
                             <p:separator style="margin-left: 20px;margin-right: 20px;"/>
                             <h:panelGrid columns="4" style="margin-left: 30px;margin-top: 10px;margin-bottom: 10px" >
-                                <p:outputLabel value="Role Name" style="font-weight: bold" for="roleNameId"/>
+                                <p:outputLabel value="Process Name" style="font-weight: bold" for="processId"/>
                                 <p:outputLabel value=":"/>
-                                <p:inputText  id="roleNameId" style="width: 250px" value="#{roleController.roleName}" required="true" title="Role Name" label="Role Name"
-                                              onkeyup="this.value = this.value.toUpperCase()"/>
-                                <p:message for="roleNameId" />
+                                <p:selectOneMenu value="#{approvalProcessController.selectedProcess}" id="processId" 
+                                                 effect="fade" style="width:255px"  filter="true" filterMatchMode="startsWith">  
+                                    <f:selectItem itemLabel="#{appmsg['global.pilih']}" itemValue="" />  
+                                    <f:selectItems value="#{approvalProcessController.listProcess}" var="p" itemLabel="#{p}" itemValue="#{p}"/>
+                                     
+                                </p:selectOneMenu>  
+                                <p:message for="processId" />
 
                                 <p:outputLabel value="Deskription" style="font-weight: bold"/>
                                 <p:outputLabel value=":"/>
@@ -90,7 +94,7 @@
                                 <h:outputText />
                                 <h:outputText id="counter" />
                             </h:panelGrid>
-                            <p:focus for="roleNameId"/>
+                            <p:focus for="processId"/>
                             <h:panelGrid columns="4" style="margin-left: 20px;margin-top: 10px;margin-bottom: 10px">
                                 <p:button href="/protected/account/role.htm" value="New" icon="ui-icon-document" style="width: 75px" />
                                 <p:commandButton value="Save" style="width: 75px" icon="ui-icon-disk"  title="Save Password Configuration" action="#{roleController.doSave()}" 
@@ -137,7 +141,7 @@
                             <p:defaultCommand target="pencarianId"/>
                             <div style="margin-top: 10px;margin-bottom: 10px;margin-left: 20px;margin-right: 20px">
 
-                                <p:dataTable  var="roleData"  value="#{roleController.lazyDataHrmRole}" lazy="true" paginator="true" pageLinks="7"
+                                <p:dataTable  var="approvalProcess"  value="#{approvalProcessController.lazyDataModelProscessToApprove}" lazy="true" paginator="true" pageLinks="7"
                                               paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
                                               id="tableRoleId" rows="5" rowsPerPageTemplate="5,7,11,15,21,25,31"
                                               rowIndexVar="no">
@@ -150,19 +154,19 @@
                                         </f:facet>
                                         <h:outputLabel value="#{no+1}." />
                                     </p:column>
-                                    <p:column sortBy="#{roleData.roleName}" style="width: 200px">
+                                    <p:column sortBy="#{approvalProcess.code}" style="width: 200px">
                                         <f:facet name="header">  
                                             <h:outputText value="Role Name"/>
                                         </f:facet>
-                                        <h:outputLabel value= "#{roleData.roleName}"/>
+                                        <h:outputLabel value= "#{approvalProcess.code}"/>
                                     </p:column>
-                                    <p:column sortBy="#{roleData.description}" style="width: 200px">
+                                    <p:column sortBy="#{approvalProcess.description}" style="width: 200px">
                                         <f:facet name="header">  
                                             <h:outputText value="Description"/>
                                         </f:facet>
-                                        <h:outputLabel value= "#{roleData.description}"/>
+                                        <h:outputLabel value= "#{approvalProcess.description}"/>
                                     </p:column>
-                                    <p:column headerText="Action" style="width: 120px;text-align: center" exportable="false" >
+<!--                                    <p:column headerText="Action" style="width: 120px;text-align: center" exportable="false" >
 
                                         <p:commandButton  icon="ui-icon-zoomin" title="Detail" label="Detail" style="font-size: 10px!important"
                                                           action="#{roleController.doDetail()}" >
@@ -181,7 +185,7 @@
                                     </p:column>
                                     <f:facet name="footer">
                                         <p:outputLabel value="Total Data :"/><p:outputLabel value="#{roleController.lazyDataHrmRole.rowCount}"/><p:outputLabel value="Data" style="margin-left: 3px"/>
-                                    </f:facet>
+                                    </f:facet>-->
                                 </p:dataTable>
                                 <p:blockUI block="roleTableId" trigger="tableRoleId,pencarianId,:deleteDialogIdSpiProduct:yesId" >
                                     <h:panelGrid columns="2">
@@ -225,7 +229,7 @@
                     </pe:layoutPane>  
                 </pe:layout>
                 <h:outputScript library="js" name="tabmenu.js" />
-                <script> tabmenu.select("rolePage");</script>
+                <script> tabmenu.select("approvalProcessPage");</script>
             </ui:define>
 
         </ui:composition>

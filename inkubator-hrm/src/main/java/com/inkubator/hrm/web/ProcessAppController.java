@@ -30,7 +30,7 @@ import org.primefaces.model.LazyDataModel;
  */
 @ManagedBean(name = "roleController")
 @ViewScoped
-public class RoleController extends BaseController {
+public class ProcessAppController extends BaseController {
 
     private HrmRoleSearchParameter hrmRoleSearchParameter;
     private LazyDataModel<HrmRole> lazyDataHrmRole;

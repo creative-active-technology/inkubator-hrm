@@ -30,6 +30,6 @@
     <bean id="jsonGsonConverter" class="com.inkubator.common.util.JsonConverter" lazy-init="true" >
         <property name="jsonPatternDateFormat" value="${common.util.dateFullPattern}"/>
     </bean>
-    
+  
    
 </beans>

@@ -17,4 +17,11 @@ public class HRMConstant {
     public static final String USER_LOGIN_ID = "user_login_id";
     public static final String NOTIFICATION_CHANEL_SOCKET = "/notificationsLogin";
     public static final String PASSWORD_CONFIG_CODE = "passconfigcode";
+    public static final String APPROVAL_PROCESS_CREATE_USER_ID = "PEMBUATAN USER";
+    public static final String APPROVAL_PROCESS_UPDATE_USER_ID = "UPDATE USER";
+    public static final String APPROVAL_PROCESS_DELETE_USER_ID = "HAPUS USER";
+    public static final String APPROVAL_PROCESS_CREATE_USER_EN = "CREATE USER";
+    public static final String APPROVAL_PROCESS_UPDATE_USER_EN = "UPDATE USER";
+    public static final String APPROVAL_PROCESS_DELETE_USER_EN = "DELETE USER";
+
 }
