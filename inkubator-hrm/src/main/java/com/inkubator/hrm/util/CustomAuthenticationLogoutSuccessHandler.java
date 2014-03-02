@@ -33,10 +33,8 @@ public class CustomAuthenticationLogoutSuccessHandler extends AuthenticationLogo
 
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
-        System.out.println(request.getSession().getAttribute(HRMConstant.USER_LOGIN_ID));
         try {
             if (request.getSession().getAttribute(HRMConstant.USER_LOGIN_ID) != null) {
-                System.out.println(" Logut tersekserererk");
                 String id = (String) request.getSession().getAttribute(HRMConstant.USER_LOGIN_ID);
                 LoginHistory loginHistory = new LoginHistory();
                 loginHistory.setId(Long.parseLong(id));

@@ -58,7 +58,7 @@ public class RoleController extends BaseController {
         this.defaultCommand = defaultCommand;
     }
 
-    public Boolean isIsEdit() {
+    public Boolean getIsEdit() {
         return isEdit;
     }
 
@@ -95,7 +95,6 @@ public class RoleController extends BaseController {
     }
 
     public LazyDataModel<HrmRole> getLazyDataHrmRole() {
-        System.out.println("Nisdifjsdf " + hrmRoleService);
         if (lazyDataHrmRole == null) {
             lazyDataHrmRole = new HrmRoleLazyModel(hrmRoleSearchParameter, hrmRoleService);
         }
@@ -127,7 +126,6 @@ public class RoleController extends BaseController {
                 MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save", "global.update_konfirmasi",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             } else {
-                System.out.println(" inii save kondosid");
                 hrmRole.setCreatedBy(UserInfoUtil.getUserName());
                 hrmRole.setCreatedOn(new Date());
                 hrmRoleService.save(hrmRole);
@@ -210,8 +208,12 @@ public class RoleController extends BaseController {
     }
 
     public void newData() {
-        System.out.println("snkdsjkdsjfdsjfdk");
         doClearInput();
         isEdit = Boolean.FALSE;
+    }
+    
+    public void doClearAndReset(){
+        initialization();
+        doClearInput();
     }
 }

@@ -5,16 +5,23 @@
  */
 package com.inkubator.hrm.web;
 
+import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.ProscessToApprove;
 import com.inkubator.hrm.service.ProscessToApproveService;
 import com.inkubator.hrm.web.lazymodel.ProcessApprovalLazyModel;
 import com.inkubator.hrm.web.search.ProscessToApproveSearchParameter;
+import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
+import com.inkubator.webcore.util.MessagesResourceUtil;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -30,13 +37,25 @@ public class ApprovalProcessController extends BaseController {
 
     private ProscessToApproveSearchParameter proscessToApproveSearchParameter;
     private LazyDataModel<ProscessToApprove> lazyDataModelProscessToApprove;
+    private Map<String, String> mapProcess = new HashMap<>();
     private List<String> listProcess = new ArrayList<>();
     private String selectedProcess;
+    private String description;
+    private Boolean isEdit;
+    private ProscessToApprove selectedProscessToApprove;
     @ManagedProperty(value = "#{proscessToApproveService}")
     private ProscessToApproveService proscessToApproveService;
 
     public void setProscessToApproveService(ProscessToApproveService proscessToApproveService) {
         this.proscessToApproveService = proscessToApproveService;
+    }
+
+    public ProscessToApprove getSelectedProscessToApprove() {
+        return selectedProscessToApprove;
+    }
+
+    public void setSelectedProscessToApprove(ProscessToApprove selectedProscessToApprove) {
+        this.selectedProscessToApprove = selectedProscessToApprove;
     }
 
     public ProscessToApproveSearchParameter getProscessToApproveSearchParameter() {
@@ -63,15 +82,16 @@ public class ApprovalProcessController extends BaseController {
     public void initialization() {
         super.initialization();
         if (FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).equals("in")) {
-            listProcess.add(HRMConstant.APPROVAL_PROCESS_CREATE_USER_ID);
-            listProcess.add(HRMConstant.APPROVAL_PROCESS_UPDATE_USER_ID);
-            listProcess.add(HRMConstant.APPROVAL_PROCESS_DELETE_USER_ID);
+            mapProcess.put(HRMConstant.APPROVAL_PROCESS_CREATE_USER_ID, "Create User");
+            mapProcess.put(HRMConstant.APPROVAL_PROCESS_UPDATE_USER_ID, "Update User");
+            mapProcess.put(HRMConstant.APPROVAL_PROCESS_DELETE_USER_ID, "Delete User");
         } else {
-            listProcess.add(HRMConstant.APPROVAL_PROCESS_CREATE_USER_EN);
-            listProcess.add(HRMConstant.APPROVAL_PROCESS_UPDATE_USER_EN);
-            listProcess.add(HRMConstant.APPROVAL_PROCESS_DELETE_USER_EN);
+            mapProcess.put(HRMConstant.APPROVAL_PROCESS_CREATE_USER_EN, "Create User");
+            mapProcess.put(HRMConstant.APPROVAL_PROCESS_UPDATE_USER_EN, "Update User");
+            mapProcess.put(HRMConstant.APPROVAL_PROCESS_DELETE_USER_EN, "Delete User");
         }
         proscessToApproveSearchParameter = new ProscessToApproveSearchParameter();
+        isEdit = Boolean.FALSE;
     }
 
     public String getSelectedProcess() {
@@ -88,6 +108,83 @@ public class ApprovalProcessController extends BaseController {
 
     public void setListProcess(List<String> listProcess) {
         this.listProcess = listProcess;
+    }
+
+    private void doClearInput() {
+        selectedProcess = null;
+        description = null;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Boolean getIsEdit() {
+        return isEdit;
+    }
+
+    public void setIsEdit(Boolean isEdit) {
+        this.isEdit = isEdit;
+    }
+
+    public ProscessToApprove fromPageUIToEntity() {
+        ProscessToApprove proscessToApprove = new ProscessToApprove();
+        proscessToApprove.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(15)));
+        proscessToApprove.setCode(selectedProcess);
+        proscessToApprove.setDescription(description);
+        return proscessToApprove;
+    }
+
+    public String doSave() {
+        String redirect;
+        ProscessToApprove proscessToApprove = fromPageUIToEntity();
+        try {
+
+            if (isEdit) {
+                proscessToApprove.setUpdatedBy(UserInfoUtil.getUserName());
+                proscessToApprove.setUpdatedOn(new Date());
+                proscessToApprove.setId(selectedProscessToApprove.getId());
+                proscessToApproveService.update(proscessToApprove);
+                MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save", "global.update_konfirmasi",
+                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            } else {
+                System.out.println(selectedProcess);
+                proscessToApprove.setCreatedBy(UserInfoUtil.getUserName());
+                proscessToApprove.setCreatedOn(new Date());
+                proscessToApproveService.save(proscessToApprove);
+                MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save", "global.save_konfirmasi",
+                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            }
+            lazyDataModelProscessToApprove = null;
+            doClearInput();
+            isEdit = Boolean.FALSE;
+            redirect = "/protected/account/approval_process_detail.htm?faces-redirect=true&execution=e" + proscessToApprove.getId();
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+            if (e.getCause().toString().equalsIgnoreCase("org.hibernate.exception.ConstraintViolationException: could not execute statement")) {
+                MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.save_error", "roleform.error_duplicate",
+                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            }
+            redirect = null;
+        }
+        return redirect;
+    }
+
+    public Map<String, String> getMapProcess() {
+        return mapProcess;
+    }
+
+    public void setMapProcess(Map<String, String> mapProcess) {
+        this.mapProcess = mapProcess;
+    }
+
+    public void doClearAndReset() {
+        initialization();
+        doClearInput();
     }
 
 }

@@ -92,10 +92,9 @@
                             </h:panelGrid>
                             <p:focus for="roleNameId"/>
                             <h:panelGrid columns="4" style="margin-left: 20px;margin-top: 10px;margin-bottom: 10px">
-                                <p:button href="/protected/account/role.htm" value="New" icon="ui-icon-document" style="width: 75px" />
                                 <p:commandButton value="Save" style="width: 75px" icon="ui-icon-disk"  title="Save Password Configuration" action="#{roleController.doSave()}" 
-                                                 update="roleFormId,:roleFormGrowlId,:roleTableId" id="saveBtnRoleId"/>
-                                <p:commandButton value="Reset" icon="ui-icon-refresh" title="Reset"  process="@this" 
+                                                 update="roleFormId,:roleFormGrowlId,:roleTableId" id="saveBtnRoleId" accesskey="S"/>
+                                <p:commandButton value="Reset" icon="ui-icon-refresh" title="Reset"  process="@this" action="#{roleController.doClearAndReset()}"
                                                  style="width:75px;"  update="roleFormId">
                                     <p:resetInput target="roleFormId"/>
                                 </p:commandButton>
@@ -139,7 +138,7 @@
 
                                 <p:dataTable  var="roleData"  value="#{roleController.lazyDataHrmRole}" lazy="true" paginator="true" pageLinks="7"
                                               paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
-                                              id="tableRoleId" rows="5" rowsPerPageTemplate="5,7,11,15,21,25,31"
+                                              id="tableRoleId" rows="5" rowsPerPageTemplate="5,7,11,15,21,25,31" 
                                               rowIndexVar="no">
                                     <f:facet name="header">  
                                         <h:outputText value="Daftar Role" />

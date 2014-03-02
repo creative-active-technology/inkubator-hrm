@@ -66,7 +66,7 @@
                         </f:facet> 
                         <p:growl id ="roleFormGrowlId" showSummary="true" showDetail="true" globalOnly="true" escape="true" life="4000" sticky="true"/>
 
-                        <h:form id="roleFormId">
+                        <h:form id="proscessToApproveFormId">
                             <div>
                                 <h:outputLabel value="Approval Process Information" style="margin-left: 23px;font-size: 13px;font-weight: bold;margin-top: 10px;float: left;padding-top: 5px"/>
                                 <p:commandButton value="Close" style="width: 75px;float: right;margin-top: 10px;margin-right: 20px" icon="ui-icon-home"  title="Close and Back to Home" action="#{roleController.doClose()}" immediate="true"/>
@@ -76,18 +76,18 @@
                             <h:panelGrid columns="4" style="margin-left: 30px;margin-top: 10px;margin-bottom: 10px" >
                                 <p:outputLabel value="Process Name" style="font-weight: bold" for="processId"/>
                                 <p:outputLabel value=":"/>
-                                <p:selectOneMenu value="#{approvalProcessController.selectedProcess}" id="processId" 
+                                <p:selectOneMenu value="#{approvalProcessController.selectedProcess}" id="processId" required="true"
                                                  effect="fade" style="width:255px"  filter="true" filterMatchMode="startsWith">  
-                                    <f:selectItem itemLabel="#{appmsg['global.pilih']}" itemValue="" />  
-                                    <f:selectItems value="#{approvalProcessController.listProcess}" var="p" itemLabel="#{p}" itemValue="#{p}"/>
-                                     
+                                    <f:selectItem itemLabel="#{appmsg['global.pilih']}" itemValue=""  />  
+                                    <f:selectItems value="#{approvalProcessController.mapProcess}" var="p" itemLabel="#{p}" itemValue="#{p}"/>
+
                                 </p:selectOneMenu>  
                                 <p:message for="processId" />
 
                                 <p:outputLabel value="Deskription" style="font-weight: bold"/>
                                 <p:outputLabel value=":"/>
-                                <p:inputTextarea id="description" rows="5" cols="30" counter="counter" maxlength="500" value="#{roleController.description}"
-                                                 style="width: 250px; height: 90px;" counterTemplate="{0} sisa karakter" autoResize="true" label="sdfsdfsdfdsf" title="sdfsdfdsf"/>
+                                <p:inputTextarea id="description" rows="5" cols="30" counter="counter" maxlength="500" value="#{approvalProcessController.description}"
+                                                 style="width: 250px; height: 90px;" counterTemplate="{0} sisa karakter" autoResize="true" label="Description" title="Description"/>
                                 <p:message for="description"/>
 
                                 <h:outputText />
@@ -96,12 +96,11 @@
                             </h:panelGrid>
                             <p:focus for="processId"/>
                             <h:panelGrid columns="4" style="margin-left: 20px;margin-top: 10px;margin-bottom: 10px">
-                                <p:button href="/protected/account/role.htm" value="New" icon="ui-icon-document" style="width: 75px" />
-                                <p:commandButton value="Save" style="width: 75px" icon="ui-icon-disk"  title="Save Password Configuration" action="#{roleController.doSave()}" 
-                                                 update="roleFormId,:roleFormGrowlId,:roleTableId" id="saveBtnRoleId"/>
-                                <p:commandButton value="Reset" icon="ui-icon-refresh" title="Reset"  process="@this" 
-                                                 style="width:75px;"  update="roleFormId">
-                                    <p:resetInput target="roleFormId"/>
+                                <p:commandButton value="Save" style="width: 75px" icon="ui-icon-disk"  title="Save Password Configuration" action="#{approvalProcessController.doSave()}" 
+                                                 update="proscessToApproveFormId,:roleFormGrowlId,:proscessToApproveTableId" id="saveBtnRoleId"/>
+                                <p:commandButton value="Reset" icon="ui-icon-refresh" title="Reset"  process="@this" action="#{approvalProcessController.doClearAndReset()}"
+                                                 style="width:75px;"  update="proscessToApproveFormId">
+                                    <p:resetInput target="proscessToApproveFormId"/>
                                 </p:commandButton>
 
                             </h:panelGrid>
@@ -110,7 +109,7 @@
                             <h:outputLabel value="Role List" style="margin-left: 23px;font-size: 13px;font-weight: bold"/>
                         </div>
                         <p:separator style="margin-left: 20px;margin-right: 20px;margin-bottom: 10px"/>
-                        <h:form id="roleTableId">
+                        <h:form id="proscessToApproveTableId">
                             <p:toolbar style="margin-left: 20px;margin-right: 20px">
                                 <p:toolbarGroup align="left">
                                     <p:outputLabel value="Cari Data" style="margin-left: 5px;margin-right: 10px"/>
@@ -146,7 +145,7 @@
                                               id="tableRoleId" rows="5" rowsPerPageTemplate="5,7,11,15,21,25,31"
                                               rowIndexVar="no">
                                     <f:facet name="header">  
-                                        <h:outputText value="Daftar Role" />
+                                        <h:outputText value="Daftar Approval Process" />
                                     </f:facet> 
                                     <p:column style="text-align: center;width: 25px">
                                         <f:facet name="header">  
@@ -156,7 +155,7 @@
                                     </p:column>
                                     <p:column sortBy="#{approvalProcess.code}" style="width: 200px">
                                         <f:facet name="header">  
-                                            <h:outputText value="Role Name"/>
+                                            <h:outputText value="Process Name"/>
                                         </f:facet>
                                         <h:outputLabel value= "#{approvalProcess.code}"/>
                                     </p:column>
@@ -166,28 +165,28 @@
                                         </f:facet>
                                         <h:outputLabel value= "#{approvalProcess.description}"/>
                                     </p:column>
-<!--                                    <p:column headerText="Action" style="width: 120px;text-align: center" exportable="false" >
-
-                                        <p:commandButton  icon="ui-icon-zoomin" title="Detail" label="Detail" style="font-size: 10px!important"
-                                                          action="#{roleController.doDetail()}" >
-                                            <f:setPropertyActionListener value="#{roleData}" target="#{roleController.selectedHrmRole}" />
-                                        </p:commandButton>
-                                        -
-                                        <p:commandButton  icon="ui-icon-trash" title="Delete" label="Delete"  style="font-size: 9px!important"
-                                                          oncomplete="confirmDialogHrmRole.show();" onclick="statusDialogHrmRole.show();" update=":confirmDialogHrmRoleId" >
-                                            <f:setPropertyActionListener value="#{roleData}" target="#{roleController.selectedHrmRole}" />
-                                        </p:commandButton>
-                                        -
-                                        <p:commandButton  icon="ui-icon-folder-open" title="Edit" label="Edit" style="font-size: 9px!important" update=":roleFormId"
-                                                          action="#{roleController.doEdit()}"  >
-                                            <f:setPropertyActionListener value="#{roleData}" target="#{roleController.selectedHrmRole}" />
-                                        </p:commandButton>
-                                    </p:column>
-                                    <f:facet name="footer">
-                                        <p:outputLabel value="Total Data :"/><p:outputLabel value="#{roleController.lazyDataHrmRole.rowCount}"/><p:outputLabel value="Data" style="margin-left: 3px"/>
-                                    </f:facet>-->
+                                    <!--                                    <p:column headerText="Action" style="width: 120px;text-align: center" exportable="false" >
+                                    
+                                                                            <p:commandButton  icon="ui-icon-zoomin" title="Detail" label="Detail" style="font-size: 10px!important"
+                                                                                              action="#{roleController.doDetail()}" >
+                                                                                <f:setPropertyActionListener value="#{roleData}" target="#{roleController.selectedHrmRole}" />
+                                                                            </p:commandButton>
+                                                                            -
+                                                                            <p:commandButton  icon="ui-icon-trash" title="Delete" label="Delete"  style="font-size: 9px!important"
+                                                                                              oncomplete="confirmDialogHrmRole.show();" onclick="statusDialogHrmRole.show();" update=":confirmDialogHrmRoleId" >
+                                                                                <f:setPropertyActionListener value="#{roleData}" target="#{roleController.selectedHrmRole}" />
+                                                                            </p:commandButton>
+                                                                            -
+                                                                            <p:commandButton  icon="ui-icon-folder-open" title="Edit" label="Edit" style="font-size: 9px!important" update=":proscessToApproveFormId"
+                                                                                              action="#{roleController.doEdit()}"  >
+                                                                                <f:setPropertyActionListener value="#{roleData}" target="#{roleController.selectedHrmRole}" />
+                                                                            </p:commandButton>
+                                                                        </p:column>
+                                                                        <f:facet name="footer">
+                                                                            <p:outputLabel value="Total Data :"/><p:outputLabel value="#{roleController.lazyDataHrmRole.rowCount}"/><p:outputLabel value="Data" style="margin-left: 3px"/>
+                                                                        </f:facet>-->
                                 </p:dataTable>
-                                <p:blockUI block="roleTableId" trigger="tableRoleId,pencarianId,:deleteDialogIdSpiProduct:yesId" >
+                                <p:blockUI block="proscessToApproveTableId" trigger="tableRoleId,pencarianId,:deleteDialogIdSpiProduct:yesId" >
                                     <h:panelGrid columns="2">
                                         <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
                                         <h:outputLabel value="Data sedang diproses" style="font-size: 12px;color: #006699;margin-left: 3px"/>
@@ -216,7 +215,7 @@
                                         <p:outputLabel value="#{roleController.selectedHrmRole.roleName}"/>
                                     </h:panelGrid>
                                     <p:separator/>
-                                    <p:commandButton value="#{appmsg['global.yes']}" action="#{roleController.doDelete()}" update=":roleTableId" id="yesId"
+                                    <p:commandButton value="#{appmsg['global.yes']}" action="#{roleController.doDelete()}" update=":proscessToApproveTableId" id="yesId"
                                                      oncomplete="confirmDialogHrmRole.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
                                     <p:commandButton value="#{appmsg['global.no']}" oncomplete="confirmDialogHrmRole.hide()" icon="ui-icon-close" />
 
