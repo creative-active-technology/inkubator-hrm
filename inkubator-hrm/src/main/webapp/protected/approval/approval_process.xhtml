@@ -64,7 +64,9 @@
                         <f:facet name="header">  
                             <h:outputText value="Appropal Process" style="font-family: Trebuchet MS;font-size: 12px;font-weight: bold"/>  
                         </f:facet> 
-                        <p:growl id ="roleFormGrowlId" showSummary="true" showDetail="true" globalOnly="true" escape="true" life="4000" sticky="true"/>
+                        
+                        <p:growl id ="processToApprovalFormGrowlId" showSummary="true" showDetail="true" globalOnly="true" escape="true" life="4000" sticky="true"/>
+                        <p:growl id ="processToApprovalFormGrowlNoDelteId" showSummary="true" showDetail="true" globalOnly="true" escape="true" life="4000"/>
 
                         <h:form id="proscessToApproveFormId">
                             <div>
@@ -97,7 +99,7 @@
                             <p:focus for="processId"/>
                             <h:panelGrid columns="4" style="margin-left: 20px;margin-top: 10px;margin-bottom: 10px">
                                 <p:commandButton value="Save" style="width: 75px" icon="ui-icon-disk"  title="Save Password Configuration" action="#{approvalProcessController.doSave()}" 
-                                                 update="proscessToApproveFormId,:roleFormGrowlId,:proscessToApproveTableId" id="saveBtnRoleId"/>
+                                                 update="proscessToApproveFormId,:processToApprovalFormGrowlId,:proscessToApproveTableId" id="saveBtnRoleId"/>
                                 <p:commandButton value="Reset" icon="ui-icon-refresh" title="Reset"  process="@this" action="#{approvalProcessController.doClearAndReset()}"
                                                  style="width:75px;"  update="proscessToApproveFormId">
                                     <p:resetInput target="proscessToApproveFormId"/>
@@ -106,7 +108,7 @@
                             </h:panelGrid>
                         </h:form>
                         <div style="margin-top: 30px">
-                            <h:outputLabel value="Role List" style="margin-left: 23px;font-size: 13px;font-weight: bold"/>
+                            <h:outputLabel value="Approval Process List" style="margin-left: 23px;font-size: 13px;font-weight: bold"/>
                         </div>
                         <p:separator style="margin-left: 20px;margin-right: 20px;margin-bottom: 10px"/>
                         <h:form id="proscessToApproveTableId">
@@ -153,6 +155,23 @@
                                         </f:facet>
                                         <h:outputLabel value="#{no+1}." />
                                     </p:column>
+                                    <p:column headerText="Action" style="width: 120px;text-align: center" exportable="false" >
+
+                                        <p:commandButton  icon="ui-icon-zoomin" title="Detail" label="Detail" style="font-size: 9px!important"
+                                                          action="#{approvalProcessController.doDetail()}" >
+                                            <f:setPropertyActionListener value="#{approvalProcess}" target="#{approvalProcessController.selectedProscessToApprove}" />
+                                        </p:commandButton>
+                                        -
+                                        <p:commandButton  icon="ui-icon-trash" title="Delete" label="Delete"  style="font-size: 9px!important"
+                                                          oncomplete="confirmDialogHrmRole.show();" onclick="statusDialogHrmRole.show();" >
+                                            <f:setPropertyActionListener value="#{approvalProcess}" target="#{approvalProcessController.selectedProscessToApprove}" />
+                                        </p:commandButton>
+                                        -
+                                        <p:commandButton  icon="ui-icon-folder-open" title="Edit" label="Edit" style="font-size: 9px!important" update=":proscessToApproveFormId"
+                                                          action="#{approvalProcessController.doEdit()}"  >
+                                            <f:setPropertyActionListener value="#{approvalProcess}" target="#{approvalProcessController.selectedProscessToApprove}" />
+                                        </p:commandButton>
+                                    </p:column>
                                     <p:column sortBy="#{approvalProcess.code}" style="width: 200px">
                                         <f:facet name="header">  
                                             <h:outputText value="Process Name"/>
@@ -165,26 +184,28 @@
                                         </f:facet>
                                         <h:outputLabel value= "#{approvalProcess.description}"/>
                                     </p:column>
-                                    <!--                                    <p:column headerText="Action" style="width: 120px;text-align: center" exportable="false" >
-                                    
-                                                                            <p:commandButton  icon="ui-icon-zoomin" title="Detail" label="Detail" style="font-size: 10px!important"
-                                                                                              action="#{roleController.doDetail()}" >
-                                                                                <f:setPropertyActionListener value="#{roleData}" target="#{roleController.selectedHrmRole}" />
-                                                                            </p:commandButton>
-                                                                            -
-                                                                            <p:commandButton  icon="ui-icon-trash" title="Delete" label="Delete"  style="font-size: 9px!important"
-                                                                                              oncomplete="confirmDialogHrmRole.show();" onclick="statusDialogHrmRole.show();" update=":confirmDialogHrmRoleId" >
-                                                                                <f:setPropertyActionListener value="#{roleData}" target="#{roleController.selectedHrmRole}" />
-                                                                            </p:commandButton>
-                                                                            -
-                                                                            <p:commandButton  icon="ui-icon-folder-open" title="Edit" label="Edit" style="font-size: 9px!important" update=":proscessToApproveFormId"
-                                                                                              action="#{roleController.doEdit()}"  >
-                                                                                <f:setPropertyActionListener value="#{roleData}" target="#{roleController.selectedHrmRole}" />
-                                                                            </p:commandButton>
-                                                                        </p:column>
-                                                                        <f:facet name="footer">
-                                                                            <p:outputLabel value="Total Data :"/><p:outputLabel value="#{roleController.lazyDataHrmRole.rowCount}"/><p:outputLabel value="Data" style="margin-left: 3px"/>
-                                                                        </f:facet>-->
+                                    <p:column headerText="Action" style="width: 120px;text-align: center" exportable="false" >
+
+                                        <p:commandLink   title="Detail"  style="font-size: 11px!important"
+                                                         action="#{approvalProcessController.doDetail()}" >
+                                            <h:outputText value="Detail"/>
+                                            <f:setPropertyActionListener value="#{approvalProcess}" target="#{approvalProcessController.selectedProscessToApprove}" />
+                                        </p:commandLink>
+                                        -
+                                        <p:commandLink   title="Delete"   style="font-size: 11px!important"
+                                                         oncomplete="confirmDialogApprovalProcess.show();" onclick="statusDialogApprovalProcess.show();"  update=":confirmDialogHrmApprovalProcessId">
+                                            <h:outputText value="Delete"/>
+                                            <f:setPropertyActionListener value="#{approvalProcess}" target="#{approvalProcessController.selectedProscessToApprove}" />
+                                        </p:commandLink>
+                                        -
+                                        <p:commandLink   title="Edit"  style="font-size: 11px!important" update=":proscessToApproveFormId"
+                                                         action="#{approvalProcessController.doEdit()}"  >
+                                            <h:outputText value="Edit"/>
+                                            <f:setPropertyActionListener value="#{approvalProcess}" target="#{approvalProcessController.selectedProscessToApprove}" />
+                                        </p:commandLink>
+                                    </p:column>                                                                   <f:facet name="footer">
+                                        <p:outputLabel value="Total Data :"/><p:outputLabel value="#{approvalProcessController.lazyDataModelProscessToApprove.rowCount}"/><p:outputLabel value="Data" style="margin-left: 3px"/>
+                                    </f:facet>
                                 </p:dataTable>
                                 <p:blockUI block="proscessToApproveTableId" trigger="tableRoleId,pencarianId,:deleteDialogIdSpiProduct:yesId" >
                                     <h:panelGrid columns="2">
@@ -195,8 +216,8 @@
 
                             </div>
                         </h:form>
-                        <p:dialog widgetVar="confirmDialogHrmRole" header="Konfirmasi" modal="true" width="450" dynamic="true" onShow="statusDialogHrmRole.hide()"
-                                  appendTo="@(body)" resizable="false" id="confirmDialogHrmRoleId" >
+                        <p:dialog widgetVar="confirmDialogApprovalProcess" header="Konfirmasi" modal="true" width="450" dynamic="true" onShow="statusDialogApprovalProcess.hide()"
+                                  appendTo="@(body)" resizable="false" id="confirmDialogHrmApprovalProcessId" >
                             <h:form id="deleteDialogIdSpiProduct">
                                 <div align="center">
                                     <div align="center">
@@ -210,19 +231,20 @@
                                         </h:panelGrid>
                                     </div>
                                     <h:panelGrid  columns="3">
-                                        <p:outputLabel value="Role Name"  style="font-weight: bold"/>
+                                        <p:outputLabel value="Process Name"  style="font-weight: bold"/>
                                         <p:outputLabel value=":"  style="font-weight: bold"/>
-                                        <p:outputLabel value="#{roleController.selectedHrmRole.roleName}"/>
+                                        <p:outputLabel value="#{approvalProcessController.selectedProscessToApprove.code}"/>
                                     </h:panelGrid>
                                     <p:separator/>
-                                    <p:commandButton value="#{appmsg['global.yes']}" action="#{roleController.doDelete()}" update=":proscessToApproveTableId" id="yesId"
-                                                     oncomplete="confirmDialogHrmRole.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                                    <p:commandButton value="#{appmsg['global.no']}" oncomplete="confirmDialogHrmRole.hide()" icon="ui-icon-close" />
+                                    <p:commandButton value="#{appmsg['global.yes']}" action="#{approvalProcessController.doDelete()}"
+                                                     id="yesId" update=":proscessToApproveTableId,:processToApprovalFormGrowlNoDelteId"
+                                                     oncomplete="confirmDialogApprovalProcess.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                                    <p:commandButton value="#{appmsg['global.no']}" oncomplete="confirmDialogApprovalProcess.hide()" icon="ui-icon-close" />
 
                                 </div>
                             </h:form>
                         </p:dialog>
-                        <p:dialog modal="true" widgetVar="statusDialogHrmRole" header="#{appmsg['global.waiting_satu']}" draggable="false" closable="false" resizable="false">
+                        <p:dialog modal="true" widgetVar="statusDialogApprovalProcess" header="#{appmsg['global.waiting_satu']}" draggable="false" closable="false" resizable="false">
                             <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
                         </p:dialog>
                     </pe:layoutPane>  

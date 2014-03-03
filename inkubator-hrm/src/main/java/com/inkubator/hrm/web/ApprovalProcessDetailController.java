@@ -5,12 +5,10 @@
  */
 package com.inkubator.hrm.web;
 
-import com.inkubator.hrm.entity.HrmRole;
-import com.inkubator.hrm.service.HrmRoleService;
+import com.inkubator.hrm.entity.ProscessToApprove;
+import com.inkubator.hrm.service.ProscessToApproveService;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.bean.ManagedBean;
@@ -21,24 +19,24 @@ import javax.faces.bean.RequestScoped;
  *
  * @author Deni Husni FR
  */
-@ManagedBean(name = "roleDetailController")
+@ManagedBean(name = "approvalProcessDetailController")
 @RequestScoped
-public class RoleDetailController extends BaseController {
+public class ApprovalProcessDetailController extends BaseController {
 
-    private HrmRole selectedHrmRole;
-    @ManagedProperty(value = "#{hrmRoleService}")
-    private HrmRoleService hrmRoleService;
+    private ProscessToApprove proscessToApprove;
+    @ManagedProperty(value = "#{proscessToApproveService}")
+    private ProscessToApproveService proscessToApproveService;
 
-    public void setHrmRoleService(HrmRoleService hrmRoleService) {
-        this.hrmRoleService = hrmRoleService;
+    public void setProscessToApproveService(ProscessToApproveService proscessToApproveService) {
+        this.proscessToApproveService = proscessToApproveService;
     }
 
-    public HrmRole getSelectedHrmRole() {
-        return selectedHrmRole;
+    public ProscessToApprove getProscessToApprove() {
+        return proscessToApprove;
     }
 
-    public void setSelectedHrmRole(HrmRole selectedHrmRole) {
-        this.selectedHrmRole = selectedHrmRole;
+    public void setProscessToApprove(ProscessToApprove proscessToApprove) {
+        this.proscessToApprove = proscessToApprove;
     }
 
     @PostConstruct
@@ -48,7 +46,7 @@ public class RoleDetailController extends BaseController {
         String redirectParam = FacesUtil.getRequestParameter("execution");
         if (redirectParam != null) {
             try {
-                selectedHrmRole = hrmRoleService.getEntiyByPK(Long.parseLong(redirectParam.substring(1)));
+                proscessToApprove = proscessToApproveService.getEntiyByPK(Long.parseLong(redirectParam.substring(1)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
             }
@@ -57,12 +55,12 @@ public class RoleDetailController extends BaseController {
     }
 
     public String backToView() {
-        return "/protected/account/role.htm?faces-redirect=true";
+        return "/protected/approval/approval_process.htm?faces-redirect=true";
     }
 
     @PreDestroy
     public void onPostClose() {
-        hrmRoleService = null;
-        selectedHrmRole = null;
+       proscessToApprove=null;
+       proscessToApproveService=null;
     }
 }

@@ -65,6 +65,7 @@
                             <h:outputText value="Role Form" style="font-family: Trebuchet MS;font-size: 12px;font-weight: bold"/>  
                         </f:facet> 
                         <p:growl id ="roleFormGrowlId" showSummary="true" showDetail="true" globalOnly="true" escape="true" life="4000" sticky="true"/>
+                        <p:growl id ="roleFormGrowlNoDelteId" showSummary="true" showDetail="true" globalOnly="true" escape="true" life="4000"/>
 
                         <h:form id="roleFormId">
                             <div>
@@ -149,21 +150,9 @@
                                         </f:facet>
                                         <h:outputLabel value="#{no+1}." />
                                     </p:column>
-                                    <p:column sortBy="#{roleData.roleName}" style="width: 200px">
-                                        <f:facet name="header">  
-                                            <h:outputText value="Role Name"/>
-                                        </f:facet>
-                                        <h:outputLabel value= "#{roleData.roleName}"/>
-                                    </p:column>
-                                    <p:column sortBy="#{roleData.description}" style="width: 200px">
-                                        <f:facet name="header">  
-                                            <h:outputText value="Description"/>
-                                        </f:facet>
-                                        <h:outputLabel value= "#{roleData.description}"/>
-                                    </p:column>
                                     <p:column headerText="Action" style="width: 120px;text-align: center" exportable="false" >
 
-                                        <p:commandButton  icon="ui-icon-zoomin" title="Detail" label="Detail" style="font-size: 10px!important"
+                                        <p:commandButton  icon="ui-icon-zoomin" title="Detail" label="Detail" style="font-size: 9px!important"
                                                           action="#{roleController.doDetail()}" >
                                             <f:setPropertyActionListener value="#{roleData}" target="#{roleController.selectedHrmRole}" />
                                         </p:commandButton>
@@ -178,6 +167,38 @@
                                             <f:setPropertyActionListener value="#{roleData}" target="#{roleController.selectedHrmRole}" />
                                         </p:commandButton>
                                     </p:column>
+                                    <p:column sortBy="#{roleData.roleName}" style="width: 200px">
+                                        <f:facet name="header">  
+                                            <h:outputText value="Role Name"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{roleData.roleName}"/>
+                                    </p:column>
+                                    <p:column sortBy="#{roleData.description}" style="width: 200px">
+                                        <f:facet name="header">  
+                                            <h:outputText value="Description"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{roleData.description}"/>
+                                    </p:column>
+                                    <p:column headerText="Action" style="width: 150px;text-align: center" exportable="false"> 
+                                        <p:commandLink  title="Detail" style="font-size: 11px!important"
+                                                        action="#{roleController.doDetail()}" >
+                                            <h:outputText value="Detail"/>
+                                            <f:setPropertyActionListener value="#{roleData}" target="#{roleController.selectedHrmRole}" />
+                                        </p:commandLink>
+                                        -
+                                        <p:commandLink   title="Delete"   style="font-size: 11px!important"
+                                                         oncomplete="confirmDialogHrmRole.show();" onclick="statusDialogHrmRole.show();" update=":confirmDialogHrmRoleId" >
+                                            <h:outputText value="Delete"/>
+                                            <f:setPropertyActionListener value="#{roleData}" target="#{roleController.selectedHrmRole}" />
+                                        </p:commandLink>
+                                        -
+                                        <p:commandLink title="Edit" style="font-size: 11px!important" update=":roleFormId"
+                                                       action="#{roleController.doEdit()}" >
+                                            <h:outputText value="Edit"/>
+                                            <f:setPropertyActionListener value="#{roleData}" target="#{roleController.selectedHrmRole}" />   
+                                        </p:commandLink>
+                                    </p:column>
+
                                     <f:facet name="footer">
                                         <p:outputLabel value="Total Data :"/><p:outputLabel value="#{roleController.lazyDataHrmRole.rowCount}"/><p:outputLabel value="Data" style="margin-left: 3px"/>
                                     </f:facet>
@@ -192,7 +213,7 @@
                             </div>
                         </h:form>
                         <p:dialog widgetVar="confirmDialogHrmRole" header="Konfirmasi" modal="true" width="450" dynamic="true" onShow="statusDialogHrmRole.hide()"
-                                  appendTo="@(body)" resizable="false" id="confirmDialogHrmRoleId" >
+                                  appendTo="@(body)" resizable="false" id="confirmDialogHrmRoleId" hideEffect="puff" showEffect="clip" closeOnEscape="true" >
                             <h:form id="deleteDialogIdSpiProduct">
                                 <div align="center">
                                     <div align="center">
@@ -211,7 +232,7 @@
                                         <p:outputLabel value="#{roleController.selectedHrmRole.roleName}"/>
                                     </h:panelGrid>
                                     <p:separator/>
-                                    <p:commandButton value="#{appmsg['global.yes']}" action="#{roleController.doDelete()}" update=":roleTableId" id="yesId"
+                                    <p:commandButton value="#{appmsg['global.yes']}" action="#{roleController.doDelete()}" update=":roleTableId,:roleFormGrowlNoDelteId" id="yesId"
                                                      oncomplete="confirmDialogHrmRole.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
                                     <p:commandButton value="#{appmsg['global.no']}" oncomplete="confirmDialogHrmRole.hide()" icon="ui-icon-close" />
 

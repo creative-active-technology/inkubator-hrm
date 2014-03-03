@@ -20,8 +20,14 @@ public class HRMConstant {
     public static final String APPROVAL_PROCESS_CREATE_USER_ID = "PEMBUATAN USER";
     public static final String APPROVAL_PROCESS_UPDATE_USER_ID = "UPDATE USER";
     public static final String APPROVAL_PROCESS_DELETE_USER_ID = "HAPUS USER";
+    public static final String APPROVAL_PROCESS_REQUEST_LEAP_ID = "PERMOHONAN CUTI";
+    public static final String APPROVAL_PROCESS_REQUEST_SICK_ID = "PERMOHONAN SAKIT";
+    public static final String APPROVAL_PROCESS_REQUEST_PERMIT_ID = "PERMOHONAN IZIN";
     public static final String APPROVAL_PROCESS_CREATE_USER_EN = "CREATE USER";
     public static final String APPROVAL_PROCESS_UPDATE_USER_EN = "UPDATE USER";
     public static final String APPROVAL_PROCESS_DELETE_USER_EN = "DELETE USER";
+    public static final String APPROVAL_PROCESS_REQUEST_LEAP_EN = "LEAP REQUEST";
+    public static final String APPROVAL_PROCESS_REQUEST_SICK_EN = "SICK REQUEST";
+    public static final String APPROVAL_PROCESS_REQUEST_PERMIT_EN = "PERMIT REQUEST";
 
 }

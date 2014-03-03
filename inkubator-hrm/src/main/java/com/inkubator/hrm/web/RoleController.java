@@ -139,7 +139,7 @@ public class RoleController extends BaseController {
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
             if (ex.getCause().toString().equalsIgnoreCase("org.hibernate.exception.ConstraintViolationException: could not execute statement")) {
-                MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.save_error", "roleform.error_duplicate",
+                MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_FATAL, "global.save_error", "roleform.error_duplicate",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             }
             redirect = null;
@@ -172,7 +172,7 @@ public class RoleController extends BaseController {
     public String doDetail() {
         String redirect = null;
         try {
-            selectedHrmRole = hrmRoleService.getEntiyByPK(selectedHrmRole.getId());
+//            selectedHrmRole = hrmRoleService.getEntiyByPK(selectedHrmRole.getId());
             redirect = "/protected/account/role_detail.htm?faces-redirect=true&execution=e" + selectedHrmRole.getId();
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
@@ -183,7 +183,7 @@ public class RoleController extends BaseController {
     public void doEdit() {
         isEdit = Boolean.TRUE;
         try {
-            selectedHrmRole = hrmRoleService.getEntiyByPK(selectedHrmRole.getId());
+//            selectedHrmRole = hrmRoleService.getEntiyByPK(selectedHrmRole.getId());
             roleName = selectedHrmRole.getRoleName();
             description = selectedHrmRole.getDescription();
         } catch (Exception ex) {
@@ -191,17 +191,18 @@ public class RoleController extends BaseController {
         }
     }
 
-    public void onDetail() {
-        try {
-            selectedHrmRole = hrmRoleService.getEntiyByPK(selectedHrmRole.getId());
-        } catch (Exception ex) {
-            LOGGER.error("Error", ex);
-        }
-    }
-
+//    public void onDetail() {
+//        try {
+////            selectedHrmRole = hrmRoleService.getEntiyByPK(selectedHrmRole.getId());
+//        } catch (Exception ex) {
+//            LOGGER.error("Error", ex);
+//        }
+//    }
     public void doDelete() {
         try {
             hrmRoleService.delete(selectedHrmRole);
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_WARN, "global.delete", "global.delete_info",
+                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -211,8 +212,8 @@ public class RoleController extends BaseController {
         doClearInput();
         isEdit = Boolean.FALSE;
     }
-    
-    public void doClearAndReset(){
+
+    public void doClearAndReset() {
         initialization();
         doClearInput();
     }

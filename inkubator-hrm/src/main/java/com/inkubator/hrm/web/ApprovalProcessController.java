@@ -82,13 +82,19 @@ public class ApprovalProcessController extends BaseController {
     public void initialization() {
         super.initialization();
         if (FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).equals("in")) {
-            mapProcess.put(HRMConstant.APPROVAL_PROCESS_CREATE_USER_ID, "Create User");
-            mapProcess.put(HRMConstant.APPROVAL_PROCESS_UPDATE_USER_ID, "Update User");
-            mapProcess.put(HRMConstant.APPROVAL_PROCESS_DELETE_USER_ID, "Delete User");
+            mapProcess.put(HRMConstant.APPROVAL_PROCESS_CREATE_USER_ID, "CREATE USER");
+            mapProcess.put(HRMConstant.APPROVAL_PROCESS_UPDATE_USER_ID, "UPDATE USER");
+            mapProcess.put(HRMConstant.APPROVAL_PROCESS_DELETE_USER_ID, "DELETE USER");
+            mapProcess.put(HRMConstant.APPROVAL_PROCESS_REQUEST_LEAP_ID, "LEAP REQUEST");
+            mapProcess.put(HRMConstant.APPROVAL_PROCESS_REQUEST_SICK_ID, "SICK REQUEST");
+            mapProcess.put(HRMConstant.APPROVAL_PROCESS_REQUEST_PERMIT_ID, "PERMIT REQUEST");
         } else {
-            mapProcess.put(HRMConstant.APPROVAL_PROCESS_CREATE_USER_EN, "Create User");
-            mapProcess.put(HRMConstant.APPROVAL_PROCESS_UPDATE_USER_EN, "Update User");
-            mapProcess.put(HRMConstant.APPROVAL_PROCESS_DELETE_USER_EN, "Delete User");
+            mapProcess.put(HRMConstant.APPROVAL_PROCESS_CREATE_USER_EN, "CREATE USER");
+            mapProcess.put(HRMConstant.APPROVAL_PROCESS_UPDATE_USER_EN, "UPDATE USER");
+            mapProcess.put(HRMConstant.APPROVAL_PROCESS_DELETE_USER_EN, "DELETE USER");
+            mapProcess.put(HRMConstant.APPROVAL_PROCESS_REQUEST_LEAP_EN, "LEAP REQUEST");
+            mapProcess.put(HRMConstant.APPROVAL_PROCESS_REQUEST_SICK_EN, "SICK REQUEST");
+            mapProcess.put(HRMConstant.APPROVAL_PROCESS_REQUEST_PERMIT_EN, "PERMIT REQUEST");
         }
         proscessToApproveSearchParameter = new ProscessToApproveSearchParameter();
         isEdit = Boolean.FALSE;
@@ -185,6 +191,33 @@ public class ApprovalProcessController extends BaseController {
     public void doClearAndReset() {
         initialization();
         doClearInput();
+    }
+
+    public String doDetail() {
+        return "/protected/approval/approval_process_detail.htm?faces-redirect=true&execution=e" + selectedProscessToApprove.getId();
+   
+    }
+
+    public void doEdit() {
+        System.out.println(selectedProscessToApprove.getId());
+        isEdit = Boolean.TRUE;
+        try {
+//            selectedProscessToApprove = proscessToApproveService.getEntiyByPK(selectedProscessToApprove.getId());
+            selectedProcess = selectedProscessToApprove.getCode();
+            description = selectedProscessToApprove.getDescription();
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
+        }
+    }
+
+    public void doDelete() {
+        try {
+            proscessToApproveService.delete(selectedProscessToApprove);
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_WARN, "global.delete", "global.delete_info",
+                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
+        }
     }
 
 }
