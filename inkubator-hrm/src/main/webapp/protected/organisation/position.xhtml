@@ -19,11 +19,11 @@
                            margin-top: 10px;min-height: 480px;margin-bottom: 8px">
                     <pe:layoutPane position="center" maxWidth="100%" maxHeight="100%" maxSize="100%">  
                         <f:facet name="header">  
-                            <h:outputText value="Approval Definition" style="font-family: Trebuchet MS;font-size: 12px;font-weight: bold"/>  
+                            <h:outputText value="Organisasi - Jabatan" style="font-family: Trebuchet MS;font-size: 12px;font-weight: bold"/>  
                         </f:facet> 
                         <p:growl id ="roleFormGrowlId" showSummary="true" showDetail="true" globalOnly="true" escape="true" life="4000" sticky="true"/>
                         <div style="margin-top: 30px">
-                            <h:outputLabel value="Approval Definition List" style="margin-left: 23px;font-size: 13px;font-weight: bold"/>
+                            <h:outputLabel value="Jabatan List" style="margin-left: 23px;font-size: 13px;font-weight: bold"/>
                         </div>
                         <p:separator style="margin-left: 20px;margin-right: 20px;margin-bottom: 10px"/>
                         <h:form id="roleTableId">
@@ -61,7 +61,7 @@
                             <p:defaultCommand target="pencarianId"/>
                             <div style="margin-top: 10px;margin-bottom: 10px;margin-left: 20px;margin-right: 20px">
 
-                                <p:dataTable  var="approvalDefData"  value="#{approvalDefinitionController.lazyDataModelApprovalDefinition}" lazy="true" paginator="true" pageLinks="7"
+                                <p:dataTable  var="positionData"  value="#{positionViewController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7"
                                               paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
                                               id="tableRoleId" rows="5" rowsPerPageTemplate="5,7,11,15,21,25,31"
                                               rowIndexVar="no">
@@ -74,53 +74,53 @@
                                         </f:facet>
                                         <h:outputLabel value="#{no+1}." />
                                     </p:column>
-                                    <p:column sortBy="#{approvalDefData.proscessToApprove.code}">
+                                    <p:column sortBy="#{positionData.positionCode}">
                                         <f:facet name="header">  
                                             <h:outputText value="Process"/>
                                         </f:facet>
-                                        <h:outputLabel value= "#{approvalDefData.proscessToApprove.code}"/>
+                                        <h:outputLabel value= "#{positionData.positionCode}"/>
                                     </p:column>
-                                    <p:column sortBy="#{approvalDefData.approverIndividual}" >
+                                    <p:column sortBy="#{positionData.department}" >
                                         <f:facet name="header">  
                                             <h:outputText value="Approver Name"/>
                                         </f:facet>
-                                        <h:outputLabel value= "#{approvalDefData.approverIndividual}"/>
+                                        <h:outputLabel value= "#{positionData.department.departmentName}"/>
                                     </p:column>
-                                    <p:column sortBy="#{approvalDefData.approverPosition}" >
+<!--                                    <p:column sortBy="#{positionData.approverPosition}" >
                                         <f:facet name="header">  
                                             <h:outputText value="Approver Position"/>
                                         </f:facet>
-                                        <h:outputLabel value= "#{approvalDefData.approverPosition}"/>
+                                        <h:outputLabel value= "#{positionData.approverPosition}"/>
                                     </p:column>
-                                    <p:column sortBy="#{approvalDefData.onBehalfIndividual}" >
+                                    <p:column sortBy="#{positionData.onBehalfIndividual}" >
                                         <f:facet name="header">  
                                             <h:outputText value="On Behalf Name"/>
                                         </f:facet>
-                                        <h:outputLabel value= "#{approvalDefData.onBehalfIndividual}"/>
+                                        <h:outputLabel value= "#{positionData.onBehalfIndividual}"/>
                                     </p:column>
-                                    <p:column sortBy="#{approvalDefData.onBehalfPosition}" >
+                                    <p:column sortBy="#{positionData.onBehalfPosition}" >
                                         <f:facet name="header">  
                                             <h:outputText value="On Behalf Position"/>
                                         </f:facet>
-                                        <h:outputLabel value= "#{approvalDefData.onBehalfPosition}"/>
+                                        <h:outputLabel value= "#{positionData.onBehalfPosition}"/>
                                     </p:column>
-                                    <p:column sortBy="#{approvalDefData.sequence}" style="text-align: center">
+                                    <p:column sortBy="#{positionData.sequence}" style="text-align: center">
                                         <f:facet name="header">  
                                             <h:outputText value="Urutan Approval"/>
                                         </f:facet>
-                                        <h:outputLabel value= "#{approvalDefData.sequence}"/>
+                                        <h:outputLabel value= "#{positionData.sequence}"/>
                                     </p:column>
-                                    <p:column sortBy="#{approvalDefData.minApprover}" style="text-align: center">
+                                    <p:column sortBy="#{positionData.minApprover}" style="text-align: center">
                                         <f:facet name="header">  
                                             <h:outputText value="Minimal Approval"/>
                                         </f:facet>
-                                        <h:outputLabel value= "#{approvalDefData.minApprover}"/>
+                                        <h:outputLabel value= "#{positionData.minApprover}"/>
                                     </p:column>
-                                    <p:column sortBy="#{approvalDefData.minRejector}" style="text-align: center">
+                                    <p:column sortBy="#{positionData.minRejector}" style="text-align: center">
                                         <f:facet name="header">  
                                             <h:outputText value="Minimal Rejector"/>
                                         </f:facet>
-                                        <h:outputLabel value= "#{approvalDefData.minRejector}"/>
+                                        <h:outputLabel value= "#{positionData.minRejector}"/>
                                     </p:column>
                                    
                                     <p:column headerText="Action" style="width: 130px;text-align: center" exportable="false" >
@@ -142,7 +142,7 @@
                                     </p:column>
                                     <f:facet name="footer">
                                         <p:outputLabel value="Total Data :"/><p:outputLabel value="#{roleController.lazyDataHrmRole.rowCount}"/><p:outputLabel value="Data" style="margin-left: 3px"/>
-                                    </f:facet>
+                                    </f:facet>-->
                                 </p:dataTable>
                                 <p:blockUI block="roleTableId" trigger="tableRoleId,pencarianId,:deleteDialogIdSpiProduct:yesId" >
                                     <h:panelGrid columns="2">
@@ -186,7 +186,7 @@
                     </pe:layoutPane>  
                 </pe:layout>
                 <h:outputScript library="js" name="tabmenu.js" />
-                <script> tabmenu.select("approvalDevinitionPage");</script>
+                <script> tabmenu.select("positionPage");</script>
             </ui:define>
 
         </ui:composition>

@@ -64,7 +64,7 @@
                         <f:facet name="header">  
                             <h:outputText value="Appropal Process" style="font-family: Trebuchet MS;font-size: 12px;font-weight: bold"/>  
                         </f:facet> 
-                        
+
                         <p:growl id ="processToApprovalFormGrowlId" showSummary="true" showDetail="true" globalOnly="true" escape="true" life="4000" sticky="true"/>
                         <p:growl id ="processToApprovalFormGrowlNoDelteId" showSummary="true" showDetail="true" globalOnly="true" escape="true" life="4000"/>
 
@@ -116,25 +116,25 @@
                                 <p:toolbarGroup align="left">
                                     <p:outputLabel value="Cari Data" style="margin-left: 5px;margin-right: 10px"/>
                                     <p:outputLabel value=":"  style="margin-right: 5px"/>
-                                    <p:inputText style="width: 250px!important;margin-right: 5px" value="#{roleController.hrmRoleSearchParameter.roleName}"
-                                                 placeholder="Pencarian Berdasarkan Role Name" onkeyup="changeCommand()"
-                                                 title="Pencarian Berdasarkan Role Name" id="inputPencarianId"/>
+                                    <p:inputText style="width: 250px!important;margin-right: 5px" value="#{approvalProcessController.proscessToApproveSearchParameter.processApproval}"
+                                                 placeholder="Pencarian Berdasarkan Process Name"
+                                                 title="Pencarian Berdasarkan Process Name" id="inputPencarianId"/>
                                     <p:commandButton value="Search" icon="ui-icon-search" title="Go To seacrh Data" 
-                                                     id="pencarianId" action="#{roleController.doSearch()}" widgetVar="btn" update="tableRoleId"/>
+                                                     id="pencarianId" action="#{approvalProcessController.doSearch()}" widgetVar="btn" update="tableApprovalProcessId"/>
                                     <p:separator/>
                                     <!--                                    <p:commandButton value="Advacne Search" icon="ui-icon-zoomin" title="Go to Advance Search" />-->
 
                                 </p:toolbarGroup>
                                 <p:toolbarGroup align="right">
                                     <p:commandButton value="Export to XLS" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false">
-                                        <!--<p:dataExporter target="tableRoleId" type="pdf" pageOnly="true" selectionOnly="true" fileName="List_Role"/>-->
-                                        <pe:exporter target="tableRoleId" type="xlsx" pageOnly="true" selectionOnly="true" fileName="List_Role"/>
+                                        <!--<p:dataExporter target="tableApprovalProcessId" type="pdf" pageOnly="true" selectionOnly="true" fileName="List_Role"/>-->
+                                        <pe:exporter target="tableApprovalProcessId" type="xlsx" pageOnly="true" selectionOnly="true" fileName="List_Role"/>
                                     </p:commandButton>
                                     <p:commandButton value="Export to PDF" style="margin-right: 5px" icon="ui-icon-image" title="Export Table to PDF" ajax="false">
-                                        <pe:exporter target="tableRoleId" type="pdf" pageOnly="true" selectionOnly="true" fileName="List_Role"/>
+                                        <pe:exporter target="tableApprovalProcessId" type="pdf" pageOnly="true" selectionOnly="true" fileName="List_Role"/>
                                     </p:commandButton>
                                     <p:commandButton value="Print" icon="ui-icon-print" title="Print Table">
-                                        <p:printer target="tableRoleId" />
+                                        <p:printer target="tableApprovalProcessId" />
                                     </p:commandButton>
 
                                 </p:toolbarGroup>
@@ -144,7 +144,7 @@
 
                                 <p:dataTable  var="approvalProcess"  value="#{approvalProcessController.lazyDataModelProscessToApprove}" lazy="true" paginator="true" pageLinks="7"
                                               paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
-                                              id="tableRoleId" rows="5" rowsPerPageTemplate="5,7,11,15,21,25,31"
+                                              id="tableApprovalProcessId" rows="5" rowsPerPageTemplate="5,7,11,15,21,25,31"
                                               rowIndexVar="no">
                                     <f:facet name="header">  
                                         <h:outputText value="Daftar Approval Process" />
@@ -155,59 +155,40 @@
                                         </f:facet>
                                         <h:outputLabel value="#{no+1}." />
                                     </p:column>
-                                    <p:column headerText="Action" style="width: 120px;text-align: center" exportable="false" >
 
-                                        <p:commandButton  icon="ui-icon-zoomin" title="Detail" label="Detail" style="font-size: 9px!important"
-                                                          action="#{approvalProcessController.doDetail()}" >
-                                            <f:setPropertyActionListener value="#{approvalProcess}" target="#{approvalProcessController.selectedProscessToApprove}" />
-                                        </p:commandButton>
-                                        -
-                                        <p:commandButton  icon="ui-icon-trash" title="Delete" label="Delete"  style="font-size: 9px!important"
-                                                          oncomplete="confirmDialogHrmRole.show();" onclick="statusDialogHrmRole.show();" >
-                                            <f:setPropertyActionListener value="#{approvalProcess}" target="#{approvalProcessController.selectedProscessToApprove}" />
-                                        </p:commandButton>
-                                        -
-                                        <p:commandButton  icon="ui-icon-folder-open" title="Edit" label="Edit" style="font-size: 9px!important" update=":proscessToApproveFormId"
-                                                          action="#{approvalProcessController.doEdit()}"  >
-                                            <f:setPropertyActionListener value="#{approvalProcess}" target="#{approvalProcessController.selectedProscessToApprove}" />
-                                        </p:commandButton>
-                                    </p:column>
-                                    <p:column sortBy="#{approvalProcess.code}" style="width: 200px">
+                                    <p:column sortBy="#{approvalProcess.code}" >
                                         <f:facet name="header">  
                                             <h:outputText value="Process Name"/>
                                         </f:facet>
                                         <h:outputLabel value= "#{approvalProcess.code}"/>
                                     </p:column>
-                                    <p:column sortBy="#{approvalProcess.description}" style="width: 200px">
+                                    <p:column sortBy="#{approvalProcess.description}">
                                         <f:facet name="header">  
                                             <h:outputText value="Description"/>
                                         </f:facet>
                                         <h:outputLabel value= "#{approvalProcess.description}"/>
                                     </p:column>
-                                    <p:column headerText="Action" style="width: 120px;text-align: center" exportable="false" >
+                                    <p:column headerText="Action" style="width: 130px;text-align: center" exportable="false" >
 
-                                        <p:commandLink   title="Detail"  style="font-size: 11px!important"
-                                                         action="#{approvalProcessController.doDetail()}" >
-                                            <h:outputText value="Detail"/>
+                                        <p:commandButton  icon="ui-icon-zoomin" title="Detail of Approval Process" label="Detail of Approval Process" style="font-size: 9px!important"
+                                                          action="#{approvalProcessController.doDetail()}" >
                                             <f:setPropertyActionListener value="#{approvalProcess}" target="#{approvalProcessController.selectedProscessToApprove}" />
-                                        </p:commandLink>
+                                        </p:commandButton>
                                         -
-                                        <p:commandLink   title="Delete"   style="font-size: 11px!important"
-                                                         oncomplete="confirmDialogApprovalProcess.show();" onclick="statusDialogApprovalProcess.show();"  update=":confirmDialogHrmApprovalProcessId">
-                                            <h:outputText value="Delete"/>
+                                        <p:commandButton  icon="ui-icon-trash" title="Delete of Approval Process" label="Delete of Approval Process"  style="font-size: 9px!important"
+                                                          oncomplete="confirmDialogApprovalProcess.show();" onclick="statusDialogApprovalProcess.show();" update=":confirmDialogHrmApprovalProcessId" >
                                             <f:setPropertyActionListener value="#{approvalProcess}" target="#{approvalProcessController.selectedProscessToApprove}" />
-                                        </p:commandLink>
+                                        </p:commandButton>
                                         -
-                                        <p:commandLink   title="Edit"  style="font-size: 11px!important" update=":proscessToApproveFormId"
-                                                         action="#{approvalProcessController.doEdit()}"  >
-                                            <h:outputText value="Edit"/>
+                                        <p:commandButton  icon="ui-icon-folder-open" title="Edit of Approval Process" label="Edit of Approval Process" style="font-size: 9px!important" update=":proscessToApproveFormId"
+                                                          action="#{approvalProcessController.doEdit()}"  >
                                             <f:setPropertyActionListener value="#{approvalProcess}" target="#{approvalProcessController.selectedProscessToApprove}" />
-                                        </p:commandLink>
-                                    </p:column>                                                                   <f:facet name="footer">
+                                        </p:commandButton>
+                                    </p:column>                                                                <f:facet name="footer">
                                         <p:outputLabel value="Total Data :"/><p:outputLabel value="#{approvalProcessController.lazyDataModelProscessToApprove.rowCount}"/><p:outputLabel value="Data" style="margin-left: 3px"/>
                                     </f:facet>
                                 </p:dataTable>
-                                <p:blockUI block="proscessToApproveTableId" trigger="tableRoleId,pencarianId,:deleteDialogIdSpiProduct:yesId" >
+                                <p:blockUI block="proscessToApproveTableId" trigger="tableApprovalProcessId,pencarianId,:deleteDialogIdSpiProduct:yesId" >
                                     <h:panelGrid columns="2">
                                         <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
                                         <h:outputLabel value="Data sedang diproses" style="font-size: 12px;color: #006699;margin-left: 3px"/>

@@ -114,11 +114,11 @@
                                                             </ul>
                                                         </li>-->
                             <!--<li><a><h:outputLabel value="|"/></a></li>-->
-                            <li><a><h:outputLabel value="Organisasi" rendered="true"/></a>  
+                            <li id="organisationPage"><a><h:outputLabel value="Organisation" rendered="true"/></a>  
                                 <ul>
-                                    <li><a><h:outputLabel value="Setting Struktur"/></a>  
+                                    <li id="positionPage"><a href="${request.contextPath}/protected/organisation/position.htm"><h:outputLabel value="Jabatan" rendered="true"/></a>  
                                     </li>
-                                    <li><a><h:outputLabel value="Struktur Organisasi"/></a>  
+                                    <li><a><h:outputLabel value="Department"/></a>  
                                     </li>
                                     <li><a><h:outputLabel value="Job Specification"/></a>  
                                     </li>
@@ -199,7 +199,7 @@
                             <li id="approvalProcessPage" ><a href="${request.contextPath}/protected/approval/approval_process.htm"><h:outputLabel value="Approval Process" rendered="true"/></a>  
                             </li>
                             <li><a><h:outputLabel value="|" rendered="true" style="text-decoration: none"/></a></li>
-                            <li ><a href="?22"><h:outputLabel value="Approval Parameter"/></a>  
+                            <li  id="approvalDevinitionPage"><a href="${request.contextPath}/protected/approval/approval_definition.htm"><h:outputLabel value="Approval Definition"/></a>  
                             </li>
                         </ul>
                     </li>

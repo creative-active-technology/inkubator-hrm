@@ -168,7 +168,7 @@ public class ApprovalProcessController extends BaseController {
             lazyDataModelProscessToApprove = null;
             doClearInput();
             isEdit = Boolean.FALSE;
-            redirect = "/protected/account/approval_process_detail.htm?faces-redirect=true&execution=e" + proscessToApprove.getId();
+            redirect = "/protected/approval/approval_process_detail.htm?faces-redirect=true&execution=e" + proscessToApprove.getId();
         } catch (Exception e) {
             LOGGER.error("Error", e);
             if (e.getCause().toString().equalsIgnoreCase("org.hibernate.exception.ConstraintViolationException: could not execute statement")) {
@@ -195,7 +195,7 @@ public class ApprovalProcessController extends BaseController {
 
     public String doDetail() {
         return "/protected/approval/approval_process_detail.htm?faces-redirect=true&execution=e" + selectedProscessToApprove.getId();
-   
+
     }
 
     public void doEdit() {
@@ -220,4 +220,7 @@ public class ApprovalProcessController extends BaseController {
         }
     }
 
+    public void doSearch() {
+        lazyDataModelProscessToApprove = null;
+    }
 }

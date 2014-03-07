@@ -24,12 +24,12 @@
         <dependency>
             <groupId>com.inkubator</groupId>
             <artifactId>web-core</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0.0.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>com.inkubator</groupId>
             <artifactId>data-core</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0.0.RELEASE</version>
             <exclusions>
                 <exclusion>
                     <groupId>javax.enterprise</groupId>
@@ -45,12 +45,12 @@
         <dependency> 
             <groupId>com.inkubator</groupId>
             <artifactId>common-notification</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0.0.RELEASE</version>
         </dependency>
         <dependency>  
             <groupId>com.inkubator</groupId>
             <artifactId>security-core</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0.0.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.apache.poi</groupId>

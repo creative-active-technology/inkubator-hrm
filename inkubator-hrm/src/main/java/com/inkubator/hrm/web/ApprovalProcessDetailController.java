@@ -43,6 +43,7 @@ public class ApprovalProcessDetailController extends BaseController {
     @Override
     public void initialization() {
         super.initialization();
+        System.out.println(" shdfdsfjksdhfdsjfh");
         String redirectParam = FacesUtil.getRequestParameter("execution");
         if (redirectParam != null) {
             try {
