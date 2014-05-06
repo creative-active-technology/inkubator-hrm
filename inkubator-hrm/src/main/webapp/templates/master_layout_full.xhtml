@@ -40,23 +40,24 @@
                             <h:form>
                                 <h:panelGrid columns="7" cellpadding="3" style="margin-right: 6%;padding-top: 3px">
                                     <h:panelGroup>
-                                        <p:outputLabel value="Welcome, " styleClass="label_hrm" style="font-family: Trebuchet MS!important;color: #ffffff!important"/>
-                                        <p:outputLabel value="Deni Husni FR. Login At: 17 Januari 2014 - 12:00:00 PM" styleClass="label_hrm" style="margin-right: 100px;color: #ffffff !important"/>
+                                        <p:outputLabel value="Welcome, " styleClass="label_welcome_header" />
+                                        <p:outputLabel value="Deni Husni FR. " styleClass="label_welcome_header" style="color: #ffcc00 !important;font-weight: bold!important" />
+                                        <p:outputLabel value="You Login At: 17 Januari 2014 - 12:00:00 PM" styleClass="label_welcome_header" style="margin-right: 100px"/>
                                     </h:panelGroup>
                                     <p:commandLink id="pendingId" action="#{userInformationController.doPendingTask()}" title="My Pending Task" >
-                                        <p:graphicImage library="images" name="task-manager.png" width="20" height="20" id="ima" cache="true" /> 
+                                        <p:graphicImage library="images" name="task-manager.png" width="22" height="22" id="ima" cache="true" /> 
                                     </p:commandLink>
                                     <p:commandLink id="userId" onclick="statusDialog.show()" oncomplete="userInformationDialog.show()" action="#{userInformationController.onRenderUserInfo()}" title="User Profile" >
-                                        <p:graphicImage library="images" name="user.png" width="20" height="20" cache="true"/> 
+                                        <p:graphicImage library="images" name="user.png" width="22" height="22" cache="true"/> 
                                     </p:commandLink>
                                     <h:commandLink id="calendarId" title="Calendar">
-                                        <p:graphicImage library="images" name="calendar_1.png" width="20" height="20"  cache="true"/> 
+                                        <p:graphicImage library="images" name="calendar_1.png" width="22" height="22"  cache="true"/> 
                                     </h:commandLink>
                                     <h:commandLink id="helpId" title="Need Help Clik Me">
-                                        <p:graphicImage library="images" name="help.png" width="20" height="20"  cache="true"/> 
+                                        <p:graphicImage library="images" name="help.png" width="22" height="22"  cache="true"/> 
                                     </h:commandLink>
-                                    <h:outputLink id="logoutId" style="margin-left: 20px;margin-right: 10px" value="${request.contextPath}/logout.htm" title="Logout and Exit">
-                                        <p:graphicImage library="images" name="logout.png" width="20" height="20" cache="true"/> 
+                                    <h:outputLink id="logoutId" style="margin-left: 22px;margin-right: 10px" value="${request.contextPath}/logout.htm" title="Logout and Exit">
+                                        <p:graphicImage library="images" name="logout.png" width="22" height="22" cache="true"/> 
                                     </h:outputLink>
                                 </h:panelGrid>
                                 <pe:tooltip for="pendingId" value="My Pending Task" showEffect="slideToggle"
@@ -151,7 +152,7 @@
 
                                                                         <h:panelGroup >
                                                                             <h:panelGrid columns="1" style="text-align: center">
-                                                                                <h:outputLink id="createUserId" value="${request.contextPath}/flow-protected/user">
+                                                                                <h:outputLink id="userAccountId" value="${request.contextPath}/flow-protected/user">
                                                                                     <p:graphicImage library="images" name="user_account.png" style="width: 64px;height: 64px;" cache="true" /> 
                                                                                 </h:outputLink>
                                                                                 <h:outputLabel value="User Account" style="font-family: Verdana;font-size: 12px"/>
@@ -159,7 +160,7 @@
                                                                         </h:panelGroup>
                                                                         <h:panelGroup >
                                                                             <h:panelGrid columns="1" style="text-align: center">
-                                                                                <h:outputLink id="createUserId22" value="${request.contextPath}/flow-protected/user">
+                                                                                <h:outputLink id="jadwalKerjaId" value="${request.contextPath}/flow-protected/user">
                                                                                     <p:graphicImage library="images" name="task.png" style="width: 64px;height: 64px;" cache="true" /> 
                                                                                 </h:outputLink>
                                                                                 <h:outputLabel value="Jadwal Kerja" style="font-family: Verdana;font-size: 12px"/>
@@ -485,6 +486,18 @@
                                                     </p:column>
                                                 </p:row>
                                             </p:panelGrid>
+                                            <pe:tooltip for="tabView1:userAccountId" value="Click to Create User" showEffect="slideToggle"
+                                                        hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>
+                                            <pe:tooltip for="tabView1:jadwalKerjaId" value="Click to Create Jadwal Kerja" showEffect="slideToggle"
+                                                        hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>
+<!--                                            <pe:tooltip for="createCabangId" value="#{appmsg['dashboard.tooltip.viewbranch']}" showEffect="slideToggle"
+                                                        hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>
+                                            <pe:tooltip for="createProductId" value="#{appmsg['dashboard.tooltip.viewproduct']}" showEffect="slideToggle"
+                                                        hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>
+                                            <pe:tooltip for="createSystemId" value="#{appmsg['dashboard.tooltip.sysconfig']}" showEffect="slideToggle"
+                                                        hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>
+                                            <pe:tooltip for="createMoniotingId" value="#{appmsg['dashboard.tooltip.monitoring']}" showEffect="slideToggle"
+                                                        hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>-->
                                             <div class="cleared"></div>
                                             <div class="art-footer">
                                                 <div class="art-footer-t"></div>
