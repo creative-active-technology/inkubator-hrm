@@ -1,0 +1,517 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>#{appmsg['global.header_app']}</title>
+        <link rel="stylesheet" href="${request.contextPath}/resources/css/hr_content_css.css" type="text/css" media="screen" />
+        <link rel="shortcut icon" href="${request.contextPath}/hr.ico" type="image/x-icon" />
+        <title><ui:insert name="windowTitle"/></title>
+    </h:head>
+    <h:body>
+        <p:socket onMessage="handleLogin" channel="/notificationsLogin" />
+        <p:growl widgetVar="loginNotification" showDetail="true" showSummary="true" life="2500" /> 
+        <h:form>
+            <p:idleMonitor timeout="1740000" onidle="infoSession.show()"/>
+            <p:dialog header="#{appmsg['master_layout.session_information']}" widgetVar="infoSession" modal="true" 
+                      id="infoSessionId"
+                      appendTo="@(body)" resizable="false" closable="false" style="width: 400px;height: 120px">
+                <div align="center">
+                    <h:outputLabel value="#{appmsg['master_layout.session_expired']}" style="margin-top: 5px"/>
+                </div>
+                <br/>
+                <div align="center">
+                    <h:panelGrid columns="1">
+                        <p:graphicImage library="images" name="session_wait.gif" style="width: 64px;height: 64px"/>
+                        <p:button href="${request.contextPath}/logout.htm" value="#{appmsg['global.ok']}" icon="ui-icon-power" style="width: 64px;margin-top: 5px"
+                                  title="#{appmsg['global.ok']}"/>
+                    </h:panelGrid>
+                </div>
+            </p:dialog>
+        </h:form>
+        <div id="art-page-background-middle-texture">
+            <div id="art-page-background-glare">
+                <div id="art-page-background-glare-image">
+                    <div id="art-main">
+                        <div style="float: right">
+                            <h:form>
+                                <h:panelGrid columns="7" cellpadding="3" style="margin-right: 6%;padding-top: 3px">
+                                    <h:panelGroup>
+                                        <p:outputLabel value="Welcome, " styleClass="label_hrm" style="font-family: Trebuchet MS!important;color: #ffffff!important"/>
+                                        <p:outputLabel value="Deni Husni FR. Login At: 17 Januari 2014 - 12:00:00 PM" styleClass="label_hrm" style="margin-right: 100px;color: #ffffff !important"/>
+                                    </h:panelGroup>
+                                    <p:commandLink id="pendingId" action="#{userInformationController.doPendingTask()}" title="My Pending Task" >
+                                        <p:graphicImage library="images" name="task-manager.png" width="20" height="20" id="ima" cache="true" /> 
+                                    </p:commandLink>
+                                    <p:commandLink id="userId" onclick="statusDialog.show()" oncomplete="userInformationDialog.show()" action="#{userInformationController.onRenderUserInfo()}" title="User Profile" >
+                                        <p:graphicImage library="images" name="user.png" width="20" height="20" cache="true"/> 
+                                    </p:commandLink>
+                                    <h:commandLink id="calendarId" title="Calendar">
+                                        <p:graphicImage library="images" name="calendar_1.png" width="20" height="20"  cache="true"/> 
+                                    </h:commandLink>
+                                    <h:commandLink id="helpId" title="Need Help Clik Me">
+                                        <p:graphicImage library="images" name="help.png" width="20" height="20"  cache="true"/> 
+                                    </h:commandLink>
+                                    <h:outputLink id="logoutId" style="margin-left: 20px;margin-right: 10px" value="${request.contextPath}/logout.htm" title="Logout and Exit">
+                                        <p:graphicImage library="images" name="logout.png" width="20" height="20" cache="true"/> 
+                                    </h:outputLink>
+                                </h:panelGrid>
+                                <pe:tooltip for="pendingId" value="My Pending Task" showEffect="slideToggle"
+                                            hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>
+                                <pe:tooltip for="helpId" value="Need Help? Click Me" showEffect="slideToggle"
+                                            hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/> 
+                                <pe:tooltip for="calendarId" value="To See Calendar" showEffect="slideToggle"
+                                            hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>
+                                <pe:tooltip for="userId" value="My User Profile" showEffect="slideToggle"
+                                            hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>
+                                <pe:tooltip for="logoutId" value="Logout and Exit" showEffect="slideToggle"
+                                            hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>
+                            </h:form>
+                        </div>
+                        <div style="clear: both" />
+                        <div id="art-sheet">
+                            <div class="art-sheet-tl"></div>
+                            <div class="art-sheet-tr"></div>
+                            <div class="art-sheet-bl"></div>
+                            <div class="art-sheet-br"></div>
+                            <div class="art-sheet-tc"></div>
+                            <div class="art-sheet-bc"></div>
+                            <div class="art-sheet-cl"></div>
+                            <div class="art-sheet-cr"></div>
+                            <div class="art-sheet-cc"></div>
+                            <div class="art-sheet-body">
+                                <p:menubar style="margin-left: 0px;margin-right: 0px;margin-top: 0px" styleClass="panelMenu" autoDisplay="false" id="menuId">  
+                                    <p:menuitem value="" url="/protected/home.htm"  title="Back to Home" style="font-size: 12px !important;font-weight: normal!important;color: white" icon="ui-icon-home" />  
+                                    <p:submenu label="Account"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu">
+                                        <p:menuitem value="User Account" icon="img-price-simulator" style="font-size: 12px !important;color: #003366" title="Make Price Simulation" url="/protected/price_simulator.htm" /> 
+                                        <p:menuitem value="User Role" icon="img-button-price" style="font-size: 12px !important;color: #003366" title="Create Offering Price" url="/protected/price_offer.htm" /> 
+                                        <p:separator/>
+                                        <p:menuitem value="Password Setting" icon="img-button-price" style="font-size: 12px !important;color: #003366" title="Create Offering Price" url="/protected/price_offer.htm" />  
+                                        <p:menuitem value="Password History" icon="img-button-price" style="font-size: 12px !important;color: #003366" title="Create Offering Price" url="/protected/price_offer.htm" /> 
+                                        <p:menuitem value="Login History" icon="img-button-price" style="font-size: 12px !important;color: #003366" title="Create Offering Price" url="/protected/price_offer.htm" />  
+                                    </p:submenu>
+                                    <p:submenu label="Konfigurasi"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu">
+                                        <p:menuitem value="Price Simulator" icon="img-price-simulator" style="font-size: 12px !important;color: #003366" title="Make Price Simulation" url="/protected/price_simulator.htm" /> 
+                                        <p:menuitem value="Price Offer" icon="img-button-price" style="font-size: 12px !important;color: #003366" title="Create Offering Price" url="/protected/price_offer.htm" />  
+                                    </p:submenu>
+                                    <p:submenu label="Personalia"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu">
+                                        <p:menuitem value="Price Simulator" icon="img-price-simulator" style="font-size: 12px !important;color: #003366" title="Make Price Simulation" url="/protected/price_simulator.htm" /> 
+                                        <p:menuitem value="Price Offer" icon="img-button-price" style="font-size: 12px !important;color: #003366" title="Create Offering Price" url="/protected/price_offer.htm" />  
+                                    </p:submenu>
+                                    <p:submenu label="Waktu Kerja"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu">
+                                        <p:menuitem value="Price Simulator" icon="img-price-simulator" style="font-size: 12px !important;color: #003366" title="Make Price Simulation" url="/protected/price_simulator.htm" /> 
+                                        <p:menuitem value="Price Offer" icon="img-button-price" style="font-size: 12px !important;color: #003366" title="Create Offering Price" url="/protected/price_offer.htm" />  
+                                    </p:submenu>
+                                    <p:submenu label="Payroll"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu">
+                                        <p:menuitem value="Price Simulator" icon="img-price-simulator" style="font-size: 12px !important;color: #003366" title="Make Price Simulation" url="/protected/price_simulator.htm" /> 
+                                        <p:menuitem value="Price Offer" icon="img-button-price" style="font-size: 12px !important;color: #003366" title="Create Offering Price" url="/protected/price_offer.htm" />  
+                                    </p:submenu>
+                                    <p:submenu label="Pengembangan"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu">
+                                        <p:menuitem value="Price Simulator" icon="img-price-simulator" style="font-size: 12px !important;color: #003366" title="Make Price Simulation" url="/protected/price_simulator.htm" /> 
+                                        <p:menuitem value="Price Offer" icon="img-button-price" style="font-size: 12px !important;color: #003366" title="Create Offering Price" url="/protected/price_offer.htm" />  
+                                    </p:submenu>
+
+                                    <p:submenu label="Approval Metrix"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu">
+                                        <p:menuitem value="User Account" icon="img-price-simulator" style="font-size: 12px !important;color: #003366" title="Make Price Simulation" url="/protected/price_simulator.htm" /> 
+                                        <p:menuitem value="User Role" icon="img-button-price" style="font-size: 12px !important;color: #003366" title="Create Offering Price" url="/protected/price_offer.htm" /> 
+                                        <p:separator/>
+                                        <p:menuitem value="Password Setting" icon="img-button-price" style="font-size: 12px !important;color: #003366" title="Create Offering Price" url="/protected/price_offer.htm" />  
+                                        <p:menuitem value="Password History" icon="img-button-price" style="font-size: 12px !important;color: #003366" title="Create Offering Price" url="/protected/price_offer.htm" /> 
+                                        <p:menuitem value="Login History" icon="img-button-price" style="font-size: 12px !important;color: #003366" title="Create Offering Price" url="/protected/price_offer.htm" />  
+                                    </p:submenu>
+                                    <p:submenu label="Laporan"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu">
+                                        <p:menuitem value="Price Simulator" icon="img-price-simulator" style="font-size: 12px !important;color: #003366" title="Make Price Simulation" url="/protected/price_simulator.htm" /> 
+                                        <p:menuitem value="Price Offer" icon="img-button-price" style="font-size: 12px !important;color: #003366" title="Create Offering Price" url="/protected/price_offer.htm" />  
+                                    </p:submenu>
+                                    <p:menuitem value="Logout" icon="ui-icon-power" styleClass="menu" style="color: #ff9933 !important;font-size: 14px!important" title="Logout and Exit" url="/logout.htm" />  
+                                </p:menubar>  
+                                <div class="art-header">
+                                    <div class="art-header-jpeg"></div>
+                                    <div class="art-logo" style="float: right">
+                                        <h:panelGrid >
+                                            <p:outputLabel value="OPTIMA HR" styleClass="header_hrm" style="font-size: 28px !important;color: #cff !important;font-family: Palatino Linotype!important"/>
+                                            <p:outputLabel value="PT. Indonesia Inkubator Teknologi" styleClass="header_hrm" style="font-size: 15px !important;padding-top: -5px!important;color: #036 !important;font-family: Lucida Grande!important"/>
+                                        </h:panelGrid>
+                                    </div>
+                                </div>
+
+                                <div class="art-content-layout">
+                                    <div class="art-content-layout-row">
+                                        <div class="art-layout-cell art-content">
+                                            <p:panelGrid style="width: 100%;margin-bottom: 20px" styleClass="grid_no_border">
+                                                <p:row>
+                                                    <p:column style="width: 95%" colspan="3">
+                                                        <p:tabView id="tabView1" dynamic="true" cache="true" style="margin-left: 10px;margin-right: 15px;margin-top: 10px;font-size: 11px!important;font-family: Lucida Sans!important"> 
+                                                            <p:tab id="quickMenu" title="Favorite Menu">  
+                                                                <div align="center">
+                                                                    <h:panelGrid columns="12" cellpadding="11">
+
+                                                                        <h:panelGroup >
+                                                                            <h:panelGrid columns="1" style="text-align: center">
+                                                                                <h:outputLink id="createUserId" value="${request.contextPath}/flow-protected/user">
+                                                                                    <p:graphicImage library="images" name="user_account.png" style="width: 64px;height: 64px;" cache="true" /> 
+                                                                                </h:outputLink>
+                                                                                <h:outputLabel value="User Account" style="font-family: Verdana;font-size: 12px"/>
+                                                                            </h:panelGrid>
+                                                                        </h:panelGroup>
+                                                                        <h:panelGroup >
+                                                                            <h:panelGrid columns="1" style="text-align: center">
+                                                                                <h:outputLink id="createUserId22" value="${request.contextPath}/flow-protected/user">
+                                                                                    <p:graphicImage library="images" name="task.png" style="width: 64px;height: 64px;" cache="true" /> 
+                                                                                </h:outputLink>
+                                                                                <h:outputLabel value="Jadwal Kerja" style="font-family: Verdana;font-size: 12px"/>
+                                                                            </h:panelGrid>
+                                                                        </h:panelGroup>
+                                                                        <h:panelGroup >
+                                                                            <h:panelGrid columns="1" style="text-align: center">
+                                                                                <h:outputLink id="createUserId1" value="${request.contextPath}/flow-protected/user">
+                                                                                    <p:graphicImage library="images" name="overtime.png" style="width: 64px;height: 64px;" cache="true" /> 
+                                                                                </h:outputLink>
+                                                                                <h:outputLabel value="Lembur" style="font-family: Verdana;font-size: 12px"/>
+                                                                            </h:panelGrid>
+                                                                        </h:panelGroup>
+                                                                        <h:panelGroup >
+                                                                            <h:panelGrid columns="1" style="text-align: center">
+                                                                                <h:outputLink id="createUserId2" value="${request.contextPath}/flow-protected/user">
+                                                                                    <p:graphicImage library="images" name="broadcast.png" style="width: 64px;height: 64px;" cache="true" /> 
+                                                                                </h:outputLink>
+                                                                                <h:outputLabel value="Broadcast Info" style="font-family: Verdana;font-size: 12px"/>
+                                                                            </h:panelGrid>
+                                                                        </h:panelGroup>
+                                                                        <h:panelGroup >
+                                                                            <h:panelGrid columns="1" style="text-align: center">
+                                                                                <h:outputLink id="createUserId3" value="${request.contextPath}/flow-protected/user">
+                                                                                    <p:graphicImage library="images" name="user.png" style="width: 64px;height: 64px;" cache="true" /> 
+                                                                                </h:outputLink>
+                                                                                <h:outputLabel value="Karyawan" style="font-family: Verdana;font-size: 12px"/>
+                                                                            </h:panelGrid>
+                                                                        </h:panelGroup>
+                                                                        <h:panelGroup >
+                                                                            <h:panelGrid columns="1" style="text-align: center">
+                                                                                <h:outputLink id="createUserId4" value="${request.contextPath}/flow-protected/user">
+                                                                                    <p:graphicImage library="images" name="payroll.png" style="width: 64px;height: 64px;" cache="true" /> 
+                                                                                </h:outputLink>
+                                                                                <h:outputLabel value="Payroll" style="font-family: Verdana;font-size: 12px"/>
+                                                                            </h:panelGrid>
+                                                                        </h:panelGroup>
+                                                                        <h:panelGroup >
+                                                                            <h:panelGrid columns="1" style="text-align: center">
+                                                                                <h:outputLink id="createUserId5" value="${request.contextPath}/flow-protected/user">
+                                                                                    <p:graphicImage library="images" name="login_history.png" style="width: 64px;height: 64px;" cache="true" /> 
+                                                                                </h:outputLink>
+                                                                                <h:outputLabel value="History Login" style="font-family: Verdana;font-size: 12px"/>
+                                                                            </h:panelGrid>
+                                                                        </h:panelGroup>
+                                                                        <h:panelGroup >
+                                                                            <h:panelGrid columns="1" style="text-align: center">
+                                                                                <h:outputLink id="createUserId6" value="${request.contextPath}/flow-protected/user">
+                                                                                    <p:graphicImage library="images" name="finger_scan.png" style="width: 64px;height: 64px;" cache="true" /> 
+                                                                                </h:outputLink>
+                                                                                <h:outputLabel value="Fingger" style="font-family: Verdana;font-size: 12px"/>
+                                                                            </h:panelGrid>
+                                                                        </h:panelGroup>
+                                                                        <h:panelGroup >
+                                                                            <h:panelGrid columns="1" style="text-align: center">
+                                                                                <h:outputLink id="createUserId7" value="${request.contextPath}/flow-protected/user">
+                                                                                    <p:graphicImage library="images" name="permit.png" style="width: 64px;height: 64px;" cache="true" /> 
+                                                                                </h:outputLink>
+                                                                                <h:outputLabel value="Cuti" style="font-family: Verdana;font-size: 12px"/>
+                                                                            </h:panelGrid>
+                                                                        </h:panelGroup>
+                                                                        <h:panelGroup >
+                                                                            <h:panelGrid columns="1" style="text-align: center">
+                                                                                <h:outputLink id="createUserId9" value="${request.contextPath}/flow-protected/user">
+                                                                                    <p:graphicImage library="images" name="permit.png" style="width: 64px;height: 64px;" cache="true" /> 
+                                                                                </h:outputLink>
+                                                                                <h:outputLabel value="Izin &amp; Sakit" style="font-family: Verdana;font-size: 12px"/>
+                                                                            </h:panelGrid>
+                                                                        </h:panelGroup>
+                                                                        <h:panelGroup >
+                                                                            <h:panelGrid columns="1" style="text-align: center">
+                                                                                <h:outputLink id="createUserId8" value="${request.contextPath}/flow-protected/user">
+                                                                                    <p:graphicImage library="images" name="laporan.png" style="width: 64px;height: 64px;" cache="true" /> 
+                                                                                </h:outputLink>
+                                                                                <h:outputLabel value="Laporan" style="font-family: Verdana;font-size: 12px"/>
+                                                                            </h:panelGrid>
+                                                                        </h:panelGroup>
+
+
+                                                                    </h:panelGrid>  
+                                                                </div>
+                                                            </p:tab>  
+                                                            <p:tab id="tba11" title="Pending Task">  
+                                                                <h:panelGrid columns="2" cellpadding="10">  
+                                                                    <p:graphicImage id="tab1Img" value="/images/godfather/godfather1.jpg" />  
+                                                                    <h:outputText  
+                                                                        value="The story begins as Don Vito Corleone, the head of a New York Mafia family, oversees his daughter's wedding.  
+                                                                        His beloved son Michael has just come home from the war, but does not intend to become part of his father's business. T  
+                                                                        hrough Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, kind and benevolent to those who give respect,  
+                                                                        but given to ruthless violence whenever anything stands against the good of the family." />  
+                                                                </h:panelGrid>  
+                                                            </p:tab>  
+
+                                                            <p:tab id="tab21" title="Pending Request">  
+                                                                <h:panelGrid columns="2" cellpadding="10">  
+                                                                    <p:graphicImage id="tab2Img" value="/images/godfather/godfather2.jpg" />  
+                                                                    <h:outputText value="Francis Ford Coppola's legendary continuation and sequel to his landmark 1972 film, The_Godfather, parallels the young Vito Corleone's rise with his son Michael's spiritual fall, deepening The_Godfather's depiction of the dark side of the American dream.  
+                                                                                  In the early 1900s, the child Vito flees his Sicilian village for America after the local Mafia kills his family. Vito struggles to make a living, legally or illegally, for his wife and growing brood in Little Italy,  
+                                                                                  killing the local Black Hand Fanucci after he demands his customary cut of the tyro's business. With Fanucci gone, Vito's communal stature grows."/>  
+                                                                </h:panelGrid>  
+                                                            </p:tab>  
+
+                                                            <p:tab id="tab31" title="Request History">  
+                                                                <h:panelGrid columns="2" cellpadding="10">  
+                                                                    <p:graphicImage id="tab3Img" value="/images/godfather/godfather3.jpg" />  
+                                                                    <h:outputText value="After a break of more than 15 years, director Francis Ford Coppola and writer Mario Puzo returned to the well for this third and final story of the fictional Corleone crime family.  
+                                                                                  Two decades have passed, and crime kingpin Michael Corleone, now divorced from his wife Kay has nearly succeeded in keeping his promise that his family would one day be completely legitimate."/>  
+                                                                </h:panelGrid>  
+                                                            </p:tab>  
+
+                                                        </p:tabView>
+                                                    </p:column>
+                                                </p:row>
+                                                <p:row>
+                                                    <p:column style="width: 25%">
+                                                        <p:panel  style="margin-left: 10px;margin-right: 0px;margin-top: 10px"> 
+                                                            <h:panelGrid style="margin-bottom: 3px">
+                                                                <p:outputLabel value="Login History" styleClass="header_big" />
+                                                                <p:outputLabel value="Daftar Karyawan yang Login Terakhir" styleClass="header_small_no_bold" />
+                                                            </h:panelGrid>
+
+                                                            <p:panelGrid  styleClass="grid_border" style="width: 98%;margin-left: 5px;margin-right: 5px;margin-top: 10px;margin-bottom: 13px;color: #036">
+                                                                <p:row>
+                                                                    <p:column style="width: 40%;text-align: center"  rowspan="2">
+                                                                        <p:outputLabel value="12-Juli-2014" />
+                                                                        <br/>
+                                                                        <p:outputLabel value="12:00 PM" />
+                                                                    </p:column>
+                                                                    <p:column style="width: 60%" >
+                                                                        <p:outputLabel value="Deni Husni FR" />
+                                                                    </p:column>
+
+                                                                </p:row>
+                                                                <p:row>
+                                                                    <p:column style="width: 60%" >
+                                                                        <p:outputLabel value="Software Developer" />
+                                                                    </p:column>
+                                                                </p:row>
+
+                                                                <p:row>
+                                                                    <p:column style="width: 40%;text-align: center"  rowspan="2">
+                                                                        <p:outputLabel value="13-Juli-2014" />
+                                                                        <br/>
+                                                                        <p:outputLabel value="12:00 PM" />
+                                                                    </p:column>
+                                                                    <p:column style="width: 60%" >
+                                                                        <p:outputLabel value="Rizky Kozek" />
+                                                                    </p:column>
+
+                                                                </p:row>
+                                                                <p:row>
+                                                                    <p:column style="width: 60%" >
+                                                                        <p:outputLabel value="Software Developer" />
+                                                                    </p:column>
+                                                                </p:row>
+
+                                                                <p:row>
+                                                                    <p:column style="width: 40%;text-align: center"  rowspan="2">
+                                                                        <p:outputLabel value="14-Juli-2014" />
+                                                                        <br/>
+                                                                        <p:outputLabel value="12:00 PM" />
+                                                                    </p:column>
+                                                                    <p:column style="width: 60%" >
+                                                                        <p:outputLabel value="Ahmad Albar" />
+                                                                    </p:column>
+
+                                                                </p:row>
+                                                                <p:row>
+                                                                    <p:column style="width: 60%" >
+                                                                        <p:outputLabel value="Penyanyi" />
+                                                                    </p:column>
+                                                                </p:row>
+                                                                <p:row>
+                                                                    <p:column style="width: 40%;text-align: center"  rowspan="2">
+                                                                        <p:outputLabel value="15-Juli-2014" />
+                                                                        <br/>
+                                                                        <p:outputLabel value="12:00 PM" />
+                                                                    </p:column>
+                                                                    <p:column style="width: 60%" >
+                                                                        <p:outputLabel value="Guntur Saketi" />
+                                                                    </p:column>
+
+                                                                </p:row>
+                                                                <p:row>
+                                                                    <p:column style="width: 60%" >
+                                                                        <p:outputLabel value="System Analis" />
+                                                                    </p:column>
+                                                                </p:row>
+
+
+                                                            </p:panelGrid>
+                                                        </p:panel>
+                                                    </p:column>
+                                                    <p:column style="width: 70%;color: #990000" colspan="2">
+                                                        <p:panel  style="margin-left: 0px;margin-right: 15px;margin-top: 10px">
+                                                            <h:panelGrid style="margin-bottom: 3px">
+                                                                <p:outputLabel value="History Kehadiran Karyawan"  styleClass="header_big" />
+                                                                <p:outputLabel value="Pada Setiap Departement (Update Data Per Week)" styleClass="header_small_no_bold" />
+                                                            </h:panelGrid>
+                                                            <p:barChart id="basic" value="#{homeController.persentasiKehadiranPerWeek}" legendPosition="ne"  stacked="false" seriesColors="66cc00,629de1,003366,990000,cccc00,6600cc"   animate="true"
+                                                                        showDatatip="true"  legendCols="6" max="150" min="0"
+                                                                        style="height:180px;font-size: 11px"/> 
+
+                                                        </p:panel>
+
+                                                    </p:column>
+
+
+                                                </p:row>
+                                                <p:row>
+                                                    <p:column style="width: 25%;color: #990099">
+                                                        <p:panel style="margin-left: 10px;margin-right: 0px;margin-top: 10px"> 
+                                                            <h:panelGrid style="margin-bottom: 3px">
+                                                                <p:outputLabel value="Distribusi Karyawan" styleClass="header_big" />
+                                                                <p:outputLabel value="Usia (Data Update per Bulan)" styleClass="header_small_no_bold" />
+                                                            </h:panelGrid>
+
+                                                            <p:pieChart id="custo2" value="#{homeController.pieModel}" legendPosition="e" fill="false" showDataLabels="true" seriesColors="66cc00,629de1,003366,990000,cccc00,6600cc"
+                                                                        style="height:180px;font-size: 11px" sliceMargin="4" diameter="120" />  
+                                                        </p:panel>
+                                                    </p:column>
+
+                                                    <p:column style="width: 53%;color: #990000">
+                                                        <p:panel  style="margin-left: 0px;margin-right: 0px;margin-top: 10px">
+                                                            <h:panelGrid style="margin-bottom: 3px">
+                                                                <p:outputLabel value="Presensi Absen Karyawan" styleClass="header_big" />
+                                                                <p:outputLabel value="Minggu Ke 3 Juni 2014 (Data Update per Hari)" styleClass="header_small_no_bold" />
+                                                            </h:panelGrid>
+                                                            <p:barChart id="basic1" value="#{homeController.presensiModel}" legendPosition="se"  stacked="true" seriesColors="66cc00,629de1,003366,990000,cccc00,6600cc"   animate="true" 
+                                                                        showDatatip="true" orientation="horizontal" max="300" 
+                                                                        style="height:180px;font-size: 11px"/> 
+
+                                                        </p:panel>
+
+                                                    </p:column>
+                                                    <p:column style="width: 25%">
+                                                        <p:panel  style="margin-left: 0px;margin-right: 15px;margin-top: 10px"> 
+                                                            <h:panelGrid style="margin-bottom: 3px">
+                                                                <p:outputLabel value="Distribusi Karyawan" styleClass="header_big" />
+                                                                <p:outputLabel value="Gender (Data Update per Bulan)" styleClass="header_small_no_bold" />
+                                                            </h:panelGrid>
+                                                            <div align="center" style="margin-bottom: 15px;margin-top: 15px">
+                                                                <p:panelGrid>
+                                                                    <p:row>
+                                                                        <p:column style="width: 50%">
+                                                                            <p:graphicImage library="images" name="logo-cowo.png" cache="true" height="120" width="70"/>   
+                                                                        </p:column>
+                                                                        <p:column style="width: 50%">
+                                                                            <p:graphicImage library="images" name="logo-cewe.png" cache="true" height="120" width="70"/>
+                                                                        </p:column>
+                                                                    </p:row>
+                                                                    <p:row>
+                                                                        <p:column style="width: 50%;text-align: center">
+                                                                            <p:outputLabel value="1200" style="font-size: 27px !important;font-weight: bold;color: #069;font-family: Digital-7 !important" />
+                                                                        </p:column>
+                                                                        <p:column style="width: 50%; text-align: center">
+                                                                            <p:outputLabel value="2000" style="font-size: 27px !important;font-weight: bold; color: #069;font-family: Digital-7  !important" />
+                                                                        </p:column>
+                                                                    </p:row>
+
+                                                                </p:panelGrid>
+                                                            </div>
+                                                        </p:panel>
+                                                    </p:column>
+
+                                                </p:row>
+                                                <p:row>
+                                                    <p:column style="width: 25%">
+                                                        <p:panel  style="margin-left: 10px;margin-right: 0px;margin-top: 10px"> 
+                                                            <h:panelGrid style="margin-bottom: 3px">
+                                                                <p:outputLabel value="Resume Data Karyawan" styleClass="header_big" />
+                                                                <p:outputLabel value="Statistik Informasi" styleClass="header_small_no_bold" />
+                                                            </h:panelGrid>
+                                                            <h:panelGrid columns="3">
+                                                                <p:outputLabel value="Karyawan"  styleClass="label_hrm"/>
+                                                                <p:outputLabel value=":" styleClass="label_hrm" />
+                                                                <p:outputLabel value="120 Orang" styleClass="isitext_hrm" />
+
+                                                                <p:outputLabel value="Cuti Hari Ini" styleClass="label_hrm" />
+                                                                <p:outputLabel value=":" styleClass="label_hrm" />
+                                                                <p:outputLabel value="6 Orang" styleClass="isitext_hrm" />
+
+                                                                <p:outputLabel value="Jumlah Dinas Hari Ini" styleClass="label_hrm" />
+                                                                <p:outputLabel value=":" styleClass="label_hrm" />
+                                                                <p:outputLabel value="2 Orang" styleClass="isitext_hrm" />
+
+                                                                <p:outputLabel value="Kehadiran Kemarin" styleClass="label_hrm" />
+                                                                <p:outputLabel value=":" styleClass="label_hrm" />
+                                                                <p:outputLabel value="97 %" styleClass="isitext_hrm" />
+
+                                                                <p:outputLabel value="Perkiraan Kehadiran 10/04" styleClass="label_hrm" />
+                                                                <p:outputLabel value=":" styleClass="label_hrm" />
+                                                                <p:outputLabel value="92 %" styleClass="isitext_hrm" />
+                                                            </h:panelGrid>
+
+                                                            <p:separator style="margin-left: 4px;margin-right: 2px;margin-top: 5px"/>
+                                                            <h:panelGrid columns="1" style="margin-bottom: 9px;margin-top: 9px">
+                                                                <p:outputLabel value="Karyawan Ulang Tahun Terdekat" styleClass="header_small_no_bold"/>
+                                                                <p:outputLabel value="Mr. Angin Ribut"  styleClass="header_big"/>
+                                                            </h:panelGrid>
+
+                                                        </p:panel>
+                                                    </p:column>
+                                                    <p:column style="width: 53% !important;color: #6600cc">
+                                                        <p:panel  style="margin-left: 0px;margin-right: 0px;margin-top: 10px">
+                                                            <h:panelGrid style="margin-bottom: 3px">
+                                                                <p:outputLabel value="Distribusi Karyawan"  styleClass="header_big" />
+                                                                <p:outputLabel value="Departement" styleClass="header_small_no_bold" />
+                                                            </h:panelGrid>
+                                                            <p:barChart id="basic11" value="#{homeController.distribusiKaryawanPerDepartment}" legendPosition="ne"  stacked="false" seriesColors="66cc00,629de1,003366,990000,cccc00,6600cc"   animate="true"
+                                                                        showDatatip="true"  legendCols="6" 
+                                                                        style="height:180px;font-size: 11px"/> 
+
+                                                        </p:panel>
+
+                                                    </p:column>
+                                                    <p:column style="width: 25%;" >
+                                                        <p:panel  style="margin-left: 0px;margin-right: 15px;margin-top: 10px;height: 242px" > 
+                                                            <div align="center" style="margin-top: 5%">
+                                                                <p:calendar  mode="inline" id="inlineCal" />
+                                                            </div>
+                                                        </p:panel>
+                                                    </p:column>
+                                                </p:row>
+                                            </p:panelGrid>
+                                            <div class="cleared"></div>
+                                            <div class="art-footer">
+                                                <div class="art-footer-t"></div>
+                                                <div class="art-footer-l"></div>
+                                                <div class="art-footer-b"></div>
+                                                <div class="art-footer-r"></div>
+                                                <div class="art-footer-body">
+                                                    <a href="#" class="art-rss-tag-icon" title="RSS"></a>
+                                                    <div class="art-footer-text">
+                                                        <p><a href="#">Link1</a> | <a href="#">Link2</a> | <a href="#">Link3</a></p><p>Copyright &copy; 2014. All Rights Reserved.</p>
+                                                    </div>
+                                                    <div class="cleared"></div>
+                                                </div>
+                                            </div>
+                                            <div class="cleared"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cleared"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <h:outputScript library="js" name="login_socket.js"/>
+        <h:outputScript library="js" name="indonesia_locale.js" />
+    </h:body>
+</html>
+

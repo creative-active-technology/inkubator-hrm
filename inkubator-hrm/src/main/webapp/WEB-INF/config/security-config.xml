@@ -18,6 +18,7 @@
         </security:session-management>
         <security:custom-filter ref="logoutFilter" position="LOGOUT_FILTER" />
         <!--<security:logout invalidate-session="true" delete-cookies="JSESSIONID" logout-url="/logout.htm"/>-->
+      
     </security:http>
     <bean id="myHandlerSuccessLogin" class="com.inkubator.hrm.util.CustomAuthenticationSuccessHandler" lazy-init="true"/> 
     <bean id="logoutFilter" class="org.springframework.security.web.authentication.logout.LogoutFilter">
@@ -39,7 +40,7 @@
             <!--<security:password-encoder hash="sha-256" />-->
             <security:user-service>
                 <security:user name="master.admin" password="12345" authorities="ROLE_ADMIN_HRM" />
-                <security:user name="deni.fahri" password="12345" authorities="ROLE_ADMIN_HRM" />
+                <security:user name="deni.fahri" password="123456789" authorities="ROLE_ADMIN_HRM" />
             </security:user-service>
         </security:authentication-provider>
         <!--        <security:authentication-provider user-service-ref="userDetailsService" >
@@ -49,9 +50,11 @@
     <security:global-method-security jsr250-annotations="enabled" pre-post-annotations="enabled" />
         
     <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
-        <property name="basenames">
+        <property name="basenames" >
             <list>
                 <value>messages</value>
+                <value>messages_in</value>
+                <value>messages_en</value>
             </list>
         </property>
     </bean>

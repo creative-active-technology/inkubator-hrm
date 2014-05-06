@@ -57,7 +57,7 @@
     <context-param>
         <description>Primefaces theme</description>
         <param-name>primefaces.THEME</param-name>
-        <param-value>start</param-value>
+        <param-value>cupertino</param-value>
     </context-param>
     <context-param>
         <param-name>javax.faces.FACELETS_LIBRARIES</param-name>
@@ -83,7 +83,9 @@
     </listener>-->
     <listener>
         <description>Exposes the request to the current thread through both LocaleContextHolder and RequestContextHolder</description>
-        <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+        <!--<listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>-->
+        <listener-class>com.inkubator.hrm.util.SpringSecurityContextListenerFix</listener-class>
+        
     </listener>
     
     <filter>

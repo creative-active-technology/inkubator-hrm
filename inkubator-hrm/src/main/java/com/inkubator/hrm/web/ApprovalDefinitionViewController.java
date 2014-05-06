@@ -15,6 +15,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import org.primefaces.model.LazyDataModel;
+import org.springframework.web.context.request.RequestContextListener;
 
 /**
  *
@@ -38,6 +39,7 @@ public class ApprovalDefinitionViewController extends BaseController {
     public void initialization() {
         super.initialization();
         approvalDefinitionSearchParameter=new ApprovalDefinitionSearchParameter();
+        RequestContextListener contextListener;
     }
 
     public LazyDataModel<ApprovalDefinition> getLazyDataModelApprovalDefinition() {

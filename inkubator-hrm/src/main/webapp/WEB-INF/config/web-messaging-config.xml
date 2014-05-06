@@ -61,7 +61,7 @@
     <bean id="loginHistoryMessagesListener" class="com.csl.idm.web.listener.LoginHistoryMessagesListener" lazy-init="true"/>
     <bean id="notificationMessagesListener" class="com.csl.idm.web.listener.NotificationMessagesListener" lazy-init="true"/>
     <jms:listener-container container-type="default" connection-factory="connectionFactoryComsume" acknowledge="transacted" 
-                            transaction-manager="jsmTransaction"  >
+                            transaction-manager="jsmTransaction"   >
         <jms:listener destination="loginHistory" ref="loginHistoryMessagesListener" method="onMessage"  />  
         <jms:listener destination="notification" ref="notificationMessagesListener" method="onMessage"  /> 
        
