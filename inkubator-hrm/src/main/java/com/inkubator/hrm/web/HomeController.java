@@ -53,6 +53,7 @@ public class HomeController extends BaseController {
     @Override
     public void initialization() {
         super.initialization();
+        System.out.println("tereksekusi");
         distribusiKaryawanPerDepartment = new CartesianChartModel();
         persentasiKehadiranPerWeek = new CartesianChartModel();
         ChartSeries itpercent = new ChartSeries();
