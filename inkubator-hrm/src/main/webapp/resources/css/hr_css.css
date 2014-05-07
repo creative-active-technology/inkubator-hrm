@@ -117,9 +117,13 @@ root
 }
 #header_login
 {
-
-    margin-top: 5px;
-   
+	background:none repeat scroll 0 0 #035 ;
+    box-shadow:0 -1px rgba(255,255,255,.05) inset,0 1px rgba(0,0,0,.05);
+    position:relative;
+    text-align:left;
+    text-shadow:0 1px rgba(0,0,0,.1);
+    z-index:1;
+    height:67px;   
 }
 #header_namaPT{
     float: left;
