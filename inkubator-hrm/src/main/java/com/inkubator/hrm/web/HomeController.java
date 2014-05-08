@@ -162,6 +162,9 @@ public class HomeController extends BaseController {
         ChartSeries design = new ChartSeries();
         design.setLabel("DESIGN");
         design.set("Departement", 10);
+        ChartSeries warehouse = new ChartSeries();
+        warehouse.setLabel("GUDANG");
+        warehouse.set("Gudang", 24);
 
         distribusiKaryawanPerDepartment.addSeries(it);
         distribusiKaryawanPerDepartment.addSeries(hrga);
@@ -169,6 +172,7 @@ public class HomeController extends BaseController {
         distribusiKaryawanPerDepartment.addSeries(marketing);
         distribusiKaryawanPerDepartment.addSeries(production);
         distribusiKaryawanPerDepartment.addSeries(design);
+        distribusiKaryawanPerDepartment.addSeries(warehouse);
 
         pieModel = new PieChartModel();
 

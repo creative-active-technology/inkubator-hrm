@@ -84,7 +84,7 @@
     <listener>
         <description>Exposes the request to the current thread through both LocaleContextHolder and RequestContextHolder</description>
         <!--<listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>-->
-        <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+        <listener-class>com.inkubator.hrm.util.SpringSecurityContextListenerFix</listener-class>
         
     </listener>
     
@@ -260,7 +260,7 @@
     </welcome-file-list>
     <session-config>
         <session-timeout>
-            1
+            30
         </session-timeout>
     </session-config>
 </web-app>

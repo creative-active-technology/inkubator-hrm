@@ -439,12 +439,19 @@ div.art-logo
     font-weight: bold;
     color: #FFFFFF;
     font-family: Lucida Sans !important;
+
 }
 .label_hrm{
     font-family: Calibri!important;
     font-size: 15px !important;
     font-weight: bold !important;
-    color:#ffffff !important;
+    color:#FFFFFF !important;
+}
+.label_quick{
+    font-family: Lucida Sans!important;
+    font-size: 13px !important;
+    font-weight: normal !important;
+    color:#003366 !important;
 }
 
 .label_welcome_header{
