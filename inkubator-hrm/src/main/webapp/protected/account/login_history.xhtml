@@ -15,8 +15,91 @@
                 Home
             </ui:define>
             <ui:define name="center">
-              
-                
+                <p:panel style="margin: 10px" >
+                    <h:form>
+                        <h:panelGrid style="margin-bottom: 5px" columns="2">
+                            <p:graphicImage library="images" name="login_history_1.png" height="36" width="36" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="Login History" styleClass="header_big" />
+                                    <p:outputLabel value="Data login of Employee" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator/>
+
+                        <p:toolbar  style="margin-top: 10px">
+                            <p:toolbarGroup align="left">
+                                <h:panelGrid columns="4">
+                                    <p:outputLabel value="Pencarian" />
+                                    <p:outputLabel value=":" />
+                                    <p:inputText value="#{loginHistoryController.loginHistorySearchParameter.parameter}" style="width: 250px" id="pencarianId"/>
+                                    <p:commandButton value="Cari" action="#{loginHistoryController.doSearch()}" style="width: 75px"/>
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                            <p:toolbarGroup align="right">
+                                <h:panelGrid >
+                                    <p:commandButton value="Close" style="width: 75px"/>
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+
+                        </p:toolbar>
+                        <p:focus for="pencarianId" />
+                        <p:dataTable  var="loginHistoryData"  value="#{loginHistoryController.lazyDataLoginHistory}" lazy="true" paginator="true" pageLinks="7"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      id="tableLoginHistory" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="Daftar Riwayat Login" />
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 25px">
+                                <f:facet name="header">  
+                                    <h:outputText value="No." />
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column sortBy="#{loginHistoryData.userName}"  style="width: 15%">
+                                <f:facet name="header">  
+                                    <h:outputText value="User ID"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{loginHistoryData.userName}"/>
+                            </p:column>
+                            <p:column sortBy="#{loginHistoryData.loginDate}" style="width: 20%">
+                                <f:facet name="header">
+                                    <h:outputText value="Login Date"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{loginHistoryData.loginDate}">
+                                    <f:convertDateTime pattern ="dd-MMMM-yyyy  hh:mm:ss" timeZone="GMT+7"/>
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column sortBy="#{loginHistoryData.logOutDate}" style="width: 20%">
+                                <f:facet name="header">
+                                    <h:outputText value="Logout Date"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{loginHistoryData.logOutDate}">
+                                    <f:convertDateTime pattern ="dd-MMMM-yyyy  hh:mm:ss" timeZone="GMT+7"/>
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column sortBy="#{loginHistoryData.ipAddress}" style="width: 20%">
+                                <f:facet name="header">
+                                    <h:outputText value="Ip Address"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{loginHistoryData.ipAddress}"/>
+                            </p:column>
+                            <p:column sortBy="#{loginHistoryData.bahasa}" style="text-align: center;width: 90px">
+                                <f:facet name="header">
+                                    <h:outputText value="Bahasa"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{loginHistoryData.bahasa}"/>
+                            </p:column>
+                            <f:facet name="footer">
+                                <p:outputLabel value="Total Data :"/><p:outputLabel value="#{loginHistoryController.lazyDataLoginHistory.rowCount}"/><p:outputLabel value="Data" style="margin-left: 3px"/>
+                            </f:facet>  
+                        </p:dataTable>
+                    </h:form>
+                </p:panel>
+                <!--</div>-->
+
             </ui:define>
         </ui:composition>
 

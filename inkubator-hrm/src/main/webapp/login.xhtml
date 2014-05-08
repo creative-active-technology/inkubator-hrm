@@ -21,11 +21,11 @@
 		                        <h:outputLabel value="#{appmsg['global.company.name']}" style="font-size: 12px!important"/>
 		                    </h:panelGrid>
 		                </div>
-		                <div id="header_login_right">
+<!--		                <div id="header_login_right">
 		                	<h:outputLabel value="#{tglSekarang}">
                                 <f:convertDateTime pattern ="dd-MMMM-yyyy" timeZone="GMT+7"/>
                             </h:outputLabel> 
-		                </div>
+		                </div>-->
 	                </div>
                     <div id="box_bg">
                         <p:growl id="loginGrowl" life="5000" showDetail="true" escape="false" />
@@ -123,7 +123,7 @@
                             <h:outputLabel value="#{appmsg['login_form_copyright']}" styleClass="footer_hrm"/>   
                         </div>
                         <div style="float: right;margin-right: 20px;margin-top: -5px" >
-                            <h:outputLabel value="#{appmsg['login_form.perusahaan']}" styleClass="footer_hrm"/>   
+                            <h:outputLabel value="#{appmsg['global.company.name']}" styleClass="footer_hrm"/>   
                         </div>
                     </div> 
                 </div>
