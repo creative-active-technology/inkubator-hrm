@@ -15,11 +15,16 @@
             <div id="art-page-background-glare">
                 <div id="art-page-background-glare-image">
 	                <div id="header_login">
-		                <div>
-		                    <h:panelGrid columns="1">
-		                        <h:outputLabel value="#{appmsg['global.application.desc']}" style="text-align: left;color: #ff9900;font-family:Trebuchet MS" />        
-		                        <h:outputLabel value="#{appmsg['global.company.name']}" style="font-size: 12px!important" />
+		                <div id="header_login_left">
+		                    <h:panelGrid columns="1" styleClass="">
+		                        <h:outputLabel value="#{appmsg['global.application.name']}" style="color:#ff9900"/>        
+		                        <h:outputLabel value="#{appmsg['global.company.name']}" style="font-size: 12px!important"/>
 		                    </h:panelGrid>
+		                </div>
+		                <div id="header_login_right">
+		                	<h:outputLabel value="#{tglSekarang}">
+                                <f:convertDateTime pattern ="dd-MMMM-yyyy" timeZone="GMT+7"/>
+                            </h:outputLabel> 
 		                </div>
 	                </div>
                     <div id="box_bg">
@@ -41,11 +46,8 @@
                                 <p:separator style="margin-left: 20px;margin-right: 20px;margin-top: 5px"/>
                             </h:form>
                         </div>
-                        <h:panelGrid style="float: left">
-                            <h:outputLabel value="#{appmsg['loginform_appliacation_name']}" style="margin-left: 30px;font-family: Transformers!important" styleClass="header_hrm"/>
-                        </h:panelGrid>
                         <h:panelGrid style="float: right">
-                            <h:outputLabel value="#{appmsg['loginform.hr_title']}" style="margin-right: 20px" styleClass="header_hrm" />
+                            <h:outputLabel value="#{appmsg['global.application.desc']}" style="margin-right: 20px" styleClass="header_hrm" />
                         </h:panelGrid>
                         <div style="clear: both" />
                         <h:form id="loginForm" prependId="false">
