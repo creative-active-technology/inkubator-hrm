@@ -92,7 +92,7 @@ html:first-child #art-page-background-glare
     /*top: 2px !important;*/
     margin-bottom: 20px !important;
     cursor:auto;
-    width: 93%;
+    width: 94%;
 }
 
 .art-sheet-body
@@ -191,13 +191,13 @@ html:first-child #art-page-background-glare
     background-image: url('../images/sheet_c.png');
 }
 
-.art-sheet
+/*.art-sheet
 {
     top: 20px !important;
     margin-bottom: 20px !important;
     cursor:auto;
-    width: 95%;
-}
+    width: 97%;
+}*/
 
 
 div.art-header

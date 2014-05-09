@@ -188,5 +188,9 @@ root
 .ui-growl
 {
     position:fixed;
-    top:4%
+    top:6%
+}
+.ui-corner-all {
+    border-radius: 4px;
+
 }
