@@ -20,4 +20,8 @@ public interface LoginHistoryService extends IService<LoginHistory> {
     public List<LoginHistory> getByParam(LoginHistorySearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
 
     public Long getTotalLoginHistoryByParam(LoginHistorySearchParameter searchParameter) throws Exception;
+    
+    public void saveAndPushMessage(LoginHistory entity);
+    
+    public void updateAndPushMessage(LoginHistory entity);
 }

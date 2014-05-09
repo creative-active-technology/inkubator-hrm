@@ -41,13 +41,8 @@ public class CustomAuthenticationSuccessHandler extends AuthenticationSuccessHan
             loginHistory.setIpAddress(request.getRemoteAddr());
             loginHistory.setLoginDate(new Date());
             loginHistory.setHrmUser(new HrmUser(authentication.getName()));
-            this.loginHistoryService.save(loginHistory);
-//            FacesUtil.setSessionAttribute(HRMConstant.USER_LOGIN_ID, number);
-//            PushContext pushContext = PushContextFactory.getDefault().getPushContext();
-//            String infoMessages=authentication.getName()+" berhasil login pada : "+dateFormatter.getDateFullAsStringsWithActiveLocale(loginHistory.getLoginDate(), new Locale(loginHistory.getLanguange()));
-//            FacesMessage facesMessage=new FacesMessage(FacesMessage.SEVERITY_INFO, "Information Login", infoMessages);
-//            pushContext.push(HRMConstant.NOTIFICATION_CHANEL_SOCKET, facesMessage); 
-            LOGGER.info("Success Login");
+            this.loginHistoryService.saveAndPushMessage(loginHistory);
+            LOGGER.info(authentication.getName() + " Success Login");
             response.sendRedirect(request.getContextPath() + "/protected/home.htm");
         } catch (Exception ex) {
             LOGGER.error("Error", ex);

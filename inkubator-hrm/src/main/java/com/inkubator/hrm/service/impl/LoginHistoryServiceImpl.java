@@ -5,6 +5,22 @@
  */
 package com.inkubator.hrm.service.impl;
 
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
+import javax.faces.application.FacesMessage;
+
+import org.hibernate.criterion.Order;
+import org.primefaces.push.PushContext;
+import org.primefaces.push.PushContextFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.inkubator.common.util.DateFormatter;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
@@ -16,19 +32,6 @@ import com.inkubator.hrm.entity.LoginHistory;
 import com.inkubator.hrm.service.LoginHistoryService;
 import com.inkubator.hrm.web.search.LoginHistorySearchParameter;
 import com.inkubator.webcore.util.FacesUtil;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import javax.faces.application.FacesMessage;
-import org.hibernate.criterion.Order;
-import org.primefaces.push.PushContext;
-import org.primefaces.push.PushContextFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -61,18 +64,11 @@ public class LoginHistoryServiceImpl extends IServiceImpl implements LoginHistor
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED,
-            isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
     public void save(LoginHistory entity) throws Exception {
         HrmUser hrmUser = this.hrmUserDao.getByUserName(entity.getHrmUser().getUserId());
         entity.setHrmUser(hrmUser);
         this.loginHistoryDao.save(entity);
-        String number = RandomNumberUtil.getRandomNumber(15);
-        FacesUtil.setSessionAttribute(HRMConstant.USER_LOGIN_ID, number);
-        PushContext pushContext = PushContextFactory.getDefault().getPushContext();
-        String infoMessages = hrmUser.getRealName() + " berhasil login pada : " + dateFormatter.getDateFullAsStringsWithActiveLocale(entity.getLoginDate(), new Locale(entity.getLanguange()));
-        FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_INFO, "Information Login", infoMessages);
-        pushContext.push(HRMConstant.NOTIFICATION_CHANEL_SOCKET, facesMessage);
     }
 
     @Override
@@ -232,5 +228,37 @@ public class LoginHistoryServiceImpl extends IServiceImpl implements LoginHistor
     public Long getTotalLoginHistoryByParam(LoginHistorySearchParameter searchParameter) throws Exception {
         return this.loginHistoryDao.getTotalLoginHistoryByParam(searchParameter);
     }
+
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
+	public void saveAndPushMessage(LoginHistory entity) {
+		//saving loginHistory
+		HrmUser hrmUser = this.hrmUserDao.getByUserName(entity.getHrmUser().getUserId());
+        entity.setHrmUser(hrmUser);
+        this.loginHistoryDao.save(entity);
+        
+        //push message
+        FacesUtil.setSessionAttribute(HRMConstant.USER_LOGIN_ID, entity.getId());
+        PushContext pushContext = PushContextFactory.getDefault().getPushContext();
+        String infoMessages = hrmUser.getRealName() + " berhasil login pada : " + dateFormatter.getDateFullAsStringsWithActiveLocale(entity.getLoginDate(), new Locale(entity.getLanguange()));
+        FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_INFO, "Information Login", infoMessages);
+        pushContext.push(HRMConstant.NOTIFICATION_CHANEL_SOCKET, facesMessage);
+	}
+	
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
+	public void updateAndPushMessage(LoginHistory entity) {
+		//saving loginHistory
+		LoginHistory loginHistory = this.loginHistoryDao.getEntiyByPK(entity.getId());
+        loginHistory.setLogOutDate(new Date());
+        this.loginHistoryDao.update(loginHistory);
+        
+        //push message
+        HrmUser hrmUser = this.hrmUserDao.getByUserName(loginHistory.getHrmUser().getUserId());
+        PushContext pushContext = PushContextFactory.getDefault().getPushContext();
+        String infoMessages = hrmUser.getRealName() + " berhasil logout pada : " + dateFormatter.getDateFullAsStringsWithActiveLocale(new Date(), new Locale(loginHistory.getLanguange()));
+        FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_INFO, "Information Logout", infoMessages);
+        pushContext.push(HRMConstant.NOTIFICATION_CHANEL_SOCKET, facesMessage);		
+	}
 
 }
