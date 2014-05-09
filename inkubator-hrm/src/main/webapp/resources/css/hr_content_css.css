@@ -549,3 +549,58 @@ div.art-logo
 
 }
 
+.img-user-account
+{
+    background-image:url(../images/user_account.png)!important;
+    background-size: 80% auto;
+    padding-right: 2px;
+}
+
+.img-configuration
+{
+    background-image:url(../images/configuration.png)!important;
+    background-size: 80% auto;
+    padding-right: 2px;
+}
+
+.img-employees
+{
+    background-image:url(../images/employees.png)!important;
+    background-size: 80% auto;
+    padding-right: 2px;
+}
+
+.img-task
+{
+    background-image:url(../images/task.png)!important;
+    background-size: 80% auto;
+    padding-right: 2px;
+}
+
+.img-payroll
+{
+    background-image:url(../images/payroll.png)!important;
+    background-size: 80% auto;
+    padding-right: 2px;
+}
+
+.img-competency
+{
+    background-image:url(../images/competency.png)!important;
+    background-size: 80% auto;
+    padding-right: 2px;
+}
+
+.img-reporting
+{
+    background-image:url(../images/laporan.png)!important;
+    background-size: 80% auto;
+    padding-right: 2px;
+}
+
+.img-training
+{
+    background-image:url(../images/training.png)!important;
+    background-size: 80% auto;
+    padding-right: 2px;
+}
