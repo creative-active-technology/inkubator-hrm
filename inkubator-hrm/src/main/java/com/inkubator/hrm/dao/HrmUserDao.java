@@ -3,13 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.inkubator.hrm.dao;
+
+import com.inkubator.datacore.dao.IDAO;
+import com.inkubator.hrm.entity.HrmUser;
 
 /**
  *
  * @author Deni Husni FR
  */
-public interface SampleDao {
-    
+public interface HrmUserDao extends IDAO<HrmUser> {
+
+    public HrmUser getByUserName(String userName);
 }
