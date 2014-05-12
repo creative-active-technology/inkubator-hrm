@@ -39,7 +39,8 @@
         <security:authentication-provider>
             <!--<security:password-encoder hash="sha-256" />-->
             <security:user-service>
-                <security:user name="master.admin" password="12345" authorities="ROLE_ADMIN_HRM" />
+                <security:user name="admin" password="admin1234" authorities="ROLE_ADMIN_HRM" />
+                <security:user name="rizky" password="admin1234" authorities="ROLE_ADMIN_HRM" />
                 <security:user name="deni.fahri" password="123456789" authorities="ROLE_ADMIN_HRM" />
             </security:user-service>
         </security:authentication-provider>
