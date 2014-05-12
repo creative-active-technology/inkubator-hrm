@@ -80,48 +80,6 @@ public class RoleViewController extends BaseController {
 
     }
 
-//    public String doSave() {
-//        String redirect = null;
-//        HrmRole hrmRole = fromPageUIToEntity();
-//        try {
-//            if (isEdit) {
-//                hrmRole.setUpdatedBy(UserInfoUtil.getUserName());
-//                hrmRole.setUpdatedOn(new Date());
-//                hrmRole.setId(selectedHrmRole.getId());
-//                hrmRoleService.update(hrmRole);
-//                MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save", "global.update_konfirmasi",
-//                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-//            } else {
-//                hrmRole.setCreatedBy(UserInfoUtil.getUserName());
-//                hrmRole.setCreatedOn(new Date());
-//                hrmRoleService.save(hrmRole);
-//                MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save", "global.save_konfirmasi",
-//                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-//            }
-//            lazyDataHrmRole = null;
-//            doClearInput();
-//            isEdit = Boolean.FALSE;
-//            redirect = "/protected/account/role_detail.htm?faces-redirect=true&execution=e" + hrmRole.getId();
-//        } catch (Exception ex) {
-//            LOGGER.error("Error", ex);
-//            if (ex.getCause().toString().equalsIgnoreCase("org.hibernate.exception.ConstraintViolationException: could not execute statement")) {
-//                MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_FATAL, "global.save_error", "roleform.error_duplicate",
-//                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-//            }
-//            redirect = null;
-//        }
-//        return redirect;
-//    }
-//    private HrmRole fromPageUIToEntity() {
-//        HrmRole hrmRole = new HrmRole();
-//        hrmRole.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(15)));
-//        hrmRole.setRoleName(roleModel.getRoleName());
-//        hrmRole.setDescription(roleModel.getDescription());
-//        return hrmRole;
-//    }
-//    private void doClearInput() {
-//        roleModel = new RoleModel();
-//    }
     public void doSearch() {
         lazyDataHrmRole = null;
     }
@@ -142,23 +100,6 @@ public class RoleViewController extends BaseController {
         return redirect;
     }
 
-//    public void doEdit() {
-//        isEdit = Boolean.TRUE;
-//        try {
-////            selectedHrmRole = hrmRoleService.getEntiyByPK(selectedHrmRole.getId());
-//            roleModel.setRoleName(selectedHrmRole.getRoleName());
-//            roleModel.setDescription(selectedHrmRole.getDescription());
-//        } catch (Exception ex) {
-//            LOGGER.error("Error", ex);
-//        }
-//    }
-//    public void onDetail() {
-//        try {
-////            selectedHrmRole = hrmRoleService.getEntiyByPK(selectedHrmRole.getId());
-//        } catch (Exception ex) {
-//            LOGGER.error("Error", ex);
-//        }
-//    }
     public void doDelete() {
         try {
             hrmRoleService.delete(selectedHrmRole);
@@ -169,15 +110,6 @@ public class RoleViewController extends BaseController {
         }
     }
 
-//    public void newData() {
-//        doClearInput();
-//        isEdit = Boolean.FALSE;
-//    }
-    public void doClearAndReset() {
-        initialization();
-//        doClearInput();
-    }
-
     public void doAdd() {
         Map<String, Object> options = new HashMap<>();
         options.put("modal", true);
@@ -185,13 +117,6 @@ public class RoleViewController extends BaseController {
         options.put("resizable", false);
         options.put("contentWidth", 400);
         options.put("contentHeight", 340);
-//        Map<String, List<String>> dataToSend = new HashMap<>();
-//        List<String> dataIsi = new ArrayList<>();
-//        dataIsi.add("hahahah");
-////        dataIsi.add("srwrwerwer");
-//        dataToSend.put("data1", dataIsi);
-////        options.put("height", "400");
-//        options.put("contentHeight", "auto");
         RequestContext.getCurrentInstance().openDialog("role_form", options, null);
     }
 
@@ -210,6 +135,18 @@ public class RoleViewController extends BaseController {
     }
 
     public void onDialogReturn(SelectEvent event) {
-        System.out.println("hahahahhaaaaaaaaaaaaaaa");
+        lazyDataHrmRole=null;
+        System.out.println(" shhsdfhsdhdsfhdsfhdh");
+        String condition = (String) event.getObject();
+        System.out.println(" kodisi " + condition);
+        if (condition.equalsIgnoreCase(HRMConstant.SAVE_CONDITION)) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added.successfully",
+                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        }
+        if (condition.equalsIgnoreCase(HRMConstant.UPDATE_CONDITION)) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update.successfully",
+                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        }
+
     }
 }

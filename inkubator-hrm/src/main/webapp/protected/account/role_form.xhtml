@@ -15,6 +15,7 @@
 
             </ui:define>
             <ui:define name="center">
+                <p:growl id="formRoleGrowl" globalOnly="true" showDetail="true"/>
                 <h:form id="roleFormId">
                     <h:panelGrid  columns="2">
                         <p:graphicImage library="images" name="role.png" height="36" width="36" />
@@ -82,7 +83,7 @@
                     </p:panelGrid>
                     <p:separator style="margin-top: 10px;margin-bottom: 10px"/>
                     <h:panelGrid columns="2" style="margin-bottom: -30px!important">
-                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="roleFormId"
+                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="roleFormId,:formRoleGrowl"
                                          action="#{roleFormController.doSave()}" styleClass="isitext_hrm"
                                          style="margin-right: 5px;width: 75px" label="#{appmsg['global.save']}"
                                          icon="ui-icon-disk"

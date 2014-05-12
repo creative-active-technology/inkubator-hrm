@@ -25,6 +25,7 @@
                         </h:panelGroup>
                     </h:panelGrid>
                     <p:separator/>
+                    <p:growl id="roleViewGrowlId" globalOnly="true" showDetail="true" />
                     <h:form id="roleViewId">
                         <p:toolbar  style="margin-top: 10px">
                             <p:toolbarGroup align="left">
@@ -33,7 +34,8 @@
                                     <p:outputLabel value=":" styleClass="label_hrm" />
                                     <p:inputText value="#{roleViewController.hrmRoleSearchParameter.parameter}" style="width: 250px" id="pencarianId" styleClass="isitext_hrm" 
                                                  label="#{appmsg['global.seraching']}" title="#{appmsg['global.seraching']}"/>
-                                    <p:commandButton value="#{appmsg['global.search']}" action="#{roleViewController.doSearch()}" style="width: 75px"  styleClass="isitext_hrm" title="#{appmsg['global.search']}" />
+                                    <p:commandButton value="#{appmsg['global.search']}" action="#{roleViewController.doSearch()}" style="width: 75px"  id="btnPencarianId"
+                                                     styleClass="isitext_hrm" title="#{appmsg['global.search']}" />
 
                                 </h:panelGrid>
                             </p:toolbarGroup>
@@ -41,7 +43,7 @@
                                 <h:panelGrid columns="2">
                                     <p:commandButton value="#{appmsg['global.add']}" action="#{roleViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}"
                                                      style="width: 75px"  styleClass="isitext_hrm" ajax="true">
-                                        <p:ajax event="dialogReturn" listener="#{roleViewController.onDialogReturn}"  update="tableRoleId"/>
+                                        <p:ajax event="dialogReturn" listener="#{roleViewController.onDialogReturn}"  update="tableRoleId,:roleViewGrowlId"/>
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.close']}" style="width: 75px" styleClass="isitext_hrm" action="#{roleViewController.doClose()}" title="#{appmsg['global.close']}" 
                                                      label="#{appmsg['global.close']}"/>
@@ -88,8 +90,9 @@
                                 </p:commandButton>
                                 -
                                 <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
-                                                  oncomplete="createDialog.show();" action="#{roleViewController.doEdit()}" >
+                                                  action="#{roleViewController.doEdit()}" >
                                     <f:setPropertyActionListener value="#{roleViewData}" target="#{roleViewController.selectedHrmRole}" />
+                                    <p:ajax event="dialogReturn" listener="#{roleViewController.onDialogReturn}"  update="tableRoleId,:roleViewGrowlId"/>
                                 </p:commandButton> 
                             </p:column>
                             <f:facet name="footer">
@@ -98,8 +101,15 @@
                                 <p:outputLabel value="Data" style="margin-left: 3px" styleClass="label_hrm"/>
                             </f:facet>  
                         </p:dataTable>
+                        <p:blockUI block="tableRoleId" trigger="tableRoleId,btnPencarianId" >
+                            <h:panelGrid columns="2" styleClass="grid_no_border">
+                                <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
+                                <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
+                            </h:panelGrid>
+                        </p:blockUI>
                     </h:form>
                 </p:panel>
+
             </ui:define>
 
         </ui:composition>

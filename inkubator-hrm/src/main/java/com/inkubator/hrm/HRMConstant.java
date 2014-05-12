@@ -29,5 +29,7 @@ public class HRMConstant {
     public static final String APPROVAL_PROCESS_REQUEST_LEAP_EN = "LEAP REQUEST";
     public static final String APPROVAL_PROCESS_REQUEST_SICK_EN = "SICK REQUEST";
     public static final String APPROVAL_PROCESS_REQUEST_PERMIT_EN = "PERMIT REQUEST";
+    public static final String SAVE_CONDITION = "SAVE_CONDITION";
+    public static final String UPDATE_CONDITION = "UPDATE_CONDITION";
 
 }

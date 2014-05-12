@@ -20,4 +20,6 @@ public interface HrmRoleService extends IService<HrmRole> {
     public List<HrmRole> getByParam(HrmRoleSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
 
     public Long getTotalHrmRoleByParam(HrmRoleSearchParameter searchParameter) throws Exception;
+
+    public HrmRole getByRoleName(String roleName) throws Exception;
 }

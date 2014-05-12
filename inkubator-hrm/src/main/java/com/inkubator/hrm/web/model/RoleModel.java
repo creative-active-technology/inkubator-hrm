@@ -13,9 +13,10 @@ import java.io.Serializable;
  */
 public class RoleModel implements Serializable {
 
+    private Long id;
     private String roleName;
     private String description;
-   
+
     private String defaultCommand;
 
     public String getRoleName() {
@@ -34,7 +35,6 @@ public class RoleModel implements Serializable {
         this.description = description;
     }
 
-    
     public String getDefaultCommand() {
         return defaultCommand;
     }
@@ -42,6 +42,14 @@ public class RoleModel implements Serializable {
     public void setDefaultCommand(String defaultCommand) {
         this.defaultCommand = defaultCommand;
     }
-    
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     
 }

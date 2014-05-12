@@ -5,11 +5,14 @@
  */
 package com.inkubator.hrm.service.impl;
 
+import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.dao.HrmRoleDao;
 import com.inkubator.hrm.entity.HrmRole;
 import com.inkubator.hrm.service.HrmRoleService;
 import com.inkubator.hrm.web.search.HrmRoleSearchParameter;
+import com.inkubator.securitycore.util.UserInfoUtil;
+import java.util.Date;
 import java.util.List;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,13 +50,23 @@ public class HrmRoleServiceImpl extends IServiceImpl implements HrmRoleService {
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(HrmRole entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        entity.setId(Integer.parseInt(RandomNumberUtil.getRandomNumber(9)));
+        entity.setCreatedBy(UserInfoUtil.getUserName());
+        entity.setCreatedOn(new Date());
+        this.hrmRoleDao.save(entity);
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(HrmRole entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        HrmRole hrmRoleToUpdate=this.hrmRoleDao.getEntiyByPK(entity.getId());
+        hrmRoleToUpdate.setDescription(entity.getDescription());
+        hrmRoleToUpdate.setRoleName(entity.getRoleName());
+        hrmRoleToUpdate.setUpdatedBy(UserInfoUtil.getUserName());
+        hrmRoleToUpdate.setUpdatedOn(new Date());
+        this.hrmRoleDao.update(hrmRoleToUpdate);
     }
 
     @Override
@@ -201,6 +214,12 @@ public class HrmRoleServiceImpl extends IServiceImpl implements HrmRoleService {
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public Long getTotalHrmRoleByParam(HrmRoleSearchParameter searchParameter) throws Exception {
         return this.hrmRoleDao.getTotalHrmRoleByParam(searchParameter);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public HrmRole getByRoleName(String roleName) throws Exception {
+        return this.hrmRoleDao.getByRoleName(roleName);
     }
 
 }
