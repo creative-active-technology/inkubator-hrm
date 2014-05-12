@@ -93,7 +93,7 @@ public class RoleFormController extends BaseController {
             boolean isDuplicate = hrmRoleService.getByRoleName(roleModel.getRoleName()) != null;
             if (isDuplicate) {
                 System.out.println(" data sudah ada");
-                MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "role_form.error_duplicate_role.name",
+                MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "role_form.error_duplicate_role_name",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             } else {
                 hrmRoleService.save(hrmRole);
@@ -111,7 +111,7 @@ public class RoleFormController extends BaseController {
             HrmRole hrmRoleExisting = hrmRoleService.getEntiyByPK(hrmRole.getId());
             boolean isDuplicate = (hrmRoleService.getByRoleName(hrmRole.getRoleName()) != null && !StringUtils.equals(hrmRoleExisting.getRoleName(), hrmRole.getRoleName()));
             if (isDuplicate) {
-                MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "role_form.error_duplicate_role.name",
+                MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "role_form.error_duplicate_role_name",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             } else {
                 System.out.println(" tidak duplicate");
