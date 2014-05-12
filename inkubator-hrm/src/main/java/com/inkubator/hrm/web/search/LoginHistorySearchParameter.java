@@ -5,52 +5,42 @@
  */
 package com.inkubator.hrm.web.search;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.inkubator.webcore.util.SearchParameter;
-import java.util.Date;
 
 /**
  *
- * @author Deni Husni FR
+ * @author Deni Husni FR,rizkykojek
  */
 public class LoginHistorySearchParameter extends SearchParameter {
 
-    private String userName;
+    private String userId;
     private String ipAddress;
-    private Date loginDateStart;
-    private Date loginDateFinish;
 
-    public String getUserName() {
-        return userName;
-    }
+    public String getUserId() {
+    	if(StringUtils.equalsIgnoreCase(getKeyParam(), "userId")){
+    		userId = getParameter();
+		} else {
+			userId = null;
+		}
+    	return userId;
+	}
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 
-    public String getIpAddress() {
+	public String getIpAddress() {
+		if(StringUtils.equalsIgnoreCase(getKeyParam(), "ipAddress")){
+			ipAddress = getParameter();
+		} else {
+			ipAddress = null;
+		}
         return ipAddress;
     }
 
     public void setIpAddress(String ipAddress) {
         this.ipAddress = ipAddress;
     }
-
-    public Date getLoginDateStart() {
-        return loginDateStart;
-    }
-
-    public void setLoginDateStart(Date loginDateStart) {
-        this.loginDateStart = loginDateStart;
-    }
-
-    public Date getLoginDateFinish() {
-        return loginDateFinish;
-    }
-
-    public void setLoginDateFinish(Date loginDateFinish) {
-        this.loginDateFinish = loginDateFinish;
-    }
-    
-    
-
 }

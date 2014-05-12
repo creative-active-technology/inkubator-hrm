@@ -30,13 +30,11 @@
                         <p:toolbar  style="margin-top: 10px">
                             <p:toolbarGroup align="left">
                                 <h:panelGrid columns="5">
-                                    <p:outputLabel value="#{appmsg['global.seraching']}" styleClass="label_hrm"/>
+                                    <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm"/>
                                     <p:outputLabel value=":" styleClass="label_hrm" />
                                     <p:inputText value="#{roleViewController.hrmRoleSearchParameter.parameter}" style="width: 250px" id="pencarianId" styleClass="isitext_hrm" 
-                                                 label="#{appmsg['global.seraching']}" title="#{appmsg['global.seraching']}"/>
-                                    <p:commandButton value="#{appmsg['global.search']}" action="#{roleViewController.doSearch()}" style="width: 75px"  id="btnPencarianId"
-                                                     styleClass="isitext_hrm" title="#{appmsg['global.search']}" />
-
+                                                 label="#{appmsg['global.searching']}" title="#{appmsg['global.searching']}"/>
+                                    <p:commandButton value="#{appmsg['global.search']}" action="#{roleViewController.doSearch()}" style="width: 75px"  styleClass="isitext_hrm" title="#{appmsg['global.search']}" />
                                 </h:panelGrid>
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
