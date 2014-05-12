@@ -14,7 +14,7 @@
         <security:intercept-url pattern="/flow-protected/**" access="hasAnyRole('ROLE_ADMIN_HRM','ROLE_USER_HRM')"/>
         <security:intercept-url pattern="/protected/**" access="hasAnyRole('ROLE_ADMIN_HRM','ROLE_USER_HRM')"/>
         <security:session-management>
-            <security:concurrency-control max-sessions="1" error-if-maximum-exceeded="true" session-registry-alias="sessionRegistry"/>
+            <security:concurrency-control max-sessions="2" error-if-maximum-exceeded="true" session-registry-alias="sessionRegistry"/>
         </security:session-management>
         <security:custom-filter ref="logoutFilter" position="LOGOUT_FILTER" />
         <!--<security:logout invalidate-session="true" delete-cookies="JSESSIONID" logout-url="/logout.htm"/>-->
@@ -39,7 +39,8 @@
         <security:authentication-provider>
             <!--<security:password-encoder hash="sha-256" />-->
             <security:user-service>
-                <security:user name="master.admin" password="12345" authorities="ROLE_ADMIN_HRM" />
+                <security:user name="admin" password="admin1234" authorities="ROLE_ADMIN_HRM" />
+                <security:user name="rizky" password="admin1234" authorities="ROLE_ADMIN_HRM" />
                 <security:user name="deni.fahri" password="123456789" authorities="ROLE_ADMIN_HRM" />
             </security:user-service>
         </security:authentication-provider>
