@@ -89,15 +89,18 @@ public class RoleViewController extends BaseController {
         System.out.println("Bersih -berisesfsdhfkh");
     }
 
-    public String doDetail() {
-        String redirect = null;
-        try {
-//            selectedHrmRole = hrmRoleService.getEntiyByPK(selectedHrmRole.getId());
-            redirect = "/protected/account/role_detail.htm?faces-redirect=true&execution=e" + selectedHrmRole.getId();
-        } catch (Exception ex) {
-            LOGGER.error("Error", ex);
-        }
-        return redirect;
+    public void doDetail() {
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 400);
+//        options.put("contentHeight", 340);
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        List<String> dataIsi = new ArrayList<>();
+        dataIsi.add(String.valueOf(selectedHrmRole.getId()));
+        dataToSend.put("param", dataIsi);
+        RequestContext.getCurrentInstance().openDialog("role_detail", options, dataToSend);
     }
 
     public void doDelete() {
@@ -135,7 +138,7 @@ public class RoleViewController extends BaseController {
     }
 
     public void onDialogReturn(SelectEvent event) {
-        lazyDataHrmRole=null;
+        lazyDataHrmRole = null;
         System.out.println(" shhsdfhsdhdsfhdsfhdh");
         String condition = (String) event.getObject();
         System.out.println(" kodisi " + condition);

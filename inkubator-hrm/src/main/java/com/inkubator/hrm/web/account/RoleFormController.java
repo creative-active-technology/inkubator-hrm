@@ -117,7 +117,7 @@ public class RoleFormController extends BaseController {
                 System.out.println(" tidak duplicate");
                 hrmRoleService.update(hrmRole);
                 System.out.println(" beres update");
-                RequestContext.getCurrentInstance().closeDialog("");
+                RequestContext.getCurrentInstance().closeDialog(HRMConstant.UPDATE_CONDITION);
                 System.out.println(" beres update");
             }
         } catch (Exception ex) {
