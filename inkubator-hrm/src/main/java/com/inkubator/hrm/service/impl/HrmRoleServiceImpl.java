@@ -41,8 +41,9 @@ public class HrmRoleServiceImpl extends IServiceImpl implements HrmRoleService {
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public HrmRole getEntiyByPK(Long id) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.hrmRoleDao.getEntiyByPK(id);
     }
 
     @Override

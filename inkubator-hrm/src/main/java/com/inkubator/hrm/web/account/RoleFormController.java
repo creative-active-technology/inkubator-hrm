@@ -5,11 +5,14 @@
  */
 package com.inkubator.hrm.web.account;
 
+import com.inkubator.hrm.entity.HrmRole;
+import com.inkubator.hrm.service.HrmRoleService;
 import com.inkubator.hrm.web.model.RoleModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import org.primefaces.context.RequestContext;
 
@@ -23,14 +26,28 @@ public class RoleFormController extends BaseController {
 
     private RoleModel roleModel;
     private Boolean isEdit;
+    @ManagedProperty(value = "#{hrmRoleService}")
+    private HrmRoleService hrmRoleService;
+
+    public void setHrmRoleService(HrmRoleService hrmRoleService) {
+        this.hrmRoleService = hrmRoleService;
+    }
+    
 
     @PostConstruct
     @Override
     public void initialization() {
-        String data=FacesUtil.getRequestParameter("data1");
-        System.out.println(" Nila "+data);
-        super.initialization();
-        roleModel=new RoleModel();
+        String param = FacesUtil.getRequestParameter("param");
+        roleModel = new RoleModel();
+        if (param != null) {
+            try {
+                HrmRole hrmRole = hrmRoleService.getEntiyByPK(Long.parseLong(param));
+                
+            } catch (Exception ex) {
+               LOGGER.error("Error", ex);
+            }
+        }
+
     }
 
     public RoleModel getRoleModel() {
@@ -49,13 +66,12 @@ public class RoleFormController extends BaseController {
         this.isEdit = isEdit;
     }
 
-   
-    
-    public void doSave(){
-          RequestContext.getCurrentInstance().closeDialog("");
+    public void doSave() {
+
+        RequestContext.getCurrentInstance().closeDialog("");
     }
-    
-    public void doClear(){
-         roleModel=new RoleModel();
+
+    public void doClear() {
+        roleModel = new RoleModel();
     }
 }

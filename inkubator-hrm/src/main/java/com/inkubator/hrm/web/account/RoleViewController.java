@@ -13,7 +13,9 @@ import com.inkubator.hrm.web.search.HrmRoleSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -29,9 +31,9 @@ import org.primefaces.model.LazyDataModel;
  *
  * @author Deni Husni FR
  */
-@ManagedBean(name = "roleController")
+@ManagedBean(name = "roleViewController")
 @ViewScoped
-public class RoleController extends BaseController {
+public class RoleViewController extends BaseController {
 
     private HrmRoleSearchParameter hrmRoleSearchParameter;
     private LazyDataModel<HrmRole> lazyDataHrmRole;
@@ -192,8 +194,21 @@ public class RoleController extends BaseController {
 //        options.put("contentHeight", "auto");
         RequestContext.getCurrentInstance().openDialog("role_form", options, null);
     }
-    
-    
+
+    public void doEdit() {
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 400);
+        options.put("contentHeight", 340);
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        List<String> dataIsi = new ArrayList<>();
+        dataIsi.add(String.valueOf(selectedHrmRole.getId()));
+        dataToSend.put("param", dataIsi);
+        RequestContext.getCurrentInstance().openDialog("role_form", options, dataToSend);
+    }
+
     public void onDialogReturn(SelectEvent event) {
         System.out.println("hahahahhaaaaaaaaaaaaaaa");
     }
