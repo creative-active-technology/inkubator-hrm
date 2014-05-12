@@ -19,7 +19,7 @@ import org.primefaces.model.SortOrder;
 
 /**
  *
- * @author Deni Husni FR
+ * @author Deni Husni FR,rizkykojek
  */
 public class LoginHistoryLazyModel extends LazyDataModel<LoginHistory> implements Serializable {
 
@@ -62,7 +62,6 @@ public class LoginHistoryLazyModel extends LazyDataModel<LoginHistory> implement
                 LOGGER.error("Error", ex);
             }
         }
-//            jumlahData = Integer.parseInt(String.valueOf(loginHistoryService.getTotalLoginHistoryByParam(loginHistorySearchParameter)));
         LOGGER.info("Success Load Lazy data Model");
 
         setPageSize(pageSize);

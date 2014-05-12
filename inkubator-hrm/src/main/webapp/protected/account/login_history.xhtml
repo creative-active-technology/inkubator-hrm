@@ -21,8 +21,8 @@
                             <p:graphicImage library="images" name="login_history_1.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="Login History" styleClass="header_big" />
-                                    <p:outputLabel value="Data login of Employee" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['loginhistory']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['loginhistory.data.login.employee']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -30,43 +30,47 @@
 
                         <p:toolbar  style="margin-top: 10px">
                             <p:toolbarGroup align="left">
-                                <h:panelGrid columns="4">
-                                    <p:outputLabel value="Pencarian" styleClass="label_hrm" />
+                                <h:panelGrid columns="5">
+                                    <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm" />
                                     <p:outputLabel value=":" />
-                                    <p:inputText value="#{loginHistoryController.loginHistorySearchParameter.parameter}" style="width: 250px" id="pencarianId"/>
-                                    <p:commandButton value="Cari" action="#{loginHistoryController.doSearch()}" style="width: 75px"/>
+                                    <p:selectOneMenu value="#{loginHistoryController.loginHistorySearchParameter.keyParam}" style="width: 150px;margin-right: 3px" >
+                                        <f:selectItem itemLabel="#{appmsg['global.please.choose']}" itemValue=""/>
+                                        <f:selectItem itemLabel="#{appmsg['global.user.id']}" itemValue="userId"/>
+                                        <f:selectItem itemLabel="#{appmsg['loginhistory.ip.address']}" itemValue="ipAddress"/>
+                                    </p:selectOneMenu>
+                                    <p:inputText value="#{loginHistoryController.loginHistorySearchParameter.parameter}" style="width: 250px" id="searchId"/>
+                                    <p:commandButton value="#{appmsg['global.search']}" action="#{loginHistoryController.doSearch()}" update="tableLoginHistory"  style="width: 75px"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
                                 <h:panelGrid >
-                                    <p:commandButton value="Close" style="width: 75px"/>
+                                    <p:commandButton value="#{appmsg['global.close']}" style="width: 75px"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
-
                         </p:toolbar>
-                        <p:focus for="pencarianId" />
+                        <p:focus for="searchId" />
                         <p:dataTable  var="loginHistoryData"  value="#{loginHistoryController.lazyDataLoginHistory}" lazy="true" paginator="true" pageLinks="7"
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
                                       id="tableLoginHistory" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="Daftar Riwayat Login" />
+                                <h:outputText value="#{appmsg['loginhistory.list.of.login.history']}" />
                             </f:facet> 
                             <p:column style="text-align: center;width: 25px">
                                 <f:facet name="header">  
-                                    <h:outputText value="No." />
+                                    <h:outputText value="#{appmsg['global.number']}" />
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="#{loginHistoryData.userName}"  style="width: 15%">
+                            <p:column sortBy="#{loginHistoryData.hrmUser.userId}"  style="width: 15%">
                                 <f:facet name="header">  
-                                    <h:outputText value="User ID"/>
+                                    <h:outputText value="#{appmsg['global.user.id']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{loginHistoryData.userName}"/>
+                                <h:outputLabel value= "#{loginHistoryData.hrmUser.userId}"/>
                             </p:column>
                             <p:column sortBy="#{loginHistoryData.loginDate}" style="width: 20%">
                                 <f:facet name="header">
-                                    <h:outputText value="Login Date"/>
+                                    <h:outputText value="#{appmsg['loginhistory.login.date']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{loginHistoryData.loginDate}">
                                     <f:convertDateTime pattern ="dd-MMMM-yyyy  hh:mm:ss" timeZone="GMT+7"/>
@@ -74,7 +78,7 @@
                             </p:column>
                             <p:column sortBy="#{loginHistoryData.logOutDate}" style="width: 20%">
                                 <f:facet name="header">
-                                    <h:outputText value="Logout Date"/>
+                                    <h:outputText value="#{appmsg['loginhistory.logout.date']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{loginHistoryData.logOutDate}">
                                     <f:convertDateTime pattern ="dd-MMMM-yyyy  hh:mm:ss" timeZone="GMT+7"/>
@@ -82,18 +86,18 @@
                             </p:column>
                             <p:column sortBy="#{loginHistoryData.ipAddress}" style="width: 20%">
                                 <f:facet name="header">
-                                    <h:outputText value="Ip Address"/>
+                                    <h:outputText value="#{appmsg['loginhistory.ip.address']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{loginHistoryData.ipAddress}"/>
                             </p:column>
-                            <p:column sortBy="#{loginHistoryData.bahasa}" style="text-align: center;width: 90px">
+                            <p:column sortBy="#{loginHistoryData.languange}" style="text-align: center;width: 90px">
                                 <f:facet name="header">
-                                    <h:outputText value="Bahasa"/>
+                                    <h:outputText value="#{appmsg['global.language']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{loginHistoryData.bahasa}"/>
+                                <h:outputLabel value= "#{loginHistoryData.languange}"/>
                             </p:column>
                             <f:facet name="footer">
-                                <p:outputLabel value="Total Data :"/><p:outputLabel value="#{loginHistoryController.lazyDataLoginHistory.rowCount}"/><p:outputLabel value="Data" style="margin-left: 3px"/>
+                                <p:outputLabel value="#{appmsg['global.total_data']} : "/><p:outputLabel value="#{loginHistoryController.lazyDataLoginHistory.rowCount}"/><p:outputLabel value="Data" style="margin-left: 3px"/>
                             </f:facet>  
                         </p:dataTable>
                     </h:form>
