@@ -17,8 +17,8 @@
 	                <div id="header_login">
 		                <div id="header_login_left">
 		                    <h:panelGrid columns="1" styleClass="">
-		                        <h:outputLabel value="#{appmsg['global.application.name']}" style="color:#ff9900"/>        
-		                        <h:outputLabel value="#{appmsg['global.company.name']}" style="font-size: 12px!important"/>
+		                        <h:outputLabel value="#{appmsg['global.application_name']}" style="color:#ff9900"/>        
+		                        <h:outputLabel value="#{appmsg['global.company_name']}" style="font-size: 12px!important"/>
 		                    </h:panelGrid>
 		                </div>
 <!--		                <div id="header_login_right">
@@ -47,7 +47,7 @@
                             </h:form>
                         </div>
                         <h:panelGrid style="float: right">
-                            <h:outputLabel value="#{appmsg['global.application.desc']}" style="margin-right: 20px" styleClass="header_hrm" />
+                            <h:outputLabel value="#{appmsg['global.application_desc']}" style="margin-right: 20px" styleClass="header_hrm" />
                         </h:panelGrid>
                         <div style="clear: both" />
                         <h:form id="loginForm" prependId="false">
@@ -58,14 +58,14 @@
                                     <p:outputLabel value=":" styleClass="label_hrm" escape="false"/>
                                     <p:focus for="j_username">
                                         <p:inputText  requiredMessage="#{appmsg['loginform.userid_mandatory']}" value="#{loginController.userId}"
-                                                      id="j_username" required="true" label="#{appmsg['loginform.userid']}" validatorMessage="#{appmsg['loginform_username_validator']}"
+                                                      id="j_username" required="true" label="#{appmsg['loginform.userid']}" validatorMessage="#{appmsg['loginform.username_validator']}"
                                                       style="width: 240px;font-size: 14px!important;font-family: Calibri !important">
                                             <f:validateLength maximum="45" minimum="3"/>
                                         </p:inputText>
                                     </p:focus>
-                                    <h:outputLabel for="j_password" value="#{appmsg['loginform_password']}" styleClass="label_hrm" escape="false"/>
+                                    <h:outputLabel for="j_password" value="#{appmsg['loginform.password']}" styleClass="label_hrm" escape="false"/>
                                     <p:outputLabel value=":" styleClass="label_hrm" escape="false"  />
-                                    <p:password id="j_password"  validatorMessage="#{appmsg['loginform_password_validator']}" value="#{loginController.password}"
+                                    <p:password id="j_password"  validatorMessage="#{appmsg['loginform.password_validator']}" value="#{loginController.password}"
                                                 requiredMessage="#{appmsg['loginform.password_mandatory']}"
                                                 required="true" style="width: 240px">
                                         <f:validateLength minimum="9" maximum="45"/>
@@ -73,17 +73,17 @@
                                     <p:outputLabel/>
                                     <p:outputLabel/>
                                     <h:panelGroup>
-                                        <p:commandButton icon="ui-icon-locked" value="#{appmsg['loginform_login']}" action="#{loginController.doLogin()}"
+                                        <p:commandButton icon="ui-icon-locked" value="#{appmsg['loginform.login']}" action="#{loginController.doLogin()}"
                                                          id="loginId" ajax="false" type="submit" styleClass="label_hrm"
                                                          update="loginForm" 
                                                          style="width: 85px" />
-                                        <p:commandLink id="resetPasswordId" value="#{appmsg['loginform_lupa_password']}" styleClass="isitext_hrm"
+                                        <p:commandLink id="resetPasswordId" value="#{appmsg['loginform.lupa_password']}" styleClass="isitext_hrm"
                                                        style="margin-left: 10px;text-decoration: none" oncomplete="resetDialog.show();"/>
                                     </h:panelGroup>
                                     <p:defaultCommand target="loginId" />
-                                    <p:watermark for="j_username" value="#{appmsg['water_mark_user']}" />
-                                    <p:watermark for="j_password" value="#{appmsg['water_mark_password']}" />
-                                    <pe:tooltip for="loginId" value="#{appmsg['loginform_login_tooltip']}" showEffect="slideToggle" 
+                                    <p:watermark for="j_username" value="#{appmsg['loginform.water_mark_user']}" />
+                                    <p:watermark for="j_password" value="#{appmsg['loginform.water_mark_password']}" />
+                                    <pe:tooltip for="loginId" value="#{appmsg['loginform.login_tooltip']}" showEffect="slideToggle" 
                                                 hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>
                                 </h:panelGrid>
                             </h:panelGrid>
@@ -94,14 +94,14 @@
                                         <p:outputLabel value="#{appmsg['loginform.failed']}"
                                                        style="color: #990000;font-family: Verdana;font-weight: bold;font-size: 14px!important" escape="false"/>
                                         <br/>
-                                        <p:outputLabel value="#{appmsg['loginform_alasan']}: #{sessionScope.SPRING_SECURITY_LAST_EXCEPTION.message}."
+                                        <p:outputLabel value="#{appmsg['loginform.alasan']}: #{sessionScope.SPRING_SECURITY_LAST_EXCEPTION.message}."
                                                        style="color: #990000;font-family: Trebuchet MS;font-weight: bold;font-size: 14px!important" escape="false"/>
                                     </c:if>
                                     <c:if test="${not empty param.session_expired}">
                                         <p:outputLabel value="Your Action attempt was not successful, try again !"
                                                        style="color: #990000;font-family: Verdana;font-weight: bold;font-size: 14px!important" escape="false"/>
                                         <br/>
-                                        <p:outputLabel value="#{appmsg['loginform_alasan']}: Session Expired"
+                                        <p:outputLabel value="#{appmsg['loginform.alasan']}: Session Expired"
                                                        style="color: #990000;font-family: Verdana;font-weight: bold;font-size: 14px!important" escape="false"/>
                                     </c:if>
                                 </c:if>
@@ -120,10 +120,10 @@
                         </h:form>
                         <p:separator style="margin-left: 20px;margin-right: 20px;margin-top: -7px"/>
                         <div style="float: left;margin-left: 20px;margin-top: -5px" >
-                            <h:outputLabel value="#{appmsg['login_form_copyright']}" styleClass="footer_hrm"/>   
+                            <h:outputLabel value="#{appmsg['loginform.copyright']}" styleClass="footer_hrm"/>   
                         </div>
                         <div style="float: right;margin-right: 20px;margin-top: -5px" >
-                            <h:outputLabel value="#{appmsg['global.company.name']}" styleClass="footer_hrm"/>   
+                            <h:outputLabel value="#{appmsg['global.company_name']}" styleClass="footer_hrm"/>   
                         </div>
                     </div> 
                 </div>
