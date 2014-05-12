@@ -34,7 +34,7 @@
                     <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
                         <p:row>
                             <p:column style="width: 27%">
-                                <p:outputLabel for="roleName" value="#{appmsg['role_form.role_ name']}" styleClass="label_hrm"/>
+                                <p:outputLabel for="roleName" value="#{appmsg['role_view.role_name']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="roleName" value=":" styleClass="label_hrm"/>
@@ -44,7 +44,7 @@
                                     <p:inputText id="roleName" value="#{roleFormController.roleModel.roleName}"
                                                  required="true" label="Kode" 
                                                  maxlength="30"
-                                                 title="#{appmsg['role_form.role_ name']}" style="width: 270px"
+                                                 title="#{appmsg['role_view.role_name']}" style="width: 270px"
                                                  onkeyup="this.value = this.value.toUpperCase();">
                                     </p:inputText>
                                 </p:focus>
