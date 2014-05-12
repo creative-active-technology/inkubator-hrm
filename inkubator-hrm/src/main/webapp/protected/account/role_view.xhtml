@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Role View
+            </ui:define>
+            <ui:define name="center">
+                <p:panel style="margin: 10px" >
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="role.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="Role View" styleClass="header_big" />
+                                <p:outputLabel value="Data Role of Application" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator/>
+                    <h:form id="roleViewId">
+                        <p:toolbar  style="margin-top: 10px">
+                            <p:toolbarGroup align="left">
+                                <h:panelGrid columns="5">
+                                    <p:outputLabel value="Pencarian" styleClass="label_hrm"/>
+                                    <p:outputLabel value=":" styleClass="label_hrm" />
+                                    <p:inputText value="#{roleController.hrmRoleSearchParameter.parameter}" style="width: 250px" id="pencarianId" styleClass="isitext_hrm" />
+                                    <p:commandButton value="Cari" action="#{roleController.doSearch()}" style="width: 75px"  styleClass="isitext_hrm" />
+
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                            <p:toolbarGroup align="right">
+                                <h:panelGrid columns="2">
+                                    <p:commandButton value="Tambah" action="#{roleController.doAdd()}" style="width: 75px"  styleClass="isitext_hrm" ajax="true">
+                                        <p:ajax event="dialogReturn" listener="#{roleController.onDialogReturn}"  />
+                                    </p:commandButton>
+                                    <p:commandButton value="Close" style="width: 75px" styleClass="isitext_hrm"/>
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+
+                        </p:toolbar>
+                        <p:focus for="pencarianId" />
+
+                        <p:dataTable  var="roleViewData"  value="#{roleController.lazyDataHrmRole}" lazy="true" paginator="true" pageLinks="7" 
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      id="tableRoleId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="Daftar Role" />
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 25px">
+                                <f:facet name="header">  
+                                    <h:outputText value="No." />
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column sortBy="roleName"  >
+                                <f:facet name="header">  
+                                    <h:outputText value="Role Name"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{roleViewData.roleName}"/>
+                            </p:column>
+                            <p:column sortBy="description">
+                                <f:facet name="header">
+                                    <h:outputText value="Deskripsi"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{roleViewData.description}"/>
+                            </p:column>
+                            <p:column headerText="Action" style="width: 150px;text-align: center" exportable="false">
+                                <p:commandButton  icon="ui-icon-zoomin" title="Detail" label="Detail" style="font-size: 10px!important" 
+                                                  onclick="statusDialog.show()"  oncomplete="detailDialog.show()" >
+                                    <f:setPropertyActionListener value="#{roleViewData}" target="#{roleController.selectedHrmRole}" />
+                                </p:commandButton>
+                                - 
+                                <p:commandButton  icon="ui-icon-trash" title="Delete" label="Delete"  style="font-size: 10px!important" 
+                                                  onclick="statusDialog.show()"  oncomplete="confirmDeleteDialog.show()" >
+                                    <f:setPropertyActionListener value="#{roleViewData}" target="#{roleController.selectedHrmRole}" />
+                                </p:commandButton>
+                                -
+                                <p:commandButton  icon="ui-icon-folder-open" title="Edit" label="Edit" style="font-size: 10px!important" 
+                                                  oncomplete="createDialog.show();" onclick="statusDialog.show();" action="#{roleController.onUpdate()}" >
+                                    <f:setPropertyActionListener value="#{roleViewData}" target="#{roleController.selectedHrmRole}" />
+                                </p:commandButton> 
+                            </p:column>
+                            <f:facet name="footer">
+                                <p:outputLabel value="Total Data :"/><p:outputLabel value="#{roleController.lazyDataHrmRole.rowCount}"/><p:outputLabel value="Data" style="margin-left: 3px"/>
+                            </f:facet>  
+                        </p:dataTable>
+                    </h:form>
+                </p:panel>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

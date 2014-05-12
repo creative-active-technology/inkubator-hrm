@@ -1,0 +1,102 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/dialog_layout.xhtml">
+            <ui:define name="windowTitle">
+
+            </ui:define>
+            <ui:define name="center">
+                <h:form id="roleFormId">
+                    <h:panelGrid  columns="2">
+                        <p:graphicImage library="images" name="role.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="Role Form" styleClass="header_big" />
+                                <p:outputLabel value="Data Role of Application" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="1" style="margin-bottom: 5px;margin-left: 0px">
+                        <h:outputLabel value="Perhatikan data-data yang Anda Masukkan!" styleClass="label_hrm" style="font-weight: normal!important"/>
+                        <h:outputLabel value="Role Name harus diisi dan unik." styleClass="label_hrm" style="font-weight: normal!important"/>
+                    </h:panelGrid> 
+                    <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
+                        <p:row>
+                            <p:column style="width: 27%">
+                                <p:outputLabel for="roleName" value="#{appmsg['role_form.role_ name']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="roleName" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 60%">
+                                <p:focus for ="roleName">
+                                    <p:inputText id="roleName" value="#{roleFormController.roleModel.roleName}"
+                                                 required="true" label="Kode" 
+                                                 maxlength="30"
+                                                 title="#{appmsg['role_form.role_ name']}" style="width: 270px"
+                                                 onkeyup="this.value = this.value.toUpperCase();">
+                                    </p:inputText>
+                                </p:focus>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="roleName"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 27%">
+                                <p:outputLabel for="description" value="Deskripsi" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="description" value=":"  styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 60%" >
+                                <p:inputTextarea id="description" rows="5" cols="37" counter="counter" maxlength="500" value="#{roleFormController.roleModel.description}" 
+                                                 style="width: 270px; height: 89px;" counterTemplate="#{appmsg['global_remaining']}"   autoResize="true" 
+                                                 label="#{appmsg['role.label.desc']}" title="#{appmsg['role.label.desc']}" />
+
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 25%">
+                                <p:outputLabel for="description" value="" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="description" value=""  styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 60%" >
+                                <h:outputText id="counter" />
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <p:separator style="margin-top: 10px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="2" style="margin-bottom: -30px!important">
+                        <p:commandButton value="Save" ajax="true" update="roleFormId"
+                                         action="#{roleFormController.doSave()}" styleClass="isitext_hrm"
+                                         style="margin-right: 5px;width: 75px"
+                                         icon="ui-icon-disk"
+                                         id="buttonSave" title="#{appmsg['global.button.update']}"/>
+                        <p:commandButton value="Clear" title="#{appmsg['global.clear']}" type="reset" action="#{roleFormController.doClear()}"
+                                         process="@this" icon="ui-icon-refresh" id="cleareId" update="roleFormId" style="width: 75px" styleClass="isitext_hrm" >  
+                            <p:resetInput target="roleFormId" />  
+                        </p:commandButton>
+                    </h:panelGrid>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

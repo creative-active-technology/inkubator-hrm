@@ -46,7 +46,7 @@
     <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate" lazy-init="true">
         <constructor-arg name="connectionFactory" ref="connectionFactoryExpose"/>
         <property name="sessionTransacted" value="true"/>
-        <property name="defaultDestinationName" value="loginHistory"/>
+        <property name="defaultDestinationName" value="loginHistoryHrm"/>
 <!--        <property name="receiveTimeout" value="50">-->
         
     </bean>  
@@ -54,7 +54,7 @@
     <bean id="jmsTemplate1" class="org.springframework.jms.core.JmsTemplate" lazy-init="true">
         <constructor-arg name="connectionFactory" ref="connectionFactoryExpose"/>
         <property name="sessionTransacted" value="true"/>
-        <property name="defaultDestinationName" value="notification"/>
+        <property name="defaultDestinationName" value="notificationHrm"/>
         
     </bean>  
     
@@ -62,8 +62,8 @@
     <bean id="notificationMessagesListener" class="com.csl.idm.web.listener.NotificationMessagesListener" lazy-init="true"/>
     <jms:listener-container container-type="default" connection-factory="connectionFactoryComsume" acknowledge="transacted" 
                             transaction-manager="jsmTransaction"   >
-        <jms:listener destination="loginHistory" ref="loginHistoryMessagesListener" method="onMessage"  />  
-        <jms:listener destination="notification" ref="notificationMessagesListener" method="onMessage"  /> 
+        <jms:listener destination="loginHistoryHrm" ref="loginHistoryMessagesListener" method="onMessage"  />  
+        <jms:listener destination="notificationHrm" ref="notificationMessagesListener" method="onMessage"  /> 
        
     </jms:listener-container>
     <bean id="jsmTransaction" class="org.springframework.jms.connection.JmsTransactionManager">

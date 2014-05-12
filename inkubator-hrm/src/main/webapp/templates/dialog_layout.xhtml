@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>#{appmsg['global.header_app']}</title>
+        <!--<link rel="stylesheet" href="${request.contextPath}/resources/css/hr_content_css.css" type="text/css" media="screen" />-->
+        <link rel="stylesheet" href="${request.contextPath}/resources/css/theme_customize.css" type="text/css" media="screen" />
+        <link rel="shortcut icon" href="${request.contextPath}/logo.ico" type="image/x-icon" />
+        <title><ui:insert name="windowTitle"/></title>
+    </h:head>
+    <h:body>
+        <h:inputHidden value="#{homeController.bahasa}" />
+        <ui:insert name="center" />
+
+    </h:body>
+</html>
+

@@ -14,7 +14,7 @@
         <security:intercept-url pattern="/flow-protected/**" access="hasAnyRole('ROLE_ADMIN_HRM','ROLE_USER_HRM')"/>
         <security:intercept-url pattern="/protected/**" access="hasAnyRole('ROLE_ADMIN_HRM','ROLE_USER_HRM')"/>
         <security:session-management>
-            <security:concurrency-control max-sessions="1" error-if-maximum-exceeded="true" session-registry-alias="sessionRegistry"/>
+            <security:concurrency-control max-sessions="2" error-if-maximum-exceeded="true" session-registry-alias="sessionRegistry"/>
         </security:session-management>
         <security:custom-filter ref="logoutFilter" position="LOGOUT_FILTER" />
         <!--<security:logout invalidate-session="true" delete-cookies="JSESSIONID" logout-url="/logout.htm"/>-->
