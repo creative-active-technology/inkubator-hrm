@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+    
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <p:panel style="margin: 10px" >                    
+                 	<h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="religion.png" height="36" width="36" cache="true"/>
+                     	<h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['religion.religion']}" styleClass="header_big" />
+                            	<p:outputLabel value="#{appmsg['religion.religion_data_from_reference']}" styleClass="header_small_no_bold" />
+                        	</h:panelGrid>
+                    	</h:panelGroup>
+                    </h:panelGrid>
+                        
+                    <p:separator/>
+                    <p:growl id="growlReligionViewlId" globalOnly="true" showDetail="true" />
+					
+					<h:form id="formReligionViewId">
+                        <p:toolbar  style="margin-top: 10px">
+                            <p:toolbarGroup align="left">
+                                <h:panelGrid columns="4">
+                                    <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm" />
+                                    <p:outputLabel value=":" />
+                                    <p:inputText id="searchId" value="#{religionViewController.parameter}" style="width: 250px" styleClass="isitext_hrm"/>
+                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" action="#{religionViewController.doSearch()}" update="tableReligionId"  style="width: 75px" styleClass="isitext_hrm"/>
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                            <p:toolbarGroup align="right">
+                                <h:panelGrid columns="2" >
+                                	<p:commandButton value="#{appmsg['global.add']}" actionListener="#{religionViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" style="width: 75px"  styleClass="isitext_hrm" ajax="true">
+                                        <p:ajax event="dialogReturn" listener="#{religionViewController.onDialogClose}"  update="tableReligionId,:growlReligionViewlId"/>
+                                    </p:commandButton>
+                                    <p:commandButton value="#{appmsg['global.close']}" style="width: 75px" styleClass="isitext_hrm"/>
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                        </p:toolbar>
+                        <p:focus for="searchId" />
+                        
+                        <p:dataTable  id="tableReligionId" var="religionData"  value="#{religionViewController.lazyDataReligion}" lazy="true" paginator="true" pageLinks="7"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['religion.list_of_religion']}" styleClass="label_hrm"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 5%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}" styleClass="label_hrm"/>
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column sortBy="name"  style="width: 95%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.name']}" styleClass="label_hrm"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{religionData.name}"/>
+                            </p:column>                            
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : " styleClass="label_hrm"/>
+                                <p:outputLabel value="#{religionViewController.lazyDataReligion.rowCount}" styleClass="label_hrm"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px" styleClass="label_hrm"/>
+                            </f:facet>  
+                        </p:dataTable>
+                        <p:blockUI block="formReligionViewId" trigger="tableReligionId,btnSearchId" >
+                            <h:panelGrid columns="2" styleClass="grid_no_border">
+                                <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
+                                <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
+                            </h:panelGrid>
+                        </p:blockUI>
+                    </h:form>
+                </p:panel>
+            </ui:define>
+        </ui:composition>
+        
+    </h:body>
+</html>
+
