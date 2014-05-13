@@ -23,9 +23,11 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import org.hibernate.exception.ConstraintViolationException;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.LazyDataModel;
+import org.springframework.dao.DataIntegrityViolationException;
 
 /**
  *
@@ -90,24 +92,23 @@ public class RoleViewController extends BaseController {
     }
 
     public void doDetail() {
-        Map<String, Object> options = new HashMap<>();
-        options.put("modal", true);
-        options.put("draggable", true);
-        options.put("resizable", false);
-        options.put("contentWidth", 400);
-//        options.put("contentHeight", 340);
-        Map<String, List<String>> dataToSend = new HashMap<>();
-        List<String> dataIsi = new ArrayList<>();
-        dataIsi.add(String.valueOf(selectedHrmRole.getId()));
-        dataToSend.put("param", dataIsi);
-        RequestContext.getCurrentInstance().openDialog("role_detail", options, dataToSend);
+        try {
+            selectedHrmRole = this.hrmRoleService.getEntiyByPK(selectedHrmRole.getId());
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
+        }
     }
 
     public void doDelete() {
         try {
-            hrmRoleService.delete(selectedHrmRole);
-            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_WARN, "global.delete", "global.delete_info",
+            this.hrmRoleService.delete(selectedHrmRole);
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+
+        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint",
+                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            LOGGER.error("Error", ex);
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -120,6 +121,10 @@ public class RoleViewController extends BaseController {
         options.put("resizable", false);
         options.put("contentWidth", 400);
         options.put("contentHeight", 340);
+//        options.put("closable", false);
+//        options.put("height", "auto");
+
+//        options.put("contentHeight", 340);
         RequestContext.getCurrentInstance().openDialog("role_form", options, null);
     }
 
@@ -151,5 +156,13 @@ public class RoleViewController extends BaseController {
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         }
 
+    }
+
+    public void onDelete() {
+        try {
+            selectedHrmRole = this.hrmRoleService.getEntiyByPK(selectedHrmRole.getId());
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
+        }
     }
 }

@@ -135,8 +135,9 @@ public class HrmRoleServiceImpl extends IServiceImpl implements HrmRoleService {
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor =Exception.class)
     public void delete(HrmRole entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.hrmRoleDao.delete(entity);
     }
 
     @Override

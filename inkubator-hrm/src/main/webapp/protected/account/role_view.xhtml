@@ -40,7 +40,7 @@
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="2">
-                                    <p:commandButton value="#{appmsg['global.add']}" action="#{roleViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}"
+                                    <p:commandButton value="#{appmsg['global.add']}" actionListener="#{roleViewController.doAdd}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" 
                                                      style="width: 75px"  styleClass="isitext_hrm" ajax="true">
                                         <p:ajax event="dialogReturn" listener="#{roleViewController.onDialogReturn}"  update="tableRoleId,:roleViewGrowlId"/>
                                     </p:commandButton>
@@ -65,7 +65,7 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="roleName"  >
+                            <p:column sortBy="roleName" style="width: 200px" >
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['role_view.role_name']}"/>
                                 </f:facet>
@@ -78,12 +78,14 @@
                                 <h:outputLabel value= "#{roleViewData.description}"/>
                             </p:column>
                             <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
-                                <p:commandButton  icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" action="#{roleViewController.doDetail()}" style="font-size: 10px!important" >                        
+                                <p:commandButton  icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" update=":detailPanel"
+                                                  onclick="statusDialog.show()"  oncomplete="detailDialogHrmRole.show()"
+                                                  action="#{roleViewController.doDetail()}" style="font-size: 10px!important" >                        
                                     <f:setPropertyActionListener value="#{roleViewData}" target="#{roleViewController.selectedHrmRole}" />
                                 </p:commandButton>
                                 - 
                                 <p:commandButton  icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  style="font-size: 10px!important" 
-                                                  onclick="statusDialog.show()"  oncomplete="confirmDeleteDialog.show()" >
+                                                  onclick="statusDialog.show()"  oncomplete="confirmDialogHrmRole.show()" action="#{roleViewController.onDelete()}" update=":deleteDialogRoleId">
                                     <f:setPropertyActionListener value="#{roleViewData}" target="#{roleViewController.selectedHrmRole}" />
                                 </p:commandButton>
                                 -
@@ -107,7 +109,67 @@
                         </p:blockUI>
                     </h:form>
                 </p:panel>
+                <p:dialog widgetVar="confirmDialogHrmRole" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                          appendTo="@(body)" resizable="false" id="confirmDialogHrmRoleId" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
+                    <h:form id="deleteDialogRoleId">
+                        <div align="center">
+                            <div align="center">
+                                <h:panelGrid columns="2" style="text-align: justify">
+                                    <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
+                                    <h:panelGroup>
+                                        <h:panelGrid style="text-align: center">
+                                            <p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
+                                        </h:panelGrid>
+                                    </h:panelGroup>
+                                </h:panelGrid>
+                            </div>
+                            <h:panelGrid  columns="3">
+                                <p:outputLabel value="Role Name"  style="font-weight: bold"/>
+                                <p:outputLabel value=":"  style="font-weight: bold"/>
+                                <p:outputLabel value="#{roleViewController.selectedHrmRole.roleName}"/>
+                            </h:panelGrid>
+                            <p:separator/>
+                            <p:commandButton value="#{appmsg['global.yes']}" action="#{roleViewController.doDelete()}" update=":roleViewId" id="yesId"
+                                             oncomplete="confirmDialogHrmRole.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                            <p:commandButton value="#{appmsg['global.no']}" oncomplete="confirmDialogHrmRole.hide()" icon="ui-icon-close" />
 
+                        </div>
+                    </h:form>
+                </p:dialog>
+                <p:dialog widgetVar="detailDialogHrmRole" header="#{appmsg['role_view.detail_dialog']}" width="450" modal="true" resizable="false" hideEffect="puff" 
+                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                    <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['role_view.role_name']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{roleViewController.selectedHrmRole.roleName}"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['role_view.role_description']}" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{roleViewController.selectedHrmRole.description}"/> </p:column>
+                        </p:row>
+<!--                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="Create By" style="font-weight: bold"/></p:column>
+                            <p:column><p:outputLabel value="#{spiRoleViewController.selectedSpiRole.createdBy}"/> </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="Create Date" style="font-weight: bold"/></p:column>
+                            <p:column><p:outputLabel value="#{spiRoleViewController.selectedSpiRole.createdOn}"/> </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="Update By" style="font-weight: bold"/></p:column>
+                            <p:column><p:outputLabel value="#{spiRoleViewController.selectedSpiRole.updatedBy}"/> </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="Update On" style="font-weight: bold"/></p:column>
+                            <p:column><p:outputLabel value="#{spiRoleViewController.selectedSpiRole.updatedOn}"/> </p:column>
+                        </p:row>-->
+                        <f:facet name="footer">
+                            <p:row>
+                                <p:column colspan="2"><p:outputLabel value="User Account - Role" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
+                            </p:row>
+                        </f:facet>
+                    </p:panelGrid>
+                </p:dialog>
             </ui:define>
 
         </ui:composition>

@@ -13,6 +13,7 @@ import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -81,7 +82,7 @@ public class RoleFormController extends BaseController {
         } else {
             doInsert(hrmRole);
         }
-
+        cleanAndExit();
     }
 
     public void doClear() {
@@ -134,5 +135,13 @@ public class RoleFormController extends BaseController {
         hrmRole.setRoleName(roleModel.getRoleName());
         hrmRole.setDescription(roleModel.getDescription());
         return hrmRole;
+    }
+
+    @PreDestroy
+    private void cleanAndExit() {
+        roleModel = null;
+        isEdit = null;
+        hrmRoleService = null;
+        System.out.println(" ahhahaha");
     }
 }
