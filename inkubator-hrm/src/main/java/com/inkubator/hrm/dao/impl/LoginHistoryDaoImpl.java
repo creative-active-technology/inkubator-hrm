@@ -39,7 +39,7 @@ public class LoginHistoryDaoImpl extends IDAOImpl<LoginHistory> implements Login
     public List<LoginHistory> getByParam(LoginHistorySearchParameter searchParameter, int firstResult, int maxResults, Order order) {
     	Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchLoginHistByParam(searchParameter, criteria);
-        criteria.createAlias("hrmUser", "u", JoinType.LEFT_OUTER_JOIN);
+        criteria.createAlias("hrmUser", "hrmUser", JoinType.LEFT_OUTER_JOIN);
         criteria.addOrder(order);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
@@ -49,14 +49,14 @@ public class LoginHistoryDaoImpl extends IDAOImpl<LoginHistory> implements Login
     @Override
     public Long getTotalLoginHistoryByParam(LoginHistorySearchParameter searchParameter) {
     	Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-    	criteria.createAlias("hrmUser", "u", JoinType.LEFT_OUTER_JOIN);
+    	criteria.createAlias("hrmUser", "hrmUser", JoinType.LEFT_OUTER_JOIN);
     	doSearchLoginHistByParam(searchParameter, criteria);
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
     
     private void doSearchLoginHistByParam(LoginHistorySearchParameter searchParameter, Criteria criteria) {
         if (searchParameter.getUserId()!=null) {
-        	criteria.add(Restrictions.like("u.userId", searchParameter.getUserId(), MatchMode.ANYWHERE));
+        	criteria.add(Restrictions.like("hrmUser.userId", searchParameter.getUserId(), MatchMode.ANYWHERE));
         } else if(searchParameter.getIpAddress()!=null){
         	criteria.add(Restrictions.like("ipAddress", searchParameter.getIpAddress(), MatchMode.ANYWHERE));
         }
