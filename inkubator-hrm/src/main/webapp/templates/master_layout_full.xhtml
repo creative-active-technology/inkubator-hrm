@@ -9,6 +9,7 @@
         <title>#{appmsg['global.header_app']}</title>
         <link rel="stylesheet" href="${request.contextPath}/resources/css/hr_content_css.css" type="text/css" media="screen" />
         <link rel="stylesheet" href="${request.contextPath}/resources/css/theme_customize.css" type="text/css" media="screen" />
+        <link rel="stylesheet" href="${request.contextPath}/resources/css/table_custome.css" type="text/css" media="screen" />
         <link rel="shortcut icon" href="${request.contextPath}/hr.ico" type="image/x-icon" />
         <title><ui:insert name="windowTitle"/></title>
     </h:head>
@@ -102,8 +103,8 @@
                                     <p:menubar style="margin-left: 0px;margin-right: 0px;margin-top: 0px" styleClass="panelMenu" autoDisplay="false" id="menuId">  
                                         <p:menuitem value="" url="/protected/home.htm"  title="Back to Home" style="font-size: 12px !important;font-weight: normal!important;color: white" icon="ui-icon-home" />  
                                         <p:submenu label="Account"  styleClass="menu" icon="img-user-account">
-                                            <p:menuitem value="User Account"  style="color: #003366" title="User Account" url="/protected/price_simulator.htm"  /> 
-                                            <p:menuitem value="User Role"  style="color: #003366" title="User Role" url="/protected/account/role_view.htm" /> 
+                                            <p:menuitem value="#{appmsg['menu.user_view']}"  style="color: #003366" title="#{appmsg['menu.user_view']}" url="/protected/account/user_view.htm"  /> 
+                                            <p:menuitem value="#{appmsg['menu.role_view']}"  style="color: #003366" title="#{appmsg['menu.role_view']}" url="/protected/account/role_view.htm" /> 
                                             <p:separator/>
                                             <p:menuitem value="Password Setting"  style="color: #003366" title="Create Offering Price" url="/protected/price_offer.htm" />  
                                             <p:menuitem value="Password History"  style="color: #003366" title="Create Offering Price" url="/protected/price_offer.htm" /> 

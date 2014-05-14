@@ -1,0 +1,24 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : May 14, 2014, 1:11:46 PM
+    Author     : Deni Husni FR
+*/
+
+.ui-datatable-odd {
+    background-color: #e1f0f0 !important;
+    border: 1px solid #a6c9e2 !important;
+    /*border: 1px !important;*/
+}
+.ui-datatable-even {
+    /*background-color: #e1f0f0 !important;*/
+    border: 1px solid #a6c9e2 !important;
+    /*border: 1px !important;*/
+}
+
+.ui-widget-content{
+    background-image: none !important;   
+}

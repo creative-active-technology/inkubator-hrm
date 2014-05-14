@@ -30,6 +30,11 @@ and open the template in the editor.
     font-family: Lucida Sans !important;
 
 }
+.menu_child a{
+    font-weight: bold;
+    color: #003366;
+    font-family: Lucida Sans !important;
+}
 .grid_no_border td,.grid_no_border tr 
 {
     border:0px;
@@ -63,20 +68,7 @@ and open the template in the editor.
     color: #003366;
 }
 
-.ui-datatable-odd {
-    background-color: #e1f0f0 !important;
-    border: 1px solid #a6c9e2 !important;
-    /*border: 1px !important;*/
-}
-.ui-datatable-even {
-    /*background-color: #e1f0f0 !important;*/
-    border: 1px solid #a6c9e2 !important;
-    /*border: 1px !important;*/
-}
 
-.ui-widget-content{
-    background-image: none !important;   
-}
 
 .ui-corner-all {
     border-radius: 4px;

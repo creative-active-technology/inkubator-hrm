@@ -1,9 +1,12 @@
 package com.inkubator.hrm.entity;
 // Generated May 9, 2014 9:50:44 AM by Hibernate Tools 3.6.0
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,6 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 
@@ -28,6 +32,7 @@ public class HrmUser implements java.io.Serializable {
     private String userId;
     private String realName;
     private String emailAddress;
+    private String phoneNumber;
     private String password;
     private Integer isActive;
     private Integer isLock;
@@ -38,6 +43,7 @@ public class HrmUser implements java.io.Serializable {
     private Date updatedOn;
     private Set<HrmUserRole> hrmUserRoles = new HashSet<>(0);
     private Set<LoginHistory> loginHistories = new HashSet<>(0);
+    private List<HrmRole> roles = new ArrayList<>(0);
 
     public HrmUser() {
     }
@@ -185,7 +191,7 @@ public class HrmUser implements java.io.Serializable {
         this.updatedOn = updatedOn;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "hrmUser")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "hrmUser", orphanRemoval = true)
     public Set<HrmUserRole> getHrmUserRoles() {
         return this.hrmUserRoles;
     }
@@ -206,7 +212,71 @@ public class HrmUser implements java.io.Serializable {
     public HrmUser(String userId) {
         this.userId = userId;
     }
-    
-    
+
+    @Column(name = "PHONE_NUMBER", length = 45)
+    public String getPhoneNumber() {
+        return this.phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    @Transient
+    public List<HrmRole> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<HrmRole> roles) {
+        this.roles = roles;
+    }
+
+    @Transient
+    public String getAcitveAsString() {
+        String data = null;
+        if (isActive == 1) {
+            data = "Yes";
+        }
+
+        if (isActive == 0) {
+            data = "No";
+        }
+        return data;
+    }
+
+    @Transient
+    public String getLockAsString() {
+        String data = null;
+        if (isLock == 1) {
+            data = "Yes";
+        }
+
+        if (isLock == 0) {
+            data = "No";
+        }
+        return data;
+    }
+
+    @Transient
+    public String getExpiredAsString() {
+        String data = null;
+        if (isExpired == 1) {
+            data = "Yes";
+        }
+
+        if (isExpired == 0) {
+            data = "No";
+        }
+        return data;
+    }
+
+    @Transient
+    public List<String> getListRuleAsString() {
+        List<String> roleNames = new ArrayList<>();
+        for (HrmRole role : getRoles()) {
+            roleNames.add(role.getRoleName());
+        }
+        return roleNames;
+    }
 
 }

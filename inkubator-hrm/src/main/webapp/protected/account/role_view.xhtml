@@ -124,19 +124,19 @@
                                 </h:panelGrid>
                             </div>
                             <h:panelGrid  columns="3">
-                                <p:outputLabel value="Role Name"  style="font-weight: bold"/>
-                                <p:outputLabel value=":"  style="font-weight: bold"/>
-                                <p:outputLabel value="#{roleViewController.selectedHrmRole.roleName}"/>
+                                <p:outputLabel value="#{appmsg['role_view.role_name']}" styleClass="label_hrm"/>
+                                <p:outputLabel value=":"  styleClass="label_hrm" />
+                                <p:outputLabel value="#{roleViewController.selectedHrmRole.roleName}" styleClass="isitext_hrm"/>
                             </h:panelGrid>
                             <p:separator/>
-                            <p:commandButton value="#{appmsg['global.yes']}" action="#{roleViewController.doDelete()}" update=":roleViewId" id="yesId"
+                            <p:commandButton value="#{appmsg['global.yes']}" action="#{roleViewController.doDelete()}" update=":roleViewId" id="yesId" title="#{appmsg['global.yes']}"
                                              oncomplete="confirmDialogHrmRole.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                            <p:commandButton value="#{appmsg['global.no']}" oncomplete="confirmDialogHrmRole.hide()" icon="ui-icon-close" />
+                            <p:commandButton value="#{appmsg['global.no']}" oncomplete="confirmDialogHrmRole.hide()" icon="ui-icon-close" title="#{appmsg['global.no']}" />
 
                         </div>
                     </h:form>
                 </p:dialog>
-                <p:dialog widgetVar="detailDialogHrmRole" header="#{appmsg['role_view.detail_dialog']}" width="450" modal="true" resizable="false" hideEffect="puff" 
+                <p:dialog widgetVar="detailDialogHrmRole" header="#{appmsg['role_view.detail_dialog']}" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
                           showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
                     <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
                         <p:row>
