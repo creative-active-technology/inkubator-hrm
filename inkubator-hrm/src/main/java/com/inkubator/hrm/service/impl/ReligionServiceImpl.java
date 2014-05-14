@@ -30,9 +30,9 @@ public class ReligionServiceImpl extends IServiceImpl implements ReligionService
 	private ReligionDao religionDao;
 	
 	@Override
-	public void delete(Religion arg0) throws Exception {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
-
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void delete(Religion religion) throws Exception {
+		religionDao.delete(religion);
 	}
 
 	@Override
@@ -226,9 +226,13 @@ public class ReligionServiceImpl extends IServiceImpl implements ReligionService
 	}
 
 	@Override
-	public void update(Religion arg0) throws Exception {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
-
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void update(Religion r) throws Exception {
+		Religion religion = religionDao.getEntiyByPK(r.getId());
+		religion.setName(r.getName());
+		religion.setUpdatedBy(UserInfoUtil.getUserName());
+		religion.setCreatedOn(new Date());
+		religionDao.update(religion);
 	}
 
 	@Override

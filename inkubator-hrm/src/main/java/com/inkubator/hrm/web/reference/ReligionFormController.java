@@ -77,14 +77,18 @@ public class ReligionFormController extends BaseController {
 	}
 	
 	public void doClear(){
+		//clear all data except the id (if any)
+		Long tempId = religionModel.getId();
 		religionModel = new ReligionModel();
+		religionModel.setId(tempId);
 	}
 	
 	public void doSave(){
 		Religion religion = getEntityFromViewModel(religionModel);
 		try {
 			if(isUpdate){
-				
+				religionService.update(religion);
+				RequestContext.getCurrentInstance().closeDialog(HRMConstant.UPDATE_CONDITION);
 			} else {
 				religionService.save(religion);
 				RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
