@@ -1,5 +1,6 @@
 package com.inkubator.hrm.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
@@ -10,10 +11,12 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.dao.ReligionDao;
 import com.inkubator.hrm.entity.Religion;
 import com.inkubator.hrm.service.ReligionService;
+import com.inkubator.securitycore.util.UserInfoUtil;
 
 /**
 *
@@ -160,9 +163,9 @@ public class ReligionServiceImpl extends IServiceImpl implements ReligionService
 	}
 
 	@Override
-	public Religion getEntiyByPK(Long arg0) throws Exception {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
-
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Religion getEntiyByPK(Long id) throws Exception {
+		return religionDao.getEntiyByPK(id);
 	}
 
 	@Override
@@ -190,9 +193,12 @@ public class ReligionServiceImpl extends IServiceImpl implements ReligionService
 	}
 
 	@Override
-	public void save(Religion arg0) throws Exception {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
-
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void save(Religion religion) throws Exception {
+		religion.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+		religion.setCreatedBy(UserInfoUtil.getUserName());
+		religion.setCreatedOn(new Date());
+		religionDao.save(religion);
 	}
 
 	@Override
