@@ -109,9 +109,10 @@
                                             <p:menuitem value="Password History"  style="color: #003366" title="Create Offering Price" url="/protected/price_offer.htm" /> 
                                             <p:menuitem value="#{appmsg['loginhistory.login_history']}"  style="color: #003366" title="#{appmsg['loginhistory.login_history']}" url="/protected/account/login_history.htm" />  
                                         </p:submenu>
-                                        <p:submenu label="Konfigurasi"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-configuration">
-                                            <p:menuitem value="Price Simulator" icon="img-price-simulator" style="font-size: 12px !important;color: #003366" title="Make Price Simulation" url="/protected/price_simulator.htm" /> 
-                                            <p:menuitem value="Price Offer" icon="img-button-price" style="font-size: 12px !important;color: #003366" title="Create Offering Price" url="/protected/price_offer.htm" />  
+                                        <p:submenu label="#{appmsg['menu.configuration']}" style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-configuration">
+                                            <p:submenu label="#{appmsg['menu.data_reference']}"  styleClass="menu_child">
+                                            	<p:menuitem value="#{appmsg['religion.religion']}" icon="" style="font-size: 12px !important;color: #003366" title="#{appmsg['religion.religion']}" url="/protected/reference/religion_view.htm" />
+                                            </p:submenu>                                            
                                         </p:submenu>
                                         <p:submenu label="Personalia"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-employees">
                                             <p:menuitem value="Price Simulator" icon="img-price-simulator" style="font-size: 12px !important;color: #003366" title="Make Price Simulation" url="/protected/price_simulator.htm" /> 

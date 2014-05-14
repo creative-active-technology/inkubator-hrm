@@ -58,7 +58,7 @@
                                          action="#{religionFormController.doSave()}" styleClass="isitext_hrm"
                                          style="margin-right: 5px;width: 75px" label="#{appmsg['global.save']}"
                                          icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
-                        <p:commandButton value="#{appmsg['global.clear']}" title="#{appmsg['global.clear']}" type="reset" action="#{religionFormController.doClear()}"
+                        <p:commandButton value="#{appmsg['global.clear']}" title="#{appmsg['global.clear']}" update="formReligionFormId" action="#{religionFormController.doClear()}"
                                          icon="ui-icon-refresh" styleClass="isitext_hrm" >  
                             <p:resetInput target="formReligionFormId" />  
                         </p:commandButton>
