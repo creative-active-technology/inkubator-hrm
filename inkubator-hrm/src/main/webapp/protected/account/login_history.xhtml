@@ -45,7 +45,7 @@
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
                                 <h:panelGrid >
-                                    <p:commandButton value="#{appmsg['global.close']}" style="width: 75px" styleClass="isitext_hrm"/>
+                                    <p:commandButton value="#{appmsg['global.close']}" style="width: 75px" styleClass="isitext_hrm" action="#{loginHistoryController.doClose()}"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
                         </p:toolbar>
@@ -75,7 +75,9 @@
                                     <h:outputText value="#{appmsg['loginhistory.login_date']}" styleClass="label_hrm"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{loginHistoryData.loginDate}">
+
                                     <f:convertDateTime pattern ="dd-MMMM-yyyy  hh:mm:ss" timeZone="GMT+7" />
+
                                 </h:outputLabel>
                             </p:column>
                             <p:column sortBy="logOutDate" style="width: 20%">
