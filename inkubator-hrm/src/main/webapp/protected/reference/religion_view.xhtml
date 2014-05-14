@@ -10,27 +10,27 @@
         <title>IGNORED</title>
     </h:head>
     <h:body>
-    
+
         <ui:composition template="/templates/master_layout_full.xhtml">
             <ui:define name="windowTitle">
                 Home
             </ui:define>
             <ui:define name="center">
                 <p:panel style="margin: 10px" >                    
-                 	<h:panelGrid style="margin-bottom: 5px" columns="2">
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
                         <p:graphicImage library="images" name="religion.png" height="36" width="36" cache="true"/>
-                     	<h:panelGroup layout="block">
+                        <h:panelGroup layout="block">
                             <h:panelGrid>
                                 <p:outputLabel value="#{appmsg['religion.religion']}" styleClass="header_big" />
-                            	<p:outputLabel value="#{appmsg['religion.religion_data_from_reference']}" styleClass="header_small_no_bold" />
-                        	</h:panelGrid>
-                    	</h:panelGroup>
+                                <p:outputLabel value="#{appmsg['religion.religion_data_from_reference']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
                     </h:panelGrid>
-                        
+
                     <p:separator/>
                     <p:growl id="growlReligionViewlId" globalOnly="true" showDetail="true" />
-					
-					<h:form id="formReligionViewId">
+
+                    <h:form id="formReligionViewId">
                         <p:toolbar  style="margin-top: 10px">
                             <p:toolbarGroup align="left">
                                 <h:panelGrid columns="4">
@@ -42,7 +42,7 @@
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="2" >
-                                	<p:commandButton value="#{appmsg['global.add']}" actionListener="#{religionViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" style="width: 75px"  styleClass="isitext_hrm" ajax="true">
+                                    <p:commandButton value="#{appmsg['global.add']}" actionListener="#{religionViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" style="width: 75px"  styleClass="isitext_hrm" ajax="true">
                                         <p:ajax event="dialogReturn" listener="#{religionViewController.onDialogClose}"  update="tableReligionId,:growlReligionViewlId"/>
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.close']}" style="width: 75px" styleClass="isitext_hrm" action="#{religionViewController.doClose()}"/>
@@ -50,7 +50,7 @@
                             </p:toolbarGroup>
                         </p:toolbar>
                         <p:focus for="searchId" />
-                        
+
                         <p:dataTable  id="tableReligionId" var="religionData"  value="#{religionViewController.lazyDataReligion}" lazy="true" paginator="true" pageLinks="7"
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
                                       rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
@@ -71,8 +71,8 @@
                                 <h:outputLabel value= "#{religionData.name}"/>
                             </p:column>    
                             <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
-                            	<p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" style="font-size: 10px!important"
-                            					 update=":panelDialogDetailId" onclick="statusDialog.show()"  oncomplete="dialogDetailReligion.show()">                        
+                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" style="font-size: 10px!important"
+                                                 update=":panelDialogDetailId" onclick="statusDialog.show()"  oncomplete="dialogDetailReligion.show()">                        
                                     <f:setPropertyActionListener value="#{religionData}" target="#{religionViewController.selectedReligion}" />
                                 </p:commandButton>
                                 - 
@@ -101,30 +101,30 @@
                         </p:blockUI>
                     </h:form>
                 </p:panel>
-                
+
                 <p:dialog widgetVar="dialogConfirmReligion" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
-                 	<div align="center">
-                		<div align="center">
-                        	<h:panelGrid columns="2" style="text-align: justify">
-                            	<p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
+                    <div align="center">
+                        <div align="center">
+                            <h:panelGrid columns="2" style="text-align: justify">
+                                <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
                                 <h:panelGroup>
-                                	<h:panelGrid style="text-align: center">
-                                    	<p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
-                                 	</h:panelGrid>
-                             	</h:panelGroup>
-                         	</h:panelGrid>
-                   		</div>
-                      	<h:panelGrid id="panelDialogConfirmId"  columns="3">
-                          	<p:outputLabel value="#{appmsg['religion.religion']}"  style="font-weight: bold"/>
-                           	<p:outputLabel value=":"  style="font-weight: bold"/>
-                    		<p:outputLabel value="#{religionViewController.selectedReligion.name}" styleClass="label_hrm"/>
-                  		</h:panelGrid>
-                     	<p:separator/>
-                     	<p:commandButton value="#{appmsg['global.yes']}" action="#{religionViewController.doDelete()}" update="formReligionViewId,:growlReligionViewlId"
+                                    <h:panelGrid style="text-align: center">
+                                        <p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
+                                    </h:panelGrid>
+                                </h:panelGroup>
+                            </h:panelGrid>
+                        </div>
+                        <h:panelGrid id="panelDialogConfirmId"  columns="3">
+                            <p:outputLabel value="#{appmsg['religion.religion']}"  style="font-weight: bold"/>
+                            <p:outputLabel value=":"  style="font-weight: bold"/>
+                            <p:outputLabel value="#{religionViewController.selectedReligion.name}" styleClass="label_hrm"/>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:commandButton value="#{appmsg['global.yes']}" action="#{religionViewController.doDelete()}" update="formReligionViewId,:growlReligionViewlId"
                                          oncomplete="dialogConfirmReligion.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
                         <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmReligion.hide()" icon="ui-icon-close" />                     	
-                 	</div>
+                    </div>
                 </p:dialog>
                 <p:dialog widgetVar="dialogDetailReligion" header="#{appmsg['religion.detail_dialog']}" width="450" modal="true" resizable="false" hideEffect="puff" 
                           showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
@@ -138,11 +138,11 @@
                                 <p:column colspan="2"><p:outputLabel value="#{appmsg['religion.religion']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
                             </p:row>
                         </f:facet>
-                  	</p:panelGrid>
-              	</p:dialog>
+                    </p:panelGrid>
+                </p:dialog>
             </ui:define>
         </ui:composition>
-        
+
     </h:body>
 </html>
 
