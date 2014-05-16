@@ -23,7 +23,7 @@ import org.primefaces.model.SortOrder;
  * @author Deni Husni FR
  */
 public class HrmUserLazyDataModel extends LazyDataModel<HrmUser> implements Serializable {
-    private static final Logger LOGGER = Logger.getLogger(LoginHistoryLazyModel.class);
+    private static final Logger LOGGER = Logger.getLogger(HrmUserLazyDataModel.class);
     private final HrmUserSearchParameter spiUserSearchParameter;
     private final HrmUserService spiUserService;
     private List<HrmUser> spiUsers = new ArrayList<>();

@@ -13,159 +13,159 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
-import com.inkubator.hrm.dao.ReligionDao;
-import com.inkubator.hrm.entity.Religion;
-import com.inkubator.hrm.service.ReligionService;
+import com.inkubator.hrm.dao.EducationLevelDao;
+import com.inkubator.hrm.entity.EducationLevel;
+import com.inkubator.hrm.service.EducationLevelService;
 import com.inkubator.securitycore.util.UserInfoUtil;
 
 /**
 *
 * @author rizkykojek
 */
-@Service(value = "religionService")
+@Service(value = "educationLevelService")
 @Lazy
-public class ReligionServiceImpl extends IServiceImpl implements ReligionService {
+public class EducationLevelServiceImpl extends IServiceImpl implements EducationLevelService {
 
 	@Autowired
-	private ReligionDao religionDao;
+	private EducationLevelDao educationLevelDao;
 	
 	@Override
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void delete(Religion religion) throws Exception {
-		religionDao.delete(religion);
+	public void delete(EducationLevel educationLevel) throws Exception {
+		educationLevelDao.delete(educationLevel);
 	}
 
 	@Override
-	public List<Religion> getAllData() throws Exception {
+	public List<EducationLevel> getAllData() throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public List<Religion> getAllData(Boolean arg0) throws Exception {
+	public List<EducationLevel> getAllData(Boolean arg0) throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public List<Religion> getAllData(Integer arg0) throws Exception {
+	public List<EducationLevel> getAllData(Integer arg0) throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public List<Religion> getAllData(Byte arg0) throws Exception {
+	public List<EducationLevel> getAllData(Byte arg0) throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public List<Religion> getAllDataPageAble(int arg0, int arg1, Order arg2)
+	public List<EducationLevel> getAllDataPageAble(int arg0, int arg1, Order arg2)
 			throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public List<Religion> getAllDataPageAbleIsActive(int arg0, int arg1,
+	public List<EducationLevel> getAllDataPageAbleIsActive(int arg0, int arg1,
 			Order arg2, Boolean arg3) throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public List<Religion> getAllDataPageAbleIsActive(int arg0, int arg1,
+	public List<EducationLevel> getAllDataPageAbleIsActive(int arg0, int arg1,
 			Order arg2, Integer arg3) throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public List<Religion> getAllDataPageAbleIsActive(int arg0, int arg1,
+	public List<EducationLevel> getAllDataPageAbleIsActive(int arg0, int arg1,
 			Order arg2, Byte arg3) throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public Religion getEntityByPkIsActive(String arg0, Integer arg1)
+	public EducationLevel getEntityByPkIsActive(String arg0, Integer arg1)
 			throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public Religion getEntityByPkIsActive(String arg0, Byte arg1)
+	public EducationLevel getEntityByPkIsActive(String arg0, Byte arg1)
 			throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public Religion getEntityByPkIsActive(String arg0, Boolean arg1)
+	public EducationLevel getEntityByPkIsActive(String arg0, Boolean arg1)
 			throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public Religion getEntityByPkIsActive(Integer arg0, Integer arg1)
+	public EducationLevel getEntityByPkIsActive(Integer arg0, Integer arg1)
 			throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public Religion getEntityByPkIsActive(Integer arg0, Byte arg1)
+	public EducationLevel getEntityByPkIsActive(Integer arg0, Byte arg1)
 			throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public Religion getEntityByPkIsActive(Integer arg0, Boolean arg1)
+	public EducationLevel getEntityByPkIsActive(Integer arg0, Boolean arg1)
 			throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public Religion getEntityByPkIsActive(Long arg0, Integer arg1)
+	public EducationLevel getEntityByPkIsActive(Long arg0, Integer arg1)
 			throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public Religion getEntityByPkIsActive(Long arg0, Byte arg1)
+	public EducationLevel getEntityByPkIsActive(Long arg0, Byte arg1)
 			throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public Religion getEntityByPkIsActive(Long arg0, Boolean arg1)
+	public EducationLevel getEntityByPkIsActive(Long arg0, Boolean arg1)
 			throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public Religion getEntiyByPK(String arg0) throws Exception {
+	public EducationLevel getEntiyByPK(String arg0) throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public Religion getEntiyByPK(Integer arg0) throws Exception {
+	public EducationLevel getEntiyByPK(Integer arg0) throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-	public Religion getEntiyByPK(Long id) throws Exception {
-		return religionDao.getEntiyByPK(id);
+	public EducationLevel getEntiyByPK(Long id) throws Exception {
+		return educationLevelDao.getEntiyByPK(id);
 	}
 
 	@Override
@@ -194,63 +194,64 @@ public class ReligionServiceImpl extends IServiceImpl implements ReligionService
 
 	@Override
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void save(Religion religion) throws Exception {
-		religion.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
-		religion.setCreatedBy(UserInfoUtil.getUserName());
-		religion.setCreatedOn(new Date());
-		religionDao.save(religion);
+	public void save(EducationLevel educationLevel) throws Exception {
+		educationLevel.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+		educationLevel.setCreatedBy(UserInfoUtil.getUserName());
+		educationLevel.setCreatedOn(new Date());
+		educationLevelDao.save(educationLevel);
 	}
 
 	@Override
-	public Religion saveData(Religion arg0) throws Exception {
+	public EducationLevel saveData(EducationLevel arg0) throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public void saveOrUpdate(Religion arg0) throws Exception {
+	public void saveOrUpdate(EducationLevel arg0) throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public Religion saveOrUpdateData(Religion arg0) throws Exception {
+	public EducationLevel saveOrUpdateData(EducationLevel arg0) throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public void softDelete(Religion arg0) throws Exception {
+	public void softDelete(EducationLevel arg0) throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void update(Religion r) throws Exception {
-		Religion religion = religionDao.getEntiyByPK(r.getId());
-		religion.setName(r.getName());
-		religion.setUpdatedBy(UserInfoUtil.getUserName());
-		religion.setUpdatedOn(new Date());
-		religionDao.update(religion);
+	public void update(EducationLevel edu) throws Exception {
+		EducationLevel educationLevel = educationLevelDao.getEntiyByPK(edu.getId());
+		educationLevel.setName(edu.getName());
+		educationLevel.setLevel(edu.getLevel());
+		educationLevel.setUpdatedBy(UserInfoUtil.getUserName());
+		educationLevel.setUpdatedOn(new Date());
+		educationLevelDao.update(educationLevel);
 	}
 
 	@Override
-	public Religion updateData(Religion arg0) throws Exception {
+	public EducationLevel updateData(EducationLevel arg0) throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<Religion> getByParam(String parameter, int firstResult, int maxResults, Order orderable) throws Exception {
-		return this.religionDao.getByParam(parameter, firstResult, maxResults, orderable);
+	public List<EducationLevel> getByParam(String parameter, int firstResult, int maxResults, Order orderable) throws Exception {
+		return this.educationLevelDao.getByParam(parameter, firstResult, maxResults, orderable);
 	}
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-	public Long getTotalReligionByParam(String parameter) throws Exception {
-		return this.religionDao.getTotalReligionByParam(parameter);
+	public Long getTotalByParam(String parameter) throws Exception {
+		return this.educationLevelDao.getTotalByParam(parameter);
 	}
 
 }

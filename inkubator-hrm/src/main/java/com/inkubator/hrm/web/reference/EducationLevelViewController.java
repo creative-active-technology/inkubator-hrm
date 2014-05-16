@@ -19,9 +19,9 @@ import org.primefaces.model.LazyDataModel;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.Religion;
-import com.inkubator.hrm.service.ReligionService;
-import com.inkubator.hrm.web.lazymodel.ReligionLazyDataModel;
+import com.inkubator.hrm.entity.EducationLevel;
+import com.inkubator.hrm.service.EducationLevelService;
+import com.inkubator.hrm.web.lazymodel.EducationLevelLazyDataModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
@@ -30,15 +30,15 @@ import com.inkubator.webcore.util.MessagesResourceUtil;
 *
 * @author rizkykojek
 */
-@ManagedBean(name = "religionViewController")
+@ManagedBean(name = "educationLevelViewController")
 @ViewScoped
-public class ReligionViewController extends BaseController {
+public class EducationLevelViewController extends BaseController {
 
 	private String parameter;
-	private LazyDataModel<Religion> lazyDataReligion;	
-	private Religion selectedReligion;
-	@ManagedProperty(value = "#{religionService}")
-	private ReligionService religionService;
+	private LazyDataModel<EducationLevel> lazyDataEducationLevel;	
+	private EducationLevel selectedEducationLevel;
+	@ManagedProperty(value = "#{educationLevelService}")
+	private EducationLevelService educationLevelService;
 	
 	@PostConstruct
     @Override
@@ -48,14 +48,33 @@ public class ReligionViewController extends BaseController {
 	
 	@PreDestroy
     public void cleanAndExit() {
-		religionService = null;
+		educationLevelService = null;
 		parameter = null;
-		lazyDataReligion = null;
-		selectedReligion = null;
+		lazyDataEducationLevel = null;
+		selectedEducationLevel = null;
 	}
-	
-	public void setReligionService(ReligionService religionService) {
-		this.religionService = religionService;
+
+	public LazyDataModel<EducationLevel> getLazyDataEducationLevel() {
+		if(lazyDataEducationLevel == null){
+			lazyDataEducationLevel = new EducationLevelLazyDataModel(parameter, educationLevelService);
+		}
+		return lazyDataEducationLevel;
+	}
+
+	public void setLazyDataEducationLevel(LazyDataModel<EducationLevel> lazyDataEducationLevel) {
+		this.lazyDataEducationLevel = lazyDataEducationLevel;
+	}
+
+	public EducationLevel getSelectedEducationLevel() {
+		return selectedEducationLevel;
+	}
+
+	public void setSelectedEducationLevel(EducationLevel selectedEducationLevel) {
+		this.selectedEducationLevel = selectedEducationLevel;
+	}
+
+	public void setEducationLevelService(EducationLevelService educationLevelService) {
+		this.educationLevelService = educationLevelService;
 	}
 
 	public String getParameter() {
@@ -65,40 +84,21 @@ public class ReligionViewController extends BaseController {
 	public void setParameter(String parameter) {
 		this.parameter = parameter;
 	}
-
-	public LazyDataModel<Religion> getLazyDataReligion() {
-		if(lazyDataReligion == null){
-			lazyDataReligion = new ReligionLazyDataModel(parameter, religionService);
-		}
-		return lazyDataReligion;
-	}
-
-	public void setLazyDataReligion(LazyDataModel<Religion> lazyDataReligion) {
-		this.lazyDataReligion = lazyDataReligion;
-	}
 	
-	public Religion getSelectedReligion() {
-		return selectedReligion;
-	}
-
-	public void setSelectedReligion(Religion selectedReligion) {
-		this.selectedReligion = selectedReligion;
-	}
-
 	public void doSearch(){
-		lazyDataReligion = null;
+		lazyDataEducationLevel = null;
 	}
 	
 	public void doDelete(){
 		try {
-            religionService.delete(selectedReligion);
+            educationLevelService.delete(selectedEducationLevel);
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 
         } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
         	MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-            LOGGER.error("Error when doDelete religion ", ex);
+            LOGGER.error("Error when doDelete educationLevel ", ex);
         } catch (Exception ex) {
-        	LOGGER.error("Error when doDelete religion", ex);
+        	LOGGER.error("Error when doDelete educationLevel", ex);
 		}
 	}
 	
@@ -109,7 +109,7 @@ public class ReligionViewController extends BaseController {
 	public void doUpdate(){
 		Map<String, List<String>> dataToSend = new HashMap<>();
         List<String> values = new ArrayList<>();
-        values.add(String.valueOf(selectedReligion.getId()));
+        values.add(String.valueOf(selectedEducationLevel.getId()));
         dataToSend.put("param", values);
         showDialog(dataToSend);
 	}
@@ -121,7 +121,7 @@ public class ReligionViewController extends BaseController {
         options.put("resizable", false);
         options.put("contentWidth", 400);
         options.put("contentHeight", 250);
-        RequestContext.getCurrentInstance().openDialog("religion_form", options, params);
+        RequestContext.getCurrentInstance().openDialog("education_level_form", options, params);
 	}
 	
 	public void onDialogClose(SelectEvent event){
