@@ -41,17 +41,17 @@
                                     </p:selectOneMenu>
                                     <p:inputText value="#{userViewController.hrmUserSearchParameter.parameter}" style="width: 250px" id="pencarianId" styleClass="isitext_hrm" 
                                                  label="#{appmsg['global.searching']}" title="#{appmsg['global.searching']}"/>
-                                    <p:commandButton value="#{appmsg['global.search']}" action="#{userViewController.doSearch()}" style="width: 75px" update="tableUserId"  
-                                                     styleClass="isitext_hrm" title="#{appmsg['global.search']}" id="btnPencarianId" />
+                                    <p:commandButton value="#{appmsg['global.search']}" action="#{userViewController.doSearch()}" style="width: 75px" update="tableUserId" icon="ui-icon-search"
+                                                     styleClass="label_button" title="#{appmsg['global.search']}" id="btnPencarianId" />
                                 </h:panelGrid>
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="2">
-                                    <p:commandButton value="#{appmsg['global.add']}" action="#{userViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" 
-                                                     style="width: 75px"  styleClass="isitext_hrm" ajax="true" immediate="true">
+                                    <p:commandButton value="#{appmsg['global.add']}" action="#{userViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" icon="ui-icon-document"
+                                                       styleClass="label_button" ajax="true" immediate="true">
 
                                     </p:commandButton>
-                                    <p:commandButton value="#{appmsg['global.close']}" style="width: 75px" styleClass="isitext_hrm" action="#{roleViewController.doClose()}" title="#{appmsg['global.close']}" 
+                                    <p:commandButton value="#{appmsg['global.close']}"  styleClass="label_button" action="#{roleViewController.doClose()}" title="#{appmsg['global.close']}" icon="ui-icon-home"
                                                      label="#{appmsg['global.close']}"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>

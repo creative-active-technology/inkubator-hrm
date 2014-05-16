@@ -51,7 +51,7 @@
         
     </bean>  -->
     
-    <bean id="jmsTemplate1" class="org.springframework.jms.core.JmsTemplate" lazy-init="true">
+    <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate" lazy-init="true">
         <constructor-arg name="connectionFactory" ref="connectionFactoryExpose"/>
         <property name="sessionTransacted" value="true"/>
         <property name="defaultDestinationName" value="notificationUserHrm"/>

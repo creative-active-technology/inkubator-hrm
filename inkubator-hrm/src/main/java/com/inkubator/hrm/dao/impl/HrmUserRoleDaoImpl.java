@@ -35,7 +35,7 @@ public class HrmUserRoleDaoImpl extends IDAOImpl<HrmUserRole> implements HrmUser
         criteria.createAlias("hrmUser", "su");
         criteria.add(Restrictions.eq("su.id", id));
         criteria.addOrder(Order.desc("hrmRole"));
-        criteria.setFetchMode("hrmUser", FetchMode.JOIN);
+        criteria.setFetchMode("hrmRole", FetchMode.JOIN);
         return criteria.list();
     }
 

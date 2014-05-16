@@ -19,8 +19,8 @@
                 <prop key="mail.smtp.port">587</prop>
             </props>
         </property>
-        <property name="username" value="sam.erp@ciptasrigatilestari.co.id" />
-        <property name="password" value="sam_erp1235813" />
+        <property name="username" value="noreplaypriceoffer@gmail.com" />
+        <property name="password" value="1235813sahatea" />
     </bean>
     <bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean" lazy-init="true">
         <property name="velocityProperties" >

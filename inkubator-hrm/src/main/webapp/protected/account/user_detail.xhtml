@@ -114,8 +114,8 @@
                         </p:dataTable>
 
                         <h:panelGrid columns="2" style="float: right">
-                            <p:commandButton value="Edit"  icon="ui-icon-folder-open" style="width: 75px" title="Edit User Data" action="#{userDetailController.doEdit()}"/>
-                            <p:commandButton value="Back to View"  icon="ui-icon-contact"  title="Back to User View" action="#{userDetailController.doBack()}"/>
+                            <p:commandButton value="#{appmsg['global.edit']}"  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" action="#{userDetailController.doEdit()}" styleClass="label_button"/>
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{userDetailController.doBack()}" styleClass="label_button"/>
                         </h:panelGrid>
                         <div style="clear: both"/>
                     </h:form>

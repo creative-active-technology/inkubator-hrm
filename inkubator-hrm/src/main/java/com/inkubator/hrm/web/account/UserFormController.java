@@ -5,6 +5,7 @@
  */
 package com.inkubator.hrm.web.account;
 
+import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.HrmRole;
 import com.inkubator.hrm.entity.HrmUser;
@@ -87,14 +88,14 @@ public class UserFormController extends BaseController {
     public String doSave() {
         HrmUser hrmUser = getEntityFromView(userModel);
         if (isEdit) {
-            String redirect = doUpdate(hrmUser);
+            return doUpdate(hrmUser);
         } else {
-            String redirect = doInsert(hrmUser);
+            return doInsert(hrmUser);
         }
-        return null;
     }
 
     private String doInsert(HrmUser hrmUser) {
+        hrmUser.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
         try {
             boolean isDuplicateUserId = hrmUserService.getByUserId(hrmUser.getUserId()) != null;
             boolean isDuplicateEmailAddress = hrmUserService.getByEmailAddress(hrmUser.getEmailAddress()) != null;

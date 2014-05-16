@@ -6,12 +6,14 @@
 package com.inkubator.hrm.service.impl;
 
 import com.inkubator.common.util.AESUtil;
+import com.inkubator.common.util.HashingUtils;
 import com.inkubator.common.util.JsonConverter;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.dao.HrmUserRoleDao;
+import com.inkubator.hrm.dao.PasswordHistoryDao;
 import com.inkubator.hrm.entity.HrmRole;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.HrmUserRole;
@@ -23,15 +25,18 @@ import com.inkubator.webcore.util.FacesUtil;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Session;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
 
 /**
  *
@@ -48,7 +53,9 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
     @Autowired
     private JsonConverter jsonConverter;
     @Autowired
-    private JmsTemplate jmsTemplate1;
+    private JmsTemplate jmsTemplate;
+    @Autowired
+    private PasswordHistoryDao passwordHistoryDao;
 
     @Override
     public HrmUser getEntiyByPK(String id) throws Exception {
@@ -233,6 +240,7 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
         for (HrmUserRole hrmRole : this.hrmUserRoleDao.getByUserId(id)) {
             hrmRoles.add(hrmRole.getHrmRole());
         }
+        System.out.println(hrmRoles.get(0).getRoleName());
         hrmUser.setRoles(hrmRoles);
         return hrmUser;
     }
@@ -252,9 +260,13 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void saveAndNotification(HrmUser hrmUser) throws Exception {
-        PasswordHistory passwordHistory = new PasswordHistory();
+        final PasswordHistory passwordHistory = new PasswordHistory();
         passwordHistory.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
         passwordHistory.setPassword(AESUtil.getAESEncription(hrmUser.getPassword(), HRMConstant.KEYVALUE, HRMConstant.AES_ALGO));
+        hrmUser.setPassword(HashingUtils.getHashSHA256(hrmUser.getPassword()));
+        hrmUser.setCreatedBy(UserInfoUtil.getUserName());
+        hrmUser.setCreatedOn(new Date());
+        this.hrmUserDao.save(hrmUser);
         passwordHistory.setEmailNotification(HRMConstant.EMAIL_NOTIFICATION_NOT_YET_SEND);
         passwordHistory.setSmsNotification(HRMConstant.SMA_NOTIFICATION_NOT_SEND);
         passwordHistory.setEmailAddress(hrmUser.getEmailAddress());
@@ -267,15 +279,25 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
         passwordHistory.setCreatedOn(new Date());
         List<String> dataRole = new ArrayList<>();
         List<HrmRole> hrmRoles = new ArrayList<>();
+        System.out.println(" nilai user Id" + hrmUser.getId());
         for (HrmUserRole hrmUserRole : hrmUserRoleDao.getByUserId(hrmUser.getId())) {
             hrmRoles.add(hrmUserRole.getHrmRole());
         }
+        System.out.println("Ukuran " + hrmRoles.size());
         for (HrmRole hrmRole : hrmRoles) {
             dataRole.add(hrmRole.getRoleName());
         }
+        System.out.println("List Role " + dataRole.size());
         passwordHistory.setListRole(jsonConverter.getJson(dataRole.toArray(new String[dataRole.size()])));
-        System.out.println(passwordHistory);
-       
+
+        this.passwordHistoryDao.save(passwordHistory);
+        this.jmsTemplate.send(new MessageCreator() {
+            @Override
+            public Message createMessage(Session session)
+                    throws JMSException {
+                return session.createTextMessage(jsonConverter.getJson(passwordHistory));
+            }
+        });
 
     }
 }
