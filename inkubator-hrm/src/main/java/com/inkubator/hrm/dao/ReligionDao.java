@@ -13,8 +13,8 @@ import com.inkubator.hrm.entity.Religion;
 */
 public interface ReligionDao extends IDAO<Religion> {
 
-	List<Religion> getByParam(String parameter, int firstResult, int maxResults, Order orderable);
+	public List<Religion> getByParam(String parameter, int firstResult, int maxResults, Order orderable);
 
-	Long getTotalReligionByParam(String parameter);
+	public Long getTotalReligionByParam(String parameter);
 
 }

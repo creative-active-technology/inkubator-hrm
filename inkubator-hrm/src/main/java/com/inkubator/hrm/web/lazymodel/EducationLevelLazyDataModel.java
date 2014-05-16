@@ -10,28 +10,28 @@ import org.hibernate.criterion.Order;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
-import com.inkubator.hrm.entity.Religion;
-import com.inkubator.hrm.service.ReligionService;
+import com.inkubator.hrm.entity.EducationLevel;
+import com.inkubator.hrm.service.EducationLevelService;
 
 /**
 *
 * @author rizkykojek
 */
-public class ReligionDataModel extends LazyDataModel<Religion> implements Serializable {
+public class EducationLevelLazyDataModel extends LazyDataModel<EducationLevel> implements Serializable {
 
-	private static final Logger LOGGER = Logger.getLogger(ReligionDataModel.class);
+	private static final Logger LOGGER = Logger.getLogger(EducationLevelLazyDataModel.class);
     private final String parameter;
-    private final ReligionService religionService;
-    private List<Religion> religions = new ArrayList<>();
+    private final EducationLevelService educationLevelService;
+    private List<EducationLevel> educationLevels = new ArrayList<>();
     private Integer total;
 
-    public ReligionDataModel(String parameter, ReligionService religionService) {
+    public EducationLevelLazyDataModel(String parameter, EducationLevelService educationLevelService) {
         this.parameter = parameter;
-        this.religionService = religionService;
+        this.educationLevelService = educationLevelService;
     }
 
     @Override
-    public List<Religion> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<EducationLevel> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
         LOGGER.info("Step Load Lazy data Model");        
         try {
         	Order orderable = null;
@@ -41,8 +41,8 @@ public class ReligionDataModel extends LazyDataModel<Religion> implements Serial
 	        	orderable = Order.desc("name");
 	        }
 	        
-	        religions = religionService.getByParam(parameter, first, pageSize, orderable);
-            total = Integer.parseInt(String.valueOf(religionService.getTotalReligionByParam(parameter)));            
+	        educationLevels = educationLevelService.getByParam(parameter, first, pageSize, orderable);
+            total = Integer.parseInt(String.valueOf(educationLevelService.getTotalByParam(parameter)));            
         	LOGGER.info("Success Load Lazy data Model");
         	
         } catch (Exception ex) {
@@ -52,19 +52,19 @@ public class ReligionDataModel extends LazyDataModel<Religion> implements Serial
 
         setPageSize(pageSize);
         setRowCount(total);
-        return religions;
+        return educationLevels;
     }
 
     @Override
-    public Object getRowKey(Religion religion) {
-        return religion.getId();
+    public Object getRowKey(EducationLevel educationLevel) {
+        return educationLevel.getId();
     }
 
     @Override
-    public Religion getRowData(String id) {
-        for (Religion religion : religions) {
-            if (id.equals(String.valueOf(religion.getId()))) {
-                return religion;
+    public EducationLevel getRowData(String id) {
+        for (EducationLevel educationLevel : educationLevels) {
+            if (id.equals(String.valueOf(educationLevel.getId()))) {
+                return educationLevel;
             }
         }
         return null;

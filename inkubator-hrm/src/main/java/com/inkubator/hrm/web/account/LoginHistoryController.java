@@ -16,7 +16,7 @@ import org.primefaces.model.chart.PieChartModel;
 
 import com.inkubator.hrm.entity.LoginHistory;
 import com.inkubator.hrm.service.LoginHistoryService;
-import com.inkubator.hrm.web.lazymodel.LoginHistoryLazyModel;
+import com.inkubator.hrm.web.lazymodel.LoginHistoryLazyDataModel;
 import com.inkubator.hrm.web.search.LoginHistorySearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 
@@ -154,7 +154,7 @@ public class LoginHistoryController extends BaseController {
 
     public LazyDataModel<LoginHistory> getLazyDataLoginHistory() {
         if (lazyDataLoginHistory == null) {
-            lazyDataLoginHistory = new LoginHistoryLazyModel(loginHistorySearchParameter, loginHistoryService);
+            lazyDataLoginHistory = new LoginHistoryLazyDataModel(loginHistorySearchParameter, loginHistoryService);
         }
         return lazyDataLoginHistory;
     }

@@ -13,8 +13,8 @@ import com.inkubator.hrm.entity.Religion;
 */
 public interface ReligionService extends IService<Religion> {
 
-	List<Religion> getByParam(String parameter, int firstResult, int maxResults, Order orderable) throws Exception;
+	public List<Religion> getByParam(String parameter, int firstResult, int maxResults, Order orderable) throws Exception;
 
-	Long getTotalReligionByParam(String parameter) throws Exception;
+	public Long getTotalReligionByParam(String parameter) throws Exception;
 
 }

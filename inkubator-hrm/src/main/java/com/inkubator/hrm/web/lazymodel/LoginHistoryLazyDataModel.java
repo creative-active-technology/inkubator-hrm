@@ -21,15 +21,15 @@ import org.primefaces.model.SortOrder;
  *
  * @author Deni Husni FR,rizkykojek
  */
-public class LoginHistoryLazyModel extends LazyDataModel<LoginHistory> implements Serializable {
+public class LoginHistoryLazyDataModel extends LazyDataModel<LoginHistory> implements Serializable {
 
-    private static final Logger LOGGER = Logger.getLogger(LoginHistoryLazyModel.class);
+    private static final Logger LOGGER = Logger.getLogger(LoginHistoryLazyDataModel.class);
     private final LoginHistorySearchParameter loginHistorySearchParameter;
     private final LoginHistoryService loginHistoryService;
     private List<LoginHistory> loginHistorys = new ArrayList<>();
     private Integer jumlahData;
 
-    public LoginHistoryLazyModel(LoginHistorySearchParameter loginHistorySearchParameter, LoginHistoryService loginHistoryService) {
+    public LoginHistoryLazyDataModel(LoginHistorySearchParameter loginHistorySearchParameter, LoginHistoryService loginHistoryService) {
         this.loginHistorySearchParameter = loginHistorySearchParameter;
         this.loginHistoryService = loginHistoryService;
     }
