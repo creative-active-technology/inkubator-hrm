@@ -59,11 +59,11 @@
     </bean>  
     
     <!--<bean id="loginHistoryMessagesListener" class="com.csl.idm.web.listener.LoginHistoryMessagesListener" lazy-init="true"/>-->
-    <bean id="notificationMessagesListener" class="com.csl.idm.web.listener.NotificationMessagesListener" lazy-init="true"/>
+    <bean id="notificationUserMessagesListener" class="com.inkubator.hrm.service.impl.NotificationUserMessagesListener" lazy-init="true"/>
     <jms:listener-container container-type="default" connection-factory="connectionFactoryComsume" acknowledge="transacted" 
                             transaction-manager="jsmTransaction"   >
         
-        <jms:listener destination="notificationUserHrm" ref="notificationMessagesListener" method="onMessage"  /> 
+        <jms:listener destination="notificationUserHrm" ref="notificationUserMessagesListener" method="onMessage"  /> 
        
     </jms:listener-container>
     <bean id="jsmTransaction" class="org.springframework.jms.connection.JmsTransactionManager">
