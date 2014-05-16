@@ -37,15 +37,15 @@
                                     <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm" />
                                     <p:outputLabel value=":" />
                                     <p:inputText id="searchId" value="#{religionViewController.parameter}" style="width: 250px" styleClass="isitext_hrm"/>
-                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" action="#{religionViewController.doSearch()}" update="tableReligionId"  style="width: 75px" styleClass="isitext_hrm"/>
+                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" action="#{religionViewController.doSearch()}" update="tableReligionId"  styleClass="label_button" icon="ui-icon-search"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="2" >
-                                    <p:commandButton value="#{appmsg['global.add']}" actionListener="#{religionViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" style="width: 75px"  styleClass="isitext_hrm" ajax="true">
+                                    <p:commandButton value="#{appmsg['global.add']}" actionListener="#{religionViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
                                         <p:ajax event="dialogReturn" listener="#{religionViewController.onDialogClose}"  update="tableReligionId,:growlReligionViewlId"/>
                                     </p:commandButton>
-                                    <p:commandButton value="#{appmsg['global.close']}" style="width: 75px" styleClass="isitext_hrm" action="#{religionViewController.doClose()}"/>
+                                    <p:commandButton value="#{appmsg['global.close']}" styleClass="label_button" action="#{religionViewController.doClose()}" icon="ui-icon-home"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
                         </p:toolbar>
@@ -56,17 +56,17 @@
                                       rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="#{appmsg['religion.list_of_religion']}" styleClass="label_hrm"/>
+                                <h:outputText value="#{appmsg['religion.list_of_religion']}"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 5%">
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['global.number']}" styleClass="label_hrm"/>
+                                    <h:outputText value="#{appmsg['global.number']}"/>
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
                             <p:column sortBy="name"  style="width: 70%">
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['global.name']}" styleClass="label_hrm"/>
+                                    <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{religionData.name}"/>
                             </p:column>    
@@ -88,9 +88,9 @@
                                 </p:commandButton>
                             </p:column>                        
                             <f:facet name="footer">
-                                <p:outputLabel value="#{appmsg['global.total_data']} : " styleClass="label_hrm"/>
-                                <p:outputLabel value="#{religionViewController.lazyDataReligion.rowCount}" styleClass="label_hrm"/>
-                                <p:outputLabel value="Data" style="margin-left: 3px" styleClass="label_hrm"/>
+                                <p:outputLabel value="#{appmsg['global.total_data']} : "/>
+                                <p:outputLabel value="#{religionViewController.lazyDataReligion.rowCount}"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px"/>
                             </f:facet>  
                         </p:dataTable>
                         <p:blockUI block="formReligionViewId" trigger="tableReligionId,btnSearchId" >
@@ -99,6 +99,9 @@
                                 <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
                             </h:panelGrid>
                         </p:blockUI>
+                        <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
+                            <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
+                        </p:dialog>
                     </h:form>
                 </p:panel>
 
