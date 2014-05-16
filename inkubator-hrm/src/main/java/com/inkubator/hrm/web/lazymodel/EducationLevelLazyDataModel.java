@@ -38,7 +38,7 @@ public class EducationLevelLazyDataModel extends LazyDataModel<EducationLevel> i
 	        if (sortField != null) {
 	            orderable = (sortOrder == SortOrder.ASCENDING) ? Order.asc(sortField) : Order.desc(sortField);
 	        } else {
-	        	orderable = Order.desc("name");
+	        	orderable = Order.asc("level");
 	        }
 	        
 	        educationLevels = educationLevelService.getByParam(parameter, first, pageSize, orderable);
