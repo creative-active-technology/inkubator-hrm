@@ -38,89 +38,95 @@ and open the template in the editor.
 }
 
 
-    .grid_no_border td,.grid_no_border tr 
-    {
-        border:0px;
-        /*padding:3px 3px!important;*/
-        background:transparent;
-        border-width: 0px !important;
-        padding-right: 2px !important;
-        padding-bottom: 2px !important;
-        padding: 1px 4.5px !important;
+.grid_no_border td,.grid_no_border tr 
+{
+    border:0px;
+    /*padding:3px 3px!important;*/
+    background:transparent;
+    border-width: 0px !important;
+    padding-right: 2px !important;
+    padding-bottom: 2px !important;
+    padding: 1px 4.5px !important;
 
-        /*left: 50%!important;*/
-    }
-    .grid_border td,.grid_border tr 
-    {
-        border:2px !important;
-        /*padding:3px 3px!important;*/
-        /*background:transparent;*/
-        border-style: solid !important;
-        border-width: 1px!important;
-        border-color: #245485 !important;
-        padding-right: 2px !important;
-        padding-bottom: 2px !important;
-        padding: 1px 4.5px !important;
+    /*left: 50%!important;*/
+}
+.grid_border td,.grid_border tr 
+{
+    border:2px !important;
+    /*padding:3px 3px!important;*/
+    /*background:transparent;*/
+    border-style: solid !important;
+    border-width: 1px!important;
+    border-color: #245485 !important;
+    padding-right: 2px !important;
+    padding-bottom: 2px !important;
+    padding: 1px 4.5px !important;
 
-        /*left: 50%!important;*/
-    }
-    .ui-widget,.ui-widget .ui-widget
-    {
-        font-size:13px;
-        font-family: Calibri;
-        color: #003366;
-    }
+    /*left: 50%!important;*/
+}
+.ui-widget,.ui-widget .ui-widget
+{
+    font-size:13px;
+    font-family: Calibri;
+    /*color: #003366;*/
+}
 
 
 
-    .ui-corner-all {
-        border-radius: 4px;
+.ui-corner-all {
+    border-radius: 4px;
 
-    }
+}
 
-    .label_hrm{
-        font-family: Calibri!important;
-        font-size: 13px !important;
-        font-weight: bold !important;
-        color: #245485 !important;
+.label_hrm{
+    font-family: Calibri!important;
+    font-size: 13px !important;
+    font-weight: bold !important;
+    color: #036 !important;
 
-    }
+}
 
-    .isitext_hrm{
-        font-family: Calibri!important;
-        font-size: 13px !important;
-        color: #245485 !important;
+.label_button{
+    font-family: Calibri!important;
+    font-size: 13px !important;
+/*    font-weight: bold !important;
+    color: #245485 !important;*/
+}
+.isitext_hrm{
+    font-family: Calibri!important;
+    font-size: 13px !important;
+    color: #245485 !important;
 
-    }
+}
 
-    .header_big{
-        font-family: Lucida Sans !important;
-        font-size: 14px !important;
-        font-weight: bold;
-        color: #036;
-    }
+.header_big{
+    font-family: Lucida Sans !important;
+    font-size: 14px !important;
+    font-weight: bold;
+    color: #036;
+}
 
-    .header_small_no_bold{
-        font-family: Lucida Sans !important;
-        font-size: 12px !important;
-        font-weight: normal;
-        color: #003366; 
-    }
+.header_small_no_bold{
+    font-family: Lucida Sans !important;
+    font-size: 12px !important;
+    font-weight: normal;
+    color: #003366; 
+}
 
-    .ui-growl-title
-    {
-        font:18px "Lucida Console"!important;
-        color:#900;
-        text-align:left
-    }
-    .ui-growl-message p
-    {
-        font:12px Verdana!important;
-        color:#036
-    }
-    .ui-growl
-    {
-        position:fixed;
-        top:2%;
-        right: 1%;
-    }
+.ui-growl-title
+{
+    font:18px "Lucida Console"!important;
+    color:#900;
+    text-align:left
+}
+.ui-growl-message p
+{
+    font:12px Verdana!important;
+    color:#036
+}
+.ui-growl
+{
+    position:fixed;
+    top:2%;
+    right: 1%;
+}

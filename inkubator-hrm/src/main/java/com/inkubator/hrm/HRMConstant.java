@@ -31,5 +31,23 @@ public class HRMConstant {
     public static final String APPROVAL_PROCESS_REQUEST_PERMIT_EN = "PERMIT REQUEST";
     public static final String SAVE_CONDITION = "SAVE_CONDITION";
     public static final String UPDATE_CONDITION = "UPDATE_CONDITION";
+    public static final Integer ACTIVE = 1;
+    public static final Integer NOTACTIVE = 0;
+    public static final Integer LOCK = 1;
+    public static final Integer NOTLOCK = 0;
+    public static final Integer EXPIRED = 1;
+    public static final Integer NOTEXPIRED = 0;
+    public static final byte[] KEYVALUE = new byte[]{'z', 'i', 'm', 'A', 'm', 'a', 'B', 'y', 'a', 'L', 'N', 'L', 'd', 'h', 'f', 'r'};
+    public static final String AES_ALGO = "AES";
+    public static final String USER_NEW = "user_create_new";
+    public static final String USER_UPDATE = "user_update";
+    public static final String USER_RESET = "user_reset";
+    public static final String INKUBA_SYSTEM = "INKUBA_SYSTEM";
+    public static final Integer EMAIL_NOTIFICATION_NOT_SEND = -1;
+    public static final Integer EMAIL_NOTIFICATION_NOT_YET_SEND = 0;
+    public static final Integer EMAIL_NOTIFICATION_SEND = 1;
+    public static final Integer SMA_NOTIFICATION_NOT_SEND = -1;
+    public static final Integer SMS_NOTIFICATION_NOT_YET_SEND = 0;
+    public static final Integer SMS_NOTIFICATION_SEND = 1;
 
 }

@@ -15,7 +15,7 @@ import org.hibernate.validator.constraints.Email;
  */
 public class UserModel implements Serializable {
 
-    private long id;
+    private Long id;
     private String userId;
     private String userName;
     private String emailAddress;
@@ -25,11 +25,11 @@ public class UserModel implements Serializable {
     private Boolean isExpired;
     private Boolean isLock;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -39,13 +39,13 @@
                                         <f:selectItem itemLabel="#{appmsg['global.user_id']}" itemValue="userId"/>
                                         <f:selectItem itemLabel="#{appmsg['loginhistory.ip_address']}" itemValue="ipAddress"/>
                                     </p:selectOneMenu>
-                                    <p:inputText id="searchId" value="#{loginHistoryController.loginHistorySearchParameter.parameter}" style="width: 250px" styleClass="isitext_hrm"/>
-                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" action="#{loginHistoryController.doSearch()}" update="tableLoginHistoryId"  style="width: 75px" styleClass="isitext_hrm"/>
+                                    <p:inputText id="searchId" value="#{loginHistoryController.loginHistorySearchParameter.parameter}" style="width: 250px" styleClass="label_button"/>
+                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" action="#{loginHistoryController.doSearch()}" update="tableLoginHistoryId"  style="width: 75px" styleClass="label_button"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
                                 <h:panelGrid >
-                                    <p:commandButton value="#{appmsg['global.close']}" style="width: 75px" styleClass="isitext_hrm" action="#{loginHistoryController.doClose()}"/>
+                                    <p:commandButton value="#{appmsg['global.close']}" style="width: 75px" styleClass="label_button" action="#{loginHistoryController.doClose()}" />
                                 </h:panelGrid>
                             </p:toolbarGroup>
                         </p:toolbar>

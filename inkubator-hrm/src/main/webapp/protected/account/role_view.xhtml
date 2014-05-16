@@ -34,17 +34,17 @@
                                     <p:outputLabel value=":" styleClass="label_hrm" />
                                     <p:inputText value="#{roleViewController.hrmRoleSearchParameter.roleName}" style="width: 250px" id="pencarianId" styleClass="isitext_hrm" 
                                                  label="#{appmsg['global.searching']}" title="#{appmsg['global.searching']}"/>
-                                    <p:commandButton value="#{appmsg['global.search']}" action="#{roleViewController.doSearch()}" style="width: 75px" update="tableRoleId"  
-                                                     styleClass="isitext_hrm" title="#{appmsg['global.search']}" id="btnPencarianId" />
+                                    <p:commandButton value="#{appmsg['global.search']}" action="#{roleViewController.doSearch()}"  update="tableRoleId" icon="ui-icon-search"
+                                                     styleClass="label_button" title="#{appmsg['global.search']}" id="btnPencarianId" />
                                 </h:panelGrid>
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="2">
-                                    <p:commandButton value="#{appmsg['global.add']}" actionListener="#{roleViewController.doAdd}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" 
-                                                     style="width: 75px"  styleClass="isitext_hrm" ajax="true">
+                                    <p:commandButton value="#{appmsg['global.add']}" actionListener="#{roleViewController.doAdd}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" icon="ui-icon-document"
+                                                       styleClass="label_button" ajax="true">
                                         <p:ajax event="dialogReturn" listener="#{roleViewController.onDialogReturn}"  update="tableRoleId,:roleViewGrowlId"/>
                                     </p:commandButton>
-                                    <p:commandButton value="#{appmsg['global.close']}" style="width: 75px" styleClass="isitext_hrm" action="#{roleViewController.doClose()}" title="#{appmsg['global.close']}" 
+                                    <p:commandButton value="#{appmsg['global.close']}"  styleClass="label_button" action="#{roleViewController.doClose()}" title="#{appmsg['global.close']}" icon="ui-icon-home"
                                                      label="#{appmsg['global.close']}"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
@@ -107,6 +107,9 @@
                                 <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
                             </h:panelGrid>
                         </p:blockUI>
+                        <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
+                            <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
+                        </p:dialog>
                     </h:form>
                 </p:panel>
                 <p:dialog widgetVar="confirmDialogHrmRole" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
@@ -131,7 +134,7 @@
                             <p:separator/>
                             <p:commandButton value="#{appmsg['global.yes']}" action="#{roleViewController.doDelete()}" update=":roleViewId" id="yesId" title="#{appmsg['global.yes']}"
                                              oncomplete="confirmDialogHrmRole.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                            <p:commandButton value="#{appmsg['global.no']}" oncomplete="confirmDialogHrmRole.hide()" icon="ui-icon-close" title="#{appmsg['global.no']}" />
+                            <p:commandButton value="#{appmsg['global.no']}" oncomplete="confirmDialogHrmRole.hide()" icon="ui-icon-close" title="#{appmsg['global.no']}"  />
 
                         </div>
                     </h:form>
@@ -147,22 +150,22 @@
                             <p:column style="color: #003366"><p:outputLabel value="#{appmsg['role_view.role_description']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{roleViewController.selectedHrmRole.description}"/> </p:column>
                         </p:row>
-<!--                        <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Create By" style="font-weight: bold"/></p:column>
-                            <p:column><p:outputLabel value="#{spiRoleViewController.selectedSpiRole.createdBy}"/> </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Create Date" style="font-weight: bold"/></p:column>
-                            <p:column><p:outputLabel value="#{spiRoleViewController.selectedSpiRole.createdOn}"/> </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Update By" style="font-weight: bold"/></p:column>
-                            <p:column><p:outputLabel value="#{spiRoleViewController.selectedSpiRole.updatedBy}"/> </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Update On" style="font-weight: bold"/></p:column>
-                            <p:column><p:outputLabel value="#{spiRoleViewController.selectedSpiRole.updatedOn}"/> </p:column>
-                        </p:row>-->
+                        <!--                        <p:row>
+                                                    <p:column style="color: #003366"><p:outputLabel value="Create By" style="font-weight: bold"/></p:column>
+                                                    <p:column><p:outputLabel value="#{spiRoleViewController.selectedSpiRole.createdBy}"/> </p:column>
+                                                </p:row>
+                                                <p:row>
+                                                    <p:column style="color: #003366"><p:outputLabel value="Create Date" style="font-weight: bold"/></p:column>
+                                                    <p:column><p:outputLabel value="#{spiRoleViewController.selectedSpiRole.createdOn}"/> </p:column>
+                                                </p:row>
+                                                <p:row>
+                                                    <p:column style="color: #003366"><p:outputLabel value="Update By" style="font-weight: bold"/></p:column>
+                                                    <p:column><p:outputLabel value="#{spiRoleViewController.selectedSpiRole.updatedBy}"/> </p:column>
+                                                </p:row>
+                                                <p:row>
+                                                    <p:column style="color: #003366"><p:outputLabel value="Update On" style="font-weight: bold"/></p:column>
+                                                    <p:column><p:outputLabel value="#{spiRoleViewController.selectedSpiRole.updatedOn}"/> </p:column>
+                                                </p:row>-->
                         <f:facet name="footer">
                             <p:row>
                                 <p:column colspan="2"><p:outputLabel value="User Account - Role" styleClass="label_hrm" style="margin-left: 5px "/></p:column>

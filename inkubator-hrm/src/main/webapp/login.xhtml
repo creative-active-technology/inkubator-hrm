@@ -74,7 +74,7 @@
                                     <p:outputLabel/>
                                     <h:panelGroup>
                                         <p:commandButton icon="ui-icon-locked" value="#{appmsg['loginform.login']}" action="#{loginController.doLogin()}"
-                                                         id="loginId" ajax="false" type="submit" styleClass="label_hrm"
+                                                         id="loginId" ajax="false" type="submit" styleClass="label_button"
                                                          update="loginForm" 
                                                          style="width: 85px" />
                                         <p:commandLink id="resetPasswordId" value="#{appmsg['loginform.lupa_password']}" styleClass="isitext_hrm"
@@ -152,7 +152,7 @@
                 <p:separator/>
                 <div align="right">
                     <!--<p:messages id="messagesId"/>-->
-                    <p:commandButton icon="ui-icon-mail-closed" value="Submit"
+                    <p:commandButton icon="ui-icon-mail-closed" value="Submit" styleClass="label_button"
                                      action="#{loginController.doResetPassword()}" id="submitId"
                                      update=":resetgrowl,emailId" ajax="true" oncomplete="handleUpdateRequest(args)"
                                      style="margin-top: 5px;margin-right: 10px;width: 80px" />

@@ -83,6 +83,13 @@ root
     color: #245485 !important;
 }
 
+.label_button{
+    font-family: Calibri!important;
+    font-size: 14px !important;
+/*    font-weight: bold !important;
+    color: #245485 !important;*/
+}
+
 .isitext_hrm{
     font-family: Calibri!important;
     font-size: 14px !important;

@@ -22,4 +22,10 @@ public interface HrmUserService extends IService<HrmUser> {
     public Long getTotalHrmUserByParam(HrmUserSearchParameter searchParameter) throws Exception;
 
     public HrmUser getEntiyByPkWithDetail(long id) throws Exception;
+
+    public HrmUser getByUserId(String userId) throws Exception;
+
+    public HrmUser getByEmailAddress(String emailAddress) throws Exception;
+
+    public void saveAndNotification(HrmUser hrmUser) throws Exception;
 }

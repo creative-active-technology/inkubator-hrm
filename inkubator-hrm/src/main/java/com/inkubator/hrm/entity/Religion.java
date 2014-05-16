@@ -2,7 +2,6 @@ package com.inkubator.hrm.entity;
 
 import java.io.Serializable;
 import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -11,49 +10,49 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name="religion",catalog="hrm")
+@Table(name = "religion", catalog = "hrm")
 public class Religion implements Serializable {
 
-	private Long id;
-	private String name;
-	private String createdBy;
+    private Long id;
+    private String name;
+    private String createdBy;
     private String updatedBy;
     private Date createdOn;
     private Date updatedOn;
-	
-	public Religion(){
-		
-	}
-	
-	public Religion(Long id){
-		this.id = id;
-	}
-	
-	public Religion(Long id, String name){
-		this.id = id;
-		this.name = name;
-	}
-	
-	@Id 
-    @Column(name="id", unique=true, nullable=false)
+
+    public Religion() {
+
+    }
+
+    public Religion(Long id) {
+        this.id = id;
+    }
+
+    public Religion(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    @Id
+    @Column(name = "id", unique = true, nullable = false)
     public Long getId() {
         return this.id;
     }
-    
+
     public void setId(Long id) {
         this.id = id;
     }
 
-    @Column(name="name", unique=true, nullable=false)
-	public String getName() {
-		return name;
-	}
+    @Column(name = "name", unique = true, nullable = false)
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	@Column(name = "created_by", length = 45)
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Column(name = "created_by", length = 45)
     public String getCreatedBy() {
         return this.createdBy;
     }

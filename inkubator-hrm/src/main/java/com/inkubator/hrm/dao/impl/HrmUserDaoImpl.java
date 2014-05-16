@@ -73,4 +73,11 @@ public class HrmUserDaoImpl extends IDAOImpl<HrmUser> implements HrmUserDao {
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
+    @Override
+    public HrmUser getByEmailAddress(String emailAddress) {
+         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("emailAddress", emailAddress));
+        return (HrmUser) criteria.uniqueResult();
+    }
+
 }
