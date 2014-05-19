@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.ReligionDao;
 import com.inkubator.hrm.entity.Religion;
 import com.inkubator.hrm.service.ReligionService;
@@ -195,6 +196,12 @@ public class ReligionServiceImpl extends IServiceImpl implements ReligionService
 	@Override
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void save(Religion religion) throws Exception {
+		// check duplicate name
+		long totalDuplicates = religionDao.getTotalByName(religion.getName());
+		if (totalDuplicates > 0) {
+			throw new BussinessException("religion.error_duplicate_religion_name");
+		}
+				
 		religion.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
 		religion.setCreatedBy(UserInfoUtil.getUserName());
 		religion.setCreatedOn(new Date());
@@ -228,6 +235,12 @@ public class ReligionServiceImpl extends IServiceImpl implements ReligionService
 	@Override
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void update(Religion r) throws Exception {
+		// check duplicate name
+		long totalDuplicates = religionDao.getTotalByNameAndNotId(r.getName(), r.getId());
+		if (totalDuplicates > 0) {
+			throw new BussinessException("religion.error_duplicate_religion_name");
+		}
+		
 		Religion religion = religionDao.getEntiyByPK(r.getId());
 		religion.setName(r.getName());
 		religion.setUpdatedBy(UserInfoUtil.getUserName());
