@@ -42,7 +42,7 @@
                             <p:column  style="width: 50%">
                                 <p:focus for ="nameId">
                                     <p:inputText id="nameId" title="#{appmsg['educationlevel.education_level_name']}" value="#{educationLevelFormController.educationLevelModel.name}" 
-                                    			 required="true" maxlength="30" styleClass="isitext_hrm" style="width:190px;" />
+                                    			 required="true" requiredMessage="#{appmsg['educationlevel.education_level_name_should_not_be_empty']}" maxlength="30" styleClass="isitext_hrm" style="width:190px;" />
                                 </p:focus>
                             </p:column>
                         </p:row>
@@ -76,7 +76,7 @@
                                          action="#{educationLevelFormController.doSave()}" styleClass="isitext_hrm"
                                          style="margin-right: 5px;width: 75px" label="#{appmsg['global.save']}"
                                          icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
-                        <p:commandButton value="#{appmsg['global.clear']}" title="#{appmsg['global.clear']}" update="formEducationLevelFormId" action="#{educationLevelFormController.doClear()}"
+                        <p:commandButton value="#{appmsg['global.clear']}" title="#{appmsg['global.clear']}" process="@this" update="formEducationLevelFormId" action="#{educationLevelFormController.doClear()}"
                                          icon="ui-icon-refresh" styleClass="isitext_hrm" >  
                             <p:resetInput target="formEducationLevelFormId" />  
                         </p:commandButton>

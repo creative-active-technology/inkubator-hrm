@@ -16,47 +16,47 @@
                 Home
             </ui:define>
             <ui:define name="center">
-                <div id="box_bg" style="margin: 10px">                    
+                <p:panel style="margin: 10px" >                    
                     <h:panelGrid style="margin-bottom: 5px" columns="2">
-                        <p:graphicImage library="images" name="religion.png" height="36" width="36" cache="true"/>
+                        <p:graphicImage library="images" name="graduated.png" height="36" width="36" cache="true"/>
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="#{appmsg['religion.religion']}" styleClass="header_big" />
-                                <p:outputLabel value="#{appmsg['religion.religion_data_from_reference']}" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['specificationability.specification_ability']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['specificationability.specification_ability_data_from_reference']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
 
                     <p:separator/>
-                    <p:growl id="growlReligionViewlId" globalOnly="true" showDetail="true" />
+                    <p:growl id="growlSpecAbilityViewlId" globalOnly="true" showDetail="true" />
 
-                    <h:form id="formReligionViewId">
+                    <h:form id="formSpecAbilityViewId">
                         <p:toolbar  style="margin-top: 10px">
                             <p:toolbarGroup align="left">
                                 <h:panelGrid columns="4">
                                     <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm" />
                                     <p:outputLabel value=":" />
-                                    <p:inputText id="searchId" value="#{religionViewController.parameter}" style="width: 250px" styleClass="isitext_hrm"/>
-                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{religionViewController.doSearch()}" update="tableReligionId"  styleClass="label_button" icon="ui-icon-search"/>
+                                    <p:inputText id="searchId" value="#{specAbilityViewController.searchParameter.parameter}" style="width: 250px" styleClass="isitext_hrm"/>
+                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" action="#{specAbilityViewController.doSearch()}" update="tableSpecAbilityId"  styleClass="label_button" icon="ui-icon-search"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="2" >
-                                    <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']}" actionListener="#{religionViewController.doAdd()}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
-                                        <p:ajax event="dialogReturn" listener="#{religionViewController.onDialogClose}"  update="tableReligionId,:growlReligionViewlId"/>
+                                    <p:commandButton value="#{appmsg['global.add']}" actionListener="#{specAbilityViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
+                                        <p:ajax event="dialogReturn" listener="#{specAbilityViewController.onDialogClose}"  update="tableSpecAbilityId,:growlSpecAbilityViewlId"/>
                                     </p:commandButton>
-                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{religionViewController.doClose()}" icon="ui-icon-home"/>
+                                    <p:commandButton value="#{appmsg['global.close']}" styleClass="label_button" action="#{specAbilityViewController.doClose()}" icon="ui-icon-home"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
                         </p:toolbar>
                         <p:focus for="searchId" />
 
-                        <p:dataTable  id="tableReligionId" var="religionData"  value="#{religionViewController.lazyDataReligion}" lazy="true" paginator="true" pageLinks="7"
+                        <p:dataTable  id="tableSpecAbilityId" var="specAbilityData"  value="#{educationLevelViewController.lazyDataEducationLevel}" lazy="true" paginator="true" pageLinks="7"
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
                                       rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="#{appmsg['religion.list_of_religion']}"/>
+                                <h:outputText value="#{appmsg['educationlevel.list_of_education_level']}"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 5%">
                                 <f:facet name="header">  
@@ -64,36 +64,43 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="name"  style="width: 70%">
+                            <p:column sortBy="level"  style="text-align: center;width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['educationlevel.level']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{specAbilityData.level}"/>
+                            </p:column>
+                            <p:column sortBy="name"  style="width: 50%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{religionData.name}"/>
-                            </p:column>    
+                                <h:outputLabel value= "#{specAbilityData.name}"/>
+                            </p:column>
+                                
                             <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" style="font-size: 10px!important"
-                                                 update=":panelDialogDetailId" onclick="statusDialog.show()"  oncomplete="dialogDetailReligion.show()">                        
-                                    <f:setPropertyActionListener value="#{religionData}" target="#{religionViewController.selectedReligion}" />
+                                                 update=":panelDialogDetailId" onclick="statusDialog.show()"  oncomplete="dialogDetailEducationLevel.show()">                        
+                                    <f:setPropertyActionListener value="#{specAbilityData}" target="#{educationLevelViewController.selectedEducationLevel}" />
                                 </p:commandButton>
                                 - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  style="font-size: 10px!important" 
-                                                 update=":panelDialogConfirmId" onclick="statusDialog.show()"  oncomplete="dialogConfirmReligion.show()">
-                                    <f:setPropertyActionListener value="#{religionData}" target="#{religionViewController.selectedReligion}" />
+                                                 update=":panelDialogConfirmId" onclick="statusDialog.show()"  oncomplete="dialogConfirmEducationLevel.show()">
+                                    <f:setPropertyActionListener value="#{specAbilityData}" target="#{educationLevelViewController.selectedEducationLevel}" />
                                 </p:commandButton>
                                 -
                                 <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
-                                                 action="#{religionViewController.doUpdate()}" >
-                                    <f:setPropertyActionListener value="#{religionData}" target="#{religionViewController.selectedReligion}" />
-                                    <p:ajax event="dialogReturn" listener="#{religionViewController.onDialogClose}"  update="tableReligionId,:growlReligionViewlId"/>
+                                                 action="#{educationLevelViewController.doUpdate()}" >
+                                    <f:setPropertyActionListener value="#{specAbilityData}" target="#{educationLevelViewController.selectedEducationLevel}" />
+                                    <p:ajax event="dialogReturn" listener="#{educationLevelViewController.onDialogClose}"  update="tableSpecAbilityId,:growlSpecAbilityViewlId"/>
                                 </p:commandButton>
                             </p:column>                        
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>
-                                <p:outputLabel value="#{religionViewController.lazyDataReligion.rowCount}"/>
+                                <p:outputLabel value="#{educationLevelViewController.lazyDataEducationLevel.rowCount}"/>
                                 <p:outputLabel value="Data" style="margin-left: 3px"/>
                             </f:facet>  
                         </p:dataTable>
-                        <p:blockUI block="formReligionViewId" trigger="tableReligionId,btnSearchId" >
+                        <p:blockUI block="formSpecAbilityViewId" trigger="tableSpecAbilityId,btnSearchId" >
                             <h:panelGrid columns="2" styleClass="grid_no_border">
                                 <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
                                 <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
@@ -103,9 +110,9 @@
                             <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
                         </p:dialog>
                     </h:form>
-                </div>
+                </p:panel>
 
-                <p:dialog widgetVar="dialogConfirmReligion" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmEducationLevel" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -119,26 +126,30 @@
                             </h:panelGrid>
                         </div>
                         <h:panelGrid id="panelDialogConfirmId"  columns="3">
-                            <p:outputLabel value="#{appmsg['religion.religion']}"  style="font-weight: bold"/>
+                            <p:outputLabel value="#{appmsg['educationlevel.education_level']}"  style="font-weight: bold"/>
                             <p:outputLabel value=":"  style="font-weight: bold"/>
-                            <p:outputLabel value="#{religionViewController.selectedReligion.name}" styleClass="label_hrm"/>
+                            <p:outputLabel value="#{educationLevelViewController.selectedEducationLevel.name}" styleClass="label_hrm"/>
                         </h:panelGrid>
                         <p:separator/>
-                        <p:commandButton value="#{appmsg['global.yes']}" action="#{religionViewController.doDelete()}" update="formReligionViewId,:growlReligionViewlId"
-                                         oncomplete="dialogConfirmReligion.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmReligion.hide()" icon="ui-icon-close" />                     	
+                        <p:commandButton value="#{appmsg['global.yes']}" action="#{educationLevelViewController.doDelete()}" update="formSpecAbilityViewId,:growlSpecAbilityViewlId"
+                                         oncomplete="dialogConfirmEducationLevel.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmEducationLevel.hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
-                <p:dialog widgetVar="dialogDetailReligion" header="#{appmsg['religion.detail_dialog']}" width="450" modal="true" resizable="false" hideEffect="puff" 
+                <p:dialog widgetVar="dialogDetailEducationLevel" header="#{appmsg['educationlevel.detail_dialog']}" width="450" modal="true" resizable="false" hideEffect="puff" 
                           showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogDetailId" style="width:100%;margin:5px;">
                         <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['religion.religion_name']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;"><p:outputLabel value="#{religionViewController.selectedReligion.name}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['educationlevel.name']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{educationLevelViewController.selectedEducationLevel.name}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['educationlevel.level']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{educationLevelViewController.selectedEducationLevel.level}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <f:facet name="footer">
                             <p:row>
-                                <p:column colspan="2"><p:outputLabel value="#{appmsg['religion.religion']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
+                                <p:column colspan="2"><p:outputLabel value="#{appmsg['educationlevel.education_level']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
                             </p:row>
                         </f:facet>
                     </p:panelGrid>

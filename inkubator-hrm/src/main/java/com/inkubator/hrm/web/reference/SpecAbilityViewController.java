@@ -1,0 +1,141 @@
+package com.inkubator.hrm.web.reference;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+
+import org.hibernate.exception.ConstraintViolationException;
+import org.primefaces.context.RequestContext;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.model.LazyDataModel;
+import org.springframework.dao.DataIntegrityViolationException;
+
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.entity.SpecificationAbility;
+import com.inkubator.hrm.service.SpecificationAbilityService;
+import com.inkubator.hrm.web.lazymodel.SpecificationAbilityLazyDataModel;
+import com.inkubator.hrm.web.search.SpecificationAbilitySearchParameter;
+import com.inkubator.webcore.controller.BaseController;
+import com.inkubator.webcore.util.FacesUtil;
+import com.inkubator.webcore.util.MessagesResourceUtil;
+
+/**
+*
+* @author rizkykojek
+*/
+@ManagedBean(name = "specAbilityViewController")
+@ViewScoped
+public class SpecAbilityViewController extends BaseController {
+
+	private SpecificationAbilitySearchParameter searchParameter;
+	private LazyDataModel<SpecificationAbility> lazyDataSpecificationAbility;	
+	private SpecificationAbility selectedSpecificationAbility;
+	@ManagedProperty(value = "#{specificationAbilityService}")
+	private SpecificationAbilityService specificationAbilityService;
+	
+	@PostConstruct
+    @Override
+    public void initialization() {
+        super.initialization();
+	}
+	
+	@PreDestroy
+    public void cleanAndExit() {
+		specificationAbilityService = null;
+		searchParameter = null;
+		lazyDataSpecificationAbility = null;
+		selectedSpecificationAbility = null;
+	}
+	
+	public LazyDataModel<SpecificationAbility> getLazyDataSpecificationAbility() {
+		if(lazyDataSpecificationAbility == null){
+			lazyDataSpecificationAbility = new SpecificationAbilityLazyDataModel(searchParameter, specificationAbilityService);
+		}
+		return lazyDataSpecificationAbility;
+	}
+
+	public void setLazyDataSpecificationAbility(
+			LazyDataModel<SpecificationAbility> lazyDataSpecificationAbility) {
+		this.lazyDataSpecificationAbility = lazyDataSpecificationAbility;
+	}
+
+	public SpecificationAbility getSelectedSpecificationAbility() {
+		return selectedSpecificationAbility;
+	}
+
+	public void setSelectedSpecificationAbility(SpecificationAbility selectedSpecificationAbility) {
+		this.selectedSpecificationAbility = selectedSpecificationAbility;
+	}
+
+	public void setSpecificationAbilityService(SpecificationAbilityService specificationAbilityService) {
+		this.specificationAbilityService = specificationAbilityService;
+	}
+
+	public SpecificationAbilitySearchParameter getSearchParameter() {
+		return searchParameter;
+	}
+
+	public void setSearchParameter(SpecificationAbilitySearchParameter searchParameter) {
+		this.searchParameter = searchParameter;
+	}
+
+	public void doSearch(){
+		lazyDataSpecificationAbility = null;
+	}
+	
+	public void doDelete(){
+		try {
+            specificationAbilityService.delete(selectedSpecificationAbility);
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+
+        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
+        	MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            LOGGER.error("Error when doDelete specificationAbility ", ex);
+        } catch (Exception ex) {
+        	LOGGER.error("Error when doDelete specificationAbility", ex);
+		}
+	}
+	
+	public void doAdd(){
+		showDialog(null);
+	}
+	
+	public void doUpdate(){
+		Map<String, List<String>> dataToSend = new HashMap<>();
+        List<String> values = new ArrayList<>();
+        values.add(String.valueOf(selectedSpecificationAbility.getId()));
+        dataToSend.put("param", values);
+        showDialog(dataToSend);
+	}
+	
+	private void showDialog(Map<String, List<String>> params){
+		Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 400);
+        options.put("contentHeight", 300);
+        RequestContext.getCurrentInstance().openDialog("spec_ability_form", options, params);
+	}
+	
+	public void onDialogClose(SelectEvent event){
+		//re-calculate searching
+		doSearch();
+		
+		//show growl message
+		String condition = (String) event.getObject();
+		if (condition.equalsIgnoreCase(HRMConstant.SAVE_CONDITION)) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } else if (condition.equalsIgnoreCase(HRMConstant.UPDATE_CONDITION)) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        }
+	}	
+}

@@ -17,7 +17,7 @@ public class SpecificationAbility implements Serializable {
     private Long id;
     private Integer version;
     private String name;
-    private String option;
+    private String optionAbility;
     private Integer scaleValue;
     private String createdBy;
     private String updatedBy;
@@ -42,6 +42,16 @@ public class SpecificationAbility implements Serializable {
         this.id = id;
     }
 
+    @Version
+    @Column(name = "version")
+    public Integer getVersion() {
+        return this.version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
     @Column(name = "name", unique = true, nullable = false)
     public String getName() {
         return name;
@@ -52,12 +62,12 @@ public class SpecificationAbility implements Serializable {
     }
 
     @Column(name = "option_ability", nullable = false)
-    public String getOption() {
-        return option;
+    public String getOptionAbility() {
+        return optionAbility;
     }
 
-    public void setOption(String option) {
-        this.option = option;
+    public void setOptionAbility(String optionAbility) {
+        this.optionAbility = optionAbility;
     }
 
     @Column(name = "scale_value", nullable = false)
@@ -107,14 +117,5 @@ public class SpecificationAbility implements Serializable {
         this.updatedOn = updatedOn;
     }
 
-    @Version
-    @Column(name = "version")
-    public Integer getVersion() {
-        return this.version;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
-
+ 
 }
