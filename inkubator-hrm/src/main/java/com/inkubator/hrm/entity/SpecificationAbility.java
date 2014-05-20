@@ -52,6 +52,7 @@ public class SpecificationAbility implements Serializable {
         this.version = version;
     }
 
+   
     @Column(name = "name", unique = true, nullable = false)
     public String getName() {
         return name;
@@ -117,5 +118,4 @@ public class SpecificationAbility implements Serializable {
         this.updatedOn = updatedOn;
     }
 
- 
 }
