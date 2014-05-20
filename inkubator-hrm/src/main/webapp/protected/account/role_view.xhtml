@@ -14,7 +14,8 @@
                 Role View
             </ui:define>
             <ui:define name="center">
-                <p:panel style="margin: 10px" >
+                <div id="box_bg" style="margin: 10px">
+                    <!--<p:panel style="margin: 10px" >-->
                     <h:panelGrid style="margin-bottom: 5px" columns="2">
                         <p:graphicImage library="images" name="role.png" height="36" width="36" />
                         <h:panelGroup layout="block">
@@ -41,7 +42,7 @@
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="2">
                                     <p:commandButton value="#{appmsg['global.add']}" actionListener="#{roleViewController.doAdd}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" icon="ui-icon-document"
-                                                       styleClass="label_button" ajax="true">
+                                                     styleClass="label_button" ajax="true">
                                         <p:ajax event="dialogReturn" listener="#{roleViewController.onDialogReturn}"  update="tableRoleId,:roleViewGrowlId"/>
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.close']}"  styleClass="label_button" action="#{roleViewController.doClose()}" title="#{appmsg['global.close']}" icon="ui-icon-home"
@@ -111,7 +112,8 @@
                             <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
                         </p:dialog>
                     </h:form>
-                </p:panel>
+                    <!--</p:panel>-->
+                </div>
                 <p:dialog widgetVar="confirmDialogHrmRole" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
                           appendTo="@(body)" resizable="false" id="confirmDialogHrmRoleId" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <h:form id="deleteDialogRoleId">

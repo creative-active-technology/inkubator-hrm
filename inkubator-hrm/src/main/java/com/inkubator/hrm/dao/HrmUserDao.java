@@ -24,4 +24,8 @@ public interface HrmUserDao extends IDAO<HrmUser> {
     public Long getTotalHrmUserByParam(HrmUserSearchParameter searchParameter);
 
     public HrmUser getByEmailAddress(String emailAddress);
+
+    public void saveAndMerge(HrmUser hrmUser);
+
+    public HrmUser getByUserIdOrEmail(String param);
 }

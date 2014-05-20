@@ -11,6 +11,7 @@ import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.web.search.HrmUserSearchParameter;
 import java.util.List;
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -75,9 +76,25 @@ public class HrmUserDaoImpl extends IDAOImpl<HrmUser> implements HrmUserDao {
 
     @Override
     public HrmUser getByEmailAddress(String emailAddress) {
-         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("emailAddress", emailAddress));
         return (HrmUser) criteria.uniqueResult();
+    }
+
+    @Override
+    public void saveAndMerge(HrmUser hrmUser) {
+        getCurrentSession().update(hrmUser);
+        getCurrentSession().flush();
+    }
+
+    @Override
+    public HrmUser getByUserIdOrEmail(String param) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        Disjunction disjunction = Restrictions.disjunction();
+        disjunction.add(Restrictions.eq("userId", param));
+        disjunction.add(Restrictions.eq("emailAddress", param));
+        criteria.add(disjunction);
+        return  (HrmUser) criteria.uniqueResult();
     }
 
 }

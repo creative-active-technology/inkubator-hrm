@@ -25,6 +25,7 @@ import com.inkubator.webcore.util.FacesUtil;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
@@ -80,8 +81,27 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(HrmUser entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        HrmUser hrmUser = this.hrmUserDao.getEntiyByPK(entity.getId());
+        hrmUser.getHrmUserRoles().clear();
+        hrmUser.setEmailAddress(entity.getEmailAddress());
+        hrmUser.setIsActive(entity.getIsActive());
+        hrmUser.setIsExpired(entity.getIsExpired());
+        hrmUser.setIsLock(entity.getIsLock());
+        hrmUser.setPhoneNumber(entity.getPhoneNumber());
+        hrmUser.setRealName(entity.getRealName());
+        hrmUser.setUpdatedBy(UserInfoUtil.getUserName());
+        hrmUser.setUpdatedOn(new Date());
+        hrmUser.setUserId(entity.getUserId());
+        hrmUser.setRealName(entity.getRealName());
+        this.hrmUserDao.saveAndMerge(hrmUser);
+        Set<HrmUserRole> dataToSave = entity.getHrmUserRoles();
+        System.out.println("Size " + dataToSave.size());
+        for (HrmUserRole hrmUserRole : dataToSave) {
+            hrmUserRole.setHrmUser(hrmUser);
+            this.hrmUserRoleDao.save(hrmUserRole);
+        }
     }
 
     @Override
@@ -246,13 +266,13 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
     }
 
     @Override
-    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, timeout = 30)
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public HrmUser getByUserId(String userId) throws Exception {
         return this.hrmUserDao.getByUserName(userId);
     }
 
     @Override
-    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, timeout = 30)
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public HrmUser getByEmailAddress(String emailAddress) throws Exception {
         return this.hrmUserDao.getByEmailAddress(emailAddress);
     }
@@ -299,5 +319,11 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
             }
         });
 
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public HrmUser getByUserIdOrEmail(String param) throws Exception {
+        return this.hrmUserDao.getByUserIdOrEmail(param);
     }
 }

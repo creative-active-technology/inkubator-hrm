@@ -10,13 +10,14 @@
         <title>IGNORED</title>
     </h:head>
     <h:body>
-    
+
         <ui:composition template="/templates/master_layout_full.xhtml">
             <ui:define name="windowTitle">
                 Home
             </ui:define>
             <ui:define name="center">
-                <p:panel style="margin: 10px" >
+                <div id="box_bg" style="margin: 10px">
+                    <!--<p:panel style="margin: 10px" >-->
                     <h:form id="formLoginHistoryId">
                         <h:panelGrid style="margin-bottom: 5px" columns="2">
                             <p:graphicImage library="images" name="login_history_1.png" height="36" width="36" />
@@ -50,7 +51,7 @@
                             </p:toolbarGroup>
                         </p:toolbar>
                         <p:focus for="searchId" />
-                        
+
                         <p:dataTable  var="loginHistoryData"  value="#{loginHistoryController.lazyDataLoginHistory}" lazy="true" paginator="true" pageLinks="7"
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
                                       id="tableLoginHistoryId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
@@ -111,10 +112,11 @@
                             </h:panelGrid>
                         </p:blockUI>
                     </h:form>
-                </p:panel>
+                    <!--</p:panel>-->
+                </div>
             </ui:define>
         </ui:composition>
-        
+
     </h:body>
 </html>
 

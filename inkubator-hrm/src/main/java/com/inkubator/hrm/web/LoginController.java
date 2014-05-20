@@ -104,6 +104,7 @@ public class LoginController extends BaseController {
         }
         FacesUtil.setSessionAttribute(HRMConstant.LOGIN_DATE, dateFormatter.getDateFullAsStringsWithActiveLocale(new Date(),
                 new Locale(bahasaTerpilih)));
+       
         FacesUtil.getFacesContext().responseComplete();
         return null;
     }
