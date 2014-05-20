@@ -11,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.primefaces.context.RequestContext;
 import org.springframework.dao.DataIntegrityViolationException;
 
+import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.EducationLevel;
 import com.inkubator.hrm.service.EducationLevelService;
@@ -100,10 +101,9 @@ public class EducationLevelFormController extends BaseController {
 			} 
 			cleanAndExit();
 		}
-		catch(DataIntegrityViolationException ex){ //data already exist(duplicate)
+		catch(BussinessException ex){ //data already exist(duplicate)
 			LOGGER.error("Error", ex);
-			MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "educationlevel.error_duplicate_name", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-			doClear();
+			MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 		}
 		catch(Exception ex){
 			LOGGER.error("Error", ex);

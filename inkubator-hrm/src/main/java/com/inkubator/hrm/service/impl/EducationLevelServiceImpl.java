@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.EducationLevelDao;
 import com.inkubator.hrm.entity.EducationLevel;
 import com.inkubator.hrm.service.EducationLevelService;
@@ -195,6 +196,17 @@ public class EducationLevelServiceImpl extends IServiceImpl implements Education
 	@Override
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void save(EducationLevel educationLevel) throws Exception {
+		// check duplicate name
+		long totalDuplicates = educationLevelDao.getTotalByName(educationLevel.getName());
+		if (totalDuplicates > 0) {
+			throw new BussinessException("educationlevel.error_duplicate_name");
+		}
+		// check duplicate level
+		totalDuplicates = educationLevelDao.getTotalByLevel(educationLevel.getLevel());
+		if (totalDuplicates > 0) {
+			throw new BussinessException("educationlevel.error_duplicate_level");
+		}
+				
 		educationLevel.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
 		educationLevel.setCreatedBy(UserInfoUtil.getUserName());
 		educationLevel.setCreatedOn(new Date());
@@ -228,6 +240,17 @@ public class EducationLevelServiceImpl extends IServiceImpl implements Education
 	@Override
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void update(EducationLevel edu) throws Exception {
+		//check duplicate name
+		long totalDuplicates = educationLevelDao.getTotalByNameAndNotId(edu.getName(), edu.getId());
+		if(totalDuplicates > 0){
+			throw new BussinessException("educationlevel.error_duplicate_name");
+		}
+		//check duplicate level
+		totalDuplicates = educationLevelDao.getTotalByLevelAndNotId(edu.getLevel(), edu.getId());
+		if(totalDuplicates > 0){
+			throw new BussinessException("educationlevel.error_duplicate_level");
+		}
+		
 		EducationLevel educationLevel = educationLevelDao.getEntiyByPK(edu.getId());
 		educationLevel.setName(edu.getName());
 		educationLevel.setLevel(edu.getLevel());

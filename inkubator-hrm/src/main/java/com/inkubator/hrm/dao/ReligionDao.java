@@ -16,5 +16,9 @@ public interface ReligionDao extends IDAO<Religion> {
 	public List<Religion> getByParam(String parameter, int firstResult, int maxResults, Order orderable);
 
 	public Long getTotalReligionByParam(String parameter);
+	
+	public Long getTotalByName(String name);
+	
+	public Long getTotalByNameAndNotId(String name, Long id);
 
 }

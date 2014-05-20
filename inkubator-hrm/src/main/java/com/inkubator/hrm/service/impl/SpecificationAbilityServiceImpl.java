@@ -14,159 +14,160 @@ import org.springframework.transaction.annotation.Transactional;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
-import com.inkubator.hrm.dao.ReligionDao;
-import com.inkubator.hrm.entity.Religion;
-import com.inkubator.hrm.service.ReligionService;
+import com.inkubator.hrm.dao.SpecificationAbilityDao;
+import com.inkubator.hrm.entity.SpecificationAbility;
+import com.inkubator.hrm.service.SpecificationAbilityService;
+import com.inkubator.hrm.web.search.SpecificationAbilitySearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 
 /**
 *
 * @author rizkykojek
 */
-@Service(value = "religionService")
+@Service(value = "specificationAbilityService")
 @Lazy
-public class ReligionServiceImpl extends IServiceImpl implements ReligionService {
+public class SpecificationAbilityServiceImpl extends IServiceImpl implements SpecificationAbilityService {
 
 	@Autowired
-	private ReligionDao religionDao;
+	private SpecificationAbilityDao specificationAbilityDao;
 	
 	@Override
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void delete(Religion religion) throws Exception {
-		religionDao.delete(religion);
+	public void delete(SpecificationAbility specificationAbility) throws Exception {
+		specificationAbilityDao.delete(specificationAbility);
 	}
 
 	@Override
-	public List<Religion> getAllData() throws Exception {
+	public List<SpecificationAbility> getAllData() throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public List<Religion> getAllData(Boolean arg0) throws Exception {
+	public List<SpecificationAbility> getAllData(Boolean arg0) throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public List<Religion> getAllData(Integer arg0) throws Exception {
+	public List<SpecificationAbility> getAllData(Integer arg0) throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public List<Religion> getAllData(Byte arg0) throws Exception {
+	public List<SpecificationAbility> getAllData(Byte arg0) throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public List<Religion> getAllDataPageAble(int arg0, int arg1, Order arg2)
+	public List<SpecificationAbility> getAllDataPageAble(int arg0, int arg1, Order arg2)
 			throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public List<Religion> getAllDataPageAbleIsActive(int arg0, int arg1,
+	public List<SpecificationAbility> getAllDataPageAbleIsActive(int arg0, int arg1,
 			Order arg2, Boolean arg3) throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public List<Religion> getAllDataPageAbleIsActive(int arg0, int arg1,
+	public List<SpecificationAbility> getAllDataPageAbleIsActive(int arg0, int arg1,
 			Order arg2, Integer arg3) throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public List<Religion> getAllDataPageAbleIsActive(int arg0, int arg1,
+	public List<SpecificationAbility> getAllDataPageAbleIsActive(int arg0, int arg1,
 			Order arg2, Byte arg3) throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public Religion getEntityByPkIsActive(String arg0, Integer arg1)
+	public SpecificationAbility getEntityByPkIsActive(String arg0, Integer arg1)
 			throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public Religion getEntityByPkIsActive(String arg0, Byte arg1)
+	public SpecificationAbility getEntityByPkIsActive(String arg0, Byte arg1)
 			throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public Religion getEntityByPkIsActive(String arg0, Boolean arg1)
+	public SpecificationAbility getEntityByPkIsActive(String arg0, Boolean arg1)
 			throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public Religion getEntityByPkIsActive(Integer arg0, Integer arg1)
+	public SpecificationAbility getEntityByPkIsActive(Integer arg0, Integer arg1)
 			throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public Religion getEntityByPkIsActive(Integer arg0, Byte arg1)
+	public SpecificationAbility getEntityByPkIsActive(Integer arg0, Byte arg1)
 			throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public Religion getEntityByPkIsActive(Integer arg0, Boolean arg1)
+	public SpecificationAbility getEntityByPkIsActive(Integer arg0, Boolean arg1)
 			throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public Religion getEntityByPkIsActive(Long arg0, Integer arg1)
+	public SpecificationAbility getEntityByPkIsActive(Long arg0, Integer arg1)
 			throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public Religion getEntityByPkIsActive(Long arg0, Byte arg1)
+	public SpecificationAbility getEntityByPkIsActive(Long arg0, Byte arg1)
 			throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public Religion getEntityByPkIsActive(Long arg0, Boolean arg1)
+	public SpecificationAbility getEntityByPkIsActive(Long arg0, Boolean arg1)
 			throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public Religion getEntiyByPK(String arg0) throws Exception {
+	public SpecificationAbility getEntiyByPK(String arg0) throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public Religion getEntiyByPK(Integer arg0) throws Exception {
+	public SpecificationAbility getEntiyByPK(Integer arg0) throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-	public Religion getEntiyByPK(Long id) throws Exception {
-		return religionDao.getEntiyByPK(id);
+	public SpecificationAbility getEntiyByPK(Long id) throws Exception {
+		return specificationAbilityDao.getEntiyByPK(id);
 	}
 
 	@Override
@@ -195,75 +196,77 @@ public class ReligionServiceImpl extends IServiceImpl implements ReligionService
 
 	@Override
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void save(Religion religion) throws Exception {
+	public void save(SpecificationAbility specificationAbility) throws Exception {
 		// check duplicate name
-		long totalDuplicates = religionDao.getTotalByName(religion.getName());
+		long totalDuplicates = specificationAbilityDao.getTotalByName(specificationAbility.getName());
 		if (totalDuplicates > 0) {
-			throw new BussinessException("religion.error_duplicate_religion_name");
+			throw new BussinessException("specificationability.error_duplicate_name");
 		}
 				
-		religion.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
-		religion.setCreatedBy(UserInfoUtil.getUserName());
-		religion.setCreatedOn(new Date());
-		religionDao.save(religion);
+		specificationAbility.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+		specificationAbility.setCreatedBy(UserInfoUtil.getUserName());
+		specificationAbility.setCreatedOn(new Date());
+		specificationAbilityDao.save(specificationAbility);
 	}
 
 	@Override
-	public Religion saveData(Religion arg0) throws Exception {
+	public SpecificationAbility saveData(SpecificationAbility arg0) throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public void saveOrUpdate(Religion arg0) throws Exception {
+	public void saveOrUpdate(SpecificationAbility arg0) throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public Religion saveOrUpdateData(Religion arg0) throws Exception {
+	public SpecificationAbility saveOrUpdateData(SpecificationAbility arg0) throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public void softDelete(Religion arg0) throws Exception {
+	public void softDelete(SpecificationAbility arg0) throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void update(Religion r) throws Exception {
+	public void update(SpecificationAbility sa) throws Exception {
 		// check duplicate name
-		long totalDuplicates = religionDao.getTotalByNameAndNotId(r.getName(), r.getId());
+		long totalDuplicates = specificationAbilityDao.getTotalByNameAndNotId(sa.getName(), sa.getId());
 		if (totalDuplicates > 0) {
-			throw new BussinessException("religion.error_duplicate_religion_name");
+			throw new BussinessException("specificationability.error_duplicate_name");
 		}
 		
-		Religion religion = religionDao.getEntiyByPK(r.getId());
-		religion.setName(r.getName());
-		religion.setUpdatedBy(UserInfoUtil.getUserName());
-		religion.setUpdatedOn(new Date());
-		religionDao.update(religion);
+		SpecificationAbility specificationAbility = specificationAbilityDao.getEntiyByPK(sa.getId());
+		specificationAbility.setName(sa.getName());
+		specificationAbility.setOption(sa.getOption());
+		specificationAbility.setScaleValue(sa.getScaleValue());
+		specificationAbility.setUpdatedBy(UserInfoUtil.getUserName());
+		specificationAbility.setUpdatedOn(new Date());
+		specificationAbilityDao.update(specificationAbility);
 	}
 
 	@Override
-	public Religion updateData(Religion arg0) throws Exception {
+	public SpecificationAbility updateData(SpecificationAbility arg0) throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<Religion> getByParam(String parameter, int firstResult, int maxResults, Order orderable) throws Exception {
-		return this.religionDao.getByParam(parameter, firstResult, maxResults, orderable);
+	public List<SpecificationAbility> getByParam(SpecificationAbilitySearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception {
+		return this.specificationAbilityDao.getByParam(parameter, firstResult, maxResults, orderable);
 	}
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-	public Long getTotalReligionByParam(String parameter) throws Exception {
-		return this.religionDao.getTotalReligionByParam(parameter);
+	public Long getTotalByParam(SpecificationAbilitySearchParameter parameter) throws Exception {
+		return this.specificationAbilityDao.getTotalByParam(parameter);
 	}
 
 }

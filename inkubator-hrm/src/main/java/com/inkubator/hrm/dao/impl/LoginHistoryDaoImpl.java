@@ -57,7 +57,8 @@ public class LoginHistoryDaoImpl extends IDAOImpl<LoginHistory> implements Login
     private void doSearchLoginHistByParam(LoginHistorySearchParameter searchParameter, Criteria criteria) {
         if (searchParameter.getUserId()!=null) {
         	criteria.add(Restrictions.like("hrmUser.userId", searchParameter.getUserId(), MatchMode.ANYWHERE));
-        } else if(searchParameter.getIpAddress()!=null){
+        } 
+        if(searchParameter.getIpAddress()!=null){
         	criteria.add(Restrictions.like("ipAddress", searchParameter.getIpAddress(), MatchMode.ANYWHERE));
         }
         criteria.add(Restrictions.isNotNull("id"));
