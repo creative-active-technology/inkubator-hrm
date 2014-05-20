@@ -28,4 +28,6 @@ public interface HrmUserService extends IService<HrmUser> {
     public HrmUser getByEmailAddress(String emailAddress) throws Exception;
 
     public void saveAndNotification(HrmUser hrmUser) throws Exception;
+    
+    public HrmUser getByUserIdOrEmail(String param) throws Exception;
 }

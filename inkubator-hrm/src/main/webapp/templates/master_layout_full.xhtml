@@ -49,7 +49,7 @@
                                 <h:panelGrid columns="8" cellpadding="3" style="margin-right: 6%;padding-top: 3px">
                                     <h:panelGroup>
                                         <p:outputLabel value="#{appmsg['global.welcome']}, " styleClass="label_welcome_header" />
-                                        <p:outputLabel value="#{userContext.userName}. " styleClass="label_welcome_header" style="color: #ffcc00 !important;font-weight: bold!important" />
+                                        <p:outputLabel value="#{realName}. " styleClass="label_welcome_header" style="color: #ffcc00 !important;font-weight: bold!important" />
                                         <p:outputLabel value="#{appmsg['master_layout.login_at']} : #{login_date}" styleClass="label_welcome_header" style="margin-right: 100px"/>
                                     </h:panelGroup>
                                     <p:commandLink id="pendingId" action="#{userInformationController.doPendingTask()}" title="My Pending Task" >
@@ -104,12 +104,12 @@
                                     <p:menubar style="margin-left: 0px;margin-right: 0px;margin-top: 0px" styleClass="panelMenu" autoDisplay="false" id="menuId">  
                                         <p:menuitem value="" url="/protected/home.htm"  title="Back to Home" style="font-size: 12px !important;font-weight: normal!important;color: white" icon="ui-icon-home" />  
                                         <p:submenu label="Account"  styleClass="menu" icon="img-user-account">
-                                            <p:menuitem value="#{appmsg['menu.user_view']}"  style="color: #003366" title="#{appmsg['menu.user_view']}" url="/protected/account/user_view.htm"  /> 
-                                            <p:menuitem value="#{appmsg['menu.role_view']}"  style="color: #003366" title="#{appmsg['menu.role_view']}" url="/protected/account/role_view.htm" /> 
+                                            <p:menuitem value="#{appmsg['menu.user_view']}"  style="color: #003366" title="#{appmsg['menu.user_view']}" url="/protected/account/user_view.htm"  icon="img-user"/> 
+                                            <p:menuitem value="#{appmsg['menu.role_view']}"  style="color: #003366" title="#{appmsg['menu.role_view']}" url="/protected/account/role_view.htm" icon="img-user-role" /> 
                                             <p:separator/>
                                             <p:menuitem value="Password Setting"  style="color: #003366" title="Create Offering Price" url="/protected/price_offer.htm" />  
                                             <p:menuitem value="Password History"  style="color: #003366" title="Create Offering Price" url="/protected/price_offer.htm" /> 
-                                            <p:menuitem value="#{appmsg['loginhistory.login_history']}"  style="color: #003366" title="#{appmsg['loginhistory.login_history']}" url="/protected/account/login_history.htm" />  
+                                            <p:menuitem value="#{appmsg['loginhistory.login_history']}"  style="color: #003366" title="#{appmsg['loginhistory.login_history']}" url="/protected/account/login_history.htm" icon="img-login-history" />  
                                         </p:submenu>
                                         <p:submenu label="#{appmsg['menu.configuration']}" style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-configuration">
                                             <p:submenu label="#{appmsg['menu.data_reference']}"  styleClass="menu_child">

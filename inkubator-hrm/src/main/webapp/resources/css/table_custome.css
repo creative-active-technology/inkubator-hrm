@@ -15,10 +15,13 @@ and open the template in the editor.
 }
 .ui-datatable-even {
     /*background-color: #e1f0f0 !important;*/
+/*    background-image: none;
+    background-color: #ccffcc;*/
     border: 1px solid #a6c9e2 !important;
     /*border: 1px !important;*/
 }
 
 .ui-widget-content{
     background-image: none !important;   
+    
 }

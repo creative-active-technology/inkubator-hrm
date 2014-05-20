@@ -14,7 +14,8 @@
                 Role View
             </ui:define>
             <ui:define name="center">
-                <p:panel style="margin: 10px" >
+                <div id="box_bg" style="margin: 10px">
+                <!--<p:panel style="margin: 10px" >-->
                     <h:panelGrid style="margin-bottom: 5px" columns="2">
                         <p:graphicImage library="images" name="user_account.png" height="36" width="36" />
                         <h:panelGroup layout="block">
@@ -109,7 +110,7 @@
                                 -
                                 <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
                                                   action="#{userViewController.doEdit()}" >
-                                    <f:setPropertyActionListener value="#{userViewData}" target="#{roleViewController.selectedHrmUser}" />
+                                    <f:setPropertyActionListener value="#{userViewData}" target="#{userViewController.selectedHrmUser}" />
 
                                 </p:commandButton> 
                             </p:column>                                                      <f:facet name="footer">
@@ -129,8 +130,8 @@
                         </p:dialog>
 
                     </h:form>
-                </p:panel>
-
+                <!--</p:panel>-->
+                </div>
                 <p:dialog widgetVar="confirmDialogHrmUser" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
                           appendTo="@(body)" resizable="false" id="confirmDialogHrmRoleId" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <h:form id="deleteDialogUserId">

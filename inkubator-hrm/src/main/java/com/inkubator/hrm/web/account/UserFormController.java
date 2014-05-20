@@ -19,12 +19,14 @@ import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import org.apache.commons.lang3.StringUtils;
 import org.primefaces.model.DualListModel;
 
 /**
@@ -56,10 +58,23 @@ public class UserFormController extends BaseController {
     public void initialization() {
         try {
             super.initialization();
-            List<HrmRole> sourceSpiRole = this.hrmRoleService.getAllData();
-            dualListModel.setSource(sourceSpiRole);
-            userModel = new UserModel();
-            isEdit = Boolean.FALSE;
+            String userId = FacesUtil.getRequestParameter("execution");
+            if (userId != null) {
+                isEdit = Boolean.TRUE;
+                HrmUser selectedHrmUser = hrmUserService.getEntiyByPkWithDetail(Long.parseLong(userId.substring(1)));
+                userModel = getUserModelFromEntity(selectedHrmUser);
+                List<HrmRole> sourceSpiRole = this.hrmRoleService.getAllData();
+                List<HrmRole> targetRole = selectedHrmUser.getRoles();
+                sourceSpiRole.removeAll(targetRole);
+                System.out.println(sourceSpiRole.size());
+                dualListModel = new DualListModel<>(sourceSpiRole, targetRole);
+            } else {
+                List<HrmRole> sourceSpiRole = this.hrmRoleService.getAllData();
+                dualListModel.setSource(sourceSpiRole);
+                userModel = new UserModel();
+                isEdit = Boolean.FALSE;
+            }
+
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -118,12 +133,9 @@ public class UserFormController extends BaseController {
                     dataToSave.add(hrmUserRole);
                 }
                 hrmUser.setHrmUserRoles(dataToSave);
-//                PasswordHistory passwordHistory = new PasswordHistory();
-//                 passwordHistory.setPassword(AESUtil.getAESEncription(passwordHistory.getPassword(), HRMConstant.KEYVALUE, HRMConstant.AES_ALGO));
-//                passwordHistory.setEmailNotification(0);
-//                passwordHistory.setEmailAddress(hrmUser.getEmailAddress());
-//                passwordHistory.setRequestType(HRMConstant.USER_NEW);
                 hrmUserService.saveAndNotification(hrmUser);
+                MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
+                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
                 return "/protected/account/user_detail.htm?faces-redirect=true&execution=e" + hrmUser.getId();
 
             }
@@ -134,6 +146,37 @@ public class UserFormController extends BaseController {
     }
 
     private String doUpdate(HrmUser hrmUser) {
+        try {
+            HrmUser hrmUserExixting = hrmUserService.getEntiyByPK(hrmUser.getId());
+            boolean isDuplicateUserId = (hrmUserService.getByUserId(hrmUser.getUserId()) != null && !StringUtils.equals(hrmUserExixting.getUserId(), hrmUser.getUserId()));
+            boolean isDuplicateEmailAddress = (hrmUserService.getByEmailAddress(hrmUser.getEmailAddress()) != null && !StringUtils.equals(hrmUserExixting.getEmailAddress(), hrmUser.getEmailAddress()));
+            if (isDuplicateUserId) {
+                MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "user_form.duplicate_user_name",
+                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+                return null;
+            } else if (isDuplicateEmailAddress) {
+                MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "user_form.duplicate_email_address",
+                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+                return null;
+            } else {
+                Set<HrmUserRole> dataToSave = new HashSet<>();
+                List<HrmRole> hrmRoles = dualListModel.getTarget();
+                for (HrmRole hrmRole : hrmRoles) {
+                    HrmUserRole hrmUserRole = new HrmUserRole();
+                    hrmUserRole.setId(new HrmUserRoleId(hrmUser.getId(), hrmRole.getId()));
+                    hrmUserRole.setHrmRole(hrmRole);
+                    hrmUserRole.setHrmUser(hrmUser);
+                    dataToSave.add(hrmUserRole);
+                }
+                hrmUser.setHrmUserRoles(dataToSave);
+                hrmUserService.update(hrmUser);
+                MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
+                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+                return "/protected/account/user_detail.htm?faces-redirect=true&execution=e" + hrmUser.getId();
+            }
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
+        }
         return null;
     }
 
@@ -178,6 +221,32 @@ public class UserFormController extends BaseController {
         hrmUser.setRealName(userModel.getUserName());
         hrmUser.setUserId(userModel.getUserId());
         return hrmUser;
+    }
+
+    public UserModel getUserModelFromEntity(HrmUser hrmUser) {
+        UserModel us = new UserModel();
+        us.setId(hrmUser.getId());
+        us.setEmailAddress(hrmUser.getEmailAddress());
+        if (Objects.equals(hrmUser.getIsActive(), HRMConstant.ACTIVE)) {
+            us.setIsActive(Boolean.TRUE);
+        } else {
+            us.setIsActive(Boolean.FALSE);
+        }
+        if (Objects.equals(hrmUser.getIsExpired(), HRMConstant.EXPIRED)) {
+            us.setIsExpired(Boolean.TRUE);
+        } else {
+            us.setIsExpired(Boolean.FALSE);
+        }
+        if (Objects.equals(hrmUser.getIsLock(), HRMConstant.LOCK)) {
+            us.setIsLock(Boolean.TRUE);
+        } else {
+            us.setIsLock(Boolean.FALSE);
+        }
+        us.setPassword(hrmUser.getPassword());
+        us.setPhoneNumber(hrmUser.getPhoneNumber());
+        us.setUserName(hrmUser.getRealName());
+        us.setUserId(hrmUser.getUserId());
+        return us;
     }
 
 }

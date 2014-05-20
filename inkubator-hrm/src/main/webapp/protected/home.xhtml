@@ -17,7 +17,7 @@
                 <p:panelGrid style="width: 100%;margin-bottom: 10px" styleClass="grid_no_border">
                     <p:row>
                         <p:column style="width: 95%" colspan="3">
-                            <p:panel  style="margin-left: 10px;margin-right: 10px;margin-top: 10px">
+                            <p:panel  style="margin: 10px" >
                                 <div align="center">
                                     <h:panelGrid columns="12" cellpadding="17" cellspacing="2" >
                                         <h:panelGroup  layout="block">
@@ -70,7 +70,7 @@
                                         </h:panelGroup>
                                         <h:panelGroup layout="block">
                                             <h:panelGrid columns="1" style="text-align: center">
-                                                <h:outputLink id="createUserId5" value="${request.contextPath}/flow-protected/user">
+                                                <h:outputLink id="createUserId5" value="${request.contextPath}/protected/account/login_history.htm">
                                                     <p:graphicImage library="images" name="login_history.png" style="width: 60px;height: 60px;" cache="true" /> 
                                                 </h:outputLink>
                                                 <h:outputLabel value="History Login" styleClass="label_quick"/>
@@ -119,13 +119,12 @@
                                     </h:panelGrid>  
                                 </div>
                             </p:panel>
-
                         </p:column>
                     </p:row>
                      
                     <p:row>
                         <p:column style="width: 95%" colspan="3">
-                            <p:tabView id="tabView1" dynamic="true" cache="true" style="margin-left: 10px;margin-right: 10px;margin-top: 10px;font-size: 11px!important;font-family: Lucida Sans!important"> 
+                            <p:tabView id="tabView1" dynamic="true" cache="true" style="margin-left: 10px;margin-right: 10px;margin-top: 5px;font-size: 11px!important;font-family: Lucida Sans!important"> 
                                 <p:tab id="tab31" title="Request History">  
                                     <h:panelGrid columns="2" cellpadding="10">  
                                         <p:graphicImage id="tab3Img" value="/images/godfather/godfather3.jpg" />  

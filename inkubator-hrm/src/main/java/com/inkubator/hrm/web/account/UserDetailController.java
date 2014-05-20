@@ -13,14 +13,14 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 
 /**
  *
  * @author Deni Husni FR
  */
 @ManagedBean(name = "userDetailController")
-@RequestScoped
+@ViewScoped
 public class UserDetailController extends BaseController {
 
     private HrmUser selectedHrmUser;

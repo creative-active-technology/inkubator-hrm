@@ -42,7 +42,7 @@ public class UserViewController extends BaseController {
     public void setHrmRoleService(HrmRoleService hrmRoleService) {
         this.hrmRoleService = hrmRoleService;
     }
-    
+
     public void setHrmUserService(HrmUserService hrmUserService) {
         this.hrmUserService = hrmUserService;
     }
@@ -93,6 +93,10 @@ public class UserViewController extends BaseController {
 
     public String doDetail() {
         return "/protected/account/user_detail.htm?faces-redirect=true&execution=e" + selectedHrmUser.getId();
+    }
+
+    public String doEdit() {
+        return "/protected/account/user_form.htm?faces-redirect=true&execution=e" + selectedHrmUser.getId();
     }
 
     public void onDelete() {

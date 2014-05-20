@@ -35,5 +35,9 @@ public class UserContext implements Serializable {
     public boolean hasRole(String roleName) {
         return UserInfoUtil.hasRole(roleName);
     }
+    
+    public String getRealName(){
+        return HrmUserInfoUtil.getRealName();
+    }
 
 }

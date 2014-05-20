@@ -36,6 +36,7 @@ public class CustomAuthenticationSuccessHandler extends AuthenticationSuccessHan
         try {
             LoginHistory loginHistory = new LoginHistory();
             loginHistory.setLanguange((String) FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE));
+            FacesUtil.setSessionAttribute("realName", HrmUserInfoUtil.getRealName());
             String number = RandomNumberUtil.getRandomNumber(15);
             loginHistory.setId(Long.parseLong(number));
             loginHistory.setIpAddress(request.getRemoteAddr());
@@ -44,7 +45,7 @@ public class CustomAuthenticationSuccessHandler extends AuthenticationSuccessHan
             this.loginHistoryService.saveAndPushMessage(loginHistory);
             LOGGER.info(authentication.getName() + " Success Login");
             response.sendRedirect(request.getContextPath() + "/protected/home.htm");
-        } catch (Exception ex) {
+        } catch (NumberFormatException | IOException ex) {
             LOGGER.error("Error", ex);
         }
 

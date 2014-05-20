@@ -461,7 +461,24 @@ div.art-logo
     background-size: 80% auto;
     padding-right: 2px;
 }
+.img-user
+{
+    background-image:url(../images/user_account.png)!important;
+    background-size: 80% auto;
+    padding-right: 2px;
+}
+.img-login-history{
+    background-image:url(../images/login_history_1.png)!important;
+    background-size: 80% auto;
+    padding-right: 2px;
+}
 
+.img-user-role
+{
+    background-image:url(../images/role.png)!important;
+    background-size: 80% auto;
+    padding-right: 2px;
+}
 .img-configuration
 {
     background-image:url(../images/configuration.png)!important;
@@ -511,4 +528,25 @@ div.art-logo
     padding-right: 2px;
 }
 
-
+#box_bg
+{
+    /*border:0px solid #006699;*/
+    background-image: none;
+    /*    background-image: url(../images/greyzz.png);
+        background-repeat: repeat;*/
+    background: #ffffff;
+    /*width:100%;*/
+    -webkit-border-radius:3px;
+    -moz-border-radius:3px;
+    border-radius:5px;
+    /*height:330px;*/
+    /*box-shadow:0 2px 2px rgba(0,0,0,.2),0 1px 5px rgba(0,0,0,.2),0 0 0 8px rgba(255,255,204,.8);*/
+    margin: 10px;
+    position: relative;
+    padding: 0.5em 1em;
+    /*top:53%;*/
+    /*position:fixed;*/
+    /*margin-top:-160px;*/
+    /*left:50%;*/
+    /*margin-left:-302px;*/
+}
