@@ -521,6 +521,14 @@ div.art-logo
     padding-right: 2px;
 }
 
+.img-family
+{
+    background-image:url(../images/family-icon.png)!important;
+    background-size: 80% auto;
+    padding-right: 2px;
+}
+
+
 .img-training
 {
     background-image:url(../images/training.png)!important;

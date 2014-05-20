@@ -8,12 +8,14 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Version;
 
 @Entity
 @Table(name = "specification_ability", catalog = "hrm")
 public class SpecificationAbility implements Serializable {
 
     private Long id;
+    private Integer version;
     private String name;
     private String option;
     private Integer scaleValue;
@@ -49,25 +51,25 @@ public class SpecificationAbility implements Serializable {
         this.name = name;
     }
 
-    @Column(name = "option", nullable = false)
+    @Column(name = "option_ability", nullable = false)
     public String getOption() {
-		return option;
-	}
+        return option;
+    }
 
-	public void setOption(String option) {
-		this.option = option;
-	}
+    public void setOption(String option) {
+        this.option = option;
+    }
 
-	@Column(name = "scale_value", nullable = false)
-	public Integer getScaleValue() {
-		return scaleValue;
-	}
+    @Column(name = "scale_value", nullable = false)
+    public Integer getScaleValue() {
+        return scaleValue;
+    }
 
-	public void setScaleValue(Integer scaleValue) {
-		this.scaleValue = scaleValue;
-	}
+    public void setScaleValue(Integer scaleValue) {
+        this.scaleValue = scaleValue;
+    }
 
-	@Column(name = "created_by", length = 45)
+    @Column(name = "created_by", length = 45)
     public String getCreatedBy() {
         return this.createdBy;
     }
@@ -104,4 +106,15 @@ public class SpecificationAbility implements Serializable {
     public void setUpdatedOn(Date updatedOn) {
         this.updatedOn = updatedOn;
     }
+
+    @Version
+    @Column(name = "version")
+    public Integer getVersion() {
+        return this.version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
 }
