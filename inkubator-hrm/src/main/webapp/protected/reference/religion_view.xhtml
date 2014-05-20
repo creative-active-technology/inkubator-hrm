@@ -16,7 +16,7 @@
                 Home
             </ui:define>
             <ui:define name="center">
-                <p:panel style="margin: 10px" >                    
+                <div id="box_bg" style="margin: 10px">                    
                     <h:panelGrid style="margin-bottom: 5px" columns="2">
                         <p:graphicImage library="images" name="religion.png" height="36" width="36" cache="true"/>
                         <h:panelGroup layout="block">
@@ -37,15 +37,15 @@
                                     <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm" />
                                     <p:outputLabel value=":" />
                                     <p:inputText id="searchId" value="#{religionViewController.parameter}" style="width: 250px" styleClass="isitext_hrm"/>
-                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" action="#{religionViewController.doSearch()}" update="tableReligionId"  styleClass="label_button" icon="ui-icon-search"/>
+                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{religionViewController.doSearch()}" update="tableReligionId"  styleClass="label_button" icon="ui-icon-search"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="2" >
-                                    <p:commandButton value="#{appmsg['global.add']}" actionListener="#{religionViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
+                                    <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']}" actionListener="#{religionViewController.doAdd()}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
                                         <p:ajax event="dialogReturn" listener="#{religionViewController.onDialogClose}"  update="tableReligionId,:growlReligionViewlId"/>
                                     </p:commandButton>
-                                    <p:commandButton value="#{appmsg['global.close']}" styleClass="label_button" action="#{religionViewController.doClose()}" icon="ui-icon-home"/>
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{religionViewController.doClose()}" icon="ui-icon-home"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
                         </p:toolbar>
@@ -103,7 +103,7 @@
                             <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
                         </p:dialog>
                     </h:form>
-                </p:panel>
+                </div>
 
                 <p:dialog widgetVar="dialogConfirmReligion" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">

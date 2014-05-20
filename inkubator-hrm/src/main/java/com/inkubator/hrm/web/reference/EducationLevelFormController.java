@@ -9,7 +9,6 @@ import javax.faces.bean.ViewScoped;
 
 import org.apache.commons.lang3.StringUtils;
 import org.primefaces.context.RequestContext;
-import org.springframework.dao.DataIntegrityViolationException;
 
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;

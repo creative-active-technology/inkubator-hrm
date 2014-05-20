@@ -244,7 +244,7 @@ public class SpecificationAbilityServiceImpl extends IServiceImpl implements Spe
 		
 		SpecificationAbility specificationAbility = specificationAbilityDao.getEntiyByPK(sa.getId());
 		specificationAbility.setName(sa.getName());
-		specificationAbility.setOption(sa.getOption());
+		specificationAbility.setOptionAbility(sa.getOptionAbility());
 		specificationAbility.setScaleValue(sa.getScaleValue());
 		specificationAbility.setUpdatedBy(UserInfoUtil.getUserName());
 		specificationAbility.setUpdatedOn(new Date());

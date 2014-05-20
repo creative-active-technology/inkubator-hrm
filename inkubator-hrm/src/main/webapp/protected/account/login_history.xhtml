@@ -41,12 +41,12 @@
                                         <f:selectItem itemLabel="#{appmsg['loginhistory.ip_address']}" itemValue="ipAddress"/>
                                     </p:selectOneMenu>
                                     <p:inputText id="searchId" value="#{loginHistoryController.loginHistorySearchParameter.parameter}" style="width: 250px" styleClass="label_button"/>
-                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" action="#{loginHistoryController.doSearch()}" update="tableLoginHistoryId"  styleClass="label_button" icon="ui-icon-search"/>
+                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{loginHistoryController.doSearch()}" update="tableLoginHistoryId"  styleClass="label_button" icon="ui-icon-search"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
                                 <h:panelGrid >
-                                    <p:commandButton value="#{appmsg['global.close']}" styleClass="label_button" action="#{loginHistoryController.doClose()}" icon="ui-icon-home" />
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{loginHistoryController.doClose()}" icon="ui-icon-home" />
                                 </h:panelGrid>
                             </p:toolbarGroup>
                         </p:toolbar>

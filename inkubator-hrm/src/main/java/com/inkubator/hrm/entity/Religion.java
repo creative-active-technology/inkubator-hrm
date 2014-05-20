@@ -8,12 +8,14 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Version;
 
 @Entity
 @Table(name = "religion", catalog = "hrm")
 public class Religion implements Serializable {
 
     private Long id;
+    private Integer version;
     private String name;
     private String createdBy;
     private String updatedBy;
@@ -41,6 +43,16 @@ public class Religion implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+    
+    @Version
+    @Column(name = "version")
+    public Integer getVersion() {
+        return this.version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 
     @Column(name = "name", unique = true, nullable = false)
