@@ -1,9 +1,9 @@
 package com.inkubator.hrm.web.reference;
 
 import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.Religion;
-import com.inkubator.hrm.service.ReligionService;
-import com.inkubator.hrm.web.lazymodel.ReligionLazyDataModel;
+import com.inkubator.hrm.entity.FamilyRelation;
+import com.inkubator.hrm.service.FamilyRelationService;
+import com.inkubator.hrm.web.lazymodel.FamilyRelationLazyDataModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
@@ -25,17 +25,17 @@ import org.springframework.dao.DataIntegrityViolationException;
 
 /**
  *
- * @author rizkykojek
+ * @author Deni Husni FR
  */
-@ManagedBean(name = "religionViewController")
+@ManagedBean(name = "familyRelationViewController")
 @ViewScoped
-public class ReligionViewController extends BaseController {
+public class FamilyRelationViewController extends BaseController {
 
     private String parameter;
-    private LazyDataModel<Religion> lazyDataReligion;
-    private Religion selectedReligion;
-    @ManagedProperty(value = "#{religionService}")
-    private ReligionService religionService;
+    private LazyDataModel<FamilyRelation> lazyDataFamilyRelation;
+    private FamilyRelation selectedFamilyRelation;
+    @ManagedProperty(value = "#{familyRelationService}")
+    private FamilyRelationService familyRelationService;
 
     @PostConstruct
     @Override
@@ -45,15 +45,17 @@ public class ReligionViewController extends BaseController {
 
     @PreDestroy
     public void cleanAndExit() {
-        religionService = null;
+        familyRelationService = null;
         parameter = null;
-        lazyDataReligion = null;
-        selectedReligion = null;
+        lazyDataFamilyRelation = null;
+        selectedFamilyRelation = null;
     }
 
-    public void setReligionService(ReligionService religionService) {
-        this.religionService = religionService;
+    public void setFamilyRelationService(FamilyRelationService familyRelationService) {
+        this.familyRelationService = familyRelationService;
     }
+
+    
 
     public String getParameter() {
         return parameter;
@@ -63,32 +65,32 @@ public class ReligionViewController extends BaseController {
         this.parameter = parameter;
     }
 
-    public LazyDataModel<Religion> getLazyDataReligion() {
-        if (lazyDataReligion == null) {
-            lazyDataReligion = new ReligionLazyDataModel(parameter, religionService);
+    public LazyDataModel<FamilyRelation> getLazyDataFamilyRelation() {
+        if (lazyDataFamilyRelation == null) {
+            lazyDataFamilyRelation = new FamilyRelationLazyDataModel(parameter, familyRelationService);
         }
-        return lazyDataReligion;
+        return lazyDataFamilyRelation;
     }
 
-    public void setLazyDataReligion(LazyDataModel<Religion> lazyDataReligion) {
-        this.lazyDataReligion = lazyDataReligion;
+    public void setLazyDataFamilyRelation(LazyDataModel<FamilyRelation> lazyDataFamilyRelation) {
+        this.lazyDataFamilyRelation = lazyDataFamilyRelation;
     }
 
-    public Religion getSelectedReligion() {
-        return selectedReligion;
+    public FamilyRelation getSelectedFamilyRelation() {
+        return selectedFamilyRelation;
     }
 
-    public void setSelectedReligion(Religion selectedReligion) {
-        this.selectedReligion = selectedReligion;
+    public void setSelectedFamilyRelation(FamilyRelation selectedFamilyRelation) {
+        this.selectedFamilyRelation = selectedFamilyRelation;
     }
 
     public void doSearch() {
-        lazyDataReligion = null;
+        lazyDataFamilyRelation = null;
     }
 
     public void doDelete() {
         try {
-            religionService.delete(selectedReligion);
+            familyRelationService.delete(selectedFamilyRelation);
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 
         } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
@@ -106,7 +108,7 @@ public class ReligionViewController extends BaseController {
     public void doUpdate() {
         Map<String, List<String>> dataToSend = new HashMap<>();
         List<String> values = new ArrayList<>();
-        values.add(String.valueOf(selectedReligion.getId()));
+        values.add(String.valueOf(selectedFamilyRelation.getId()));
         dataToSend.put("param", values);
         showDialog(dataToSend);
     }
@@ -118,7 +120,7 @@ public class ReligionViewController extends BaseController {
         options.put("resizable", false);
         options.put("contentWidth", 400);
         options.put("contentHeight", 250);
-        RequestContext.getCurrentInstance().openDialog("religion_form", options, params);
+        RequestContext.getCurrentInstance().openDialog("family_relation_form", options, params);
     }
 
     public void onDialogClose(SelectEvent event) {
@@ -131,6 +133,23 @@ public class ReligionViewController extends BaseController {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } else if (condition.equalsIgnoreCase(HRMConstant.UPDATE_CONDITION)) {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        }
+    }
+    
+    
+    public void onDelete(){
+          try {
+            selectedFamilyRelation = this.familyRelationService.getEntiyByPK(selectedFamilyRelation.getId());
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
+        }
+    }
+    
+     public void doDetail(){
+          try {
+            selectedFamilyRelation = this.familyRelationService.getEntiyByPK(selectedFamilyRelation.getId());
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
         }
     }
 }

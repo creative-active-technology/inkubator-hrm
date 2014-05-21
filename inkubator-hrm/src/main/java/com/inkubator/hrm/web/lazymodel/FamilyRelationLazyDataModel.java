@@ -13,14 +13,14 @@ import org.primefaces.model.SortOrder;
 
 /**
  *
- * @author rizkykojek
+ * @author Deni Husni FR
  */
 public class FamilyRelationLazyDataModel extends LazyDataModel<FamilyRelation> implements Serializable {
 
     private static final Logger LOGGER = Logger.getLogger(FamilyRelationLazyDataModel.class);
     private final String parameter;
     private final FamilyRelationService familyRelationService;
-    private List<FamilyRelation> religions = new ArrayList<>();
+    private List<FamilyRelation> familyRelations = new ArrayList<>();
     private Integer total;
 
     public FamilyRelationLazyDataModel(String parameter, FamilyRelationService familyRelationService) {
@@ -31,26 +31,33 @@ public class FamilyRelationLazyDataModel extends LazyDataModel<FamilyRelation> i
     @Override
     public List<FamilyRelation> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
         LOGGER.info("Step Load Lazy data Model");
-        try {
-            Order orderable = null;
-            if (sortField != null) {
-                orderable = (sortOrder == SortOrder.ASCENDING) ? Order.asc(sortField) : Order.desc(sortField);
+        if (sortField != null) {
+            if (sortOrder == SortOrder.ASCENDING) {
+                try {
+                    familyRelations = familyRelationService.getByParam(parameter, first, pageSize, Order.asc(sortField));
+                    total = Integer.parseInt(String.valueOf(familyRelationService.getTotalFamilyRelationByParam(parameter)));
+                } catch (Exception ex) {
+                    LOGGER.error("Error", ex);
+                }
             } else {
-                orderable = Order.desc("name");
+                try {
+                    familyRelations = familyRelationService.getByParam(parameter, first, pageSize, Order.desc(sortField));
+                    total = Integer.parseInt(String.valueOf(familyRelationService.getTotalFamilyRelationByParam(parameter)));
+                } catch (Exception ex) {
+                    LOGGER.error("Error", ex);
+                }
             }
-
-            religions = familyRelationService.getByParam(parameter, first, pageSize, orderable);
-            total = Integer.parseInt(String.valueOf(familyRelationService.getTotalFamilyRelationByParam(parameter)));
-            LOGGER.info("Success Load Lazy data Model");
-
-        } catch (Exception ex) {
-            LOGGER.error("Failed Load Lazy data Model");
-            LOGGER.error("Error = ", ex);
+        } else {
+            try {
+                familyRelations = familyRelationService.getByParam(parameter, first, pageSize, Order.asc("relasiName"));
+                total = Integer.parseInt(String.valueOf(familyRelationService.getTotalFamilyRelationByParam(parameter)));
+            } catch (Exception ex) {
+                LOGGER.error("Error", ex);
+            }
         }
-
         setPageSize(pageSize);
         setRowCount(total);
-        return religions;
+        return familyRelations;
     }
 
     @Override
@@ -60,9 +67,9 @@ public class FamilyRelationLazyDataModel extends LazyDataModel<FamilyRelation> i
 
     @Override
     public FamilyRelation getRowData(String id) {
-        for (FamilyRelation religion : religions) {
-            if (id.equals(String.valueOf(religion.getId()))) {
-                return religion;
+        for (FamilyRelation familyRelation : familyRelations) {
+            if (id.equals(String.valueOf(familyRelation.getId()))) {
+                return familyRelation;
             }
         }
         return null;

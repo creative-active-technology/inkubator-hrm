@@ -2,9 +2,9 @@ package com.inkubator.hrm.web.reference;
 
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.Religion;
-import com.inkubator.hrm.service.ReligionService;
-import com.inkubator.hrm.web.model.ReligionModel;
+import com.inkubator.hrm.entity.FamilyRelation;
+import com.inkubator.hrm.service.FamilyRelationService;
+import com.inkubator.hrm.web.model.FamilyRelationModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
@@ -19,30 +19,35 @@ import org.primefaces.context.RequestContext;
 
 /**
  *
- * @author rizkykojek
+ * @author Deni Husni FR
  */
-@ManagedBean(name = "religionFormController")
+@ManagedBean(name = "familyRelationFormController")
 @ViewScoped
-public class ReligionFormController extends BaseController {
+public class FamilyRelationFormController extends BaseController {
 
-    private ReligionModel religionModel;
+    private FamilyRelationModel familyRelationModel;
     Boolean isUpdate;
-    @ManagedProperty(value = "#{religionService}")
-    private ReligionService religionService;
+    @ManagedProperty(value = "#{familyRelationService}")
+    private FamilyRelationService familyRelationService;
+
+    public void setFamilyRelationService(FamilyRelationService familyRelationService) {
+        this.familyRelationService = familyRelationService;
+    }
 
     @PostConstruct
     @Override
     public void initialization() {
         super.initialization();
         String param = FacesUtil.getRequestParameter("param");
-        religionModel = new ReligionModel();
+        System.out.println(" hehehr "+param);
+        familyRelationModel = new FamilyRelationModel();
         isUpdate = Boolean.FALSE;
         if (StringUtils.isNumeric(param)) {
             try {
-                Religion religion = religionService.getEntiyByPK(Long.parseLong(param));
+                FamilyRelation religion = familyRelationService.getEntiyByPK(Long.parseLong(param));
                 if (religion != null) {
-                    religionModel.setId(religion.getId());
-                    religionModel.setName(religion.getName());
+                    familyRelationModel.setId(religion.getId());
+                    familyRelationModel.setRelationName(religion.getRelasiName());
                     isUpdate = Boolean.TRUE;
                 }
             } catch (Exception e) {
@@ -53,17 +58,9 @@ public class ReligionFormController extends BaseController {
 
     @PreDestroy
     public void cleanAndExit() {
-        religionService = null;
-        religionModel = null;
+        familyRelationService = null;
+        familyRelationModel = null;
         isUpdate = null;
-    }
-
-    public ReligionModel getReligionModel() {
-        return religionModel;
-    }
-
-    public void setReligionModel(ReligionModel religionModel) {
-        this.religionModel = religionModel;
     }
 
     public Boolean getIsUpdate() {
@@ -74,25 +71,21 @@ public class ReligionFormController extends BaseController {
         this.isUpdate = isUpdate;
     }
 
-    public void setReligionService(ReligionService religionService) {
-        this.religionService = religionService;
-    }
-
     public void doClear() {
         //clear all data except the id (if any)
-        Long tempId = religionModel.getId();
-        religionModel = new ReligionModel();
-        religionModel.setId(tempId);
+        Long tempId = familyRelationModel.getId();
+        familyRelationModel = new FamilyRelationModel();
+        familyRelationModel.setId(tempId);
     }
 
     public void doSave() {
-        Religion religion = getEntityFromViewModel(religionModel);
+        FamilyRelation familyRelation = getEntityFromViewModel(familyRelationModel);
         try {
             if (isUpdate) {
-                religionService.update(religion);
+                familyRelationService.update(familyRelation);
                 RequestContext.getCurrentInstance().closeDialog(HRMConstant.UPDATE_CONDITION);
             } else {
-                religionService.save(religion);
+                familyRelationService.save(familyRelation);
                 RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
             }
             cleanAndExit();
@@ -104,12 +97,22 @@ public class ReligionFormController extends BaseController {
         }
     }
 
-    private Religion getEntityFromViewModel(ReligionModel religionModel) {
-        Religion religion = new Religion();
+    private FamilyRelation getEntityFromViewModel(FamilyRelationModel religionModel) {
+        FamilyRelation familyRelation = new FamilyRelation();
         if (religionModel.getId() != null) {
-            religion.setId(religionModel.getId());
+            familyRelation.setId(religionModel.getId());
         }
-        religion.setName(religionModel.getName());
-        return religion;
+        familyRelation.setRelasiName(religionModel.getRelationName());
+        return familyRelation;
     }
+
+    public FamilyRelationModel getFamilyRelationModel() {
+        return familyRelationModel;
+    }
+
+    public void setFamilyRelationModel(FamilyRelationModel familyRelationModel) {
+        this.familyRelationModel = familyRelationModel;
+    }
+    
+    
 }

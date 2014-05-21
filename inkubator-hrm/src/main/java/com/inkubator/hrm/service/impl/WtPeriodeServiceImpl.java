@@ -5,14 +5,11 @@
  */
 package com.inkubator.hrm.service.impl;
 
-import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
-import com.inkubator.exception.BussinessException;
-import com.inkubator.hrm.dao.FamilyRelationDao;
-import com.inkubator.hrm.entity.FamilyRelation;
-import com.inkubator.hrm.service.FamilyRelationService;
-import com.inkubator.securitycore.util.UserInfoUtil;
-import java.util.Date;
+import com.inkubator.hrm.dao.WtPeriodeDao;
+import com.inkubator.hrm.entity.WtPeriode;
+import com.inkubator.hrm.service.WtPeriodeService;
+import com.inkubator.hrm.web.search.WtPeriodeSearchParameter;
 import java.util.List;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,130 +23,110 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author Deni Husni FR
  */
-@Service(value = "familyRelationService")
+@Service(value = "wtPeriodeService")
 @Lazy
-public class FamilyRelationServiceImpl extends IServiceImpl implements FamilyRelationService {
+public class WtPeriodeServiceImpl extends IServiceImpl implements WtPeriodeService {
 
     @Autowired
-    private FamilyRelationDao familyRelationDao;
+    private WtPeriodeDao wtPeriodeDao;
 
     @Override
-    public FamilyRelation getEntiyByPK(String id) throws Exception {
+    public WtPeriode getEntiyByPK(String id) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public FamilyRelation getEntiyByPK(Integer id) throws Exception {
+    public WtPeriode getEntiyByPK(Integer id) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public FamilyRelation getEntiyByPK(Long id) throws Exception {
-        return this.familyRelationDao.getEntiyByPK(id);
-    }
-
-    @Override
-    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void save(FamilyRelation entity) throws Exception {
-        long totalDuplicates = familyRelationDao.getTotalByName(entity.getRelasiName());
-        if (totalDuplicates > 0) {
-            throw new BussinessException("family_relation.error_duplicate_relation_name");
-        }
-
-        entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
-        entity.setCreatedBy(UserInfoUtil.getUserName());
-        entity.setCreatedOn(new Date());
-        familyRelationDao.save(entity);
-    }
-
-    @Override
-    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void update(FamilyRelation entity) throws Exception {
-        long totalDuplicates = familyRelationDao.getTotalByNameAndNotId(entity.getRelasiName(), entity.getId());
-        if (totalDuplicates > 0) {
-            throw new BussinessException("family_relation.error_duplicate_relation_name");
-        }
-        FamilyRelation familyRelation = familyRelationDao.getEntiyByPK(entity.getId());
-        familyRelation.setRelasiName(entity.getRelasiName());
-        familyRelation.setUpdatedBy(UserInfoUtil.getUserName());
-        familyRelation.setUpdatedOn(new Date());
-        familyRelationDao.update(familyRelation);
-    }
-
-    @Override
-    public void saveOrUpdate(FamilyRelation enntity) throws Exception {
+    public WtPeriode getEntiyByPK(Long id) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public FamilyRelation saveData(FamilyRelation entity) throws Exception {
+    public void save(WtPeriode entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public FamilyRelation updateData(FamilyRelation entity) throws Exception {
+    public void update(WtPeriode entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public FamilyRelation saveOrUpdateData(FamilyRelation entity) throws Exception {
+    public void saveOrUpdate(WtPeriode enntity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public FamilyRelation getEntityByPkIsActive(String id, Integer isActive) throws Exception {
+    public WtPeriode saveData(WtPeriode entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public FamilyRelation getEntityByPkIsActive(String id, Byte isActive) throws Exception {
+    public WtPeriode updateData(WtPeriode entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public FamilyRelation getEntityByPkIsActive(String id, Boolean isActive) throws Exception {
+    public WtPeriode saveOrUpdateData(WtPeriode entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public FamilyRelation getEntityByPkIsActive(Integer id, Integer isActive) throws Exception {
+    public WtPeriode getEntityByPkIsActive(String id, Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public FamilyRelation getEntityByPkIsActive(Integer id, Byte isActive) throws Exception {
+    public WtPeriode getEntityByPkIsActive(String id, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public FamilyRelation getEntityByPkIsActive(Integer id, Boolean isActive) throws Exception {
+    public WtPeriode getEntityByPkIsActive(String id, Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public FamilyRelation getEntityByPkIsActive(Long id, Integer isActive) throws Exception {
+    public WtPeriode getEntityByPkIsActive(Integer id, Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public FamilyRelation getEntityByPkIsActive(Long id, Byte isActive) throws Exception {
+    public WtPeriode getEntityByPkIsActive(Integer id, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public FamilyRelation getEntityByPkIsActive(Long id, Boolean isActive) throws Exception {
+    public WtPeriode getEntityByPkIsActive(Integer id, Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void delete(FamilyRelation entity) throws Exception {
-      this.familyRelationDao.delete(entity);
+    public WtPeriode getEntityByPkIsActive(Long id, Integer isActive) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void softDelete(FamilyRelation entity) throws Exception {
+    public WtPeriode getEntityByPkIsActive(Long id, Byte isActive) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public WtPeriode getEntityByPkIsActive(Long id, Boolean isActive) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void delete(WtPeriode entity) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void softDelete(WtPeriode entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -174,67 +151,55 @@ public class FamilyRelationServiceImpl extends IServiceImpl implements FamilyRel
     }
 
     @Override
-    public List<FamilyRelation> getAllData() throws Exception {
+    public List<WtPeriode> getAllData() throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<FamilyRelation> getAllData(Boolean isActive) throws Exception {
+    public List<WtPeriode> getAllData(Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<FamilyRelation> getAllData(Integer isActive) throws Exception {
+    public List<WtPeriode> getAllData(Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<FamilyRelation> getAllData(Byte isActive) throws Exception {
+    public List<WtPeriode> getAllData(Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<FamilyRelation> getAllDataPageAble(int firstResult, int maxResults, Order order) throws Exception {
+    public List<WtPeriode> getAllDataPageAble(int firstResult, int maxResults, Order order) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<FamilyRelation> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Boolean isActive) throws Exception {
+    public List<WtPeriode> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<FamilyRelation> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Integer isActive) throws Exception {
+    public List<WtPeriode> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<FamilyRelation> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
+    public List<WtPeriode> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<FamilyRelation> getByParam(String parameter, int firstResult, int maxResults, Order ordertable) throws Exception {
-        return this.familyRelationDao.getByParam(parameter, firstResult, maxResults, ordertable);
+    public List<WtPeriode> getByParam(WtPeriodeSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
+       return this.wtPeriodeDao.getByParam(searchParameter, firstResult, maxResults, order);
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getTotalFamilyRelationByParam(String parameter) throws Exception {
-        return this.familyRelationDao.getTotalFamilyRelationByParam(parameter);
-    }
-
-    @Override
-    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getTotalByName(String name) throws Exception {
-        return this.familyRelationDao.getTotalByName(name);
-    }
-
-    @Override
-    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getTotalByNameAndNotId(String name, Long id) throws Exception {
-        return this.familyRelationDao.getTotalByNameAndNotId(name, id);
+    public Long getTotalWtPeriodeByParam(WtPeriodeSearchParameter searchParameter) throws Exception {
+       return this.wtPeriodeDao.getTotalWtPeriodeByParam(searchParameter);
     }
 
 }
