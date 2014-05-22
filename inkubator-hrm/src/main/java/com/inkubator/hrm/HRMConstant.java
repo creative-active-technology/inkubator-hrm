@@ -37,6 +37,7 @@ public class HRMConstant {
     public static final Integer NOTLOCK = 0;
     public static final Integer EXPIRED = 1;
     public static final Integer NOTEXPIRED = 0;
+    public static final String DELIMITER = "|";
     public static final byte[] KEYVALUE = new byte[]{'z', 'i', 'm', 'A', 'm', 'a', 'B', 'y', 'a', 'L', 'N', 'L', 'd', 'h', 'f', 'r'};
     public static final String AES_ALGO = "AES";
     public static final String USER_NEW = "user_create_new";

@@ -45,6 +45,7 @@ public class SpecAbilityViewController extends BaseController {
     @Override
     public void initialization() {
         super.initialization();
+        searchParameter = new SpecificationAbilitySearchParameter();
 	}
 	
 	@PreDestroy
@@ -104,27 +105,14 @@ public class SpecAbilityViewController extends BaseController {
 		}
 	}
 	
-	public void doAdd(){
-		showDialog(null);
+	public String doAdd(){
+		return "/protected/reference/spec_ability_form.htm?faces-redirect=true";
 	}
 	
-	public void doUpdate(){
-		Map<String, List<String>> dataToSend = new HashMap<>();
-        List<String> values = new ArrayList<>();
-        values.add(String.valueOf(selectedSpecificationAbility.getId()));
-        dataToSend.put("param", values);
-        showDialog(dataToSend);
+	public String doUpdate(){
+		return "/protected/reference/spec_ability_form.htm?faces-redirect=true&execution=e"+selectedSpecificationAbility.getId();
 	}
 	
-	private void showDialog(Map<String, List<String>> params){
-		Map<String, Object> options = new HashMap<>();
-        options.put("modal", true);
-        options.put("draggable", true);
-        options.put("resizable", false);
-        options.put("contentWidth", 400);
-        options.put("contentHeight", 300);
-        RequestContext.getCurrentInstance().openDialog("spec_ability_form", options, params);
-	}
 	
 	public void onDialogClose(SelectEvent event){
 		//re-calculate searching

@@ -11,7 +11,8 @@ import com.inkubator.webcore.util.SearchParameter;
 public class SpecificationAbilitySearchParameter extends SearchParameter {
 	
 	private String name;	
-	private String option;
+	private String optionAbility;
+	private String scaleValue;
 
 	public String getName() {
 		if(StringUtils.equalsIgnoreCase(getKeyParam(), "name")){
@@ -26,17 +27,30 @@ public class SpecificationAbilitySearchParameter extends SearchParameter {
 		this.name = name;
 	}
 
-	public String getOption() {
-		if(StringUtils.equalsIgnoreCase(getKeyParam(), "option")){
-			option = getParameter();
+	public String getOptionAbility() {
+		if(StringUtils.equalsIgnoreCase(getKeyParam(), "optionAbility")){
+			optionAbility = getParameter();
 		} else {
-			option = null;
+			optionAbility = null;
 		}
-    	return option;
+    	return optionAbility;
 	}
 
-	public void setOption(String option) {
-		this.option = option;
+	public void setOptionAbility(String optionAbility) {
+		this.optionAbility = optionAbility;
+	}
+
+	public String getScaleValue() {
+		if(StringUtils.equalsIgnoreCase(getKeyParam(), "scaleValue")){
+			scaleValue = getParameter();
+		} else {
+			scaleValue = null;
+		}
+    	return scaleValue;
+	}
+
+	public void setScaleValue(String scaleValue) {
+		this.scaleValue = scaleValue;
 	}
 
 }

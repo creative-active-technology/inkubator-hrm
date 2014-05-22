@@ -18,7 +18,7 @@ public class SpecificationAbility implements Serializable {
     private Integer version;
     private String name;
     private String optionAbility;
-    private Integer scaleValue;
+    private String scaleValue;
     private String createdBy;
     private String updatedBy;
     private Date createdOn;
@@ -71,13 +71,13 @@ public class SpecificationAbility implements Serializable {
 	}
 
 	@Column(name = "scale_value", nullable = false)
-	public Integer getScaleValue() {
+	public String getScaleValue() {
 		return scaleValue;
 	}
 
-	public void setScaleValue(Integer scaleValue) {
+	public void setScaleValue(String scaleValue) {
 		this.scaleValue = scaleValue;
-	}
+	}	
 
 	@Column(name = "created_by", length = 45)
     public String getCreatedBy() {
