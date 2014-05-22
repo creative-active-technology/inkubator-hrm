@@ -33,32 +33,22 @@
 	                        <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
 	                        <h:outputLabel value="#{appmsg['specificationability.dialog_info']}" styleClass="label_hrm" style="font-weight: normal!important"/>
 	                    </h:panelGrid> 
-	                    <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
+	                    <p:panelGrid id="optionsGroupId" styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px">
 	                        <p:row>
-	                            <p:column style="width: 19%">
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
 	                                <p:outputLabel for="nameId" value="#{appmsg['specificationability.specification_ability']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column style="width: 1%">
-	                                <h:outputLabel for="nameId" value=":" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                                <p:focus for ="nameId">
 	                                    <p:inputText id="nameId" title="#{appmsg['specificationability.specification_ability']}" value="#{specAbilityFormController.specAbilityModel.name}" 
 	                                    			 required="true" requiredMessage="#{appmsg['specificationability.specification_ability_name_should_not_be_empty']}" maxlength="30" styleClass="isitext_hrm" style="width:290px;" />
+	                                    <p:message for="nameId"/>
 	                                </p:focus>
 	                            </p:column>
 	                        </p:row>
 	                        <p:row>
-	                            <p:column colspan="3">
-	                                <p:message for="nameId"/>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 19%">
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
 	                                <p:outputLabel for="optionId" value="#{appmsg['specificationability.option']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column style="width: 1%">
-	                                <h:outputLabel for="optionId" value=":" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column style="width: 80%">
 	                                <p:focus for ="optionId">
@@ -67,20 +57,17 @@
 	                                    	<f:validateLongRange minimum="1" maximum="11"/>
 	                                    	<p:ajax update="optionsGroupId" process="@this" listener="#{specAbilityFormController.doAdjustScaleValue()}"/>
 	                                    </p:spinner>
+	                                    <p:message for="optionId"/>
 	                                </p:focus>                                
 	                            </p:column>
-	                        </p:row>  
-	                        <p:row>
-	                            <p:column colspan="3">
-	                                <p:message for="optionId"/>
-	                            </p:column>
-	                        </p:row>                      
+	                        </p:row>                     
 	                 	</p:panelGrid>
-	                    <p:panelGrid id="optionsGroupId" styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
+	                    <p:panelGrid id="optionsGroupId" styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px">
 		                    <c:forEach begin="0" end="#{specAbilityFormController.specAbilityModel.totalOption - 1}" var="i">
 								<p:row>
-									<p:column style="width: 19%"><p:outputLabel value="#{appmsg['specificationability.scale_value']}" styleClass="label_hrm" rendered="#{i == 0}"/></p:column>
-		                            <p:column style="width: 1%"><p:outputLabel value="&nbsp;&nbsp;"/></p:column>	                            
+									<p:column style="width: 20%;background-color: #e1f0f0!important">
+										<p:outputLabel value="#{appmsg['specificationability.scale_value']}" styleClass="label_hrm" rendered="#{i == 0}"/>
+									</p:column>
 									<p:column style="width: 80%">
 										<p:inputText id="${'optionId'.concat(i)}" title="#{appmsg['specificationability.option']}" value="#{specAbilityFormController.specAbilityModel.options[i]}" 
 	                                    			 required="true" requiredMessage="#{appmsg['specificationability.option_name_should_not_be_empty']}" 
@@ -88,13 +75,9 @@
 	                                   	<p:outputLabel value="&nbsp;/&nbsp;"/>
 	                                   	<p:inputText title="#{appmsg['specificationability.specification_ability']}" value="#{specAbilityFormController.specAbilityModel.scaleValue[i]}" 
 	                                    			 maxlength="30" readonly="true" styleClass="isitext_disabled_hrm" style="width:50px;" />
+	                                    <p:message for="${'optionId'.concat(i)}"/>
 									</p:column>
 								</p:row>
-								<p:row>
-		                            <p:column colspan="3">
-		                                <p:message for="${'optionId'.concat(i)}"/>
-		                            </p:column>
-		                        </p:row> 
 							</c:forEach>							
 						</p:panelGrid>
 	                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
