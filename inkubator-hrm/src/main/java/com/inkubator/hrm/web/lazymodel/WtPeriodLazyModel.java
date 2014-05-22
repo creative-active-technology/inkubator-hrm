@@ -26,7 +26,7 @@ public class WtPeriodLazyModel extends LazyDataModel<WtPeriode> implements Seria
     private static final Logger LOGGER = Logger.getLogger(WtPeriodLazyModel.class);
     private final WtPeriodeSearchParameter periodeSearchParameter;
     private final WtPeriodeService wtPeriodeService;
-    private List<WtPeriode> hrmRoles = new ArrayList<>();
+    private List<WtPeriode> wtPeriodes = new ArrayList<>();
     private Integer jumlahData;
 
     public WtPeriodLazyModel(WtPeriodeSearchParameter periodeSearchParameter, WtPeriodeService wtPeriodeService) {
@@ -41,14 +41,14 @@ public class WtPeriodLazyModel extends LazyDataModel<WtPeriode> implements Seria
         if (sortField != null) {
             if (sortOrder == SortOrder.ASCENDING) {
                 try {
-                    hrmRoles = wtPeriodeService.getByParam(periodeSearchParameter, first, pageSize, Order.asc(sortField));
+                    wtPeriodes = wtPeriodeService.getByParam(periodeSearchParameter, first, pageSize, Order.asc(sortField));
                     jumlahData = Integer.parseInt(String.valueOf(wtPeriodeService.getTotalWtPeriodeByParam(periodeSearchParameter)));
                 } catch (Exception ex) {
                     LOGGER.error("Error", ex);
                 }
             } else {
                 try {
-                    hrmRoles = wtPeriodeService.getByParam(periodeSearchParameter, first, pageSize, Order.desc(sortField));
+                    wtPeriodes = wtPeriodeService.getByParam(periodeSearchParameter, first, pageSize, Order.desc(sortField));
                     jumlahData = Integer.parseInt(String.valueOf(wtPeriodeService.getTotalWtPeriodeByParam(periodeSearchParameter)));
                 } catch (Exception ex) {
                     LOGGER.error("Error", ex);
@@ -56,7 +56,7 @@ public class WtPeriodLazyModel extends LazyDataModel<WtPeriode> implements Seria
             }
         } else {
             try {
-                hrmRoles = wtPeriodeService.getByParam(periodeSearchParameter, first, pageSize, Order.desc("roleName"));
+                wtPeriodes = wtPeriodeService.getByParam(periodeSearchParameter, first, pageSize, Order.desc("tahun"));
                 jumlahData = Integer.parseInt(String.valueOf(wtPeriodeService.getTotalWtPeriodeByParam(periodeSearchParameter)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
@@ -66,7 +66,7 @@ public class WtPeriodLazyModel extends LazyDataModel<WtPeriode> implements Seria
         LOGGER.info("Success Load Lazy data Model");
         setPageSize(pageSize);
         setRowCount(jumlahData);
-        return hrmRoles;
+        return wtPeriodes;
     }
 
     @Override
@@ -76,7 +76,7 @@ public class WtPeriodLazyModel extends LazyDataModel<WtPeriode> implements Seria
 
     @Override
     public WtPeriode getRowData(String id) {
-        for (WtPeriode hrmRole : hrmRoles) {
+        for (WtPeriode hrmRole : wtPeriodes) {
             if (id.equals(String.valueOf(hrmRole.getId()))) {
                 return hrmRole;
             }
