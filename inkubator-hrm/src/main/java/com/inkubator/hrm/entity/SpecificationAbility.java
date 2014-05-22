@@ -62,13 +62,13 @@ public class SpecificationAbility implements Serializable {
     }
 
     @Column(name = "option_ability", nullable = false)
-	public String getOptionAbility() {
-		return optionAbility;
-	}
+    public String getOptionAbility() {
+        return optionAbility;
+    }
 
-	public void setOptionAbility(String optionAbility) {
-		this.optionAbility = optionAbility;
-	}
+    public void setOptionAbility(String optionAbility) {
+        this.optionAbility = optionAbility;
+    }
 
 	@Column(name = "scale_value", nullable = false)
 	public String getScaleValue() {
@@ -77,9 +77,9 @@ public class SpecificationAbility implements Serializable {
 
 	public void setScaleValue(String scaleValue) {
 		this.scaleValue = scaleValue;
-	}	
+	}
 
-	@Column(name = "created_by", length = 45)
+    @Column(name = "created_by", length = 45)
     public String getCreatedBy() {
         return this.createdBy;
     }

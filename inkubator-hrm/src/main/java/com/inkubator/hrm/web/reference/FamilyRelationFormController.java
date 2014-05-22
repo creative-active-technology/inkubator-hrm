@@ -2,9 +2,9 @@ package com.inkubator.hrm.web.reference;
 
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.EducationLevel;
-import com.inkubator.hrm.service.EducationLevelService;
-import com.inkubator.hrm.web.model.EducationLevelModel;
+import com.inkubator.hrm.entity.FamilyRelation;
+import com.inkubator.hrm.service.FamilyRelationService;
+import com.inkubator.hrm.web.model.FamilyRelationModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
@@ -19,31 +19,35 @@ import org.primefaces.context.RequestContext;
 
 /**
  *
- * @author rizkykojek
+ * @author Deni Husni FR
  */
-@ManagedBean(name = "educationLevelFormController")
+@ManagedBean(name = "familyRelationFormController")
 @ViewScoped
-public class EducationLevelFormController extends BaseController {
+public class FamilyRelationFormController extends BaseController {
 
-    private EducationLevelModel educationLevelModel;
+    private FamilyRelationModel familyRelationModel;
     Boolean isUpdate;
-    @ManagedProperty(value = "#{educationLevelService}")
-    private EducationLevelService educationLevelService;
+    @ManagedProperty(value = "#{familyRelationService}")
+    private FamilyRelationService familyRelationService;
+
+    public void setFamilyRelationService(FamilyRelationService familyRelationService) {
+        this.familyRelationService = familyRelationService;
+    }
 
     @PostConstruct
     @Override
     public void initialization() {
         super.initialization();
         String param = FacesUtil.getRequestParameter("param");
-        educationLevelModel = new EducationLevelModel();
+        System.out.println(" hehehr "+param);
+        familyRelationModel = new FamilyRelationModel();
         isUpdate = Boolean.FALSE;
         if (StringUtils.isNumeric(param)) {
             try {
-                EducationLevel educationLevel = educationLevelService.getEntiyByPK(Long.parseLong(param));
-                if (educationLevel != null) {
-                    educationLevelModel.setId(educationLevel.getId());
-                    educationLevelModel.setName(educationLevel.getName());
-                    educationLevelModel.setLevel(educationLevel.getLevel());
+                FamilyRelation religion = familyRelationService.getEntiyByPK(Long.parseLong(param));
+                if (religion != null) {
+                    familyRelationModel.setId(religion.getId());
+                    familyRelationModel.setRelationName(religion.getRelasiName());
                     isUpdate = Boolean.TRUE;
                 }
             } catch (Exception e) {
@@ -54,17 +58,9 @@ public class EducationLevelFormController extends BaseController {
 
     @PreDestroy
     public void cleanAndExit() {
-        educationLevelService = null;
-        educationLevelModel = null;
+        familyRelationService = null;
+        familyRelationModel = null;
         isUpdate = null;
-    }
-
-    public EducationLevelModel getEducationLevelModel() {
-        return educationLevelModel;
-    }
-
-    public void setEducationLevelModel(EducationLevelModel educationLevelModel) {
-        this.educationLevelModel = educationLevelModel;
     }
 
     public Boolean getIsUpdate() {
@@ -75,25 +71,21 @@ public class EducationLevelFormController extends BaseController {
         this.isUpdate = isUpdate;
     }
 
-    public void setEducationLevelService(EducationLevelService educationLevelService) {
-        this.educationLevelService = educationLevelService;
-    }
-
     public void doClear() {
         //clear all data except the id (if any)
-        Long tempId = educationLevelModel.getId();
-        educationLevelModel = new EducationLevelModel();
-        educationLevelModel.setId(tempId);
+        Long tempId = familyRelationModel.getId();
+        familyRelationModel = new FamilyRelationModel();
+        familyRelationModel.setId(tempId);
     }
 
     public void doSave() {
-        EducationLevel educationLevel = getEntityFromViewModel(educationLevelModel);
+        FamilyRelation familyRelation = getEntityFromViewModel(familyRelationModel);
         try {
             if (isUpdate) {
-                educationLevelService.update(educationLevel);
+                familyRelationService.update(familyRelation);
                 RequestContext.getCurrentInstance().closeDialog(HRMConstant.UPDATE_CONDITION);
             } else {
-                educationLevelService.save(educationLevel);
+                familyRelationService.save(familyRelation);
                 RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
             }
             cleanAndExit();
@@ -105,13 +97,22 @@ public class EducationLevelFormController extends BaseController {
         }
     }
 
-    private EducationLevel getEntityFromViewModel(EducationLevelModel model) {
-        EducationLevel educationLevel = new EducationLevel();
-        if (model.getId() != null) {
-            educationLevel.setId(model.getId());
+    private FamilyRelation getEntityFromViewModel(FamilyRelationModel religionModel) {
+        FamilyRelation familyRelation = new FamilyRelation();
+        if (religionModel.getId() != null) {
+            familyRelation.setId(religionModel.getId());
         }
-        educationLevel.setName(model.getName());
-        educationLevel.setLevel(model.getLevel());
-        return educationLevel;
+        familyRelation.setRelasiName(religionModel.getRelationName());
+        return familyRelation;
     }
+
+    public FamilyRelationModel getFamilyRelationModel() {
+        return familyRelationModel;
+    }
+
+    public void setFamilyRelationModel(FamilyRelationModel familyRelationModel) {
+        this.familyRelationModel = familyRelationModel;
+    }
+    
+    
 }

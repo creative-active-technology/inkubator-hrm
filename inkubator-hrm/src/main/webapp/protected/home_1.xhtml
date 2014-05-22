@@ -1,233 +1,51 @@
-<?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:pe="http://primefaces.org/ui/extensions"
-      xmlns:f="http://java.sun.com/jsf/core">
-    <h:head>
-        <title>#{appmsg['global.header_app']}</title>
-        <link rel="stylesheet" href="${request.contextPath}/resources/css/hr_content_css.css" type="text/css" media="screen" />
-        <link rel="stylesheet" href="${request.contextPath}/resources/css/tabmenu.css" type="text/css" media="screen" />
-        <link rel="shortcut icon" href="${request.contextPath}/hr.ico" type="image/x-icon" />
-    </h:head>
-    <h:body>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+    <body>
+        <div style="font-family:Trebuchet MS;margin-bottom: 20px;font-weight: bold;color: black;padding: 3px 3px 3px 10px;background-image: linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -o-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -moz-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -webkit-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -ms-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -webkit-gradient(linear,left bottom,left topcolor-stop(0.68, rgb(114,185,215)));">
+            User Registration</div>
+        <div style="padding-left: 10px;font-family: Verdana">
+            Dear ${user.realName},
+            <br />
+            <br />
+            <br />
+            ${headerInfo}
 
-        <div id="art-page-background-middle-texture" >
-            <div id="header_content">
-                <div id="header_namaPT" style="margin-left: 20px">
-                    <h:panelGrid columns="1">
-                        <h:outputLabel value="HR Management" style="text-align: left;color: #ff9900;font-family:Trebuchet MS" />        
-                        <h:outputLabel value="#{appmsg['global.namaPT']}" style="font-size: 11px!important;color: #003366"/>
-                    </h:panelGrid>
-                </div>
-                <div style="float: right">                
-                    <h:panelGrid columns="2" style="padding-top: 8px">
-                        <h:outputLabel value="Selamat Datang, Deni Husni FR.  Anda login pada 12 Desember 2030" 
-                                       style="font-size: 18px;font-family: Tempus Sans ITC;color: #003366;margin-right: 60px"/> 
-                        <h:form>
-                            <h:panelGroup style="margin-right: 220px">
-                                <h:panelGrid columns="4" cellpadding="3" >
-                                    <h:commandLink id="printerLogId">
-                                        <h:graphicImage library="images" name="printer.png" width="36" height="36" /> 
-                                    </h:commandLink>
-                                    <h:commandLink id="printerLogId1">
-                                        <h:graphicImage library="images" name="help_system.png" width="36" height="36" /> 
-                                    </h:commandLink>
-                                    <h:commandLink id="printerLogId3">
-                                        <h:graphicImage library="images" name="user.png" width="36" height="36" /> 
-                                    </h:commandLink>
-                                    <h:outputLink id="printerLogId2" style="margin-left: 30px" value="${request.contextPath}/logout.htm">
-                                        <h:graphicImage library="images" name="logout.png" width="36" height="36" /> 
-                                    </h:outputLink>
-                                </h:panelGrid>
-                            </h:panelGroup>
-                        </h:form>
-                    </h:panelGrid>
-                </div>
-            </div>
-            <div style="clear: both"/>
-            <p:separator style="margin-top: 0px"/>
-            <div style="margin-left: 10px;margin-right: 10px;margin-top: 0px">
-                <ul id="tabmenu">
-
-                    <li id="home">
-                        <a href="home.htm"><h:outputLabel value="Home"/></a>
-                        <!--                    <ul>
-                                                <li><a href="?11">Sub menu 1</a>
-                                                    <ul>
-                                                        <li><a href="?111">Tab menu 1-1-1</a></li>
-                                                        <li><a href="?112">Tab menu 1-1-2</a></li>
-                                                        <li><a href="?113">Tab menu 1-1-3</a></li>
-                                                        <li><a href="?114">Tab menu 1-1-4</a></li>
-                                                    </ul>
-                                                </li>
-                                                <li><a href="sdfdsfd">Sub menu 2</a>
-                                                    <ul>
-                                                        <li><a href="?121">Tab menu 1-2-1</a></li>
-                                                        <li><a href="?122">Tab menu 1-2-2</a></li>
-                                                    </ul>
-                                                </li>
-                                                <li><a href="?13">Sub menu 3</a></li>
-                                            </ul>-->
-                    </li>
-                    <li>
-                        <h:outputLabel value="User Acount"/>
-                        <ul>
-                            <li id="p22"><a href="home_1.htm"><h:outputLabel value="User Data"/></a>  
-                            </li>
-                            <li><a href="?22"><h:outputLabel value="Role Data"/></a>  
-                            </li>
-                            <li><a href="?23"><h:outputLabel value="Department Data"/></a>  
-                            </li>
-                            <li><a href="?24"><h:outputLabel value="Position Data"/></a>  
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="?2"><h:outputLabel value="Aproval Matrix"/></a>
-                        <ul>
-                            <li><a href="?31">Tab menu 3-1</a></li>
-                            <li><a href="?32">Tab menu 3-2</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="?4">Contact Us</a></li>
-                </ul>
-                <h:form id="form">  
-
-                    <p:panel id="panel" header="New Person" style="margin: 10px">  
-                        <p:messages id="messages" />  
-                        <h:panelGrid columns="3">  
-                            <h:outputLabel for="firstname" value="Firstname: *" />  
-                            <p:inputText id="firstname"   
-                                         value="#{pprBean.firstname}" required="true" label="Firstname">  
-                                <f:validateLength minimum="2" />  
-                            </p:inputText>  
-                            <p:message for="firstname" />  
-
-                            <h:outputLabel for="surname" value="Surname: *" />  
-                            <p:inputText id="surname"   
-                                         value="#{pprBean.surname}" required="true" label="Surname"/>  
-                            <p:message for="surname" />  
-                        </h:panelGrid>  
-                    </p:panel>  
-
-                    <p:commandButton value="Ajax Submit"  id="ajax"  
-                                     actionListener="#{pprBean.savePerson}" style="margin-top: 5px;margin-bottom: 10px;margin-left: 10px"/>  
-
-                    <p:commandButton value="Non-Ajax Submit" actionListener="#{pprBean.savePerson}"   
-                                     ajax="false" />  
-
-                    <p:commandButton value="With Icon" actionListener="#{pprBean.savePerson}" id="withIcon"   
-                                     update="panel,display" icon="ui-icon-disk" />  
-
-                    <p:commandButton actionListener="#{pprBean.savePerson}" update="panel,display" id="iconOnly"  
-                                     icon="ui-icon-disk" title="Icon Only"/>  
-
-                    <p:commandButton value="Disabled" disabled="true" id="disabled" />  
-
-                    <p:panel id="display" header="Information" style="margin: 10px">  
-                        <h:panelGrid columns="2">  
-                            <h:outputText value="Firstname: " />  
-                            <h:outputText value="#{pprBean.firstname}" />  
-
-                            <h:outputText value="Surname: " />  
-                            <h:outputText value="#{pprBean.surname}" />  
-                        </h:panelGrid>  
-                    </p:panel>  
-
-                </h:form>  
-                <p:tabView id="tabView" style="margin: 10px">  
-
-                    <p:tab id="tab1" title="Godfather Part I">  
-                        <h:panelGrid columns="2" cellpadding="10">  
-                            <p:graphicImage id="tab1Img" value="/images/godfather/godfather1.jpg" />  
-                            <h:outputText id="tab1Text"  
-                                          value="The story begins as Don Vito Corleone, the head of a New York Mafia family, oversees his daughter's wedding.  
-                                          His beloved son Michael has just come home from the war, but does not intend to become part of his father's business. T  
-                                          hrough Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, kind and benevolent to those who give respect,  
-                                          but given to ruthless violence whenever anything stands against the good of the family." />  
-                        </h:panelGrid>  
-                    </p:tab>  
-
-                    <p:tab id="tab2" title="Godfather Part II">  
-                        <h:panelGrid columns="2" cellpadding="10">  
-                            <p:graphicImage id="tab2Img" value="/images/godfather/godfather2.jpg" />  
-                            <h:outputText id="tab2Text" value="Francis Ford Coppola's legendary continuation and sequel to his landmark 1972 film, The_Godfather, parallels the young Vito Corleone's rise with his son Michael's spiritual fall, deepening The_Godfather's depiction of the dark side of the American dream.  
-                                          In the early 1900s, the child Vito flees his Sicilian village for America after the local Mafia kills his family. Vito struggles to make a living, legally or illegally, for his wife and growing brood in Little Italy,  
-                                          killing the local Black Hand Fanucci after he demands his customary cut of the tyro's business. With Fanucci gone, Vito's communal stature grows."/>  
-                        </h:panelGrid>  
-                    </p:tab>  
-
-                    <p:tab id="tab3" title="Godfather Part III">  
-                        <h:panelGrid columns="2" cellpadding="10">  
-                            <p:graphicImage id="tab3Img" value="/images/godfather/godfather3.jpg" />  
-                            <h:outputText id="tab3Text" value="After a break of more than 15 years, director Francis Ford Coppola and writer Mario Puzo returned to the well for this third and final story of the fictional Corleone crime family.  
-                                          Two decades have passed, and crime kingpin Michael Corleone, now divorced from his wife Kay has nearly succeeded in keeping his promise that his family would one day be completely legitimate."/>  
-                        </h:panelGrid>  
-                    </p:tab>  
-
-                </p:tabView>  
-                <!--            <p:tabView id="tabView1" style="margin: 10px">  
-                
-                                <p:tab id="tab11" title="Godfather Part I">  
-                                    <h:panelGrid columns="2" cellpadding="10">  
-                                        <p:graphicImage id="tab1Img" value="/images/godfather/godfather1.jpg" />  
-                                        <h:outputText id="tab1Text"  
-                                                      value="The story begins as Don Vito Corleone, the head of a New York Mafia family, oversees his daughter's wedding.  
-                                                      His beloved son Michael has just come home from the war, but does not intend to become part of his father's business. T  
-                                                      hrough Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, kind and benevolent to those who give respect,  
-                                                      but given to ruthless violence whenever anything stands against the good of the family." />  
-                                    </h:panelGrid>  
-                                </p:tab>  
-                
-                                <p:tab id="tab21" title="Godfather Part II">  
-                                    <h:panelGrid columns="2" cellpadding="10">  
-                                        <p:graphicImage id="tab2Img" value="/images/godfather/godfather2.jpg" />  
-                                        <h:outputText id="tab2Text" value="Francis Ford Coppola's legendary continuation and sequel to his landmark 1972 film, The_Godfather, parallels the young Vito Corleone's rise with his son Michael's spiritual fall, deepening The_Godfather's depiction of the dark side of the American dream.  
-                                                      In the early 1900s, the child Vito flees his Sicilian village for America after the local Mafia kills his family. Vito struggles to make a living, legally or illegally, for his wife and growing brood in Little Italy,  
-                                                      killing the local Black Hand Fanucci after he demands his customary cut of the tyro's business. With Fanucci gone, Vito's communal stature grows."/>  
-                                    </h:panelGrid>  
-                                </p:tab>  
-                
-                                <p:tab id="tab31" title="Godfather Part III">  
-                                    <h:panelGrid columns="2" cellpadding="10">  
-                                        <p:graphicImage id="tab3Img" value="/images/godfather/godfather3.jpg" />  
-                                        <h:outputText id="tab3Texte" value="After a break of more than 15 years, director Francis Ford Coppola and writer Mario Puzo returned to the well for this third and final story of the fictional Corleone crime family.  
-                                                      Two decades have passed, and crime kingpin Michael Corleone, now divorced from his wife Kay has nearly succeeded in keeping his promise that his family would one day be completely legitimate."/>  
-                                    </h:panelGrid>  
-                                    <h:panelGrid columns="2" cellpadding="10">  
-                                        <p:graphicImage id="tab3Img3" value="/images/godfather/godfather3.jpg" />  
-                                        <h:outputText id="tab3Textw" value="After a break of more than 15 years, director Francis Ford Coppola and writer Mario Puzo returned to the well for this third and final story of the fictional Corleone crime family.  
-                                                      Two decades have passed, and crime kingpin Michael Corleone, now divorced from his wife Kay has nearly succeeded in keeping his promise that his family would one day be completely legitimate."/>  
-                                    </h:panelGrid>  
-                                    <h:panelGrid columns="2" cellpadding="10">  
-                                        <p:graphicImage id="tab3Img34" value="/images/godfather/godfather3.jpg" />  
-                                        <h:outputText id="tab3Text" value="After a break of more than 15 years, director Francis Ford Coppola and writer Mario Puzo returned to the well for this third and final story of the fictional Corleone crime family.  
-                                                      Two decades have passed, and crime kingpin Michael Corleone, now divorced from his wife Kay has nearly succeeded in keeping his promise that his family would one day be completely legitimate."/>  
-                                    </h:panelGrid>  
-                                </p:tab>  
-                
-                            </p:tabView>  -->
-            </div>
+            Aplikasi tersebut dapat Anda akses di <a href="http://192.168.1.230:8080/OPTIMA-HR/" target="_blank">http://192.168.1.230:8080/OPTIMA-HR/</a><br/>
+            Silahkan gunakan informasi berikut untuk dapat login ke aplikasi, <br/>
+            <table  cellspacing="4" cellpadding="1" style="border: 1px solid white; width: 100%; margin-bottom: 10px;margin-top:10px;margin-left: -25px">
+               
+                 <tr>
+                    <td style="width: 20%; background: #72b9d7; text-align: right; padding: 4px; color: white;">User Name</td>
+                    <td style="background: #91d5f2; width: 80%; padding: 4px;">${user.userName}</td>
+                </tr>
+                <tr>
+                    <td style="width: 20%; background: #72b9d7; text-align: right; padding: 4px; color: white;">Password </td>
+                    <td style="background: #91d5f2; width: 80%;padding: 4px;">${user.password}</td>
+                </tr>
+            </table>
+Berikut Daftar dari Role Anda:</br>
+  <table  cellspacing="4" cellpadding="1" style="border: 1px solid white; width: 100%; margin-bottom: 10px;margin-top:10px;margin-left: -25px">
+        <th style="width: 5%; background: #72b9d7; text-align: center; padding: 4px; color: white;">No.</th>
+        <th style="width: 89%; background: #72b9d7; text-align: left; padding: 4px; color: white;">Role Name</th>
+            #foreach($role in $role)
+         <tr>
+            <td style="background: #91d5f2; width: 5%; padding: 4px;text-align: center">$velocityCount</td>
+           <td style="background: #91d5f2; width: 89%; padding: 4px;">${role}</td>
+        </tr>
+     #end
+ </table>
+ 
+            Demi kerahasiaan dan keamanan mohon segera mengganti password Anda!
+            <br/>
+            Best Regards,
+            <br/>
+            <br/>
+            ADMINISTRATOR
         </div>
-
-        <h:outputScript library="js" name="tabmenu.js" />
-        <script> tabmenu.select("p22");</script>
-        <!--        <script type="text/javascript">
-                    $(function() {
-                        var stickyRibbonTop = $('#header_content').offset().top;
-        
-                        $(window).scroll(function() {
-                            if ($(window).scrollTop() > stickyRibbonTop) {
-                                $('#header_content').css({position: 'fixed', top: '0px'});
-                            } else {
-                                $('#header_content').css({position: 'static', top: '0px'});
-                            }
-                        });
-                    });
-                </script>-->
-    </h:body>
+        <div style="font-family:Trebuchet MS ;margin-top: 20px;font-weight: bold;color: black;padding: 3px 3px 3px 10px;background-image: linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -o-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -moz-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -webkit-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -ms-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -webkit-gradient(linear,left bottom,left topcolor-stop(0.68, rgb(114,185,215)));">OPTIMA - HR@PT. Indonesia Inkubator Teknologi
+        </div>
+    </body>
 </html>
-
