@@ -18,7 +18,7 @@
             <ui:define name="center">
                 <p:panel style="margin: 10px" >                    
                     <h:panelGrid style="margin-bottom: 5px" columns="2">
-                        <p:graphicImage library="images" name="graduated.png" height="36" width="36" cache="true"/>
+                        <p:graphicImage library="images" name="specification.png" height="36" width="36" cache="true"/>
                         <h:panelGroup layout="block">
                             <h:panelGrid>
                                 <p:outputLabel value="#{appmsg['specificationability.specification_ability']}" styleClass="header_big" />
@@ -33,30 +33,34 @@
                     <h:form id="formSpecAbilityViewId">
                         <p:toolbar  style="margin-top: 10px">
                             <p:toolbarGroup align="left">
-                                <h:panelGrid columns="4">
-                                    <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm" />
+                                <h:panelGrid columns="5">
+                                    <p:outputLabel value="#{appmsg['global.searching']}" title="#{appmsg['global.searching']}" styleClass="label_hrm" />
                                     <p:outputLabel value=":" />
+                                    <p:selectOneMenu value="#{specAbilityViewController.searchParameter.keyParam}" style="margin-right: 3px" >
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItem itemLabel="#{appmsg['specificationability.specification_ability']}" itemValue="name"/>
+                                        <f:selectItem itemLabel="#{appmsg['specificationability.option']}" itemValue="optionAbility"/>
+                                        <f:selectItem itemLabel="#{appmsg['specificationability.scale_value']}" itemValue="scaleValue"/>
+                                    </p:selectOneMenu>
                                     <p:inputText id="searchId" value="#{specAbilityViewController.searchParameter.parameter}" style="width: 250px" styleClass="isitext_hrm"/>
-                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" action="#{specAbilityViewController.doSearch()}" update="tableSpecAbilityId"  styleClass="label_button" icon="ui-icon-search"/>
+                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{specAbilityViewController.doSearch()}" update="tableSpecAbilityId"  styleClass="label_button" icon="ui-icon-search"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="2" >
-                                    <p:commandButton value="#{appmsg['global.add']}" actionListener="#{specAbilityViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
-                                        <p:ajax event="dialogReturn" listener="#{specAbilityViewController.onDialogClose}"  update="tableSpecAbilityId,:growlSpecAbilityViewlId"/>
-                                    </p:commandButton>
-                                    <p:commandButton value="#{appmsg['global.close']}" styleClass="label_button" action="#{specAbilityViewController.doClose()}" icon="ui-icon-home"/>
+                                    <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']}" action="#{specAbilityViewController.doAdd()}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true"/>
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{specAbilityViewController.doClose()}" icon="ui-icon-home"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
                         </p:toolbar>
                         <p:focus for="searchId" />
 
-                        <p:dataTable  id="tableSpecAbilityId" var="specAbilityData"  value="#{educationLevelViewController.lazyDataEducationLevel}" lazy="true" paginator="true" pageLinks="7"
+                        <p:dataTable  id="tableSpecAbilityId" var="specAbilityData"  value="#{specAbilityViewController.lazyDataSpecificationAbility}" lazy="true" paginator="true" pageLinks="7"
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
                                       rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="#{appmsg['educationlevel.list_of_education_level']}"/>
+                                <h:outputText value="#{appmsg['specificationability.list_of_specification_ability']}"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 5%">
                                 <f:facet name="header">  
@@ -64,39 +68,44 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="level"  style="text-align: center;width: 10%">
+                            <p:column sortBy="name"  style="text-align: center;width: 40%">
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['educationlevel.level']}"/>
-                                </f:facet>
-                                <h:outputLabel value= "#{specAbilityData.level}"/>
-                            </p:column>
-                            <p:column sortBy="name"  style="width: 50%">
-                                <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['global.name']}"/>
+                                    <h:outputText value="#{appmsg['specificationability.specification_ability']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{specAbilityData.name}"/>
+                            </p:column>
+                            <p:column sortBy="optionAbility"  style="width: 20%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['specificationability.option']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{specAbilityData.optionAbility}"/>
+                            </p:column>
+                            <p:column sortBy="scaleValue"  style="width: 20%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['specificationability.scale_value']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{specAbilityData.scaleValue}"/>
                             </p:column>
                                 
                             <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" style="font-size: 10px!important"
-                                                 update=":panelDialogDetailId" onclick="statusDialog.show()"  oncomplete="dialogDetailEducationLevel.show()">                        
-                                    <f:setPropertyActionListener value="#{specAbilityData}" target="#{educationLevelViewController.selectedEducationLevel}" />
+                                                 update=":panelDialogDetailId" onclick="statusDialog.show()"  oncomplete="dialogDetailSpecAbilityLevel.show()">                        
+                                    <f:setPropertyActionListener value="#{specAbilityData}" target="#{specAbilityViewController.selectedSpecificationAbility}" />
                                 </p:commandButton>
                                 - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  style="font-size: 10px!important" 
-                                                 update=":panelDialogConfirmId" onclick="statusDialog.show()"  oncomplete="dialogConfirmEducationLevel.show()">
-                                    <f:setPropertyActionListener value="#{specAbilityData}" target="#{educationLevelViewController.selectedEducationLevel}" />
+                                                 update=":panelDialogConfirmId" onclick="statusDialog.show()"  oncomplete="dialogConfirmSpecAbilityLevel.show()">
+                                    <f:setPropertyActionListener value="#{specAbilityData}" target="#{specAbilityViewController.selectedSpecificationAbility}" />
                                 </p:commandButton>
                                 -
                                 <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
-                                                 action="#{educationLevelViewController.doUpdate()}" >
-                                    <f:setPropertyActionListener value="#{specAbilityData}" target="#{educationLevelViewController.selectedEducationLevel}" />
-                                    <p:ajax event="dialogReturn" listener="#{educationLevelViewController.onDialogClose}"  update="tableSpecAbilityId,:growlSpecAbilityViewlId"/>
+                                                 action="#{specAbilityViewController.doUpdate()}" >
+                                    <f:setPropertyActionListener value="#{specAbilityData}" target="#{specAbilityViewController.selectedSpecificationAbility}" />
                                 </p:commandButton>
                             </p:column>                        
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>
-                                <p:outputLabel value="#{educationLevelViewController.lazyDataEducationLevel.rowCount}"/>
+                                <p:outputLabel value="#{specAbilityViewController.lazyDataSpecificationAbility.rowCount}"/>
                                 <p:outputLabel value="Data" style="margin-left: 3px"/>
                             </f:facet>  
                         </p:dataTable>
@@ -112,7 +121,7 @@
                     </h:form>
                 </p:panel>
 
-                <p:dialog widgetVar="dialogConfirmEducationLevel" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmSpecAbilityLevel" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -126,30 +135,34 @@
                             </h:panelGrid>
                         </div>
                         <h:panelGrid id="panelDialogConfirmId"  columns="3">
-                            <p:outputLabel value="#{appmsg['educationlevel.education_level']}"  style="font-weight: bold"/>
+                            <p:outputLabel value="#{appmsg['specificationability.specification_ability']}"  style="font-weight: bold"/>
                             <p:outputLabel value=":"  style="font-weight: bold"/>
-                            <p:outputLabel value="#{educationLevelViewController.selectedEducationLevel.name}" styleClass="label_hrm"/>
+                            <p:outputLabel value="#{specAbilityViewController.selectedSpecificationAbility.name}" styleClass="label_hrm"/>
                         </h:panelGrid>
                         <p:separator/>
-                        <p:commandButton value="#{appmsg['global.yes']}" action="#{educationLevelViewController.doDelete()}" update="formSpecAbilityViewId,:growlSpecAbilityViewlId"
-                                         oncomplete="dialogConfirmEducationLevel.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmEducationLevel.hide()" icon="ui-icon-close" />                     	
+                        <p:commandButton value="#{appmsg['global.yes']}" action="#{specAbilityViewController.doDelete()}" update="formSpecAbilityViewId,:growlSpecAbilityViewlId"
+                                         oncomplete="dialogConfirmSpecAbilityLevel.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmSpecAbilityLevel.hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
-                <p:dialog widgetVar="dialogDetailEducationLevel" header="#{appmsg['educationlevel.detail_dialog']}" width="450" modal="true" resizable="false" hideEffect="puff" 
+                <p:dialog widgetVar="dialogDetailSpecAbilityLevel" header="#{appmsg['specificationability.detail_dialog']}" width="450" modal="true" resizable="false" hideEffect="puff" 
                           showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogDetailId" style="width:100%;margin:5px;">
                         <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['educationlevel.name']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;"><p:outputLabel value="#{educationLevelViewController.selectedEducationLevel.name}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:40%"><p:outputLabel value="#{appmsg['specificationability.specification_ability']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:60%;"><p:outputLabel value="#{specAbilityViewController.selectedSpecificationAbility.name}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['educationlevel.level']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;"><p:outputLabel value="#{educationLevelViewController.selectedEducationLevel.level}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:40%"><p:outputLabel value="#{appmsg['specificationability.option']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:60%;"><p:outputLabel value="#{specAbilityViewController.selectedSpecificationAbility.optionAbility}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:40%"><p:outputLabel value="#{appmsg['specificationability.scale_value']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:60%;"><p:outputLabel value="#{specAbilityViewController.selectedSpecificationAbility.scaleValue}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <f:facet name="footer">
                             <p:row>
-                                <p:column colspan="2"><p:outputLabel value="#{appmsg['educationlevel.education_level']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
+                                <p:column colspan="2"><p:outputLabel value="#{appmsg['specificationability.specification_ability']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
                             </p:row>
                         </f:facet>
                     </p:panelGrid>

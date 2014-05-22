@@ -570,6 +570,13 @@ div.art-logo
     padding-right: 2px;
 }
 
+.img-specification-ability
+{
+    background-image:url(../images/specification.png)!important;
+    background-size: 80% auto;
+    padding-right: 2px;
+}
+
 #box_bg
 {
     /*border:0px solid #006699;*/

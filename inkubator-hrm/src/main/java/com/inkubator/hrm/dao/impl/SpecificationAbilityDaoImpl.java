@@ -49,8 +49,11 @@ public class SpecificationAbilityDaoImpl extends IDAOImpl<SpecificationAbility> 
 		if (parameter.getName() != null) {
         	criteria.add(Restrictions.like("name", parameter.getName(), MatchMode.ANYWHERE));
         }
-		if (parameter.getOption() != null) {
-        	criteria.add(Restrictions.like("option", parameter.getOption(), MatchMode.ANYWHERE));
+		if (parameter.getOptionAbility() != null) {
+        	criteria.add(Restrictions.like("optionAbility", parameter.getOptionAbility(), MatchMode.ANYWHERE));
+        }
+		if (parameter.getScaleValue() != null) {
+        	criteria.add(Restrictions.like("scaleValue", parameter.getScaleValue(), MatchMode.ANYWHERE));
         }
         criteria.add(Restrictions.isNotNull("id"));
 	}
