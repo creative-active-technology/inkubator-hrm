@@ -85,6 +85,14 @@ public class EducationLevelViewController extends BaseController {
     public void doSearch() {
         lazyDataEducationLevel = null;
     }
+    
+    public void doDetail() {
+        try {
+        	selectedEducationLevel = this.educationLevelService.getEntiyByPK(selectedEducationLevel.getId());
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
+        }
+    } 
 
     public void doDelete() {
         try {

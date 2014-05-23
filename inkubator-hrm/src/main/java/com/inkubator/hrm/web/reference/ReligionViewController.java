@@ -85,6 +85,14 @@ public class ReligionViewController extends BaseController {
     public void doSearch() {
         lazyDataReligion = null;
     }
+    
+    public void doDetail() {
+        try {
+        	selectedReligion = this.religionService.getEntiyByPK(selectedReligion.getId());
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
+        }
+    } 
 
     public void doDelete() {
         try {

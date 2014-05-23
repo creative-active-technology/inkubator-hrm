@@ -92,6 +92,14 @@ public class SpecAbilityViewController extends BaseController {
 		lazyDataSpecificationAbility = null;
 	}
 	
+	public void doDetail() {
+        try {
+        	selectedSpecificationAbility = this.specificationAbilityService.getEntiyByPK(selectedSpecificationAbility.getId());
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
+        }
+    } 
+	
 	public void doDelete(){
 		try {
             specificationAbilityService.delete(selectedSpecificationAbility);
