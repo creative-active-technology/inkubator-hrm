@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 
@@ -22,7 +23,7 @@ import javax.persistence.Version;
 )
 public class WtHoliday implements java.io.Serializable {
 
-    private int id;
+    private long id;
     private Integer version;
     private Religion religion;
     private String holidayName;
@@ -37,11 +38,11 @@ public class WtHoliday implements java.io.Serializable {
     public WtHoliday() {
     }
 
-    public WtHoliday(int id) {
+    public WtHoliday(long id) {
         this.id = id;
     }
 
-    public WtHoliday(int id, Religion religion, String holidayName, Date holidayDate, Integer isEveryYear, Integer isColectiveLeave, String createdBy, Date createdOn, String updatedBy, Date updatedOn) {
+    public WtHoliday(long id, Religion religion, String holidayName, Date holidayDate, Integer isEveryYear, Integer isColectiveLeave, String createdBy, Date createdOn, String updatedBy, Date updatedOn) {
         this.id = id;
         this.religion = religion;
         this.holidayName = holidayName;
@@ -56,11 +57,11 @@ public class WtHoliday implements java.io.Serializable {
 
     @Id
     @Column(name = "id", unique = true, nullable = false)
-    public int getId() {
+    public long getId() {
         return this.id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -157,6 +158,30 @@ public class WtHoliday implements java.io.Serializable {
 
     public void setUpdatedOn(Date updatedOn) {
         this.updatedOn = updatedOn;
+    }
+
+    @Transient
+    public String getIsEveryYearAsLabel() {
+        if (isEveryYear == 1) {
+            return "Y";
+        }
+
+        if (isEveryYear == 0) {
+            return "N";
+        }
+        return null;
+    }
+
+    @Transient
+    public String getIsCollectiveAsLabel() {
+        if (isColectiveLeave == 1) {
+            return "Y";
+        }
+
+        if (isColectiveLeave == 0) {
+            return "N";
+        }
+        return null;
     }
 
 }

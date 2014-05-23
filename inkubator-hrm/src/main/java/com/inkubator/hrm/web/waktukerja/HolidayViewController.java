@@ -5,21 +5,13 @@
  */
 package com.inkubator.hrm.web.waktukerja;
 
-import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.WtPeriode;
-import com.inkubator.hrm.service.WtPeriodeService;
-import com.inkubator.hrm.util.MapUtil;
-import com.inkubator.hrm.web.lazymodel.WtPeriodLazyModel;
-import com.inkubator.hrm.web.search.WtPeriodeSearchParameter;
+import com.inkubator.hrm.entity.WtHoliday;
+import com.inkubator.hrm.service.WtHolidayService;
+import com.inkubator.hrm.web.lazymodel.WtHolidayLazyModel;
+import com.inkubator.hrm.web.search.HolidaySearchParameter;
 import com.inkubator.webcore.controller.BaseController;
-import com.inkubator.webcore.util.FacesUtil;
-import java.text.DateFormatSymbols;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.TreeMap;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.bean.ManagedBean;
@@ -33,112 +25,87 @@ import org.primefaces.model.LazyDataModel;
  *
  * @author Deni Husni FR
  */
-@ManagedBean(name = "periodeViewController")
+@ManagedBean(name = "holidayViewController")
 @ViewScoped
-public class PeriodeViewController extends BaseController {
+public class HolidayViewController extends BaseController {
 
-    private WtPeriodeSearchParameter wtPeriodeSearchParameter;
-    private LazyDataModel<WtPeriode> wtPeriodelazyDataModel;
-    @ManagedProperty(value = "#{wtPeriodeService}")
-    private WtPeriodeService wtPeriodeService;
-    private WtPeriode selectedWtPeriode;
-    private Map<String, Integer> mapMonths = new TreeMap<>();
-    private List<Integer> listTahun = new ArrayList<>();
-    private Integer selectedTahun;
-    private Integer selectedBulan;
+    private HolidaySearchParameter holidaySearchParameter;
+    private LazyDataModel<WtHoliday> wtHolidayLazyDataModel;
+    @ManagedProperty(value = "#{wtHolidayService}")
+    private WtHolidayService wtHolidayService;
+    private WtHoliday selecWtHoliday;
 
-    public Integer getSelectedTahun() {
-        return selectedTahun;
+    public HolidaySearchParameter getHolidaySearchParameter() {
+        return holidaySearchParameter;
     }
 
-    public void setSelectedTahun(Integer selectedTahun) {
-        this.selectedTahun = selectedTahun;
+    public void setHolidaySearchParameter(HolidaySearchParameter holidaySearchParameter) {
+        this.holidaySearchParameter = holidaySearchParameter;
     }
 
-    public Integer getSelectedBulan() {
-        return selectedBulan;
-    }
-
-    public void setSelectedBulan(Integer selectedBulan) {
-        this.selectedBulan = selectedBulan;
-    }
-
-    public Map<String, Integer> getMapMonths() {
-        return mapMonths;
-    }
-
-    public void setMapMonths(Map<String, Integer> mapMonths) {
-        this.mapMonths = mapMonths;
-    }
-
-    public WtPeriode getSelectedWtPeriode() {
-        return selectedWtPeriode;
-    }
-
-    public void setSelectedWtPeriode(WtPeriode selectedWtPeriode) {
-        this.selectedWtPeriode = selectedWtPeriode;
-    }
-
-    public void setWtPeriodeService(WtPeriodeService wtPeriodeService) {
-        this.wtPeriodeService = wtPeriodeService;
-    }
-
-    public WtPeriodeSearchParameter getWtPeriodeSearchParameter() {
-        return wtPeriodeSearchParameter;
-    }
-
-    public void setWtPeriodeSearchParameter(WtPeriodeSearchParameter wtPeriodeSearchParameter) {
-        this.wtPeriodeSearchParameter = wtPeriodeSearchParameter;
-    }
-
-    public LazyDataModel<WtPeriode> getWtPeriodelazyDataModel() {
-        if (wtPeriodelazyDataModel == null) {
-            wtPeriodelazyDataModel = new WtPeriodLazyModel(wtPeriodeSearchParameter, wtPeriodeService);
+    public LazyDataModel<WtHoliday> getWtPeriodelazyDataModel() {
+        if(wtHolidayLazyDataModel==null){
+            wtHolidayLazyDataModel=new WtHolidayLazyModel(holidaySearchParameter, wtHolidayService);
         }
-        return wtPeriodelazyDataModel;
+        return wtHolidayLazyDataModel;
     }
 
-    public void setWtPeriodelazyDataModel(LazyDataModel<WtPeriode> wtPeriodelazyDataModel) {
-        this.wtPeriodelazyDataModel = wtPeriodelazyDataModel;
+    public void setWtPeriodelazyDataModel(LazyDataModel<WtHoliday> wtPeriodelazyDataModel) {
+        this.wtHolidayLazyDataModel = wtPeriodelazyDataModel;
     }
+
+    public WtHoliday getSelecWtHoliday() {
+        return selecWtHoliday;
+    }
+
+    public void setSelecWtHoliday(WtHoliday selecWtHoliday) {
+        this.selecWtHoliday = selecWtHoliday;
+    }
+
+    public void setWtHolidayService(WtHolidayService wtHolidayService) {
+        this.wtHolidayService = wtHolidayService;
+    }
+  
+
+   
+
+   
+
+//    public LazyDataModel<WtPeriode> getWtPeriodelazyDataModel() {
+//        if (wtHolidayLazyDataModel == null) {
+//            wtHolidayLazyDataModel = new WtPeriodLazyModel(wtPeriodeSearchParameter, wtPeriodeService);
+//        }
+//        return wtHolidayLazyDataModel;
+//    }
+//
+//    public void setWtPeriodelazyDataModel(LazyDataModel<WtPeriode> wtHolidayLazyDataModel) {
+//        this.wtHolidayLazyDataModel = wtHolidayLazyDataModel;
+//    }
 
     @PostConstruct
     @Override
     public void initialization() {
         super.initialization();
-        wtPeriodeSearchParameter = new WtPeriodeSearchParameter();
-        String[] month = DateFormatSymbols.getInstance(Locale.forLanguageTag((String) FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE))).getMonths();
-
-        for (int i = 0; i < month.length - 1; i++) {
-            mapMonths.put(month[i], i + 1);
-            listTahun.add(2013 + i);
-        }
-        mapMonths = MapUtil.sortByValue(mapMonths);
+      holidaySearchParameter=new HolidaySearchParameter();
+      
 
     }
 
-    public List<Integer> getListTahun() {
-        return listTahun;
-    }
-
-    public void setListTahun(List<Integer> listTahun) {
-        this.listTahun = listTahun;
-    }
+//    public List<Integer> getListTahun() {
+//        return listTahun;
+//    }
+//
+//    public void setListTahun(List<Integer> listTahun) {
+//        this.listTahun = listTahun;
+//    }
 
     public void doSearch() {
-        wtPeriodelazyDataModel = null;
+        wtHolidayLazyDataModel = null;
     }
 
     @PreDestroy
     public void onPostClose() {
-        wtPeriodeSearchParameter = null;
-        wtPeriodelazyDataModel = null;
-        wtPeriodeService = null;
-        selectedWtPeriode = null;
-        mapMonths = null;
-        listTahun = null;
-        selectedTahun = null;
-        selectedBulan = null;
+        System.out.println("Bersih -berisesfsdhfkh");
     }
 
     public void doDetail() {
@@ -215,12 +182,12 @@ public class PeriodeViewController extends BaseController {
 //            LOGGER.error("Error", ex);
 //        }
     }
-
-    public void doChangeYear() {
-        wtPeriodelazyDataModel = null;
+    
+    public void doChangeYear(){
+        wtHolidayLazyDataModel=null;
     }
-
-    public void doChangeMonth() {
-        wtPeriodelazyDataModel = null;
+    
+    public void doChangeMonth(){
+          wtHolidayLazyDataModel=null;
     }
 }
