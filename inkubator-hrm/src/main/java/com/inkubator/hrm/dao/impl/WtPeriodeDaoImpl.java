@@ -49,12 +49,14 @@ public class WtPeriodeDaoImpl extends IDAOImpl<WtPeriode> implements WtPeriodeDa
     }
 
     private void doSearchWtPeriodeByParam(WtPeriodeSearchParameter searchParameter, Criteria criteria) {
+        System.out.println(searchParameter.getBulan());
+        System.out.println(searchParameter.getTahun());
         if (searchParameter.getTahun() != null) {
             criteria.add(Restrictions.like("tahun", searchParameter.getTahun(), MatchMode.ANYWHERE));
         }
 
-        if (searchParameter.getBulan() != null) {
-            criteria.add(Restrictions.like("bulan", searchParameter.getBulan(), MatchMode.ANYWHERE));
+        if (searchParameter.getBulan() != null&& searchParameter.getBulan()!=0) {
+            criteria.add(Restrictions.eq("bulan", searchParameter.getBulan()));
         }
         criteria.add(Restrictions.isNotNull("id"));
     }

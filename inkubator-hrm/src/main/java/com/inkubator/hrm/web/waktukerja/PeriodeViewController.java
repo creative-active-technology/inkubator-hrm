@@ -5,13 +5,18 @@
  */
 package com.inkubator.hrm.web.waktukerja;
 
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.WtPeriodeService;
+import com.inkubator.hrm.util.MapUtil;
 import com.inkubator.hrm.web.lazymodel.WtPeriodLazyModel;
 import com.inkubator.hrm.web.search.WtPeriodeSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
+import com.inkubator.webcore.util.FacesUtil;
 import java.text.DateFormatSymbols;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
@@ -38,6 +43,34 @@ public class PeriodeViewController extends BaseController {
     private WtPeriodeService wtPeriodeService;
     private WtPeriode selectedWtPeriode;
     private Map<String, Integer> mapMonths = new TreeMap<>();
+    private List<Integer>listTahun=new ArrayList<>();
+    private Integer selectedTahun;
+    private Integer selectedBulan;
+
+    public Integer getSelectedTahun() {
+        return selectedTahun;
+    }
+
+    public void setSelectedTahun(Integer selectedTahun) {
+        this.selectedTahun = selectedTahun;
+    }
+
+    public Integer getSelectedBulan() {
+        return selectedBulan;
+    }
+
+    public void setSelectedBulan(Integer selectedBulan) {
+        this.selectedBulan = selectedBulan;
+    }
+    
+
+    public Map<String, Integer> getMapMonths() {
+        return mapMonths;
+    }
+
+    public void setMapMonths(Map<String, Integer> mapMonths) {
+        this.mapMonths = mapMonths;
+    }
 
     public WtPeriode getSelectedWtPeriode() {
         return selectedWtPeriode;
@@ -75,11 +108,22 @@ public class PeriodeViewController extends BaseController {
     public void initialization() {
         super.initialization();
         wtPeriodeSearchParameter = new WtPeriodeSearchParameter();
-        String[] month = DateFormatSymbols.getInstance(Locale.FRENCH).getMonths();
-        for (String string : month) {
-            System.out.println(" nilai bulan" + string);
+        String[] month = DateFormatSymbols.getInstance(Locale.forLanguageTag((String) FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE))).getMonths();
+        
+        for (int i = 0; i < month.length-1; i++) {
+              mapMonths.put(month[i],i+1 );
+              listTahun.add(2013+i);
         }
+        mapMonths=MapUtil.sortByValue(mapMonths);
 
+    }
+
+    public List<Integer> getListTahun() {
+        return listTahun;
+    }
+
+    public void setListTahun(List<Integer> listTahun) {
+        this.listTahun = listTahun;
     }
 
     public void doSearch() {
@@ -164,5 +208,13 @@ public class PeriodeViewController extends BaseController {
 //        } catch (Exception ex) {
 //            LOGGER.error("Error", ex);
 //        }
+    }
+    
+    public void doChangeYear(){
+        wtPeriodelazyDataModel=null;
+    }
+    
+    public void doChangeMonth(){
+          wtPeriodelazyDataModel=null;
     }
 }

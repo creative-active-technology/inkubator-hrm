@@ -14,7 +14,7 @@ import com.inkubator.webcore.util.SearchParameter;
 public class WtPeriodeSearchParameter extends SearchParameter {
 
     private String tahun;
-    private String bulan;
+    private Integer bulan;
 
     public String getTahun() {
         if (getKeyParam() != null) {
@@ -29,17 +29,17 @@ public class WtPeriodeSearchParameter extends SearchParameter {
         this.tahun = tahun;
     }
 
-    public String getBulan() {
+    public Integer getBulan() {
         if (getKeyParam() != null) {
             if (getKeyParam().equalsIgnoreCase("bulan")) {
-                bulan = getParameter();
+                bulan = Integer.parseInt(getParameter());
             }
         }
 
         return bulan;
     }
 
-    public void setBulan(String bulan) {
+    public void setBulan(Integer bulan) {
         this.bulan = bulan;
     }
 

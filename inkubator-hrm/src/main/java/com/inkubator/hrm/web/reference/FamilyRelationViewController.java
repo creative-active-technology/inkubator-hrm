@@ -95,9 +95,9 @@ public class FamilyRelationViewController extends BaseController {
 
         } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-            LOGGER.error("Error when doDelete religion ", ex);
+            LOGGER.error("Error", ex);
         } catch (Exception ex) {
-            LOGGER.error("Error when doDelete religion", ex);
+            LOGGER.error("Error", ex);
         }
     }
 

@@ -16,7 +16,8 @@
                 Home
             </ui:define>
             <ui:define name="center">
-                <p:panel style="margin: 10px" >                    
+                <div id="box_bg" style="margin: 10px">    
+                    <!--<p:panel style="margin: 10px" >-->                    
                     <h:panelGrid style="margin-bottom: 5px" columns="2">
                         <p:graphicImage library="images" name="specification.png" height="36" width="36" cache="true"/>
                         <h:panelGroup layout="block">
@@ -86,7 +87,7 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{specAbilityData.scaleValue}"/>
                             </p:column>
-                                
+
                             <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" style="font-size: 10px!important"
                                                  update=":panelDialogDetailId" onclick="statusDialog.show()"  oncomplete="dialogDetailSpecAbilityLevel.show()">                        
@@ -119,8 +120,8 @@
                             <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
                         </p:dialog>
                     </h:form>
-                </p:panel>
-
+                    <!--</p:panel>-->
+                </div>
                 <p:dialog widgetVar="dialogConfirmSpecAbilityLevel" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
