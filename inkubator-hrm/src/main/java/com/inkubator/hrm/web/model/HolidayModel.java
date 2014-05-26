@@ -3,43 +3,33 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.inkubator.hrm.web.search;
 
-import com.inkubator.webcore.util.SearchParameter;
+package com.inkubator.hrm.web.model;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  *
  * @author Deni Husni FR
  */
-public class HolidaySearchParameter extends SearchParameter {
-
-    private String religionName;
+public class HolidayModel implements Serializable{
+    private Long id;
     private String holidayName;
+    private Date holidayDate;
+    private Long religionId;
     private Boolean isEveryYear;
     private Boolean isCollective;
 
-    public String getReligionName() {
-        if (getKeyParam() != null) {
-            if (getKeyParam().equalsIgnoreCase("religionName")) {
-                religionName = getParameter();
-            }
-        }
-
-        return religionName;
+    public Long getId() {
+        return id;
     }
 
-    public void setReligionName(String religionName) {
-        this.religionName = religionName;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getHolidayName() {
-        if (getKeyParam() != null) {
-            if (getKeyParam().equalsIgnoreCase("holidayName")) {
-                holidayName = getParameter();
-            }
-
-        }
-
         return holidayName;
     }
 
@@ -47,7 +37,23 @@ public class HolidaySearchParameter extends SearchParameter {
         this.holidayName = holidayName;
     }
 
-    public Boolean isIsEveryYear() {
+    public Date getHolidayDate() {
+        return holidayDate;
+    }
+
+    public void setHolidayDate(Date holidayDate) {
+        this.holidayDate = holidayDate;
+    }
+
+    public Long getReligionId() {
+        return religionId;
+    }
+
+    public void setReligionId(Long religionId) {
+        this.religionId = religionId;
+    }
+
+    public Boolean getIsEveryYear() {
         return isEveryYear;
     }
 
@@ -55,12 +61,14 @@ public class HolidaySearchParameter extends SearchParameter {
         this.isEveryYear = isEveryYear;
     }
 
-    public Boolean isIsCollective() {
+    public Boolean getIsCollective() {
         return isCollective;
     }
 
     public void setIsCollective(Boolean isCollective) {
         this.isCollective = isCollective;
     }
-
+    
+    
+    
 }

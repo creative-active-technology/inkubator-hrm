@@ -26,52 +26,37 @@
                         </h:panelGroup>
                     </h:panelGrid>
                     <p:separator/>
-                    <p:growl id="roleViewGrowlId" globalOnly="true" showDetail="true" />
+                    <p:growl id="holidayViewGrowlId" globalOnly="true" showDetail="true" />
                     <h:form id="roleViewId">
                         <p:toolbar  style="margin-top: 10px">
                             <p:toolbarGroup align="left">
-                                <h:panelGrid columns="8">
-                                    <p:outputLabel value="Tahun" styleClass="label_hrm"/>
-                                    <p:outputLabel value=":" styleClass="label_hrm" />
-                                    <p:selectOneMenu id="pilihanTahun" value="#{periodeViewController.wtPeriodeSearchParameter.tahun}"
-                                                     required="true" label="#{appmsg['loginform.choose_language']}"
-                                                     style="font-family: Calibri!important;width: 130px;text-align: left" >
-                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue="" />
-                                        <f:selectItems value="#{periodeViewController.listTahun}" />
-                                        <p:ajax listener="#{periodeViewController.doChangeYear()}" update="tablePeriodeId" />
+                                <h:panelGrid columns="5">
+                                    <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm" />
+                                    <p:outputLabel value=":" />
+                                    <p:selectOneMenu value="#{holidayViewController.holidaySearchParameter.keyParam}" style="margin-right: 3px" >
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItem itemLabel="Nama Hari Libur" itemValue="holidayName"/>
+                                        <f:selectItem itemLabel="Libur Keagamaan" itemValue="religionName"/>
+                                        <!--<f:selectItem itemLabel="#{appmsg['specificationability.scale_value']}" itemValue="scaleValue"/>-->
                                     </p:selectOneMenu>
-                                    <p:outputLabel value="Bulan" styleClass="label_hrm"/>
-                                    <p:outputLabel value=":" styleClass="label_hrm" />
-                                    <p:selectOneMenu id="pilihanBulan" value="#{periodeViewController.wtPeriodeSearchParameter.bulan}"
-                                                     required="true" label="#{appmsg['loginform.choose_language']}"
-                                                     style="font-family: Calibri!important;width: 130px;text-align: left" >
-                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue="0" />
-                                        <f:selectItems value="#{periodeViewController.mapMonths}" />
-                                        <p:ajax listener="#{periodeViewController.doChangeMonth()}" update="tablePeriodeId"/>
-                                    </p:selectOneMenu>
-                                    <!--                                    <p:inputText value="#{roleViewController.hrmRoleSearchParameter.roleName}" style="width: 250px" id="pencarianId" styleClass="isitext_hrm" 
-                                                                                     label="#{appmsg['global.searching']}" title="#{appmsg['global.searching']}"/>
-                                                                        <p:commandButton value="#{appmsg['global.search']}" action="#{roleViewController.doSearch()}"  update="tablePeriodeId" icon="ui-icon-search"
-                                                                                         styleClass="label_button" title="#{appmsg['global.search']}" id="btnPencarianId" />-->
+                                    <p:inputText id="searchId" value="#{holidayViewController.holidaySearchParameter.parameter}" style="width: 250px" styleClass="isitext_hrm"/>
+                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" action="#{holidayViewController.doSearch()}" update="tableHolidayId"  styleClass="label_button" icon="ui-icon-search"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
-                                <h:panelGrid columns="2">
-<!--                                    <p:commandButton value="#{appmsg['global.add']}" actionListener="#{roleViewController.doAdd}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" icon="ui-icon-document"
-                                                     styleClass="label_button" ajax="true">
-                                        <p:ajax event="dialogReturn" listener="#{roleViewController.onDialogReturn}"  update="tablePeriodeId,:roleViewGrowlId"/>
-                                    </p:commandButton>-->
-                                    <p:commandButton value="#{appmsg['global.close']}"  styleClass="label_button" action="#{roleViewController.doClose()}" title="#{appmsg['global.close']}" icon="ui-icon-home" immediate="true"
-                                                     label="#{appmsg['global.close']}"/>
+                                <h:panelGrid columns="2" >
+                                    <p:commandButton value="#{appmsg['global.add']}" actionListener="#{holidayViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
+                                        <p:ajax event="dialogReturn" listener="#{holidayViewController.onDialogClose}"  update="tableHolidayId,:holidayViewGrowlId"/>
+                                    </p:commandButton>
+                                    <p:commandButton value="#{appmsg['global.close']}" styleClass="label_button" action="#{familyRelationViewController.doClose()}" icon="ui-icon-home"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
-
                         </p:toolbar>
-                        <!--<p:focus for="pencarianId" />-->
+                        <p:focus for="searchId" />
 
                         <p:dataTable  var="holidayViewData"  value="#{holidayViewController.wtPeriodelazyDataModel}" lazy="true" paginator="true" pageLinks="7" 
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
-                                      id="tablePeriodeId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      id="tableHolidayId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
                                 <h:outputText value="Daftar Hari Libur" styleClass="label_hrm"/>
@@ -82,11 +67,13 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="tahun" style="width: 150px" >
+                            <p:column sortBy="holidayDate" style="width: 150px" >
                                 <f:facet name="header">  
                                     <h:outputText value="Tanggal Libur"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{holidayViewData.holidayDate}"/>
+                                <h:outputLabel value= "#{holidayViewData.holidayDate}">
+                                    <f:convertDateTime pattern="dd-MMMM-yyyy" />
+                                </h:outputLabel>
                             </p:column>
                             <p:column sortBy="bulan">
                                 <f:facet name="header">
@@ -100,44 +87,44 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{holidayViewData.religion.name}"/>
                             </p:column>
-                            <p:column sortBy="bulan">
+                            <p:column sortBy="bulan" style="text-align: center">
                                 <f:facet name="header">
                                     <h:outputText value="Setiap Tahun"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{holidayViewData.isEveryYearAsLabel}"/>
                             </p:column>
-                            <p:column sortBy="bulan">
+                            <p:column sortBy="bulan" style="text-align: center">
                                 <f:facet name="header">
                                     <h:outputText value="Libur Bersama"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{holidayViewData.isCollectiveAsLabel}"/>
                             </p:column>
-                            
+
                             <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
                                 <p:commandButton  icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" update=":detailPanel"
-                                                  onclick="statusDialog.show()"  oncomplete="detailDialogHrmRole.show()"
-                                                  action="#{roleViewController.doDetail()}" style="font-size: 10px!important" >                        
-                                    <f:setPropertyActionListener value="#{roleViewData}" target="#{roleViewController.selectedHrmRole}" />
+                                                  onclick="statusDialog.show()"  oncomplete="detailDialogHoliday.show()"
+                                                  action="#{holidayViewController.doDetail()}" style="font-size: 10px!important" >                        
+                                    <f:setPropertyActionListener value="#{holidayViewData}" target="#{holidayViewController.selecWtHoliday}" />
                                 </p:commandButton>
                                 - 
                                 <p:commandButton  icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  style="font-size: 10px!important" 
-                                                  onclick="statusDialog.show()"  oncomplete="confirmDialogHrmRole.show()" action="#{roleViewController.onDelete()}" update=":deleteDialogRoleId">
-                                    <f:setPropertyActionListener value="#{roleViewData}" target="#{roleViewController.selectedHrmRole}" />
+                                                  onclick="statusDialog.show()"  oncomplete="confirmDialogHoliday.show()" action="#{holidayViewController.onDelete()}" update=":deleteDialogRoleId">
+                                    <f:setPropertyActionListener value="#{holidayViewData}" target="#{holidayViewController.selecWtHoliday}" />
                                 </p:commandButton>
                                 -
                                 <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
-                                                  action="#{roleViewController.doEdit()}" >
-                                    <f:setPropertyActionListener value="#{roleViewData}" target="#{roleViewController.selectedHrmRole}" />
-                                    <p:ajax event="dialogReturn" listener="#{roleViewController.onDialogReturn}"  update="tablePeriodeId,:roleViewGrowlId"/>
+                                                  action="#{holidayViewController.doEdit()}" >
+                                    <f:setPropertyActionListener value="#{holidayViewData}" target="#{holidayViewController.selecWtHoliday}" />
+                                    <p:ajax event="dialogReturn" listener="#{roleViewController.onDialogReturn}"  update="tableHolidayId,:holidayViewGrowlId"/>
                                 </p:commandButton> 
                             </p:column>
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : " styleClass="label_hrm" />
-                                <p:outputLabel value="#{periodeViewController.wtPeriodelazyDataModel.rowCount}" styleClass="label_hrm"/>
+                                <p:outputLabel value="#{holidayViewController.wtPeriodelazyDataModel.rowCount}" styleClass="label_hrm"/>
                                 <p:outputLabel value="Data" style="margin-left: 3px" styleClass="label_hrm"/>
                             </f:facet>  
                         </p:dataTable>
-                        <p:blockUI block="roleViewId" trigger="tablePeriodeId,pilihanTahun,pilihanBulan" >
+                        <p:blockUI block="roleViewId" trigger="tableHolidayId,btnSearchId" >
                             <h:panelGrid columns="2" styleClass="grid_no_border">
                                 <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
                                 <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
@@ -149,8 +136,8 @@
                     </h:form>
                     <!--</p:panel>-->
                 </div>
-                <p:dialog widgetVar="confirmDialogHrmRole" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
-                          appendTo="@(body)" resizable="false" id="confirmDialogHrmRoleId" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
+                <p:dialog widgetVar="confirmDialogHoliday" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                          appendTo="@(body)" resizable="false" id="confirmDialogHolidayId" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <h:form id="deleteDialogRoleId">
                         <div align="center">
                             <div align="center">
@@ -164,28 +151,43 @@
                                 </h:panelGrid>
                             </div>
                             <h:panelGrid  columns="3">
-                                <p:outputLabel value="#{appmsg['role_view.role_name']}" styleClass="label_hrm"/>
+                                <p:outputLabel value="Nama hari libur" styleClass="label_hrm"/>
                                 <p:outputLabel value=":"  styleClass="label_hrm" />
-                                <p:outputLabel value="#{roleViewController.selectedHrmRole.roleName}" styleClass="isitext_hrm"/>
+                                <p:outputLabel value="#{holidayViewController.selecWtHoliday.holidayName}" styleClass="isitext_hrm"/>
                             </h:panelGrid>
                             <p:separator/>
-                            <p:commandButton value="#{appmsg['global.yes']}" action="#{roleViewController.doDelete()}" update=":roleViewId" id="yesId" title="#{appmsg['global.yes']}"
-                                             oncomplete="confirmDialogHrmRole.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                            <p:commandButton value="#{appmsg['global.no']}" oncomplete="confirmDialogHrmRole.hide()" icon="ui-icon-close" title="#{appmsg['global.no']}"  />
+                            <p:commandButton value="#{appmsg['global.yes']}" action="#{holidayViewController.doDelete()}" update=":roleViewId" id="yesId" title="#{appmsg['global.yes']}"
+                                             oncomplete="confirmDialogHoliday.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                            <p:commandButton value="#{appmsg['global.no']}" oncomplete="confirmDialogHoliday.hide()" icon="ui-icon-close" title="#{appmsg['global.no']}"  />
 
                         </div>
                     </h:form>
                 </p:dialog>
-                <p:dialog widgetVar="detailDialogHrmRole" header="#{appmsg['role_view.detail_dialog']}" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
+                <p:dialog widgetVar="detailDialogHoliday" header="Detil Hari Libur" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
                           showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
                     <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
                         <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['role_view.role_name']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;"><p:outputLabel value="#{roleViewController.selectedHrmRole.roleName}"/></p:column>
+                            <p:column style="width:30%"><p:outputLabel value="Tanggal Libur" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{holidayViewController.selecWtHoliday.holidayDate}">
+                                    <f:convertDateTime pattern="dd-MMMM-yyyy" />
+                                </p:outputLabel></p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['role_view.role_description']}" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{roleViewController.selectedHrmRole.description}"/> </p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="Nama Hari Libur" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{holidayViewController.selecWtHoliday.holidayName}"/> </p:column>
+                        </p:row>
+                       
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="Hari Besar Agama" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{holidayViewController.selecWtHoliday.religion.name}"/> </p:column>
+                        </p:row>
+                         <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="Setiap Tahun" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{holidayViewController.selecWtHoliday.isEveryYearAsLabel}"/> </p:column>
+                        </p:row>
+                         <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="Libur Bersama" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{holidayViewController.selecWtHoliday.isCollectiveAsLabel}"/> </p:column>
                         </p:row>
                         <!--                        <p:row>
                                                     <p:column style="color: #003366"><p:outputLabel value="Create By" style="font-weight: bold"/></p:column>

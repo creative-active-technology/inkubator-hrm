@@ -41,8 +41,11 @@ public class WtHolidayServiceImpl extends IServiceImpl implements WtHolidayServi
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public WtHoliday getEntiyByPK(Long id) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        WtHoliday holiday=wtHolidayDao.getEntiyByPK(id);
+        holiday.getReligion().getName();
+        return holiday;
     }
 
     @Override
@@ -121,8 +124,9 @@ public class WtHolidayServiceImpl extends IServiceImpl implements WtHolidayServi
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void delete(WtHoliday entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       this.wtHolidayDao.delete(entity);
     }
 
     @Override
