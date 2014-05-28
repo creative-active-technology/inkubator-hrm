@@ -20,4 +20,8 @@ public interface WtHolidayDao extends IDAO<WtHoliday> {
     public List<WtHoliday> getByParam(HolidaySearchParameter searchParameter, int firstResult, int maxResults, Order order);
 
     public Long getTotalWtHolidayByParam(HolidaySearchParameter searchParameter);
+
+    public Long getTotalWtHolidayByHolidayName(String holidayName);
+
+    public Long getTotalWtHolidayByNameAndNotId(String holidayName, Long id);
 }

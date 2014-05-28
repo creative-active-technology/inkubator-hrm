@@ -1,0 +1,154 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/dialog_layout.xhtml">
+            <ui:define name="windowTitle">
+
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlAttendaceStatusFormlId" globalOnly="true" showDetail="true"/>
+                <h:form id="formAttendanceStatusFormId">
+                    <h:panelGrid  columns="2">
+                        <p:graphicImage library="images" name="status_attendance.png" height="36" width="36"  cache="true"/>
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="Form Status Kehadiran" styleClass="header_big" />
+                                <p:outputLabel value="Data Status Kehadiran dari Waktu Kerja" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="1" style="margin-bottom: 5px;margin-left: 0px">
+                        <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                        <h:outputLabel value="Nama hari libur bersifat unik" styleClass="label_hrm" style="font-weight: normal!important"/>
+                    </h:panelGrid> 
+                    <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
+                        <p:row>
+                            <p:column style="width: 30%">
+                                <p:outputLabel for="codeId" value="Kode Status" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="codeId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                                <p:focus for ="codeId">
+                                    <p:inputText id="codeId" title="#{appmsg['religion.religion_name']}" value="#{attendanceStatusFormController.attendanceStatusModel.kodeStatus}" 
+                                                 required="true"  maxlength="30" styleClass="isitext_hrm" style="width:250px;" onkeyup="this.value = this.value.toUpperCase();" />
+                                </p:focus>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="codeId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 30%">
+                                <p:outputLabel for="namaId" value="Nama Status" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="namaId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                                <p:inputText id="namaId" title="#{appmsg['religion.religion_name']}" value="#{attendanceStatusFormController.attendanceStatusModel.namaStatus}" 
+                                             required="true" maxlength="30" styleClass="isitext_hrm" style="width:250px;" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="namaId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 30%">
+                                <p:outputLabel for="description" value="#{appmsg['role_view.role_description']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="description" value=":"  styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 70%" >
+                                <p:inputTextarea id="description" rows="5" cols="37" counter="counter" maxlength="500" value="#{attendanceStatusFormController.attendanceStatusModel.description}" 
+                                                 style="width: 250px; height: 89px;" counterTemplate="#{appmsg['global.remaining']}"   autoResize="true" 
+                                                 label="#{appmsg['role_view.role_description']}" title="#{appmsg['role_view.role_description']}" />
+
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 30%">
+                                <p:outputLabel for="description" value="" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="description" value=""  styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 70%" >
+                                <h:outputText id="counter" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 30%">
+                                <p:outputLabel for="idPayId" value="Dibayar" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="idPayId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+
+                                <p:selectBooleanButton value="#{attendanceStatusFormController.attendanceStatusModel.isPay}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
+                                                       offIcon="ui-icon-close"  styleClass="label_button"  id="idPayId"/>
+
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="idPayId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 30%">
+                                <p:outputLabel for="isPresentId" value="Hadir" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="isPresentId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+
+                                <p:selectBooleanButton value="#{attendanceStatusFormController.attendanceStatusModel.isPresent}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
+                                                       offIcon="ui-icon-close"  styleClass="label_button"  id="isPresentId"/>
+
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="isPresentId"/>
+                            </p:column>
+                        </p:row>
+
+                    </p:panelGrid>
+                    <p:separator style="margin-top: 10px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="2" style="margin-bottom: -30px!important">
+                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formAttendanceStatusFormId,:growlAttendaceStatusFormlId"
+                                         action="#{attendanceStatusFormController.doSave()}" styleClass="isitext_hrm"
+                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
+                                         icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                        <p:commandButton value="#{appmsg['global.clear']}" title="#{appmsg['global.clear']}" process="@this" update="formAttendanceStatusFormId" action="#{religionFormController.doClear()}"
+                                         icon="ui-icon-refresh" styleClass="isitext_hrm" >  
+                            <p:resetInput target="formAttendanceStatusFormId" />  
+                        </p:commandButton>
+                    </h:panelGrid>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

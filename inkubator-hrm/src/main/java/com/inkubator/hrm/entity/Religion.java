@@ -36,6 +36,11 @@ public class Religion implements java.io.Serializable {
         this.name = name;
     }
 
+    public Religion(long id) {
+        this.id = id;
+    }
+
+    
     public Religion(long id, String createdBy, Date createdOn, String name, String updatedBy, Date updatedOn, Set<WtHoliday> wtHolidays) {
         this.id = id;
         this.createdBy = createdBy;

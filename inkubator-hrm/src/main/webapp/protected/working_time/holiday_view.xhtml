@@ -17,7 +17,7 @@
                 <div id="box_bg" style="margin: 10px">
                     <!--<p:panel style="margin: 10px" >-->
                     <h:panelGrid style="margin-bottom: 5px" columns="2">
-                        <p:graphicImage library="images" name="holiday.png" height="36" width="36" />
+                        <p:graphicImage library="images" name="holiday.png" height="36" width="36" cache="true" />
                         <h:panelGroup layout="block">
                             <h:panelGrid>
                                 <p:outputLabel value="Daftar Hari Libur" styleClass="header_big" />
@@ -27,7 +27,7 @@
                     </h:panelGrid>
                     <p:separator/>
                     <p:growl id="holidayViewGrowlId" globalOnly="true" showDetail="true" />
-                    <h:form id="roleViewId">
+                    <h:form id="holidayViewId">
                         <p:toolbar  style="margin-top: 10px">
                             <p:toolbarGroup align="left">
                                 <h:panelGrid columns="5">
@@ -112,10 +112,10 @@
                                     <f:setPropertyActionListener value="#{holidayViewData}" target="#{holidayViewController.selecWtHoliday}" />
                                 </p:commandButton>
                                 -
-                                <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
+                                <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" ajax="true"
                                                   action="#{holidayViewController.doEdit()}" >
                                     <f:setPropertyActionListener value="#{holidayViewData}" target="#{holidayViewController.selecWtHoliday}" />
-                                    <p:ajax event="dialogReturn" listener="#{roleViewController.onDialogReturn}"  update="tableHolidayId,:holidayViewGrowlId"/>
+                                    <p:ajax event="dialogReturn" listener="#{holidayViewController.onDialogClose}"  update="tableHolidayId,:holidayViewGrowlId"/>
                                 </p:commandButton> 
                             </p:column>
                             <f:facet name="footer">
@@ -124,7 +124,7 @@
                                 <p:outputLabel value="Data" style="margin-left: 3px" styleClass="label_hrm"/>
                             </f:facet>  
                         </p:dataTable>
-                        <p:blockUI block="roleViewId" trigger="tableHolidayId,btnSearchId" >
+                        <p:blockUI block="holidayViewId" trigger="tableHolidayId,btnSearchId" >
                             <h:panelGrid columns="2" styleClass="grid_no_border">
                                 <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
                                 <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
@@ -156,7 +156,7 @@
                                 <p:outputLabel value="#{holidayViewController.selecWtHoliday.holidayName}" styleClass="isitext_hrm"/>
                             </h:panelGrid>
                             <p:separator/>
-                            <p:commandButton value="#{appmsg['global.yes']}" action="#{holidayViewController.doDelete()}" update=":roleViewId" id="yesId" title="#{appmsg['global.yes']}"
+                            <p:commandButton value="#{appmsg['global.yes']}" action="#{holidayViewController.doDelete()}" update=":holidayViewId,:holidayViewGrowlId" id="yesId" title="#{appmsg['global.yes']}"
                                              oncomplete="confirmDialogHoliday.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
                             <p:commandButton value="#{appmsg['global.no']}" oncomplete="confirmDialogHoliday.hide()" icon="ui-icon-close" title="#{appmsg['global.no']}"  />
 
