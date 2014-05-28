@@ -266,8 +266,8 @@ public class WtWorkingHourServiceImpl extends IServiceImpl implements WtWorkingH
 		workingHour.setIsPenaltyArriveLate(wt.getIsPenaltyArriveLate());
 		workingHour.setIsPenaltyGoHomeEarly(wt.getIsPenaltyGoHomeEarly());
 		workingHour.setIsManageBreakTime(wt.getIsManageBreakTime());
-		workingHour.setBreakTimeBegin(wt.getBreakTimeBegin());
-		workingHour.setBreakTimeEnd(wt.getBreakTimeEnd());
+		workingHour.setBreakHourBegin(wt.getBreakHourBegin());
+		workingHour.setBreakHourEnd(wt.getBreakHourEnd());
 		workingHour.setBreakStartLimitBegin(wt.getBreakStartLimitBegin());
 		workingHour.setBreakStartLimitEnd(wt.getBreakStartLimitEnd());
 		workingHour.setBreakFinishLimitBegin(wt.getBreakFinishLimitBegin());
