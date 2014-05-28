@@ -53,15 +53,30 @@ public class WtHolidayDaoImpl extends IDAOImpl<WtHoliday> implements WtHolidayDa
     private void doSearchWtHolidayByParam(HolidaySearchParameter searchParameter, Criteria criteria) {
 //        System.out.println(" Ni lai 1 " + searchParameter.getHolidayName());
 //        System.out.println(" Ni lai 1 " + searchParameter.getReligionName());
-        if (searchParameter.getReligionName() != null&& !searchParameter.getReligionName().isEmpty()) {
+        if (searchParameter.getReligionName() != null && !searchParameter.getReligionName().isEmpty()) {
             criteria.createAlias("religion", "r");
             criteria.add(Restrictions.like("r.name", searchParameter.getReligionName(), MatchMode.ANYWHERE));
         }
 
-        if (searchParameter.getHolidayName() != null&& !searchParameter.getHolidayName().isEmpty()) {
+        if (searchParameter.getHolidayName() != null && !searchParameter.getHolidayName().isEmpty()) {
             criteria.add(Restrictions.like("holidayName", searchParameter.getHolidayName(), MatchMode.ANYWHERE));
         }
         criteria.add(Restrictions.isNotNull("id"));
+    }
+
+    @Override
+    public Long getTotalWtHolidayByHolidayName(String holidayName) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.like("holidayName", holidayName, MatchMode.ANYWHERE));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+
+    @Override
+    public Long getTotalWtHolidayByNameAndNotId(String holidayName, Long id) {
+         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.like("holidayName", holidayName, MatchMode.ANYWHERE));
+        criteria.add(Restrictions.ne("id", id));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
 }

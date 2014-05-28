@@ -601,6 +601,13 @@ div.art-logo
     padding-right: 2px;
 }
 
+.img-status-attendance
+{
+    background-image:url(../images/status_attendance.png)!important;
+    background-size: 80% auto;
+    padding-right: 2px;
+}
+
 
 #box_bg
 {
