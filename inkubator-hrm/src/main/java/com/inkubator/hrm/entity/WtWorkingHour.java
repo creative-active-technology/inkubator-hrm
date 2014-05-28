@@ -26,7 +26,7 @@ public class WtWorkingHour implements java.io.Serializable {
     private String description;
     private Date workingHourBegin;
     private Date workingHourEnd;
-    private Double maxHour;
+    private Date maxHour;
     private Integer arriveLimitBegin;
     private Integer arriveLimitEnd;
     private Integer goHomeLimitBegin;
@@ -34,8 +34,8 @@ public class WtWorkingHour implements java.io.Serializable {
     private Boolean isPenaltyArriveLate;
     private Boolean isPenaltyGoHomeEarly;
     private Boolean isManageBreakTime;
-    private Date breakTimeBegin;
-    private Date breakTimeEnd;
+    private Date breakHourBegin;
+    private Date breakHourEnd;
     private Integer breakStartLimitBegin;
     private Integer breakStartLimitEnd;
     private Integer breakFinishLimitBegin;
@@ -121,16 +121,17 @@ public class WtWorkingHour implements java.io.Serializable {
 		this.workingHourEnd = workingHourEnd;
 	}
 
-	@Column(name = "max_hour", nullable = false, length = 2)
-	public Double getMaxHour() {
+	@Temporal(TemporalType.TIME)
+	@Column(name = "max_hour", nullable = false, length = 10)
+	public Date getMaxHour() {
 		return maxHour;
 	}
 
-	public void setMaxHour(Double maxHour) {
+	public void setMaxHour(Date maxHour) {
 		this.maxHour = maxHour;
 	}
 
-	@Column(name = "arrive_limit_begin", nullable = false, length = 2)
+	@Column(name = "arrive_limit_begin", nullable = false, length = 3)
 	public Integer getArriveLimitBegin() {
 		return arriveLimitBegin;
 	}
@@ -139,7 +140,7 @@ public class WtWorkingHour implements java.io.Serializable {
 		this.arriveLimitBegin = arriveLimitBegin;
 	}
 
-	@Column(name = "arrive_limit_end", nullable = false, length = 2)
+	@Column(name = "arrive_limit_end", nullable = false, length = 3)
 	public Integer getArriveLimitEnd() {
 		return arriveLimitEnd;
 	}
@@ -148,7 +149,7 @@ public class WtWorkingHour implements java.io.Serializable {
 		this.arriveLimitEnd = arriveLimitEnd;
 	}
 
-	@Column(name = "go_home_limit_begin", nullable = false, length = 2)
+	@Column(name = "go_home_limit_begin", nullable = false, length = 3)
 	public Integer getGoHomeLimitBegin() {
 		return goHomeLimitBegin;
 	}
@@ -157,7 +158,7 @@ public class WtWorkingHour implements java.io.Serializable {
 		this.goHomeLimitBegin = goHomeLimitBegin;
 	}
 
-	@Column(name = "go_home_limit_end", nullable = false, length = 2)
+	@Column(name = "go_home_limit_end", nullable = false, length = 3)
 	public Integer getGoHomeLimitEnd() {
 		return goHomeLimitEnd;
 	}
@@ -194,26 +195,26 @@ public class WtWorkingHour implements java.io.Serializable {
 	}
 
 	@Temporal(TemporalType.TIME)
-	@Column(name = "break_time_begin", length = 2)
-	public Date getBreakTimeBegin() {
-		return breakTimeBegin;
+	@Column(name = "break_hour_begin", length = 3)
+	public Date getBreakHourBegin() {
+		return breakHourBegin;
 	}
 
-	public void setBreakTimeBegin(Date breakTimeBegin) {
-		this.breakTimeBegin = breakTimeBegin;
+	public void setBreakHourBegin(Date breakHourBegin) {
+		this.breakHourBegin = breakHourBegin;
 	}
 
 	@Temporal(TemporalType.TIME)
-	@Column(name = "break_time_end", length = 2)
-	public Date getBreakTimeEnd() {
-		return breakTimeEnd;
+	@Column(name = "break_hour_end", length = 3)
+	public Date getBreakHourEnd() {
+		return breakHourEnd;
 	}
 
-	public void setBreakTimeEnd(Date breakTimeEnd) {
-		this.breakTimeEnd = breakTimeEnd;
+	public void setBreakHourEnd(Date breakHourEnd) {
+		this.breakHourEnd = breakHourEnd;
 	}
 
-	@Column(name = "break_start_limit_begin", length = 2)
+	@Column(name = "break_start_limit_begin", length = 3)
 	public Integer getBreakStartLimitBegin() {
 		return breakStartLimitBegin;
 	}
@@ -222,7 +223,7 @@ public class WtWorkingHour implements java.io.Serializable {
 		this.breakStartLimitBegin = breakStartLimitBegin;
 	}
 
-	@Column(name = "break_start_limit_end", length = 2)
+	@Column(name = "break_start_limit_end", length = 3)
 	public Integer getBreakStartLimitEnd() {
 		return breakStartLimitEnd;
 	}
@@ -231,7 +232,7 @@ public class WtWorkingHour implements java.io.Serializable {
 		this.breakStartLimitEnd = breakStartLimitEnd;
 	}
 
-	@Column(name = "break_finish_limit_begin", length = 2)
+	@Column(name = "break_finish_limit_begin", length = 3)
 	public Integer getBreakFinishLimitBegin() {
 		return breakFinishLimitBegin;
 	}
@@ -240,7 +241,7 @@ public class WtWorkingHour implements java.io.Serializable {
 		this.breakFinishLimitBegin = breakFinishLimitBegin;
 	}
 
-	@Column(name = "break_finish_limit_end", length = 2)
+	@Column(name = "break_finish_limit_end", length = 3)
 	public Integer getBreakFinishLimitEnd() {
 		return breakFinishLimitEnd;
 	}
