@@ -85,13 +85,17 @@ public class WorkingHourViewController extends BaseController {
 		lazyDataWorkingHour = null;
 	}
 	
-	public void doDetail() {
+	public String doDetail() {
+		return "/protected/working_time/working_hour_detail.htm?faces-redirect=true&execution=e"+selectedWorkingHour.getId();
+    } 
+	
+	public void doSelectEntity() {
         try {
         	selectedWorkingHour = this.workingHourService.getEntiyByPK(selectedWorkingHour.getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
-    } 
+    }
 	
 	public void doDelete(){
 		try {

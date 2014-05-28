@@ -68,29 +68,76 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="code"  style="text-align: center;width: 40%">
+                            <p:column sortBy="code"  style="text-align: center;width: 5%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{workingHourData.code}"/>
                             </p:column>   
-                            <p:column sortBy="name"  style="text-align: center;width: 40%">
+                            <p:column sortBy="name"  style="text-align: center;width: 20%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.name']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{workingHourData.name}"/>
+                            </p:column>
+                            <p:column style="text-align: center;width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['workinghour.working_hour']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{workingHourData.name}"/>
-                            </p:column>         
+                                <h:outputLabel value= "#{workingHourData.workingHourBegin}">
+                                	<f:convertDateTime pattern="HH.mm" />
+                                </h:outputLabel>
+                                <h:outputLabel value= "&nbsp;-&nbsp;"/>
+                                <h:outputLabel value= "#{workingHourData.workingHourEnd}">
+                                	<f:convertDateTime pattern="HH.mm" />
+                                </h:outputLabel>
+                            </p:column> 
+                            <p:column style="text-align: center;width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['workinghour.arrival_time_limit']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{workingHourData.arriveLimitBegin}/#{workingHourData.arriveLimitEnd}"/>
+                            </p:column>
+                            <p:column style="text-align: center;width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['workinghour.go_home_time_limit']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{workingHourData.goHomeLimitBegin}/#{workingHourData.goHomeLimitEnd}"/>
+                            </p:column>
+                            <p:column style="text-align: center;width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['workinghour.break_hour']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{workingHourData.breakHourBegin}" rendered="#{workingHourData.isManageBreakTime}">
+                                	<f:convertDateTime pattern="HH.mm" />
+                                </h:outputLabel>
+                                <h:outputLabel value= "&nbsp;-&nbsp;" rendered="#{workingHourData.isManageBreakTime}"/>
+                                <h:outputLabel value= "#{workingHourData.breakHourEnd}" rendered="#{workingHourData.isManageBreakTime}">
+                                	<f:convertDateTime pattern="HH.mm" />
+                                </h:outputLabel>
+                            </p:column> 
+                            <p:column style="text-align: center;width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['workinghour.limit_start']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{workingHourData.breakStartLimitBegin}/#{workingHourData.breakStartLimitEnd}" rendered="#{workingHourData.isManageBreakTime}"/>
+                            </p:column>
+                            <p:column style="text-align: center;width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['workinghour.limit_finish']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{workingHourData.breakFinishLimitBegin}/#{workingHourData.breakFinishLimitEnd}" rendered="#{workingHourData.isManageBreakTime}"/>
+                            </p:column>     
                             
                             <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
-                                				 style="font-size: 10px!important" update=":panelDialogDetailId" 
-                                				 action="#{workingHourViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogDetailWorkingHour.show()">                        
+                                				 style="font-size: 10px!important" action="#{workingHourViewController.doDetail()}">                        
                                     <f:setPropertyActionListener value="#{workingHourData}" target="#{workingHourViewController.selectedWorkingHour}" />
                                 </p:commandButton>
                                 - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                 				 style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                				 action="#{workingHourViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmWorkingHour.show()">
+                                				 action="#{workingHourViewController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmWorkingHour.show()">
                                     <f:setPropertyActionListener value="#{workingHourData}" target="#{workingHourViewController.selectedWorkingHour}" />
                                 </p:commandButton>
                                 -
@@ -140,24 +187,6 @@
                                          oncomplete="dialogConfirmWorkingHour.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
                         <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmWorkingHour.hide()" icon="ui-icon-close" />                     	
                     </div>
-                </p:dialog>
-                <p:dialog widgetVar="dialogDetailWorkingHour" header="#{appmsg['workinghour.detail_dialog']}" styleClass="header_small_no_bold" width="450" modal="true" resizable="false" hideEffect="puff" 
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
-                    <p:panelGrid id="panelDialogDetailId" style="width:100%;margin:5px;">
-                        <p:row>
-                            <p:column style="width:40%"><p:outputLabel value="#{appmsg['global.code']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:60%;"><p:outputLabel value="#{workingHourViewController.selectedWorkingHour.code}" styleClass="label_hrm"/></p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="width:40%"><p:outputLabel value="#{appmsg['global.name']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:60%;"><p:outputLabel value="#{workingHourViewController.selectedWorkingHour.name}" styleClass="label_hrm"/></p:column>
-                        </p:row>
-                        <f:facet name="footer">
-                            <p:row>
-                                <p:column colspan="2"><p:outputLabel value="#{appmsg['menu.working_time']} - #{appmsg['workinghour.working_hour']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
-                            </p:row>
-                        </f:facet>
-                    </p:panelGrid>
                 </p:dialog>
             </ui:define>
         </ui:composition>

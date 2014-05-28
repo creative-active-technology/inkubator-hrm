@@ -242,12 +242,12 @@ public class WtWorkingHourServiceImpl extends IServiceImpl implements WtWorkingH
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void update(WtWorkingHour wt) throws Exception {
 		// check duplicate name
-		long totalDuplicates = wtWorkingHourDao.getTotalByName(wt.getName());
+		long totalDuplicates = wtWorkingHourDao.getTotalByNameAndNotId(wt.getName(),wt.getId());
 		if (totalDuplicates > 0) {
 			throw new BussinessException("wtworkinghour.error_duplicate_name");
 		}
 		// check duplicate code
-		totalDuplicates = wtWorkingHourDao.getTotalByCode(wt.getCode());
+		totalDuplicates = wtWorkingHourDao.getTotalByCodeAndNotId(wt.getCode(),wt.getId());
 		if (totalDuplicates > 0) {
 			throw new BussinessException("wtworkinghour.error_duplicate_code");
 		}
