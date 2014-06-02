@@ -28,7 +28,7 @@ PrimeFaces.locales ['in'] = {
     month: 'Bulan',
     week: 'Minggu',
     day: 'Hari',
-    allDayText: 'All Day'
+    allDayText: 'Sehari Penuh'
 };
 
 PrimeFacesExt.locales.Timeline['in'] = {

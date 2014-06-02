@@ -122,7 +122,7 @@
                             </p:row>
                         </p:panelGrid>
                         <!--</p:panel>-->
-                        <p:focus for="userId"/>
+                        <p:focus  context="userFormId"/>
 <!--                    <h:outputLabel value="#{appmsg['role_view.header1']}" styleClass="header_big" style="font-size: 13px!important"/>
                     <p:separator />-->
                         <!--<p:panel style="margin: 10px" >-->
@@ -167,6 +167,9 @@
 
 
                 </h:form>
+                <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
+                    <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
+                </p:dialog>
             </ui:define>
 
         </ui:composition>

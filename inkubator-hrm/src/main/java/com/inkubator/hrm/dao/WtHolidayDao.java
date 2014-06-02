@@ -8,6 +8,7 @@ package com.inkubator.hrm.dao;
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.WtHoliday;
 import com.inkubator.hrm.web.search.HolidaySearchParameter;
+import java.util.Date;
 import java.util.List;
 import org.hibernate.criterion.Order;
 
@@ -24,4 +25,6 @@ public interface WtHolidayDao extends IDAO<WtHoliday> {
     public Long getTotalWtHolidayByHolidayName(String holidayName);
 
     public Long getTotalWtHolidayByNameAndNotId(String holidayName, Long id);
+
+    public List<WtHoliday> getBetweenDate(Date start, Date end);
 }

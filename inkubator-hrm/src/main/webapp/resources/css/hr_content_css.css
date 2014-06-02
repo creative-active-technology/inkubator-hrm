@@ -457,13 +457,13 @@ div.art-logo
 
 .img-user-account
 {
-    background-image:url(../images/admin.png)!important;
+    background-image:url(../images/admin_ico.png)!important;
     background-size: 80% auto;
     padding-right: 2px;
 }
 .img-user
 {
-    background-image:url(../images/user_account.png)!important;
+    background-image:url(../images/user_account_ico.png)!important;
     background-size: 80% auto;
     padding-right: 2px;
 }
@@ -475,55 +475,55 @@ div.art-logo
 
 .img-user-role
 {
-    background-image:url(../images/role.png)!important;
+    background-image:url(../images/role_ico.png)!important;
     background-size: 80% auto;
     padding-right: 2px;
 }
 .img-configuration
 {
-    background-image:url(../images/configuration.png)!important;
+    background-image:url(../images/configuration_ico.png)!important;
     background-size: 80% auto;
     padding-right: 2px;
 }
 
 .img-employees
 {
-    background-image:url(../images/employees.png)!important;
+    background-image:url(../images/employees_ico.png)!important;
     background-size: 80% auto;
     padding-right: 2px;
 }
 
 .img-task
 {
-    background-image:url(../images/task.png)!important;
+    background-image:url(../images/task_ico.png)!important;
     background-size: 80% auto;
     padding-right: 2px;
 }
 
 .img-payroll
 {
-    background-image:url(../images/payroll.png)!important;
+    background-image:url(../images/payroll_ico.png)!important;
     background-size: 80% auto;
     padding-right: 2px;
 }
 
 .img-competency
 {
-    background-image:url(../images/competency.png)!important;
+    background-image:url(../images/competency_ico.png)!important;
     background-size: 80% auto;
     padding-right: 2px;
 }
 
 .img-reporting
 {
-    background-image:url(../images/laporan.png)!important;
+    background-image:url(../images/laporan_ico.png)!important;
     background-size: 80% auto;
     padding-right: 2px;
 }
 
 .img-family
 {
-    background-image:url(../images/family-icon.png)!important;
+    background-image:url(../images/family-icon_ico.png)!important;
     background-size: 80% auto;
     padding-right: 2px;
 }
@@ -531,48 +531,35 @@ div.art-logo
 
 .img-training
 {
-    background-image:url(../images/training.png)!important;
+    background-image:url(../images/training_ico.png)!important;
     background-size: 80% auto;
     padding-right: 2px;
 }
 
+
 .img-religion
 {
-    background-image:url(../images/religion.png)!important;
+    background-image:url(../images/religion_ico.png)!important;
     background-size: 80% auto;
     padding-right: 2px;
 }
 
 .img-education-level
 {
-    background-image:url(../images/graduated.png)!important;
-    background-size: 80% auto;
-    padding-right: 2px;
-}
-
-.img-religion
-{
-    background-image:url(../images/religion.png)!important;
-    background-size: 80% auto;
-    padding-right: 2px;
-}
-
-.img-education-level
-{
-    background-image:url(../images/graduated.png)!important;
+    background-image:url(../images/graduated_ico.png)!important;
     background-size: 80% auto;
     padding-right: 2px;
 }
 .img-periode
 {
-    background-image:url(../images/periode.png)!important;
+    background-image:url(../images/periode_ico.png)!important;
     background-size: 80% auto;
     padding-right: 2px;
 }
 
 .img-specification-ability
 {
-    background-image:url(../images/specification.png)!important;
+    background-image:url(../images/specification_ico.png)!important;
     background-size: 80% auto;
     padding-right: 2px;
 }
@@ -580,7 +567,7 @@ div.art-logo
 
 .img-holiday
 {
-    background-image:url(../images/holiday.png)!important;
+    background-image:url(../images/holiday_ico.png)!important;
     background-size: 80% auto;
     padding-right: 2px;
 }
@@ -588,7 +575,7 @@ div.art-logo
 
 .img-employee-type
 {
-    background-image:url(../images/employee_type.png)!important;
+    background-image:url(../images/employee_type_ico.png)!important;
     background-size: 80% auto;
     padding-right: 2px;
 }
@@ -596,14 +583,26 @@ div.art-logo
 
 .img-working-hour
 {
-    background-image:url(../images/working_hour.png)!important;
+    background-image:url(../images/working_hour_ico.png)!important;
     background-size: 80% auto;
     padding-right: 2px;
 }
 
 .img-status-attendance
 {
-    background-image:url(../images/status_attendance.png)!important;
+    background-image:url(../images/status_attendance_ico.png)!important;
+    background-size: 80% auto;
+    padding-right: 2px;
+}
+.img-permit
+{
+    background-image:url(../images/permit_ico.png)!important;
+    background-size: 80% auto;
+    padding-right: 2px;
+}
+.img-over-time
+{
+    background-image:url(../images/overtime_ico.png)!important;
     background-size: 80% auto;
     padding-right: 2px;
 }

@@ -268,4 +268,5 @@ public class HomeController extends BaseController {
         this.persentasiKehadiranPerWeek = persentasiKehadiranPerWeek;
     }
 
+ 
 }
