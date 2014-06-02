@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.inkubator.hrm.web.waktukerja;
+package com.inkubator.hrm.web.workingtime;
 
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.WtPeriode;

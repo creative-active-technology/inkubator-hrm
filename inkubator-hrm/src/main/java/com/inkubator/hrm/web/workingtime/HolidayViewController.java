@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.inkubator.hrm.web.waktukerja;
+package com.inkubator.hrm.web.workingtime;
 
 import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.AttendanceStatus;
-import com.inkubator.hrm.service.AttendanceStatusService;
-import com.inkubator.hrm.web.lazymodel.AttendanceStatusLazyDataModel;
-import com.inkubator.hrm.web.search.AttendanceStatusSearchParamater;
+import com.inkubator.hrm.entity.WtHoliday;
+import com.inkubator.hrm.service.WtHolidayService;
+import com.inkubator.hrm.web.lazymodel.WtHolidayLazyModel;
+import com.inkubator.hrm.web.search.HolidaySearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
@@ -33,57 +33,74 @@ import org.springframework.dao.DataIntegrityViolationException;
  *
  * @author Deni Husni FR
  */
-@ManagedBean(name = "attendanceStatusViewController")
+@ManagedBean(name = "holidayViewController")
 @ViewScoped
-public class AttendanceStatusViewController extends BaseController {
+public class HolidayViewController extends BaseController {
 
-    private AttendanceStatusSearchParamater attendanceStatusSearchParamater;
-    private LazyDataModel<AttendanceStatus> attendanceStatusesLazyDataModel;
-    @ManagedProperty(value = "#{attendanceStatusService}")
-    private AttendanceStatusService attendanceStatusService;
-    private AttendanceStatus selecedAttendanceStatus;
+    private HolidaySearchParameter holidaySearchParameter;
+    private LazyDataModel<WtHoliday> wtHolidayLazyDataModel;
+    @ManagedProperty(value = "#{wtHolidayService}")
+    private WtHolidayService wtHolidayService;
+    private WtHoliday selecWtHoliday;
 
-    public void setAttendanceStatusService(AttendanceStatusService attendanceStatusService) {
-        this.attendanceStatusService = attendanceStatusService;
+    public HolidaySearchParameter getHolidaySearchParameter() {
+        return holidaySearchParameter;
     }
 
-    public AttendanceStatusSearchParamater getAttendanceStatusSearchParamater() {
-        return attendanceStatusSearchParamater;
+    public void setHolidaySearchParameter(HolidaySearchParameter holidaySearchParameter) {
+        this.holidaySearchParameter = holidaySearchParameter;
     }
 
-    public void setAttendanceStatusSearchParamater(AttendanceStatusSearchParamater attendanceStatusSearchParamater) {
-        this.attendanceStatusSearchParamater = attendanceStatusSearchParamater;
-    }
-
-    public LazyDataModel<AttendanceStatus> getAttendanceStatusesLazyDataModel() {
-        if (attendanceStatusesLazyDataModel == null) {
-            attendanceStatusesLazyDataModel = new AttendanceStatusLazyDataModel(attendanceStatusSearchParamater, attendanceStatusService);
+    public LazyDataModel<WtHoliday> getWtPeriodelazyDataModel() {
+        if (wtHolidayLazyDataModel == null) {
+            wtHolidayLazyDataModel = new WtHolidayLazyModel(holidaySearchParameter, wtHolidayService);
         }
-        return attendanceStatusesLazyDataModel;
+        return wtHolidayLazyDataModel;
     }
 
-    public void setAttendanceStatusesLazyDataModel(LazyDataModel<AttendanceStatus> attendanceStatusesLazyDataModel) {
-        this.attendanceStatusesLazyDataModel = attendanceStatusesLazyDataModel;
+    public void setWtPeriodelazyDataModel(LazyDataModel<WtHoliday> wtPeriodelazyDataModel) {
+        this.wtHolidayLazyDataModel = wtPeriodelazyDataModel;
     }
 
-    public AttendanceStatus getSelecedAttendanceStatus() {
-        return selecedAttendanceStatus;
+    public WtHoliday getSelecWtHoliday() {
+        return selecWtHoliday;
     }
 
-    public void setSelecedAttendanceStatus(AttendanceStatus selecedAttendanceStatus) {
-        this.selecedAttendanceStatus = selecedAttendanceStatus;
+    public void setSelecWtHoliday(WtHoliday selecWtHoliday) {
+        this.selecWtHoliday = selecWtHoliday;
     }
 
+    public void setWtHolidayService(WtHolidayService wtHolidayService) {
+        this.wtHolidayService = wtHolidayService;
+    }
+
+//    public LazyDataModel<WtPeriode> getWtPeriodelazyDataModel() {
+//        if (wtHolidayLazyDataModel == null) {
+//            wtHolidayLazyDataModel = new WtPeriodLazyModel(wtPeriodeSearchParameter, wtPeriodeService);
+//        }
+//        return wtHolidayLazyDataModel;
+//    }
+//
+//    public void setWtPeriodelazyDataModel(LazyDataModel<WtPeriode> wtHolidayLazyDataModel) {
+//        this.wtHolidayLazyDataModel = wtHolidayLazyDataModel;
+//    }
     @PostConstruct
     @Override
     public void initialization() {
         super.initialization();
-        attendanceStatusSearchParamater = new AttendanceStatusSearchParamater();
+        holidaySearchParameter = new HolidaySearchParameter();
 
     }
 
+//    public List<Integer> getListTahun() {
+//        return listTahun;
+//    }
+//
+//    public void setListTahun(List<Integer> listTahun) {
+//        this.listTahun = listTahun;
+//    }
     public void doSearch() {
-        attendanceStatusesLazyDataModel = null;
+        wtHolidayLazyDataModel = null;
     }
 
     @PreDestroy
@@ -93,7 +110,7 @@ public class AttendanceStatusViewController extends BaseController {
 
     public void doDetail() {
         try {
-            selecedAttendanceStatus = attendanceStatusService.getEntiyByPK(selecedAttendanceStatus.getId());
+            selecWtHoliday = wtHolidayService.getEntiyByPK(selecWtHoliday.getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -101,7 +118,7 @@ public class AttendanceStatusViewController extends BaseController {
 
     public void doDelete() {
         try {
-            this.attendanceStatusService.delete(selecedAttendanceStatus);
+            this.wtHolidayService.delete(selecWtHoliday);
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 
@@ -120,12 +137,12 @@ public class AttendanceStatusViewController extends BaseController {
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 400);
-        options.put("contentHeight", 440);
+        options.put("contentHeight", 360);
 //        options.put("closable", false);
 //        options.put("height", "auto");
 
 //        options.put("contentHeight", 340);
-        RequestContext.getCurrentInstance().openDialog("attendance_status_form", options, null);
+        RequestContext.getCurrentInstance().openDialog("holiday_form", options, null);
     }
 
     public void doEdit() {
@@ -135,16 +152,16 @@ public class AttendanceStatusViewController extends BaseController {
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 400);
-        options.put("contentHeight", 440);
+        options.put("contentHeight", 360);
         Map<String, List<String>> dataToSend = new HashMap<>();
         List<String> dataIsi = new ArrayList<>();
-        dataIsi.add(String.valueOf(selecedAttendanceStatus.getId()));
+        dataIsi.add(String.valueOf(selecWtHoliday.getId()));
         dataToSend.put("param", dataIsi);
-        RequestContext.getCurrentInstance().openDialog("attendance_status_form", options, dataToSend);
+        RequestContext.getCurrentInstance().openDialog("holiday_form", options, dataToSend);
     }
 
     public void onDialogClose(SelectEvent event) {
-        attendanceStatusesLazyDataModel = null;
+        wtHolidayLazyDataModel = null;
         String condition = (String) event.getObject();
         if (condition.equalsIgnoreCase(HRMConstant.SAVE_CONDITION)) {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
@@ -154,19 +171,22 @@ public class AttendanceStatusViewController extends BaseController {
         if (condition.equalsIgnoreCase(HRMConstant.UPDATE_CONDITION)) {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-        }
+        }    
     }
 
     public void onDelete() {
         try {
-            selecedAttendanceStatus = attendanceStatusService.getEntiyByPK(selecedAttendanceStatus.getId());
+            selecWtHoliday = wtHolidayService.getEntiyByPK(selecWtHoliday.getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
     }
 
-    @PreDestroy
-    private void cleanAndExit() {
+    public void doChangeYear() {
+        wtHolidayLazyDataModel = null;
+    }
 
+    public void doChangeMonth() {
+        wtHolidayLazyDataModel = null;
     }
 }

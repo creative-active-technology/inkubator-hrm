@@ -23,7 +23,7 @@
                                         <h:panelGroup  layout="block">
                                             <h:panelGrid columns="1" style="text-align: center">
                                                 <h:outputLink id="userAccountId" value="${request.contextPath}/protected/account/user_form.htm">
-                                                    <p:graphicImage library="images" name="user_account.png" style="width: 60px;height: 60px;" cache="true" /> 
+                                                    <p:graphicImage library="images" name="user_account.png"  cache="true" height="60" width="60"  /> 
                                                 </h:outputLink>
                                                 <h:outputLabel value="User Account" styleClass="label_quick"/>
                                             </h:panelGrid>
@@ -121,7 +121,7 @@
                             </p:panel>
                         </p:column>
                     </p:row>
-                     
+
                     <p:row>
                         <p:column style="width: 95%" colspan="3">
                             <p:tabView id="tabView1" dynamic="true" cache="true" style="margin-left: 10px;margin-right: 10px;margin-top: 5px;font-size: 11px!important;font-family: Lucida Sans!important"> 
@@ -157,7 +157,7 @@
                             </p:tabView>
                         </p:column>
                     </p:row> 
-                    
+
                     <p:row>
                         <p:column style="width: 25%" >
                             <p:panel  style="margin-left: 10px;margin-right: 0px;margin-top: 10px;height: 100%"> 
@@ -363,6 +363,7 @@
                             <p:panel  style="margin-left: 0px;margin-right: 10px;margin-top: 10px;height: 242px" > 
                                 <div align="center" style="margin-top: 5%">
                                     <p:calendar  mode="inline" id="inlineCal" />
+                                    <!--<p:schedule />-->
                                 </div>
                             </p:panel>
                         </p:column>
@@ -380,6 +381,9 @@
                             hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>
                 <pe:tooltip for=":tabView1:createMoniotingId" value="#{appmsg['dashboard.tooltip.monitoring']}" showEffect="slideToggle"
                             hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>-->
+                <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
+                    <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
+                </p:dialog>
             </ui:define>
 
         </ui:composition>

@@ -1,0 +1,224 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Role View
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg" style="margin: 10px">
+                    <!--<p:panel style="margin: 10px" >-->
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="overtime.png" height="36" width="36"  cache="true"/>
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="Daftar Lembur" styleClass="header_big" />
+                                <p:outputLabel value="Daftar Lembur dari Waktu Kerja" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator/>
+                    <p:growl id="holidayViewGrowlId" globalOnly="true" showDetail="true" />
+                    <h:form id="holidayViewId">
+                        <p:toolbar  style="margin-top: 10px">
+                            <p:toolbarGroup align="left">
+                                <h:panelGrid columns="5">
+                                    <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm" />
+                                    <p:outputLabel value=":" />
+                                    <p:selectOneMenu value="#{overTimeViewController.wtOverTimeSearchParameter.keyParam}" style="margin-right: 3px" >
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItem itemLabel="Kode Lembur" itemValue="overTimecode"/>
+                                        <f:selectItem itemLabel="Nama Lembur" itemValue="overTimeName"/>
+                                        <f:selectItem itemLabel="Minimum Lembur" itemValue="minTime"/>
+                                        <f:selectItem itemLabel="Maksimum Lembur" itemValue="maxTime"/>
+                                    <!--<f:selectItem itemLabel="#{appmsg['specificationability.scale_value']}" itemValue="scaleValue"/>-->
+                                    </p:selectOneMenu>
+                                    <p:inputText id="searchId" value="#{overTimeViewController.wtOverTimeSearchParameter.parameter}" style="width: 250px" styleClass="isitext_hrm"/>
+                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" action="#{overTimeViewController.doSearch()}" update="tableOverTimeId"  styleClass="label_button" icon="ui-icon-search"/>
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                            <p:toolbarGroup align="right">
+                                <h:panelGrid columns="2" >
+                                    <p:commandButton value="#{appmsg['global.add']}" actionListener="#{overTimeViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
+                                        <p:ajax event="dialogReturn" listener="#{overTimeViewController.onDialogClose}"  update="tableOverTimeId,:holidayViewGrowlId"/>
+                                    </p:commandButton>
+                                    <p:commandButton value="#{appmsg['global.close']}" styleClass="label_button" action="#{familyRelationViewController.doClose()}" icon="ui-icon-home"/>
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                        </p:toolbar>
+                        <p:focus for="searchId" />
+
+                        <p:dataTable  var="overTimeData"  value="#{overTimeViewController.wtOverTimesLazyDataModel}" lazy="true" paginator="true" pageLinks="7" 
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      id="tableOverTimeId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="Daftar Status Kehadiran" styleClass="label_hrm"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 25px">
+                                <f:facet name="header">  
+                                    <h:outputText value="No." />
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column sortBy="code" style="width: 150px" >
+                                <f:facet name="header">  
+                                    <h:outputText value="Kode Lembur"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{overTimeData.code}"/>
+                            </p:column>
+                            <p:column sortBy="name">
+                                <f:facet name="header">
+                                    <h:outputText value="Nama Lembur" />
+                                </f:facet>
+                                <h:outputLabel value= "#{overTimeData.name}"/>
+                            </p:column>
+                            <!--                            <p:column sortBy="description">
+                                                            <f:facet name="header">
+                                                                <h:outputText value="Deskripsi"/>
+                                                            </f:facet>
+                                                            <h:outputLabel value= "#{overTimeData.description}"/>
+                                                        </p:column>-->
+                            <p:column sortBy="minimumTime" style="text-align: center">
+                                <f:facet name="header">
+                                    <h:outputText value="Minimum"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{overTimeData.minimumTime} #{appmsg['global.satuan_jam']}"/>
+                            </p:column>
+                            <p:column sortBy="maximumTime" style="text-align: center">
+                                <f:facet name="header">
+                                    <h:outputText value="Maksimum" />
+                                </f:facet>
+                                <h:outputLabel value= "#{overTimeData.maximumTime} #{appmsg['global.satuan_jam']}"/>
+                            </p:column>
+
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
+                                <p:commandButton  icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" update=":detailPanel"
+                                                  onclick="statusDialog.show()"  oncomplete="detailDialogOverTime.show()"
+                                                  action="#{overTimeViewController.doDetail()}" style="font-size: 10px!important" >                        
+                                    <f:setPropertyActionListener value="#{overTimeData}" target="#{overTimeViewController.selectedWtOverTime}" />
+                                </p:commandButton>
+                                - 
+                                <p:commandButton  icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  style="font-size: 10px!important" 
+                                                  onclick="statusDialog.show()"  oncomplete="confirmDialogHoliday.show()" action="#{overTimeViewController.onDelete()}" update=":deleteDialogAttendaceStatusId">
+                                    <f:setPropertyActionListener value="#{overTimeData}" target="#{overTimeViewController.selectedWtOverTime}" />
+                                </p:commandButton>
+                                -
+                                <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" ajax="true"
+                                                  action="#{overTimeViewController.doEdit()}" >
+                                    <f:setPropertyActionListener value="#{overTimeData}" target="#{overTimeViewController.selectedWtOverTime}" />
+                                    <p:ajax event="dialogReturn" listener="#{overTimeViewController.onDialogClose}"  update="tableOverTimeId,:holidayViewGrowlId"/>
+                                </p:commandButton> 
+                            </p:column>
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : " styleClass="label_hrm" />
+                                <p:outputLabel value="#{overTimeViewController.wtOverTimesLazyDataModel.rowCount}" styleClass="label_hrm"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px" styleClass="label_hrm"/>
+                            </f:facet>  
+                        </p:dataTable>
+                        <p:blockUI block="holidayViewId" trigger="tableOverTimeId,btnSearchId" >
+                            <h:panelGrid columns="2" styleClass="grid_no_border">
+                                <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
+                                <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
+                            </h:panelGrid>
+                        </p:blockUI>
+                        <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
+                            <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
+                        </p:dialog>
+                    </h:form>
+                    <!--</p:panel>-->
+                </div>
+                <p:dialog widgetVar="confirmDialogHoliday" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                          appendTo="@(body)" resizable="false" id="confirmDialogHolidayId" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
+                    <h:form id="deleteDialogAttendaceStatusId">
+                        <div align="center">
+                            <div align="center">
+                                <h:panelGrid columns="2" style="text-align: justify">
+                                    <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
+                                    <h:panelGroup>
+                                        <h:panelGrid style="text-align: center">
+                                            <p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
+                                        </h:panelGrid>
+                                    </h:panelGroup>
+                                </h:panelGrid>
+                            </div>
+                            <h:panelGrid  columns="3">
+                                <p:outputLabel value="Nama Lembur" styleClass="label_hrm"/>
+                                <p:outputLabel value=":"  styleClass="label_hrm" />
+                                <p:outputLabel value="#{overTimeViewController.selectedWtOverTime.name}" styleClass="isitext_hrm"/>
+                            </h:panelGrid>
+                            <p:separator/>
+                            <p:commandButton value="#{appmsg['global.yes']}" action="#{overTimeViewController.doDelete()}" update=":holidayViewId,:holidayViewGrowlId" id="yesId" title="#{appmsg['global.yes']}"
+                                             oncomplete="confirmDialogHoliday.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                            <p:commandButton value="#{appmsg['global.no']}" oncomplete="confirmDialogHoliday.hide()" icon="ui-icon-close" title="#{appmsg['global.no']}"  />
+
+                        </div>
+                    </h:form>
+                </p:dialog>
+                <p:dialog widgetVar="detailDialogOverTime" header="Detil Lembur" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
+                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)" dynamic="true">
+                    <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
+
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="Kode Lembur" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{overTimeViewController.selectedWtOverTime.code}"/> </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="Nama Lembur" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{overTimeViewController.selectedWtOverTime.name}"/> </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="Deskripsi" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{overTimeViewController.selectedWtOverTime.description}"/> </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="Minimu Lembur" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{overTimeViewController.selectedWtOverTime.minimumTime} #{appmsg['global.satuan_jam']} "/> </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="Maksimus Lembur" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{overTimeViewController.selectedWtOverTime.maximumTime} #{appmsg['global.satuan_jam']} "/> </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="Faktor Waktu Mulai" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{overTimeViewController.selectedWtOverTime.startTimeFactor}"/> </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="Faktor Waktu Akhir" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{overTimeViewController.selectedWtOverTime.finishTimeFactor}"/> </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="Faktor Penggenap" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{overTimeViewController.selectedWtOverTime.otRounding}"/> </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="Kalkulasi Lembur" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{overTimeViewController.selectedWtOverTime.overTimeCalculation}"/> </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="Nilai Lembur" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{overTimeViewController.selectedWtOverTime.valuePrice}"/> </p:column>
+                        </p:row>
+                        <f:facet name="footer">
+                            <p:row>
+                                <p:column colspan="2"><p:outputLabel value="Lembur" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
+                            </p:row>
+                        </f:facet>
+                    </p:panelGrid>
+                </p:dialog>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

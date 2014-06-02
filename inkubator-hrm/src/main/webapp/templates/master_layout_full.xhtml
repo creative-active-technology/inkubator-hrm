@@ -35,10 +35,19 @@
             </p:dialog>
 
         </h:form>
+        <p:dialog widgetVar="calendarDialog" modal="true" resizable="false"  onShow="statusDialog.hide();"
+                  appendTo="@(body)" header="Kalender" dynamic="true" width="500" closeOnEscape="true" >
+            <h:form id="caledarFormId">
+                <p:schedule value="#{calendarController.lazyScheduleModel}" timeZone="GMT+7"
+                            style="font-size: 14px !important;margin-top: 10px!important; margin-bottom: 10px!important"/>
+            </h:form>    
+
+        </p:dialog>
+
 <!--        <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
-            <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
-            <h:inputHidden value="#{homeController.bahasa}" />
-        </p:dialog>-->
+  <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
+  <h:inputHidden value="#{homeController.bahasa}" />
+</p:dialog>-->
         <div id="art-page-background-middle-texture">
             <div id="art-page-background-glare">
                 <div id="art-page-background-glare-image">
@@ -46,29 +55,29 @@
                         <div style="float: right">
                             <h:form>
                                 <h:inputHidden value="#{homeController.bahasa}" />
-                                <h:panelGrid columns="8" cellpadding="3" style="margin-right: 6%;padding-top: 3px">
+                                <h:panelGrid columns="7" cellpadding="3" style="margin-right: 6%;padding-top: 3px">
                                     <h:panelGroup>
                                         <p:outputLabel value="#{appmsg['global.welcome']}, " styleClass="label_welcome_header" />
                                         <p:outputLabel value="#{realName}. " styleClass="label_welcome_header" style="color: #ffcc00 !important;font-weight: bold!important" />
                                         <p:outputLabel value="#{appmsg['master_layout.login_at']} : #{login_date}" styleClass="label_welcome_header" style="margin-right: 100px"/>
                                     </h:panelGroup>
                                     <p:commandLink id="pendingId" action="#{userInformationController.doPendingTask()}" title="My Pending Task" >
-                                        <p:graphicImage library="images" name="task-manager.png" width="22" height="22" id="ima" cache="true" /> 
+                                        <p:graphicImage library="images" name="task-manager_ico.png" width="22" height="22" id="ima" cache="true" /> 
                                     </p:commandLink>
                                     <p:commandLink id="userId" onclick="statusDialog.show()" oncomplete="userInformationDialog.show()" action="#{userInformationController.onRenderUserInfo()}" title="User Profile" >
-                                        <p:graphicImage library="images" name="user.png" width="22" height="22" cache="true"/> 
+                                        <p:graphicImage library="images" name="user_ico.png" width="22" height="22" cache="true"/> 
                                     </p:commandLink>
                                     <h:commandLink id="calculatorId" title="Calculator">
-                                        <p:graphicImage library="images" name="calculator.png" width="22" height="22"  cache="true"/> 
+                                        <p:graphicImage library="images" name="calculator_ico.png" width="22" height="22"  cache="true"/> 
                                     </h:commandLink>
-                                    <h:commandLink id="calendarId" title="Calendar">
-                                        <p:graphicImage library="images" name="calendar.png" width="22" height="22"  cache="true"/> 
-                                    </h:commandLink>
+                                    <p:commandLink id="calendarId" title="Calendar" onclick="statusDialog.show()" oncomplete="calendarDialog.show()" ajax="true" update=":caledarFormId" >
+                                        <p:graphicImage library="images" name="calendar_ico.png" width="22" height="22"  cache="true"/> 
+                                    </p:commandLink>
                                     <h:commandLink id="helpId" title="Need Help Clik Me">
-                                        <p:graphicImage library="images" name="help.png" width="22" height="22"  cache="true"/> 
+                                        <p:graphicImage library="images" name="help_ico.png" width="22" height="22"  cache="true"/> 
                                     </h:commandLink>
                                     <h:outputLink id="logoutId" style="margin-left: 22px;margin-right: 10px" value="${request.contextPath}/logout.htm" title="Logout and Exit">
-                                        <p:graphicImage library="images" name="logout.png" width="22" height="22" cache="true"/> 
+                                        <p:graphicImage library="images" name="logout_ico.png" width="22" height="22" cache="true" style="vertical-align: central"/> 
                                     </h:outputLink>
                                 </h:panelGrid>
                                 <div class="isitext_hrm">
@@ -129,6 +138,7 @@
                                             <p:menuitem value="Hari Libur" icon="img-holiday" style="font-size: 12px !important;color: #003366" title="Create Offering Price" url="/protected/working_time/holiday_view.htm" />
                                             <p:menuitem value="Status Kehadiran" icon="img-status-attendance" style="font-size: 12px !important;color: #003366" title="Status Kehadiran" url="/protected/working_time/attendance_status_view.htm" />  
                                             <p:menuitem value="#{appmsg['workinghour.working_hour']}" icon="img-working-hour" style="font-size: 12px !important;color: #003366" title="#{appmsg['workinghour.working_hour']}" url="/protected/working_time/working_hour_view.htm" />  
+                                            <p:menuitem value="Lembur" icon="img-over-time" style="font-size: 12px !important;color: #003366" title="Lembur" url="/protected/working_time/over_time_view.htm" />  
                                         </p:submenu>
                                         <p:submenu label="Payroll"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-payroll">
                                             <p:menuitem value="Price Simulator" icon="img-price-simulator" style="font-size: 12px !important;color: #003366" title="Make Price Simulation" url="/protected/price_simulator.htm" /> 
