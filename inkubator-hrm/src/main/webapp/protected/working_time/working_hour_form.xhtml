@@ -16,8 +16,9 @@
 				Home
             </ui:define>
             <ui:define name="center">
-                <p:growl id="growlWorkingHourFormlId" globalOnly="true" showDetail="true"/>
+                <p:growl id="growlWorkingHourFormlId" globalOnly="true" showDetail="true"/>                
                 <h:form id="formWorkingHourFormId">
+                	<p:focus context="formWorkingHourFormId"/>
                 	<div id="box_bg" style="margin: 10px">
 	                    <h:panelGrid  columns="2">
 	                        <p:graphicImage library="images" name="working_hour.png" height="36" width="36" />
@@ -35,11 +36,9 @@
 	                                <p:outputLabel for="codeId" value="#{appmsg['workinghour.working_time_code']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                                <p:focus for ="codeId">
-	                                    <p:inputText id="codeId" title="#{appmsg['workinghour.working_time_code']}" value="#{workingHourFormController.model.code}" 
-	                                    			 required="true" requiredMessage="#{appmsg['workinghour.error_empty_code']}" maxlength="45" styleClass="isitext_hrm" style="width:290px;" />
-	                                    <p:message for="codeId"/>
-	                                </p:focus>
+	                            	<p:inputText id="codeId" title="#{appmsg['workinghour.working_time_code']}" value="#{workingHourFormController.model.code}" 
+	                                    		 required="true" requiredMessage="#{appmsg['workinghour.error_empty_code']}" maxlength="45" styleClass="isitext_hrm" style="width:290px;" />
+	                                <p:message for="codeId"/>
 	                            </p:column>
 	                        </p:row>   
 	                        <p:row>
@@ -47,11 +46,9 @@
 	                                <p:outputLabel for="nameId" value="#{appmsg['workinghour.working_time_name']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                                <p:focus for ="nameId">
-	                                    <p:inputText id="nameId" title="#{appmsg['workinghour.working_time_name']}" value="#{workingHourFormController.model.name}" 
-	                                    			 required="true" requiredMessage="#{appmsg['workinghour.error_empty_code']}" maxlength="45" styleClass="isitext_hrm" style="width:290px;" />
-	                                    <p:message for="nameId"/>
-	                                </p:focus>
+	                            	<p:inputText id="nameId" title="#{appmsg['workinghour.working_time_name']}" value="#{workingHourFormController.model.name}" 
+	                                    		 required="true" requiredMessage="#{appmsg['workinghour.error_empty_code']}" maxlength="45" styleClass="isitext_hrm" style="width:290px;" />
+	                                <p:message for="nameId"/>
 	                            </p:column>
 	                        </p:row>  
 	                        <p:row>
@@ -59,11 +56,9 @@
 	                                <p:outputLabel for="descId" value="#{appmsg['global.description']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                                <p:focus for ="descId">
-	                                    <p:inputTextarea id="descId" title="#{appmsg['global.description']}" value="#{workingHourFormController.model.description}" 
+	                            	<p:inputTextarea id="descId" title="#{appmsg['global.description']}" value="#{workingHourFormController.model.description}" 
 	                                    			 maxlength="1000" styleClass="isitext_hrm" style="width:290px;" />
-	                                    <p:message for="descId"/>
-	                                </p:focus>
+	                                <p:message for="descId"/>
 	                            </p:column>
 	                        </p:row>    
 	                        <p:row>
