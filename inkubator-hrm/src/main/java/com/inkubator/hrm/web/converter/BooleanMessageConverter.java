@@ -15,8 +15,8 @@ import com.inkubator.webcore.util.FacesUtil;
  *
  * @author rizkykojek
  */
-@FacesConverter(value = "hrmBooleanConverter")
-public class HrmBooleanConverter implements Converter {
+@FacesConverter(value = "booleanMessageConverter")
+public class BooleanMessageConverter implements Converter {
 
 	@Override
 	public Object getAsObject(FacesContext facesContext, UIComponent uiComponent, String str) {

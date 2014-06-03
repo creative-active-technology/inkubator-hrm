@@ -200,12 +200,12 @@ public class WtWorkingHourServiceImpl extends IServiceImpl implements WtWorkingH
 		// check duplicate name
 		long totalDuplicates = wtWorkingHourDao.getTotalByName(workingHour.getName());
 		if (totalDuplicates > 0) {
-			throw new BussinessException("wtworkinghour.error_duplicate_name");
+			throw new BussinessException("workinghour.error_duplicate_name");
 		}
 		// check duplicate code
 		totalDuplicates = wtWorkingHourDao.getTotalByCode(workingHour.getCode());
 		if (totalDuplicates > 0) {
-			throw new BussinessException("wtworkinghour.error_duplicate_code");
+			throw new BussinessException("workinghour.error_duplicate_code");
 		}
 		
 		workingHour.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
@@ -244,12 +244,12 @@ public class WtWorkingHourServiceImpl extends IServiceImpl implements WtWorkingH
 		// check duplicate name
 		long totalDuplicates = wtWorkingHourDao.getTotalByNameAndNotId(wt.getName(),wt.getId());
 		if (totalDuplicates > 0) {
-			throw new BussinessException("wtworkinghour.error_duplicate_name");
+			throw new BussinessException("workinghour.error_duplicate_name");
 		}
 		// check duplicate code
 		totalDuplicates = wtWorkingHourDao.getTotalByCodeAndNotId(wt.getCode(),wt.getId());
 		if (totalDuplicates > 0) {
-			throw new BussinessException("wtworkinghour.error_duplicate_code");
+			throw new BussinessException("workinghour.error_duplicate_code");
 		}
 		
 		WtWorkingHour workingHour = wtWorkingHourDao.getEntiyByPK(wt.getId());

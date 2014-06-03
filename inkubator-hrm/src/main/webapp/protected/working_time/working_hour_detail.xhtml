@@ -110,7 +110,7 @@
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                            	<p:outputLabel value="#{workingHourDetailController.selectedWorkingHour.isPenaltyArriveLate}">
-	                            		<f:converter converterId="hrmBooleanConverter"/>
+	                            		<f:converter converterId="booleanMessageConverter"/>
 	                            	</p:outputLabel>	                                	                                
 	                            </p:column>
 	                        </p:row> 
@@ -120,7 +120,7 @@
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                            	<p:outputLabel value="#{workingHourDetailController.selectedWorkingHour.isPenaltyGoHomeEarly}">
-	                            		<f:converter converterId="hrmBooleanConverter"/>
+	                            		<f:converter converterId="booleanMessageConverter"/>
 	                            	</p:outputLabel>	                                                             
 	                            </p:column>
 	                        </p:row> 
@@ -130,7 +130,7 @@
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                            	<p:outputLabel value="#{workingHourDetailController.selectedWorkingHour.isManageBreakTime}">
-	                            		<f:converter converterId="hrmBooleanConverter"/>
+	                            		<f:converter converterId="booleanMessageConverter"/>
 	                            	</p:outputLabel>                             
 	                            </p:column>
 	                        </p:row>
@@ -176,7 +176,7 @@
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                            	<p:outputLabel value="#{workingHourDetailController.selectedWorkingHour.isPenaltyBreakStartEarly}">
-	                            		<f:converter converterId="hrmBooleanConverter"/>
+	                            		<f:converter converterId="booleanMessageConverter"/>
 	                            	</p:outputLabel>	                                                          
 	                            </p:column>
 	                        </p:row>   
@@ -186,7 +186,7 @@
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                            	<p:outputLabel value="#{workingHourDetailController.selectedWorkingHour.isPenaltyBreakFinishLate}">
-	                            		<f:converter converterId="hrmBooleanConverter"/>
+	                            		<f:converter converterId="booleanMessageConverter"/>
 	                            	</p:outputLabel>	                                                                
 	                            </p:column>
 	                        </p:row>     
@@ -194,7 +194,7 @@
 	                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
 	                    <div style="margin-bottom: 5px">
 	                    	<p:commandButton value="#{appmsg['global.edit']}" icon="ui-icon-zoomin" title="#{appmsg['global.edit']}" action="#{workingHourDetailController.doUpdate()}" immediate="true"
-                                			 styleClass="label_button"/>
+                                			 style="margin-right: 5px" styleClass="label_button"/>
 	                        <p:commandButton value="#{appmsg['global.back']}" icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{workingHourDetailController.doBack()}" immediate="true"
 	                                      	 styleClass="label_button"/>
 	                    </div>
