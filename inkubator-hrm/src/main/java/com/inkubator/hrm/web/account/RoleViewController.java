@@ -86,11 +86,6 @@ public class RoleViewController extends BaseController {
         lazyDataHrmRole = null;
     }
 
-    @PreDestroy
-    public void onPostClose() {
-        System.out.println("Bersih -berisesfsdhfkh");
-    }
-
     public void doDetail() {
         try {
             selectedHrmRole = this.hrmRoleService.getEntiyByPK(selectedHrmRole.getId());
@@ -142,19 +137,10 @@ public class RoleViewController extends BaseController {
         RequestContext.getCurrentInstance().openDialog("role_form", options, dataToSend);
     }
 
+    @Override
     public void onDialogReturn(SelectEvent event) {
         lazyDataHrmRole = null;
-        System.out.println(" shhsdfhsdhdsfhdsfhdh");
-        String condition = (String) event.getObject();
-        System.out.println(" kodisi " + condition);
-        if (condition.equalsIgnoreCase(HRMConstant.SAVE_CONDITION)) {
-            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
-                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-        }
-        if (condition.equalsIgnoreCase(HRMConstant.UPDATE_CONDITION)) {
-            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
-                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-        }
+       super.onDialogReturn(event);
 
     }
 
@@ -164,5 +150,14 @@ public class RoleViewController extends BaseController {
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
+    }
+
+    @PreDestroy
+    private void cleanAndExit() {
+        hrmRoleSearchParameter=null;
+        lazyDataHrmRole=null;
+        hrmRoleService=null;
+        selectedHrmRole=null;
+        
     }
 }

@@ -26,7 +26,7 @@ import org.primefaces.context.RequestContext;
 public class ReligionFormController extends BaseController {
 
     private ReligionModel religionModel;
-    Boolean isUpdate;
+    private Boolean isUpdate;
     @ManagedProperty(value = "#{religionService}")
     private ReligionService religionService;
 

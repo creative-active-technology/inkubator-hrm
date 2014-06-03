@@ -1,18 +1,6 @@
 package com.inkubator.hrm.web.reference;
 
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
-
-import org.hibernate.exception.ConstraintViolationException;
-import org.primefaces.event.SelectEvent;
-import org.primefaces.model.LazyDataModel;
-import org.springframework.dao.DataIntegrityViolationException;
-
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.SpecificationAbility;
 import com.inkubator.hrm.service.SpecificationAbilityService;
@@ -21,6 +9,15 @@ import com.inkubator.hrm.web.search.SpecificationAbilitySearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+import org.hibernate.exception.ConstraintViolationException;
+import org.primefaces.model.LazyDataModel;
+import org.springframework.dao.DataIntegrityViolationException;
 
 /**
  *
@@ -116,16 +113,5 @@ public class SpecAbilityViewController extends BaseController {
         return "/protected/reference/spec_ability_form.htm?faces-redirect=true&execution=e" + selectedSpecificationAbility.getId();
     }
 
-    public void onDialogClose(SelectEvent event) {
-        //re-calculate searching
-        doSearch();
-
-        //show growl message
-        String condition = (String) event.getObject();
-        if (condition.equalsIgnoreCase(HRMConstant.SAVE_CONDITION)) {
-            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-        } else if (condition.equalsIgnoreCase(HRMConstant.UPDATE_CONDITION)) {
-            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-        }
-    }
+   
 }

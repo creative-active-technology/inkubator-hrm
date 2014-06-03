@@ -85,14 +85,14 @@ public class ReligionViewController extends BaseController {
     public void doSearch() {
         lazyDataReligion = null;
     }
-    
+
     public void doDetail() {
         try {
-        	selectedReligion = this.religionService.getEntiyByPK(selectedReligion.getId());
+            selectedReligion = this.religionService.getEntiyByPK(selectedReligion.getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
-    } 
+    }
 
     public void doDelete() {
         try {
@@ -129,16 +129,10 @@ public class ReligionViewController extends BaseController {
         RequestContext.getCurrentInstance().openDialog("religion_form", options, params);
     }
 
-    public void onDialogClose(SelectEvent event) {
+    @Override
+    public void onDialogReturn(SelectEvent event) {
         //re-calculate searching
         doSearch();
-
-        //show growl message
-        String condition = (String) event.getObject();
-        if (condition.equalsIgnoreCase(HRMConstant.SAVE_CONDITION)) {
-            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-        } else if (condition.equalsIgnoreCase(HRMConstant.UPDATE_CONDITION)) {
-            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-        }
+        super.onDialogReturn(event);
     }
 }

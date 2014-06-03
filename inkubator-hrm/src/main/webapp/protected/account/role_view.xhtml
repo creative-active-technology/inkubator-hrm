@@ -134,7 +134,7 @@
                                 <p:outputLabel value="#{roleViewController.selectedHrmRole.roleName}" styleClass="isitext_hrm"/>
                             </h:panelGrid>
                             <p:separator/>
-                            <p:commandButton value="#{appmsg['global.yes']}" action="#{roleViewController.doDelete()}" update=":roleViewId" id="yesId" title="#{appmsg['global.yes']}"
+                            <p:commandButton value="#{appmsg['global.yes']}" action="#{roleViewController.doDelete()}" update=":roleViewId,:roleViewGrowlId" id="yesId" title="#{appmsg['global.yes']}"
                                              oncomplete="confirmDialogHrmRole.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
                             <p:commandButton value="#{appmsg['global.no']}" oncomplete="confirmDialogHrmRole.hide()" icon="ui-icon-close" title="#{appmsg['global.no']}"  />
 

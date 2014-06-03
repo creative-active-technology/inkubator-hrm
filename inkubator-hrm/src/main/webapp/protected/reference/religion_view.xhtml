@@ -43,7 +43,7 @@
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="2" >
                                     <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']}" actionListener="#{religionViewController.doAdd()}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
-                                        <p:ajax event="dialogReturn" listener="#{religionViewController.onDialogClose}"  update="tableReligionId,:growlReligionViewlId"/>
+                                        <p:ajax event="dialogReturn" listener="#{religionViewController.onDialogReturn}"  update="tableReligionId,:growlReligionViewlId"/>
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{religionViewController.doClose()}" icon="ui-icon-home"/>
                                 </h:panelGrid>
@@ -86,7 +86,7 @@
                                 <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
                                                  action="#{religionViewController.doUpdate()}" >
                                     <f:setPropertyActionListener value="#{religionData}" target="#{religionViewController.selectedReligion}" />
-                                    <p:ajax event="dialogReturn" listener="#{religionViewController.onDialogClose}"  update="tableReligionId,:growlReligionViewlId"/>
+                                    <p:ajax event="dialogReturn" listener="#{religionViewController.onDialogReturn}"  update="tableReligionId,:growlReligionViewlId"/>
                                 </p:commandButton>
                             </p:column>                        
                             <f:facet name="footer">

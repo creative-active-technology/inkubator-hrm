@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -180,11 +181,6 @@ public class UserFormController extends BaseController {
         return null;
     }
 
-    public void doClear() {
-        System.out.println(" hhsdhfhds");
-        userModel = new UserModel();
-    }
-
     public Boolean getIsEdit() {
         return isEdit;
     }
@@ -247,6 +243,14 @@ public class UserFormController extends BaseController {
         us.setUserName(hrmUser.getRealName());
         us.setUserId(hrmUser.getUserId());
         return us;
+    }
+
+    @PreDestroy
+    public void cleanAndExit() {
+        dualListModel = null;
+        hrmUserService=null;
+        hrmRoleService=null;
+
     }
 
 }

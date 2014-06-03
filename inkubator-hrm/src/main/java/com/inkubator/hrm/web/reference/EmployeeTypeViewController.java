@@ -30,19 +30,19 @@ import org.springframework.dao.DataIntegrityViolationException;
 @ManagedBean(name = "employeeTypeViewController")
 @ViewScoped
 public class EmployeeTypeViewController extends BaseController {
-
+    
     private String parameter;
     private LazyDataModel<EmployeeType> lazyDataEmployeeType;
     private EmployeeType selectedEmployeeType;
     @ManagedProperty(value = "#{employeeTypeService}")
     private EmployeeTypeService employeeTypeService;
-
+    
     @PostConstruct
     @Override
     public void initialization() {
         super.initialization();
     }
-
+    
     @PreDestroy
     public void cleanAndExit() {
         employeeTypeService = null;
@@ -50,55 +50,55 @@ public class EmployeeTypeViewController extends BaseController {
         lazyDataEmployeeType = null;
         selectedEmployeeType = null;
     }
-
+    
     public void setEmployeeTypeService(EmployeeTypeService employeeTypeService) {
         this.employeeTypeService = employeeTypeService;
     }
-
+    
     public String getParameter() {
         return parameter;
     }
-
+    
     public void setParameter(String parameter) {
         this.parameter = parameter;
     }
-
+    
     public LazyDataModel<EmployeeType> getLazyDataEmployeeType() {
         if (lazyDataEmployeeType == null) {
             lazyDataEmployeeType = new EmployeeTypeLazyDataModel(parameter, employeeTypeService);
         }
         return lazyDataEmployeeType;
     }
-
+    
     public void setLazyDataEmployeeType(LazyDataModel<EmployeeType> lazyDataEmployeeType) {
         this.lazyDataEmployeeType = lazyDataEmployeeType;
     }
-
+    
     public EmployeeType getSelectedEmployeeType() {
         return selectedEmployeeType;
     }
-
+    
     public void setSelectedEmployeeType(EmployeeType selectedEmployeeType) {
         this.selectedEmployeeType = selectedEmployeeType;
     }
-
+    
     public void doSearch() {
         lazyDataEmployeeType = null;
     }
     
     public void doDetail() {
         try {
-        	selectedEmployeeType = this.employeeTypeService.getEntiyByPK(selectedEmployeeType.getId());
+            selectedEmployeeType = this.employeeTypeService.getEntiyByPK(selectedEmployeeType.getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
-    } 
-
+    }    
+    
     public void doDelete() {
         try {
             employeeTypeService.delete(selectedEmployeeType);
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-
+            
         } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             LOGGER.error("Error when doDelete employeeType ", ex);
@@ -106,11 +106,11 @@ public class EmployeeTypeViewController extends BaseController {
             LOGGER.error("Error when doDelete employeeType", ex);
         }
     }
-
+    
     public void doAdd() {
         showDialog(null);
     }
-
+    
     public void doUpdate() {
         Map<String, List<String>> dataToSend = new HashMap<>();
         List<String> values = new ArrayList<>();
@@ -118,7 +118,7 @@ public class EmployeeTypeViewController extends BaseController {
         dataToSend.put("param", values);
         showDialog(dataToSend);
     }
-
+    
     private void showDialog(Map<String, List<String>> params) {
         Map<String, Object> options = new HashMap<>();
         options.put("modal", true);
@@ -128,17 +128,11 @@ public class EmployeeTypeViewController extends BaseController {
         options.put("contentHeight", 250);
         RequestContext.getCurrentInstance().openDialog("employee_type_form", options, params);
     }
-
-    public void onDialogClose(SelectEvent event) {
+    
+    @Override
+    public void onDialogReturn(SelectEvent event) {
         //re-calculate searching
         doSearch();
-
-        //show growl message
-        String condition = (String) event.getObject();
-        if (condition.equalsIgnoreCase(HRMConstant.SAVE_CONDITION)) {
-            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-        } else if (condition.equalsIgnoreCase(HRMConstant.UPDATE_CONDITION)) {
-            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-        }
+        super.onDialogReturn(event);
     }
 }

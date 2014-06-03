@@ -43,7 +43,7 @@
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="2" >
                                     <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']}" actionListener="#{employeeTypeViewController.doAdd()}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
-                                        <p:ajax event="dialogReturn" listener="#{employeeTypeViewController.onDialogClose}"  update="tableEmployeeTypeId,:growlEmployeeTypeViewlId"/>
+                                        <p:ajax event="dialogReturn" listener="#{employeeTypeViewController.onDialogReturn}"  update="tableEmployeeTypeId,:growlEmployeeTypeViewlId"/>
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{employeeTypeViewController.doClose()}" icon="ui-icon-home"/>
                                 </h:panelGrid>
@@ -86,7 +86,7 @@
                                 <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
                                                  action="#{employeeTypeViewController.doUpdate()}" >
                                     <f:setPropertyActionListener value="#{employeeTypeData}" target="#{employeeTypeViewController.selectedEmployeeType}" />
-                                    <p:ajax event="dialogReturn" listener="#{employeeTypeViewController.onDialogClose}"  update="tableEmployeeTypeId,:growlEmployeeTypeViewlId"/>
+                                    <p:ajax event="dialogReturn" listener="#{employeeTypeViewController.onDialogReturn}"  update="tableEmployeeTypeId,:growlEmployeeTypeViewlId"/>
                                 </p:commandButton>
                             </p:column>                        
                             <f:facet name="footer">

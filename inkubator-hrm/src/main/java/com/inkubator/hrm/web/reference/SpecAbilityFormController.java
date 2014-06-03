@@ -25,7 +25,7 @@ import org.apache.commons.lang3.StringUtils;
 public class SpecAbilityFormController extends BaseController {
 
     private SpecAbilityModel specAbilityModel;
-    Boolean isUpdate;
+    private Boolean isUpdate;
     @ManagedProperty(value = "#{specificationAbilityService}")
     private SpecificationAbilityService specificationAbilityService;
 

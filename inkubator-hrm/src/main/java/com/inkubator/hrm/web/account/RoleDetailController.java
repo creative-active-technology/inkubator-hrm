@@ -52,7 +52,7 @@ public class RoleDetailController extends BaseController {
     
     
     @PreDestroy
-    private void CleanAndExit(){
+    private void cleanAndExit(){
         hrmRoleService=null;
         hrmRole=null;
     }

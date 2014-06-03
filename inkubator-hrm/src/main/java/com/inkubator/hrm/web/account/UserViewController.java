@@ -7,7 +7,6 @@ package com.inkubator.hrm.web.account;
 
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.HrmUser;
-import com.inkubator.hrm.service.HrmRoleService;
 import com.inkubator.hrm.service.HrmUserService;
 import com.inkubator.hrm.web.lazymodel.HrmUserLazyDataModel;
 import com.inkubator.hrm.web.search.HrmUserSearchParameter;
@@ -15,6 +14,7 @@ import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -36,12 +36,6 @@ public class UserViewController extends BaseController {
     private HrmUser selectedHrmUser;
     @ManagedProperty(value = "#{hrmUserService}")
     private HrmUserService hrmUserService;
-    @ManagedProperty(value = "#{hrmRoleService}")
-    private HrmRoleService hrmRoleService;
-
-    public void setHrmRoleService(HrmRoleService hrmRoleService) {
-        this.hrmRoleService = hrmRoleService;
-    }
 
     public void setHrmUserService(HrmUserService hrmUserService) {
         this.hrmUserService = hrmUserService;
@@ -49,7 +43,6 @@ public class UserViewController extends BaseController {
 
     @PostConstruct
     @Override
-
     public void initialization() {
         super.initialization();
         hrmUserSearchParameter = new HrmUserSearchParameter();
@@ -121,5 +114,13 @@ public class UserViewController extends BaseController {
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
+    }
+
+    @PreDestroy
+    public void cleanAndExit() {
+        hrmUserSearchParameter = null;
+        lazyDataHrmUser = null;
+        selectedHrmUser = null;
+        hrmUserService = null;
     }
 }

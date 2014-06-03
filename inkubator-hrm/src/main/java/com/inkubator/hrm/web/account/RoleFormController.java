@@ -142,6 +142,5 @@ public class RoleFormController extends BaseController {
         roleModel = null;
         isEdit = null;
         hrmRoleService = null;
-        System.out.println(" ahhahaha");
     }
 }

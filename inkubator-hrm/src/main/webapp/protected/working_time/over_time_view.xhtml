@@ -48,7 +48,7 @@
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="2" >
                                     <p:commandButton value="#{appmsg['global.add']}" actionListener="#{overTimeViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
-                                        <p:ajax event="dialogReturn" listener="#{overTimeViewController.onDialogClose}"  update="tableOverTimeId,:holidayViewGrowlId"/>
+                                        <p:ajax event="dialogReturn" listener="#{overTimeViewController.onDialogReturn}"  update="tableOverTimeId,:holidayViewGrowlId"/>
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.close']}" styleClass="label_button" action="#{familyRelationViewController.doClose()}" icon="ui-icon-home"/>
                                 </h:panelGrid>
@@ -115,7 +115,7 @@
                                 <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" ajax="true"
                                                   action="#{overTimeViewController.doEdit()}" >
                                     <f:setPropertyActionListener value="#{overTimeData}" target="#{overTimeViewController.selectedWtOverTime}" />
-                                    <p:ajax event="dialogReturn" listener="#{overTimeViewController.onDialogClose}"  update="tableOverTimeId,:holidayViewGrowlId"/>
+                                    <p:ajax event="dialogReturn" listener="#{overTimeViewController.onDialogReturn}"  update="tableOverTimeId,:holidayViewGrowlId"/>
                                 </p:commandButton> 
                             </p:column>
                             <f:facet name="footer">

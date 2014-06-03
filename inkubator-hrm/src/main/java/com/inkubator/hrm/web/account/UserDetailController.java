@@ -64,6 +64,7 @@ public class UserDetailController extends BaseController {
 
     @PreDestroy
     public void cleanAndExit() {
-       
+       selectedHrmUser=null;
+       hrmUserService=null;
     }
 }

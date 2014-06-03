@@ -133,18 +133,10 @@ public class OverTimeViewController extends BaseController {
         RequestContext.getCurrentInstance().openDialog("over_time_form", options, dataToSend);
     }
 
-    public void onDialogClose(SelectEvent event) {
+    @Override
+    public void onDialogReturn(SelectEvent event) {
         wtOverTimesLazyDataModel = null;
-        String condition = (String) event.getObject();
-        if (condition.equalsIgnoreCase(HRMConstant.SAVE_CONDITION)) {
-            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
-                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-        }
-
-        if (condition.equalsIgnoreCase(HRMConstant.UPDATE_CONDITION)) {
-            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
-                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-        }
+        super.onDialogReturn(event);
     }
 
     public void onDelete() {
