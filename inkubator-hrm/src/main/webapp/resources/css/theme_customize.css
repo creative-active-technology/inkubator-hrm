@@ -83,7 +83,7 @@ and open the template in the editor.
     padding: 2.5px 7px !important;
 }
 
-.ui-widget,.ui-widget .ui-widget
+.ui-widget,.ui-widget .ui-widget,.ui-widget input
 {
     font-size:13px;
     font-family: Calibri;

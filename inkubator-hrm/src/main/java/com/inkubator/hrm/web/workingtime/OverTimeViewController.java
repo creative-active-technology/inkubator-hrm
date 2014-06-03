@@ -120,12 +120,12 @@ public class OverTimeViewController extends BaseController {
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 400);
-        options.put("contentHeight", 440);
+        options.put("contentHeight", 535);
 //        options.put("closable", false);
 //        options.put("height", "auto");
 
 //        options.put("contentHeight", 340);
-        RequestContext.getCurrentInstance().openDialog("attendance_status_form", options, null);
+        RequestContext.getCurrentInstance().openDialog("over_time_form", options, null);
     }
 
     public void doEdit() {

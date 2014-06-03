@@ -9,10 +9,10 @@ import java.util.Date;
  */
 public class WorkingHourModel implements Serializable {
 
-	private Long id;
-	private String name;
-	private String code;
-	private String description;
+    private Long id;
+    private String name;
+    private String code;
+    private String description;
     private Date workingHourBegin;
     private Date workingHourEnd;
     private Date maxHour;
@@ -31,179 +31,184 @@ public class WorkingHourModel implements Serializable {
     private Integer breakFinishLimitEnd;
     private Boolean isPenaltyBreakStartEarly;
     private Boolean isPenaltyBreakFinishLate;
-	
-    public WorkingHourModel(){
-	}
-		
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public String getCode() {
-		return code;
-	}
-	public void setCode(String code) {
-		this.code = code;
-	}
 
-	public String getDescription() {
-		return description;
-	}
+    public WorkingHourModel() {
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public Date getWorkingHourBegin() {
-		return workingHourBegin;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setWorkingHourBegin(Date workingHourBegin) {
-		this.workingHourBegin = workingHourBegin;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public Date getWorkingHourEnd() {
-		return workingHourEnd;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setWorkingHourEnd(Date workingHourEnd) {
-		this.workingHourEnd = workingHourEnd;
-	}
-	
-	public Date getMaxHour() {
-		return maxHour;
-	}
+    public String getCode() {
+        return code;
+    }
 
-	public void setMaxHour(Date maxHour) {
-		this.maxHour = maxHour;
-	}
+    public void setCode(String code) {
+        this.code = code;
+    }
 
-	public Integer getArriveLimitBegin() {
-		return arriveLimitBegin;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setArriveLimitBegin(Integer arriveLimitBegin) {
-		this.arriveLimitBegin = arriveLimitBegin;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public Integer getArriveLimitEnd() {
-		return arriveLimitEnd;
-	}
+    public Date getWorkingHourBegin() {
+        return workingHourBegin;
+    }
 
-	public void setArriveLimitEnd(Integer arriveLimitEnd) {
-		this.arriveLimitEnd = arriveLimitEnd;
-	}
+    public void setWorkingHourBegin(Date workingHourBegin) {
+        this.workingHourBegin = workingHourBegin;
+    }
 
-	public Integer getGoHomeLimitBegin() {
-		return goHomeLimitBegin;
-	}
+    public Date getWorkingHourEnd() {
+        return workingHourEnd;
+    }
 
-	public void setGoHomeLimitBegin(Integer goHomeLimitBegin) {
-		this.goHomeLimitBegin = goHomeLimitBegin;
-	}
+    public void setWorkingHourEnd(Date workingHourEnd) {
+        this.workingHourEnd = workingHourEnd;
+    }
 
-	public Integer getGoHomeLimitEnd() {
-		return goHomeLimitEnd;
-	}
+    public Date getMaxHour() {
+        return maxHour;
+    }
 
-	public void setGoHomeLimitEnd(Integer goHomeLimitEnd) {
-		this.goHomeLimitEnd = goHomeLimitEnd;
-	}
+    public void setMaxHour(Date maxHour) {
+        this.maxHour = maxHour;
+    }
 
-	public Boolean getIsPenaltyArriveLate() {
-		return isPenaltyArriveLate;
-	}
+    public Integer getArriveLimitBegin() {
+        return arriveLimitBegin;
+    }
 
-	public void setIsPenaltyArriveLate(Boolean isPenaltyArriveLate) {
-		this.isPenaltyArriveLate = isPenaltyArriveLate;
-	}
+    public void setArriveLimitBegin(Integer arriveLimitBegin) {
+        this.arriveLimitBegin = arriveLimitBegin;
+    }
 
-	public Boolean getIsPenaltyGoHomeEarly() {
-		return isPenaltyGoHomeEarly;
-	}
+    public Integer getArriveLimitEnd() {
+        return arriveLimitEnd;
+    }
 
-	public void setIsPenaltyGoHomeEarly(Boolean isPenaltyGoHomeEarly) {
-		this.isPenaltyGoHomeEarly = isPenaltyGoHomeEarly;
-	}
+    public void setArriveLimitEnd(Integer arriveLimitEnd) {
+        this.arriveLimitEnd = arriveLimitEnd;
+    }
 
-	public Boolean getIsManageBreakTime() {
-		return isManageBreakTime;
-	}
+    public Integer getGoHomeLimitBegin() {
+        return goHomeLimitBegin;
+    }
 
-	public void setIsManageBreakTime(Boolean isManageBreakTime) {
-		this.isManageBreakTime = isManageBreakTime;
-	}
+    public void setGoHomeLimitBegin(Integer goHomeLimitBegin) {
+        this.goHomeLimitBegin = goHomeLimitBegin;
+    }
 
-	public Date getBreakHourBegin() {
-		return breakHourBegin;
-	}
+    public Integer getGoHomeLimitEnd() {
+        return goHomeLimitEnd;
+    }
 
-	public void setBreakHourBegin(Date breakHourBegin) {
-		this.breakHourBegin = breakHourBegin;
-	}
+    public void setGoHomeLimitEnd(Integer goHomeLimitEnd) {
+        this.goHomeLimitEnd = goHomeLimitEnd;
+    }
 
-	public Date getBreakHourEnd() {
-		return breakHourEnd;
-	}
+    public Boolean getIsPenaltyArriveLate() {
+        return isPenaltyArriveLate;
+    }
 
-	public void setBreakHourEnd(Date breakHourEnd) {
-		this.breakHourEnd = breakHourEnd;
-	}
+    public void setIsPenaltyArriveLate(Boolean isPenaltyArriveLate) {
+        this.isPenaltyArriveLate = isPenaltyArriveLate;
+    }
 
-	public Integer getBreakStartLimitBegin() {
-		return breakStartLimitBegin;
-	}
+    public Boolean getIsPenaltyGoHomeEarly() {
+        return isPenaltyGoHomeEarly;
+    }
 
-	public void setBreakStartLimitBegin(Integer breakStartLimitBegin) {
-		this.breakStartLimitBegin = breakStartLimitBegin;
-	}
+    public void setIsPenaltyGoHomeEarly(Boolean isPenaltyGoHomeEarly) {
+        this.isPenaltyGoHomeEarly = isPenaltyGoHomeEarly;
+    }
 
-	public Integer getBreakStartLimitEnd() {
-		return breakStartLimitEnd;
-	}
+    public Boolean getIsManageBreakTime() {
+        return isManageBreakTime;
+    }
 
-	public void setBreakStartLimitEnd(Integer breakStartLimitEnd) {
-		this.breakStartLimitEnd = breakStartLimitEnd;
-	}
+    public void setIsManageBreakTime(Boolean isManageBreakTime) {
+        this.isManageBreakTime = isManageBreakTime;
+    }
 
-	public Integer getBreakFinishLimitBegin() {
-		return breakFinishLimitBegin;
-	}
+    public Date getBreakHourBegin() {
+        return breakHourBegin;
+    }
 
-	public void setBreakFinishLimitBegin(Integer breakFinishLimitBegin) {
-		this.breakFinishLimitBegin = breakFinishLimitBegin;
-	}
+    public void setBreakHourBegin(Date breakHourBegin) {
+        this.breakHourBegin = breakHourBegin;
+    }
 
-	public Integer getBreakFinishLimitEnd() {
-		return breakFinishLimitEnd;
-	}
+    public Date getBreakHourEnd() {
+        return breakHourEnd;
+    }
 
-	public void setBreakFinishLimitEnd(Integer breakFinishLimitEnd) {
-		this.breakFinishLimitEnd = breakFinishLimitEnd;
-	}
+    public void setBreakHourEnd(Date breakHourEnd) {
+        this.breakHourEnd = breakHourEnd;
+    }
 
-	public Boolean getIsPenaltyBreakStartEarly() {
-		return isPenaltyBreakStartEarly;
-	}
+    public Integer getBreakStartLimitBegin() {
+        return breakStartLimitBegin;
+    }
 
-	public void setIsPenaltyBreakStartEarly(Boolean isPenaltyBreakStartEarly) {
-		this.isPenaltyBreakStartEarly = isPenaltyBreakStartEarly;
-	}
+    public void setBreakStartLimitBegin(Integer breakStartLimitBegin) {
+        this.breakStartLimitBegin = breakStartLimitBegin;
+    }
 
-	public Boolean getIsPenaltyBreakFinishLate() {
-		return isPenaltyBreakFinishLate;
-	}
+    public Integer getBreakStartLimitEnd() {
+        return breakStartLimitEnd;
+    }
 
-	public void setIsPenaltyBreakFinishLate(Boolean isPenaltyBreakFinishLate) {
-		this.isPenaltyBreakFinishLate = isPenaltyBreakFinishLate;
-	}
-	
+    public void setBreakStartLimitEnd(Integer breakStartLimitEnd) {
+        this.breakStartLimitEnd = breakStartLimitEnd;
+    }
+
+    public Integer getBreakFinishLimitBegin() {
+        return breakFinishLimitBegin;
+    }
+
+    public void setBreakFinishLimitBegin(Integer breakFinishLimitBegin) {
+        this.breakFinishLimitBegin = breakFinishLimitBegin;
+    }
+
+    public Integer getBreakFinishLimitEnd() {
+        return breakFinishLimitEnd;
+    }
+
+    public void setBreakFinishLimitEnd(Integer breakFinishLimitEnd) {
+        this.breakFinishLimitEnd = breakFinishLimitEnd;
+    }
+
+    public Boolean getIsPenaltyBreakStartEarly() {
+        return isPenaltyBreakStartEarly;
+    }
+
+    public void setIsPenaltyBreakStartEarly(Boolean isPenaltyBreakStartEarly) {
+        this.isPenaltyBreakStartEarly = isPenaltyBreakStartEarly;
+    }
+
+    public Boolean getIsPenaltyBreakFinishLate() {
+        return isPenaltyBreakFinishLate;
+    }
+
+    public void setIsPenaltyBreakFinishLate(Boolean isPenaltyBreakFinishLate) {
+        this.isPenaltyBreakFinishLate = isPenaltyBreakFinishLate;
+    }
+
 }

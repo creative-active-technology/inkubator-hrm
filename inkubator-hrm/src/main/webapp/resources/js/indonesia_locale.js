@@ -43,3 +43,12 @@ PrimeFacesExt.locales.Timeline['in'] = {
     'NEW': "New",
     'CREATE_NEW_EVENT': "Create new  event"
 };
+
+PrimeFacesExt.locales.TimePicker['in'] = {
+    hourText: 'Jam',
+    minuteText: 'Menit',
+    amPmText: ['AM', 'PM'] ,
+    closeButtonText: 'Beres',
+    nowButtonText: 'Sekarang',
+    deselectButtonText: 'Pilih'
+};
