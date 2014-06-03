@@ -66,9 +66,13 @@
 	                                <p:outputLabel for="workingHourBeginId" value="#{appmsg['workinghour.working_hour']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                                <pe:timePicker id="workingHourBeginId" required="true" requiredMessage="#{appmsg['workinghour.error_empty_workinghour_begin']}" value="#{workingHourFormController.model.workingHourBegin}" mode="spinner" styleClass="isitext_hrm"/>
+	                                <pe:timePicker id="workingHourBeginId" required="true" requiredMessage="#{appmsg['workinghour.error_empty_workinghour_begin']}" value="#{workingHourFormController.model.workingHourBegin}" mode="spinner" styleClass="isitext_hrm">
+	                                	<f:validator validatorId="timeBetweenValidator"  />
+	                                	<f:attribute name="endTime" value="#{workingHourEndId}"/>
+	                                	<f:attribute name="validatorMessage" value="#{appmsg['workinghour.error_workinghour_begin_bigger_than_workinghour_end']}"/>
+	                                </pe:timePicker>
 	                                <p:outputLabel value="&nbsp;&nbsp; #{appmsg['global.to']} &nbsp;&nbsp;" styleClass="label_hrm"/>
-	                                <pe:timePicker id="workingHourEndId" required="true" requiredMessage="#{appmsg['workinghour.error_empty_workinghour_end']}" value="#{workingHourFormController.model.workingHourEnd}" mode="spinner" styleClass="isitext_hrm"/>
+	                                <pe:timePicker id="workingHourEndId" binding="#{workingHourEndId}" required="true" requiredMessage="#{appmsg['workinghour.error_empty_workinghour_end']}" value="#{workingHourFormController.model.workingHourEnd}" mode="spinner" styleClass="isitext_hrm"/>
 	                                <p:message for="workingHourBeginId"/>	
 	                                <p:message for="workingHourEndId"/>	                                
 	                            </p:column>
@@ -91,6 +95,7 @@
 	                                <p:spinner id="arriveLimitBeginId" value="#{workingHourFormController.model.arriveLimitBegin}" stepFactor="10" size="4" styleClass="isitext_hrm" required="true" requiredMessage="#{appmsg['workinghour.error_empty_arrivelimit_begin']}"/>
 	                                <p:outputLabel value="&nbsp;&nbsp; #{appmsg['global.to']} &nbsp;&nbsp;" styleClass="label_hrm"/>
 	                                <p:spinner id="arriveLimitEndId" value="#{workingHourFormController.model.arriveLimitEnd}" stepFactor="10" size="4" styleClass="isitext_hrm" required="true" requiredMessage="#{appmsg['workinghour.error_empty_arrivelimit_end']}"/>
+	                                <p:outputLabel value="&nbsp;&nbsp; ( #{appmsg['global.minute']} )" styleClass="label_hrm"/>
 	                                <p:message for="arriveLimitBeginId"/>	
 	                                <p:message for="arriveLimitEndId"/>	                                
 	                            </p:column>
@@ -103,6 +108,7 @@
 	                                <p:spinner id="goHomeLimitBeginId" value="#{workingHourFormController.model.goHomeLimitBegin}" stepFactor="10" size="4" required="true" styleClass="isitext_hrm" requiredMessage="#{appmsg['workinghour.error_empty_gohome_begin']}"/>
 	                                <p:outputLabel value="&nbsp;&nbsp; #{appmsg['global.to']} &nbsp;&nbsp;" styleClass="label_hrm"/>
 	                                <p:spinner id="goHomeLimitEndId" value="#{workingHourFormController.model.goHomeLimitEnd}" stepFactor="10" size="4" required="true" styleClass="isitext_hrm" requiredMessage="#{appmsg['workinghour.error_empty_gohome_end']}"/>
+	                                <p:outputLabel value="&nbsp;&nbsp; ( #{appmsg['global.minute']} )" styleClass="label_hrm"/>
 	                                <p:message for="goHomeLimitBeginId"/>	
 	                                <p:message for="goHomeLimitEndId"/>                             
 	                            </p:column>
@@ -140,9 +146,13 @@
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                                <pe:timePicker id="breakHourBeginId" value="#{workingHourFormController.model.breakHourBegin}" mode="spinner" styleClass="isitext_hrm" 
-	                                			   disabled="#{workingHourFormController.isDisabledBreakConf}" required="#{not workingHourFormController.isDisabledBreakConf}" requiredMessage="#{appmsg['workinghour.error_empty_breaktime_begin']}"/>
+	                                			   disabled="#{workingHourFormController.isDisabledBreakConf}" required="#{not workingHourFormController.isDisabledBreakConf}" requiredMessage="#{appmsg['workinghour.error_empty_breaktime_begin']}">
+	                                	<f:validator validatorId="timeBetweenValidator"  />
+	                                	<f:attribute name="endTime" value="#{breakHourEndId}"/>
+	                                	<f:attribute name="validatorMessage" value="#{appmsg['workinghour.error_breakhour_begin_bigger_than_breakhour_end']}"/>
+	                                </pe:timePicker>
 	                                <p:outputLabel value="&nbsp;&nbsp; #{appmsg['global.to']} &nbsp;&nbsp;" styleClass="label_hrm"/>
-	                                <pe:timePicker id="breakHourEndId" value="#{workingHourFormController.model.breakHourEnd}" mode="spinner" styleClass="isitext_hrm" 
+	                                <pe:timePicker id="breakHourEndId" binding="#{breakHourEndId}" value="#{workingHourFormController.model.breakHourEnd}" mode="spinner" styleClass="isitext_hrm" 
 	                                			   disabled="#{workingHourFormController.isDisabledBreakConf}" required="#{not workingHourFormController.isDisabledBreakConf}" requiredMessage="#{appmsg['workinghour.error_empty_breaktime_end']}"/>
 	                                <p:message id="breakHourBeginMessageId" for="breakHourBeginId"/>	
 	                                <p:message id="breakHourEndMessageId" for="breakHourEndId"/>	                                
@@ -158,6 +168,7 @@
 	                                <p:outputLabel value="&nbsp;&nbsp; #{appmsg['global.to']} &nbsp;&nbsp;" styleClass="label_hrm"/>
 	                                <p:spinner id="breakStartLimitEndId" value="#{workingHourFormController.model.breakStartLimitEnd}" stepFactor="10" size="4" styleClass="isitext_hrm" 
 	                                		   disabled="#{workingHourFormController.isDisabledBreakConf}" required="#{not workingHourFormController.isDisabledBreakConf}" requiredMessage="#{appmsg['workinghour.error_empty_breakstart_limit_end']}"/>
+	                                <p:outputLabel value="&nbsp;&nbsp; ( #{appmsg['global.minute']} )" styleClass="label_hrm"/>
 	                                <p:message id="breakStartLimitBeginMessageId" for="breakStartLimitBeginId"/>	
 	                                <p:message id="breakStartLimitEndMessageId" for="breakStartLimitEndId"/>	                                
 	                            </p:column>
@@ -172,6 +183,7 @@
 	                                <p:outputLabel value="&nbsp;&nbsp; #{appmsg['global.to']} &nbsp;&nbsp;" styleClass="label_hrm"/>
 	                                <p:spinner id="breakFinishLimitEndId" value="#{workingHourFormController.model.breakFinishLimitEnd}" stepFactor="10" size="4" styleClass="isitext_hrm" 
 	                                		   disabled="#{workingHourFormController.isDisabledBreakConf}" required="#{not workingHourFormController.isDisabledBreakConf}" requiredMessage="#{appmsg['workinghour.error_empty_breakfinish_limit_end']}"/>
+	                                <p:outputLabel value="&nbsp;&nbsp; ( #{appmsg['global.minute']} )" styleClass="label_hrm"/>
 	                                <p:message id="breakFinishLimitBeginMesssageId" for="breakFinishLimitBeginId"/>	
 	                                <p:message id="breakFinishLimitEndMessageId" for="breakFinishLimitEndId"/>                             
 	                            </p:column>
