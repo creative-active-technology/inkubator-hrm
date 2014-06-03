@@ -20,4 +20,6 @@ public interface WtOverTimeDao extends IDAO<WtOverTime> {
     public List<WtOverTime> getByParam(WtOverTimeSearchParameter searchParameter, int firstResult, int maxResults, Order order);
 
     public Long getTotalWtOverTimeByParam(WtOverTimeSearchParameter searchParameter);
+
+    public Long getTotalDuplicateByCode(String code);
 }

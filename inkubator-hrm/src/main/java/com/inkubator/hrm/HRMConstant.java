@@ -50,5 +50,7 @@ public class HRMConstant {
     public static final Integer SMA_NOTIFICATION_NOT_SEND = -1;
     public static final Integer SMS_NOTIFICATION_NOT_YET_SEND = 0;
     public static final Integer SMS_NOTIFICATION_SEND = 1;
+    public static final Integer OT_SUMMARY = 1;
+    public static final Integer OT_SEPARATED = 0;
 
 }

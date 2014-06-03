@@ -1,13 +1,16 @@
 package com.inkubator.hrm.entity;
 // Generated May 29, 2014 11:36:01 AM by Hibernate Tools 3.6.0
 
+import com.inkubator.hrm.HRMConstant;
 import java.util.Date;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 
@@ -62,7 +65,6 @@ public class WtOverTime implements java.io.Serializable {
     }
 
     @Id
-
     @Column(name = "id", unique = true, nullable = false)
     public long getId() {
         return this.id;
@@ -212,6 +214,19 @@ public class WtOverTime implements java.io.Serializable {
 
     public void setUpdatedOn(Date updatedOn) {
         this.updatedOn = updatedOn;
+    }
+
+    @Transient
+    public String getOTCalculationAsString() {
+        if (Objects.equals(getOverTimeCalculation(), HRMConstant.OT_SEPARATED)) {
+            return "Separated";
+        }
+
+        if (Objects.equals(getOverTimeCalculation(), HRMConstant.OT_SUMMARY)) {
+            return "Sumarry";
+        }
+
+        return null;
     }
 
 }

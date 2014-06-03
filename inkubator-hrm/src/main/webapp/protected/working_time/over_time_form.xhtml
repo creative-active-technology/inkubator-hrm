@@ -40,8 +40,8 @@
                                 <h:outputLabel for="code" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <p:inputText id="code" value="#{overTimeFormController.overTimeModel.code}" title="#{appmsg['religion.religion_name']}" onkeyup="this.value = this.value.toUpperCase();"
-                                             required="true" requiredMessage="#{appmsg['religion.religion_name_should_not_be_empty']}" maxlength="30" styleClass="isitext_hrm" style="width:210px;" />
+                                <p:inputText id="code" value="#{overTimeFormController.overTimeModel.code}" onkeyup="this.value = this.value.toUpperCase();"
+                                             required="true" maxlength="6" styleClass="isitext_hrm" style="width:210px;" />
                             </p:column>
                         </p:row>
                         <p:row>
@@ -57,8 +57,8 @@
                                 <h:outputLabel for="name" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <p:inputText id="name" title="#{appmsg['religion.religion_name']}" value="#{overTimeFormController.overTimeModel.name}"
-                                             required="true" requiredMessage="#{appmsg['religion.religion_name_should_not_be_empty']}" maxlength="30" styleClass="isitext_hrm" style="width:210px;" />
+                                <p:inputText id="name"  value="#{overTimeFormController.overTimeModel.name}"
+                                             required="true"  maxlength="45" styleClass="isitext_hrm" style="width:210px;" />
                             </p:column>
                         </p:row>
                         <p:row>
@@ -75,7 +75,7 @@
                             </p:column>
                             <p:column style="width: 50%" >
                                 <p:inputTextarea id="description" rows="5" cols="37" counter="counter" maxlength="500" value="#{overTimeFormController.overTimeModel.description}"
-                                                 style="width: 210px; height: 60px;" counterTemplate="#{appmsg['global.remaining']}" autoResize="true" styleClass="isitext_hrm"
+                                                 style="width: 210px; height: 50px;" counterTemplate="#{appmsg['global.remaining']}" autoResize="true" styleClass="isitext_hrm" 
                                                  label="#{appmsg['role_view.role_description']}" title="#{appmsg['role_view.role_description']}" />
 
                             </p:column>
@@ -91,6 +91,44 @@
                                 <h:outputText id="counter" styleClass="label_hrm" style="font-weight: normal!important"/>
                             </p:column>
                         </p:row>
+                        <p:row>
+                            <p:column style="width: 40%">
+                                <p:outputLabel for="rounding" value="Penggenapan" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="rounding" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                                <p:spinner id="rounding" value="#{overTimeFormController.overTimeModel.otRounding}" size="2"
+                                           min="0" max="10" stepFactor="1"/>
+
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="rounding"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 40%">
+                                <p:outputLabel for="kalkulasi" value="Kalkulasi Lembur" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="kalkulasi" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                                <p:selectOneRadio id="kalkulasi" styleClass="isitext_hrm" required="true"  value="#{overTimeFormController.overTimeModel.overTimeCalculation}">
+                                    <!--Cek HRM Constanta..-->
+                                    <f:selectItem itemLabel="Digabung" itemValue="1" />
+                                    <f:selectItem itemLabel="Terpisah" itemValue="0" />
+                                </p:selectOneRadio>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="kalkulasi"/>
+                            </p:column>
+                        </p:row>
 
                         <p:row>
                             <p:column style="width: 40%">
@@ -100,9 +138,9 @@
                                 <h:outputLabel for="minimum" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <pe:timePicker   id="minimum" locale="in" value="#{overTimeFormController.overTimeModel.minimumTime}"
+                                <pe:timePicker  id="minimum" locale="in" value="#{overTimeFormController.overTimeModel.minimumTime}"
                                                  label="Spinner time picker" styleClass="isitext_hrm" required="true" />  
-                                <p:outputLabel value="Jam" styleClass="label_hrm" style="margin-left: 5px;font-weight: normal!important"/>
+                                <p:outputLabel value="Jam" styleClass="label_hrm" style="margin-left: 7px;font-weight: normal!important"/>
                             </p:column>
                         </p:row>
                         <p:row>
@@ -118,9 +156,9 @@
                                 <h:outputLabel for="maksimum" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <pe:timePicker id="maksimum" value="#{overTimeFormController.overTimeModel.maximumTime}"
+                                <pe:timePicker id="maksimum" value="#{overTimeFormController.overTimeModel.maximumTime}" 
                                                label="Spinner time picker"  styleClass="isitext_hrm"  required="true" />  
-                                <p:outputLabel value="Jam" styleClass="label_hrm" style="margin-left: 5px;font-weight: normal!important"/>
+                                <p:outputLabel value="Jam" styleClass="label_hrm" style="margin-left: 7px;font-weight: normal!important"/>
                             </p:column>
                         </p:row>
                         <p:row>
@@ -129,25 +167,8 @@
                             </p:column>
                         </p:row>
 
-                        <p:row>
-                            <p:column style="width: 40%">
-                                <p:outputLabel for="kalkulasi" value="Kalkulasi Lembur" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="kalkulasi" value=":" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column  style="width: 50%">
-                                <p:selectOneRadio id="kalkulasi" styleClass="isitext_hrm" required="true" >
-                                    <f:selectItem itemLabel="Digabung" itemValue="digabung" />
-                                    <f:selectItem itemLabel="Terpisah" itemValue="terpisa" />
-                                </p:selectOneRadio>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:message for="kalkulasi"/>
-                            </p:column>
-                        </p:row>
+
+
                         <p:row>
                             <p:column style="width: 40%">
                                 <p:outputLabel for="faktorMulai" value="Waktu Mulai" styleClass="label_hrm"/>
@@ -156,7 +177,7 @@
                                 <h:outputLabel for="faktorMulai" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <pe:timePicker id="faktorMulai" value="#{overTimeFormController.overTimeModel.maximumTime}" required="true"
+                                <pe:timePicker id="faktorMulai" value="#{overTimeFormController.overTimeModel.startTimeFactor}" required="true"
                                                label="Spinner time picker" styleClass="isitext_hrm" />  
 
                             </p:column>
@@ -174,7 +195,7 @@
                                 <h:outputLabel for="faktorAkhir" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <pe:timePicker id="faktorAkhir" value="#{overTimeFormController.overTimeModel.maximumTime}" required="true"
+                                <pe:timePicker id="faktorAkhir" value="#{overTimeFormController.overTimeModel.finishTimeFactor}" required="true"
                                                label="Spinner time picker" styleClass="isitext_hrm" />  
 
                             </p:column>

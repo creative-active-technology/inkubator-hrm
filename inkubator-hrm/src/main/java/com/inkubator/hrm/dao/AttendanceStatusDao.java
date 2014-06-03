@@ -21,7 +21,7 @@ public interface AttendanceStatusDao extends IDAO<AttendanceStatus> {
 
     public Long getTotalAttendanceStatusyParam(AttendanceStatusSearchParamater searchParameter);
 
-    public Long getTotalDuplicateByName(String statusCode);
+    public Long getTotalDuplicateByCode(String statusCode);
 
     public Long getTotalDuplicaByNameAndNotId(String statusCode, Long id);
 }
