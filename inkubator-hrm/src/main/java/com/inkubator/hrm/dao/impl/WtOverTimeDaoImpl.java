@@ -65,4 +65,11 @@ public class WtOverTimeDaoImpl extends IDAOImpl<WtOverTime> implements WtOverTim
             criteria.add(Restrictions.eq("maximumTime", searchParameter.getMaxTime()));
         }
     }
+
+    @Override
+    public Long getTotalDuplicateByCode(String code) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.like("code", code, MatchMode.ANYWHERE));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
 }

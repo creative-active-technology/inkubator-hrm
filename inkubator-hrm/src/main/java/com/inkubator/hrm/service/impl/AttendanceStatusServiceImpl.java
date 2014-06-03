@@ -53,7 +53,7 @@ public class AttendanceStatusServiceImpl extends IServiceImpl implements Attenda
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(AttendanceStatus entity) throws Exception {
-        long totalDuplicates = attendanceStatusDao.getTotalDuplicateByName(entity.getCode());
+        long totalDuplicates = attendanceStatusDao.getTotalDuplicateByCode(entity.getCode());
         if (totalDuplicates > 0) {
             throw new BussinessException("status_attendace.error_duplicate_code");
         }

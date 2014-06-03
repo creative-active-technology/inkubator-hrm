@@ -120,7 +120,7 @@ public class OverTimeViewController extends BaseController {
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 400);
-        options.put("contentHeight", 535);
+        options.put("contentHeight", 555);
 //        options.put("closable", false);
 //        options.put("height", "auto");
 
@@ -135,26 +135,26 @@ public class OverTimeViewController extends BaseController {
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 400);
-        options.put("contentHeight", 440);
+        options.put("contentHeight", 555);
         Map<String, List<String>> dataToSend = new HashMap<>();
         List<String> dataIsi = new ArrayList<>();
         dataIsi.add(String.valueOf(selectedWtOverTime.getId()));
         dataToSend.put("param", dataIsi);
-        RequestContext.getCurrentInstance().openDialog("attendance_status_form", options, dataToSend);
+        RequestContext.getCurrentInstance().openDialog("over_time_form", options, dataToSend);
     }
 
     public void onDialogClose(SelectEvent event) {
-//        attendanceStatusesLazyDataModel = null;
-//        String condition = (String) event.getObject();
-//        if (condition.equalsIgnoreCase(HRMConstant.SAVE_CONDITION)) {
-//            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
-//                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-//        }
-//
-//        if (condition.equalsIgnoreCase(HRMConstant.UPDATE_CONDITION)) {
-//            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
-//                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-//        }
+        wtOverTimesLazyDataModel = null;
+        String condition = (String) event.getObject();
+        if (condition.equalsIgnoreCase(HRMConstant.SAVE_CONDITION)) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
+                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        }
+
+        if (condition.equalsIgnoreCase(HRMConstant.UPDATE_CONDITION)) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
+                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        }
     }
 
     public void onDelete() {

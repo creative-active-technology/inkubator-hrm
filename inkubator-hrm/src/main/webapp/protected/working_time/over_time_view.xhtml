@@ -61,7 +61,7 @@
                                       id="tableOverTimeId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="Daftar Status Kehadiran" styleClass="label_hrm"/>
+                                <h:outputText value="Daftar Lembur" styleClass="label_hrm"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 25px">
                                 <f:facet name="header">  
@@ -81,23 +81,23 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{overTimeData.name}"/>
                             </p:column>
-                            <!--                            <p:column sortBy="description">
-                                                            <f:facet name="header">
-                                                                <h:outputText value="Deskripsi"/>
-                                                            </f:facet>
-                                                            <h:outputLabel value= "#{overTimeData.description}"/>
-                                                        </p:column>-->
                             <p:column sortBy="minimumTime" style="text-align: center">
                                 <f:facet name="header">
                                     <h:outputText value="Minimum"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{overTimeData.minimumTime} #{appmsg['global.satuan_jam']}"/>
+                                <h:outputLabel value= "#{overTimeData.minimumTime}">
+                                    <f:convertDateTime pattern="HH:mm"/>
+                                </h:outputLabel>
+                                <h:outputLabel value="Jam" style="margin-left: 5px"/>
                             </p:column>
                             <p:column sortBy="maximumTime" style="text-align: center">
                                 <f:facet name="header">
                                     <h:outputText value="Maksimum" />
                                 </f:facet>
-                                <h:outputLabel value= "#{overTimeData.maximumTime} #{appmsg['global.satuan_jam']}"/>
+                                <h:outputLabel value= "#{overTimeData.maximumTime}">
+                                    <f:convertDateTime pattern="HH:mm"/>
+                                </h:outputLabel>
+                                <h:outputLabel value="Jam" style="margin-left: 5px"/>
                             </p:column>
 
                             <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
@@ -202,7 +202,7 @@
                         </p:row>
                         <p:row>
                             <p:column style="color: #003366"><p:outputLabel value="Kalkulasi Lembur" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{overTimeViewController.selectedWtOverTime.overTimeCalculation}"/> </p:column>
+                            <p:column><p:outputLabel value="#{overTimeViewController.selectedWtOverTime.OTCalculationAsString}"/> </p:column>
                         </p:row>
                         <p:row>
                             <p:column style="color: #003366"><p:outputLabel value="Nilai Lembur" styleClass="label_hrm"/></p:column>
