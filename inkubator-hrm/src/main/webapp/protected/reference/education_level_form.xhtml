@@ -17,6 +17,7 @@
             <ui:define name="center">
                 <p:growl id="growlEducationLevelFormlId" globalOnly="true" showDetail="true"/>
                 <h:form id="formEducationLevelFormId">
+                	<p:focus context="formEducationLevelFormId"/>
                     <h:panelGrid  columns="2">
                         <p:graphicImage library="images" name="graduated.png" height="36" width="36" />
                         <h:panelGroup layout="block">
@@ -40,10 +41,8 @@
                                 <h:outputLabel for="nameId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <p:focus for ="nameId">
-                                    <p:inputText id="nameId" title="#{appmsg['educationlevel.education_level_name']}" value="#{educationLevelFormController.educationLevelModel.name}" 
-                                    			 required="true" requiredMessage="#{appmsg['educationlevel.education_level_name_should_not_be_empty']}" maxlength="30" styleClass="isitext_hrm" style="width:190px;" />
-                                </p:focus>
+                            	<p:inputText id="nameId" title="#{appmsg['educationlevel.education_level_name']}" value="#{educationLevelFormController.educationLevelModel.name}" 
+                                    		 required="true" requiredMessage="#{appmsg['educationlevel.education_level_name_should_not_be_empty']}" maxlength="30" styleClass="isitext_hrm" style="width:190px;" />
                             </p:column>
                         </p:row>
                         <p:row>
@@ -59,9 +58,7 @@
                                 <h:outputLabel for="levelId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column>
-                                <p:focus for ="levelId">
-                                    <p:spinner id="levelId" value="#{educationLevelFormController.educationLevelModel.level}" min="1" max="10" required="true" size="2"/>
-                                </p:focus>
+                            	<p:spinner id="levelId" value="#{educationLevelFormController.educationLevelModel.level}" min="1" max="10" required="true" size="2"/>
                             </p:column>
                         </p:row>
                         <p:row>

@@ -18,6 +18,7 @@
             <ui:define name="center">
                 <p:growl id="growlSpecAbilityFormlId" globalOnly="true" showDetail="true"/>
                 <h:form id="formSpecAbilityFormId">
+                	<p:focus context="formSpecAbilityFormId"/>
                     <div id="box_bg" style="margin: 10px">
                         <h:panelGrid  columns="2">
                             <p:graphicImage library="images" name="specification.png" height="36" width="36" />
@@ -35,11 +36,9 @@
                                     <p:outputLabel for="nameId" value="#{appmsg['specificationability.specification_ability']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:focus for ="nameId">
-                                        <p:inputText id="nameId" title="#{appmsg['specificationability.specification_ability']}" value="#{specAbilityFormController.specAbilityModel.name}" 
-                                                     required="true" requiredMessage="#{appmsg['specificationability.specification_ability_name_should_not_be_empty']}" maxlength="30" styleClass="isitext_hrm" style="width:290px;" />
-                                        <p:message for="nameId"/>
-                                    </p:focus>
+                                	<p:inputText id="nameId" title="#{appmsg['specificationability.specification_ability']}" value="#{specAbilityFormController.specAbilityModel.name}" 
+                                                 required="true" requiredMessage="#{appmsg['specificationability.specification_ability_name_should_not_be_empty']}" maxlength="30" styleClass="isitext_hrm" style="width:290px;" />
+                                    <p:message for="nameId"/>
                                 </p:column>
                             </p:row>
                             <p:row>
@@ -47,14 +46,12 @@
                                     <p:outputLabel for="optionId" value="#{appmsg['specificationability.option']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:focus for ="optionId">
-                                        <p:spinner id="optionId" value="#{specAbilityFormController.specAbilityModel.totalOption}" min="0" max="11" required="true" size="2" 
-                                                   validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
-                                            <f:validateLongRange minimum="1" maximum="11"/>
-                                            <p:ajax update="optionsGroupId" process="@this" listener="#{specAbilityFormController.doAdjustScaleValue()}"/>
-                                        </p:spinner>
-                                        <p:message for="optionId"/>
-                                    </p:focus>                                
+                                	<p:spinner id="optionId" value="#{specAbilityFormController.specAbilityModel.totalOption}" min="0" max="11" required="true" size="2" 
+                                               validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
+                                    	<f:validateLongRange minimum="1" maximum="11"/>
+                                        <p:ajax update="optionsGroupId" process="@this" listener="#{specAbilityFormController.doAdjustScaleValue()}"/>
+                                    </p:spinner>
+                                    <p:message for="optionId"/>                            
                                 </p:column>
                             </p:row>                     
                         </p:panelGrid>
