@@ -58,7 +58,7 @@
                                          action="#{employeeTypeFormController.doSave()}" styleClass="isitext_hrm"
                                          style="margin-right: 5px" label="#{appmsg['global.save']}"
                                          icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
-                        <p:commandButton value="#{appmsg['global.clear']}" title="#{appmsg['global.clear']}" process="@this" update="formEmployeeTypeFormId" action="#{employeeTypeFormController.doClear()}"
+                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formEmployeeTypeFormId"
                                          icon="ui-icon-refresh" styleClass="isitext_hrm" >  
                             <p:resetInput target="formEmployeeTypeFormId" />  
                         </p:commandButton>

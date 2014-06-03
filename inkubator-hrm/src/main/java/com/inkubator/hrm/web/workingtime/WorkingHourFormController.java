@@ -60,6 +60,7 @@ public class WorkingHourFormController extends BaseController {
         workingHourService = null;
         model = null;
         isUpdate = null;
+        isDisabledBreakConf = null;
     }
     
     public WorkingHourModel getModel() {
@@ -97,6 +98,24 @@ public class WorkingHourFormController extends BaseController {
         model.setId(tempId);
         //default is true
         isDisabledBreakConf = Boolean.TRUE;
+    }
+	
+	public void doReset() {
+    	if(isUpdate) {
+    		try {
+    			WtWorkingHour workingHour = workingHourService.getEntiyByPK(model.getId());
+    			if (workingHour != null) {
+                    getModelFromEntity(workingHour);
+                    isDisabledBreakConf = BooleanUtils.isNotTrue(model.getIsManageBreakTime());
+    			}
+    		} catch (Exception ex) {
+    			LOGGER.error("Error", ex);
+    		}
+    	} else {
+    		model = new WorkingHourModel();
+    		//default is true
+    		isDisabledBreakConf = Boolean.TRUE;
+    	}    	
     }
 
     public String doSave() {

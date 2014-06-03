@@ -40,13 +40,7 @@ public class SpecAbilityFormController extends BaseController {
             try {
                 SpecificationAbility specificationAbility = specificationAbilityService.getEntiyByPK(Long.parseLong(param.substring(1)));
                 if (specificationAbility != null) {
-                    specAbilityModel.setId(specificationAbility.getId());
-                    specAbilityModel.setName(specificationAbility.getName());
-                    String options[] = StringUtils.split(specificationAbility.getOptionAbility(), HRMConstant.DELIMITER);
-                    specAbilityModel.setTotalOption(options.length);
-                    specAbilityModel.setOptions(options);
-                    String scaleVals[] = StringUtils.split(specificationAbility.getScaleValue(), HRMConstant.DELIMITER);
-                    specAbilityModel.setScaleValue(scaleVals);
+                    getModelFromEntity(specificationAbility);
                     isUpdate = Boolean.TRUE;
                 }
             } catch (Exception e) {
@@ -87,6 +81,21 @@ public class SpecAbilityFormController extends BaseController {
         Long tempId = specAbilityModel.getId();
         specAbilityModel = new SpecAbilityModel();
         specAbilityModel.setId(tempId);
+    }
+    
+    public void doReset() {
+    	if(isUpdate) {
+    		try {
+    			SpecificationAbility specificationAbility = specificationAbilityService.getEntiyByPK(specAbilityModel.getId());
+    			if (specificationAbility != null) {
+                    getModelFromEntity(specificationAbility);
+    			}
+    		} catch (Exception ex) {
+    			LOGGER.error("Error", ex);
+    		}
+    	} else {
+    		specAbilityModel = new SpecAbilityModel();
+    	}    	
     }
 
     public String doSave() {
@@ -135,6 +144,17 @@ public class SpecAbilityFormController extends BaseController {
         specificationAbility.setScaleValue(buffScales.toString());
 
         return specificationAbility;
+    }
+    
+    private void getModelFromEntity(SpecificationAbility specAbility){
+    	specAbilityModel.setId(specAbility.getId());
+        specAbilityModel.setName(specAbility.getName());
+        String options[] = StringUtils.split(specAbility.getOptionAbility(), HRMConstant.DELIMITER);
+        specAbilityModel.setTotalOption(options.length);
+        specAbilityModel.setOptions(options);
+        String scaleVals[] = StringUtils.split(specAbility.getScaleValue(), HRMConstant.DELIMITER);
+        specAbilityModel.setScaleValue(scaleVals);
+    	
     }
 
     /* rule, if total option is 4 -> then scale value 0, 33, 66, 100 
