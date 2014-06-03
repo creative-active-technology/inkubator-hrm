@@ -26,7 +26,7 @@ import org.primefaces.context.RequestContext;
 public class FamilyRelationFormController extends BaseController {
 
     private FamilyRelationModel familyRelationModel;
-    Boolean isUpdate;
+    private Boolean isUpdate;
     @ManagedProperty(value = "#{familyRelationService}")
     private FamilyRelationService familyRelationService;
 
@@ -39,7 +39,6 @@ public class FamilyRelationFormController extends BaseController {
     public void initialization() {
         super.initialization();
         String param = FacesUtil.getRequestParameter("param");
-        System.out.println(" hehehr "+param);
         familyRelationModel = new FamilyRelationModel();
         isUpdate = Boolean.FALSE;
         if (StringUtils.isNumeric(param)) {
@@ -71,13 +70,7 @@ public class FamilyRelationFormController extends BaseController {
         this.isUpdate = isUpdate;
     }
 
-    public void doClear() {
-        //clear all data except the id (if any)
-        Long tempId = familyRelationModel.getId();
-        familyRelationModel = new FamilyRelationModel();
-        familyRelationModel.setId(tempId);
-    }
-
+  
     public void doSave() {
         FamilyRelation familyRelation = getEntityFromViewModel(familyRelationModel);
         try {

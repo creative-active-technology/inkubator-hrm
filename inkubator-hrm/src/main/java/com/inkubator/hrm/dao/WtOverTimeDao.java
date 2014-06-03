@@ -22,4 +22,6 @@ public interface WtOverTimeDao extends IDAO<WtOverTime> {
     public Long getTotalWtOverTimeByParam(WtOverTimeSearchParameter searchParameter);
 
     public Long getTotalDuplicateByCode(String code);
+
+    public Long getTotalDuplicaByCodeAndNotId(String code, Long id);
 }

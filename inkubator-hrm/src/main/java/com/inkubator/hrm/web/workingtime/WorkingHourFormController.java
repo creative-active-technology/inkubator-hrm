@@ -1,15 +1,5 @@
 package com.inkubator.hrm.web.workingtime;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
-
-import org.apache.commons.lang3.BooleanUtils;
-import org.apache.commons.lang3.StringUtils;
-
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.WtWorkingHour;
@@ -18,6 +8,14 @@ import com.inkubator.hrm.web.model.WorkingHourModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -28,8 +26,8 @@ import com.inkubator.webcore.util.MessagesResourceUtil;
 public class WorkingHourFormController extends BaseController {
 
     private WorkingHourModel model;
-    Boolean isUpdate;
-    Boolean isDisabledBreakConf;
+    private Boolean isUpdate;
+    private Boolean isDisabledBreakConf;
     @ManagedProperty(value = "#{wtWorkingHourService}")
     private WtWorkingHourService workingHourService;
 
@@ -40,12 +38,12 @@ public class WorkingHourFormController extends BaseController {
         String param = FacesUtil.getRequestParameter("execution");
         model = new WorkingHourModel();
         isUpdate = Boolean.FALSE;
-    	isDisabledBreakConf = Boolean.TRUE;
+        isDisabledBreakConf = Boolean.TRUE;
         if (StringUtils.isNotEmpty(param)) {
             try {
                 WtWorkingHour workingHour = workingHourService.getEntiyByPK(Long.parseLong(param.substring(1)));
                 if (workingHour != null) {
-                	getModelFromEntity(workingHour);
+                    getModelFromEntity(workingHour);
                     isUpdate = Boolean.TRUE;
                     isDisabledBreakConf = !workingHour.getIsManageBreakTime();
                 }
@@ -61,16 +59,16 @@ public class WorkingHourFormController extends BaseController {
         model = null;
         isUpdate = null;
     }
-    
+
     public WorkingHourModel getModel() {
-		return model;
-	}
+        return model;
+    }
 
-	public void setModel(WorkingHourModel model) {
-		this.model = model;
-	}
+    public void setModel(WorkingHourModel model) {
+        this.model = model;
+    }
 
-	public Boolean getIsUpdate() {
+    public Boolean getIsUpdate() {
         return isUpdate;
     }
 
@@ -79,18 +77,18 @@ public class WorkingHourFormController extends BaseController {
     }
 
     public Boolean getIsDisabledBreakConf() {
-		return isDisabledBreakConf;
-	}
+        return isDisabledBreakConf;
+    }
 
-	public void setIsDisabledBreakConf(Boolean isDisabledBreakConf) {
-		this.isDisabledBreakConf = isDisabledBreakConf;
-	}
+    public void setIsDisabledBreakConf(Boolean isDisabledBreakConf) {
+        this.isDisabledBreakConf = isDisabledBreakConf;
+    }
 
-	public void setWorkingHourService(WtWorkingHourService workingHourService) {
-		this.workingHourService = workingHourService;
-	}
+    public void setWorkingHourService(WtWorkingHourService workingHourService) {
+        this.workingHourService = workingHourService;
+    }
 
-	public void doClear() {
+    public void doClear() {
         //clear all data except the id (if any)
         Long tempId = model.getId();
         model = new WorkingHourModel();
@@ -108,11 +106,11 @@ public class WorkingHourFormController extends BaseController {
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 
             } else {
-            	workingHourService.save(workingHour);
+                workingHourService.save(workingHour);
                 MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             }
-            return "/protected/working_time/working_hour_detail.htm?faces-redirect=true&execution=e"+workingHour.getId();
+            return "/protected/working_time/working_hour_detail.htm?faces-redirect=true&execution=e" + workingHour.getId();
         } catch (BussinessException ex) { //data already exist(duplicate)
             LOGGER.error("Error", ex);
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
@@ -150,16 +148,16 @@ public class WorkingHourFormController extends BaseController {
         workingHour.setBreakFinishLimitEnd(model.getBreakFinishLimitEnd());
         workingHour.setIsPenaltyBreakStartEarly(model.getIsPenaltyBreakStartEarly());
         workingHour.setIsPenaltyBreakFinishLate(model.getIsPenaltyBreakFinishLate());
-        
+
         return workingHour;
     }
-    
-    private void getModelFromEntity(WtWorkingHour workingHour){
-    	model.setId(workingHour.getId());
-    	model.setCode(workingHour.getCode());
-    	model.setName(workingHour.getName());
-    	model.setDescription(workingHour.getDescription());
-    	model.setWorkingHourBegin(workingHour.getWorkingHourBegin());
+
+    private void getModelFromEntity(WtWorkingHour workingHour) {
+        model.setId(workingHour.getId());
+        model.setCode(workingHour.getCode());
+        model.setName(workingHour.getName());
+        model.setDescription(workingHour.getDescription());
+        model.setWorkingHourBegin(workingHour.getWorkingHourBegin());
         model.setWorkingHourEnd(workingHour.getWorkingHourEnd());
         model.setMaxHour(workingHour.getMaxHour());
         model.setArriveLimitBegin(workingHour.getArriveLimitBegin());
@@ -178,24 +176,24 @@ public class WorkingHourFormController extends BaseController {
         model.setBreakFinishLimitBegin(workingHour.getBreakFinishLimitBegin());
         model.setBreakFinishLimitEnd(workingHour.getBreakFinishLimitEnd());
         model.setIsPenaltyBreakStartEarly(workingHour.getIsPenaltyBreakStartEarly());
-        model.setIsPenaltyBreakFinishLate(workingHour.getIsPenaltyBreakFinishLate());    	
+        model.setIsPenaltyBreakFinishLate(workingHour.getIsPenaltyBreakFinishLate());
     }
 
     public String doBack() {
         return "/protected/working_time/working_hour_view.htm?faces-redirect=true";
     }
-    
-    public void onChangeManageBreakTime(){
-    	isDisabledBreakConf = BooleanUtils.isNotTrue(model.getIsManageBreakTime());
-    	if(isDisabledBreakConf){
-    		model.setBreakHourBegin(null);
-    		model.setBreakHourEnd(null);
-    		model.setBreakStartLimitBegin(null);
-    		model.setBreakStartLimitEnd(null);
-    		model.setBreakFinishLimitBegin(null);
-    		model.setBreakFinishLimitEnd(null);
-    		model.setIsPenaltyBreakStartEarly(Boolean.FALSE);
-    		model.setIsPenaltyBreakFinishLate(Boolean.FALSE);
-    	}
+
+    public void onChangeManageBreakTime() {
+        isDisabledBreakConf = BooleanUtils.isNotTrue(model.getIsManageBreakTime());
+        if (isDisabledBreakConf) {
+            model.setBreakHourBegin(null);
+            model.setBreakHourEnd(null);
+            model.setBreakStartLimitBegin(null);
+            model.setBreakStartLimitEnd(null);
+            model.setBreakFinishLimitBegin(null);
+            model.setBreakFinishLimitEnd(null);
+            model.setIsPenaltyBreakStartEarly(Boolean.FALSE);
+            model.setIsPenaltyBreakFinishLate(Boolean.FALSE);
+        }
     }
 }

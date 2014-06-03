@@ -63,9 +63,30 @@ public class WtOverTimeServiceImpl extends IServiceImpl implements WtOverTimeSer
         this.wtOverTimeDao.save(entity);
     }
     
+    
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(WtOverTime entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        long totalDuplicates = wtOverTimeDao.getTotalDuplicaByCodeAndNotId(entity.getCode(), entity.getId());
+        if (totalDuplicates > 0) {
+            throw new BussinessException("over_time.error_code_duplicate");
+        }
+        
+        WtOverTime overTime=this.wtOverTimeDao.getEntiyByPK(entity.getId());
+        overTime.setCode(entity.getCode());
+        overTime.setDescription(entity.getDescription());
+        overTime.setFinishTimeFactor(entity.getFinishTimeFactor());
+        overTime.setMaximumTime(entity.getMaximumTime());
+        overTime.setMinimumTime(entity.getMinimumTime());
+        overTime.setName(entity.getName());
+        overTime.setOtRounding(entity.getOtRounding());
+        overTime.setOverTimeCalculation(entity.getOverTimeCalculation());
+        overTime.setStartTimeFactor(entity.getStartTimeFactor());
+        overTime.setValuePrice(entity.getValuePrice());
+        overTime.setUpdatedBy(UserInfoUtil.getUserName());
+        overTime.setUpdatedOn(new Date());
+        wtOverTimeDao.update(overTime);
+        
     }
     
     @Override

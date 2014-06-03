@@ -5,16 +5,15 @@
  */
 package com.inkubator.hrm.web.workingtime;
 
+import com.inkubator.hrm.entity.WtWorkingHour;
+import com.inkubator.hrm.service.WtWorkingHourService;
+import com.inkubator.webcore.controller.BaseController;
+import com.inkubator.webcore.util.FacesUtil;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-
-import com.inkubator.hrm.entity.WtWorkingHour;
-import com.inkubator.hrm.service.WtWorkingHourService;
-import com.inkubator.webcore.controller.BaseController;
-import com.inkubator.webcore.util.FacesUtil;
 
 /**
  *
@@ -27,7 +26,6 @@ public class WorkingHourDetailController extends BaseController {
     private WtWorkingHour selectedWorkingHour;
     @ManagedProperty(value = "#{wtWorkingHourService}")
     private WtWorkingHourService workingHourService;
-   
 
     @PostConstruct
     @Override
@@ -41,26 +39,26 @@ public class WorkingHourDetailController extends BaseController {
 
         }
     }
-    
+
     @PreDestroy
     public void cleanAndExit() {
-       selectedWorkingHour =  null;
-       workingHourService = null;
+        selectedWorkingHour = null;
+        workingHourService = null;
     }
 
     public WtWorkingHour getSelectedWorkingHour() {
-		return selectedWorkingHour;
-	}
+        return selectedWorkingHour;
+    }
 
-	public void setSelectedWorkingHour(WtWorkingHour selectedWorkingHour) {
-		this.selectedWorkingHour = selectedWorkingHour;
-	}
+    public void setSelectedWorkingHour(WtWorkingHour selectedWorkingHour) {
+        this.selectedWorkingHour = selectedWorkingHour;
+    }
 
-	public void setWorkingHourService(WtWorkingHourService workingHourService) {
-		this.workingHourService = workingHourService;
-	}
+    public void setWorkingHourService(WtWorkingHourService workingHourService) {
+        this.workingHourService = workingHourService;
+    }
 
-	public String doBack() {
+    public String doBack() {
         return "/protected/working_time/working_hour_view.htm?faces-redirect=true";
     }
 
@@ -68,5 +66,4 @@ public class WorkingHourDetailController extends BaseController {
         return "/protected/working_time/working_hour_form.htm?faces-redirect=true&execution=e" + selectedWorkingHour.getId();
     }
 
-    
 }

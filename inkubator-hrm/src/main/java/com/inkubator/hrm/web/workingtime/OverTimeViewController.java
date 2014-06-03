@@ -86,11 +86,6 @@ public class OverTimeViewController extends BaseController {
         wtOverTimesLazyDataModel = null;
     }
 
-    @PreDestroy
-    public void onPostClose() {
-        System.out.println("Bersih -berisesfsdhfkh");
-    }
-
     public void doDetail() {
         try {
             selectedWtOverTime = wtOverTimeService.getEntiyByPK(selectedWtOverTime.getId());
@@ -121,15 +116,10 @@ public class OverTimeViewController extends BaseController {
         options.put("resizable", false);
         options.put("contentWidth", 400);
         options.put("contentHeight", 555);
-//        options.put("closable", false);
-//        options.put("height", "auto");
-
-//        options.put("contentHeight", 340);
         RequestContext.getCurrentInstance().openDialog("over_time_form", options, null);
     }
 
     public void doEdit() {
-//        Map<String, Object> options = new HashMap<>();
         Map<String, Object> options = new HashMap<>();
         options.put("modal", true);
         options.put("draggable", true);
@@ -167,6 +157,9 @@ public class OverTimeViewController extends BaseController {
 
     @PreDestroy
     private void cleanAndExit() {
-
+        wtOverTimeSearchParameter = null;
+        wtOverTimesLazyDataModel = null;
+        wtOverTimeService = null;
+        selectedWtOverTime = null;
     }
 }

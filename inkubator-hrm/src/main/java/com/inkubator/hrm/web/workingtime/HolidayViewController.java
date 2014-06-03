@@ -74,16 +74,6 @@ public class HolidayViewController extends BaseController {
         this.wtHolidayService = wtHolidayService;
     }
 
-//    public LazyDataModel<WtPeriode> getWtPeriodelazyDataModel() {
-//        if (wtHolidayLazyDataModel == null) {
-//            wtHolidayLazyDataModel = new WtPeriodLazyModel(wtPeriodeSearchParameter, wtPeriodeService);
-//        }
-//        return wtHolidayLazyDataModel;
-//    }
-//
-//    public void setWtPeriodelazyDataModel(LazyDataModel<WtPeriode> wtHolidayLazyDataModel) {
-//        this.wtHolidayLazyDataModel = wtHolidayLazyDataModel;
-//    }
     @PostConstruct
     @Override
     public void initialization() {
@@ -92,22 +82,11 @@ public class HolidayViewController extends BaseController {
 
     }
 
-//    public List<Integer> getListTahun() {
-//        return listTahun;
-//    }
-//
-//    public void setListTahun(List<Integer> listTahun) {
-//        this.listTahun = listTahun;
-//    }
     public void doSearch() {
         wtHolidayLazyDataModel = null;
     }
 
-    @PreDestroy
-    public void onPostClose() {
-        System.out.println("Bersih -berisesfsdhfkh");
-    }
-
+  
     public void doDetail() {
         try {
             selecWtHoliday = wtHolidayService.getEntiyByPK(selecWtHoliday.getId());
@@ -138,15 +117,11 @@ public class HolidayViewController extends BaseController {
         options.put("resizable", false);
         options.put("contentWidth", 400);
         options.put("contentHeight", 360);
-//        options.put("closable", false);
-//        options.put("height", "auto");
 
-//        options.put("contentHeight", 340);
         RequestContext.getCurrentInstance().openDialog("holiday_form", options, null);
     }
 
     public void doEdit() {
-//        Map<String, Object> options = new HashMap<>();
         Map<String, Object> options = new HashMap<>();
         options.put("modal", true);
         options.put("draggable", true);
@@ -171,7 +146,7 @@ public class HolidayViewController extends BaseController {
         if (condition.equalsIgnoreCase(HRMConstant.UPDATE_CONDITION)) {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-        }    
+        }
     }
 
     public void onDelete() {
@@ -188,5 +163,13 @@ public class HolidayViewController extends BaseController {
 
     public void doChangeMonth() {
         wtHolidayLazyDataModel = null;
+    }
+
+    @PreDestroy
+    private void cleanAndExit() {
+        holidaySearchParameter = null;
+        wtHolidayService = null;
+        wtHolidayLazyDataModel = null;
+        selecWtHoliday = null;
     }
 }

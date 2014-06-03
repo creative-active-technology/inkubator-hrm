@@ -47,30 +47,6 @@ public class OverTimeFormController extends BaseController {
         this.wtOverTimeService = wtOverTimeService;
     }
 
-//    private HolidayModel holidayModel;
-//    @ManagedProperty(value = "#{wtHolidayService}")
-//    private WtHolidayService wtHolidayService;
-//    @ManagedProperty(value = "#{religionService}")
-//    private ReligionService religionService;
-//    private Map<String, Long> mapReligions = new TreeMap<>();
-//    private Boolean isEdit;
-//
-//    public HolidayModel getHolidayModel() {
-//        return holidayModel;
-//    }
-//
-//    public void setHolidayModel(HolidayModel holidayModel) {
-//        this.holidayModel = holidayModel;
-//    }
-//
-//    public void setWtHolidayService(WtHolidayService wtHolidayService) {
-//        this.wtHolidayService = wtHolidayService;
-//    }
-//
-//    public void setReligionService(ReligionService religionService) {
-//        this.religionService = religionService;
-//    }
-//
     @PostConstruct
     @Override
     public void initialization() {
@@ -98,56 +74,9 @@ public class OverTimeFormController extends BaseController {
                 isEdit = Boolean.FALSE;
             }
         } catch (Exception ex) {
-          LOGGER.error("Error", ex);
+            LOGGER.error("Error", ex);
         }
-//        try {
-
-//            String param = FacesUtil.getRequestParameter("param");
-//            holidayModel = new HolidayModel();
-//            List<Religion> religions = religionService.getAllData();
-//            for (Religion religion : religions) {
-//                mapReligions.put(religion.getName(), religion.getId());
-//            }
-//            if (param != null) {
-//                System.out.println(" nilai param" + param);
-//                WtHoliday wtHoliday = wtHolidayService.getEntiyByPK(Long.parseLong(param));
-//                holidayModel.setId(wtHoliday.getId());
-//                holidayModel.setHolidayDate(wtHoliday.getHolidayDate());
-//                holidayModel.setHolidayName(wtHoliday.getHolidayName());
-//                if (wtHoliday.getIsColectiveLeave() == 1) {
-//                    holidayModel.setIsCollective(Boolean.TRUE);
-//                }
-//                if (wtHoliday.getIsColectiveLeave() == 0) {
-//                    holidayModel.setIsCollective(Boolean.FALSE);
-//                }
-//
-//                if (wtHoliday.getIsEveryYear() == 1) {
-//                    holidayModel.setIsEveryYear(Boolean.TRUE);
-//                }
-//                if (wtHoliday.getIsEveryYear() == 0) {
-//                    holidayModel.setIsEveryYear(Boolean.FALSE);
-//                }
-//                if (wtHoliday.getReligion() != null) {
-//                    holidayModel.setReligionId(wtHoliday.getReligion().getId());
-//                }
-//                isEdit = Boolean.TRUE;
-//            } else {
-//                isEdit = Boolean.FALSE;
-//            }
-//
-//        } catch (Exception ex) {
-//            LOGGER.error("Errot", ex);
-//        }
     }
-//
-//    public Map<String, Long> getMapReligions() {
-//        return mapReligions;
-//    }
-//
-//    public void setMapReligions(Map<String, Long> mapReligions) {
-//        this.mapReligions = mapReligions;
-//    }
-//
 
     public void doSave() {
         WtOverTime wtOverTime = getEntityFromViewModel(overTimeModel);
@@ -168,15 +97,6 @@ public class OverTimeFormController extends BaseController {
         }
         cleanAndExit();
     }
-//
-//    public Boolean getIsEdit() {
-//        return isEdit;
-//    }
-//
-//    public void setIsEdit(Boolean isEdit) {
-//        this.isEdit = isEdit;
-//    }
-//
 
     private WtOverTime getEntityFromViewModel(OverTimeModel overTimeModel) {
         WtOverTime overTime = new WtOverTime();
@@ -198,9 +118,11 @@ public class OverTimeFormController extends BaseController {
 
     @PreDestroy
     private void cleanAndExit() {
-
+        overTimeModel = null;
+        wtOverTimeService = null;
+        selectedWtOverTime = null;
         isEdit = null;
-        System.out.println(" ahhahaha");
+
     }
 
     public OverTimeModel getOverTimeModel() {

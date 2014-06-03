@@ -26,7 +26,7 @@ import org.primefaces.context.RequestContext;
 public class EducationLevelFormController extends BaseController {
 
     private EducationLevelModel educationLevelModel;
-    Boolean isUpdate;
+    private Boolean isUpdate;
     @ManagedProperty(value = "#{educationLevelService}")
     private EducationLevelService educationLevelService;
 

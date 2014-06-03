@@ -26,7 +26,7 @@ import org.primefaces.context.RequestContext;
 public class EmployeeTypeFormController extends BaseController {
 
     private EmployeeTypeModel employeeTypeModel;
-    Boolean isUpdate;
+    private Boolean isUpdate;
     @ManagedProperty(value = "#{employeeTypeService}")
     private EmployeeTypeService employeeTypeService;
 

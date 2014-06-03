@@ -161,8 +161,11 @@ public class HolidayFormController extends BaseController {
 
     @PreDestroy
     private void cleanAndExit() {
+        holidayModel = null;
+        wtHolidayService=null;
+        religionService=null;
+        mapReligions=null;
+        isEdit=null;
 
-        isEdit = null;
-        System.out.println(" ahhahaha");
     }
 }

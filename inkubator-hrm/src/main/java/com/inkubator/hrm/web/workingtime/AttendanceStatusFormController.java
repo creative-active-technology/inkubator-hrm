@@ -135,8 +135,8 @@ public class AttendanceStatusFormController extends BaseController {
 
     @PreDestroy
     private void cleanAndExit() {
-
+        attendanceStatusModel = null;
+        attendanceStatusService = null;
         isEdit = null;
-        System.out.println(" ahhahaha");
     }
 }

@@ -86,11 +86,7 @@ public class AttendanceStatusViewController extends BaseController {
         attendanceStatusesLazyDataModel = null;
     }
 
-    @PreDestroy
-    public void onPostClose() {
-        System.out.println("Bersih -berisesfsdhfkh");
-    }
-
+   
     public void doDetail() {
         try {
             selecedAttendanceStatus = attendanceStatusService.getEntiyByPK(selecedAttendanceStatus.getId());
@@ -121,15 +117,10 @@ public class AttendanceStatusViewController extends BaseController {
         options.put("resizable", false);
         options.put("contentWidth", 400);
         options.put("contentHeight", 440);
-//        options.put("closable", false);
-//        options.put("height", "auto");
-
-//        options.put("contentHeight", 340);
         RequestContext.getCurrentInstance().openDialog("attendance_status_form", options, null);
     }
 
     public void doEdit() {
-//        Map<String, Object> options = new HashMap<>();
         Map<String, Object> options = new HashMap<>();
         options.put("modal", true);
         options.put("draggable", true);
@@ -167,6 +158,11 @@ public class AttendanceStatusViewController extends BaseController {
 
     @PreDestroy
     private void cleanAndExit() {
-
+        attendanceStatusSearchParamater = null;
+        attendanceStatusesLazyDataModel=null;
+        attendanceStatusService=null;
+        selecedAttendanceStatus=null;
+        
+        
     }
 }
