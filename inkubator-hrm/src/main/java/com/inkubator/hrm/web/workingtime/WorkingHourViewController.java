@@ -1,5 +1,16 @@
 package com.inkubator.hrm.web.workingtime;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+
+import org.hibernate.exception.ConstraintViolationException;
+import org.primefaces.model.LazyDataModel;
+import org.springframework.dao.DataIntegrityViolationException;
+
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.WtWorkingHour;
 import com.inkubator.hrm.service.WtWorkingHourService;
@@ -8,16 +19,6 @@ import com.inkubator.hrm.web.search.WorkingHourSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
-import org.hibernate.exception.ConstraintViolationException;
-import org.primefaces.event.SelectEvent;
-import org.primefaces.model.LazyDataModel;
-import org.springframework.dao.DataIntegrityViolationException;
 
 /**
  *
@@ -102,9 +103,9 @@ public class WorkingHourViewController extends BaseController {
 
         } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-            LOGGER.error("Error when doDelete specificationAbility ", ex);
+            LOGGER.error("Error when doDelete workinghour ", ex);
         } catch (Exception ex) {
-            LOGGER.error("Error when doDelete specificationAbility", ex);
+            LOGGER.error("Error when doDelete workinghour", ex);
         }
     }
 
@@ -114,18 +115,5 @@ public class WorkingHourViewController extends BaseController {
 
     public String doUpdate() {
         return "/protected/working_time/working_hour_form.htm?faces-redirect=true&execution=e" + selectedWorkingHour.getId();
-    }
-
-    public void onDialogClose(SelectEvent event) {
-        //re-calculate searching
-        doSearch();
-
-        //show growl message
-        String condition = (String) event.getObject();
-        if (condition.equalsIgnoreCase(HRMConstant.SAVE_CONDITION)) {
-            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-        } else if (condition.equalsIgnoreCase(HRMConstant.UPDATE_CONDITION)) {
-            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-        }
     }
 }

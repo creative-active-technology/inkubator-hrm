@@ -3,9 +3,14 @@ package com.inkubator.hrm.entity;
 
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -35,6 +40,7 @@ public class AttendanceStatus  implements java.io.Serializable {
      private Date createdOn;
      private String updatedBy;
      private Date upatedOn;
+     private Set<Leave> leaves = new HashSet<Leave>(0);
 
     public AttendanceStatus() {
     }
@@ -191,6 +197,17 @@ public class AttendanceStatus  implements java.io.Serializable {
         }
         return null;
     }
+
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "attendanceStatus")
+	public Set<Leave> getLeaves() {
+		return leaves;
+	}
+
+
+	public void setLeaves(Set<Leave> leaves) {
+		this.leaves = leaves;
+	}
 
 
 }
