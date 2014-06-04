@@ -33,7 +33,7 @@
         <property name="maxPoolSize" value="100"/>
         <property name="minPoolSize" value="20"/>
         <property name="maxStatements" value="50"/>
-        <property name="maxIdleTime" value="3600" />
+        <property name="maxIdleTime" value="1800" />
         <property name="autoCommitOnClose" value="false" />
         <property name="initialPoolSize" value="5" />
         <property name="maxConnectionAge" value="7200" />
@@ -44,6 +44,7 @@
         <property name="testConnectionOnCheckout" value="true" />
         <property name="numHelperThreads" value="6" />
         <property name="unreturnedConnectionTimeout" value="3600" />
+         
     </bean>
     <bean id="c3p0DataSource-1" parent="c3p0DataSourceAbstract" lazy-init="true">
         <property name="driverClass" value="com.mysql.jdbc.Driver"/>

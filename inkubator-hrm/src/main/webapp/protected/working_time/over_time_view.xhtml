@@ -37,9 +37,9 @@
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItem itemLabel="Kode Lembur" itemValue="overTimecode"/>
                                         <f:selectItem itemLabel="Nama Lembur" itemValue="overTimeName"/>
-<!--                                        <f:selectItem itemLabel="Minimum Lembur" itemValue="minTime"/>
-                                        <f:selectItem itemLabel="Maksimum Lembur" itemValue="maxTime"/>-->
-                                    <!--<f:selectItem itemLabel="#{appmsg['specificationability.scale_value']}" itemValue="scaleValue"/>-->
+                                        <!--                                        <f:selectItem itemLabel="Minimum Lembur" itemValue="minTime"/>
+                                                                                <f:selectItem itemLabel="Maksimum Lembur" itemValue="maxTime"/>-->
+                                                                            <!--<f:selectItem itemLabel="#{appmsg['specificationability.scale_value']}" itemValue="scaleValue"/>-->
                                     </p:selectOneMenu>
                                     <p:inputText id="searchId" value="#{overTimeViewController.wtOverTimeSearchParameter.parameter}" style="width: 250px" styleClass="isitext_hrm"/>
                                     <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" action="#{overTimeViewController.doSearch()}" update="tableOverTimeId"  styleClass="label_button" icon="ui-icon-search"/>
@@ -206,7 +206,9 @@
                         </p:row>
                         <p:row>
                             <p:column style="color: #003366"><p:outputLabel value="Nilai Lembur" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{overTimeViewController.selectedWtOverTime.valuePrice}"/> </p:column>
+                            <p:column><p:outputLabel value="#{overTimeViewController.selectedWtOverTime.valuePrice}">
+                                    <f:convertNumber maxFractionDigits="2" />
+                                </p:outputLabel> </p:column>
                         </p:row>
                         <f:facet name="footer">
                             <p:row>
