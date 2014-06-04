@@ -88,15 +88,6 @@ public class WorkingHourFormController extends BaseController {
     public void setWorkingHourService(WtWorkingHourService workingHourService) {
         this.workingHourService = workingHourService;
     }
-
-    public void doClear() {
-        //clear all data except the id (if any)
-        Long tempId = model.getId();
-        model = new WorkingHourModel();
-        model.setId(tempId);
-        //default is true
-        isDisabledBreakConf = Boolean.TRUE;
-    }
 	
 	public void doReset() {
     	if(isUpdate) {
