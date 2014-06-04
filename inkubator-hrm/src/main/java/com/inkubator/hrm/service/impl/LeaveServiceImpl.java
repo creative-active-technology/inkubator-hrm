@@ -267,8 +267,8 @@ public class LeaveServiceImpl extends IServiceImpl implements LeaveService {
 	    AttendanceStatus attendanceStatus = attendanceStatusDao.getEntiyByPK(l.getAttendanceStatus().getId());
 	    leave.setAttendanceStatus(attendanceStatus);
 	    leave.setPeriodBase(l.getPeriodBase());
-	    leave.setLeaveAvailability(l.getLeaveAvailability());
-	    leave.setIncreasedLeaveDate(l.getIncreasedLeaveDate());
+	    leave.setAvailability(l.getAvailability());
+	    leave.setAvailabilityAtSpecificDate(l.getAvailabilityAtSpecificDate());
 	    leave.setIsTakingLeaveToNextYear(l.getIsTakingLeaveToNextYear());
 	    leave.setMaxTakingLeaveToNextYear(l.getMaxTakingLeaveToNextYear());
 	    leave.setBackwardPeriodLimit(l.getBackwardPeriodLimit());
@@ -277,9 +277,9 @@ public class LeaveServiceImpl extends IServiceImpl implements LeaveService {
 	    leave.setEffectiveFrom(l.getEffectiveFrom());
 	    leave.setSubmittedLimit(l.getSubmittedLimit());
 	    leave.setApprovalLevel(l.getApprovalLevel());
-	    leave.setLeaveQuotaReduction(l.getLeaveQuotaReduction());
-	    leave.setEndOfPeriodLeave(l.getEndOfPeriodLeave());
-	    leave.setEndOfPeriodLeaveMonth(l.getEndOfPeriodLeaveMonth());
+	    leave.setIsQuotaReduction(l.getIsQuotaReduction());
+	    leave.setEndOfPeriod(l.getEndOfPeriod());
+	    leave.setEndOfPeriodMonth(l.getEndOfPeriodMonth());
 	    leave.setIsOnlyOncePerEmployee(l.getIsOnlyOncePerEmployee());
 	    leave.setUpdatedBy(UserInfoUtil.getUserName());
 	    leave.setUpdatedOn(new Date());

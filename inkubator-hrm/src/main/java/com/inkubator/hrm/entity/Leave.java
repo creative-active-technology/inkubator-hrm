@@ -32,8 +32,8 @@ public class Leave implements Serializable {
     private Integer calculation;
     private AttendanceStatus attendanceStatus;
     private Integer periodBase;
-    private Integer leaveAvailability;
-    private Date increasedLeaveDate;
+    private Integer availability;
+    private Date availabilityAtSpecificDate;
     private Boolean isTakingLeaveToNextYear;
     private Integer maxTakingLeaveToNextYear;
     private Integer backwardPeriodLimit;
@@ -42,9 +42,9 @@ public class Leave implements Serializable {
     private Integer effectiveFrom;
     private Integer submittedLimit;
     private Integer approvalLevel;
-    private Integer leaveQuotaReduction;
-    private Integer endOfPeriodLeave;
-    private Integer endOfPeriodLeaveMonth;
+    private Boolean isQuotaReduction;
+    private Integer endOfPeriod;
+    private Integer endOfPeriodMonth;
     private Boolean isOnlyOncePerEmployee;
     private String createdBy;
     private Date createdOn;
@@ -143,25 +143,24 @@ public class Leave implements Serializable {
 		this.periodBase = periodBase;
 	}
 
-	@Column(name = "leave_availability", nullable = false, length = 1)
-	public Integer getLeaveAvailability() {
-		return leaveAvailability;
+	@Column(name = "availability", nullable = false, length = 1)
+	public Integer getAvailability() {
+		return availability;
 	}
 
-	public void setLeaveAvailability(Integer leaveAvailability) {
-		this.leaveAvailability = leaveAvailability;
+	public void setAvailability(Integer availability) {
+		this.availability = availability;
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "increased_leave_date", length = 19)
-	public Date getIncreasedLeaveDate() {
-		return increasedLeaveDate;
+    @Column(name = "availabity_at_specific_date", length = 19)
+	public Date getAvailabilityAtSpecificDate() {
+		return availabilityAtSpecificDate;
 	}
 
-	public void setIncreasedLeaveDate(Date increasedLeaveDate) {
-		this.increasedLeaveDate = increasedLeaveDate;
-	}
-	
+	public void setAvailabilityAtSpecificDate(Date availabilityAtSpecificDate) {
+		this.availabilityAtSpecificDate = availabilityAtSpecificDate;
+	}	
 	
 	@Column(name = "is_taking_leave_to_next_year", nullable = false)
 	public Boolean getIsTakingLeaveToNextYear() {
@@ -235,31 +234,31 @@ public class Leave implements Serializable {
 		this.approvalLevel = approvalLevel;
 	}
 
-	@Column(name = "leave_quota_reduction", nullable = false)
-	public Integer getLeaveQuotaReduction() {
-		return leaveQuotaReduction;
+	@Column(name = "is_quota_reduction", nullable = false)
+	public Boolean getIsQuotaReduction() {
+		return isQuotaReduction;
 	}
 
-	public void setLeaveQuotaReduction(Integer leaveQuotaReduction) {
-		this.leaveQuotaReduction = leaveQuotaReduction;
+	public void setIsQuotaReduction(Boolean isQuotaReduction) {
+		this.isQuotaReduction = isQuotaReduction;
 	}
 
-	@Column(name = "end_of_period_leave", nullable = false, length = 1)
-	public Integer getEndOfPeriodLeave() {
-		return endOfPeriodLeave;
+	@Column(name = "end_of_period", nullable = false, length = 1)
+	public Integer getEndOfPeriod() {
+		return endOfPeriod;
 	}
 
-	public void setEndOfPeriodLeave(Integer endOfPeriodLeave) {
-		this.endOfPeriodLeave = endOfPeriodLeave;
+	public void setEndOfPeriod(Integer endOfPeriod) {
+		this.endOfPeriod = endOfPeriod;
 	}
 
-	@Column(name = "end_of_period_leave_month", length = 2)
-	public Integer getEndOfPeriodLeaveMonth() {
-		return endOfPeriodLeaveMonth;
+	@Column(name = "end_of_period_month", length = 2)
+	public Integer getEndOfPeriodMonth() {
+		return endOfPeriodMonth;
 	}
 
-	public void setEndOfPeriodLeaveMonth(Integer endOfPeriodLeaveMonth) {
-		this.endOfPeriodLeaveMonth = endOfPeriodLeaveMonth;
+	public void setEndOfPeriodMonth(Integer endOfPeriodMonth) {
+		this.endOfPeriodMonth = endOfPeriodMonth;
 	}
 
 	@Column(name = "is_only_once_per_employee", nullable = false)

@@ -180,7 +180,7 @@ public class AttendanceStatusServiceImpl extends IServiceImpl implements Attenda
 
     @Override
     public List<AttendanceStatus> getAllData() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return attendanceStatusDao.getAllData();
     }
 
     @Override

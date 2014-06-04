@@ -20,7 +20,7 @@
                 <h:form id="formLeaveFormId">
                 	<p:focus context="formLeaveFormId"/>
                 	<div id="box_bg" style="margin: 10px">
-	                    <h:panelGrid  columns="2">
+	                    <h:panelGrid columns="2">
 	                        <p:graphicImage library="images" name="permit.png" height="36" width="36" />
 	                        <h:panelGroup layout="block">
 	                            <h:panelGrid>
@@ -37,7 +37,7 @@
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                            	<p:inputText id="codeId" title="#{appmsg['leave.leave_code']}" value="#{leaveFormController.model.code}" 
-	                                    		 required="true" requiredMessage="#{appmsg['leave.error_empty_code']}" maxlength="45" styleClass="isitext_hrm" style="width:290px;" />
+	                                    		 required="true" maxlength="45" styleClass="isitext_hrm" style="width:290px;" />
 	                                <p:message for="codeId"/>
 	                            </p:column>
 	                        </p:row>   
@@ -47,10 +47,10 @@
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                            	<p:inputText id="nameId" title="#{appmsg['leave.leave_name']}" value="#{leaveFormController.model.name}" 
-	                                    		 required="true" requiredMessage="#{appmsg['leave.error_empty_code']}" maxlength="45" styleClass="isitext_hrm" style="width:290px;" />
+	                                    		 required="true" maxlength="45" styleClass="isitext_hrm" style="width:290px;" />
 	                                <p:message for="nameId"/>
 	                            </p:column>
-	                        </p:row>  
+	                        </p:row>
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
 	                                <p:outputLabel for="descId" value="#{appmsg['global.description']}" styleClass="label_hrm"/>
@@ -60,7 +60,82 @@
 	                                    			 maxlength="1000" styleClass="isitext_hrm" style="width:290px;" />
 	                                <p:message for="descId"/>
 	                            </p:column>
-	                        </p:row>    	                             
+	                        </p:row> 
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="dayTypeId" value="#{appmsg['leave.type_of_day']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:selectOneRadio id="dayTypeId" styleClass="isitext_hrm" required="true"  value="#{leaveFormController.model.dayType}">
+	                                    <!--Cek HRM Constanta..-->
+	                                    <f:selectItem itemLabel="#{appmsg['leave.working_days']}" itemValue="0" />
+	                                    <f:selectItem itemLabel="#{appmsg['leave.calendar_days']}" itemValue="1" />
+	                                </p:selectOneRadio>
+	                                <p:message for="dayTypeId"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="calculationId" value="#{appmsg['leave.calculation']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:selectOneRadio id="calculationId" styleClass="isitext_hrm" required="true"  value="#{leaveFormController.model.calculation}">
+	                                    <!--Cek HRM Constanta..-->
+	                                    <f:selectItem itemLabel="#{appmsg['leave.full_day']}" itemValue="0" />
+	                                    <f:selectItem itemLabel="#{appmsg['leave.part_of_day']}" itemValue="1" />
+	                                </p:selectOneRadio>
+	                                <p:message for="calculationId"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="attendanceId" value="#{appmsg['leave.attendance']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:selectOneMenu id="attendanceId" styleClass="isitext_hrm" required="true"  value="#{leaveFormController.model.attendanceStatusId}">
+	                            		<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+	                                    <f:selectItems value="#{leaveFormController.model.attendanceStatusList}" var="attendanceStatus" itemValue="#{attendanceStatus.id}" itemLabel="#{attendanceStatus.code}"/>
+	                                </p:selectOneMenu>
+	                                <p:message for="attendanceId"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="periodBaseId" value="#{appmsg['leave.period_base']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:selectOneMenu id="periodBaseId" styleClass="isitext_hrm" required="true"  value="#{leaveFormController.model.periodBase}">
+	                            		<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+	                                    <f:selectItem itemLabel="T.M.B" itemValue="0" />
+	                                    <f:selectItem itemLabel="0101" itemValue="1" />
+	                                    <f:selectItem itemLabel="T.M.B ke 0101" itemValue="2" />
+	                                </p:selectOneMenu>
+	                                <p:message for="periodBaseId"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="availabilityId" value="#{appmsg['leave.availability_of_leave']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<h:panelGrid columns="2" id="gridAvailabity" style="margin-left:-10px" >
+		                            	<p:selectOneMenu id="availabilityId" styleClass="isitext_hrm" required="true"  value="#{leaveFormController.model.availability}">
+		                            		<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+		                                    <f:selectItem itemLabel="#{appmsg['leave.full']}" itemValue="0" />
+		                                    <f:selectItem itemLabel="#{appmsg['leave.increases_each_month']}" itemValue="1" />
+		                                    <f:selectItem itemLabel="#{appmsg['leave.increases_on_certain_date']}" itemValue="2" />
+		                                    <p:ajax listener="#{leaveFormController.onChangeAvailabilty()}" update="gridAvailabity"/>
+		                                </p:selectOneMenu>
+		                                <p:calendar id="availabilityAtSpecificDateId" label="#{appmsg['global.date']}" required="true"  pattern="dd-MMMM-yyyy" showOn="button"
+	                                            value="#{leaveFormController.model.availabilityAtSpecificDate}" rendered="#{leaveFormController.isRenderAvailabilityDate}"/>
+                                     </h:panelGrid> 
+	                                <p:message for="availabilityId"/>
+	                                <p:message for="availabilityAtSpecificDateId"/>
+	                            </p:column>
+	                        </p:row>  
+	                           	         
+	                           	         
+	                           	                             
 	                 	</p:panelGrid>	                    
 	                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
 	                    <div style="margin-bottom: 5px">
