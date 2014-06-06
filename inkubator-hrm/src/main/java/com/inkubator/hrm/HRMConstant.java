@@ -53,4 +53,18 @@ public class HRMConstant {
     public static final Integer OT_SUMMARY = 1;
     public static final Integer OT_SEPARATED = 0;
 
+
+    /* 
+     * Constant for Leave Module */
+    public static final Integer LEAVE_DAY_TYPE_WORKING = 0;
+    public static final Integer LEAVE_DAY_TYPE_CALENDAR = 1;
+    public static final Integer LEAVE_CALCULATION_FULL_DAY = 0;
+    public static final Integer LEAVE_CALCULATION_PART_DAY = 1;
+    public static final Integer LEAVE_PERIOD_BASE_TMB = 0;
+    public static final Integer LEAVE_PERIOD_BASE_0101 = 1;
+    public static final Integer LEAVE_PERIOD_BASE_TMB_TO_0101 = 2;
+    public static final Integer LEAVE_AVAILABILITY_FULL = 0;
+    public static final Integer LEAVE_AVAILABILITY_INCREASES_MONTH = 1;
+    public static final Integer LEAVE_AVAILABILITY_INCREASES_CERTAIN_DATE = 2;
+    /* END */
 }

@@ -33,7 +33,7 @@
         <property name="maxPoolSize" value="100"/>
         <property name="minPoolSize" value="20"/>
         <property name="maxStatements" value="50"/>
-        <property name="maxIdleTime" value="1800" />
+        <property name="maxIdleTime" value="1500" />
         <property name="autoCommitOnClose" value="false" />
         <property name="initialPoolSize" value="5" />
         <property name="maxConnectionAge" value="7200" />
