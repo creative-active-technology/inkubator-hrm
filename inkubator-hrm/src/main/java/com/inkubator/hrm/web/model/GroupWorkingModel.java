@@ -3,19 +3,21 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.inkubator.hrm.web.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  *
  * @author Deni Husni FR
  */
-public class GroupWorkingModel implements Serializable{
+public class GroupWorkingModel implements Serializable {
+
     private Long id;
     private String code;
     private String name;
@@ -26,7 +28,10 @@ public class GroupWorkingModel implements Serializable{
     private Double workingTimePerweek;
     private Boolean overtimeBasedOnAttendance;
     private Boolean overtimeBasedOnRequest;
-    private List<ScheduleShiftModel> dataShiftModels=new ArrayList<>();
+    private List<ScheduleShiftModel> dataShiftModels = new ArrayList<>();
+    private List<ScheduleShiftModel> dataToShow = new ArrayList<>();
+    private Map<String, Long> mapData = new TreeMap<>();
+    private int pageNumber;
 
     public Long getId() {
         return id;
@@ -115,6 +120,31 @@ public class GroupWorkingModel implements Serializable{
     public void setDataShiftModels(List<ScheduleShiftModel> dataShiftModels) {
         this.dataShiftModels = dataShiftModels;
     }
+
+    public List<ScheduleShiftModel> getDataToShow() {
+        return dataToShow;
+    }
+
+    public void setDataToShow(List<ScheduleShiftModel> dataToShow) {
+        this.dataToShow = dataToShow;
+    }
+
+    public int getPageNumber() {
+        return pageNumber;
+    }
+
+    public void setPageNumber(int pageNumber) {
+        this.pageNumber = pageNumber;
+    }
+
+    public Map<String, Long> getMapData() {
+        return mapData;
+    }
+
+    public void setMapData(Map<String, Long> mapData) {
+        this.mapData = mapData;
+    }
     
     
+
 }

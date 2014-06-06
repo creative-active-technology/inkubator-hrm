@@ -38,8 +38,9 @@ public class WtWorkingHourServiceImpl extends IServiceImpl implements WtWorkingH
 	}
 
 	@Override
+        @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
 	public List<WtWorkingHour> getAllData() throws Exception {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+		return this.wtWorkingHourDao.getAllData();
 
 	}
 

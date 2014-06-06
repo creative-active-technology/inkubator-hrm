@@ -112,58 +112,58 @@
                     </p:panelGrid>
                     <p:outputLabel value="Penambahan Jadwal Shift" styleClass="header_big" />
                     <p:separator/>
+                    <h:form>
+                        <p:dataTable  var="dataShiftModel"  value="#{groupWorkingModel.dataToShow}" 
+                                      id="tableOverTimeId" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
 
-                    <p:dataTable  var="dataShiftModel"  value="#{groupWorkingModel.dataShiftModels}" lazy="false"
+                            <!--                        <f:facet name="header">  
+                                                        <h:outputText value="Daftar Jadwal Shift" styleClass="label_hrm"/>
+                                                    </f:facet> -->
+                            <!--                        <p:column style="text-align: center;max-width: 1px" >
+                                                        <f:facet name="header">  
+                                                            <h:outputText value="No." />
+                                                        </f:facet>
+                                                        <h:outputLabel value="#{no+1}." />
+                                                    </p:column>-->
+                            <p:column style="text-align: center" >
+                                <f:facet name="header">  
+                                    <h:outputText value="Tanggal"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{dataShiftModel.tanggalKerja}">
+                                    <f:convertDateTime pattern="dd MMMM yyyy" />
+                                </h:outputLabel>
+                            </p:column>
 
-                                  id="tableOverTimeId" style="margin-top: 10px;margin-bottom: 10px"
-                                  rowIndexVar="no">
+                            <p:column  >
+                                <f:facet name="header">  
+                                    <h:outputText value="Jadwal Shift"/>
+                                </f:facet>
+                                <p:selectOneMenu id="pilihanBahasa" styleClass="isitext_hrm"
+                                                 label="#{appmsg['loginform.choose_language']}"
+                                                 style="font-family: Calibri!important;text-align: left" >
+                                    <f:selectItems value="#{groupWorkingModel.mapData}"/>
 
-                        <!--                        <f:facet name="header">  
-                                                    <h:outputText value="Daftar Jadwal Shift" styleClass="label_hrm"/>
-                                                </f:facet> -->
-                        <!--                        <p:column style="text-align: center;max-width: 1px" >
-                                                    <f:facet name="header">  
-                                                        <h:outputText value="No." />
-                                                    </f:facet>
-                                                    <h:outputLabel value="#{no+1}." />
-                                                </p:column>-->
-                        <p:column style="text-align: center" >
-                            <f:facet name="header">  
-                                <h:outputText value="Tanggal"/>
-                            </f:facet>
-                            <h:outputLabel value= "#{dataShiftModel.tanggalKerja}">
-                                <f:convertDateTime pattern="dd MMMM yyyy" />
-                            </h:outputLabel>
-                        </p:column>
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:dataTable>
+                        <div align="center">
+                            <h:panelGrid columns="2">
+                                <p:commandButton value="Previous" icon="ui-icon-arrow-1-w" action="back_table" update="tableOverTimeId"/>
+                                <p:commandButton value="Next" icon="ui-icon-arrow-1-e" action="next_table" update="tableOverTimeId"/>
+                            </h:panelGrid>
+                        </div>
+                        <p:separator/>
+                        <div style="margin-bottom: 5px">
+                            <p:commandButton value="Simpan" ajax="true" 
+                                             action="next" styleClass="isitext_hrm" 
+                                             style="margin-right: 5px" label="Lanjut"
+                                             icon="ui-icon-disk" title="Lanjut"/>
 
-                        <p:column  >
-                            <f:facet name="header">  
-                                <h:outputText value="Jadwal Shift"/>
-                            </f:facet>
-                            <p:selectOneMenu id="pilihanBahasa" styleClass="isitext_hrm"
-                                             label="#{appmsg['loginform.choose_language']}"
-                                             style="font-family: Calibri!important;width: 130px;text-align: left" >
-                                <f:selectItems value="#{bahasa}"/>
-
-                            </p:selectOneMenu>
-                        </p:column>
-                    </p:dataTable>
-                    <div align="center">
-                        <h:panelGrid columns="2">
-                            <p:commandButton value="Back"/>
-                            <p:commandButton value="Next"/>
-                        </h:panelGrid>
-                    </div>
-                    <p:separator/>
-                    <div style="margin-bottom: 5px">
-                        <p:commandButton value="Simpan" ajax="true" 
-                                         action="next" styleClass="isitext_hrm" 
-                                         style="margin-right: 5px" label="Lanjut"
-                                         icon="ui-icon-arrow-1-e" title="Lanjut"/>
-                       
-                        <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{workingHourFormController.doBack()}" immediate="true"
-                                         styleClass="label_button"/>
-                    </div>
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-arrow-1-w"  title="#{appmsg['global.back']}" action="back" 
+                                             styleClass="label_button"/>
+                        </div>
+                    </h:form>
                 </div>
 
             </ui:define>
