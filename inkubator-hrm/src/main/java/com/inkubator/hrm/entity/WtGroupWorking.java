@@ -38,6 +38,7 @@ public class WtGroupWorking implements java.io.Serializable {
     private Date createdOn;
     private String updatedBy;
     private Date updatedOn;
+    private Boolean isActive;
     private Set<WtScheduleShift> wtScheduleShifts = new HashSet<WtScheduleShift>(0);
 
     public WtGroupWorking() {
@@ -206,7 +207,7 @@ public class WtGroupWorking implements java.io.Serializable {
         this.updatedOn = updatedOn;
     }
 
-//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "wtGroupWorking")
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "wtGroupWorking", orphanRemoval = true)
     public Set<WtScheduleShift> getWtScheduleShifts() {
         return this.wtScheduleShifts;
@@ -214,6 +215,15 @@ public class WtGroupWorking implements java.io.Serializable {
 
     public void setWtScheduleShifts(Set<WtScheduleShift> wtScheduleShifts) {
         this.wtScheduleShifts = wtScheduleShifts;
+    }
+
+    @Column(name = "is_active", nullable = false)
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
     }
 
 }

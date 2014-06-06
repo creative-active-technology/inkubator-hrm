@@ -32,5 +32,5 @@
     <!--    <lifecycle>
         <phase-listener>com.csl.web.core.listener.Primefaces35PhaseListener</phase-listener>
     </lifecycle>-->
-        
+         
 </faces-config>

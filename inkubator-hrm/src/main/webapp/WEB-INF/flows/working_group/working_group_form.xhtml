@@ -1,0 +1,156 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Role View
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg" style="margin: 10px">
+                    <!--<p:panel style="margin: 10px" >-->
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="group_working.png" height="36" width="36"  cache="true"/>
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="Form Kelompok Kerja" styleClass="header_big" />
+                                <p:outputLabel value="Daftar Kelompok Kerja dari Waktu Kerja" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator/>
+                    <p:growl id="workingGroupFormGrowlId" globalOnly="true" showDetail="true" />
+                    <h:form id="formWorkingGroupId">
+                        <p:panelGrid style="width: 100%;margin-bottom: 20px;margin-top: 20px" styleClass="grid_border3" >
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Kode Kelompok Kerja"  for="kkId" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:inputText value="#{groupWorkingModel.code}" styleClass="isitext_hrm" label="Kode Kelompok Kerja"
+                                                 style="width: 290px" required="true" id="kkId" onkeyup="this.value = this.value.toUpperCase();" />
+                                    <p:message for="kkId"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Nama Kelompok Kerja"  for="nameKKid" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:inputText value="#{groupWorkingModel.name}" styleClass="isitext_hrm" label="Nama Kelompok Kerja"
+                                                 style="width:290px" required="true" id="nameKKid" />
+                                    <p:message for="nameKKid"/>
+                                </p:column>
+
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Tanggal Mulai"  for="tglMulaiId" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:calendar id="tglMulaiId" pattern="dd MMMM yyyy" required="true" value="#{groupWorkingModel.beginTime}" label="Tanggal Mulai">
+                                        <f:validator validatorId="dateBetweenValidator"  />
+                                        <f:attribute name="endTime" value="#{tglSelesaiId}"/>
+                                        <f:attribute name="validatorMessage" value="#{appmsg['group_working_time.time_bengin_is_greater']}"/>
+                                    </p:calendar>
+                                    <p:message for="tglMulaiId"/>
+                                </p:column>
+
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Tanggal Selesai"  for="tglSelesaiId" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:calendar id="tglSelesaiId" binding="#{tglSelesaiId}" pattern="dd MMMM yyyy" required="true" value="#{groupWorkingModel.endTime}" label="Tanggal Selesai"/>
+                                    <p:message for="tglSelesaiId"/>
+                                </p:column>
+
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Berulang"  for="periodicId" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectBooleanButton  onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" required="true"
+                                                            offIcon="ui-icon-close"  id="periodicId" styleClass="label_button" value="#{groupWorkingModel.isPeriodic}" />
+                                    <p:message for="periodicId"/>
+                                </p:column>
+
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Jam Kerja Per Hari"  for="perDayWorkId" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <pe:inputNumber decimalPlaces="1" id="perDayWorkId" style="text-align: right;width: 60px" required="true" label="Jam Kerja Per Hari"
+                                                    value="#{groupWorkingModel.workingTimePerday}"
+                                                    styleClass="isitext_hrm" maxValue="24"/>
+                                    <p:message for="perDayWorkId"/>
+                                </p:column>
+
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Jam Kerja Per Minggu"  for="perWeekWorkId" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <pe:inputNumber decimalPlaces="1" id="perWeekWorkId" style="text-align: right;width: 60px" value="#{groupWorkingModel.workingTimePerweek}"
+                                                    styleClass="isitext_hrm" maxValue="100" label="Jam Kerja Per Minggu" required="true"/>
+                                    <p:message for="perWeekWorkId"/>
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Lembur Berdasarkan Pekerja"  for="attendaceOTid" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectBooleanButton  onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" required="true" value="#{groupWorkingModel.overtimeBasedOnAttendance}"
+                                                            offIcon="ui-icon-close"  id="attendaceOTid" styleClass="label_button" label="Lembur Berdasarkan Pekerja" />
+                                    <p:message for="attendaceOTid"/>
+                                </p:column>
+
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Lembur Berdasarkan Permintaan"  for="requestOTid" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectBooleanButton  onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" required="true" value="#{groupWorkingModel.overtimeBasedOnRequest}"
+                                                            offIcon="ui-icon-close"  id="requestOTid" styleClass="label_button" label="Lembur Berdasarkan Permintaan" />
+                                    <p:message for="requestOTid"/>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                        <p:separator style="margin-top: 20px;margin-bottom: 10px"/>
+                        <div style="margin-bottom: 5px">
+                            <p:commandButton value="Lanjut" ajax="true" 
+                                             action="next" styleClass="isitext_hrm" update="formWorkingGroupId"
+                                             style="margin-right: 5px" label="Lanjut"
+                                             icon="ui-icon-arrow-1-e" title="Lanjut"/>
+                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formWorkingGroupId"
+                                             icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px">  
+                                <p:resetInput target="formWorkingGroupId" />  
+                            </p:commandButton>
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{workingHourFormController.doBack()}" immediate="true"
+                                             styleClass="label_button"/>
+                        </div>
+                    </h:form>
+                </div>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

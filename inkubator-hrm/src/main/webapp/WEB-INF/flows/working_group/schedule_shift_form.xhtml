@@ -1,0 +1,175 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Role View
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg" style="margin: 10px">
+                    <!--<p:panel style="margin: 10px" >-->
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="/working_hour.png" height="36" width="36"  cache="true"/>
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="Form Jadwak Shift" styleClass="header_big" />
+                                <p:outputLabel value="Jadwal Shift dari Waktu Kerja" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+
+                    <p:separator/>
+                    <p:growl id="workingGroupFormGrowlId" globalOnly="true" showDetail="true" />
+                    <p:panelGrid style="width: 100%;margin-top: 20px;margin-bottom: 20px" styleClass="grid_border3">
+                        <p:row>
+                            <p:column style="width: 17%;background-color: #e1f0f0!important" >
+                                <p:outputLabel  value="Kode Kelompok Kerja" style="font-weight: bold"/>
+                            </p:column>
+                            <p:column style="width: 34%">
+                                <p:outputLabel  value="#{groupWorkingModel.code}" />
+                            </p:column>
+                            <p:column style="width: 17%;background-color: #e1f0f0!important">
+                                <p:outputLabel  value="Nama Kelompok Kerja" style="font-weight: bold"/>
+                            </p:column>
+                            <p:column style="width: 34%">
+                                <p:outputLabel  value="#{groupWorkingModel.name}" />
+                            </p:column>
+
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 17%;background-color: #e1f0f0!important" >
+                                <p:outputLabel  value="Tanggal Mulai" style="font-weight: bold"/>
+                            </p:column>
+                            <p:column style="width: 34%">
+                                <p:outputLabel  value="#{groupWorkingModel.beginTime}" >
+                                    <f:convertDateTime pattern="dd MMMM yyyy" />
+                                </p:outputLabel>
+                            </p:column>
+                            <p:column style="width: 17%;background-color: #e1f0f0!important">
+                                <p:outputLabel  value="Tanggal Selesai" style="font-weight: bold"/>
+                            </p:column>
+                            <p:column style="width: 34%">
+                                <p:outputLabel  value="#{groupWorkingModel.endTime}" >
+                                    <f:convertDateTime pattern="dd MMMM yyyy" />
+                                </p:outputLabel>
+                            </p:column>
+
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 17%;background-color: #e1f0f0!important" >
+                                <p:outputLabel  value="Jam Kerja Per Hari" style="font-weight: bold"/>
+                            </p:column>
+                            <p:column style="width: 34%">
+                                <p:outputLabel  value="#{groupWorkingModel.workingTimePerday}" />
+                                <h:outputLabel value="#{appmsg['global.hour']}" style="margin-left: 5px"/>
+                            </p:column>
+                            <p:column style="width: 17%;background-color: #e1f0f0!important">
+                                <p:outputLabel  value="Jam Kerja Per Minggu" style="font-weight: bold"/>
+                            </p:column>
+                            <p:column style="width: 34%">
+                                <p:outputLabel  value="#{groupWorkingModel.workingTimePerweek}" />
+                                <h:outputLabel value="#{appmsg['global.hour']}" style="margin-left: 5px"/>
+                            </p:column>
+
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 17%;background-color: #e1f0f0!important" >
+                                <p:outputLabel  value="Lembur Berdasarkan Pekerja" style="font-weight: bold"/>
+                            </p:column>
+                            <p:column style="width: 34%">
+                                <h:outputFormat  value="#{groupWorkingModel.overtimeBasedOnAttendance}" >
+                                    <f:converter converterId="booleanMessageConverter"/>
+                                </h:outputFormat>
+                            </p:column>
+                            <p:column style="width: 17%;background-color: #e1f0f0!important" rowspan="2" >
+                                <p:outputLabel  value="Berulang" style="font-weight: bold"/>
+                            </p:column>
+                            <p:column style="width: 34%" rowspan="2">
+                                <h:outputLabel value="#{groupWorkingModel.isPeriodic}" >
+                                    <f:converter converterId="booleanMessageConverter"/>
+                                </h:outputLabel>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 17%;background-color: #e1f0f0!important" >
+                                <p:outputLabel  value="Lembur Berdasarkan Permintaan" style="font-weight: bold"/>
+                            </p:column>
+                            <p:column style="width: 34%" >
+                                <h:outputLabel  value="#{groupWorkingModel.overtimeBasedOnRequest}" >
+                                    <f:converter converterId="booleanMessageConverter"/>
+                                </h:outputLabel>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <p:outputLabel value="Penambahan Jadwal Shift" styleClass="header_big" />
+                    <p:separator/>
+
+                    <p:dataTable  var="dataShiftModel"  value="#{groupWorkingModel.dataShiftModels}" lazy="false"
+
+                                  id="tableOverTimeId" style="margin-top: 10px;margin-bottom: 10px"
+                                  rowIndexVar="no">
+
+                        <!--                        <f:facet name="header">  
+                                                    <h:outputText value="Daftar Jadwal Shift" styleClass="label_hrm"/>
+                                                </f:facet> -->
+                        <!--                        <p:column style="text-align: center;max-width: 1px" >
+                                                    <f:facet name="header">  
+                                                        <h:outputText value="No." />
+                                                    </f:facet>
+                                                    <h:outputLabel value="#{no+1}." />
+                                                </p:column>-->
+                        <p:column style="text-align: center" >
+                            <f:facet name="header">  
+                                <h:outputText value="Tanggal"/>
+                            </f:facet>
+                            <h:outputLabel value= "#{dataShiftModel.tanggalKerja}">
+                                <f:convertDateTime pattern="dd MMMM yyyy" />
+                            </h:outputLabel>
+                        </p:column>
+
+                        <p:column  >
+                            <f:facet name="header">  
+                                <h:outputText value="Jadwal Shift"/>
+                            </f:facet>
+                            <p:selectOneMenu id="pilihanBahasa" styleClass="isitext_hrm"
+                                             label="#{appmsg['loginform.choose_language']}"
+                                             style="font-family: Calibri!important;width: 130px;text-align: left" >
+                                <f:selectItems value="#{bahasa}"/>
+
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:dataTable>
+                    <div align="center">
+                        <h:panelGrid columns="2">
+                            <p:commandButton value="Back"/>
+                            <p:commandButton value="Next"/>
+                        </h:panelGrid>
+                    </div>
+                    <p:separator/>
+                    <div style="margin-bottom: 5px">
+                        <p:commandButton value="Simpan" ajax="true" 
+                                         action="next" styleClass="isitext_hrm" 
+                                         style="margin-right: 5px" label="Lanjut"
+                                         icon="ui-icon-arrow-1-e" title="Lanjut"/>
+                       
+                        <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{workingHourFormController.doBack()}" immediate="true"
+                                         styleClass="label_button"/>
+                    </div>
+                </div>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+
