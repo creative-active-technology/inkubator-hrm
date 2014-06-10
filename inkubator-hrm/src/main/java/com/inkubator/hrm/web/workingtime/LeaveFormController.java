@@ -33,6 +33,7 @@ public class LeaveFormController extends BaseController {
     private LeaveModel model;
     private Boolean isUpdate;
     private Boolean isRenderAvailabilityDate;
+    private Boolean isRenderEndOfPeriodMonth;
     @ManagedProperty(value = "#{leaveService}")
     private LeaveService leaveService;
     @ManagedProperty(value = "#{attendanceStatusService}")
@@ -43,18 +44,22 @@ public class LeaveFormController extends BaseController {
     public void initialization() {
         super.initialization();
         try {
-	        String param = FacesUtil.getRequestParameter("execution");
+        	isUpdate = Boolean.FALSE;
+	        isRenderAvailabilityDate = Boolean.FALSE;
+	        isRenderEndOfPeriodMonth = Boolean.FALSE;
+	        
 	        model = new LeaveModel();
 	        List<AttendanceStatus> attendanceStatusList = attendanceStatusService.getAllData();
 	        model.setAttendanceStatusList(attendanceStatusList);
-	        isUpdate = Boolean.FALSE;
-	        isRenderAvailabilityDate = Boolean.FALSE;
+	        
+	        String param = FacesUtil.getRequestParameter("execution");
 	        if (StringUtils.isNotEmpty(param)) {
 	        	Leave leave = leaveService.getEntiyByPK(Long.parseLong(param.substring(1)));
 				if (leave != null) {
 					getModelFromEntity(leave);
 					isUpdate = Boolean.TRUE;
-					isRenderAvailabilityDate = model.getAvailability() == HRMConstant.LEAVE_AVAILABILITY_INCREASES_CERTAIN_DATE;
+					isRenderAvailabilityDate = StringUtils.equals(model.getAvailability(), HRMConstant.LEAVE_AVAILABILITY_INCREASES_SPECIFIC_DATE);
+                    isRenderEndOfPeriodMonth = StringUtils.equals(model.getEndOfPeriod(), HRMConstant.LEAVE_END_OF_PERIOD_MONTH);
 				}
 	        }
         } catch (Exception e) {
@@ -68,6 +73,7 @@ public class LeaveFormController extends BaseController {
         model = null;
         isUpdate = null;
         isRenderAvailabilityDate = null;
+        isRenderEndOfPeriodMonth = null;
         attendanceStatusService = null;
     }
 
@@ -87,12 +93,20 @@ public class LeaveFormController extends BaseController {
         this.isUpdate = isUpdate;
     }
 
-    public Boolean getIsRenderAvailabilityDate() {
+	public Boolean getIsRenderAvailabilityDate() {
 		return isRenderAvailabilityDate;
 	}
 
 	public void setIsRenderAvailabilityDate(Boolean isRenderAvailabilityDate) {
 		this.isRenderAvailabilityDate = isRenderAvailabilityDate;
+	}
+
+	public Boolean getIsRenderEndOfPeriodMonth() {
+		return isRenderEndOfPeriodMonth;
+	}
+
+	public void setIsRenderEndOfPeriodMonth(Boolean isRenderEndOfPeriodMonth) {
+		this.isRenderEndOfPeriodMonth = isRenderEndOfPeriodMonth;
 	}
 
 	public void setLeaveService(LeaveService leaveService) {
@@ -109,12 +123,16 @@ public class LeaveFormController extends BaseController {
     			Leave leave = leaveService.getEntiyByPK(model.getId());
     			if (leave != null) {
                     getModelFromEntity(leave);
+                    isRenderAvailabilityDate = StringUtils.equals(model.getAvailability(), HRMConstant.LEAVE_AVAILABILITY_INCREASES_SPECIFIC_DATE);
+                    isRenderEndOfPeriodMonth = StringUtils.equals(model.getEndOfPeriod(), HRMConstant.LEAVE_END_OF_PERIOD_MONTH);
     			}
     		} catch (Exception ex) {
     			LOGGER.error("Error", ex);
     		}
     	} else {
     		model = new LeaveModel();
+    		isRenderAvailabilityDate = Boolean.FALSE;
+			isRenderEndOfPeriodMonth = Boolean.FALSE;
     	}    	
     }
 
@@ -131,7 +149,7 @@ public class LeaveFormController extends BaseController {
                 MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             }
-            return "/protected/working_time/leave_detail.htm?faces-redirect=true&execution=e" + leave.getId();
+            return "/protected/working_time/leave_view.htm?faces-redirect=true&execution=e" + leave.getId();
         } catch (BussinessException ex) { //data already exist(duplicate)
             LOGGER.error("Error", ex);
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
@@ -147,8 +165,26 @@ public class LeaveFormController extends BaseController {
             leave.setId(model.getId());
         }
         leave.setCode(model.getCode());
-        leave.setName(model.getName());
-        leave.setDescription(model.getDescription());
+		leave.setName(model.getName());
+		leave.setDescription(model.getDescription());	
+		leave.setDayType(model.getDayType());
+	    leave.setCalculation(model.getCalculation());
+	    leave.setAttendanceStatus(new AttendanceStatus(model.getAttendanceStatusId()));
+	    leave.setPeriodBase(model.getPeriodBase());
+	    leave.setAvailability(model.getAvailability());
+	    leave.setAvailabilityAtSpecificDate(model.getAvailabilityAtSpecificDate());
+	    leave.setIsTakingLeaveToNextYear(model.getIsTakingLeaveToNextYear());
+	    leave.setMaxTakingLeaveToNextYear(model.getMaxTakingLeaveToNextYear());
+	    leave.setBackwardPeriodLimit(model.getBackwardPeriodLimit());
+	    leave.setIsAllowedMinus(model.getIsAllowedMinus());
+	    leave.setMaxAllowedMinus(model.getMaxAllowedMinus());
+	    leave.setEffectiveFrom(model.getEffectiveFrom());
+	    leave.setSubmittedLimit(model.getSubmittedLimit());
+	    leave.setApprovalLevel(model.getApprovalLevel());
+	    leave.setIsQuotaReduction(model.getIsQuotaReduction());
+	    leave.setEndOfPeriod(model.getEndOfPeriod());
+	    leave.setEndOfPeriodMonth(model.getEndOfPeriodMonth());
+	    leave.setIsOnlyOncePerEmployee(model.getIsOnlyOncePerEmployee());
 
         return leave;
     }
@@ -156,16 +192,43 @@ public class LeaveFormController extends BaseController {
     private void getModelFromEntity(Leave leave) {
         model.setId(leave.getId());
         model.setCode(leave.getCode());
-        model.setName(leave.getName());
-        model.setDescription(leave.getDescription());
+		model.setName(leave.getName());
+		model.setDescription(leave.getDescription());	
+		model.setDayType(leave.getDayType());
+	    model.setCalculation(leave.getCalculation());
+	    model.setAttendanceStatusId(leave.getAttendanceStatus().getId());
+	    model.setPeriodBase(leave.getPeriodBase());
+	    model.setAvailability(leave.getAvailability());
+	    model.setAvailabilityAtSpecificDate(leave.getAvailabilityAtSpecificDate());
+	    model.setIsTakingLeaveToNextYear(leave.getIsTakingLeaveToNextYear());
+	    model.setMaxTakingLeaveToNextYear(leave.getMaxTakingLeaveToNextYear());
+	    model.setBackwardPeriodLimit(leave.getBackwardPeriodLimit());
+	    model.setIsAllowedMinus(leave.getIsAllowedMinus());
+	    model.setMaxAllowedMinus(leave.getMaxAllowedMinus());
+	    model.setEffectiveFrom(leave.getEffectiveFrom());
+	    model.setSubmittedLimit(leave.getSubmittedLimit());
+	    model.setApprovalLevel(leave.getApprovalLevel());
+	    model.setIsQuotaReduction(leave.getIsQuotaReduction());
+	    model.setEndOfPeriod(leave.getEndOfPeriod());
+	    model.setEndOfPeriodMonth(leave.getEndOfPeriodMonth());
+	    model.setIsOnlyOncePerEmployee(leave.getIsOnlyOncePerEmployee());
     }
 
     public String doBack() {
         return "/protected/working_time/leave_view.htm?faces-redirect=true";
     }
     
-    public void onChangeAvailabilty(){
-    	isRenderAvailabilityDate = (model.getAvailability()!=null && 
-    			model.getAvailability() == HRMConstant.LEAVE_AVAILABILITY_INCREASES_CERTAIN_DATE);
+    public void onChangeAvailability(){
+    	isRenderAvailabilityDate = StringUtils.equals(model.getAvailability(), HRMConstant.LEAVE_AVAILABILITY_INCREASES_SPECIFIC_DATE);
+    	if(isRenderAvailabilityDate == Boolean.FALSE){
+    		model.setAvailabilityAtSpecificDate(null);
+    	}
+    }
+    
+    public void onChangeEndOfPeriod(){
+    	isRenderEndOfPeriodMonth = StringUtils.equals(model.getEndOfPeriod(), HRMConstant.LEAVE_END_OF_PERIOD_MONTH);
+    	if(isRenderEndOfPeriodMonth == Boolean.FALSE){
+    		model.setEndOfPeriodMonth(null);
+    	}
     }
 }

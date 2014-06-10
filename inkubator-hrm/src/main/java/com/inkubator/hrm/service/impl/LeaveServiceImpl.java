@@ -215,6 +215,8 @@ public class LeaveServiceImpl extends IServiceImpl implements LeaveService {
 		}
 		
 		leave.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+		AttendanceStatus attendanceStatus = attendanceStatusDao.getEntiyByPK(leave.getAttendanceStatus().getId());
+	    leave.setAttendanceStatus(attendanceStatus);
 		leave.setCreatedBy(UserInfoUtil.getUserName());
 		leave.setCreatedOn(new Date());
 		leaveDao.save(leave);

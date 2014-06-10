@@ -53,16 +53,6 @@
 	                        </p:row>
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel for="descId" value="#{appmsg['global.description']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:inputTextarea id="descId" title="#{appmsg['global.description']}" value="#{leaveFormController.model.description}" 
-	                                    			 maxlength="1000" styleClass="isitext_hrm" style="width:290px;" />
-	                                <p:message for="descId"/>
-	                            </p:column>
-	                        </p:row> 
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
 	                                <p:outputLabel for="dayTypeId" value="#{appmsg['leave.type_of_day']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
@@ -105,7 +95,7 @@
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                            	<p:selectOneMenu id="periodBaseId" styleClass="isitext_hrm" required="true"  value="#{leaveFormController.model.periodBase}">
-	                            		<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+	                                    <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
 	                                    <f:selectItem itemLabel="T.M.B" itemValue="0" />
 	                                    <f:selectItem itemLabel="0101" itemValue="1" />
 	                                    <f:selectItem itemLabel="T.M.B ke 0101" itemValue="2" />
@@ -118,24 +108,154 @@
 	                                <p:outputLabel for="availabilityId" value="#{appmsg['leave.availability_of_leave']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<h:panelGrid columns="2" id="gridAvailabity" style="margin-left:-10px" >
-		                            	<p:selectOneMenu id="availabilityId" styleClass="isitext_hrm" required="true"  value="#{leaveFormController.model.availability}">
+	                            	<h:panelGrid columns="2" style="margin-left:-10px" >
+	                            		<!-- note: pada dasarnya option dibawah adalah required="true", dibuat dynamic agar ajax calling selalu dipanggil tanpa menghirauakan validation -->
+		                            	<p:selectOneMenu id="availabilityId" styleClass="isitext_hrm" required="#{not leaveFormController.isRenderAvailabilityDate}"  value="#{leaveFormController.model.availability}">
 		                            		<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
 		                                    <f:selectItem itemLabel="#{appmsg['leave.full']}" itemValue="0" />
 		                                    <f:selectItem itemLabel="#{appmsg['leave.increases_each_month']}" itemValue="1" />
 		                                    <f:selectItem itemLabel="#{appmsg['leave.increases_on_certain_date']}" itemValue="2" />
-		                                    <p:ajax listener="#{leaveFormController.onChangeAvailabilty()}" update="gridAvailabity"/>
+		                                    <p:ajax listener="#{leaveFormController.onChangeAvailability()}" update="gridAvailabilityAtSpecificDateId"/>
 		                                </p:selectOneMenu>
-		                                <p:calendar id="availabilityAtSpecificDateId" label="#{appmsg['global.date']}" required="true"  pattern="dd-MMMM-yyyy" showOn="button"
-	                                            value="#{leaveFormController.model.availabilityAtSpecificDate}" rendered="#{leaveFormController.isRenderAvailabilityDate}"/>
-                                     </h:panelGrid> 
+		                                <h:panelGrid id="gridAvailabilityAtSpecificDateId" columns="1">
+		                                	<p:calendar id="availabilityAtSpecificDateId" label="#{appmsg['global.date']}" required="true"  pattern="dd-MMMM" showOn="button"
+	                                            		value="#{leaveFormController.model.availabilityAtSpecificDate}" rendered="#{leaveFormController.isRenderAvailabilityDate}" />
+	                                    </h:panelGrid>
+                                    </h:panelGrid> 
 	                                <p:message for="availabilityId"/>
 	                                <p:message for="availabilityAtSpecificDateId"/>
 	                            </p:column>
 	                        </p:row>  
-	                           	         
-	                           	         
-	                           	                             
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="isTakingLeaveToNextYearId" value="#{appmsg['leave.taking_leave_to_next_year']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                                <p:selectBooleanButton id="isTakingLeaveToNextYearId" value="#{leaveFormController.model.isTakingLeaveToNextYear}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
+                                                           offIcon="ui-icon-close" styleClass="label_button">
+                                    	<p:ajax update="maxTakingLeaveToNextYearId,maxTakingLeaveToNextYearMessageId,backwardPeriodLimitId,backwardPeriodLimitMessageId" />
+                                    </p:selectBooleanButton>                             
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="maxTakingLeaveToNextYearId" value="#{appmsg['leave.maximum_taken']}" styleClass="label_hrm" style="margin-left:30px;"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                                <p:spinner id="maxTakingLeaveToNextYearId" value="#{leaveFormController.model.maxTakingLeaveToNextYear}" size="4" max="10" min="0" styleClass="isitext_hrm" 
+	                                		   disabled="#{not leaveFormController.model.isTakingLeaveToNextYear}" required="#{leaveFormController.model.isTakingLeaveToNextYear}"/>	                               
+	                                <p:message id="maxTakingLeaveToNextYearMessageId" for="maxTakingLeaveToNextYearId"/>	                                
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="backwardPeriodLimitId" value="#{appmsg['leave.backward_period_limit']}" styleClass="label_hrm" style="margin-left:30px;"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                                <p:spinner id="backwardPeriodLimitId" value="#{leaveFormController.model.backwardPeriodLimit}" size="4" max="12" min="0" styleClass="isitext_hrm" 
+	                                		   disabled="#{not leaveFormController.model.isTakingLeaveToNextYear}" required="#{leaveFormController.model.isTakingLeaveToNextYear}"/>	                               
+	                                <p:message id="backwardPeriodLimitMessageId" for="backwardPeriodLimitId"/>	                                
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="isAllowedMinusId" value="#{appmsg['leave.allowed_minus']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<h:panelGrid columns="3" id="gridIsAllowedMinusId" style="margin-left:-10px" >
+		                                <p:selectBooleanButton id="isAllowedMinusId" value="#{leaveFormController.model.isAllowedMinus}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
+	                                                           offIcon="ui-icon-close" styleClass="label_button" style="margin-right: 10px;">
+	                                    	<p:ajax update="gridIsAllowedMinusId" />
+	                                    </p:selectBooleanButton> 
+	                                    <p:outputLabel for="maxAllowedMinusId" value="#{appmsg['global.maximum']}" rendered="#{leaveFormController.model.isAllowedMinus}" styleClass="label_hrm"/>
+	                                    <p:spinner id="maxAllowedMinusId" label="#{appmsg['global.maximum']}" value="#{leaveFormController.model.maxTakingLeaveToNextYear}" size="4" max="10" min="0" styleClass="isitext_hrm" 
+	                                		   	   required="#{leaveFormController.model.isAllowedMinus}" rendered="#{leaveFormController.model.isAllowedMinus}"/>	                               
+                                    </h:panelGrid>     
+                                    <p:message for="maxAllowedMinusId"/>               
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="effectiveFromId" value="#{appmsg['leave.effective_from']} (TMB)" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                                <p:spinner id="effectiveFromId" value="#{leaveFormController.model.effectiveFrom}" size="4" max="100" min="0" 
+	                                		   styleClass="isitext_hrm" required="true"/>	                               
+	                                <p:message for="effectiveFromId"/>	                                
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="submittedLimitId" value="#{appmsg['leave.submitted_limit']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                                <p:spinner id="submittedLimitId" value="#{leaveFormController.model.submittedLimit}" size="4" max="10" min="0" 
+	                                		   styleClass="isitext_hrm" required="true"/>	                               
+	                                <p:message for="submittedLimitId"/>	                                
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="approvalLevelId" value="#{appmsg['leave.approval_level']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                                <p:spinner id="approvalLevelId" value="#{leaveFormController.model.approvalLevel}" size="4" max="10" min="0" 
+	                                		   styleClass="isitext_hrm" required="true"/>	                               
+	                                <p:message for="approvalLevelId"/>	                                
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="isQuotaReductionId" value="#{appmsg['leave.leave_quota_reduction']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+		                        	<p:selectBooleanButton id="isQuotaReductionId" value="#{leaveFormController.model.isQuotaReduction}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
+	                                                       offIcon="ui-icon-close" styleClass="label_button"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="endOfPeriodId" value="#{appmsg['leave.availability_of_leave']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<h:panelGrid columns="2" style="margin-left:-10px" >
+	                            		<!-- note: pada dasarnya option dibawah adalah required="true", dibuat dynamic agar ajax calling selalu dipanggil tanpa menghirauakan validation -->
+		                            	<p:selectOneMenu id="endOfPeriodId" styleClass="isitext_hrm" required="#{not leaveFormController.isRenderEndOfPeriodMonth}"  value="#{leaveFormController.model.endOfPeriod}">		                            		
+		                                    <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+		                                    <f:selectItem itemLabel="#{appmsg['leave.monthly']}" itemValue="0" />
+		                                    <f:selectItem itemLabel="#{appmsg['leave.rest_of_leave']}" itemValue="1" />
+		                                    <p:ajax listener="#{leaveFormController.onChangeEndOfPeriod()}" update="gridEndOfPeriodMonthId"/>
+		                                </p:selectOneMenu>
+		                                <h:panelGrid id="gridEndOfPeriodMonthId" columns="2">
+			                                <p:outputLabel for="endOfPeriodMonthId" value="#{appmsg['leave.total_month']}" rendered="#{leaveFormController.isRenderEndOfPeriodMonth}" styleClass="label_hrm"/>
+			                                <p:spinner id="endOfPeriodMonthId" value="#{leaveFormController.model.endOfPeriodMonth}" size="4" max="12" min="0" styleClass="isitext_hrm" 
+		                                		   	   required="true" rendered="#{leaveFormController.isRenderEndOfPeriodMonth}"/>
+	                               		</h:panelGrid>	                               
+                                    </h:panelGrid> 
+                                    <p:message for="endOfPeriodId"/>
+	                                <p:message for="endOfPeriodMonthId"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important"/>
+	                            <p:column  style="width: 80%">
+	                            	<h:panelGrid columns="2">
+		                        		<p:selectBooleanButton value="#{leaveFormController.model.isOnlyOncePerEmployee}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
+	                                                       	   offIcon="ui-icon-close" styleClass="label_button" style="margin-left: -10px;"/>
+	                                    <p:outputLabel value="#{appmsg['leave.only_once_per_employee']}" styleClass="label_hrm"/>
+	                                </h:panelGrid>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="descId" value="#{appmsg['global.description']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:inputTextarea id="descId" title="#{appmsg['global.description']}" value="#{leaveFormController.model.description}" 
+	                                    			 maxlength="1000" styleClass="isitext_hrm" style="width:290px;" />
+	                                <p:message for="descId"/>
+	                            </p:column>
+	                        </p:row>                       
 	                 	</p:panelGrid>	                    
 	                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
 	                    <div style="margin-bottom: 5px">

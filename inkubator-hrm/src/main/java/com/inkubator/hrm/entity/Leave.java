@@ -28,11 +28,11 @@ public class Leave implements Serializable {
     private String code;
     private String name;
     private String description;
-    private Integer dayType;
-    private Integer calculation;
+    private String dayType;
+    private String calculation;
     private AttendanceStatus attendanceStatus;
-    private Integer periodBase;
-    private Integer availability;
+    private String periodBase;
+    private String availability;
     private Date availabilityAtSpecificDate;
     private Boolean isTakingLeaveToNextYear;
     private Integer maxTakingLeaveToNextYear;
@@ -43,7 +43,7 @@ public class Leave implements Serializable {
     private Integer submittedLimit;
     private Integer approvalLevel;
     private Boolean isQuotaReduction;
-    private Integer endOfPeriod;
+    private String endOfPeriod;
     private Integer endOfPeriodMonth;
     private Boolean isOnlyOncePerEmployee;
     private String createdBy;
@@ -107,20 +107,20 @@ public class Leave implements Serializable {
 	}
 
 	@Column(name = "day_type", nullable = false, length = 1)
-	public Integer getDayType() {
+	public String getDayType() {
 		return dayType;
 	}
 
-	public void setDayType(Integer dayType) {
+	public void setDayType(String dayType) {
 		this.dayType = dayType;
 	}
 
 	@Column(name = "calculation", nullable = false, length = 1)
-	public Integer getCalculation() {
+	public String getCalculation() {
 		return calculation;
 	}
 
-	public void setCalculation(Integer calculation) {
+	public void setCalculation(String calculation) {
 		this.calculation = calculation;
 	}
 
@@ -135,20 +135,20 @@ public class Leave implements Serializable {
 	}
 
 	@Column(name = "period_base", nullable = false, length = 1)
-	public Integer getPeriodBase() {
+	public String getPeriodBase() {
 		return periodBase;
 	}
 
-	public void setPeriodBase(Integer periodBase) {
+	public void setPeriodBase(String periodBase) {
 		this.periodBase = periodBase;
 	}
 
 	@Column(name = "availability", nullable = false, length = 1)
-	public Integer getAvailability() {
+	public String getAvailability() {
 		return availability;
 	}
 
-	public void setAvailability(Integer availability) {
+	public void setAvailability(String availability) {
 		this.availability = availability;
 	}
 
@@ -244,11 +244,11 @@ public class Leave implements Serializable {
 	}
 
 	@Column(name = "end_of_period", nullable = false, length = 1)
-	public Integer getEndOfPeriod() {
+	public String getEndOfPeriod() {
 		return endOfPeriod;
 	}
 
-	public void setEndOfPeriod(Integer endOfPeriod) {
+	public void setEndOfPeriod(String endOfPeriod) {
 		this.endOfPeriod = endOfPeriod;
 	}
 
