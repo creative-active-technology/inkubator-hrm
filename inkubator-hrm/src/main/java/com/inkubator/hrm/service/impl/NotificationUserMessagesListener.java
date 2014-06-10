@@ -86,7 +86,7 @@ public class NotificationUserMessagesListener extends IServiceImpl implements Me
                     }
 
                     if (passwordHistory.getRequestType().equalsIgnoreCase(HRMConstant.USER_RESET)) {
-                        maptoSend.put("headerInfo", "Password Anda pada Aplikasi PRICE GENERATOR berhasil direset. <br/>");
+                        maptoSend.put("headerInfo", "Password Anda pada Aplikasi OPTIMA HR berhasil direset. <br/>");
                     }
                 }
                 Gson gson = new GsonBuilder().create();

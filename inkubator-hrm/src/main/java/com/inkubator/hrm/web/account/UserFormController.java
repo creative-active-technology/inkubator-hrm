@@ -214,7 +214,7 @@ public class UserFormController extends BaseController {
         }
         hrmUser.setPassword(userModel.getPassword());
         hrmUser.setPhoneNumber(userModel.getPhoneNumber());
-        hrmUser.setRealName(userModel.getUserName());
+        hrmUser.setRealName(userModel.getRealName());
         hrmUser.setUserId(userModel.getUserId());
         return hrmUser;
     }
@@ -240,7 +240,7 @@ public class UserFormController extends BaseController {
         }
         us.setPassword(hrmUser.getPassword());
         us.setPhoneNumber(hrmUser.getPhoneNumber());
-        us.setUserName(hrmUser.getRealName());
+        us.setRealName(hrmUser.getRealName());
         us.setUserId(hrmUser.getUserId());
         return us;
     }

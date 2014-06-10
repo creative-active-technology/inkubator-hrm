@@ -16,6 +16,7 @@
     <h:body>
         <p:socket onMessage="handleLogin" channel="/notificationsLogin" />
         <p:growl widgetVar="loginNotification" showDetail="true" showSummary="true" life="2500" /> 
+        <p:growl id="mainGrowl" showDetail="true" globalOnly="true" />
         <h:form>
             <p:idleMonitor timeout="1740000" onidle="infoSession.show()"/>
             <p:dialog header="#{appmsg['master_layout.session_information']}" widgetVar="infoSession" modal="true" 
@@ -43,11 +44,108 @@
             </h:form>    
 
         </p:dialog>
-
-<!--        <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
-  <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
-  <h:inputHidden value="#{homeController.bahasa}" />
-</p:dialog>-->
+        <p:dialog widgetVar="dialogUserInfo" modal="true" resizable="false" hideEffect="puff" showEffect="clip" onShow="statusDialog.hide();" 
+           		appendTo="@(body)" header="#{appmsg['master_layout.user_configuration']}" dynamic="true" width="500" >
+            	<h:panelGrid columns="2" style="margin-top: 10px;margin-left: 6px">
+            		<p:graphicImage library="images" name="user.png" width="44" height="44" cache="true" />
+            		<p:outputLabel value="#{appmsg['master_layout.user_information']}" styleClass="header_big" />
+            	</h:panelGrid>   
+            	<p:separator/>
+            	<h:panelGrid columns="1" style="margin-bottom: 15px;">
+                	<p:outputLabel id="changeUserInfoId" value="#{appmsg['master_layout.user_information_attention']}" styleClass="label_hrm"/>
+                	<p:outputLabel id="changePasswordId" value="#{appmsg['master_layout.user_password_attention']}" styleClass="label_hrm" />
+                </h:panelGrid>
+                <p:tabView id="tabViewUserInfoId" onTabChange="handleViewTabUserInfo(index)" style="margin: 10px 0px;">
+                	<p:tab title="#{appmsg['master_layout.user_information']}">
+                		<h:form id="formUserInfoTab">
+	                		<p:panelGrid styleClass="panelHeaderGrid" style="width:100%">
+	                			<p:row>
+	                				<p:column style="width:30%;background-color: #e1f0f0!important">
+	                					<h:outputLabel value="#{appmsg['master_layout.user_id']}" styleClass="label_hrm"/>
+	                				</p:column>
+	                				<p:column style="width:60%;">
+	                					<p:inputText value="#{userInfoController.userModel.userId}" disabled="true"/>
+	                				</p:column>
+	                			</p:row>
+	                			<p:row>
+	                				<p:column style="width:30%;background-color: #e1f0f0!important">
+	                					<h:outputLabel value="#{appmsg['master_layout.user_name']}" styleClass="label_hrm"/>
+	                				</p:column>
+	                				<p:column style="width:60%;">
+	                					<p:inputText value="#{userInfoController.userModel.realName}" />
+	                				</p:column>
+	                			</p:row>
+	                			<p:row>
+	                				<p:column style="width:30%;background-color: #e1f0f0!important">
+	                					<p:outputLabel for="emailAddress" value="#{appmsg['master_layout.email_address']}" styleClass="label_hrm"/>
+	                				</p:column>
+	                				<p:column style="width:60%;">
+	                					<p:inputText id="emailAddress" value="#{userInfoController.userModel.emailAddress}" required="true"/>
+	                					<p:message for="emailAddress"/>
+	                				</p:column>
+	                			</p:row>
+	                			<p:row>
+	                				<p:column style="width:30%;background-color: #e1f0f0!important">
+	                					<p:outputLabel for="phoneNumber" value="#{appmsg['master_layout.phone_number']}" styleClass="label_hrm"/>
+	                				</p:column>
+	                				<p:column style="width:60%;">
+	                					<p:inputText id="phoneNumber" value="#{userInfoController.userModel.phoneNumber}" required="true" />
+	                					<p:message for="phoneNumber"/>
+	                				</p:column>
+	                			</p:row>
+	                		</p:panelGrid>
+	                		<p:commandButton value="#{appmsg['global.edit']}" update="formUserInfoTab,:mainGrowl" ajax="true" title="#{appmsg['global.edit']}" action="#{userInfoController.doUpdateUserInfo()}" 
+	                			style="margin-top: 10px;font-size: 11px;width: 100%" icon="ui-icon-locked" oncomplete="handleDoUpdateUserInfo(args)"/>
+                            <p:watermark for="emailAddress" value="some_one@some_where.com"/>
+                            <p:watermark for="phoneNumber" value="+62000000000"/>
+                		</h:form>
+                	</p:tab>
+                	<p:tab title="#{appmsg['master_layout.change_password']}">
+                		<h:form id="formChangePasswordTab">
+	                		<p:panelGrid styleClass="panelHeaderGrid" style="width:100%">
+	                			<p:row>
+	                				<p:column style="width:30%;background-color: #e1f0f0!important">
+	                					<p:outputLabel value="#{appmsg['master_layout.user_id']}" styleClass="label_hrm"/>
+	                				</p:column>
+	                				<p:column style="width:60%;">
+	                					<p:inputText value="#{userInfoController.userModel.userId}" disabled="true" />
+	                				</p:column>
+	                			</p:row>
+	                			<p:row>
+	                				<p:column style="width:30%;background-color: #e1f0f0!important">
+	                					<p:outputLabel for="oldPassword" value="#{appmsg['master_layout.old_password']}" styleClass="label_hrm"/>
+	                				</p:column>
+	                				<p:column style="width:60%;">
+	                					<p:password id="oldPassword" value="#{userInfoController.userModel.oldPassword}" feedback="true" required="true"/>
+	                					<p:message for="oldPassword"/>	                					
+	                				</p:column>
+	                			</p:row>
+	                			<p:row>
+	                				<p:column style="width:30%;background-color: #e1f0f0!important">
+	                					<p:outputLabel for="newPassword" value="#{appmsg['master_layout.new_password']}" styleClass="label_hrm"/>
+	                				</p:column>
+	                				<p:column style="width:60%;">
+	                					<p:password id="newPassword" value="#{userInfoController.userModel.password}" match="confirmPassword" feedback="true" required="true"/>
+	                					<p:message for="newPassword"/>
+	                				</p:column>
+	                			</p:row>
+	                			<p:row>
+	                				<p:column style="width:30%;background-color: #e1f0f0!important">
+	                					<p:outputLabel for="confirmPassword" value="#{appmsg['master_layout.confirm_new_password']}" styleClass="label_hrm"/>
+	                				</p:column>
+	                				<p:column style="width:60%;">
+	                					<p:password id="confirmPassword" value="#{userInfoController.userModel.password}" feedback="true" required="true" />
+	                					<p:message for="confirmPassword"/>
+	                				</p:column>
+	                			</p:row>
+	                		</p:panelGrid>
+	                		<p:commandButton value="#{appmsg['global.edit']}" update="formChangePasswordTab,:mainGrowl" ajax="true" title="#{appmsg['global.edit']}" action="#{userInfoController.doUpdatePassword()}" oncomplete="handleDoUpdateUserInfo(args)"
+	                			style="margin-top: 10px;font-size: 11px;width: 100%" icon="ui-icon-locked"/>	                		
+                		</h:form>
+                	</p:tab>
+                </p:tabView>
+            </p:dialog>
+            
         <div id="art-page-background-middle-texture">
             <div id="art-page-background-glare">
                 <div id="art-page-background-glare-image">
@@ -64,7 +162,7 @@
                                     <p:commandLink id="pendingId" action="#{userInformationController.doPendingTask()}" title="My Pending Task" >
                                         <p:graphicImage library="images" name="task-manager_ico.png" width="22" height="22" id="ima" cache="true" /> 
                                     </p:commandLink>
-                                    <p:commandLink id="userId" onclick="statusDialog.show()" oncomplete="userInformationDialog.show()" action="#{userInformationController.onRenderUserInfo()}" title="User Profile" >
+                                    <p:commandLink id="userId" onclick="statusDialog.show()" oncomplete="dialogUserInfo.show()" update=":tabViewUserInfoId" action="#{userInfoController.onRenderUserInfo()}" title="User Profile" >
                                         <p:graphicImage library="images" name="user_ico.png" width="22" height="22" cache="true"/> 
                                     </p:commandLink>
                                     <h:commandLink id="calculatorId" title="Calculator">
@@ -210,6 +308,22 @@
                 </div>
             </div>
         </div>
+        <script type="text/javascript">
+	    	function handleViewTabUserInfo(idx) {
+	        	if(idx === 0){
+	            	$('#changeUserInfoId').show();
+	            	$('#changePasswordId').hide();
+	            } else {
+	            	$('#changeUserInfoId').hide();
+	                $('#changePasswordId').show();	                		
+	            }
+	        }
+	    	function handleDoUpdateUserInfo(args) {
+                if (args.isUpdateSucceed) {
+                	dialogUserInfo.hide();
+                }
+            }
+	    </script>
         <h:outputScript library="js" name="login_socket.js"/>
         <h:outputScript library="js" name="indonesia_locale.js" />
     </h:body>

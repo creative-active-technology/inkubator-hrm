@@ -17,10 +17,11 @@ public class UserModel implements Serializable {
 
     private Long id;
     private String userId;
-    private String userName;
+    private String realName;
     private String emailAddress;
     private String phoneNumber;
     private String password;
+    private String oldPassword;
     private Boolean isActive;
     private Boolean isExpired;
     private Boolean isLock;
@@ -41,15 +42,15 @@ public class UserModel implements Serializable {
         this.userId = userId;
     }
 
-    public String getUserName() {
-        return userName;
-    }
+    public String getRealName() {
+		return realName;
+	}
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
+	public void setRealName(String realName) {
+		this.realName = realName;
+	}
 
-    @Email(message = "{errorr_mail}")
+	@Email(message = "{errorr_mail}")
     public String getEmailAddress() {
         return emailAddress;
     }
@@ -76,7 +77,15 @@ public class UserModel implements Serializable {
         this.password = password;
     }
 
-    public Boolean getIsActive() {
+    public String getOldPassword() {
+		return oldPassword;
+	}
+
+	public void setOldPassword(String oldPassword) {
+		this.oldPassword = oldPassword;
+	}
+
+	public Boolean getIsActive() {
         return isActive;
     }
 

@@ -32,7 +32,7 @@ public class HrmUserSearchParameter extends SearchParameter {
 
     public String getRealName() {
         if (getKeyParam() != null) {
-            if (getKeyParam().equalsIgnoreCase("userName")) {
+            if (getKeyParam().equalsIgnoreCase("realName")) {
                 realName = getParameter();
             }
         }
