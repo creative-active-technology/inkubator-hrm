@@ -133,7 +133,7 @@
 	                            <p:column  style="width: 80%">
 	                                <p:selectBooleanButton id="isTakingLeaveToNextYearId" value="#{leaveFormController.model.isTakingLeaveToNextYear}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
                                                            offIcon="ui-icon-close" styleClass="label_button">
-                                    	<p:ajax update="maxTakingLeaveToNextYearId,maxTakingLeaveToNextYearMessageId,backwardPeriodLimitId,backwardPeriodLimitMessageId" />
+                                    	<p:ajax listener="#{leaveFormController.onChangeIsTakingLeaveToNextYear()}" update="maxTakingLeaveToNextYearId,maxTakingLeaveToNextYearMessageId,backwardPeriodLimitId,backwardPeriodLimitMessageId" />
                                     </p:selectBooleanButton>                             
 	                            </p:column>
 	                        </p:row>
@@ -165,10 +165,10 @@
 	                            	<h:panelGrid columns="3" id="gridIsAllowedMinusId" style="margin-left:-10px" >
 		                                <p:selectBooleanButton id="isAllowedMinusId" value="#{leaveFormController.model.isAllowedMinus}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
 	                                                           offIcon="ui-icon-close" styleClass="label_button" style="margin-right: 10px;">
-	                                    	<p:ajax update="gridIsAllowedMinusId" />
+	                                    	<p:ajax listener="#{leaveFormController.onChangeIsAllowedMinus()}" update="gridIsAllowedMinusId" />
 	                                    </p:selectBooleanButton> 
 	                                    <p:outputLabel for="maxAllowedMinusId" value="#{appmsg['global.maximum']}" rendered="#{leaveFormController.model.isAllowedMinus}" styleClass="label_hrm"/>
-	                                    <p:spinner id="maxAllowedMinusId" label="#{appmsg['global.maximum']}" value="#{leaveFormController.model.maxTakingLeaveToNextYear}" size="4" max="10" min="0" styleClass="isitext_hrm" 
+	                                    <p:spinner id="maxAllowedMinusId" label="#{appmsg['global.maximum']}" value="#{leaveFormController.model.maxAllowedMinus}" size="4" max="10" min="0" styleClass="isitext_hrm" 
 	                                		   	   required="#{leaveFormController.model.isAllowedMinus}" rendered="#{leaveFormController.model.isAllowedMinus}"/>	                               
                                     </h:panelGrid>     
                                     <p:message for="maxAllowedMinusId"/>               
@@ -180,7 +180,8 @@
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                                <p:spinner id="effectiveFromId" value="#{leaveFormController.model.effectiveFrom}" size="4" max="100" min="0" 
-	                                		   styleClass="isitext_hrm" required="true"/>	                               
+	                                		   styleClass="isitext_hrm" required="true"/>	
+	                                <p:outputLabel value="&nbsp; #{appmsg['global.day']}" styleClass="label_hrm"/>                               
 	                                <p:message for="effectiveFromId"/>	                                
 	                            </p:column>
 	                        </p:row>
@@ -190,7 +191,8 @@
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                                <p:spinner id="submittedLimitId" value="#{leaveFormController.model.submittedLimit}" size="4" max="10" min="0" 
-	                                		   styleClass="isitext_hrm" required="true"/>	                               
+	                                		   styleClass="isitext_hrm" required="true"/>
+	                               	<p:outputLabel value="&nbsp; #{appmsg['global.day']}" styleClass="label_hrm"/>	                               
 	                                <p:message for="submittedLimitId"/>	                                
 	                            </p:column>
 	                        </p:row>

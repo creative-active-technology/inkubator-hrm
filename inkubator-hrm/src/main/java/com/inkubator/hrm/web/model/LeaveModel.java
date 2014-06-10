@@ -64,13 +64,13 @@ public class LeaveModel {
 	}
 	public void setDayType(String dayType) {
 		this.dayType = dayType;
-	}
+	}	
 	public String getCalculation() {
 		return calculation;
 	}
 	public void setCalculation(String calculation) {
 		this.calculation = calculation;
-	}
+	}	
 	public List<AttendanceStatus> getAttendanceStatusList() {
 		return attendanceStatusList;
 	}

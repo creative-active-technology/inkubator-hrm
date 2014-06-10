@@ -18,4 +18,5 @@ public interface LeaveService extends IService<Leave> {
 
 	public Long getTotalByParam(LeaveSearchParameter parameter) throws Exception;
 
+	public Leave getEntityByPkFetchAttendStatus(Long id) throws Exception;
 }

@@ -149,7 +149,7 @@ public class LeaveFormController extends BaseController {
                 MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             }
-            return "/protected/working_time/leave_view.htm?faces-redirect=true&execution=e" + leave.getId();
+            return "/protected/working_time/leave_detail.htm?faces-redirect=true&execution=e" + leave.getId();
         } catch (BussinessException ex) { //data already exist(duplicate)
             LOGGER.error("Error", ex);
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
@@ -229,6 +229,19 @@ public class LeaveFormController extends BaseController {
     	isRenderEndOfPeriodMonth = StringUtils.equals(model.getEndOfPeriod(), HRMConstant.LEAVE_END_OF_PERIOD_MONTH);
     	if(isRenderEndOfPeriodMonth == Boolean.FALSE){
     		model.setEndOfPeriodMonth(null);
+    	}
+    }
+    
+    public void onChangeIsTakingLeaveToNextYear(){
+    	if(model.getIsTakingLeaveToNextYear() == Boolean.FALSE){
+    		model.setMaxTakingLeaveToNextYear(null);
+    		model.setBackwardPeriodLimit(null);
+    	}
+    }
+    
+    public void onChangeIsAllowedMinus(){
+    	if(model.getIsAllowedMinus() == Boolean.FALSE){
+    		model.setMaxAllowedMinus(null);
     	}
     }
 }

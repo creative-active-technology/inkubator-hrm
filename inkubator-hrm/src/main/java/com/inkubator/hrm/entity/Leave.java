@@ -1,7 +1,10 @@
 package com.inkubator.hrm.entity;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,7 +15,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.Version;
+
+import org.apache.commons.lang3.StringUtils;
+
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.webcore.util.FacesUtil;
 
 /**
  *
@@ -306,5 +315,70 @@ public class Leave implements Serializable {
 
     public void setUpdatedOn(Date updatedOn) {
         this.updatedOn = updatedOn;
+    }
+    
+    @Transient
+    public String getDayTypeAsLabel(){
+		String dayTypeAsLabel = StringUtils.EMPTY;
+		ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+		if(StringUtils.equals(dayType, HRMConstant.LEAVE_DAY_TYPE_CALENDAR)){
+			dayTypeAsLabel = messages.getString("leave.calendar_days");
+		} else if(StringUtils.equals(dayType, HRMConstant.LEAVE_DAY_TYPE_WORKING)) {
+			dayTypeAsLabel = messages.getString("leave.working_days");
+		}
+		return dayTypeAsLabel;
+	}
+    
+    @Transient
+	public String getCalculationAsLabel(){
+		String calculationAsLabel = StringUtils.EMPTY;
+		ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+		if(StringUtils.equals(calculation, HRMConstant.LEAVE_CALCULATION_FULL_DAY)){
+			calculationAsLabel = messages.getString("leave.full_day");
+		} else if(StringUtils.equals(calculation, HRMConstant.LEAVE_CALCULATION_PART_DAY)) {
+			calculationAsLabel = messages.getString("leave.part_of_day");
+		}
+		return calculationAsLabel;
+	}
+    
+    @Transient
+    public String getPeriodBaseAsLabel(){
+    	String periodBaseAsLabel = StringUtils.EMPTY;
+    	ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+    	if(StringUtils.equals(periodBase, HRMConstant.LEAVE_PERIOD_BASE_TMB)){
+    		periodBaseAsLabel = "T.M.B";
+    	} else  if(StringUtils.equals(periodBase, HRMConstant.LEAVE_PERIOD_BASE_0101)){
+    		periodBaseAsLabel = "0101";
+    	} else if(StringUtils.equals(periodBase, HRMConstant.LEAVE_PERIOD_BASE_TMB_TO_0101)){
+    		periodBaseAsLabel = "T.M.B ke 0101";
+    	}
+    	return periodBaseAsLabel;
+    }
+    
+    @Transient
+    public String getAvailabilityAslabel(){
+    	String availabilityAsLabel = StringUtils.EMPTY;
+    	ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+    	if(StringUtils.equals(availability, HRMConstant.LEAVE_AVAILABILITY_FULL)){
+    		availabilityAsLabel = messages.getString("leave.full");
+		} else if(StringUtils.equals(availability, HRMConstant.LEAVE_AVAILABILITY_INCREASES_MONTH)) {
+			availabilityAsLabel = messages.getString("leave.increases_each_month");
+		} else if(StringUtils.equals(availability, HRMConstant.LEAVE_AVAILABILITY_INCREASES_SPECIFIC_DATE)) {
+			SimpleDateFormat parser = new SimpleDateFormat("dd MMMM", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+			availabilityAsLabel = messages.getString("leave.increases_on_certain_date") + ". " + messages.getString("global.date") + " = " + parser.format(availabilityAtSpecificDate);		
+		}
+    	return availabilityAsLabel;
+    }
+    
+    @Transient
+    public String getEndOfPeriodAsLabel(){
+    	String endOfPeriodAsLabel = StringUtils.EMPTY;
+    	ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+    	if(StringUtils.equals(endOfPeriod, HRMConstant.LEAVE_END_OF_PERIOD_MONTH)){
+    		endOfPeriodAsLabel = messages.getString("leave.monthly")+ ". " + messages.getString("leave.total_month") + " = " + endOfPeriodMonth;
+		} else if(StringUtils.equals(availability, HRMConstant.LEAVE_END_OF_PERIOD_REST_OF_LEAVE)) {
+			endOfPeriodAsLabel = messages.getString("leave.rest_of_leave");
+		}
+    	return endOfPeriodAsLabel;
     }
 }

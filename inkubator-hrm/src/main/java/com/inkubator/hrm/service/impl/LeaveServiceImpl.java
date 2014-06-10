@@ -174,6 +174,11 @@ public class LeaveServiceImpl extends IServiceImpl implements LeaveService {
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
 	public Leave getEntiyByPK(Long id) throws Exception {
 		return leaveDao.getEntiyByPK(id);
+	}	
+	
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Leave getEntityByPkFetchAttendStatus(Long id) throws Exception {
+		return leaveDao.getEntityByPkFetchAttendStatus(id);
 	}
 
 	@Override
