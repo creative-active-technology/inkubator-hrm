@@ -45,7 +45,7 @@ public class LoginController extends BaseController {
     private DateFormatter dateFormatter;
     @ManagedProperty(value = "#{hrmUserService}")
     private HrmUserService userService;
-
+    
     @PostConstruct
     @Override
     public void initialization() {
@@ -57,7 +57,7 @@ public class LoginController extends BaseController {
         }
         FacesUtil.getFacesContext().getViewRoot().setLocale(new Locale(selectedLanguage));
     }
-
+    
     @PreDestroy
     public void cleanAndExit() {
         userId = null;
@@ -85,30 +85,30 @@ public class LoginController extends BaseController {
     }
 
     public String getEmailAddress() {
-        return emailAddress;
-    }
+		return emailAddress;
+	}
 
-    public void setEmailAddress(String emailAddress) {
-        this.emailAddress = emailAddress;
-    }
+	public void setEmailAddress(String emailAddress) {
+		this.emailAddress = emailAddress;
+	}
 
-    public String getSelectedLanguage() {
-        return selectedLanguage;
-    }
+	public String getSelectedLanguage() {
+		return selectedLanguage;
+	}
 
-    public void setSelectedLanguage(String selectedLanguage) {
-        this.selectedLanguage = selectedLanguage;
-    }
+	public void setSelectedLanguage(String selectedLanguage) {
+		this.selectedLanguage = selectedLanguage;
+	}
 
     public void setDateFormatter(DateFormatter dateFormatter) {
         this.dateFormatter = dateFormatter;
     }
 
     public void setUserService(HrmUserService userService) {
-        this.userService = userService;
-    }
+		this.userService = userService;
+	}
 
-    public void doChageLanguange() {
+	public void doChageLanguange() {
         FacesUtil.setSessionAttribute(HRMConstant.BAHASA_ACTIVE, selectedLanguage);
         String bahasa1 = (String) FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE);
         FacesUtil.getFacesContext().getViewRoot().setLocale(new Locale(bahasa1));
@@ -125,11 +125,11 @@ public class LoginController extends BaseController {
         }
         FacesUtil.setSessionAttribute(HRMConstant.LOGIN_DATE, dateFormatter.getDateFullAsStringsWithActiveLocale(new Date(),
                 new Locale(selectedLanguage)));
-
+       
         FacesUtil.getFacesContext().responseComplete();
         return null;
     }
-
+    
     public void doResetPassword() {
         RequestContext context = FacesUtil.getRequestContext();
         Boolean emailIsExist = Boolean.FALSE;
@@ -137,13 +137,13 @@ public class LoginController extends BaseController {
             HrmUser user = userService.getByEmailAddress(emailAddress);
             if (user == null) {
                 MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.error", "error.email_not_registered",
-                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+                            FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());               
             } else {
                 user.setPassword("Inkuba" + RandomNumberUtil.getRandomNumber(7));
                 userService.resetPassword(user);
                 emailIsExist = Boolean.TRUE;
             }
-
+            
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
