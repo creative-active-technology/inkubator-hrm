@@ -82,12 +82,8 @@ public class GroupWorkingViewController extends BaseController {
         wtOverTimesLazyDataModel = null;
     }
 
-    public void doDetail() {
-        try {
-            selectedWtGroupWorking = wtGroupWorkingService.getEntiyByPK(selectedWtGroupWorking.getId());
-        } catch (Exception ex) {
-            LOGGER.error("Error", ex);
-        }
+    public String doDetail() {
+         return "/protected/working_time/working_group_detail.htm?faces-redirect=true&execution=e" + selectedWtGroupWorking.getCode();
     }
 
     public void doDelete() {
@@ -127,6 +123,15 @@ public class GroupWorkingViewController extends BaseController {
             red.redirect(red.getRequestContextPath() + "/flow-protected/working_group");
         } catch (IOException ex) {
           LOGGER.error("Erorr", ex);
+        }
+    }
+    
+    public void doEdit(){
+         ExternalContext red = FacesUtil.getExternalContext();
+        try {
+            red.redirect(red.getRequestContextPath() + "/flow-protected/working_group?otherParam=" + selectedWtGroupWorking.getId());
+        } catch (IOException ex) {
+          LOGGER.error("Error", ex);
         }
     }
 

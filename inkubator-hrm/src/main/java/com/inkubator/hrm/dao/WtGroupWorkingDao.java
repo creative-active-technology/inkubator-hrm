@@ -20,4 +20,12 @@ public interface WtGroupWorkingDao extends IDAO<WtGroupWorking> {
     public List<WtGroupWorking> getByParam(WtGroupWorkingSearchParameter searchParameter, int firstResult, int maxResults, Order order);
 
     public Long getTotalWtGroupWorkingByParam(WtGroupWorkingSearchParameter searchParameter);
+
+    public Long getTotalByCode(String code);
+
+    public WtGroupWorking getByPKIdWithDetail(Long id);
+    
+    public WtGroupWorking getByCode(String code);
+    
+    
 }

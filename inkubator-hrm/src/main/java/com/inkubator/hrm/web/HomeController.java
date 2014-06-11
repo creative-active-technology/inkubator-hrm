@@ -7,6 +7,7 @@ package com.inkubator.hrm.web;
 
 import com.inkubator.hrm.web.model.LoginHistoryModel;
 import com.inkubator.webcore.controller.BaseController;
+import com.inkubator.webcore.util.FacesUtil;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -52,6 +53,7 @@ public class HomeController extends BaseController {
     @PostConstruct
     @Override
     public void initialization() {
+        System.out.println(FacesUtil.getRequest().getRequestURL());
         super.initialization();
         System.out.println("tereksekusi");
         distribusiKaryawanPerDepartment = new CartesianChartModel();
@@ -268,5 +270,4 @@ public class HomeController extends BaseController {
         this.persentasiKehadiranPerWeek = persentasiKehadiranPerWeek;
     }
 
- 
 }

@@ -14,6 +14,9 @@ import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -184,6 +187,18 @@ public class WtScheduleShiftServiceImpl extends IServiceImpl implements WtSchedu
     @Override
     public List<WtScheduleShift> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<WtScheduleShift> getByParam(Long workingGroupId, int firstResult, int maxResults, Order order) throws Exception {
+        return this.wtScheduleShiftDao.getByParam(workingGroupId, firstResult, maxResults, order);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalWtScheduleShiftByParam(Long workingGroupId) throws Exception {
+        return this.wtScheduleShiftDao.getTotalWtScheduleShiftByParam(workingGroupId);
     }
 
 }

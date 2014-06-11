@@ -32,6 +32,7 @@ public class GroupWorkingModel implements Serializable {
     private List<ScheduleShiftModel> dataToShow = new ArrayList<>();
     private Map<String, Long> mapData = new TreeMap<>();
     private int pageNumber;
+    private Boolean isDisable;
 
     public Long getId() {
         return id;
@@ -144,6 +145,16 @@ public class GroupWorkingModel implements Serializable {
     public void setMapData(Map<String, Long> mapData) {
         this.mapData = mapData;
     }
+
+    public Boolean getIsDisable() {
+        return isDisable;
+    }
+
+    public void setIsDisable(Boolean isDisable) {
+        this.isDisable = isDisable;
+    }
+
+  
     
     
 

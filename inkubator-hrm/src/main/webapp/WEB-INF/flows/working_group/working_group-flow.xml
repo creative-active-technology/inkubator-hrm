@@ -9,51 +9,39 @@
     <on-start>
         <!--        <evaluate expression="usersController.crateUserSerchParameter()" result="flowScope.userSearchParam"/>
         <set name="flowScope.param" value="requestParameters.otherParam" type="java.lang.String" />-->
+         <set name="flowScope.param" value="requestParameters.otherParam" type="java.lang.String" />
         <evaluate expression="groupWorkingFormController.createGroupWorkingModel(flowRequestContext)" result="flowScope.groupWorkingModel"/> 
     </on-start><!--
 -->    
     <view-state id="start" view="working_group_form.xhtml">
-        <transition on="next" to="add_jaddwal_shift" />  
+        <transition on="next" to="add_jaddwal_shift" >
+             <evaluate expression="groupWorkingFormController.doCalculateDate(flowRequestContext)"/> 
+        </transition>  
         <transition on="close" to="end"/>
     </view-state>
     <view-state id="add_jaddwal_shift" view="schedule_shift_form.xhtml">
-        <on-entry>
-            <evaluate expression="groupWorkingFormController.doCalculateDate(flowRequestContext)"/> 
-        </on-entry>        
+<!--        <on-entry>
+           
+        </on-entry>        -->
         <transition on="next_table">
             <evaluate expression="groupWorkingFormController.doNeckTable(flowRequestContext)"/> 
         </transition>  
         <transition on="back_table">
             <evaluate expression="groupWorkingFormController.doBackTable(flowRequestContext)"/> 
         </transition>  
-        <transition on="next" to="add_jaddwal_shift" />  
+        <transition on="save" to="verifikasi_save" />  
         <transition on="back" to="start"/>
         
     </view-state>
     
-    <view-state id="add_other" view="add_other.xhtml">
-        <transition on="next" to="add_role" />
-        <transition on="back" to="start" />
-    </view-state>
-    <view-state id="add_role" view="add_role.xhtml">
-        <on-render>
-            <evaluate expression="spiUserFlowController.toAddRole(flowRequestContext)"/> 
-        </on-render>
-        <transition on="back" to="add_other" />  
-        <transition on="next" to="send_notification" />  
-    </view-state>
-    <view-state id="send_notification" view="send_notification.xhtml">
-        <transition on="save" to="verifikasi_save" />  
-        <transition on="back" to="add_role" />  
-    </view-state>	
+   
     
         
     <action-state id="verifikasi_save">
-        <evaluate expression="spiUserFlowController.doSave(flowRequestContext)"/>
+        <evaluate expression="groupWorkingFormController.doSave(flowRequestContext)"/>
         <transition on="yes" to="sukses_save"/>
-        <transition on="no" to="send_notification"/>
+        <transition on="no" to="add_jaddwal_shift"/>
     </action-state >	
-    
-    <end-state id="sukses_save" view="externalRedirect:contextRelative:/protected/user_detail.htm?execution=s#{userModel.spiUser.id}"/>
+    <end-state id="sukses_save" view="externalRedirect:contextRelative:/protected/working_time/working_group_detail.htm?execution=s#{groupWorkingModel.code}"/>
     <end-state id="end" view="externalRedirect:contextRelative:/protected/working_time/working_group_view.htm" />
 </flow>

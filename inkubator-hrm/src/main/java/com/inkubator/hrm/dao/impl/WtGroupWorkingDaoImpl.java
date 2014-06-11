@@ -11,6 +11,7 @@ import com.inkubator.hrm.entity.WtGroupWorking;
 import com.inkubator.hrm.web.search.WtGroupWorkingSearchParameter;
 import java.util.List;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -58,4 +59,27 @@ public class WtGroupWorkingDaoImpl extends IDAOImpl<WtGroupWorking> implements W
         }
 
     }
+
+    @Override
+    public Long getTotalByCode(String code) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.like("code", code, MatchMode.ANYWHERE));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+
+    @Override
+    public WtGroupWorking getByPKIdWithDetail(Long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("id", id));
+        criteria.setFetchMode("wtScheduleShifts", FetchMode.JOIN);
+        return (WtGroupWorking) criteria.uniqueResult();
+    }
+
+    @Override
+    public WtGroupWorking getByCode(String code) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("code", code));
+        return (WtGroupWorking) criteria.uniqueResult();
+    }
+
 }

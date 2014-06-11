@@ -114,7 +114,7 @@
                             </p:column>
                             <p:column sortBy="isPeriodic" style="text-align: center">
                                 <f:facet name="header">
-                                    <h:outputText value="Status Active" />
+                                    <h:outputText value="Jadwal Terpakai" />
                                 </f:facet>
                                 <h:outputLabel value= "#{workingGroupData.isActive}">
                                     <f:converter converterId="booleanMessageConverter"/>
@@ -140,10 +140,9 @@
                                                         </p:column>-->
 
                             <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
-                                <p:commandButton  icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" update=":detailPanel"
-                                                  onclick="statusDialog.show()"  oncomplete="detailDialogOverTime.show()"
+                                <p:commandButton  icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
                                                   action="#{groupWorkingViewController.doDetail()}" style="font-size: 10px!important" >                        
-                                    <f:setPropertyActionListener value="#{workingGroupData}" target="#{groupWorkingViewController.selectedWtOverTime}" />
+                                    <f:setPropertyActionListener value="#{workingGroupData}" target="#{groupWorkingViewController.selectedWtGroupWorking}" />
                                 </p:commandButton>
                                 - 
                                 <p:commandButton  icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  style="font-size: 10px!important" 
@@ -154,7 +153,7 @@
                                 <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" ajax="true"
                                                   action="#{groupWorkingViewController.doEdit()}" >
                                     <f:setPropertyActionListener value="#{workingGroupData}" target="#{groupWorkingViewController.selectedWtGroupWorking}" />
-                                    <p:ajax event="dialogReturn" listener="#{groupWorkingViewController.onDialogReturn}"  update="tableOverTimeId,:workingGroupViewGrowlId"/>
+                                  
                                 </p:commandButton> 
                             </p:column>
                             <f:facet name="footer">

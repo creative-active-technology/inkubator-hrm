@@ -1,0 +1,219 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg">
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="group_working.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="Detil Kelompok Kerja" styleClass="header_big" />
+                                <p:outputLabel value="Data Kelompok Kerja dari Aplikasi" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator />
+                    <p:growl id="growlGroupWorkingDetailId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
+                    <h:form id="groupWorkingDetailId" >
+                        <p:panelGrid style="width: 100%;margin-top: 20px;margin-bottom: 20px" styleClass="grid_border3">
+                            <p:row>
+                                <p:column style="width: 17%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Kode Kelompok Kerja" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 34%">
+                                    <p:inplace id="ajax" editor="true">
+                                        <p:inputText value="#{groupWorkingDetilController.selectedWtGroupWorking.code}" required="true" label="text"  onkeyup="this.value = this.value.toUpperCase();" />
+                                    </p:inplace>
+
+                                </p:column>
+                                <p:column style="width: 17%;background-color: #e1f0f0!important">
+                                    <p:outputLabel  value="Nama Kelompok Kerja" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 34%">
+
+                                    <p:outputLabel  value="#{groupWorkingDetilController.selectedWtGroupWorking.name}" />
+                                </p:column>
+
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 17%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Tanggal Mulai" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 34%">
+                                    <p:outputLabel  value="#{groupWorkingDetilController.selectedWtGroupWorking.beginTime}" >
+                                        <f:convertDateTime pattern="dd MMMM yyyy" />
+                                    </p:outputLabel>
+                                </p:column>
+                                <p:column style="width: 17%;background-color: #e1f0f0!important">
+                                    <p:outputLabel  value="Tanggal Selesai" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 34%">
+                                    <p:outputLabel  value="#{groupWorkingDetilController.selectedWtGroupWorking.endTime}" >
+                                        <f:convertDateTime pattern="dd MMMM yyyy" />
+                                    </p:outputLabel>
+                                </p:column>
+
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 17%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Jam Kerja Per Hari" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 34%">
+                                    <p:outputLabel  value="#{groupWorkingDetilController.selectedWtGroupWorking.workingTimePerday}" />
+                                    <h:outputLabel value="#{appmsg['global.hour']}" style="margin-left: 5px"/>
+                                </p:column>
+                                <p:column style="width: 17%;background-color: #e1f0f0!important">
+                                    <p:outputLabel  value="Jam Kerja Per Minggu" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 34%">
+                                    <p:outputLabel  value="#{groupWorkingDetilController.selectedWtGroupWorking.workingTimePerweek}" />
+                                    <h:outputLabel value="#{appmsg['global.hour']}" style="margin-left: 5px"/>
+                                </p:column>
+
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 17%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Lembur Berdasarkan Pekerja" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 34%">
+                                    <h:outputFormat  value="#{groupWorkingDetilController.selectedWtGroupWorking.overtimeBasedOnAttendance}" >
+                                        <f:converter converterId="booleanMessageConverter"/>
+                                    </h:outputFormat>
+                                </p:column>
+                                <p:column style="width: 17%;background-color: #e1f0f0!important" rowspan="2" >
+                                    <p:outputLabel  value="Berulang" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 34%" rowspan="2">
+                                    <h:outputLabel value="#{groupWorkingDetilController.selectedWtGroupWorking.isPeriodic}" >
+                                        <f:converter converterId="booleanMessageConverter"/>
+                                    </h:outputLabel>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 17%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Lembur Berdasarkan Permintaan" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 34%" >
+                                    <h:outputLabel  value="#{groupWorkingDetilController.selectedWtGroupWorking.overtimeBasedOnRequest}" >
+                                        <f:converter converterId="booleanMessageConverter"/>
+                                    </h:outputLabel>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+
+                        <p:dataTable  var="workingGroupData"  value="#{groupWorkingDetilController.wtScheduleShiftLazyDataModel}" lazy="true" paginator="true" pageLinks="7" 
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      id="tableJamKerjaId" rows="7" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="Daftar Jam Kerja" styleClass="label_hrm"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 25px">
+                                <f:facet name="header">  
+                                    <h:outputText value="No." />
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column sortBy="wtWorkingHour" style="width: 100px" >
+                                <f:facet name="header">  
+                                    <h:outputText value="Nama Jam Kerja"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{workingGroupData.wtWorkingHour.name}"/>
+                            </p:column>
+                            <p:column sortBy="scheduleDate" style="width: 100px" >
+                                <f:facet name="header">  
+                                    <h:outputText value="Tanggal Kerja"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{workingGroupData.scheduleDate}">
+                                    <f:convertDateTime pattern="dd MMMM yyyy" />
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column sortBy="wtWorkingHour" style="text-align: center;width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['workinghour.working_hour']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{workingGroupData.wtWorkingHour.workingHourBegin}">
+                                    <f:convertDateTime pattern="HH.mm" />
+                                </h:outputLabel>
+                                <h:outputLabel value= "&nbsp;-&nbsp;"/>
+                                <h:outputLabel value= "#{workingGroupData.wtWorkingHour.workingHourEnd}">
+                                    <f:convertDateTime pattern="HH.mm" />
+                                </h:outputLabel>
+                            </p:column> 
+                            <p:column style="text-align: center;width: 10%" sortBy="wtWorkingHour">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['workinghour.arrival_time_limit']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{workingGroupData.wtWorkingHour.arriveLimitBegin}/#{workingGroupData.wtWorkingHour.arriveLimitEnd}"/>
+                            </p:column>
+                            <p:column style="text-align: center;width: 10%" sortBy="wtWorkingHour">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['workinghour.go_home_time_limit']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{workingGroupData.wtWorkingHour.goHomeLimitBegin}/#{workingGroupData.wtWorkingHour.goHomeLimitEnd}"/>
+                            </p:column>
+                            <p:column style="text-align: center;width: 10%" sortBy="wtWorkingHour">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['workinghour.break_hour']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{workingGroupData.wtWorkingHour.breakHourBegin}" rendered="#{workingGroupData.wtWorkingHour.isManageBreakTime}">
+                                    <f:convertDateTime pattern="HH.mm" />
+                                </h:outputLabel>
+                                <h:outputLabel value= "&nbsp;-&nbsp;" rendered="#{workingHourData.isManageBreakTime}"/>
+                                <h:outputLabel value= "#{workingGroupData.wtWorkingHour.breakHourEnd}" rendered="#{workingGroupData.wtWorkingHour.isManageBreakTime}">
+                                    <f:convertDateTime pattern="HH.mm" />
+                                </h:outputLabel>
+                            </p:column> 
+                            <p:column style="text-align: center;width: 10%" sortBy="wtWorkingHour">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['workinghour.limit_start']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{workingGroupData.wtWorkingHour.breakStartLimitBegin}/#{workingGroupData.wtWorkingHour.breakStartLimitEnd}" rendered="#{workingGroupData.wtWorkingHour.isManageBreakTime}"/>
+                            </p:column>
+                            <p:column style="text-align: center;width: 10%" sortBy="wtWorkingHour">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['workinghour.limit_finish']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{workingGroupData.wtWorkingHour.breakFinishLimitBegin}/#{workingGroupData.wtWorkingHour.breakFinishLimitEnd}" rendered="#{workingGroupData.wtWorkingHour.isManageBreakTime}"/>
+                            </p:column>  
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : "/>
+                                <p:outputLabel value="#{groupWorkingDetilController.wtScheduleShiftLazyDataModel.rowCount}"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px"/>
+                            </f:facet>  
+                        </p:dataTable>
+                        <h:panelGrid columns="2" style="margin-bottom: 10px;float: left">
+                            <p:commandButton value="#{appmsg['global.edit']}"  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" action="#{groupWorkingDetilController.doEdit()}" styleClass="label_button"/>
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{groupWorkingDetilController.doBack()}" styleClass="label_button"/>
+                        </h:panelGrid>
+                        <div style="clear: both"/>
+                        <p:blockUI block="tableJamKerjaId" trigger="tableJamKerjaId" >
+                            <h:panelGrid columns="2" styleClass="grid_no_border">
+                                <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
+                                <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
+                            </h:panelGrid>
+                        </p:blockUI>
+                    </h:form>
+
+                </div>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

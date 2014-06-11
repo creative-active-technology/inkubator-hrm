@@ -165,3 +165,13 @@ and open the template in the editor.
 .panel{
     color:#FFFFFF !important;
 }
+
+.ui-selectonemenu-panel .ui-selectonemenu-filter {
+	width: 100%!important;
+	padding-right: 30px
+}
+.ui-selectonemenu-panel .ui-selectonemenu-filter-container .ui-icon {
+	position: absolute;
+	top: 10px;
+	right: -30px
+}

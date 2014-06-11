@@ -85,6 +85,7 @@ public class LoginController extends BaseController {
             bahasaTerpilih = (String) FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE);
         }
         FacesUtil.getFacesContext().getViewRoot().setLocale(new Locale(bahasaTerpilih));
+       
     }
 
     public void doChageLanguange() {
