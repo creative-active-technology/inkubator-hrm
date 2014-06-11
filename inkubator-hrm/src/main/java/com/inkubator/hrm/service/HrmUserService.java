@@ -35,5 +35,7 @@ public interface HrmUserService extends IService<HrmUser> {
     
     public void updateUserInfo(HrmUser user) throws Exception;
     
+    public void resetPassword(HrmUser user) throws Exception;
+    
     public void updatePassword(Long id, String newPassword) throws Exception;
 }
