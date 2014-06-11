@@ -174,6 +174,11 @@ public class LeaveServiceImpl extends IServiceImpl implements LeaveService {
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
 	public Leave getEntiyByPK(Long id) throws Exception {
 		return leaveDao.getEntiyByPK(id);
+	}	
+	
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Leave getEntityByPkFetchAttendStatus(Long id) throws Exception {
+		return leaveDao.getEntityByPkFetchAttendStatus(id);
 	}
 
 	@Override
@@ -215,6 +220,8 @@ public class LeaveServiceImpl extends IServiceImpl implements LeaveService {
 		}
 		
 		leave.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+		AttendanceStatus attendanceStatus = attendanceStatusDao.getEntiyByPK(leave.getAttendanceStatus().getId());
+	    leave.setAttendanceStatus(attendanceStatus);
 		leave.setCreatedBy(UserInfoUtil.getUserName());
 		leave.setCreatedOn(new Date());
 		leaveDao.save(leave);

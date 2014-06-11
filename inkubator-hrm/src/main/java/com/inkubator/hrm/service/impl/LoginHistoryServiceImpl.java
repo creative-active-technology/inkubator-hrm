@@ -62,7 +62,7 @@ public class LoginHistoryServiceImpl extends IServiceImpl implements LoginHistor
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
     public void save(LoginHistory entity) throws Exception {
-        HrmUser hrmUser = this.hrmUserDao.getByUserName(entity.getHrmUser().getUserId());
+        HrmUser hrmUser = this.hrmUserDao.getByUserId(entity.getHrmUser().getUserId());
         entity.setHrmUser(hrmUser);
         this.loginHistoryDao.save(entity);
     }

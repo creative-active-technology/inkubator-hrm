@@ -56,15 +56,17 @@ public class HRMConstant {
 
     /* 
      * Constant for Leave Module */
-    public static final Integer LEAVE_DAY_TYPE_WORKING = 0;
-    public static final Integer LEAVE_DAY_TYPE_CALENDAR = 1;
-    public static final Integer LEAVE_CALCULATION_FULL_DAY = 0;
-    public static final Integer LEAVE_CALCULATION_PART_DAY = 1;
-    public static final Integer LEAVE_PERIOD_BASE_TMB = 0;
-    public static final Integer LEAVE_PERIOD_BASE_0101 = 1;
-    public static final Integer LEAVE_PERIOD_BASE_TMB_TO_0101 = 2;
-    public static final Integer LEAVE_AVAILABILITY_FULL = 0;
-    public static final Integer LEAVE_AVAILABILITY_INCREASES_MONTH = 1;
-    public static final Integer LEAVE_AVAILABILITY_INCREASES_CERTAIN_DATE = 2;
+    public static final String LEAVE_DAY_TYPE_WORKING = "0";
+    public static final String LEAVE_DAY_TYPE_CALENDAR = "1";
+    public static final String LEAVE_CALCULATION_FULL_DAY = "0";
+    public static final String LEAVE_CALCULATION_PART_DAY = "1";
+    public static final String LEAVE_PERIOD_BASE_TMB = "0";
+    public static final String LEAVE_PERIOD_BASE_0101 = "1";
+    public static final String LEAVE_PERIOD_BASE_TMB_TO_0101 = "2";
+    public static final String LEAVE_AVAILABILITY_FULL = "0";
+    public static final String LEAVE_AVAILABILITY_INCREASES_MONTH = "1";
+    public static final String LEAVE_AVAILABILITY_INCREASES_SPECIFIC_DATE = "2";
+    public static final String LEAVE_END_OF_PERIOD_MONTH = "0";
+    public static final String LEAVE_END_OF_PERIOD_REST_OF_LEAVE = "1";
     /* END */
 }

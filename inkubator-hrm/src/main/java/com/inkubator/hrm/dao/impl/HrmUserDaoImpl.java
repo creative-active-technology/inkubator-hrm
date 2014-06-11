@@ -33,9 +33,9 @@ public class HrmUserDaoImpl extends IDAOImpl<HrmUser> implements HrmUserDao {
     }
 
     @Override
-    public HrmUser getByUserName(String userName) {
+    public HrmUser getByUserId(String userId) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.eq("userId", userName));
+        criteria.add(Restrictions.eq("userId", userId));
         return (HrmUser) criteria.uniqueResult();
     }
 
@@ -96,5 +96,13 @@ public class HrmUserDaoImpl extends IDAOImpl<HrmUser> implements HrmUserDao {
         criteria.add(disjunction);
         return  (HrmUser) criteria.uniqueResult();
     }
+
+	@Override
+	public Long getTotalByEmailAndNotUserId(String emailAddress, String userId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("emailAddress", emailAddress));
+		criteria.add(Restrictions.ne("userId", userId));
+		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
 
 }

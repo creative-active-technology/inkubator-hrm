@@ -5,11 +5,31 @@
  */
 package com.inkubator.hrm.service.impl;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
+
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Session;
+
+import org.hibernate.criterion.Order;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.inkubator.common.util.AESUtil;
 import com.inkubator.common.util.HashingUtils;
 import com.inkubator.common.util.JsonConverter;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.dao.HrmUserRoleDao;
@@ -22,22 +42,6 @@ import com.inkubator.hrm.service.HrmUserService;
 import com.inkubator.hrm.web.search.HrmUserSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesUtil;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.Session;
-import org.hibernate.criterion.Order;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.jms.core.JmsTemplate;
-import org.springframework.jms.core.MessageCreator;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -268,7 +272,7 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public HrmUser getByUserId(String userId) throws Exception {
-        return this.hrmUserDao.getByUserName(userId);
+        return this.hrmUserDao.getByUserId(userId);
     }
 
     @Override
@@ -325,5 +329,116 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public HrmUser getByUserIdOrEmail(String param) throws Exception {
         return this.hrmUserDao.getByUserIdOrEmail(param);
+    }
+    
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void resetPassword(HrmUser u) throws Exception {
+    	
+        HrmUser user = this.hrmUserDao.getEntiyByPK(u.getId());
+        user.setPassword(HashingUtils.getHashSHA256(u.getPassword()));
+        user.setUpdatedBy(HRMConstant.INKUBA_SYSTEM);
+        user.setUpdatedOn(new Date());
+        this.hrmUserDao.update(user);
+        
+        final PasswordHistory passwordHistory = new PasswordHistory();
+        passwordHistory.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+        passwordHistory.setCreatedBy(HRMConstant.INKUBA_SYSTEM);
+        passwordHistory.setCreatedOn(new Date());
+        passwordHistory.setEmailAddress(user.getEmailAddress());
+        passwordHistory.setEmailNotification(0);
+        passwordHistory.setRequestType(HRMConstant.USER_RESET);
+        passwordHistory.setSmsNotification(-1);
+        passwordHistory.setRealName(user.getRealName());
+        passwordHistory.setPhoneNumber(user.getPhoneNumber());
+        passwordHistory.setPassword(AESUtil.getAESEncription(u.getPassword(), HRMConstant.KEYVALUE, HRMConstant.AES_ALGO));
+        passwordHistory.setUserName(user.getUserId());
+        passwordHistory.setLocalId("en");
+        List<String> roleNames = new ArrayList<>();
+        for (HrmUserRole userRole : hrmUserRoleDao.getByUserId(u.getId())) {
+            roleNames.add(userRole.getHrmRole().getRoleName());
+        }
+        passwordHistory.setListRole(jsonConverter.getJson(roleNames.toArray(new String[roleNames.size()])));
+        this.passwordHistoryDao.save(passwordHistory);
+        
+        //send messaging, for processing sending email
+        this.jmsTemplate.send(new MessageCreator() {
+            @Override
+            public Message createMessage(Session session)
+                    throws JMSException {
+                return session.createTextMessage(jsonConverter.getJson(passwordHistory));
+            }
+        });
+    }
+    
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void updatePassword(Long id, String newPassword) throws Exception {
+        String userBy = UserInfoUtil.getUserName();
+        Date now = new Date();
+        String aesEncryptedPass = AESUtil.getAESEncription(newPassword, HRMConstant.KEYVALUE, HRMConstant.AES_ALGO);
+        String shaEncryptedPass = HashingUtils.getHashSHA256(newPassword);
+
+        HrmUser user = hrmUserDao.getEntiyByPK(id);
+        user.setPassword(shaEncryptedPass);
+        user.setUpdatedBy(userBy);
+        user.setUpdatedOn(now);
+        hrmUserDao.update(user);
+
+        final PasswordHistory passwordHistory = new PasswordHistory();
+        passwordHistory.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+        passwordHistory.setEmailAddress(user.getEmailAddress());
+        passwordHistory.setEmailNotification(0);
+        passwordHistory.setRequestType(HRMConstant.USER_UPDATE);
+        passwordHistory.setSmsNotification(-1);
+        passwordHistory.setRealName(user.getRealName());
+        passwordHistory.setPhoneNumber(user.getPhoneNumber());
+        passwordHistory.setPassword(aesEncryptedPass);
+        passwordHistory.setUserName(user.getUserId());
+        passwordHistory.setCreatedBy(userBy);
+        passwordHistory.setCreatedOn(now);
+        passwordHistory.setLocalId("en");
+        List<String> dataRole = new ArrayList<>();
+        List<HrmRole> roles = new ArrayList<>();
+        for (HrmUserRole userRole : hrmUserRoleDao.getByUserId(user.getId())) {
+            roles.add(userRole.getHrmRole());
+        }
+        for (HrmRole role : roles) {
+            dataRole.add(role.getRoleName());
+        }
+        passwordHistory.setListRole(jsonConverter.getJson(dataRole.toArray(new String[dataRole.size()])));
+        passwordHistoryDao.save(passwordHistory);
+        
+        //send messaging, for processing sending email
+        this.jmsTemplate.send(new MessageCreator() {
+            @Override
+            public Message createMessage(Session session)
+                    throws JMSException {
+                return session.createTextMessage(jsonConverter.getJson(passwordHistory));
+            }
+        });
+
+    }
+
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void updateUserInfo(HrmUser u) throws Exception {
+		// check duplicate email
+		long totalDuplicates = hrmUserDao.getTotalByEmailAndNotUserId(u.getEmailAddress(), u.getUserId());
+		if (totalDuplicates > 0) {
+			throw new BussinessException("master_layout.error_duplicate_email");
+		}
+    			
+        String userBy = UserInfoUtil.getUserName();
+        Date now = new Date();
+
+        HrmUser user = hrmUserDao.getByUserId(u.getUserId());
+        user.setRealName(u.getRealName());
+        user.setPhoneNumber(u.getPhoneNumber());
+        user.setEmailAddress(u.getEmailAddress());
+        user.setUpdatedBy(userBy);
+        user.setUpdatedOn(now);
+        hrmUserDao.update(user);
+
     }
 }

@@ -17,7 +17,7 @@ import org.hibernate.criterion.Order;
  */
 public interface HrmUserDao extends IDAO<HrmUser> {
 
-    public HrmUser getByUserName(String userName);
+    public HrmUser getByUserId(String userId);
 
     public List<HrmUser> getByParam(HrmUserSearchParameter searchParameter, int firstResult, int maxResults, Order order);
 
@@ -28,4 +28,6 @@ public interface HrmUserDao extends IDAO<HrmUser> {
     public void saveAndMerge(HrmUser hrmUser);
 
     public HrmUser getByUserIdOrEmail(String param);
+
+	public Long getTotalByEmailAndNotUserId(String emailAddress, String userId);
 }
