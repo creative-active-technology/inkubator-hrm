@@ -606,7 +606,12 @@ div.art-logo
     background-size: 80% auto;
     padding-right: 2px;
 }
-
+.img-password-config
+{
+    background-image:url(../images/password_config_ico.png)!important;
+    background-size: 80% auto;
+    padding-right: 2px;
+}
 .img-group-working
 {
     background-image:url(../images/group_working_ico.png)!important;

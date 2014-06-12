@@ -140,7 +140,7 @@
 	                			</p:row>
 	                		</p:panelGrid>
 	                		<p:commandButton value="#{appmsg['global.edit']}" update="formChangePasswordTab,:mainGrowl" ajax="true" title="#{appmsg['global.edit']}" action="#{userInfoController.doUpdatePassword()}" oncomplete="handleDoUpdateUserInfo(args)"
-	                			style="margin-top: 10px;font-size: 11px;width: 100%" icon="ui-icon-locked"/>	                		
+                                                         style="margin-top: 10px;width: 100%" icon="ui-icon-locked" styleClass="label_button"/>	                		
                 		</h:form>
                 	</p:tab>
                 </p:tabView>
@@ -214,7 +214,7 @@
                                             <p:menuitem value="#{appmsg['menu.user_view']}"  style="color: #003366" title="#{appmsg['menu.user_view']}" url="/protected/account/user_view.htm"  icon="img-user"/> 
                                             <p:menuitem value="#{appmsg['menu.role_view']}"  style="color: #003366" title="#{appmsg['menu.role_view']}" url="/protected/account/role_view.htm" icon="img-user-role" /> 
                                             <p:separator/>
-                                            <p:menuitem value="Password Setting"  style="color: #003366" title="Create Offering Price" url="/protected/price_offer.htm" />  
+                                            <p:menuitem value="Password Setting"  style="color: #003366" title="Password Setting" url="/protected/account/password_configuration.htm" icon="img-password-config"/>  
                                             <p:menuitem value="Password History"  style="color: #003366" title="Create Offering Price" url="/protected/price_offer.htm" /> 
                                             <p:menuitem value="#{appmsg['loginhistory.login_history']}"  style="color: #003366" title="#{appmsg['loginhistory.login_history']}" url="/protected/account/login_history.htm" icon="img-login-history" />  
                                         </p:submenu>

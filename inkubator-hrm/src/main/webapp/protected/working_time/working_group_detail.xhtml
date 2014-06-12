@@ -158,12 +158,14 @@
                                     <h:outputText value="#{appmsg['workinghour.arrival_time_limit']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{workingGroupData.wtWorkingHour.arriveLimitBegin}/#{workingGroupData.wtWorkingHour.arriveLimitEnd}"/>
+                                <p:outputLabel value="#{appmsg['global.minute']}"  style="margin-left: 5px"/>
                             </p:column>
                             <p:column style="text-align: center;width: 10%" sortBy="wtWorkingHour">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['workinghour.go_home_time_limit']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{workingGroupData.wtWorkingHour.goHomeLimitBegin}/#{workingGroupData.wtWorkingHour.goHomeLimitEnd}"/>
+                                <p:outputLabel value="#{appmsg['global.minute']}"  style="margin-left: 5px"/>
                             </p:column>
                             <p:column style="text-align: center;width: 10%" sortBy="wtWorkingHour">
                                 <f:facet name="header">  
@@ -172,7 +174,7 @@
                                 <h:outputLabel value= "#{workingGroupData.wtWorkingHour.breakHourBegin}" rendered="#{workingGroupData.wtWorkingHour.isManageBreakTime}">
                                     <f:convertDateTime pattern="HH.mm" />
                                 </h:outputLabel>
-                                <h:outputLabel value= "&nbsp;-&nbsp;" rendered="#{workingHourData.isManageBreakTime}"/>
+                                <h:outputLabel value= "&nbsp;-&nbsp;" rendered="#{workingGroupData.wtWorkingHour.isManageBreakTime}"/>
                                 <h:outputLabel value= "#{workingGroupData.wtWorkingHour.breakHourEnd}" rendered="#{workingGroupData.wtWorkingHour.isManageBreakTime}">
                                     <f:convertDateTime pattern="HH.mm" />
                                 </h:outputLabel>
@@ -182,12 +184,14 @@
                                     <h:outputText value="#{appmsg['workinghour.limit_start']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{workingGroupData.wtWorkingHour.breakStartLimitBegin}/#{workingGroupData.wtWorkingHour.breakStartLimitEnd}" rendered="#{workingGroupData.wtWorkingHour.isManageBreakTime}"/>
+                                <p:outputLabel value="#{appmsg['global.minute']}"  style="margin-left: 5px" rendered="#{workingGroupData.wtWorkingHour.isManageBreakTime}"/>
                             </p:column>
                             <p:column style="text-align: center;width: 10%" sortBy="wtWorkingHour">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['workinghour.limit_finish']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{workingGroupData.wtWorkingHour.breakFinishLimitBegin}/#{workingGroupData.wtWorkingHour.breakFinishLimitEnd}" rendered="#{workingGroupData.wtWorkingHour.isManageBreakTime}"/>
+                                <p:outputLabel value="#{appmsg['global.minute']}"  style="margin-left: 5px" rendered="#{workingGroupData.wtWorkingHour.isManageBreakTime}"/>
                             </p:column>  
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>
@@ -195,7 +199,8 @@
                                 <p:outputLabel value="Data" style="margin-left: 3px"/>
                             </f:facet>  
                         </p:dataTable>
-                        <h:panelGrid columns="2" style="margin-bottom: 10px;float: left">
+                        <p:separator/>
+                        <h:panelGrid columns="2" style="margin-bottom: 5px;float: left">
                             <p:commandButton value="#{appmsg['global.edit']}"  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" action="#{groupWorkingDetilController.doEdit()}" styleClass="label_button"/>
                             <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{groupWorkingDetilController.doBack()}" styleClass="label_button"/>
                         </h:panelGrid>

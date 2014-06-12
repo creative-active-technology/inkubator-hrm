@@ -26,6 +26,7 @@
                         <p:growl id="loginGrowl" life="5000" showDetail="true" escape="false" />
                         <div style="margin-top: 10px;margin-bottom: 5px">
                             <h:form id="pilihanBahasaForm" >
+                                <h:inputHidden value="#{loginController.selectedLanguage}"/>
                                 <h:panelGrid columns="4" style="float: right;margin-right: 15px">
                                     <h:outputLabel style="margin-right: 5px;" styleClass="label_hrm"
                                                    value="#{appmsg['loginform.pilihan_bahasa']} :"/>

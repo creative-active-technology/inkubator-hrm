@@ -64,6 +64,21 @@ and open the template in the editor.
 
     /*left: 50%!important;*/
 }
+.grid_border_table td,.grid_border_table tr 
+{
+    border:2px !important;
+    /*padding:3px 3px!important;*/
+    /*background:transparent;*/
+    border-style: solid !important;
+    border-width: 1px!important;
+    border-color: #AED0EA !important;
+/*    padding-right: 2px !important;
+    padding-bottom: 2px !important;*/
+    /*padding: 1px 4.5px !important;*/
+
+    /*left: 50%!important;*/
+}
+
 .grid_border2 td,.grid_border2 tr 
 {
     background: none!important;
@@ -127,7 +142,7 @@ and open the template in the editor.
 
 .header_big{
     font-family: Lucida Sans !important;
-    font-size: 14px !important;
+    font-size: 13px !important;
     font-weight: bold;
     color: #036;
 }

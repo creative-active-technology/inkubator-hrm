@@ -5,13 +5,18 @@
  */
 package com.inkubator.hrm.web;
 
+import com.inkubator.hrm.entity.RiwayatAkses;
+import com.inkubator.hrm.service.RiwayatAksesService;
 import com.inkubator.hrm.web.model.LoginHistoryModel;
+import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import org.primefaces.model.chart.CartesianChartModel;
 import org.primefaces.model.chart.ChartSeries;
@@ -31,7 +36,15 @@ public class HomeController extends BaseController {
     private PieChartModel distibusiPerDepartment;
     private CartesianChartModel persentasiKehadiranPerWeek;
     private List<LoginHistoryModel> logHistorys = new ArrayList<>();
+    @ManagedProperty(value = "#{riwayatAksesService}")
+    private RiwayatAksesService riwayatAksesService;
 
+    public void setRiwayatAksesService(RiwayatAksesService riwayatAksesService) {
+        this.riwayatAksesService = riwayatAksesService;
+    }
+
+    
+    
     public CartesianChartModel getDistribusiKaryawanPerDepartment() {
         return distribusiKaryawanPerDepartment;
     }
@@ -53,7 +66,16 @@ public class HomeController extends BaseController {
     @PostConstruct
     @Override
     public void initialization() {
-        System.out.println(FacesUtil.getRequest().getRequestURL());
+        StringBuffer urlPath = FacesUtil.getRequest().getRequestURL();
+        RiwayatAkses akses=new RiwayatAkses();
+        akses.setDateAccess(new Date());
+        akses.setPathUrl(urlPath.toString());
+        akses.setUserId(UserInfoUtil.getUserName());
+        try {
+            riwayatAksesService.doSaveAccess(akses);
+        } catch (Exception ex) {
+           LOGGER.error("Error", ex);
+        }
         super.initialization();
         System.out.println("tereksekusi");
         distribusiKaryawanPerDepartment = new CartesianChartModel();
