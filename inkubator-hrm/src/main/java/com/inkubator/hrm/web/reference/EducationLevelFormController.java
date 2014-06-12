@@ -79,13 +79,6 @@ public class EducationLevelFormController extends BaseController {
         this.educationLevelService = educationLevelService;
     }
 
-    public void doClear() {
-        //clear all data except the id (if any)
-        Long tempId = educationLevelModel.getId();
-        educationLevelModel = new EducationLevelModel();
-        educationLevelModel.setId(tempId);
-    }
-
     public void doSave() {
         EducationLevel educationLevel = getEntityFromViewModel(educationLevelModel);
         try {

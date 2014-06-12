@@ -78,13 +78,6 @@ public class ReligionFormController extends BaseController {
         this.religionService = religionService;
     }
 
-    public void doClear() {
-        //clear all data except the id (if any)
-        Long tempId = religionModel.getId();
-        religionModel = new ReligionModel();
-        religionModel.setId(tempId);
-    }
-
     public void doSave() {
         Religion religion = getEntityFromViewModel(religionModel);
         try {
