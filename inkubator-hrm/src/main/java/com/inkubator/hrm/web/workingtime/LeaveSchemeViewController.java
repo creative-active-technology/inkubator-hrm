@@ -129,7 +129,7 @@ public class LeaveSchemeViewController extends BaseController {
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", false);
-        options.put("contentWidth", 500);
+        options.put("contentWidth", 450);
         options.put("contentHeight", 250);
         RequestContext.getCurrentInstance().openDialog("leave_scheme_form", options, params);
     }
