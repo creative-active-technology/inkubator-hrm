@@ -78,13 +78,6 @@ public class EmployeeTypeFormController extends BaseController {
         this.employeeTypeService = employeeTypeService;
     }
 
-    public void doClear() {
-        //clear all data except the id (if any)
-        Long tempId = employeeTypeModel.getId();
-        employeeTypeModel = new EmployeeTypeModel();
-        employeeTypeModel.setId(tempId);
-    }
-
     public void doSave() {
         EmployeeType employeeType = getEntityFromViewModel(employeeTypeModel);
         try {

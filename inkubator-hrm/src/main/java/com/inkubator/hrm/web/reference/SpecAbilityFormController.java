@@ -75,13 +75,6 @@ public class SpecAbilityFormController extends BaseController {
     public void setSpecificationAbilityService(SpecificationAbilityService specificationAbilityService) {
         this.specificationAbilityService = specificationAbilityService;
     }
-
-    public void doClear() {
-        //clear all data except the id (if any)
-        Long tempId = specAbilityModel.getId();
-        specAbilityModel = new SpecAbilityModel();
-        specAbilityModel.setId(tempId);
-    }
     
     public void doReset() {
     	if(isUpdate) {
