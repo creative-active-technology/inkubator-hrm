@@ -31,6 +31,8 @@ public class HrmMenu implements java.io.Serializable {
     private String urlName;
     private String iconName;
     private Integer menuLevel;
+    private String menuStyle;
+    private String menuStyleClass;
     private String createdBy;
     private Date createdOn;
     private String updatedBy;
@@ -181,6 +183,24 @@ public class HrmMenu implements java.io.Serializable {
 
     public void setHrmMenuRoles(Set<HrmMenuRole> hrmMenuRoles) {
         this.hrmMenuRoles = hrmMenuRoles;
+    }
+
+    @Column(name = "menu_style", length = 45)
+    public String getMenuStyle() {
+        return this.menuStyle;
+    }
+
+    public void setMenuStyle(String menuStyle) {
+        this.menuStyle = menuStyle;
+    }
+
+    @Column(name = "menu_style_class", length = 45)
+    public String getMenuStyleClass() {
+        return this.menuStyleClass;
+    }
+
+    public void setMenuStyleClass(String menuStyleClass) {
+        this.menuStyleClass = menuStyleClass;
     }
 
 }
