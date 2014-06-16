@@ -21,21 +21,21 @@
                         <p:graphicImage library="images" name="holiday.png" height="36" width="36"  cache="true"/>
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Form Hari Libur" styleClass="header_big" />
-                                <p:outputLabel value="Data Hari Libur dari Waktu Kerja" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['holiday.form_of_holiday']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['holiday.holiday_date_from_work_time']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
                     <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
                     <h:panelGrid columns="1" style="margin-bottom: 5px;margin-left: 0px">
                         <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
-                        <h:outputLabel value="Nama hari libur bersifat unik" styleClass="label_hrm" style="font-weight: normal!important"/>
+                        <h:outputLabel value="#{appmsg['holiday.dialog_info']}" styleClass="label_hrm" style="font-weight: normal!important"/>
                     </h:panelGrid> 
                     <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
 
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="nameId" value="Nama Hari Libur" styleClass="label_hrm"/>
+                                <p:outputLabel for="nameId" value="#{appmsg['holiday.name_of_holiday']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="nameId" value=":" styleClass="label_hrm"/>
@@ -54,7 +54,7 @@
                         </p:row>
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="holidayDateId" value="Tanggal" styleClass="label_hrm"/>
+                                <p:outputLabel for="holidayDateId" value="#{appmsg['global.date']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="holidayDateId" value=":" styleClass="label_hrm"/>
@@ -72,7 +72,7 @@
 
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="agamaId" value="Agama" styleClass="label_hrm"/>
+                                <p:outputLabel for="agamaId" value="#{appmsg['religion.religion']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="agamaId" value=":" styleClass="label_hrm"/>
@@ -93,7 +93,7 @@
                         </p:row>
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="everyYearsId" value="Setiap Tahun" styleClass="label_hrm"/>
+                                <p:outputLabel for="everyYearsId" value="#{appmsg['holiday.every_year']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="everyYearsId" value=":" styleClass="label_hrm"/>
@@ -112,7 +112,7 @@
                         </p:row>
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="collectiveLeaveId" value="Cuti Bersama" styleClass="label_hrm"/>
+                                <p:outputLabel for="collectiveLeaveId" value="#{appmsg['holiday.public_leave']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="collectiveLeaveId" value=":" styleClass="label_hrm"/>
