@@ -198,7 +198,7 @@
                                              style="margin-right: 5px" label="Lanjut" id="buttonSaveId"
                                              icon="ui-icon-disk" title="Lanjut"/>
 
-                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-arrow-1-w" title="#{appmsg['global.back']}" oncomplete="backConfirmation.show()"
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-arrow-1-w" title="#{appmsg['global.back']}" oncomplete="backConfirmation.show()" onclick="statusDialog.show()"
                                              styleClass="label_button" immediate="true"/>
                         </div>
 
@@ -216,9 +216,9 @@
                             </div>
                         </h:form>
                     </p:dialog>
-                    <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
+<!--                    <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
                         <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
-                    </p:dialog>
+                    </p:dialog>-->
                 </div>
 
             </ui:define>
