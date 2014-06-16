@@ -20,8 +20,8 @@
                         <p:graphicImage library="images" name="holiday.png" height="36" width="36" cache="true" />
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Daftar Hari Libur" styleClass="header_big" />
-                                <p:outputLabel value="Daftar Hari Libur dari Waktu Kerja" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['holiday.list_of_holiday']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['holiday.list_of_holiday_and_workday']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -59,7 +59,7 @@
                                       id="tableHolidayId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="Daftar Hari Libur" styleClass="label_hrm"/>
+                                <h:outputText value="#{appmsg['holiday.list_of_holiday']}" styleClass="label_hrm"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 25px">
                                 <f:facet name="header">  
@@ -69,7 +69,7 @@
                             </p:column>
                             <p:column sortBy="holidayDate" style="width: 150px" >
                                 <f:facet name="header">  
-                                    <h:outputText value="Tanggal Libur"/>
+                                    <h:outputText value="#{appmsg['holiday.holiday_date']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{holidayViewData.holidayDate}">
                                     <f:convertDateTime pattern="dd-MMMM-yyyy" />
@@ -77,25 +77,25 @@
                             </p:column>
                             <p:column sortBy="bulan">
                                 <f:facet name="header">
-                                    <h:outputText value="Nama Hari Libur"/>
+                                    <h:outputText value="#{appmsg['holiday.name_of_holiday']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{holidayViewData.holidayName}"/>
                             </p:column>
                             <p:column sortBy="bulan">
                                 <f:facet name="header">
-                                    <h:outputText value="Hari Raya Keagamaan"/>
+                                    <h:outputText value="#{appmsg['holiday.religious_holiday']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{holidayViewData.religion.name}"/>
                             </p:column>
                             <p:column sortBy="bulan" style="text-align: center">
                                 <f:facet name="header">
-                                    <h:outputText value="Setiap Tahun"/>
+                                    <h:outputText value="#{appmsg['holiday.every_year']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{holidayViewData.isEveryYearAsLabel}"/>
                             </p:column>
                             <p:column sortBy="bulan" style="text-align: center">
                                 <f:facet name="header">
-                                    <h:outputText value="Libur Bersama"/>
+                                    <h:outputText value="#{appmsg['holiday.public_leave']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{holidayViewData.isCollectiveAsLabel}"/>
                             </p:column>
