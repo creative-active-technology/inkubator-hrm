@@ -151,7 +151,7 @@
                                 </h:panelGrid>
                             </div>
                             <h:panelGrid  columns="3">
-                                <p:outputLabel value="Nama hari libur" styleClass="label_hrm"/>
+                                <p:outputLabel value="#{appmsg['holiday.name_of_holiday']}" styleClass="label_hrm"/>
                                 <p:outputLabel value=":"  styleClass="label_hrm" />
                                 <p:outputLabel value="#{holidayViewController.selecWtHoliday.holidayName}" styleClass="isitext_hrm"/>
                             </h:panelGrid>
@@ -167,26 +167,26 @@
                           showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
                     <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
                         <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="Tanggal Libur" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['holiday.holiday_date']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:70%;"><p:outputLabel value="#{holidayViewController.selecWtHoliday.holidayDate}">
                                     <f:convertDateTime pattern="dd-MMMM-yyyy" />
                                 </p:outputLabel></p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Nama Hari Libur" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['holiday.name_of_holiday']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{holidayViewController.selecWtHoliday.holidayName}"/> </p:column>
                         </p:row>
                        
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Hari Besar Agama" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['holiday.religious_holiday']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{holidayViewController.selecWtHoliday.religion.name}"/> </p:column>
                         </p:row>
                          <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Setiap Tahun" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['holiday.every_year']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{holidayViewController.selecWtHoliday.isEveryYearAsLabel}"/> </p:column>
                         </p:row>
                          <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Libur Bersama" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['holiday.public_leave']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{holidayViewController.selecWtHoliday.isCollectiveAsLabel}"/> </p:column>
                         </p:row>
                         <!--                        <p:row>
