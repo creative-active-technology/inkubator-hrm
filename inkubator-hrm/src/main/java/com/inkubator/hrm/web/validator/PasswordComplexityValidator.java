@@ -56,59 +56,55 @@ public class PasswordComplexityValidator implements Validator {
                 ResourceBundle messages = ResourceBundle.getBundle("messages", loc);
                 FacesMessage msg = new FacesMessage(messages.getString("password_config.min_character") + " " + complexity.getMinCharacter());
                 msg.setSeverity(FacesMessage.SEVERITY_ERROR);
-
-                System.out.println("Ini adalah pesannya" + messages.getString("password_config.min_character"));
-//                String validatorMessage = (String) component.getAttributes().get("validatorMessage");
                 throw new ValidatorException(msg);
             }
             if (size > complexity.getMaxCharacter()) {
-                System.out.println("DSVDFDSGDGFDG");
+
                 ResourceBundle messages = ResourceBundle.getBundle("messages", loc);
-                FacesMessage msg = new FacesMessage(messages.getString("password_config.max_character") + " " + complexity.getMaxCharacter());
+                FacesMessage msg = new FacesMessage(messages.getString("password_config.max_character"));
                 msg.setSeverity(FacesMessage.SEVERITY_ERROR);
                 throw new ValidatorException(msg);
             }
 
             if (complexity.getHasUpperCase()) {
                 if (!StringsUtils.isHaveUpperCase(password)) {
-                    ResourceBundle messages = ResourceBundle.getBundle("messages", loc);
-                    FacesMessage msg = new FacesMessage(messages.getString("password_config.max_character") + " " + complexity.getMaxCharacter());
-                    msg.setSeverity(FacesMessage.SEVERITY_ERROR);
-                    throw new ValidatorException(msg);
-                }
-            }
 
-            if (complexity.getHasUpperCase()) {
-                if (!StringsUtils.isHaveUpperCase(password)) {
                     ResourceBundle messages = ResourceBundle.getBundle("messages", loc);
-                    FacesMessage msg = new FacesMessage(messages.getString("password_config.must_have_upper") + " " + complexity.getMaxCharacter());
+                    FacesMessage msg = new FacesMessage(messages.getString("password_config.must_have_upper"));
                     msg.setSeverity(FacesMessage.SEVERITY_ERROR);
                     throw new ValidatorException(msg);
                 }
             }
             if (complexity.getHasLowerCase()) {
                 if (!StringsUtils.isHaveLowerCase(password)) {
+                    System.out.println(" sdfdshfhdsfhdsfhdh");
                     ResourceBundle messages = ResourceBundle.getBundle("messages", loc);
-                    FacesMessage msg = new FacesMessage(messages.getString("password_config.max_character") + " " + complexity.getMaxCharacter());
+                    FacesMessage msg = new FacesMessage(messages.getString("password_config.must_have_lower_case"));
                     msg.setSeverity(FacesMessage.SEVERITY_ERROR);
                     throw new ValidatorException(msg);
                 }
             }
 
+            if (complexity.getHasSpecialCharacter()) {
+
+                if (!StringsUtils.isContainsSpecialChar(password)) {
+                    ResourceBundle messages = ResourceBundle.getBundle("messages", loc);
+                    FacesMessage msg = new FacesMessage(messages.getString("password_config.must_have_special"));
+                    msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+                    throw new ValidatorException(msg);
+                }
+            }
+            if (complexity.getHasNumber()) {
+
+                if (!StringsUtils.isHaveNumber(password)) {
+                    ResourceBundle messages = ResourceBundle.getBundle("messages", loc);
+                    FacesMessage msg = new FacesMessage(messages.getString("password_config.must_have_number"));
+                    msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+                    throw new ValidatorException(msg);
+                }
+            }
         }
 
-//            if (size >= complexity.getMaxCharacter()) {
-//                String validatorMessage = (String) component.getAttributes().get("validatorMessage");
-//                throw new ValidatorException(new FacesMessage(validatorMessage));
-//            }
-        // Check if begin time is bigger/equal with end time
-//        if (beginTime.after(endTime) || beginTime.equals(endTime)) {
-//            String validatorMessage = (String) component.getAttributes().get("validatorMessage");
-//            throw new ValidatorException(new FacesMessage(validatorMessage));
-//        }
-//        } catch (Exception ex) {
-//            Logger.getLogger(PasswordComplexityValidator.class.getName()).log(Level.SEVERE, null, ex);
-//        }
     }
 
 }
