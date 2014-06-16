@@ -10,9 +10,12 @@ import com.inkubator.hrm.entity.PasswordComplexity;
 import com.inkubator.hrm.service.PasswordComplexityService;
 import com.inkubator.hrm.web.model.PasswordComplexityModel;
 import com.inkubator.webcore.controller.BaseController;
+import com.inkubator.webcore.util.FacesUtil;
+import com.inkubator.webcore.util.MessagesResourceUtil;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -69,10 +72,11 @@ public class PasswordComplexityController extends BaseController {
         for (int i = 1; i <= 12; i++) {
             period.add(i);
         }
-try {
+        try {
             PasswordComplexity passwordComplexity = passwordComplexityService.getByCode(HRMConstant.PASSWORD_CONFIG_CODE);
             if (passwordComplexity == null) {
                 isDisable = Boolean.FALSE;
+                isEdit = Boolean.FALSE;
             } else {
                 passwordComplexityModel.setExpiredPeriod(passwordComplexity.getExpiredPeriod());
                 passwordComplexityModel.setId(passwordComplexity.getId());
@@ -84,9 +88,16 @@ try {
                 passwordComplexityModel.setMaxCharacter(passwordComplexity.getMaxCharacter());
                 passwordComplexityModel.setMinCharacter(passwordComplexity.getMinCharacter());
                 passwordComplexityModel.setNotificationPeriod(passwordComplexity.getNotificationPeriod());
-               
+                if (passwordComplexity.getEmailNotification()) {
+                    notificationSelection.add("email");
+                }
+                if (passwordComplexity.getSmsNotification()) {
+                    notificationSelection.add("sms");
+                }
+                isDisable = Boolean.TRUE;
+                isEdit = Boolean.TRUE;
             }
-            isEdit = Boolean.FALSE;
+
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -108,5 +119,57 @@ try {
         this.isEdit = isEdit;
     }
 
-    
+    public void doEdit() {
+        isDisable = Boolean.FALSE;
+        isEdit = Boolean.TRUE;
+    }
+
+    public void doSave() {
+        System.out.println(" hehehehh");
+        PasswordComplexity passwordComplexity = fromPageUIToEntity();
+        try {
+            if (isEdit) {
+                passwordComplexityService.update(passwordComplexity);
+                MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
+                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            } else {
+                passwordComplexityService.save(passwordComplexity);
+                MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
+                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            }
+            isDisable = Boolean.TRUE;
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
+        }
+
+    }
+
+    private PasswordComplexity fromPageUIToEntity() {
+        PasswordComplexity passwordComplexity = new PasswordComplexity();
+        if (passwordComplexityModel.getId() != null) {
+            passwordComplexity.setId(passwordComplexityModel.getId());
+        }
+        passwordComplexity.setCode(HRMConstant.PASSWORD_CONFIG_CODE);
+        if (notificationSelection.contains("email")) {
+            passwordComplexity.setEmailNotification(Boolean.TRUE);
+        } else {
+            passwordComplexity.setEmailNotification(Boolean.FALSE);
+        }
+
+        if (notificationSelection.contains("sms")) {
+            passwordComplexity.setSmsNotification(Boolean.TRUE);
+        } else {
+            passwordComplexity.setSmsNotification(Boolean.FALSE);
+        }
+        passwordComplexity.setExpiredPeriod(passwordComplexityModel.getExpiredPeriod());
+        passwordComplexity.setHasLowerCase(passwordComplexityModel.getIsMustHaveLowerCase());
+        passwordComplexity.setHasNumber(passwordComplexityModel.getIsMustHaveNumber());
+        passwordComplexity.setHasSpecialCharacter(passwordComplexityModel.getIsMustHaveSPCharacter());
+        passwordComplexity.setHasUpperCase(passwordComplexityModel.getIsMustHaveUpperCase());
+        passwordComplexity.setMaxCharacter(passwordComplexityModel.getMaxCharacter());
+        passwordComplexity.setMinCharacter(passwordComplexityModel.getMinCharacter());
+        passwordComplexity.setNotificationPeriod(passwordComplexityModel.getNotificationPeriod());
+        passwordComplexity.setPasswordMustDifferent(passwordComplexityModel.getIsPasswordMustDifferent());
+        return passwordComplexity;
+    }
 }

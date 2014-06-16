@@ -5,10 +5,13 @@
  */
 package com.inkubator.hrm.service.impl;
 
+import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.dao.PasswordComplexityDao;
 import com.inkubator.hrm.entity.PasswordComplexity;
 import com.inkubator.hrm.service.PasswordComplexityService;
+import com.inkubator.securitycore.util.UserInfoUtil;
+import java.util.Date;
 import java.util.List;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,13 +48,33 @@ public class PasswordComplexityServiceImpl extends IServiceImpl implements Passw
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(PasswordComplexity entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+       entity.setCreatedBy(UserInfoUtil.getUserName());
+       entity.setCreatedOn(new Date());
+       this.passwordComplexityDao.save(entity);
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(PasswordComplexity entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        PasswordComplexity complexity = this.passwordComplexityDao.getEntiyByPK(entity.getId());
+        complexity.setCode(entity.getCode());
+        complexity.setEmailNotification(entity.getEmailNotification());
+        complexity.setExpiredPeriod(entity.getExpiredPeriod());
+        complexity.setHasLowerCase(entity.getHasLowerCase());
+        complexity.setHasNumber(entity.getHasNumber());
+        complexity.setHasSpecialCharacter(entity.getHasSpecialCharacter());
+        complexity.setHasUpperCase(entity.getHasUpperCase());
+        complexity.setMaxCharacter(entity.getMaxCharacter());
+        complexity.setMinCharacter(entity.getMinCharacter());
+        complexity.setNotificationPeriod(entity.getNotificationPeriod());
+        complexity.setPasswordMustDifferent(entity.getPasswordMustDifferent());
+        complexity.setSmsNotification(entity.getSmsNotification());
+        complexity.setUpdatedBy(UserInfoUtil.getUserName());
+        complexity.setUpdatedOn(new Date());
+        this.passwordComplexityDao.update(complexity);
     }
 
     @Override

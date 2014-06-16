@@ -69,10 +69,10 @@
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
    
-    <listener>
+    <!--    <listener>
         <description>Monitor application</description>
         <listener-class>net.bull.javamelody.SessionListener</listener-class>
-    </listener>
+    </listener>-->
     <!--Listener for spring security log out-->
     <listener>
         <listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
@@ -104,7 +104,7 @@
         <filter-name>springSecurityFilterChain</filter-name>
         <url-pattern>/monitoring/*</url-pattern>
     </filter-mapping>
-    <filter>
+    <!--    <filter>
         <description>Filer untuk monitoring Java Melody</description>
         <filter-name>javamelodyFilter</filter-name>
         <filter-class>net.bull.javamelody.MonitoringFilter</filter-class>
@@ -120,7 +120,7 @@
     <filter-mapping>
         <filter-name>javamelodyFilter</filter-name>
         <url-pattern>/*</url-pattern>
-    </filter-mapping>
+    </filter-mapping>-->
     <filter>
         <filter-name>charEncodingFilter</filter-name>
         <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
@@ -191,6 +191,29 @@
     <servlet>
         <servlet-name>Push Servlet</servlet-name>
         <servlet-class>org.primefaces.push.PushServlet</servlet-class>
+       
+        <init-param>
+            <param-name>org.atmosphere.useNative</param-name>
+            <param-value>true</param-value>
+        </init-param>
+<!--        <init-param>
+            <param-name>org.atmosphere.cpr.sessionSupport</param-name>
+            <param-value>true</param-value>
+        </init-param>-->
+        <init-param>
+            <param-name>org.atmosphere.cpr.broadcasterCacheClass</param-name>
+            <param-value>org.atmosphere.cache.HeaderBroadcasterCache</param-value>
+        </init-param>
+        <init-param>
+            <param-name>org.atmosphere.cpr.broadcasterClass</param-name>
+            <param-value>org.atmosphere.cpr.DefaultBroadcaster</param-value>
+        </init-param>
+        <init-param>
+            <param-name>org.atmosphere.cpr.CometSupport.maxInactiveActivity</param-name>
+            <param-value>1800000</param-value>
+        </init-param>
+   
+        <async-supported>true</async-supported>
     </servlet>
     <servlet-mapping>
         <servlet-name>Push Servlet</servlet-name>

@@ -2,17 +2,6 @@ package com.inkubator.hrm.service.impl;
 
 
 
-import java.util.Date;
-import java.util.List;
-
-import org.hibernate.criterion.Order;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
@@ -23,6 +12,15 @@ import com.inkubator.hrm.entity.Leave;
 import com.inkubator.hrm.service.LeaveService;
 import com.inkubator.hrm.web.search.LeaveSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+import java.util.Date;
+import java.util.List;
+import org.hibernate.criterion.Order;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -174,8 +172,9 @@ public class LeaveServiceImpl extends IServiceImpl implements LeaveService {
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
 	public Leave getEntiyByPK(Long id) throws Exception {
 		return leaveDao.getEntiyByPK(id);
-	}	
-	
+	}
+        
+	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
 	public Leave getEntityByPkFetchAttendStatus(Long id) throws Exception {
 		return leaveDao.getEntityByPkFetchAttendStatus(id);

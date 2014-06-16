@@ -21,9 +21,10 @@
         <h:inputHidden value="#{homeController.bahasa}" />
         <h:form>
             <p:idleMonitor timeout="1740000" onidle="infoSession.show()"/>
-            <p:dialog header="#{appmsg['master_layout.session_information']}" widgetVar="infoSession" modal="true" 
+           
+            <p:dialog header="#{appmsg['master_layout.session_information']}" widgetVar="infoSession" modal="true" width="150"
                       id="infoSessionId"
-                      appendTo="@(body)" resizable="false" closable="false" style="width: 400px;height: 120px">
+                      appendTo="@(body)" resizable="false" closable="false">
                 <div align="center">
                     <h:outputLabel value="#{appmsg['master_layout.session_expired']}" style="margin-top: 5px"/>
                 </div>

@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
         <title>IGNORED</title>
     </h:head>
@@ -30,7 +31,7 @@
 
 
 
-                        <p:panelGrid style="width: 100%;margin-bottom: 20px;margin-top: 20px" styleClass="grid_border3" >
+                        <p:panelGrid style="width: 100%;margin-bottom: 5px;margin-top: 20px" styleClass="grid_border3" >
                             <p:row>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="#{appmsg['user_view.user_id']}"  for="userId" styleClass="label_hrm" />
@@ -74,9 +75,11 @@
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:password id="password" value="#{userFormController.userModel.password}" label="#{appmsg['user_form.password']}"
-                                                feedback="true" maxlength="100" match="checkpassword"   validatorMessage="#{appmsg['error_strengh_password']}"
+                                                feedback="true" maxlength="100"  match="checkpassword" 
                                                 required="true" disabled="#{userFormController.isEdit}" 
-                                                style="width: 75%" />
+                                                style="width: 75%" >
+                                        <f:validator validatorId="passwordComplexityValidator" />
+                                    </p:password>
                                     <p:message for="password"/>
                                 </p:column>
                                 <p:column style="width: 13%;background-color: #e1f0f0 !important" >
@@ -121,19 +124,49 @@
                                 </p:column>
                             </p:row>
                         </p:panelGrid>
+                        <h:panelGrid columns="20" style="margin-bottom: 15px" cellspacing="4">
+                            <p:outputLabel value="*) Aturan Pembuatan Password" styleClass="label_hrm" style="margin-right: 7px"/>
+                            <p:outputLabel value="Minimum Karakter" />
+                            <p:outputLabel value=":" />
+                            <p:outputLabel value="#{userFormController.passwordComplexity.minCharacter}" styleClass="label_hrm" />
+                            <p:outputLabel value="Maksimum Karakter" />
+                            <p:outputLabel value=":" />
+                            <p:outputLabel value="#{userFormController.passwordComplexity.maxCharacter}" styleClass="label_hrm"/>
+                            <p:outputLabel value="Terdapat Angka" />
+                            <p:outputLabel value=":" />
+                            <p:outputLabel value="#{userFormController.passwordComplexity.hasNumber}" styleClass="label_hrm" >
+                                <f:converter converterId="booleanMessageConverter" />
+                            </p:outputLabel>
+                            <p:outputLabel value="Terdapat Huruf Besar" />
+                            <p:outputLabel value=":" />
+                            <p:outputLabel value="#{userFormController.passwordComplexity.hasUpperCase}" styleClass="label_hrm" >
+                                <f:converter converterId="booleanMessageConverter" />
+                            </p:outputLabel>
+                            <p:outputLabel value="Terdapat Huruf Kecil" />
+                            <p:outputLabel value=":" />
+                            <p:outputLabel value="#{userFormController.passwordComplexity.hasLowerCase}" styleClass="label_hrm" >
+                                <f:converter converterId="booleanMessageConverter" />
+                            </p:outputLabel>
+                            <p:outputLabel value="Terdapat Karakter Khusus" />
+                            <p:outputLabel value=":" />
+                            <p:outputLabel value="#{userFormController.passwordComplexity.hasSpecialCharacter}" styleClass="label_hrm" >
+                                <f:converter converterId="booleanMessageConverter" />
+                            </p:outputLabel>
+                        </h:panelGrid>
+
                         <!--</p:panel>-->
                         <p:focus  context="userFormId"/>
 <!--                    <h:outputLabel value="#{appmsg['role_view.header1']}" styleClass="header_big" style="font-size: 13px!important"/>
                     <p:separator />-->
                         <!--<p:panel style="margin: 10px" >-->
                         <!--<h:panelGrid style="margin-bottom: 0px" columns="1">-->
-                            <!--<p:graphicImage library="images" name="user_account.png" height="36" width="36" />-->
-                            <!--                            <h:panelGroup layout="block">
-                                                            <h:panelGrid>-->
-                            <p:outputLabel value="#{appmsg['role_view.header1']}" styleClass="header_big" />
-                            <!--<p:outputLabel value="#{appmsg['user_view.header2']}" styleClass="header_small_no_bold" />-->
-                            <!--                                </h:panelGrid>
-                                                        </h:panelGroup>-->
+                        <!--<p:graphicImage library="images" name="user_account.png" height="36" width="36" />-->
+                        <!--                            <h:panelGroup layout="block">
+                                                        <h:panelGrid>-->
+                        <p:outputLabel value="#{appmsg['role_view.header1']}" styleClass="header_big" />
+                        <!--<p:outputLabel value="#{appmsg['user_view.header2']}" styleClass="header_small_no_bold" />-->
+                        <!--                                </h:panelGrid>
+                                                    </h:panelGroup>-->
                         <!--</h:panelGrid>-->
                         <p:separator/>
                         <div align="center">
