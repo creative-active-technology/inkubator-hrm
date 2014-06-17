@@ -20,8 +20,8 @@
                         <p:graphicImage library="images" name="group_working.png" height="36" width="36" />
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Detil Kelompok Kerja" styleClass="header_big" />
-                                <p:outputLabel value="Data Kelompok Kerja dari Aplikasi" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['workinggroup.working_group_detail']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['workinggroup.data_working_group_from_application']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -31,7 +31,7 @@
                         <p:panelGrid style="width: 100%;margin-top: 20px;margin-bottom: 20px" styleClass="grid_border3">
                             <p:row>
                                 <p:column style="width: 17%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Kode Kelompok Kerja" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['workinggroup.working_group_code_of_working_group']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 34%">
                                     <p:inplace id="ajax" editor="true">
@@ -40,7 +40,7 @@
 
                                 </p:column>
                                 <p:column style="width: 17%;background-color: #e1f0f0!important">
-                                    <p:outputLabel  value="Nama Kelompok Kerja" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['workinggroup.working_group_name_of_working_group']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 34%">
 
@@ -50,7 +50,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 17%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Tanggal Mulai" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['workinggroup.working_group_start_date']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 34%">
                                     <p:outputLabel  value="#{groupWorkingDetilController.selectedWtGroupWorking.beginTime}" >
@@ -58,7 +58,7 @@
                                     </p:outputLabel>
                                 </p:column>
                                 <p:column style="width: 17%;background-color: #e1f0f0!important">
-                                    <p:outputLabel  value="Tanggal Selesai" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['workinggroup.working_group_end_date']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 34%">
                                     <p:outputLabel  value="#{groupWorkingDetilController.selectedWtGroupWorking.endTime}" >
@@ -69,14 +69,14 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 17%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Jam Kerja Per Hari" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['workinggroup.working_group_working_time_per_hour']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 34%">
                                     <p:outputLabel  value="#{groupWorkingDetilController.selectedWtGroupWorking.workingTimePerday}" />
                                     <h:outputLabel value="#{appmsg['global.hour']}" style="margin-left: 5px"/>
                                 </p:column>
                                 <p:column style="width: 17%;background-color: #e1f0f0!important">
-                                    <p:outputLabel  value="Jam Kerja Per Minggu" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['workinggroup.working_group_working_time_per_week']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 34%">
                                     <p:outputLabel  value="#{groupWorkingDetilController.selectedWtGroupWorking.workingTimePerweek}" />
@@ -86,7 +86,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 17%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Lembur Berdasarkan Pekerja" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['workinggroup.working_group_working_overtime_by_workers']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 34%">
                                     <h:outputFormat  value="#{groupWorkingDetilController.selectedWtGroupWorking.overtimeBasedOnAttendance}" >
@@ -94,7 +94,7 @@
                                     </h:outputFormat>
                                 </p:column>
                                 <p:column style="width: 17%;background-color: #e1f0f0!important" rowspan="2" >
-                                    <p:outputLabel  value="Berulang" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['workinggroup.working_group_recurring']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 34%" rowspan="2">
                                     <h:outputLabel value="#{groupWorkingDetilController.selectedWtGroupWorking.isPeriodic}" >
@@ -104,7 +104,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 17%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Lembur Berdasarkan Permintaan" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['workinggroup.working_group_working_overtime_by_request']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 34%" >
                                     <h:outputLabel  value="#{groupWorkingDetilController.selectedWtGroupWorking.overtimeBasedOnRequest}" >
@@ -119,7 +119,7 @@
                                       id="tableJamKerjaId" rows="7" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="Daftar Jam Kerja" styleClass="label_hrm"/>
+                                <h:outputText value="#{appmsg['workinghour.list_of_working_hour']}" styleClass="label_hrm"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 25px">
                                 <f:facet name="header">  
@@ -129,13 +129,13 @@
                             </p:column>
                             <p:column sortBy="wtWorkingHour" style="width: 100px" >
                                 <f:facet name="header">  
-                                    <h:outputText value="Nama Jam Kerja"/>
+                                    <h:outputText value="#{appmsg['workinghour.working_hour_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{workingGroupData.wtWorkingHour.name}"/>
                             </p:column>
                             <p:column sortBy="scheduleDate" style="width: 100px" >
                                 <f:facet name="header">  
-                                    <h:outputText value="Tanggal Kerja"/>
+                                    <h:outputText value="#{appmsg['workinghour.working_hour_date_of_employment']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{workingGroupData.scheduleDate}">
                                     <f:convertDateTime pattern="dd MMMM yyyy" />

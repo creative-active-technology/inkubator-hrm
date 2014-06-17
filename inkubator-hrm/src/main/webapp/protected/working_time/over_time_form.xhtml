@@ -21,20 +21,20 @@
                         <p:graphicImage library="images" name="overtime.png" height="36" width="36"  cache="true"/>
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Form Lembur" styleClass="header_big" />
-                                <p:outputLabel value="Data Lembur dari Waktu Kerja" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['overtime.overtime_form']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['overtime.data_of_overtime_from_working_time']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
                     <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
                     <h:panelGrid columns="1" style="margin-bottom: 5px;margin-left: 0px">
                         <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
-                        <h:outputLabel value="Nama hari libur bersifat unik" styleClass="label_hrm" style="font-weight: normal!important"/>
+                        <h:outputLabel value="#{appmsg['overtime.dialog_overtime_info']}" styleClass="label_hrm" style="font-weight: normal!important"/>
                     </h:panelGrid> 
                     <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="code" value="Kode" styleClass="label_hrm"/>
+                                <p:outputLabel for="code" value="#{appmsg['overtime.overtime_code']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="code" value=":" styleClass="label_hrm"/>
@@ -51,7 +51,7 @@
                         </p:row>
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="name" value="Nama" styleClass="label_hrm"/>
+                                <p:outputLabel for="name" value="#{appmsg['overtime.overtime_name']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="name" value=":" styleClass="label_hrm"/>
@@ -93,7 +93,7 @@
                         </p:row>
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="rounding" value="Penggenapan" styleClass="label_hrm"/>
+                                <p:outputLabel for="rounding" value="#{appmsg['overtime.overtime_fullfilment']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="rounding" value=":" styleClass="label_hrm"/>
@@ -111,7 +111,7 @@
                         </p:row>
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="kalkulasi" value="Kalkulasi Lembur" styleClass="label_hrm"/>
+                                <p:outputLabel for="kalkulasi" value="#{appmsg['overtime.calculation_of_overtime']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="kalkulasi" value=":" styleClass="label_hrm"/>
@@ -119,8 +119,8 @@
                             <p:column  style="width: 50%">
                                 <p:selectOneRadio id="kalkulasi" styleClass="isitext_hrm" required="true"  value="#{overTimeFormController.overTimeModel.overTimeCalculation}">
                                     <!--Cek HRM Constanta..-->
-                                    <f:selectItem itemLabel="Digabung" itemValue="1" />
-                                    <f:selectItem itemLabel="Terpisah" itemValue="0" />
+                                    <f:selectItem itemLabel="#{appmsg['overtime.combined']}" itemValue="1" />
+                                    <f:selectItem itemLabel="#{appmsg['overtime.separated']}" itemValue="0" />
                                 </p:selectOneRadio>
                             </p:column>
                         </p:row>
@@ -132,7 +132,7 @@
 
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="minimum" value="Waktu Minimum" styleClass="label_hrm"/>
+                                <p:outputLabel for="minimum" value="#{appmsg['overtime.minimum_time']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="minimum" value=":" styleClass="label_hrm"/>
@@ -144,7 +144,7 @@
                                     <f:attribute name="endTime" value="#{maksimum}"/>
                                     <f:attribute name="validatorMessage" value="#{appmsg['over_time.minimum_time_is_geater']}"/>
                                 </pe:timePicker>  
-                                <p:outputLabel value="Jam" styleClass="label_hrm" style="margin-left: 7px;font-weight: normal!important"/>
+                                <p:outputLabel value="#{appmsg['global.hour']}" styleClass="label_hrm" style="margin-left: 7px;font-weight: normal!important"/>
                             </p:column>
                         </p:row>
                         <p:row>
@@ -154,7 +154,7 @@
                         </p:row>
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="maksimum" value="Waktu Maksimum" styleClass="label_hrm"/>
+                                <p:outputLabel for="maksimum" value="#{appmsg['overtime.maximum_time']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="maksimum" value=":" styleClass="label_hrm"/>
@@ -162,7 +162,7 @@
                             <p:column  style="width: 50%">
                                 <pe:timePicker id="maksimum" value="#{overTimeFormController.overTimeModel.maximumTime}" binding="#{maksimum}"
                                                label="Spinner time picker"  styleClass="isitext_hrm"  required="true" />  
-                                <p:outputLabel value="Jam" styleClass="label_hrm" style="margin-left: 7px;font-weight: normal!important"/>
+                                <p:outputLabel value="#{appmsg['global.hour']}" styleClass="label_hrm" style="margin-left: 7px;font-weight: normal!important"/>
                             </p:column>
                         </p:row>
                         <p:row>
@@ -175,7 +175,7 @@
 
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="faktorMulai" value="Waktu Mulai" styleClass="label_hrm"/>
+                                <p:outputLabel for="faktorMulai" value="#{appmsg['overtime.start_time']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="faktorMulai" value=":" styleClass="label_hrm"/>
@@ -197,7 +197,7 @@
                         </p:row>
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="faktorAkhir" value="Waktu Akhir" styleClass="label_hrm"/>
+                                <p:outputLabel for="faktorAkhir" value="#{appmsg['overtime.end_time']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="faktorAkhir" value=":" styleClass="label_hrm"/>
@@ -215,7 +215,7 @@
                         </p:row>
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="valuePrice" value="Nilai Lembur" styleClass="label_hrm"/>
+                                <p:outputLabel for="valuePrice" value="#{appmsg['overtime.value_overtime']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="valuePrice" value=":" styleClass="label_hrm"/>
