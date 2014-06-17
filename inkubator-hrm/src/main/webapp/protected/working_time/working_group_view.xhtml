@@ -20,8 +20,8 @@
                         <p:graphicImage library="images" name="group_working.png" height="36" width="36"  cache="true"/>
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Daftar Kelompok Kerja" styleClass="header_big" />
-                                <p:outputLabel value="Daftar  Kelompok Kerja dari Waktu Kerja" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['workinggroup.working_group']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['workinggroup.data_working_group']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -35,8 +35,8 @@
                                     <p:outputLabel value=":" />
                                     <p:selectOneMenu value="#{groupWorkingViewController.wtGroupWorkingSearchParameter.keyParam}" style="margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemLabel="Kode Kelompok Kerja" itemValue="kode"/>
-                                        <f:selectItem itemLabel="Nama Kelompok Kerja" itemValue="name"/>
+                                        <f:selectItem itemLabel="#{appmsg['workinggroup.working_group_code_of_working_group']}" itemValue="kode"/>
+                                        <f:selectItem itemLabel="#{appmsg['workinggroup.working_group_name_of_working_group']}" itemValue="name"/>
                                     </p:selectOneMenu>
                                     <p:inputText id="searchId" value="#{groupWorkingViewController.wtGroupWorkingSearchParameter.parameter}" style="width: 250px" styleClass="isitext_hrm"/>
                                     <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" action="#{groupWorkingViewController.doSearch()}" update="tableOverTimeId"  styleClass="label_button" icon="ui-icon-search"/>
@@ -58,7 +58,7 @@
                                       id="tableOverTimeId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="Daftar Kelompok Kerja" styleClass="label_hrm"/>
+                                <h:outputText value="#{appmsg['workinggroup.list_of_working_group']}" styleClass="label_hrm"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 25px">
                                 <f:facet name="header">  
@@ -68,19 +68,19 @@
                             </p:column>
                             <p:column sortBy="code" style="width: 100px" >
                                 <f:facet name="header">  
-                                    <h:outputText value="Kode"/>
+                                    <h:outputText value="#{appmsg['workinggroup.working_group_code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{workingGroupData.code}"/>
                             </p:column>
                             <p:column sortBy="name">
                                 <f:facet name="header">
-                                    <h:outputText value="Nama" />
+                                    <h:outputText value="#{appmsg['workinggroup.working_group_name']}" />
                                 </f:facet>
                                 <h:outputLabel value= "#{workingGroupData.name}"/>
                             </p:column>
                             <p:column sortBy="beginTime">
                                 <f:facet name="header">
-                                    <h:outputText value="Jadwal" />
+                                    <h:outputText value="#{appmsg['workinggroup.working_group_schedule']}" />
                                 </f:facet>
                                 <h:outputLabel value= "#{workingGroupData.beginTime}">
                                     <f:convertDateTime pattern="dd MMMM yyyy"/>
@@ -92,21 +92,21 @@
                             </p:column>
                             <p:column sortBy="workingTimePerday" style="text-align: center">
                                 <f:facet name="header">
-                                    <h:outputText value="Per Hari" />
+                                    <h:outputText value="#{appmsg['workinggroup.working_group_hour_a_day']}" />
                                 </f:facet>
                                 <h:outputLabel value= "#{workingGroupData.workingTimePerday}" />
                                 <h:outputLabel value="#{appmsg['global.hour']}" style="margin-left: 5px"/>
                             </p:column>
                             <p:column sortBy="workingTimePerweek" style="text-align: center">
                                 <f:facet name="header">
-                                    <h:outputText value="Per Minggu" />
+                                    <h:outputText value="#{appmsg['workinggroup.working_group_hour_a_week']}" />
                                 </f:facet>
                                 <h:outputLabel value= "#{workingGroupData.workingTimePerweek}"/>
                                 <h:outputLabel value="#{appmsg['global.hour']}" style="margin-left: 5px"/>
                             </p:column>
                             <p:column sortBy="isPeriodic" style="text-align: center">
                                 <f:facet name="header">
-                                    <h:outputText value="Berulang" />
+                                    <h:outputText value="#{appmsg['workinggroup.working_group_recurring']}" />
                                 </f:facet>
                                 <h:outputLabel value= "#{workingGroupData.isPeriodic}">
                                     <f:converter converterId="booleanMessageConverter"/>
@@ -114,7 +114,7 @@
                             </p:column>
                             <p:column sortBy="isPeriodic" style="text-align: center">
                                 <f:facet name="header">
-                                    <h:outputText value="Jadwal Terpakai" />
+                                    <h:outputText value="#{appmsg['workinggroup.working_group_schedule_used']}" />
                                 </f:facet>
                                 <h:outputLabel value= "#{workingGroupData.isActive}">
                                     <f:converter converterId="booleanMessageConverter"/>
@@ -189,7 +189,7 @@
                                 </h:panelGrid>
                             </div>
                             <h:panelGrid  columns="3">
-                                <p:outputLabel value="Nama Lembur" styleClass="label_hrm"/>
+                                <p:outputLabel value="#{appmsg['workinggroup.working_group_overtime_name']}" styleClass="label_hrm"/>
                                 <p:outputLabel value=":"  styleClass="label_hrm" />
                                 <p:outputLabel value="#{groupWorkingViewController.selectedWtGroupWorking.name}" styleClass="isitext_hrm"/>
                             </h:panelGrid>
