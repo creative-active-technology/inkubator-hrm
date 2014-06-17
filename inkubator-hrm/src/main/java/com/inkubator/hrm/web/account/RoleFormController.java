@@ -51,6 +51,7 @@ public class RoleFormController extends BaseController {
                 roleModel.setRoleName(hrmRole.getRoleName());
                 roleModel.setDescription(hrmRole.getDescription());
                 isEdit = Boolean.TRUE;
+             
 
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
