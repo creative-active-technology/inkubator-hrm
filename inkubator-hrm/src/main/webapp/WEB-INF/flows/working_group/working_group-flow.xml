@@ -7,22 +7,18 @@
 
     <!--<secured attributes="ROLE_ADMIN_ALL,ROLE_ADMIN_IDM" match="any"/>-->
     <on-start>
-        <!--        <evaluate expression="usersController.crateUserSerchParameter()" result="flowScope.userSearchParam"/>
-        <set name="flowScope.param" value="requestParameters.otherParam" type="java.lang.String" />-->
-         <set name="flowScope.param" value="requestParameters.otherParam" type="java.lang.String" />
+        <set name="flowScope.param" value="requestParameters.otherParam" type="java.lang.String" />
         <evaluate expression="groupWorkingFormController.createGroupWorkingModel(flowRequestContext)" result="flowScope.groupWorkingModel"/> 
     </on-start><!--
 -->    
     <view-state id="start" view="working_group_form.xhtml">
         <transition on="next" to="add_jaddwal_shift" >
-             <evaluate expression="groupWorkingFormController.doCalculateDate(flowRequestContext)"/> 
+            <evaluate expression="groupWorkingFormController.doCalculateDate(flowRequestContext)"/> 
         </transition>  
         <transition on="close" to="end"/>
     </view-state>
     <view-state id="add_jaddwal_shift" view="schedule_shift_form.xhtml">
-<!--        <on-entry>
-           
-        </on-entry>        -->
+
         <transition on="next_table">
             <evaluate expression="groupWorkingFormController.doNeckTable(flowRequestContext)"/> 
         </transition>  

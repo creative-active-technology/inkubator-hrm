@@ -230,7 +230,7 @@ public class GroupWorkingFormController implements Serializable {
         }
     };
 
-    private Comparator<WtScheduleShift> shortByDate1 = new Comparator<WtScheduleShift>() {
+    private final Comparator<WtScheduleShift> shortByDate1 = new Comparator<WtScheduleShift>() {
         @Override
         public int compare(WtScheduleShift o1, WtScheduleShift o2) {
             return o1.getScheduleDate().compareTo(o2.getScheduleDate());

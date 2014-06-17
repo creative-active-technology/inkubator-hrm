@@ -92,17 +92,13 @@
                                     <p:outputLabel  value="Lembur Berdasarkan Pekerja" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 34%">
-                                    <h:outputFormat  value="#{groupWorkingModel.overtimeBasedOnAttendance}" >
-                                        <f:converter converterId="booleanMessageConverter"/>
-                                    </h:outputFormat>
+                                    <h:outputFormat  value="#{groupWorkingModel.overtimeBasedOnAttendanceAsString}" />
                                 </p:column>
                                 <p:column style="width: 17%;background-color: #e1f0f0!important" rowspan="2" >
                                     <p:outputLabel  value="Berulang" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 34%" rowspan="2">
-                                    <h:outputLabel value="#{groupWorkingModel.isPeriodic}" >
-                                        <f:converter converterId="booleanMessageConverter"/>
-                                    </h:outputLabel>
+                                    <h:outputLabel value="#{groupWorkingModel.isPeriodicAsString}" />
                                 </p:column>
                             </p:row>
                             <p:row>
@@ -110,9 +106,7 @@
                                     <p:outputLabel  value="Lembur Berdasarkan Permintaan" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 34%" >
-                                    <h:outputLabel  value="#{groupWorkingModel.overtimeBasedOnRequest}" >
-                                        <f:converter converterId="booleanMessageConverter"/>
-                                    </h:outputLabel>
+                                    <h:outputLabel  value="#{groupWorkingModel.overtimeBasedOnRequestAsString}" />
                                 </p:column>
                             </p:row>
                         </p:panelGrid>
@@ -203,7 +197,7 @@
                         </div>
 
                     </h:form>
-                    <p:dialog id="backDialogId" appendToBody="true" draggable="true" modal="true" resizable="false" hideEffect="clip" showEffect="clip"  onShow="statusDialog.hide()"
+                    <p:dialog id="backDialogId" appendTo="@(body)" draggable="true" modal="true" resizable="false" hideEffect="clip" showEffect="clip"  onShow="statusDialog.hide()"
                               header="Konfirmasi" widgetVar="backConfirmation" dynamic="true">
                         <h:form id="backFormId">
                             <div align="center">
