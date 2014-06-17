@@ -2,9 +2,13 @@ package com.inkubator.hrm.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -23,6 +27,7 @@ public class SpecificationAbility implements Serializable {
     private String updatedBy;
     private Date createdOn;
     private Date updatedOn;
+    private Set<JabatanSpesifikasi> jabatanSpesifikasis = new HashSet<JabatanSpesifikasi>(0);
 
     public SpecificationAbility() {
 
@@ -41,7 +46,7 @@ public class SpecificationAbility implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-    
+
     @Version
     @Column(name = "version")
     public Integer getVersion() {
@@ -70,14 +75,14 @@ public class SpecificationAbility implements Serializable {
         this.optionAbility = optionAbility;
     }
 
-	@Column(name = "scale_value", nullable = false)
-	public String getScaleValue() {
-		return scaleValue;
-	}
+    @Column(name = "scale_value", nullable = false)
+    public String getScaleValue() {
+        return scaleValue;
+    }
 
-	public void setScaleValue(String scaleValue) {
-		this.scaleValue = scaleValue;
-	}
+    public void setScaleValue(String scaleValue) {
+        this.scaleValue = scaleValue;
+    }
 
     @Column(name = "created_by", length = 45)
     public String getCreatedBy() {
@@ -115,5 +120,14 @@ public class SpecificationAbility implements Serializable {
 
     public void setUpdatedOn(Date updatedOn) {
         this.updatedOn = updatedOn;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "specificationAbility")
+    public Set<JabatanSpesifikasi> getJabatanSpesifikasis() {
+        return this.jabatanSpesifikasis;
+    }
+
+    public void setJabatanSpesifikasis(Set<JabatanSpesifikasi> jabatanSpesifikasis) {
+        this.jabatanSpesifikasis = jabatanSpesifikasis;
     }
 }
