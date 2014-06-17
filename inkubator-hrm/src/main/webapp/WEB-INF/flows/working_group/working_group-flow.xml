@@ -15,7 +15,7 @@
         <transition on="next" to="add_jaddwal_shift" >
             <evaluate expression="groupWorkingFormController.doCalculateDate(flowRequestContext)"/> 
         </transition>  
-        <transition on="close" to="end"/>
+        <transition on="close_back" to="end"/>
     </view-state>
     <view-state id="add_jaddwal_shift" view="schedule_shift_form.xhtml">
 
