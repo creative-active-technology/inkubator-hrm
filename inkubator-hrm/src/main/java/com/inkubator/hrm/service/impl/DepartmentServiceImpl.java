@@ -4,7 +4,9 @@
  */
 package com.inkubator.hrm.service.impl;
 
+import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.DepartmentDao;
 import com.inkubator.hrm.entity.Department;
 import com.inkubator.hrm.service.DepartmentService;
@@ -39,13 +41,13 @@ public class DepartmentServiceImpl extends IServiceImpl implements DepartmentSer
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public Long getTotalDepartmentByParam(DepartmentSearchParameter searchParameter) {
-        return this.departmentDao.getTotalHrmRoleByParam(searchParameter);
+        return this.departmentDao.getTotalDepartmentByParam(searchParameter);
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Department getByRoleName(String name) {
-        return this.departmentDao.getByRoleName(name);
+    public Long getByDepartmentName(String name) {
+        return this.departmentDao.getByDepartmentCode(name);
     }
 
     @Override
@@ -66,7 +68,13 @@ public class DepartmentServiceImpl extends IServiceImpl implements DepartmentSer
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void save(Department entity) {
+    public void save(Department entity) throws Exception{
+        // check duplicate name
+        long totalDuplicates = departmentDao.getByDepartmentCode(entity.getDepartmentCode());
+        if (totalDuplicates > 0) {
+            throw new BussinessException("department.error_duplicate_department_name");
+        }
+        entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         entity.setDepartmentCode(entity.getDepartmentCode());
         entity.setDepartmentName(entity.getDepartmentName());
         entity.setCreatedBy(UserInfoUtil.getUserName());
@@ -76,7 +84,11 @@ public class DepartmentServiceImpl extends IServiceImpl implements DepartmentSer
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void update(Department entity) {
+    public void update(Department entity) throws Exception {
+        long totalDuplicates = departmentDao.getTotalByCodeAndNotId(entity.getDepartmentCode(), entity.getId());
+        if (totalDuplicates > 0) {
+            throw new BussinessException("department.error_duplicate_department_name");
+        }
         Department departmentUpdate = this.departmentDao.getEntiyByPK(entity.getId());
         departmentUpdate.setDepartmentCode(entity.getDepartmentCode());
         departmentUpdate.setDepartmentName(entity.getDepartmentName());
