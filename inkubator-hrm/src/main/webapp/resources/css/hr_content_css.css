@@ -506,7 +506,12 @@ div.art-logo
     background-size: 80% auto;
     padding-right: 2px;
 }
-
+.img-unit-kerja
+{
+    background-image:url(../images/unit-icon-1.png)!important;
+    background-size: 80% auto;
+    padding-right: 2px;
+}
 .img-competency
 {
     background-image:url(../images/competency_ico.png)!important;
@@ -703,6 +708,13 @@ div.art-logo
 .img-leave-scheme
 {
     background-image:url(../images/leave_scheme_ico.png)!important;
+    background-size: 80% auto;
+    padding-right: 2px;
+}
+
+.img-organization-letter
+{
+    background-image:url(../images/organization_letter_ico.png)!important;
     background-size: 80% auto;
     padding-right: 2px;
 }
