@@ -256,7 +256,7 @@
                                             <p:menuitem value="#{appmsg['passwordhistory.password_history']}"  style="color: #003366" title="Create Offering Price" url="/protected/account/password_history.htm" icon="img-password-history" /> 
                                             <p:menuitem value="#{appmsg['loginhistory.login_history']}"  style="color: #003366" title="#{appmsg['loginhistory.login_history']}" url="/protected/account/login_history.htm" icon="img-login-history" />  
                                         </p:submenu>
-                                         
+
                                         <p:submenu label="#{appmsg['menu.configuration']}" style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-configuration">
                                             <p:submenu label="#{appmsg['menu.data_reference']}"  styleClass="menu_child" >
                                                 <p:menuitem value="#{appmsg['religion.religion']}" icon="img-religion" style="font-size: 12px !important;color: #003366" title="#{appmsg['religion.religion']}" url="/protected/reference/religion_view.htm" />
@@ -366,6 +366,13 @@
                 if (args.isUpdateSucceed) {
                     dialogUserInfo.hide();
                 }
+            }
+            function start() {
+                PF('statusDialog').show();
+            }
+
+            function stop() {
+                PF('statusDialog').hide();
             }
         </script>
         <h:outputScript library="js" name="login_socket.js"/>
