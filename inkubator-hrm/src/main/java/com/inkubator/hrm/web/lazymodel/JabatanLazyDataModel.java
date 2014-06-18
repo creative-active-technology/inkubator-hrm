@@ -18,17 +18,17 @@ import org.primefaces.model.SortOrder;
 
 /**
  *
- * @author deniarianto
+ * @author Deni Husni Fahri Rizal
  */
 public class JabatanLazyDataModel extends LazyDataModel<Jabatan> implements Serializable{
     private static final Logger LOGGER = Logger.getLogger(JabatanLazyDataModel.class);
-    private final JabatanSearchParameter passwordHistorySearchParameter;
+    private final JabatanSearchParameter jabatanSearchParameter;
     private final JabatanService jabatanService;
-    private List<Jabatan> passwordHistorys = new ArrayList<>();
+    private List<Jabatan> jabatans = new ArrayList<>();
     private Integer jumlahData;
     
-    public JabatanLazyDataModel(JabatanSearchParameter passwordHistorySearchParameter, JabatanService jabatanService) {
-        this.passwordHistorySearchParameter = passwordHistorySearchParameter;
+    public JabatanLazyDataModel(JabatanSearchParameter jabatanSearchParameter, JabatanService jabatanService) {
+        this.jabatanSearchParameter = jabatanSearchParameter;
         this.jabatanService = jabatanService;
     }
     
@@ -39,23 +39,23 @@ public class JabatanLazyDataModel extends LazyDataModel<Jabatan> implements Seri
         if (sortField != null) {
             if (sortOrder == SortOrder.ASCENDING) {
                 try {
-                    passwordHistorys = jabatanService.getByParam(passwordHistorySearchParameter, first, pageSize, Order.asc(sortField));
-                    jumlahData = Integer.parseInt(String.valueOf(jabatanService.getTotalJabatanByParam(passwordHistorySearchParameter)));
+                    jabatans = jabatanService.getByParam(jabatanSearchParameter, first, pageSize, Order.asc(sortField));
+                    jumlahData = Integer.parseInt(String.valueOf(jabatanService.getTotalJabatanByParam(jabatanSearchParameter)));
                 } catch (Exception ex) {
                     LOGGER.error("Error", ex);
                 }
             } else {
                 try {
-                    passwordHistorys = jabatanService.getByParam(passwordHistorySearchParameter, first, pageSize, Order.desc(sortField));
-                    jumlahData = Integer.parseInt(String.valueOf(jabatanService.getTotalJabatanByParam(passwordHistorySearchParameter)));
+                    jabatans = jabatanService.getByParam(jabatanSearchParameter, first, pageSize, Order.desc(sortField));
+                    jumlahData = Integer.parseInt(String.valueOf(jabatanService.getTotalJabatanByParam(jabatanSearchParameter)));
                 } catch (Exception ex) {
                     LOGGER.error("Error", ex);
                 }
             }
         } else {
             try {
-                passwordHistorys = jabatanService.getByParam(passwordHistorySearchParameter, first, pageSize, Order.desc("realName"));
-                jumlahData = Integer.parseInt(String.valueOf(jabatanService.getTotalJabatanByParam(passwordHistorySearchParameter)));
+                jabatans = jabatanService.getByParam(jabatanSearchParameter, first, pageSize, Order.desc("code"));
+                jumlahData = Integer.parseInt(String.valueOf(jabatanService.getTotalJabatanByParam(jabatanSearchParameter)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
             }
@@ -64,19 +64,19 @@ public class JabatanLazyDataModel extends LazyDataModel<Jabatan> implements Seri
 
         setPageSize(pageSize);
         setRowCount(jumlahData);
-        return passwordHistorys;
+        return jabatans;
     }
     
     @Override
-    public Object getRowKey(Jabatan passwordHistory) {
-        return passwordHistory.getId();
+    public Object getRowKey(Jabatan jabatan) {
+        return jabatan.getId();
     }
 
     @Override
     public Jabatan getRowData(String id) {
-        for (Jabatan passwordHistory : passwordHistorys) {
-            if (id.equals(String.valueOf(passwordHistory.getId()))) {
-                return passwordHistory;
+        for (Jabatan jabatan : jabatans) {
+            if (id.equals(String.valueOf(jabatan.getId()))) {
+                return jabatan;
             }
         }
         return null;
