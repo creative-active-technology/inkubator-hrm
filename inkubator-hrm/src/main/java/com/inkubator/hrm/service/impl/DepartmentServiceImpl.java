@@ -87,7 +87,7 @@ public class DepartmentServiceImpl extends IServiceImpl implements DepartmentSer
     public void update(Department entity) throws Exception {
         long totalDuplicates = departmentDao.getTotalByCodeAndNotId(entity.getDepartmentCode(), entity.getId());
         if (totalDuplicates > 0) {
-            throw new BussinessException("religion.error_duplicate_religion_name");
+            throw new BussinessException("department.error_duplicate_department_name");
         }
         Department departmentUpdate = this.departmentDao.getEntiyByPK(entity.getId());
         departmentUpdate.setDepartmentCode(entity.getDepartmentCode());
