@@ -639,6 +639,13 @@ div.art-logo
     padding-right: 2px;
 }
 
+.img-organization-letter
+{
+    background-image:url(../images/organization_letter_ico.png)!important;
+    background-size: 80% auto;
+    padding-right: 2px;
+}
+
 #box_bg
 {
     /*border:0px solid #006699;*/

@@ -1,0 +1,172 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg" style="margin: 10px">                    
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="organization_letter.png" height="36" width="36" cache="true"/>
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['organizationletter.organization_letter']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['organizationletter.organization_letter_data_from_organization']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+
+                    <p:separator/>
+                    <p:growl id="growlOrganizationLetterViewlId" globalOnly="true" showDetail="true" />
+
+                    <h:form id="formOrganizationLetterViewId">
+                        <p:toolbar  style="margin-top: 10px">
+                            <p:toolbarGroup align="left">
+                                <h:panelGrid columns="4">
+                                    <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm" />
+                                    <p:outputLabel value=":" />
+                                    <p:inputText id="searchId" value="#{organizationLetterViewController.parameter}" style="width: 250px" styleClass="isitext_hrm"/>
+                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{organizationLetterViewController.doSearch()}" update="tableOrganizationLetterId"  styleClass="label_button" icon="ui-icon-search"/>
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                            <p:toolbarGroup align="right">
+                                <h:panelGrid columns="2" >
+                                    <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']}" actionListener="#{organizationLetterViewController.doAdd()}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
+                                        <p:ajax event="dialogReturn" listener="#{organizationLetterViewController.onDialogReturn}"  update="tableOrganizationLetterId,:growlOrganizationLetterViewlId"/>
+                                    </p:commandButton>
+                                    <p:commandButton value="#{appmsg['global.export']}" style="margin-right: 5px" icon="ui-icon-calculator" title="#{appmsg['global.export_excel']}" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
+                                        <pe:exporter target="tableOrganizationLetterId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Organization_Letter"/>
+                                    </p:commandButton>
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{organizationLetterViewController.doClose()}" icon="ui-icon-home"/>
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                        </p:toolbar>
+                        <p:focus for="searchId" />
+
+                        <p:dataTable  id="tableOrganizationLetterId" var="organizationLetterData"  value="#{organizationLetterViewController.lazyDataOrganizationLetter}" lazy="true" paginator="true" pageLinks="7"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['organizationletter.list_of_organization_letter']}"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 5%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column sortBy="letterNumber"  style="width: 35%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['organizationletter.letter_number']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{organizationLetterData.letterNumber}"/>
+                            </p:column>
+                            <p:column sortBy="letterDate"  style="width: 35%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['organizationletter.letter_date']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{organizationLetterData.letterDate}">
+                                	<f:convertDateTime pattern="dd-MMMM-yyyy" />
+                                </h:outputLabel>
+                            </p:column>    
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
+                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
+                                				 style="font-size: 10px!important" update=":panelDialogDetailId" 
+                                				 action="#{organizationLetterViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogDetailOrganizationLetter.show()">                        
+                                    <f:setPropertyActionListener value="#{organizationLetterData}" target="#{organizationLetterViewController.selectedOrganizationLetter}" />
+                                </p:commandButton>
+                                - 
+                                <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+                                				 style="font-size: 10px!important" update=":panelDialogConfirmId" 
+                                				 action="#{organizationLetterViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmOrganizationLetter.show()">
+                                    <f:setPropertyActionListener value="#{organizationLetterData}" target="#{organizationLetterViewController.selectedOrganizationLetter}" />
+                                </p:commandButton>
+                                -
+                                <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
+                                                 action="#{organizationLetterViewController.doUpdate()}" >
+                                    <f:setPropertyActionListener value="#{organizationLetterData}" target="#{organizationLetterViewController.selectedOrganizationLetter}" />
+                                    <p:ajax event="dialogReturn" listener="#{organizationLetterViewController.onDialogReturn}"  update="tableOrganizationLetterId,:growlOrganizationLetterViewlId"/>
+                                </p:commandButton>
+                            </p:column>                        
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : "/>
+                                <p:outputLabel value="#{organizationLetterViewController.lazyDataOrganizationLetter.rowCount}"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px"/>
+                            </f:facet>  
+                        </p:dataTable>
+                        <p:blockUI block="formOrganizationLetterViewId" trigger="tableOrganizationLetterId,btnSearchId" >
+                            <h:panelGrid columns="2" styleClass="grid_no_border">
+                                <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
+                                <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
+                            </h:panelGrid>
+                        </p:blockUI>
+                        <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
+                            <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
+                        </p:dialog>
+                    </h:form>
+                </div>
+
+                <p:dialog widgetVar="dialogConfirmOrganizationLetter" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                          appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
+                    <div align="center">
+                        <div align="center">
+                            <h:panelGrid columns="2" style="text-align: justify">
+                                <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
+                                <h:panelGroup>
+                                    <h:panelGrid style="text-align: center">
+                                        <p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
+                                    </h:panelGrid>
+                                </h:panelGroup>
+                            </h:panelGrid>
+                        </div>
+                        <h:panelGrid id="panelDialogConfirmId"  columns="3">
+                            <p:outputLabel value="#{appmsg['organizationletter.letter_number']}"  style="font-weight: bold"/>
+                            <p:outputLabel value=":"  style="font-weight: bold"/>
+                            <p:outputLabel value="#{organizationLetterViewController.selectedOrganizationLetter.letterNumber}" styleClass="label_hrm"/>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:commandButton value="#{appmsg['global.yes']}" action="#{organizationLetterViewController.doDelete()}" update="formOrganizationLetterViewId,:growlOrganizationLetterViewlId"
+                                         oncomplete="dialogConfirmOrganizationLetter.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmOrganizationLetter.hide()" icon="ui-icon-close" />                     	
+                    </div>
+                </p:dialog>
+                <p:dialog widgetVar="dialogDetailOrganizationLetter" header="#{appmsg['organizationletter.detail_dialog']}" styleClass="header_small_no_bold" width="500" modal="true" resizable="false" hideEffect="puff" 
+                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                    <p:panelGrid id="panelDialogDetailId" style="width:100%;margin:5px;">
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['organizationletter.letter_number']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{organizationLetterViewController.selectedOrganizationLetter.letterNumber}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['organizationletter.letter_date']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;">
+                            	<p:outputLabel value="#{organizationLetterViewController.selectedOrganizationLetter.letterDate}" styleClass="label_hrm">
+                            		<f:convertDateTime pattern="dd-MMMM-yyyy" />
+                            	</p:outputLabel>
+                            </p:column>
+                        </p:row>
+                        <f:facet name="footer">
+                            <p:row>
+                                <p:column colspan="2"><p:outputLabel value="#{appmsg['menu.organisation_setting']} - #{appmsg['organizationletter.organization_letter']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
+                            </p:row>
+                        </f:facet>
+                    </p:panelGrid>
+                </p:dialog>
+            </ui:define>
+        </ui:composition>
+
+    </h:body>
+</html>
+
