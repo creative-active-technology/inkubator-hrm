@@ -17,7 +17,9 @@ import org.hibernate.criterion.Order;
 public interface DepartmentDao extends IDAO<Department>{
     public List<Department> getByParam(DepartmentSearchParameter searchParameter, int firstResult, int maxResults, Order order);
 
-    public Long getTotalHrmRoleByParam(DepartmentSearchParameter searchParameter);
+    public Long getTotalDepartmentByParam(DepartmentSearchParameter searchParameter);
 
-    public Department getByRoleName(String name);
+    public Long getByDepartmentCode(String code);
+    
+    public Long getTotalByCodeAndNotId(String code, Long id);
 }
