@@ -94,7 +94,7 @@
 	                                <p:outputLabel for="periodBaseId" value="#{appmsg['leave.period_base']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:selectOneMenu id="periodBaseId" styleClass="isitext_hrm" required="true"  value="#{leaveFormController.model.periodBase}">
+	                            	<p:selectOneMenu id="periodBaseId" styleClass="isitext_hrm" required="true"  value="#{leaveFormController.model.periodBase}" style="width:290px;">
 	                                    <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
 	                                    <f:selectItem itemLabel="T.M.B" itemValue="0" />
 	                                    <f:selectItem itemLabel="0101" itemValue="1" />
@@ -110,7 +110,7 @@
 	                            <p:column  style="width: 80%">
 	                            	<h:panelGrid columns="2" style="margin-left:-10px" >
 	                            		<!-- note: pada dasarnya option dibawah adalah required="true", dibuat dynamic agar ajax calling selalu dipanggil tanpa menghirauakan validation -->
-		                            	<p:selectOneMenu id="availabilityId" styleClass="isitext_hrm" required="#{not leaveFormController.isRenderAvailabilityDate}"  value="#{leaveFormController.model.availability}">
+		                            	<p:selectOneMenu id="availabilityId" styleClass="isitext_hrm" required="#{not leaveFormController.isRenderAvailabilityDate}"  value="#{leaveFormController.model.availability}" style="width:290px;">
 		                            		<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
 		                                    <f:selectItem itemLabel="#{appmsg['leave.full']}" itemValue="0" />
 		                                    <f:selectItem itemLabel="#{appmsg['leave.increases_each_month']}" itemValue="1" />
@@ -222,7 +222,7 @@
 	                            <p:column  style="width: 80%">
 	                            	<h:panelGrid columns="2" style="margin-left:-10px" >
 	                            		<!-- note: pada dasarnya option dibawah adalah required="true", dibuat dynamic agar ajax calling selalu dipanggil tanpa menghirauakan validation -->
-		                            	<p:selectOneMenu id="endOfPeriodId" styleClass="isitext_hrm" required="#{not leaveFormController.isRenderEndOfPeriodMonth}"  value="#{leaveFormController.model.endOfPeriod}">		                            		
+		                            	<p:selectOneMenu id="endOfPeriodId" styleClass="isitext_hrm" required="#{not leaveFormController.isRenderEndOfPeriodMonth}"  value="#{leaveFormController.model.endOfPeriod}" style="width:290px;">		                            		
 		                                    <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
 		                                    <f:selectItem itemLabel="#{appmsg['leave.monthly']}" itemValue="0" />
 		                                    <f:selectItem itemLabel="#{appmsg['leave.rest_of_leave']}" itemValue="1" />
