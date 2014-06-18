@@ -9,6 +9,7 @@ import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.dao.JabatanDao;
 import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.service.JabatanService;
+import com.inkubator.hrm.web.search.JabatanSearchParameter;
 import java.util.List;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -183,6 +184,16 @@ public class JabatanServiceImpl extends IServiceImpl implements JabatanService {
 
     @Override
     public List<Jabatan> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<Jabatan> getByParam(JabatanSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Long getTotalJabatanByParam(JabatanSearchParameter searchParameter) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
