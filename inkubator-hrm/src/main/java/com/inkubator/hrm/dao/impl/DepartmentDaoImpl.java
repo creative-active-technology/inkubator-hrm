@@ -41,17 +41,17 @@ public class DepartmentDaoImpl extends IDAOImpl<Department> implements Departmen
     }
 
     @Override
-    public Long getTotalHrmRoleByParam(DepartmentSearchParameter searchParameter) {
+    public Long getTotalDepartmentByParam(DepartmentSearchParameter searchParameter) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchDepartmentByParam(searchParameter, criteria);
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
     @Override
-    public Department getByRoleName(String name) {
+    public Long getByDepartmentCode(String code) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.eq("departmentName", name));
-        return (Department) criteria.uniqueResult();
+        criteria.add(Restrictions.like("departmentCode", code, MatchMode.ANYWHERE));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
     
     private void doSearchDepartmentByParam(DepartmentSearchParameter searchParameter, Criteria criteria) {
@@ -62,5 +62,13 @@ public class DepartmentDaoImpl extends IDAOImpl<Department> implements Departmen
         	criteria.add(Restrictions.like("departmentCode", searchParameter.getCode(), MatchMode.ANYWHERE));
         }
         criteria.add(Restrictions.isNotNull("id"));
+    }
+
+    @Override
+    public Long getTotalByCodeAndNotId(String code, Long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.like("departmentCode", code, MatchMode.ANYWHERE));
+        criteria.add(Restrictions.ne("id", id));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 }

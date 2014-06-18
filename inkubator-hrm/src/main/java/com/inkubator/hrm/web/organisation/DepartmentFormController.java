@@ -70,6 +70,7 @@ public class DepartmentFormController extends BaseController {
     @PostConstruct
     @Override
     public void initialization() {
+        System.out.println("init");
         super.initialization();
         String param = FacesUtil.getRequestParameter("param");
         departmentModel = new DepartmentModel();
@@ -92,8 +93,9 @@ public class DepartmentFormController extends BaseController {
     }
     
     public void doSave() {
+        System.out.println("masuk dosave");
         Department department = getEntityFromViewModel(departmentModel);
-
+        try {
             if (isEdit) {
                 departmentService.update(department);
                 RequestContext.getCurrentInstance().closeDialog(HRMConstant.UPDATE_CONDITION);
@@ -101,9 +103,16 @@ public class DepartmentFormController extends BaseController {
                 departmentService.save(department);
                 RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
             }
+            cleanAndExit();
+        } catch (BussinessException ex) { //data already exist(duplicate)
+            LOGGER.error("Error", ex);
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
+        }
             //cleanAndExit();
 
-        cleanAndExit();
+//        cleanAndExit();
     }
     
     private Department getEntityFromViewModel(DepartmentModel departmentModel) {

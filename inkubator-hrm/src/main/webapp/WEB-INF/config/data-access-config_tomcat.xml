@@ -33,7 +33,7 @@
         <property name="maxPoolSize" value="100"/>
         <property name="minPoolSize" value="20"/>
         <property name="maxStatements" value="50"/>
-        <property name="maxIdleTime" value="1500" />
+        <property name="maxIdleTime" value="1000" />
         <property name="autoCommitOnClose" value="false" />
         <property name="initialPoolSize" value="5" />
         <property name="maxConnectionAge" value="7200" />
@@ -63,7 +63,7 @@
                 <prop key="hibernate.show_sql">false</prop>
                 <prop key="hibernate.format_sql">true</prop>
                 <prop key="hibernate.current_session_context_class">com.inkubator.datacore.util.TransactionAwareSessionContext</prop>
-<!--                <prop key="hibernate.cache.use_query_cache">true</prop>
+                <!--                <prop key="hibernate.cache.use_query_cache">true</prop>
                 <prop key="hibernate.cache.use_second_level_cache">true</prop>
                 <prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop>
                 <prop key="hibernate.cache.region.factory_class">org.hibernatme.cache.ehcache.EhCacheRegionFactory</prop>
@@ -76,7 +76,7 @@
     <bean class="org.springframework.orm.hibernate4.HibernateTransactionManager" id="transactionManager" lazy-init="true">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-     <bean class="com.inkubator.datacore.util.ServiceLog" />
+    <bean class="com.inkubator.datacore.util.ServiceLog" />
     <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager"
           p:cacheManager-ref="ehcache"/>
     <bean id="ehcache" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"

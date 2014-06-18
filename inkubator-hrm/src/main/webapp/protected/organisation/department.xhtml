@@ -18,7 +18,7 @@
                 <div id="box_bg" style="margin: 10px">
                     <h:form id="formDepartmentId">
                         <h:panelGrid style="margin-bottom: 5px" columns="2">
-                            <p:graphicImage library="images" name="login_history_1.png" height="36" width="36" />
+                            <p:graphicImage library="images" name="department_header.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
                                     <p:outputLabel value="#{appmsg['department.department']}" styleClass="header_big" />
@@ -43,7 +43,10 @@
                                 </h:panelGrid>
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
-                                <h:panelGrid columns="2" >
+                                <h:panelGrid columns="3" >
+                                    <p:commandButton value="Export to XLS" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
+                                        <pe:exporter target="tableDepartmentId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Department"/>
+                                    </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.add']}" actionListener="#{departmentController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
                                         <p:ajax event="dialogReturn" listener="#{departmentController.onDialogReturn}"  update="tableDepartmentId"/>
                                     </p:commandButton>
