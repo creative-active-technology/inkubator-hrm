@@ -124,7 +124,7 @@ public class KlasifikasiKerja implements java.io.Serializable {
         this.updatedOn = updatedOn;
     }
 
-    @Column(name = "description", length = 65535)
+      @Column(name="description",length=65535)
     public String getDescription() {
         return this.description;
     }

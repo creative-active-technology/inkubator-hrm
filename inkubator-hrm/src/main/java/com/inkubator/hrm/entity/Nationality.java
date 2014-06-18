@@ -134,7 +134,7 @@ public class Nationality  implements java.io.Serializable {
     }
 
     
-    @Column(name="description", length=65535)
+     @Column(name="description",length=65535)
     public String getDescription() {
         return this.description;
     }

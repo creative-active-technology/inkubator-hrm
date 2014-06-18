@@ -18,7 +18,7 @@
                 <div id="box_bg" style="margin: 10px">
                     <!--<p:panel style="margin: 10px" >-->
                     <h:panelGrid style="margin-bottom: 5px" columns="2">
-                        <p:graphicImage library="images" name="user_account.png" height="36" width="36" />
+                        <p:graphicImage library="images" name="jabatan.png" height="36" width="36" />
                         <h:panelGroup layout="block">
                             <h:panelGrid>
                                 <p:outputLabel value="#{appmsg['jabatan.jabatan_list']}" styleClass="header_big" />
@@ -53,7 +53,7 @@
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3">
-                                    <p:commandButton value="Export to XLS" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
+                                    <p:commandButton value="Export to XLS" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
                                         <pe:exporter target="tableDepartmentId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Department"/>
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.add']}" action="#{jabatanViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" icon="ui-icon-document"
