@@ -1,0 +1,173 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Role View
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg" style="margin: 10px">
+                    <!--<p:panel style="margin: 10px" >-->
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="user_account.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['jabatan.jabatan_list']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['jabtan_view.header2']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator/>
+                    <p:growl id="userViewGrowlId" globalOnly="true" showDetail="true" />
+                    <h:form id="userViewId">
+                        <p:toolbar  style="margin-top: 10px">
+                            <p:toolbarGroup align="left">
+                                <h:panelGrid columns="5">
+                                    <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm"/>
+                                    <p:outputLabel value=":" styleClass="label_hrm" />
+                                    <p:selectOneMenu id="pencarianSelectId" value="#{userViewController.hrmUserSearchParameter.keyParam}"
+                                                     style="width: 150px;margin-right: 3px" >
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItem itemLabel="Kode Jabatan" itemValue="code"/>
+                                        <f:selectItem itemLabel="Nama Jabatan" itemValue="name" />
+                                        <f:selectItem itemLabel="Nama Departement" itemValue="jabatan" />
+                                        <f:selectItem itemLabel="Nama Pangkat" itemValue="departementName" />
+                                        <f:selectItem itemLabel="Pos Biaya" itemValue="costCenterName" />
+                                        <f:selectItem itemLabel="Unit Kerja" itemValue="unitKerjaName" />
+
+                                    </p:selectOneMenu>
+                                    <p:inputText value="#{userViewController.hrmUserSearchParameter.parameter}" style="width: 250px" id="pencarianId" styleClass="isitext_hrm" 
+                                                 label="#{appmsg['global.searching']}" title="#{appmsg['global.searching']}"/>
+                                    <p:commandButton value="#{appmsg['global.search']}" action="#{userViewController.doSearch()}" style="width: 75px" update="tableUserId" icon="ui-icon-search"
+                                                     styleClass="label_button" title="#{appmsg['global.search']}" id="btnPencarianId" />
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                            <p:toolbarGroup align="right">
+                                <h:panelGrid columns="2">
+                                    <p:commandButton value="#{appmsg['global.add']}" action="#{userViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" icon="ui-icon-document"
+                                                     styleClass="label_button" ajax="true" immediate="true">
+
+                                    </p:commandButton>
+                                    <p:commandButton value="#{appmsg['global.close']}"  styleClass="label_button" action="#{roleViewController.doClose()}" title="#{appmsg['global.close']}" icon="ui-icon-home"
+                                                     label="#{appmsg['global.close']}"/>
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+
+                        </p:toolbar>
+                        <p:focus for="pencarianId" />
+
+                        <p:dataTable  var="userViewData"  value="#{userViewController.lazyDataHrmUser}" lazy="true" paginator="true" pageLinks="7" 
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      id="tableUserId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['user_view.header1']}" styleClass="label_hrm"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 25px">
+                                <f:facet name="header">  
+                                    <h:outputText value="No."  />
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column sortBy="userId" style="width: 150px" >
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['user_view.user_id']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{userViewData.userId}"/>
+                            </p:column>
+                            <p:column sortBy="realName" >
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['user_view.user_name']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{userViewData.realName}"/>
+                            </p:column>
+                            <p:column sortBy="emailAddress" >
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['user_form.email_address']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{userViewData.emailAddress}"/>
+                            </p:column>
+                            <p:column sortBy="phoneNumber" >
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['user_form.phone_number']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{userViewData.phoneNumber}"/>
+                            </p:column>                                                       
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
+                                <p:commandButton  icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
+                                                  action="#{userViewController.doDetail()}" style="font-size: 10px!important" >                        
+                                    <f:setPropertyActionListener value="#{userViewData}" target="#{userViewController.selectedHrmUser}" />
+                                </p:commandButton>
+                                - 
+                                <p:commandButton  icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  style="font-size: 10px!important" update=":deleteDialogUserId"
+                                                  onclick="statusDialog.show()"  oncomplete="confirmDialogHrmUser.show()" action="#{userViewController.onDelete()}" >
+                                    <f:setPropertyActionListener value="#{userViewData}" target="#{userViewController.selectedHrmUser}" />
+                                </p:commandButton>
+                                -
+                                <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
+                                                  action="#{userViewController.doEdit()}" >
+                                    <f:setPropertyActionListener value="#{userViewData}" target="#{userViewController.selectedHrmUser}" />
+
+                                </p:commandButton> 
+                            </p:column>                                                      <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : " styleClass="label_hrm" />
+                                <p:outputLabel value="#{userViewController.lazyDataHrmUser.rowCount}" styleClass="label_hrm"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px" styleClass="label_hrm"/>
+                            </f:facet>  
+                        </p:dataTable>
+                        <p:blockUI block="userViewId" trigger="tableUserId,btnPencarianId" >
+                            <h:panelGrid columns="2" styleClass="grid_no_border">
+                                <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
+                                <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
+                            </h:panelGrid>
+                        </p:blockUI>
+<!--                        <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
+                            <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
+                        </p:dialog>-->
+
+                    </h:form>
+                    <!--</p:panel>-->
+                </div>
+                <p:dialog widgetVar="confirmDialogHrmUser" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                          appendTo="@(body)" resizable="false" id="confirmDialogHrmRoleId" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
+                    <h:form id="deleteDialogUserId">
+                        <div align="center">
+                            <div align="center">
+                                <h:panelGrid columns="2" style="text-align: justify">
+                                    <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
+                                    <h:panelGroup>
+                                        <h:panelGrid style="text-align: center">
+                                            <p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
+                                        </h:panelGrid>
+                                    </h:panelGroup>
+                                </h:panelGrid>
+                            </div>
+                            <h:panelGrid  columns="3">
+                                <p:outputLabel value="#{appmsg['user_view.user_name']}" styleClass="label_hrm"/>
+                                <p:outputLabel value=":"  styleClass="label_hrm" />
+                                <p:outputLabel value="#{userViewController.selectedHrmUser.realName}" styleClass="isitext_hrm"/>
+                            </h:panelGrid>
+                            <p:separator/>
+                            <p:commandButton value="#{appmsg['global.yes']}" action="#{userViewController.doDelete()}" update=":userViewId,:userViewGrowlId" id="yesId" title="#{appmsg['global.yes']}" styleClass="isitext_hrm"
+                                             oncomplete="confirmDialogHrmUser.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                            <p:commandButton value="#{appmsg['global.no']}" oncomplete="confirmDialogHrmUser.hide()" icon="ui-icon-close" title="#{appmsg['global.no']}"  styleClass="isitext_hrm"/>
+
+                        </div>
+                    </h:form>
+                </p:dialog>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+
