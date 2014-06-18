@@ -291,4 +291,10 @@ public class LeaveSchemeServiceImpl extends IServiceImpl implements LeaveSchemeS
 		return leaveSchemeDao.getTotalByParam(parameter);
 	}
 
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public LeaveScheme getEntiyByPkFetchLeave(Long id) {
+		return leaveSchemeDao.getEntityByPkFetchLeave(id);
+	}
+
 }

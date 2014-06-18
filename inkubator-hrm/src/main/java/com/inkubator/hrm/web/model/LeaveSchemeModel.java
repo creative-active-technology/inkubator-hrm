@@ -1,6 +1,9 @@
 package com.inkubator.hrm.web.model;
 
 import java.io.Serializable;
+import java.util.List;
+
+import com.inkubator.hrm.entity.Leave;
 
 /**
  *
@@ -14,7 +17,8 @@ public class LeaveSchemeModel implements Serializable {
     private String description;
     private Integer totalDays;
     private Long leaveId;
-	
+    private List<Leave> leaves;
+    
 	public Long getId() {
 		return id;
 	}
@@ -50,5 +54,11 @@ public class LeaveSchemeModel implements Serializable {
 	}
 	public void setLeaveId(Long leaveId) {
 		this.leaveId = leaveId;
+	}
+	public List<Leave> getLeaves() {
+		return leaves;
+	}
+	public void setLeaves(List<Leave> leaves) {
+		this.leaves = leaves;
 	}
 }

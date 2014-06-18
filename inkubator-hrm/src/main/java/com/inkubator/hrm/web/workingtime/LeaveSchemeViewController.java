@@ -93,7 +93,7 @@ public class LeaveSchemeViewController extends BaseController {
     
     public void doDetail() {
         try {
-            selectedLeaveScheme = this.leaveSchemeService.getEntiyByPK(selectedLeaveScheme.getId());
+            selectedLeaveScheme = this.leaveSchemeService.getEntiyByPkFetchLeave(selectedLeaveScheme.getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -130,7 +130,7 @@ public class LeaveSchemeViewController extends BaseController {
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 450);
-        options.put("contentHeight", 250);
+        options.put("contentHeight", 400);
         RequestContext.getCurrentInstance().openDialog("leave_scheme_form", options, params);
     }
     

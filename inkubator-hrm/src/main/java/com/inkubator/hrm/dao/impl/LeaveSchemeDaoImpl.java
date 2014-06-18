@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -90,4 +91,12 @@ public class LeaveSchemeDaoImpl extends IDAOImpl<LeaveScheme> implements LeaveSc
         criteria.add(Restrictions.ne("id", id));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
+
+	@Override
+	public LeaveScheme getEntityByPkFetchLeave(Long id) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.setFetchMode("leave", FetchMode.JOIN);
+		criteria.add(Restrictions.eq("id", id));
+		return (LeaveScheme) criteria.uniqueResult();
+	}
 }
