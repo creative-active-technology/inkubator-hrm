@@ -557,6 +557,74 @@ div.art-logo
     padding-right: 2px;
 }
 
+.img-bank
+{
+    background-image:url(../images/bank_ico.png)!important;
+    background-size: 80% auto;
+    padding-right: 2px;
+}
+
+.img-dialect
+{
+    background-image:url(../images/dialect_ico.png)!important;
+    background-size: 80% auto;
+    padding-right: 2px;
+}
+
+
+.img-race
+{
+    background-image:url(../images/race_ico.png)!important;
+    background-size: 80% auto;
+    padding-right: 2px;
+}
+
+
+.img-faculty
+{
+    background-image:url(../images/faculty_ico.png)!important;
+    background-size: 80% auto;
+    padding-right: 2px;
+}
+
+
+.img-major
+{
+    background-image:url(../images/major_ico.png)!important;
+    background-size: 80% auto;
+    padding-right: 2px;
+}
+
+
+.img-language
+{
+    background-image:url(../images/language_ico.png)!important;
+    background-size: 80% auto;
+    padding-right: 2px;
+}
+
+
+.img-occupationType
+{
+    background-image:url(../images/occupationType_ico.png)!important;
+    background-size: 80% auto;
+    padding-right: 2px;
+}
+
+.img-nationality
+{
+    background-image:url(../images/nationality_ico.png)!important;
+    background-size: 80% auto;
+    padding-right: 2px;
+}
+
+.img-klasifikasiKerja
+{
+    background-image:url(../images/klasifikasiKerja_ico.png)!important;
+    background-size: 80% auto;
+    padding-right: 2px;
+}
+
 .img-education-level
 {
     background-image:url(../images/graduated_ico.png)!important;
@@ -646,6 +714,12 @@ div.art-logo
     padding-right: 2px;
 }
 
+.img-job-title
+{
+    background-image:url(../images/jabatan_ico.png)!important;
+    background-size: 80% auto;
+    padding-right: 2px;
+}
 #box_bg
 {
     /*border:0px solid #006699;*/
