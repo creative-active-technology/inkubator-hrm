@@ -41,7 +41,7 @@
                                 </h:panelGrid>
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
-                                <h:panelGrid columns="2" >
+                                <h:panelGrid columns="3" >
                                     <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']}" actionListener="#{organizationLetterViewController.doAdd()}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
                                         <p:ajax event="dialogReturn" listener="#{organizationLetterViewController.onDialogReturn}"  update="tableOrganizationLetterId,:growlOrganizationLetterViewlId"/>
                                     </p:commandButton>
