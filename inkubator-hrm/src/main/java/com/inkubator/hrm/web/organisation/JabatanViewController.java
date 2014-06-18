@@ -6,10 +6,10 @@
 package com.inkubator.hrm.web.organisation;
 
 import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.WtHoliday;
-import com.inkubator.hrm.service.WtHolidayService;
-import com.inkubator.hrm.web.lazymodel.WtHolidayLazyModel;
-import com.inkubator.hrm.web.search.HolidaySearchParameter;
+import com.inkubator.hrm.entity.Jabatan;
+import com.inkubator.hrm.service.JabatanService;
+import com.inkubator.hrm.web.lazymodel.JabatanLazyDataModel;
+import com.inkubator.hrm.web.search.JabatanSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
@@ -36,70 +36,62 @@ import org.springframework.dao.DataIntegrityViolationException;
 @ManagedBean(name = "jabatanViewController")
 @ViewScoped
 public class JabatanViewController extends BaseController {
-    
-    private HolidaySearchParameter holidaySearchParameter;
-    private LazyDataModel<WtHoliday> wtHolidayLazyDataModel;
-    @ManagedProperty(value = "#{wtHolidayService}")
-    private WtHolidayService wtHolidayService;
-    private WtHoliday selecWtHoliday;
-    
-    public HolidaySearchParameter getHolidaySearchParameter() {
-        return holidaySearchParameter;
+
+    private JabatanSearchParameter jabatanSearchParameter;
+    private LazyDataModel<Jabatan> lazyJabatanDataModel;
+    @ManagedProperty(value = "#{jabatanService}")
+    private JabatanService jabatanService;
+    private Jabatan selectedJabatan;
+
+    public JabatanSearchParameter getJabatanSearchParameter() {
+        return jabatanSearchParameter;
     }
-    
-    public void setHolidaySearchParameter(HolidaySearchParameter holidaySearchParameter) {
-        this.holidaySearchParameter = holidaySearchParameter;
+
+    public void setJabatanSearchParameter(JabatanSearchParameter jabatanSearchParameter) {
+        this.jabatanSearchParameter = jabatanSearchParameter;
     }
-    
-    public LazyDataModel<WtHoliday> getWtPeriodelazyDataModel() {
-        if (wtHolidayLazyDataModel == null) {
-            wtHolidayLazyDataModel = new WtHolidayLazyModel(holidaySearchParameter, wtHolidayService);
+
+    public LazyDataModel<Jabatan> getLazyJabatanDataModel() {
+        if (lazyJabatanDataModel == null) {
+            lazyJabatanDataModel = new JabatanLazyDataModel(jabatanSearchParameter, jabatanService);
         }
-        return wtHolidayLazyDataModel;
+        return lazyJabatanDataModel;
     }
-    
-    public void setWtPeriodelazyDataModel(LazyDataModel<WtHoliday> wtPeriodelazyDataModel) {
-        this.wtHolidayLazyDataModel = wtPeriodelazyDataModel;
+
+    public void setLazyJabatanDataModel(LazyDataModel<Jabatan> lazyJabatanDataModel) {
+        this.lazyJabatanDataModel = lazyJabatanDataModel;
     }
-    
-    public WtHoliday getSelecWtHoliday() {
-        return selecWtHoliday;
+
+    public void setJabatanService(JabatanService jabatanService) {
+        this.jabatanService = jabatanService;
     }
-    
-    public void setSelecWtHoliday(WtHoliday selecWtHoliday) {
-        this.selecWtHoliday = selecWtHoliday;
-    }
-    
-    public void setWtHolidayService(WtHolidayService wtHolidayService) {
-        this.wtHolidayService = wtHolidayService;
-    }
-    
+
     @PostConstruct
     @Override
     public void initialization() {
         super.initialization();
-        holidaySearchParameter = new HolidaySearchParameter();
-        
+        jabatanSearchParameter = new JabatanSearchParameter();
+
     }
-    
+
     public void doSearch() {
-        wtHolidayLazyDataModel = null;
+        lazyJabatanDataModel = null;
     }
-    
+
     public void doDetail() {
         try {
-            selecWtHoliday = wtHolidayService.getEntiyByPK(selecWtHoliday.getId());
+            selectedJabatan = jabatanService.getEntiyByPK(selectedJabatan.getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
     }
-    
+
     public void doDelete() {
         try {
-            this.wtHolidayService.delete(selecWtHoliday);
+            this.jabatanService.delete(selectedJabatan);
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-            
+
         } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
@@ -108,7 +100,7 @@ public class JabatanViewController extends BaseController {
             LOGGER.error("Error", ex);
         }
     }
-    
+
     public void doAdd() {
         Map<String, Object> options = new HashMap<>();
         options.put("modal", true);
@@ -116,10 +108,10 @@ public class JabatanViewController extends BaseController {
         options.put("resizable", false);
         options.put("contentWidth", 400);
         options.put("contentHeight", 360);
-        
+
         RequestContext.getCurrentInstance().openDialog("holiday_form", options, null);
     }
-    
+
     public void doEdit() {
         Map<String, Object> options = new HashMap<>();
         options.put("modal", true);
@@ -129,38 +121,47 @@ public class JabatanViewController extends BaseController {
         options.put("contentHeight", 360);
         Map<String, List<String>> dataToSend = new HashMap<>();
         List<String> dataIsi = new ArrayList<>();
-        dataIsi.add(String.valueOf(selecWtHoliday.getId()));
+        dataIsi.add(String.valueOf(selectedJabatan.getId()));
         dataToSend.put("param", dataIsi);
         RequestContext.getCurrentInstance().openDialog("holiday_form", options, dataToSend);
     }
-    
+
     @Override
     public void onDialogReturn(SelectEvent event) {
-        wtHolidayLazyDataModel = null;
+        lazyJabatanDataModel = null;
         super.onDialogReturn(event);
     }
-    
+
     public void onDelete() {
         try {
-            selecWtHoliday = wtHolidayService.getEntiyByPK(selecWtHoliday.getId());
+            selectedJabatan = jabatanService.getEntiyByPK(selectedJabatan.getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
     }
-    
+
     public void doChangeYear() {
-        wtHolidayLazyDataModel = null;
+        lazyJabatanDataModel = null;
     }
-    
+
     public void doChangeMonth() {
-        wtHolidayLazyDataModel = null;
+        lazyJabatanDataModel = null;
     }
-    
+
     @PreDestroy
     private void cleanAndExit() {
-        holidaySearchParameter = null;
-        wtHolidayService = null;
-        wtHolidayLazyDataModel = null;
-        selecWtHoliday = null;
+        jabatanSearchParameter = null;
+        jabatanService = null;
+        lazyJabatanDataModel = null;
+        selectedJabatan = null;
     }
+
+    public Jabatan getSelectedJabatan() {
+        return selectedJabatan;
+    }
+
+    public void setSelectedJabatan(Jabatan selectedJabatan) {
+        this.selectedJabatan = selectedJabatan;
+    }
+
 }
