@@ -10,19 +10,19 @@ import org.hibernate.criterion.Order;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
-import com.inkubator.hrm.entity.Language;
+import com.inkubator.hrm.entity.LanguageUsed;
 import com.inkubator.hrm.service.LanguageService;
 
 /**
 *
 * @author Taufik Hidayat
 */
-public class LanguageLazyDataModel extends LazyDataModel<Language> implements Serializable {
+public class LanguageLazyDataModel extends LazyDataModel<LanguageUsed> implements Serializable {
 
 	private static final Logger LOGGER = Logger.getLogger(LanguageLazyDataModel.class);
     private final String parameter;
     private final LanguageService languageService;
-    private List<Language> languages = new ArrayList<>();
+    private List<LanguageUsed> languages = new ArrayList<>();
     private Integer total;
 
     public LanguageLazyDataModel(String parameter, LanguageService languageService) {
@@ -31,7 +31,7 @@ public class LanguageLazyDataModel extends LazyDataModel<Language> implements Se
     }
 
     @Override
-    public List<Language> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<LanguageUsed> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
         LOGGER.info("Step Load Lazy data Model");        
         try {
         	Order orderable = null;
@@ -56,13 +56,13 @@ public class LanguageLazyDataModel extends LazyDataModel<Language> implements Se
     }
 
     @Override
-    public Object getRowKey(Language language) {
+    public Object getRowKey(LanguageUsed language) {
         return language.getId();
     }
 
     @Override
-    public Language getRowData(String id) {
-        for (Language language : languages) {
+    public LanguageUsed getRowData(String id) {
+        for (LanguageUsed language : languages) {
             if (id.equals(String.valueOf(language.getId()))) {
                 return language;
             }

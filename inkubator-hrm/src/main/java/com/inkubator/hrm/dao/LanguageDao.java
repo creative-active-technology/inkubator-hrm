@@ -5,15 +5,15 @@ import java.util.List;
 import org.hibernate.criterion.Order;
 
 import com.inkubator.datacore.dao.IDAO;
-import com.inkubator.hrm.entity.Language;
+import com.inkubator.hrm.entity.LanguageUsed;
 
 /**
 *
 * @author Taufik hidayat
 */
-public interface LanguageDao extends IDAO<Language> {
+public interface LanguageDao extends IDAO<LanguageUsed> {
 
-	public List<Language> getByParam(String parameter, int firstResult, int maxResults, Order orderable);
+	public List<LanguageUsed> getByParam(String parameter, int firstResult, int maxResults, Order orderable);
 
 	public Long getTotalLanguageByParam(String parameter);
 	

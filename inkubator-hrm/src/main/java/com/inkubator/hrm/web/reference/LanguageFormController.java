@@ -2,7 +2,7 @@ package com.inkubator.hrm.web.reference;
 
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.Language;
+import com.inkubator.hrm.entity.LanguageUsed;
 import com.inkubator.hrm.service.LanguageService;
 import com.inkubator.hrm.web.model.LanguageModel;
 import com.inkubator.webcore.controller.BaseController;
@@ -39,7 +39,7 @@ public class LanguageFormController extends BaseController {
         isUpdate = Boolean.FALSE;
         if (StringUtils.isNumeric(param)) {
             try {
-                Language language = languageService.getEntiyByPK(Long.parseLong(param));
+                LanguageUsed language = languageService.getEntiyByPK(Long.parseLong(param));
                 if (language != null) {
                     languageModel.setId(language.getId());
                     languageModel.setLanguageName(language.getLanguageName());
@@ -80,7 +80,7 @@ public class LanguageFormController extends BaseController {
     }
 
     public void doSave() {
-        Language language = getEntityFromViewModel(languageModel);
+        LanguageUsed language = getEntityFromViewModel(languageModel);
         try {
             if (isUpdate) {
                 languageService.update(language);
@@ -98,8 +98,8 @@ public class LanguageFormController extends BaseController {
         }
     }
 
-    private Language getEntityFromViewModel(LanguageModel languageModel) {
-        Language language = new Language();
+    private LanguageUsed getEntityFromViewModel(LanguageModel languageModel) {
+        LanguageUsed language = new LanguageUsed();
         if (languageModel.getId() != null) {
             language.setId(languageModel.getId());
         }
