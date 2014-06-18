@@ -536,6 +536,19 @@ div.art-logo
     padding-right: 2px;
 }
 
+.img-password-history
+{
+    background-image:url(../images/password_history_ico.png)!important;
+    background-size: 80% auto;
+    padding-right: 2px;
+}
+
+.img-department
+{
+    background-image:url(../images/department_ico.png)!important;
+    background-size: 80% auto;
+    padding-right: 2px;
+}
 
 .img-religion
 {

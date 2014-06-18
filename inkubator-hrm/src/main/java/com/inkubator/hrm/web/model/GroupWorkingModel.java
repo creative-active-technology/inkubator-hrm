@@ -5,11 +5,16 @@
  */
 package com.inkubator.hrm.web.model;
 
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.webcore.util.FacesUtil;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
+import java.util.ResourceBundle;
 import java.util.TreeMap;
 
 /**
@@ -24,10 +29,13 @@ public class GroupWorkingModel implements Serializable {
     private Date beginTime;
     private Date endTime;
     private Boolean isPeriodic;
+    private String isPeriodicAsString;
     private Double workingTimePerday;
     private Double workingTimePerweek;
     private Boolean overtimeBasedOnAttendance;
+    private String overtimeBasedOnAttendanceAsString;
     private Boolean overtimeBasedOnRequest;
+    private String overtimeBasedOnRequestAsString;
     private List<ScheduleShiftModel> dataShiftModels = new ArrayList<>();
     private List<ScheduleShiftModel> dataToShow = new ArrayList<>();
     private Map<String, Long> mapData = new TreeMap<>();
@@ -154,8 +162,47 @@ public class GroupWorkingModel implements Serializable {
         this.isDisable = isDisable;
     }
 
-  
-    
-    
+    public String getIsPeriodicAsString() {
+        ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+        if (Objects.equals(isPeriodic, Boolean.TRUE)) {
+            isPeriodicAsString = messages.getString("global.yes");
+        } else {
+            isPeriodicAsString = messages.getString("global.no");
+        }
+        return isPeriodicAsString;
+    }
+
+    public void setIsPeriodicAsString(String isPeriodicAsString) {
+        this.isPeriodicAsString = isPeriodicAsString;
+    }
+
+    public String getOvertimeBasedOnAttendanceAsString() {
+        ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+        if (Objects.equals(overtimeBasedOnAttendance, Boolean.TRUE)) {
+            overtimeBasedOnAttendanceAsString = messages.getString("global.yes");
+        } else {
+            overtimeBasedOnAttendanceAsString = messages.getString("global.no");
+        }
+        return overtimeBasedOnAttendanceAsString;
+    }
+
+    public void setOvertimeBasedOnAttendanceAsString(String overtimeBasedOnAttendanceAsString) {
+        this.overtimeBasedOnAttendanceAsString = overtimeBasedOnAttendanceAsString;
+    }
+
+    public String getOvertimeBasedOnRequestAsString() {
+        ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+        if (Objects.equals(overtimeBasedOnRequest, Boolean.TRUE)) {
+            overtimeBasedOnRequestAsString = messages.getString("global.yes");
+        } else {
+            overtimeBasedOnRequestAsString = messages.getString("global.no");
+        }
+
+        return overtimeBasedOnRequestAsString;
+    }
+
+    public void setOvertimeBasedOnRequestAsString(String overtimeBasedOnRequestAsString) {
+        this.overtimeBasedOnRequestAsString = overtimeBasedOnRequestAsString;
+    }
 
 }

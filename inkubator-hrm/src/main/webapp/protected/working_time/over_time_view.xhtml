@@ -20,8 +20,8 @@
                         <p:graphicImage library="images" name="overtime.png" height="36" width="36"  cache="true"/>
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Daftar Lembur" styleClass="header_big" />
-                                <p:outputLabel value="Daftar Lembur dari Waktu Kerja" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['overtime.overtime']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['overtime.data_of_overtime_from_worktime']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -35,8 +35,8 @@
                                     <p:outputLabel value=":" />
                                     <p:selectOneMenu value="#{overTimeViewController.wtOverTimeSearchParameter.keyParam}" style="margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemLabel="Kode Lembur" itemValue="overTimecode"/>
-                                        <f:selectItem itemLabel="Nama Lembur" itemValue="overTimeName"/>
+                                        <f:selectItem itemLabel="#{appmsg['overtime.overtime_code']}" itemValue="overTimecode"/>
+                                        <f:selectItem itemLabel="#{appmsg['overtime.overtime_name']}" itemValue="overTimeName"/>
                                         <!--                                        <f:selectItem itemLabel="Minimum Lembur" itemValue="minTime"/>
                                                                                 <f:selectItem itemLabel="Maksimum Lembur" itemValue="maxTime"/>-->
                                                                             <!--<f:selectItem itemLabel="#{appmsg['specificationability.scale_value']}" itemValue="scaleValue"/>-->
@@ -61,7 +61,7 @@
                                       id="tableOverTimeId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="Daftar Lembur" styleClass="label_hrm"/>
+                                <h:outputText value="#{appmsg['overtime.list_of_overtime']}" styleClass="label_hrm"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 25px">
                                 <f:facet name="header">  
@@ -71,33 +71,33 @@
                             </p:column>
                             <p:column sortBy="code" style="width: 150px" >
                                 <f:facet name="header">  
-                                    <h:outputText value="Kode Lembur"/>
+                                    <h:outputText value="#{appmsg['overtime.overtime_code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{overTimeData.code}"/>
                             </p:column>
                             <p:column sortBy="name">
                                 <f:facet name="header">
-                                    <h:outputText value="Nama Lembur" />
+                                    <h:outputText value="#{appmsg['overtime.overtime_name']}" />
                                 </f:facet>
                                 <h:outputLabel value= "#{overTimeData.name}"/>
                             </p:column>
                             <p:column sortBy="minimumTime" style="text-align: center">
                                 <f:facet name="header">
-                                    <h:outputText value="Minimum Lembur"/>
+                                    <h:outputText value="#{appmsg['overtime.overtime_minimum']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{overTimeData.minimumTime}">
                                     <f:convertDateTime pattern="HH:mm"/>
                                 </h:outputLabel>
-                                <h:outputLabel value="Jam" style="margin-left: 5px"/>
+                                <h:outputLabel value="#{appmsg['global.hour']}" style="margin-left: 5px"/>
                             </p:column>
                             <p:column sortBy="maximumTime" style="text-align: center">
                                 <f:facet name="header">
-                                    <h:outputText value="Maksimum Lembur" />
+                                    <h:outputText value="#{appmsg['overtime.overtime_maximum']}" />
                                 </f:facet>
                                 <h:outputLabel value= "#{overTimeData.maximumTime}">
                                     <f:convertDateTime pattern="HH:mm"/>
                                 </h:outputLabel>
-                                <h:outputLabel value="Jam" style="margin-left: 5px"/>
+                                <h:outputLabel value="#{appmsg['global.hour']}" style="margin-left: 5px"/>
                             </p:column>
 
                             <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
@@ -130,9 +130,9 @@
                                 <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
                             </h:panelGrid>
                         </p:blockUI>
-                        <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
+<!--                        <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
                             <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
-                        </p:dialog>
+                        </p:dialog>-->
                     </h:form>
                     <!--</p:panel>-->
                 </div>
@@ -151,7 +151,7 @@
                                 </h:panelGrid>
                             </div>
                             <h:panelGrid  columns="3">
-                                <p:outputLabel value="Nama Lembur" styleClass="label_hrm"/>
+                                <p:outputLabel value="#{appmsg['workinggroup.working_group_overtime_name']}" styleClass="label_hrm"/>
                                 <p:outputLabel value=":"  styleClass="label_hrm" />
                                 <p:outputLabel value="#{overTimeViewController.selectedWtOverTime.name}" styleClass="isitext_hrm"/>
                             </h:panelGrid>
@@ -163,56 +163,56 @@
                         </div>
                     </h:form>
                 </p:dialog>
-                <p:dialog widgetVar="detailDialogOverTime" header="Detil Lembur" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
+                <p:dialog widgetVar="detailDialogOverTime" header="#{appmsg['overtime.detail_overtime']}r" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
                           showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)" dynamic="true">
                     <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
 
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Kode Lembur" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['overtime.overtime_code']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{overTimeViewController.selectedWtOverTime.code}"/> </p:column>
                         </p:row>
 
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Nama Lembur" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['overtime.overtime_name']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{overTimeViewController.selectedWtOverTime.name}"/> </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Deskripsi" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{overTimeViewController.selectedWtOverTime.description}"/> </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Minimu Lembur" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['overtime.overtime_minimum']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{overTimeViewController.selectedWtOverTime.minimumTime} #{appmsg['global.satuan_jam']} "/> </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Maksimus Lembur" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['overtime.overtime_maximum']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{overTimeViewController.selectedWtOverTime.maximumTime} #{appmsg['global.satuan_jam']} "/> </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Faktor Waktu Mulai" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['overtime.start_time']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{overTimeViewController.selectedWtOverTime.startTimeFactor}"/> </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Faktor Waktu Akhir" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['overtime.end_time']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{overTimeViewController.selectedWtOverTime.finishTimeFactor}"/> </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Faktor Penggenap" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['overtime.overtime_fullfilment']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{overTimeViewController.selectedWtOverTime.otRounding}"/> </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Kalkulasi Lembur" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['overtime.calculation_of_overtime']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{overTimeViewController.selectedWtOverTime.OTCalculationAsString}"/> </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Nilai Lembur" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['overtime.value_overtime']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{overTimeViewController.selectedWtOverTime.valuePrice}">
                                     <f:convertNumber maxFractionDigits="2" />
                                 </p:outputLabel> </p:column>
                         </p:row>
                         <f:facet name="footer">
                             <p:row>
-                                <p:column colspan="2"><p:outputLabel value="Lembur" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
+                                <p:column colspan="2"><p:outputLabel value="#{appmsg['overtime.overtime_footer']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
                             </p:row>
                         </f:facet>
                     </p:panelGrid>

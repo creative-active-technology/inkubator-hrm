@@ -50,7 +50,7 @@ public class PasswordComplexityModel implements Serializable {
         this.minCharacter = minCharacter;
     }
 
-    public Boolean isIsMustHaveNumber() {
+    public Boolean getIsMustHaveNumber() {
         return isMustHaveNumber;
     }
 
@@ -58,7 +58,7 @@ public class PasswordComplexityModel implements Serializable {
         this.isMustHaveNumber = isMustHaveNumber;
     }
 
-    public Boolean isIsMustHaveSPCharacter() {
+    public Boolean getIsMustHaveSPCharacter() {
         return isMustHaveSPCharacter;
     }
 
@@ -66,7 +66,7 @@ public class PasswordComplexityModel implements Serializable {
         this.isMustHaveSPCharacter = isMustHaveSPCharacter;
     }
 
-    public Boolean isIsMustHaveUpperCase() {
+    public Boolean getIsMustHaveUpperCase() {
         return isMustHaveUpperCase;
     }
 
@@ -74,7 +74,7 @@ public class PasswordComplexityModel implements Serializable {
         this.isMustHaveUpperCase = isMustHaveUpperCase;
     }
 
-    public Boolean isIsMustHaveLowerCase() {
+    public Boolean getIsMustHaveLowerCase() {
         return isMustHaveLowerCase;
     }
 

@@ -68,7 +68,7 @@ public class UserModel implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
-    @Pattern(regexp = "^(?=.{8,})(?=.*[a-z])(?=.*[A-Z])(?=.*[\\d])(?=.*[\\W]).*$", message = "{error_strengh_password}")
+//    @Pattern(regexp = "^(?=.{8,})(?=.*[a-z])(?=.*[A-Z])(?=.*[\\d])(?=.*[\\W]).*$", message = "{error_strengh_password}")
     public String getPassword() {
         return password;
     }

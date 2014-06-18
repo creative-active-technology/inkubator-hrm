@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -33,6 +34,7 @@ public class HrmRole implements java.io.Serializable {
     private Date createdOn;
     private Date updatedOn;
     private Set<HrmUserRole> hrmUserRoles = new HashSet<>(0);
+    private Set<HrmMenuRole> hrmMenuRoles = new HashSet<>(0);
 
     public HrmRole() {
     }
@@ -188,5 +190,13 @@ public class HrmRole implements java.io.Serializable {
         return true;
     }
 
-    
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "hrmRole", orphanRemoval = true)
+    public Set<HrmMenuRole> getHrmMenuRoles() {
+        return this.hrmMenuRoles;
+    }
+
+    public void setHrmMenuRoles(Set<HrmMenuRole> hrmMenuRoles) {
+        this.hrmMenuRoles = hrmMenuRoles;
+    }
+
 }

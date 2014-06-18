@@ -11,8 +11,10 @@ import com.inkubator.hrm.entity.HrmRole;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.HrmUserRole;
 import com.inkubator.hrm.entity.HrmUserRoleId;
+import com.inkubator.hrm.entity.PasswordComplexity;
 import com.inkubator.hrm.service.HrmRoleService;
 import com.inkubator.hrm.service.HrmUserService;
+import com.inkubator.hrm.service.PasswordComplexityService;
 import com.inkubator.hrm.web.model.UserModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
@@ -44,8 +46,15 @@ public class UserFormController extends BaseController {
     @ManagedProperty(value = "#{hrmRoleService}")
     private HrmRoleService hrmRoleService;
     private UserModel userModel;
-    private Boolean isEdit;
+    private PasswordComplexity passwordComplexity;
+    @ManagedProperty(value = "#{passwordComplexityService}")
+    private PasswordComplexityService passwordComplexityService;
+     private Boolean isEdit;
 
+    public void setPasswordComplexityService(PasswordComplexityService passwordComplexityService) {
+        this.passwordComplexityService = passwordComplexityService;
+    }
+   
     public void setHrmUserService(HrmUserService hrmUserService) {
         this.hrmUserService = hrmUserService;
     }
@@ -75,7 +84,7 @@ public class UserFormController extends BaseController {
                 userModel = new UserModel();
                 isEdit = Boolean.FALSE;
             }
-
+            passwordComplexity = passwordComplexityService.getByCode(HRMConstant.PASSWORD_CONFIG_CODE);
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -248,9 +257,19 @@ public class UserFormController extends BaseController {
     @PreDestroy
     public void cleanAndExit() {
         dualListModel = null;
-        hrmUserService=null;
-        hrmRoleService=null;
-
+        hrmUserService = null;
+        hrmRoleService = null;
+        passwordComplexity = null;
+        passwordComplexityService = null;
     }
 
+    public PasswordComplexity getPasswordComplexity() {
+        return passwordComplexity;
+    }
+
+    public void setPasswordComplexity(PasswordComplexity passwordComplexity) {
+        this.passwordComplexity = passwordComplexity;
+    }
+
+    
 }

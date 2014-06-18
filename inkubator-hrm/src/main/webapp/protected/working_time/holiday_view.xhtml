@@ -20,8 +20,8 @@
                         <p:graphicImage library="images" name="holiday.png" height="36" width="36" cache="true" />
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Daftar Hari Libur" styleClass="header_big" />
-                                <p:outputLabel value="Daftar Hari Libur dari Waktu Kerja" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['holiday.list_of_holiday']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['holiday.list_of_holiday_and_workday']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -59,7 +59,7 @@
                                       id="tableHolidayId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="Daftar Hari Libur" styleClass="label_hrm"/>
+                                <h:outputText value="#{appmsg['holiday.list_of_holiday']}" styleClass="label_hrm"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 25px">
                                 <f:facet name="header">  
@@ -69,33 +69,33 @@
                             </p:column>
                             <p:column sortBy="holidayDate" style="width: 150px" >
                                 <f:facet name="header">  
-                                    <h:outputText value="Tanggal Libur"/>
+                                    <h:outputText value="#{appmsg['holiday.holiday_date']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{holidayViewData.holidayDate}">
                                     <f:convertDateTime pattern="dd-MMMM-yyyy" />
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="bulan">
+                            <p:column sortBy="holidayName">
                                 <f:facet name="header">
-                                    <h:outputText value="Nama Hari Libur"/>
+                                    <h:outputText value="#{appmsg['holiday.name_of_holiday']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{holidayViewData.holidayName}"/>
                             </p:column>
-                            <p:column sortBy="bulan">
+                            <p:column sortBy="religion">
                                 <f:facet name="header">
-                                    <h:outputText value="Hari Raya Keagamaan"/>
+                                    <h:outputText value="#{appmsg['holiday.religious_holiday']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{holidayViewData.religion.name}"/>
                             </p:column>
-                            <p:column sortBy="bulan" style="text-align: center">
+                            <p:column sortBy="isEveryYear" style="text-align: center">
                                 <f:facet name="header">
-                                    <h:outputText value="Setiap Tahun"/>
+                                    <h:outputText value="#{appmsg['holiday.every_year']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{holidayViewData.isEveryYearAsLabel}"/>
                             </p:column>
-                            <p:column sortBy="bulan" style="text-align: center">
+                            <p:column sortBy="isColectiveLeave" style="text-align: center">
                                 <f:facet name="header">
-                                    <h:outputText value="Libur Bersama"/>
+                                    <h:outputText value="#{appmsg['holiday.public_leave']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{holidayViewData.isCollectiveAsLabel}"/>
                             </p:column>
@@ -130,9 +130,9 @@
                                 <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
                             </h:panelGrid>
                         </p:blockUI>
-                        <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
+<!--                        <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
                             <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
-                        </p:dialog>
+                        </p:dialog>-->
                     </h:form>
                     <!--</p:panel>-->
                 </div>
@@ -151,7 +151,7 @@
                                 </h:panelGrid>
                             </div>
                             <h:panelGrid  columns="3">
-                                <p:outputLabel value="Nama hari libur" styleClass="label_hrm"/>
+                                <p:outputLabel value="#{appmsg['holiday.name_of_holiday']}" styleClass="label_hrm"/>
                                 <p:outputLabel value=":"  styleClass="label_hrm" />
                                 <p:outputLabel value="#{holidayViewController.selecWtHoliday.holidayName}" styleClass="isitext_hrm"/>
                             </h:panelGrid>
@@ -167,26 +167,26 @@
                           showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
                     <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
                         <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="Tanggal Libur" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['holiday.holiday_date']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:70%;"><p:outputLabel value="#{holidayViewController.selecWtHoliday.holidayDate}">
                                     <f:convertDateTime pattern="dd-MMMM-yyyy" />
                                 </p:outputLabel></p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Nama Hari Libur" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['holiday.name_of_holiday']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{holidayViewController.selecWtHoliday.holidayName}"/> </p:column>
                         </p:row>
                        
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Hari Besar Agama" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['holiday.religious_holiday']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{holidayViewController.selecWtHoliday.religion.name}"/> </p:column>
                         </p:row>
                          <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Setiap Tahun" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['holiday.every_year']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{holidayViewController.selecWtHoliday.isEveryYearAsLabel}"/> </p:column>
                         </p:row>
                          <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Libur Bersama" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['holiday.public_leave']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{holidayViewController.selecWtHoliday.isCollectiveAsLabel}"/> </p:column>
                         </p:row>
                         <!--                        <p:row>
