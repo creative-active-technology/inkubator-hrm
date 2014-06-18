@@ -1,5 +1,7 @@
 package com.inkubator.hrm.web.workingtime;
 
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
@@ -14,8 +16,8 @@ import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.Leave;
 import com.inkubator.hrm.entity.LeaveScheme;
-import com.inkubator.hrm.entity.WtWorkingHour;
 import com.inkubator.hrm.service.LeaveSchemeService;
+import com.inkubator.hrm.service.LeaveService;
 import com.inkubator.hrm.web.model.LeaveSchemeModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
@@ -33,30 +35,37 @@ public class LeaveSchemeFormController extends BaseController {
     private Boolean isUpdate;
     @ManagedProperty(value = "#{leaveSchemeService}")
     private LeaveSchemeService leaveSchemeService;
+    @ManagedProperty(value = "#{leaveService}")
+    private LeaveService leaveService;
 
     @PostConstruct
     @Override
     public void initialization() {
         super.initialization();
-        String param = FacesUtil.getRequestParameter("param");
-        model = new LeaveSchemeModel();
-        isUpdate = Boolean.FALSE;
-        if (StringUtils.isNumeric(param)) {
-            try {
-                LeaveScheme leaveScheme = leaveSchemeService.getEntiyByPK(Long.parseLong(param));
-                if (leaveScheme != null) {
-                    getModelFromEntity(leaveScheme);
-                    isUpdate = Boolean.TRUE;
-                }
-            } catch (Exception e) {
-                LOGGER.error("Error", e);
-            }
+        try {
+        	isUpdate = Boolean.FALSE;
+        	
+	        model = new LeaveSchemeModel();
+	        List<Leave> leaves = leaveService.getAllData();
+	        model.setLeaves(leaves);
+	        
+	        String param = FacesUtil.getRequestParameter("param");
+	        if (StringUtils.isNumeric(param)) {	            
+				LeaveScheme leaveScheme = leaveSchemeService.getEntiyByPK(Long.parseLong(param));
+				if (leaveScheme != null) {
+					getModelFromEntity(leaveScheme);
+					isUpdate = Boolean.TRUE;
+				}
+	        }
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
         }
     }
 
     @PreDestroy
     public void cleanAndExit() {
         leaveSchemeService = null;
+        leaveService = null;
         model = null;
         isUpdate = null;
     }
@@ -77,6 +86,10 @@ public class LeaveSchemeFormController extends BaseController {
 		this.isUpdate = isUpdate;
 	}
 
+	public void setLeaveService(LeaveService leaveService) {
+		this.leaveService = leaveService;
+	}
+	
 	public void setLeaveSchemeService(LeaveSchemeService leaveSchemeService) {
 		this.leaveSchemeService = leaveSchemeService;
 	}
@@ -111,7 +124,7 @@ public class LeaveSchemeFormController extends BaseController {
     	leaveScheme.setTotalDays(model.getTotalDays());
     	
     	Leave leave = new Leave();
-    	leave.setId(model.getId());
+    	leave.setId(model.getLeaveId());
     	leaveScheme.setLeave(leave);
     	
         return leaveScheme;

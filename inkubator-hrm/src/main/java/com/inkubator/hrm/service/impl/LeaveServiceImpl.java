@@ -43,8 +43,7 @@ public class LeaveServiceImpl extends IServiceImpl implements LeaveService {
 
 	@Override
 	public List<Leave> getAllData() throws Exception {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
-
+		return leaveDao.getAllData();
 	}
 
 	@Override
