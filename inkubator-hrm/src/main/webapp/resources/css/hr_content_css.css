@@ -506,7 +506,12 @@ div.art-logo
     background-size: 80% auto;
     padding-right: 2px;
 }
-
+.img-unit-kerja
+{
+    background-image:url(../images/unit-icon-1.png)!important;
+    background-size: 80% auto;
+    padding-right: 2px;
+}
 .img-competency
 {
     background-image:url(../images/competency_ico.png)!important;
