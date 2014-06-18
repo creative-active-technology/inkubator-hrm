@@ -17,6 +17,7 @@
             <ui:define name="center">
                 <p:growl id="growlLeaveSchemeFormlId" globalOnly="true" showDetail="true"/>
                 <h:form id="formLeaveSchemeFormId">
+                	<p:focus context="formLeaveSchemeFormId"/>
                     <h:panelGrid  columns="2">
                         <p:graphicImage library="images" name="leave_scheme.png" height="36" width="36" />
                         <h:panelGroup layout="block">
@@ -32,18 +33,33 @@
                         <h:outputLabel value="#{appmsg['leavescheme.dialog_info']}" styleClass="label_hrm" style="font-weight: normal!important"/>
                     </h:panelGrid> 
                     <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
+                    	<p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="codeId" value="#{appmsg['leavescheme.leave_scheme_code']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="codeId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                                 <p:inputText id="codeId" title="#{appmsg['leavescheme.leave_scheme_code']}" value="#{leaveSchemeFormController.model.code}" 
+                                    		  required="true" maxlength="4" styleClass="isitext_hrm" style="width:250px;" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="codeId"/>
+                            </p:column>
+                        </p:row>
                         <p:row>
                             <p:column style="width: 29%">
-                                <p:outputLabel for="nameId" value="#{appmsg['global.name']}" styleClass="label_hrm"/>
+                                <p:outputLabel for="nameId" value="#{appmsg['leavescheme.leave_scheme_name']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="nameId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 70%">
-                                <p:focus for ="nameId">
-                                    <p:inputText id="nameId" title="#{appmsg['global.name']}" value="#{leaveFormController.model.name}" 
-                                    			 required="true" maxlength="30" styleClass="isitext_hrm" style="width:250px;" />
-                                </p:focus>
+                                <p:inputText id="nameId" title="#{appmsg['leavescheme.leave_scheme_name']}" value="#{leaveSchemeFormController.model.name}" 
+                                    		 required="true" maxlength="60" styleClass="isitext_hrm" style="width:250px;" />
                             </p:column>
                         </p:row>
                         <p:row>
@@ -51,6 +67,54 @@
                                 <p:message for="nameId"/>
                             </p:column>
                         </p:row>
+	                    <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="leaveId" value="#{appmsg['leave.leave']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="leaveId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                                <p:selectOneMenu id="leaveId" styleClass="isitext_hrm" required="true"  value="#{leaveSchemeFormController.model.leaveId}">
+	                           		<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+	                                <f:selectItems value="#{leaveSchemeFormController.model.leaves}" var="leave" itemValue="#{leave.id}" itemLabel="#{leave.name}"/>
+	                            </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="leaveId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="totalDaysId" value="#{appmsg['leavescheme.total_days']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="totalDaysId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                                <p:spinner id="totalDaysId" value="#{leaveSchemeFormController.model.totalDays}" size="4" max="10" min="0" 
+                                		   styleClass="isitext_hrm" required="true"/>	 
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="totalDaysId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="descId" value="#{appmsg['global.description']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="descId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                                <p:inputTextarea id="descId" title="#{appmsg['global.description']}" value="#{leaveSchemeFormController.model.description}" 
+	                                    	     maxlength="1000" styleClass="isitext_hrm" style="width:250px;" /> 	 
+                            </p:column>
+                        </p:row>                                  
                     </p:panelGrid>
                     <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
                     <h:panelGrid columns="2" style="margin-bottom: -30px!important">

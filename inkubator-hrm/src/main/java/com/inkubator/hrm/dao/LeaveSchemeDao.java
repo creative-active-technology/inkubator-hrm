@@ -25,6 +25,8 @@ public interface LeaveSchemeDao extends IDAO<LeaveScheme> {
 	public Long getTotalByCode(String code);
 	
 	public Long getTotalByCodeAndNotId(String code, Long id);
+
+	public LeaveScheme getEntityByPkFetchLeave(Long id);
 	
 	
 }

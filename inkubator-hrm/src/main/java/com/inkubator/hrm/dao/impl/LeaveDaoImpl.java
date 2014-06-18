@@ -1,7 +1,10 @@
 package com.inkubator.hrm.dao.impl;
 
+import com.inkubator.datacore.dao.impl.IDAOImpl;
+import com.inkubator.hrm.dao.LeaveDao;
+import com.inkubator.hrm.entity.Leave;
+import com.inkubator.hrm.web.search.LeaveSearchParameter;
 import java.util.List;
-
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
@@ -12,11 +15,6 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
-import com.inkubator.datacore.dao.impl.IDAOImpl;
-import com.inkubator.hrm.dao.LeaveDao;
-import com.inkubator.hrm.entity.Leave;
-import com.inkubator.hrm.web.search.LeaveSearchParameter;
-
 /**
  *
  * @author rizkykojek
@@ -24,13 +22,13 @@ import com.inkubator.hrm.web.search.LeaveSearchParameter;
 @Repository(value = "leaveDao")
 @Lazy
 public class LeaveDaoImpl extends IDAOImpl<Leave> implements LeaveDao {
-	
-	@Override
-	public Class<Leave> getEntityClass() {
-		return Leave.class;
-	}	
-	
-	@Override
+
+    @Override
+    public Class<Leave> getEntityClass() {
+        return Leave.class;
+    }
+
+    @Override
     public List<Leave> getByParam(LeaveSearchParameter parameter, int firstResult, int maxResults, Order orderable) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchByParam(parameter, criteria);
@@ -71,7 +69,7 @@ public class LeaveDaoImpl extends IDAOImpl<Leave> implements LeaveDao {
         criteria.add(Restrictions.ne("id", id));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
-    
+
     @Override
     public Long getTotalByCode(String code) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
@@ -87,11 +85,11 @@ public class LeaveDaoImpl extends IDAOImpl<Leave> implements LeaveDao {
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
-	@Override
-	public Leave getEntityByPkFetchAttendStatus(Long id) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.setFetchMode("attendanceStatus", FetchMode.JOIN);
-		criteria.add(Restrictions.eq("id", id));
-		return (Leave) criteria.uniqueResult();
-	}
+    @Override
+    public Leave getEntityByPkFetchAttendStatus(Long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.setFetchMode("attendanceStatus", FetchMode.JOIN);
+        criteria.add(Restrictions.eq("id", id));
+        return (Leave) criteria.uniqueResult();
+    }
 }
