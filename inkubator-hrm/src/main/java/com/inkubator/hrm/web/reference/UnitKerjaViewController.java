@@ -2,13 +2,13 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.inkubator.hrm.web.organisation;
+package com.inkubator.hrm.web.reference;
 
 import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.Department;
-import com.inkubator.hrm.service.DepartmentService;
-import com.inkubator.hrm.web.lazymodel.DepartmentLazyDataModel;
-import com.inkubator.hrm.web.search.DepartmentSearchParameter;
+import com.inkubator.hrm.entity.UnitKerja;
+import com.inkubator.hrm.service.UnitKerjaService;
+import com.inkubator.hrm.web.lazymodel.UnitKerjaLazyDataModel;
+import com.inkubator.hrm.web.search.UnitKerjaSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
@@ -32,65 +32,64 @@ import org.springframework.dao.DataIntegrityViolationException;
  *
  * @author deniarianto
  */
-@ManagedBean(name = "departmentController")
+@ManagedBean(name = "unitKerjaController")
 @ViewScoped
-public class DepartmentController extends BaseController{
-    @ManagedProperty(value = "#{departmentService}")
-    private DepartmentService departmentService;
-    private DepartmentSearchParameter departmentSearchParameter;
-    private LazyDataModel<Department> lazyDataDepartment;
-    private Department selectedDepartment;
+public class UnitKerjaViewController  extends BaseController{
+    @ManagedProperty(value = "#{unitKerjaService}")
+    private UnitKerjaService unitKerjaService;
+    private UnitKerjaSearchParameter unitKerjaSearchParameter;
+    private LazyDataModel<UnitKerja> lazyDataUnitKerja;
+    private UnitKerja selectedUnitKerja;
 
-    public DepartmentService getDepartmentService() {
-        return departmentService;
+    public UnitKerjaService getUnitKerjaService() {
+        return unitKerjaService;
     }
 
-    public void setDepartmentService(DepartmentService departmentService) {
-        System.out.println("test");
-        this.departmentService = departmentService;
+    public void setUnitKerjaService(UnitKerjaService unitKerjaService) {
+        this.unitKerjaService = unitKerjaService;
     }
 
-    public DepartmentSearchParameter getDepartmentSearchParameter() {
-        return departmentSearchParameter;
+    public UnitKerjaSearchParameter getUnitKerjaSearchParameter() {
+        return unitKerjaSearchParameter;
     }
 
-    public void setDepartmentSearchParameter(DepartmentSearchParameter departmentSearchParameter) {
-        this.departmentSearchParameter = departmentSearchParameter;
+    public void setUnitKerjaSearchParameter(UnitKerjaSearchParameter unitKerjaSearchParameter) {
+        this.unitKerjaSearchParameter = unitKerjaSearchParameter;
     }
 
-    public LazyDataModel<Department> getLazyDataDepartment() {
-        if(lazyDataDepartment == null){
-            lazyDataDepartment = new DepartmentLazyDataModel(departmentSearchParameter, departmentService);
+    public LazyDataModel<UnitKerja> getLazyDataUnitKerja() {
+        if(lazyDataUnitKerja == null){
+            lazyDataUnitKerja = new UnitKerjaLazyDataModel(unitKerjaSearchParameter, unitKerjaService);
         }
-        return lazyDataDepartment;
+        return lazyDataUnitKerja;
     }
 
-    public void setLazyDataDepartment(LazyDataModel<Department> lazyDataDepartment) {
-        this.lazyDataDepartment = lazyDataDepartment;
+    public void setLazyDataUnitKerja(LazyDataModel<UnitKerja> lazyDataUnitKerja) {
+        this.lazyDataUnitKerja = lazyDataUnitKerja;
     }
 
-    public Department getSelectedDepartment() {
-        return selectedDepartment;
+    public UnitKerja getSelectedUnitKerja() {
+        return selectedUnitKerja;
     }
 
-    public void setSelectedDepartment(Department selectedDepartment) {
-        this.selectedDepartment = selectedDepartment;
+    public void setSelectedUnitKerja(UnitKerja selectedUnitKerja) {
+        this.selectedUnitKerja = selectedUnitKerja;
     }
     
     @PostConstruct
     @Override
     public void initialization() {
         super.initialization();
-        departmentSearchParameter = new DepartmentSearchParameter();
+        unitKerjaSearchParameter = new UnitKerjaSearchParameter();
     }
     
     public void doSearch() {
-        lazyDataDepartment = null;
+        lazyDataUnitKerja = null;
     }
     
     public void doDetail() {
         try {
-            selectedDepartment = this.departmentService.getEntiyByPK(selectedDepartment.getId());
+            selectedUnitKerja = this.unitKerjaService.getEntiyByPK(selectedUnitKerja.getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -98,13 +97,12 @@ public class DepartmentController extends BaseController{
     
     public void doDelete() {
         try {
-            this.departmentService.delete(selectedDepartment);
+            this.unitKerjaService.delete(selectedUnitKerja);
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully",
-                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-
+            FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint",
-                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             LOGGER.error("Error", ex);
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
@@ -117,59 +115,56 @@ public class DepartmentController extends BaseController{
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 400);
-        options.put("contentHeight", 280);
+        options.put("contentHeight", 300);
         
 //        options.put("closable", false);
 //        options.put("height", "auto");
 
 //        options.put("contentHeight", 340);
-        RequestContext.getCurrentInstance().openDialog("department_form", options, null);
+        RequestContext.getCurrentInstance().openDialog("unit_kerja_form", options, null);
     }
-        
+    
     public void doEdit() {
         Map<String, Object> options = new HashMap<>();
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 400);
-        options.put("contentHeight", 280);
+        options.put("contentHeight", 300);
         Map<String, List<String>> dataToSend = new HashMap<>();
         List<String> dataIsi = new ArrayList<>();
-        dataIsi.add(String.valueOf(selectedDepartment.getId()));
+        dataIsi.add(String.valueOf(selectedUnitKerja.getId()));
         dataToSend.put("param", dataIsi);
-        RequestContext.getCurrentInstance().openDialog("department_form", options, dataToSend);
+        RequestContext.getCurrentInstance().openDialog("unit_kerja_form", options, dataToSend);
     }
     
     @Override
     public void onDialogReturn(SelectEvent event) {
-        lazyDataDepartment = null;
-       super.onDialogReturn(event);
-
+        lazyDataUnitKerja = null;
+        super.onDialogReturn(event);
     }
-
+    
     public void onDelete() {
         try {
-            selectedDepartment = this.departmentService.getEntiyByPK(selectedDepartment.getId());
+            selectedUnitKerja = this.unitKerjaService.getEntiyByPK(selectedUnitKerja.getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
     }
-
+    
     @PreDestroy
     private void cleanAndExit() {
-        departmentSearchParameter=null;
-        lazyDataDepartment=null;
-        departmentService=null;
-        selectedDepartment=null;
-        
+        unitKerjaSearchParameter=null;
+        lazyDataUnitKerja=null;
+        unitKerjaService=null;
+        selectedUnitKerja=null;
     }
     
     public void doSelectEntity() {
         try {
-            selectedDepartment = this.departmentService.getEntiyByPK(selectedDepartment.getId());
+            selectedUnitKerja = this.unitKerjaService.getEntiyByPK(selectedUnitKerja.getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
     }
-    
 }
