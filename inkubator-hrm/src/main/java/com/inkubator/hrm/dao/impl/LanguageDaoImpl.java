@@ -2,7 +2,7 @@ package com.inkubator.hrm.dao.impl;
 
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.LanguageDao;
-import com.inkubator.hrm.entity.Language;
+import com.inkubator.hrm.entity.LanguageUsed;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
@@ -19,15 +19,15 @@ import org.springframework.stereotype.Repository;
  */
 @Repository(value = "languageDao")
 @Lazy
-public class LanguageDaoImpl extends IDAOImpl<Language> implements LanguageDao {
+public class LanguageDaoImpl extends IDAOImpl<LanguageUsed> implements LanguageDao {
 
     @Override
-    public Class<Language> getEntityClass() {
-        return Language.class;
+    public Class<LanguageUsed> getEntityClass() {
+        return LanguageUsed.class;
     }
 
     @Override
-    public List<Language> getByParam(String parameter, int firstResult, int maxResults, Order orderable) {
+    public List<LanguageUsed> getByParam(String parameter, int firstResult, int maxResults, Order orderable) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchLanguageByParam(parameter, criteria);
         criteria.addOrder(orderable);

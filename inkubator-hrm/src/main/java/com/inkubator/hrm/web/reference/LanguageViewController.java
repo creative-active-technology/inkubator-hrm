@@ -1,7 +1,7 @@
 package com.inkubator.hrm.web.reference;
 
 import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.Language;
+import com.inkubator.hrm.entity.LanguageUsed;
 import com.inkubator.hrm.service.LanguageService;
 import com.inkubator.hrm.web.lazymodel.LanguageLazyDataModel;
 import com.inkubator.webcore.controller.BaseController;
@@ -32,8 +32,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 public class LanguageViewController extends BaseController {
 
     private String parameter;
-    private LazyDataModel<Language> lazyDataLanguage;
-    private Language selectedLanguage;
+    private LazyDataModel<LanguageUsed> lazyDataLanguage;
+    private LanguageUsed selectedLanguage;
     @ManagedProperty(value = "#{languageService}")
     private LanguageService languageService;
 
@@ -63,22 +63,22 @@ public class LanguageViewController extends BaseController {
         this.parameter = parameter;
     }
 
-    public LazyDataModel<Language> getLazyDataLanguage() {
+    public LazyDataModel<LanguageUsed> getLazyDataLanguage() {
         if (lazyDataLanguage == null) {
             lazyDataLanguage = new LanguageLazyDataModel(parameter, languageService);
         }
         return lazyDataLanguage;
     }
 
-    public void setLazyDataLanguage(LazyDataModel<Language> lazyDataLanguage) {
+    public void setLazyDataLanguage(LazyDataModel<LanguageUsed> lazyDataLanguage) {
         this.lazyDataLanguage = lazyDataLanguage;
     }
 
-    public Language getSelectedLanguage() {
+    public LanguageUsed getSelectedLanguage() {
         return selectedLanguage;
     }
 
-    public void setSelectedLanguage(Language selectedLanguage) {
+    public void setSelectedLanguage(LanguageUsed selectedLanguage) {
         this.selectedLanguage = selectedLanguage;
     }
 
