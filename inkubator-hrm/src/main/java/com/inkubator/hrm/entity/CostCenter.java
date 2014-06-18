@@ -2,6 +2,7 @@ package com.inkubator.hrm.entity;
 // Generated Jun 17, 2014 4:36:40 PM by Hibernate Tools 3.6.0
 
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -9,6 +10,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -26,16 +29,20 @@ import javax.persistence.Version;
 )
 public class CostCenter  implements java.io.Serializable {
 
-
      private long id;
      private Integer version;
+     private CostCenter costCenter;
      private String code;
      private String name;
      private String createdBy;
      private Date createdOn;
      private String updatedBy;
      private Date updatedOn;
-     private Set<Jabatan> jabatans = new HashSet<Jabatan>(0);
+     private String description;
+     private BigDecimal balance;
+     private Integer level;
+     private Set<Jabatan> jabatans = new HashSet<>(0);
+     private Set<CostCenter> costCenters = new HashSet<>(0);
 
     public CostCenter() {
     }
@@ -44,15 +51,20 @@ public class CostCenter  implements java.io.Serializable {
     public CostCenter(long id) {
         this.id = id;
     }
-    public CostCenter(long id, String code, String name, String createdBy, Date createdOn, String updatedBy, Date updatedOn, Set<Jabatan> jabatans) {
+    public CostCenter(long id, CostCenter costCenter, String code, String name, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String description, BigDecimal balance, Integer level, Set<Jabatan> jabatans, Set<CostCenter> costCenters) {
        this.id = id;
+       this.costCenter = costCenter;
        this.code = code;
        this.name = name;
        this.createdBy = createdBy;
        this.createdOn = createdOn;
        this.updatedBy = updatedBy;
        this.updatedOn = updatedOn;
+       this.description = description;
+       this.balance = balance;
+       this.level = level;
        this.jabatans = jabatans;
+       this.costCenters = costCenters;
     }
    
      @Id 
@@ -75,6 +87,16 @@ public class CostCenter  implements java.io.Serializable {
     
     public void setVersion(Integer version) {
         this.version = version;
+    }
+
+@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="parent_id")
+    public CostCenter getCostCenter() {
+        return this.costCenter;
+    }
+    
+    public void setCostCenter(CostCenter costCenter) {
+        this.costCenter = costCenter;
     }
 
     
@@ -137,6 +159,36 @@ public class CostCenter  implements java.io.Serializable {
         this.updatedOn = updatedOn;
     }
 
+    
+    @Column(name="description", length=65535)
+    public String getDescription() {
+        return this.description;
+    }
+    
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    
+    @Column(name="balance", precision=10, scale=0)
+    public BigDecimal getBalance() {
+        return this.balance;
+    }
+    
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
+    }
+
+    
+    @Column(name="level")
+    public Integer getLevel() {
+        return this.level;
+    }
+    
+    public void setLevel(Integer level) {
+        this.level = level;
+    }
+
 @OneToMany(fetch=FetchType.LAZY, mappedBy="costCenter")
     public Set<Jabatan> getJabatans() {
         return this.jabatans;
@@ -144,6 +196,15 @@ public class CostCenter  implements java.io.Serializable {
     
     public void setJabatans(Set<Jabatan> jabatans) {
         this.jabatans = jabatans;
+    }
+
+@OneToMany(fetch=FetchType.LAZY, mappedBy="costCenter")
+    public Set<CostCenter> getCostCenters() {
+        return this.costCenters;
+    }
+    
+    public void setCostCenters(Set<CostCenter> costCenters) {
+        this.costCenters = costCenters;
     }
 
 

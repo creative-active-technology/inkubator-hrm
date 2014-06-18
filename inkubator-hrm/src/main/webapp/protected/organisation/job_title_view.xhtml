@@ -36,12 +36,12 @@
                                     <p:selectOneMenu id="pencarianSelectId" value="#{userViewController.hrmUserSearchParameter.keyParam}"
                                                      style="width: 150px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemLabel="Kode Jabatan" itemValue="code"/>
-                                        <f:selectItem itemLabel="Nama Jabatan" itemValue="name" />
-                                        <f:selectItem itemLabel="Nama Departement" itemValue="jabatan" />
-                                        <f:selectItem itemLabel="Nama Pangkat" itemValue="departementName" />
-                                        <f:selectItem itemLabel="Pos Biaya" itemValue="costCenterName" />
-                                        <f:selectItem itemLabel="Unit Kerja" itemValue="unitKerjaName" />
+                                        <f:selectItem itemLabel="#{appmsg['jabat.jabatan_code']}" itemValue="code"/>
+                                        <f:selectItem itemLabel="#{appmsg['jabatan.jabatan_name']}" itemValue="name" />
+                                        <f:selectItem itemLabel="#{appmsg['jabatan.pangkat_name']}" itemValue="jabatan" />
+                                        <f:selectItem itemLabel="#{appmsg['jabatan.jabatan_deparment']}" itemValue="departementName" />
+                                        <f:selectItem itemLabel="#{appmsg['jabatan.cost_center']}" itemValue="costCenterName" />
+                                        <f:selectItem itemLabel="#{appmsg['jabatan.unit_kerja']}" itemValue="unitKerjaName" />
 
                                     </p:selectOneMenu>
                                     <p:inputText value="#{userViewController.hrmUserSearchParameter.parameter}" style="width: 250px" id="pencarianId" styleClass="isitext_hrm" 
