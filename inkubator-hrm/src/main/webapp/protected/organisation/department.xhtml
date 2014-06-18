@@ -43,7 +43,10 @@
                                 </h:panelGrid>
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
-                                <h:panelGrid columns="2" >
+                                <h:panelGrid columns="3" >
+                                    <p:commandButton value="Export to XLS" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
+                                        <pe:exporter target="tableDepartmentId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Department"/>
+                                    </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.add']}" actionListener="#{departmentController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
                                         <p:ajax event="dialogReturn" listener="#{departmentController.onDialogReturn}"  update="tableDepartmentId"/>
                                     </p:commandButton>
