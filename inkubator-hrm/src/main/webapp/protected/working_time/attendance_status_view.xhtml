@@ -20,8 +20,8 @@
                         <p:graphicImage library="images" name="status_attendance.png" height="36" width="36"  cache="true"/>
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Daftar Status Kehadiran" styleClass="header_big" />
-                                <p:outputLabel value="Daftar Status Kehadiran dari Waktu Kerja" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['attedance.list_of_attedance_status']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['attedance.data_of_attedance_status_from_working_time']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -35,8 +35,8 @@
                                     <p:outputLabel value=":" />
                                     <p:selectOneMenu value="#{attendanceStatusViewController.attendanceStatusSearchParamater.keyParam}" style="margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemLabel="Kode Status Kehadiran" itemValue="statusCode"/>
-                                        <f:selectItem itemLabel="Nama Status Kehadiran" itemValue="statusName"/>
+                                        <f:selectItem itemLabel="#{appmsg['attedance.code_attedance_status']}" itemValue="statusCode"/>
+                                        <f:selectItem itemLabel="#{appmsg['attedance.name_attedance_status']}" itemValue="statusName"/>
                                         <!--<f:selectItem itemLabel="#{appmsg['specificationability.scale_value']}" itemValue="scaleValue"/>-->
                                     </p:selectOneMenu>
                                     <p:inputText id="searchId" value="#{attendanceStatusViewController.attendanceStatusSearchParamater.parameter}" style="width: 250px" styleClass="isitext_hrm"/>
@@ -59,7 +59,7 @@
                                       id="tableAttendanceStatusId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="Daftar Status Kehadiran" styleClass="label_hrm"/>
+                                <h:outputText value="#{appmsg['attedance.list_of_attedance_status']}" styleClass="label_hrm"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 25px">
                                 <f:facet name="header">  
@@ -69,13 +69,13 @@
                             </p:column>
                             <p:column sortBy="code" style="width: 150px" >
                                 <f:facet name="header">  
-                                    <h:outputText value="Kode Status Kehadiran"/>
+                                    <h:outputText value="#{appmsg['attedance.code_attedance_status']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{attendaceStatausViewData.code}"/>
                             </p:column>
                             <p:column sortBy="statusKehadrian">
                                 <f:facet name="header">
-                                    <h:outputText value="Nama Status Kehadiran" />
+                                    <h:outputText value="#{appmsg['attedance.name_attedance_status']}" />
                                 </f:facet>
                                 <h:outputLabel value= "#{attendaceStatausViewData.statusKehadrian}"/>
                             </p:column>
@@ -87,13 +87,13 @@
                             </p:column>-->
                             <p:column sortBy="isPay" style="text-align: center">
                                 <f:facet name="header">
-                                    <h:outputText value="Dibayar"/>
+                                    <h:outputText value="#{appmsg['attedance.paid']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{attendaceStatausViewData.isPayAsLabel}"/>
                             </p:column>
                             <p:column sortBy="isPresent" style="text-align: center">
                                 <f:facet name="header">
-                                    <h:outputText value="Hadir" />
+                                    <h:outputText value="#{appmsg['attedance.attend']}" />
                                 </f:facet>
                                 <h:outputLabel value= "#{attendaceStatausViewData.isPresentAsLabel}"/>
                             </p:column>
@@ -149,7 +149,7 @@
                                 </h:panelGrid>
                             </div>
                             <h:panelGrid  columns="3">
-                                <p:outputLabel value="Nama Status Kehadiran" styleClass="label_hrm"/>
+                                <p:outputLabel value="#{appmsg['attedance.name_attedance_status']}" styleClass="label_hrm"/>
                                 <p:outputLabel value=":"  styleClass="label_hrm" />
                                 <p:outputLabel value="#{attendanceStatusViewController.selecedAttendanceStatus.statusKehadrian}" styleClass="isitext_hrm"/>
                             </h:panelGrid>
@@ -161,34 +161,34 @@
                         </div>
                     </h:form>
                 </p:dialog>
-                <p:dialog widgetVar="detailDialogAttendaceStatus" header="Detil Status Kehadiran" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
+                <p:dialog widgetVar="detailDialogAttendaceStatus" header="#{appmsg['attedance.detail_attedance_status']}" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
                           showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)" dynamic="true">
                     <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
                        
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Kode Status Kehadiran" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['attedance.code_attedance_status']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{attendanceStatusViewController.selecedAttendanceStatus.code}"/> </p:column>
                         </p:row>
                        
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Nama Status Kehadiran" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['attedance.name_attedance_status']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{attendanceStatusViewController.selecedAttendanceStatus.statusKehadrian}"/> </p:column>
                         </p:row>
                          <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Deskripsi" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['attedance.description_attedance_status']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{attendanceStatusViewController.selecedAttendanceStatus.description}"/> </p:column>
                         </p:row>
                          <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Dibayar" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['attedance.paid']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{attendanceStatusViewController.selecedAttendanceStatus.isPayAsLabel}"/> </p:column>
                         </p:row>
                          <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Hadir" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['attedance.attend']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{attendanceStatusViewController.selecedAttendanceStatus.isPresentAsLabel}"/> </p:column>
                         </p:row>
                         <f:facet name="footer">
                             <p:row>
-                                <p:column colspan="2"><p:outputLabel value="Status Kehadiran" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
+                                <p:column colspan="2"><p:outputLabel value="#{appmsg['attedance.attedance_status']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
                             </p:row>
                         </f:facet>
                     </p:panelGrid>
