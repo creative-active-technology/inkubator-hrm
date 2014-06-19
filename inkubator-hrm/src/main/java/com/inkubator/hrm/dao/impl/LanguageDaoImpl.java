@@ -53,14 +53,14 @@ public class LanguageDaoImpl extends IDAOImpl<LanguageUsed> implements LanguageD
     @Override
     public Long getTotalByName(String name) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.like("languageName", name, MatchMode.ANYWHERE));
+        criteria.add(Restrictions.eq("languageName", name));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
     @Override
     public Long getTotalByNameAndNotId(String name, Long id) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.like("languageName", name, MatchMode.ANYWHERE));
+        criteria.add(Restrictions.eq("languageName", name));
         criteria.add(Restrictions.ne("id", id));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }

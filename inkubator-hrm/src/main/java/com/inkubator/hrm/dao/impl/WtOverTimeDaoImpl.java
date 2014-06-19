@@ -69,14 +69,14 @@ public class WtOverTimeDaoImpl extends IDAOImpl<WtOverTime> implements WtOverTim
     @Override
     public Long getTotalDuplicateByCode(String code) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.like("code", code, MatchMode.ANYWHERE));
+        criteria.add(Restrictions.eq("code", code));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
     @Override
     public Long getTotalDuplicaByCodeAndNotId(String code, Long id) {
          Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.like("code", code, MatchMode.ANYWHERE));
+        criteria.add(Restrictions.eq("code", code));
         criteria.add(Restrictions.ne("id", id));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }

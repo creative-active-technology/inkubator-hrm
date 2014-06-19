@@ -58,14 +58,14 @@ public class DialectDaoImpl extends IDAOImpl<Dialect> implements DialectDao {
     @Override
     public Long getTotalByCode(String code) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.like("dialectCode", code, MatchMode.ANYWHERE));
+        criteria.add(Restrictions.eq("dialectCode", code));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
     @Override
     public Long getTotalByCodeAndNotId(String code, Long id) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.like("dialectCode", code, MatchMode.ANYWHERE));
+        criteria.add(Restrictions.eq("dialectCode", code));
         criteria.add(Restrictions.ne("id", id));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }

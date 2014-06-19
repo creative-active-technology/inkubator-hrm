@@ -58,14 +58,14 @@ public class BankDaoImpl extends IDAOImpl<Bank> implements BankDao {
     @Override
     public Long getTotalByCode(String code) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.like("bankCode", code, MatchMode.ANYWHERE));
+        criteria.add(Restrictions.eq("bankCode", code));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
     @Override
     public Long getTotalByCodeAndNotId(String code, Long id) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.like("bankCode", code, MatchMode.ANYWHERE));
+        criteria.add(Restrictions.eq("bankCode", code));
         criteria.add(Restrictions.ne("id", id));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }

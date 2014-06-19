@@ -63,7 +63,7 @@ public class WtGroupWorkingDaoImpl extends IDAOImpl<WtGroupWorking> implements W
     @Override
     public Long getTotalByCode(String code) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.like("code", code, MatchMode.ANYWHERE));
+        criteria.add(Restrictions.eq("code", code));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 

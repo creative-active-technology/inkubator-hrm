@@ -68,14 +68,14 @@ public class WtHolidayDaoImpl extends IDAOImpl<WtHoliday> implements WtHolidayDa
     @Override
     public Long getTotalWtHolidayByHolidayName(String holidayName) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.like("holidayName", holidayName, MatchMode.ANYWHERE));
+        criteria.add(Restrictions.eq("holidayName", holidayName));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
     @Override
     public Long getTotalWtHolidayByNameAndNotId(String holidayName, Long id) {
-         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.like("holidayName", holidayName, MatchMode.ANYWHERE));
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("holidayName", holidayName));
         criteria.add(Restrictions.ne("id", id));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
@@ -84,7 +84,7 @@ public class WtHolidayDaoImpl extends IDAOImpl<WtHoliday> implements WtHolidayDa
     public List<WtHoliday> getBetweenDate(Date start, Date end) {
          Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
          criteria.add(Restrictions.between("holidayDate", start, end));
-            return criteria.list();
+         return criteria.list();
     
     }
 

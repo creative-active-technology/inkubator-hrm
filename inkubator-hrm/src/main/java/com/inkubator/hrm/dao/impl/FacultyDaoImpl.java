@@ -53,14 +53,14 @@ public class FacultyDaoImpl extends IDAOImpl<Faculty> implements FacultyDao {
     @Override
     public Long getTotalByName(String name) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.like("facultyName", name, MatchMode.ANYWHERE));
+        criteria.add(Restrictions.eq("facultyName", name));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
     @Override
     public Long getTotalByNameAndNotId(String name, Long id) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.like("facultyName", name, MatchMode.ANYWHERE));
+        criteria.add(Restrictions.eq("facultyName", name));
         criteria.add(Restrictions.ne("id", id));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }

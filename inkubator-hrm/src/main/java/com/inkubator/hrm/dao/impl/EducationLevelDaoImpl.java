@@ -53,7 +53,7 @@ public class EducationLevelDaoImpl extends IDAOImpl<EducationLevel> implements E
     @Override
     public Long getTotalByNameAndNotId(String name, Long id) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.like("name", name, MatchMode.ANYWHERE));
+        criteria.add(Restrictions.eq("name", name));
         criteria.add(Restrictions.ne("id", id));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
@@ -69,7 +69,7 @@ public class EducationLevelDaoImpl extends IDAOImpl<EducationLevel> implements E
     @Override
     public Long getTotalByName(String name) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.like("name", name, MatchMode.ANYWHERE));
+        criteria.add(Restrictions.eq("name", name));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
