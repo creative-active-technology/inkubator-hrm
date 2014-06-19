@@ -53,14 +53,14 @@ public class EmployeeTypeDaoImpl extends IDAOImpl<EmployeeType> implements Emplo
     @Override
     public Long getTotalByName(String name) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.like("name", name, MatchMode.ANYWHERE));
+        criteria.add(Restrictions.eq("name", name));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
     @Override
     public Long getTotalByNameAndNotId(String name, Long id) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.like("name", name, MatchMode.ANYWHERE));
+        criteria.add(Restrictions.eq("name", name));
         criteria.add(Restrictions.ne("id", id));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }

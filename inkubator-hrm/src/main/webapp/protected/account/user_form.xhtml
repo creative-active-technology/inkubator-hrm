@@ -125,29 +125,29 @@
                             </p:row>
                         </p:panelGrid>
                         <h:panelGrid columns="20" style="margin-bottom: 15px" cellspacing="4">
-                            <p:outputLabel value="*) Aturan Pembuatan Password" styleClass="label_hrm" style="margin-right: 7px"/>
-                            <p:outputLabel value="Minimum Karakter" />
+                            <p:outputLabel value="*) #{appmsg['user_form.rules_making_password']}" styleClass="label_hrm" style="margin-right: 7px"/>
+                            <p:outputLabel value="#{appmsg['user_form.min_character']}" />
                             <p:outputLabel value=":" />
                             <p:outputLabel value="#{userFormController.passwordComplexity.minCharacter}" styleClass="label_hrm" />
-                            <p:outputLabel value="Maksimum Karakter" />
+                            <p:outputLabel value="#{appmsg['user_form.max_character']}" />
                             <p:outputLabel value=":" />
                             <p:outputLabel value="#{userFormController.passwordComplexity.maxCharacter}" styleClass="label_hrm"/>
-                            <p:outputLabel value="Terdapat Angka" />
+                            <p:outputLabel value="#{appmsg['user_form.has_a_number']}" />
                             <p:outputLabel value=":" />
                             <p:outputLabel value="#{userFormController.passwordComplexity.hasNumber}" styleClass="label_hrm" >
                                 <f:converter converterId="booleanMessageConverter" />
                             </p:outputLabel>
-                            <p:outputLabel value="Terdapat Huruf Besar" />
+                            <p:outputLabel value="#{appmsg['user_form.has_upper_case']}" />
                             <p:outputLabel value=":" />
                             <p:outputLabel value="#{userFormController.passwordComplexity.hasUpperCase}" styleClass="label_hrm" >
                                 <f:converter converterId="booleanMessageConverter" />
                             </p:outputLabel>
-                            <p:outputLabel value="Terdapat Huruf Kecil" />
+                            <p:outputLabel value="#{appmsg['user_form.has_lower_case']}" />
                             <p:outputLabel value=":" />
                             <p:outputLabel value="#{userFormController.passwordComplexity.hasLowerCase}" styleClass="label_hrm" >
                                 <f:converter converterId="booleanMessageConverter" />
                             </p:outputLabel>
-                            <p:outputLabel value="Terdapat Karakter Khusus" />
+                            <p:outputLabel value="#{appmsg['user_form.has_special_charakter']}" />
                             <p:outputLabel value=":" />
                             <p:outputLabel value="#{userFormController.passwordComplexity.hasSpecialCharacter}" styleClass="label_hrm" >
                                 <f:converter converterId="booleanMessageConverter" />

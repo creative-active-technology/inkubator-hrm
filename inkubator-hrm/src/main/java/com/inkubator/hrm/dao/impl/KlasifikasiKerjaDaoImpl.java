@@ -58,14 +58,14 @@ public class KlasifikasiKerjaDaoImpl extends IDAOImpl<KlasifikasiKerja> implemen
     @Override
     public Long getTotalByCode(String code) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.like("klasifikasiKerjaCode", code, MatchMode.ANYWHERE));
+        criteria.add(Restrictions.eq("klasifikasiKerjaCode", code));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
     @Override
     public Long getTotalByCodeAndNotId(String code, Long id) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.like("klasifikasiKerjaCode", code, MatchMode.ANYWHERE));
+        criteria.add(Restrictions.eq("klasifikasiKerjaCode", code));
         criteria.add(Restrictions.ne("id", id));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }

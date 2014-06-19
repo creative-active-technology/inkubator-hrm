@@ -21,20 +21,20 @@
                         <p:graphicImage library="images" name="status_attendance.png" height="36" width="36"  cache="true"/>
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Form Status Kehadiran" styleClass="header_big" />
-                                <p:outputLabel value="Data Status Kehadiran dari Waktu Kerja" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['attedance.form_of_attedance_status']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['attedance.data_of_attedance_status_from_working_time']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
                     <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
                     <h:panelGrid columns="1" style="margin-bottom: 5px;margin-left: 0px">
                         <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
-                        <h:outputLabel value="Nama hari libur bersifat unik" styleClass="label_hrm" style="font-weight: normal!important"/>
+                        <h:outputLabel value="#{appmsg['attedance.name_of_attedance_status_must unique']}" styleClass="label_hrm" style="font-weight: normal!important"/>
                     </h:panelGrid> 
                     <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
                         <p:row>
                             <p:column style="width: 30%">
-                                <p:outputLabel for="codeId" value="Kode Status" styleClass="label_hrm"/>
+                                <p:outputLabel for="codeId" value="#{appmsg['attedance.code_attedance_status']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="codeId" value=":" styleClass="label_hrm"/>
@@ -53,7 +53,7 @@
                         </p:row>
                         <p:row>
                             <p:column style="width: 30%">
-                                <p:outputLabel for="namaId" value="Nama Status" styleClass="label_hrm"/>
+                                <p:outputLabel for="namaId" value="#{appmsg['attedance.name_attedance_status']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="namaId" value=":" styleClass="label_hrm"/>
@@ -95,7 +95,7 @@
                         </p:row>
                         <p:row>
                             <p:column style="width: 30%">
-                                <p:outputLabel for="idPayId" value="Dibayar" styleClass="label_hrm"/>
+                                <p:outputLabel for="idPayId" value="#{appmsg['attedance.paid']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="idPayId" value=":" styleClass="label_hrm"/>
@@ -114,7 +114,7 @@
                         </p:row>
                         <p:row>
                             <p:column style="width: 30%">
-                                <p:outputLabel for="isPresentId" value="Hadir" styleClass="label_hrm"/>
+                                <p:outputLabel for="isPresentId" value="#{appmsg['attedance.attend']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="isPresentId" value=":" styleClass="label_hrm"/>

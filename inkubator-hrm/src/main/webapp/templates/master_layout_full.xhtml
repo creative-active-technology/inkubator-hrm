@@ -175,11 +175,7 @@
                         </p:panelGrid>
                         <p:separator style="margin-top: 10px;"/>
                         <p:commandButton value="#{appmsg['global.edit']}" update="formChangePasswordTab,:mainGrowl" ajax="true" title="#{appmsg['global.edit']}" action="#{userInfoController.doUpdatePassword()}" oncomplete="handleDoUpdateUserInfo(args)"
-
-
-                                         style="margin-top: 10px;width: 100%" icon="ui-icon-locked" styleClass="label_button"/>	                		
-
-
+										 style="margin-top: 10px;width: 100%" icon="ui-icon-locked" styleClass="label_button"/>
                     </h:form>
                 </p:tab>
             </p:tabView>
@@ -288,7 +284,8 @@
                                             <p:submenu label="#{appmsg['menu.organisation_setting']}"  styleClass="menu_child" >
                                                 <p:menuitem value="#{appmsg['menu.department']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.department']}" url="/protected/organisation/department_view.htm" icon="img-department"/>
                                                 <p:menuitem value="#{appmsg['organizationletter.organization_letter']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['organizationletter.organization_letter']}" url="/protected/organisation/organization_letter_view.htm" icon="img-organization-letter"/> 
-                                                <p:menuitem value="#{appmsg['jabatan.jabatan']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['jabatan.jabatan']}" url="/protected/organisation/job_title_view.htm" icon="img-job-title"/> 
+                                                <p:menuitem value="#{appmsg['jabatan.jabatan']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['jabatan.jabatan']}" url="/protected/organisation/job_title_view.htm" icon="img-job-title"/>
+                                                <p:menuitem value="#{appmsg['position.position']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['position.position']}" url="/protected/organisation/position_view.htm" icon="img-position"/> 
                                             </p:submenu> 
                                         </p:submenu>
                                         <p:submenu label="Personalia"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-employees">

@@ -62,14 +62,14 @@ public class AttendanceStatusDaoImpl extends IDAOImpl<AttendanceStatus> implemen
     @Override
     public Long getTotalDuplicateByCode(String statusCode) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.like("code", statusCode, MatchMode.ANYWHERE));
+        criteria.add(Restrictions.eq("code", statusCode));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
     @Override
     public Long getTotalDuplicaByNameAndNotId(String statusCode, Long id) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.like("code", statusCode, MatchMode.ANYWHERE));
+        criteria.add(Restrictions.eq("code", statusCode));
         criteria.add(Restrictions.ne("id", id));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
