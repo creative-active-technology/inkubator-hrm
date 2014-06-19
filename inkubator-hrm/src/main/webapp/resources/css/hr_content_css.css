@@ -725,6 +725,14 @@ div.art-logo
     background-size: 80% auto;
     padding-right: 2px;
 }
+
+.img-position
+{
+    background-image:url(../images/position_ico.png)!important;
+    background-size: 80% auto;
+    padding-right: 2px;
+}
+
 #box_bg
 {
     /*border:0px solid #006699;*/

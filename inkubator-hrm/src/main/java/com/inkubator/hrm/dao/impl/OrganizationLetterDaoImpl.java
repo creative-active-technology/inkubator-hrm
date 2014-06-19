@@ -55,14 +55,14 @@ public class OrganizationLetterDaoImpl extends IDAOImpl<OrganizationLetter> impl
     @Override
     public Long getTotalByLetterNumber(String letterNumber) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.like("letterNumber", letterNumber, MatchMode.ANYWHERE));
+        criteria.add(Restrictions.eq("letterNumber", letterNumber));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
     @Override
     public Long getTotalByLetterNumberAndNotId(String letterNumber, Long id) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.like("letterNumber", letterNumber, MatchMode.ANYWHERE));
+        criteria.add(Restrictions.eq("letterNumber", letterNumber));
         criteria.add(Restrictions.ne("id", id));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }

@@ -58,14 +58,14 @@ public class LeaveDaoImpl extends IDAOImpl<Leave> implements LeaveDao {
     @Override
     public Long getTotalByName(String name) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.like("name", name, MatchMode.ANYWHERE));
+        criteria.add(Restrictions.eq("name", name));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
     @Override
     public Long getTotalByNameAndNotId(String name, Long id) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.like("name", name, MatchMode.ANYWHERE));
+        criteria.add(Restrictions.eq("name", name));
         criteria.add(Restrictions.ne("id", id));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
@@ -73,14 +73,14 @@ public class LeaveDaoImpl extends IDAOImpl<Leave> implements LeaveDao {
     @Override
     public Long getTotalByCode(String code) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.like("code", code, MatchMode.ANYWHERE));
+        criteria.add(Restrictions.eq("code", code));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
     @Override
     public Long getTotalByCodeAndNotId(String code, Long id) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.like("code", code, MatchMode.ANYWHERE));
+        criteria.add(Restrictions.eq("code", code));
         criteria.add(Restrictions.ne("id", id));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
