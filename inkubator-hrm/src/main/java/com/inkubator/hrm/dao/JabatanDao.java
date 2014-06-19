@@ -20,4 +20,10 @@ public interface JabatanDao extends IDAO<Jabatan> {
     public List<Jabatan> getByParam(JabatanSearchParameter searchParameter, int firstResult, int maxResults, Order order);
 
     public Long getTotalJabatanByParam(JabatanSearchParameter searchParameter);
+
+    Jabatan getJabatanByLevelOne(Integer level);
+
+    public List<Jabatan> getJabatanByParentCode(String parentCode);
+
+    public Jabatan getJabatanByIdWithDetail(Long id);
 }

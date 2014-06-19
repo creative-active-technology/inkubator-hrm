@@ -20,4 +20,10 @@ public interface JabatanService extends IService<Jabatan> {
     public List<Jabatan> getByParam(JabatanSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
 
     public Long getTotalJabatanByParam(JabatanSearchParameter searchParameter) throws Exception;
+
+    public Jabatan getJabatanByLevelOne(Integer level) throws Exception;
+
+    public List<Jabatan> getJabatanByParentCode(String parentCode) throws Exception;
+
+    public Jabatan getJabatanByIdWithDetail(Long id) throws Exception;
 }
