@@ -15,6 +15,7 @@ import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.service.HrmUserService;
+import com.inkubator.hrm.util.StringsUtils;
 import com.inkubator.hrm.web.model.UserModel;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.WebCoreConstant;
@@ -62,22 +63,29 @@ public class UserInfoController extends BaseController {
 	public void doUpdatePassword() {
         Boolean isUpdateSucceed = Boolean.FALSE;
         RequestContext context = FacesUtil.getRequestContext();
-        try {
-            HrmUser user = userService.getByUserId(UserInfoUtil.getUserName());
-            boolean isOldPasswordMatched = StringUtils.equals(HashingUtils.getHashSHA256(userModel.getOldPassword()), user.getPassword());
-            if (isOldPasswordMatched) {
-                userService.updatePassword(user.getId(), userModel.getPassword());
-                MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
-                        FacesUtil.getSessionAttribute(WebCoreConstant.BAHASA_ACTIVE).toString());
-                isUpdateSucceed = true;
-            } else {
-                MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_ERROR, "global.error", "error.old_password_not_match",
-                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-            }
-
-        } catch (Exception ex) {
-            // TODO Auto-generated catch block
-            LOGGER.error("Error when doSavePassword spiRole ", ex);
+        
+        //cek password lama tidak boleh sama dengan password yang baru
+        if(StringsUtils.equals(userModel.getPassword(), userModel.getOldPassword())){
+        	MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_ERROR, "global.error", "error.oldpassword_and_newpassword_should_different",
+                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        	
+        } else {
+        	//proses pengecekan password yg lama apakah sesuai dengan yang di database
+	        try {
+	            HrmUser user = userService.getByUserId(UserInfoUtil.getUserName());
+	            boolean isOldPasswordMatched = StringUtils.equals(HashingUtils.getHashSHA256(userModel.getOldPassword()), user.getPassword());
+	            if (isOldPasswordMatched) {
+	                userService.updatePassword(user.getId(), userModel.getPassword());
+	                MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
+	                        FacesUtil.getSessionAttribute(WebCoreConstant.BAHASA_ACTIVE).toString());
+	                isUpdateSucceed = true;
+	            } else {
+	                MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_ERROR, "global.error", "error.old_password_not_match",
+	                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+	            }	
+	        } catch (Exception ex) {
+	            LOGGER.error("Error when doSavePassword spiRole ", ex);
+	        }
         }
         context.addCallbackParam("isUpdateSucceed", isUpdateSucceed);
     }
