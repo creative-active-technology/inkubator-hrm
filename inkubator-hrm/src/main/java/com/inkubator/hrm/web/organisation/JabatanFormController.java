@@ -7,7 +7,9 @@ package com.inkubator.hrm.web.organisation;
 
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.HrmUser;
+import com.inkubator.hrm.service.CostCenterService;
 import com.inkubator.hrm.service.DepartmentService;
+import com.inkubator.hrm.service.GolonganJabatanService;
 import com.inkubator.hrm.service.UnitKerjaService;
 import com.inkubator.hrm.web.model.JabatanModel;
 import com.inkubator.hrm.web.model.UserModel;
@@ -33,6 +35,10 @@ public class JabatanFormController extends BaseController {
     private DepartmentService departmentService;
     @ManagedProperty(value = "#{unitKerjaService}")
     private UnitKerjaService unitKerjaService;
+    @ManagedProperty(value = "#{costCenterService}")
+    private CostCenterService costCenterService;
+    @ManagedProperty(value = "#{golonganJabatanService}")
+    private GolonganJabatanService golonganJabatanService;
 
     private Boolean isEdit;
     private JabatanModel jabatanModel;
@@ -217,7 +223,5 @@ public class JabatanFormController extends BaseController {
     public void setUnitKerjaService(UnitKerjaService unitKerjaService) {
         this.unitKerjaService = unitKerjaService;
     }
-    
-    
 
 }
