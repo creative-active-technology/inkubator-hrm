@@ -38,6 +38,7 @@ public class PangkatServiceImpl extends IServiceImpl implements PangkatService {
 	}
 
 	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
 	public List<Pangkat> getAllData() throws Exception {
 		return pangkatDao.getAllData();
 	}

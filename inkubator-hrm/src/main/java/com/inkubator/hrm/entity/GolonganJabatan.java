@@ -24,7 +24,7 @@ import javax.persistence.Version;
 @Entity
 @Table(name="golongan_jabatan"
     ,catalog="hrm"
-    , uniqueConstraints = @UniqueConstraint(columnNames="golongan_jabatan_code") 
+    , uniqueConstraints = @UniqueConstraint(columnNames="code") 
 )
 public class GolonganJabatan  implements java.io.Serializable {
 
@@ -32,13 +32,14 @@ public class GolonganJabatan  implements java.io.Serializable {
      private long id;
      private Integer version;
      private Pangkat pangkat;
-     private String golonganJabatanCode;
-     private Integer kelompok;
-     private Integer lembur;
+     private String code;
+     private String name;
+     private Integer level;
+     private Boolean overtime;
      private String createdBy;
      private Date createdOn;
      private String updatedBy;
-     private Date upatedOn;
+     private Date updatedOn;
      private Set<Jabatan> jabatans = new HashSet<Jabatan>(0);
 
     public GolonganJabatan() {
@@ -48,22 +49,21 @@ public class GolonganJabatan  implements java.io.Serializable {
     public GolonganJabatan(long id) {
         this.id = id;
     }
-    public GolonganJabatan(long id, Pangkat pangkat, String golonganJabatanCode, Integer kelompok, Integer lembur, String createdBy, Date createdOn, String updatedBy, Date upatedOn, Set<Jabatan> jabatans) {
+    public GolonganJabatan(long id, Pangkat pangkat, String code, String name, Integer level, Boolean overtime, String createdBy, Date createdOn, String updatedBy, Date updatedOn, Set<Jabatan> jabatans) {
        this.id = id;
        this.pangkat = pangkat;
-       this.golonganJabatanCode = golonganJabatanCode;
-       this.kelompok = kelompok;
-       this.lembur = lembur;
+       this.code = code;
+       this.name = name;
+       this.level = level;
+       this.overtime = overtime;
        this.createdBy = createdBy;
        this.createdOn = createdOn;
        this.updatedBy = updatedBy;
-       this.upatedOn = upatedOn;
+       this.updatedOn = updatedOn;
        this.jabatans = jabatans;
     }
    
-     @Id 
-
-    
+    @Id 
     @Column(name="id", unique=true, nullable=false)
     public long getId() {
         return this.id;
@@ -83,7 +83,7 @@ public class GolonganJabatan  implements java.io.Serializable {
         this.version = version;
     }
 
-@ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="pangkat_id")
     public Pangkat getPangkat() {
         return this.pangkat;
@@ -94,33 +94,41 @@ public class GolonganJabatan  implements java.io.Serializable {
     }
 
     
-    @Column(name="golongan_jabatan_code", unique=true, length=4)
-    public String getGolonganJabatanCode() {
-        return this.golonganJabatanCode;
+    @Column(name="code", unique=true, length=4, nullable=false)
+    public String getCode() {
+        return this.code;
     }
     
-    public void setGolonganJabatanCode(String golonganJabatanCode) {
-        this.golonganJabatanCode = golonganJabatanCode;
+    public void setCode(String code) {
+        this.code = code;
+    }
+    
+    @Column(name="name", length=60, nullable=false)
+    public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@Column(name="level")
+    public Integer getLevel() {
+        return this.level;
+    }
+    
+    public void setLevel(Integer level) {
+        this.level = level;
     }
 
     
-    @Column(name="kelompok")
-    public Integer getKelompok() {
-        return this.kelompok;
+    @Column(name="overtime")
+    public Boolean getOvertime() {
+        return this.overtime;
     }
     
-    public void setKelompok(Integer kelompok) {
-        this.kelompok = kelompok;
-    }
-
-    
-    @Column(name="lembur")
-    public Integer getLembur() {
-        return this.lembur;
-    }
-    
-    public void setLembur(Integer lembur) {
-        this.lembur = lembur;
+    public void setOvertime(Boolean overtime) {
+        this.overtime = overtime;
     }
 
     
@@ -154,16 +162,16 @@ public class GolonganJabatan  implements java.io.Serializable {
     }
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name="upated_on", length=19)
-    public Date getUpatedOn() {
-        return this.upatedOn;
+    @Column(name="updated_on", length=19)
+    public Date getUpdatedOn() {
+        return this.updatedOn;
     }
     
-    public void setUpatedOn(Date upatedOn) {
-        this.upatedOn = upatedOn;
+    public void setUpdatedOn(Date updatedOn) {
+        this.updatedOn = updatedOn;
     }
 
-@OneToMany(fetch=FetchType.LAZY, mappedBy="golonganJabatan")
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="golonganJabatan")
     public Set<Jabatan> getJabatans() {
         return this.jabatans;
     }
@@ -171,10 +179,6 @@ public class GolonganJabatan  implements java.io.Serializable {
     public void setJabatans(Set<Jabatan> jabatans) {
         this.jabatans = jabatans;
     }
-
-
-
-
 }
 
 

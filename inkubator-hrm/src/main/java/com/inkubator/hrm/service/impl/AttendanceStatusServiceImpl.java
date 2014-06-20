@@ -179,6 +179,7 @@ public class AttendanceStatusServiceImpl extends IServiceImpl implements Attenda
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<AttendanceStatus> getAllData() throws Exception {
         return attendanceStatusDao.getAllData();
     }
