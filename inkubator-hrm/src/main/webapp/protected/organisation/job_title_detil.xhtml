@@ -120,33 +120,7 @@
                         <div style="clear: both"/>
                     </h:form>
                 </div>
-                <p:dialog widgetVar="confirmDialogJobTitle" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
-                          appendTo="@(body)" resizable="false" id="confirmDialogJobTitleId" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
-                    <h:form id="deleteDialogJobTitleId">
-                        <div align="center">
-                            <div align="center">
-                                <h:panelGrid columns="2" style="text-align: justify">
-                                    <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
-                                    <h:panelGroup>
-                                        <h:panelGrid style="text-align: center">
-                                            <p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
-                                        </h:panelGrid>
-                                    </h:panelGroup>
-                                </h:panelGrid>
-                            </div>
-                            <h:panelGrid  columns="3">
-                                <p:outputLabel value="#{appmsg['user_view.user_name']}" styleClass="label_hrm"/>
-                                <p:outputLabel value=":"  styleClass="label_hrm" />
-                                <p:outputLabel value="#{jabatanViewController.selectedJabatan.name}" styleClass="isitext_hrm"/>
-                            </h:panelGrid>
-                            <p:separator/>
-                            <p:commandButton value="#{appmsg['global.yes']}" action="#{jabatanViewController.doDelete()}" update=":jobTitleViewId,:userViewGrowlId" id="yesId" title="#{appmsg['global.yes']}" styleClass="isitext_hrm"
-                                             oncomplete="confirmDialogJobTitle.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                            <p:commandButton value="#{appmsg['global.no']}" oncomplete="confirmDialogJobTitle.hide()" icon="ui-icon-close" title="#{appmsg['global.no']}"  styleClass="isitext_hrm"/>
-
-                        </div>
-                    </h:form>
-                </p:dialog>
+               
 
             </ui:define>
 

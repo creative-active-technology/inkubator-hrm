@@ -117,4 +117,11 @@ public class JabatanDaoImpl extends IDAOImpl<Jabatan> implements JabatanDao {
         return (Jabatan) criteria.uniqueResult();
     }
 
+    @Override
+    public List<Jabatan> getJabatansByLevel(Integer level) {
+         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+         criteria.add(Restrictions.eq("levelJabatan", level));
+         return criteria.list();
+    }
+
 }

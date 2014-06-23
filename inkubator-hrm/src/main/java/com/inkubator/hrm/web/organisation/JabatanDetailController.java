@@ -57,7 +57,7 @@ public class JabatanDetailController extends BaseController {
     }
 
     public String doEdit() {
-        return "/protected/account/user_form.htm?faces-redirect=true&execution=e" + selectedJabatan.getId();
+        return "/protected/organisation/job_title_form.htm?faces-redirect=true&execution=e" + selectedJabatan.getId();
     }
 
     @PreDestroy

@@ -3,20 +3,31 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.inkubator.hrm.service.impl;
 
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.hrm.dao.GolonganJabatanDao;
 import com.inkubator.hrm.entity.GolonganJabatan;
 import com.inkubator.hrm.service.GolonganJabatanService;
 import java.util.List;
 import org.hibernate.criterion.Order;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author Deni Husni FR
  */
-public class GolonganJabatanServiceImpl extends IServiceImpl implements GolonganJabatanService{
+@Service(value = "golonganJabatanService")
+@Lazy
+public class GolonganJabatanServiceImpl extends IServiceImpl implements GolonganJabatanService {
+
+    @Autowired
+    private GolonganJabatanDao golonganJabatanDao;
 
     @Override
     public GolonganJabatan getEntiyByPK(String id) throws Exception {
@@ -139,8 +150,9 @@ public class GolonganJabatanServiceImpl extends IServiceImpl implements Golongan
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public List<GolonganJabatan> getAllData() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.golonganJabatanDao.getAllData();
     }
 
     @Override
@@ -177,5 +189,5 @@ public class GolonganJabatanServiceImpl extends IServiceImpl implements Golongan
     public List<GolonganJabatan> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
 }
