@@ -4,7 +4,8 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
     <h:head>
         <title>IGNORED</title>
     </h:head>
@@ -57,6 +58,9 @@
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="2">
+                                    <p:commandButton value="Export to XLS" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
+                                        <pe:exporter target="tablePeriodeId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Periode"/>
+                                    </p:commandButton>
 <!--                                    <p:commandButton value="#{appmsg['global.add']}" actionListener="#{roleViewController.doAdd}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" icon="ui-icon-document"
                                                      styleClass="label_button" ajax="true">
                                         <p:ajax event="dialogReturn" listener="#{roleViewController.onDialogReturn}"  update="tablePeriodeId,:roleViewGrowlId"/>
