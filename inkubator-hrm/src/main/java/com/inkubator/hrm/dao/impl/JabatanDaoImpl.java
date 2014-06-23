@@ -12,6 +12,7 @@ import com.inkubator.hrm.web.search.JabatanSearchParameter;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -37,6 +38,11 @@ public class JabatanDaoImpl extends IDAOImpl<Jabatan> implements JabatanDao {
     public List<Jabatan> getByParam(JabatanSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchByParam(searchParameter, criteria);
+        criteria.setFetchMode("costCenter", FetchMode.JOIN);
+        criteria.setFetchMode("golonganJabatan", FetchMode.JOIN);
+        criteria.setFetchMode("department", FetchMode.JOIN);
+        criteria.setFetchMode("unitKerja", FetchMode.JOIN);
+        criteria.setFetchMode("jabatan", FetchMode.JOIN);
         criteria.addOrder(order);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
@@ -55,7 +61,7 @@ public class JabatanDaoImpl extends IDAOImpl<Jabatan> implements JabatanDao {
             criteria.add(Restrictions.like("code", parameter.getCode(), MatchMode.ANYWHERE));
         }
         if (StringUtils.isNotEmpty(parameter.getName())) {
-            criteria.add(Restrictions.like("name", parameter.getCode(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("name", parameter.getName(), MatchMode.ANYWHERE));
         }
 
         if (StringUtils.isNotEmpty(parameter.getCostCenterName())) {
@@ -79,6 +85,36 @@ public class JabatanDaoImpl extends IDAOImpl<Jabatan> implements JabatanDao {
         }
 
         criteria.add(Restrictions.isNotNull("id"));
+    }
+
+    @Override
+    public Jabatan getJabatanByLevelOne(Integer level) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("levelJabatan", level));
+        return (Jabatan) criteria.uniqueResult();
+    }
+
+    @Override
+    public List<Jabatan> getJabatanByParentCode(String parentCode) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("jabatan", "jb", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("jb.code", parentCode));
+        criteria.setFetchMode("jabatans", FetchMode.JOIN);
+        criteria.setFetchMode("jabatans.jabatan", FetchMode.JOIN);
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        return criteria.list();
+    }
+
+    @Override
+    public Jabatan getJabatanByIdWithDetail(Long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("id", id));
+        criteria.setFetchMode("costCenter", FetchMode.JOIN);
+        criteria.setFetchMode("golonganJabatan", FetchMode.JOIN);
+        criteria.setFetchMode("department", FetchMode.JOIN);
+        criteria.setFetchMode("unitKerja", FetchMode.JOIN);
+        criteria.setFetchMode("jabatan", FetchMode.JOIN);
+        return (Jabatan) criteria.uniqueResult();
     }
 
 }

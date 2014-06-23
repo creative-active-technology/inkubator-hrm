@@ -28,7 +28,7 @@
                     </h:panelGrid>
                     <p:separator/>
                     <p:growl id="userViewGrowlId" globalOnly="true" showDetail="true" />
-                    <h:form id="userViewId">
+                    <h:form id="jobTitleViewId">
                         <p:toolbar  style="margin-top: 10px">
                             <p:toolbarGroup align="left">
                                 <h:panelGrid columns="5">
@@ -52,10 +52,13 @@
                                 </h:panelGrid>
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
-                                <h:panelGrid columns="3">
+                                <h:panelGrid columns="4">
+                                     <p:commandButton value="Diagram" action="#{jabatanViewController.doViewShema()}" title="Diagram Jabatan" label="Diagram Jabatan" icon="ui-icon-image"
+                                                     styleClass="label_button" ajax="true" immediate="true" />
                                     <p:commandButton value="Export to XLS" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
                                         <pe:exporter target="tableDepartmentId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Department"/>
                                     </p:commandButton>
+                                   
                                     <p:commandButton value="#{appmsg['global.add']}" action="#{jabatanViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" icon="ui-icon-document"
                                                      styleClass="label_button" ajax="true" immediate="true">
 
@@ -81,69 +84,66 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="userId" style="width: 150px" >
+                            <p:column sortBy="code" style="width: 150px" >
                                 <f:facet name="header">  
                                     <h:outputText value="Kode"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{jabatanViewData.code}"/>
                             </p:column>
-                            <p:column sortBy="realName" >
+                            <p:column sortBy="name" >
                                 <f:facet name="header">  
                                     <h:outputText value="Nama"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{jabatanViewData.name}"/>
                             </p:column>
-                            <p:column sortBy="emailAddress" >
+                            <p:column sortBy="jabatan" >
                                 <f:facet name="header">  
                                     <h:outputText value="Jabatan Atasan"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{jabatanViewData.jabatan}"/>
+                                <h:outputLabel value= "#{jabatanViewData.jabatan.name}"/>
                             </p:column>
-                            <p:column sortBy="phoneNumber" >
+                            <p:column sortBy="department" >
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['user_form.phone_number']}"/>
+                                    <h:outputText value="Nama Departement"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{jabatanViewData.levelJabatan}"/>
-                            </p:column>                                                       
-<!--                            <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
+                                <h:outputLabel value= "#{jabatanViewData.department.departmentName}"/>
+                            </p:column> 
+                          
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
                                 <p:commandButton  icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
                                                   action="#{jabatanViewController.doDetail()}" style="font-size: 10px!important" >                        
-                                    <f:setPropertyActionListener value="#{jabatanViewData}" target="#{jabatanViewController.selectedHrmUser}" />
+                                    <f:setPropertyActionListener value="#{jabatanViewData}" target="#{jabatanViewController.selectedJabatan}" />
                                 </p:commandButton>
                                 - 
-                                <p:commandButton  icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  style="font-size: 10px!important" update=":deleteDialogUserId"
-                                                  onclick="statusDialog.show()"  oncomplete="confirmDialogHrmUser.show()" action="#{jabatanViewController.onDelete()}" >
-                                    <f:setPropertyActionListener value="#{jabatanViewData}" target="#{jabatanViewController.selectedHrmUser}" />
+                                <p:commandButton  icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  style="font-size: 10px!important" update=":deleteDialogJobTitleId"
+                                                  onclick="statusDialog.show()"  oncomplete="confirmDialogJobTitle.show()" action="#{jabatanViewController.onDelete()}" >
+                                    <f:setPropertyActionListener value="#{jabatanViewData}" target="#{jabatanViewController.selectedJabatan}" />
                                 </p:commandButton>
                                 -
                                 <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
                                                   action="#{jabatanViewController.doEdit()}" >
-                                    <f:setPropertyActionListener value="#{jabatanViewData}" target="#{jabatanViewController.selectedHrmUser}" />
+                                    <f:setPropertyActionListener value="#{jabatanViewData}" target="#{jabatanViewController.selectedJabatan}" />
 
                                 </p:commandButton> 
-                            </p:column>                                        -->
+                            </p:column>                                        
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : " styleClass="label_hrm" />
                                 <p:outputLabel value="#{jabatanViewController.lazyJabatanDataModel.rowCount}" styleClass="label_hrm"/>
                                 <p:outputLabel value="Data" style="margin-left: 3px" styleClass="label_hrm"/>
                             </f:facet>  
                         </p:dataTable>
-                        <p:blockUI block="userViewId" trigger="tableUserId,btnPencarianId" >
+                        <p:blockUI block="jobTitleViewId" trigger="tableUserId,btnPencarianId" >
                             <h:panelGrid columns="2" styleClass="grid_no_border">
                                 <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
                                 <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
                             </h:panelGrid>
                         </p:blockUI>
-<!--                        <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
-                            <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
-                        </p:dialog>-->
-
                     </h:form>
                     <!--</p:panel>-->
                 </div>
-                <p:dialog widgetVar="confirmDialogHrmUser" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
-                          appendTo="@(body)" resizable="false" id="confirmDialogHrmRoleId" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
-                    <h:form id="deleteDialogUserId">
+                <p:dialog widgetVar="confirmDialogJobTitle" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                          appendTo="@(body)" resizable="false" id="confirmDialogJobTitleId" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
+                    <h:form id="deleteDialogJobTitleId">
                         <div align="center">
                             <div align="center">
                                 <h:panelGrid columns="2" style="text-align: justify">
@@ -158,12 +158,12 @@
                             <h:panelGrid  columns="3">
                                 <p:outputLabel value="#{appmsg['user_view.user_name']}" styleClass="label_hrm"/>
                                 <p:outputLabel value=":"  styleClass="label_hrm" />
-                                <p:outputLabel value="#{jabatanViewController.selectedHrmUser.realName}" styleClass="isitext_hrm"/>
+                                <p:outputLabel value="#{jabatanViewController.selectedJabatan.name}" styleClass="isitext_hrm"/>
                             </h:panelGrid>
                             <p:separator/>
-                            <p:commandButton value="#{appmsg['global.yes']}" action="#{jabatanViewController.doDelete()}" update=":userViewId,:userViewGrowlId" id="yesId" title="#{appmsg['global.yes']}" styleClass="isitext_hrm"
-                                             oncomplete="confirmDialogHrmUser.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                            <p:commandButton value="#{appmsg['global.no']}" oncomplete="confirmDialogHrmUser.hide()" icon="ui-icon-close" title="#{appmsg['global.no']}"  styleClass="isitext_hrm"/>
+                            <p:commandButton value="#{appmsg['global.yes']}" action="#{jabatanViewController.doDelete()}" update=":jobTitleViewId,:userViewGrowlId" id="yesId" title="#{appmsg['global.yes']}" styleClass="isitext_hrm"
+                                             oncomplete="confirmDialogJobTitle.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                            <p:commandButton value="#{appmsg['global.no']}" oncomplete="confirmDialogJobTitle.hide()" icon="ui-icon-close" title="#{appmsg['global.no']}"  styleClass="isitext_hrm"/>
 
                         </div>
                     </h:form>

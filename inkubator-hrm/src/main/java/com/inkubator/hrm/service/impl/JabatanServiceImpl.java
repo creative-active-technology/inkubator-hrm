@@ -41,8 +41,9 @@ public class JabatanServiceImpl extends IServiceImpl implements JabatanService {
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public Jabatan getEntiyByPK(Long id) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.jabatanDao.getEntiyByPK(id);
     }
 
     @Override
@@ -121,8 +122,10 @@ public class JabatanServiceImpl extends IServiceImpl implements JabatanService {
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void delete(Jabatan entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println(" hereh ekskeksk");
+        this.jabatanDao.delete(entity);
     }
 
     @Override
@@ -200,6 +203,26 @@ public class JabatanServiceImpl extends IServiceImpl implements JabatanService {
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public Long getTotalJabatanByParam(JabatanSearchParameter searchParameter) throws Exception {
         return this.jabatanDao.getTotalJabatanByParam(searchParameter);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Jabatan getJabatanByLevelOne(Integer level) throws Exception {
+        return this.jabatanDao.getJabatanByLevelOne(level);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<Jabatan> getJabatanByParentCode(String parentCode) throws Exception {
+        return this.jabatanDao.getJabatanByParentCode(parentCode);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public Jabatan getJabatanByIdWithDetail(Long id) throws Exception {
+       Jabatan jabatan=jabatanDao.getJabatanByIdWithDetail(id);
+       jabatan.getGolonganJabatan().getPangkat().getPangkatName();
+       return jabatan;
     }
 
 }

@@ -13,10 +13,6 @@ import com.inkubator.hrm.web.search.JabatanSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
@@ -24,7 +20,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import org.hibernate.exception.ConstraintViolationException;
-import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.LazyDataModel;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -78,12 +73,12 @@ public class JabatanViewController extends BaseController {
         lazyJabatanDataModel = null;
     }
 
-    public void doDetail() {
-        try {
-            selectedJabatan = jabatanService.getEntiyByPK(selectedJabatan.getId());
-        } catch (Exception ex) {
-            LOGGER.error("Error", ex);
-        }
+    public String doDetail() {
+        return "/protected/organisation/job_title_detil.htm?faces-redirect=true&execution=e" + selectedJabatan.getId();
+    }
+    
+    public String doAdd(){
+          return "/protected/organisation/job_title_form.htm?faces-redirect=true";
     }
 
     public void doDelete() {
@@ -101,31 +96,7 @@ public class JabatanViewController extends BaseController {
         }
     }
 
-    public void doAdd() {
-        Map<String, Object> options = new HashMap<>();
-        options.put("modal", true);
-        options.put("draggable", true);
-        options.put("resizable", false);
-        options.put("contentWidth", 400);
-        options.put("contentHeight", 360);
-
-        RequestContext.getCurrentInstance().openDialog("holiday_form", options, null);
-    }
-
-    public void doEdit() {
-        Map<String, Object> options = new HashMap<>();
-        options.put("modal", true);
-        options.put("draggable", true);
-        options.put("resizable", false);
-        options.put("contentWidth", 400);
-        options.put("contentHeight", 360);
-        Map<String, List<String>> dataToSend = new HashMap<>();
-        List<String> dataIsi = new ArrayList<>();
-        dataIsi.add(String.valueOf(selectedJabatan.getId()));
-        dataToSend.put("param", dataIsi);
-        RequestContext.getCurrentInstance().openDialog("holiday_form", options, dataToSend);
-    }
-
+   
     @Override
     public void onDialogReturn(SelectEvent event) {
         lazyJabatanDataModel = null;
@@ -164,4 +135,8 @@ public class JabatanViewController extends BaseController {
         this.selectedJabatan = selectedJabatan;
     }
 
+    
+    public String doViewShema(){
+         return "/protected/organisation/job_title_diagram.htm?faces-redirect=true";
+    }
 }

@@ -733,6 +733,13 @@ div.art-logo
     padding-right: 2px;
 }
 
+.img-function-group
+{
+    background-image:url(../images/function_group_ico.png)!important;
+    background-size: 80% auto;
+    padding-right: 2px;
+}
+
 #box_bg
 {
     /*border:0px solid #006699;*/

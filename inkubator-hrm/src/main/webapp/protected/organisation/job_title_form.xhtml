@@ -1,0 +1,196 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlUserFormId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
+                <h:form id="jobTitleFormId" >
+                    <div id="box_bg" style="margin: 10px">
+                        <!--<p:panel style="margin: 10px">-->
+                        <h:panelGrid style="margin-bottom: 5px" columns="2">
+                            <p:graphicImage library="images" name="jabatan.png" height="36" width="36" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="Form Jabatan" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['jabtan_view.header2']}" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator/>
+
+
+
+                        <p:panelGrid style="width: 100%;margin-bottom: 20px;margin-top: 20px" styleClass="grid_border3" >
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Kode Jabatan"  for="codeId" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:inputText value="#{groupWorkingModel.code}" styleClass="isitext_hrm" label="Kode Kelompok Kerja"
+                                                 style="width: 270px" required="true" id="codeId" onkeyup="this.value = this.value.toUpperCase();" />
+                                    <p:message for="codeId"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Nama Jabatan"  for="namaJabatanId" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:inputText value="#{groupWorkingModel.name}" styleClass="isitext_hrm" label="Nama Kelompok Kerja"
+                                                 style="width:270px" required="true" id="namaJabatanId" />
+                                    <p:message for="namaJabatanId"/>
+                                </p:column>
+
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Gol. Jabatan"  for="golJabatanId" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectOneMenu  style="margin-right: 3px;width: 155px" id="golJabatanId" >
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItem itemLabel="ksksksks" />
+                                        <f:selectItem itemLabel="ksksksks" />
+                                        <f:selectItem itemLabel="ksksksks" />
+                                        <f:selectItem itemLabel="ksksksks" />
+                                    </p:selectOneMenu>
+                                    <p:message for="golJabatanId"/>
+                                </p:column>
+
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Unit Kerja"  for="unitKerjaId" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectOneMenu  style="margin-right: 3px;width: 155px" id="unitKerjaId" >
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItem itemLabel="ksksksks" />
+                                        <f:selectItem itemLabel="ksksksks" />
+                                        <f:selectItem itemLabel="ksksksks" />
+                                        <f:selectItem itemLabel="ksksksks" />
+                                    </p:selectOneMenu>
+                                    <p:message for="unitKerjaId"/>
+                                </p:column>
+
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Departement"  for="departementId" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectOneMenu  style="margin-right: 3px;width: 155px" id="departementId" >
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItem itemLabel="ksksksks" />
+                                        <f:selectItem itemLabel="ksksksks" />
+                                        <f:selectItem itemLabel="ksksksks" />
+                                        <f:selectItem itemLabel="ksksksks" />
+                                    </p:selectOneMenu>
+                                    <p:message for="departementId"/>
+                                </p:column>
+
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Pos Biaya"  for="posBiayaId" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectOneMenu  style="margin-right: 3px;width: 155px" id="posBiayaId" >
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItem itemLabel="ksksksks" />
+                                        <f:selectItem itemLabel="ksksksks" />
+                                        <f:selectItem itemLabel="ksksksks" />
+                                        <f:selectItem itemLabel="ksksksks" />
+                                    </p:selectOneMenu>
+                                    <p:message for="posBiayaId"/>
+                                </p:column>
+
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Level Jabatan"  for="levelJabatanId" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:spinner id="levelJabatanId" value="#{overTimeFormController.overTimeModel.otRounding}" size="2"
+                                               min="1" max="100" stepFactor="1"/>
+                                    <p:message for="levelJabatanId"/>
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Jabatan Atasan"  for="atasanId" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectOneMenu  style="margin-right: 3px;width: 155px" id="atasanId" >
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItem itemLabel="ksksksks" />
+                                        <f:selectItem itemLabel="ksksksks" />
+                                        <f:selectItem itemLabel="ksksksks" />
+                                        <f:selectItem itemLabel="ksksksks" />
+                                    </p:selectOneMenu>
+                                    <p:message for="atasanId"/>
+                                </p:column>
+
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Tujuan Jabatan"  for="tujuanJabatanId" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:inputTextarea  rows="5" cols="37" counter="counter" maxlength="500" id="tujuanJabatanId"
+                                                     style="width: 270px; height: 80px;" counterTemplate="#{appmsg['global.remaining']}" autoResize="true" 
+                                                     label="#{appmsg['role_view.role_description']}" title="#{appmsg['role_view.role_description']}" />
+                                    <!--<p:message for="tujuanJabatanId"/>-->
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  for="tujuanJabatanId" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <h:outputText id="counter" />
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                        <p:focus context="jobTitleFormId" />
+                        <p:separator style="margin-top: 20px;margin-bottom: 10px"/>
+                        <div style="margin-bottom: 5px">
+                            <p:commandButton value="Lanjut" ajax="true" 
+                                             action="next" styleClass="isitext_hrm" 
+                                             style="margin-right: 5px" label="Lanjut"
+                                             icon="ui-icon-arrow-1-e" title="Lanjut"/>
+                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="jobTitleFormId"
+                                             icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px">  
+                                <p:resetInput target="formWorkingGroupId" />  
+                            </p:commandButton>
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="close_back" immediate="true"
+                                             styleClass="label_button"/>
+                        </div>
+
+                    </div>
+
+
+                </h:form>
+<!--                <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
+                    <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
+                </p:dialog>-->
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+
