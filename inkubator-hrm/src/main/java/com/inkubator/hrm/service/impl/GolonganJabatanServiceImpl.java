@@ -3,19 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.inkubator.hrm.service.impl;
-
-import java.util.Date;
-import java.util.List;
-
-import org.hibernate.criterion.Order;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
@@ -27,6 +15,15 @@ import com.inkubator.hrm.entity.Pangkat;
 import com.inkubator.hrm.service.GolonganJabatanService;
 import com.inkubator.hrm.web.search.GolonganJabatanSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+import java.util.Date;
+import java.util.List;
+import org.hibernate.criterion.Order;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -34,14 +31,13 @@ import com.inkubator.securitycore.util.UserInfoUtil;
  */
 @Service(value = "golonganJabatanService")
 @Lazy
-public class GolonganJabatanServiceImpl extends IServiceImpl implements GolonganJabatanService{
+public class GolonganJabatanServiceImpl extends IServiceImpl implements GolonganJabatanService {
 
-	@Autowired
-	private GolonganJabatanDao golJabatanDao;
-	@Autowired
-	private PangkatDao pangkatDao;
-	
-	
+    @Autowired
+    private GolonganJabatanDao golJabatanDao;
+    @Autowired
+    private PangkatDao pangkatDao;
+
     @Override
     public GolonganJabatan getEntiyByPK(String id) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -57,59 +53,48 @@ public class GolonganJabatanServiceImpl extends IServiceImpl implements Golongan
     public GolonganJabatan getEntiyByPK(Long id) throws Exception {
         return golJabatanDao.getEntiyByPK(id);
     }
-    
+
     @Override
-	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-	public GolonganJabatan getEntityByPkFetchAttendPangkat(Long id) throws Exception {
-		return golJabatanDao.getEntityByPkFetchPangkat(id);
-	}
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public GolonganJabatan getEntityByPkFetchAttendPangkat(Long id) throws Exception {
+        return golJabatanDao.getEntityByPkFetchPangkat(id);
+    }
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void save(GolonganJabatan entity) throws Exception {
-		// check duplicate name
-		long totalDuplicates = golJabatanDao.getTotalByName(entity.getName());
-		if (totalDuplicates > 0) {
-			throw new BussinessException("functiongroup.error_duplicate_name");
-		}
-		// check duplicate code
-		totalDuplicates = golJabatanDao.getTotalByCode(entity.getCode());
-		if (totalDuplicates > 0) {
-			throw new BussinessException("functiongroup.error_duplicate_code");
-		}
+    public void save(GolonganJabatan entity) throws Exception {
+        // check duplicate code
+        Long totalDuplicates = golJabatanDao.getTotalByCode(entity.getCode());
+        if (totalDuplicates > 0) {
+            throw new BussinessException("functiongroup.error_duplicate_code");
+        }
 
-		entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
-		Pangkat pangkat = pangkatDao.getEntiyByPK(entity.getPangkat().getId());
-		entity.setPangkat(pangkat);
-		entity.setCreatedBy(UserInfoUtil.getUserName());
-		entity.setCreatedOn(new Date());
-		golJabatanDao.save(entity);
-	}
+        entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+        Pangkat pangkat = pangkatDao.getEntiyByPK(entity.getPangkat().getId());
+        entity.setPangkat(pangkat);
+        entity.setCreatedBy(UserInfoUtil.getUserName());
+        entity.setCreatedOn(new Date());
+        golJabatanDao.save(entity);
+    }
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void update(GolonganJabatan entity) throws Exception {
-		// check duplicate name
-		long totalDuplicates = golJabatanDao.getTotalByNameAndNotId(entity.getName(),entity.getId());
-		if (totalDuplicates > 0) {
-			throw new BussinessException("functiongroup.error_duplicate_name");
-		}
-		// check duplicate code
-		totalDuplicates = golJabatanDao.getTotalByCodeAndNotId(entity.getCode(),entity.getId());
-		if (totalDuplicates > 0) {
-			throw new BussinessException("functiongroup.error_duplicate_code");
-		}
-		
-		GolonganJabatan golonganJabatan = golJabatanDao.getEntiyByPK(entity.getId());
-		golonganJabatan.setCode(entity.getCode());
-		golonganJabatan.setName(entity.getName());
-		Pangkat pangkat = pangkatDao.getEntiyByPK(entity.getPangkat().getId());
-		golonganJabatan.setPangkat(pangkat);
-		golonganJabatan.setOvertime(entity.getOvertime());
-		golonganJabatan.setUpdatedBy(UserInfoUtil.getUserName());
-		golonganJabatan.setUpdatedOn(new Date()); 
-	    golJabatanDao.update(golonganJabatan);
-	}
+    public void update(GolonganJabatan entity) throws Exception {
+        // check duplicate code
+        Long totalDuplicates = golJabatanDao.getTotalByCodeAndNotId(entity.getCode(), entity.getId());
+        if (totalDuplicates > 0) {
+            throw new BussinessException("functiongroup.error_duplicate_code");
+        }
+
+        GolonganJabatan golonganJabatan = golJabatanDao.getEntiyByPK(entity.getId());
+        golonganJabatan.setCode(entity.getCode());
+        Pangkat pangkat = pangkatDao.getEntiyByPK(entity.getPangkat().getId());
+        golonganJabatan.setPangkat(pangkat);
+        golonganJabatan.setOvertime(entity.getOvertime());
+        golonganJabatan.setUpdatedBy(UserInfoUtil.getUserName());
+        golonganJabatan.setUpdatedOn(new Date());
+        golJabatanDao.update(golonganJabatan);
+    }
 
     @Override
     public void saveOrUpdate(GolonganJabatan enntity) throws Exception {
@@ -248,16 +233,22 @@ public class GolonganJabatanServiceImpl extends IServiceImpl implements Golongan
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<GolonganJabatan> getByParam(GolonganJabatanSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception {
-		return golJabatanDao.getByParam(parameter, firstResult, maxResults, orderable);
-	}
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<GolonganJabatan> getByParam(GolonganJabatanSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception {
+        return golJabatanDao.getByParam(parameter, firstResult, maxResults, orderable);
+    }
 
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-	public Long getTotalByParam(GolonganJabatanSearchParameter parameter) throws Exception {
-		return golJabatanDao.getTotalByParam(parameter);		
-	}
-    
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalByParam(GolonganJabatanSearchParameter parameter) throws Exception {
+        return golJabatanDao.getTotalByParam(parameter);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<GolonganJabatan> getAllWithDetail() throws Exception {
+        return golJabatanDao.getAllWithDetail();
+    }
+
 }

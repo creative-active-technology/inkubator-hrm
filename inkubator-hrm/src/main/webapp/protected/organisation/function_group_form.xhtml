@@ -42,30 +42,12 @@
                             <p:column  style="width: 60%">
                             	<p:inputText id="codeId" title="#{appmsg['functiongroup.function_group_code']}" value="#{golonganJabatanFormController.model.code}" 
                                     		 required="true" maxlength="4" styleClass="isitext_hrm" style="width:235px;" >
-                                    		 <p:ajax listener="#{golonganJabatanFormController.doUpdateName()}" update="nameId"/>
                                 </p:inputText>
                             </p:column>
                         </p:row>
                         <p:row>
                             <p:column colspan="3">
                                 <p:message for="codeId"/>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="width: 39%">
-                                <p:outputLabel for="nameId" value="#{appmsg['functiongroup.function_group_name']}" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="nameId" value=":" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column  style="width: 60%">
-                            	<p:inputText id="nameId" title="#{appmsg['functiongroup.function_group_name']}" value="#{golonganJabatanFormController.model.name}" 
-                                    		 required="true" maxlength="60" disabled="true" styleClass="isitext_hrm" style="width:235px;" />
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:message for="nameId"/>
                             </p:column>
                         </p:row>
                         <p:row>
@@ -91,7 +73,6 @@
                                 <p:selectOneMenu id="pangkatId" styleClass="isitext_hrm" required="true" filter="true" value="#{golonganJabatanFormController.model.pangkatId}">
 	                           		<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
 	                                <f:selectItems value="#{golonganJabatanFormController.model.pangkats.entrySet()}" var="pangkat" itemValue="#{pangkat.key}" itemLabel="#{pangkat.value}"/>
-	                                <p:ajax listener="#{golonganJabatanFormController.doUpdateName()}" update="nameId"/>
 	                            </p:selectOneMenu>
                             </p:column>
                         </p:row>

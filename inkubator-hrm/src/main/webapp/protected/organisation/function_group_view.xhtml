@@ -39,7 +39,6 @@
                                     <p:selectOneMenu value="#{golonganJabatanViewController.parameter.keyParam}" style="margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItem itemLabel="#{appmsg['functiongroup.function_group_code']}" itemValue="code"/>
-                                        <f:selectItem itemLabel="#{appmsg['functiongroup.function_group_name']}" itemValue="name"/>
                                         <f:selectItem itemLabel="#{appmsg['position.position']}" itemValue="pangkatName"/>
                                     </p:selectOneMenu>
                                     <p:inputText id="searchId" value="#{golonganJabatanViewController.parameter.parameter}" style="width: 250px" styleClass="label_button"/>
@@ -67,30 +66,30 @@
                             <f:facet name="header">  
                                 <h:outputText value="#{appmsg['functiongroup.list_of_function_group']}"/>
                             </f:facet>
-                            <p:column sortBy="pangkat.level" style="text-align: center;width: 5%">
+                            <p:column style="text-align: center;width: 5%">
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['global.level']}"/>
+                                    <h:outputText value="#{appmsg['global.number']}"/>
                                 </f:facet>
-                                <h:outputLabel value="#{golonganJabatanData.pangkat.level}" />
+                                <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="code"  style="width: 25%">
-                                <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['functiongroup.function_group_code']}"/>
-                                </f:facet>
-                                <h:outputLabel value= "#{golonganJabatanData.code}"/>
-                            </p:column>
-                            <p:column sortBy="name"  style="width: 25%">
-                                <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['functiongroup.function_group_name']}"/>
-                                </f:facet>
-                                <h:outputLabel value= "#{golonganJabatanData.name}"/>
-                            </p:column>
-                            <p:column sortBy="pangkat.pangkatName"  style="width: 25%">
+                            <p:column sortBy="pangkat.pangkatName"  style="width: 30%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['position.position']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{golonganJabatanData.pangkat.pangkatName}"/>
-                            </p:column>    
+                            </p:column>                            
+                            <p:column sortBy="code"  style="width: 30%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['functiongroup.function_group_code']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{golonganJabatanData.code}"/>
+                            </p:column>                            
+                            <p:column sortBy="pangkat.level" style="text-align: center;width: 20%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.level']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{golonganJabatanData.pangkat.level}" />
+                            </p:column>   
                             <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                 				 style="font-size: 10px!important" update=":panelDialogDetailId" 

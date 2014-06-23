@@ -123,8 +123,7 @@ public class GolonganJabatanFormController extends BaseController {
         if (model.getId() != null) {
         	golonganJabatan.setId(model.getId());
         }
-        golonganJabatan.setCode(model.getCode());
-        golonganJabatan.setName(model.getName());
+        golonganJabatan.setCode(model.getCode());        
         golonganJabatan.setOvertime(model.getOvertime());
         golonganJabatan.setPangkat(new Pangkat(model.getPangkatId()));
         return golonganJabatan;
@@ -132,14 +131,8 @@ public class GolonganJabatanFormController extends BaseController {
     
     private void getViewModelFromEntity(GolonganJabatan golonganJabatan){
     	model.setId(golonganJabatan.getId());
-    	model.setCode(golonganJabatan.getCode());
-    	model.setName(golonganJabatan.getName());
+    	model.setCode(golonganJabatan.getCode());    	
     	model.setOvertime(golonganJabatan.getOvertime());
     	model.setPangkatId(golonganJabatan.getPangkat().getId());
-    }
-    
-    public void doUpdateName(){
-		String pangkatName = model.getPangkats().get(model.getPangkatId());
-		model.setName(pangkatName + " - " + model.getCode());
     }
 }

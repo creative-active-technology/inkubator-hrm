@@ -10,7 +10,6 @@ import java.util.Map;
 public class GolonganJabatanModel {
 
 	private Long id;
-    private String name;
     private String code;
     private Long pangkatId;
     private Boolean overtime;
@@ -21,12 +20,6 @@ public class GolonganJabatanModel {
 	}
 	public void setId(Long id) {
 		this.id = id;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
 	}
 	public String getCode() {
 		return code;
