@@ -105,7 +105,6 @@ public class GolonganJabatanServiceImpl extends IServiceImpl implements Golongan
 		golonganJabatan.setName(entity.getName());
 		Pangkat pangkat = pangkatDao.getEntiyByPK(entity.getPangkat().getId());
 		golonganJabatan.setPangkat(pangkat);
-		golonganJabatan.setLevel(entity.getLevel());
 		golonganJabatan.setOvertime(entity.getOvertime());
 		golonganJabatan.setUpdatedBy(UserInfoUtil.getUserName());
 		golonganJabatan.setUpdatedOn(new Date()); 

@@ -67,11 +67,11 @@
                             <f:facet name="header">  
                                 <h:outputText value="#{appmsg['functiongroup.list_of_function_group']}"/>
                             </f:facet>
-                            <p:column sortBy="level" style="text-align: center;width: 5%">
+                            <p:column sortBy="pangkat.level" style="text-align: center;width: 5%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.level']}"/>
                                 </f:facet>
-                                <h:outputLabel value="#{golonganJabatanData.level}" />
+                                <h:outputLabel value="#{golonganJabatanData.pangkat.level}" />
                             </p:column>
                             <p:column sortBy="code"  style="width: 25%">
                                 <f:facet name="header">  

@@ -1,7 +1,9 @@
 package com.inkubator.hrm.service.impl;
 
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -279,4 +281,16 @@ public class PangkatServiceImpl extends IServiceImpl implements PangkatService {
 		return pangkatDao.getTotalByParam(parameter);
 	}
 
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public Map<Long, String> getAllDataMaps() {
+		List<Pangkat> pangkats = pangkatDao.getAllData();
+		Map<Long, String> maps = new LinkedHashMap<Long, String>();
+		for(Pangkat pangkat: pangkats){
+			maps.put(pangkat.getId(), pangkat.getPangkatName());
+		}
+		return maps;
+	}
+
+	
 }

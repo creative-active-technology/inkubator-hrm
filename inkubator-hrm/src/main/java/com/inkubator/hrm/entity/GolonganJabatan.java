@@ -34,7 +34,6 @@ public class GolonganJabatan  implements java.io.Serializable {
      private Pangkat pangkat;
      private String code;
      private String name;
-     private Integer level;
      private Boolean overtime;
      private String createdBy;
      private Date createdOn;
@@ -49,12 +48,11 @@ public class GolonganJabatan  implements java.io.Serializable {
     public GolonganJabatan(long id) {
         this.id = id;
     }
-    public GolonganJabatan(long id, Pangkat pangkat, String code, String name, Integer level, Boolean overtime, String createdBy, Date createdOn, String updatedBy, Date updatedOn, Set<Jabatan> jabatans) {
+    public GolonganJabatan(long id, Pangkat pangkat, String code, String name, Boolean overtime, String createdBy, Date createdOn, String updatedBy, Date updatedOn, Set<Jabatan> jabatans) {
        this.id = id;
        this.pangkat = pangkat;
        this.code = code;
        this.name = name;
-       this.level = level;
        this.overtime = overtime;
        this.createdBy = createdBy;
        this.createdOn = createdOn;
@@ -111,16 +109,6 @@ public class GolonganJabatan  implements java.io.Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	@Column(name="level")
-    public Integer getLevel() {
-        return this.level;
-    }
-    
-    public void setLevel(Integer level) {
-        this.level = level;
-    }
-
     
     @Column(name="overtime")
     public Boolean getOvertime() {

@@ -34,23 +34,6 @@
                     <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
                         <p:row>
                             <p:column style="width: 39%">
-                                <p:outputLabel for="levelId" value="#{appmsg['global.level']}" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="levelId" value=":" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column  style="width: 60%">
-                            	<p:spinner id="levelId" value="#{golonganJabatanFormController.model.level}" size="4" max="10" min="0" 
-                            			   styleClass="isitext_hrm" required="true"/>	                               
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:message for="levelId"/>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="width: 39%">
                                 <p:outputLabel for="codeId" value="#{appmsg['functiongroup.function_group_code']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
@@ -58,7 +41,9 @@
                             </p:column>
                             <p:column  style="width: 60%">
                             	<p:inputText id="codeId" title="#{appmsg['functiongroup.function_group_code']}" value="#{golonganJabatanFormController.model.code}" 
-                                    		 required="true" maxlength="60" styleClass="isitext_hrm" style="width:235px;" />
+                                    		 required="true" maxlength="4" styleClass="isitext_hrm" style="width:235px;" >
+                                    		 <p:ajax listener="#{golonganJabatanFormController.doUpdateName()}" update="nameId"/>
+                                </p:inputText>
                             </p:column>
                         </p:row>
                         <p:row>
@@ -75,7 +60,7 @@
                             </p:column>
                             <p:column  style="width: 60%">
                             	<p:inputText id="nameId" title="#{appmsg['functiongroup.function_group_name']}" value="#{golonganJabatanFormController.model.name}" 
-                                    		 required="true" maxlength="60" styleClass="isitext_hrm" style="width:235px;" />
+                                    		 required="true" maxlength="60" disabled="true" styleClass="isitext_hrm" style="width:235px;" />
                             </p:column>
                         </p:row>
                         <p:row>
@@ -103,9 +88,10 @@
                                 <h:outputLabel for="pangkatId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 70%">
-                                <p:selectOneMenu id="pangkatId" styleClass="isitext_hrm" required="true"  value="#{golonganJabatanFormController.model.pangkatId}">
+                                <p:selectOneMenu id="pangkatId" styleClass="isitext_hrm" required="true" filter="true" value="#{golonganJabatanFormController.model.pangkatId}">
 	                           		<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-	                                <f:selectItems value="#{golonganJabatanFormController.model.pangkats}" var="pangkat" itemValue="#{pangkat.id}" itemLabel="#{pangkat.pangkatName}"/>
+	                                <f:selectItems value="#{golonganJabatanFormController.model.pangkats.entrySet()}" var="pangkat" itemValue="#{pangkat.key}" itemLabel="#{pangkat.value}"/>
+	                                <p:ajax listener="#{golonganJabatanFormController.doUpdateName()}" update="nameId"/>
 	                            </p:selectOneMenu>
                             </p:column>
                         </p:row>

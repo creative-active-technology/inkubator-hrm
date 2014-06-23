@@ -1,6 +1,6 @@
 package com.inkubator.hrm.web.organisation;
 
-import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -46,7 +46,7 @@ public class GolonganJabatanFormController extends BaseController {
 	        isUpdate = Boolean.FALSE;
 	        
 	        model = new GolonganJabatanModel();
-	        List<Pangkat> pangkats = pangkatService.getAllData();
+	        Map<Long, String> pangkats = pangkatService.getAllDataMaps();
 			model.setPangkats(pangkats);
 	        
 	        String param = FacesUtil.getRequestParameter("param");
@@ -126,7 +126,6 @@ public class GolonganJabatanFormController extends BaseController {
         golonganJabatan.setCode(model.getCode());
         golonganJabatan.setName(model.getName());
         golonganJabatan.setOvertime(model.getOvertime());
-        golonganJabatan.setLevel(model.getLevel());
         golonganJabatan.setPangkat(new Pangkat(model.getPangkatId()));
         return golonganJabatan;
     }
@@ -135,8 +134,12 @@ public class GolonganJabatanFormController extends BaseController {
     	model.setId(golonganJabatan.getId());
     	model.setCode(golonganJabatan.getCode());
     	model.setName(golonganJabatan.getName());
-    	model.setLevel(golonganJabatan.getLevel());
     	model.setOvertime(golonganJabatan.getOvertime());
     	model.setPangkatId(golonganJabatan.getPangkat().getId());
+    }
+    
+    public void doUpdateName(){
+		String pangkatName = model.getPangkats().get(model.getPangkatId());
+		model.setName(pangkatName + " - " + model.getCode());
     }
 }
