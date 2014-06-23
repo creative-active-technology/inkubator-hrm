@@ -16,7 +16,7 @@
             </ui:define>
             <ui:define name="center">
                 <div id="box_bg" style="margin: 10px">
-                    <h:form id="formDepartmentId">
+                    <h:form id="formCostCenterId">
                         <h:panelGrid style="margin-bottom: 5px" columns="2">
                             <p:graphicImage library="images" name="department_header.png" height="36" width="36" />
                             <h:panelGroup layout="block">
@@ -27,7 +27,7 @@
                             </h:panelGroup>
                         </h:panelGrid>
                         <p:separator/>
-                        <p:growl id="growlDepartmentId" globalOnly="true" showDetail="true" />
+                        <p:growl id="growlCostCenterId" globalOnly="true" showDetail="true" />
                         <p:toolbar  style="margin-top: 10px">
                             <p:toolbarGroup align="left">
                                 <h:panelGrid columns="5">
@@ -39,16 +39,16 @@
                                         <f:selectItem itemLabel="#{appmsg['department.name']}" itemValue="name"/>
                                     </p:selectOneMenu>
                                     <p:inputText id="searchId" value="#{costCenterController.costCenterSearchParameter.parameter}" style="width: 250px" styleClass="label_button"/>
-                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{costCenterController.doSearch()}" update="tableDepartmentId"  styleClass="label_button" icon="ui-icon-search"/>
+                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{costCenterController.doSearch()}" update="tableCostCenterId"  styleClass="label_button" icon="ui-icon-search"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3" >
                                     <p:commandButton value="Export to XLS" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
-                                        <pe:exporter target="tableDepartmentId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Department"/>
+                                        <pe:exporter target="tableCostCenterId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Department"/>
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.add']}" actionListener="#{costCenterController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
-                                        <p:ajax event="dialogReturn" listener="#{costCenterController.onDialogReturn}"  update="tableDepartmentId"/>
+                                        <p:ajax event="dialogReturn" listener="#{costCenterController.onDialogReturn}"  update="tableCostCenterId"/>
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{costCenterController.doClose()}" icon="ui-icon-home" />
                                     
@@ -56,9 +56,9 @@
                             </p:toolbarGroup>
                         </p:toolbar>
                         <p:focus for="searchId" />
-                        <p:dataTable  var="departmentData"  value="#{costCenterController.lazyDataCostCenter}" lazy="true" paginator="true" pageLinks="7"
+                        <p:dataTable  var="costCenterData"  value="#{costCenterController.lazyDataCostCenter}" lazy="true" paginator="true" pageLinks="7"
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
-                                      id="tableDepartmentId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      id="tableCostCenterId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
                                 <h:outputText value="#{appmsg['department.list_of_department']}"/>
@@ -73,37 +73,43 @@
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['department.code']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{departmentData.code}" />
+                                <h:outputLabel value= "#{costCenterData.code}" />
                             </p:column>
-                            <p:column sortBy="name" style="width: 50%">
+                            <p:column sortBy="name" style="width: 30%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['department.name']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{departmentData.name}" />
+                                <h:outputLabel value= "#{costCenterData.name}" />
+                            </p:column>
+                            <p:column sortBy="name" style="width: 20%">
+                                <f:facet name="header">
+                                    <h:outputText value="Level"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{costCenterData.level}" />
                             </p:column>
                             <p:column sortBy="name" style="width: 20%">
                                 <f:facet name="header">
                                     <h:outputText value="Kode Parent"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{departmentData.level}" />
+                                <h:outputLabel value= "#{costCenterData.costCenter.name}" />
                             </p:column>
                             <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
-                                                 onclick="statusDialog.show()"  oncomplete="detailDepartment.show()" update=":detailPanel"
+                                                 onclick="statusDialog.show()"  oncomplete="detailCostCenter.show()" update=":detailPanel"
                                                  style="font-size: 10px!important" action="#{costCenterController.doDetail()}">                        
-                                    <f:setPropertyActionListener value="#{departmentData}" target="#{costCenterController.selectedCostCenter}" />
+                                    <f:setPropertyActionListener value="#{costCenterData}" target="#{costCenterController.selectedCostCenter}" />
                                 </p:commandButton>
                                 - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                 				 style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                                                 action="#{costCenterController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmDepartment.show()">
-                                    <f:setPropertyActionListener value="#{departmentData}" target="#{costCenterController.selectedCostCenter}" />
+                                                                 action="#{costCenterController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmCostCenter.show()">
+                                    <f:setPropertyActionListener value="#{costCenterData}" target="#{costCenterController.selectedCostCenter}" />
                                 </p:commandButton>
                                 -
                                 <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" ajax="true"
                                                   action="#{costCenterController.doEdit()}" >
-                                    <f:setPropertyActionListener value="#{departmentData}" target="#{costCenterController.selectedCostCenter}" />
-                                    <p:ajax event="dialogReturn" listener="#{costCenterController.onDialogReturn}"  update="tableDepartmentId"/>
+                                    <f:setPropertyActionListener value="#{costCenterData}" target="#{costCenterController.selectedCostCenter}" />
+                                    <p:ajax event="dialogReturn" listener="#{costCenterController.onDialogReturn}"  update="tableCostCenterId"/>
                                 </p:commandButton> 
                             </p:column> 
                             <f:facet name="footer">
@@ -112,7 +118,7 @@
                                 <p:outputLabel value="Data" style="margin-left: 3px"/>
                             </f:facet>  
                         </p:dataTable>
-                        <p:blockUI block="formDepartmentId" trigger="tableDepartmentId,btnSearchId" >
+                        <p:blockUI block="formCostCenterId" trigger="tableCostCenterId,btnSearchId" >
                             <h:panelGrid columns="2" styleClass="grid_no_border">
                                 <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
                                 <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
@@ -123,7 +129,7 @@
                 <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
                     <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
                 </p:dialog>
-                <p:dialog widgetVar="dialogConfirmDepartment" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmCostCenter" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -139,26 +145,26 @@
                         <h:panelGrid id="panelDialogConfirmId"  columns="3">
                             <p:outputLabel value="#{appmsg['department.department_name']}"  style="font-weight: bold"/>
                             <p:outputLabel value=":"  style="font-weight: bold"/>
-                            <p:outputLabel value="#{departmentController.selectedDepartment.departmentName}" styleClass="label_hrm"/>
+                            <p:outputLabel value="#{costCenterController.selectedCostCenter.name}" styleClass="label_hrm"/>
                         </h:panelGrid>
                         <p:separator/>
-                        <p:commandButton value="#{appmsg['global.yes']}" action="#{departmentController.doDelete()}" update="formDepartmentId"
-                                         oncomplete="dialogConfirmDepartment.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmDepartment.hide()" icon="ui-icon-close" />                     	
+                        <p:commandButton value="#{appmsg['global.yes']}" action="#{costCenterController.doDelete()}" update="formCostCenterId"
+                                         oncomplete="dialogConfirmCostCenter.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmCostCenter.hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
-                <p:dialog widgetVar="detailDepartment" header="#{appmsg['department.detail_department']}" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
+                <p:dialog widgetVar="detailCostCenter" header="#{appmsg['department.detail_department']}" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
                           showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)" dynamic="true">
                     <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
 
                         <p:row>
                             <p:column style="color: #003366"><p:outputLabel value="#{appmsg['department.code']}" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{departmentController.selectedDepartment.departmentCode}"/> </p:column>
+                            <p:column><p:outputLabel value="#{costCenterController.selectedCostCenter.code}"/> </p:column>
                         </p:row>
 
                         <p:row>
                             <p:column style="color: #003366"><p:outputLabel value="#{appmsg['department.name']}" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{departmentController.selectedDepartment.departmentName}"/> </p:column>
+                            <p:column><p:outputLabel value="#{costCenterController.selectedCostCenter.name}"/> </p:column>
                         </p:row>
 
                         <f:facet name="footer">

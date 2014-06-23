@@ -5,20 +5,21 @@
 package com.inkubator.hrm.web.model;
 
 import com.inkubator.hrm.entity.CostCenter;
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
  *
  * @author deniarianto
  */
-public class CostCenterModel {
+public class CostCenterModel implements Serializable{
     private Long id;
     private String code;
     private String name;
     private String description;
     private Integer level;
     private BigDecimal balance;
-    private CostCenter parent;
+    private Long parentId;
     private Boolean isManageParentId;
 
     public Long getId() {
@@ -30,6 +31,7 @@ public class CostCenterModel {
     }
 
     public String getCode() {
+        System.out.println("masuk kode cost center");
         return code;
     }
 
@@ -69,12 +71,13 @@ public class CostCenterModel {
         this.balance = balance;
     }
 
-    public CostCenter getParent() {
-        return parent;
+    public Long getParentId() {
+        System.out.println("masuk parent id");
+        return parentId;
     }
 
-    public void setParent(CostCenter parent) {
-        this.parent = parent;
+    public void setParentId(Long parent) {
+        this.parentId = parent;
     }
 
     public Boolean getIsManageParentId() {

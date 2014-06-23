@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
@@ -34,13 +36,30 @@ import org.primefaces.context.RequestContext;
 public class CostCenterFormController extends BaseController{
     @ManagedProperty(value = "#{costCenterService}")
     private CostCenterService costCentreService;
-    private Boolean isDisabledBreakConf;
+    private Boolean isParentDisabled;
     private CostCenter selectedCostCenter;
     private CostCenterModel costCenterModel;
     private Boolean isEdit;
     private String city; 
-    private Map<String, Long> cities = new HashMap<String, Long>();
+    private Map<String, Long> costCenterParent;
     private List<CostCenter> costCenterList = new ArrayList<>();
+    private Integer parentLevel;
+
+    public Integer getBranchLevel() {
+        return parentLevel;
+    }
+
+    public void setBranchLevel(Integer parentLevel) {
+        this.parentLevel = parentLevel;
+    }
+
+    public Map<String, Long> getCostCenterParent() {
+        return costCenterParent;
+    }
+
+    public void setCostCenterParent(Map<String, Long> costCenterParent) {
+        this.costCenterParent = costCenterParent;
+    }
 
     public List<CostCenter> getCostCenterList() {
         return costCenterList;
@@ -59,21 +78,20 @@ public class CostCenterFormController extends BaseController{
         this.city = city;
     }
 
-    public Map<String, Long> getCities() {
-        return cities;
+    public Map<String, Long> getCostCenter() {
+        return costCenterParent;
     }
 
-    public void setCities(Map<String, Long> cities) {
-        this.cities = cities;
+    public void setCostCenter(Map<String, Long> costCenterParent) {
+        this.costCenterParent = costCenterParent;
     }
 
-    
-    public Boolean getIsDisabledBreakConf() {
-        return isDisabledBreakConf;
+    public Boolean getIsParentDisabled() {
+        return isParentDisabled;
     }
 
-    public void setIsDisabledBreakConf(Boolean isDisabledBreakConf) {
-        this.isDisabledBreakConf = isDisabledBreakConf;
+    public void setIsParentDisabled(Boolean isParentDisabled) {
+        this.isParentDisabled = isParentDisabled;
     }
 
     public CostCenterService getCostCentreService() {
@@ -115,27 +133,34 @@ public class CostCenterFormController extends BaseController{
         super.initialization();
         String param = FacesUtil.getRequestParameter("param");
         costCenterModel = new CostCenterModel();
-        
+        isParentDisabled=Boolean.TRUE;
         try {
             costCenterList = costCentreService.getAllData();
-            cities = new HashMap<String, Long>();
-                for (CostCenter costCenter : costCenterList) {
-                    cities.put(costCenter.getName(), costCenter.getId());
-                }  
+        } catch (Exception ex) {
+            Logger.getLogger(CostCenterFormController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try { 
             if (param != null) {
 
                 isEdit = Boolean.TRUE;
+                isParentDisabled = Boolean.FALSE;
                 CostCenter costCenter = costCentreService.getEntiyByPK(Long.parseLong(param));
                 costCenterModel.setId(costCenter.getId());
                 costCenterModel.setCode(costCenter.getCode());
                 costCenterModel.setName(costCenter.getName());
-                
-                //cities
+                costCenterModel.setLevel(costCenter.getLevel());
+                costCenterModel.setParentId(Long.valueOf(String.valueOf(costCenter.getCostCenter().getId())));
+                //get level
+                Integer level = costCenterModel.getLevel();
+                costCenterParent = new HashMap<String, Long>();
 
-
+                //kalo level 3, tampilkan level 2, dst
+                for (CostCenter costCenterListUpdate : costCenterList) {
+                    if((level-1) == costCenterListUpdate.getLevel()){
+                        costCenterParent.put(costCenterListUpdate.getName(), costCenterListUpdate.getId());
+                    }
+                }
             } else {
-                 
-
                 isEdit = Boolean.FALSE;
             }
         } catch (Exception ex) {
@@ -161,9 +186,6 @@ public class CostCenterFormController extends BaseController{
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
-            //cleanAndExit();
-
-//        cleanAndExit();
     }
     
     private CostCenter getEntityFromViewModel(CostCenterModel costCenterModel) {
@@ -171,28 +193,43 @@ public class CostCenterFormController extends BaseController{
         if (costCenterModel.getId() != null) {
             costCenter.setId(costCenterModel.getId());
         }
+        if(costCenterModel.getParentId() == null){
+            costCenter.setCostCenter(new CostCenter());
+        }else{
+            costCenter.setCostCenter(new CostCenter(costCenterModel.getParentId()));
+        }
         costCenter.setCode(costCenterModel.getCode());
         costCenter.setName(costCenterModel.getName());
-        costCenter.setCostCenter(costCenterModel.getParent());
         costCenter.setLevel(costCenterModel.getLevel());
         return costCenter;
     }
     
     @PreDestroy
     private void cleanAndExit() {
+        costCenterParent = null;
         costCenterModel = null;
-        costCenterModel = null;
+        costCentreService = null;
         selectedCostCenter = null;
         isEdit = null;
+        isParentDisabled = null;
+        parentLevel = null;
 
     }
     
-    public void onChangeManageBreakTime() {
-        isDisabledBreakConf = BooleanUtils.isNotTrue(costCenterModel.getIsManageParentId());
-        if (isDisabledBreakConf) {
-            costCenterModel.setParent(null);
-
-        }
+    public void onChangeManageBreakTime() throws Exception {
+        //kalo get level = 1 disable parent idnya
+        isParentDisabled = costCenterModel.getLevel() <= 1 ? true : false;
+        System.out.println(isParentDisabled + " = " + costCenterModel.getLevel());
+        //get level
+        Integer level = costCenterModel.getLevel();
+        costCenterParent = new HashMap<String, Long>();
+        
+        //kalo level 3, tampilkan level 2, dst
+        for (CostCenter costCenter : costCenterList) {
+            if((level-1) == costCenter.getLevel()){
+                costCenterParent.put(costCenter.getName(), costCenter.getId());
+            }
+        } 
     }
 }
 

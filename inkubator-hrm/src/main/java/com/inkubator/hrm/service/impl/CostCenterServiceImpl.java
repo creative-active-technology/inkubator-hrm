@@ -73,7 +73,11 @@ public class CostCenterServiceImpl extends IServiceImpl implements CostCenterSer
         // check duplicate name
         long totalDuplicates = costCenterDao.getByCostCenterCode(entity.getCode());
         if (totalDuplicates > 0) {
-            throw new BussinessException("department.error_duplicate_department_name");
+            throw new BussinessException("costcenter.error_duplicate_cost_center_code");
+        }
+        
+        if(entity.getCostCenter() != null){
+            entity.setCostCenter(costCenterDao.getEntiyByPK(entity.getCostCenter().getId()));
         }
         entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         entity.setCode(entity.getCode());
@@ -83,11 +87,28 @@ public class CostCenterServiceImpl extends IServiceImpl implements CostCenterSer
         entity.setDescription(entity.getDescription());
         entity.setCreatedBy(UserInfoUtil.getUserName());
         entity.setCreatedOn(new Date());
+        this.costCenterDao.save(entity);
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(CostCenter entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        long totalDuplicates = costCenterDao.getTotalByCodeAndNotId(entity.getCode(), entity.getId());
+        if (totalDuplicates > 0) {
+            throw new BussinessException("department.error_duplicate_department_name");
+        }
+        CostCenter costCenterUpdate = this.costCenterDao.getEntiyByPK(entity.getId());
+        if(entity.getCostCenter() != null){
+            entity.setCostCenter(costCenterDao.getEntiyByPK(entity.getCostCenter().getId()));
+        }
+        entity.setCode(entity.getCode());
+        entity.setName(entity.getName());
+        entity.setBalance(entity.getBalance());
+        entity.setLevel(entity.getLevel());
+        entity.setDescription(entity.getDescription());
+        entity.setUpdatedBy(UserInfoUtil.getUserName());
+        entity.setUpdatedOn(new Date());
+        this.costCenterDao.update(entity);
     }
 
     @Override
