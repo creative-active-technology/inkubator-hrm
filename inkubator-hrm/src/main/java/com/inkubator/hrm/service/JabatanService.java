@@ -28,4 +28,6 @@ public interface JabatanService extends IService<Jabatan> {
     public Jabatan getJabatanByIdWithDetail(Long id) throws Exception;
     
     public List<Jabatan>getJabatansByLevel(Integer level)throws Exception;
+    
+    
 }

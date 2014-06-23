@@ -90,10 +90,10 @@ public class JabatanFormController extends BaseController {
             List<Department> listDepartemens = departmentService.getAllData();
             List<CostCenter> listCostCenters = costCenterService.getAllData();
             List<UnitKerja> listUnitKerjas = unitKerjaService.getAllData();
-            List<GolonganJabatan> listGolonganJabatans = golonganJabatanService.getAllData();
+            List<GolonganJabatan> listGolonganJabatans = golonganJabatanService.getAllWithDetail();
 
             for (GolonganJabatan golonganJabatan : listGolonganJabatans) {
-                golJabatans.put(golonganJabatan.getName(), golonganJabatan.getId());
+                golJabatans.put(golonganJabatan.getCode()+" - "+golonganJabatan.getPangkat().getPangkatName(), golonganJabatan.getId());
             }
             for (UnitKerja unitKerja : listUnitKerjas) {
                 untiKerjas.put(unitKerja.getName(), unitKerja.getId());
