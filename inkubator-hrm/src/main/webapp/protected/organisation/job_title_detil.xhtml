@@ -78,9 +78,11 @@
 
                             <p:row>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Nama Pangkat" style="font-weight: bold"/>
+                                    <p:outputLabel  value="Golongan Jabatan" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%">
+                                    <p:outputLabel  value="#{jabatanDetailController.selectedJabatan.golonganJabatan.code}" />
+                                    <p:outputLabel  value="-" />
                                     <p:outputLabel  value="#{jabatanDetailController.selectedJabatan.golonganJabatan.pangkat.pangkatName}" />
                                 </p:column>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important">
@@ -92,16 +94,32 @@
 
                             </p:row>
 
+                            <!--                            <p:row>
+                                                            <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                                                <p:outputLabel  value="Golongan Jabatan" style="font-weight: bold"/>
+                                                            </p:column>
+                                                            <p:column style="width: 37%">
+                                                                <p:outputLabel  value="#{jabatanDetailController.selectedJabatan.golonganJabatan.pangkat.pangkatName}" />
+                                                            </p:column>
+                                                            <p:column style="width: 13%;background-color: #e1f0f0!important">
+                                                                <p:outputLabel  value="Tujuan Jabatan" style="font-weight: bold"/>
+                                                            </p:column>
+                                                            <p:column style="width: 37%">
+                                                                <p:outputLabel  value="#{jabatanDetailController.selectedJabatan.tujuanJabatan}" />
+                                                            </p:column>
+                            
+                                                        </p:row>-->
+
                         </p:panelGrid>
                         <p:tabView id="tabView1" dynamic="true" cache="true" styleClass="tabview_hrm" style="margin-left: 0px; margin-right: 0px;margin-bottom: 15px">
-                            <p:tab id="jobSpesificationId" title="Job Spesicikasi">  
+                            <p:tab id="jobSpesificationId" title="Jabatan Spesicikasi">  
                                 <h:panelGrid columns="2" cellpadding="10">  
                                     <p:graphicImage id="tab3Img" value="/images/godfather/godfather3.jpg" />  
                                     <h:outputText value="After a break of more than 15 years, director Francis Ford Coppola and writer Mario Puzo returned to the well for this third and final story of the fictional Corleone crime family.  
                                                   Two decades have passed, and crime kingpin Michael Corleone, now divorced from his wife Kay has nearly succeeded in keeping his promise that his family would one day be completely legitimate."/>  
                                 </h:panelGrid>  
                             </p:tab>  
-                            <p:tab id="jobDeskriptionId" title="Job Deskripsi">  
+                            <p:tab id="jobDeskriptionId" title="Jabatan Deskripsi">  
                                 <h:panelGrid columns="2" cellpadding="10">  
                                     <p:graphicImage id="tab1Img" value="/images/godfather/godfather1.jpg" />  
                                     <h:outputText  
@@ -120,33 +138,7 @@
                         <div style="clear: both"/>
                     </h:form>
                 </div>
-                <p:dialog widgetVar="confirmDialogJobTitle" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
-                          appendTo="@(body)" resizable="false" id="confirmDialogJobTitleId" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
-                    <h:form id="deleteDialogJobTitleId">
-                        <div align="center">
-                            <div align="center">
-                                <h:panelGrid columns="2" style="text-align: justify">
-                                    <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
-                                    <h:panelGroup>
-                                        <h:panelGrid style="text-align: center">
-                                            <p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
-                                        </h:panelGrid>
-                                    </h:panelGroup>
-                                </h:panelGrid>
-                            </div>
-                            <h:panelGrid  columns="3">
-                                <p:outputLabel value="#{appmsg['user_view.user_name']}" styleClass="label_hrm"/>
-                                <p:outputLabel value=":"  styleClass="label_hrm" />
-                                <p:outputLabel value="#{jabatanViewController.selectedJabatan.name}" styleClass="isitext_hrm"/>
-                            </h:panelGrid>
-                            <p:separator/>
-                            <p:commandButton value="#{appmsg['global.yes']}" action="#{jabatanViewController.doDelete()}" update=":jobTitleViewId,:userViewGrowlId" id="yesId" title="#{appmsg['global.yes']}" styleClass="isitext_hrm"
-                                             oncomplete="confirmDialogJobTitle.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                            <p:commandButton value="#{appmsg['global.no']}" oncomplete="confirmDialogJobTitle.hide()" icon="ui-icon-close" title="#{appmsg['global.no']}"  styleClass="isitext_hrm"/>
 
-                        </div>
-                    </h:form>
-                </p:dialog>
 
             </ui:define>
 

@@ -6,9 +6,11 @@
 package com.inkubator.hrm.web.organisation;
 
 import com.inkubator.hrm.entity.Jabatan;
+import com.inkubator.hrm.entity.JabatanSpesifikasi;
 import com.inkubator.hrm.service.JabatanService;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.bean.ManagedBean;
@@ -26,6 +28,7 @@ public class JabatanDetailController extends BaseController {
     private Jabatan selectedJabatan;
     @ManagedProperty(value = "#{jabatanService}")
     private JabatanService jabatanService;
+    private List<JabatanSpesifikasi> listJabatanSpesifikasi;
 
     public Jabatan getSelectedJabatan() {
         return selectedJabatan;
@@ -46,6 +49,7 @@ public class JabatanDetailController extends BaseController {
             super.initialization();
             String userId = FacesUtil.getRequestParameter("execution");
             selectedJabatan = jabatanService.getJabatanByIdWithDetail(Long.parseLong(userId.substring(1)));
+            
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
 
@@ -57,7 +61,7 @@ public class JabatanDetailController extends BaseController {
     }
 
     public String doEdit() {
-        return "/protected/account/user_form.htm?faces-redirect=true&execution=e" + selectedJabatan.getId();
+        return "/protected/organisation/job_title_form.htm?faces-redirect=true&execution=e" + selectedJabatan.getId();
     }
 
     @PreDestroy
@@ -65,4 +69,14 @@ public class JabatanDetailController extends BaseController {
         selectedJabatan = null;
         jabatanService = null;
     }
+
+    public List<JabatanSpesifikasi> getListJabatanSpesifikasi() {
+        return listJabatanSpesifikasi;
+    }
+
+    public void setListJabatanSpesifikasi(List<JabatanSpesifikasi> listJabatanSpesifikasi) {
+        this.listJabatanSpesifikasi = listJabatanSpesifikasi;
+    }
+    
+    
 }

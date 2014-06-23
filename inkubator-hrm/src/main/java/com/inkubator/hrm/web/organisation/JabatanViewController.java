@@ -76,9 +76,13 @@ public class JabatanViewController extends BaseController {
     public String doDetail() {
         return "/protected/organisation/job_title_detil.htm?faces-redirect=true&execution=e" + selectedJabatan.getId();
     }
-    
-    public String doAdd(){
-          return "/protected/organisation/job_title_form.htm?faces-redirect=true";
+
+    public String doAdd() {
+        return "/protected/organisation/job_title_form.htm?faces-redirect=true";
+    }
+
+    public String doEdit() {
+        return "/protected/organisation/job_title_form.htm?faces-redirect=true&execution=e" + selectedJabatan.getId();
     }
 
     public void doDelete() {
@@ -96,7 +100,6 @@ public class JabatanViewController extends BaseController {
         }
     }
 
-   
     @Override
     public void onDialogReturn(SelectEvent event) {
         lazyJabatanDataModel = null;
@@ -135,8 +138,7 @@ public class JabatanViewController extends BaseController {
         this.selectedJabatan = selectedJabatan;
     }
 
-    
-    public String doViewShema(){
-         return "/protected/organisation/job_title_diagram.htm?faces-redirect=true";
+    public String doViewShema() {
+        return "/protected/organisation/job_title_diagram.htm?faces-redirect=true";
     }
 }

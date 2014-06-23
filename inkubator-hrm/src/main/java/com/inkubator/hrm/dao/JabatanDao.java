@@ -26,4 +26,6 @@ public interface JabatanDao extends IDAO<Jabatan> {
     public List<Jabatan> getJabatanByParentCode(String parentCode);
 
     public Jabatan getJabatanByIdWithDetail(Long id);
+
+    public List<Jabatan> getJabatansByLevel(Integer level);
 }
