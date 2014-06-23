@@ -5,7 +5,6 @@
  */
 package com.inkubator.hrm.service.impl;
 
-
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
@@ -261,6 +260,5 @@ public class GolonganJabatanServiceImpl extends IServiceImpl implements Golongan
     public Long getTotalByParam(GolonganJabatanSearchParameter parameter) throws Exception {
         return golJabatanDao.getTotalByParam(parameter);
     }
-
 
 }
