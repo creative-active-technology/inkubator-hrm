@@ -42,6 +42,7 @@ public class LeaveServiceImpl extends IServiceImpl implements LeaveService {
 	}
 
 	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
 	public List<Leave> getAllData() throws Exception {
 		return leaveDao.getAllData();
 	}
