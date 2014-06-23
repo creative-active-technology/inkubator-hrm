@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/dialog_layout.xhtml">
+            <ui:define name="windowTitle">
+
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlCostCenterFormlId" globalOnly="true" showDetail="true"/>
+                <h:form id="formCostCenterId">
+
+                    <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['costcenter.code']}" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{costCenterDetailController.selectedCostCenter.code}"/> </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['costcenter.name']}" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{costCenterDetailController.selectedCostCenter.name}"/> </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['costcenter.level']}" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{costCenterDetailController.selectedCostCenter.level}"/> </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['costcenter.parentId']}" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{costCenterDetailController.selectedCostCenter.costCenter.name}"/> </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{costCenterDetailController.selectedCostCenter.description}"/> </p:column>
+                        </p:row>
+                        <f:facet name="footer">
+                            <p:row>
+                                <p:column colspan="2"><p:outputLabel value="#{appmsg['costcenter.costcenter']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
+                            </p:row>
+                        </f:facet>
+                    </p:panelGrid>
+                    <p:focus context="formCostCenterId" />
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

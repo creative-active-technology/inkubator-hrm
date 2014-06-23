@@ -48,8 +48,8 @@ public class UnitKerjaServiceImpl extends IServiceImpl implements UnitKerjaServi
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getByUnitKerjaName(String name) {
-        return this.unitKerjaDao.getByUnitKerjaCode(name);
+    public Long getByUnitKerjaCode(String code) {
+        return this.unitKerjaDao.getByUnitKerjaCode(code);
     }
 
     @Override

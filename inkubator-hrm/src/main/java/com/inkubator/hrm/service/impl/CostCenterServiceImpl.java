@@ -83,7 +83,11 @@ public class CostCenterServiceImpl extends IServiceImpl implements CostCenterSer
         entity.setCode(entity.getCode());
         entity.setName(entity.getName());
         entity.setBalance(entity.getBalance());
-        entity.setLevel(entity.getLevel());
+        if(entity.getLevel() == 0){
+            entity.setLevel(1);
+        }else{
+            entity.setLevel(entity.getLevel());
+        }
         entity.setDescription(entity.getDescription());
         entity.setCreatedBy(UserInfoUtil.getUserName());
         entity.setCreatedOn(new Date());
@@ -95,20 +99,22 @@ public class CostCenterServiceImpl extends IServiceImpl implements CostCenterSer
     public void update(CostCenter entity) throws Exception {
         long totalDuplicates = costCenterDao.getTotalByCodeAndNotId(entity.getCode(), entity.getId());
         if (totalDuplicates > 0) {
-            throw new BussinessException("department.error_duplicate_department_name");
+            throw new BussinessException("costcenter.error_duplicate_cost_center_code");
         }
         CostCenter costCenterUpdate = this.costCenterDao.getEntiyByPK(entity.getId());
         if(entity.getCostCenter() != null){
-            entity.setCostCenter(costCenterDao.getEntiyByPK(entity.getCostCenter().getId()));
+            costCenterUpdate.setCostCenter(costCenterDao.getEntiyByPK(entity.getCostCenter().getId()));
+        }else{
+            costCenterUpdate.setCostCenter(new CostCenter());
         }
-        entity.setCode(entity.getCode());
-        entity.setName(entity.getName());
-        entity.setBalance(entity.getBalance());
-        entity.setLevel(entity.getLevel());
-        entity.setDescription(entity.getDescription());
-        entity.setUpdatedBy(UserInfoUtil.getUserName());
-        entity.setUpdatedOn(new Date());
-        this.costCenterDao.update(entity);
+        costCenterUpdate.setCode(entity.getCode());
+        costCenterUpdate.setName(entity.getName());
+        costCenterUpdate.setBalance(entity.getBalance());
+        costCenterUpdate.setLevel(entity.getLevel());
+        costCenterUpdate.setDescription(entity.getDescription());
+        costCenterUpdate.setUpdatedBy(UserInfoUtil.getUserName());
+        costCenterUpdate.setUpdatedOn(new Date());
+        this.costCenterDao.update(costCenterUpdate);
     }
 
     @Override
@@ -246,6 +252,18 @@ public class CostCenterServiceImpl extends IServiceImpl implements CostCenterSer
     @Override
     public List<CostCenter> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public CostCenter getCostCenterByIdWithDetail(Long id) throws Exception {
+        CostCenter costCenter = costCenterDao.getCostCenterByIdWithDetail(id);
+        if(costCenter.getCostCenter() != null){
+            costCenter.getCostCenter().getName();
+        }else{
+            costCenter.getName();
+        }               
+        return costCenter;
     }
     
 }

@@ -10,6 +10,7 @@ import com.inkubator.hrm.entity.CostCenter;
 import com.inkubator.hrm.web.search.CostCenterSearchParameter;
 import java.util.List;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -70,5 +71,13 @@ public class CostCenterDaoImpl extends IDAOImpl<CostCenter> implements CostCente
         	criteria.add(Restrictions.like("name", searchParameter.getCode(), MatchMode.ANYWHERE));
         }
         criteria.add(Restrictions.isNotNull("id"));
+    }
+
+    @Override
+    public CostCenter getCostCenterByIdWithDetail(Long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("id", id));
+        criteria.setFetchMode("costCenter", FetchMode.JOIN);
+        return (CostCenter) criteria.uniqueResult();
     }
 }

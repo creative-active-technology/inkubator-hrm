@@ -19,6 +19,6 @@ public interface UnitKerjaService  extends IService<UnitKerja> {
 
     public Long getTotalUnitKerjaByParam(UnitKerjaSearchParameter searchParameter);
 
-    public Long getByUnitKerjaName(String name);
+    public Long getByUnitKerjaCode(String code);
     
 }

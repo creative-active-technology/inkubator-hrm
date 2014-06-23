@@ -202,4 +202,19 @@ public class ApprovalDefinitionServiceImpl extends IServiceImpl implements Appro
         return this.approvalDefinitionDao.getTotalApprovalDefinitionByParam(searchParameter);
     }
 
+    @Override
+    public Long getTotalByCode(String arg0) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Long getTotalByCodeAndNotId(String arg0, Long arg1) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Long getTotalByName(String arg0) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

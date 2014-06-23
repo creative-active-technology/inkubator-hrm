@@ -18,23 +18,23 @@
                 <p:growl id="growlCostCenterFormlId" globalOnly="true" showDetail="true"/>
                 <h:form id="formCostCenterId">
                     <h:panelGrid  columns="2">
-                        <p:graphicImage library="images" name="department_header.png" height="36" width="36"  cache="true"/>
+                        <p:graphicImage library="images" name="cost_center.png" height="36" width="36"  cache="true"/>
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="#{appmsg['department.department_form']}" styleClass="header_big" />
-                                <p:outputLabel value="#{appmsg['department.data_of_department']}" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['costcenter.cost_center_form']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['costcenter.data_cost_center']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
                     <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
                     <h:panelGrid columns="1" style="margin-bottom: 5px;margin-left: 0px">
                         <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
-                        <h:outputLabel value="#{appmsg['department.dialog_department_info']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                        <h:outputLabel value="#{appmsg['costcenter.dialog_cost_center_info']}" styleClass="label_hrm" style="font-weight: normal!important"/>
                     </h:panelGrid> 
                     <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="code" value="#{appmsg['department.code']}" styleClass="label_hrm"/>
+                                <p:outputLabel for="code" value="#{appmsg['costcenter.code']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="code" value=":" styleClass="label_hrm"/>
@@ -51,7 +51,7 @@
                         </p:row>
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="name" value="#{appmsg['department.name']}" styleClass="label_hrm"/>
+                                <p:outputLabel for="name" value="#{appmsg['costcenter.name']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="name" value=":" styleClass="label_hrm"/>
@@ -68,7 +68,7 @@
                         </p:row>
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="level" value="Level" styleClass="label_hrm"/>
+                                <p:outputLabel for="level" value="#{appmsg['costcenter.level']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="level" value=":" styleClass="label_hrm"/>
@@ -93,7 +93,7 @@
                         </p:row>
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="parentId" value="ParentId" styleClass="label_hrm"/>
+                                <p:outputLabel for="parentId" value="#{appmsg['costcenter.parentId']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="parentId" value=":" styleClass="label_hrm"/>
@@ -109,6 +109,24 @@
                         <p:row>
                             <p:column colspan="3">
                                 <p:message for="parentId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="descriptionId" value="#{appmsg['global.description']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="descriptionId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                                <p:inputTextarea id="descriptionId" title="#{appmsg['global.description']}" value="#{costCenterFormController.costCenterModel.description}" 
+                                                 required="false" maxlength="255" styleClass="isitext_hrm" style="width:250px;" />
+
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="descriptionId"/>
                             </p:column>
                         </p:row>
 

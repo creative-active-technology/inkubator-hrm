@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
@@ -40,7 +42,17 @@ public class CostCenterViewController extends BaseController{
     private CostCenterSearchParameter costCenterSearchParameter;
     private LazyDataModel<CostCenter> lazyDataCostCenter;
     private CostCenter selectedCostCenter;
+    List<String> dataIsi2;
 
+    public List<String> getDataIsi2() {
+        return dataIsi2;
+    }
+
+    public void setDataIsi2(List<String> dataIsi2) {
+        this.dataIsi2 = dataIsi2;
+    }
+    
+    
     public CostCenterService getCostCenterService() {
         return costCenterService;
     }
@@ -81,6 +93,7 @@ public class CostCenterViewController extends BaseController{
     public void initialization() {
         super.initialization();
         costCenterSearchParameter = new CostCenterSearchParameter();
+        
     }
     
     public void doSearch() {
@@ -88,11 +101,17 @@ public class CostCenterViewController extends BaseController{
     }
     
     public void doDetail() {
-        try {
-            selectedCostCenter = this.costCenterService.getEntiyByPK(selectedCostCenter.getId());
-        } catch (Exception ex) {
-            LOGGER.error("Error", ex);
-        }
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 400);
+        options.put("contentHeight", 180);
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        List<String> dataIsi = new ArrayList<>();
+        dataIsi.add(String.valueOf(selectedCostCenter.getId()));
+        dataToSend.put("execution", dataIsi);
+        RequestContext.getCurrentInstance().openDialog("cost_center_detail", options, dataToSend);
     }
     
     public void doDelete() {
@@ -116,7 +135,7 @@ public class CostCenterViewController extends BaseController{
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 400);
-        options.put("contentHeight", 280);
+        options.put("contentHeight", 400);
         
 //        options.put("closable", false);
 //        options.put("height", "auto");
@@ -131,7 +150,7 @@ public class CostCenterViewController extends BaseController{
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 400);
-        options.put("contentHeight", 280);
+        options.put("contentHeight", 400);
         Map<String, List<String>> dataToSend = new HashMap<>();
         List<String> dataIsi = new ArrayList<>();
         dataIsi.add(String.valueOf(selectedCostCenter.getId()));

@@ -525,7 +525,12 @@ div.art-logo
     background-size: 80% auto;
     padding-right: 2px;
 }
-
+.img-cost-center
+{
+    background-image:url(../images/cost_center_ico.png)!important;
+    background-size: 80% auto;
+    padding-right: 2px;
+}
 .img-family
 {
     background-image:url(../images/family-icon_ico.png)!important;

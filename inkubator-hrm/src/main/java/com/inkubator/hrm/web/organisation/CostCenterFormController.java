@@ -43,15 +43,7 @@ public class CostCenterFormController extends BaseController{
     private String city; 
     private Map<String, Long> costCenterParent;
     private List<CostCenter> costCenterList = new ArrayList<>();
-    private Integer parentLevel;
 
-    public Integer getBranchLevel() {
-        return parentLevel;
-    }
-
-    public void setBranchLevel(Integer parentLevel) {
-        this.parentLevel = parentLevel;
-    }
 
     public Map<String, Long> getCostCenterParent() {
         return costCenterParent;
@@ -143,13 +135,17 @@ public class CostCenterFormController extends BaseController{
             if (param != null) {
 
                 isEdit = Boolean.TRUE;
-                isParentDisabled = Boolean.FALSE;
+                
                 CostCenter costCenter = costCentreService.getEntiyByPK(Long.parseLong(param));
+                isParentDisabled = costCenter.getLevel() <= 1 ? true : false;
                 costCenterModel.setId(costCenter.getId());
                 costCenterModel.setCode(costCenter.getCode());
                 costCenterModel.setName(costCenter.getName());
                 costCenterModel.setLevel(costCenter.getLevel());
+                System.out.println(costCenter.getDescription()+"YEUHHHHHHHHHHHHHHHHHHHHHHHHHHH");
+                costCenterModel.setDescription(costCenter.getDescription());
                 costCenterModel.setParentId(Long.valueOf(String.valueOf(costCenter.getCostCenter().getId())));
+
                 //get level
                 Integer level = costCenterModel.getLevel();
                 costCenterParent = new HashMap<String, Long>();
@@ -201,6 +197,8 @@ public class CostCenterFormController extends BaseController{
         costCenter.setCode(costCenterModel.getCode());
         costCenter.setName(costCenterModel.getName());
         costCenter.setLevel(costCenterModel.getLevel());
+        costCenter.setDescription(costCenterModel.getDescription());
+        
         return costCenter;
     }
     
@@ -212,7 +210,6 @@ public class CostCenterFormController extends BaseController{
         selectedCostCenter = null;
         isEdit = null;
         isParentDisabled = null;
-        parentLevel = null;
 
     }
     
