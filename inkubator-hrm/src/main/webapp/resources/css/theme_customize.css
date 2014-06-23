@@ -192,12 +192,23 @@ and open the template in the editor.
 }
 
 .ui-selectonemenu-panel .ui-selectonemenu-filter {
-    width: 100%!important;
+    /*width: 100%!important;*/
     padding-right: 30px
 }
 .ui-selectonemenu-panel .ui-selectonemenu-filter-container .ui-icon {
     position: absolute;
+    top: 13px;
+    right: 0px;
+}
+.midle_combo_box .ui-selectonemenu-panel .ui-selectonemenu-filter{
+    width: 60%!important;
+    padding-right: 30px 
+}
+
+.midle_combo_box .ui-selectonemenu-panel .ui-selectonemenu-filter-container .ui-icon{
+    position: absolute;
     top: 10px;
     right: -30px
 }
+
 

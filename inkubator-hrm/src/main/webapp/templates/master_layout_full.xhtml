@@ -32,7 +32,7 @@
                 <br/>
                 <div align="center">
                     <h:panelGrid columns="1">
-                        <p:graphicImage library="images" name="session_wait.gif" style="width: 64px;height: 64px"/>
+                        <p:graphicImage library="images" name="session_wait.gif" style="width: 64px;height: 64px" />
                         <p:button href="${request.contextPath}/logout.htm" value="#{appmsg['global.ok']}" icon="ui-icon-power" style="width: 64px;margin-top: 5px"
                                   title="#{appmsg['global.ok']}"/>
                     </h:panelGrid>
@@ -54,7 +54,7 @@
         <p:dialog widgetVar="dialogUserInfo" modal="true" resizable="false" hideEffect="puff" showEffect="clip" onShow="statusDialog.hide();handleViewTabUserInfo(0);" 
                   appendTo="@(body)" header="#{appmsg['master_layout.user_configuration']}" dynamic="true" width="500" >
             <h:panelGrid columns="2" style="margin-top: 10px;margin-left: 6px">
-                <p:graphicImage library="images" name="user.png" width="44" height="44" cache="true" />
+                <p:graphicImage library="images" name="user.png" width="44" height="44" cache="true"  />
                 <p:outputLabel value="#{appmsg['master_layout.user_information']}" styleClass="header_big" />
             </h:panelGrid>   
             <p:separator/>

@@ -26,4 +26,6 @@ public interface JabatanService extends IService<Jabatan> {
     public List<Jabatan> getJabatanByParentCode(String parentCode) throws Exception;
 
     public Jabatan getJabatanByIdWithDetail(Long id) throws Exception;
+    
+    public List<Jabatan>getJabatansByLevel(Integer level)throws Exception;
 }

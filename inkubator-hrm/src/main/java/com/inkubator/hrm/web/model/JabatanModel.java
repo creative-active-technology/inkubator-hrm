@@ -22,6 +22,7 @@ public class JabatanModel implements Serializable {
     private Long departementId;
     private Long posBiayaId;
     private String tujuanJabatan;
+    private Integer levelJabatan;
 
     public Long getId() {
         return id;
@@ -93,6 +94,14 @@ public class JabatanModel implements Serializable {
 
     public void setTujuanJabatan(String tujuanJabatan) {
         this.tujuanJabatan = tujuanJabatan;
+    }
+
+    public Integer getLevelJabatan() {
+        return levelJabatan;
+    }
+
+    public void setLevelJabatan(Integer levelJabatan) {
+        this.levelJabatan = levelJabatan;
     }
     
     

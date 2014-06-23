@@ -5,11 +5,19 @@
  */
 package com.inkubator.hrm.service.impl;
 
+import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.dao.CostCenterDao;
+import com.inkubator.hrm.dao.DepartmentDao;
+import com.inkubator.hrm.dao.GolonganJabatanDao;
 import com.inkubator.hrm.dao.JabatanDao;
+import com.inkubator.hrm.dao.UnitKerjaDao;
 import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.service.JabatanService;
 import com.inkubator.hrm.web.search.JabatanSearchParameter;
+import com.inkubator.securitycore.util.UserInfoUtil;
+import java.util.Date;
 import java.util.List;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +37,14 @@ public class JabatanServiceImpl extends IServiceImpl implements JabatanService {
 
     @Autowired
     private JabatanDao jabatanDao;
+    @Autowired
+    private CostCenterDao costCenterDao;
+    @Autowired
+    private UnitKerjaDao unitKerjaDao;
+    @Autowired
+    private DepartmentDao departmentDao;
+    @Autowired
+    private GolonganJabatanDao golonganJabatanDao;
 
     @Override
     public Jabatan getEntiyByPK(String id) throws Exception {
@@ -47,13 +63,49 @@ public class JabatanServiceImpl extends IServiceImpl implements JabatanService {
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(Jabatan entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        long totalDuplicate = this.jabatanDao.getTotalByCode(entity.getCode());
+        if (totalDuplicate > 0) {
+            throw new BussinessException("jabatan.jabatan_duplicate_code");
+        }
+        entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+        entity.setCostCenter(this.costCenterDao.getEntiyByPK(entity.getCostCenter().getId()));
+        entity.setDepartment(this.departmentDao.getEntiyByPK(entity.getDepartment().getId()));
+        entity.setGolonganJabatan(this.golonganJabatanDao.getEntiyByPK(entity.getGolonganJabatan().getId()));
+        if (entity.getJabatan() != null) {
+            entity.setJabatan(this.jabatanDao.getEntiyByPK(entity.getJabatan().getId()));
+        }
+        entity.setUnitKerja(this.unitKerjaDao.getEntiyByPK(entity.getUnitKerja().getId()));
+        entity.setCreatedBy(UserInfoUtil.getUserName());
+        entity.setCreatedOn(new Date());
+        this.jabatanDao.save(entity);
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(Jabatan entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        long totalDuplicate = this.jabatanDao.getTotalByCodeAndNotId(entity.getCode(), entity.getId());
+        if (totalDuplicate > 0) {
+            throw new BussinessException("jabatan.jabatan_duplicate_code");
+        }
+        Jabatan jabatan = this.jabatanDao.getEntiyByPK(entity.getId());
+        jabatan.setCode(entity.getCode());
+        jabatan.setCostCenter(this.costCenterDao.getEntiyByPK(entity.getCostCenter().getId()));
+        jabatan.setDepartment(this.departmentDao.getEntiyByPK(entity.getDepartment().getId()));
+        jabatan.setGolonganJabatan(this.golonganJabatanDao.getEntiyByPK(entity.getGolonganJabatan().getId()));
+        if (jabatan.getJabatan() != null) {
+            jabatan.setJabatan(this.jabatanDao.getEntiyByPK(entity.getJabatan().getId()));
+        }
+
+        jabatan.setUnitKerja(this.unitKerjaDao.getEntiyByPK(entity.getUnitKerja().getId()));
+        jabatan.setLevelJabatan(entity.getLevelJabatan());
+        jabatan.setName(entity.getName());
+        jabatan.setTujuanJabatan(entity.getTujuanJabatan());
+        jabatan.setUpdatedBy(UserInfoUtil.getUserName());
+        jabatan.setUpdatedOn(new Date());
+        this.jabatanDao.update(jabatan);
+
     }
 
     @Override
@@ -124,7 +176,6 @@ public class JabatanServiceImpl extends IServiceImpl implements JabatanService {
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void delete(Jabatan entity) throws Exception {
-        System.out.println(" hereh ekskeksk");
         this.jabatanDao.delete(entity);
     }
 
@@ -154,8 +205,9 @@ public class JabatanServiceImpl extends IServiceImpl implements JabatanService {
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public List<Jabatan> getAllData() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return jabatanDao.getAllData();
     }
 
     @Override
@@ -220,9 +272,15 @@ public class JabatanServiceImpl extends IServiceImpl implements JabatanService {
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
     public Jabatan getJabatanByIdWithDetail(Long id) throws Exception {
-       Jabatan jabatan=jabatanDao.getJabatanByIdWithDetail(id);
-       jabatan.getGolonganJabatan().getPangkat().getPangkatName();
-       return jabatan;
+        Jabatan jabatan = jabatanDao.getJabatanByIdWithDetail(id);
+        jabatan.getGolonganJabatan().getPangkat().getPangkatName();
+        return jabatan;
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<Jabatan> getJabatansByLevel(Integer level) throws Exception {
+        return this.jabatanDao.getJabatansByLevel(level);
     }
 
 }

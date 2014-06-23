@@ -21,4 +21,5 @@ public interface LoginHistoryDao extends IDAO<LoginHistory> {
             int firstResult, int maxResults, Order order);
 
     public Long getTotalLoginHistoryByParam(LoginHistorySearchParameter searchParameter);
+ 
 }

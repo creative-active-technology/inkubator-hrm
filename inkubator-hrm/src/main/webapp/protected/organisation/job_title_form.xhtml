@@ -38,7 +38,8 @@
                                     <p:outputLabel  value="Kode Jabatan"  for="codeId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:inputText value="#{groupWorkingModel.code}" styleClass="isitext_hrm" label="Kode Kelompok Kerja"
+                                    <p:inputText value="#{jabatanFormController.jabatanModel.kodeJabatan}" maxlength="12"
+                                                 styleClass="isitext_hrm" label="Kode Kelompok Kerja"
                                                  style="width: 270px" required="true" id="codeId" onkeyup="this.value = this.value.toUpperCase();" />
                                     <p:message for="codeId"/>
                                 </p:column>
@@ -48,7 +49,8 @@
                                     <p:outputLabel  value="Nama Jabatan"  for="namaJabatanId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:inputText value="#{groupWorkingModel.name}" styleClass="isitext_hrm" label="Nama Kelompok Kerja"
+                                    <p:inputText value="#{jabatanFormController.jabatanModel.namaJabatan}" maxlength="45"
+                                                 styleClass="isitext_hrm" label="Nama Kelompok Kerja"
                                                  style="width:270px" required="true" id="namaJabatanId" />
                                     <p:message for="namaJabatanId"/>
                                 </p:column>
@@ -59,12 +61,10 @@
                                     <p:outputLabel  value="Gol. Jabatan"  for="golJabatanId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneMenu  style="margin-right: 3px;width: 155px" id="golJabatanId" >
+                                    <p:selectOneMenu  style="margin-right: 3px;width: 200px" id="golJabatanId" filter="true" required="true"
+                                                      value="#{jabatanFormController.jabatanModel.golonganJabatanId}">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemLabel="ksksksks" />
-                                        <f:selectItem itemLabel="ksksksks" />
-                                        <f:selectItem itemLabel="ksksksks" />
-                                        <f:selectItem itemLabel="ksksksks" />
+                                        <f:selectItems value="#{jabatanFormController.golJabatans}" />
                                     </p:selectOneMenu>
                                     <p:message for="golJabatanId"/>
                                 </p:column>
@@ -75,12 +75,10 @@
                                     <p:outputLabel  value="Unit Kerja"  for="unitKerjaId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneMenu  style="margin-right: 3px;width: 155px" id="unitKerjaId" >
+                                    <p:selectOneMenu  style="margin-right: 3px;width: 200px" id="unitKerjaId" filter="true" required="true"
+                                                      value="#{jabatanFormController.jabatanModel.unitKerjaId}" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemLabel="ksksksks" />
-                                        <f:selectItem itemLabel="ksksksks" />
-                                        <f:selectItem itemLabel="ksksksks" />
-                                        <f:selectItem itemLabel="ksksksks" />
+                                        <f:selectItems value="#{jabatanFormController.untiKerjas}" />
                                     </p:selectOneMenu>
                                     <p:message for="unitKerjaId"/>
                                 </p:column>
@@ -91,28 +89,22 @@
                                     <p:outputLabel  value="Departement"  for="departementId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneMenu  style="margin-right: 3px;width: 155px" id="departementId" >
+                                    <p:selectOneMenu id="departementId" value="#{jabatanFormController.jabatanModel.departementId}" required="true"
+                                                     style="width: 200px" filter="true" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemLabel="ksksksks" />
-                                        <f:selectItem itemLabel="ksksksks" />
-                                        <f:selectItem itemLabel="ksksksks" />
-                                        <f:selectItem itemLabel="ksksksks" />
+                                        <f:selectItems value="#{jabatanFormController.departments}" />
                                     </p:selectOneMenu>
                                     <p:message for="departementId"/>
                                 </p:column>
-
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="Pos Biaya"  for="posBiayaId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneMenu  style="margin-right: 3px;width: 155px" id="posBiayaId" >
+                                    <p:selectOneMenu  id="posBiayaId" style="width: 200px" value="#{jabatanFormController.jabatanModel.posBiayaId}" filter="true" required="true" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemLabel="ksksksks" />
-                                        <f:selectItem itemLabel="ksksksks" />
-                                        <f:selectItem itemLabel="ksksksks" />
-                                        <f:selectItem itemLabel="ksksksks" />
+                                        <f:selectItems value="#{jabatanFormController.posBiayas}" />
                                     </p:selectOneMenu>
                                     <p:message for="posBiayaId"/>
                                 </p:column>
@@ -123,8 +115,10 @@
                                     <p:outputLabel  value="Level Jabatan"  for="levelJabatanId" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:spinner id="levelJabatanId" value="#{overTimeFormController.overTimeModel.otRounding}" size="2"
-                                               min="1" max="100" stepFactor="1"/>
+                                    <p:spinner id="levelJabatanId" value="#{jabatanFormController.jabatanModel.levelJabatan}" size="2" required="true"
+                                               min="1" max="100" stepFactor="1" >
+                                        <p:ajax update="atasanId" process="@this" listener="#{jabatanFormController.doChangeLevel()}"/>
+                                    </p:spinner>
                                     <p:message for="levelJabatanId"/>
                                 </p:column>
                             </p:row>
@@ -134,12 +128,10 @@
                                     <p:outputLabel  value="Jabatan Atasan"  for="atasanId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneMenu  style="margin-right: 3px;width: 155px" id="atasanId" >
+                                    <p:selectOneMenu style="margin-right: 3px;width: 200px"  value="#{jabatanFormController.jabatanModel.jabatanAtasanId}" id="atasanId" required="true"
+                                                     disabled="#{jabatanFormController.isDisable}" filter="true" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemLabel="ksksksks" />
-                                        <f:selectItem itemLabel="ksksksks" />
-                                        <f:selectItem itemLabel="ksksksks" />
-                                        <f:selectItem itemLabel="ksksksks" />
+                                        <f:selectItems value="#{jabatanFormController.jabatanAtasans}" />
                                     </p:selectOneMenu>
                                     <p:message for="atasanId"/>
                                 </p:column>
@@ -150,10 +142,10 @@
                                     <p:outputLabel  value="Tujuan Jabatan"  for="tujuanJabatanId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:inputTextarea  rows="5" cols="37" counter="counter" maxlength="500" id="tujuanJabatanId"
-                                                     style="width: 270px; height: 80px;" counterTemplate="#{appmsg['global.remaining']}" autoResize="true" 
-                                                     label="#{appmsg['role_view.role_description']}" title="#{appmsg['role_view.role_description']}" />
-                                    <!--<p:message for="tujuanJabatanId"/>-->
+                                    <p:inputTextarea  rows="5" cols="37" counter="counter" maxlength="500" id="tujuanJabatanId" value="#{jabatanFormController.jabatanModel.tujuanJabatan}" required="false"
+                                                      style="width: 270px; height: 60px;" counterTemplate="#{appmsg['global.remaining']}" autoResize="true" 
+                                                      label="#{appmsg['role_view.role_description']}" title="#{appmsg['role_view.role_description']}" />
+                                    <p:message for="tujuanJabatanId"/>
                                 </p:column>
                             </p:row>
                             <p:row>
@@ -168,15 +160,15 @@
                         <p:focus context="jobTitleFormId" />
                         <p:separator style="margin-top: 20px;margin-bottom: 10px"/>
                         <div style="margin-bottom: 5px">
-                            <p:commandButton value="Lanjut" ajax="true" 
-                                             action="next" styleClass="isitext_hrm" 
-                                             style="margin-right: 5px" label="Lanjut"
-                                             icon="ui-icon-arrow-1-e" title="Lanjut"/>
-                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="jobTitleFormId"
-                                             icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px">  
-                                <p:resetInput target="formWorkingGroupId" />  
+                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" action="#{jabatanFormController.doSave()}"
+                                             styleClass="isitext_hrm" 
+                                             style="margin-right: 5px" label="#{appmsg['global.save']}" update="jobTitleFormId"
+                                             icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="jobTitleFormId" action="#{jabatanFormController.doReset()}"
+                                             icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px" >  
+                                <p:resetInput target="jobTitleFormId" />  
                             </p:commandButton>
-                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="close_back" immediate="true"
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}"  immediate="true" action="#{jabatanFormController.doBack()}"
                                              styleClass="label_button"/>
                         </div>
 
