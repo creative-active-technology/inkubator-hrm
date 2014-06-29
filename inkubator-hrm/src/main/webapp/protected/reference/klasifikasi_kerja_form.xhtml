@@ -48,6 +48,11 @@
                             </p:column>
                         </p:row>
                         <p:row>
+                            <p:column colspan="3">
+                                <p:message for="codeId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
                             <p:column style="width: 29%">
                                 <p:outputLabel for="nameId" value="#{appmsg['klasifikasiKerja.klasifikasiKerja_name']}" styleClass="label_hrm"/>
                             </p:column>
@@ -61,6 +66,11 @@
                             </p:column>
                         </p:row>
                         <p:row>
+                            <p:column colspan="3">
+                                <p:message for="nameId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
                             <p:column style="width: 29%">
                                 <p:outputLabel for="descriptionId" value="#{appmsg['global.description']}" styleClass="label_hrm"/>
                             </p:column>
@@ -69,8 +79,19 @@
                             </p:column>
                             <p:column  style="width: 70%">
                                 <p:inputTextarea id="descriptionId" title="#{appmsg['global.description']}" value="#{klasifikasiKerjaFormController.klasifikasiKerjaModel.description}" 
-                                                 required="false" maxlength="255" styleClass="isitext_hrm" style="width:250px;" />
+                                                 required="false" maxlength="500" counter="counter" counterTemplate="#{appmsg['global.remaining']}" styleClass="isitext_hrm" style="width:250px;" />
 
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%;" >
+                                <p:outputLabel  for="counter" styleClass="label_hrm" />
+                            </p:column>
+                            <p:column style="width: 1%;" >
+                                <p:outputLabel  for="counter" styleClass="label_hrm" />
+                            </p:column>
+                            <p:column style="width: 70%">
+                                <h:outputText id="counter" />
                             </p:column>
                         </p:row>
                         <p:row>

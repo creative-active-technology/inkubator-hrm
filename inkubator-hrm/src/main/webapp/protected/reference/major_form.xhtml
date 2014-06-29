@@ -60,8 +60,19 @@
                             </p:column>
                             <p:column  style="width: 70%">
                                 <p:inputTextarea id="descriptionId" title="#{appmsg['global.description']}" value="#{majorFormController.majorModel.description}" 
-                                                 required="false" maxlength="255" styleClass="isitext_hrm" style="width:250px;" />
+                                                 required="false" maxlength="500" counter="counter" counterTemplate="#{appmsg['global.remaining']}" styleClass="isitext_hrm" style="width:250px;" />
 
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%;" >
+                                <p:outputLabel  for="counter" styleClass="label_hrm" />
+                            </p:column>
+                            <p:column style="width: 1%;" >
+                                <p:outputLabel  for="counter" styleClass="label_hrm" />
+                            </p:column>
+                            <p:column style="width: 70%">
+                                <h:outputText id="counter" />
                             </p:column>
                         </p:row>
                         <p:row>

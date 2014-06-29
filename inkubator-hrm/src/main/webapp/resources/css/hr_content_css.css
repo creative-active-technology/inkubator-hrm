@@ -635,6 +635,34 @@ div.art-logo
     padding-right: 2px;
 }
 
+.img-country
+{
+    background-image:url(../images/country_ico.png)!important;
+    background-size: 80% auto;
+    padding-right: 2px;
+}
+
+.img-city
+{
+    background-image:url(../images/city_ico.png)!important;
+    background-size: 80% auto;
+    padding-right: 2px;
+}
+
+.img-province
+{
+    background-image:url(../images/province_ico.png)!important;
+    background-size: 80% auto;
+    padding-right: 2px;
+}
+
+.img-institutionEducation
+{
+    background-image:url(../images/institutionEducation_ico.png)!important;
+    background-size: 80% auto;
+    padding-right: 2px;
+}
+
 .img-education-level
 {
     background-image:url(../images/graduated_ico.png)!important;

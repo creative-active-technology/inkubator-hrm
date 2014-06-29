@@ -13,6 +13,7 @@
         <link rel="stylesheet" href="${request.contextPath}/resources/css/theme_customize.css" type="text/css" media="screen" />
         <link rel="shortcut icon" href="${request.contextPath}/logo.ico" type="image/x-icon" />
         <title><ui:insert name="windowTitle"/></title>
+        <ui:insert name="jsInclude"/>
     </h:head>
     <h:body>
         <h:inputHidden value="#{homeController.bahasa}" />

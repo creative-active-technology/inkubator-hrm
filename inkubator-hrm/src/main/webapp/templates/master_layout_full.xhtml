@@ -13,6 +13,7 @@
         <link rel="stylesheet" href="${request.contextPath}/resources/css/table_custome.css" type="text/css" media="screen" />
         <link rel="shortcut icon" href="${request.contextPath}/hr.ico" type="image/x-icon" />
         <title><ui:insert name="windowTitle"/></title>
+        <ui:insert name="jsInclude"/>
     </h:head>
     <h:body>
         <p:socket onMessage="handleLogin" channel="/notificationsLogin" />
@@ -270,6 +271,10 @@
                                                 <p:menuitem value="#{appmsg['occupationType.occupationType']}" icon="img-occupationType" style="font-size: 12px !important;color: #003366" title="#{appmsg['occupationType.occupationType']}" url="/protected/reference/occupation_type_view.htm" />
                                                 <p:menuitem value="#{appmsg['nationality.nationality']}" icon="img-nationality" style="font-size: 12px !important;color: #003366" title="#{appmsg['nationality.nationality']}" url="/protected/reference/nationality_view.htm" />
                                                 <p:menuitem value="#{appmsg['klasifikasiKerja.klasifikasiKerja']}" icon="img-klasifikasiKerja" style="font-size: 12px !important;color: #003366" title="#{appmsg['klasifikasiKerja.klasifikasiKerja']}" url="/protected/reference/klasifikasi_kerja_view.htm" />
+                                                <p:menuitem value="#{appmsg['country.country']}" icon="img-country" style="font-size: 12px !important;color: #003366" title="#{appmsg['country.country']}" url="/protected/reference/country_view.htm" />
+                                                <p:menuitem value="#{appmsg['province.province']}" icon="img-province" style="font-size: 12px !important;color: #003366" title="#{appmsg['province.province']}" url="/protected/reference/province_view.htm" />
+                                                <p:menuitem value="#{appmsg['city.city']}" icon="img-city" style="font-size: 12px !important;color: #003366" title="#{appmsg['city.city']}" url="/protected/reference/city_view.htm" />
+                                                <p:menuitem value="#{appmsg['institutionEducation.institutionEducation']}" icon="img-institutionEducation" style="font-size: 12px !important;color: #003366" title="#{appmsg['institutionEducation.institutionEducation']}" url="/protected/reference/institution_education_view.htm" />
                                             </p:submenu>          
                                             <p:submenu label="#{appmsg['menu.working_time_setting']}"  styleClass="menu_child" >
                                                 <p:menuitem value="#{appmsg['menu.work_period']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.work_period']}" url="/protected/working_time/periode_view.htm" /> 
@@ -363,6 +368,7 @@
                 </div>
             </div>
         </div>
+        
         <script type="text/javascript">
             function handleViewTabUserInfo(idx) {
                 if (idx === 0) {

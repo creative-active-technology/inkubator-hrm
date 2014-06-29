@@ -129,7 +129,7 @@ public class KlasifikasiKerjaViewController extends BaseController {
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 450);
-        options.put("contentHeight", 350);
+        options.put("contentHeight", 375);
         RequestContext.getCurrentInstance().openDialog("klasifikasi_kerja_form", options, params);
     }
 
