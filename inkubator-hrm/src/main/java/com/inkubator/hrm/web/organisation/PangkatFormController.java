@@ -105,7 +105,7 @@ public class PangkatFormController extends BaseController {
         }
         pangkat.setPangkatCode(model.getPangkatCode());
         pangkat.setPangkatName(model.getPangkatName());
-        pangkat.setLevel(model.getLevel());
+//        pangkat.setLevel(model.getLevel());
         return pangkat;
     }
     
@@ -113,6 +113,6 @@ public class PangkatFormController extends BaseController {
     	model.setId(pangkat.getId());
     	model.setPangkatCode(pangkat.getPangkatCode());
     	model.setPangkatName(pangkat.getPangkatName());
-    	model.setLevel(pangkat.getLevel());
+//    	model.setLevel(pangkat.getLevel());
     }
 }

@@ -31,7 +31,7 @@ public class Pangkat  implements java.io.Serializable {
      private Integer version;
      private String pangkatCode;
      private String pangkatName;
-     private Integer level;
+//     private Integer level;
      private String createdBy;
      private Date createdOn;
      private String updatedBy;
@@ -49,7 +49,7 @@ public class Pangkat  implements java.io.Serializable {
        this.id = id;
        this.pangkatCode = pangkatCode;
        this.pangkatName = pangkatName;
-       this.level = level;
+//       this.level = level;
        this.createdBy = createdBy;
        this.createdOn = createdOn;
        this.updatedBy = updatedBy;
@@ -100,14 +100,14 @@ public class Pangkat  implements java.io.Serializable {
     }
 
     
-    @Column(name="level")
-    public Integer getLevel() {
-        return this.level;
-    }
-    
-    public void setLevel(Integer level) {
-        this.level = level;
-    }
+//    @Column(name="level")
+//    public Integer getLevel() {
+//        return this.level;
+//    }
+//    
+//    public void setLevel(Integer level) {
+//        this.level = level;
+//    }
 
     
     @Column(name="created_by", length=45)

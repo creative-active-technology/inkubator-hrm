@@ -40,7 +40,7 @@ public class PangkatLazyDataModel extends LazyDataModel<Pangkat> implements Seri
 	        if (sortField != null) {
 	            orderable = (sortOrder == SortOrder.ASCENDING) ? Order.asc(sortField) : Order.desc(sortField);
 	        } else {
-	        	orderable = Order.asc("level");
+	        	orderable = Order.asc("pangkatName");
 	        }
 	        
 	        pangkats = pangkatService.getByParam(parameter, first, pageSize, orderable);

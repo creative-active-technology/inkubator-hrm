@@ -257,7 +257,7 @@ public class PangkatServiceImpl extends IServiceImpl implements PangkatService {
 		Pangkat pangkat = pangkatDao.getEntiyByPK(p.getId());
 		pangkat.setPangkatCode(p.getPangkatCode());
 		pangkat.setPangkatName(p.getPangkatName());
-		pangkat.setLevel(p.getLevel());
+//		pangkat.setLevel(p.getLevel());
 	    pangkat.setUpdatedBy(UserInfoUtil.getUserName());
 	    pangkat.setUpdatedOn(new Date());
 		pangkatDao.update(pangkat);

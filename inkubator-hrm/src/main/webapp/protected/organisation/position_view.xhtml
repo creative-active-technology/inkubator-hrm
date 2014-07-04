@@ -66,12 +66,12 @@
                             <f:facet name="header">  
                                 <h:outputText value="#{appmsg['position.list_of_position']}"/>
                             </f:facet>
-                            <p:column sortBy="level" style="text-align: center;width: 5%">
+<!--                            <p:column sortBy="level" style="text-align: center;width: 5%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.level']}"/>
                                 </f:facet>
                                 <h:outputLabel value="#{pangkatData.level}" />
-                            </p:column>
+                            </p:column>-->
                             <p:column sortBy="pangkatCode"  style="width: 35%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['position.position_code']}"/>
@@ -145,10 +145,10 @@
                 <p:dialog widgetVar="dialogDetailPosition" header="#{appmsg['position.detail_dialog']}" styleClass="header_small_no_bold" width="500" modal="true" resizable="false" hideEffect="puff" 
                           showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogDetailId" style="width:100%;margin:5px;">
-                        <p:row>
+<!--                        <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['global.level']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:70%;"><p:outputLabel value="#{pangkatViewController.selectedPangkat.level}" styleClass="label_hrm"/></p:column>
-                        </p:row>
+                        </p:row>-->
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['position.position_code']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:70%;"><p:outputLabel value="#{pangkatViewController.selectedPangkat.pangkatCode}" styleClass="label_hrm"/></p:column>
