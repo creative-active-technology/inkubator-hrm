@@ -1,4 +1,4 @@
-package com.inkubator.hrm.web.reference;
+package com.inkubator.hrm.web.organisation;
 
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;

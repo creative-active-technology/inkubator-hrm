@@ -37,10 +37,8 @@ public class CostCenterFormController extends BaseController{
     @ManagedProperty(value = "#{costCenterService}")
     private CostCenterService costCentreService;
     private Boolean isParentDisabled;
-    private CostCenter selectedCostCenter;
     private CostCenterModel costCenterModel;
     private Boolean isEdit;
-    private String city; 
     private Map<String, Long> costCenterParent;
     private List<CostCenter> costCenterList = new ArrayList<>();
 
@@ -59,15 +57,6 @@ public class CostCenterFormController extends BaseController{
 
     public void setCostCenterList(List<CostCenter> costCenterList) {
         this.costCenterList = costCenterList;
-    }
-    
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
     }
 
     public Map<String, Long> getCostCenter() {
@@ -94,14 +83,6 @@ public class CostCenterFormController extends BaseController{
         this.costCentreService = costCentreService;
     }
 
-    public CostCenter getSelectedCostCenter() {
-        return selectedCostCenter;
-    }
-
-    public void setSelectedCostCenter(CostCenter selectedCostCenter) {
-        this.selectedCostCenter = selectedCostCenter;
-    }
-
     public CostCenterModel getCostCenterModel() {
         return costCenterModel;
     }
@@ -126,38 +107,45 @@ public class CostCenterFormController extends BaseController{
         String param = FacesUtil.getRequestParameter("param");
         costCenterModel = new CostCenterModel();
         isParentDisabled=Boolean.TRUE;
-        try {
-            costCenterList = costCentreService.getAllData();
-        } catch (Exception ex) {
-            Logger.getLogger(CostCenterFormController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        costCenterParent = new HashMap<String, Long>();
+//        try {
+//            costCenterList = costCentreService.getAllData();
+//        } catch (Exception ex) {
+//            Logger.getLogger(CostCenterFormController.class.getName()).log(Level.SEVERE, null, ex);
+//        }
         try { 
             if (param != null) {
 
                 isEdit = Boolean.TRUE;
-                
                 CostCenter costCenter = costCentreService.getEntiyByPK(Long.parseLong(param));
-                isParentDisabled = costCenter.getLevel() <= 1 ? true : false;
+                costCenterList = costCentreService.getAllDataWhichIsNotItself(costCenter.getId());
+//                isParentDisabled = costCenter.getLevel() <= 1 ? true : false;
                 costCenterModel.setId(costCenter.getId());
                 costCenterModel.setCode(costCenter.getCode());
                 costCenterModel.setName(costCenter.getName());
-                costCenterModel.setLevel(costCenter.getLevel());
-                System.out.println(costCenter.getDescription()+"YEUHHHHHHHHHHHHHHHHHHHHHHHHHHH");
+//                costCenterModel.setLevel(costCenter.getLevel());
                 costCenterModel.setDescription(costCenter.getDescription());
-                costCenterModel.setParentId(Long.valueOf(String.valueOf(costCenter.getCostCenter().getId())));
+                if(costCenter.getCostCenter() != null){
+                    costCenterModel.setParentId(costCenter.getCostCenter().getId());
+                }
+                
 
                 //get level
-                Integer level = costCenterModel.getLevel();
-                costCenterParent = new HashMap<String, Long>();
+//                Integer level = costCenterModel.getLevel();
+                
 
                 //kalo level 3, tampilkan level 2, dst
                 for (CostCenter costCenterListUpdate : costCenterList) {
-                    if((level-1) == costCenterListUpdate.getLevel()){
-                        costCenterParent.put(costCenterListUpdate.getName(), costCenterListUpdate.getId());
-                    }
+                    costCenterParent.put(costCenterListUpdate.getName(), costCenterListUpdate.getId());
+                        
+//                    }
                 }
             } else {
+                costCenterList = costCentreService.getAllData();
                 isEdit = Boolean.FALSE;
+                for (CostCenter costCenter : costCenterList) {
+                        costCenterParent.put(costCenter.getName(), costCenter.getId());
+                } 
             }
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
@@ -196,7 +184,7 @@ public class CostCenterFormController extends BaseController{
         }
         costCenter.setCode(costCenterModel.getCode());
         costCenter.setName(costCenterModel.getName());
-        costCenter.setLevel(costCenterModel.getLevel());
+//        costCenter.setLevel(costCenterModel.getLevel());
         costCenter.setDescription(costCenterModel.getDescription());
         
         return costCenter;
@@ -207,7 +195,6 @@ public class CostCenterFormController extends BaseController{
         costCenterParent = null;
         costCenterModel = null;
         costCentreService = null;
-        selectedCostCenter = null;
         isEdit = null;
         isParentDisabled = null;
 
@@ -215,17 +202,17 @@ public class CostCenterFormController extends BaseController{
     
     public void onChangeManageBreakTime() throws Exception {
         //kalo get level = 1 disable parent idnya
-        isParentDisabled = costCenterModel.getLevel() <= 1 ? true : false;
-        System.out.println(isParentDisabled + " = " + costCenterModel.getLevel());
+//        isParentDisabled = costCenterModel.getLevel() <= 1 ? true : false;
+//        System.out.println(isParentDisabled + " = " + costCenterModel.getLevel());
         //get level
-        Integer level = costCenterModel.getLevel();
+//        Integer level = costCenterModel.getLevel();
         costCenterParent = new HashMap<String, Long>();
         
         //kalo level 3, tampilkan level 2, dst
         for (CostCenter costCenter : costCenterList) {
-            if((level-1) == costCenter.getLevel()){
+//            if((level-1) == costCenter.getLevel()){
                 costCenterParent.put(costCenter.getName(), costCenter.getId());
-            }
+//            }
         } 
     }
 }

@@ -66,7 +66,7 @@
                                 <p:message for="name"/>
                             </p:column>
                         </p:row>
-                        <p:row>
+<!--                        <p:row>
                             <p:column style="width: 40%">
                                 <p:outputLabel for="level" value="#{appmsg['costcenter.level']}" styleClass="label_hrm"/>
                             </p:column>
@@ -85,12 +85,12 @@
                                     	        update="parentId" />
                                     </p:selectOneMenu>
                             </p:column>
-                        </p:row>
-                        <p:row>
+                        </p:row>-->
+<!--                        <p:row>
                             <p:column colspan="3">
                                 <p:message for="level"/>
                             </p:column>
-                        </p:row>
+                        </p:row>-->
                         <p:row>
                             <p:column style="width: 40%">
                                 <p:outputLabel for="parentId" value="#{appmsg['costcenter.parentId']}" styleClass="label_hrm"/>
@@ -99,8 +99,7 @@
                                 <h:outputLabel for="parentId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <p:selectOneMenu id="parentId" value="#{costCenterFormController.costCenterModel.parentId}" style="width: 150px;margin-right: 3px" 
-                                                 disabled="#{costCenterFormController.isParentDisabled}" required="#{!costCenterFormController.isParentDisabled}" >
+                                <p:selectOneMenu id="parentId" value="#{costCenterFormController.costCenterModel.parentId}" style="width: 150px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{costCenterFormController.costCenterParent}"/>
                                     </p:selectOneMenu>

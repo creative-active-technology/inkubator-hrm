@@ -22,4 +22,6 @@ public interface CostCenterService extends IService<CostCenter> {
     public Long getByCostCenterName(String name);
     
     public CostCenter getCostCenterByIdWithDetail(Long id) throws Exception;
+    
+    public List<CostCenter> getAllDataWhichIsNotItself(Long id) throws Exception;
 }
