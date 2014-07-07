@@ -36,6 +36,10 @@
                             <p:column><p:outputLabel value="#{costCenterDetailController.selectedCostCenter.costCenter.name}"/> </p:column>
                         </p:row>
                         <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['costcenter.balance']}" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{costCenterDetailController.selectedCostCenter.balance}"><f:convertNumber pattern="###,###" type="currency"/></p:outputLabel> </p:column>
+                        </p:row>
+                        <p:row>
                             <p:column style="color: #003366"><p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{costCenterDetailController.selectedCostCenter.description}"/> </p:column>
                         </p:row>
