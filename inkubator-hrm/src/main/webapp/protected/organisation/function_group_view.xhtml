@@ -140,7 +140,7 @@
                         <h:panelGrid id="panelDialogConfirmId"  columns="3">
                             <p:outputLabel value="#{appmsg['functiongroup.function_group_name']}"  style="font-weight: bold"/>
                             <p:outputLabel value=":"  style="font-weight: bold"/>
-                            <p:outputLabel value="#{golonganJabatanViewController.selectedGolJabatan.name}" styleClass="label_hrm"/>
+                            <p:outputLabel value="#{golonganJabatanViewController.selectedGolJabatan.code}" styleClass="label_hrm"/>
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{golonganJabatanViewController.doDelete()}" update="formFunctionGroupViewId,:growlFunctionGroupViewlId"
@@ -152,16 +152,8 @@
                           showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogDetailId" style="width:100%;margin:5px;">
                         <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['global.level']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;"><p:outputLabel value="#{golonganJabatanViewController.selectedGolJabatan.level}" styleClass="label_hrm"/></p:column>
-                        </p:row>
-                        <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['functiongroup.function_group_code']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:70%;"><p:outputLabel value="#{golonganJabatanViewController.selectedGolJabatan.code}" styleClass="label_hrm"/></p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['functiongroup.function_group_name']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;"><p:outputLabel value="#{golonganJabatanViewController.selectedGolJabatan.name}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['global.overtime']}" styleClass="label_hrm"/></p:column>

@@ -1,4 +1,4 @@
-package com.inkubator.hrm.web.reference;
+package com.inkubator.hrm.web.organisation;
 
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.EmployeeType;
