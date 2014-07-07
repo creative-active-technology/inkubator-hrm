@@ -8,6 +8,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -32,6 +34,7 @@ public class UnitKerja implements java.io.Serializable {
     private Date createdOn;
     private String updatedBy;
     private Date updatedOn;
+    private City city;
     private Set<Jabatan> jabatans = new HashSet<Jabatan>(0);
 
     public UnitKerja() {
@@ -41,7 +44,7 @@ public class UnitKerja implements java.io.Serializable {
         this.id = id;
     }
 
-    public UnitKerja(long id, String code, String name, String location, String createdBy, Date createdOn, String updatedBy, Date updatedOn) {
+    public UnitKerja(long id, String code, String name, String location, String createdBy, Date createdOn, String updatedBy, Date updatedOn,City city) {
         this.id = id;
         this.code = code;
         this.name = name;
@@ -50,6 +53,7 @@ public class UnitKerja implements java.io.Serializable {
         this.createdOn = createdOn;
         this.updatedBy = updatedBy;
         this.updatedOn = updatedOn;
+        this.city = city;
     }
 
     @Id
@@ -147,4 +151,13 @@ public class UnitKerja implements java.io.Serializable {
         this.jabatans = jabatans;
     }
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "city_id")
+    public City getCity() {
+        return city;
+    }
+    
+    public void setCity(City city) {
+        this.city = city;
+    }
 }

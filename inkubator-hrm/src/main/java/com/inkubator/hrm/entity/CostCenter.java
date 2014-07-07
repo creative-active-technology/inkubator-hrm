@@ -62,7 +62,7 @@ public class CostCenter  implements java.io.Serializable {
        this.updatedOn = updatedOn;
        this.description = description;
        this.balance = balance;
-       this.level = level;
+//       this.level = level;
        this.jabatans = jabatans;
        this.costCenters = costCenters;
     }
@@ -180,14 +180,14 @@ public class CostCenter  implements java.io.Serializable {
     }
 
     
-    @Column(name="level")
-    public Integer getLevel() {
-        return this.level;
-    }
-    
-    public void setLevel(Integer level) {
-        this.level = level;
-    }
+//    @Column(name="level")
+//    public Integer getLevel() {
+//        return this.level;
+//    }
+//    
+//    public void setLevel(Integer level) {
+//        this.level = level;
+//    }
 
 @OneToMany(fetch=FetchType.LAZY, mappedBy="costCenter")
     public Set<Jabatan> getJabatans() {

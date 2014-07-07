@@ -10,6 +10,7 @@ import com.inkubator.hrm.entity.UnitKerja;
 import com.inkubator.hrm.web.search.UnitKerjaSearchParameter;
 import java.util.List;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -73,5 +74,24 @@ public class UnitKerjaDaoImpl extends IDAOImpl<UnitKerja> implements UnitKerjaDa
         	criteria.add(Restrictions.like("code", searchParameter.getLocation(), MatchMode.ANYWHERE));
         }
         criteria.add(Restrictions.isNotNull("id"));
+    }
+
+    @Override
+    public List<UnitKerja> getAllDataWithCity(UnitKerjaSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        doSearchUnitKerjaByParam(searchParameter, criteria);
+        criteria.setFetchMode("city", FetchMode.JOIN);
+        criteria.addOrder(order);
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResults);
+        return criteria.list();
+    }
+
+    @Override
+    public UnitKerja getEntityByPkWithCity(Long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.ne("id", id));
+        criteria.setFetchMode("city", FetchMode.JOIN);
+        return (UnitKerja) criteria.uniqueResult();
     }
 }

@@ -4,15 +4,18 @@
  */
 package com.inkubator.hrm.web.model;
 
+import java.io.Serializable;
+
 /**
  *
  * @author deniarianto
  */
-public class UnitKerjaModel {
+public class UnitKerjaModel implements Serializable{
     private Long id;
     private String code;
     private String name;
     private String location;
+    private Long cityId;
 
     public Long getId() {
         return id;
@@ -45,6 +48,14 @@ public class UnitKerjaModel {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public Long getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(Long cityId) {
+        this.cityId = cityId;
     }
     
     
