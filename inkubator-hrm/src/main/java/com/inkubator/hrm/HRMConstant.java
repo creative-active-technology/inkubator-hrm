@@ -69,4 +69,12 @@ public class HRMConstant {
     public static final String LEAVE_END_OF_PERIOD_MONTH = "0";
     public static final String LEAVE_END_OF_PERIOD_REST_OF_LEAVE = "1";
     /* END */
+
+    /* 
+     * Constant for JOB Deskripsi Module */
+    public static final Integer JOB_DESCRIPTION_PRIMER = 1;
+    public static final Integer JOB_DESCRIPTION_SEKUNDER = 2;
+    public static final Integer JOB_DESCRIPTION_DAY = 1;
+    public static final Integer JOB_DESCRIPTION_MONTH = 2;
+    /* END */
 }
