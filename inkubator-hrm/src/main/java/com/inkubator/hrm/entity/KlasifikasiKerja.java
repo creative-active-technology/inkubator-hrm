@@ -1,11 +1,15 @@
 package com.inkubator.hrm.entity;
-// Generated Jul 7, 2014 11:26:33 AM by Hibernate Tools 3.6.0
+// Generated Jul 7, 2014 11:47:53 AM by Hibernate Tools 3.6.0
 
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -32,6 +36,7 @@ public class KlasifikasiKerja  implements java.io.Serializable {
      private String updatedBy;
      private Date updatedOn;
      private String description;
+     private Set<KlasifikasiKerjaJabatan> klasifikasiKerjaJabatans = new HashSet<KlasifikasiKerjaJabatan>(0);
 
     public KlasifikasiKerja() {
     }
@@ -40,7 +45,7 @@ public class KlasifikasiKerja  implements java.io.Serializable {
     public KlasifikasiKerja(long id) {
         this.id = id;
     }
-    public KlasifikasiKerja(long id, String createdBy, Date createdOn, String code, String name, String updatedBy, Date updatedOn, String description) {
+    public KlasifikasiKerja(long id, String createdBy, Date createdOn, String code, String name, String updatedBy, Date updatedOn, String description, Set<KlasifikasiKerjaJabatan> klasifikasiKerjaJabatans) {
        this.id = id;
        this.createdBy = createdBy;
        this.createdOn = createdOn;
@@ -49,6 +54,7 @@ public class KlasifikasiKerja  implements java.io.Serializable {
        this.updatedBy = updatedBy;
        this.updatedOn = updatedOn;
        this.description = description;
+       this.klasifikasiKerjaJabatans = klasifikasiKerjaJabatans;
     }
    
      @Id 
@@ -141,6 +147,15 @@ public class KlasifikasiKerja  implements java.io.Serializable {
     
     public void setDescription(String description) {
         this.description = description;
+    }
+
+@OneToMany(fetch=FetchType.LAZY, mappedBy="klasifikasiKerja")
+    public Set<KlasifikasiKerjaJabatan> getKlasifikasiKerjaJabatans() {
+        return this.klasifikasiKerjaJabatans;
+    }
+    
+    public void setKlasifikasiKerjaJabatans(Set<KlasifikasiKerjaJabatan> klasifikasiKerjaJabatans) {
+        this.klasifikasiKerjaJabatans = klasifikasiKerjaJabatans;
     }
 
 
