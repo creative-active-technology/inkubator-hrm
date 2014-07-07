@@ -83,11 +83,11 @@ public class CostCenterServiceImpl extends IServiceImpl implements CostCenterSer
         entity.setCode(entity.getCode());
         entity.setName(entity.getName());
         entity.setBalance(entity.getBalance());
-        if(entity.getLevel() == 0){
-            entity.setLevel(1);
-        }else{
-            entity.setLevel(entity.getLevel());
-        }
+//        if(entity.getLevel() == 0){
+//            entity.setLevel(1);
+//        }else{
+//            entity.setLevel(entity.getLevel());
+//        }
         entity.setDescription(entity.getDescription());
         entity.setCreatedBy(UserInfoUtil.getUserName());
         entity.setCreatedOn(new Date());
@@ -110,7 +110,7 @@ public class CostCenterServiceImpl extends IServiceImpl implements CostCenterSer
         costCenterUpdate.setCode(entity.getCode());
         costCenterUpdate.setName(entity.getName());
         costCenterUpdate.setBalance(entity.getBalance());
-        costCenterUpdate.setLevel(entity.getLevel());
+//        costCenterUpdate.setLevel(entity.getLevel());
         costCenterUpdate.setDescription(entity.getDescription());
         costCenterUpdate.setUpdatedBy(UserInfoUtil.getUserName());
         costCenterUpdate.setUpdatedOn(new Date());
@@ -264,6 +264,12 @@ public class CostCenterServiceImpl extends IServiceImpl implements CostCenterSer
             costCenter.getName();
         }               
         return costCenter;
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ,propagation = Propagation.SUPPORTS, timeout = 30)
+    public List<CostCenter> getAllDataWhichIsNotItself(Long id) throws Exception {
+        return costCenterDao.getAllDataWhichIsNotItself(id);
     }
     
 }

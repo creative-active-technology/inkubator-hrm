@@ -34,7 +34,7 @@ public class CostCenterDaoImpl extends IDAOImpl<CostCenter> implements CostCente
     @Override
     public List<CostCenter> getByParam(CostCenterSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        doSearchDepartmentByParam(searchParameter, criteria);
+        doSearchCostCenterByParam(searchParameter, criteria);
         criteria.addOrder(order);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
@@ -44,7 +44,7 @@ public class CostCenterDaoImpl extends IDAOImpl<CostCenter> implements CostCente
     @Override
     public Long getTotalCostCenterByParam(CostCenterSearchParameter searchParameter) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        doSearchDepartmentByParam(searchParameter, criteria);
+        doSearchCostCenterByParam(searchParameter, criteria);
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
@@ -63,7 +63,7 @@ public class CostCenterDaoImpl extends IDAOImpl<CostCenter> implements CostCente
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
     
-    private void doSearchDepartmentByParam(CostCenterSearchParameter searchParameter, Criteria criteria) {
+    private void doSearchCostCenterByParam(CostCenterSearchParameter searchParameter, Criteria criteria) {
         if (searchParameter.getName()!=null) {
         	criteria.add(Restrictions.like("code", searchParameter.getName(), MatchMode.ANYWHERE));
         } 
@@ -79,5 +79,12 @@ public class CostCenterDaoImpl extends IDAOImpl<CostCenter> implements CostCente
         criteria.add(Restrictions.eq("id", id));
         criteria.setFetchMode("costCenter", FetchMode.JOIN);
         return (CostCenter) criteria.uniqueResult();
+    }
+
+    @Override
+    public List<CostCenter> getAllDataWhichIsNotItself(Long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.ne("id", id));
+        return criteria.list();
     }
 }

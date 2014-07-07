@@ -17,7 +17,7 @@ public class CostCenterModel implements Serializable{
     private String code;
     private String name;
     private String description;
-    private Integer level;
+//    private Integer level;
     private BigDecimal balance;
     private Long parentId;
     private Boolean isManageParentId;
@@ -31,7 +31,6 @@ public class CostCenterModel implements Serializable{
     }
 
     public String getCode() {
-        System.out.println("masuk kode cost center");
         return code;
     }
 
@@ -55,13 +54,13 @@ public class CostCenterModel implements Serializable{
         this.description = description;
     }
 
-    public Integer getLevel() {
-        return level;
-    }
-
-    public void setLevel(Integer level) {
-        this.level = level;
-    }
+//    public Integer getLevel() {
+//        return level;
+//    }
+//
+//    public void setLevel(Integer level) {
+//        this.level = level;
+//    }
 
     public BigDecimal getBalance() {
         return balance;

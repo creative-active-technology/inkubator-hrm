@@ -24,4 +24,6 @@ public interface CostCenterDao extends IDAO<CostCenter>{
     public Long getTotalByCodeAndNotId(String code, Long id);
     
     public CostCenter getCostCenterByIdWithDetail(Long id);
+    
+    public List<CostCenter> getAllDataWhichIsNotItself(Long id);
 }
