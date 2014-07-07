@@ -176,7 +176,7 @@
                         </p:panelGrid>
                         <p:separator style="margin-top: 10px;"/>
                         <p:commandButton value="#{appmsg['global.edit']}" update="formChangePasswordTab,:mainGrowl" ajax="true" title="#{appmsg['global.edit']}" action="#{userInfoController.doUpdatePassword()}" oncomplete="handleDoUpdateUserInfo(args)"
-										 style="margin-top: 10px;width: 100%" icon="ui-icon-locked" styleClass="label_button"/>
+                                         style="margin-top: 10px;width: 100%" icon="ui-icon-locked" styleClass="label_button"/>
                     </h:form>
                 </p:tab>
             </p:tabView>
@@ -247,7 +247,8 @@
                                         <p:menuitem value="" url="/protected/home.htm"  title="Back to Home" style="font-size: 12px !important;font-weight: normal!important;color: white" icon="ui-icon-home" />  
                                         <p:submenu label="Account"  styleClass="menu" icon="img-user-account">
                                             <p:menuitem value="#{appmsg['menu.user_view']}"  style="color: #003366" title="#{appmsg['menu.user_view']}" url="/protected/account/user_view.htm"  icon="img-user"/> 
-                                            <p:menuitem value="#{appmsg['menu.role_view']}"  style="color: #003366" title="#{appmsg['menu.role_view']}" url="/protected/account/role_view.htm" icon="img-user-role" /> 
+                                            <p:menuitem value="#{appmsg['menu.role_view']}"  style="color: #003366" title="#{appmsg['menu.role_view']}" url="/protected/account/role_view.htm" icon="img-user-role" />
+                                            <p:menuitem value="#{appmsg['hrm_menu.menu']}"  style="color: #003366" title="#{appmsg['hrm_menu.menu']}" url="/protected/account/menu_view.htm" icon="img-user-menu" /> 
                                             <p:separator/>
                                             <p:menuitem value="#{appmsg['passwordhistory.password_config']}"  style="color: #003366" title="Password Setting" url="/protected/account/password_configuration.htm" icon="img-password-config"/>  
                                             <p:menuitem value="#{appmsg['passwordhistory.password_history']}"  style="color: #003366" title="Create Offering Price" url="/protected/account/password_history.htm" icon="img-password-history" /> 
@@ -283,6 +284,7 @@
                                                 <p:menuitem value="#{appmsg['functiongroup.function_group']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['functiongroup.function_group']}" url="/protected/organisation/function_group_view.htm" icon="img-function-group"/> 
                                                 <p:menuitem value="#{appmsg['klasifikasiKerja.klasifikasiKerja']}" icon="img-klasifikasiKerja" style="font-size: 12px !important;color: #003366" title="#{appmsg['klasifikasiKerja.klasifikasiKerja']}" url="/protected/reference/klasifikasi_kerja_view.htm" /> 
                                                 <p:menuitem value="#{appmsg['jabatan.jabatan']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['jabatan.jabatan']}" url="/protected/organisation/job_title_view.htm" icon="img-job-title"/>
+                                                <p:menuitem value="Jabatan Deskripsi" style="font-size: 12px !important;color: #003366" title="Jabatan Deskripsi" url="/protected/organisation/job_description_view.htm" icon="img-job-descriptions"/>
                                             </p:submenu> 
                                             <p:submenu label="#{appmsg['menu.working_time_setting']}"  styleClass="menu_child" >
                                                 <p:menuitem value="#{appmsg['menu.work_period']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.work_period']}" url="/protected/working_time/periode_view.htm" /> 
@@ -368,7 +370,7 @@
                 </div>
             </div>
         </div>
-        
+
         <script type="text/javascript">
             function handleViewTabUserInfo(idx) {
                 if (idx === 0) {
