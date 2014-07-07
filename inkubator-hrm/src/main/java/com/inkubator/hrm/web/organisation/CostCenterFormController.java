@@ -42,6 +42,7 @@ public class CostCenterFormController extends BaseController{
     private Map<String, Long> costCenterParent;
     private List<CostCenter> costCenterList = new ArrayList<>();
 
+    
 
     public Map<String, Long> getCostCenterParent() {
         return costCenterParent;
@@ -125,10 +126,15 @@ public class CostCenterFormController extends BaseController{
                 costCenterModel.setName(costCenter.getName());
 //                costCenterModel.setLevel(costCenter.getLevel());
                 costCenterModel.setDescription(costCenter.getDescription());
+                costCenterModel.setBalance(costCenter.getBalance());
                 if(costCenter.getCostCenter() != null){
                     costCenterModel.setParentId(costCenter.getCostCenter().getId());
                 }
-                
+                if(costCenter.getCostCenter() == null){
+                    isParentDisabled = Boolean.TRUE;
+                }else{
+                    isParentDisabled = Boolean.FALSE;
+                }
 
                 //get level
 //                Integer level = costCenterModel.getLevel();
@@ -143,6 +149,7 @@ public class CostCenterFormController extends BaseController{
             } else {
                 costCenterList = costCentreService.getAllData();
                 isEdit = Boolean.FALSE;
+                isParentDisabled = Boolean.FALSE;
                 for (CostCenter costCenter : costCenterList) {
                         costCenterParent.put(costCenter.getName(), costCenter.getId());
                 } 
@@ -186,6 +193,7 @@ public class CostCenterFormController extends BaseController{
         costCenter.setName(costCenterModel.getName());
 //        costCenter.setLevel(costCenterModel.getLevel());
         costCenter.setDescription(costCenterModel.getDescription());
+        costCenter.setBalance(costCenterModel.getBalance());
         
         return costCenter;
     }
