@@ -1,0 +1,129 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+				Home
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlMenuFormlId" globalOnly="true" showDetail="true"/>                
+                <h:form id="formMenuFormId">
+                	<p:focus context="formMenuFormId"/>
+                	<div id="box_bg" style="margin: 10px">
+	                    <h:panelGrid  columns="2">
+	                        <p:graphicImage library="images" name="menu.png" height="36" width="36" />
+	                        <h:panelGroup layout="block">
+	                            <h:panelGrid>
+	                                <p:outputLabel value="#{appmsg['hrm_menu.menu']}" styleClass="header_big" />
+	                                <p:outputLabel value="#{appmsg['hrm_menu.menu_data_from_application']}" styleClass="header_small_no_bold" />
+	                            </h:panelGrid>
+	                        </h:panelGroup>
+	                    </h:panelGrid>
+	                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+	                    <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px">
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="nameId" value="#{appmsg['hrm_menu.menu_name']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:inputText id="nameId" title="#{appmsg['hrm_menu.menu_name']}" value="#{menuFormController.model.name}" 
+	                                    		 required="true" maxlength="45" styleClass="isitext_hrm" style="width:290px;" />
+	                                <p:message for="nameId"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="urlId" value="#{appmsg['hrm_menu.url_name']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:inputText id="urlId" title="#{appmsg['hrm_menu.url_name']}" value="#{menuFormController.model.urlName}" 
+	                                    		 maxlength="45" styleClass="isitext_hrm" style="width:290px;" />
+	                                <p:message for="urlId"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="iconId" value="#{appmsg['hrm_menu.icon_name']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:inputText id="iconId" title="#{appmsg['hrm_menu.icon_name']}" value="#{menuFormController.model.iconName}" 
+	                                    		 required="true" maxlength="45" styleClass="isitext_hrm" style="width:290px;" />
+	                                <p:message for="iconId"/>
+	                            </p:column>
+	                        </p:row> 	                        
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="levelId" value="#{appmsg['hrm_menu.menu_level']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:spinner id="levelId" value="#{menuFormController.model.menuLevel}" size="2" required="true"
+                                               min="1" max="100" stepFactor="1" >
+                                        <p:ajax update="parentId" process="@this" listener="#{menuFormController.doChangeLevel()}"/>
+                                    </p:spinner>
+	                                <p:message for="levelId"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="parentId" value="#{appmsg['hrm_menu.icon_name']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:selectOneMenu id="parentId" required="true" style="margin-right: 3px;width: 200px" value="#{menuFormController.model.parentMenuId}"
+                                                      disabled="#{menuFormController.isDisableParent}" filter="true" >
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{menuFormController.model.listParentMenu}" var="menu" itemLabel="#{menu.name}" itemValue="#{menu.id}" />
+                                    </p:selectOneMenu>
+	                                <p:message for="parentId"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="menuStyleId" value="#{appmsg['hrm_menu.menu_style']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:inputText id="menuStyleId" title="#{appmsg['hrm_menu.menu_style']}" value="#{menuFormController.model.menuStyle}" 
+	                                    		 maxlength="45" styleClass="isitext_hrm" style="width:290px;" />
+	                                <p:message for="menuStyleId"/>
+	                            </p:column>
+	                        </p:row> 
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="menuStyleClassId" value="#{appmsg['hrm_menu.menu_style_class']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:inputText id="menuStyleClassId" title="#{appmsg['hrm_menu.menu_style_class']}" value="#{menuFormController.model.menuStyleClass}" 
+	                                    		 maxlength="45" styleClass="isitext_hrm" style="width:290px;" />
+	                                <p:message for="menuStyleClassId"/>
+	                            </p:column>
+	                        </p:row>   	                           
+	                 	</p:panelGrid>	                    
+	                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+	                    <div style="margin-bottom: 5px">
+	                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formMenuFormId,:growlMenuFormlId"
+	                                         action="#{menuFormController.doSave()}" styleClass="isitext_hrm"
+	                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
+	                                         icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+	                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" action="#{menuFormController.doReset()}" update="formMenuFormId"
+                                                 icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px">  
+	                            <p:resetInput target="formMenuFormId" />  
+	                        </p:commandButton>
+	                        <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{menuFormController.doBack()}" immediate="true"
+	                                      	 styleClass="label_button"/>
+	                    </div>
+                    </div>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+
