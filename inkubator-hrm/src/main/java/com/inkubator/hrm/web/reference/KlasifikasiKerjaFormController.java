@@ -42,8 +42,8 @@ public class KlasifikasiKerjaFormController extends BaseController {
                 KlasifikasiKerja klasifikasiKerja = klasifikasiKerjaService.getEntiyByPK(Long.parseLong(param));
                 if (klasifikasiKerja != null) {
                     klasifikasiKerjaModel.setId(klasifikasiKerja.getId());
-                    klasifikasiKerjaModel.setKlasifikasiKerjaCode(klasifikasiKerja.getKlasifikasiKerjaCode());
-                    klasifikasiKerjaModel.setKlasifikasiKerjaName(klasifikasiKerja.getKlasifikasiKerjaName());
+                    klasifikasiKerjaModel.setKlasifikasiKerjaCode(klasifikasiKerja.getCode());
+                    klasifikasiKerjaModel.setKlasifikasiKerjaName(klasifikasiKerja.getName());
                     klasifikasiKerjaModel.setDescription(klasifikasiKerja.getDescription());
                     isUpdate = Boolean.TRUE;
                 }
@@ -104,8 +104,8 @@ public class KlasifikasiKerjaFormController extends BaseController {
         if (klasifikasiKerjaModel.getId() != null) {
             klasifikasiKerja.setId(klasifikasiKerjaModel.getId());
         }
-        klasifikasiKerja.setKlasifikasiKerjaCode(klasifikasiKerjaModel.getKlasifikasiKerjaCode());
-        klasifikasiKerja.setKlasifikasiKerjaName(klasifikasiKerjaModel.getKlasifikasiKerjaName());
+        klasifikasiKerja.setCode(klasifikasiKerjaModel.getKlasifikasiKerjaCode());
+        klasifikasiKerja.setName(klasifikasiKerjaModel.getKlasifikasiKerjaName());
         klasifikasiKerja.setDescription(klasifikasiKerjaModel.getDescription());
         return klasifikasiKerja;
     }

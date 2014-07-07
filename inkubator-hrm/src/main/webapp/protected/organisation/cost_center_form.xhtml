@@ -99,7 +99,7 @@
                                 <h:outputLabel for="parentId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <p:selectOneMenu id="parentId" value="#{costCenterFormController.costCenterModel.parentId}" style="width: 150px;margin-right: 3px" >
+                                <p:selectOneMenu id="parentId" value="#{costCenterFormController.costCenterModel.parentId}" style="width: 150px;margin-right: 3px" disabled="#{costCenterFormController.isParentDisabled}" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{costCenterFormController.costCenterParent}"/>
                                     </p:selectOneMenu>
@@ -111,6 +111,23 @@
                             </p:column>
                         </p:row>
                         <p:row>
+                            <p:column style="width: 40%">
+                                <p:outputLabel for="balance" value="#{appmsg['costcenter.balance']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="balance" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                                <p:inputText id="balance"  value="#{costCenterFormController.costCenterModel.balance}"
+                                             required="true"  maxlength="45" styleClass="isitext_hrm" style="width:210px;" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="balance"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
                             <p:column style="width: 29%">
                                 <p:outputLabel for="descriptionId" value="#{appmsg['global.description']}" styleClass="label_hrm"/>
                             </p:column>
@@ -119,13 +136,19 @@
                             </p:column>
                             <p:column  style="width: 70%">
                                 <p:inputTextarea id="descriptionId" title="#{appmsg['global.description']}" value="#{costCenterFormController.costCenterModel.description}" 
-                                                 required="false" maxlength="255" styleClass="isitext_hrm" style="width:250px;" />
+                                                 required="false" counter="counter" maxlength="500" styleClass="isitext_hrm" style="width:210px;" />
 
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column colspan="3">
-                                <p:message for="descriptionId"/>
+                            <p:column style="width: 180%;" >
+                                <p:outputLabel  for="descriptionId" styleClass="label_hrm" />
+                            </p:column>
+                            <p:column style="width: 180%;" >
+                                <p:outputLabel  for="descriptionId" styleClass="label_hrm" />
+                            </p:column>
+                            <p:column style="width: 80%">
+                                <h:outputText id="counter" />
                             </p:column>
                         </p:row>
 

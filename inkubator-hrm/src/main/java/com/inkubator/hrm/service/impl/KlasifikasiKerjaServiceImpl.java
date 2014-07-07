@@ -196,7 +196,7 @@ public class KlasifikasiKerjaServiceImpl extends IServiceImpl implements Klasifi
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(KlasifikasiKerja klasifikasiKerja) throws Exception {
         // check duplicate name
-        long totalDuplicates = klasifikasiKerjaDao.getTotalByCode(klasifikasiKerja.getKlasifikasiKerjaCode());
+        long totalDuplicates = klasifikasiKerjaDao.getTotalByCode(klasifikasiKerja.getCode());
         if (totalDuplicates > 0) {
             throw new BussinessException("klasifikasiKerja.error_duplicate_klasifikasiKerja_code");
         }
@@ -235,14 +235,14 @@ public class KlasifikasiKerjaServiceImpl extends IServiceImpl implements Klasifi
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(KlasifikasiKerja b) throws Exception {
         // check duplicate name
-        long totalDuplicates = klasifikasiKerjaDao.getTotalByCodeAndNotId(b.getKlasifikasiKerjaCode(), b.getId());
+        long totalDuplicates = klasifikasiKerjaDao.getTotalByCodeAndNotId(b.getCode(), b.getId());
         if (totalDuplicates > 0) {
             throw new BussinessException("klasifikasiKerja.error_duplicate_klasifikasiKerja_code");
         }
 
         KlasifikasiKerja klasifikasiKerja = klasifikasiKerjaDao.getEntiyByPK(b.getId());
-        klasifikasiKerja.setKlasifikasiKerjaCode(b.getKlasifikasiKerjaCode());
-        klasifikasiKerja.setKlasifikasiKerjaName(b.getKlasifikasiKerjaName());
+        klasifikasiKerja.setCode(b.getCode());
+        klasifikasiKerja.setName(b.getName());
         klasifikasiKerja.setDescription(b.getDescription());
         klasifikasiKerja.setUpdatedBy(UserInfoUtil.getUserName());
         klasifikasiKerja.setUpdatedOn(new Date());
