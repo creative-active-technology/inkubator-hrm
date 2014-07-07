@@ -5,7 +5,6 @@ import com.inkubator.hrm.dao.KlasifikasiKerjaDao;
 import com.inkubator.hrm.entity.KlasifikasiKerja;
 import com.inkubator.hrm.web.search.KlasifikasiKerjaSearchParameter;
 import java.util.List;
-import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
@@ -46,11 +45,11 @@ public class KlasifikasiKerjaDaoImpl extends IDAOImpl<KlasifikasiKerja> implemen
 
     private void doSearchKlasifikasiKerjaByParam(KlasifikasiKerjaSearchParameter parameter, Criteria criteria) {
         if (parameter.getKlasifikasiKerjaCode() != null) {
-            criteria.add(Restrictions.like("klasifikasiKerjaCode", parameter.getKlasifikasiKerjaCode(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("code", parameter.getKlasifikasiKerjaCode(), MatchMode.ANYWHERE));
         }
         
         if (parameter.getKlasifikasiKerjaName()!= null) {
-            criteria.add(Restrictions.like("klasifikasiKerjaName", parameter.getKlasifikasiKerjaName(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("name", parameter.getKlasifikasiKerjaName(), MatchMode.ANYWHERE));
         }
         criteria.add(Restrictions.isNotNull("id"));
     }
@@ -58,14 +57,14 @@ public class KlasifikasiKerjaDaoImpl extends IDAOImpl<KlasifikasiKerja> implemen
     @Override
     public Long getTotalByCode(String code) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.eq("klasifikasiKerjaCode", code));
+        criteria.add(Restrictions.eq("code", code));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
     @Override
     public Long getTotalByCodeAndNotId(String code, Long id) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.eq("klasifikasiKerjaCode", code));
+        criteria.add(Restrictions.eq("code", code));
         criteria.add(Restrictions.ne("id", id));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
