@@ -112,14 +112,14 @@
                           
                             <p:column headerText="#{appmsg['global.action']}" style="width: 250px;text-align: center" exportable="false">
                                 <p:commandButton  icon="ui-icon-document" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" value="Add Jobs Deskripsi"
-                                                  action="#{jabatanViewController.doDetail()}" style="font-size: 10px!important" >                        
-                                    <f:setPropertyActionListener value="#{jabatanDeskripsiModel}" target="#{jabatanViewController.selectedJabatan}" />
+                                                  action="#{jabatanDeskripsiViewController.doAdd()}" style="font-size: 10px!important" >                        
+                                    <f:setPropertyActionListener value="#{jabatanDeskripsiModel}" target="#{jabatanDeskripsiViewController.selectedJabatan}" />
                                 </p:commandButton>
                                 - 
                                 
                                 <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" value="Edit Jobs Deskripsi"
-                                                  action="#{jabatanViewController.doEdit()}" >
-                                    <f:setPropertyActionListener value="#{jabatanDeskripsiModel}" target="#{jabatanDeskripsiViewController.selectedJabatanDeskripsi}" />
+                                                  action="#{jabatanDeskripsiViewController.doEdit()}" >
+                                    <f:setPropertyActionListener value="#{jabatanDeskripsiModel}" target="#{jabatanDeskripsiViewController.selectedJabatan}" />
 
                                 </p:commandButton> 
                             </p:column>                                        

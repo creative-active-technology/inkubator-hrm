@@ -283,4 +283,12 @@ public class JabatanServiceImpl extends IServiceImpl implements JabatanService {
         return this.jabatanDao.getJabatansByLevel(level);
     }
 
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Jabatan getByIdWithJobDeskripsi(long id) throws Exception {
+        Jabatan jabatan = jabatanDao.getByIdWithJobDeskripsi(id);
+        jabatan.getGolonganJabatan().getPangkat().getPangkatName();
+        return jabatan;
+    }
+
 }

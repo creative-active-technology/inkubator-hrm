@@ -76,7 +76,7 @@ public class JabatanDeskripsiViewController extends BaseController {
     }
 
     public String doAdd() {
-        return "/protected/organisation/job_title_form.htm?faces-redirect=true";
+      return "/protected/organisation/job_descriptions_add.htm?faces-redirect=true&execution=e" + selectedJabatan.getId();
     }
 
     public String doEdit() {

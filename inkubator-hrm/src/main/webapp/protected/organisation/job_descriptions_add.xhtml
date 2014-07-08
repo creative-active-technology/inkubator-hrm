@@ -1,0 +1,172 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Role View
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg" style="margin: 10px">
+                    <!--<p:panel style="margin: 10px" >-->
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="job_descriptions.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="Jobs Deskripsi" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['jabtan_view.header2']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator/>
+                    <p:growl id="userViewGrowlId" globalOnly="true" showDetail="true" />
+                    <h:form id="jobTitleViewId">
+                        <p:panelGrid style="width: 100%;margin-top: 20px;margin-bottom: 15px" styleClass="grid_border3">
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Kode Jabatan" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:outputLabel  value="#{jabatanDeskripsInputController.selectedJabatan.code}" />
+                                </p:column>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important">
+                                    <p:outputLabel  value="Nama Jabatan" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:outputLabel  value="#{jabatanDeskripsInputController.selectedJabatan.name}" />
+                                </p:column>
+
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Jabatan Atasan" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:outputLabel  value="#{jabatanDeskripsInputController.selectedJabatan.jabatan.name}" />
+                                </p:column>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important">
+                                    <p:outputLabel  value="Nama Departement" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:outputLabel  value="#{jabatanDeskripsInputController.selectedJabatan.department.departmentName}" />
+                                </p:column>
+
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Nama Pos Biaya" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:outputLabel  value="#{jabatanDeskripsInputController.selectedJabatan.costCenter.name}" />
+                                </p:column>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important">
+                                    <p:outputLabel  value="Nama Unit Kerja" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:outputLabel  value="#{jabatanDeskripsInputController.selectedJabatan.unitKerja.name}" />
+                                </p:column>
+
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Golongan Jabatan" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:outputLabel  value="#{jabatanDeskripsInputController.selectedJabatan.golonganJabatan.code}" />
+                                    <p:outputLabel  value="-" />
+                                    <p:outputLabel  value="#{jabatanDeskripsInputController.selectedJabatan.golonganJabatan.pangkat.pangkatName}" />
+                                </p:column>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important">
+                                    <p:outputLabel  value="Tujuan Jabatan" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:outputLabel  value="#{jabatanDeskripsInputController.selectedJabatan.tujuanJabatan}" />
+                                </p:column>
+
+                            </p:row>
+
+                            <!--                            <p:row>
+                                                            <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                                                <p:outputLabel  value="Golongan Jabatan" style="font-weight: bold"/>
+                                                            </p:column>
+                                                            <p:column style="width: 37%">
+                                                                <p:outputLabel  value="#{jabatanDeskripsInputController.selectedJabatan.golonganJabatan.pangkat.pangkatName}" />
+                                                            </p:column>
+                                                            <p:column style="width: 13%;background-color: #e1f0f0!important">
+                                                                <p:outputLabel  value="Tujuan Jabatan" style="font-weight: bold"/>
+                                                            </p:column>
+                                                            <p:column style="width: 37%">
+                                                                <p:outputLabel  value="#{jabatanDeskripsInputController.selectedJabatan.tujuanJabatan}" />
+                                                            </p:column>
+                            
+                                                        </p:row>-->
+
+                        </p:panelGrid>
+                        <p:dataTable value="#{jabatanDeskripsInputController.jabatanDeskripsis}" var="listJobDeskrpsi" rowIndexVar="no" style="margin-top: 20px;margin-bottom: 15px">
+                            <f:facet name="header">  
+                                <h:outputText value="Daftar Jobs Deskripsi" style="text-align: left" styleClass="label_hrm"/> 
+                            </f:facet>
+                            <p:column style="text-align: center;width: 25px;max-width: 25px">
+                                <f:facet name="header">  
+                                    <h:outputText value="No." />
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column > 
+                                <f:facet name="header">  
+                                    <h:outputText value="Deskripsi" />
+                                </f:facet>
+                                <h:outputLabel value=" #{listJobDeskrpsi.description}" />
+                            </p:column> 
+                            <p:column > 
+                                <f:facet name="header">  
+                                    <h:outputText value="Kategori Tugas" />
+                                </f:facet>
+                                <h:outputLabel value=" #{listJobDeskrpsi.kategoryTugas}" />
+                            </p:column>
+                            <p:column > 
+                                <f:facet name="header">  
+                                    <h:outputText value="Type Waktu" />
+                                </f:facet>
+                                <h:outputLabel value=" #{listJobDeskrpsi.typeWaktu}" />
+                            </p:column>
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 250px;text-align: center" exportable="false">
+                                <p:commandButton  icon="ui-icon-document" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" value="Add Jobs Deskripsi"
+                                                  action="#{jabatanDeskripsiViewController.doDetail()}" style="font-size: 10px!important" >                        
+                                    <f:setPropertyActionListener value="#{listJobDeskrpsi}" target="#{jabatanDeskripsInputController.selectedJabatanDeskripsi}" />
+                                </p:commandButton>
+                                - 
+
+                                <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" value="Edit Jobs Deskripsi"
+                                                  action="#{jabatanDeskripsiViewController.doEdit()}" >
+                                    <f:setPropertyActionListener value="#{listJobDeskrpsi}" target="#{jabatanDeskripsInputController.selectedJabatanDeskripsi}" />
+
+                                </p:commandButton> 
+                            </p:column>         
+                        </p:dataTable>
+                        <p:separator/>
+                        <h:panelGrid columns="2" style="margin-bottom: 5px;float: left">
+                            <p:commandButton value="Tambah"  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" action="#{jabatanDeskripsInputController.doAdd()}" styleClass="label_button"/>
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{jabatanDeskripsInputController.doBack()}" styleClass="label_button"/>
+                        </h:panelGrid>
+                        <div style="clear: both"/>
+                    </h:form>
+                </div>
+
+
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+
