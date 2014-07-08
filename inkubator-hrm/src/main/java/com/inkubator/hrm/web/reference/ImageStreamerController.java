@@ -30,12 +30,54 @@ public class ImageStreamerController extends BaseController {
 
     @ManagedProperty(value = "#{countryService}")
     private CountryService countryService;
+    private Boolean rendered;
+    private Boolean renderedEmpty;
+
+    public Boolean getRendered() {
+        FacesContext context = FacesUtil.getFacesContext();
+        String countryId = context.getExternalContext().getRequestParameterMap().get("countryId");
+        try {
+            byte[] flagIcon = countryService.getEntiyByPK(Long.parseLong(countryId)).getFlagIcon();
+            if ( flagIcon != null || flagIcon.length == 0) {
+                rendered = Boolean.TRUE;
+            } else {
+                rendered = Boolean.FALSE;
+            }
+        } catch (Exception ex) {
+            rendered = Boolean.FALSE;
+        }
+        return rendered;
+    }
+
+    public void setRendered(Boolean rendered) {
+        this.rendered = rendered;
+    }
+
+    public Boolean getRenderedEmpty() {
+        FacesContext context = FacesUtil.getFacesContext();
+        String countryId = context.getExternalContext().getRequestParameterMap().get("countryId");
+        try {
+            byte[] flagIcon = countryService.getEntiyByPK(Long.parseLong(countryId)).getFlagIcon();
+            if ( flagIcon != null || flagIcon.length == 0) {
+                renderedEmpty = Boolean.FALSE;
+            } else {
+                renderedEmpty = Boolean.TRUE;
+            }
+        } catch (Exception ex) {
+            renderedEmpty = Boolean.TRUE;
+        }
+        return renderedEmpty;
+    }
+
+    public void setRenderedEmpty(Boolean renderedEmpty) {
+        this.renderedEmpty = renderedEmpty;
+    }
+
     
 
     public void setCountryService(CountryService countryService) {
         this.countryService = countryService;
     }
-
 
     public StreamedContent getImage() throws IOException {
         FacesContext context = FacesUtil.getFacesContext();
@@ -47,16 +89,14 @@ public class ImageStreamerController extends BaseController {
         } else {
             InputStream is = null;
             try {
-                
                 is = new ByteArrayInputStream(countryService.getEntiyByPK(Long.parseLong(countryId)).getFlagIcon());
-                
+
             } catch (Exception ex) {
-                return new DefaultStreamedContent();
-//                LOGGER.error(ex, ex);
 //                return new DefaultStreamedContent();
+                LOGGER.error(ex, ex);
+                return new DefaultStreamedContent();
             }
             return new DefaultStreamedContent(is);
-            
 
         }
     }

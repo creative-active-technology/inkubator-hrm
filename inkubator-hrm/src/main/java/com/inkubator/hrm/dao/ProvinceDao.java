@@ -23,5 +23,7 @@ public interface ProvinceDao extends IDAO<Province> {
 	public Long getTotalByCodeAndNotId(String code, Long id);
         
         public Province getProvinceByIdWithDetail(Long id);
+        
+        public List<Province> getByCountryIdWithDetail(Long id);
 
 }

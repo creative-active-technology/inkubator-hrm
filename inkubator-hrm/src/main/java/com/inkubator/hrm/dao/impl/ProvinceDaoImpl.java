@@ -50,16 +50,16 @@ public class ProvinceDaoImpl extends IDAOImpl<Province> implements ProvinceDao {
         if (parameter.getProvinceCode() != null) {
             criteria.add(Restrictions.like("provinceCode", parameter.getProvinceCode(), MatchMode.ANYWHERE));
         }
-        
-        if (parameter.getProvinceName()!= null) {
+
+        if (parameter.getProvinceName() != null) {
             criteria.add(Restrictions.like("provinceName", parameter.getProvinceName(), MatchMode.ANYWHERE));
         }
-        
-        if (parameter.getCountryName()!= null) {
+
+        if (parameter.getCountryName() != null) {
             criteria.createAlias("country", "c", JoinType.INNER_JOIN);
             criteria.add(Restrictions.like("c.countryName", parameter.getCountryName(), MatchMode.ANYWHERE));
         }
-        
+
         criteria.add(Restrictions.isNotNull("id"));
     }
 
@@ -77,13 +77,22 @@ public class ProvinceDaoImpl extends IDAOImpl<Province> implements ProvinceDao {
         criteria.add(Restrictions.ne("id", id));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
-    
+
     @Override
     public Province getProvinceByIdWithDetail(Long id) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("id", id));
         criteria.setFetchMode("country", FetchMode.JOIN);
         return (Province) criteria.uniqueResult();
+    }
+
+    @Override
+    public List<Province> getByCountryIdWithDetail(Long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("country", "c", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("c.id", id));
+        criteria.setFetchMode("country", FetchMode.JOIN);
+        return criteria.list();
     }
 
 }
