@@ -1,6 +1,10 @@
 package com.inkubator.hrm.web.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.inkubator.hrm.entity.HrmMenu;
 
 /**
  *
@@ -10,12 +14,17 @@ public class MenuModel implements Serializable {
 	
 	private Long id;
     private Long parentMenuId;
+    private List<HrmMenu> listParentMenu;
     private String name;
     private String urlName;
     private String iconName;
     private Integer menuLevel;
     private String menuStyle;
     private String menuStyleClass;
+    
+    public MenuModel(){
+    	listParentMenu = new ArrayList<HrmMenu>();
+    }
     
 	public Long getId() {
 		return id;
@@ -28,6 +37,12 @@ public class MenuModel implements Serializable {
 	}
 	public void setParentMenuId(Long parentMenuId) {
 		this.parentMenuId = parentMenuId;
+	}
+	public List<HrmMenu> getListParentMenu() {
+		return listParentMenu;
+	}
+	public void setListParentMenu(List<HrmMenu> listParentMenu) {
+		this.listParentMenu = listParentMenu;
 	}
 	public String getName() {
 		return name;
