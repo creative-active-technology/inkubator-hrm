@@ -185,7 +185,7 @@ public class HrmMenu implements java.io.Serializable {
         this.hrmMenuRoles = hrmMenuRoles;
     }
 
-    @Column(name = "menu_style", length = 45)
+    @Column(name = "menu_style", length = 1000)
     public String getMenuStyle() {
         return this.menuStyle;
     }
