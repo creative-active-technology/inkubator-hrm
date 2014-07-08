@@ -508,7 +508,7 @@ div.art-logo
 }
 .img-unit-kerja
 {
-    background-image:url(../images/unit-icon-1.png)!important;
+    background-image:url(../images/unit-icon.png)!important;
     background-size: 80% auto;
     padding-right: 2px;
 }
@@ -548,7 +548,7 @@ div.art-logo
 
 .img-password-history
 {
-    background-image:url(../images/password_history_ico.png)!important;
+    background-image:url(../images/password_history_icon.png)!important;
     background-size: 80% auto;
     padding-right: 2px;
 }
@@ -769,6 +769,20 @@ div.art-logo
 .img-function-group
 {
     background-image:url(../images/function_group_ico.png)!important;
+    background-size: 80% auto;
+    padding-right: 2px;
+}
+
+.img-user-menu
+{
+    background-image:url(../images/menu_ico.png)!important;
+    background-size: 80% auto;
+    padding-right: 2px;
+}
+
+.img-job-descriptions
+{
+    background-image:url(../images/job_descriptions_ico.png)!important;
     background-size: 80% auto;
     padding-right: 2px;
 }
