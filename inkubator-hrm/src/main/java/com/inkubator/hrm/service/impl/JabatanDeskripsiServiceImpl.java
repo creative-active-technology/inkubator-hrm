@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author Deni Husni FR
  */
-@Service
+@Service(value = "jabatanDeskripsiService")
 @Lazy
 public class JabatanDeskripsiServiceImpl extends IServiceImpl implements JabatanDeskripsiService {
 
@@ -197,7 +197,7 @@ public class JabatanDeskripsiServiceImpl extends IServiceImpl implements Jabatan
     }
 
     @Override
-    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public Long getTotalJabatanByParam(JabatanDeskripsiSearcParameter searchParameter) throws Exception {
       return this.jabatanDeskripsiDao.getTotalJabatanByParam(searchParameter);
     }
