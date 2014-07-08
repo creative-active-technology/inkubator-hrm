@@ -5,11 +5,15 @@
  */
 package com.inkubator.hrm.service.impl;
 
+import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.hrm.dao.JabatanDao;
 import com.inkubator.hrm.dao.JabatanDeskripsiDao;
 import com.inkubator.hrm.entity.JabatanDeskripsi;
 import com.inkubator.hrm.service.JabatanDeskripsiService;
 import com.inkubator.hrm.web.search.JabatanDeskripsiSearcParameter;
+import com.inkubator.securitycore.util.UserInfoUtil;
+import java.util.Date;
 import java.util.List;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +33,8 @@ public class JabatanDeskripsiServiceImpl extends IServiceImpl implements Jabatan
 
     @Autowired
     private JabatanDeskripsiDao jabatanDeskripsiDao;
+    @Autowired
+    private JabatanDao jabatanDao;
 
     @Override
     public JabatanDeskripsi getEntiyByPK(String id) throws Exception {
@@ -46,8 +52,13 @@ public class JabatanDeskripsiServiceImpl extends IServiceImpl implements Jabatan
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(JabatanDeskripsi entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+        entity.setCreatedBy(UserInfoUtil.getUserName());
+        entity.setCreatedOn(new Date());
+        entity.setJabatan(jabatanDao.getEntiyByPK(entity.getJabatan().getId()));
+        this.jabatanDeskripsiDao.save(entity);
     }
 
     @Override
@@ -199,7 +210,7 @@ public class JabatanDeskripsiServiceImpl extends IServiceImpl implements Jabatan
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public Long getTotalJabatanByParam(JabatanDeskripsiSearcParameter searchParameter) throws Exception {
-      return this.jabatanDeskripsiDao.getTotalJabatanByParam(searchParameter);
+        return this.jabatanDeskripsiDao.getTotalJabatanByParam(searchParameter);
     }
 
 }

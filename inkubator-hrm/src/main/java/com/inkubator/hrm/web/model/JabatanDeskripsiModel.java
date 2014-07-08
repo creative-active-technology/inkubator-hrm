@@ -13,16 +13,17 @@ import java.io.Serializable;
  */
 public class JabatanDeskripsiModel implements Serializable {
 
-    private long id;
+    private Long id;
     private Integer categoryTugas;
     private Integer typeWaktu;
     private String deskripsi;
+    private Long jabatanId;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -48,6 +49,14 @@ public class JabatanDeskripsiModel implements Serializable {
 
     public void setDeskripsi(String deskripsi) {
         this.deskripsi = deskripsi;
+    }
+
+    public Long getJabatanId() {
+        return jabatanId;
+    }
+
+    public void setJabatanId(Long jabatanId) {
+        this.jabatanId = jabatanId;
     }
     
     

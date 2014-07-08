@@ -141,13 +141,13 @@
                             </p:column>
                             <p:column headerText="#{appmsg['global.action']}" style="width: 250px;text-align: center" exportable="false">
                                 <p:commandButton  icon="ui-icon-document" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" value="Add Jobs Deskripsi"
-                                                  action="#{jabatanDeskripsiViewController.doDetail()}" style="font-size: 10px!important" >                        
+                                                  action="#{jabatanDeskripsInputController.doDetail()}" style="font-size: 10px!important" >                        
                                     <f:setPropertyActionListener value="#{listJobDeskrpsi}" target="#{jabatanDeskripsInputController.selectedJabatanDeskripsi}" />
                                 </p:commandButton>
                                 - 
 
                                 <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" value="Edit Jobs Deskripsi"
-                                                  action="#{jabatanDeskripsiViewController.doEdit()}" >
+                                                  action="#{jabatanDeskripsInputController.doEdit()}" >
                                     <f:setPropertyActionListener value="#{listJobDeskrpsi}" target="#{jabatanDeskripsInputController.selectedJabatanDeskripsi}" />
 
                                 </p:commandButton> 
@@ -155,7 +155,9 @@
                         </p:dataTable>
                         <p:separator/>
                         <h:panelGrid columns="2" style="margin-bottom: 5px;float: left">
-                            <p:commandButton value="Tambah"  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" action="#{jabatanDeskripsInputController.doAdd()}" styleClass="label_button"/>
+                            <p:commandButton value="Tambah"  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" action="#{jabatanDeskripsInputController.doAdd()}" styleClass="label_button">
+                              <p:ajax event="dialogReturn" listener="#{jabatanDeskripsInputController.onDialogReturn}"  update="jobTitleViewId,:userViewGrowlId"/>
+                            </p:commandButton>
                             <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{jabatanDeskripsInputController.doBack()}" styleClass="label_button"/>
                         </h:panelGrid>
                         <div style="clear: both"/>

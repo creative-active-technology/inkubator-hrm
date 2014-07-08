@@ -20,6 +20,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.SelectEvent;
 
 /**
  *
@@ -34,6 +35,7 @@ public class JabatanDeskripsInputController extends BaseController {
     private JabatanService jabatanService;
     private List<JabatanDeskripsi> jabatanDeskripsis;
     private JabatanDeskripsi selectedJabatanDeskripsi;
+    private String userId;
 
     public Jabatan getSelectedJabatan() {
         return selectedJabatan;
@@ -52,7 +54,7 @@ public class JabatanDeskripsInputController extends BaseController {
     public void initialization() {
         try {
             super.initialization();
-            String userId = FacesUtil.getRequestParameter("execution");
+            userId = FacesUtil.getRequestParameter("execution");
             selectedJabatan = jabatanService.getByIdWithJobDeskripsi(Long.parseLong(userId.substring(1)));
             jabatanDeskripsis = new ArrayList<>(selectedJabatan.getJabatanDeskripsis());
         } catch (Exception ex) {
@@ -92,7 +94,7 @@ public class JabatanDeskripsInputController extends BaseController {
         options.put("contentHeight", 360);
         Map<String, List<String>> dataToSend = new HashMap<>();
         List<String> dataIsi = new ArrayList<>();
-        dataIsi.add("i"+String.valueOf(selectedJabatan.getId()));
+        dataIsi.add("i" + String.valueOf(selectedJabatan.getId()));
         dataToSend.put("param", dataIsi);
 //        options.put("closable", false);
 //        options.put("height", "auto");
@@ -107,6 +109,22 @@ public class JabatanDeskripsInputController extends BaseController {
 
     public void setSelectedJabatanDeskripsi(JabatanDeskripsi selectedJabatanDeskripsi) {
         this.selectedJabatanDeskripsi = selectedJabatanDeskripsi;
+    }
+
+    @Override
+    public void onDialogReturn(SelectEvent event) {
+        try {
+            System.out.println(" nilia user "+userId);
+//          JabatanDeskripsi jabatanDeskripsi=(JabatanDeskripsi) event.getObject();
+//            System.out.println(jabatanDeskripsi.getJabatan().getId());
+//            userId = FacesUtil.getRequestParameter("execution");
+            System.out.println(" niliadsfsdf "+userId.substring(1));
+            selectedJabatan = jabatanService.getByIdWithJobDeskripsi(Long.parseLong(userId.substring(1)));
+            jabatanDeskripsis = new ArrayList<>(selectedJabatan.getJabatanDeskripsis());
+            super.onDialogReturn(event);
+        } catch (Exception ex) {
+           LOGGER.error("Error", ex);
+        }
     }
 
 }
