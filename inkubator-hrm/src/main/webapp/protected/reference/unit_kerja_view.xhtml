@@ -76,19 +76,25 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{unitKerjaData.code}" />
                             </p:column>
-                            <p:column sortBy="name" style="width: 30%">
+                            <p:column sortBy="name" style="width: 20%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['unitkerja.name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{unitKerjaData.name}" />
                             </p:column>
-                            <p:column sortBy="location" style="width: 40%">
+                            <p:column sortBy="location" style="width: 20%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['unitkerja.location']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{unitKerjaData.location}" />
                             </p:column>
-                            <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
+                            <p:column sortBy="city" style="width: 20%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['unitkerja.city']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{unitKerjaData.city.cityName}" />
+                            </p:column>
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 180px;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
                                                  onclick="statusDialog.show()"  oncomplete="detailUnitKerja.show()" update=":detailPanel"
                                                  style="font-size: 10px!important" action="#{unitKerjaController.doDetail()}">                        
@@ -165,6 +171,11 @@
                         <p:row>
                             <p:column style="color: #003366"><p:outputLabel value="#{appmsg['unitkerja.location']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{unitKerjaController.selectedUnitKerja.location}"/> </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['unitkerja.city']}" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{unitKerjaController.selectedUnitKerja.city.cityName}"/> </p:column>
                         </p:row>
                         
                         <f:facet name="footer">

@@ -84,7 +84,7 @@
 	                            <p:column  style="width: 80%">
 	                            	<p:selectOneMenu id="attendanceId" styleClass="isitext_hrm" required="true"  value="#{leaveFormController.model.attendanceStatusId}">
 	                            		<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-	                                    <f:selectItems value="#{leaveFormController.model.attendanceStatusList}" var="attendanceStatus" itemValue="#{attendanceStatus.id}" itemLabel="#{attendanceStatus.code}"/>
+	                                    <f:selectItems value="#{leaveFormController.model.attendanceStatusList}" var="attendanceStatus" itemValue="#{attendanceStatus.id}" itemLabel="#{attendanceStatus.statusKehadrian}"/>
 	                                </p:selectOneMenu>
 	                                <p:message for="attendanceId"/>
 	                            </p:column>

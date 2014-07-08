@@ -79,6 +79,7 @@ public class UnitKerjaServiceImpl extends IServiceImpl implements UnitKerjaServi
         entity.setCode(entity.getCode());
         entity.setName(entity.getName());
         entity.setLocation(entity.getLocation());
+        entity.setCity(entity.getCity());
         entity.setCreatedBy(UserInfoUtil.getUserName());
         entity.setCreatedOn(new Date());
         this.unitKerjaDao.save(entity);
@@ -96,6 +97,7 @@ public class UnitKerjaServiceImpl extends IServiceImpl implements UnitKerjaServi
         unitKerjaUpdate.setName(entity.getName());
         unitKerjaUpdate.setLocation(entity.getLocation());
         unitKerjaUpdate.setUpdatedBy(UserInfoUtil.getUserName());
+        unitKerjaUpdate.setCity(entity.getCity());
         unitKerjaUpdate.setUpdatedOn(new Date());
         this.unitKerjaDao.update(unitKerjaUpdate);
     }
@@ -235,6 +237,18 @@ public class UnitKerjaServiceImpl extends IServiceImpl implements UnitKerjaServi
     @Override
     public List<UnitKerja> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ,propagation = Propagation.SUPPORTS, timeout = 30)
+    public List<UnitKerja> getAllDataWithCity(UnitKerjaSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
+        return unitKerjaDao.getAllDataWithCity(searchParameter, firstResult, maxResults, order);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public UnitKerja getEntityByPkWithCity(Long code) throws Exception{
+        return unitKerjaDao.getEntityByPkWithCity(code);
     }
     
 }
