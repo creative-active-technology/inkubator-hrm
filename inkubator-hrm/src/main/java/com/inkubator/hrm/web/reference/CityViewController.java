@@ -8,10 +8,6 @@ import com.inkubator.hrm.web.search.CitySearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
@@ -19,13 +15,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import org.hibernate.exception.ConstraintViolationException;
-import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.LazyDataModel;
-import org.primefaces.model.map.DefaultMapModel;
-import org.primefaces.model.map.LatLng;
-import org.primefaces.model.map.MapModel;
-import org.primefaces.model.map.Marker;
 import org.springframework.dao.DataIntegrityViolationException;
 
 /**
@@ -41,14 +32,12 @@ public class CityViewController extends BaseController {
     private City selectedCity;
     @ManagedProperty(value = "#{cityService}")
     private CityService cityService;
-    private MapModel emptyModel;
 
     @PostConstruct
     @Override
     public void initialization() {
         super.initialization();
         searchParameter = new CitySearchParameter();
-        emptyModel = new DefaultMapModel();
     }
 
     @PreDestroy
@@ -57,7 +46,6 @@ public class CityViewController extends BaseController {
         searchParameter = null;
         lazyDataCity = null;
         selectedCity = null;
-        emptyModel = null;
     }
 
     public void setCityService(CityService cityService) {
@@ -91,29 +79,19 @@ public class CityViewController extends BaseController {
         this.selectedCity = selectedCity;
     }
 
-    public MapModel getEmptyModel() {
-        return emptyModel;
-    }
-
-    public void setEmptyModel(MapModel emptyModel) {
-        this.emptyModel = emptyModel;
-    }
-
     public void doSearch() {
         lazyDataCity = null;
     }
 
-    public void doDetail() {
-        emptyModel.getMarkers().clear();
-        try {
-            selectedCity = this.cityService.getCityByIdWithDetail(selectedCity.getId());
-            LatLng coord = new LatLng(Double.parseDouble(selectedCity.getLatitude()), Double.parseDouble(selectedCity.getLongitude()));
-
-            //Basic marker
-            emptyModel.addOverlay(new Marker(coord, selectedCity.getCityName()));
-        } catch (Exception ex) {
-            LOGGER.error("Error", ex);
-        }
+    public String doDetail() {
+//        emptyModel.getMarkers().clear();
+//        try {
+//            selectedCity = this.cityService.getCityByIdWithDetail(selectedCity.getId());
+//            LatLng coord = new LatLng(Double.parseDouble(selectedCity.getLatitude()), Double.parseDouble(selectedCity.getLongitude()));
+//
+//            //Basic marker
+//            emptyModel.addOverlay(new Marker(coord, selectedCity.getCityName()));
+        return "/protected/reference/city_detail.htm?faces-redirect=true&execution=e" + selectedCity.getId();
     }
 
     public void doDelete() {
@@ -129,26 +107,12 @@ public class CityViewController extends BaseController {
         }
     }
 
-    public void doAdd() {
-        showDialog(null);
+    public String doAdd() {
+        return "/protected/reference/city_form.htm?faces-redirect=true";
     }
 
-    public void doUpdate() {
-        Map<String, List<String>> dataToSend = new HashMap<>();
-        List<String> values = new ArrayList<>();
-        values.add(String.valueOf(selectedCity.getId()));
-        dataToSend.put("param", values);
-        showDialog(dataToSend);
-    }
-
-    private void showDialog(Map<String, List<String>> params) {
-        Map<String, Object> options = new HashMap<>();
-        options.put("modal", true);
-        options.put("draggable", true);
-        options.put("resizable", false);
-        options.put("contentWidth", 1000);
-        options.put("contentHeight", 450);
-        RequestContext.getCurrentInstance().openDialog("city_form", options, params);
+    public String doUpdate() {
+        return "/protected/reference/city_form.htm?faces-redirect=true&execution=e" + selectedCity.getId();
     }
 
     @Override
