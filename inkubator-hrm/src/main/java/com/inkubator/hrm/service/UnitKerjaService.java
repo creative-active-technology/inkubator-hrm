@@ -21,4 +21,8 @@ public interface UnitKerjaService  extends IService<UnitKerja> {
 
     public Long getByUnitKerjaCode(String code);
     
+    public List<UnitKerja> getAllDataWithCity(UnitKerjaSearchParameter searchParameter, int firstResult, int maxResults, Order order);
+    
+    public UnitKerja getEntityByPkWithCity(Long code) throws Exception;
+    
 }

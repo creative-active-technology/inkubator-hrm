@@ -89,7 +89,7 @@ public class UnitKerjaViewController  extends BaseController{
     
     public void doDetail() {
         try {
-            selectedUnitKerja = this.unitKerjaService.getEntiyByPK(selectedUnitKerja.getId());
+            selectedUnitKerja = this.unitKerjaService.getEntityByPkWithCity(selectedUnitKerja.getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -115,7 +115,7 @@ public class UnitKerjaViewController  extends BaseController{
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 400);
-        options.put("contentHeight", 300);
+        options.put("contentHeight", 320);
         
 //        options.put("closable", false);
 //        options.put("height", "auto");
@@ -130,7 +130,7 @@ public class UnitKerjaViewController  extends BaseController{
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 400);
-        options.put("contentHeight", 300);
+        options.put("contentHeight", 320);
         Map<String, List<String>> dataToSend = new HashMap<>();
         List<String> dataIsi = new ArrayList<>();
         dataIsi.add(String.valueOf(selectedUnitKerja.getId()));

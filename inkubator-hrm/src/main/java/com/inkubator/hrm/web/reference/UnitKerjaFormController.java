@@ -6,13 +6,21 @@ package com.inkubator.hrm.web.reference;
 
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.entity.City;
+import com.inkubator.hrm.entity.CostCenter;
 import com.inkubator.hrm.entity.UnitKerja;
+import com.inkubator.hrm.service.CityService;
 import com.inkubator.hrm.service.UnitKerjaService;
 import com.inkubator.hrm.web.model.UnitKerjaModel;
-import com.inkubator.hrm.web.search.UnitKerjaSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
@@ -30,9 +38,14 @@ import org.primefaces.context.RequestContext;
 public class UnitKerjaFormController extends BaseController{
     @ManagedProperty(value = "#{unitKerjaService}")
     private UnitKerjaService unitKerjaService;
+    @ManagedProperty(value = "#{cityService}")
+    private CityService cityService;
     private UnitKerjaModel unitKerjaModel;
     private UnitKerja selectedUnitKerja;
     private Boolean isEdit;
+    private Map<String, Long> listDropDownCity;
+    private List<City> cityList = new ArrayList<>();
+    private City city;
 
     public UnitKerjaService getUnitKerjaService() {
         return unitKerjaService;
@@ -66,6 +79,31 @@ public class UnitKerjaFormController extends BaseController{
     public void setIsEdit(Boolean isEdit) {
         this.isEdit = isEdit;
     }
+
+    public CityService getCityService() {
+        return cityService;
+    }
+
+    public void setCityService(CityService cityService) {
+        this.cityService = cityService;
+    }
+
+    public Map<String, Long> getListDropDownCity() {
+        return listDropDownCity;
+    }
+
+    public void setListDropDownCity(Map<String, Long> listDropDownCity) {
+        this.listDropDownCity = listDropDownCity;
+    }
+    
+    public List<City> getCityList() {
+        return cityList;
+    }
+
+    public void setCityList(List<City> cityList) {
+        this.cityList = cityList;
+    }
+    
     
     @PostConstruct
     @Override
@@ -74,6 +112,15 @@ public class UnitKerjaFormController extends BaseController{
         super.initialization();
         String param = FacesUtil.getRequestParameter("param");
         unitKerjaModel = new UnitKerjaModel();
+        listDropDownCity = new HashMap<String, Long>();
+        try {
+            cityList = cityService.getAllData();
+        } catch (Exception ex) {
+            Logger.getLogger(UnitKerjaFormController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        for (City citiesList : cityList) {
+            listDropDownCity.put(citiesList.getCityName(), citiesList.getId());                
+        }
         try {
             if (param != null) {
 
@@ -83,8 +130,7 @@ public class UnitKerjaFormController extends BaseController{
                 unitKerjaModel.setCode(unitKerja.getCode());
                 unitKerjaModel.setName(unitKerja.getName());
                 unitKerjaModel.setLocation(unitKerja.getLocation());
-
-
+                unitKerjaModel.setCityId(unitKerja.getCity().getId());
             } else {
                 isEdit = Boolean.FALSE;
             }
@@ -93,7 +139,7 @@ public class UnitKerjaFormController extends BaseController{
         }
     }
     
-    public void doSave() {
+    public void doSave() throws Exception {
         System.out.println("masuk dosave");
         UnitKerja unitKerja = getEntityFromViewModel(unitKerjaModel);
         try {
@@ -116,7 +162,7 @@ public class UnitKerjaFormController extends BaseController{
 //        cleanAndExit();
     }
     
-    private UnitKerja getEntityFromViewModel(UnitKerjaModel unitKerjaModel) {
+    private UnitKerja getEntityFromViewModel(UnitKerjaModel unitKerjaModel) throws Exception {
         UnitKerja unitKerja = new UnitKerja();
         if (unitKerjaModel.getId() != null) {
             unitKerja.setId(unitKerjaModel.getId());
@@ -124,6 +170,7 @@ public class UnitKerjaFormController extends BaseController{
         unitKerja.setCode(unitKerjaModel.getCode());
         unitKerja.setName(unitKerjaModel.getName());
         unitKerja.setLocation(unitKerjaModel.getLocation());
+        unitKerja.setCity(cityService.getEntiyByPK(unitKerjaModel.getCityId()));
         return unitKerja;
     }
     
@@ -133,6 +180,7 @@ public class UnitKerjaFormController extends BaseController{
         unitKerjaService = null;
         selectedUnitKerja = null;
         isEdit = null;
-
+        listDropDownCity = null;
+        cityList = null;
     }
 }

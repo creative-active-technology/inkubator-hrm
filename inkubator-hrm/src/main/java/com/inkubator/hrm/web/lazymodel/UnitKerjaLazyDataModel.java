@@ -39,14 +39,14 @@ public class UnitKerjaLazyDataModel extends LazyDataModel<UnitKerja> implements 
         if (sortField != null) {
             if (sortOrder == SortOrder.ASCENDING) {
                 try {
-                    unitKerjaList = unitKerjaService.getByParam(unitKerjaSearchParameter, first, pageSize, Order.asc(sortField));
+                    unitKerjaList = unitKerjaService.getAllDataWithCity(unitKerjaSearchParameter, first, pageSize, Order.asc(sortField));
                     jumlahData = Integer.parseInt(String.valueOf(unitKerjaService.getTotalUnitKerjaByParam(unitKerjaSearchParameter)));
                 } catch (Exception ex) {
                     LOGGER.error("Error", ex);
                 }
             } else {
                 try {
-                    unitKerjaList = unitKerjaService.getByParam(unitKerjaSearchParameter, first, pageSize, Order.desc(sortField));
+                    unitKerjaList = unitKerjaService.getAllDataWithCity(unitKerjaSearchParameter, first, pageSize, Order.desc(sortField));
                     jumlahData = Integer.parseInt(String.valueOf(unitKerjaService.getTotalUnitKerjaByParam(unitKerjaSearchParameter)));
                 } catch (Exception ex) {
                     LOGGER.error("Error", ex);
@@ -54,7 +54,7 @@ public class UnitKerjaLazyDataModel extends LazyDataModel<UnitKerja> implements 
             }
         } else {
             try {
-                unitKerjaList = unitKerjaService.getByParam(unitKerjaSearchParameter, first, pageSize, Order.desc("code"));
+                unitKerjaList = unitKerjaService.getAllDataWithCity(unitKerjaSearchParameter, first, pageSize, Order.desc("code"));
                 jumlahData = Integer.parseInt(String.valueOf(unitKerjaService.getTotalUnitKerjaByParam(unitKerjaSearchParameter)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);

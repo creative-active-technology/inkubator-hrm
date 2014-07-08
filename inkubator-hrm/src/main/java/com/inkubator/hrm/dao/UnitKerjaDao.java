@@ -22,4 +22,8 @@ public interface UnitKerjaDao extends IDAO<UnitKerja>{
     public Long getByUnitKerjaCode(String code);
     
     public Long getTotalByCodeAndNotId(String code, Long id);
+    
+    public List<UnitKerja> getAllDataWithCity(UnitKerjaSearchParameter searchParameter, int firstResult, int maxResults, Order order);
+    
+    public UnitKerja getEntityByPkWithCity(Long id);
 }

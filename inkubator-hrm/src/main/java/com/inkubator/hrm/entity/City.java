@@ -41,6 +41,7 @@ public class City  implements java.io.Serializable {
      private String latitude;
      private String longitude;
      private Set<InstitutionEducation> institutionEducations = new HashSet<InstitutionEducation>(0);
+     private Set<UnitKerja> unitKerjas = new HashSet<UnitKerja>(0);
 
     public City() {
     }
@@ -182,6 +183,15 @@ public class City  implements java.io.Serializable {
     
     public void setInstitutionEducations(Set<InstitutionEducation> institutionEducations) {
         this.institutionEducations = institutionEducations;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "city")
+    public Set<UnitKerja> getUnitKerjas() {
+        return unitKerjas;
+    }
+
+    public void setUnitKerjas(Set<UnitKerja> unitKerjas) {
+        this.unitKerjas = unitKerjas;
     }
 
 
