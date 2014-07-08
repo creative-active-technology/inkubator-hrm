@@ -15,13 +15,13 @@ import org.hibernate.criterion.Order;
  * @author deniarianto
  */
 public interface UnitKerjaService  extends IService<UnitKerja> {
-    public List<UnitKerja> getByParam(UnitKerjaSearchParameter searchParameter, int firstResult, int maxResults, Order order);
+    public List<UnitKerja> getByParam(UnitKerjaSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
 
-    public Long getTotalUnitKerjaByParam(UnitKerjaSearchParameter searchParameter);
+    public Long getTotalUnitKerjaByParam(UnitKerjaSearchParameter searchParameter) throws Exception;
 
-    public Long getByUnitKerjaCode(String code);
+    public Long getByUnitKerjaCode(String code) throws Exception;
     
-    public List<UnitKerja> getAllDataWithCity(UnitKerjaSearchParameter searchParameter, int firstResult, int maxResults, Order order);
+    public List<UnitKerja> getAllDataWithCity(UnitKerjaSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
     
     public UnitKerja getEntityByPkWithCity(Long code) throws Exception;
     

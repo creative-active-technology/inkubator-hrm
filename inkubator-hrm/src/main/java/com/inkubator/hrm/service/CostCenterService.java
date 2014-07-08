@@ -15,11 +15,11 @@ import org.hibernate.criterion.Order;
  * @author deniarianto
  */
 public interface CostCenterService extends IService<CostCenter> {
-    public List<CostCenter> getByParam(CostCenterSearchParameter searchParameter, int firstResult, int maxResults, Order order);
+    public List<CostCenter> getByParam(CostCenterSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
 
-    public Long getTotalCostCenterByParam(CostCenterSearchParameter searchParameter);
+    public Long getTotalCostCenterByParam(CostCenterSearchParameter searchParameter) throws Exception;
 
-    public Long getByCostCenterName(String name);
+    public Long getByCostCenterName(String name) throws Exception;
     
     public CostCenter getCostCenterByIdWithDetail(Long id) throws Exception;
     

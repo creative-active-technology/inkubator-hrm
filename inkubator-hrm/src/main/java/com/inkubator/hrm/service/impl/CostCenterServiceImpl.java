@@ -35,19 +35,19 @@ public class CostCenterServiceImpl extends IServiceImpl implements CostCenterSer
     
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<CostCenter> getByParam(CostCenterSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
+    public List<CostCenter> getByParam(CostCenterSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception{
         return costCenterDao.getByParam(searchParameter, firstResult, maxResults, order);
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getTotalCostCenterByParam(CostCenterSearchParameter searchParameter) {
+    public Long getTotalCostCenterByParam(CostCenterSearchParameter searchParameter) throws Exception{
         return costCenterDao.getTotalCostCenterByParam(searchParameter);
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getByCostCenterName(String name) {
+    public Long getByCostCenterName(String name) throws Exception{
         return costCenterDao.getByCostCenterCode(name);
     }
 
@@ -83,11 +83,6 @@ public class CostCenterServiceImpl extends IServiceImpl implements CostCenterSer
         entity.setCode(entity.getCode());
         entity.setName(entity.getName());
         entity.setBalance(entity.getBalance());
-//        if(entity.getLevel() == 0){
-//            entity.setLevel(1);
-//        }else{
-//            entity.setLevel(entity.getLevel());
-//        }
         entity.setDescription(entity.getDescription());
         entity.setCreatedBy(UserInfoUtil.getUserName());
         entity.setCreatedOn(new Date());
@@ -110,7 +105,6 @@ public class CostCenterServiceImpl extends IServiceImpl implements CostCenterSer
         costCenterUpdate.setCode(entity.getCode());
         costCenterUpdate.setName(entity.getName());
         costCenterUpdate.setBalance(entity.getBalance());
-//        costCenterUpdate.setLevel(entity.getLevel());
         costCenterUpdate.setDescription(entity.getDescription());
         costCenterUpdate.setUpdatedBy(UserInfoUtil.getUserName());
         costCenterUpdate.setUpdatedOn(new Date());
