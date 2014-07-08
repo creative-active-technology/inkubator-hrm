@@ -20,4 +20,8 @@ public interface HrmMenuService extends IService<HrmMenu> {
     
     public List<HrmMenu> getAllDataByLevel(Integer level);
 
+	public HrmMenu getEntityByPkWithDetail(long id);
+
+	public List<HrmMenu> getAllDataByLevelAndNotId(int level, Long id);
+
 }

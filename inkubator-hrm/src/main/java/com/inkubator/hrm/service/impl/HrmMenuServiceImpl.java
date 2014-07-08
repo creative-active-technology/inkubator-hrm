@@ -55,10 +55,12 @@ public class HrmMenuServiceImpl extends IServiceImpl implements HrmMenuService {
 	public void save(HrmMenu entity) throws Exception {
 		long totalDuplicates = hrmMenuDao.getTotalByName(entity.getName());
         if (totalDuplicates > 0) {
-            throw new BussinessException("hrm_menu.error_duplicate_name");
+            throw new BussinessException("hrm_menu.error_duplicate_menu_name");
         }
         
         entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+        HrmMenu parentMenu = entity.getHrmMenu() == null ? null : hrmMenuDao.getEntiyByPK(entity.getHrmMenu().getId());
+        entity.setHrmMenu(parentMenu);
         entity.setCreatedBy(UserInfoUtil.getUserName());
         entity.setCreatedOn(new Date());
         this.hrmMenuDao.save(entity);
@@ -67,16 +69,14 @@ public class HrmMenuServiceImpl extends IServiceImpl implements HrmMenuService {
 	@Override
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void update(HrmMenu entity) throws Exception {
-		long totalDuplicates = hrmMenuDao.getTotalByName(entity.getName());
+		long totalDuplicates = hrmMenuDao.getTotalByNameAndNotId(entity.getName(), entity.getId());
         if (totalDuplicates > 0) {
-            throw new BussinessException("hrm_menu.error_duplicate_name");
+            throw new BussinessException("hrm_menu.error_duplicate_menu_name");
         }
         
         HrmMenu menu = hrmMenuDao.getEntiyByPK(entity.getId());
-        if(entity.getHrmMenu() != null){
-        	HrmMenu parentMenu = hrmMenuDao.getEntiyByPK(entity.getHrmMenu().getId());
-        	menu.setHrmMenu(parentMenu);
-        }
+        HrmMenu parentMenu = entity.getHrmMenu() == null ? null : hrmMenuDao.getEntiyByPK(entity.getHrmMenu().getId());
+        menu.setHrmMenu(parentMenu);
         menu.setName(entity.getName());
         menu.setIconName(entity.getIconName());
         menu.setUrlName(entity.getUrlName());
@@ -283,6 +283,18 @@ public class HrmMenuServiceImpl extends IServiceImpl implements HrmMenuService {
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
 	public List<HrmMenu> getAllDataByLevel(Integer level) {
 		return hrmMenuDao.getAllDataByLevel(level);
+		
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public HrmMenu getEntityByPkWithDetail(long id) {
+		return hrmMenuDao.getEntityByPkWithDetail(id);
+	}
+
+	@Override
+	public List<HrmMenu> getAllDataByLevelAndNotId(int level, Long id) {
+		return hrmMenuDao.getAllDataByLevelAndNotId(level, id);
 		
 	}
 

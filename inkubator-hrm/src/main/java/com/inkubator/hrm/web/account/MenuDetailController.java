@@ -34,7 +34,7 @@ public class MenuDetailController extends BaseController {
         try {
             super.initialization();
             String id = FacesUtil.getRequestParameter("execution");
-            selectedMenu = hrmMenuService.getEntiyByPK(Long.parseLong(id.substring(1)));
+            selectedMenu = hrmMenuService.getEntityByPkWithDetail(Long.parseLong(id.substring(1)));
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
 

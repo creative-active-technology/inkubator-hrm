@@ -83,6 +83,7 @@ public class CityDaoImpl extends IDAOImpl<City> implements CityDao {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("id", id));
         criteria.setFetchMode("province", FetchMode.JOIN);
+        criteria.setFetchMode("province.country", FetchMode.JOIN);
         return (City) criteria.uniqueResult();
     }
 

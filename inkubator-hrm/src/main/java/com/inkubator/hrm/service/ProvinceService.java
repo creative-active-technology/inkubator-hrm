@@ -19,5 +19,7 @@ public interface ProvinceService extends IService<Province> {
 	public Long getTotalByParam(ProvinceSearchParameter parameter) throws Exception;
         
         public Province getProvinceByIdWithDetail(Long id) throws Exception;
+        
+        public List<Province> getByCountryIdWithDetail(Long id) throws Exception;
 
 }
