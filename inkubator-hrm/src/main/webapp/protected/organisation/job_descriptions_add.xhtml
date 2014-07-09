@@ -111,9 +111,10 @@
                                                         </p:row>-->
 
                         </p:panelGrid>
-                        <p:dataTable value="#{jabatanDeskripsInputController.jabatanDeskripsis}" var="listJobDeskrpsi" rowIndexVar="no" style="margin-top: 20px;margin-bottom: 15px">
+                        <p:dataTable value="#{jabatanDeskripsInputController.jabatanDeskripsis}" var="listJobDeskrpsi" rowIndexVar="no" id="jobDesTableId"
+                                     style="margin-top: 20px;margin-bottom: 15px">
                             <f:facet name="header">  
-                                <h:outputText value="Daftar Jobs Deskripsi" style="text-align: left" styleClass="label_hrm"/> 
+                                <h:outputText value="Daftar Job Deskripsi" style="text-align: left" styleClass="label_hrm"/> 
                             </f:facet>
                             <p:column style="text-align: center;width: 25px;max-width: 25px">
                                 <f:facet name="header">  
@@ -127,43 +128,74 @@
                                 </f:facet>
                                 <h:outputLabel value=" #{listJobDeskrpsi.description}" />
                             </p:column> 
-                            <p:column > 
-                                <f:facet name="header">  
+                            <p:column style="width: 80px;text-align: center"> 
+                                <f:facet name="header" >  
                                     <h:outputText value="Kategori Tugas" />
                                 </f:facet>
-                                <h:outputLabel value=" #{listJobDeskrpsi.kategoryTugas}" />
+                                <p:outputLabel value="#{listJobDeskrpsi.kategoryTugas}" >
+                                    <f:converter converterId="jobCategoryConverter" />
+                                </p:outputLabel>
                             </p:column>
-                            <p:column > 
+                            <p:column style="width: 80px;text-align: center"> 
                                 <f:facet name="header">  
                                     <h:outputText value="Type Waktu" />
                                 </f:facet>
-                                <h:outputLabel value=" #{listJobDeskrpsi.typeWaktu}" />
+                                <p:outputLabel value="#{listJobDeskrpsi.typeWaktu}" >
+                                    <f:converter converterId="jobTypeTimeConverter" />
+                                </p:outputLabel>
                             </p:column>
-                            <p:column headerText="#{appmsg['global.action']}" style="width: 250px;text-align: center" exportable="false">
-                                <p:commandButton  icon="ui-icon-document" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" value="Add Jobs Deskripsi"
-                                                  action="#{jabatanDeskripsInputController.doDetail()}" style="font-size: 10px!important" >                        
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 130px;text-align: center" exportable="false">
+
+                                <p:commandButton  icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  style="font-size: 10px!important" update=":deleteDialogJobDeskripsiId"
+                                                  onclick="statusDialog.show()"  oncomplete="confirmDialogJobDeskripsi.show()" action="#{jabatanDeskripsInputController.onDelete()}" >
                                     <f:setPropertyActionListener value="#{listJobDeskrpsi}" target="#{jabatanDeskripsInputController.selectedJabatanDeskripsi}" />
                                 </p:commandButton>
-                                - 
-
-                                <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" value="Edit Jobs Deskripsi"
+                                -
+                                <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
                                                   action="#{jabatanDeskripsInputController.doEdit()}" >
                                     <f:setPropertyActionListener value="#{listJobDeskrpsi}" target="#{jabatanDeskripsInputController.selectedJabatanDeskripsi}" />
-
+                                    <p:ajax event="dialogReturn" listener="#{jabatanDeskripsInputController.onDialogReturn}"  update=":jobTitleViewId,:userViewGrowlId"/>
                                 </p:commandButton> 
                             </p:column>         
                         </p:dataTable>
                         <p:separator/>
                         <h:panelGrid columns="2" style="margin-bottom: 5px;float: left">
                             <p:commandButton value="Tambah"  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" action="#{jabatanDeskripsInputController.doAdd()}" styleClass="label_button">
-                              <p:ajax event="dialogReturn" listener="#{jabatanDeskripsInputController.onDialogReturn}"  update="jobTitleViewId,:userViewGrowlId"/>
+                                <p:ajax event="dialogReturn" listener="#{jabatanDeskripsInputController.onDialogReturn}"  update="jobTitleViewId,:userViewGrowlId"/>
                             </p:commandButton>
                             <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{jabatanDeskripsInputController.doBack()}" styleClass="label_button"/>
                         </h:panelGrid>
                         <div style="clear: both"/>
+
                     </h:form>
                 </div>
+                <p:dialog widgetVar="confirmDialogJobDeskripsi" header="#{appmsg['global.header_confirmation']}" modal="true" width="500" dynamic="true" onShow="statusDialog.hide()"
+                          appendTo="@(body)" resizable="false" id="confirmDialogJobTitleId" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
+                    <h:form id="deleteDialogJobDeskripsiId">
+                        <div align="center">
+                            <div align="center">
+                                <h:panelGrid columns="2" style="text-align: justify">
+                                    <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
+                                    <h:panelGroup>
+                                        <h:panelGrid style="text-align: center">
+                                            <p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
+                                        </h:panelGrid>
+                                    </h:panelGroup>
+                                </h:panelGrid>
+                            </div>
+                            <h:panelGrid  columns="3" cellspacing="3">
+                                <p:outputLabel value="Jobs Deskripsi" styleClass="label_hrm"/>
+                                <p:outputLabel value=":"  styleClass="label_hrm" />
+                                <p:outputLabel value="#{jabatanDeskripsInputController.selectedJabatanDeskripsi.description}" styleClass="isitext_hrm"/>
+                            </h:panelGrid>
+                            <p:separator/>
+                            <p:commandButton value="#{appmsg['global.yes']}" action="#{jabatanDeskripsInputController.doDelete()}" update=":jobTitleViewId:jobDesTableId,:userViewGrowlId" id="yesId" title="#{appmsg['global.yes']}" styleClass="isitext_hrm"
+                                             oncomplete="confirmDialogJobDeskripsi.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                            <p:commandButton value="#{appmsg['global.no']}" oncomplete="confirmDialogJobDeskripsi.hide()" icon="ui-icon-close" title="#{appmsg['global.no']}"  styleClass="isitext_hrm"/>
 
+                        </div>
+                    </h:form>
+                </p:dialog>
 
             </ui:define>
 

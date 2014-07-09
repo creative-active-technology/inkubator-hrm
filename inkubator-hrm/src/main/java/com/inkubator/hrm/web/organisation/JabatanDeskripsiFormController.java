@@ -43,11 +43,26 @@ public class JabatanDeskripsiFormController extends BaseController {
         String param = FacesUtil.getRequestParameter("param");
         if (param.contains("i")) {
             jobsId = Long.parseLong(param.substring(1));
-            isEdit=Boolean.FALSE;
+            isEdit = Boolean.FALSE;
             System.out.println(" ini lhooooo");
+            jabatanDeskripsiModel = new JabatanDeskripsiModel();
         }
+        if (param.contains("e")) {
+            try {
+                long jobDeskId = Long.parseLong(param.substring(1));
+                JabatanDeskripsi jabatanDeskripsi = jabatanDeskripsiService.getEntiyByPK(jobDeskId);
+                isEdit = Boolean.TRUE;
+                jabatanDeskripsiModel = new JabatanDeskripsiModel();
+                jabatanDeskripsiModel.setId(jabatanDeskripsi.getId());
+                jabatanDeskripsiModel.setCategoryTugas(jabatanDeskripsi.getKategoryTugas());
+                jabatanDeskripsiModel.setDeskripsi(jabatanDeskripsi.getDescription());
+                jabatanDeskripsiModel.setJabatanId(jabatanDeskripsi.getJabatan().getId());
+                jabatanDeskripsiModel.setTypeWaktu(jabatanDeskripsi.getKategoryTugas());
+            } catch (Exception ex) {
+                LOGGER.error("Error", ex);
+            }
 
-        jabatanDeskripsiModel = new JabatanDeskripsiModel();
+        }
 
     }
 
@@ -101,23 +116,25 @@ public class JabatanDeskripsiFormController extends BaseController {
 
     @PreDestroy
     public void cleanAndExit() {
-//        pangkatService = null;
-//        model = null;
-//        isUpdate = null;
+        jabatanDeskripsiModel = null;
+        jabatanDeskripsiService = null;
+        isEdit = null;
+
     }
 
     private JabatanDeskripsi getEntityFromViewModel(JabatanDeskripsiModel model) {
         JabatanDeskripsi jabatanDeskripsi = new JabatanDeskripsi();
         if (model.getId() != null) {
             jabatanDeskripsi.setId(model.getId());
+            jabatanDeskripsi.setJabatan(new Jabatan(model.getJabatanId()));
+        } else {
+
+            jabatanDeskripsi.setJabatan(new Jabatan(jobsId));
         }
         jabatanDeskripsi.setDescription(model.getDeskripsi());
-        jabatanDeskripsi.setJabatan(new Jabatan(jobsId));
         jabatanDeskripsi.setKategoryTugas(model.getCategoryTugas());
         jabatanDeskripsi.setTypeWaktu(model.getTypeWaktu());
         return jabatanDeskripsi;
     }
-
-   
 
 }

@@ -76,7 +76,7 @@ public class JabatanDeskripsiViewController extends BaseController {
     }
 
     public String doAdd() {
-      return "/protected/organisation/job_descriptions_add.htm?faces-redirect=true&execution=e" + selectedJabatan.getId();
+        return "/protected/organisation/job_descriptions_add.htm?faces-redirect=true&execution=e" + selectedJabatan.getId();
     }
 
     public String doEdit() {
@@ -89,6 +89,10 @@ public class JabatanDeskripsiViewController extends BaseController {
 
     @PreDestroy
     private void cleanAndExit() {
+        jabatanSearchParameter = null;
+        lazyJabatanDataModel = null;
+        jabatanService = null;
+        selectedJabatan = null;
 
     }
 

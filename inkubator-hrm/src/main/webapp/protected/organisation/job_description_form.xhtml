@@ -43,8 +43,8 @@
                             <p:column  style="width: 50%">
                                 <p:selectOneRadio id="kategoryTugasId" styleClass="isitext_hrm" required="true"  value="#{jabatanDeskripsiFormController.jabatanDeskripsiModel.categoryTugas}">
                                     <!--Cek HRM Constanta..-->
-                                    <f:selectItem itemLabel="Primer" itemValue="1" />
-                                    <f:selectItem itemLabel="Sekunder" itemValue="0" />
+                                    <f:selectItem itemLabel="#{appmsg['jobs_desk.primer_taks']}" itemValue="1" />
+                                    <f:selectItem itemLabel="#{appmsg['jobs_desk.sekunder_task']}" itemValue="2" />
                                 </p:selectOneRadio>
                             </p:column>
                         </p:row>
@@ -61,10 +61,9 @@
                                 <h:outputLabel for="typeTimeId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <p:selectOneRadio id="typeTimeId" styleClass="isitext_hrm" required="true"  value="#{jabatanDeskripsiFormController.jabatanDeskripsiModel.typeWaktu}">
-                                    <!--Cek HRM Constanta..-->
-                                    <f:selectItem itemLabel="Harian" itemValue="1" />
-                                    <f:selectItem itemLabel="Mingguan" itemValue="0" />
+                                <p:selectOneRadio id="typeTimeId" styleClass="isitext_hrm" required="true"  value="#{jabatanDeskripsiFormController.jabatanDeskripsiModel.typeWaktu}" >
+                                    <f:selectItem itemLabel="#{appmsg['jobs_desk.time_daily']}" itemValue="1" />
+                                    <f:selectItem itemLabel="#{appmsg['jobs_desk.time_monthly']}" itemValue="2" />
                                 </p:selectOneRadio>
                             </p:column>
                         </p:row>

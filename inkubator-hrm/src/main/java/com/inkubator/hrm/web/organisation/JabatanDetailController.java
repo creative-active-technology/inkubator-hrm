@@ -6,10 +6,12 @@
 package com.inkubator.hrm.web.organisation;
 
 import com.inkubator.hrm.entity.Jabatan;
+import com.inkubator.hrm.entity.JabatanDeskripsi;
 import com.inkubator.hrm.entity.JabatanSpesifikasi;
 import com.inkubator.hrm.service.JabatanService;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -29,6 +31,7 @@ public class JabatanDetailController extends BaseController {
     @ManagedProperty(value = "#{jabatanService}")
     private JabatanService jabatanService;
     private List<JabatanSpesifikasi> listJabatanSpesifikasi;
+    private List<JabatanDeskripsi> jabatanDeskripsis;
 
     public Jabatan getSelectedJabatan() {
         return selectedJabatan;
@@ -48,8 +51,8 @@ public class JabatanDetailController extends BaseController {
         try {
             super.initialization();
             String userId = FacesUtil.getRequestParameter("execution");
-            selectedJabatan = jabatanService.getJabatanByIdWithDetail(Long.parseLong(userId.substring(1)));
-            
+            selectedJabatan = jabatanService.getByIdWithJobDeskripsi(Long.parseLong(userId.substring(1)));
+            jabatanDeskripsis = new ArrayList<>(selectedJabatan.getJabatanDeskripsis());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
 
@@ -68,6 +71,7 @@ public class JabatanDetailController extends BaseController {
     public void cleanAndExit() {
         selectedJabatan = null;
         jabatanService = null;
+        listJabatanSpesifikasi = null;
     }
 
     public List<JabatanSpesifikasi> getListJabatanSpesifikasi() {
@@ -77,6 +81,13 @@ public class JabatanDetailController extends BaseController {
     public void setListJabatanSpesifikasi(List<JabatanSpesifikasi> listJabatanSpesifikasi) {
         this.listJabatanSpesifikasi = listJabatanSpesifikasi;
     }
-    
-    
+
+    public List<JabatanDeskripsi> getJabatanDeskripsis() {
+        return jabatanDeskripsis;
+    }
+
+    public void setJabatanDeskripsis(List<JabatanDeskripsi> jabatanDeskripsis) {
+        this.jabatanDeskripsis = jabatanDeskripsis;
+    }
+
 }

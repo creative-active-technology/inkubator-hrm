@@ -5,22 +5,28 @@
  */
 package com.inkubator.hrm.web.organisation;
 
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.entity.JabatanDeskripsi;
+import com.inkubator.hrm.service.JabatanDeskripsiService;
 import com.inkubator.hrm.service.JabatanService;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
+import com.inkubator.webcore.util.MessagesResourceUtil;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import org.hibernate.exception.ConstraintViolationException;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
+import org.springframework.dao.DataIntegrityViolationException;
 
 /**
  *
@@ -33,6 +39,8 @@ public class JabatanDeskripsInputController extends BaseController {
     private Jabatan selectedJabatan;
     @ManagedProperty(value = "#{jabatanService}")
     private JabatanService jabatanService;
+    @ManagedProperty(value = "#{jabatanDeskripsiService}")
+    private JabatanDeskripsiService jabatanDeskripsiService;
     private List<JabatanDeskripsi> jabatanDeskripsis;
     private JabatanDeskripsi selectedJabatanDeskripsi;
     private String userId;
@@ -64,17 +72,18 @@ public class JabatanDeskripsInputController extends BaseController {
     }
 
     public String doBack() {
-        return "/protected/organisation/job_title_view.htm?faces-redirect=true";
-    }
-
-    public String doEdit() {
-        return "/protected/organisation/job_title_form.htm?faces-redirect=true&execution=e" + selectedJabatan.getId();
+        return "/protected/organisation/job_description_view.htm?faces-redirect=true";
     }
 
     @PreDestroy
     public void cleanAndExit() {
         selectedJabatan = null;
         jabatanService = null;
+        jabatanDeskripsiService=null;
+        jabatanDeskripsis=null;
+        selectedJabatanDeskripsi=null;
+        userId=null;
+        
     }
 
     public List<JabatanDeskripsi> getJabatanDeskripsis() {
@@ -96,10 +105,20 @@ public class JabatanDeskripsInputController extends BaseController {
         List<String> dataIsi = new ArrayList<>();
         dataIsi.add("i" + String.valueOf(selectedJabatan.getId()));
         dataToSend.put("param", dataIsi);
-//        options.put("closable", false);
-//        options.put("height", "auto");
+        RequestContext.getCurrentInstance().openDialog("job_description_form", options, dataToSend);
+    }
 
-//        options.put("contentHeight", 340);
+    public void doEdit() {
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", false);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 400);
+        options.put("contentHeight", 360);
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        List<String> dataIsi = new ArrayList<>();
+        dataIsi.add("e" + String.valueOf(selectedJabatanDeskripsi.getId()));
+        dataToSend.put("param", dataIsi);
         RequestContext.getCurrentInstance().openDialog("job_description_form", options, dataToSend);
     }
 
@@ -114,17 +133,41 @@ public class JabatanDeskripsInputController extends BaseController {
     @Override
     public void onDialogReturn(SelectEvent event) {
         try {
-            System.out.println(" nilia user "+userId);
-//          JabatanDeskripsi jabatanDeskripsi=(JabatanDeskripsi) event.getObject();
-//            System.out.println(jabatanDeskripsi.getJabatan().getId());
-//            userId = FacesUtil.getRequestParameter("execution");
-            System.out.println(" niliadsfsdf "+userId.substring(1));
             selectedJabatan = jabatanService.getByIdWithJobDeskripsi(Long.parseLong(userId.substring(1)));
             jabatanDeskripsis = new ArrayList<>(selectedJabatan.getJabatanDeskripsis());
             super.onDialogReturn(event);
         } catch (Exception ex) {
-           LOGGER.error("Error", ex);
+            LOGGER.error("Error", ex);
         }
+    }
+
+    public void doDelete() {
+        try {
+            jabatanDeskripsiService.delete(selectedJabatanDeskripsi);
+            selectedJabatan = jabatanService.getByIdWithJobDeskripsi(Long.parseLong(userId.substring(1)));
+            jabatanDeskripsis = new ArrayList<>(selectedJabatan.getJabatanDeskripsis());
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully",
+                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint",
+                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+//            LOGGER.error("Error", ex);
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
+        }
+    }
+
+    public void onDelete() {
+        try {
+            selectedJabatanDeskripsi = jabatanDeskripsiService.getEntiyByPK(selectedJabatanDeskripsi.getId());
+
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
+        }
+    }
+
+    public void setJabatanDeskripsiService(JabatanDeskripsiService jabatanDeskripsiService) {
+        this.jabatanDeskripsiService = jabatanDeskripsiService;
     }
 
 }

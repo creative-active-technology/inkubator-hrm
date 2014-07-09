@@ -47,8 +47,11 @@ public class JabatanDeskripsiServiceImpl extends IServiceImpl implements Jabatan
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public JabatanDeskripsi getEntiyByPK(Long id) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        JabatanDeskripsi jabatanDeskripsi = jabatanDeskripsiDao.getEntiyByPK(id);
+        jabatanDeskripsi.getJabatan().getId();
+        return jabatanDeskripsi;
     }
 
     @Override
@@ -62,8 +65,16 @@ public class JabatanDeskripsiServiceImpl extends IServiceImpl implements Jabatan
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(JabatanDeskripsi entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       JabatanDeskripsi jabatanDeskripsi=this.jabatanDeskripsiDao.getEntiyByPK(entity.getId());
+       jabatanDeskripsi.setDescription(entity.getDescription());
+       jabatanDeskripsi.setJabatan(this.jabatanDao.getEntiyByPK(entity.getJabatan().getId()));
+       jabatanDeskripsi.setKategoryTugas(entity.getKategoryTugas());
+       jabatanDeskripsi.setTypeWaktu(entity.getTypeWaktu());
+       jabatanDeskripsi.setUpdatedBy(UserInfoUtil.getUserName());
+       jabatanDeskripsi.setUpdatedOn(new Date());
+       this.jabatanDeskripsiDao.update(jabatanDeskripsi);
     }
 
     @Override
@@ -132,8 +143,9 @@ public class JabatanDeskripsiServiceImpl extends IServiceImpl implements Jabatan
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void delete(JabatanDeskripsi entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.jabatanDeskripsiDao.delete(entity);
     }
 
     @Override
