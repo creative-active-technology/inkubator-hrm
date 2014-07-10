@@ -201,10 +201,10 @@ public class CountryServiceImpl extends IServiceImpl implements CountryService {
             throw new BussinessException("country.error_duplicate_country_code");
         }
 
-        long totalPhoneCodeDuplicates = countryDao.getTotalByPhoneCode(country.getPhoneCode());
-        if (totalPhoneCodeDuplicates > 0) {
-            throw new BussinessException("country.error_duplicate_country_phone_code");
-        }
+//        long totalPhoneCodeDuplicates = countryDao.getTotalByPhoneCode(country.getPhoneCode());
+//        if (totalPhoneCodeDuplicates > 0) {
+//            throw new BussinessException("country.error_duplicate_country_phone_code");
+//        }
         System.out.println("Country Icon :" + country.getFlagIcon());
         country.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         country.setCreatedBy(UserInfoUtil.getUserName());
@@ -250,6 +250,8 @@ public class CountryServiceImpl extends IServiceImpl implements CountryService {
         country.setCountryName(b.getCountryName());
         country.setFlagIcon(b.getFlagIcon());
         country.setPhoneCode(b.getPhoneCode());
+        country.setLatitude(b.getLatitude());
+        country.setLongitude(b.getLongitude());
         country.setUpdatedBy(UserInfoUtil.getUserName());
         country.setUpdatedOn(new Date());
         countryDao.update(country);
