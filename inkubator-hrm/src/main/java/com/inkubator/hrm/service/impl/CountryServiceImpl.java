@@ -250,6 +250,8 @@ public class CountryServiceImpl extends IServiceImpl implements CountryService {
         country.setCountryName(b.getCountryName());
         country.setFlagIcon(b.getFlagIcon());
         country.setPhoneCode(b.getPhoneCode());
+        country.setLatitude(b.getLatitude());
+        country.setLongitude(b.getLongitude());
         country.setUpdatedBy(UserInfoUtil.getUserName());
         country.setUpdatedOn(new Date());
         countryDao.update(country);
