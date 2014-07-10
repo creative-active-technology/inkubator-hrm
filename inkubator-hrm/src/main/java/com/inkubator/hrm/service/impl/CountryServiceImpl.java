@@ -201,10 +201,10 @@ public class CountryServiceImpl extends IServiceImpl implements CountryService {
             throw new BussinessException("country.error_duplicate_country_code");
         }
 
-        long totalPhoneCodeDuplicates = countryDao.getTotalByPhoneCode(country.getPhoneCode());
-        if (totalPhoneCodeDuplicates > 0) {
-            throw new BussinessException("country.error_duplicate_country_phone_code");
-        }
+//        long totalPhoneCodeDuplicates = countryDao.getTotalByPhoneCode(country.getPhoneCode());
+//        if (totalPhoneCodeDuplicates > 0) {
+//            throw new BussinessException("country.error_duplicate_country_phone_code");
+//        }
         System.out.println("Country Icon :" + country.getFlagIcon());
         country.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         country.setCreatedBy(UserInfoUtil.getUserName());
