@@ -23,4 +23,6 @@ public interface HrmRoleDao extends IDAO<HrmRole> {
 
     public HrmRole getByRoleName(String name);
 
+	public HrmRole getEntityByPkWithMenus(long id);
+
 }

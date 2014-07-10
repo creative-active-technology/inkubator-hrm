@@ -10,94 +10,121 @@
         <title>IGNORED</title>
     </h:head>
     <h:body>
-        <ui:composition template="/templates/dialog_layout.xhtml">
+        <ui:composition template="/templates/master_layout_full.xhtml">
             <ui:define name="windowTitle">
-
+				Home
             </ui:define>
             <ui:define name="center">
-                <p:growl id="formRoleGrowl" globalOnly="true" showDetail="true"/>
+            	<p:growl id="formRoleGrowl" globalOnly="true" showDetail="true"/>            	                
                 <h:form id="roleFormId">
-                    <h:panelGrid  columns="2">
-                        <p:graphicImage library="images" name="role.png" height="36" width="36" />
-                        <h:panelGroup layout="block">
-                            <h:panelGrid>
-                                <p:outputLabel value="#{appmsg['role_form.header']}" styleClass="header_big" />
-                                <p:outputLabel value="#{appmsg['role_view.header2']}" styleClass="header_small_no_bold" />
-                            </h:panelGrid>
-                        </h:panelGroup>
-                    </h:panelGrid>
-                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
-                    <h:panelGrid columns="1" style="margin-bottom: 5px;margin-left: 0px">
-                        <h:outputLabel value="#{appmsg['role_form.info1']}" styleClass="label_hrm" style="font-weight: normal!important"/>
-                        <h:outputLabel value="#{appmsg['role_form.info2']}" styleClass="label_hrm" style="font-weight: normal!important"/>
-                    </h:panelGrid> 
-                    <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
-                        <p:row>
-                            <p:column style="width: 27%">
-                                <p:outputLabel for="roleName" value="#{appmsg['role_view.role_name']}" styleClass="label_hrm"/>
+                	<p:focus context="roleFormId"/>
+                	<div id="box_bg" style="margin: 10px">
+	                    <h:panelGrid  columns="2">
+	                        <p:graphicImage library="images" name="role.png" height="36" width="36" />
+	                        <h:panelGroup layout="block">
+	                            <h:panelGrid>
+	                                <p:outputLabel value="#{appmsg['role_form.header']}" styleClass="header_big" />
+	                                <p:outputLabel value="#{appmsg['role_view.header2']}" styleClass="header_small_no_bold" />
+	                            </h:panelGrid>
+	                        </h:panelGroup>
+	                    </h:panelGrid>
+	                    
+	                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+	                    
+	                    <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px;margin-bottom:20px;">
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="roleName" value="#{appmsg['role_view.role_name']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                                <p:focus for ="roleName">
+	                                    <p:inputText id="roleName" value="#{roleFormController.roleModel.roleName}"
+	                                                 required="true" label="Kode" 
+	                                                 maxlength="30"
+	                                                 title="#{appmsg['role_view.role_name']}" style="width: 270px"
+	                                                 onkeyup="this.value = this.value.toUpperCase();">
+	                                    </p:inputText>
+	                                    <p:message for="roleName"/>
+	                                </p:focus>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="description" value="#{appmsg['role_view.role_description']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column style="width: 80%" >
+	                                <p:inputTextarea id="description" rows="5" cols="37" counter="counter" maxlength="500" value="#{roleFormController.roleModel.description}" 
+	                                                 style="width: 270px; height: 89px;" counterTemplate="#{appmsg['global.remaining']}"   autoResize="true" 
+	                                                 label="#{appmsg['role_view.role_description']}" title="#{appmsg['role_view.role_description']}" />
+									<br/><p:outputLabel id="counter" />
+	                            </p:column>
+	                        </p:row>
+	                    </p:panelGrid>
+	                    
+	                    <p:outputLabel value="#{appmsg['hrm_menu.list_of_menu']}" styleClass="header_big"/>
+	                    <p:separator/>
+	                    
+	                    <p:dataTable  id="tableMenuId" var="menuData"  value="#{roleFormController.menus}" lazy="true" paginator="true" pageLinks="7"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <p:column style="text-align: center;width: 5%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>  
+                            <p:column style="text-align: center;width: 40%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['hrm_menu.menu_name']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{menuData.name}"/>
                             </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="roleName" value=":" styleClass="label_hrm"/>
+                            <p:column style="text-align: center;width: 40%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['hrm_menu.url_name']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{menuData.urlName}"/>
                             </p:column>
-                            <p:column  style="width: 60%">
-                                <p:focus for ="roleName">
-                                    <p:inputText id="roleName" value="#{roleFormController.roleModel.roleName}"
-                                                 required="true" label="Kode" 
-                                                 maxlength="30"
-                                                 title="#{appmsg['role_view.role_name']}" style="width: 270px"
-                                                 onkeyup="this.value = this.value.toUpperCase();">
-                                    </p:inputText>
-                                </p:focus>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:message for="roleName"/>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="width: 27%">
-                                <p:outputLabel for="description" value="#{appmsg['role_view.role_description']}" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="description" value=":"  styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 60%" >
-                                <p:inputTextarea id="description" rows="5" cols="37" counter="counter" maxlength="500" value="#{roleFormController.roleModel.description}" 
-                                                 style="width: 270px; height: 89px;" counterTemplate="#{appmsg['global.remaining']}"   autoResize="true" 
-                                                 label="#{appmsg['role_view.role_description']}" title="#{appmsg['role_view.role_description']}" />
-
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="width: 25%">
-                                <p:outputLabel for="description" value="" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="description" value=""  styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 60%" >
-                                <h:outputText id="counter" />
-                            </p:column>
-                        </p:row>
-                    </p:panelGrid>
-                    <p:separator style="margin-top: 10px;margin-bottom: 10px"/>
-                    <h:panelGrid columns="2" style="margin-bottom: -30px!important">
-                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="roleFormId,:formRoleGrowl"
-                                         action="#{roleFormController.doSave()}" styleClass="label_button"
-                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
-                                         icon="ui-icon-disk"
-                                         id="buttonSave" title="#{appmsg['global.save']}"/>
-                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}"
-                                         process="@this" icon="ui-icon-refresh" id="cleareId" update="roleFormId"  styleClass="label_button" >  
-                            <p:resetInput target="roleFormId" />  
-                        </p:commandButton>
-                    </h:panelGrid>
-                </h:form>
+                            <p:column style="text-align: center;width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['hrm_menu.menu_level']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{menuData.menuLevel}"/>
+                            </p:column> 
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
+                                <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+                                				 style="font-size: 10px!important" update="tableMenuId" 
+                                				 action="#{roleFormController.doDeleteMenu()}" onclick="statusDialog.show()" oncomplete="statusDialog.hide()">
+                                    <f:setPropertyActionListener value="#{menuData}" target="#{roleFormController.selectedMenu}" />
+                                </p:commandButton>
+                            </p:column> 
+                        </p:dataTable>
+                        <h:panelGrid columns="1">
+                    		<p:commandButton value="Tambah Menu" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" 
+                    						 actionListener="#{roleFormController.doShowMenuList()}" ajax="true" immediate="true">
+                            	<p:ajax event="dialogReturn" listener="#{roleFormController.onDialogReturn}"  update="tableMenuId,:formRoleGrowl"/>
+                           	</p:commandButton>
+                    	</h:panelGrid>
+	                    
+	                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+	                    <div style="margin-bottom: 5px">
+	                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="roleFormId,:formRoleGrowl"
+	                                         action="#{roleFormController.doSave()}" styleClass="label_button"
+	                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
+	                                         icon="ui-icon-disk"
+	                                         id="buttonSave" title="#{appmsg['global.save']}"/>
+	                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}"
+	                                         process="@this" icon="ui-icon-refresh" id="cleareId" update="roleFormId"  styleClass="label_button" >  
+	                            <p:resetInput target="roleFormId" />  
+	                        </p:commandButton>
+	                        <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{roleFormController.doBack()}" immediate="true"
+		                                     styleClass="label_button"/>
+	                    </div>
+                    </div>
+                </h:form>                
             </ui:define>
-
         </ui:composition>
-
     </h:body>
 </html>
 

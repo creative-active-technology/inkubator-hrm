@@ -5,10 +5,12 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.springframework.stereotype.Repository;
 
 import com.inkubator.datacore.dao.impl.IDAOImpl;
@@ -32,7 +34,7 @@ public class HrmMenuDaoImpl extends IDAOImpl<HrmMenu> implements HrmMenuDao {
 	@Override
 	public List<HrmMenu> getByParam(HrmMenuSearchParameter parameter, int firstResult, int maxResults, Order orderable) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        doSearchByParam(parameter, criteria);
+		criteria = doSearchByParam(parameter, criteria);
         criteria.addOrder(orderable);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
@@ -42,15 +44,17 @@ public class HrmMenuDaoImpl extends IDAOImpl<HrmMenu> implements HrmMenuDao {
 	@Override
 	public Long getTotalByParam(HrmMenuSearchParameter parameter) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        doSearchByParam(parameter, criteria);
+		criteria = doSearchByParam(parameter, criteria);
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
 	}
 	
-	private void doSearchByParam(HrmMenuSearchParameter parameter, Criteria criteria) {        
+	private Criteria doSearchByParam(HrmMenuSearchParameter parameter, Criteria criteria) {        
         if (StringUtils.isNotEmpty(parameter.getName())) {
             criteria.add(Restrictions.like("name", parameter.getName(), MatchMode.ANYWHERE));
         }
         criteria.add(Restrictions.isNotNull("id"));
+        
+        return criteria;
     }
 
 	@Override
@@ -75,6 +79,31 @@ public class HrmMenuDaoImpl extends IDAOImpl<HrmMenu> implements HrmMenuDao {
 		criteria.add(Restrictions.eq("menuLevel", level));
 		criteria.add(Restrictions.ne("id", id));
 		return criteria.list();
+	}
+
+	@Override
+	public List<HrmMenu> getAllDataByParamAndNotRoleId(Long roleId, HrmMenuSearchParameter parameter, int firstResult, int maxResults,
+			Order orderable) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria = doSearchByParamAndNotRoleId(roleId, parameter, criteria);
+        criteria.addOrder(orderable);
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResults);
+        return criteria.list();
+	}
+
+	@Override
+	public Long getTotalByParamAndNotRoleId(Long roleId, HrmMenuSearchParameter parameter) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria = doSearchByParamAndNotRoleId(roleId, parameter, criteria);
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
+	
+	private Criteria doSearchByParamAndNotRoleId(Long roleId, HrmMenuSearchParameter parameter, Criteria criteria) {
+		Criterion orCondition  = Restrictions.disjunction().add(Restrictions.ne("h.hrmRole.id", roleId)).add(Restrictions.isNull("h.hrmRole.id"));
+		criteria.createAlias("hrmMenuRoles", "h", JoinType.LEFT_OUTER_JOIN);
+		criteria.add(orCondition);
+		return doSearchByParam(parameter, criteria);
 	}
 
 }

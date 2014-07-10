@@ -298,4 +298,18 @@ public class HrmMenuServiceImpl extends IServiceImpl implements HrmMenuService {
 		
 	}
 
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<HrmMenu> getAllDataByParamAndNotRoleId(Long roleId, HrmMenuSearchParameter parameter, int firstResult, int maxResults,
+			Order orderable) {
+		return hrmMenuDao.getAllDataByParamAndNotRoleId(roleId, parameter, firstResult, maxResults, orderable);
+		
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Long getTotalByParamAndNotRoleId(Long roleId, HrmMenuSearchParameter parameter) {
+		return hrmMenuDao.getTotalByParamAndNotRoleId(roleId, parameter);
+	}
+
 }

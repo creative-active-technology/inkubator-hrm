@@ -22,4 +22,6 @@ public interface HrmRoleService extends IService<HrmRole> {
     public Long getTotalHrmRoleByParam(HrmRoleSearchParameter searchParameter) throws Exception;
 
     public HrmRole getByRoleName(String roleName) throws Exception;
+
+	public HrmRole getEntityByPkWithMenus(long id);
 }
