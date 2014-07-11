@@ -1,17 +1,21 @@
 package com.inkubator.hrm.web.account;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
-import org.apache.commons.lang3.StringUtils;
+import org.primefaces.context.RequestContext;
 import org.primefaces.model.LazyDataModel;
 
 import com.inkubator.hrm.entity.HrmMenu;
 import com.inkubator.hrm.service.HrmMenuService;
-import com.inkubator.hrm.web.lazymodel.HrmMenuExceptRoleLazyDataModel;
+import com.inkubator.hrm.web.lazymodel.HrmMenuExceptMenuIdsLazyDataModel;
 import com.inkubator.hrm.web.search.HrmMenuSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
@@ -26,7 +30,8 @@ public class RoleMenusFormController extends BaseController {
 
 	private HrmMenuSearchParameter searchParameter;
 	private LazyDataModel<HrmMenu> lazyDataMenu;
-	private Long selectedRoleId;
+	private HrmMenu selectedMenu;
+	private List<String> strMenuIds;
 	@ManagedProperty(value = "#{hrmMenuService}")
     private HrmMenuService hrmMenuService;
 	
@@ -35,15 +40,17 @@ public class RoleMenusFormController extends BaseController {
     public void initialization() {
 		super.initialization();
 		searchParameter = new HrmMenuSearchParameter();
-		String param = FacesUtil.getRequestParameter("roleId");
-		if (StringUtils.isNumeric(param)){
-			selectedRoleId = Long.parseLong(param);
-		}
+		String[] params = FacesUtil.getExternalContext().getRequestParameterValuesMap().get("menuIds");
+		strMenuIds = (params == null) ? new ArrayList<String>() : new ArrayList<String>(Arrays.asList(params));
 	}
 	
 	@PreDestroy
     public void cleanAndExit() {
-		
+		searchParameter = null;
+		lazyDataMenu = null;
+		selectedMenu = null;
+		hrmMenuService = null;
+		strMenuIds = null;
 	}
 
 	public HrmMenuSearchParameter getSearchParameter() {
@@ -54,17 +61,25 @@ public class RoleMenusFormController extends BaseController {
 		this.searchParameter = searchParameter;
 	}
 
-	public Long getSelectedRoleId() {
-		return selectedRoleId;
+	public List<String> getStrMenuIds() {
+		return strMenuIds;
 	}
 
-	public void setSelectedRoleId(Long selectedRoleId) {
-		this.selectedRoleId = selectedRoleId;
+	public void setStrMenuIds(List<String> strMenuIds) {
+		this.strMenuIds = strMenuIds;
+	}
+
+	public HrmMenu getSelectedMenu() {
+		return selectedMenu;
+	}
+
+	public void setSelectedMenu(HrmMenu selectedMenu) {
+		this.selectedMenu = selectedMenu;
 	}
 
 	public LazyDataModel<HrmMenu> getLazyDataMenu() {
 		if(lazyDataMenu == null){
-			lazyDataMenu = new HrmMenuExceptRoleLazyDataModel(searchParameter, hrmMenuService, selectedRoleId);
+			lazyDataMenu = new HrmMenuExceptMenuIdsLazyDataModel(searchParameter, hrmMenuService, strMenuIds);
 		}
 		return lazyDataMenu;
 	}
@@ -79,5 +94,10 @@ public class RoleMenusFormController extends BaseController {
 	
 	public void doSearch(){
 		lazyDataMenu = null;
+	}
+	
+	public void doPickMenuFromList(){
+		RequestContext.getCurrentInstance().closeDialog(selectedMenu);
+		cleanAndExit();
 	}
 }

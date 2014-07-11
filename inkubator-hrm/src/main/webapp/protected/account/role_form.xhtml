@@ -101,7 +101,7 @@
                             </p:column> 
                         </p:dataTable>
                         <h:panelGrid columns="1">
-                    		<p:commandButton value="#{appmsg['global.add']} #{appmsg['hrm_menu.menu']}" title="#{appmsg['global.add']} #{appmsg['hrm_menu.menu']}" label="#{appmsg['global.add']} #{appmsg['hrm_menu.menu']}" styleClass="label_button" icon="ui-icon-document" 
+                    		<p:commandButton value="#{appmsg['global.add']} #{appmsg['hrm_menu.menu']}" title="#{appmsg['global.add']} #{appmsg['hrm_menu.menu']}" label="#{appmsg['global.add']} #{appmsg['hrm_menu.menu']}" styleClass="label_button" icon="ui-icon-search" 
                     						 actionListener="#{roleFormController.doShowMenuList()}" ajax="true" immediate="true">
                             	<p:ajax event="dialogReturn" listener="#{roleFormController.onDialogReturn}"  update="tableMenuId,:formRoleGrowl"/>
                            	</p:commandButton>
@@ -114,8 +114,8 @@
 	                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
 	                                         icon="ui-icon-disk"
 	                                         id="buttonSave" title="#{appmsg['global.save']}"/>
-	                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}"
-	                                         process="@this" icon="ui-icon-refresh" id="cleareId" update="roleFormId"  styleClass="label_button" >  
+	                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" styleClass="label_button" icon="ui-icon-refresh"
+	                                         process="@this"  update="roleFormId"  action="#{roleFormController.doReset()}"  >  
 	                            <p:resetInput target="roleFormId" />  
 	                        </p:commandButton>
 	                        <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{roleFormController.doBack()}" immediate="true"

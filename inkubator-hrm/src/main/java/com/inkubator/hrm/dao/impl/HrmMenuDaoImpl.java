@@ -82,10 +82,10 @@ public class HrmMenuDaoImpl extends IDAOImpl<HrmMenu> implements HrmMenuDao {
 	}
 
 	@Override
-	public List<HrmMenu> getAllDataByParamAndNotRoleId(Long roleId, HrmMenuSearchParameter parameter, int firstResult, int maxResults,
+	public List<HrmMenu> getAllDataByParamAndNotIds(HrmMenuSearchParameter parameter, List<Long> ids, int firstResult, int maxResults,
 			Order orderable) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria = doSearchByParamAndNotRoleId(roleId, parameter, criteria);
+		criteria = doSearchByParamAndNotIds(parameter, ids, criteria);
         criteria.addOrder(orderable);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
@@ -93,17 +93,25 @@ public class HrmMenuDaoImpl extends IDAOImpl<HrmMenu> implements HrmMenuDao {
 	}
 
 	@Override
-	public Long getTotalByParamAndNotRoleId(Long roleId, HrmMenuSearchParameter parameter) {
+	public Long getTotalByParamAndNotIds(HrmMenuSearchParameter parameter, List<Long> ids) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria = doSearchByParamAndNotRoleId(roleId, parameter, criteria);
+		criteria = doSearchByParamAndNotIds(parameter, ids, criteria);
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
 	}
 	
-	private Criteria doSearchByParamAndNotRoleId(Long roleId, HrmMenuSearchParameter parameter, Criteria criteria) {
+	private Criteria doSearchByParamAndNotIds(HrmMenuSearchParameter parameter, List<Long> ids, Criteria criteria) {
+		criteria = doSearchByParam(parameter, criteria);
+		if(ids!= null && ids.size() > 0){
+			criteria.add(Restrictions.not(Restrictions.in("id", ids)));
+		}
+		return criteria;
+	}
+	
+	/*private Criteria doSearchByParamAndNotRoleId(Long roleId, HrmMenuSearchParameter parameter, Criteria criteria) {
 		Criterion orCondition  = Restrictions.disjunction().add(Restrictions.ne("h.hrmRole.id", roleId)).add(Restrictions.isNull("h.hrmRole.id"));
 		criteria.createAlias("hrmMenuRoles", "h", JoinType.LEFT_OUTER_JOIN);
 		criteria.add(orCondition);
 		return doSearchByParam(parameter, criteria);
-	}
+	}*/
 
 }

@@ -202,5 +202,24 @@ public class HrmMenu implements java.io.Serializable {
     public void setMenuStyleClass(String menuStyleClass) {
         this.menuStyleClass = menuStyleClass;
     }
+    
+    @Override
+    public boolean equals(Object other) {
+    	if (this == other){ 
+    		return true;
+    	}
+    	else if (other == null ){
+    		return false;
+    	}
+    	else if (!(other instanceof HrmMenu)){
+    		return false;
+    	}
+    	else {
+    		HrmMenu castOther = ( HrmMenu ) other; 
+    		return this.getId()==castOther.getId();    				  
+    	}
+    }
+        
+		 
 
 }

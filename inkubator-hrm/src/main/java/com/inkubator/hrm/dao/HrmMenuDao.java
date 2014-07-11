@@ -18,9 +18,9 @@ public interface HrmMenuDao extends IDAO<HrmMenu> {
 
     public Long getTotalByParam(HrmMenuSearchParameter parameter);
     
-    public List<HrmMenu> getAllDataByParamAndNotRoleId(Long roleId, HrmMenuSearchParameter parameter, int firstResult, int maxResults, Order orderable);
+    public List<HrmMenu> getAllDataByParamAndNotIds(HrmMenuSearchParameter parameter, List<Long> ids, int firstResult, int maxResults, Order orderable);
 	
-	public Long getTotalByParamAndNotRoleId(Long roleId, HrmMenuSearchParameter parameter);
+	public Long getTotalByParamAndNotIds(HrmMenuSearchParameter parameter, List<Long> ids);
 
 	public List<HrmMenu> getAllDataByLevel(Integer level);
 
