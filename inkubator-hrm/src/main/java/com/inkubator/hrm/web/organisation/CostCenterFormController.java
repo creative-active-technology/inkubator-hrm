@@ -8,6 +8,7 @@ import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.CostCenter;
 import com.inkubator.hrm.service.CostCenterService;
+import com.inkubator.hrm.util.MapUtil;
 import com.inkubator.hrm.web.model.CostCenterModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
@@ -16,15 +17,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import org.apache.commons.lang3.BooleanUtils;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -109,58 +107,46 @@ public class CostCenterFormController extends BaseController{
         costCenterModel = new CostCenterModel();
         isParentDisabled=Boolean.TRUE;
         costCenterParent = new HashMap<String, Long>();
-//        try {
-//            costCenterList = costCentreService.getAllData();
-//        } catch (Exception ex) {
-//            Logger.getLogger(CostCenterFormController.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        MapUtil.sortByValue(costCenterParent);
         try { 
             if (param != null) {
 
                 isEdit = Boolean.TRUE;
                 CostCenter costCenter = costCentreService.getEntiyByPK(Long.parseLong(param));
+                //list cost center tidak menampilkan dirinya sendiri
                 costCenterList = costCentreService.getAllDataWhichIsNotItself(costCenter.getId());
-//                isParentDisabled = costCenter.getLevel() <= 1 ? true : false;
                 costCenterModel.setId(costCenter.getId());
                 costCenterModel.setCode(costCenter.getCode());
                 costCenterModel.setName(costCenter.getName());
-//                costCenterModel.setLevel(costCenter.getLevel());
                 costCenterModel.setDescription(costCenter.getDescription());
                 costCenterModel.setBalance(costCenter.getBalance());
                 if(costCenter.getCostCenter() != null){
                     costCenterModel.setParentId(costCenter.getCostCenter().getId());
                 }
+                //jika cost center null / levelnya paling atas, maka dropdown disable
                 if(costCenter.getCostCenter() == null){
                     isParentDisabled = Boolean.TRUE;
                 }else{
                     isParentDisabled = Boolean.FALSE;
                 }
-
-                //get level
-//                Integer level = costCenterModel.getLevel();
-                
-
-                //kalo level 3, tampilkan level 2, dst
-                for (CostCenter costCenterListUpdate : costCenterList) {
-                    costCenterParent.put(costCenterListUpdate.getName(), costCenterListUpdate.getId());
-                        
-//                    }
-                }
             } else {
                 costCenterList = costCentreService.getAllData();
                 isEdit = Boolean.FALSE;
                 isParentDisabled = Boolean.FALSE;
-                for (CostCenter costCenter : costCenterList) {
-                        costCenterParent.put(costCenter.getName(), costCenter.getId());
-                } 
             }
+            listParent();
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
     }
     
+    public void listParent(){
+        for (CostCenter costCenterListUpdate : costCenterList) {
+            costCenterParent.put(costCenterListUpdate.getName(), costCenterListUpdate.getId());               
+        }
+    }
+    
     public void doSave() {
-        System.out.println("masuk dosave");
         CostCenter costCenter = getEntityFromViewModel(costCenterModel);
         try {
             if (isEdit) {
@@ -191,7 +177,6 @@ public class CostCenterFormController extends BaseController{
         }
         costCenter.setCode(costCenterModel.getCode());
         costCenter.setName(costCenterModel.getName());
-//        costCenter.setLevel(costCenterModel.getLevel());
         costCenter.setDescription(costCenterModel.getDescription());
         costCenter.setBalance(costCenterModel.getBalance());
         
@@ -206,22 +191,6 @@ public class CostCenterFormController extends BaseController{
         isEdit = null;
         isParentDisabled = null;
 
-    }
-    
-    public void onChangeManageBreakTime() throws Exception {
-        //kalo get level = 1 disable parent idnya
-//        isParentDisabled = costCenterModel.getLevel() <= 1 ? true : false;
-//        System.out.println(isParentDisabled + " = " + costCenterModel.getLevel());
-        //get level
-//        Integer level = costCenterModel.getLevel();
-        costCenterParent = new HashMap<String, Long>();
-        
-        //kalo level 3, tampilkan level 2, dst
-        for (CostCenter costCenter : costCenterList) {
-//            if((level-1) == costCenter.getLevel()){
-                costCenterParent.put(costCenter.getName(), costCenter.getId());
-//            }
-        } 
     }
 }
 

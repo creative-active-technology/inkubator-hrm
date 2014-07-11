@@ -116,11 +116,9 @@ public class UnitKerjaViewController  extends BaseController{
         options.put("resizable", false);
         options.put("contentWidth", 400);
         options.put("contentHeight", 320);
-        
-//        options.put("closable", false);
-//        options.put("height", "auto");
-
-//        options.put("contentHeight", 340);
+        //options.put("closable", false);
+        //options.put("height", "auto");
+        //options.put("contentHeight", 340);
         RequestContext.getCurrentInstance().openDialog("unit_kerja_form", options, null);
     }
     

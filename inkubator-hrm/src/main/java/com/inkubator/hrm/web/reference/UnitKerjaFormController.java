@@ -7,10 +7,10 @@ package com.inkubator.hrm.web.reference;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.City;
-import com.inkubator.hrm.entity.CostCenter;
 import com.inkubator.hrm.entity.UnitKerja;
 import com.inkubator.hrm.service.CityService;
 import com.inkubator.hrm.service.UnitKerjaService;
+import com.inkubator.hrm.util.MapUtil;
 import com.inkubator.hrm.web.model.UnitKerjaModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -108,11 +109,10 @@ public class UnitKerjaFormController extends BaseController{
     @PostConstruct
     @Override
     public void initialization() {
-        System.out.println("init");
         super.initialization();
         String param = FacesUtil.getRequestParameter("param");
         unitKerjaModel = new UnitKerjaModel();
-        listDropDownCity = new HashMap<String, Long>();
+        listDropDownCity = new TreeMap<>();
         try {
             cityList = cityService.getAllData();
         } catch (Exception ex) {
@@ -121,11 +121,12 @@ public class UnitKerjaFormController extends BaseController{
         for (City citiesList : cityList) {
             listDropDownCity.put(citiesList.getCityName(), citiesList.getId());                
         }
+        MapUtil.sortByValue(listDropDownCity);
         try {
             if (param != null) {
-
-                isEdit = Boolean.TRUE;
+                
                 UnitKerja unitKerja = unitKerjaService.getEntiyByPK(Long.parseLong(param));
+                isEdit = Boolean.TRUE;
                 unitKerjaModel.setId(unitKerja.getId());
                 unitKerjaModel.setCode(unitKerja.getCode());
                 unitKerjaModel.setName(unitKerja.getName());
@@ -140,7 +141,6 @@ public class UnitKerjaFormController extends BaseController{
     }
     
     public void doSave() throws Exception {
-        System.out.println("masuk dosave");
         UnitKerja unitKerja = getEntityFromViewModel(unitKerjaModel);
         try {
             if (isEdit) {
@@ -157,9 +157,6 @@ public class UnitKerjaFormController extends BaseController{
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
-            //cleanAndExit();
-
-//        cleanAndExit();
     }
     
     private UnitKerja getEntityFromViewModel(UnitKerjaModel unitKerjaModel) throws Exception {

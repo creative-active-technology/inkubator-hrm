@@ -21,5 +21,7 @@ public interface SpecificationAbilityDao extends IDAO<SpecificationAbility> {
 	public Long getTotalByName(String name);
 	
 	public Long getTotalByNameAndNotId(String name, Long id);
+        
+        public SpecificationAbility getByName(String name);
 
 }

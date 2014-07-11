@@ -36,19 +36,19 @@ public class UnitKerjaServiceImpl extends IServiceImpl implements UnitKerjaServi
     
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<UnitKerja> getByParam(UnitKerjaSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
+    public List<UnitKerja> getByParam(UnitKerjaSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception{
         return this.unitKerjaDao.getByParam(searchParameter, firstResult, maxResults, order);
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getTotalUnitKerjaByParam(UnitKerjaSearchParameter searchParameter) {
+    public Long getTotalUnitKerjaByParam(UnitKerjaSearchParameter searchParameter) throws Exception{
         return this.unitKerjaDao.getTotalUnitKerjaByParam(searchParameter);
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getByUnitKerjaCode(String code) {
+    public Long getByUnitKerjaCode(String code) throws Exception{
         return this.unitKerjaDao.getByUnitKerjaCode(code);
     }
 
@@ -241,7 +241,7 @@ public class UnitKerjaServiceImpl extends IServiceImpl implements UnitKerjaServi
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ,propagation = Propagation.SUPPORTS, timeout = 30)
-    public List<UnitKerja> getAllDataWithCity(UnitKerjaSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
+    public List<UnitKerja> getAllDataWithCity(UnitKerjaSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception{
         return unitKerjaDao.getAllDataWithCity(searchParameter, firstResult, maxResults, order);
     }
 

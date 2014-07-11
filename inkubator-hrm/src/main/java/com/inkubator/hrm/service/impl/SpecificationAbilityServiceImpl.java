@@ -38,10 +38,10 @@ public class SpecificationAbilityServiceImpl extends IServiceImpl implements Spe
 	}
 
 	@Override
-	public List<SpecificationAbility> getAllData() throws Exception {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
-
-	}
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ,propagation = Propagation.SUPPORTS, timeout = 30)
+        public List<SpecificationAbility> getAllData() throws Exception {
+            return specificationAbilityDao.getAllData();
+        }
 
 	@Override
 	public List<SpecificationAbility> getAllData(Boolean arg0) throws Exception {
@@ -268,5 +268,11 @@ public class SpecificationAbilityServiceImpl extends IServiceImpl implements Spe
 	public Long getTotalByParam(SpecificationAbilitySearchParameter parameter) throws Exception {
 		return this.specificationAbilityDao.getTotalByParam(parameter);
 	}
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public SpecificationAbility getByName(String name) throws Exception {
+        return specificationAbilityDao.getByName(name);
+    }
 
 }

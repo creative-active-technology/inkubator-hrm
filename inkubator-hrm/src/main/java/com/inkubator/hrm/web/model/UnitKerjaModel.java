@@ -12,11 +12,20 @@ import java.io.Serializable;
  */
 public class UnitKerjaModel implements Serializable{
     private Long id;
+    private Long cityId;
     private String code;
     private String name;
     private String location;
-    private Long cityId;
 
+    
+    public Long getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(Long cityId) {
+        this.cityId = cityId;
+    }
+    
     public Long getId() {
         return id;
     }
@@ -24,7 +33,6 @@ public class UnitKerjaModel implements Serializable{
     public void setId(Long id) {
         this.id = id;
     }
-
     
     public String getCode() {
         return code;
@@ -49,14 +57,4 @@ public class UnitKerjaModel implements Serializable{
     public void setLocation(String location) {
         this.location = location;
     }
-
-    public Long getCityId() {
-        return cityId;
-    }
-
-    public void setCityId(Long cityId) {
-        this.cityId = cityId;
-    }
-    
-    
 }

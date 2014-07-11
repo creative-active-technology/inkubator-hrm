@@ -17,5 +17,7 @@ public interface SpecificationAbilityService extends IService<SpecificationAbili
 	public List<SpecificationAbility> getByParam(SpecificationAbilitySearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception;
 
 	public Long getTotalByParam(SpecificationAbilitySearchParameter parameter) throws Exception;
+        
+        public SpecificationAbility getByName(String name) throws Exception;
 
 }

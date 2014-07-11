@@ -16,8 +16,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
@@ -136,11 +134,9 @@ public class CostCenterViewController extends BaseController{
         options.put("resizable", false);
         options.put("contentWidth", 400);
         options.put("contentHeight", 420);
-        
-//        options.put("closable", false);
-//        options.put("height", "auto");
-
-//        options.put("contentHeight", 340);
+        //options.put("closable", false);
+        //options.put("height", "auto");
+        //options.put("contentHeight", 340);
         RequestContext.getCurrentInstance().openDialog("cost_center_form", options, null);
     }
         
