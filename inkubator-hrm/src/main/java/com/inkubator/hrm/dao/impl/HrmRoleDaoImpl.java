@@ -74,4 +74,10 @@ public class HrmRoleDaoImpl extends IDAOImpl<HrmRole> implements HrmRoleDao{
 		criteria.setFetchMode("hrmMenuRoles.hrmMenu", FetchMode.JOIN);
 		return (HrmRole) criteria.uniqueResult();
 	}
+
+
+	@Override
+	public HrmRole updateAndMerge(HrmRole role) {
+		return (HrmRole) getCurrentSession().merge(role);
+	}
 }

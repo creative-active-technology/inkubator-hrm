@@ -132,7 +132,7 @@ public class RoleFormController extends BaseController {
                 MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "role_form.error_duplicate_role_name",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             } else {
-                hrmRoleService.save(hrmRole);
+                hrmRoleService.save(hrmRole, menus);
                 MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             }
@@ -149,7 +149,7 @@ public class RoleFormController extends BaseController {
                 MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "role_form.error_duplicate_role_name",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             } else {
-                hrmRoleService.update(hrmRole);
+                hrmRoleService.update(hrmRole, menus);
                 MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             }
