@@ -40,8 +40,8 @@
                                 <h:outputLabel for="codeId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 60%">
-                            	<p:inputText id="codeId" title="#{appmsg['functiongroup.function_group_code']}" value="#{golonganJabatanFormController.model.code}" 
-                                    		 required="true" maxlength="4" styleClass="isitext_hrm" style="width:235px;" >
+                                <p:inputText id="codeId" title="#{appmsg['functiongroup.function_group_code']}" value="#{golonganJabatanFormController.model.code}" 
+                                             required="true" maxlength="4" styleClass="isitext_hrm" style="width:235px;" >
                                 </p:inputText>
                             </p:column>
                         </p:row>
@@ -59,7 +59,7 @@
                             </p:column>
                             <p:column  style="width: 70%">
                                 <p:selectBooleanButton value="#{golonganJabatanFormController.model.overtime}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
-	                                                   offIcon="ui-icon-close" styleClass="label_button" style="margin-bottom: 5px;"/>
+                                                       offIcon="ui-icon-close" styleClass="label_button" style="margin-bottom: 5px;"/>
                             </p:column>
                         </p:row>
                         <p:row>
@@ -71,9 +71,9 @@
                             </p:column>
                             <p:column  style="width: 70%">
                                 <p:selectOneMenu id="pangkatId" styleClass="isitext_hrm" required="true" filter="true" value="#{golonganJabatanFormController.model.pangkatId}">
-	                           		<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-	                                <f:selectItems value="#{golonganJabatanFormController.model.pangkats.entrySet()}" var="pangkat" itemValue="#{pangkat.key}" itemLabel="#{pangkat.value}"/>
-	                            </p:selectOneMenu>
+                                    <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                    <f:selectItems value="#{golonganJabatanFormController.model.pangkats.entrySet()}" var="pangkat" itemValue="#{pangkat.key}" itemLabel="#{pangkat.value}"/>
+                                </p:selectOneMenu>
                             </p:column>
                         </p:row>
                         <p:row>
@@ -82,6 +82,7 @@
                             </p:column>
                         </p:row>                                                                        
                     </p:panelGrid>
+                    <p:focus context="formFunctionGroupFormId" />
                     <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
                     <h:panelGrid columns="2" style="margin-bottom: -30px!important">
                         <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formFunctionGroupFormId,:growlFunctionGroupFormlId"

@@ -45,10 +45,8 @@
                                     <p:commandButton value="Export to XLS" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
                                         <pe:exporter target="tableRoleId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Role_User"/>
                                     </p:commandButton>
-                                    <p:commandButton value="#{appmsg['global.add']}" actionListener="#{roleViewController.doAdd}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" icon="ui-icon-document"
-                                                     styleClass="label_button" ajax="true">
-                                        <p:ajax event="dialogReturn" listener="#{roleViewController.onDialogReturn}"  update="tableRoleId,:roleViewGrowlId"/>
-                                    </p:commandButton>
+                                    <p:commandButton value="#{appmsg['global.add']}" action="#{roleViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" icon="ui-icon-document"
+                                                     styleClass="label_button"/>
                                     <p:commandButton value="#{appmsg['global.close']}"  styleClass="label_button" action="#{roleViewController.doClose()}" title="#{appmsg['global.close']}" icon="ui-icon-home"
                                                      label="#{appmsg['global.close']}"/>
                                 </h:panelGrid>
@@ -97,7 +95,6 @@
                                 <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
                                                   action="#{roleViewController.doEdit()}" >
                                     <f:setPropertyActionListener value="#{roleViewData}" target="#{roleViewController.selectedHrmRole}" />
-                                    <p:ajax event="dialogReturn" listener="#{roleViewController.onDialogReturn}"  update="tableRoleId,:roleViewGrowlId"/>
                                 </p:commandButton> 
                             </p:column>
                             <f:facet name="footer">
@@ -112,11 +109,7 @@
                                 <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
                             </h:panelGrid>
                         </p:blockUI>
-<!--                        <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
-                            <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
-                        </p:dialog>-->
                     </h:form>
-                    <!--</p:panel>-->
                 </div>
                 <p:dialog widgetVar="confirmDialogHrmRole" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
                           appendTo="@(body)" resizable="false" id="confirmDialogHrmRoleId" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
@@ -156,22 +149,6 @@
                             <p:column style="color: #003366"><p:outputLabel value="#{appmsg['role_view.role_description']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{roleViewController.selectedHrmRole.description}"/> </p:column>
                         </p:row>
-                        <!--                        <p:row>
-                                                    <p:column style="color: #003366"><p:outputLabel value="Create By" style="font-weight: bold"/></p:column>
-                                                    <p:column><p:outputLabel value="#{spiRoleViewController.selectedSpiRole.createdBy}"/> </p:column>
-                                                </p:row>
-                                                <p:row>
-                                                    <p:column style="color: #003366"><p:outputLabel value="Create Date" style="font-weight: bold"/></p:column>
-                                                    <p:column><p:outputLabel value="#{spiRoleViewController.selectedSpiRole.createdOn}"/> </p:column>
-                                                </p:row>
-                                                <p:row>
-                                                    <p:column style="color: #003366"><p:outputLabel value="Update By" style="font-weight: bold"/></p:column>
-                                                    <p:column><p:outputLabel value="#{spiRoleViewController.selectedSpiRole.updatedBy}"/> </p:column>
-                                                </p:row>
-                                                <p:row>
-                                                    <p:column style="color: #003366"><p:outputLabel value="Update On" style="font-weight: bold"/></p:column>
-                                                    <p:column><p:outputLabel value="#{spiRoleViewController.selectedSpiRole.updatedOn}"/> </p:column>
-                                                </p:row>-->
                         <f:facet name="footer">
                             <p:row>
                                 <p:column colspan="2"><p:outputLabel value="User Account - Role" styleClass="label_hrm" style="margin-left: 5px "/></p:column>

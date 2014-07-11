@@ -8,7 +8,6 @@ import com.inkubator.hrm.web.search.CountrySearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -88,12 +87,9 @@ public class CountryViewController extends BaseController {
         lazyDataCountry = null;
     }
 
-    public void doDetail() {
-        try {
-            selectedCountry = this.countryService.getEntiyByPK(selectedCountry.getId());
-        } catch (Exception ex) {
-            LOGGER.error("Error", ex);
-        }
+    public String doDetail() {
+        return "/protected/reference/country_detail.htm?faces-redirect=true&execution=e" + selectedCountry.getId();
+        
     }
 
     public void doDelete() {
@@ -109,26 +105,12 @@ public class CountryViewController extends BaseController {
         }
     }
 
-    public void doAdd() {
-        showDialog(null);
+    public String doAdd() {
+        return "/protected/reference/country_form.htm?faces-redirect=true";
     }
 
-    public void doUpdate() {
-        Map<String, List<String>> dataToSend = new HashMap<>();
-        List<String> values = new ArrayList<>();
-        values.add(String.valueOf(selectedCountry.getId()));
-        dataToSend.put("param", values);
-        showDialog(dataToSend);
-    }
-
-    private void showDialog(Map<String, List<String>> params) {
-        Map<String, Object> options = new HashMap<>();
-        options.put("modal", true);
-        options.put("draggable", true);
-        options.put("resizable", false);
-        options.put("contentWidth", 500);
-        options.put("contentHeight", 475);
-        RequestContext.getCurrentInstance().openDialog("country_form", options, params);
+    public String doUpdate() {
+        return "/protected/reference/country_form.htm?faces-redirect=true&execution=e" + selectedCountry.getId();
     }
 
     @Override
@@ -138,5 +120,4 @@ public class CountryViewController extends BaseController {
         super.onDialogReturn(event);
     }
 
-    
 }

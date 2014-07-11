@@ -28,4 +28,6 @@ public interface JabatanDao extends IDAO<Jabatan> {
     public Jabatan getJabatanByIdWithDetail(Long id);
 
     public List<Jabatan> getJabatansByLevel(Integer level);
+
+    public Jabatan getByIdWithJobDeskripsi(long id) throws Exception;
 }

@@ -5,6 +5,17 @@
  */
 package com.inkubator.hrm.web.account;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+
+import org.hibernate.exception.ConstraintViolationException;
+import org.primefaces.model.LazyDataModel;
+import org.springframework.dao.DataIntegrityViolationException;
+
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.HrmRole;
 import com.inkubator.hrm.service.HrmRoleService;
@@ -13,21 +24,6 @@ import com.inkubator.hrm.web.search.HrmRoleSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
-import org.hibernate.exception.ConstraintViolationException;
-import org.primefaces.context.RequestContext;
-import org.primefaces.event.SelectEvent;
-import org.primefaces.model.LazyDataModel;
-import org.springframework.dao.DataIntegrityViolationException;
 
 /**
  *
@@ -43,6 +39,22 @@ public class RoleViewController extends BaseController {
     private HrmRoleService hrmRoleService;
     private HrmRole selectedHrmRole;
 
+    @PostConstruct
+    @Override
+    public void initialization() {
+        super.initialization();
+        hrmRoleSearchParameter = new HrmRoleSearchParameter();
+    }
+    
+    @PreDestroy
+    private void cleanAndExit() {
+        hrmRoleSearchParameter=null;
+        lazyDataHrmRole=null;
+        hrmRoleService=null;
+        selectedHrmRole=null;
+        
+    }
+    
     public HrmRole getSelectedHrmRole() {
         return selectedHrmRole;
     }
@@ -74,14 +86,6 @@ public class RoleViewController extends BaseController {
         this.lazyDataHrmRole = lazyDataHrmRole;
     }
 
-    @PostConstruct
-    @Override
-    public void initialization() {
-        super.initialization();
-        hrmRoleSearchParameter = new HrmRoleSearchParameter();
-
-    }
-
     public void doSearch() {
         lazyDataHrmRole = null;
     }
@@ -109,39 +113,12 @@ public class RoleViewController extends BaseController {
         }
     }
 
-    public void doAdd() {
-        Map<String, Object> options = new HashMap<>();
-        options.put("modal", true);
-        options.put("draggable", true);
-        options.put("resizable", false);
-        options.put("contentWidth", 400);
-        options.put("contentHeight", 340);
-//        options.put("closable", false);
-//        options.put("height", "auto");
-
-//        options.put("contentHeight", 340);
-        RequestContext.getCurrentInstance().openDialog("role_form", options, null);
+    public String doAdd() {
+    	return "/protected/account/role_form.htm?faces-redirect=true";
     }
 
-    public void doEdit() {
-        Map<String, Object> options = new HashMap<>();
-        options.put("modal", true);
-        options.put("draggable", true);
-        options.put("resizable", false);
-        options.put("contentWidth", 400);
-        options.put("contentHeight", 340);
-        Map<String, List<String>> dataToSend = new HashMap<>();
-        List<String> dataIsi = new ArrayList<>();
-        dataIsi.add(String.valueOf(selectedHrmRole.getId()));
-        dataToSend.put("param", dataIsi);
-        RequestContext.getCurrentInstance().openDialog("role_form", options, dataToSend);
-    }
-
-    @Override
-    public void onDialogReturn(SelectEvent event) {
-        lazyDataHrmRole = null;
-       super.onDialogReturn(event);
-
+    public String doEdit() {
+    	return "/protected/account/role_form.htm?faces-redirect=true&execution=e" + selectedHrmRole.getId();
     }
 
     public void onDelete() {
@@ -150,14 +127,5 @@ public class RoleViewController extends BaseController {
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
-    }
-
-    @PreDestroy
-    private void cleanAndExit() {
-        hrmRoleSearchParameter=null;
-        lazyDataHrmRole=null;
-        hrmRoleService=null;
-        selectedHrmRole=null;
-        
-    }
+    } 
 }

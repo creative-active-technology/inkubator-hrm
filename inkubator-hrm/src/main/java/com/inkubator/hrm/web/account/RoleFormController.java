@@ -5,21 +5,30 @@
  */
 package com.inkubator.hrm.web.account;
 
-import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.HrmRole;
-import com.inkubator.hrm.service.HrmRoleService;
-import com.inkubator.hrm.web.model.RoleModel;
-import com.inkubator.webcore.controller.BaseController;
-import com.inkubator.webcore.util.FacesUtil;
-import com.inkubator.webcore.util.MessagesResourceUtil;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+
 import org.apache.commons.lang3.StringUtils;
 import org.primefaces.context.RequestContext;
+
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.entity.HrmMenu;
+import com.inkubator.hrm.entity.HrmMenuRole;
+import com.inkubator.hrm.entity.HrmRole;
+import com.inkubator.hrm.service.HrmRoleService;
+import com.inkubator.hrm.web.model.RoleModel;
+import com.inkubator.webcore.controller.BaseController;
+import com.inkubator.webcore.util.FacesUtil;
+import com.inkubator.webcore.util.MessagesResourceUtil;
 
 /**
  *
@@ -31,33 +40,46 @@ public class RoleFormController extends BaseController {
 
     private RoleModel roleModel;
     private Boolean isEdit;
+    private List<HrmMenu> menus;
+    private HrmMenu selectedMenu;
     @ManagedProperty(value = "#{hrmRoleService}")
     private HrmRoleService hrmRoleService;
-
-    public void setHrmRoleService(HrmRoleService hrmRoleService) {
-        this.hrmRoleService = hrmRoleService;
-    }
+    
 
     @PostConstruct
     @Override
     public void initialization() {
-        String param = FacesUtil.getRequestParameter("param");
-        roleModel = new RoleModel();
-        isEdit = Boolean.FALSE;
-        if (param != null) {
-            try {
-                HrmRole hrmRole = hrmRoleService.getEntiyByPK(Long.parseLong(param));
-                roleModel.setId(hrmRole.getId());
-                roleModel.setRoleName(hrmRole.getRoleName());
-                roleModel.setDescription(hrmRole.getDescription());
-                isEdit = Boolean.TRUE;
-             
-
-            } catch (Exception ex) {
-                LOGGER.error("Error", ex);
-            }
+    	try {
+    		roleModel = new RoleModel();
+    		menus = new ArrayList<HrmMenu>();
+    		
+	        String param = FacesUtil.getRequestParameter("execution");	        
+	        isEdit = param != null;
+	        if(isEdit) {	            
+	        	HrmRole hrmRole = hrmRoleService.getEntityByPkWithMenus(Long.parseLong(param.substring(1)));
+	            roleModel.setId(hrmRole.getId());
+	            roleModel.setRoleName(hrmRole.getRoleName());
+	            roleModel.setDescription(hrmRole.getDescription());
+	            for(HrmMenuRole menuRoles : hrmRole.getHrmMenuRoles()){
+	            	menus.add(menuRoles.getHrmMenu());
+	            }
+	        }
+    	} catch (Exception ex) {
+            LOGGER.error("Error", ex);
         }
+    }
+    
+    @PreDestroy
+    private void cleanAndExit() {
+        roleModel = null;
+        isEdit = null;
+        hrmRoleService = null;
+        menus = null;
+        selectedMenu =  null;
+    }
 
+    public void setHrmRoleService(HrmRoleService hrmRoleService) {
+        this.hrmRoleService = hrmRoleService;
     }
 
     public RoleModel getRoleModel() {
@@ -76,39 +98,53 @@ public class RoleFormController extends BaseController {
         this.isEdit = isEdit;
     }
 
-    public void doSave() {
+    public HrmMenu getSelectedMenu() {
+		return selectedMenu;
+	}
+
+	public void setSelectedMenu(HrmMenu selectedMenu) {
+		this.selectedMenu = selectedMenu;
+	}
+
+	public List<HrmMenu> getMenus() {
+		return menus;
+	}
+
+	public void setMenus(List<HrmMenu> menus) {
+		this.menus = menus;
+	}
+
+	public String doSave() {
         HrmRole hrmRole = getEntityFromView(roleModel);
         if (isEdit) {
             doUpdate(hrmRole);
         } else {
             doInsert(hrmRole);
         }
-        cleanAndExit();
+        return "/protected/account/role_view.htm?faces-redirect=true";
     }
-
-    public void doClear() {
-        roleModel = new RoleModel();
+    
+    public String doBack() {
+        return "/protected/account/role_view.htm?faces-redirect=true";
     }
 
     public void doInsert(HrmRole hrmRole) {
         try {
             boolean isDuplicate = hrmRoleService.getByRoleName(roleModel.getRoleName()) != null;
             if (isDuplicate) {
-                System.out.println(" data sudah ada");
                 MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "role_form.error_duplicate_role_name",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             } else {
                 hrmRoleService.save(hrmRole);
-                RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
+                MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
+                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             }
-
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
     }
 
     public void doUpdate(HrmRole hrmRole) {
-
         try {
             HrmRole hrmRoleExisting = hrmRoleService.getEntiyByPK(hrmRole.getId());
             boolean isDuplicate = (hrmRoleService.getByRoleName(hrmRole.getRoleName()) != null && !StringUtils.equals(hrmRoleExisting.getRoleName(), hrmRole.getRoleName()));
@@ -116,16 +152,32 @@ public class RoleFormController extends BaseController {
                 MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "role_form.error_duplicate_role_name",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             } else {
-                System.out.println(" tidak duplicate");
                 hrmRoleService.update(hrmRole);
-                System.out.println(" beres update");
-                RequestContext.getCurrentInstance().closeDialog(HRMConstant.UPDATE_CONDITION);
-                System.out.println(" beres update");
+                MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
+                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             }
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
-
+    }
+    
+    public void doDeleteMenu(){
+    	menus.remove(selectedMenu);
+    }
+    
+    public void doShowMenuList(){
+    	Map<String, List<String>> dataToSend = new HashMap<>();
+        List<String> values = new ArrayList<>();
+        values.add(String.valueOf(roleModel.getId()));
+        dataToSend.put("roleId", values);
+        
+    	Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", true);
+        options.put("contentWidth", 800);
+        options.put("contentHeight", 400);
+        RequestContext.getCurrentInstance().openDialog("role_menus_form", options, dataToSend);
     }
 
     public HrmRole getEntityFromView(RoleModel roleModel) {
@@ -136,12 +188,5 @@ public class RoleFormController extends BaseController {
         hrmRole.setRoleName(roleModel.getRoleName());
         hrmRole.setDescription(roleModel.getDescription());
         return hrmRole;
-    }
-
-    @PreDestroy
-    private void cleanAndExit() {
-        roleModel = null;
-        isEdit = null;
-        hrmRoleService = null;
     }
 }

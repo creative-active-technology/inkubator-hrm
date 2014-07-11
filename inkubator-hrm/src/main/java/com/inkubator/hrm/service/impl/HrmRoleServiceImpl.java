@@ -224,4 +224,11 @@ public class HrmRoleServiceImpl extends IServiceImpl implements HrmRoleService {
         return this.hrmRoleDao.getByRoleName(roleName);
     }
 
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+	public HrmRole getEntityByPkWithMenus(long id) {
+		return this.hrmRoleDao.getEntityByPkWithMenus(id);
+		
+	}
+
 }

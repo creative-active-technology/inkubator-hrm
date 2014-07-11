@@ -1,0 +1,126 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/dialog_layout.xhtml">
+            <ui:define name="windowTitle">
+
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="formRoleGrowl" globalOnly="true" showDetail="true"/>
+                <h:form id="jobDeskrisoForm">
+                    <h:panelGrid  columns="2">
+                        <p:graphicImage library="images" name="job_descriptions.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="Jobs Deskripsi Form" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['jabtan_view.header2']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="1" style="margin-bottom: 5px;margin-left: 0px">
+                        <h:outputLabel value="#{appmsg['role_form.info1']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                        <!--<h:outputLabel value="#{appmsg['role_form.info2']}" styleClass="label_hrm" style="font-weight: normal!important"/>-->
+                    </h:panelGrid> 
+                    <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
+
+                        <p:row>
+                            <p:column style="width: 40%">
+                                <p:outputLabel for="kategoryTugasId" value="Kategori Tugas" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="kategoryTugasId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                                <p:selectOneRadio id="kategoryTugasId" styleClass="isitext_hrm" required="true"  value="#{jabatanDeskripsiFormController.jabatanDeskripsiModel.categoryTugas}">
+                                    <!--Cek HRM Constanta..-->
+                                    <f:selectItem itemLabel="#{appmsg['jobs_desk.primer_taks']}" itemValue="1" />
+                                    <f:selectItem itemLabel="#{appmsg['jobs_desk.sekunder_task']}" itemValue="2" />
+                                </p:selectOneRadio>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="kategoryTugasId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 40%">
+                                <p:outputLabel for="typeTimeId" value="Type Waktu" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="typeTimeId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                                <p:selectOneRadio id="typeTimeId" styleClass="isitext_hrm" required="true"  value="#{jabatanDeskripsiFormController.jabatanDeskripsiModel.typeWaktu}" >
+                                    <f:selectItem itemLabel="#{appmsg['jobs_desk.time_daily']}" itemValue="1" />
+                                    <f:selectItem itemLabel="#{appmsg['jobs_desk.time_monthly']}" itemValue="2" />
+                                </p:selectOneRadio>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="typeTimeId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 27%">
+                                <p:outputLabel for="description" value="#{appmsg['role_view.role_description']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="description" value=":"  styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 60%" >
+                                <p:inputTextarea id="description" rows="5" cols="37" counter="counter" maxlength="500" value="#{jabatanDeskripsiFormController.jabatanDeskripsiModel.deskripsi}" 
+                                                 style="width: 230px; height: 89px;" counterTemplate="#{appmsg['global.remaining']}"   autoResize="true" required="true"
+                                                 label="#{appmsg['role_view.role_description']}" title="#{appmsg['role_view.role_description']}" />
+
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="description"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 25%">
+                                <p:outputLabel  value="" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel  value=""  styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 60%" >
+                                <h:outputText id="counter" />
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <p:focus context="jobDeskrisoForm" />
+                    <p:separator style="margin-top: 10px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="2" style="margin-bottom: -30px!important">
+                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="jobDeskrisoForm,:formRoleGrowl"
+                                         action="#{jabatanDeskripsiFormController.doSave()}" styleClass="label_button"
+                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
+                                         icon="ui-icon-disk"
+                                         id="buttonSave" title="#{appmsg['global.save']}"/>
+                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}"
+                                         process="@this" icon="ui-icon-refresh" id="cleareId" update="jobDeskrisoForm"  styleClass="label_button" >  
+                            <p:resetInput target="jobDeskrisoForm" />  
+                        </p:commandButton>
+                    </h:panelGrid>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

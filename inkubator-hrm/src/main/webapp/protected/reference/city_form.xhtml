@@ -11,159 +11,136 @@
 
     </h:head>
     <h:body>
-        <ui:composition template="/templates/dialog_layout.xhtml">
+        <ui:composition template="/templates/master_layout_full.xhtml">
 
             <ui:define name="windowTitle">
-
+                City Form     
             </ui:define>
 
             <ui:define name="jsInclude">
                 <script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"></script>
-                
+
             </ui:define>
             <ui:define name="center">
                 <p:growl id="growlCityFormlId" globalOnly="true" showDetail="true"/>
+                
                 <h:form id="formCityFormId">
+                    <div id="box_bg" style="margin: 10px">
+                        <h:panelGrid  columns="2">
+                            <p:graphicImage library="images" name="city.png" height="36" width="36" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="#{appmsg['city.form_city']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['city.city_data_from_reference']}" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator  />
+                        <!--                            <h:panelGrid columns="1" style="margin-bottom: 5px;margin-left: 0px">
+                                                        <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                                                        <h:outputLabel value="#{appmsg['city.dialog_info_3']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                                                        <h:outputLabel value="#{appmsg['city.dialog_info']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                                                        <h:outputLabel value="#{appmsg['city.dialog_info_2']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                                                        <h:outputLabel value="#{appmsg['city.dialog_info_4']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                                                    </h:panelGrid> -->
+                        <p:panelGrid style="width: 100%;margin-bottom: 5px;margin-top: 20px" styleClass="grid_border3" >
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel for="countryId" value="#{appmsg['country.country_name']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:focus for ="countryId">
+                                        <p:selectOneMenu id="countryId" value="#{cityFormController.cityModel.countryId}" required="true" valueChangeListener="#{cityFormController.countryChanged}" 
+                                                         style="width: 250px" filter="true" requiredMessage="#{appmsg['country.country_name_should_not_be_empty']}">
+                                            <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue="" />
+                                            <f:selectItems value="#{cityFormController.countrys}"  />
+                                            <p:ajax update="gmap, provinceIdA, provinceId" event="change" />
+                                        </p:selectOneMenu>
+                                        <p:messages for="countryId" />
+                                    </p:focus>
+                                </p:column>
+                                <p:column style="width: 50%" colspan="2" rowspan="6">
+                                    <h:outputLabel value="#{appmsg['country.dialog_info_5']}" styleClass="label_hrm" style="font-weight: normal!important;"/>
+                                    <p:gmap id="gmap" center="#{cityFormController.defaultLat},#{cityFormController.defaultLng} " zoom="4" type="HYBRID" style="width:600px;height:400px; margin-top: 10px;"
+                                            model="#{cityFormController.emptyModel}" widgetVar="map" >
+                                        <p:ajax event="pointSelect" listener="#{cityFormController.onPointSelect}" update="gmap,latitudeId, longitudeId, lat , lng" />
+                                    </p:gmap>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel for="provinceIdA" value="#{appmsg['city.province_name']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:selectOneMenu id="provinceIdA" value="#{cityFormController.cityModel.provinceId}" required="true" 
+                                                     style="width: 250px" filter="true" requiredMessage="#{appmsg['city.province_should_not_be_empty']}" disabled="#{cityFormController.disabled}">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue="" />
+                                        <f:selectItems value="#{cityFormController.provinces}"  />
+                                    </p:selectOneMenu>
+                                    <p:message id="provinceId" for="provinceId"/>
+                                    <p:message for="provinceIdA"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel for="codeId" value="#{appmsg['city.city_code']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 37%">
+                                    <p:inputText id="codeId" title="#{appmsg['city.city_code']}" value="#{cityFormController.cityModel.cityCode}" 
+                                                 required="true" requiredMessage="#{appmsg['city.city_code_should_not_be_empty']}" maxlength="8" styleClass="isitext_hrm" style="width:250px;" />
+                                    <p:message for="codeId"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel for="nameId" value="#{appmsg['city.city_name']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 37%">
+                                    <p:inputText id="nameId" title="#{appmsg['city.city_name']}" value="#{cityFormController.cityModel.cityName}" 
+                                                 required="true" requiredMessage="#{appmsg['city.city_name_should_not_be_empty']}" maxlength="60" styleClass="isitext_hrm" style="width:250px;" />
+                                    <p:message for="nameId"/>
+                                </p:column>
+                            </p:row>
 
-                    <h:panelGrid  columns="2">
-                        <h:column>
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel for="latitudeId" value="#{appmsg['city.latitude']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 37%">
+                                    <p:inputText id="latitudeId" title="#{appmsg['city.latitude']}" value="#{cityFormController.lat}" disabled="True"
+                                                 required="true" requiredMessage="#{appmsg['city.latitude_should_not_be_empty']}" maxlength="60" styleClass="isitext_hrm" style="width:250px;" />
+                                    <p:message for="latitudeId"/>
+                                </p:column>
+                            </p:row>
 
-                            <p:gmap id="gmap" center="#{cityFormController.defaultLat},#{cityFormController.defaultLng} " zoom="13" type="HYBRID" style="width:600px;height:400px"
-                                    model="#{cityFormController.emptyModel}" widgetVar="map" >
-                                <p:ajax event="pointSelect" listener="#{cityFormController.onPointSelect}" update="gmap,latitudeId, longitudeId, lat , lng" />
-                            </p:gmap>
-                        </h:column>
-                        <h:column>
-                            <h:panelGrid  columns="2">
-                                <p:graphicImage library="images" name="city.png" height="36" width="36" />
-                                <h:panelGroup layout="block">
-                                    <h:panelGrid>
-                                        <p:outputLabel value="#{appmsg['city.form_city']}" styleClass="header_big" />
-                                        <p:outputLabel value="#{appmsg['city.city_data_from_reference']}" styleClass="header_small_no_bold" />
-                                    </h:panelGrid>
-                                </h:panelGroup>
-                            </h:panelGrid>
-                            <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
-                            <h:panelGrid columns="1" style="margin-bottom: 5px;margin-left: 0px">
-                                <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
-                                <h:outputLabel value="#{appmsg['city.dialog_info_3']}" styleClass="label_hrm" style="font-weight: normal!important"/>
-                                <h:outputLabel value="#{appmsg['city.dialog_info']}" styleClass="label_hrm" style="font-weight: normal!important"/>
-                                <h:outputLabel value="#{appmsg['city.dialog_info_2']}" styleClass="label_hrm" style="font-weight: normal!important"/>
-                                <h:outputLabel value="#{appmsg['city.dialog_info_4']}" styleClass="label_hrm" style="font-weight: normal!important"/>
-                            </h:panelGrid> 
-                            <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
-                                <p:row>
-                                    <p:column style="width: 29%">
-                                        <p:outputLabel for="provinceId" value="#{appmsg['city.province_name']}" styleClass="label_hrm"/>
-                                    </p:column>
-                                    <p:column style="width: 1%">
-                                        <h:outputLabel for="provinceId" value=":" styleClass="label_hrm"/>
-                                    </p:column>
-                                    <p:column  style="width: 70%">
-                                        <p:focus for ="provinceId">
-                                            <p:selectOneMenu id="provinceId" value="#{cityFormController.cityModel.provinceId}" required="true"
-                                                             style="width: 250px" filter="true" requiredMessage="#{appmsg['city.province_should_not_be_empty']}">
-                                                <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                                <f:selectItems value="#{cityFormController.provinces}" />
-                                            </p:selectOneMenu>
-                                        </p:focus>
-                                    </p:column>
-                                </p:row>
-                                <p:row>
-                                    <p:column colspan="3">
-                                        <p:message for="provinceId"/>
-                                    </p:column>
-                                </p:row>
-                                <p:row>
-                                    <p:column style="width: 29%">
-                                        <p:outputLabel for="codeId" value="#{appmsg['city.city_code']}" styleClass="label_hrm"/>
-                                    </p:column>
-                                    <p:column style="width: 1%">
-                                        <h:outputLabel for="codeId" value=":" styleClass="label_hrm"/>
-                                    </p:column>
-                                    <p:column  style="width: 70%">
-                                        <p:inputText id="codeId" title="#{appmsg['city.city_code']}" value="#{cityFormController.cityModel.cityCode}" 
-                                                     required="true" requiredMessage="#{appmsg['city.city_code_should_not_be_empty']}" maxlength="8" styleClass="isitext_hrm" style="width:250px;" />
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel for="longitudeId" value="#{appmsg['city.longitude']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 37%">
+                                    <p:inputText id="longitudeId" title="#{appmsg['city.longitude']}" value="#{cityFormController.lng}"  disabled="True"
+                                                 required="true" requiredMessage="#{appmsg['city.longitude_should_not_be_empty']}" maxlength="60" styleClass="isitext_hrm" style="width:250px;" />
+                                    <h:inputHidden id="lat" value="#{cityFormController.lat}" />
+                                    <h:inputHidden id="lng" value="#{cityFormController.lng}" />
+                                    <p:message for="longitudeId"/>
+                                </p:column>
+                            </p:row>
 
-                                    </p:column>
-                                </p:row>
-                                <p:row>
-                                    <p:column colspan="3">
-                                        <p:message for="codeId"/>
-                                    </p:column>
-                                </p:row>
-                                <p:row>
-                                    <p:column style="width: 29%">
-                                        <p:outputLabel for="nameId" value="#{appmsg['city.city_name']}" styleClass="label_hrm"/>
-                                    </p:column>
-                                    <p:column style="width: 1%">
-                                        <h:outputLabel for="nameId" value=":" styleClass="label_hrm"/>
-                                    </p:column>
-                                    <p:column  style="width: 70%">
-                                        <p:inputText id="nameId" title="#{appmsg['city.city_name']}" value="#{cityFormController.cityModel.cityName}" 
-                                                     required="true" requiredMessage="#{appmsg['city.city_name_should_not_be_empty']}" maxlength="60" styleClass="isitext_hrm" style="width:250px;" />
-
-                                    </p:column>
-                                </p:row>
-                                <p:row>
-                                    <p:column colspan="3">
-                                        <p:message for="nameId"/>
-                                    </p:column>
-                                </p:row>
-
-                                <p:row>
-                                    <p:column style="width: 29%">
-                                        <p:outputLabel for="latitudeId" value="#{appmsg['city.latitude']}" styleClass="label_hrm"/>
-                                    </p:column>
-                                    <p:column style="width: 1%">
-                                        <h:outputLabel for="latitudeId" value=":" styleClass="label_hrm"/>
-                                    </p:column>
-                                    <p:column  style="width: 70%">
-                                        <p:inputText id="latitudeId" title="#{appmsg['city.latitude']}" value="#{cityFormController.lat}" disabled="True"
-                                                     required="true" requiredMessage="#{appmsg['city.latitude_should_not_be_empty']}" maxlength="60" styleClass="isitext_hrm" style="width:250px;" />
-
-                                    </p:column>
-                                </p:row>
-                                <p:row>
-                                    <p:column colspan="3">
-                                        <p:message for="latitudeId"/>
-                                    </p:column>
-                                </p:row>
-
-                                <p:row>
-                                    <p:column style="width: 29%">
-                                        <p:outputLabel for="longitudeId" value="#{appmsg['city.longitude']}" styleClass="label_hrm"/>
-                                    </p:column>
-                                    <p:column style="width: 1%">
-                                        <h:outputLabel for="longitudeId" value=":" styleClass="label_hrm"/>
-                                    </p:column>
-                                    <p:column  style="width: 70%">
-                                        <p:inputText id="longitudeId" title="#{appmsg['city.longitude']}" value="#{cityFormController.lng}"  disabled="True"
-                                                     required="true" requiredMessage="#{appmsg['city.longitude_should_not_be_empty']}" maxlength="60" styleClass="isitext_hrm" style="width:250px;" />
-                                        <h:inputHidden id="lat" value="#{cityFormController.lat}" />
-                                        <h:inputHidden id="lng" value="#{cityFormController.lng}" />
-                                    </p:column>
-                                </p:row>
-                                <p:row>
-                                    <p:column colspan="3">
-                                        <p:message for="longitudeId"/>
-                                    </p:column>
-                                </p:row>
-
-                            </p:panelGrid>
-                            <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
-                            <h:panelGrid columns="2" style="margin-bottom: -30px!important">
-                                <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formCityFormId,:growlCityFormlId"
-                                                 action="#{cityFormController.doSave()}" styleClass="isitext_hrm"
-                                                 style="margin-right: 5px" label="#{appmsg['global.save']}"
-                                                 icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
-                                <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formCityFormId"
-                                                 icon="ui-icon-refresh" styleClass="isitext_hrm" >  
-                                    <p:resetInput target="formCityFormId" />  
-                                </p:commandButton>
-                            </h:panelGrid>
-                        </h:column>
-                    </h:panelGrid>
+                        </p:panelGrid>
+                        <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
+                        <div style="margin-bottom: 5px">
+                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formCityFormId"
+                                             action="#{cityFormController.doSave()}" styleClass="isitext_hrm"
+                                             style="margin-right: 5px" label="#{appmsg['global.save']}"
+                                             icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formCityFormId"
+                                             icon="ui-icon-refresh" styleClass="isitext_hrm" >  
+                                <p:resetInput target="formCityFormId" />  
+                            </p:commandButton>
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{cityFormController.doBack()}" immediate="true"
+                                             styleClass="label_button"/>
+                        </div>
+                    </div>
                 </h:form>
             </ui:define>
 

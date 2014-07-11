@@ -11,6 +11,7 @@ public class CityModel implements Serializable {
     private Long id;
     private String cityCode;
     private String cityName;
+    private Long countryId;
     private Long provinceId;
     private String latitude;
     private String longitude;
@@ -39,6 +40,16 @@ public class CityModel implements Serializable {
         this.cityName = cityName;
     }
 
+    public Long getCountryId() {
+        return countryId;
+    }
+
+    public void setCountryId(Long countryId) {
+        this.countryId = countryId;
+    }
+
+    
+    
     public Long getProvinceId() {
         return provinceId;
     }

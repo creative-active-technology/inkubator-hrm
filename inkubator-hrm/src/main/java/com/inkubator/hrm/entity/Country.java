@@ -37,6 +37,8 @@ public class Country  implements java.io.Serializable {
      private String countryName;
      private byte[] flagIcon;
      private Integer phoneCode;
+     private String latitude;
+     private String longitude;
      private Set<Province> provinces = new HashSet<Province>(0);
 
     public Country() {
@@ -46,7 +48,7 @@ public class Country  implements java.io.Serializable {
     public Country(long id) {
         this.id = id;
     }
-    public Country(long id, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String countryCode, String countryName, byte[] flagIcon, Integer phoneCode, Set<Province> provinces) {
+    public Country(long id, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String countryCode, String countryName, byte[] flagIcon, Integer phoneCode, String latitude, String longitude, Set<Province> provinces) {
        this.id = id;
        this.createdBy = createdBy;
        this.createdOn = createdOn;
@@ -56,6 +58,8 @@ public class Country  implements java.io.Serializable {
        this.countryName = countryName;
        this.flagIcon = flagIcon;
        this.phoneCode = phoneCode;
+       this.latitude = latitude;
+       this.longitude = longitude;
        this.provinces = provinces;
     }
    
@@ -152,13 +156,32 @@ public class Country  implements java.io.Serializable {
     }
 
     
-    @Column(name="phone_code", unique=true)
+    @Column(name="phone_code")
     public Integer getPhoneCode() {
         return this.phoneCode;
     }
     
     public void setPhoneCode(Integer phoneCode) {
         this.phoneCode = phoneCode;
+    }
+    
+    @Column(name="latitude", length=45)
+    public String getLatitude() {
+        return this.latitude;
+    }
+    
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    
+    @Column(name="longitude", length=45)
+    public String getLongitude() {
+        return this.longitude;
+    }
+    
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
     }
 
 @OneToMany(fetch=FetchType.LAZY, mappedBy="country")

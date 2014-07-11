@@ -75,25 +75,16 @@ public class JabatanFormController extends BaseController {
                 jabatanModel = new JabatanModel();
                 isEdit = Boolean.FALSE;
                 jabatanModel.setLevelJabatan(1);
-//                List<Jabatan> listJabatans = jabatanService.getAllData();
-//                for (Jabatan jabatan : listJabatans) {
-//                    jabatanAtasans.put(jabatan.getName(), jabatan.getId());
-//                }
                 doChangeLevel();
             }
 
-//            if (jabatanModel.getLevelJabatan() == 1) {
-//                isDisable = Boolean.TRUE;
-//            } else {
-//                isDisable = Boolean.FALSE;
-//            }
             List<Department> listDepartemens = departmentService.getAllData();
             List<CostCenter> listCostCenters = costCenterService.getAllData();
             List<UnitKerja> listUnitKerjas = unitKerjaService.getAllData();
             List<GolonganJabatan> listGolonganJabatans = golonganJabatanService.getAllWithDetail();
 
             for (GolonganJabatan golonganJabatan : listGolonganJabatans) {
-                golJabatans.put(golonganJabatan.getCode()+" - "+golonganJabatan.getPangkat().getPangkatName(), golonganJabatan.getId());
+                golJabatans.put(golonganJabatan.getCode() + " - " + golonganJabatan.getPangkat().getPangkatName(), golonganJabatan.getId());
             }
             for (UnitKerja unitKerja : listUnitKerjas) {
                 untiKerjas.put(unitKerja.getName(), unitKerja.getId());
@@ -197,7 +188,19 @@ public class JabatanFormController extends BaseController {
 
     @PreDestroy
     public void cleanAndExit() {
-
+        departmentService = null;
+        unitKerjaService=null;
+        costCenterService=null;
+        golonganJabatanService=null;
+        jabatanService=null;
+        isDisable=null;
+        isEdit=null;
+        jabatanModel=null;
+        untiKerjas=null;
+        golJabatans=null;
+        departments=null;
+        posBiayas=null;
+        jabatanAtasans=null;
     }
 
     public JabatanModel getJabatanModel() {
