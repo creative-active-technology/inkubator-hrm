@@ -1,0 +1,98 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/dialog_layout.xhtml">
+            <ui:define name="windowTitle">
+
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlJobSpesifikasiFormlId" globalOnly="true" showDetail="true"/>
+                <h:form id="formJobSpesifikasiId">
+                    <h:panelGrid  columns="2">
+                        <p:graphicImage library="images" name="job_spek.png" height="36" width="36"  cache="true"/>
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['jobspek.jobspek']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['jobspek.jobspek_header_form']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="1" style="margin-bottom: 5px;margin-left: 0px">
+                        <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                        <!--<h:outputLabel value="#{appmsg['costcenter.dialog_cost_center_info']}" styleClass="label_hrm" style="font-weight: normal!important"/>-->
+                    </h:panelGrid> 
+                    <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
+                        
+                        <p:row>
+                            <p:column style="width: 40%">
+                                <p:outputLabel for="specId" value="#{appmsg['jobspec.jobspec_specification']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="specId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                                <p:selectOneMenu id="specId" value="#{jabatanSpesifikasiFormController.model.specId}" style="width: 150px;margin-right: 3px" >
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{jabatanSpesifikasiFormController.listSpecAbility}"/>
+                                        <p:ajax update="value" process="@this" listener="#{jabatanSpesifikasiFormController.doChangeValue()}"/>
+                                    </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="specId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 40%">
+                                <p:outputLabel for="value" value="#{appmsg['jobspec.jobspec_value']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="value" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                                <p:selectOneMenu id="value" value="#{jabatanSpesifikasiFormController.model.value}" style="width: 150px;margin-right: 3px">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{jabatanSpesifikasiFormController.listValue}"/>
+                                    </p:selectOneMenu>
+                            </p:column>
+                            <h:inputHidden value="#{jabatanSpesifikasiFormController.listValue}" id="optionValue" />
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="value"/>
+                            </p:column>
+                        </p:row>
+                        
+
+                    </p:panelGrid>
+                    <p:focus context="formJobSpesifikasiId" />
+                    <p:separator style="margin-top: 20px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="2" style="margin-bottom: -30px!important">
+                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formJobSpesifikasiId,:growlJobSpesifikasiFormlId"
+                                         action="#{jabatanSpesifikasiFormController.doSave()}" styleClass="isitext_hrm"
+                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
+                                         icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                        <p:commandButton value="#{appmsg['global.clear']}" title="#{appmsg['global.clear']}" process="@this" update="formJobSpesifikasiId" 
+                                         icon="ui-icon-refresh" styleClass="isitext_hrm" >  
+                            <p:resetInput target="formJobSpesifikasiId" />  
+                        </p:commandButton>
+                    </h:panelGrid>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

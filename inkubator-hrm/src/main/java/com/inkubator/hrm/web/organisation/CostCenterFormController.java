@@ -129,19 +129,20 @@ public class CostCenterFormController extends BaseController{
                 }else{
                     isParentDisabled = Boolean.FALSE;
                 }
-                for (CostCenter costCenterListUpdate : costCenterList) {
-                    costCenterParent.put(costCenterListUpdate.getName(), costCenterListUpdate.getId());               
-                }
             } else {
                 costCenterList = costCentreService.getAllData();
                 isEdit = Boolean.FALSE;
                 isParentDisabled = Boolean.FALSE;
-                for (CostCenter costCenter : costCenterList) {
-                        costCenterParent.put(costCenter.getName(), costCenter.getId());
-                } 
             }
+            listParent();
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
+        }
+    }
+    
+    public void listParent(){
+        for (CostCenter costCenterListUpdate : costCenterList) {
+            costCenterParent.put(costCenterListUpdate.getName(), costCenterListUpdate.getId());               
         }
     }
     

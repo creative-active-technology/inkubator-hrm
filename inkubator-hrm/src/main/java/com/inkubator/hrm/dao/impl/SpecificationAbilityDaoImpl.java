@@ -73,4 +73,11 @@ public class SpecificationAbilityDaoImpl extends IDAOImpl<SpecificationAbility> 
 		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
 	}
 
+    @Override
+    public SpecificationAbility getByName(String name) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("name", name));
+        return (SpecificationAbility) criteria.uniqueResult();
+    }
+
 }

@@ -467,6 +467,12 @@ div.art-logo
     background-size: 80% auto;
     padding-right: 2px;
 }
+.img-job_spek
+{
+    background-image:url(../images/job_spek_ico.png)!important;
+    background-size: 80% auto;
+    padding-right: 2px;
+}
 .img-login-history{
     background-image:url(../images/login_history_1.png)!important;
     background-size: 80% auto;
