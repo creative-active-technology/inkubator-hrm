@@ -245,4 +245,10 @@ public class JabatanSpesifikasiServiceImpl extends IServiceImpl implements Jabat
         return jabatanSpesifikasiDao.getDataByPK(id);
     }
 
+    @Override
+    public JabatanSpesifikasi getDataBySpecAbility(Long specId) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+
 }
