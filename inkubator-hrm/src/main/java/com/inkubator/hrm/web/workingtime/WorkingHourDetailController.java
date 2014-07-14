@@ -34,6 +34,7 @@ public class WorkingHourDetailController extends BaseController {
             super.initialization();
             String id = FacesUtil.getRequestParameter("execution");
             selectedWorkingHour = workingHourService.getEntiyByPK(Long.parseLong(id.substring(1)));
+          
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
 

@@ -24,8 +24,9 @@ public interface WtGroupWorkingDao extends IDAO<WtGroupWorking> {
     public Long getTotalByCode(String code);
 
     public WtGroupWorking getByPKIdWithDetail(Long id);
-    
+
     public WtGroupWorking getByCode(String code);
-    
-    
+
+    public void saveAndMerge(WtGroupWorking groupWorking);
+
 }
