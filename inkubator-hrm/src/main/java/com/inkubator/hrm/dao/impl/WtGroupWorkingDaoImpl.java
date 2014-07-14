@@ -82,4 +82,10 @@ public class WtGroupWorkingDaoImpl extends IDAOImpl<WtGroupWorking> implements W
         return (WtGroupWorking) criteria.uniqueResult();
     }
 
+    @Override
+    public void saveAndMerge(WtGroupWorking groupWorking) {
+        getCurrentSession().update(groupWorking);
+        getCurrentSession().flush();
+    }
+
 }

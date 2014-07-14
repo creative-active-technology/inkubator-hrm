@@ -1,8 +1,7 @@
 package com.inkubator.hrm.web.search;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.inkubator.webcore.util.SearchParameter;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -14,7 +13,7 @@ public class KlasifikasiKerjaSearchParameter extends SearchParameter {
 	private String klasifikasiKerjaName;
         
 	public String getKlasifikasiKerjaName() {
-		if(StringUtils.equalsIgnoreCase(getKeyParam(), "klasifikasiKerjaName")){
+		if(StringUtils.equalsIgnoreCase(getKeyParam(), "name")){
 			klasifikasiKerjaName = getParameter();
 		} else {
 			klasifikasiKerjaName = null;
@@ -27,7 +26,7 @@ public class KlasifikasiKerjaSearchParameter extends SearchParameter {
 	}
 
 	public String getKlasifikasiKerjaCode() {
-		if(StringUtils.equalsIgnoreCase(getKeyParam(), "klasifikasiKerjaCode")){
+		if(StringUtils.equalsIgnoreCase(getKeyParam(), "code")){
 			klasifikasiKerjaCode = getParameter();
 		} else {
 			klasifikasiKerjaCode = null;

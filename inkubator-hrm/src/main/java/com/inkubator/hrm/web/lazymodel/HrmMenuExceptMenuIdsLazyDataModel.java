@@ -19,19 +19,23 @@ import com.inkubator.securitycore.util.UserInfoUtil;
  *
  * @author rizkykojek
  */
-public class HrmMenuExceptRoleLazyDataModel extends LazyDataModel<HrmMenu> implements Serializable {
+public class HrmMenuExceptMenuIdsLazyDataModel extends LazyDataModel<HrmMenu> implements Serializable {
 
-    private static final Logger LOGGER = Logger.getLogger(HrmMenuExceptRoleLazyDataModel.class);
+    private static final Logger LOGGER = Logger.getLogger(HrmMenuExceptMenuIdsLazyDataModel.class);
     private final HrmMenuSearchParameter parameter;
     private final HrmMenuService service;
-    private final Long roleId;
-    private List<HrmMenu> menus = new ArrayList<>();
+    private List<Long> selectedMenuIds = new ArrayList<Long>();
+    private List<HrmMenu> list = new ArrayList<>();
     private Integer total;
 
-    public HrmMenuExceptRoleLazyDataModel(HrmMenuSearchParameter parameter, HrmMenuService service, Long roleId) {
+    public HrmMenuExceptMenuIdsLazyDataModel(HrmMenuSearchParameter parameter, HrmMenuService service, List<String> strMenuIds) {
         this.parameter = parameter;
         this.service = service;
-        this.roleId = roleId;
+        
+        selectedMenuIds.clear();
+        for(String id : strMenuIds){
+        	selectedMenuIds.add(Long.parseLong(id));
+        }
     }
 
     @Override
@@ -45,8 +49,8 @@ public class HrmMenuExceptRoleLazyDataModel extends LazyDataModel<HrmMenu> imple
 	        	orderable = Order.desc("name");
 	        }
 	        
-	        menus = service.getAllDataByParamAndNotRoleId(roleId, parameter, first, pageSize, orderable);
-            total = Integer.parseInt(String.valueOf(service.getTotalByParamAndNotRoleId(roleId, parameter)));            
+	        list = service.getAllDataByParamAndNotIds(parameter, selectedMenuIds, first, pageSize, orderable);
+            total = Integer.parseInt(String.valueOf(service.getTotalByParamAndNotIds(parameter, selectedMenuIds)));            
         	LOGGER.info("Success Load Lazy data Model");
         	
         } catch (Exception ex) {
@@ -55,7 +59,7 @@ public class HrmMenuExceptRoleLazyDataModel extends LazyDataModel<HrmMenu> imple
         }
         setPageSize(pageSize);
         setRowCount(total);
-        return menus;
+        return list;
     }
 
     @Override
@@ -65,7 +69,7 @@ public class HrmMenuExceptRoleLazyDataModel extends LazyDataModel<HrmMenu> imple
 
     @Override
     public HrmMenu getRowData(String id) {
-        for (HrmMenu menu : menus) {
+        for (HrmMenu menu : list) {
             if (id.equals(String.valueOf(menu.getId()))) {
                 return menu;
             }

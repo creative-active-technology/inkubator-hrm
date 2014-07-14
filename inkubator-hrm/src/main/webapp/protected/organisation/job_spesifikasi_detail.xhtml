@@ -18,11 +18,11 @@
                 <div id="box_bg" style="margin: 10px">
                     <!--<p:panel style="margin: 10px" >-->
                     <h:panelGrid style="margin-bottom: 5px" columns="2">
-                        <p:graphicImage library="images" name="jabatan.png" height="36" width="36" />
+                        <p:graphicImage library="images" name="specification.png" height="36" width="36" />
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="#{appmsg['jabatan.jabatan_list']}" styleClass="header_big" />
-                                <p:outputLabel value="#{appmsg['jabtan_view.header2']}" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="Daftar Spesifikasi Jabatan" styleClass="header_big" />
+                                <p:outputLabel value="Data Spesifikasi Jabatan dari Organisasi" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -112,7 +112,7 @@
 
                         </p:panelGrid>
                         <!--table jabatan spesifikasi-->
-                        
+
                         <p:dataTable  var="jobSpekData"  value="#{jabatanSpesifikasiDetailController.lazyDataJabatanSpesifikasi}" lazy="true" paginator="true" pageLinks="7"
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
                                       id="tableJobSpekId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
@@ -127,23 +127,17 @@
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
 
-                            <p:column sortBy="name" style="width: 20%">
-                                <f:facet name="header">
-                                    <h:outputText value="#{appmsg['jobspec.jobspec_position']}"/>
-                                </f:facet>
-                                <h:outputLabel value= "#{jobSpekData.jabatan.name}" />
-                            </p:column>
+                            <!--                            <p:column sortBy="name" style="width: 20%">
+                                                            <f:facet name="header">
+                                                                <h:outputText value="#{appmsg['jobspec.jobspec_position']}"/>
+                                                            </f:facet>
+                                                            <h:outputLabel value= "#{jobSpekData.jabatan.name}" />
+                                                        </p:column>-->
                             <p:column sortBy="specificationAbility.name" style="width: 20%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['jobspec.jobspec_specification']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{jobSpekData.specificationAbility.name}" />
-                            </p:column>
-                            <p:column sortBy="value" style="width: 20%">
-                                <f:facet name="header">
-                                    <h:outputText value="#{appmsg['jobspec.jobspec_value']}"/>
-                                </f:facet>
-                                <h:outputLabel value= "#{jobSpekData.value}" />
                             </p:column>
                             <p:column sortBy="optionAbility" style="width: 20%">
                                 <f:facet name="header">
@@ -151,6 +145,13 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{jobSpekData.optionAbility}" />
                             </p:column>
+                            <p:column sortBy="value" style="width: 20%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['jobspec.jobspec_value']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{jobSpekData.value}" />
+                            </p:column>
+
                             <p:column headerText="#{appmsg['global.action']}" style="width: 80px;text-align: center" exportable="false">
                                 <p:commandButton  icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" style="font-size: 10px!important" ajax="true"
                                                   action="#{jabatanSpesifikasiDetailController.doDetail()}" oncomplete="detailJobSpek.show()" update=":detailPanel" onclick="statusDialog.show()">
@@ -159,8 +160,8 @@
                                 </p:commandButton> 
                                 - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
-                                				 style="font-size: 10px!important" 
-                                                                 action="#{jabatanSpesifikasiDetailController.onDelete()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmJobSpec.show()">
+                                                 style="font-size: 10px!important" 
+                                                 action="#{jabatanSpesifikasiDetailController.onDelete()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmJobSpec.show()">
                                     <f:setPropertyActionListener value="#{jobSpekData}" target="#{jabatanSpesifikasiDetailController.selectedJobSpec}" />
                                 </p:commandButton>
                                 -
@@ -169,7 +170,7 @@
                                     <f:setPropertyActionListener value="#{jobSpekData}" target="#{jabatanSpesifikasiDetailController.selectedJobSpec}" />
                                     <p:ajax event="dialogReturn" listener="#{jabatanSpesifikasiDetailController.onDialogReturn}"  update="tableJobSpekId"/>
                                 </p:commandButton> 
-                                
+
                             </p:column> 
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>
@@ -190,7 +191,7 @@
                     </h:form>
                 </div>
 
-            <p:dialog widgetVar="dialogConfirmJobSpec" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmJobSpec" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -234,7 +235,7 @@
                             <p:column style="color: #003366"><p:outputLabel value="#{appmsg['jobspec.jobspec_option_ability']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{jabatanSpesifikasiDetailController.selectedJobSpec.optionAbility}"/> </p:column>
                         </p:row>
-                        
+
                         <f:facet name="footer">
                             <p:row>
                                 <p:column colspan="2"><p:outputLabel value="#{appmsg['jobspek.jobspek']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>

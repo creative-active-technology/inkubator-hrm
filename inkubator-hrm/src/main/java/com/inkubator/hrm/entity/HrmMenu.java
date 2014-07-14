@@ -39,6 +39,7 @@ public class HrmMenu implements java.io.Serializable {
     private Date upatedOn;
     private Set<HrmMenu> hrmMenus = new HashSet<HrmMenu>(0);
     private Set<HrmMenuRole> hrmMenuRoles = new HashSet<HrmMenuRole>(0);
+    private Set<FavoriteMenu> favoriteMenus = new HashSet<FavoriteMenu>(0);
 
     public HrmMenu() {
     }
@@ -201,6 +202,29 @@ public class HrmMenu implements java.io.Serializable {
 
     public void setMenuStyleClass(String menuStyleClass) {
         this.menuStyleClass = menuStyleClass;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) {
+            return true;
+        } else if (other == null) {
+            return false;
+        } else if (!(other instanceof HrmMenu)) {
+            return false;
+        } else {
+            HrmMenu castOther = (HrmMenu) other;
+            return this.getId() == castOther.getId();
+        }
+    }
+    
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="hrmMenu")
+    public Set<FavoriteMenu> getFavoriteMenus() {
+        return this.favoriteMenus;
+    }
+    
+    public void setFavoriteMenus(Set<FavoriteMenu> favoriteMenus) {
+        this.favoriteMenus = favoriteMenus;
     }
 
 }

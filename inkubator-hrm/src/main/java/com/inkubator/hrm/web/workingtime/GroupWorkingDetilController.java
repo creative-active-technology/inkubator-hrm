@@ -5,6 +5,7 @@
  */
 package com.inkubator.hrm.web.workingtime;
 
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.WtGroupWorking;
 import com.inkubator.hrm.entity.WtScheduleShift;
 import com.inkubator.hrm.service.WtGroupWorkingService;
@@ -12,9 +13,11 @@ import com.inkubator.hrm.service.WtScheduleShiftService;
 import com.inkubator.hrm.web.lazymodel.WtScheduleShiftLazyModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
+import com.inkubator.webcore.util.MessagesResourceUtil;
 import java.io.IOException;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -42,7 +45,13 @@ public class GroupWorkingDetilController extends BaseController {
         try {
             super.initialization();
             String id = FacesUtil.getRequestParameter("execution");
+            if (id.contains("s")) {
+                System.out.println(" hehehe");
+                MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
+                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            }
             selectedWtGroupWorking = wtGroupWorkingService.getByCode(id.substring(1));
+
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }

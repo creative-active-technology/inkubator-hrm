@@ -27,6 +27,7 @@ public class Religion implements java.io.Serializable {
     private String updatedBy;
     private Date updatedOn;
     private Set<WtHoliday> wtHolidays = new HashSet<WtHoliday>(0);
+    private Set<BioData> bioDatas = new HashSet<BioData>(0);
 
     public Religion() {
     }
@@ -40,7 +41,6 @@ public class Religion implements java.io.Serializable {
         this.id = id;
     }
 
-    
     public Religion(long id, String createdBy, Date createdOn, String name, String updatedBy, Date updatedOn, Set<WtHoliday> wtHolidays) {
         this.id = id;
         this.createdBy = createdBy;
@@ -127,4 +127,12 @@ public class Religion implements java.io.Serializable {
         this.wtHolidays = wtHolidays;
     }
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "religion")
+    public Set<BioData> getBioDatas() {
+        return this.bioDatas;
+    }
+
+    public void setBioDatas(Set<BioData> bioDatas) {
+        this.bioDatas = bioDatas;
+    }
 }

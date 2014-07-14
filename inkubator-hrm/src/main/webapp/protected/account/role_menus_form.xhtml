@@ -65,21 +65,18 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{menuData.name}"/>
                             </p:column>
-                            <p:column sortBy="name"  style="text-align: center;width: 35%">
+                            <p:column sortBy="urlName"  style="text-align: center;width: 35%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['hrm_menu.url_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{menuData.urlName}"/>
-                            </p:column>
-                            <p:column sortBy="name"  style="text-align: center;width: 10%">
-                                <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['hrm_menu.menu_level']}"/>
-                                </f:facet>
-                                <h:outputLabel value= "#{menuData.menuLevel}"/>
-                            </p:column>                            
+                            </p:column>                           
                             
                             <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
-                            
+                            	<p:commandButton title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" style="font-size: 10px!important" icon="ui-icon-cart" 
+	                    						 action="#{roleMenusFormController.doPickMenuFromList()}" ajax="true">
+	                    			<f:setPropertyActionListener value="#{menuData}" target="#{roleMenusFormController.selectedMenu}" />
+	                    		</p:commandButton>
                             </p:column>                        
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>
