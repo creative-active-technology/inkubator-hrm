@@ -81,8 +81,7 @@
                                 <h:outputLabel value= "#{roleViewData.description}"/>
                             </p:column>
                             <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
-                                <p:commandButton  icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" update=":detailPanel"
-                                                  onclick="statusDialog.show()"  oncomplete="detailDialogHrmRole.show()"
+                                <p:commandButton  icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
                                                   action="#{roleViewController.doDetail()}" style="font-size: 10px!important" >                        
                                     <f:setPropertyActionListener value="#{roleViewData}" target="#{roleViewController.selectedHrmRole}" />
                                 </p:commandButton>

@@ -10,35 +10,82 @@
         <title>IGNORED</title>
     </h:head>
     <h:body>
-        <ui:composition template="/templates/dialog_layout.xhtml">
+        <ui:composition template="/templates/master_layout_full.xhtml">
             <ui:define name="windowTitle">
 
             </ui:define>
             <ui:define name="center">
-                <h:panelGrid  columns="2">
-                    <p:graphicImage library="images" name="role.png" height="36" width="36" />
-                    <h:panelGroup layout="block">
-                        <h:panelGrid>
-                            <p:outputLabel value="Role Detail" styleClass="header_big" />
-                            <p:outputLabel value="#{appmsg['role_view.header2']}" styleClass="header_small_no_bold" />
-                        </h:panelGrid>
-                    </h:panelGroup>
-                </h:panelGrid>
-                <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
-                <p:panelGrid columns="2" style="width: 100%">
-                    <p:outputLabel value="Role Name" styleClass="label_hrm"/>
-                    <p:outputLabel value="#{roleDetailController.hrmRole.roleName}" styleClass="isitext_hrm"/>
-                    
-                    <p:outputLabel value="Deskripsi" styleClass="label_hrm"/>
-                    <p:outputLabel value="#{roleDetailController.hrmRole.description}" styleClass="isitext_hrm"/>
-                    <f:facet name="footer">
-                       Role Detail
-                    </f:facet>
-                </p:panelGrid>
+            	<div id="box_bg" style="margin: 10px">
+	                <h:panelGrid  columns="2">
+	                    <p:graphicImage library="images" name="role.png" height="36" width="36" />
+	                    <h:panelGroup layout="block">
+	                        <h:panelGrid>
+	                            <p:outputLabel value="#{appmsg['role_view.detail_dialog']}" styleClass="header_big" />
+	                            <p:outputLabel value="#{appmsg['role_view.header2']}" styleClass="header_small_no_bold" />
+	                        </h:panelGrid>
+	                    </h:panelGroup>
+	                </h:panelGrid>
+	                <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+	                <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px">
+	                	<p:row>
+		                	<p:column style="width: 20%;background-color: #e1f0f0!important">
+		                    	<p:outputLabel value="#{appmsg['role_view.role_name']}" styleClass="label_hrm"/>
+		                    </p:column>
+		                    <p:column  style="width: 80%">
+		                    	<p:outputLabel value="#{roleDetailController.hrmRole.roleName}"/>
+		                    </p:column>
+		               	</p:row>   
+		                <p:row>
+		                	<p:column style="width: 20%;background-color: #e1f0f0!important">
+		                    	<p:outputLabel value="#{appmsg['role_view.role_description']}" styleClass="label_hrm"/>
+		                    </p:column>
+		                   	<p:column  style="width: 80%">
+		                    	<p:outputLabel value="#{roleDetailController.hrmRole.description}"/>
+		                    </p:column>
+		                </p:row>
+	                </p:panelGrid>
+	                
+	                <p:dataTable  id="tableMenuId" var="menuRoleData"  value="#{roleDetailController.hrmRole.hrmMenuRoles.toArray()}" lazy="false" paginator="false" pageLinks="7"
+	                              paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+	                              rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px" rowIndexVar="no">
+	                    <f:facet name="header">  
+	                    	<h:outputText value="#{appmsg['hrm_menu.list_of_menu']}" styleClass="label_hrm"/>
+	                    </f:facet>
+	                	<p:column style="text-align: center;width: 5%">
+	                    	<f:facet name="header">  
+	                        	<h:outputText value="#{appmsg['global.number']}"/>
+	                        </f:facet>
+	                    	<h:outputLabel value="#{no+1}." />
+	                    </p:column>  
+	                    <p:column style="text-align: center;width: 40%">
+	                    	<f:facet name="header">  
+	                        	<h:outputText value="#{appmsg['hrm_menu.menu_name']}"/>
+	                        </f:facet>
+	                        <h:outputLabel value= "#{menuRoleData.hrmMenu.name}"/>
+	                    </p:column>
+	                    <p:column style="text-align: center;width: 40%">
+	                    	<f:facet name="header">  
+	                        	<h:outputText value="#{appmsg['hrm_menu.url_name']}"/>
+	                        </f:facet>
+	                        <h:outputLabel value= "#{menuRoleData.hrmMenu.urlName}"/>
+	                    </p:column>
+	                    <p:column style="text-align: center;width: 10%">
+	                    	<f:facet name="header">  
+	                        	<h:outputText value="#{appmsg['hrm_menu.menu_level']}"/>
+	                        </f:facet>
+	                        <h:outputLabel value= "#{menuRoleData.hrmMenu.menuLevel}"/>
+	                    </p:column> 
+	            	</p:dataTable>
+	            	<p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+	                <div style="margin-bottom: 5px">
+	                	<p:commandButton value="#{appmsg['global.edit']}" icon="ui-icon-zoomin" title="#{appmsg['global.edit']}" action="#{roleDetailController.doUpdate()}" immediate="true"
+                                			 style="margin-right: 5px" styleClass="label_button"/>
+	                	<p:commandButton value="#{appmsg['global.back']}" icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{roleDetailController.doBack()}" immediate="true"
+	                                      	 styleClass="label_button"/>
+	               	</div>
+            	</div>
             </ui:define>
-
         </ui:composition>
-
     </h:body>
 </html>
 
