@@ -46,6 +46,7 @@ public class HrmUser implements java.io.Serializable {
     private Set<HrmUserRole> hrmUserRoles = new HashSet<>(0);
     private Set<LoginHistory> loginHistories = new HashSet<>(0);
     private List<HrmRole> roles = new ArrayList<>(0);
+    private Set<FavoriteMenu> favoriteMenus = new HashSet<FavoriteMenu>(0);
 
     public HrmUser() {
     }
@@ -279,6 +280,15 @@ public class HrmUser implements java.io.Serializable {
             roleNames.add(role.getRoleName());
         }
         return roleNames;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "hrmUser")
+    public Set<FavoriteMenu> getFavoriteMenus() {
+        return this.favoriteMenus;
+    }
+
+    public void setFavoriteMenus(Set<FavoriteMenu> favoriteMenus) {
+        this.favoriteMenus = favoriteMenus;
     }
 
 }

@@ -26,8 +26,11 @@ public class BioData  implements java.io.Serializable {
 
      private long id;
      private Integer version;
+     private Nationality nationality;
+     private Dialect dialect;
      private Religion religion;
      private City city;
+     private Race race;
      private MaritalStatus maritalStatus;
      private String firstName;
      private String lastName;
@@ -52,10 +55,13 @@ public class BioData  implements java.io.Serializable {
     public BioData(long id) {
         this.id = id;
     }
-    public BioData(long id, Religion religion, City city, MaritalStatus maritalStatus, String firstName, String lastName, String title, String nickname, Integer gender, Integer bloodType, Date dateOfBirth, String personalEmail, String mobilePhone, Double bodyTall, Double bodyWeight, String createdBy, Date createdOn, String updatedBy, Date updatedOn) {
+    public BioData(long id, Nationality nationality, Dialect dialect, Religion religion, City city, Race race, MaritalStatus maritalStatus, String firstName, String lastName, String title, String nickname, Integer gender, Integer bloodType, Date dateOfBirth, String personalEmail, String mobilePhone, Double bodyTall, Double bodyWeight, String createdBy, Date createdOn, String updatedBy, Date updatedOn) {
        this.id = id;
+       this.nationality = nationality;
+       this.dialect = dialect;
        this.religion = religion;
        this.city = city;
+       this.race = race;
        this.maritalStatus = maritalStatus;
        this.firstName = firstName;
        this.lastName = lastName;
@@ -97,6 +103,26 @@ public class BioData  implements java.io.Serializable {
     }
 
 @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="warga_negara")
+    public Nationality getNationality() {
+        return this.nationality;
+    }
+    
+    public void setNationality(Nationality nationality) {
+        this.nationality = nationality;
+    }
+
+@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="dialect")
+    public Dialect getDialect() {
+        return this.dialect;
+    }
+    
+    public void setDialect(Dialect dialect) {
+        this.dialect = dialect;
+    }
+
+@ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="agama_id")
     public Religion getReligion() {
         return this.religion;
@@ -114,6 +140,16 @@ public class BioData  implements java.io.Serializable {
     
     public void setCity(City city) {
         this.city = city;
+    }
+
+@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="ras")
+    public Race getRace() {
+        return this.race;
+    }
+    
+    public void setRace(Race race) {
+        this.race = race;
     }
 
 @ManyToOne(fetch=FetchType.LAZY)
@@ -275,6 +311,7 @@ public class BioData  implements java.io.Serializable {
     public void setUpdatedOn(Date updatedOn) {
         this.updatedOn = updatedOn;
     }
+
 
 
 

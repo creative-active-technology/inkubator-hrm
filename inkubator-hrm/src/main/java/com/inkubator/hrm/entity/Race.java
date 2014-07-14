@@ -2,9 +2,13 @@ package com.inkubator.hrm.entity;
 // Generated Jun 17, 2014 6:48:25 AM by Hibernate Tools 3.6.0
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -28,6 +32,7 @@ public class Race implements java.io.Serializable {
     private String raceCode;
     private String raceName;
     private String description;
+    private Set<BioData> bioDatas = new HashSet<BioData>(0);
 
     public Race() {
     }
@@ -131,6 +136,15 @@ public class Race implements java.io.Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "race")
+    public Set<BioData> getBioDatas() {
+        return this.bioDatas;
+    }
+
+    public void setBioDatas(Set<BioData> bioDatas) {
+        this.bioDatas = bioDatas;
     }
 
 }
