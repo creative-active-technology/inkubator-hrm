@@ -77,13 +77,13 @@
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.code']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{klasifikasiKerjaData.klasifikasiKerjaCode}"/>
+                                <h:outputLabel value= "#{klasifikasiKerjaData.code}"/>
                             </p:column>  
                             <p:column sortBy="klasifikasiKerjaName"  style="width: 50%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{klasifikasiKerjaData.klasifikasiKerjaName}"/>
+                                <h:outputLabel value= "#{klasifikasiKerjaData.name}"/>
                             </p:column>    
                             <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
@@ -138,7 +138,7 @@
                         <h:panelGrid id="panelDialogConfirmId"  columns="3">
                             <p:outputLabel value="#{appmsg['klasifikasiKerja.klasifikasiKerja']}"  style="font-weight: bold"/>
                             <p:outputLabel value=":"  style="font-weight: bold"/>
-                            <p:outputLabel value="#{klasifikasiKerjaViewController.selectedKlasifikasiKerja.klasifikasiKerjaName}" styleClass="label_hrm"/>
+                            <p:outputLabel value="#{klasifikasiKerjaViewController.selectedKlasifikasiKerja.name}" styleClass="label_hrm"/>
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{klasifikasiKerjaViewController.doDelete()}" update="formKlasifikasiKerjaViewId,:growlKlasifikasiKerjaViewlId"
@@ -151,11 +151,11 @@
                     <p:panelGrid id="panelDialogDetailId" style="width:100%;margin:5px;">
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['klasifikasiKerja.klasifikasiKerja_code']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;"><p:outputLabel value="#{klasifikasiKerjaViewController.selectedKlasifikasiKerja.klasifikasiKerjaCode}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{klasifikasiKerjaViewController.selectedKlasifikasiKerja.code}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['klasifikasiKerja.klasifikasiKerja_name']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;"><p:outputLabel value="#{klasifikasiKerjaViewController.selectedKlasifikasiKerja.klasifikasiKerjaName}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{klasifikasiKerjaViewController.selectedKlasifikasiKerja.name}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/></p:column>
