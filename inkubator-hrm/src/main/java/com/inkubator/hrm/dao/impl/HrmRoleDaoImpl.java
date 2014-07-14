@@ -12,6 +12,7 @@ import com.inkubator.hrm.entity.HrmRole;
 import com.inkubator.hrm.web.search.HrmRoleSearchParameter;
 import java.util.List;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -63,4 +64,20 @@ public class HrmRoleDaoImpl extends IDAOImpl<HrmRole> implements HrmRoleDao{
          criteria.add(Restrictions.eq("roleName", name));
          return (HrmRole) criteria.uniqueResult();
     }
+
+
+	@Override
+	public HrmRole getEntityByPkWithMenus(long id) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("id", id));
+		criteria.setFetchMode("hrmMenuRoles", FetchMode.JOIN);
+		criteria.setFetchMode("hrmMenuRoles.hrmMenu", FetchMode.JOIN);
+		return (HrmRole) criteria.uniqueResult();
+	}
+
+
+	@Override
+	public HrmRole updateAndMerge(HrmRole role) {
+		return (HrmRole) getCurrentSession().merge(role);
+	}
 }

@@ -156,7 +156,7 @@ public class Country  implements java.io.Serializable {
     }
 
     
-    @Column(name="phone_code", unique=true)
+    @Column(name="phone_code")
     public Integer getPhoneCode() {
         return this.phoneCode;
     }

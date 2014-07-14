@@ -29,6 +29,7 @@ public class JabatanSpesifikasi  implements java.io.Serializable {
      private SpecificationAbility specificationAbility;
      private Jabatan jabatan;
      private String value;
+     private String optionAbility;
      private String createdBy;
      private Date createdOn;
      private String updatedBy;
@@ -41,7 +42,7 @@ public class JabatanSpesifikasi  implements java.io.Serializable {
     public JabatanSpesifikasi(long id) {
         this.id = id;
     }
-    public JabatanSpesifikasi(long id, SpecificationAbility specificationAbility, Jabatan jabatan, String value, String createdBy, Date createdOn, String updatedBy, Date updatedOn) {
+    public JabatanSpesifikasi(long id, SpecificationAbility specificationAbility, Jabatan jabatan, String value, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String optionAbility) {
        this.id = id;
        this.specificationAbility = specificationAbility;
        this.jabatan = jabatan;
@@ -50,6 +51,7 @@ public class JabatanSpesifikasi  implements java.io.Serializable {
        this.createdOn = createdOn;
        this.updatedBy = updatedBy;
        this.updatedOn = updatedOn;
+       this.optionAbility = optionAbility;
     }
    
      @Id 
@@ -104,6 +106,14 @@ public class JabatanSpesifikasi  implements java.io.Serializable {
         this.value = value;
     }
 
+    @Column(name = "option_ability", nullable = false)
+    public String getOptionAbility() {
+        return optionAbility;
+    }
+
+    public void setOptionAbility(String optionAbility) {
+        this.optionAbility = optionAbility;
+    }
     
     @Column(name="created_by", length=45)
     public String getCreatedBy() {

@@ -18,6 +18,10 @@ public interface HrmMenuService extends IService<HrmMenu> {
 
     public Long getTotalByParam(HrmMenuSearchParameter parameter);
     
+    public List<HrmMenu> getAllDataByParamAndNotIds(HrmMenuSearchParameter parameter, List<Long> ids, int firstResult, int maxResults, Order orderable);
+
+    public Long getTotalByParamAndNotIds(HrmMenuSearchParameter parameter, List<Long> ids);
+    
     public List<HrmMenu> getAllDataByLevel(Integer level);
 
 	public HrmMenu getEntityByPkWithDetail(long id);

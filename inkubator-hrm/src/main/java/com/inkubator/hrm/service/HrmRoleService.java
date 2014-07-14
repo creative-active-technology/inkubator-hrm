@@ -6,6 +6,7 @@
 package com.inkubator.hrm.service;
 
 import com.inkubator.datacore.service.IService;
+import com.inkubator.hrm.entity.HrmMenu;
 import com.inkubator.hrm.entity.HrmRole;
 import com.inkubator.hrm.web.search.HrmRoleSearchParameter;
 import java.util.List;
@@ -22,4 +23,11 @@ public interface HrmRoleService extends IService<HrmRole> {
     public Long getTotalHrmRoleByParam(HrmRoleSearchParameter searchParameter) throws Exception;
 
     public HrmRole getByRoleName(String roleName) throws Exception;
+
+	public HrmRole getEntityByPkWithMenus(long id) throws Exception;
+	
+	public void save(HrmRole role, List<HrmMenu> menus) throws Exception;
+		
+	public void update(HrmRole r, List<HrmMenu> menus) throws Exception;
+	
 }

@@ -69,7 +69,10 @@
                                 </p:column>
 
                                 <p:column  style="width: 37%">
-                                    <p:graphicImage value="#{imageStreamerController.image}" cache="FALSE" width="48" height="32">
+                                    <p:graphicImage value="#{imageStreamerController.image}" cache="FALSE" width="48" height="32" rendered="#{not empty countryDetailController.selectedCountry.flagIcon}">
+                                        <f:param name="countryId" value="#{countryDetailController.selectedCountry.id}" />
+                                    </p:graphicImage> 
+                                    <p:graphicImage library="images" name="imageNotFound.jpg" cache="FALSE" width="48" height="32" rendered="#{empty countryDetailController.selectedCountry.flagIcon}">
                                         <f:param name="countryId" value="#{countryDetailController.selectedCountry.id}" />
                                     </p:graphicImage> 
 
@@ -110,7 +113,7 @@
                         <div style="margin-bottom: 5px">
                             <p:commandButton value="#{appmsg['global.edit']}"  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" action="#{countryDetailController.doEdit()}" styleClass="label_button" style="margin-right: 5px"/>
                             <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{countryDetailController.doBack()}" styleClass="label_button"/>
-                           
+
                         </div>
                     </div>
                 </h:form>
