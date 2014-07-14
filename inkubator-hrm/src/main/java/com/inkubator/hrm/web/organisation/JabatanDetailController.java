@@ -53,6 +53,7 @@ public class JabatanDetailController extends BaseController {
             String userId = FacesUtil.getRequestParameter("execution");
             selectedJabatan = jabatanService.getByIdWithJobDeskripsi(Long.parseLong(userId.substring(1)));
             jabatanDeskripsis = new ArrayList<>(selectedJabatan.getJabatanDeskripsis());
+            listJabatanSpesifikasi = new ArrayList<>(selectedJabatan.getJabatanSpesifikasis());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
 

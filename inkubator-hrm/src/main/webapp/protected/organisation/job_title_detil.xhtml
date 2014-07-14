@@ -97,45 +97,67 @@
                         </p:panelGrid>
                         <p:tabView id="tabView1" dynamic="true"  cache="true" styleClass="tabview_hrm" style="margin-left: 0px; margin-right: 0px;margin-bottom: 15px">
                             <p:tab id="jobSpesificationId" title="Jabatan Spesicikasi">  
-                                <h:panelGrid columns="2" cellpadding="10">  
-                                    <p:graphicImage id="tab3Img" value="/images/godfather/godfather3.jpg" />  
-                                    <h:outputText value="After a break of more than 15 years, director Francis Ford Coppola and writer Mario Puzo returned to the well for this third and final story of the fictional Corleone crime family.  
-                                                  Two decades have passed, and crime kingpin Michael Corleone, now divorced from his wife Kay has nearly succeeded in keeping his promise that his family would one day be completely legitimate."/>  
-                                </h:panelGrid>  
+                                <p:dataTable value="#{jabatanDetailController.listJabatanSpesifikasi}" var="listJobSpecifikasi" rowIndexVar="no" id="jobDesId"
+                                             >
+                                    <p:column style="text-align: center;width: 25px;max-width: 25px">
+                                        <f:facet name="header">  
+                                            <h:outputText value="No." />
+                                        </f:facet>
+                                        <h:outputLabel value="#{no+1}." />
+                                    </p:column>
+                                    <p:column > 
+                                        <f:facet name="header">  
+                                           <h:outputText value="#{appmsg['jobspec.jobspec_specification']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value=" #{listJobSpecifikasi.specificationAbility.name}" />
+                                    </p:column> 
+                                    <p:column style="width: 150px;text-align: center"> 
+                                        <f:facet name="header" >  
+                                        <h:outputText value="#{appmsg['jobspec.jobspec_option_ability']}"/>
+                                        </f:facet>
+                                        <p:outputLabel value="#{listJobSpecifikasi.optionAbility}" />
+                                    </p:column>
+                                    <p:column style="width: 80px;text-align: center"> 
+                                        <f:facet name="header">  
+                                             <h:outputText value="#{appmsg['jobspec.jobspec_value']}"/>
+                                        </f:facet>
+                                        <p:outputLabel value="#{listJobSpecifikasi.value}" />
+                                    </p:column>
+                                </p:dataTable>  
                             </p:tab>  
                             <p:tab id="jobDeskriptionId" title="Jabatan Deskripsi">  
                                 <!--<h:panelGrid columns="2" cellpadding="10">-->  
-                                    <p:dataTable value="#{jabatanDetailController.jabatanDeskripsis}" var="listJobDeskrpsi" rowIndexVar="no" id="jobDesTableId"
-                                                 >
-                                        <p:column style="text-align: center;width: 25px;max-width: 25px">
-                                            <f:facet name="header">  
-                                                <h:outputText value="No." />
-                                            </f:facet>
-                                            <h:outputLabel value="#{no+1}." />
-                                        </p:column>
-                                        <p:column > 
-                                            <f:facet name="header">  
-                                                <h:outputText value="Deskripsi" />
-                                            </f:facet>
-                                            <h:outputLabel value=" #{listJobDeskrpsi.description}" />
-                                        </p:column> 
-                                        <p:column style="width: 80px;text-align: center"> 
-                                            <f:facet name="header" >  
-                                                <h:outputText value="Kategori Tugas" />
-                                            </f:facet>
-                                            <p:outputLabel value="#{listJobDeskrpsi.kategoryTugas}" >
-                                                <f:converter converterId="jobCategoryConverter" />
-                                            </p:outputLabel>
-                                        </p:column>
-                                        <p:column style="width: 80px;text-align: center"> 
-                                            <f:facet name="header">  
-                                                <h:outputText value="Type Waktu" />
-                                            </f:facet>
-                                            <p:outputLabel value="#{listJobDeskrpsi.typeWaktu}" >
-                                                <f:converter converterId="jobTypeTimeConverter" />
-                                            </p:outputLabel>
-                                        </p:column>
-                                    </p:dataTable> 
+                                <p:dataTable value="#{jabatanDetailController.jabatanDeskripsis}" var="listJobDeskrpsi" rowIndexVar="no" id="jobDesTableId"
+                                             >
+                                    <p:column style="text-align: center;width: 25px;max-width: 25px">
+                                        <f:facet name="header">  
+                                            <h:outputText value="No." />
+                                        </f:facet>
+                                        <h:outputLabel value="#{no+1}." />
+                                    </p:column>
+                                    <p:column > 
+                                        <f:facet name="header">  
+                                            <h:outputText value="Deskripsi" />
+                                        </f:facet>
+                                        <h:outputLabel value=" #{listJobDeskrpsi.description}" />
+                                    </p:column> 
+                                    <p:column style="width: 80px;text-align: center"> 
+                                        <f:facet name="header" >  
+                                            <h:outputText value="Kategori Tugas" />
+                                        </f:facet>
+                                        <p:outputLabel value="#{listJobDeskrpsi.kategoryTugas}" >
+                                            <f:converter converterId="jobCategoryConverter" />
+                                        </p:outputLabel>
+                                    </p:column>
+                                    <p:column style="width: 80px;text-align: center"> 
+                                        <f:facet name="header">  
+                                            <h:outputText value="Type Waktu" />
+                                        </f:facet>
+                                        <p:outputLabel value="#{listJobDeskrpsi.typeWaktu}" >
+                                            <f:converter converterId="jobTypeTimeConverter" />
+                                        </p:outputLabel>
+                                    </p:column>
+                                </p:dataTable> 
                             </p:tab>  
                         </p:tabView>
                         <p:separator/>

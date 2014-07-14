@@ -129,7 +129,7 @@ public class JabatanSpesifikasiDetailController extends BaseController{
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 400);
-        options.put("contentHeight", 280);
+        options.put("contentHeight", 250);
         List<String> dataIsi = new ArrayList<>();
         Map<String, List<String>> dataToSend = new HashMap<>();
         dataIsi.add("i" + String.valueOf(selectedJabatan.getId()));
@@ -143,7 +143,7 @@ public class JabatanSpesifikasiDetailController extends BaseController{
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 400);
-        options.put("contentHeight", 280);
+        options.put("contentHeight", 250);
         Map<String, List<String>> dataToSend = new HashMap<>();
         List<String> dataIsi = new ArrayList<>();
         dataIsi.add("e" + String.valueOf(selectedJobSpec.getId()));
