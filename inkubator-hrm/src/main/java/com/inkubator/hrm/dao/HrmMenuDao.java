@@ -27,5 +27,7 @@ public interface HrmMenuDao extends IDAO<HrmMenu> {
 	public HrmMenu getEntityByPkWithDetail(long id);
 
 	public List<HrmMenu> getAllDataByLevelAndNotId(int level, Long id);
+	
+	public List<HrmMenu> getAllDataByUserRolesAndHaveNoChild();
 
 }

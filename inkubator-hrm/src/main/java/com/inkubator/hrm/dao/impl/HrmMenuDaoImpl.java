@@ -5,18 +5,17 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
-import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.sql.JoinType;
 import org.springframework.stereotype.Repository;
 
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.HrmMenuDao;
 import com.inkubator.hrm.entity.HrmMenu;
 import com.inkubator.hrm.web.search.HrmMenuSearchParameter;
+import com.inkubator.securitycore.util.UserInfoUtil;
 
 /**
  *
@@ -77,7 +76,9 @@ public class HrmMenuDaoImpl extends IDAOImpl<HrmMenu> implements HrmMenuDao {
 	public List<HrmMenu> getAllDataByLevelAndNotId(int level, Long id) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
 		criteria.add(Restrictions.eq("menuLevel", level));
-		criteria.add(Restrictions.ne("id", id));
+		if(id!=null){
+			criteria.add(Restrictions.ne("id", id));
+		}
 		return criteria.list();
 	}
 
@@ -105,6 +106,15 @@ public class HrmMenuDaoImpl extends IDAOImpl<HrmMenu> implements HrmMenuDao {
 			criteria.add(Restrictions.not(Restrictions.in("id", ids)));
 		}
 		return criteria;
+	}
+
+	@Override
+	public List<HrmMenu> getAllDataByUserRolesAndHaveNoChild() {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("hrmMenuRoles", "hrmMenuRoles");
+		criteria.createAlias("hrmMenuRoles.hrmRole", "hrmRole");
+		criteria.add(Restrictions.in("hrmRole.roleName", UserInfoUtil.getRoles()));
+		return criteria.list();		
 	}
 	
 	/*private Criteria doSearchByParamAndNotRoleId(Long roleId, HrmMenuSearchParameter parameter, Criteria criteria) {

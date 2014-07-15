@@ -792,6 +792,14 @@ div.art-logo
 	background-size: 80% auto;
     padding-right: 2px;
 }
+
+.img-favorite-menu
+{
+    background-image:url(../images/favorite_menu_ico.png)!important;
+    background-size: 80% auto;
+    padding-right: 2px;
+}
+
 .img-job-descriptions
 {
     background-image:url(../images/job_descriptions_ico.png)!important;
