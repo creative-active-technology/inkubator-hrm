@@ -80,31 +80,31 @@
                             </f:facet> 
                             <p:column style="text-align: center;width: 25px">
                                 <f:facet name="header">  
-                                    <h:outputText value="No."  />
+                                    <h:outputText value="#{appmsg['global.number']}"  />
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
                             <p:column sortBy="code" style="width: 150px" >
                                 <f:facet name="header">  
-                                    <h:outputText value="Kode"/>
+                                    <h:outputText value="#{appmsg['jabat.jabatan_code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{jabatanViewData.code}"/>
                             </p:column>
                             <p:column sortBy="name" >
                                 <f:facet name="header">  
-                                    <h:outputText value="Nama"/>
+                                    <h:outputText value="#{appmsg['jabatan.jabatan_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{jabatanViewData.name}"/>
                             </p:column>
                             <p:column sortBy="jabatan" >
                                 <f:facet name="header">  
-                                    <h:outputText value="Jabatan Atasan"/>
+                                    <h:outputText value="#{appmsg['jabatan.jabatan_deparment_boss']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{jabatanViewData.jabatan.name}"/>
                             </p:column>
                             <p:column sortBy="department" >
                                 <f:facet name="header">  
-                                    <h:outputText value="Nama Departement"/>
+                                    <h:outputText value="#{appmsg['jabatan.jabatan_deparment']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{jabatanViewData.department.departmentName}"/>
                             </p:column> 

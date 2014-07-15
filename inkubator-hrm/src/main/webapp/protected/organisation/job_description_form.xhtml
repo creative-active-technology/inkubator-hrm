@@ -21,7 +21,7 @@
                         <p:graphicImage library="images" name="job_descriptions.png" height="36" width="36" />
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Jobs Deskripsi Form" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['jabatan.jabatan_form']}" styleClass="header_big" />
                                 <p:outputLabel value="#{appmsg['jabtan_view.header2']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
@@ -35,7 +35,7 @@
 
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="kategoryTugasId" value="Kategori Tugas" styleClass="label_hrm"/>
+                                <p:outputLabel for="kategoryTugasId" value="#{appmsg['jabatan.category_task']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="kategoryTugasId" value=":" styleClass="label_hrm"/>
@@ -55,7 +55,7 @@
                         </p:row>
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="typeTimeId" value="Type Waktu" styleClass="label_hrm"/>
+                                <p:outputLabel for="typeTimeId" value="#{appmsg['jabatan.type_time']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="typeTimeId" value=":" styleClass="label_hrm"/>

@@ -21,8 +21,8 @@
                         <p:graphicImage library="images" name="job_descriptions.png" height="36" width="36" />
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Daftar Deskripsi Jabatan" styleClass="header_big" />
-                                <p:outputLabel value="Data Deskripsi Jabatan dari Organisasi" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['jobdescription.job_description']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['jobdescription.job_description_header']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -80,38 +80,38 @@
                             </f:facet> 
                             <p:column style="text-align: center;width: 25px">
                                 <f:facet name="header">  
-                                    <h:outputText value="No."  />
+                                    <h:outputText value="#{appmsg['global.number']}"  />
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
                             <p:column sortBy="code" style="width: 150px" >
                                 <f:facet name="header">  
-                                    <h:outputText value="Kode"/>
+                                    <h:outputText value="#{appmsg['jabat.jabatan_code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{jabatanDeskripsiModel.code}"/>
                             </p:column>
                             <p:column sortBy="name" >
                                 <f:facet name="header">  
-                                    <h:outputText value="Nama"/>
+                                    <h:outputText value="#{appmsg['jabatan.jabatan_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{jabatanDeskripsiModel.name}"/>
                             </p:column>
                             <p:column sortBy="jabatan" >
                                 <f:facet name="header">  
-                                    <h:outputText value="Jabatan Atasan"/>
+                                    <h:outputText value="#{appmsg['jabatan.jabatan_deparment_boss']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{jabatanDeskripsiModel.jabatan.name}"/>
                             </p:column>
                             <p:column sortBy="department" >
                                 <f:facet name="header">  
-                                    <h:outputText value="Nama Departement"/>
+                                    <h:outputText value="#{appmsg['jabatan.jabatan_deparment']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{jabatanDeskripsiModel.department.departmentName}"/>
                             </p:column> 
 
                           
                             <p:column headerText="#{appmsg['global.action']}" style="width: 160px;text-align: center" exportable="false">
-                                <p:commandButton  icon="ui-icon-document" title="Add or Edit Jobs Deskripsi" label="Add or Edit Jobs Deskripsi" value="Add or Edit Jobs Deskripsi"
+                                <p:commandButton  icon="ui-icon-document" title="#{appmsg['jabatan.add_or_edit_job_description']}" label="#{appmsg['jabatan.add_or_edit_job_description']}" value="#{appmsg['jabatan.add_or_edit_job_description']}"
                                                   action="#{jabatanDeskripsiViewController.doAdd()}" style="font-size: 10px!important" >                        
                                     <f:setPropertyActionListener value="#{jabatanDeskripsiModel}" target="#{jabatanDeskripsiViewController.selectedJabatan}" />
                                 </p:commandButton>
