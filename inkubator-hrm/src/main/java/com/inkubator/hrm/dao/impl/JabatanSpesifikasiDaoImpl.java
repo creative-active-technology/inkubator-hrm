@@ -7,15 +7,20 @@ package com.inkubator.hrm.dao.impl;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.JabatanSpesifikasiDao;
 import com.inkubator.hrm.entity.JabatanSpesifikasi;
+import com.inkubator.hrm.entity.SpecificationAbility;
 import com.inkubator.hrm.web.search.JabatanSpesifikasiSearchParameter;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Subqueries;
+import org.hibernate.sql.JoinType;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -97,4 +102,5 @@ public class JabatanSpesifikasiDaoImpl extends IDAOImpl<JabatanSpesifikasi> impl
         criteria.setFetchMode("specificationAbility", FetchMode.JOIN);
         return (JabatanSpesifikasi) criteria.uniqueResult();
     }
+
 }

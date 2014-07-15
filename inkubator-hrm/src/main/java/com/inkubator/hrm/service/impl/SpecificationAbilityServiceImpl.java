@@ -17,8 +17,10 @@ import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.SpecificationAbilityDao;
 import com.inkubator.hrm.entity.SpecificationAbility;
 import com.inkubator.hrm.service.SpecificationAbilityService;
+import com.inkubator.hrm.web.model.SpecificationAbilityModelView;
 import com.inkubator.hrm.web.search.SpecificationAbilitySearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+import java.util.ArrayList;
 
 /**
 *
@@ -273,6 +275,27 @@ public class SpecificationAbilityServiceImpl extends IServiceImpl implements Spe
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
     public SpecificationAbility getByName(String name) throws Exception {
         return specificationAbilityDao.getByName(name);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<SpecificationAbilityModelView> getDataBySpecAbilityNotExistInJabatanSpec(SpecificationAbilitySearchParameter parameter, int firstResult, int maxResult, Order order) throws Exception {
+        List<SpecificationAbilityModelView> modelViews = new ArrayList<SpecificationAbilityModelView>();
+        List<SpecificationAbility> specificationAbilitys = specificationAbilityDao.getDataBySpecAbilityNotExistInJabatanSpec(parameter, firstResult, maxResult, order);
+        for (SpecificationAbility specAbi : specificationAbilitys) {
+            SpecificationAbilityModelView modelView = new SpecificationAbilityModelView();
+            modelView.setId(specAbi.getId());
+            modelView.setName(specAbi.getName());
+            modelView.setOptionAbility(specAbi.getOptionAbility());
+            modelView.setScaleValue(specAbi.getScaleValue());
+            if(!specAbi.getJabatanSpesifikasis().isEmpty()){
+                modelView.setIsEdit(Boolean.FALSE);
+            }else{
+                modelView.setIsEdit(Boolean.TRUE);
+            }
+            modelViews.add(modelView);
+        }
+        return modelViews;
     }
 
 }

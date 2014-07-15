@@ -25,4 +25,6 @@ public interface JabatanSpesifikasiService extends IService<JabatanSpesifikasi> 
     public Long getTotalJabatanSpesifikasiByJabatan(JabatanSpesifikasiSearchParameter searchParameter, Long id)  throws Exception;
     
     public JabatanSpesifikasi getDataByPK(Long id) throws Exception;
+    
+    public JabatanSpesifikasi getDataBySpecAbility(Long specId) throws Exception;
 }
