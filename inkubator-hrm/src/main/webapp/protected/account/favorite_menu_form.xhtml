@@ -30,7 +30,7 @@
                     <p:growl id="growlFavoriteMenuFormlId" globalOnly="true" showDetail="true" />
 
                     <h:form id="formFavoriteMenuFormId">
-                    	<p:fieldset legend="Available Menus">
+                    	<p:fieldset id="fieldsetAvailableMenuId" legend="#{appmsg['favorite_menu.available_menus']}">
 	                        <p:toolbar  style="margin-top: 10px">
 	                            <p:toolbarGroup align="left">
 	                                <h:panelGrid columns="5">
@@ -48,11 +48,11 @@
 	                                      rows="5" rowsPerPageTemplate="5,10" style="margin-top: 10px;margin-bottom: 10px"
 	                                      rowIndexVar="no">
 	                            <f:facet name="header">  
-	                                <h:outputText value="#{appmsg['hrm_menu.list_of_menu']}"/>
+	                                <h:outputText value="#{appmsg['favorite_menu.list_of_available_menus']}"/>
 	                            </f:facet> 
 	                            <p:column style="text-align: center;width: 10%">
 	                                <f:facet name="header">  
-	                                    <h:outputText value="Drag Icon"/>
+	                                    <h:outputText value="#{appmsg['favorite_menu.drag_icon']}"/>
 	                                </f:facet>
 	                                <p:graphicImage id="dragIcon" name="/images/#{menuData.iconName}" height="30" />
 	                                <p:draggable for="dragIcon" revert="true" />
@@ -81,7 +81,65 @@
 	                                <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
 	                            </h:panelGrid>
 	                        </p:blockUI>
+                        </p:fieldset>                        
+                        
+                        <br/>
+                        
+                        <p:fieldset id="fieldsetFavoriteMenuId" legend="#{appmsg['favorite_menu.favorite_menu']}">
+                        	<p:dataTable  id="tableFavoriteMenuId" var="favoriteMenuData"  value="#{favoriteMenuFormController.favoriteMenus}" lazy="false" paginator="false" pageLinks="7"
+	                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+	                                      rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+	                                      rowIndexVar="no">
+	                            <f:facet name="header">  
+	                                <h:outputText value="#{appmsg['favorite_menu.list_of_favorite_menu']}"/>
+	                            </f:facet> 
+	                            <p:column style="text-align: center;width: 5%">
+	                                <f:facet name="header">  
+	                                    <h:outputText value="#{appmsg['global.number']}"/>
+	                                </f:facet>
+	                                <h:outputLabel value="#{no+1}." />
+	                            </p:column>  
+	                            <p:column style="text-align: center;width: 35%">
+	                                <f:facet name="header">  
+	                                    <h:outputText value="#{appmsg['hrm_menu.menu_name']}"/>
+	                                </f:facet>
+	                                <h:outputLabel value= "#{favoriteMenuData.name}"/>
+	                            </p:column>
+	                            <p:column style="text-align: center;width: 35%">
+	                                <f:facet name="header">  
+	                                    <h:outputText value="#{appmsg['hrm_menu.url_name']}"/>
+	                                </f:facet>
+	                                <h:outputLabel value= "#{favoriteMenuData.urlName}"/>
+	                            </p:column>   
+	                        </p:dataTable>
                         </p:fieldset>
+                        
+                        <p:droppable for="fieldsetFavoriteMenuId" tolerance="touch" activeStyleClass="ui-state-highlight" datasource="tableAvailableMenuId" onDrop="handleDrop">
+					        <p:ajax listener="#{favoriteMenuFormController.onMenuDrop}" update="tableFavoriteMenuId,tableAvailableMenuId,:growlFavoriteMenuFormlId" />
+					    </p:droppable>
+					    
+					    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+	                    <div style="margin-bottom: 5px">
+	                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formFavoriteMenuFormId,:growlFavoriteMenuFormlId"
+	                                         action="#{favoriteMenuFormController.doSave()}" styleClass="isitext_hrm"
+	                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
+	                                         icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+	                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formFavoriteMenuFormId" action="#{favoriteMenuFormController.doReset()}"
+                                                 icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px">  
+	                            <p:resetInput target="formFavoriteMenuFormId" />  
+	                        </p:commandButton>
+	                        <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{favoriteMenuFormController.doBack()}" immediate="true"
+	                                      	 styleClass="label_button"/>
+	                    </div>
+	                    
+                        <script type="text/javascript">
+						    function handleDrop(event, ui) {
+						        var droppedMenu = ui.draggable;
+						 
+						        droppedMenu.fadeOut('fast');
+						    }
+						</script>
+		
                     </h:form>
                 </div>
             </ui:define>

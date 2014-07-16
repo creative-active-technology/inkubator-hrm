@@ -5,12 +5,15 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import org.primefaces.event.DragDropEvent;
 import org.primefaces.model.LazyDataModel;
 
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.FavoriteMenu;
 import com.inkubator.hrm.entity.HrmMenu;
 import com.inkubator.hrm.service.FavoriteMenuService;
@@ -18,6 +21,8 @@ import com.inkubator.hrm.service.HrmMenuService;
 import com.inkubator.hrm.web.lazymodel.HrmMenuAvailableForFavoriteLazyDataModel;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.controller.BaseController;
+import com.inkubator.webcore.util.FacesUtil;
+import com.inkubator.webcore.util.MessagesResourceUtil;
 
 /**
  *
@@ -39,12 +44,9 @@ public class FavoriteMenuFormController extends BaseController {
     @Override
     public void initialization() {
         super.initialization();
-        List<FavoriteMenu> listFavoriteMenu = favoriteMenuService.getAllDataByUserIdWithMenus(UserInfoUtil.getUserName());
-        for(FavoriteMenu favoriteMenu : listFavoriteMenu){
-        	favoriteMenus.add(favoriteMenu.getHrmMenu());
-        }
+        favoriteMenus = getUserListFavoriteMenu();        
 	}
-	
+
 	@PreDestroy
     public void cleanAndExit() {
 		parameter = null;
@@ -97,7 +99,31 @@ public class FavoriteMenuFormController extends BaseController {
 		
 	}
 	
+	public void doReset(){
+		favoriteMenus = getUserListFavoriteMenu();
+	}
+	
 	public String doBack() {
         return "/protected/account/favorite_menu_view.htm?faces-redirect=true";
     }
+	
+	public void onMenuDrop(DragDropEvent event){
+		HrmMenu droppedMenu = (HrmMenu) event.getData();
+		if(favoriteMenus.contains(droppedMenu)){
+			MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "favorite_menu.menu_already_added", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+		} else if(favoriteMenus.size()>= 6){
+			MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "favorite_menu.max_six_menu_in_favorite_menu", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+		} else {
+			favoriteMenus.add(droppedMenu);
+		}
+	}
+	
+	private List<HrmMenu> getUserListFavoriteMenu() {
+		List<FavoriteMenu> listUserFavoriteMenu = favoriteMenuService.getAllDataByUserIdWithMenus(UserInfoUtil.getUserName());
+		List<HrmMenu> favoriteMenus = new ArrayList<HrmMenu>();
+        for(FavoriteMenu favoriteMenu : listUserFavoriteMenu){
+        	favoriteMenus.add(favoriteMenu.getHrmMenu());
+        }
+		return favoriteMenus;
+	}
 }
