@@ -37,7 +37,7 @@ public class HomeHistoryController extends BaseController {
     @Override
     public void initialization() {
         try {
-            dataRiwayatAkses = riwayatAksesService.getDataByUserId(UserInfoUtil.getUserName(), 0, 5, Order.desc("dateAccess"));
+            dataRiwayatAkses = riwayatAksesService.getDataByUserId(UserInfoUtil.getUserName(), 0, 3, Order.desc("dateAccess"));
         } catch (Exception ex) {
            LOGGER.error("Error", ex);
         }
