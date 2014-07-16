@@ -50,12 +50,12 @@
 	                            <f:facet name="header">  
 	                                <h:outputText value="#{appmsg['favorite_menu.list_of_available_menus']}"/>
 	                            </f:facet> 
-	                            <p:column style="text-align: center;width: 10%">
+	                            <p:column style="text-align: center;width: 5%;overflow:visible">
 	                                <f:facet name="header">  
-	                                    <h:outputText value="#{appmsg['favorite_menu.drag_icon']}"/>
+	                                    <h:outputText/>
 	                                </f:facet>
-	                                <p:graphicImage id="dragIcon" name="/images/#{menuData.iconName}" height="30" />
-	                                <p:draggable for="dragIcon" revert="true" />
+	                                <p:graphicImage id="dragIcon" name="/images/#{menuData.iconName}" height="22" title="#{appmsg['favorite_menu.drag_icon_drop_to_favorite_menu_list']}" />
+	                                <p:draggable for="dragIcon" revert="true" zindex="10000" />
 	                            </p:column>  
 	                            <p:column sortBy="name"  style="text-align: center;width: 35%">
 	                                <f:facet name="header">  
@@ -113,7 +113,7 @@
 	                            </p:column>   
 	                            <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
 	                                <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
-	                                				 style="font-size: 10px!important" update="tableFavoriteMenuId" 
+	                                				 style="font-size: 10px!important" update="tableFavoriteMenuId,:formFavoriteMenuFormId:tableAvailableMenuId" 
 	                                				 action="#{favoriteMenuFormController.doRemoveFavoriteMenu()}">
 	                                    <f:setPropertyActionListener value="#{favoriteMenuData}" target="#{favoriteMenuFormController.selectedFavoriteMenu}" />
 	                                </p:commandButton>

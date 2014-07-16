@@ -28,8 +28,8 @@ public interface HrmMenuService extends IService<HrmMenu> {
 
 	public List<HrmMenu> getAllDataByLevelAndNotId(int level, Long id);
 	
-	public List<HrmMenu> getAllDataByUserRolesAndHaveNoChild(String parameter, List<String> roles, int firstResult, int maxResults, Order orderable);
+	public List<HrmMenu> getAllDataByUserRolesAndHaveNoChild(String parameter, List<Long> exceptMenuIds, List<String> roles, int firstResult, int maxResults, Order orderable);
 	
-	public Long getTotalByUserRolesAndHaveNoChild(String parameter, List<String> roles);
+	public Long getTotalByUserRolesAndHaveNoChild(String parameter, List<Long> exceptMenuIds, List<String> roles);
 
 }

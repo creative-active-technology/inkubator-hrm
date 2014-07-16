@@ -108,9 +108,9 @@ public class HrmMenuDaoImpl extends IDAOImpl<HrmMenu> implements HrmMenuDao {
 	}
 
 	@Override
-	public List<HrmMenu> getAllDataByUserRolesAndHaveNoChild(String parameter, List<String> roles, int firstResult, int maxResults, Order orderable) {
+	public List<HrmMenu> getAllDataByUserRolesAndHaveNoChild(String parameter, List<Long> exceptMenuIds, List<String> roles, int firstResult, int maxResults, Order orderable) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria = doSearchByUserRolesAndHaveNoChild(criteria, parameter, roles);
+		criteria = doSearchByUserRolesAndHaveNoChild(criteria, parameter, exceptMenuIds, roles);
 		criteria.addOrder(orderable);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
@@ -119,19 +119,22 @@ public class HrmMenuDaoImpl extends IDAOImpl<HrmMenu> implements HrmMenuDao {
 	}
 
 	@Override
-	public Long getTotalByUserRolesAndHaveNoChild(String parameter, List<String> roles) {
+	public Long getTotalByUserRolesAndHaveNoChild(String parameter, List<Long> exceptMenuIds, List<String> roles) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria = doSearchByUserRolesAndHaveNoChild(criteria, parameter, roles);
+		criteria = doSearchByUserRolesAndHaveNoChild(criteria, parameter, exceptMenuIds, roles);
 		
 		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
 	}
 	
-	private Criteria doSearchByUserRolesAndHaveNoChild(Criteria criteria, String parameter, List<String> roles){
+	private Criteria doSearchByUserRolesAndHaveNoChild(Criteria criteria, String parameter, List<Long> exceptMenuIds, List<String> roles){
 		criteria.createAlias("hrmMenuRoles", "hrmMenuRoles");
 		criteria.createAlias("hrmMenuRoles.hrmRole", "hrmRole");
 		criteria.add(Restrictions.in("hrmRole.roleName", roles));
 		if(parameter != null){
 			criteria.add(Restrictions.like("name", parameter, MatchMode.ANYWHERE));
+		}
+		if(exceptMenuIds!= null && exceptMenuIds.size() > 0){
+			criteria.add(Restrictions.not(Restrictions.in("id", exceptMenuIds))); //where clause to except menu that already choose
 		}
 		criteria.add(Restrictions.isEmpty("hrmMenus")); //where clause to identified that this menu have no child
 		

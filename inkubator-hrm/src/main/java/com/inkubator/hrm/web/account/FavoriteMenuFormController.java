@@ -69,7 +69,7 @@ public class FavoriteMenuFormController extends BaseController {
 
 	public LazyDataModel<HrmMenu> getLazyAvailableMenus() {
 		if(lazyAvailableMenus == null){
-			lazyAvailableMenus = new HrmMenuAvailableForFavoriteLazyDataModel(parameter, hrmMenuService);
+			lazyAvailableMenus = new HrmMenuAvailableForFavoriteLazyDataModel(parameter, hrmMenuService, favoriteMenus);
 		}
 		return lazyAvailableMenus;
 	}
@@ -131,6 +131,7 @@ public class FavoriteMenuFormController extends BaseController {
 	
 	public void doRemoveFavoriteMenu(){
 		favoriteMenus.remove(selectedFavoriteMenu);
+		doSearchAvailableMenus(); //recalculate searching available menus
 	}
 	
 	public void onMenuDrop(DragDropEvent event){
@@ -141,6 +142,7 @@ public class FavoriteMenuFormController extends BaseController {
 			MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "favorite_menu.max_six_menu_in_favorite_menu", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 		} else {
 			favoriteMenus.add(droppedMenu);
+			doSearchAvailableMenus(); //recalculate searching available menus
 		}
 	}
 	

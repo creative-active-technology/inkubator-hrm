@@ -23,12 +23,16 @@ public class HrmMenuAvailableForFavoriteLazyDataModel extends LazyDataModel<HrmM
     private static final Logger LOGGER = Logger.getLogger(HrmMenuAvailableForFavoriteLazyDataModel.class);
     private final HrmMenuService service;
     private final String parameter;
+    private final List<Long> exceptMenuIds = new ArrayList<Long>();
     private List<HrmMenu> list = new ArrayList<>();
     private Integer total;
 
-    public HrmMenuAvailableForFavoriteLazyDataModel(String parameter, HrmMenuService service) {
+    public HrmMenuAvailableForFavoriteLazyDataModel(String parameter, HrmMenuService service, List<HrmMenu> exceptMenus) {
         this.service = service;
         this.parameter = parameter;
+        for(HrmMenu menu:exceptMenus){
+        	this.exceptMenuIds.add(menu.getId());
+        }
     }
 
     @Override
@@ -42,8 +46,8 @@ public class HrmMenuAvailableForFavoriteLazyDataModel extends LazyDataModel<HrmM
 	        	orderable = Order.desc("name");
 	        }
 	        
-	        list = service.getAllDataByUserRolesAndHaveNoChild(parameter, UserInfoUtil.getRoles(), first, pageSize, orderable);
-            total = Integer.parseInt(String.valueOf(service.getTotalByUserRolesAndHaveNoChild(parameter, UserInfoUtil.getRoles())));            
+	        list = service.getAllDataByUserRolesAndHaveNoChild(parameter, exceptMenuIds, UserInfoUtil.getRoles(), first, pageSize, orderable);
+            total = Integer.parseInt(String.valueOf(service.getTotalByUserRolesAndHaveNoChild(parameter, exceptMenuIds, UserInfoUtil.getRoles())));            
         	LOGGER.info("Success Load Lazy data Model");
         	
         } catch (Exception ex) {
