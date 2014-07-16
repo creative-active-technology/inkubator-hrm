@@ -1,0 +1,156 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg" style="margin: 10px">                       
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="favorite_menu.png" height="36" width="36" cache="true"/>
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['favorite_menu.form_menu']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['favorite_menu.favorite_menu_data_from_application']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+
+                    <p:separator/>
+                    <p:growl id="growlFavoriteMenuFormlId" globalOnly="true" showDetail="true" />
+
+                    <h:form id="formFavoriteMenuFormId">
+                    	<p:fieldset id="fieldsetAvailableMenuId" legend="#{appmsg['favorite_menu.available_menus']}">
+	                        <p:toolbar  style="margin-top: 10px">
+	                            <p:toolbarGroup align="left">
+	                                <h:panelGrid columns="5">
+	                                    <p:outputLabel value="#{appmsg['global.searching']} #{appmsg['hrm_menu.menu_name']}" title="#{appmsg['global.searching']} #{appmsg['hrm_menu.menu_name']}" styleClass="label_hrm" />
+	                                    <p:outputLabel value=":" />
+	                                    <p:inputText id="searchId" value="#{favoriteMenuFormController.parameter}" style="width: 250px" styleClass="isitext_hrm"/>
+	                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{favoriteMenuFormController.doSearchAvailableMenus()}" update="tableAvailableMenuId"  styleClass="label_button" icon="ui-icon-search"/>
+	                                </h:panelGrid>
+	                            </p:toolbarGroup>
+	                        </p:toolbar>
+	                        <p:focus for="searchId" />
+							
+	                        <p:dataTable  id="tableAvailableMenuId" var="menuData"  value="#{favoriteMenuFormController.lazyAvailableMenus}" lazy="true" paginator="true" pageLinks="7"
+	                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+	                                      rows="5" rowsPerPageTemplate="5,10" style="margin-top: 10px;margin-bottom: 10px"
+	                                      rowIndexVar="no">
+	                            <f:facet name="header">  
+	                                <h:outputText value="#{appmsg['favorite_menu.list_of_available_menus']}"/>
+	                            </f:facet> 
+	                            <p:column style="text-align: center;width: 10%">
+	                                <f:facet name="header">  
+	                                    <h:outputText value="#{appmsg['favorite_menu.drag_icon']}"/>
+	                                </f:facet>
+	                                <p:graphicImage id="dragIcon" name="/images/#{menuData.iconName}" height="30" />
+	                                <p:draggable for="dragIcon" revert="true" />
+	                            </p:column>  
+	                            <p:column sortBy="name"  style="text-align: center;width: 35%">
+	                                <f:facet name="header">  
+	                                    <h:outputText value="#{appmsg['hrm_menu.menu_name']}"/>
+	                                </f:facet>
+	                                <h:outputLabel value= "#{menuData.name}"/>
+	                            </p:column>
+	                            <p:column sortBy="urlName"  style="text-align: center;width: 35%">
+	                                <f:facet name="header">  
+	                                    <h:outputText value="#{appmsg['hrm_menu.url_name']}"/>
+	                                </f:facet>
+	                                <h:outputLabel value= "#{menuData.urlName}"/>
+	                            </p:column>                       
+	                            <f:facet name="footer">
+	                                <p:outputLabel value="#{appmsg['global.total_data']} : "/>
+	                                <p:outputLabel value="#{favoriteMenuFormController.lazyAvailableMenus.rowCount}"/>
+	                                <p:outputLabel value="Data" style="margin-left: 3px"/>
+	                            </f:facet>  
+	                        </p:dataTable>
+	                        <p:blockUI block="formFavoriteMenuFormId" trigger="tableAvailableMenuId,btnSearchId" >
+	                            <h:panelGrid columns="2" styleClass="grid_no_border">
+	                                <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
+	                                <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
+	                            </h:panelGrid>
+	                        </p:blockUI>
+                        </p:fieldset>                        
+                        
+                        <br/>
+                        
+                        <p:fieldset id="fieldsetFavoriteMenuId" legend="#{appmsg['favorite_menu.favorite_menu']}">
+                        	<p:dataTable  id="tableFavoriteMenuId" var="favoriteMenuData"  value="#{favoriteMenuFormController.favoriteMenus}" lazy="false" paginator="false" pageLinks="7"
+	                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+	                                      rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+	                                      rowIndexVar="no">
+	                            <f:facet name="header">  
+	                                <h:outputText value="#{appmsg['favorite_menu.list_of_favorite_menu']}"/>
+	                            </f:facet> 
+	                            <p:column style="text-align: center;width: 5%">
+	                                <f:facet name="header">  
+	                                    <h:outputText value="#{appmsg['global.number']}"/>
+	                                </f:facet>
+	                                <h:outputLabel value="#{no+1}." />
+	                            </p:column>  
+	                            <p:column style="text-align: center;width: 35%">
+	                                <f:facet name="header">  
+	                                    <h:outputText value="#{appmsg['hrm_menu.menu_name']}"/>
+	                                </f:facet>
+	                                <h:outputLabel value= "#{favoriteMenuData.name}"/>
+	                            </p:column>
+	                            <p:column style="text-align: center;width: 35%">
+	                                <f:facet name="header">  
+	                                    <h:outputText value="#{appmsg['hrm_menu.url_name']}"/>
+	                                </f:facet>
+	                                <h:outputLabel value= "#{favoriteMenuData.urlName}"/>
+	                            </p:column>   
+	                            <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
+	                                <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+	                                				 style="font-size: 10px!important" update="tableFavoriteMenuId" 
+	                                				 action="#{favoriteMenuFormController.doRemoveFavoriteMenu()}">
+	                                    <f:setPropertyActionListener value="#{favoriteMenuData}" target="#{favoriteMenuFormController.selectedFavoriteMenu}" />
+	                                </p:commandButton>
+	                            </p:column>
+	                        </p:dataTable>
+                        </p:fieldset>
+                        
+                        <p:droppable for="fieldsetFavoriteMenuId" tolerance="touch" activeStyleClass="ui-state-highlight" datasource="tableAvailableMenuId" onDrop="handleDrop">
+					        <p:ajax listener="#{favoriteMenuFormController.onMenuDrop}" update="tableFavoriteMenuId,tableAvailableMenuId,:growlFavoriteMenuFormlId" />
+					    </p:droppable>
+					    
+					    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+	                    <div style="margin-bottom: 5px">
+	                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formFavoriteMenuFormId,:growlFavoriteMenuFormlId"
+	                                         action="#{favoriteMenuFormController.doSave()}" styleClass="isitext_hrm"
+	                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
+	                                         icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+	                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formFavoriteMenuFormId" action="#{favoriteMenuFormController.doReset()}"
+                                                 icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px">  
+	                            <p:resetInput target="formFavoriteMenuFormId" />  
+	                        </p:commandButton>
+	                        <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{favoriteMenuFormController.doBack()}" immediate="true"
+	                                      	 styleClass="label_button"/>
+	                    </div>
+	                    
+                        <script type="text/javascript">
+						    function handleDrop(event, ui) {
+						        var droppedMenu = ui.draggable;
+						 
+						        droppedMenu.fadeOut('fast');
+						    }
+						</script>
+		
+                    </h:form>
+                </div>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

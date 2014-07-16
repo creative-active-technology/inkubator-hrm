@@ -15,7 +15,6 @@ import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.HrmMenuDao;
 import com.inkubator.hrm.entity.HrmMenu;
 import com.inkubator.hrm.web.search.HrmMenuSearchParameter;
-import com.inkubator.securitycore.util.UserInfoUtil;
 
 /**
  *
@@ -109,12 +108,34 @@ public class HrmMenuDaoImpl extends IDAOImpl<HrmMenu> implements HrmMenuDao {
 	}
 
 	@Override
-	public List<HrmMenu> getAllDataByUserRolesAndHaveNoChild() {
+	public List<HrmMenu> getAllDataByUserRolesAndHaveNoChild(String parameter, List<String> roles, int firstResult, int maxResults, Order orderable) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria = doSearchByUserRolesAndHaveNoChild(criteria, parameter, roles);
+		criteria.addOrder(orderable);
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResults);
+        
+		return criteria.list();		
+	}
+
+	@Override
+	public Long getTotalByUserRolesAndHaveNoChild(String parameter, List<String> roles) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria = doSearchByUserRolesAndHaveNoChild(criteria, parameter, roles);
+		
+		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
+	
+	private Criteria doSearchByUserRolesAndHaveNoChild(Criteria criteria, String parameter, List<String> roles){
 		criteria.createAlias("hrmMenuRoles", "hrmMenuRoles");
 		criteria.createAlias("hrmMenuRoles.hrmRole", "hrmRole");
-		criteria.add(Restrictions.in("hrmRole.roleName", UserInfoUtil.getRoles()));
-		return criteria.list();		
+		criteria.add(Restrictions.in("hrmRole.roleName", roles));
+		if(parameter != null){
+			criteria.add(Restrictions.like("name", parameter, MatchMode.ANYWHERE));
+		}
+		criteria.add(Restrictions.isEmpty("hrmMenus")); //where clause to identified that this menu have no child
+		
+		return criteria;
 	}
 	
 	/*private Criteria doSearchByParamAndNotRoleId(Long roleId, HrmMenuSearchParameter parameter, Criteria criteria) {

@@ -12,29 +12,23 @@ import org.primefaces.model.SortOrder;
 
 import com.inkubator.hrm.entity.HrmMenu;
 import com.inkubator.hrm.service.HrmMenuService;
-import com.inkubator.hrm.web.search.HrmMenuSearchParameter;
+import com.inkubator.securitycore.util.UserInfoUtil;
 
 /**
  *
  * @author rizkykojek
  */
-public class HrmMenuExceptMenuIdsLazyDataModel extends LazyDataModel<HrmMenu> implements Serializable {
+public class HrmMenuAvailableForFavoriteLazyDataModel extends LazyDataModel<HrmMenu> implements Serializable {
 
-    private static final Logger LOGGER = Logger.getLogger(HrmMenuExceptMenuIdsLazyDataModel.class);
-    private final HrmMenuSearchParameter parameter;
+    private static final Logger LOGGER = Logger.getLogger(HrmMenuAvailableForFavoriteLazyDataModel.class);
     private final HrmMenuService service;
-    private List<Long> selectedMenuIds = new ArrayList<Long>();
+    private final String parameter;
     private List<HrmMenu> list = new ArrayList<>();
     private Integer total;
 
-    public HrmMenuExceptMenuIdsLazyDataModel(HrmMenuSearchParameter parameter, HrmMenuService service, List<String> strMenuIds) {
-        this.parameter = parameter;
+    public HrmMenuAvailableForFavoriteLazyDataModel(String parameter, HrmMenuService service) {
         this.service = service;
-        
-        selectedMenuIds.clear();
-        for(String id : strMenuIds){
-        	selectedMenuIds.add(Long.parseLong(id));
-        }
+        this.parameter = parameter;
     }
 
     @Override
@@ -48,8 +42,8 @@ public class HrmMenuExceptMenuIdsLazyDataModel extends LazyDataModel<HrmMenu> im
 	        	orderable = Order.desc("name");
 	        }
 	        
-	        list = service.getAllDataByParamAndNotIds(parameter, selectedMenuIds, first, pageSize, orderable);
-            total = Integer.parseInt(String.valueOf(service.getTotalByParamAndNotIds(parameter, selectedMenuIds)));            
+	        list = service.getAllDataByUserRolesAndHaveNoChild(parameter, UserInfoUtil.getRoles(), first, pageSize, orderable);
+            total = Integer.parseInt(String.valueOf(service.getTotalByUserRolesAndHaveNoChild(parameter, UserInfoUtil.getRoles())));            
         	LOGGER.info("Success Load Lazy data Model");
         	
         } catch (Exception ex) {
