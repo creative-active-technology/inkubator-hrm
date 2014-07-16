@@ -111,6 +111,13 @@
 	                                </f:facet>
 	                                <h:outputLabel value= "#{favoriteMenuData.urlName}"/>
 	                            </p:column>   
+	                            <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
+	                                <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+	                                				 style="font-size: 10px!important" update="tableFavoriteMenuId" 
+	                                				 action="#{favoriteMenuFormController.doRemoveFavoriteMenu()}">
+	                                    <f:setPropertyActionListener value="#{favoriteMenuData}" target="#{favoriteMenuFormController.selectedFavoriteMenu}" />
+	                                </p:commandButton>
+	                            </p:column>
 	                        </p:dataTable>
                         </p:fieldset>
                         

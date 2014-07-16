@@ -13,6 +13,7 @@ import javax.faces.bean.ViewScoped;
 import org.primefaces.event.DragDropEvent;
 import org.primefaces.model.LazyDataModel;
 
+import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.FavoriteMenu;
 import com.inkubator.hrm.entity.HrmMenu;
@@ -35,6 +36,7 @@ public class FavoriteMenuFormController extends BaseController {
 	private String parameter;
 	private LazyDataModel<HrmMenu> lazyAvailableMenus;
 	private List<HrmMenu> favoriteMenus = new ArrayList<HrmMenu>();
+	private HrmMenu selectedFavoriteMenu;
 	@ManagedProperty(value = "#{hrmMenuService}")
 	private HrmMenuService hrmMenuService;
 	@ManagedProperty(value = "#{favoriteMenuService}")
@@ -54,6 +56,7 @@ public class FavoriteMenuFormController extends BaseController {
 		favoriteMenus = null;
 		favoriteMenuService = null;
 		hrmMenuService = null;
+		selectedFavoriteMenu = null;
 	}
 	
 	public String getParameter() {
@@ -83,6 +86,14 @@ public class FavoriteMenuFormController extends BaseController {
 		this.favoriteMenus = favoriteMenus;
 	}
 
+	public HrmMenu getSelectedFavoriteMenu() {
+		return selectedFavoriteMenu;
+	}
+
+	public void setSelectedFavoriteMenu(HrmMenu selectedFavoriteMenu) {
+		this.selectedFavoriteMenu = selectedFavoriteMenu;
+	}
+
 	public void setHrmMenuService(HrmMenuService hrmMenuService) {
 		this.hrmMenuService = hrmMenuService;
 	}
@@ -95,8 +106,19 @@ public class FavoriteMenuFormController extends BaseController {
 		lazyAvailableMenus = null;
 	}
 	
-	public void doSave(){
-		
+	public String doSave(){
+		try {
+			favoriteMenuService.saveOrUpdate(UserInfoUtil.getUserName(), favoriteMenus);
+            MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
+                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            return "/protected/account/favorite_menu_view.htm?faces-redirect=true";
+        } catch (BussinessException ex) { //data already exist(duplicate)
+            LOGGER.error("Error", ex);
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
+        }
+        return null;
 	}
 	
 	public void doReset(){
@@ -106,6 +128,10 @@ public class FavoriteMenuFormController extends BaseController {
 	public String doBack() {
         return "/protected/account/favorite_menu_view.htm?faces-redirect=true";
     }
+	
+	public void doRemoveFavoriteMenu(){
+		favoriteMenus.remove(selectedFavoriteMenu);
+	}
 	
 	public void onMenuDrop(DragDropEvent event){
 		HrmMenu droppedMenu = (HrmMenu) event.getData();

@@ -12,7 +12,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.dao.FavoriteMenuDao;
+import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.entity.FavoriteMenu;
+import com.inkubator.hrm.entity.FavoriteMenuId;
+import com.inkubator.hrm.entity.HrmMenu;
+import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.service.FavoriteMenuService;
 
 /**
@@ -25,6 +29,8 @@ public class FavoriteMenuServiceImpl extends IServiceImpl implements FavoriteMen
 
 	@Autowired
 	private FavoriteMenuDao favoriteMenuDao;
+	@Autowired
+	private HrmUserDao hrmUserDao;
 	
 	@Override
 	public FavoriteMenu getEntiyByPK(String id) throws Exception {
@@ -237,6 +243,27 @@ public class FavoriteMenuServiceImpl extends IServiceImpl implements FavoriteMen
 	public List<FavoriteMenu> getAllDataByUserIdWithMenus(String userId) {
 		return favoriteMenuDao.getAllDataByUserIdWithMenus(userId);
 		
+	}
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void saveOrUpdate(String userId, List<HrmMenu> favoriteMenus) throws Exception {
+		HrmUser user = hrmUserDao.getByUserId(userId);
+		
+		//remove old favorite menu entities
+		List<FavoriteMenu> oldEntities = favoriteMenuDao.getAllDataByUserIdWithMenus(userId);
+		for(FavoriteMenu oldEntity : oldEntities){
+			favoriteMenuDao.delete(oldEntity);
+		}
+		
+		//add new favorite menu entities
+		for(HrmMenu menu : favoriteMenus){
+			FavoriteMenu favoriteMenu = new FavoriteMenu();
+			favoriteMenu.setId(new FavoriteMenuId(user.getId(), menu.getId()));
+			favoriteMenu.setHrmMenu(menu);
+			favoriteMenu.setHrmUser(user);
+			favoriteMenuDao.save(favoriteMenu);
+		}
 	}
 
 }
