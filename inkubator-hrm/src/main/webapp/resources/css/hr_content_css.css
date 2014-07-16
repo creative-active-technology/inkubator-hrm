@@ -498,7 +498,12 @@ div.art-logo
     background-size: 80% auto;
     padding-right: 2px;
 }
-
+.img-currency
+{
+    background-image:url(../images/currency_icon.png)!important;
+    background-size: 80% auto;
+    padding-right: 2px;
+}
 .img-task
 {
     background-image:url(../images/task_ico.png)!important;
