@@ -35,6 +35,7 @@ public class FavoriteMenuViewController extends BaseController {
 	@PreDestroy
     public void cleanAndExit() {
 		favoriteMenuService = null;
+		favoriteMenus = null;
 	}
 
 	public void setFavoriteMenuService(FavoriteMenuService favoriteMenuService) {
