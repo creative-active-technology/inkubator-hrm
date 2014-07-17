@@ -35,7 +35,7 @@
                                     <p:outputLabel value=":" />
                                     <p:selectOneMenu value="#{interestTypeController.search.keyParam}" style="width: 150px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemLabel="#{appmsg['currency.name']}" itemValue="name"/>
+                                        <f:selectItem itemLabel="#{appmsg['interesttype.name']}" itemValue="name"/>
                                     </p:selectOneMenu>
                                     <p:inputText id="searchId" value="#{interestTypeController.search.parameter}" style="width: 250px" styleClass="label_button"/>
                                     <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{interestTypeController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
@@ -60,7 +60,7 @@
                                       id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="#{appmsg['currency.list_of_currency']}"/>
+                                <h:outputText value="#{appmsg['interesttype.list_of_interestType']}"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 5%">
                                 <f:facet name="header">  

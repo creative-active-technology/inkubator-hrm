@@ -18,7 +18,9 @@ import javax.persistence.Version;
 @Entity
 @Table(name="bank"
     ,catalog="hrm"
-    , uniqueConstraints = @UniqueConstraint(columnNames="bank_code") 
+    , uniqueConstraints ={ @UniqueConstraint(columnNames="bank_code") 
+    , @UniqueConstraint(columnNames="swift_code") 
+    , @UniqueConstraint(columnNames="bank_identification_no") }
 )
 public class Bank  implements java.io.Serializable {
 
@@ -32,6 +34,9 @@ public class Bank  implements java.io.Serializable {
      private String bankCode;
      private String bankName;
      private String description;
+     private String swiftCcode; 
+     private String iban;
+     private String bankIdentificationNo;
 
     public Bank() {
     }
@@ -40,7 +45,7 @@ public class Bank  implements java.io.Serializable {
     public Bank(long id) {
         this.id = id;
     }
-    public Bank(long id, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String bankCode, String bankName, String description) {
+    public Bank(long id, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String bankCode, String bankName, String description,String swiftCcode,String iban,String bankIdentificationNo) {
        this.id = id;
        this.createdBy = createdBy;
        this.createdOn = createdOn;
@@ -49,6 +54,9 @@ public class Bank  implements java.io.Serializable {
        this.bankCode = bankCode;
        this.bankName = bankName;
        this.description = description;
+       this.swiftCcode = swiftCcode;
+       this.iban = iban;
+       this.bankIdentificationNo = bankIdentificationNo;
     }
    
      @Id 
@@ -143,7 +151,34 @@ public class Bank  implements java.io.Serializable {
         this.description = description;
     }
 
+    @Column(name="swift_code", unique=true, length=30)
+    public String getSwiftCcode() {
+        return swiftCcode;
+    }
 
+    public void setSwiftCcode(String swiftCcode) {
+        this.swiftCcode = swiftCcode;
+    }
+
+    @Column(name="iban", length=20)
+    public String getIban() {
+        return iban;
+    }
+
+    public void setIban(String iban) {
+        this.iban = iban;
+    }
+
+    @Column(name="bank_identification_no", unique=true, length=60)
+    public String getBankIdentificationNo() {
+        return bankIdentificationNo;
+    }
+
+    public void setBankIdentificationNo(String bankIdentificationNo) {
+        this.bankIdentificationNo = bankIdentificationNo;
+    }
+
+    
 
 
 }
