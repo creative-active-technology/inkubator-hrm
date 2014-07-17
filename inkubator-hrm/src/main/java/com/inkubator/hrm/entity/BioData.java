@@ -47,6 +47,7 @@ public class BioData implements java.io.Serializable {
     private String pathFoto;
     private String pathFinger;
     private String pathSignature;
+    private String noKK;
 
     public BioData() {
     }
@@ -324,4 +325,14 @@ public class BioData implements java.io.Serializable {
     public void setPathSignature(String pathSignature) {
         this.pathSignature = pathSignature;
     }
+
+    @Column(name = "no_kk", length = 100)
+    public String getNoKK() {
+        return noKK;
+    }
+
+    public void setNoKK(String noKK) {
+        this.noKK = noKK;
+    }
+
 }
