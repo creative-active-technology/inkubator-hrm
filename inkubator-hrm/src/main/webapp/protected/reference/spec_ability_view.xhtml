@@ -95,18 +95,18 @@
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                 				 style="font-size: 10px!important" update=":panelDialogDetailId" 
                                 				 action="#{specAbilityViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogDetailSpecAbilityLevel.show()">                        
-                                    <f:setPropertyActionListener value="#{specAbilityData}" target="#{specAbilityViewController.selectedSpecificationAbility}" />
+                                    <f:setPropertyActionListener value="#{specAbilityData}" target="#{specAbilityViewController.selectedSpecAbi}" />
                                 </p:commandButton>
-                                - 
+                                <h:outputLabel value= "-" rendered="#{specAbilityData.isEdit}"/>
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                 				 style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                				 action="#{specAbilityViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmSpecAbilityLevel.show()">
-                                    <f:setPropertyActionListener value="#{specAbilityData}" target="#{specAbilityViewController.selectedSpecificationAbility}" />
+                                				 rendered="#{specAbilityData.isEdit}" action="#{specAbilityViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmSpecAbilityLevel.show()">
+                                    <f:setPropertyActionListener value="#{specAbilityData}" target="#{specAbilityViewController.selectedSpecAbi}" />
                                 </p:commandButton>
-                                -
+                                <h:outputLabel rendered="#{specAbilityData.isEdit}" value= "-"/>
                                 <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
-                                                 action="#{specAbilityViewController.doUpdate()}" >
-                                    <f:setPropertyActionListener value="#{specAbilityData}" target="#{specAbilityViewController.selectedSpecificationAbility}" />
+                                                 action="#{specAbilityViewController.doUpdate()}" rendered="#{specAbilityData.isEdit}" >
+                                    <f:setPropertyActionListener value="#{specAbilityData}" target="#{specAbilityViewController.selectedSpecAbi}" />
                                 </p:commandButton>
                             </p:column>                        
                             <f:facet name="footer">

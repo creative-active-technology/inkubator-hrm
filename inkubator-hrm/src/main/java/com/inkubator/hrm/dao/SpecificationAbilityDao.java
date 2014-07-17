@@ -23,5 +23,7 @@ public interface SpecificationAbilityDao extends IDAO<SpecificationAbility> {
 	public Long getTotalByNameAndNotId(String name, Long id);
         
         public SpecificationAbility getByName(String name);
+        
+        public List<SpecificationAbility> getDataBySpecAbilityNotExistInJabatanSpec(SpecificationAbilitySearchParameter parameter, int firstResult, int maxResult, Order order);
 
 }

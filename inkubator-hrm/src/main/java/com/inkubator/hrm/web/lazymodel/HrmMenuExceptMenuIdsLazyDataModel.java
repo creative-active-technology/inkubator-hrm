@@ -13,7 +13,6 @@ import org.primefaces.model.SortOrder;
 import com.inkubator.hrm.entity.HrmMenu;
 import com.inkubator.hrm.service.HrmMenuService;
 import com.inkubator.hrm.web.search.HrmMenuSearchParameter;
-import com.inkubator.securitycore.util.UserInfoUtil;
 
 /**
  *

@@ -300,8 +300,7 @@ public class HrmMenuServiceImpl extends IServiceImpl implements HrmMenuService {
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<HrmMenu> getAllDataByParamAndNotIds(HrmMenuSearchParameter parameter, List<Long> ids, int firstResult, int maxResults,
-			Order orderable) {
+	public List<HrmMenu> getAllDataByParamAndNotIds(HrmMenuSearchParameter parameter, List<Long> ids, int firstResult, int maxResults, Order orderable) {
 		return hrmMenuDao.getAllDataByParamAndNotIds(parameter, ids, firstResult, maxResults, orderable);
 		
 	}
@@ -310,6 +309,20 @@ public class HrmMenuServiceImpl extends IServiceImpl implements HrmMenuService {
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
 	public Long getTotalByParamAndNotIds(HrmMenuSearchParameter parameter, List<Long> ids) {
 		return hrmMenuDao.getTotalByParamAndNotIds(parameter, ids);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<HrmMenu> getAllDataByUserRolesAndHaveNoChild(String parameter, List<Long> exceptMenuIds, List<String> roles, int firstResult, int maxResults, Order orderable) {
+		return hrmMenuDao.getAllDataByUserRolesAndHaveNoChild(parameter, exceptMenuIds, roles, firstResult, maxResults, orderable);
+		
+	}	
+	
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public Long getTotalByUserRolesAndHaveNoChild(String parameter, List<Long> exceptMenuIds, List<String> roles) {
+		return hrmMenuDao.getTotalByUserRolesAndHaveNoChild(parameter, exceptMenuIds, roles);
+		
 	}
 
 }

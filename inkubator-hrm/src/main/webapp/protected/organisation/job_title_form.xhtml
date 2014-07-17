@@ -23,7 +23,7 @@
                             <p:graphicImage library="images" name="jabatan.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="Form Jabatan" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['jabtan.jabatan_form']}" styleClass="header_big" />
                                     <p:outputLabel value="#{appmsg['jabtan_view.header2']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
@@ -35,7 +35,7 @@
                         <p:panelGrid style="width: 100%;margin-bottom: 20px;margin-top: 20px" styleClass="grid_border3" >
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Kode Jabatan"  for="codeId" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['jabat.jabatan_code']}"  for="codeId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:inputText value="#{jabatanFormController.jabatanModel.kodeJabatan}" maxlength="12"
@@ -46,7 +46,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Nama Jabatan"  for="namaJabatanId" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['jabatan.jabatan_name']}"  for="namaJabatanId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:inputText value="#{jabatanFormController.jabatanModel.namaJabatan}" maxlength="45"
@@ -58,7 +58,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Gol. Jabatan"  for="golJabatanId" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['functiongroup.function_group']}"  for="golJabatanId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:selectOneMenu  style="margin-right: 3px;width: 200px" id="golJabatanId" filter="true" required="true"
@@ -72,7 +72,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Unit Kerja"  for="unitKerjaId" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['jabatan.work_unit_name']}"  for="unitKerjaId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:selectOneMenu  style="margin-right: 3px;width: 200px" id="unitKerjaId" filter="true" required="true"
@@ -86,7 +86,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Departement"  for="departementId" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['jabatan.jabatan_deparment']}"  for="departementId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:selectOneMenu id="departementId" value="#{jabatanFormController.jabatanModel.departementId}" required="true"
@@ -99,7 +99,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Pos Biaya"  for="posBiayaId" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['jabatan.cost_center_name']}"  for="posBiayaId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:selectOneMenu  id="posBiayaId" style="width: 200px" value="#{jabatanFormController.jabatanModel.posBiayaId}" filter="true" required="true" >
@@ -112,7 +112,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Level Jabatan"  for="levelJabatanId" styleClass="label_hrm"/>
+                                    <p:outputLabel  value="#{appmsg['jabatan.jabatan_level']}"  for="levelJabatanId" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:spinner id="levelJabatanId" value="#{jabatanFormController.jabatanModel.levelJabatan}" size="2" required="true"
@@ -125,7 +125,7 @@
 
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Jabatan Atasan"  for="atasanId" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['jabatan.jabatan_deparment_boss']}"  for="atasanId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:selectOneMenu style="margin-right: 3px;width: 200px"  value="#{jabatanFormController.jabatanModel.jabatanAtasanId}" id="atasanId" required="true"
@@ -139,7 +139,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Tujuan Jabatan"  for="tujuanJabatanId" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['jabatan.position_goal']}"  for="tujuanJabatanId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:inputTextarea  rows="5" cols="37" counter="counter" maxlength="500" id="tujuanJabatanId" value="#{jabatanFormController.jabatanModel.tujuanJabatan}" required="false"

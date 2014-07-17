@@ -40,6 +40,7 @@ public class Country  implements java.io.Serializable {
      private String latitude;
      private String longitude;
      private Set<Province> provinces = new HashSet<Province>(0);
+     private Set<Currency> currency = new HashSet<Currency>(0);
 
     public Country() {
     }
@@ -48,7 +49,7 @@ public class Country  implements java.io.Serializable {
     public Country(long id) {
         this.id = id;
     }
-    public Country(long id, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String countryCode, String countryName, byte[] flagIcon, Integer phoneCode, String latitude, String longitude, Set<Province> provinces) {
+    public Country(long id, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String countryCode, String countryName, byte[] flagIcon, Integer phoneCode, String latitude, String longitude, Set<Province> provinces, Set<Currency> currency) {
        this.id = id;
        this.createdBy = createdBy;
        this.createdOn = createdOn;
@@ -61,6 +62,7 @@ public class Country  implements java.io.Serializable {
        this.latitude = latitude;
        this.longitude = longitude;
        this.provinces = provinces;
+       this.currency = currency;
     }
    
      @Id 
@@ -134,7 +136,6 @@ public class Country  implements java.io.Serializable {
     public void setCountryCode(String countryCode) {
         this.countryCode = countryCode;
     }
-
     
     @Column(name="country_name", length=60)
     public String getCountryName() {
@@ -191,6 +192,15 @@ public class Country  implements java.io.Serializable {
     
     public void setProvinces(Set<Province> provinces) {
         this.provinces = provinces;
+    }
+
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="country")
+    public Set<Currency> getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(Set<Currency> currency) {
+        this.currency = currency;
     }
 
 

@@ -6,6 +6,7 @@ import org.hibernate.criterion.Order;
 
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.SpecificationAbility;
+import com.inkubator.hrm.web.model.SpecificationAbilityModelView;
 import com.inkubator.hrm.web.search.SpecificationAbilitySearchParameter;
 
 /**
@@ -20,4 +21,5 @@ public interface SpecificationAbilityService extends IService<SpecificationAbili
         
         public SpecificationAbility getByName(String name) throws Exception;
 
+        public List<SpecificationAbilityModelView> getDataBySpecAbilityNotExistInJabatanSpec(SpecificationAbilitySearchParameter parameter, int firstResult, int maxResult, Order order) throws Exception;
 }

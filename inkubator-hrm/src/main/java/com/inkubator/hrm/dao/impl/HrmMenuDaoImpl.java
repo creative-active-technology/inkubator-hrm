@@ -5,12 +5,10 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
-import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.sql.JoinType;
 import org.springframework.stereotype.Repository;
 
 import com.inkubator.datacore.dao.impl.IDAOImpl;
@@ -77,7 +75,9 @@ public class HrmMenuDaoImpl extends IDAOImpl<HrmMenu> implements HrmMenuDao {
 	public List<HrmMenu> getAllDataByLevelAndNotId(int level, Long id) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
 		criteria.add(Restrictions.eq("menuLevel", level));
-		criteria.add(Restrictions.ne("id", id));
+		if(id!=null){
+			criteria.add(Restrictions.ne("id", id));
+		}
 		return criteria.list();
 	}
 
@@ -104,6 +104,40 @@ public class HrmMenuDaoImpl extends IDAOImpl<HrmMenu> implements HrmMenuDao {
 		if(ids!= null && ids.size() > 0){
 			criteria.add(Restrictions.not(Restrictions.in("id", ids)));
 		}
+		return criteria;
+	}
+
+	@Override
+	public List<HrmMenu> getAllDataByUserRolesAndHaveNoChild(String parameter, List<Long> exceptMenuIds, List<String> roles, int firstResult, int maxResults, Order orderable) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria = doSearchByUserRolesAndHaveNoChild(criteria, parameter, exceptMenuIds, roles);
+		criteria.addOrder(orderable);
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResults);
+        
+		return criteria.list();		
+	}
+
+	@Override
+	public Long getTotalByUserRolesAndHaveNoChild(String parameter, List<Long> exceptMenuIds, List<String> roles) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria = doSearchByUserRolesAndHaveNoChild(criteria, parameter, exceptMenuIds, roles);
+		
+		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
+	
+	private Criteria doSearchByUserRolesAndHaveNoChild(Criteria criteria, String parameter, List<Long> exceptMenuIds, List<String> roles){
+		criteria.createAlias("hrmMenuRoles", "hrmMenuRoles");
+		criteria.createAlias("hrmMenuRoles.hrmRole", "hrmRole");
+		criteria.add(Restrictions.in("hrmRole.roleName", roles));
+		if(parameter != null){
+			criteria.add(Restrictions.like("name", parameter, MatchMode.ANYWHERE));
+		}
+		if(exceptMenuIds!= null && exceptMenuIds.size() > 0){
+			criteria.add(Restrictions.not(Restrictions.in("id", exceptMenuIds))); //where clause to except menu that already choose
+		}
+		criteria.add(Restrictions.isEmpty("hrmMenus")); //where clause to identified that this menu have no child
+		
 		return criteria;
 	}
 	
