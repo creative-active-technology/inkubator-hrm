@@ -119,6 +119,7 @@ public class FavoriteMenuFormController extends BaseController {
 	
 	public void doReset(){
 		favoriteMenus = getUserListFavoriteMenu();
+		doSearchAvailableMenus(); //recalculate searching available menus
 	}
 	
 	public String doBack() {
