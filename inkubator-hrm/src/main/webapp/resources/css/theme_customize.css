@@ -193,12 +193,12 @@ and open the template in the editor.
 
 .ui-selectonemenu-panel .ui-selectonemenu-filter {
     /*width: 100%!important;*/
-    padding-right: 30px
+    padding-right: 23px
 }
 .ui-selectonemenu-panel .ui-selectonemenu-filter-container .ui-icon {
     position: absolute;
-    top: 13px;
-    right: 0px;
+    top: 11px;
+    right: 10px;
 }
 .midle_combo_box .ui-selectonemenu-panel .ui-selectonemenu-filter{
     width: 60%!important;

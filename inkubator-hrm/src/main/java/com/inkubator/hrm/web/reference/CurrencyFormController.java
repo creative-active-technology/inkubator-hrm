@@ -10,6 +10,7 @@ import com.inkubator.hrm.entity.Country;
 import com.inkubator.hrm.entity.Currency;
 import com.inkubator.hrm.service.CountryService;
 import com.inkubator.hrm.service.CurrencyService;
+import com.inkubator.hrm.util.MapUtil;
 import com.inkubator.hrm.web.model.CurrencyModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
@@ -61,7 +63,7 @@ public class CurrencyFormController extends BaseController{
         super.initialization();
         String param = FacesUtil.getRequestParameter("param");
         model = new CurrencyModel();
-        listCountries = new HashMap<String, Long>();
+        listCountries = new TreeMap<String, Long>();
         try {
             listCountry = countryService.getAllData();
             if (param != null) {
@@ -84,8 +86,15 @@ public class CurrencyFormController extends BaseController{
     
     public void listParent(){
         for (Country country : listCountry) {
-            listCountries.put(country.getCountryName(), country.getId());               
+            String countryCut = "";
+            if(country.getCountryName().length() > 25){
+                countryCut = country.getCountryName().substring(0,25) + "...";
+            }else{
+                countryCut = country.getCountryName();
+            }      
+            listCountries.put(countryCut, country.getId());
         }
+        MapUtil.sortByValue(listCountries);
     }
     
     public void doSave() {
