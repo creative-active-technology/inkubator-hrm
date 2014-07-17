@@ -43,7 +43,14 @@ public class BioDataServiceImpl extends IServiceImpl implements BioDataService {
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public BioData getEntiyByPK(Long id) throws Exception {
-       return this.bioDataDao.getEntiyByPK(id);
+        BioData bioData = bioDataDao.getEntiyByPK(id);
+        bioData.getCity().getCityName();
+        bioData.getReligion().getName();
+        bioData.getMaritalStatus().getName();
+        bioData.getNationality().getNationalityName();
+        bioData.getRace().getRaceName();
+        bioData.getDialect().getDialectName();
+        return bioData;
     }
 
     @Override
@@ -124,7 +131,7 @@ public class BioDataServiceImpl extends IServiceImpl implements BioDataService {
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void delete(BioData entity) throws Exception {
-       this.bioDataDao.delete(entity);
+        this.bioDataDao.delete(entity);
     }
 
     @Override
@@ -195,13 +202,13 @@ public class BioDataServiceImpl extends IServiceImpl implements BioDataService {
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<BioData> getByParam(BioDataSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception {
-       return this.bioDataDao.getByParam(parameter, firstResult, maxResults, orderable);
+        return this.bioDataDao.getByParam(parameter, firstResult, maxResults, orderable);
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public Long getTotalByParam(BioDataSearchParameter parameter) throws Exception {
-       return this.bioDataDao.getTotalByParam(parameter);
+        return this.bioDataDao.getTotalByParam(parameter);
     }
 
 }

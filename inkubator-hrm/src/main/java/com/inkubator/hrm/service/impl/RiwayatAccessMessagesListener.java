@@ -33,7 +33,7 @@ public class RiwayatAccessMessagesListener extends IServiceImpl implements Messa
 
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED,
-            isolation = Isolation.READ_COMMITTED, timeout = 50, rollbackFor = Exception.class)
+            isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
     public void onMessage(Message message) {
         try {
             TextMessage textMessage = (TextMessage) message;
