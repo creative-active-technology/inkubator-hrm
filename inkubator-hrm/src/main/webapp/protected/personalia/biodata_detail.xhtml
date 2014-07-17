@@ -1,0 +1,206 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg">
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="bio_data.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="Detil Biodata" styleClass="header_big" />
+                                <p:outputLabel value="Data Biodata dari Personalia" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator />
+                    <p:growl id="growlUserFormId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
+                    <h:form id="userFormDetail" >
+                        <p:panelGrid style="width: 100%;margin-bottom: 10px" styleClass="grid_no_border">
+                            <p:row>
+                                <p:column style="width: 25%" >
+                                    <p:panel style="margin-left: 0px;margin-right: 0px;margin-top: 10px;height: 100%"> 
+                                        <h:panelGrid columns="2">
+                                            <h:panelGroup>
+                                                <h:panelGrid>
+                                                    <p:graphicImage library="images" name="admin.png" height="86" width="120" style="border:  2px solid #003366 !important; border-radius: 5px !important"/>
+                                                    <p:graphicImage library="images" name="admin.png" height="86" width="120" style="border:  2px solid #003366 !important; border-radius: 5px !important"/>
+                                                </h:panelGrid>
+                                            </h:panelGroup>
+                                            <p:graphicImage library="images" name="admin.png" height="180" width="120" style="border:  2px solid #003366 !important; border-radius: 5px !important"/>
+
+                                        </h:panelGrid>
+                                    </p:panel>
+                                </p:column>
+
+                                <p:column style="width: 75%" >
+                                    <p:panel style="margin-left: 0px;margin-right: 0px;margin-top: 10px;height: 100%">
+                                        <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                            <p:outputLabel  value="Kode Jabatan" style="font-weight: bold"/>
+                                        </p:column>
+                                        <p:column style="width: 37%">
+                                            <p:outputLabel  value="#{jabatanDetailController.selectedJabatan.code}" />
+                                        </p:column>
+                                        <p:column style="width: 13%;background-color: #e1f0f0!important">
+                                            <p:outputLabel  value="Nama Jabatan" style="font-weight: bold"/>
+                                        </p:column>
+                                        <p:column style="width: 37%">
+                                            <p:outputLabel  value="#{jabatanDetailController.selectedJabatan.name}" />
+                                        </p:column>
+                                    </p:panel>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                        <!--                        <div>
+                                                    <h:panelGrid columns="2" style="float: left">
+                                                        <h:panelGroup>
+                                                            <h:panelGrid>
+                                                                <p:graphicImage library="images" name="admin.png" height="86" width="120" style="border:  2px solid #003366 !important; border-radius: 5px !important"/>
+                                                                <p:graphicImage library="images" name="admin.png" height="86" width="120" style="border:  2px solid #003366 !important; border-radius: 5px !important"/>
+                                                            </h:panelGrid>
+                                                        </h:panelGroup>
+                                                        <p:graphicImage library="images" name="admin.png" height="180" width="120" style="border:  2px solid #003366 !important; border-radius: 5px !important"/>
+                        
+                                                    </h:panelGrid>
+                                                    <div style="float: right;width: 100%">
+                                                        <p:panelGrid style="width: 100%;margin-top: 20px" styleClass="grid_border3">
+                                                            <p:row>
+                                                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                                                    <p:outputLabel  value="User Name" />
+                                                                </p:column>
+                                                                <p:column style="width: 37%">
+                                                                    <p:outputLabel  value="#{userDetailController.selectedHrmUser.userId}" />
+                                                                </p:column>
+                                                                <p:column style="width: 13%;background-color: #e1f0f0!important">
+                                                                    <p:outputLabel  value="#{appmsg['user_view.user_name']}" style="font-weight: bold"/>
+                                                                </p:column>
+                                                                <p:column style="width: 37%">
+                                                                    <p:outputLabel  value="#{userDetailController.selectedHrmUser.realName}" />
+                                                                </p:column>
+                        
+                                                            </p:row>
+                                                            <p:row>
+                                                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                                                    <p:outputLabel  value="#{appmsg['user_form.email_address']}" style="font-weight: bold"/>
+                                                                </p:column>
+                                                                <p:column style="width: 37%">
+                                                                    <p:outputLabel  value="#{userDetailController.selectedHrmUser.emailAddress}" />
+                                                                </p:column>
+                                                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                                                    <p:outputLabel  value="#{appmsg['user_form.phone_number']}" style="font-weight: bold"/>
+                                                                </p:column>
+                                                                <p:column style="width: 37%" >
+                                                                    <p:outputLabel value="#{userDetailController.selectedHrmUser.phoneNumber}" />
+                                                                </p:column>
+                                                            </p:row>
+                                                            <p:row>
+                                                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                                                    <p:outputLabel  value="#{appmsg['user_form.is_active']}" style="font-weight: bold"/>
+                                                                </p:column>
+                                                                <p:column style="width: 37%">
+                                                                    <p:outputLabel  value="#{userDetailController.selectedHrmUser.acitveAsString}" />
+                                                                </p:column>
+                                                                <p:column style="width: 13%;background-color: #e1f0f0!important" rowspan="2" >
+                                                                    <p:outputLabel  value="#{appmsg['user_form.is_expired']}" style="font-weight: bold"/>
+                                                                </p:column>
+                                                                <p:column style="width: 37%" rowspan="2">
+                                                                    <p:outputLabel value="#{userDetailController.selectedHrmUser.expiredAsString}" />
+                                                                </p:column>
+                                                            </p:row>
+                                                            <p:row>
+                                                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                                                    <p:outputLabel  value="#{appmsg['user_form.is_lock']}" style="font-weight: bold"/>
+                                                                </p:column>
+                                                                <p:column style="width: 37%" >
+                                                                    <p:outputLabel  value="#{userDetailController.selectedHrmUser.lockAsString}" />
+                                                                </p:column>
+                                                                                                 <p:column style="width: 13%;background-color: #e1f0f0" >
+                                                                                                    <p:outputLabel  value="#{appmsg['user_view.user_id']}" style="font-weight: bold"/>
+                                                                                                </p:column>
+                                                                                                <p:column style="width: 37%">
+                                                                                                    <p:outputLabel value="#{userDetailController.selectedHrmUser.lockAsString}" />
+                                                                                                </p:column>
+                        
+                                                            </p:row>
+                                                        </p:panelGrid>
+                                                    </div>
+                                                </div>
+                                                <div style="clear: both" />-->
+                        <p:tabView id="tabView1" dynamic="true"  cache="true" styleClass="tabview_hrm" style="margin-top: 15px;margin-bottom: 15px;margin-left: 0px;margin-right: 0px" scrollable="true" >
+                            <p:tab id="detailId" title="Detail" >  
+
+                            </p:tab>  
+                            <p:tab id="kesehatanId" title="Kesehatan">  
+
+
+                            </p:tab>  
+                            <p:tab id="alamatId" title="Alamat">  
+
+
+                            </p:tab>  
+                            <p:tab id="riwayatKerjaId" title="Riwayat Kerja">  
+
+
+                            </p:tab>  
+                            <p:tab id="pendidikanId" title="Pendidikan">  
+
+
+                            </p:tab>  
+                            <p:tab id="minatId" title="Minat">  
+
+
+                            </p:tab>  
+                            <p:tab id="dataKeluargaid" title="Data Keluarga">  
+
+
+                            </p:tab>  
+                            <p:tab id="documentId" title="Dokument">  
+
+
+                            </p:tab>  
+                            <p:tab id="bank" title="Bank">  
+
+
+                            </p:tab>  
+                            <p:tab id="diCardId" title="ID Card">  
+
+
+                            </p:tab>  
+                            <p:tab id="asuransiId" title="Asuransi">  
+
+
+                            </p:tab>  
+                            <p:tab id="contactId" title="Contact">  
+
+
+                            </p:tab>  
+
+                        </p:tabView>
+                        <p:separator/>
+                        <h:panelGrid columns="2" style="margin-bottom: 5px;float: left">
+                            <p:commandButton value="#{appmsg['global.edit']}"  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" action="#{userDetailController.doEdit()}" styleClass="label_button"/>
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{userDetailController.doBack()}" styleClass="label_button"/>
+                        </h:panelGrid>
+                        <div style="clear: both"/>
+                    </h:form>
+                </div>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+
