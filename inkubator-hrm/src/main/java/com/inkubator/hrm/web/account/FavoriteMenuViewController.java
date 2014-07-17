@@ -1,5 +1,6 @@
 package com.inkubator.hrm.web.account;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -29,7 +30,12 @@ public class FavoriteMenuViewController extends BaseController {
     @Override
     public void initialization() {
         super.initialization();
-        favoriteMenus = favoriteMenuService.getAllDataByUserIdWithMenus(UserInfoUtil.getUserName());
+        favoriteMenus = new ArrayList<FavoriteMenu>();
+        try {
+			favoriteMenus = favoriteMenuService.getAllDataByUserIdWithMenus(UserInfoUtil.getUserName());
+		} catch (Exception e) {
+			LOGGER.error("Error in FavoriteMenuViewController ", e);
+		}
 	}
 	
 	@PreDestroy

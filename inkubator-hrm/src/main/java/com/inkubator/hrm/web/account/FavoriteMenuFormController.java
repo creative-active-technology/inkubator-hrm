@@ -13,7 +13,6 @@ import javax.faces.bean.ViewScoped;
 import org.primefaces.event.DragDropEvent;
 import org.primefaces.model.LazyDataModel;
 
-import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.FavoriteMenu;
 import com.inkubator.hrm.entity.HrmMenu;
@@ -112,9 +111,6 @@ public class FavoriteMenuFormController extends BaseController {
             MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             return "/protected/account/favorite_menu_view.htm?faces-redirect=true";
-        } catch (BussinessException ex) { //data already exist(duplicate)
-            LOGGER.error("Error", ex);
-            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -147,7 +143,13 @@ public class FavoriteMenuFormController extends BaseController {
 	}
 	
 	private List<HrmMenu> getUserListFavoriteMenu() {
-		List<FavoriteMenu> listUserFavoriteMenu = favoriteMenuService.getAllDataByUserIdWithMenus(UserInfoUtil.getUserName());
+		List<FavoriteMenu> listUserFavoriteMenu = new ArrayList<FavoriteMenu>();
+		try {
+			listUserFavoriteMenu = favoriteMenuService.getAllDataByUserIdWithMenus(UserInfoUtil.getUserName());
+		} catch (Exception e) {
+			LOGGER.error("Error in FavoriteMenuFormController ", e);
+		}
+		
 		List<HrmMenu> favoriteMenus = new ArrayList<HrmMenu>();
         for(FavoriteMenu favoriteMenu : listUserFavoriteMenu){
         	favoriteMenus.add(favoriteMenu.getHrmMenu());

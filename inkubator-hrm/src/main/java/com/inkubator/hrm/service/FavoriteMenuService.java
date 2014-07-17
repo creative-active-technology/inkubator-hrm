@@ -12,7 +12,7 @@ import com.inkubator.hrm.entity.HrmMenu;
  */
 public interface FavoriteMenuService extends IService<FavoriteMenu> {
 
-	public List<FavoriteMenu> getAllDataByUserIdWithMenus(String userId);
+	public List<FavoriteMenu> getAllDataByUserIdWithMenus(String userId) throws Exception;
 
 	public void saveOrUpdate(String userId, List<HrmMenu> favoriteMenus) throws Exception;
 }

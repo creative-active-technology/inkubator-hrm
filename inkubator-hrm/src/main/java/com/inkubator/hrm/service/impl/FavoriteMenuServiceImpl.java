@@ -240,7 +240,7 @@ public class FavoriteMenuServiceImpl extends IServiceImpl implements FavoriteMen
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<FavoriteMenu> getAllDataByUserIdWithMenus(String userId) {
+	public List<FavoriteMenu> getAllDataByUserIdWithMenus(String userId) throws Exception {
 		return favoriteMenuDao.getAllDataByUserIdWithMenus(userId);
 		
 	}
