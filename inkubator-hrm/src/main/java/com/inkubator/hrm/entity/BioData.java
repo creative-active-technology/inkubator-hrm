@@ -51,6 +51,7 @@ public class BioData implements java.io.Serializable {
     private String pathFoto;
     private String pathFinger;
     private String pathSignature;
+    private String noKK;
     private Set<BioAddress> bioAddresses = new HashSet<BioAddress>(0);
 
     public BioData() {
@@ -329,7 +330,16 @@ public class BioData implements java.io.Serializable {
     public void setPathSignature(String pathSignature) {
         this.pathSignature = pathSignature;
     }
+    
+    @Column(name = "no_kk", length = 100)
+    public String getNoKK() {
+        return noKK;
+    }
 
+    public void setNoKK(String noKK) {
+        this.noKK = noKK;
+    }
+    
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "bioData")
 	public Set<BioAddress> getBioAddresses() {
 		return bioAddresses;
@@ -338,5 +348,5 @@ public class BioData implements java.io.Serializable {
 	public void setBioAddresses(Set<BioAddress> bioAddresses) {
 		this.bioAddresses = bioAddresses;
 	}
-	
+
 }
