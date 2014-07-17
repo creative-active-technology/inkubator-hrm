@@ -77,4 +77,14 @@ public class HRMConstant {
     public static final Integer JOB_DESCRIPTION_DAY = 1;
     public static final Integer JOB_DESCRIPTION_MONTH = 2;
     /* END */
+
+    /* Constant for JOB Deskripsi Module */
+    public static final Integer GLOBAL_MALE = 1;
+    public static final Integer GLOBAL_FEMALE = 0;
+    public static final Integer BLOOD_A_TYPE = 1;
+    public static final Integer BLOOD_B_TYPE = 2;
+    public static final Integer BLOOD_AB_TYPE = 3;
+    public static final Integer BLOOD_O_TYPE = 4;
+    /* END */
+
 }
