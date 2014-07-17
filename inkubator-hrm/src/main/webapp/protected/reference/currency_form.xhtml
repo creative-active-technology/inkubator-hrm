@@ -76,7 +76,7 @@
                                 <h:outputLabel for="countryId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <p:selectOneMenu id="countryId" value="#{currencyFormController.model.country}" style="width: 150px;margin-right: 3px" >
+                                <p:selectOneMenu id="countryId" value="#{currencyFormController.model.country}" style="width: 150px;margin-right: 3px" filter="true" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{currencyFormController.listCountries}"/>
                                     </p:selectOneMenu>

@@ -51,12 +51,17 @@ public class HomeFavoriteMenuController extends BaseController {
     }
 
     private List<HrmMenu> getUserListFavoriteMenu() {
-        List<FavoriteMenu> listUserFavoriteMenu = favoriteMenuService.getAllDataByUserIdWithMenus(UserInfoUtil.getUserName());
-        List<HrmMenu> favoriteMenus = new ArrayList<>();
-        for (FavoriteMenu favoriteMenu : listUserFavoriteMenu) {
-            favoriteMenus.add(favoriteMenu.getHrmMenu());
+        List<FavoriteMenu> listUserFavoriteMenu = new ArrayList<FavoriteMenu>();
+        try {
+            listUserFavoriteMenu = favoriteMenuService.getAllDataByUserIdWithMenus(UserInfoUtil.getUserName());
+        } catch (Exception e) {
+            LOGGER.error("Error in HomeFavoriteMenuController ", e);
         }
-        return favoriteMenus;
-    }
 
+        List<HrmMenu> menus = new ArrayList<HrmMenu>();
+        for (FavoriteMenu favoriteMenu : listUserFavoriteMenu) {
+            menus.add(favoriteMenu.getHrmMenu());
+        }
+        return menus;
+    }
 }
