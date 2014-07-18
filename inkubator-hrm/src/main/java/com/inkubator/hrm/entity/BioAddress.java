@@ -33,6 +33,8 @@ public class BioAddress implements java.io.Serializable {
     private String village;
     private String zipCode;
     private String notes;
+    private String latitude;
+    private String longitude;
     
     private String createdBy;
     private Date createdOn;
@@ -186,6 +188,25 @@ public class BioAddress implements java.io.Serializable {
 	public void setNotes(String notes) {
 		this.notes = notes;
 	}
+	
+	@Column(name="latitude", length=45)
+    public String getLatitude() {
+        return this.latitude;
+    }
+    
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    
+    @Column(name="longitude", length=45)
+    public String getLongitude() {
+        return this.longitude;
+    }
+    
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
 
 	@Column(name = "created_by", length = 45)
     public String getCreatedBy() {

@@ -1,16 +1,31 @@
 package com.inkubator.hrm.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.dao.BioAddressDao;
+import com.inkubator.hrm.dao.BioDataDao;
+import com.inkubator.hrm.dao.CityDao;
+import com.inkubator.hrm.dao.CountryDao;
+import com.inkubator.hrm.dao.ProvinceDao;
 import com.inkubator.hrm.entity.BioAddress;
+import com.inkubator.hrm.entity.BioData;
+import com.inkubator.hrm.entity.City;
+import com.inkubator.hrm.entity.Country;
+import com.inkubator.hrm.entity.Province;
 import com.inkubator.hrm.service.BioAddressService;
+import com.inkubator.hrm.web.search.BioAddressSearchParameter;
+import com.inkubator.securitycore.util.UserInfoUtil;
 
 /**
  *
@@ -22,6 +37,14 @@ public class BioAddressServiceImpl extends IServiceImpl implements BioAddressSer
 
 	@Autowired
 	private BioAddressDao bioAddressDao;
+	@Autowired
+	private BioDataDao bioDataDao;
+	@Autowired
+	private CountryDao countryDao;
+	@Autowired
+	private ProvinceDao provinceDao;
+	@Autowired
+	private CityDao cityDao;
 	
 	@Override
 	public BioAddress getEntiyByPK(String id) throws Exception {
@@ -36,21 +59,68 @@ public class BioAddressServiceImpl extends IServiceImpl implements BioAddressSer
 	}
 
 	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
 	public BioAddress getEntiyByPK(Long id) throws Exception {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+		return bioAddressDao.getEntiyByPK(id);
 
 	}
 
 	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void save(BioAddress entity) throws Exception {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
+		BioData biodata = bioDataDao.getEntiyByPK(entity.getBioData().getId());
+		Country country = countryDao.getEntiyByPK(entity.getCountry().getId());
+		Province province = provinceDao.getEntiyByPK(entity.getProvince().getId());
+		City city = cityDao.getEntiyByPK(entity.getCity().getId());
+		
+		entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+		entity.setBioData(biodata);
+		entity.setCountry(country);
+		entity.setProvince(province);
+		entity.setCity(city);
+		entity.setCreatedBy(UserInfoUtil.getUserName());
+		entity.setCreatedOn(new Date());
+		
+		bioAddressDao.save(entity);
 	}
 
 	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void update(BioAddress entity) throws Exception {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
-
+		
+		BioData biodata = bioDataDao.getEntiyByPK(entity.getBioData().getId());
+		Country country = countryDao.getEntiyByPK(entity.getCountry().getId());
+		Province province = provinceDao.getEntiyByPK(entity.getProvince().getId());
+		City city = cityDao.getEntiyByPK(entity.getCity().getId());
+		
+		BioAddress bioAddress = bioAddressDao.getEntiyByPK(entity.getId());
+		bioAddress.setBioData(biodata);
+		bioAddress.setCountry(country);
+		bioAddress.setProvince(province);
+		bioAddress.setCity(city);
+		bioAddress.setStatusAddress(entity.getStatusAddress());
+		bioAddress.setType(entity.getType());
+		bioAddress.setContactName(entity.getContactName());
+		bioAddress.setPhoneNumber(entity.getPhoneNumber());
+		bioAddress.setAddressDetail(entity.getAddressDetail());
+		bioAddress.setSubDistrict(entity.getSubDistrict());
+		bioAddress.setVillage(entity.getVillage());
+		bioAddress.setZipCode(entity.getZipCode());
+		bioAddress.setNotes(entity.getNotes());
+		bioAddress.setUpdatedBy(UserInfoUtil.getUserName());
+		bioAddress.setUpdatedOn(new Date());
+		
+		bioAddressDao.update(bioAddress);
+	}
+	
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void updateMapCoordinate(Long id, String latitude, String longitude) throws Exception {
+		BioAddress bioAddress = bioAddressDao.getEntiyByPK(id);
+		bioAddress.setLatitude(latitude);
+		bioAddress.setLongitude(longitude);
+		bioAddressDao.update(bioAddress);
 	}
 
 	@Override
@@ -141,8 +211,9 @@ public class BioAddressServiceImpl extends IServiceImpl implements BioAddressSer
 	}
 
 	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void delete(BioAddress entity) throws Exception {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+		bioAddressDao.delete(entity);
 
 	}
 
@@ -225,6 +296,20 @@ public class BioAddressServiceImpl extends IServiceImpl implements BioAddressSer
 	public List<BioAddress> getAllDataPageAbleIsActive(int firstResult,
 			int maxResults, Order order, Byte isActive) throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+	
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<BioAddress> getByParam(BioAddressSearchParameter parameter,int firstResult, int maxResults, Order orderable) {
+		return bioAddressDao.getByParam(parameter, firstResult, maxResults, orderable);
+
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Long getTotalByParam(BioAddressSearchParameter parameter) {
+		return bioAddressDao.getTotalByParam(parameter);
 
 	}
 
