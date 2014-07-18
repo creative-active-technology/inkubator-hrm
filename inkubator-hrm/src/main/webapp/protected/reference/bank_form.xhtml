@@ -54,6 +54,64 @@
                         </p:row>
                         <p:row>
                             <p:column style="width: 29%">
+                                <p:outputLabel for="swiftCode" value="#{appmsg['bank.swift_code']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="swiftCode" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                                <p:focus for ="swiftCode">
+                                    <p:inputText id="swiftCode" title="swiftCode" value="#{bankFormController.bankModel.swiftCode}" 
+                                                 required="true" requiredMessage="#{appmsg['bank.bank_code_should_not_be_empty']}" maxlength="20" styleClass="isitext_hrm" style="width:250px;" />
+                                </p:focus>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="swiftCode"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="identificationNumber" value="#{appmsg['bank.identification_number']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="identificationNumber" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                                <p:focus for ="identificationNumber">
+                                    <p:inputText id="identificationNumber" title="identificationNumber" value="#{bankFormController.bankModel.bankIdentificationNumber}" 
+                                                 required="true" requiredMessage="#{appmsg['bank.bank_code_should_not_be_empty']}" maxlength="60" styleClass="isitext_hrm" style="width:250px;" />
+                                </p:focus>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="identificationNumber"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="iban" value="#{appmsg['bank.iban']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="iban" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                                <p:focus for ="iban">
+                                    <p:inputText id="iban" title="iban" value="#{bankFormController.bankModel.iban}" 
+                                                 required="true" requiredMessage="#{appmsg['bank.bank_code_should_not_be_empty']}" maxlength="20" styleClass="isitext_hrm" style="width:250px;" />
+                                </p:focus>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="iban"/>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="width: 29%">
                                 <p:outputLabel for="nameId" value="#{appmsg['bank.bank_name']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
