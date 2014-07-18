@@ -14,14 +14,20 @@
         <div id="art-page-background-middle-texture" >
             <div id="art-page-background-glare">
                 <div id="art-page-background-glare-image">
-	                <div id="header_login">
-		                <div id="header_login_left">
-		                    <h:panelGrid columns="1" styleClass="">
-		                        <h:outputLabel value="#{appmsg['global.application_name']}" style="color:#ff9900"/>        
-		                        <h:outputLabel value="#{appmsg['global.company_name']}" style="font-size: 12px!important"/>
-		                    </h:panelGrid>
-		                </div>
-	                </div>
+                    <div id="header_login">
+                        <div id="header_login_left">
+                            <h:panelGrid columns="1" styleClass="">
+                                <h:outputLabel value="#{appmsg['global.application_name']}" style="color:#ff9900"/>        
+                                <h:outputLabel value="#{appmsg['global.company_name']}" style="font-size: 12px!important"/>
+                            </h:panelGrid>
+                        </div>
+                        <div style="float: right">
+                            <h:panelGrid columns="1" style="padding-top: 3px">
+                                <p:graphicImage value="./resources/images/inkuba_logo-07.png"  width="145" style="margin-right: 10px" cache="true" />
+                            </h:panelGrid>
+                        </div> 
+                    </div>
+                    <div style="clear: both"/>
                     <div id="box_bg">
                         <p:growl id="loginGrowl" life="5000" showDetail="true" escape="false" />
                         <!-- input hidden disini untuk memaksa view ini memanggil loginController yg bertujuan untuk memaksa nge-set default language/locale -->
@@ -126,7 +132,7 @@
                 </div>
             </div>
         </div>
-        
+
         <p:dialog id="dialogResetId" widgetVar="dialogReset" modal="true" width="450" height="155" header="#{appmsg['loginform.form_reset_password']}"
                   draggable="false" hideEffect="puff" showEffect="clip" appendTo="@(body)"
                   dynamic="true" resizable="false">
@@ -139,7 +145,7 @@
                     <h:outputLabel for="emailId" value="Email" style="font-weight: bold;font-family: Trebuchet MS;color: #003366" escape="false"/>
                     <p:outputLabel value=":" style="font-weight: bold;color: #003366" escape="false"/>
                     <p:inputText  id="emailId" value="#{loginController.emailAddress}"  title="#{loginController.emailAddress}" required="true" requiredMessage="#{appmsg['loginform.email_address_mandatory']}" 
-                    			  label="#{appmsg['loginform.email_address']}" style="width: 310px">
+                                  label="#{appmsg['loginform.email_address']}" style="width: 310px">
                         <f:validateLength maximum="100"/>
                     </p:inputText>
                     <p:focus for="emailId"/>
@@ -155,7 +161,7 @@
                             hideEffect="slideToggle" showDelay="1"  myPosition="right center" atPosition="left center"/>
             </h:form>
         </p:dialog>
-        
+
     </h:body>
     <script type="text/javascript">
         function handleUpdateRequest(args) {

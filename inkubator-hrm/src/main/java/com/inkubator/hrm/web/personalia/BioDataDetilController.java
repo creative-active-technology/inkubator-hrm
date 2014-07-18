@@ -66,4 +66,8 @@ public class BioDataDetilController extends BaseController {
         return null;
     }
     
+    public String doBack(){
+          return "/protected/personalia/biodata_view.htm?faces-redirect=true";
+    }
+    
 }
