@@ -39,7 +39,9 @@
                                                     <p:graphicImage library="images" name="admin.png" height="82" width="120" style="border:  2px solid #003366 !important; border-radius: 5px !important"/>
                                                 </h:panelGrid>
                                             </h:panelGroup>
-                                            <p:graphicImage library="images" name="admin.png" height="176" width="120" style="border:  2px solid #003366 !important; border-radius: 5px !important"/>
+                                            <p:graphicImage value="#{imageBioDataStreamerController.fotoImage}" height="176" width="120" style="border:  2px solid #003366 !important; border-radius: 5px !important" cache="false">
+                                                <f:param name="id" value="#{bioDataDetilController.selectedBioData.id}"/>
+                                            </p:graphicImage>
 
                                         </h:panelGrid>
                                     </p:panel>
@@ -258,7 +260,7 @@
                         <p:separator/>
                         <h:panelGrid columns="2" style="margin-bottom: 5px;float: left">
                             <p:commandButton value="#{appmsg['global.edit']}"  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" action="#{userDetailController.doEdit()}" styleClass="label_button"/>
-                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{userDetailController.doBack()}" styleClass="label_button"/>
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{bioDataDetilController.doBack()}" styleClass="label_button"/>
                         </h:panelGrid>
                         <div style="clear: both"/>
                     </h:form>

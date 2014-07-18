@@ -107,4 +107,8 @@ public class BioDataViewController extends BaseController {
             LOGGER.error("Error", ex);
         }
     }
+    
+    public String doAdd(){
+        return "/protected/personalia/biodata_form.htm?faces-redirect=true";
+    }
 }
