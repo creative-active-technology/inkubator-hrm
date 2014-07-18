@@ -24,7 +24,6 @@ import com.inkubator.hrm.entity.City;
 import com.inkubator.hrm.entity.Country;
 import com.inkubator.hrm.entity.Province;
 import com.inkubator.hrm.service.BioAddressService;
-import com.inkubator.hrm.web.search.BioAddressSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 
 /**
@@ -301,16 +300,9 @@ public class BioAddressServiceImpl extends IServiceImpl implements BioAddressSer
 	
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<BioAddress> getByParam(BioAddressSearchParameter parameter,int firstResult, int maxResults, Order orderable) {
-		return bioAddressDao.getByParam(parameter, firstResult, maxResults, orderable);
+	public List<BioAddress> getAllDataByBioDataId(Long bioDataId) {
+		return bioAddressDao.getAllDataByBioDataId(bioDataId);
 
 	}
-
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-	public Long getTotalByParam(BioAddressSearchParameter parameter) {
-		return bioAddressDao.getTotalByParam(parameter);
-
-	}
-
+	
 }
