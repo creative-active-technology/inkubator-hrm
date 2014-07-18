@@ -54,7 +54,7 @@ public class EducationHistoryLazyDataModel extends LazyDataModel<EducationHistor
             }
         } else {
             try {
-                educationHistoryList = service.getByParam(parameter, first, pageSize, Order.desc("name"));
+                educationHistoryList = service.getByParam(parameter, first, pageSize, Order.desc("certificateNumber"));
                 jumlahData = Integer.parseInt(String.valueOf(service.getTotalEducationHistoryByParam(parameter)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);

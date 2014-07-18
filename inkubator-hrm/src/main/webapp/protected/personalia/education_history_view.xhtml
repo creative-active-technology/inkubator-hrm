@@ -17,50 +17,15 @@
             <ui:define name="center">
                 <div id="box_bg" style="margin: 10px">
                     <h:form id="formId">
-                        <h:panelGrid style="margin-bottom: 5px" columns="2">
-                            <p:graphicImage library="images" name="marital_status.png" height="36" width="36" />
-                            <h:panelGroup layout="block">
-                                <h:panelGrid>
-                                    <p:outputLabel value="#{appmsg['maritalstatus.maritalstatus']}" styleClass="header_big" />
-                                    <p:outputLabel value="#{appmsg['maritalstatus.marital_status_header']}" styleClass="header_small_no_bold" />
-                                </h:panelGrid>
-                            </h:panelGroup>
-                        </h:panelGrid>
                         <p:separator/>
                         <p:growl id="growlId" globalOnly="true" showDetail="true" />
-                        <p:toolbar  style="margin-top: 10px">
-                            <p:toolbarGroup align="left">
-                                <h:panelGrid columns="5">
-                                    <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm" />
-                                    <p:outputLabel value=":" />
-                                    <p:selectOneMenu value="#{maritalStatusController.search.keyParam}" style="width: 150px;margin-right: 3px" >
-                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemLabel="#{appmsg['maritalstatus.name']}" itemValue="name"/>
-                                    </p:selectOneMenu>
-                                    <p:inputText id="searchId" value="#{maritalStatusController.search.parameter}" style="width: 250px" styleClass="label_button"/>
-                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{maritalStatusController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
-                                </h:panelGrid>
-                            </p:toolbarGroup>
-                            <p:toolbarGroup align="right">
-                                <h:panelGrid columns="3" >
-                                    <p:commandButton value="Export to XLS" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
-                                        <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Marital_Status"/>
-                                    </p:commandButton>
-                                    <p:commandButton value="#{appmsg['global.add']}" actionListener="#{maritalStatusController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
-                                        <p:ajax event="dialogReturn" listener="#{maritalStatusController.onDialogReturn}"  update="tableId, growlId"/>
-                                    </p:commandButton>
-                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{maritalStatusController.doClose()}" icon="ui-icon-home" />
-                                    
-                                </h:panelGrid>
-                            </p:toolbarGroup>
-                        </p:toolbar>
-                        <p:focus for="searchId" />
-                        <p:dataTable  var="data"  value="#{maritalStatusController.lazy}" lazy="true" paginator="true" pageLinks="7"
+                        
+                        <p:dataTable  var="data"  value="#{educationHistoryController.lazy}" lazy="true" paginator="true" pageLinks="7"
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
                                       id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="#{appmsg['maritalstatus.list_of_marital_status']}"/>
+                                <h:outputText value="#{appmsg['educationhistory.list_of_education_history']}"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 5%">
                                 <f:facet name="header">  
@@ -68,17 +33,41 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="name" style="width: 40%">
+                            <p:column sortBy="name" style="width: 15%">
                                 <f:facet name="header">
-                                    <h:outputText value="#{appmsg['maritalstatus.name']}"/>
+                                    <h:outputText value="#{appmsg['educationhistory.biodata']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.name}" />
+                                <h:outputLabel value= "#{data.biodata.firstName}" />
+                            </p:column>
+                            <p:column sortBy="name" style="width: 15%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['educationhistory.education_level']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.educationLevel.name}" />
+                            </p:column>
+                            <p:column sortBy="name" style="width: 15%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['educationhistory.institution_level']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.institutionEducation.institutionEducationName}" />
+                            </p:column>
+                            <p:column sortBy="name" style="width: 15%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['educationhistory.faculty']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.faculty.facultyName}" />
+                            </p:column>
+                            <p:column sortBy="name" style="width: 15%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['educationhistory.major']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.major.majorName}" />
                             </p:column>
                             <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
                                                  onclick="statusDialog.show()"  oncomplete="detail.show()" update=":detailPanel"
-                                                 style="font-size: 10px!important" action="#{maritalStatusController.doSelectEntity()}">                        
-                                    <f:setPropertyActionListener value="#{data}" target="#{maritalStatusController.selected}" />
+                                                 style="font-size: 10px!important" action="#{educationHistoryController.doSelectEntity()}">                        
+                                    <f:setPropertyActionListener value="#{data}" target="#{educationHistoryController.selected}" />
                                 </p:commandButton>
                                 - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
@@ -88,9 +77,9 @@
                                 </p:commandButton>
                                 -
                                 <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" ajax="true"
-                                                  action="#{maritalStatusController.doEdit()}" >
-                                    <f:setPropertyActionListener value="#{data}" target="#{maritalStatusController.selected}" />
-                                    <p:ajax event="dialogReturn" listener="#{maritalStatusController.onDialogReturn}"  update="tableId"/>
+                                                  action="#{educationHistoryController.doEdit()}" >
+                                    <f:setPropertyActionListener value="#{data}" target="#{educationHistoryController.selected}" />
+                                    <p:ajax event="dialogReturn" listener="#{educationHistoryController.onDialogReturn}"  update="tableId"/>
                                 </p:commandButton> 
                             </p:column> 
                             <f:facet name="footer">
@@ -99,12 +88,19 @@
                                 <p:outputLabel value="Data" style="margin-left: 3px"/>
                             </f:facet>  
                         </p:dataTable>
-                        <p:blockUI block="formId" trigger="tableId,btnSearchId" >
+                        <p:blockUI block="formId" trigger="tableId" >
                             <h:panelGrid columns="2" styleClass="grid_no_border">
                                 <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
                                 <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
                             </h:panelGrid>
                         </p:blockUI>
+                                <h:panelGrid columns="3" >
+                                    <p:commandButton value="#{appmsg['global.add']}" actionListener="#{educationHistoryController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
+                                        <p:ajax event="dialogReturn" listener="#{educationHistoryController.onDialogReturn}"  update="tableId, growlId"/>
+                                    </p:commandButton>
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{educationHistoryController.doClose()}" icon="ui-icon-home" />
+                                    
+                                </h:panelGrid>
                     </h:form>
                 </div>
                 <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
@@ -140,7 +136,7 @@
 
                         <p:row>
                             <p:column style="color: #003366"><p:outputLabel value="#{appmsg['maritalstatus.name']}" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{maritalStatusController.selected.name}"/> </p:column>
+                            <p:column><p:outputLabel value="#{educationHistoryController.selected.faculty.facultyName}"/> </p:column>
                         </p:row>
 
                         <f:facet name="footer">

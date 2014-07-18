@@ -3,9 +3,13 @@ package com.inkubator.hrm.entity;
 
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -31,6 +35,7 @@ public class Faculty  implements java.io.Serializable {
      private Date updatedOn;
      private String facultyName;
      private String description;
+     private Set<EducationHistory> educationHistorys = new HashSet<EducationHistory>(0);
 
     public Faculty() {
     }
@@ -39,7 +44,7 @@ public class Faculty  implements java.io.Serializable {
     public Faculty(long id) {
         this.id = id;
     }
-    public Faculty(long id, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String facultyName, String description) {
+    public Faculty(long id, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String facultyName, String description, Set<EducationHistory> educationHistorys) {
        this.id = id;
        this.createdBy = createdBy;
        this.createdOn = createdOn;
@@ -47,6 +52,7 @@ public class Faculty  implements java.io.Serializable {
        this.updatedOn = updatedOn;
        this.facultyName = facultyName;
        this.description = description;
+       this.educationHistorys = educationHistorys;
     }
    
      @Id 
@@ -129,6 +135,15 @@ public class Faculty  implements java.io.Serializable {
     
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "faculty")
+    public Set<EducationHistory> getEducationHistorys() {
+        return educationHistorys;
+    }
+
+    public void setEducationHistorys(Set<EducationHistory> educationHistorys) {
+        this.educationHistorys = educationHistorys;
     }
 
 

@@ -82,7 +82,7 @@ public class EducationHistoryServiceImpl extends IServiceImpl implements Educati
         entity.setBiodata(bioDataDao.getEntiyByPK(entity.getBiodata().getId()));
         entity.setEducationLevel(educationLevelDao.getEntiyByPK(entity.getEducationLevel().getId()));
         entity.setInstitutionEducation(institutionEducationDao.getEntiyByPK(entity.getInstitutionEducation().getId()));
-        entity.setFaculty(facultyDao.getEntiyByPK(entity.getId()));
+        entity.setFaculty(facultyDao.getEntiyByPK(entity.getFaculty().getId()));
         entity.setMajor(majorDao.getEntiyByPK(entity.getMajor().getId()));
         entity.setCertificateNumber(entity.getCertificateNumber());
         entity.setScore(entity.getScore());
@@ -98,7 +98,7 @@ public class EducationHistoryServiceImpl extends IServiceImpl implements Educati
         update.setBiodata(bioDataDao.getEntiyByPK(entity.getBiodata().getId()));
         update.setEducationLevel(educationLevelDao.getEntiyByPK(entity.getEducationLevel().getId()));
         update.setInstitutionEducation(institutionEducationDao.getEntiyByPK(entity.getInstitutionEducation().getId()));
-        update.setFaculty(facultyDao.getEntiyByPK(entity.getId()));
+        update.setFaculty(facultyDao.getEntiyByPK(entity.getFaculty().getId()));
         update.setMajor(majorDao.getEntiyByPK(entity.getMajor().getId()));
         update.setCertificateNumber(entity.getCertificateNumber());
         update.setScore(entity.getScore());

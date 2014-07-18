@@ -2,12 +2,15 @@ package com.inkubator.hrm.entity;
 // Generated Jul 14, 2014 1:26:56 PM by Hibernate Tools 3.6.0
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -48,6 +51,7 @@ public class BioData implements java.io.Serializable {
     private String pathFinger;
     private String pathSignature;
     private String noKK;
+    private Set<EducationHistory> educationHistories = new HashSet<EducationHistory>(0);
 
     public BioData() {
     }
@@ -56,7 +60,7 @@ public class BioData implements java.io.Serializable {
         this.id = id;
     }
 
-    public BioData(long id, Nationality nationality, Dialect dialect, Religion religion, City city, Race race, MaritalStatus maritalStatus, String firstName, String lastName, String title, String nickname, Integer gender, Integer bloodType, Date dateOfBirth, String personalEmail, String mobilePhone, Double bodyTall, Double bodyWeight, String createdBy, Date createdOn, String updatedBy, Date updatedOn) {
+    public BioData(long id, Nationality nationality, Dialect dialect, Religion religion, City city, Race race, MaritalStatus maritalStatus, String firstName, String lastName, String title, String nickname, Integer gender, Integer bloodType, Date dateOfBirth, String personalEmail, String mobilePhone, Double bodyTall, Double bodyWeight, String createdBy, Date createdOn, String updatedBy, Date updatedOn, Set<EducationHistory> educationHistories) {
         this.id = id;
         this.nationality = nationality;
         this.dialect = dialect;
@@ -79,6 +83,7 @@ public class BioData implements java.io.Serializable {
         this.createdOn = createdOn;
         this.updatedBy = updatedBy;
         this.updatedOn = updatedOn;
+        this.educationHistories = educationHistories;
     }
 
     @Id
@@ -333,6 +338,15 @@ public class BioData implements java.io.Serializable {
 
     public void setNoKK(String noKK) {
         this.noKK = noKK;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "biodata")
+    public Set<EducationHistory> getEducationHistories() {
+        return educationHistories;
+    }
+
+    public void setEducationHistories(Set<EducationHistory> educationHistories) {
+        this.educationHistories = educationHistories;
     }
 
 }

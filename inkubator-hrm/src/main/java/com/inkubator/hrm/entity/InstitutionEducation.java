@@ -3,12 +3,15 @@ package com.inkubator.hrm.entity;
 
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -37,6 +40,7 @@ public class InstitutionEducation  implements java.io.Serializable {
      private String institutionEducationName;
      private String address;
      private Integer postalCode;
+     private Set<EducationHistory> educationHistorys = new HashSet<EducationHistory>(0);
 
     public InstitutionEducation() {
     }
@@ -45,7 +49,7 @@ public class InstitutionEducation  implements java.io.Serializable {
     public InstitutionEducation(long id) {
         this.id = id;
     }
-    public InstitutionEducation(long id, City city, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String institutionEducationCode, String institutionEducationName, String address, Integer postalCode) {
+    public InstitutionEducation(long id, City city, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String institutionEducationCode, String institutionEducationName, String address, Integer postalCode,Set<EducationHistory> educationHistorys) {
        this.id = id;
        this.city = city;
        this.createdBy = createdBy;
@@ -56,6 +60,7 @@ public class InstitutionEducation  implements java.io.Serializable {
        this.institutionEducationName = institutionEducationName;
        this.address = address;
        this.postalCode = postalCode;
+       this.educationHistorys = educationHistorys;
     }
    
      @Id 
@@ -168,6 +173,15 @@ public class InstitutionEducation  implements java.io.Serializable {
     
     public void setPostalCode(Integer postalCode) {
         this.postalCode = postalCode;
+    }
+    
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "institutionEducation")
+    public Set<EducationHistory> getEducationHistorys() {
+        return educationHistorys;
+    }
+
+    public void setEducationHistorys(Set<EducationHistory> educationHistorys) {
+        this.educationHistorys = educationHistorys;
     }
 
 

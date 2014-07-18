@@ -90,7 +90,7 @@ public class EducationHistoryViewController extends BaseController{
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 400);
-        options.put("contentHeight", 280);
+        options.put("contentHeight", 350);
         RequestContext.getCurrentInstance().openDialog("education_history_form", options, null);
     }
     
@@ -99,8 +99,8 @@ public class EducationHistoryViewController extends BaseController{
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", false);
-        options.put("contentWidth", 400);
-        options.put("contentHeight", 280);
+        options.put("contentWidth", 430);
+        options.put("contentHeight", 430);
         Map<String, List<String>> dataToSend = new HashMap<>();
         List<String> dataIsi = new ArrayList<>();
         dataIsi.add(String.valueOf(selected.getId()));
