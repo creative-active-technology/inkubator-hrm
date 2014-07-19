@@ -31,21 +31,21 @@
 
 
 
-                        <p:panelGrid style="width: 100%;margin-bottom: 10px;margin-top: 20px" styleClass="grid_border3" >
+                        <p:panelGrid style="width: 100%;margin-bottom: 20px;margin-top: 20px" styleClass="grid_border3" >
                             <p:row>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="Nama Depan"  for="firstNameId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 37%">
-                                    <p:inputText value="#{userFormController.userModel.userId}" styleClass="isitext_hrm" label="#{appmsg['user_view.user_id']}"
+                                    <p:inputText value="#{userFormController.userModel.userId}" styleClass="isitext_hrm" label="Nama Depan"
                                                  style="width: 75%" required="true" id="firstNameId" />
                                     <p:message for="firstNameId"/>
                                 </p:column>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important">
-                                    <p:outputLabel  value="Title" styleClass="label_hrm" for="titleId"/>
+                                    <p:outputLabel  value="Gelar" styleClass="label_hrm" for="titleId"/>
                                 </p:column>
                                 <p:column style="width: 37%">
-                                    <p:inputText value="#{userFormController.userModel.realName}" styleClass="isitext_hrm" style="width: 75%" label="#{appmsg['user_view.user_name']}"
+                                    <p:inputText value="#{userFormController.userModel.realName}" styleClass="isitext_hrm" style="width: 75%" label="Gelar"
                                                  required="true" id="titleId"  />
                                     <p:message for="titleId"/>
                                 </p:column>
@@ -56,7 +56,7 @@
                                     <p:outputLabel  value="Nama Belakang" styleClass="label_hrm" for="lastNameId"/>
                                 </p:column>
                                 <p:column style="width: 37%">
-                                    <p:inputText value="#{userFormController.userModel.emailAddress}" styleClass="isitext_hrm" style="width: 75%" label="#{appmsg['user_form.email_address']}"
+                                    <p:inputText value="#{userFormController.userModel.emailAddress}" styleClass="isitext_hrm" style="width: 75%" label="Nama Belakang"
                                                  required="true" id="lastNameId" />
                                     <p:message for="lastNameId"/>
                                 </p:column>
@@ -64,7 +64,7 @@
                                     <p:outputLabel  value="Nama Panggilan" styleClass="label_hrm" for="nickNameId"/>
                                 </p:column>
                                 <p:column style="width: 37%" >
-                                    <p:inputText  value="#{userFormController.userModel.phoneNumber}" styleClass="isitext_hrm" style="width: 75%" label="#{appmsg['user_form.phone_number']}"
+                                    <p:inputText  value="#{userFormController.userModel.phoneNumber}" styleClass="isitext_hrm" style="width: 75%" label="Nama Panggilan"
                                                   required="true" id="nickNameId"/>
                                     <p:message for="nickNameId"/>
                                 </p:column>
@@ -74,79 +74,81 @@
                                     <p:outputLabel  value="Tempat Lahir" styleClass="label_hrm" for="placeOfBirthId"/>
                                 </p:column>
                                 <p:column style="width: 37%">
-                                    <p:selectOneMenu  style="margin-right: 3px;width: 200px" id="placeOfBirthId" filter="true" required="true"
+                                    <p:selectOneMenu  style="margin-right: 3px;width: 200px" id="placeOfBirthId" filter="true" required="true" label="Tempat Lahir"
                                                       >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        
+
                                     </p:selectOneMenu>
                                     <p:message for="placeOfBirthId"/>
                                 </p:column>
                                 <p:column style="width: 13%;background-color: #e1f0f0 !important" >
-                                    <p:outputLabel  value="Tanggal Lahir" styleClass="label_hrm" for="isExpired"/>
+                                    <p:outputLabel  value="Agama" styleClass="label_hrm" for="religionId"/>
                                 </p:column>
                                 <p:column style="width: 37%" >
-                                    <p:selectBooleanButton value="#{userFormController.userModel.isExpired}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
-                                                           offIcon="ui-icon-close"  id="isExpired" styleClass="label_button" />
+                                    <p:selectOneMenu  style="margin-right: 3px;width: 200px" id="religionId" filter="true" required="true" label="Agama">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                    </p:selectOneMenu>
+                                    <p:message for="religionId"/>
                                 </p:column>
                             </p:row>
                             <p:row>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Alamat Email" styleClass="label_hrm" for="checkpassword"/>
+                                    <p:outputLabel  value="Tanggal Lahir" styleClass="label_hrm" for="tanggalLahirid" />
                                 </p:column>
                                 <p:column style="width: 37%" >
-                                    <p:password id="checkpassword"  maxlength="100"
-                                                feedback="false" 
-                                                required="false" disabled="#{userFormController.isEdit}"
-                                                style="width: 75%">
-                                    </p:password>
-                                    <p:message for="checkpassword"/>
+                                    <p:calendar  id="tanggalLahirid" pattern="dd MMMM yyyy" label="Tanggal Lahir" required="true"/>
+                                    <p:message for="tanggalLahirid"/>
                                 </p:column>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Glolongan Darah" styleClass="label_hrm" for="isActive"/>
+                                    <p:outputLabel  value="Ras" styleClass="label_hrm" for="rasId"/>
                                 </p:column>
                                 <p:column style="width: 37%">
-                                    <p:selectBooleanButton value="#{userFormController.userModel.isActive}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
-                                                           offIcon="ui-icon-close"  id="isActive" styleClass="label_button" />
-                                </p:column>
-
-
-                            </p:row>
-                            <p:row>
-                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Agama" styleClass="label_hrm" for="dd"/>
-                                </p:column>
-                                <p:column style="width: 37%" >
-                                    <p:password id="dd"  maxlength="100"
-                                                feedback="false" 
-                                                required="false" disabled="#{userFormController.isEdit}"
-                                                style="width: 75%">
-                                    </p:password>
-                                    <p:message for="dd"/>
-                                </p:column>
-                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Status" styleClass="label_hrm" for="fdfd"/>
-                                </p:column>
-                                <p:column style="width: 37%">
-                                    <p:selectBooleanButton value="#{userFormController.userModel.isActive}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
-                                                           offIcon="ui-icon-close"  id="fdfd" styleClass="label_button" />
+                                    <p:selectOneMenu  style="margin-right: 3px;width: 200px" id="rasId" filter="true" required="true" label="Ras">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                    </p:selectOneMenu>
+                                    <p:message for="rasId"/>
                                 </p:column>
 
 
                             </p:row>
                             <p:row>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Gender"  for="genderId" styleClass="label_hrm" />
+                                    <p:outputLabel  value="Gender" styleClass="label_hrm" for="genderId"/>
                                 </p:column>
-                                <p:column style="width: 37%">
-                                    <p:inputText value="#{userFormController.userModel.userId}" styleClass="isitext_hrm" label="#{appmsg['user_view.user_id']}"
-                                                 style="width: 75%" required="true" id="genderId" />
+                                <p:column style="width: 37%" >
+                                    <p:selectOneRadio id="genderId" styleClass="isitext_hrm" required="true" value="#{overTimeFormController.overTimeModel.overTimeCalculation}" label="Gender">
+                                        <!--Cek HRM Constanta..-->
+                                        <f:selectItem itemLabel="Laki-Laki" itemValue="1" />
+                                        <f:selectItem itemLabel="Perempuan" itemValue="0" />
+                                    </p:selectOneRadio>
                                     <p:message for="genderId"/>
+                                </p:column>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Dialek" styleClass="label_hrm" for="dialekId"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:selectOneMenu  style="margin-right: 3px;width: 200px" id="dialekId" filter="true" required="true" label="Dialek">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                    </p:selectOneMenu>
+                                    <p:message for="dialekId"/>
+                                </p:column>
+
+
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Marital Status"  for="maritalId" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:inputText value="#{userFormController.userModel.userId}" styleClass="isitext_hrm" label="Marital Status"
+                                                 style="width: 75%" required="true" id="maritalId" />
+                                    <p:message for="maritalId"/>
                                 </p:column>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important">
                                     <p:outputLabel  value="No HP" styleClass="label_hrm" for="mobilePhoneId"/>
                                 </p:column>
                                 <p:column style="width: 37%">
-                                    <p:inputText value="#{userFormController.userModel.realName}" styleClass="isitext_hrm" style="width: 75%" label="#{appmsg['user_view.user_name']}"
+                                    <p:inputText value="#{userFormController.userModel.realName}" styleClass="isitext_hrm" style="width: 75%" label="No HP"
                                                  required="true" id="mobilePhoneId"  />
                                     <p:message for="mobilePhoneId"/>
                                 </p:column>
@@ -157,7 +159,7 @@
                                     <p:outputLabel  value="No. KK"  for="noKKId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 37%">
-                                    <p:inputText value="#{userFormController.userModel.userId}" styleClass="isitext_hrm" label="#{appmsg['user_view.user_id']}"
+                                    <p:inputText value="#{userFormController.userModel.userId}" styleClass="isitext_hrm" label="No. KK"
                                                  style="width: 75%" required="true" id="noKKId" />
                                     <p:message for="noKKId"/>
                                 </p:column>
@@ -165,7 +167,7 @@
                                     <p:outputLabel  value="Warga Negara" styleClass="label_hrm" for="wargaNegaraId"/>
                                 </p:column>
                                 <p:column style="width: 37%">
-                                    <p:inputText value="#{userFormController.userModel.realName}" styleClass="isitext_hrm" style="width: 75%" label="#{appmsg['user_view.user_name']}"
+                                    <p:inputText value="#{userFormController.userModel.realName}" styleClass="isitext_hrm" style="width: 75%" label="Warga Negara"
                                                  required="true" id="wargaNegaraId"  />
                                     <p:message for="wargaNegaraId"/>
                                 </p:column>
@@ -173,20 +175,39 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Nama Ras"  for="rasId" styleClass="label_hrm" />
+                                    <p:outputLabel  value="Nama Ras"  for="rasIdi" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 37%">
-                                    <p:inputText value="#{userFormController.userModel.userId}" styleClass="isitext_hrm" label="#{appmsg['user_view.user_id']}"
-                                                 style="width: 75%" required="true" id="rasId" />
-                                    <p:message for="rasId"/>
+                                    <p:inputText value="#{userFormController.userModel.userId}" styleClass="isitext_hrm" label="Nama Ras"
+                                                 style="width: 75%" required="true" id="rasIdi" />
+                                    <p:message for="rasIdi"/>
                                 </p:column>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important">
-                                    <p:outputLabel  value="Dialek" styleClass="label_hrm" for="dialekId"/>
+                                    <p:outputLabel  value="Alamat Email" styleClass="label_hrm" for="personalEmailId"/>
                                 </p:column>
                                 <p:column style="width: 37%">
-                                    <p:inputText value="#{userFormController.userModel.realName}" styleClass="isitext_hrm" style="width: 75%" label="#{appmsg['user_view.user_name']}"
-                                                 required="true" id="dialekId"  />
-                                    <p:message for="dialekId"/>
+                                    <p:inputText value="#{userFormController.userModel.realName}" styleClass="isitext_hrm" style="width: 75%" label="Alamat Email"
+                                                 required="true" id="personalEmailId" />
+                                    <p:message for="personalEmailId"/>
+                                </p:column>
+
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Jamsostek"  for="jamsostekId" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:inputText value="#{userFormController.userModel.userId}" styleClass="isitext_hrm" label="Jamsostek"
+                                                 style="width: 75%" required="true" id="jamsostekId" />
+                                    <p:message for="jamsostekId"/>
+                                </p:column>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important">
+                                    <p:outputLabel  value="NPWP" styleClass="label_hrm" for="npwpID"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:inputText value="#{userFormController.userModel.realName}" styleClass="isitext_hrm" style="width: 75%" label="NPWP"
+                                                 required="true" id="npwpID"  />
+                                    <p:message for="npwpID"/>
                                 </p:column>
 
                             </p:row>
@@ -200,7 +221,7 @@
                         <div>
 
                             <p:fileUpload required="true" sizeLimit="209715200" label="Pilih Foto" fileUploadListener="#{spiUserFormController.handleFileUpload}"
-                                          mode="advanced"  id="uploadFoto"  style="margin-top:20px;margin-bottom:10px;width: 100%;text-align: left!important"
+                                          mode="advanced"  id="uploadFoto"  style="margin-top:10px;margin-bottom:10px;width: 100%;text-align: left!important"
                                           dragDropSupport="true" multiple="false" update="fotoNameId"
                                           allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/> 
                             <p:outputLabel value="File Name"/>
@@ -208,7 +229,7 @@
                             <p:outputLabel value="#{spiUserFormController.fileName}" id="fotoNameId"/>
 
 
-                            <p:fileUpload required="true" sizeLimit="209715200" label="Pilih Gambar Finger" fileUploadListener="#{spiUserFormController.handleFileUpload}"
+                            <p:fileUpload required="true" sizeLimit="209715200" label="Pilih Sidik Jari" fileUploadListener="#{spiUserFormController.handleFileUpload}"
                                           mode="advanced"  id="uploadFinger"  style="margin-top:10px;margin-bottom:10px;width: 100%;text-align: left!important"
                                           dragDropSupport="true" multiple="false" update="fingerNameId"
                                           allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/> 
@@ -217,7 +238,7 @@
                             <p:outputLabel value="#{spiUserFormController.fileName}" id="fingerNameId"/>
 
 
-                            <p:fileUpload required="true" sizeLimit="209715200" label="Pilih Gambar Signatur " fileUploadListener="#{spiUserFormController.handleFileUpload}"
+                            <p:fileUpload required="true" sizeLimit="209715200" label="Pilih Tanda Tangan " fileUploadListener="#{spiUserFormController.handleFileUpload}"
                                           mode="advanced"  id="uploadSignature"  style="margin-top:10px;margin-bottom:10px;width: 100%;text-align: left!important"
                                           dragDropSupport="true" multiple="false" update="signatureId"
                                           allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/> 
