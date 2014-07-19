@@ -9,17 +9,19 @@ import com.inkubator.hrm.entity.Province;
 import com.inkubator.hrm.web.search.ProvinceSearchParameter;
 
 /**
-*
-* @author Taufik Hidayat
-*/
+ * 
+ * @author Taufik Hidayat
+ */
 public interface ProvinceService extends IService<Province> {
 
 	public List<Province> getByParam(ProvinceSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception;
 
 	public Long getTotalByParam(ProvinceSearchParameter parameter) throws Exception;
-        
-        public Province getProvinceByIdWithDetail(Long id) throws Exception;
-        
-        public List<Province> getByCountryIdWithDetail(Long id) throws Exception;
+
+	public Province getProvinceByIdWithDetail(Long id) throws Exception;
+
+	public List<Province> getByCountryIdWithDetail(Long id) throws Exception;
+	
+	public List<Province> getByCountryId(Long countryId) throws Exception;
 
 }

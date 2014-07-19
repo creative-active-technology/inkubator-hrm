@@ -9,15 +9,17 @@ import com.inkubator.hrm.entity.City;
 import com.inkubator.hrm.web.search.CitySearchParameter;
 
 /**
-*
-* @author Taufik Hidayat
-*/
+ * 
+ * @author Taufik Hidayat
+ */
 public interface CityService extends IService<City> {
 
 	public List<City> getByParam(CitySearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception;
 
 	public Long getTotalByParam(CitySearchParameter parameter) throws Exception;
-        
-        public City getCityByIdWithDetail(Long id) throws Exception;
+
+	public City getCityByIdWithDetail(Long id) throws Exception;
+	
+	public List<City> getByProvinceId(Long provinceId) throws Exception;
 
 }

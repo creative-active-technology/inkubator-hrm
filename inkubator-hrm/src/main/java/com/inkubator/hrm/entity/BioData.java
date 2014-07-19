@@ -2,12 +2,16 @@ package com.inkubator.hrm.entity;
 // Generated Jul 14, 2014 1:26:56 PM by Hibernate Tools 3.6.0
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -48,6 +52,7 @@ public class BioData implements java.io.Serializable {
     private String pathFinger;
     private String pathSignature;
     private String noKK;
+    private Set<BioAddress> bioAddresses = new HashSet<BioAddress>(0);
 
     public BioData() {
     }
@@ -325,7 +330,7 @@ public class BioData implements java.io.Serializable {
     public void setPathSignature(String pathSignature) {
         this.pathSignature = pathSignature;
     }
-
+    
     @Column(name = "no_kk", length = 100)
     public String getNoKK() {
         return noKK;
@@ -334,5 +339,14 @@ public class BioData implements java.io.Serializable {
     public void setNoKK(String noKK) {
         this.noKK = noKK;
     }
+    
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "bioData")
+	public Set<BioAddress> getBioAddresses() {
+		return bioAddresses;
+	}
+
+	public void setBioAddresses(Set<BioAddress> bioAddresses) {
+		this.bioAddresses = bioAddresses;
+	}
 
 }

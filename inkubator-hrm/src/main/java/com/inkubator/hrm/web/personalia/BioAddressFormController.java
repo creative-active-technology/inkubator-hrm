@@ -1,0 +1,241 @@
+package com.inkubator.hrm.web.personalia;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+
+import org.apache.commons.lang3.StringUtils;
+import org.primefaces.context.RequestContext;
+
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.entity.BioAddress;
+import com.inkubator.hrm.entity.BioData;
+import com.inkubator.hrm.entity.City;
+import com.inkubator.hrm.entity.Country;
+import com.inkubator.hrm.entity.Province;
+import com.inkubator.hrm.service.BioAddressService;
+import com.inkubator.hrm.service.CityService;
+import com.inkubator.hrm.service.CountryService;
+import com.inkubator.hrm.service.ProvinceService;
+import com.inkubator.hrm.web.model.BioAddressModel;
+import com.inkubator.webcore.controller.BaseController;
+import com.inkubator.webcore.util.FacesUtil;
+
+/**
+ *
+ * @author rizkykojek
+ */
+@ManagedBean(name = "bioAddressFormController")
+@ViewScoped
+public class BioAddressFormController extends BaseController {
+	
+	private List<Country> countries;
+	private List<Province> provinces;
+	private List<City> cities;
+	private BioAddressModel model;
+	private Boolean isUpdate;
+	@ManagedProperty(value = "#{bioAddressService}")
+	private BioAddressService bioAddressService;
+	@ManagedProperty(value = "#{countryService}")
+	private CountryService countryService;
+	@ManagedProperty(value = "#{provinceService}")
+	private ProvinceService provinceService;
+	@ManagedProperty(value = "#{cityService}")
+	private CityService cityService;
+	
+	@PostConstruct
+    @Override
+    public void initialization() {
+        super.initialization();
+        try {
+            isUpdate = Boolean.FALSE;
+            model = new BioAddressModel();
+            countries = countryService.getAllData();
+            provinces = new ArrayList<Province>();
+            cities = new ArrayList<City>();
+            
+            String param = FacesUtil.getRequestParameter("execution");
+            if (StringUtils.isNotEmpty(param)) {
+            	BioAddress bioAddress = bioAddressService.getEntiyByPK(param);
+            	if(bioAddress != null){
+            		model = getModelFromEntity(bioAddress);
+            		provinces = provinceService.getByCountryId(model.getCountryId());
+            		cities = cityService.getByProvinceId(model.getProvinceId());
+            		isUpdate = Boolean.TRUE;
+            	}
+            }            	
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+	}
+
+	@PreDestroy
+    public void cleanAndExit() {
+		countries = null;
+		provinces = null;
+		cities = null;
+		model = null;
+		isUpdate = null;
+		bioAddressService = null;
+		countryService = null;
+		provinceService = null; 
+		cityService = null;
+	}
+	
+	public List<Country> getCountries() {
+		return countries;
+	}
+
+	public void setCountries(List<Country> countries) {
+		this.countries = countries;
+	}
+
+	public List<Province> getProvinces() {
+		return provinces;
+	}
+
+	public void setProvinces(List<Province> provinces) {
+		this.provinces = provinces;
+	}
+
+	public List<City> getCities() {
+		return cities;
+	}
+
+	public void setCities(List<City> cities) {
+		this.cities = cities;
+	}
+
+	public BioAddressModel getModel() {
+		return model;
+	}
+
+	public void setModel(BioAddressModel model) {
+		this.model = model;
+	}
+
+	public Boolean getIsUpdate() {
+		return isUpdate;
+	}
+
+	public void setIsUpdate(Boolean isUpdate) {
+		this.isUpdate = isUpdate;
+	}
+
+	public void setBioAddressService(BioAddressService bioAddressService) {
+		this.bioAddressService = bioAddressService;
+	}
+
+	public void setCountryService(CountryService countryService) {
+		this.countryService = countryService;
+	}
+
+	public void setProvinceService(ProvinceService provinceService) {
+		this.provinceService = provinceService;
+	}
+
+	public void setCityService(CityService cityService) {
+		this.cityService = cityService;
+	}
+
+	public void doSave() {
+        BioAddress bioAddress = getEntityFromViewModel(model);
+        try {
+            if (isUpdate) {
+                bioAddressService.update(bioAddress);
+                RequestContext.getCurrentInstance().closeDialog(HRMConstant.UPDATE_CONDITION);
+            } else {
+            	bioAddressService.save(bioAddress);
+                RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
+            }
+            cleanAndExit();
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
+        }
+    }
+
+	public void doReset() {
+        if (isUpdate) {
+            try {
+                BioAddress bioAddress = bioAddressService.getEntiyByPK(model.getId());
+                if (bioAddress != null) {
+                    model = getModelFromEntity(bioAddress);
+                    provinces = provinceService.getByCountryId(model.getCountryId());
+            		cities = cityService.getByProvinceId(model.getProvinceId());
+                }
+            } catch (Exception ex) {
+                LOGGER.error("Error", ex);
+            }
+        } else {
+            model = new BioAddressModel();
+            provinces.clear();
+            cities.clear();            
+        }
+    }
+	
+	private BioAddressModel getModelFromEntity(BioAddress entity) {
+		BioAddressModel bioModel = new BioAddressModel();
+		bioModel.setId(entity.getId());
+		bioModel.setBioDataId(entity.getBioData().getId());
+	    bioModel.setStatusAddress(entity.getStatusAddress());
+	    bioModel.setType(entity.getType());
+	    bioModel.setContactName(entity.getContactName());
+	    bioModel.setPhoneNumber(entity.getPhoneNumber());
+	    bioModel.setAddressDetail(entity.getAddressDetail());
+	    bioModel.setCountryId(entity.getCountry().getId());
+	    bioModel.setProvinceId(entity.getProvince().getId());
+	    bioModel.setCityId(entity.getCity().getId());
+	    bioModel.setSubDistrict(entity.getSubDistrict());
+	    bioModel.setVillage(entity.getVillage());
+	    bioModel.setZipCode(entity.getZipCode());
+	    bioModel.setNotes(entity.getNotes());
+		
+		return bioModel;
+		
+	}
+	
+	private BioAddress getEntityFromViewModel(BioAddressModel model) {
+		BioAddress bioAddress = new BioAddress();
+		bioAddress.setId(model.getId());
+		bioAddress.setBioData(new BioData(model.getBioDataId()));
+		bioAddress.setStatusAddress(model.getStatusAddress());
+		bioAddress.setType(model.getType());
+		bioAddress.setContactName(model.getContactName());
+		bioAddress.setPhoneNumber(model.getPhoneNumber());
+		bioAddress.setAddressDetail(model.getAddressDetail());
+		bioAddress.setCountry(new Country(model.getCountryId()));
+		bioAddress.setProvince(new Province(model.getProvinceId()));
+		bioAddress.setCity(new City(model.getCityId()));
+		bioAddress.setSubDistrict(model.getSubDistrict());
+		bioAddress.setVillage(model.getVillage());
+		bioAddress.setZipCode(model.getZipCode());
+		bioAddress.setNotes(model.getNotes());
+		
+	    return bioAddress;
+	}
+	
+	public void onChangeCountries(){
+		try {
+			provinces.clear();
+			cities.clear();
+			provinces = provinceService.getByCountryId(model.getCountryId());
+		} catch (Exception e) {
+			LOGGER.error("Error", e);
+		}
+	}
+	
+	public void onChangeProvinces(){
+		try {
+			cities.clear();
+			cities = cityService.getByProvinceId(model.getProvinceId());
+		} catch (Exception e) {
+			LOGGER.error("Error", e);
+		}
+	}
+
+}
