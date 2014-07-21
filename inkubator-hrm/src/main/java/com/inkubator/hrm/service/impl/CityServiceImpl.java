@@ -278,5 +278,11 @@ public class CityServiceImpl extends IServiceImpl implements CityService {
     public City getCityByIdWithDetail(Long id) throws Exception {
         return this.cityDao.getCityByIdWithDetail(id);
     }
-
+    
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<City> getByProvinceId(Long provinceId) throws Exception{
+    	return cityDao.getByProvinceId(provinceId);
+    }
+    
 }

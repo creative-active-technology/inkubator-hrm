@@ -41,6 +41,7 @@ public class Country  implements java.io.Serializable {
      private String longitude;
      private Set<Province> provinces = new HashSet<Province>(0);
      private Set<Currency> currency = new HashSet<Currency>(0);
+     private Set<BioAddress> bioAddresses  = new HashSet<BioAddress>(0);
 
     public Country() {
     }
@@ -203,9 +204,15 @@ public class Country  implements java.io.Serializable {
         this.currency = currency;
     }
 
-
-
-
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="country")
+	public Set<BioAddress> getBioAddresses() {
+		return bioAddresses;
+	}
+    
+	public void setBioAddresses(Set<BioAddress> bioAddresses) {
+		this.bioAddresses = bioAddresses;
+	}
+	
 }
 
 

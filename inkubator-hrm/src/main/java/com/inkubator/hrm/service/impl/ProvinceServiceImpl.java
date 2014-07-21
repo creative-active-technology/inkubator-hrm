@@ -282,5 +282,11 @@ public class ProvinceServiceImpl extends IServiceImpl implements ProvinceService
     public List<Province> getByCountryIdWithDetail(Long id) throws Exception {
         return this.provinceDao.getByCountryIdWithDetail(id);
     }
+    
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<Province> getByCountryId(Long countryId) throws Exception {
+    	return this.provinceDao.getByCountryId(countryId);
+    }
 
 }
