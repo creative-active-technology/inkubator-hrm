@@ -15,9 +15,7 @@ import org.hibernate.criterion.Order;
  * @author Deni
  */
 public interface EducationHistoryService extends IService<EducationHistory>{
-    public List<EducationHistory> getByParam(EducationHistorySearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
-
-    public Long getTotalEducationHistoryByParam(EducationHistorySearchParameter searchParameter) throws Exception;
-    
     public EducationHistory getAllDataByPK(Long id);
+    
+    public List<EducationHistory> getAllDataByBioDataId(Long bioDataId) throws Exception;
 }

@@ -31,29 +31,6 @@
                         <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
                     </h:panelGrid> 
                     <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
-                        
-                        <!--biodata-->
-                        <p:row>
-                            <p:column style="width: 40%">
-                                <p:outputLabel for="biodataId" value="#{appmsg['educationhistory.biodata']}" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="biodataId" value=":" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column  style="width: 50%">
-                                <p:selectOneMenu id="biodataId" value="#{educationHistoryFormController.model.biodataId}" style="width: 150px;margin-right: 3px">
-                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItems value="#{educationHistoryFormController.listBiodatas}"/>
-                                    </p:selectOneMenu>
-                            </p:column>
-                        </p:row>
-                        
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:message for="biodataId"/>
-                            </p:column>
-                        </p:row>
-                        
                         <!--education level-->
                         <p:row>
                             <p:column style="width: 40%">

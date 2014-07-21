@@ -46,18 +46,6 @@ public class EducationHistoryServiceImpl extends IServiceImpl implements Educati
     private FacultyDao facultyDao;
     @Autowired
     private MajorDao majorDao;
-    
-    @Override
-    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<EducationHistory> getByParam(EducationHistorySearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
-        return educationHistoryDao.getByParam(searchParameter, firstResult, maxResults, order);
-    }
-
-    @Override
-    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getTotalEducationHistoryByParam(EducationHistorySearchParameter searchParameter) throws Exception {
-        return educationHistoryDao.getTotalEducationHistoryByParam(searchParameter);
-    }
 
     @Override
     public EducationHistory getEntiyByPK(String id) throws Exception {
@@ -247,6 +235,12 @@ public class EducationHistoryServiceImpl extends IServiceImpl implements Educati
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
     public EducationHistory getAllDataByPK(Long id) {
         return educationHistoryDao.getAllDataByPK(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<EducationHistory> getAllDataByBioDataId(Long bioDataId) throws Exception {
+        return educationHistoryDao.getAllDataByBioDataId(bioDataId);
     }
     
 }

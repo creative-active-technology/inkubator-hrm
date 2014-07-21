@@ -12,7 +12,6 @@ import com.inkubator.hrm.entity.EducationLevel;
 import com.inkubator.hrm.entity.Faculty;
 import com.inkubator.hrm.entity.InstitutionEducation;
 import com.inkubator.hrm.entity.Major;
-import com.inkubator.hrm.service.BioDataService;
 import com.inkubator.hrm.service.EducationHistoryService;
 import com.inkubator.hrm.service.EducationLevelService;
 import com.inkubator.hrm.service.FacultyService;
@@ -44,8 +43,6 @@ import org.primefaces.context.RequestContext;
 public class EducationHistoryFormController extends BaseController{
     @ManagedProperty(value = "#{educationHistoryService}")
     private EducationHistoryService educationHistoryService;
-    @ManagedProperty(value = "#{bioDataService}")
-    private BioDataService biodataService;
     @ManagedProperty(value = "#{educationLevelService}")
     private EducationLevelService educationLevelService;
     @ManagedProperty(value = "#{institutionEducationService}")
@@ -54,14 +51,13 @@ public class EducationHistoryFormController extends BaseController{
     private FacultyService facultyService;
     @ManagedProperty(value = "#{majorService}")
     private MajorService majorService;
-            
+    
+    private Long bioDataId;
     private EducationHistory selected;
     private EducationHistoryModel model;
     private Boolean isEdit;
     
     //List Dropdown
-    private Map<String, Long> listBiodatas = new TreeMap<String, Long>();;
-    private List<BioData> listBiodata = new ArrayList<>();
     
     private Map<String, Long> listEducationLevels = new TreeMap<String, Long>();;
     private List<EducationLevel> listEducationLevel = new ArrayList<>();
@@ -82,13 +78,10 @@ public class EducationHistoryFormController extends BaseController{
         educationHistoryService = null;
         selected = null;
         isEdit = null;
-        biodataService = null;
         educationLevelService = null;
         institutionEducationService = null;
         facultyService = null;
         majorService = null;
-        listBiodata = null;
-        listBiodatas = null;
         listEducationLevel = null;
         listEducationLevels = null;
         listInstitutionEducations = null;
@@ -97,6 +90,7 @@ public class EducationHistoryFormController extends BaseController{
         listFaculty = null;
         listMajor = null;
         listMajors = null;
+        bioDataId = null;
     }
     
     @PostConstruct
@@ -106,10 +100,16 @@ public class EducationHistoryFormController extends BaseController{
         super.initialization();
         String param = FacesUtil.getRequestParameter("param");
         model = new EducationHistoryModel();
+        
         try {
-            if (param != null) {
+            if(param.contains("i")){
+                bioDataId = Long.parseLong(param.substring(1));
+                isEdit = Boolean.FALSE;
+            }
+            if (param.contains("e")) {
                 isEdit = Boolean.TRUE;
-                EducationHistory educationHistory = educationHistoryService.getAllDataByPK(Long.parseLong(param));
+                long educationId = Long.parseLong(param.substring(1));
+                EducationHistory educationHistory = educationHistoryService.getAllDataByPK(educationId);
                 model.setId(educationHistory.getId());
                 model.setBiodataId(educationHistory.getBiodata().getId());
                 model.setEducationLevelId(educationHistory.getEducationLevel().getId());
@@ -118,6 +118,7 @@ public class EducationHistoryFormController extends BaseController{
                 model.setMajorId(educationHistory.getMajor().getId());
                 model.setCertificateNumber(educationHistory.getCertificateNumber());
                 model.setScore(educationHistory.getScore());
+                bioDataId = educationHistory.getBiodata().getId();
             } else {
                 isEdit = Boolean.FALSE;
             }
@@ -128,11 +129,6 @@ public class EducationHistoryFormController extends BaseController{
     }
     
     public void listDrowDown() throws Exception{
-        //Biodata
-        listBiodata = biodataService.getAllData();
-        for (BioData bioData : listBiodata) {
-            listBiodatas.put(bioData.getFirstName(), bioData.getId());
-        }
         //Education Level
         listEducationLevel = educationLevelService.getAllData();
         for (EducationLevel educationLevel : listEducationLevel) {
@@ -153,7 +149,6 @@ public class EducationHistoryFormController extends BaseController{
         for (Major major : listMajor) {
             listMajors.put(major.getMajorName(), major.getId());
         }
-        MapUtil.sortByValue(listBiodatas);
         MapUtil.sortByValue(listEducationLevels);
         MapUtil.sortByValue(listInstitutionEducations);
         MapUtil.sortByValue(listFaculties);
@@ -188,7 +183,7 @@ public class EducationHistoryFormController extends BaseController{
         if (model.getId() != null) {
             educationHistory.setId(model.getId());
         }
-        educationHistory.setBiodata(new BioData(model.getBiodataId()));
+        educationHistory.setBiodata(new BioData(bioDataId));
         educationHistory.setEducationLevel(new EducationLevel(model.getEducationLevelId()));
         educationHistory.setInstitutionEducation(new InstitutionEducation(model.getInstitutionEducationId()));
         educationHistory.setFaculty(new Faculty(model.getFacultyId()));
@@ -204,14 +199,6 @@ public class EducationHistoryFormController extends BaseController{
 
     public void setEducationHistoryService(EducationHistoryService educationHistoryService) {
         this.educationHistoryService = educationHistoryService;
-    }
-
-    public BioDataService getBiodataService() {
-        return biodataService;
-    }
-
-    public void setBiodataService(BioDataService biodataService) {
-        this.biodataService = biodataService;
     }
 
     public EducationLevelService getEducationLevelService() {
@@ -268,22 +255,6 @@ public class EducationHistoryFormController extends BaseController{
 
     public void setIsEdit(Boolean isEdit) {
         this.isEdit = isEdit;
-    }
-
-    public Map<String, Long> getListBiodatas() {
-        return listBiodatas;
-    }
-
-    public void setListBiodatas(Map<String, Long> listBiodatas) {
-        this.listBiodatas = listBiodatas;
-    }
-
-    public List<BioData> getListBiodata() {
-        return listBiodata;
-    }
-
-    public void setListBiodata(List<BioData> listBiodata) {
-        this.listBiodata = listBiodata;
     }
 
     public Map<String, Long> getListEducationLevels() {
