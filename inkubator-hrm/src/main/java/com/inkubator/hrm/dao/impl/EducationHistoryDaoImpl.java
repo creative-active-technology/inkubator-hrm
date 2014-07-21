@@ -6,15 +6,10 @@ package com.inkubator.hrm.dao.impl;
 
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.EducationHistoryDao;
-import com.inkubator.hrm.entity.CostCenter;
 import com.inkubator.hrm.entity.EducationHistory;
-import com.inkubator.hrm.web.search.EducationHistorySearchParameter;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
-import org.hibernate.criterion.MatchMode;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;

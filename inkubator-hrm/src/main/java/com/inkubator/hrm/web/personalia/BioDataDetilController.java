@@ -19,6 +19,8 @@ import com.inkubator.webcore.util.MessagesResourceUtil;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
@@ -52,13 +54,14 @@ public class BioDataDetilController extends BaseController {
     @ManagedProperty(value = "#{educationHistoryService}")
     private EducationHistoryService educationHistoryService;
     
+    private String userId;
     
     @PostConstruct
     @Override
     public void initialization() {
         try {
             super.initialization();
-            String userId = FacesUtil.getRequestParameter("execution");
+            userId = FacesUtil.getRequestParameter("execution");
             selectedBioData = bioDataService.getEntiyByPK(Long.parseLong(userId.substring(1)));
             bioAddresses = bioAddressService.getAllDataByBioDataId(selectedBioData.getId());
             educationHistory = educationHistoryService.getAllDataByBioDataId(selectedBioData.getId());
@@ -69,7 +72,7 @@ public class BioDataDetilController extends BaseController {
     
     @PreDestroy
     public void cleanAndExit() {
-    	
+    	userId = null;
     }
 
     public EducationHistory getSelectedEduHistory() {
@@ -226,7 +229,13 @@ public class BioDataDetilController extends BaseController {
     /** END Bio Education History method */
     @Override
     public void onDialogReturn(SelectEvent event) {
-       super.onDialogReturn(event);
+        try {
+            educationHistory = educationHistoryService.getAllDataByBioDataId(Long.parseLong(userId.substring(1)));
+            super.onDialogReturn(event);
+        } catch (Exception ex) {
+            Logger.getLogger(BioDataDetilController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
 
     }
 }

@@ -6,9 +6,7 @@ package com.inkubator.hrm.dao;
 
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.EducationHistory;
-import com.inkubator.hrm.web.search.EducationHistorySearchParameter;
 import java.util.List;
-import org.hibernate.criterion.Order;
 
 /**
  *

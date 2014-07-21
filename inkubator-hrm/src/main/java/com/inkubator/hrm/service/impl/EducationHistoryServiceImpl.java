@@ -14,7 +14,6 @@ import com.inkubator.hrm.dao.InstitutionEducationDao;
 import com.inkubator.hrm.dao.MajorDao;
 import com.inkubator.hrm.entity.EducationHistory;
 import com.inkubator.hrm.service.EducationHistoryService;
-import com.inkubator.hrm.web.search.EducationHistorySearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import java.util.Date;
 import java.util.List;
