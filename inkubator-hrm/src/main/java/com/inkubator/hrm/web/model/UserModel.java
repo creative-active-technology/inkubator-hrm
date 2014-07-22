@@ -43,14 +43,14 @@ public class UserModel implements Serializable {
     }
 
     public String getRealName() {
-		return realName;
-	}
+        return realName;
+    }
 
-	public void setRealName(String realName) {
-		this.realName = realName;
-	}
+    public void setRealName(String realName) {
+        this.realName = realName;
+    }
 
-	@Email(message = "{errorr_mail}")
+    @Email(message = "{errorr_mail}")
     public String getEmailAddress() {
         return emailAddress;
     }
@@ -78,14 +78,14 @@ public class UserModel implements Serializable {
     }
 
     public String getOldPassword() {
-		return oldPassword;
-	}
+        return oldPassword;
+    }
 
-	public void setOldPassword(String oldPassword) {
-		this.oldPassword = oldPassword;
-	}
+    public void setOldPassword(String oldPassword) {
+        this.oldPassword = oldPassword;
+    }
 
-	public Boolean getIsActive() {
+    public Boolean getIsActive() {
         return isActive;
     }
 

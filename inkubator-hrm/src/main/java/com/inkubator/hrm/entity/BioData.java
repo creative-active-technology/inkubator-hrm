@@ -4,7 +4,6 @@ package com.inkubator.hrm.entity;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -52,7 +51,9 @@ public class BioData implements java.io.Serializable {
     private String pathFinger;
     private String pathSignature;
     private String noKK;
-    private Set<BioAddress> bioAddresses = new HashSet<BioAddress>(0);
+    private Set<BioAddress> bioAddresses = new HashSet<>(0);
+    private String jamsostek;
+    private String npwp;
 
     public BioData() {
     }
@@ -330,7 +331,7 @@ public class BioData implements java.io.Serializable {
     public void setPathSignature(String pathSignature) {
         this.pathSignature = pathSignature;
     }
-    
+
     @Column(name = "no_kk", length = 100)
     public String getNoKK() {
         return noKK;
@@ -339,14 +340,32 @@ public class BioData implements java.io.Serializable {
     public void setNoKK(String noKK) {
         this.noKK = noKK;
     }
-    
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "bioData")
-	public Set<BioAddress> getBioAddresses() {
-		return bioAddresses;
-	}
 
-	public void setBioAddresses(Set<BioAddress> bioAddresses) {
-		this.bioAddresses = bioAddresses;
-	}
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "bioData")
+    public Set<BioAddress> getBioAddresses() {
+        return bioAddresses;
+    }
+
+    public void setBioAddresses(Set<BioAddress> bioAddresses) {
+        this.bioAddresses = bioAddresses;
+    }
+
+    @Column(name = "jamsostek", length = 50)
+    public String getJamsostek() {
+        return jamsostek;
+    }
+
+    public void setJamsostek(String jamsostek) {
+        this.jamsostek = jamsostek;
+    }
+
+    @Column(name = "npwp", length = 50)
+    public String getNpwp() {
+        return npwp;
+    }
+
+    public void setNpwp(String npwp) {
+        this.npwp = npwp;
+    }
 
 }

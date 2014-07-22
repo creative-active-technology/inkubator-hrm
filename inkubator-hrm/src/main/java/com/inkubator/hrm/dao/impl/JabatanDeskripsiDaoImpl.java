@@ -52,7 +52,7 @@ public class JabatanDeskripsiDaoImpl extends IDAOImpl<JabatanDeskripsi> implemen
     }
 
     private void doSearchByParam(JabatanDeskripsiSearcParameter parameter, Criteria criteria) {
-        System.out.println(" heheh eksekusi");
+   
         criteria.createAlias("jabatan", "jb");
         criteria.createAlias("jb.jabatan", "jbb");
         if (StringUtils.isNotEmpty(parameter.getJobsName())) {
