@@ -350,8 +350,13 @@
                                             <p:ajax event="dialogReturn" listener="#{bioDataDetilController.onDialogReturn}"  update="tableEducationId,:growlBioDetailFormId"/>
                                         </p:commandButton>
                                     </p:column>
-
                                 </p:dataTable>
+                                <h:panelGrid columns="3" >
+                                    <p:commandButton value="#{appmsg['global.add']}" actionListener="#{bioDataDetilController.doAddBioEduHistory()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
+                                        <p:ajax event="dialogReturn" listener="#{bioDataDetilController.onDialogReturn}"  update="tableEducationId, :growlBioDetailFormId"/>
+                                    </p:commandButton>
+
+                                    </p:dataTable>
                             </p:tab>  
 
                             <p:tab id="minatId" title="Minat">  
