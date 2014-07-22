@@ -29,12 +29,12 @@
                     <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
                     <h:panelGrid columns="1" style="margin-bottom: 5px;margin-left: 0px">
                         <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
-                        
+
                         <h:outputLabel value="#{appmsg['institutionEducation.dialog_info']}" styleClass="label_hrm" style="font-weight: normal!important"/>
                         <h:outputLabel value="#{appmsg['institutionEducation.dialog_info_2']}" styleClass="label_hrm" style="font-weight: normal!important"/>
                         <h:outputLabel value="#{appmsg['institutionEducation.dialog_info_4']}" styleClass="label_hrm" style="font-weight: normal!important"/>
                         <h:outputLabel value="#{appmsg['institutionEducation.dialog_info_3']}" styleClass="label_hrm" style="font-weight: normal!important"/>
-                        
+
                     </h:panelGrid> 
                     <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
                         <p:row>
@@ -103,16 +103,59 @@
                             </p:column>
                         </p:row>
                         <p:row>
+                            <p:column style="width: 29%" >
+                                <p:outputLabel for="countryId" value="#{appmsg['country.country_name']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="countryId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 70%">
+                                <p:selectOneMenu id="countryId" value="#{institutionEducationFormController.institutionEducationModel.countryId}" required="true" valueChangeListener="#{institutionEducationFormController.countryChanged}" 
+                                                 style="width: 250px" filter="true" requiredMessage="#{appmsg['country.country_name_should_not_be_empty']}">
+                                    <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue="" />
+                                    <f:selectItems value="#{institutionEducationFormController.countrys}"  />
+                                    <p:ajax update="provinceIdA, provinceId" event="change" />
+                                </p:selectOneMenu>
+                            </p:column>                            
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="countryId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%;background-color: #e1f0f0!important" >
+                                <p:outputLabel for="provinceIdA" value="#{appmsg['city.province_name']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="provinceIdA" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 70%">
+                                <p:selectOneMenu id="provinceIdA" value="#{institutionEducationFormController.institutionEducationModel.provinceId}" required="true" valueChangeListener="#{institutionEducationFormController.provinceChanged}"
+                                                 style="width: 250px" filter="true" requiredMessage="#{appmsg['city.province_should_not_be_empty']}" disabled="#{institutionEducationFormController.disabledProvince}">
+                                    <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue="" />
+                                    <f:selectItems value="#{institutionEducationFormController.provinces}"  />
+                                    <p:ajax update="cityIdA, cityId" event="change" />
+                                </p:selectOneMenu>                                
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message id="provinceId" for="provinceId"/>
+                                <p:message for="provinceIdA"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
                             <p:column style="width: 29%">
                                 <p:outputLabel for="cityId" value="#{appmsg['institutionEducation.city_name']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
-                                <h:outputLabel for="cityId" value=":" styleClass="label_hrm"/>
+                                <h:outputLabel for="cityIdA" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 70%">
-                                <p:focus for ="cityId">
-                                    <p:selectOneMenu id="cityId" value="#{institutionEducationFormController.institutionEducationModel.cityId}" required="true"
-                                                     style="width: 250px" filter="true" requiredMessage="#{appmsg['institutionEducation.city_should_not_be_empty']}">
+                                <p:focus for ="cityIdA">
+                                    <p:selectOneMenu id="cityIdA" value="#{institutionEducationFormController.institutionEducationModel.cityId}" required="true"
+                                                     style="width: 250px" filter="true" requiredMessage="#{appmsg['institutionEducation.city_should_not_be_empty']}" disabled="#{institutionEducationFormController.disabledCity}">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{institutionEducationFormController.citys}" />
                                     </p:selectOneMenu>
@@ -121,7 +164,8 @@
                         </p:row>
                         <p:row>
                             <p:column colspan="3">
-                                <p:message for="cityId"/>
+                                <p:message id="cityId" for="cityId"/>
+                                <p:message for="cityIdA"/>
                             </p:column>
                         </p:row>
                         <p:row>
@@ -133,7 +177,7 @@
                             </p:column>
                             <p:column  style="width: 70%">
                                 <p:inputText id="postalId" title="#{appmsg['institutionEducation.postal_code']}" value="#{institutionEducationFormController.institutionEducationModel.postalCode}" 
-                                               maxlength="8" styleClass="isitext_hrm" style="width:250px;" >
+                                             maxlength="8" styleClass="isitext_hrm" style="width:250px;" >
                                     <pe:keyFilter mask="num"></pe:keyFilter>
                                 </p:inputText>
 
