@@ -19,7 +19,5 @@ public interface CityService extends IService<City> {
 	public Long getTotalByParam(CitySearchParameter parameter) throws Exception;
         
         public City getCityByIdWithDetail(Long id) throws Exception;
-        
-        public List<City> getByProvinceIdWithDetail(Long id) throws Exception;
 
 }
