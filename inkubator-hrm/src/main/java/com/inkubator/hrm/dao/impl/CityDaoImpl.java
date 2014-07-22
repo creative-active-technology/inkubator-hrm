@@ -104,12 +104,4 @@ public class CityDaoImpl extends IDAOImpl<City> implements CityDao {
 		
 	}
 
-	@Override
-	public List<City> getByProvinceId(Long provinceId) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.add(Restrictions.eq("province.id", provinceId));
-		return criteria.list();
-		
-	}
-
 }
