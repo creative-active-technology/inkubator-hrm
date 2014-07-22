@@ -12,6 +12,7 @@ import com.inkubator.hrm.web.search.BioDataSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+import java.io.File;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -71,7 +72,7 @@ public class BioDataViewController extends BaseController {
     }
 
     public String doDetail() {
-         return "/protected/personalia/biodata_detail.htm?faces-redirect=true&execution=e" + selectedBioData.getId();
+        return "/protected/personalia/biodata_detail.htm?faces-redirect=true&execution=e" + selectedBioData.getId();
     }
 
     public BioData getSelectedBioData() {
@@ -85,13 +86,14 @@ public class BioDataViewController extends BaseController {
     public void onDelete() {
         try {
             selectedBioData = this.bioDataService.getEntiyByPK(selectedBioData.getId());
+
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
     }
 
     public String doEdit() {
-        return null;
+          return "/protected/personalia/biodata_form.htm?faces-redirect=true&execution=e" + selectedBioData.getId();
     }
 
     public void doDelete() {
@@ -99,7 +101,19 @@ public class BioDataViewController extends BaseController {
             this.bioDataService.delete(selectedBioData);
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-         } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
+            File fileFoto = new File(selectedBioData.getPathFoto());
+            fileFoto.delete();
+//        }
+
+//        if (entity.getPathSignature() != null || entity.getPathSignature().isEmpty()) {
+            File fileSignature = new File(selectedBioData.getPathSignature());
+            fileSignature.delete();
+//        }
+
+//        if (entity.getPathFinger() != null || entity.getPathFinger().isEmpty()) {
+            File fileFinger = new File(selectedBioData.getPathFinger());
+            fileFinger.delete();
+        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 //            LOGGER.error("Error", ex);
@@ -107,8 +121,8 @@ public class BioDataViewController extends BaseController {
             LOGGER.error("Error", ex);
         }
     }
-    
-    public String doAdd(){
+
+    public String doAdd() {
         return "/protected/personalia/biodata_form.htm?faces-redirect=true";
     }
 }

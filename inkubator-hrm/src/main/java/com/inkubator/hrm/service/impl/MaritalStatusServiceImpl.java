@@ -28,11 +28,11 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service(value = "maritalStatusService")
 @Lazy
-public class MaritalStatusServiceImpl extends IServiceImpl implements MaritalStatusService{
+public class MaritalStatusServiceImpl extends IServiceImpl implements MaritalStatusService {
 
     @Autowired
     private MaritalStatusDao maritalStatusDao;
-    
+
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<MaritalStatus> getByParam(MaritalStatusSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
@@ -162,7 +162,7 @@ public class MaritalStatusServiceImpl extends IServiceImpl implements MaritalSta
     }
 
     @Override
-    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor =Exception.class)
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void delete(MaritalStatus entity) throws Exception {
         this.maritalStatusDao.delete(entity);
     }
@@ -193,8 +193,9 @@ public class MaritalStatusServiceImpl extends IServiceImpl implements MaritalSta
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<MaritalStatus> getAllData() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       return this.maritalStatusDao.getAllData();
     }
 
     @Override
@@ -231,5 +232,5 @@ public class MaritalStatusServiceImpl extends IServiceImpl implements MaritalSta
     public List<MaritalStatus> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
 }

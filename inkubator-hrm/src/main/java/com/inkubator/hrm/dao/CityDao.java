@@ -26,4 +26,6 @@ public interface CityDao extends IDAO<City> {
 	
 	public List<City> getByProvinceId(Long provinceId);
 
+        public List<City> getByProvinceIdWithDetail(Long id);
+
 }

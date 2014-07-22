@@ -9,8 +9,6 @@ import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.entity.JabatanSpesifikasi;
 import com.inkubator.hrm.service.JabatanService;
 import com.inkubator.hrm.service.JabatanSpesifikasiService;
-import com.inkubator.hrm.web.lazymodel.JabatanSpesifikasiLazyDataModel;
-import com.inkubator.hrm.web.search.JabatanSpesifikasiSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
@@ -18,6 +16,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
@@ -44,8 +44,7 @@ public class JabatanSpesifikasiDetailController extends BaseController{
     @ManagedProperty(value = "#{jabatanSpesifikasiService}")
     private JabatanSpesifikasiService jabatanSpecService;
     private List<JabatanSpesifikasi> listJabatanSpesifikasi;
-    private LazyDataModel<JabatanSpesifikasi> lazyDataJabatanSpesifikasi;
-    private JabatanSpesifikasiSearchParameter jabatanSpesifikasiSearchParameter;
+    private String userId;
 
     public JabatanSpesifikasiService getJabatanSpecService() {
         return jabatanSpecService;
@@ -64,25 +63,6 @@ public class JabatanSpesifikasiDetailController extends BaseController{
         this.selectedJobSpec = selectedJobSpec;
     }
 
-    public JabatanSpesifikasiSearchParameter getJabatanSpesifikasiSearchParameter() {
-        return jabatanSpesifikasiSearchParameter;
-    }
-
-    public void setJabatanSpesifikasiSearchParameter(JabatanSpesifikasiSearchParameter jabatanSpesifikasiSearchParameter) {
-        this.jabatanSpesifikasiSearchParameter = jabatanSpesifikasiSearchParameter;
-    }
-
-    
-    public LazyDataModel<JabatanSpesifikasi> getLazyDataJabatanSpesifikasi() {
-        if(lazyDataJabatanSpesifikasi == null){
-            lazyDataJabatanSpesifikasi = new JabatanSpesifikasiLazyDataModel(jabatanSpesifikasiSearchParameter, jabatanSpecService, selectedJabatan.getId());
-        }
-        return lazyDataJabatanSpesifikasi;
-    }
-
-    public void setLazyDataJabatanSpesifikasi(LazyDataModel<JabatanSpesifikasi> lazyDataJabatanSpesifikasi) {
-        this.lazyDataJabatanSpesifikasi = lazyDataJabatanSpesifikasi;
-    }
     
     public Jabatan getSelectedJabatan() {
         return selectedJabatan;
@@ -109,9 +89,9 @@ public class JabatanSpesifikasiDetailController extends BaseController{
     public void initialization() {
         try {
             super.initialization();
-            String userId = FacesUtil.getRequestParameter("execution");
+            userId = FacesUtil.getRequestParameter("execution");
             selectedJabatan = jabatanService.getJabatanByIdWithDetail(Long.parseLong(userId.substring(1)));
-            jabatanSpesifikasiSearchParameter = new JabatanSpesifikasiSearchParameter();
+            listJabatanSpesifikasi = jabatanSpecService.getAllDataByJabatanId(selectedJabatan.getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
 
@@ -175,9 +155,14 @@ public class JabatanSpesifikasiDetailController extends BaseController{
     }
     
     @Override
-    public void onDialogReturn(SelectEvent event) {
-        lazyDataJabatanSpesifikasi = null;
-       super.onDialogReturn(event);
+    public void onDialogReturn(SelectEvent event)  {
+        try {
+            listJabatanSpesifikasi = jabatanSpecService.getAllDataByJabatanId(Long.parseLong(userId.substring(1)));
+            super.onDialogReturn(event);
+        } catch (Exception ex) {
+            Logger.getLogger(JabatanSpesifikasiDetailController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
 
     }
     
@@ -185,6 +170,7 @@ public class JabatanSpesifikasiDetailController extends BaseController{
     public void cleanAndExit() {
         selectedJabatan = null;
         jabatanService = null;
+        listJabatanSpesifikasi = null;
     }
     
     public void doDetail() {

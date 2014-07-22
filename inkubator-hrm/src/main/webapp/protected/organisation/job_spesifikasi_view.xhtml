@@ -111,7 +111,7 @@
 
                           
                             <p:column headerText="#{appmsg['global.action']}" style="width: 160px;text-align: center" exportable="false">
-                                <p:commandButton  icon="ui-icon-document" title="#{appmsg['jobspec.add_or_edit_job_spec']}" label="Add or Edit Spesifikasi" value="Add or Edit Spesifikasi"
+                                <p:commandButton  icon="ui-icon-document" title="#{appmsg['global.add_or_edit']}" label="#{appmsg['global.add_or_edit']}" value="#{appmsg['global.add_or_edit']}"
                                                   action="#{jabatanSpesifikasiViewController.doDetail()}" style="font-size: 10px!important" >                        
                                     <f:setPropertyActionListener value="#{jabatanDeskripsiModel}" target="#{jabatanSpesifikasiViewController.selectedJabatan}" />
                                 </p:commandButton>

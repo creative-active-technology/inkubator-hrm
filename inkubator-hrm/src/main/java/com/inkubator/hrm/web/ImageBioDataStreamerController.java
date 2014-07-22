@@ -49,6 +49,62 @@ public class ImageBioDataStreamerController extends BaseController {
             InputStream is = null;
             try {
                 String url = bioDataService.getEntiyByPK(Long.parseLong(bioId)).getPathFoto();
+                System.out.println(" hahahahha");
+                if(url==null|| url.isEmpty()){
+                    url=facesIO.getPathUpload()+"no_image.png";
+                }
+                is = facesIO.getInputStreamFromURL(url);
+
+            } catch (Exception ex) {
+//                return new DefaultStreamedContent();
+                LOGGER.error(ex, ex);
+                return new DefaultStreamedContent();
+            }
+            return new DefaultStreamedContent(is);
+
+        }
+
+    }
+    
+    public StreamedContent getFingerImage() throws IOException {
+
+        FacesContext context = FacesUtil.getFacesContext();
+        String bioId = context.getExternalContext().getRequestParameterMap().get("id");
+        if (context.getRenderResponse() || bioId == null) {
+            return new DefaultStreamedContent();
+        } else {
+            InputStream is = null;
+            try {
+                String url = bioDataService.getEntiyByPK(Long.parseLong(bioId)).getPathFinger();
+                 if(url==null|| url.isEmpty()){
+                    url=facesIO.getPathUpload()+"no_image.png";
+                }
+                is = facesIO.getInputStreamFromURL(url);
+
+            } catch (Exception ex) {
+//                return new DefaultStreamedContent();
+                LOGGER.error(ex, ex);
+                return new DefaultStreamedContent();
+            }
+            return new DefaultStreamedContent(is);
+
+        }
+
+    }
+    
+    public StreamedContent getSignaturImage() throws IOException {
+
+        FacesContext context = FacesUtil.getFacesContext();
+        String bioId = context.getExternalContext().getRequestParameterMap().get("id");
+        if (context.getRenderResponse() || bioId == null) {
+            return new DefaultStreamedContent();
+        } else {
+            InputStream is = null;
+            try {
+                String url = bioDataService.getEntiyByPK(Long.parseLong(bioId)).getPathSignature();
+                  if(url==null|| url.isEmpty()){
+                    url=facesIO.getPathUpload()+"no_image.png";
+                }
                 is = facesIO.getInputStreamFromURL(url);
 
             } catch (Exception ex) {

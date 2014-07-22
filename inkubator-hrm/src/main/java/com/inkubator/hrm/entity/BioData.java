@@ -4,7 +4,6 @@ package com.inkubator.hrm.entity;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -52,7 +51,11 @@ public class BioData implements java.io.Serializable {
     private String pathFinger;
     private String pathSignature;
     private String noKK;
+    private String jamsostek;
+    private String npwp;
+    private Set<EducationHistory> educationHistories = new HashSet<EducationHistory>(0);
     private Set<BioAddress> bioAddresses = new HashSet<BioAddress>(0);
+
 
     public BioData() {
     }
@@ -61,7 +64,7 @@ public class BioData implements java.io.Serializable {
         this.id = id;
     }
 
-    public BioData(long id, Nationality nationality, Dialect dialect, Religion religion, City city, Race race, MaritalStatus maritalStatus, String firstName, String lastName, String title, String nickname, Integer gender, Integer bloodType, Date dateOfBirth, String personalEmail, String mobilePhone, Double bodyTall, Double bodyWeight, String createdBy, Date createdOn, String updatedBy, Date updatedOn) {
+    public BioData(long id, Nationality nationality, Dialect dialect, Religion religion, City city, Race race, MaritalStatus maritalStatus, String firstName, String lastName, String title, String nickname, Integer gender, Integer bloodType, Date dateOfBirth, String personalEmail, String mobilePhone, Double bodyTall, Double bodyWeight, String createdBy, Date createdOn, String updatedBy, Date updatedOn, Set<EducationHistory> educationHistories) {
         this.id = id;
         this.nationality = nationality;
         this.dialect = dialect;
@@ -84,6 +87,7 @@ public class BioData implements java.io.Serializable {
         this.createdOn = createdOn;
         this.updatedBy = updatedBy;
         this.updatedOn = updatedOn;
+        this.educationHistories = educationHistories;
     }
 
     @Id
@@ -330,7 +334,7 @@ public class BioData implements java.io.Serializable {
     public void setPathSignature(String pathSignature) {
         this.pathSignature = pathSignature;
     }
-    
+
     @Column(name = "no_kk", length = 100)
     public String getNoKK() {
         return noKK;
@@ -339,14 +343,41 @@ public class BioData implements java.io.Serializable {
     public void setNoKK(String noKK) {
         this.noKK = noKK;
     }
-    
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "bioData")
-	public Set<BioAddress> getBioAddresses() {
-		return bioAddresses;
-	}
 
-	public void setBioAddresses(Set<BioAddress> bioAddresses) {
-		this.bioAddresses = bioAddresses;
-	}
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "bioData")
+    public Set<BioAddress> getBioAddresses() {
+        return bioAddresses;
+    }
+
+    public void setBioAddresses(Set<BioAddress> bioAddresses) {
+        this.bioAddresses = bioAddresses;
+    }
+
+    @Column(name = "jamsostek", length = 50)
+    public String getJamsostek() {
+        return jamsostek;
+    }
+
+    public void setJamsostek(String jamsostek) {
+        this.jamsostek = jamsostek;
+    }
+
+    @Column(name = "npwp", length = 50)
+    public String getNpwp() {
+        return npwp;
+    }
+
+    public void setNpwp(String npwp) {
+        this.npwp = npwp;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "biodata")
+    public Set<EducationHistory> getEducationHistories() {
+        return educationHistories;
+    }
+
+    public void setEducationHistories(Set<EducationHistory> educationHistories) {
+        this.educationHistories = educationHistories;
+    }
 
 }

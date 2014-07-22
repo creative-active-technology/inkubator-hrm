@@ -2,9 +2,13 @@ package com.inkubator.hrm.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -22,6 +26,7 @@ public class EducationLevel implements Serializable {
     private String updatedBy;
     private Date createdOn;
     private Date updatedOn;
+    private Set<EducationHistory> educationHistorys = new HashSet<EducationHistory>(0);
 
     public EducationLevel() {
 
@@ -111,4 +116,15 @@ public class EducationLevel implements Serializable {
     public void setUpdatedOn(Date updatedOn) {
         this.updatedOn = updatedOn;
     }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "educationLevel")
+    public Set<EducationHistory> getEducationHistorys() {
+        return educationHistorys;
+    }
+
+    public void setEducationHistorys(Set<EducationHistory> educationHistorys) {
+        this.educationHistorys = educationHistorys;
+    }
+    
+    
 }
