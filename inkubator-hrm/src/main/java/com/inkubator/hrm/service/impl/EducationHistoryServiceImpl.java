@@ -6,11 +6,14 @@ package com.inkubator.hrm.service.impl;
 
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
-import com.inkubator.hrm.dao.JabatanDao;
-import com.inkubator.hrm.dao.JabatanSpesifikasiDao;
-import com.inkubator.hrm.dao.SpecificationAbilityDao;
-import com.inkubator.hrm.entity.JabatanSpesifikasi;
-import com.inkubator.hrm.service.JabatanSpesifikasiService;
+import com.inkubator.hrm.dao.BioDataDao;
+import com.inkubator.hrm.dao.EducationHistoryDao;
+import com.inkubator.hrm.dao.EducationLevelDao;
+import com.inkubator.hrm.dao.FacultyDao;
+import com.inkubator.hrm.dao.InstitutionEducationDao;
+import com.inkubator.hrm.dao.MajorDao;
+import com.inkubator.hrm.entity.EducationHistory;
+import com.inkubator.hrm.service.EducationHistoryService;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import java.util.Date;
 import java.util.List;
@@ -26,131 +29,144 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author Deni
  */
-@Service(value = "jabatanSpesifikasiService")
+@Service(value = "educationHistoryService")
 @Lazy
-public class JabatanSpesifikasiServiceImpl extends IServiceImpl implements JabatanSpesifikasiService{
-    
+public class EducationHistoryServiceImpl extends IServiceImpl implements EducationHistoryService{
+
     @Autowired
-    private JabatanSpesifikasiDao jabatanSpesifikasiDao;
+    private EducationHistoryDao educationHistoryDao;
     @Autowired
-    private JabatanDao jabatanDao;
+    private BioDataDao bioDataDao;
     @Autowired
-    private SpecificationAbilityDao specAbilityDao;
+    private EducationLevelDao educationLevelDao;
+    @Autowired
+    private InstitutionEducationDao institutionEducationDao;
+    @Autowired
+    private FacultyDao facultyDao;
+    @Autowired
+    private MajorDao majorDao;
 
     @Override
-    public JabatanSpesifikasi getEntiyByPK(String id) throws Exception {
+    public EducationHistory getEntiyByPK(String id) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public JabatanSpesifikasi getEntiyByPK(Integer id) throws Exception {
+    public EducationHistory getEntiyByPK(Integer id) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public JabatanSpesifikasi getEntiyByPK(Long id) throws Exception {
-        return jabatanSpesifikasiDao.getEntiyByPK(id);
+    public EducationHistory getEntiyByPK(Long id) throws Exception {
+        return educationHistoryDao.getEntiyByPK(id);
     }
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void save(JabatanSpesifikasi entity) throws Exception {
+    public void save(EducationHistory entity) throws Exception {
         entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
-        entity.setJabatan(jabatanDao.getEntiyByPK(entity.getJabatan().getId()));
-        entity.setSpecificationAbility(specAbilityDao.getEntiyByPK(entity.getSpecificationAbility().getId()));
-        entity.setValue(entity.getValue());
+        entity.setBiodata(bioDataDao.getEntiyByPK(entity.getBiodata().getId()));
+        entity.setEducationLevel(educationLevelDao.getEntiyByPK(entity.getEducationLevel().getId()));
+        entity.setInstitutionEducation(institutionEducationDao.getEntiyByPK(entity.getInstitutionEducation().getId()));
+        entity.setFaculty(facultyDao.getEntiyByPK(entity.getFaculty().getId()));
+        entity.setMajor(majorDao.getEntiyByPK(entity.getMajor().getId()));
+        entity.setCertificateNumber(entity.getCertificateNumber());
+        entity.setScore(entity.getScore());
         entity.setCreatedBy(UserInfoUtil.getUserName());
         entity.setCreatedOn(new Date());
-        this.jabatanSpesifikasiDao.save(entity);
+        this.educationHistoryDao.save(entity);
     }
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void update(JabatanSpesifikasi entity) throws Exception {
-        JabatanSpesifikasi jobSpek=this.jabatanSpesifikasiDao.getEntiyByPK(entity.getId());
-        jobSpek.setJabatan(jabatanDao.getEntiyByPK(entity.getJabatan().getId()));
-        jobSpek.setSpecificationAbility(specAbilityDao.getEntiyByPK(entity.getSpecificationAbility().getId()));
-        jobSpek.setValue(entity.getValue());
-        jobSpek.setUpdatedBy(UserInfoUtil.getUserName());
-        jobSpek.setUpdatedOn(new Date());
-        jobSpek.setOptionAbility(entity.getOptionAbility());
-        this.jabatanSpesifikasiDao.update(jobSpek);
+    public void update(EducationHistory entity) throws Exception {
+        EducationHistory update = educationHistoryDao.getEntiyByPK(entity.getId());
+        update.setBiodata(bioDataDao.getEntiyByPK(entity.getBiodata().getId()));
+        update.setEducationLevel(educationLevelDao.getEntiyByPK(entity.getEducationLevel().getId()));
+        update.setInstitutionEducation(institutionEducationDao.getEntiyByPK(entity.getInstitutionEducation().getId()));
+        update.setFaculty(facultyDao.getEntiyByPK(entity.getFaculty().getId()));
+        update.setMajor(majorDao.getEntiyByPK(entity.getMajor().getId()));
+        update.setCertificateNumber(entity.getCertificateNumber());
+        update.setScore(entity.getScore());
+        update.setUpdatedBy(UserInfoUtil.getUserName());
+        update.setUpdatedOn(new Date());
+        this.educationHistoryDao.update(update);
     }
 
     @Override
-    public void saveOrUpdate(JabatanSpesifikasi enntity) throws Exception {
+    public void saveOrUpdate(EducationHistory enntity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public JabatanSpesifikasi saveData(JabatanSpesifikasi entity) throws Exception {
+    public EducationHistory saveData(EducationHistory entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public JabatanSpesifikasi updateData(JabatanSpesifikasi entity) throws Exception {
+    public EducationHistory updateData(EducationHistory entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public JabatanSpesifikasi saveOrUpdateData(JabatanSpesifikasi entity) throws Exception {
+    public EducationHistory saveOrUpdateData(EducationHistory entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public JabatanSpesifikasi getEntityByPkIsActive(String id, Integer isActive) throws Exception {
+    public EducationHistory getEntityByPkIsActive(String id, Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public JabatanSpesifikasi getEntityByPkIsActive(String id, Byte isActive) throws Exception {
+    public EducationHistory getEntityByPkIsActive(String id, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public JabatanSpesifikasi getEntityByPkIsActive(String id, Boolean isActive) throws Exception {
+    public EducationHistory getEntityByPkIsActive(String id, Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public JabatanSpesifikasi getEntityByPkIsActive(Integer id, Integer isActive) throws Exception {
+    public EducationHistory getEntityByPkIsActive(Integer id, Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public JabatanSpesifikasi getEntityByPkIsActive(Integer id, Byte isActive) throws Exception {
+    public EducationHistory getEntityByPkIsActive(Integer id, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public JabatanSpesifikasi getEntityByPkIsActive(Integer id, Boolean isActive) throws Exception {
+    public EducationHistory getEntityByPkIsActive(Integer id, Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public JabatanSpesifikasi getEntityByPkIsActive(Long id, Integer isActive) throws Exception {
+    public EducationHistory getEntityByPkIsActive(Long id, Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public JabatanSpesifikasi getEntityByPkIsActive(Long id, Byte isActive) throws Exception {
+    public EducationHistory getEntityByPkIsActive(Long id, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public JabatanSpesifikasi getEntityByPkIsActive(Long id, Boolean isActive) throws Exception {
+    public EducationHistory getEntityByPkIsActive(Long id, Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor =Exception.class)
-    public void delete(JabatanSpesifikasi entity) throws Exception {
-        this.jabatanSpesifikasiDao.delete(entity);
+    public void delete(EducationHistory entity) throws Exception {
+        this.educationHistoryDao.delete(entity);
     }
 
     @Override
-    public void softDelete(JabatanSpesifikasi entity) throws Exception {
+    public void softDelete(EducationHistory entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -175,56 +191,55 @@ public class JabatanSpesifikasiServiceImpl extends IServiceImpl implements Jabat
     }
 
     @Override
-    public List<JabatanSpesifikasi> getAllData() throws Exception {
+    public List<EducationHistory> getAllData() throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<JabatanSpesifikasi> getAllData(Boolean isActive) throws Exception {
+    public List<EducationHistory> getAllData(Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<JabatanSpesifikasi> getAllData(Integer isActive) throws Exception {
+    public List<EducationHistory> getAllData(Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<JabatanSpesifikasi> getAllData(Byte isActive) throws Exception {
+    public List<EducationHistory> getAllData(Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<JabatanSpesifikasi> getAllDataPageAble(int firstResult, int maxResults, Order order) throws Exception {
+    public List<EducationHistory> getAllDataPageAble(int firstResult, int maxResults, Order order) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<JabatanSpesifikasi> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Boolean isActive) throws Exception {
+    public List<EducationHistory> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<JabatanSpesifikasi> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Integer isActive) throws Exception {
+    public List<EducationHistory> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<JabatanSpesifikasi> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
+    public List<EducationHistory> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public JabatanSpesifikasi getDataByPK(Long id) throws Exception {
-        return jabatanSpesifikasiDao.getDataByPK(id);
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public EducationHistory getAllDataByPK(Long id) {
+        return educationHistoryDao.getAllDataByPK(id);
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<JabatanSpesifikasi> getAllDataByJabatanId(Long jabatanId) throws Exception {
-        return jabatanSpesifikasiDao.getAllDataByJabatanId(jabatanId);
+    public List<EducationHistory> getAllDataByBioDataId(Long bioDataId) throws Exception {
+        return educationHistoryDao.getAllDataByBioDataId(bioDataId);
     }
-
-
+    
 }
