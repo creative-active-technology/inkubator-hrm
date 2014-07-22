@@ -86,5 +86,14 @@ public class CityDaoImpl extends IDAOImpl<City> implements CityDao {
         criteria.setFetchMode("province.country", FetchMode.JOIN);
         return (City) criteria.uniqueResult();
     }
+    
+    @Override
+    public List<City> getByProvinceIdWithDetail(Long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("province", "p", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("p.id", id));
+        criteria.setFetchMode("province", FetchMode.JOIN);
+        return criteria.list();
+    }
 
 }
