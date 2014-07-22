@@ -32,13 +32,13 @@
                         <p:panelGrid style="width: 100%;margin-top: 20px;margin-bottom: 15px" styleClass="grid_border3">
                             <p:row>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Kode Jabatan" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['jabat.jabatan_code']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:outputLabel  value="#{jabatanDetailController.selectedJabatan.code}" />
                                 </p:column>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important">
-                                    <p:outputLabel  value="Nama Jabatan" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['jabatan.jabatan_name']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:outputLabel  value="#{jabatanDetailController.selectedJabatan.name}" />
@@ -47,13 +47,13 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Jabatan Atasan" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['jabatan.jabatan_deparment_boss']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:outputLabel  value="#{jabatanDetailController.selectedJabatan.jabatan.name}" />
                                 </p:column>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important">
-                                    <p:outputLabel  value="Nama Departement" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['jabatan.jabatan_deparment']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:outputLabel  value="#{jabatanDetailController.selectedJabatan.department.departmentName}" />
@@ -62,13 +62,13 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Nama Pos Biaya" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['jabatan.cost_center_name']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:outputLabel  value="#{jabatanDetailController.selectedJabatan.costCenter.name}" />
                                 </p:column>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important">
-                                    <p:outputLabel  value="Nama Unit Kerja" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['jabatan.work_unit_name']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:outputLabel  value="#{jabatanDetailController.selectedJabatan.unitKerja.name}" />
@@ -78,7 +78,7 @@
 
                             <p:row>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Golongan Jabatan" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['functiongroup.function_group']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:outputLabel  value="#{jabatanDetailController.selectedJabatan.golonganJabatan.code}" />
@@ -86,7 +86,7 @@
                                     <p:outputLabel  value="#{jabatanDetailController.selectedJabatan.golonganJabatan.pangkat.pangkatName}" />
                                 </p:column>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important">
-                                    <p:outputLabel  value="Tujuan Jabatan" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['jabatan.position_goal']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:outputLabel  value="#{jabatanDetailController.selectedJabatan.tujuanJabatan}" />
@@ -96,46 +96,68 @@
 
                         </p:panelGrid>
                         <p:tabView id="tabView1" dynamic="true"  cache="true" styleClass="tabview_hrm" style="margin-left: 0px; margin-right: 0px;margin-bottom: 15px">
-                            <p:tab id="jobSpesificationId" title="Jabatan Spesicikasi">  
-                                <h:panelGrid columns="2" cellpadding="10">  
-                                    <p:graphicImage id="tab3Img" value="/images/godfather/godfather3.jpg" />  
-                                    <h:outputText value="After a break of more than 15 years, director Francis Ford Coppola and writer Mario Puzo returned to the well for this third and final story of the fictional Corleone crime family.  
-                                                  Two decades have passed, and crime kingpin Michael Corleone, now divorced from his wife Kay has nearly succeeded in keeping his promise that his family would one day be completely legitimate."/>  
-                                </h:panelGrid>  
+                            <p:tab id="jobSpesificationId" title="#{appmsg['jobspek.jobspek']}">  
+                                <p:dataTable value="#{jabatanDetailController.listJabatanSpesifikasi}" var="listJobSpecifikasi" rowIndexVar="no" id="jobDesId"
+                                             >
+                                    <p:column style="text-align: center;width: 25px;max-width: 25px">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['global.number']}" />
+                                        </f:facet>
+                                        <h:outputLabel value="#{no+1}." />
+                                    </p:column>
+                                    <p:column > 
+                                        <f:facet name="header">  
+                                           <h:outputText value="#{appmsg['jobspec.jobspec_specification']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value=" #{listJobSpecifikasi.specificationAbility.name}" />
+                                    </p:column> 
+                                    <p:column style="width: 150px;text-align: center"> 
+                                        <f:facet name="header" >  
+                                        <h:outputText value="#{appmsg['jobspec.jobspec_option_ability']}"/>
+                                        </f:facet>
+                                        <p:outputLabel value="#{listJobSpecifikasi.optionAbility}" />
+                                    </p:column>
+                                    <p:column style="width: 80px;text-align: center"> 
+                                        <f:facet name="header">  
+                                             <h:outputText value="#{appmsg['jobspec.jobspec_value']}"/>
+                                        </f:facet>
+                                        <p:outputLabel value="#{listJobSpecifikasi.value}" />
+                                    </p:column>
+                                </p:dataTable>  
                             </p:tab>  
-                            <p:tab id="jobDeskriptionId" title="Jabatan Deskripsi">  
+                            <p:tab id="jobDeskriptionId" title="#{appmsg['jabatandeskripsi.jabatandeskripsi']}">  
                                 <!--<h:panelGrid columns="2" cellpadding="10">-->  
-                                    <p:dataTable value="#{jabatanDetailController.jabatanDeskripsis}" var="listJobDeskrpsi" rowIndexVar="no" id="jobDesTableId"
-                                                 >
-                                        <p:column style="text-align: center;width: 25px;max-width: 25px">
-                                            <f:facet name="header">  
-                                                <h:outputText value="No." />
-                                            </f:facet>
-                                            <h:outputLabel value="#{no+1}." />
-                                        </p:column>
-                                        <p:column > 
-                                            <f:facet name="header">  
-                                                <h:outputText value="Deskripsi" />
-                                            </f:facet>
-                                            <h:outputLabel value=" #{listJobDeskrpsi.description}" />
-                                        </p:column> 
-                                        <p:column style="width: 80px;text-align: center"> 
-                                            <f:facet name="header" >  
-                                                <h:outputText value="Kategori Tugas" />
-                                            </f:facet>
-                                            <p:outputLabel value="#{listJobDeskrpsi.kategoryTugas}" >
-                                                <f:converter converterId="jobCategoryConverter" />
-                                            </p:outputLabel>
-                                        </p:column>
-                                        <p:column style="width: 80px;text-align: center"> 
-                                            <f:facet name="header">  
-                                                <h:outputText value="Type Waktu" />
-                                            </f:facet>
-                                            <p:outputLabel value="#{listJobDeskrpsi.typeWaktu}" >
-                                                <f:converter converterId="jobTypeTimeConverter" />
-                                            </p:outputLabel>
-                                        </p:column>
-                                    </p:dataTable> 
+                                <p:dataTable value="#{jabatanDetailController.jabatanDeskripsis}" var="listJobDeskrpsi" rowIndexVar="no" id="jobDesTableId"
+                                             >
+                                    <p:column style="text-align: center;width: 25px;max-width: 25px">
+                                        <f:facet name="header">  
+                                            <h:outputText value="No." />
+                                        </f:facet>
+                                        <h:outputLabel value="#{no+1}." />
+                                    </p:column>
+                                    <p:column > 
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['global.description']}" />
+                                        </f:facet>
+                                        <h:outputLabel value=" #{listJobDeskrpsi.description}" />
+                                    </p:column> 
+                                    <p:column style="width: 80px;text-align: center"> 
+                                        <f:facet name="header" >  
+                                            <h:outputText value="#{appmsg['jabatan.category_task']}" />
+                                        </f:facet>
+                                        <p:outputLabel value="#{listJobDeskrpsi.kategoryTugas}" >
+                                            <f:converter converterId="jobCategoryConverter" />
+                                        </p:outputLabel>
+                                    </p:column>
+                                    <p:column style="width: 80px;text-align: center"> 
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['jabatan.type_time']}" />
+                                        </f:facet>
+                                        <p:outputLabel value="#{listJobDeskrpsi.typeWaktu}" >
+                                            <f:converter converterId="jobTypeTimeConverter" />
+                                        </p:outputLabel>
+                                    </p:column>
+                                </p:dataTable> 
                             </p:tab>  
                         </p:tabView>
                         <p:separator/>

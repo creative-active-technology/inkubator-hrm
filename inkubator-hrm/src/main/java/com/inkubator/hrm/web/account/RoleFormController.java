@@ -118,7 +118,7 @@ public class RoleFormController extends BaseController {
         } else {
             doInsert(hrmRole);
         }
-        return "/protected/account/role_view.htm?faces-redirect=true";
+        return "/protected/account/role_detail.htm?faces-redirect=true&execution=e" + roleModel.getId();
     }
     
     public String doBack() {

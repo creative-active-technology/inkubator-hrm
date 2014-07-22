@@ -18,11 +18,11 @@
                 <div id="box_bg" style="margin: 10px">
                     <!--<p:panel style="margin: 10px" >-->
                     <h:panelGrid style="margin-bottom: 5px" columns="2">
-                        <p:graphicImage library="images" name="job_descriptions.png" height="36" width="36" />
+                        <p:graphicImage library="images" name="specification.png" height="36" width="36" />
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Daftar Deskripsi Jabatan" styleClass="header_big" />
-                                <p:outputLabel value="Data Deskripsi Jabatan dari Organisasi" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['jobspek.job_specification']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['jobspek.job_specificatoin_header']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -80,48 +80,42 @@
                             </f:facet> 
                             <p:column style="text-align: center;width: 25px">
                                 <f:facet name="header">  
-                                    <h:outputText value="No."  />
+                                    <h:outputText value="#{appmsg['global.number']}"  />
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
                             <p:column sortBy="code" style="width: 150px" >
                                 <f:facet name="header">  
-                                    <h:outputText value="Kode"/>
+                                    <h:outputText value="#{appmsg['jabat.jabatan_code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{jabatanDeskripsiModel.code}"/>
                             </p:column>
                             <p:column sortBy="name" >
                                 <f:facet name="header">  
-                                    <h:outputText value="Nama"/>
+                                    <h:outputText value="#{appmsg['jabatan.jabatan_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{jabatanDeskripsiModel.name}"/>
                             </p:column>
                             <p:column sortBy="jabatan" >
                                 <f:facet name="header">  
-                                    <h:outputText value="Jabatan Atasan"/>
+                                    <h:outputText value="#{appmsg['jabatan.jabatan_deparment_boss']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{jabatanDeskripsiModel.jabatan.name}"/>
                             </p:column>
                             <p:column sortBy="department" >
                                 <f:facet name="header">  
-                                    <h:outputText value="Nama Departement"/>
+                                    <h:outputText value="#{appmsg['jabatan.jabatan_deparment']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{jabatanDeskripsiModel.department.departmentName}"/>
                             </p:column> 
 
                           
-                            <p:column headerText="#{appmsg['global.action']}" style="width: 250px;text-align: center" exportable="false">
-                                <p:commandButton  icon="ui-icon-document" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" value="Add Jobs Spesifikasi"
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 160px;text-align: center" exportable="false">
+                                <p:commandButton  icon="ui-icon-document" title="#{appmsg['global.add_or_edit']}" label="#{appmsg['global.add_or_edit']}" value="#{appmsg['global.add_or_edit']}"
                                                   action="#{jabatanSpesifikasiViewController.doDetail()}" style="font-size: 10px!important" >                        
                                     <f:setPropertyActionListener value="#{jabatanDeskripsiModel}" target="#{jabatanSpesifikasiViewController.selectedJabatan}" />
                                 </p:commandButton>
-                                - 
-                                
-                                <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" value="Edit Jobs Spesifikasi"
-                                                  action="#{jabatanViewController.doEdit()}" >
-                                    <f:setPropertyActionListener value="#{jabatanDeskripsiModel}" target="#{jabatanDeskripsiViewController.selectedJabatanDeskripsi}" />
-
-                                </p:commandButton> 
+                               
                             </p:column>                                        
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : " styleClass="label_hrm" />

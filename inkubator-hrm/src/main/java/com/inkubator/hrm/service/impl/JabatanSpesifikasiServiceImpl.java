@@ -11,7 +11,6 @@ import com.inkubator.hrm.dao.JabatanSpesifikasiDao;
 import com.inkubator.hrm.dao.SpecificationAbilityDao;
 import com.inkubator.hrm.entity.JabatanSpesifikasi;
 import com.inkubator.hrm.service.JabatanSpesifikasiService;
-import com.inkubator.hrm.web.search.JabatanSpesifikasiSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import java.util.Date;
 import java.util.List;
@@ -37,18 +36,6 @@ public class JabatanSpesifikasiServiceImpl extends IServiceImpl implements Jabat
     private JabatanDao jabatanDao;
     @Autowired
     private SpecificationAbilityDao specAbilityDao;
-    
-    @Override
-    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<JabatanSpesifikasi> getByParam(JabatanSpesifikasiSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
-        return jabatanSpesifikasiDao.getByParam(searchParameter, firstResult, maxResults, order);
-    }
-
-    @Override
-    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getTotalJabatanSpesifikasiByParam(JabatanSpesifikasiSearchParameter searchParameter) throws Exception {
-        return jabatanSpesifikasiDao.getTotalJabatanSpesifikasiByParam(searchParameter);
-    }
 
     @Override
     public JabatanSpesifikasi getEntiyByPK(String id) throws Exception {
@@ -228,21 +215,16 @@ public class JabatanSpesifikasiServiceImpl extends IServiceImpl implements Jabat
     }
 
     @Override
-    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<JabatanSpesifikasi> getByJabatan(JabatanSpesifikasiSearchParameter searchParameter, Long id, int firstResult, int maxResults, Order order) throws Exception{
-        return jabatanSpesifikasiDao.getByJabatan(searchParameter, id, firstResult, maxResults, order);
-    }
-
-    @Override
-    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getTotalJabatanSpesifikasiByJabatan(JabatanSpesifikasiSearchParameter searchParameter, Long id) throws Exception{
-        return jabatanSpesifikasiDao.getTotalJabatanSpesifikasiByJabatan(searchParameter, id);
-    }
-
-    @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public JabatanSpesifikasi getDataByPK(Long id) throws Exception {
         return jabatanSpesifikasiDao.getDataByPK(id);
     }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<JabatanSpesifikasi> getAllDataByJabatanId(Long jabatanId) throws Exception {
+        return jabatanSpesifikasiDao.getAllDataByJabatanId(jabatanId);
+    }
+
 
 }

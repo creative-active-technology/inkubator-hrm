@@ -27,4 +27,6 @@ public interface WtGroupWorkingService extends IService<WtGroupWorking> {
     public WtGroupWorking getByPKIdWithDetail(Long id) throws Exception;
 
     public WtGroupWorking getByCode(String code) throws Exception;
+
+    public void update(GroupWorkingModel model) throws Exception;
 }

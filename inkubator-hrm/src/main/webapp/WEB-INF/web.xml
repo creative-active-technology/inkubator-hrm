@@ -212,7 +212,6 @@
             <param-name>org.atmosphere.cpr.CometSupport.maxInactiveActivity</param-name>
             <param-value>1800000</param-value>
         </init-param>
-   
         <async-supported>true</async-supported>
     </servlet>
     <servlet-mapping>

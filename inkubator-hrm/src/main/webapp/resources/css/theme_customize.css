@@ -97,6 +97,20 @@ and open the template in the editor.
         padding-bottom: 2px !important;*/
     padding: 2.5px 7px !important;
 }
+.grid_border4 td,.grid_border4 tr 
+{
+    background: none!important;
+    /*      border:2px !important;
+        padding:3px 3px!important;
+        background:transparent;
+        border-style: solid !important;
+        border-width: 1px!important;*/
+    border-color: lightgray !important;
+    border-width: 1px!important;
+    /*    padding-right: 2px !important;
+        padding-bottom: 2px !important;*/
+    padding: 2.5px 7px !important;
+}
 
 .ui-widget,.ui-widget .ui-widget,.ui-widget input,.ui-inputfield
 {
@@ -184,7 +198,7 @@ and open the template in the editor.
 
 .ui-menu-child
 {
-    width: 190px !important;
+    width: 200px !important;
 }
 
 .panel{
@@ -193,12 +207,12 @@ and open the template in the editor.
 
 .ui-selectonemenu-panel .ui-selectonemenu-filter {
     /*width: 100%!important;*/
-    padding-right: 30px
+    padding-right: 23px
 }
 .ui-selectonemenu-panel .ui-selectonemenu-filter-container .ui-icon {
     position: absolute;
-    top: 13px;
-    right: 0px;
+    top: 11px;
+    right: 10px;
 }
 .midle_combo_box .ui-selectonemenu-panel .ui-selectonemenu-filter{
     width: 60%!important;

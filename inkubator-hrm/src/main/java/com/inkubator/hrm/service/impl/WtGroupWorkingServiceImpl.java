@@ -9,6 +9,7 @@ import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.WtGroupWorkingDao;
+import com.inkubator.hrm.dao.WtScheduleShiftDao;
 import com.inkubator.hrm.dao.WtWorkingHourDao;
 import com.inkubator.hrm.entity.WtGroupWorking;
 import com.inkubator.hrm.entity.WtScheduleShift;
@@ -41,6 +42,8 @@ public class WtGroupWorkingServiceImpl extends IServiceImpl implements WtGroupWo
     private WtGroupWorkingDao wtGroupWorkingDao;
     @Autowired
     private WtWorkingHourDao wtWorkingHourDao;
+    @Autowired
+    private WtScheduleShiftDao wtScheduleShiftDao;
 
     @Override
     public WtGroupWorking getEntiyByPK(String id) throws Exception {
@@ -292,4 +295,66 @@ public class WtGroupWorkingServiceImpl extends IServiceImpl implements WtGroupWo
         return this.wtGroupWorkingDao.getByCode(code);
     }
 
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void update(GroupWorkingModel model) throws Exception {
+        long totalDuplicates = wtGroupWorkingDao.getTotalByCodeAndNotId(model.getCode(), model.getId());
+        if (totalDuplicates > 0) {
+            throw new BussinessException("working_group.error_duplicate_code");
+        }
+        WtGroupWorking groupWorking = this.wtGroupWorkingDao.getEntiyByPK(model.getId());
+        groupWorking.getWtScheduleShifts().clear();
+        groupWorking.setBeginTime(model.getBeginTime());
+        groupWorking.setCode(model.getCode());
+//        groupWorking.setCreatedBy(UserInfoUtil.getUserName());
+//        groupWorking.setCreatedOn(new Date());
+        groupWorking.setEndTime(model.getEndTime());
+//        groupWorking.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+        groupWorking.setIsActive(Boolean.FALSE);
+        groupWorking.setIsPeriodic(model.getIsPeriodic());
+        groupWorking.setName(model.getName());
+        groupWorking.setOvertimeBasedOnAttendance(model.getOvertimeBasedOnAttendance());
+        groupWorking.setOvertimeBasedOnRequest(model.getOvertimeBasedOnRequest());
+        groupWorking.setWorkingTimePerday(model.getWorkingTimePerday());
+        groupWorking.setWorkingTimePerweek(model.getWorkingTimePerweek());
+        groupWorking.setUpdatedBy(UserInfoUtil.getUserName());
+        groupWorking.setUpdatedOn(new Date());
+        this.wtGroupWorkingDao.saveAndMerge(groupWorking);
+//        Set<WtScheduleShift> wtScheduleShifts = new HashSet<>();
+
+        List<ScheduleShiftModel> dataShiftModels = model.getDataShiftModels();
+
+        for (ScheduleShiftModel scheduleShiftModel : dataShiftModels) {
+            if (scheduleShiftModel.getJamKerjaId() != null || scheduleShiftModel.getJamKerjaId2() != null) {
+                System.out.println(scheduleShiftModel);
+                if (scheduleShiftModel.getJamKerjaId() != null) {
+                    WtScheduleShift shift1 = new WtScheduleShift();
+                    shift1.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+                    shift1.setCreatedBy(UserInfoUtil.getUserName());
+                    shift1.setCreatedOn(new Date());
+                    shift1.setScheduleDate(scheduleShiftModel.getTanggalKerja());
+                    shift1.setWtGroupWorking(groupWorking);
+                    shift1.setWtWorkingHour(wtWorkingHourDao.getEntiyByPK(scheduleShiftModel.getJamKerjaId()));
+                    wtScheduleShiftDao.save(shift1);
+//                    wtScheduleShifts.add(shift1);
+//                    System.out.println("Nilai " + shift1.getScheduleDate());
+                }
+                if (scheduleShiftModel.getJamKerjaId2() != null) {
+                    WtScheduleShift shift2 = new WtScheduleShift();
+                    shift2.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+                    shift2.setCreatedBy(UserInfoUtil.getUserName());
+                    shift2.setCreatedOn(new Date());
+                    shift2.setScheduleDate(scheduleShiftModel.getTanggalKerja2());
+                    shift2.setWtGroupWorking(groupWorking);
+                    shift2.setWtWorkingHour(wtWorkingHourDao.getEntiyByPK(scheduleShiftModel.getJamKerjaId2()));
+                    wtScheduleShiftDao.save(shift2);
+//                    wtScheduleShifts.add(shift2);
+//                    System.out.println("Nilai " + shift2.getScheduleDate());
+                }
+
+            }
+
+        }
+
+    }
 }

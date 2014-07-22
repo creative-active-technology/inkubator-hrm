@@ -2,9 +2,13 @@ package com.inkubator.hrm.entity;
 // Generated Jun 17, 2014 6:48:25 AM by Hibernate Tools 3.6.0
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -27,6 +31,7 @@ public class Major implements java.io.Serializable {
     private Date updatedOn;
     private String majorName;
     private String description;
+    private Set<EducationHistory> educationHistorys = new HashSet<EducationHistory>(0);
 
     public Major() {
     }
@@ -35,7 +40,7 @@ public class Major implements java.io.Serializable {
         this.id = id;
     }
 
-    public Major(long id, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String majorName, String description) {
+    public Major(long id, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String majorName, String description, Set<EducationHistory> educationHistorys) {
         this.id = id;
         this.createdBy = createdBy;
         this.createdOn = createdOn;
@@ -43,6 +48,7 @@ public class Major implements java.io.Serializable {
         this.updatedOn = updatedOn;
         this.majorName = majorName;
         this.description = description;
+        this.educationHistorys = educationHistorys;
     }
 
     @Id
@@ -122,4 +128,14 @@ public class Major implements java.io.Serializable {
         this.description = description;
     }
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "major")
+    public Set<EducationHistory> getEducationHistorys() {
+        return educationHistorys;
+    }
+
+    public void setEducationHistorys(Set<EducationHistory> educationHistorys) {
+        this.educationHistorys = educationHistorys;
+    }
+
+    
 }

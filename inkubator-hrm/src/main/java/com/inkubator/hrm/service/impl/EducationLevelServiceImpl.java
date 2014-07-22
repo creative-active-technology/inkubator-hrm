@@ -37,10 +37,10 @@ public class EducationLevelServiceImpl extends IServiceImpl implements Education
 	}
 
 	@Override
-	public List<EducationLevel> getAllData() throws Exception {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
-
-	}
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ,propagation = Propagation.SUPPORTS, timeout = 30)
+        public List<EducationLevel> getAllData() throws Exception {
+            return educationLevelDao.getAllData();
+        }
 
 	@Override
 	public List<EducationLevel> getAllData(Boolean arg0) throws Exception {

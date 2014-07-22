@@ -95,4 +95,11 @@ public class ProvinceDaoImpl extends IDAOImpl<Province> implements ProvinceDao {
         return criteria.list();
     }
 
+	@Override
+	public List<Province> getByCountryId(Long countryId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("country.id", countryId));
+		return criteria.list();		
+	}
+
 }

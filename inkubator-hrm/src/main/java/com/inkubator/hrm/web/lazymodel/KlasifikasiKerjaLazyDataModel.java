@@ -1,18 +1,16 @@
 package com.inkubator.hrm.web.lazymodel;
 
+import com.inkubator.hrm.entity.KlasifikasiKerja;
+import com.inkubator.hrm.service.KlasifikasiKerjaService;
+import com.inkubator.hrm.web.search.KlasifikasiKerjaSearchParameter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.Order;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
-
-import com.inkubator.hrm.entity.KlasifikasiKerja;
-import com.inkubator.hrm.service.KlasifikasiKerjaService;
-import com.inkubator.hrm.web.search.KlasifikasiKerjaSearchParameter;
 
 /**
 *
@@ -53,7 +51,7 @@ public class KlasifikasiKerjaLazyDataModel extends LazyDataModel<KlasifikasiKerj
             }
         } else {
             try {
-            	klasifikasiKerjas = klasifikasiKerjaService.getByParam(klasifikasiKerjaSearchParameter, first, pageSize, Order.asc("klasifikasiKerjaName"));
+            	klasifikasiKerjas = klasifikasiKerjaService.getByParam(klasifikasiKerjaSearchParameter, first, pageSize, Order.asc("name"));
                 total = Integer.parseInt(String.valueOf(klasifikasiKerjaService.getTotalByParam(klasifikasiKerjaSearchParameter)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);

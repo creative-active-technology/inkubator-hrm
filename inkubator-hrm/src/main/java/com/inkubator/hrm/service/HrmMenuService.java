@@ -27,5 +27,9 @@ public interface HrmMenuService extends IService<HrmMenu> {
 	public HrmMenu getEntityByPkWithDetail(long id);
 
 	public List<HrmMenu> getAllDataByLevelAndNotId(int level, Long id);
+	
+	public List<HrmMenu> getAllDataByUserRolesAndHaveNoChild(String parameter, List<Long> exceptMenuIds, List<String> roles, int firstResult, int maxResults, Order orderable);
+	
+	public Long getTotalByUserRolesAndHaveNoChild(String parameter, List<Long> exceptMenuIds, List<String> roles);
 
 }

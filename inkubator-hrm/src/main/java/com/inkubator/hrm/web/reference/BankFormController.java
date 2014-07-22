@@ -44,6 +44,9 @@ public class BankFormController extends BaseController {
                     bankModel.setId(bank.getId());
                     bankModel.setBankCode(bank.getBankCode());
                     bankModel.setBankName(bank.getBankName());
+                    bankModel.setSwiftCode(bank.getSwiftCcode());
+                    bankModel.setIban(bank.getIban());
+                    bankModel.setBankIdentificationNumber(bank.getBankIdentificationNo());
                     bankModel.setDescription(bank.getDescription());
                     isUpdate = Boolean.TRUE;
                 }
@@ -106,6 +109,9 @@ public class BankFormController extends BaseController {
         }
         bank.setBankCode(bankModel.getBankCode());
         bank.setBankName(bankModel.getBankName());
+        bank.setSwiftCcode(bankModel.getSwiftCode());
+        bank.setIban(bankModel.getIban());
+        bank.setBankIdentificationNo(bankModel.getBankIdentificationNumber());
         bank.setDescription(bankModel.getDescription());
         return bank;
     }

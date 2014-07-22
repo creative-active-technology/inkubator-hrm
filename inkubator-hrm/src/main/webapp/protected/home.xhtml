@@ -253,153 +253,116 @@
 
 
                     </p:row>
-                       <p:row>
-                        <p:column style="width: 25%;color: #990099">
-                            <p:panel style="margin-left: 10px;margin-right: 0px;margin-top: 10px"> 
-                                <h:panelGrid style="margin-bottom: 3px">
-                                    <p:outputLabel value="My Favorite Menu" styleClass="header_big" />
-                                    <!--<p:outputLabel value="Usia (Data Update per Bulan)" styleClass="header_small_no_bold" />-->
-                                </h:panelGrid>
-                                  <p:dataTable value="#{homeHistoryController.dataRiwayatAkses}"  rowIndexVar="no" var="riwayatAccess" styleClass="grid_border_table" style="margin-bottom: 5px" >
-                                    <p:column style="text-align: center;width: 25px">
-                                        <f:facet name="header">  
-                                            <h:outputText value="No." />
-                                        </f:facet>
-                                        <h:outputLabel value="#{no+1}." />
-                                    </p:column>
-                                    <p:column style="width: 25px">
-                                        <f:facet name="header">  
-                                            <h:outputText value="Nama URL" />
-                                        </f:facet>
-                                        <h:outputLabel value="#{riwayatAccess.name}" />
-                                    </p:column>
-                                </p:dataTable>
-                            </p:panel>
-                        </p:column>
+                    	<p:row>
+                        	<p:column style="width: 25%">
+	                            <p:panel  style="margin-left: 10px;margin-right: 0px;margin-top: 10px;height:180px;"> 
+	                                <h:panelGrid style="margin-bottom: 3px">
+	                                    <p:outputLabel value="Access History" styleClass="header_big" />
+	                                </h:panelGrid>
+	                                <p:dataTable value="#{homeHistoryController.dataRiwayatAkses}"  rowIndexVar="no" var="riwayatAccess" styleClass="grid_border_table" style="margin-bottom: 5px" >
+	                                    <p:column style="text-align: center;width: 25px">
+	                                        <f:facet name="header">  
+	                                            <h:outputText value="No." />
+	                                        </f:facet>
+	                                        <h:outputLabel value="#{no+1}." />
+	                                    </p:column>
+	                                    <p:column style="width: 25px">
+	                                        <f:facet name="header">  
+	                                            <h:outputText value="Nama URL" />
+	                                        </f:facet>
+	                                        <h:outputLabel value="#{riwayatAccess.name}" />
+	                                    </p:column>
+	                                </p:dataTable>
+	                            </p:panel>
+	                        </p:column>
 
-                        <p:column style="width: 53%;color: #990000">
-                            <p:panel  style="margin-left: 0px;margin-right: 0px;margin-top: 10px">
-                                <h:panelGrid style="margin-bottom: 3px">
-                                    <p:outputLabel value="Data Statistik Absensi" styleClass="header_big" />
-                                    <!--<p:outputLabel value="Minggu Ke 3 Juni 2014 (Data Update per Hari)" styleClass="header_small_no_bold" />-->
-                                    
-                                </h:panelGrid>
-                                <h:panelGroup  layout="block" style="margin-bottom: 8px">
-                                    <div align="center">
-                                        <h:panelGrid columns="6" >
-                                            <h:panelGrid columns="1" style="text-align: center;margin-bottom: 10px;margin-top: 10px">
-                                                <!--<h:outputLink id="leavId" value="${request.contextPath}/protected/account/user_form.htm">-->
-                                                <p:graphicImage library="images" name="holiday.png"  cache="true" height="64" width="64"  /> 
-                                                <!--</h:outputLink>-->
+                        	<p:column style="width: 53%;color: #990000">
+                            	<p:panel  style="margin-left: 0px;margin-right: 0px;margin-top: 10px; height: 180px;">
+                                	<h:panelGrid style="margin-bottom: 3px">
+                                    	<p:outputLabel value="Data Statistik Absensi" styleClass="header_big" />
+                                	</h:panelGrid>
+                                	<h:panelGroup  layout="block" style="margin-bottom: 8px">
+                                    	<div align="center">
+                                        	<h:panelGrid columns="6" >
+                                            	<h:panelGrid columns="1" style="text-align: center;margin-bottom: 10px;margin-top: 10px">
+                                                	<p:graphicImage library="images" name="holiday.png"  cache="true" height="64" width="64"  />                                                 
                                                 <h:panelGroup layout="block">
                                                     <h:panelGrid columns="3" style="text-align: left">
-<!--                                                        <h:outputLabel value="Tersedia" styleClass="header_big"/>
-                                                        <h:outputLabel value=":" styleClass="header_big"/>
-                                                        <h:outputLabel value="3" styleClass="header_big"/>-->
                                                         <h:outputLabel value="Cuti" styleClass="header_big"/>
                                                         <h:outputLabel value=":" styleClass="header_big"/>
                                                         <h:outputLabel value="3" styleClass="header_big"/>
                                                     </h:panelGrid>
-
                                                 </h:panelGroup>
-
                                             </h:panelGrid>
                                             <h:panelGrid columns="1" style="text-align: center">
-                                                <!--<h:outputLink id="leavId" value="${request.contextPath}/protected/account/user_form.htm">-->
                                                 <p:graphicImage library="images" name="nurse2.png"  cache="true" height="64" width="64"  /> 
-                                                <!--</h:outputLink>-->
                                                 <h:panelGroup layout="block">
                                                     <h:panelGrid columns="3" style="text-align: center">
                                                         <h:outputLabel value="Sakit" styleClass="header_big"/>
                                                         <h:outputLabel value=":" styleClass="header_big"/>
                                                         <h:outputLabel value="3" styleClass="header_big"/>
-                                                        <!--                                                        <h:outputLabel value="Diambil" styleClass="label_quick"/>
-                                                                                                                <h:outputLabel value=":" styleClass="label_quick"/>
-                                                                                                                <h:outputLabel value="3" styleClass="label_quick"/>-->
                                                     </h:panelGrid>
-
                                                 </h:panelGroup>
-
                                             </h:panelGrid>
                                             <h:panelGrid columns="1" style="text-align: center">
-                                               <!--<h:outputLink id="leavId" value="${request.contextPath}/protected/account/user_form.htm">-->
                                                 <p:graphicImage library="images" name="permit_absen.png"  cache="true" height="64" width="64"  /> 
-                                                <!--</h:outputLink>-->
                                                 <h:panelGroup layout="block">
                                                     <h:panelGrid columns="3" style="text-align: center">
                                                         <h:outputLabel value="Izin" styleClass="header_big"/>
                                                         <h:outputLabel value=":" styleClass="header_big"/>
                                                         <h:outputLabel value="3" styleClass="header_big"/>
-                                                        <!--                                                        <h:outputLabel value="Diambil" styleClass="label_quick"/>
-                                                                                                                <h:outputLabel value=":" styleClass="label_quick"/>
-                                                                                                                <h:outputLabel value="3" styleClass="label_quick"/>-->
                                                     </h:panelGrid>
-
                                                 </h:panelGroup>
-
                                             </h:panelGrid>
                                             <h:panelGrid columns="1" style="text-align: center">
-                                               <!--<h:outputLink id="leavId" value="${request.contextPath}/protected/account/user_form.htm">-->
                                                 <p:graphicImage library="images" name="alpha.png"  cache="true" height="64" width="64"  /> 
-                                                <!--</h:outputLink>-->
                                                 <h:panelGroup layout="block">
                                                     <h:panelGrid columns="3" style="text-align: center">
                                                         <h:outputLabel value="Alpha" styleClass="header_big"/>
                                                         <h:outputLabel value=":" styleClass="header_big"/>
                                                         <h:outputLabel value="3" styleClass="header_big"/>
-                                                        <!--                                                        <h:outputLabel value="Diambil" styleClass="label_quick"/>
-                                                                                                                <h:outputLabel value=":" styleClass="label_quick"/>
-                                                                                                                <h:outputLabel value="3" styleClass="label_quick"/>-->
                                                     </h:panelGrid>
-
                                                 </h:panelGroup>
-
                                             </h:panelGrid>
                                             <h:panelGrid columns="1" style="text-align: center;border-width: 1px!important">
-                                               <!--<h:outputLink id="leavId" value="${request.contextPath}/protected/account/user_form.htm">-->
                                                 <p:graphicImage library="images" name="people_run.png"  cache="true" height="64" width="64"  /> 
-                                                <!--</h:outputLink>-->
                                                 <h:panelGroup layout="block">
                                                     <h:panelGrid columns="3" style="text-align: center">
                                                         <h:outputLabel value="Terlambat" styleClass="header_big"/>
                                                         <h:outputLabel value=":" styleClass="header_big"/>
                                                         <h:outputLabel value="3" styleClass="header_big"/>
                                                     </h:panelGrid>
-
                                                 </h:panelGroup>
-
                                             </h:panelGrid>
                                         </h:panelGrid>
                                     </div>
                                 </h:panelGroup>
-
                             </p:panel>
-
                         </p:column>
-                        <p:column style="width: 25%">
-                            <p:panel  style="margin-left: 0px;margin-right: 10px;margin-top: 10px"> 
-                                <h:panelGrid style="margin-bottom: 3px">
-                                    <p:outputLabel value="Access History" styleClass="header_big" />
-                                    <!--<p:outputLabel value="Gender (Data Update per Bulan)" styleClass="header_small_no_bold" />-->
+                        
+                        <p:column style="width: 25%;color: #990099">
+                        	<p:panel style="margin-left: 0px;margin-right: 10px;margin-top: 10px;height: 180px;"> 
+                            	<h:panelGrid style="margin-bottom: 3px">
+                                	<p:outputLabel value="My Favorite Menu" styleClass="header_big" />
                                 </h:panelGrid>
-                                <p:dataTable value="#{homeHistoryController.dataRiwayatAkses}"  rowIndexVar="no" var="riwayatAccess" styleClass="grid_border_table" style="margin-bottom: 5px" >
-                                    <p:column style="text-align: center;width: 25px">
-                                        <f:facet name="header">  
-                                            <h:outputText value="No." />
+                                <p:dataTable value="#{homeFavoriteMenuController.favoriteMenus}"  rowIndexVar="no" var="favoriteMenu" styleClass="grid_border_table" style="margin-bottom: 5px" >
+                                	<p:column style="text-align: center;width: 10px">
+                                    	<f:facet name="header">  
+                                        	<h:outputText value="No." />
                                         </f:facet>
                                         <h:outputLabel value="#{no+1}." />
                                     </p:column>
                                     <p:column style="width: 25px">
-                                        <f:facet name="header">  
-                                            <h:outputText value="Nama URL" />
+                                    	<f:facet name="header">  
+                                        	<h:outputText value="#{appmsg['hrm_menu.url_name']}" />
                                         </f:facet>
-                                        <h:outputLabel value="#{riwayatAccess.name}" />
+                                        <h:outputLink value="#{favoriteMenu.urlName}">#{favoriteMenu.name}</h:outputLink>
                                     </p:column>
                                 </p:dataTable>
                             </p:panel>
                         </p:column>
-
                     </p:row>
+                    
                     <p:row>
                         <p:column style="width: 25%;color: #990099">
                             <p:panel style="margin-left: 10px;margin-right: 0px;margin-top: 10px"> 

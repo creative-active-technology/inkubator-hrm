@@ -1,0 +1,190 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Role View
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg" style="margin: 10px">
+                    <!--<p:panel style="margin: 10px" >-->
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="bio_data.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="Daftar Biodata" styleClass="header_big" />
+                                <p:outputLabel value="Data Biodata dari Personalia" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator/>
+                    <p:growl id="userViewGrowlId" globalOnly="true" showDetail="true" />
+                    <h:form id="userViewId">
+                        <p:toolbar  style="margin-top: 10px">
+                            <p:toolbarGroup align="left">
+                                <h:panelGrid columns="5">
+                                    <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm"/>
+                                    <p:outputLabel value=":" styleClass="label_hrm" />
+                                    <p:selectOneMenu id="pencarianSelectId" value="#{bioDataViewController.bioDataSearchParameter.keyParam}"
+                                                     style="width: 150px;margin-right: 3px" >
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItem itemLabel="Nama Panggilan" itemValue="nickName"/>
+                                        <f:selectItem itemLabel="Nama Lengkap" itemValue="name" />
+                                        <f:selectItem itemLabel="Alamat Email" itemValue="emailAddress" />
+                                    </p:selectOneMenu>
+                                    <p:inputText value="#{bioDataViewController.bioDataSearchParameter.parameter}" style="width: 250px" id="pencarianId" styleClass="isitext_hrm" 
+                                                 label="#{appmsg['global.searching']}" title="#{appmsg['global.searching']}"/>
+                                    <p:commandButton value="#{appmsg['global.search']}" action="#{bioDataViewController.doSearch()}" style="width: 75px" update="tableBiodataId" icon="ui-icon-search"
+                                                     styleClass="label_button" title="#{appmsg['global.search']}" id="btnPencarianId" />
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                            <p:toolbarGroup align="right">
+                                <h:panelGrid columns="3">
+                                    <p:commandButton value="Export to XLS" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
+                                        <pe:exporter target="tableBiodataId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Biodata"/>
+                                    </p:commandButton>
+                                    <p:commandButton value="#{appmsg['global.add']}" action="#{bioDataViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" icon="ui-icon-document"
+                                                     styleClass="label_button" ajax="true" immediate="true">
+
+                                    </p:commandButton>
+                                    <p:commandButton value="#{appmsg['global.close']}"  styleClass="label_button" action="#{roleViewController.doClose()}" title="#{appmsg['global.close']}" icon="ui-icon-home"
+                                                     label="#{appmsg['global.close']}"/>
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+
+                        </p:toolbar>
+                        <p:focus for="pencarianId" />
+
+                        <p:dataTable  var="biodataView"  value="#{bioDataViewController.lazyDataBioData}" lazy="true" paginator="true" pageLinks="7" 
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      id="tableBiodataId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="Daftar Biodata" styleClass="label_hrm"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 25px">
+                                <f:facet name="header">  
+                                    <h:outputText value="No."  />
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column sortBy="firstName" >
+                                <f:facet name="header">  
+                                    <h:outputText value="Nama"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{biodataView.firstName} #{biodataView.lastName}"/>
+                            </p:column>
+                            <p:column sortBy="realName" style="text-align: center">
+                                <f:facet name="header">  
+                                    <h:outputText value="Umur"/>
+                                </f:facet>
+                                <p:outputLabel value= "#{biodataView.dateOfBirth}">
+                                    <f:converter converterId="ageByDateConverter" />
+                                </p:outputLabel>
+                            </p:column>
+                            <p:column sortBy="gender" >
+                                <f:facet name="header">  
+                                    <h:outputText value="Gender"/>
+                                </f:facet>
+                                <p:outputLabel value= "#{biodataView.gender}">
+                                    <f:converter converterId="genderConverter" />
+                                </p:outputLabel>
+                            </p:column>
+                            <p:column sortBy="religion" >
+                                <f:facet name="header">  
+                                    <h:outputText value="Agama"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{biodataView.religion.name}"/>
+                            </p:column>
+                             <p:column sortBy="maritalStatus" >
+                                <f:facet name="header">  
+                                    <h:outputText value="Status"/>
+                                </f:facet>
+                                 <h:outputLabel value= "#{biodataView.maritalStatus.name}"/>
+                            </p:column>
+                            <p:column sortBy="personalEmail" >
+                                <f:facet name="header">  
+                                    <h:outputText value="Alamat Email"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{biodataView.personalEmail}"/>
+                            </p:column>                                                       
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
+                                <p:commandButton  icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
+                                                  action="#{bioDataViewController.doDetail()}" style="font-size: 10px!important" >                        
+                                    <f:setPropertyActionListener value="#{biodataView}" target="#{bioDataViewController.selectedBioData}" />
+                                </p:commandButton>
+                                - 
+                                <p:commandButton  icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  style="font-size: 10px!important" update=":deleteDialogUserId"
+                                                  onclick="statusDialog.show()"  oncomplete="confirmDialogHrmUser.show()" action="#{bioDataViewController.onDelete()}" >
+                                    <f:setPropertyActionListener value="#{biodataView}" target="#{bioDataViewController.selectedBioData}" />
+                                </p:commandButton>
+                                -
+                                <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
+                                                  action="#{bioDataViewController.doEdit()}" >
+                                    <f:setPropertyActionListener value="#{biodataView}" target="#{bioDataViewController.selectedBioData}" />
+
+                                </p:commandButton> 
+                            </p:column>                                                    
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : " styleClass="label_hrm" />
+                                <p:outputLabel value="#{bioDataViewController.lazyDataBioData.rowCount}" styleClass="label_hrm"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px" styleClass="label_hrm"/>
+                            </f:facet>  
+                        </p:dataTable>
+                        <p:blockUI block="userViewId" trigger="tableBiodataId,btnPencarianId" >
+                            <h:panelGrid columns="2" styleClass="grid_no_border">
+                                <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
+                                <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
+                            </h:panelGrid>
+                        </p:blockUI>
+<!--                        <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
+                            <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
+                        </p:dialog>-->
+
+                    </h:form>
+                    <!--</p:panel>-->
+                </div>
+                <p:dialog widgetVar="confirmDialogHrmUser" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                          appendTo="@(body)" resizable="false" id="confirmDialogHrmRoleId" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
+                    <h:form id="deleteDialogUserId">
+                        <div align="center">
+                            <div align="center">
+                                <h:panelGrid columns="2" style="text-align: justify">
+                                    <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
+                                    <h:panelGroup>
+                                        <h:panelGrid style="text-align: center">
+                                            <p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
+                                        </h:panelGrid>
+                                    </h:panelGroup>
+                                </h:panelGrid>
+                            </div>
+                            <h:panelGrid  columns="3">
+                                <p:outputLabel value="Nama" styleClass="label_hrm"/>
+                                <p:outputLabel value=":"  styleClass="label_hrm" />
+                                <p:outputLabel value="#{bioDataViewController.selectedBioData.firstName} #{bioDataViewController.selectedBioData.lastName}" styleClass="isitext_hrm"/>
+                            </h:panelGrid>
+                            <p:separator/>
+                            <p:commandButton value="#{appmsg['global.yes']}" action="#{bioDataViewController.doDelete()}" update=":userViewId,:userViewGrowlId" id="yesId" title="#{appmsg['global.yes']}" styleClass="isitext_hrm"
+                                             oncomplete="confirmDialogHrmUser.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                            <p:commandButton value="#{appmsg['global.no']}" oncomplete="confirmDialogHrmUser.hide()" icon="ui-icon-close" title="#{appmsg['global.no']}"  styleClass="isitext_hrm"/>
+
+                        </div>
+                    </h:form>
+                </p:dialog>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

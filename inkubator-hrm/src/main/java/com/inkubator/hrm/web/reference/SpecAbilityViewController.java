@@ -5,6 +5,7 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.SpecificationAbility;
 import com.inkubator.hrm.service.SpecificationAbilityService;
 import com.inkubator.hrm.web.lazymodel.SpecificationAbilityLazyDataModel;
+import com.inkubator.hrm.web.model.SpecificationAbilityModelView;
 import com.inkubator.hrm.web.search.SpecificationAbilitySearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
@@ -28,11 +29,20 @@ import org.springframework.dao.DataIntegrityViolationException;
 public class SpecAbilityViewController extends BaseController {
 
     private SpecificationAbilitySearchParameter searchParameter;
-    private LazyDataModel<SpecificationAbility> lazyDataSpecificationAbility;
+    private LazyDataModel<SpecificationAbilityModelView> lazyDataSpecificationAbility;
     private SpecificationAbility selectedSpecificationAbility;
+    private SpecificationAbilityModelView selectedSpecAbi;
     @ManagedProperty(value = "#{specificationAbilityService}")
     private SpecificationAbilityService specificationAbilityService;
 
+    public SpecificationAbilityModelView getSelectedSpecAbi() {
+        return selectedSpecAbi;
+    }
+
+    public void setSelectedSpecAbi(SpecificationAbilityModelView selectedSpecAbi) {
+        this.selectedSpecAbi = selectedSpecAbi;
+    }
+    
     @PostConstruct
     @Override
     public void initialization() {
@@ -48,7 +58,7 @@ public class SpecAbilityViewController extends BaseController {
         selectedSpecificationAbility = null;
     }
 
-    public LazyDataModel<SpecificationAbility> getLazyDataSpecificationAbility() {
+    public LazyDataModel<SpecificationAbilityModelView> getLazyDataSpecificationAbility() {
         if (lazyDataSpecificationAbility == null) {
             lazyDataSpecificationAbility = new SpecificationAbilityLazyDataModel(searchParameter, specificationAbilityService);
         }
@@ -56,7 +66,7 @@ public class SpecAbilityViewController extends BaseController {
     }
 
     public void setLazyDataSpecificationAbility(
-            LazyDataModel<SpecificationAbility> lazyDataSpecificationAbility) {
+            LazyDataModel<SpecificationAbilityModelView> lazyDataSpecificationAbility) {
         this.lazyDataSpecificationAbility = lazyDataSpecificationAbility;
     }
 
@@ -86,7 +96,7 @@ public class SpecAbilityViewController extends BaseController {
 
     public void doDetail() {
         try {
-            selectedSpecificationAbility = this.specificationAbilityService.getEntiyByPK(selectedSpecificationAbility.getId());
+            selectedSpecificationAbility = this.specificationAbilityService.getEntiyByPK(selectedSpecAbi.getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -110,7 +120,7 @@ public class SpecAbilityViewController extends BaseController {
     }
 
     public String doUpdate() {
-        return "/protected/reference/spec_ability_form.htm?faces-redirect=true&execution=e" + selectedSpecificationAbility.getId();
+        return "/protected/reference/spec_ability_form.htm?faces-redirect=true&execution=e" + selectedSpecAbi.getId();
     }
 
    

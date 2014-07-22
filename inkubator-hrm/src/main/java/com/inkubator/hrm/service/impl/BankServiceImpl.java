@@ -200,8 +200,19 @@ public class BankServiceImpl extends IServiceImpl implements BankService {
         if (totalDuplicates > 0) {
             throw new BussinessException("bank.error_duplicate_bank_code");
         }
+        long swiftCodeDuplicates = bankDao.getTotalBySwiftCode(bank.getSwiftCcode());
+        if(swiftCodeDuplicates > 0){
+            throw new BussinessException("bank.error_duplicate_swift_code");
+        }
+        long identificationNumberDuplicates = bankDao.getTotalBySwiftCode(bank.getBankIdentificationNo());
+        if(identificationNumberDuplicates > 0){
+            throw new BussinessException("bank.error_duplicate_identification_number");
+        }
 
         bank.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+        bank.setSwiftCcode(bank.getSwiftCcode());
+        bank.setBankIdentificationNo(bank.getBankIdentificationNo());
+        bank.setIban(bank.getIban());
         bank.setCreatedBy(UserInfoUtil.getUserName());
         bank.setCreatedOn(new Date());
         bankDao.save(bank);
@@ -239,10 +250,21 @@ public class BankServiceImpl extends IServiceImpl implements BankService {
         if (totalDuplicates > 0) {
             throw new BussinessException("bank.error_duplicate_bank_code");
         }
+        long swiftDuplicates = bankDao.getTotalBySwiftCodeAndNotId(b.getSwiftCcode(), b.getId());
+        if (swiftDuplicates > 0) {
+            throw new BussinessException("bank.error_duplicate_swift_code");
+        }
+        long identificationNumberDuplicates = bankDao.getTotalByIdentificationNumberAndNotId(b.getBankIdentificationNo(), b.getId());
+        if (identificationNumberDuplicates > 0) {
+            throw new BussinessException("bank.error_duplicate_identification_number");
+        }
 
         Bank bank = bankDao.getEntiyByPK(b.getId());
         bank.setBankCode(b.getBankCode());
         bank.setBankName(b.getBankName());
+        bank.setSwiftCcode(b.getSwiftCcode());
+        bank.setBankIdentificationNo(b.getBankIdentificationNo());
+        bank.setIban(b.getIban());
         bank.setDescription(b.getDescription());
         bank.setUpdatedBy(UserInfoUtil.getUserName());
         bank.setUpdatedOn(new Date());

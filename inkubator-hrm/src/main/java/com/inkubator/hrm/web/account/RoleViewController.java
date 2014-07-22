@@ -90,12 +90,8 @@ public class RoleViewController extends BaseController {
         lazyDataHrmRole = null;
     }
 
-    public void doDetail() {
-        try {
-            selectedHrmRole = this.hrmRoleService.getEntiyByPK(selectedHrmRole.getId());
-        } catch (Exception ex) {
-            LOGGER.error("Error", ex);
-        }
+    public String doDetail() {
+    	return "/protected/account/role_detail.htm?faces-redirect=true&execution=e" + selectedHrmRole.getId();
     }
 
     public void doDelete() {
