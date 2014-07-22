@@ -1,0 +1,274 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/dialog_layout.xhtml">
+            <ui:define name="windowTitle">
+
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlBioAddressFormlId" globalOnly="true" showDetail="true"/>
+                <h:form id="formBioAddressFormId">
+                	<p:focus context="formBioAddressFormId"/>
+                    <h:panelGrid  columns="2">
+                        <p:graphicImage library="images" name="bio_data.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['bioaddress.form_address']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['bioaddress.address_form_biodata']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="1" style="margin-bottom: 5px;margin-left: 0px">
+                        <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                    </h:panelGrid> 
+                    <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="typeId" value="#{appmsg['global.type']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="typeId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                            	<p:selectOneMenu id="typeId" styleClass="isitext_hrm" value="#{bioAddressFormController.model.type}">
+	                            	<!--Cek HRM Constanta..-->
+	                                <f:selectItem itemLabel="#{appmsg['bioaddress.identityCard']}" itemValue="0" />
+	                                <f:selectItem itemLabel="#{appmsg['bioaddress.residence']}" itemValue="1" />
+	                                <f:selectItem itemLabel="#{appmsg['bioaddress.emergency']}" itemValue="2" />
+	                        	</p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="typeId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="contactNameId" value="#{appmsg['bioaddress.contact_name']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="contactNameId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                            	<p:inputText id="contactNameId" title="#{appmsg['bioaddress.contact_name']}" value="#{bioAddressFormController.model.contactName}" 
+                                    		 required="true" maxlength="60" styleClass="isitext_hrm" style="width:190px;" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="contactNameId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="phoneNumbeId" value="#{appmsg['global.phone_number']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="phoneNumbeId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                            	<p:inputText id="phoneNumbeId" title="#{appmsg['global.phone_number']}" value="#{bioAddressFormController.model.phoneNumber}" 
+                                    		 required="true" maxlength="45" styleClass="isitext_hrm" style="width:190px;" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="phoneNumbeId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="addressDetailId" value="#{appmsg['global.address']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="addressDetailId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                            	<p:inputTextarea id="addressDetailId" title="#{appmsg['global.address']}" value="#{bioAddressFormController.model.addressDetail}" 
+                                    		 required="true" maxlength="1000" styleClass="isitext_hrm" style="width:190px;" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="addressDetailId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="countryId" value="#{appmsg['country.country']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="countryId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                            	<p:selectOneMenu id="countryId" filter="true" styleClass="isitext_hrm" value="#{bioAddressFormController.model.countryId}">
+	                            	<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+	                                <f:selectItems value="#{bioAddressFormController.countries}" var="country" itemValue="#{country.id}" itemLabel="#{country.countryName}"/>
+	                                <p:ajax listener="#{bioAddressFormController.onChangeCountries()}" update="provinceId,cityId"/>
+	                            </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="countryId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="provinceId" value="#{appmsg['province.province']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="provinceId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                            	<p:selectOneMenu id="provinceId" filter="true" styleClass="isitext_hrm" value="#{bioAddressFormController.model.provinceId}">
+	                            	<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+	                                <f:selectItems value="#{bioAddressFormController.provinces}" var="province" itemValue="#{province.id}" itemLabel="#{province.provinceName}"/>
+	                                <p:ajax listener="#{bioAddressFormController.onChangeProvinces()}" update="cityId"/>
+	                            </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="provinceId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="cityId" value="#{appmsg['city.city']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="cityId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                            	<p:selectOneMenu id="cityId" filter="true" styleClass="isitext_hrm" value="#{bioAddressFormController.model.cityId}">
+	                            	<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+	                                <f:selectItems value="#{bioAddressFormController.cities}" var="city" itemValue="#{city.id}" itemLabel="#{city.cityName}"/>
+	                            </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="cityId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="subDistrictId" value="#{appmsg['bioaddress.sub_district']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="subDistrictId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                            	<p:inputText id="subDistrictId" title="#{appmsg['bioaddress.sub_district']}" value="#{bioAddressFormController.model.subDistrict}" 
+                                    		 maxlength="60" styleClass="isitext_hrm" style="width:190px;" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="subDistrictId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="villageId" value="#{appmsg['bioaddress.village']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="villageId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                            	<p:inputText id="villageId" title="#{appmsg['bioaddress.village']}" value="#{bioAddressFormController.model.village}" 
+                                    		 maxlength="60" styleClass="isitext_hrm" style="width:190px;" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="villageId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="zipCodeId" value="#{appmsg['global.zip_code']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="zipCodeId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                            	<p:inputText id="zipCodeId" title="#{appmsg['global.zip_code']}" value="#{bioAddressFormController.model.zipCode}" 
+                                    		 maxlength="10" styleClass="isitext_hrm" style="width:190px;" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="zipCodeId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="statusAddressId" value="#{appmsg['global.status']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="statusAddressId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                            	<p:selectOneMenu id="statusAddressId" styleClass="isitext_hrm" value="#{bioAddressFormController.model.statusAddress}">
+	                            	<!--Cek HRM Constanta..-->
+	                                <f:selectItem itemLabel="#{appmsg['bioaddress.family']}" itemValue="0" />
+	                                <f:selectItem itemLabel="#{appmsg['bioaddress.relatives']}" itemValue="1" />
+	                                <f:selectItem itemLabel="#{appmsg['bioaddress.owner']}" itemValue="2" />
+	                        	</p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="statusAddressId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="notesId" value="#{appmsg['global.notes']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="notesId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                            	<p:inputTextarea id="notesId" title="#{appmsg['global.notes']}" value="#{bioAddressFormController.model.notes}" 
+                                    		 maxlength="1000" styleClass="isitext_hrm" style="width:190px;" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="notesId"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="2" style="margin-bottom: -30px!important">
+                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formBioAddressFormId,:growlBioAddressFormlId"
+                                         action="#{bioAddressFormController.doSave()}" styleClass="isitext_hrm"
+                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
+                                         icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formBioAddressFormId"
+                                         icon="ui-icon-refresh" styleClass="isitext_hrm" >  
+                            <p:resetInput target="formBioAddressFormId" />  
+                        </p:commandButton>
+                    </h:panelGrid>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

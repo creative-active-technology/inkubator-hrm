@@ -232,7 +232,9 @@
 		                                <f:facet name="header">  
 		                                    <h:outputText value="#{appmsg['global.type']}"/>
 		                                </f:facet>
-		                                <h:outputLabel value= "#{bioAddressesData.type}"/>
+		                                <h:outputLabel value= "#{bioAddressesData.type}">
+		                                	<f:converter converterId="bioAddressTypeConverter" />
+		                                </h:outputLabel>
 		                            </p:column>
 		                            <p:column style="text-align: center;width: 30%">
 		                                <f:facet name="header">  
@@ -284,6 +286,12 @@
 		                                </p:commandButton>
 		                            </p:column>
 		                   		</p:dataTable>
+		                   		<h:panelGrid columns="1">
+		                    		<p:commandButton value="#{appmsg['global.add']} #{appmsg['global.address']}" title="#{appmsg['global.add']} #{appmsg['global.address']}" label="#{appmsg['global.add']} #{appmsg['global.address']}" styleClass="label_button" icon="ui-icon-search" 
+		                    						 actionListener="#{bioDataDetilController.doAddBioAddress()}" ajax="true" immediate="true">
+		                            	<p:ajax event="dialogReturn" listener="#{bioDataDetilController.onDialogReturn}"  update="tableBioAdressId,:growlBioDetailFormId"/>
+		                           	</p:commandButton>
+		                    	</h:panelGrid>
                             </p:tab>  
                             <p:tab id="riwayatKerjaId" title="Riwayat Kerja">  
 

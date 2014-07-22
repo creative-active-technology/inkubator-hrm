@@ -78,13 +78,24 @@ public class HRMConstant {
     public static final Integer JOB_DESCRIPTION_MONTH = 2;
     /* END */
 
-    /* Constant for JOB Deskripsi Module */
+    /* 
+     * Constant for JOB Deskripsi Module */
     public static final Integer GLOBAL_MALE = 1;
     public static final Integer GLOBAL_FEMALE = 0;
     public static final Integer BLOOD_A_TYPE = 1;
     public static final Integer BLOOD_B_TYPE = 2;
     public static final Integer BLOOD_AB_TYPE = 3;
     public static final Integer BLOOD_O_TYPE = 4;
+    /* END */
+    
+    /* 
+     * Constant for BIO address Module */
+    public static final Integer BIOADDRESS_TYPE_IDENTITY_CARD = 0;
+    public static final Integer BIOADDRESS_TYPE_RESIDENCE = 1;
+    public static final Integer BIOADDRESS_TYPE_EMERGENCY = 2;
+    public static final Integer BIOADDRESS_STATUS_FAMILY = 0;
+    public static final Integer BIOADDRESS_STATUS_RELATIVES = 1;
+    public static final Integer BIOADDRESS_STATUS_OWNER = 2;
     /* END */
 
 }

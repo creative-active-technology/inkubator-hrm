@@ -1,5 +1,7 @@
 package com.inkubator.hrm.web.model;
 
+import javax.validation.constraints.Pattern;
+
 
 /**
  *
@@ -54,6 +56,8 @@ public class BioAddressModel {
 	public void setContactName(String contactName) {
 		this.contactName = contactName;
 	}
+	
+	@Pattern(regexp = "^[+][\\d() -]+", message = "{errorr_phone}")
 	public String getPhoneNumber() {
 		return phoneNumber;
 	}
