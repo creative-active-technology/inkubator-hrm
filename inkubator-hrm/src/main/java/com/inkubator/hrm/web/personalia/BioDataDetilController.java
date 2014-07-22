@@ -4,6 +4,24 @@
  */
 package com.inkubator.hrm.web.personalia;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+
+import org.hibernate.exception.ConstraintViolationException;
+import org.primefaces.context.RequestContext;
+import org.primefaces.event.SelectEvent;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.BioAddress;
@@ -15,22 +33,6 @@ import com.inkubator.hrm.service.EducationHistoryService;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
-import org.hibernate.exception.ConstraintViolationException;
-import org.primefaces.context.RequestContext;
-import org.primefaces.event.SelectEvent;
-import org.springframework.dao.DataIntegrityViolationException;
 
 /**
  *
@@ -160,23 +162,66 @@ public class BioDataDetilController extends BaseController {
     public void doUpdateBioAddressMap() {
 
     }
-
-    public void doSelectBioAddress() {
+    
+    public void doSelectBioAddress(){
+    	try {
+			selectedBioAddress = bioAddressService.getEntiyByPK(selectedBioAddress.getId());
+		} catch (Exception e) {
+			LOGGER.error("Error", e);
+		}
+    }
+    
+    public void doUpdateBioAddress(){
+    	
+        List<String> bioAddressId = new ArrayList<>();
+        bioAddressId.add(String.valueOf(selectedBioAddress.getId()));
+        
+        List<String> bioDataId = new ArrayList<>();
+        bioDataId.add(String.valueOf(selectedBioData.getId()));
+        
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("bioAddressId", bioAddressId);
+        dataToSend.put("bioDataId", bioDataId);
+        showDialogBioAddress(dataToSend);
 
     }
-
-    public void doUpdateBioAddress() {
-
+    
+    public void doAddBioAddress(){
+    	List<String> bioDataId = new ArrayList<>();
+        bioDataId.add(String.valueOf(selectedBioData.getId()));
+        
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("bioDataId", bioDataId);
+        showDialogBioAddress(dataToSend);
     }
+    
+    public void doDeleteBioAddress(){
+    	try {
+    		bioAddressService.delete(selectedBioAddress);
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 
-    public void doAddBioAddress() {
-
+        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (Exception ex) {
+            LOGGER.error("Error when doDelete bioAddress", ex);
+        }
     }
-
-    public void doDeleteBioAddress() {
-
+    
+    private void showDialogBioAddress(Map<String, List<String>> params) {
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 500);
+        options.put("contentHeight", 600);
+        RequestContext.getCurrentInstance().openDialog("bio_address_form", options, params);
     }
+    /** END Bio Address method */
  
+    
+    /**
+     * START Bio Edu History method
+     */
     public void doSelectBioEduHistory() {
         try {
             selectedEduHistory = this.educationHistoryService.getAllDataByPK(selectedEduHistory.getId());
@@ -227,10 +272,9 @@ public class BioDataDetilController extends BaseController {
             LOGGER.error("Error", ex);
         }
     }
-
-    /**
-     * END Bio Education History method
-     */
+    /** END Bio Address method */
+    
+    
     @Override
     public void onDialogReturn(SelectEvent event) {
         try {

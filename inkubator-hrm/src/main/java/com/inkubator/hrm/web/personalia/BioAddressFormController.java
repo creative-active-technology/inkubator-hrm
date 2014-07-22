@@ -59,9 +59,12 @@ public class BioAddressFormController extends BaseController {
             provinces = new ArrayList<Province>();
             cities = new ArrayList<City>();
             
-            String param = FacesUtil.getRequestParameter("execution");
-            if (StringUtils.isNotEmpty(param)) {
-            	BioAddress bioAddress = bioAddressService.getEntiyByPK(param);
+            String bioDataId = FacesUtil.getRequestParameter("bioDataId");
+            model.setBioDataId(Long.parseLong(bioDataId));
+            
+            String bioAddressId = FacesUtil.getRequestParameter("bioAddressId");
+            if (StringUtils.isNotEmpty(bioAddressId)) {
+            	BioAddress bioAddress = bioAddressService.getEntiyByPK(Long.parseLong(bioAddressId));
             	if(bioAddress != null){
             		model = getModelFromEntity(bioAddress);
             		provinces = provinceService.getByCountryId(model.getCountryId());
@@ -201,16 +204,24 @@ public class BioAddressFormController extends BaseController {
 	
 	private BioAddress getEntityFromViewModel(BioAddressModel model) {
 		BioAddress bioAddress = new BioAddress();
-		bioAddress.setId(model.getId());
+		if(model.getId() != null){
+			bioAddress.setId(model.getId());
+		}
 		bioAddress.setBioData(new BioData(model.getBioDataId()));
 		bioAddress.setStatusAddress(model.getStatusAddress());
 		bioAddress.setType(model.getType());
 		bioAddress.setContactName(model.getContactName());
 		bioAddress.setPhoneNumber(model.getPhoneNumber());
 		bioAddress.setAddressDetail(model.getAddressDetail());
-		bioAddress.setCountry(new Country(model.getCountryId()));
-		bioAddress.setProvince(new Province(model.getProvinceId()));
-		bioAddress.setCity(new City(model.getCityId()));
+		if(model.getCountryId() != null){
+			bioAddress.setCountry(new Country(model.getCountryId()));
+		}
+		if(model.getProvinceId() != null){
+			bioAddress.setProvince(new Province(model.getProvinceId()));
+		}
+		if(model.getCityId() != null){
+			bioAddress.setCity(new City(model.getCityId()));
+		}		
 		bioAddress.setSubDistrict(model.getSubDistrict());
 		bioAddress.setVillage(model.getVillage());
 		bioAddress.setZipCode(model.getZipCode());

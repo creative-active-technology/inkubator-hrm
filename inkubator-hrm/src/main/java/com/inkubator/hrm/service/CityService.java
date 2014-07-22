@@ -21,5 +21,7 @@ public interface CityService extends IService<City> {
 	public City getCityByIdWithDetail(Long id) throws Exception;
 	
 	public List<City> getByProvinceId(Long provinceId) throws Exception;
+        
+        public List<City> getByProvinceIdWithDetail(Long id) throws Exception;
 
 }
