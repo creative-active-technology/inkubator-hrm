@@ -4,25 +4,6 @@
  */
 package com.inkubator.hrm.web.personalia;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
-
-import org.hibernate.exception.ConstraintViolationException;
-import org.primefaces.context.RequestContext;
-import org.primefaces.event.SelectEvent;
-import org.springframework.dao.DataIntegrityViolationException;
-
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.BioAddress;
 import com.inkubator.hrm.entity.BioData;
@@ -33,13 +14,27 @@ import com.inkubator.hrm.service.EducationHistoryService;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+import org.hibernate.exception.ConstraintViolationException;
+import org.primefaces.context.RequestContext;
+import org.primefaces.event.SelectEvent;
+import org.springframework.dao.DataIntegrityViolationException;
 
 /**
  *
  * @author Deni Husni FR
  */
-
-
 @ManagedBean(name = "bioDataDetilController")
 @ViewScoped
 public class BioDataDetilController extends BaseController {
@@ -49,7 +44,6 @@ public class BioDataDetilController extends BaseController {
     private List<BioAddress> bioAddresses;
     private EducationHistory selectedEduHistory;
     private List<EducationHistory> educationHistory;
-
     @ManagedProperty(value = "#{bioDataService}")
     private BioDataService bioDataService;
     @ManagedProperty(value = "#{bioAddressService}")
@@ -74,6 +68,14 @@ public class BioDataDetilController extends BaseController {
 
     @PreDestroy
     public void cleanAndExit() {
+        selectedBioData = null;
+        selectedBioAddress = null;
+        bioAddresses = null;
+        selectedEduHistory = null;
+        educationHistory = null;
+        bioDataService = null;
+        bioAddressService = null;
+        educationHistoryService = null;
         userId = null;
 
     }
@@ -147,7 +149,7 @@ public class BioDataDetilController extends BaseController {
     }
 
     public String doEdit() {
-        return null;
+        return "/protected/personalia/biodata_form.htm?faces-redirect=true&execution=e" + selectedBioData.getId();
     }
 
     public String doBack() {
@@ -160,34 +162,34 @@ public class BioDataDetilController extends BaseController {
     public void doUpdateBioAddressMap() {
 
     }
-    
-    public void doSelectBioAddress(){
-    	try {
-			selectedBioAddress = bioAddressService.getEntiyByPK(selectedBioAddress.getId());
-		} catch (Exception e) {
-			LOGGER.error("Error", e);
-		}
+
+    public void doSelectBioAddress() {
+        try {
+            selectedBioAddress = bioAddressService.getEntiyByPK(selectedBioAddress.getId());
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
     }
-    
-    public void doUpdateBioAddress(){
-    	
+
+    public void doUpdateBioAddress() {
+
         List<String> bioAddressId = new ArrayList<>();
         bioAddressId.add(String.valueOf(selectedBioAddress.getId()));
-        
+
         List<String> bioDataId = new ArrayList<>();
         bioDataId.add(String.valueOf(selectedBioData.getId()));
-        
+
         Map<String, List<String>> dataToSend = new HashMap<>();
         dataToSend.put("bioAddressId", bioAddressId);
         dataToSend.put("bioDataId", bioDataId);
         showDialogBioAddress(dataToSend);
 
     }
-    
-    public void doAddBioAddress(){
-    	List<String> bioDataId = new ArrayList<>();
+
+    public void doAddBioAddress() {
+        List<String> bioDataId = new ArrayList<>();
         bioDataId.add(String.valueOf(selectedBioData.getId()));
-        
+
         Map<String, List<String>> dataToSend = new HashMap<>();
         dataToSend.put("bioDataId", bioDataId);
         showDialogBioAddress(dataToSend);
@@ -205,7 +207,7 @@ public class BioDataDetilController extends BaseController {
             LOGGER.error("Error when doDelete bioAddress", ex);
         }
     }
-    
+
     private void showDialogBioAddress(Map<String, List<String>> params) {
         Map<String, Object> options = new HashMap<>();
         options.put("modal", true);
@@ -280,9 +282,11 @@ public class BioDataDetilController extends BaseController {
             LOGGER.error("Error", ex);
         }
     }
-    /** END Bio Address method */
-    
-    
+
+    /**
+     * END Bio Address method
+     */
+
     @Override
     public void onDialogReturn(SelectEvent event) {
         try {
@@ -293,5 +297,5 @@ public class BioDataDetilController extends BaseController {
         }
 
     }
-  
+
 }

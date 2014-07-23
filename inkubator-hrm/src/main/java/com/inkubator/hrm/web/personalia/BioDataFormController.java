@@ -31,6 +31,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import org.apache.commons.lang3.StringUtils;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
@@ -71,14 +72,54 @@ public class BioDataFormController extends BaseController {
     private String fingerFileName;
     private UploadedFile signatureFile;
     private String signatureFileName;
+    private Boolean isEdit;
 
     @PostConstruct
     @Override
     public void initialization() {
         try {
             super.initialization();
-            
             bioDataModel = new BioDataModel();
+            String bioId = FacesUtil.getRequestParameter("execution");
+            if (bioId != null) {
+                isEdit = Boolean.TRUE;
+                BioData selectedBioData = this.bioDataService.getEntiyByPK(Long.parseLong(bioId.substring(1)));
+                bioDataModel.setBloodType(selectedBioData.getBloodType());
+                bioDataModel.setCityid(selectedBioData.getCity().getId());
+                bioDataModel.setDateOfBirth(selectedBioData.getDateOfBirth());
+                bioDataModel.setDoialekId(selectedBioData.getDialect().getId());
+                bioDataModel.setFirstName(selectedBioData.getFirstName());
+                bioDataModel.setGender(selectedBioData.getGender());
+                bioDataModel.setId(selectedBioData.getId());
+                bioDataModel.setJamsostek(selectedBioData.getJamsostek());
+                bioDataModel.setLastName(selectedBioData.getLastName());
+                bioDataModel.setMaritalStatusId(selectedBioData.getMaritalStatus().getId());
+                bioDataModel.setMobilePhone(selectedBioData.getMobilePhone());
+                bioDataModel.setNationalitiId(selectedBioData.getNationality().getId());
+                bioDataModel.setNickname(selectedBioData.getNickname());
+                bioDataModel.setNoKK(selectedBioData.getNoKK());
+                bioDataModel.setNpwp(selectedBioData.getNpwp());
+                bioDataModel.setPathFinger(selectedBioData.getPathFinger());
+                bioDataModel.setPathFoto(selectedBioData.getPathFoto());
+                bioDataModel.setPathSignature(selectedBioData.getPathSignature());
+                bioDataModel.setPersonalEmail(selectedBioData.getPersonalEmail());
+                bioDataModel.setRaceId(selectedBioData.getRace().getId());
+                bioDataModel.setReligionId(selectedBioData.getReligion().getId());
+                bioDataModel.setTitle(selectedBioData.getTitle());
+                String fotoPath = StringUtils.reverse(bioDataModel.getPathFoto());
+                String nameReverse = StringUtils.substringBefore(fotoPath, "/");
+                fotoFileName = StringUtils.reverse(nameReverse);
+                String fingetPath = StringUtils.reverse(bioDataModel.getPathFinger());
+                String nameReverse1 = StringUtils.substringBefore(fingetPath, "/");
+                fingerFileName = StringUtils.reverse(nameReverse1);
+                String signaturPath = StringUtils.reverse(bioDataModel.getPathSignature());
+                String nameReverse2 = StringUtils.substringBefore(signaturPath, "/");
+                signatureFileName = StringUtils.reverse(nameReverse2);
+
+            } else {
+                isEdit = Boolean.FALSE;
+            }
+
             List<City> dataCitys = cityService.getAllData();
             for (City city : dataCitys) {
                 tempatlahir.put(city.getCityName(), city.getId());
@@ -113,6 +154,27 @@ public class BioDataFormController extends BaseController {
 
     @PreDestroy
     public void cleanAndExit() {
+        bioDataModel = null;
+        tempatlahir = null;
+        mapReligions = null;
+        mapRas = null;
+        mapDialek = null;
+        mapMarital = null;
+        mapNationality = null;
+        cityService = null;
+        religionService = null;
+        raceService = null;
+        maritalStatusService = null;
+        nationalityService = null;
+        facesIO = null;
+        bioDataService = null;
+        fotoFile = null;
+        fotoFileName = null;
+        fingerFile = null;
+        fingerFileName = null;
+        signatureFile = null;
+        signatureFileName = null;
+        isEdit = null;
 
     }
 
@@ -197,10 +259,19 @@ public class BioDataFormController extends BaseController {
     }
 
     public String doSave() {
-        System.out.println(" hahaha");
+
         try {
             BioData bioData = getEntityFromView(bioDataModel);
-            bioDataService.save(bioData);
+            if (isEdit) {
+                bioDataService.update(bioData);
+                MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
+                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            } else {
+                bioDataService.save(bioData);
+                MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
+                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            }
+
             if (fotoFile != null) {
                 facesIO.transferFile(fotoFile);
                 File fotoOldFile = new File(facesIO.getPathUpload() + fotoFileName);
@@ -219,8 +290,6 @@ public class BioDataFormController extends BaseController {
                 sigtarueOldFile.renameTo(new File(bioData.getPathSignature()));
             }
 
-            MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
-                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             return "/protected/personalia/biodata_detail.htm?faces-redirect=true&execution=e" + bioData.getId();
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
@@ -298,6 +367,8 @@ public class BioDataFormController extends BaseController {
         fingerFileName = null;
         signatureFile = null;
         signatureFileName = null;
+        dialectService = null;
+
     }
 
     public void setFacesIO(FacesIO facesIO) {
@@ -346,9 +417,17 @@ public class BioDataFormController extends BaseController {
     public void setBioDataService(BioDataService bioDataService) {
         this.bioDataService = bioDataService;
     }
-    
-    public String doBack(){
-          return "/protected/personalia/biodata_view.htm?faces-redirect=true";
+
+    public String doBack() {
+        return "/protected/personalia/biodata_view.htm?faces-redirect=true";
+    }
+
+    public Boolean getIsEdit() {
+        return isEdit;
+    }
+
+    public void setIsEdit(Boolean isEdit) {
+        this.isEdit = isEdit;
     }
 
 }

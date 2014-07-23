@@ -14,6 +14,7 @@ import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
 import java.io.File;
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -56,6 +57,14 @@ public class BioDataViewController extends BaseController {
 
     }
 
+    @PreDestroy
+    public void cleanAndExit() {
+        bioDataService = null;
+        bioDataSearchParameter = null;
+        lazyDataBioData = null;
+        selectedBioData = null;
+    }
+
     public LazyDataModel<BioData> getLazyDataBioData() {
         if (lazyDataBioData == null) {
             lazyDataBioData = new BioDataLazyDataModel(bioDataSearchParameter, bioDataService);
@@ -93,7 +102,7 @@ public class BioDataViewController extends BaseController {
     }
 
     public String doEdit() {
-          return "/protected/personalia/biodata_form.htm?faces-redirect=true&execution=e" + selectedBioData.getId();
+        return "/protected/personalia/biodata_form.htm?faces-redirect=true&execution=e" + selectedBioData.getId();
     }
 
     public void doDelete() {
