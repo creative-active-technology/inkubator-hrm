@@ -94,8 +94,39 @@ public class BioDataServiceImpl extends IServiceImpl implements BioDataService {
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(BioData entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        BioData bioData = this.bioDataDao.getEntiyByPK(entity.getId());
+        bioData.setBloodType(entity.getBloodType());
+        bioData.setCity(this.cityDao.getEntiyByPK(entity.getCity().getId()));
+        bioData.setDateOfBirth(entity.getDateOfBirth());
+        bioData.setDialect(this.dialectDao.getEntiyByPK(entity.getDialect().getId()));
+        bioData.setFirstName(entity.getFirstName());
+        bioData.setGender(entity.getGender());
+        bioData.setJamsostek(entity.getJamsostek());
+        bioData.setLastName(entity.getLastName());
+        bioData.setMaritalStatus(this.maritalStatusDao.getEntiyByPK(entity.getMaritalStatus().getId()));
+        bioData.setMobilePhone(entity.getMobilePhone());
+        bioData.setNationality(nationalityDao.getEntiyByPK(entity.getNationality().getId()));
+        bioData.setNickname(entity.getNickname());
+        bioData.setNoKK(entity.getNoKK());
+        bioData.setNpwp(entity.getNpwp());
+        if (entity.getPathFinger() != null) {
+            bioData.setPathFinger(entity.getPathFinger());
+        }
+        if (entity.getPathFoto() != null) {
+            bioData.setPathFoto(entity.getPathFoto());
+        }
+        if (entity.getPathSignature() != null) {
+            bioData.setPathSignature(entity.getPathSignature());
+        }
+        bioData.setPersonalEmail(entity.getPersonalEmail());
+        bioData.setRace(this.raceDao.getEntiyByPK(entity.getRace().getId()));
+        bioData.setReligion(this.religionDao.getEntiyByPK(entity.getReligion().getId()));
+        bioData.setTitle(entity.getTitle());
+        bioData.setUpdatedBy(UserInfoUtil.getUserName());
+        bioData.setUpdatedOn(new Date());
+        this.bioDataDao.update(bioData);
     }
 
     @Override
@@ -164,13 +195,12 @@ public class BioDataServiceImpl extends IServiceImpl implements BioDataService {
     }
 
     @Override
-    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = DataIntegrityViolationException.class,noRollbackFor = IOException.class)
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = DataIntegrityViolationException.class, noRollbackFor = IOException.class)
     public void delete(BioData entity) throws Exception {
         this.bioDataDao.delete(entity);
 //        if (entity.getPathFoto() != null || entity.getPathFoto().isEmpty()) {
-          
-//        }
 
+//        }
     }
 
     @Override
@@ -199,7 +229,7 @@ public class BioDataServiceImpl extends IServiceImpl implements BioDataService {
     }
 
     @Override
-    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ,propagation = Propagation.SUPPORTS, timeout = 30)
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
     public List<BioData> getAllData() throws Exception {
         return bioDataDao.getAllData();
     }
