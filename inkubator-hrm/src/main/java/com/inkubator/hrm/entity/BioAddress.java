@@ -26,8 +26,6 @@ public class BioAddress implements java.io.Serializable {
     private String contactName;
     private String phoneNumber;
     private String addressDetail;
-    private Country country;
-    private Province province;
     private City city;
     private String subDistrict;
     private String village;
@@ -76,26 +74,6 @@ public class BioAddress implements java.io.Serializable {
 
 	public void setBioData(BioData bioData) {
 		this.bioData = bioData;
-	}	
-
-	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "country_id", nullable = false)
-	public Country getCountry() {
-		return country;
-	}
-
-	public void setCountry(Country country) {
-		this.country = country;
-	}
-
-	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "province_id", nullable = false)
-	public Province getProvince() {
-		return province;
-	}
-
-	public void setProvince(Province province) {
-		this.province = province;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)

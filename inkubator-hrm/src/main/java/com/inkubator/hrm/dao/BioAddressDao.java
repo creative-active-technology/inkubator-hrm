@@ -11,6 +11,8 @@ import com.inkubator.hrm.entity.BioAddress;
  */
 public interface BioAddressDao extends IDAO<BioAddress> {
 
-	List<BioAddress> getAllDataByBioDataId(Long bioDataId);
+	public List<BioAddress> getAllDataByBioDataId(Long bioDataId);
+
+	public BioAddress getEntityByPKWithDetail(long id);
 	
 }

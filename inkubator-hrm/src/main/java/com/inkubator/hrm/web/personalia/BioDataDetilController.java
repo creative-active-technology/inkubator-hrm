@@ -106,8 +106,6 @@ public class BioDataDetilController extends BaseController {
         this.educationHistoryService = educationHistoryService;
     }
 
-   
-
     public void setSelectedBioAddress(BioAddress selectedBioAddress) {
         this.selectedBioAddress = selectedBioAddress;
     }
@@ -198,6 +196,7 @@ public class BioDataDetilController extends BaseController {
     public void doDeleteBioAddress(){
     	try {
     		bioAddressService.delete(selectedBioAddress);
+    		bioAddresses = bioAddressService.getAllDataByBioDataId(selectedBioAddress.getBioData().getId());
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 
         } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
@@ -215,6 +214,15 @@ public class BioDataDetilController extends BaseController {
         options.put("contentWidth", 500);
         options.put("contentHeight", 600);
         RequestContext.getCurrentInstance().openDialog("bio_address_form", options, params);
+    }
+    
+    public void onDialogReturnBioAddress(SelectEvent event){
+    	try {
+			bioAddresses = bioAddressService.getAllDataByBioDataId(selectedBioData.getId());
+			super.onDialogReturn(event);
+		} catch (Exception e) {
+			LOGGER.error("Error", e);
+		}
     }
     /** END Bio Address method */
  

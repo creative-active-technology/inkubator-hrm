@@ -30,8 +30,18 @@ public class BioAddressDaoImpl extends IDAOImpl<BioAddress> implements BioAddres
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
 		criteria.add(Restrictions.eq("bioData.id", bioDataId));
 		criteria.setFetchMode("city", FetchMode.JOIN);
-		criteria.setFetchMode("province", FetchMode.JOIN);
+		criteria.setFetchMode("city.province", FetchMode.JOIN);
 		return criteria.list();
+	}
+
+	@Override
+	public BioAddress getEntityByPKWithDetail(long id) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("id", id));
+		criteria.setFetchMode("city", FetchMode.JOIN);
+		criteria.setFetchMode("city.province", FetchMode.JOIN);
+		criteria.setFetchMode("city.province.country", FetchMode.JOIN);
+		return (BioAddress) criteria.uniqueResult();
 	}
 		
 }

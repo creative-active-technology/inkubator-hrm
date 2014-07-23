@@ -39,7 +39,6 @@ public class Province  implements java.io.Serializable {
      private String provinceCode;
      private String provinceName;
      private Set<City> cities = new HashSet<City>(0);
-     private Set<BioAddress> bioAddresses = new HashSet<BioAddress>(0);
 
     public Province() {
     }
@@ -160,15 +159,6 @@ public class Province  implements java.io.Serializable {
     public void setCities(Set<City> cities) {
         this.cities = cities;
     }
-
-    @OneToMany(fetch=FetchType.LAZY, mappedBy="province")
-	public Set<BioAddress> getBioAddresses() {
-		return bioAddresses;
-	}
-    
-	public void setBioAddresses(Set<BioAddress> bioAddresses) {
-		this.bioAddresses = bioAddresses;
-	}
 	
 }
 
