@@ -16,13 +16,9 @@ import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.dao.BioAddressDao;
 import com.inkubator.hrm.dao.BioDataDao;
 import com.inkubator.hrm.dao.CityDao;
-import com.inkubator.hrm.dao.CountryDao;
-import com.inkubator.hrm.dao.ProvinceDao;
 import com.inkubator.hrm.entity.BioAddress;
 import com.inkubator.hrm.entity.BioData;
 import com.inkubator.hrm.entity.City;
-import com.inkubator.hrm.entity.Country;
-import com.inkubator.hrm.entity.Province;
 import com.inkubator.hrm.service.BioAddressService;
 import com.inkubator.securitycore.util.UserInfoUtil;
 
@@ -38,10 +34,6 @@ public class BioAddressServiceImpl extends IServiceImpl implements BioAddressSer
 	private BioAddressDao bioAddressDao;
 	@Autowired
 	private BioDataDao bioDataDao;
-	@Autowired
-	private CountryDao countryDao;
-	@Autowired
-	private ProvinceDao provinceDao;
 	@Autowired
 	private CityDao cityDao;
 	
@@ -69,14 +61,10 @@ public class BioAddressServiceImpl extends IServiceImpl implements BioAddressSer
 	public void save(BioAddress entity) throws Exception {
 
 		BioData biodata = bioDataDao.getEntiyByPK(entity.getBioData().getId());
-		Country country = countryDao.getEntiyByPK(entity.getCountry().getId());
-		Province province = provinceDao.getEntiyByPK(entity.getProvince().getId());
 		City city = cityDao.getEntiyByPK(entity.getCity().getId());
 		
 		entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
 		entity.setBioData(biodata);
-		entity.setCountry(country);
-		entity.setProvince(province);
 		entity.setCity(city);
 		entity.setCreatedBy(UserInfoUtil.getUserName());
 		entity.setCreatedOn(new Date());
@@ -89,14 +77,10 @@ public class BioAddressServiceImpl extends IServiceImpl implements BioAddressSer
 	public void update(BioAddress entity) throws Exception {
 		
 		BioData biodata = bioDataDao.getEntiyByPK(entity.getBioData().getId());
-		Country country = countryDao.getEntiyByPK(entity.getCountry().getId());
-		Province province = provinceDao.getEntiyByPK(entity.getProvince().getId());
 		City city = cityDao.getEntiyByPK(entity.getCity().getId());
 		
 		BioAddress bioAddress = bioAddressDao.getEntiyByPK(entity.getId());
 		bioAddress.setBioData(biodata);
-		bioAddress.setCountry(country);
-		bioAddress.setProvince(province);
 		bioAddress.setCity(city);
 		bioAddress.setStatusAddress(entity.getStatusAddress());
 		bioAddress.setType(entity.getType());
@@ -300,9 +284,15 @@ public class BioAddressServiceImpl extends IServiceImpl implements BioAddressSer
 	
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<BioAddress> getAllDataByBioDataId(Long bioDataId) {
+	public List<BioAddress> getAllDataByBioDataId(Long bioDataId) throws Exception {
 		return bioAddressDao.getAllDataByBioDataId(bioDataId);
 
+	}
+
+	@Override
+	public BioAddress getEntityByPKWithDetail(long id) throws Exception {
+		return bioAddressDao.getEntityByPKWithDetail(id);
+		
 	}
 	
 }

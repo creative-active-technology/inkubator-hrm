@@ -13,6 +13,8 @@ public interface BioAddressService extends IService<BioAddress> {
 
 	public void updateMapCoordinate(Long id, String latitude, String longitude) throws Exception;
 
-	public List<BioAddress> getAllDataByBioDataId(Long bioDataId);
+	public List<BioAddress> getAllDataByBioDataId(Long bioDataId) throws Exception;
+
+	public BioAddress getEntityByPKWithDetail(long id) throws Exception;
 	
 }

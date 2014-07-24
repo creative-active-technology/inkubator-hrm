@@ -64,7 +64,7 @@ public class BioAddressFormController extends BaseController {
             
             String bioAddressId = FacesUtil.getRequestParameter("bioAddressId");
             if (StringUtils.isNotEmpty(bioAddressId)) {
-            	BioAddress bioAddress = bioAddressService.getEntiyByPK(Long.parseLong(bioAddressId));
+            	BioAddress bioAddress = bioAddressService.getEntityByPKWithDetail(Long.parseLong(bioAddressId));
             	if(bioAddress != null){
             		model = getModelFromEntity(bioAddress);
             		provinces = provinceService.getByCountryId(model.getCountryId());
@@ -190,8 +190,8 @@ public class BioAddressFormController extends BaseController {
 	    bioModel.setContactName(entity.getContactName());
 	    bioModel.setPhoneNumber(entity.getPhoneNumber());
 	    bioModel.setAddressDetail(entity.getAddressDetail());
-	    bioModel.setCountryId(entity.getCountry().getId());
-	    bioModel.setProvinceId(entity.getProvince().getId());
+	    bioModel.setCountryId(entity.getCity().getProvince().getCountry().getId());
+	    bioModel.setProvinceId(entity.getCity().getProvince().getId());
 	    bioModel.setCityId(entity.getCity().getId());
 	    bioModel.setSubDistrict(entity.getSubDistrict());
 	    bioModel.setVillage(entity.getVillage());
@@ -213,12 +213,6 @@ public class BioAddressFormController extends BaseController {
 		bioAddress.setContactName(model.getContactName());
 		bioAddress.setPhoneNumber(model.getPhoneNumber());
 		bioAddress.setAddressDetail(model.getAddressDetail());
-		if(model.getCountryId() != null){
-			bioAddress.setCountry(new Country(model.getCountryId()));
-		}
-		if(model.getProvinceId() != null){
-			bioAddress.setProvince(new Province(model.getProvinceId()));
-		}
 		if(model.getCityId() != null){
 			bioAddress.setCity(new City(model.getCityId()));
 		}		
