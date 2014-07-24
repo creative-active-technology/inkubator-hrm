@@ -69,20 +69,23 @@ public class JabatanFormController extends BaseController {
                 Jabatan jabatan = jabatanService.getEntiyByPK(Long.parseLong(id.substring(1)));
                 isEdit = Boolean.TRUE;
                 jabatanModel = getJabatanModelFromEntity(jabatan);
-                doChangeLevel();
+//                doChangeLevel();
                 System.out.println(" hahahah");
             } else {
                 jabatanModel = new JabatanModel();
                 isEdit = Boolean.FALSE;
-                jabatanModel.setLevelJabatan(1);
-                doChangeLevel();
+//                jabatanModel.setLevelJabatan(1);
+//                doChangeLevel();
             }
 
             List<Department> listDepartemens = departmentService.getAllData();
             List<CostCenter> listCostCenters = costCenterService.getAllData();
             List<UnitKerja> listUnitKerjas = unitKerjaService.getAllData();
             List<GolonganJabatan> listGolonganJabatans = golonganJabatanService.getAllWithDetail();
-
+            List<Jabatan> listJabatans = jabatanService.getAllData();
+            for (Jabatan jabatan : listJabatans) {
+                jabatanAtasans.put(jabatan.getName(), jabatan.getId());
+            }
             for (GolonganJabatan golonganJabatan : listGolonganJabatans) {
                 golJabatans.put(golonganJabatan.getCode() + " - " + golonganJabatan.getPangkat().getPangkatName(), golonganJabatan.getId());
             }
@@ -138,7 +141,7 @@ public class JabatanFormController extends BaseController {
 
     public void doReset() {
         isDisable = Boolean.TRUE;
-        jabatanModel.setLevelJabatan(1);
+//        jabatanModel.setLevelJabatan(1);
 
     }
 
@@ -162,7 +165,7 @@ public class JabatanFormController extends BaseController {
         if (jabatanModel.getJabatanAtasanId() != null) {
             jabatan.setJabatan(new Jabatan(jabatanModel.getJabatanAtasanId()));
         }
-        jabatan.setLevelJabatan(jabatanModel.getLevelJabatan());
+//        jabatan.setLevelJabatan(jabatanModel.getLevelJabatan());
         jabatan.setName(jabatanModel.getNamaJabatan());
         jabatan.setTujuanJabatan(jabatanModel.getTujuanJabatan());
         jabatan.setUnitKerja(new UnitKerja(jabatanModel.getUnitKerjaId()));
@@ -178,7 +181,7 @@ public class JabatanFormController extends BaseController {
             jbm.setJabatanAtasanId(jabatan.getJabatan().getId());
         }
         jbm.setKodeJabatan(jabatan.getCode());
-        jbm.setLevelJabatan(jabatan.getLevelJabatan());
+//        jbm.setLevelJabatan(jabatan.getLevelJabatan());
         jbm.setNamaJabatan(jabatan.getName());
         jbm.setPosBiayaId(jabatan.getCostCenter().getId());
         jbm.setTujuanJabatan(jabatan.getTujuanJabatan());
@@ -189,18 +192,18 @@ public class JabatanFormController extends BaseController {
     @PreDestroy
     public void cleanAndExit() {
         departmentService = null;
-        unitKerjaService=null;
-        costCenterService=null;
-        golonganJabatanService=null;
-        jabatanService=null;
-        isDisable=null;
-        isEdit=null;
-        jabatanModel=null;
-        untiKerjas=null;
-        golJabatans=null;
-        departments=null;
-        posBiayas=null;
-        jabatanAtasans=null;
+        unitKerjaService = null;
+        costCenterService = null;
+        golonganJabatanService = null;
+        jabatanService = null;
+        isDisable = null;
+        isEdit = null;
+        jabatanModel = null;
+        untiKerjas = null;
+        golJabatans = null;
+        departments = null;
+        posBiayas = null;
+        jabatanAtasans = null;
     }
 
     public JabatanModel getJabatanModel() {
@@ -272,25 +275,24 @@ public class JabatanFormController extends BaseController {
         this.jabatanService = jabatanService;
     }
 
-    public void doChangeLevel() {
-        try {
-            if (jabatanModel.getLevelJabatan() > 1) {
-                isDisable = Boolean.FALSE;
-            } else {
-                isDisable = Boolean.TRUE;
-            }
-            List<Jabatan> listJabatans = jabatanService.getJabatansByLevel(jabatanModel.getLevelJabatan() - 1);
-            jabatanAtasans = new TreeMap<>();
-            for (Jabatan jabatan : listJabatans) {
-
-                jabatanAtasans.put(jabatan.getName(), jabatan.getId());
-            }
-        } catch (Exception ex) {
-            LOGGER.error("Error", ex);
-        }
-
-    }
-
+//    public void doChangeLevel() {
+//        try {
+//            if (jabatanModel.getLevelJabatan() > 1) {
+//                isDisable = Boolean.FALSE;
+//            } else {
+//                isDisable = Boolean.TRUE;
+//            }
+//            List<Jabatan> listJabatans = jabatanService.getJabatansByLevel(jabatanModel.getLevelJabatan() - 1);
+//            jabatanAtasans = new TreeMap<>();
+//            for (Jabatan jabatan : listJabatans) {
+//
+//                jabatanAtasans.put(jabatan.getName(), jabatan.getId());
+//            }
+//        } catch (Exception ex) {
+//            LOGGER.error("Error", ex);
+//        }
+//
+//    }
     public Boolean getIsDisable() {
         return isDisable;
     }
