@@ -290,6 +290,7 @@ public class BioAddressServiceImpl extends IServiceImpl implements BioAddressSer
 	}
 
 	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
 	public BioAddress getEntityByPKWithDetail(long id) throws Exception {
 		return bioAddressDao.getEntityByPKWithDetail(id);
 		
