@@ -43,7 +43,7 @@
                             
                             <p:column style="width: 50%" rowspan="8">
                             	<h:outputLabel value="#{appmsg['country.dialog_info_5']}" styleClass="label_hrm" style="font-weight: normal!important;"/>
-                                <p:gmap id="gmap" center="#{bioAddressMapController.model.latitude},#{bioAddressMapController.model.longitude}" zoom="4" type="HYBRID" style="width:500px;height:300px; margin-top: 10px;"
+                                <p:gmap id="gmap" center="#{bioAddressMapController.model.latitude},#{bioAddressMapController.model.longitude}" zoom="4" type="HYBRID" style="width:400px;height:300px; margin-top: 10px;"
                                         model="#{bioAddressMapController.mapModel}" widgetVar="map" >
                                 	<p:ajax event="pointSelect" listener="#{bioAddressMapController.onPointSelect}" update="gmap, latitudeId, longitudeId"/>
                                 </p:gmap>
