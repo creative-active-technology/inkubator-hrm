@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/dialog_layout.xhtml">
+            <ui:define name="jsInclude">
+                <script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"></script>
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlBioAddressMapId" globalOnly="true" showDetail="true"/>
+                <h:form id="formBioAddressMapId">
+                	<p:focus context="formBioAddressMapId"/>
+                    <h:panelGrid  columns="2">
+                        <p:graphicImage library="images" name="bio_data.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['bioaddress.map_address']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['bioaddress.map_address_form_biodata']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+                    <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
+                        <p:row>
+                            <p:column style="width: 13%">
+                                <p:outputLabel value="#{appmsg['country.latitude']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 36%">
+                            	<p:inputText id="latitudeId" title="#{appmsg['country.latitude']}" value="#{bioAddressMapController.model.latitude}" readonly="true"
+                                             maxlength="60" styleClass="isitext_hrm" style="width:75%;" />
+                            </p:column>
+                            
+                            <p:column style="width: 50%" rowspan="8">
+                            	<h:outputLabel value="#{appmsg['country.dialog_info_5']}" styleClass="label_hrm" style="font-weight: normal!important;"/>
+                                <p:gmap id="gmap" center="#{bioAddressMapController.model.latitude},#{bioAddressMapController.model.longitude}" zoom="4" type="HYBRID" style="width:400px;height:300px; margin-top: 10px;"
+                                        model="#{bioAddressMapController.mapModel}" widgetVar="map" >
+                                	<p:ajax event="pointSelect" listener="#{bioAddressMapController.onPointSelect}" update="gmap, latitudeId, longitudeId"/>
+                                </p:gmap>
+                            </p:column>                            
+                        </p:row>                         
+                        <p:row>
+                        	<p:column style="width: 13%">
+                                <p:outputLabel value="#{appmsg['country.longitude']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 36%">
+                            	<p:inputText id="longitudeId" title="#{appmsg['country.longitude']}" value="#{bioAddressMapController.model.longitude}" readonly="true"
+                                             maxlength="60" styleClass="isitext_hrm" style="width:75%;" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row><p:column colspan="3">&nbsp;</p:column></p:row>
+                        <p:row><p:column colspan="3">&nbsp;</p:column></p:row>
+                        <p:row><p:column colspan="3">&nbsp;</p:column></p:row>
+                        <p:row><p:column colspan="3">&nbsp;</p:column></p:row>
+                        <p:row><p:column colspan="3">&nbsp;</p:column></p:row>
+                        <p:row><p:column colspan="3">&nbsp;</p:column></p:row>
+                    </p:panelGrid>
+                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="2" style="margin-bottom: -30px!important">
+                        <p:commandButton value="#{appmsg['global.save']}" ajax="true"
+                                         action="#{bioAddressMapController.doSave()}" styleClass="isitext_hrm"
+                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
+                                         icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formBioAddressMapId"
+                                         icon="ui-icon-refresh" styleClass="isitext_hrm" >  
+                            <p:resetInput target="formBioAddressMapId" />  
+                        </p:commandButton>
+                    </h:panelGrid>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

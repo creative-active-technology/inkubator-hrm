@@ -6,11 +6,11 @@ package com.inkubator.hrm.service.impl;
 
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
-import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.dao.BioDataDao;
 import com.inkubator.hrm.dao.InterestTypeDao;
-import com.inkubator.hrm.entity.InterestType;
-import com.inkubator.hrm.service.InterestTypeService;
-import com.inkubator.hrm.web.search.InterestTypeSearchParameter;
+import com.inkubator.hrm.dao.PeopleInterestDao;
+import com.inkubator.hrm.entity.PeopleInterest;
+import com.inkubator.hrm.service.PeopleInterestService;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import java.util.Date;
 import java.util.List;
@@ -26,149 +26,143 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author Deni
  */
-@Service(value = "interestTypeService")
+@Service(value = "peopleInterestService")
 @Lazy
-public class InterestTypeServiceImpl  extends IServiceImpl implements InterestTypeService{
+public class PeopleInterestServiceImpl extends IServiceImpl implements PeopleInterestService{
+
+    @Autowired
+    private PeopleInterestDao peopleInterestDao;
+    @Autowired
+    private BioDataDao bioDataDao;
     @Autowired
     private InterestTypeDao interestTypeDao;
+    
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public PeopleInterest getAllDataByPK(Long id) {
+        return peopleInterestDao.getAllDataByPK(id);
+    }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<InterestType> getByParam(InterestTypeSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
-        return interestTypeDao.getByParam(searchParameter, firstResult, maxResults, order);
+    public List<PeopleInterest> getAllDataByBioDataId(Long bioDataId) throws Exception {
+        return peopleInterestDao.getAllDataByBioDataId(bioDataId);
     }
 
     @Override
-    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getTotalInterestTypeByParam(InterestTypeSearchParameter searchParameter) throws Exception {
-        return interestTypeDao.getTotalInterestTypeByParam(searchParameter);
-    }
-
-    @Override
-    public Long getByInterestTypeName(String name) throws Exception {
-        return interestTypeDao.getByInterestTypeName(name);
-    }
-
-    @Override
-    public InterestType getEntiyByPK(String id) throws Exception {
+    public PeopleInterest getEntiyByPK(String id) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public InterestType getEntiyByPK(Integer id) throws Exception {
+    public PeopleInterest getEntiyByPK(Integer id) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public InterestType getEntiyByPK(Long id) throws Exception {
-        return interestTypeDao.getEntiyByPK(id);
+    public PeopleInterest getEntiyByPK(Long id) throws Exception {
+        return peopleInterestDao.getEntiyByPK(id);
     }
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void save(InterestType entity) throws Exception {
-        // check duplicate name
-        long totalDuplicates = interestTypeDao.getByInterestTypeName(entity.getName());
-        if (totalDuplicates > 0) {
-            throw new BussinessException("costcenter.error_duplicate_cost_center_code");
-        }
+    public void save(PeopleInterest entity) throws Exception {
         entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+        entity.setBiodata(bioDataDao.getEntiyByPK(entity.getBiodata().getId()));
+        entity.setInterestType(interestTypeDao.getEntiyByPK(entity.getInterestType().getId()));
         entity.setName(entity.getName());
-        entity.setDescription(entity.getDescription());
         entity.setCreatedBy(UserInfoUtil.getUserName());
         entity.setCreatedOn(new Date());
-        this.interestTypeDao.save(entity);
+        this.peopleInterestDao.save(entity);
     }
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void update(InterestType entity) throws Exception {
-        long totalDuplicates = interestTypeDao.getTotalByNameAndNotId(entity.getName(), entity.getId());
-        if (totalDuplicates > 0) {
-            throw new BussinessException("costcenter.error_duplicate_cost_center_code");
-        }
-        InterestType update = this.interestTypeDao.getEntiyByPK(entity.getId());
+    public void update(PeopleInterest entity) throws Exception {
+        PeopleInterest update = peopleInterestDao.getEntiyByPK(entity.getId());
+        update.setBiodata(bioDataDao.getEntiyByPK(entity.getBiodata().getId()));
+        update.setInterestType(interestTypeDao.getEntiyByPK(entity.getInterestType().getId()));
         update.setName(entity.getName());
-        update.setDescription(entity.getDescription());
         update.setUpdatedBy(UserInfoUtil.getUserName());
         update.setUpdatedOn(new Date());
-        this.interestTypeDao.update(update);
+        this.peopleInterestDao.update(update);
     }
+    
 
     @Override
-    public void saveOrUpdate(InterestType enntity) throws Exception {
+    public void saveOrUpdate(PeopleInterest enntity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public InterestType saveData(InterestType entity) throws Exception {
+    public PeopleInterest saveData(PeopleInterest entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public InterestType updateData(InterestType entity) throws Exception {
+    public PeopleInterest updateData(PeopleInterest entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public InterestType saveOrUpdateData(InterestType entity) throws Exception {
+    public PeopleInterest saveOrUpdateData(PeopleInterest entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public InterestType getEntityByPkIsActive(String id, Integer isActive) throws Exception {
+    public PeopleInterest getEntityByPkIsActive(String id, Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public InterestType getEntityByPkIsActive(String id, Byte isActive) throws Exception {
+    public PeopleInterest getEntityByPkIsActive(String id, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public InterestType getEntityByPkIsActive(String id, Boolean isActive) throws Exception {
+    public PeopleInterest getEntityByPkIsActive(String id, Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public InterestType getEntityByPkIsActive(Integer id, Integer isActive) throws Exception {
+    public PeopleInterest getEntityByPkIsActive(Integer id, Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public InterestType getEntityByPkIsActive(Integer id, Byte isActive) throws Exception {
+    public PeopleInterest getEntityByPkIsActive(Integer id, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public InterestType getEntityByPkIsActive(Integer id, Boolean isActive) throws Exception {
+    public PeopleInterest getEntityByPkIsActive(Integer id, Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public InterestType getEntityByPkIsActive(Long id, Integer isActive) throws Exception {
+    public PeopleInterest getEntityByPkIsActive(Long id, Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public InterestType getEntityByPkIsActive(Long id, Byte isActive) throws Exception {
+    public PeopleInterest getEntityByPkIsActive(Long id, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public InterestType getEntityByPkIsActive(Long id, Boolean isActive) throws Exception {
+    public PeopleInterest getEntityByPkIsActive(Long id, Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor =Exception.class)
-    public void delete(InterestType entity) throws Exception {
-        this.interestTypeDao.delete(entity);
+    public void delete(PeopleInterest entity) throws Exception {
+        this.peopleInterestDao.delete(entity);
     }
 
     @Override
-    public void softDelete(InterestType entity) throws Exception {
+    public void softDelete(PeopleInterest entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -193,43 +187,43 @@ public class InterestTypeServiceImpl  extends IServiceImpl implements InterestTy
     }
 
     @Override
-    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<InterestType> getAllData() throws Exception {
-        return interestTypeDao.getAllData();
-    }
-
-    @Override
-    public List<InterestType> getAllData(Boolean isActive) throws Exception {
+    public List<PeopleInterest> getAllData() throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<InterestType> getAllData(Integer isActive) throws Exception {
+    public List<PeopleInterest> getAllData(Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<InterestType> getAllData(Byte isActive) throws Exception {
+    public List<PeopleInterest> getAllData(Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<InterestType> getAllDataPageAble(int firstResult, int maxResults, Order order) throws Exception {
+    public List<PeopleInterest> getAllData(Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<InterestType> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Boolean isActive) throws Exception {
+    public List<PeopleInterest> getAllDataPageAble(int firstResult, int maxResults, Order order) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<InterestType> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Integer isActive) throws Exception {
+    public List<PeopleInterest> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<InterestType> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
+    public List<PeopleInterest> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public List<PeopleInterest> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
 }

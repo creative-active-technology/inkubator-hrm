@@ -55,6 +55,7 @@ public class BioData implements java.io.Serializable {
     private String npwp;
     private Set<EducationHistory> educationHistories = new HashSet<EducationHistory>(0);
     private Set<BioAddress> bioAddresses = new HashSet<BioAddress>(0);
+    private Set<PeopleInterest> peopleInterests = new HashSet<PeopleInterest>(0);
 
 
     public BioData() {
@@ -64,7 +65,7 @@ public class BioData implements java.io.Serializable {
         this.id = id;
     }
 
-    public BioData(long id, Nationality nationality, Dialect dialect, Religion religion, City city, Race race, MaritalStatus maritalStatus, String firstName, String lastName, String title, String nickname, Integer gender, Integer bloodType, Date dateOfBirth, String personalEmail, String mobilePhone, Double bodyTall, Double bodyWeight, String createdBy, Date createdOn, String updatedBy, Date updatedOn, Set<EducationHistory> educationHistories) {
+    public BioData(long id, Nationality nationality, Dialect dialect, Religion religion, City city, Race race, MaritalStatus maritalStatus, String firstName, String lastName, String title, String nickname, Integer gender, Integer bloodType, Date dateOfBirth, String personalEmail, String mobilePhone, Double bodyTall, Double bodyWeight, String createdBy, Date createdOn, String updatedBy, Date updatedOn, Set<EducationHistory> educationHistories, Set<PeopleInterest> peopleInterests) {
         this.id = id;
         this.nationality = nationality;
         this.dialect = dialect;
@@ -88,6 +89,7 @@ public class BioData implements java.io.Serializable {
         this.updatedBy = updatedBy;
         this.updatedOn = updatedOn;
         this.educationHistories = educationHistories;
+        this.peopleInterests = peopleInterests;
     }
 
     @Id
@@ -379,5 +381,16 @@ public class BioData implements java.io.Serializable {
     public void setEducationHistories(Set<EducationHistory> educationHistories) {
         this.educationHistories = educationHistories;
     }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "biodata")
+    public Set<PeopleInterest> getPeopleInterests() {
+        return peopleInterests;
+    }
+
+    public void setPeopleInterests(Set<PeopleInterest> peopleInterests) {
+        this.peopleInterests = peopleInterests;
+    }
+    
+    
 
 }

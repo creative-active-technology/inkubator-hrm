@@ -151,11 +151,10 @@
                                     <p:ajax event="dialogReturn" listener="#{jabatanSpesifikasiDetailController.onDialogReturn}" />
                                 </p:commandButton> 
                                 - 
-                                <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}" 
+                                <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}" update=":deleteDialogJobDeskripsiId"
                                                  style="font-size: 10px!important" 
                                                  action="#{jabatanSpesifikasiDetailController.onDelete()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmJobSpec.show()">
                                     <f:setPropertyActionListener value="#{jobSpekData}" target="#{jabatanSpesifikasiDetailController.selectedJobSpec}" />
-                                    <p:ajax event="dialogReturn" listener="#{jabatanSpesifikasiDetailController.onDialogReturn}" update="tableJobSpekId,:userViewGrowlId" />
                                 </p:commandButton>
                                 -
                                 <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" ajax="true"
@@ -180,6 +179,7 @@
 
                 <p:dialog widgetVar="dialogConfirmJobSpec" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
+                    <h:form id="deleteDialogJobDeskripsiId">
                     <div align="center">
                         <div align="center">
                             <h:panelGrid columns="2" style="text-align: justify">
@@ -201,6 +201,7 @@
                                          oncomplete="dialogConfirmJobSpec.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
                         <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmJobSpec.hide()" icon="ui-icon-close" />                     	
                     </div>
+                    </h:form>
                 </p:dialog>
                 <p:dialog widgetVar="detailJobSpek" header="#{appmsg['jobspek.detail_jobspek']}" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
                           showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)" dynamic="true">

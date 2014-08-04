@@ -5,9 +5,13 @@
 package com.inkubator.hrm.entity;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -32,6 +36,7 @@ public class InterestType implements java.io.Serializable {
     private String updatedBy;
     private Date updatedOn;
     private String description;
+    private Set<PeopleInterest> peopleInterests = new HashSet<PeopleInterest>(0);
 
     public InterestType() {
     }
@@ -40,7 +45,7 @@ public class InterestType implements java.io.Serializable {
         this.id = id;
     }
 
-    public InterestType(long id, Integer version, String name, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String description) {
+    public InterestType(long id, Integer version, String name, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String description, Set<PeopleInterest> peopleInterests) {
         this.id = id;
         this.version = version;
         this.name = name;
@@ -49,6 +54,7 @@ public class InterestType implements java.io.Serializable {
         this.updatedBy = updatedBy;
         this.updatedOn = updatedOn;
         this.description = description;
+        this.peopleInterests = peopleInterests;
     }
 
     @Id 
@@ -129,7 +135,14 @@ public class InterestType implements java.io.Serializable {
         this.description = description;
     }
 
-    
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "interestType")
+    public Set<PeopleInterest> getPeopleInterests() {
+        return peopleInterests;
+    }
+
+    public void setPeopleInterests(Set<PeopleInterest> peopleInterests) {
+        this.peopleInterests = peopleInterests;
+    }
      
      
 }

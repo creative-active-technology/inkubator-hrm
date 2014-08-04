@@ -67,8 +67,8 @@ public class CountryFormController extends BaseController {
         infoRendered = Boolean.FALSE;
         emptyModel = new DefaultMapModel();
 
-        defaultLat = -6.211551441520004D;
-        defaultLng = 106.84444427490234D;
+        defaultLat = HRMConstant.DEFAULT_LATITUDE;
+        defaultLng = HRMConstant.DEFAULT_LONGITUDE;
 
         if (id != null) {
             try {
