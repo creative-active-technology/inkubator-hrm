@@ -134,6 +134,7 @@ public class JabatanSpesifikasiDetailController extends BaseController{
     public void doDelete() {
         try {
             this.jabatanSpecService.delete(selectedJobSpec);
+            listJabatanSpesifikasi = jabatanSpecService.getAllDataByJabatanId(Long.parseLong(userId.substring(1)));
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 

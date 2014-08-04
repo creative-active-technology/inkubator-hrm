@@ -8,9 +8,11 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.BioAddress;
 import com.inkubator.hrm.entity.BioData;
 import com.inkubator.hrm.entity.EducationHistory;
+import com.inkubator.hrm.entity.PeopleInterest;
 import com.inkubator.hrm.service.BioAddressService;
 import com.inkubator.hrm.service.BioDataService;
 import com.inkubator.hrm.service.EducationHistoryService;
+import com.inkubator.hrm.service.PeopleInterestService;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
@@ -51,7 +53,14 @@ public class BioDataDetilController extends BaseController {
     @ManagedProperty(value = "#{educationHistoryService}")
     private EducationHistoryService educationHistoryService;
     private String userId;
-
+    
+//people interest / minat
+    private PeopleInterest selectedPeopleInterest;
+    private List<PeopleInterest> listPeopleInterest; 
+    @ManagedProperty(value = "#{peopleInterestService}")
+    private PeopleInterestService peopleInterestService;
+//end people interest / minat
+    
     @PostConstruct
     @Override
     public void initialization() {
@@ -61,6 +70,7 @@ public class BioDataDetilController extends BaseController {
             selectedBioData = bioDataService.getEntiyByPK(Long.parseLong(userId.substring(1)));
             bioAddresses = bioAddressService.getAllDataByBioDataId(selectedBioData.getId());
             educationHistory = educationHistoryService.getAllDataByBioDataId(selectedBioData.getId());
+            listPeopleInterest = peopleInterestService.getAllDataByBioDataId(selectedBioData.getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -71,12 +81,14 @@ public class BioDataDetilController extends BaseController {
         selectedBioData = null;
         selectedBioAddress = null;
         bioAddresses = null;
+        listPeopleInterest = null;
         selectedEduHistory = null;
         educationHistory = null;
         bioDataService = null;
         bioAddressService = null;
         educationHistoryService = null;
         userId = null;
+        selectedPeopleInterest = null;
 
     }
 
@@ -136,6 +148,38 @@ public class BioDataDetilController extends BaseController {
         this.selectedBioData = selectedBioData;
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public PeopleInterest getSelectedPeopleInterest() {
+        return selectedPeopleInterest;
+    }
+
+    public void setSelectedPeopleInterest(PeopleInterest selectedPeopleInterest) {
+        this.selectedPeopleInterest = selectedPeopleInterest;
+    }
+
+    public List<PeopleInterest> getListPeopleInterest() {
+        return listPeopleInterest;
+    }
+
+    public void setListPeopleInterest(List<PeopleInterest> listPeopleInterest) {
+        this.listPeopleInterest = listPeopleInterest;
+    }
+
+    public PeopleInterestService getPeopleInterestService() {
+        return peopleInterestService;
+    }
+
+    public void setPeopleInterestService(PeopleInterestService peopleInterestService) {
+        this.peopleInterestService = peopleInterestService;
+    }
+    
     public String doDetail() {
         return "/protected/personalia/biodata_detail.htm?faces-redirect=true&execution=e" + selectedBioData.getId();
     }
@@ -283,6 +327,7 @@ public class BioDataDetilController extends BaseController {
     public void doDeleteBioEduHistory() {
         try {
             this.educationHistoryService.delete(selectedEduHistory);
+            educationHistory = educationHistoryService.getAllDataByBioDataId(Long.parseLong(userId.substring(1)));
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 
@@ -299,10 +344,70 @@ public class BioDataDetilController extends BaseController {
      * END Bio Address method
      */
 
+    /**
+     * START Bio People Interest method
+     */
+    public void doSelectBioPeopleInterest() {
+        try {
+            selectedPeopleInterest = this.peopleInterestService.getAllDataByPK(selectedPeopleInterest.getId());
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
+        }
+    }
+
+    public void doUpdateBioPeopleInterest() {
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 400);
+        options.put("contentHeight", 250);
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        List<String> dataIsi = new ArrayList<>();
+        dataIsi.add("e" + String.valueOf(selectedPeopleInterest.getId()));
+        dataToSend.put("param", dataIsi);
+        RequestContext.getCurrentInstance().openDialog("people_interest_form", options, dataToSend);
+    }
+
+    public void doAddBioPeopleInterest() {
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 400);
+        options.put("contentHeight", 250);
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        List<String> dataIsi = new ArrayList<>();
+        dataIsi.add("i" + String.valueOf(selectedBioData.getId()));
+        dataToSend.put("param", dataIsi);
+        RequestContext.getCurrentInstance().openDialog("people_interest_form", options, dataToSend);
+    }
+
+    public void doDeleteBioPeopleInterest() {
+        try {
+            this.peopleInterestService.delete(selectedPeopleInterest);
+            listPeopleInterest = peopleInterestService.getAllDataByBioDataId(Long.parseLong(userId.substring(1)));
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully",
+                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+
+        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint",
+                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            LOGGER.error("Error", ex);
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
+        }
+    }
+
+    /**
+     * END BioPeople Interest method
+     */
+    
     @Override
     public void onDialogReturn(SelectEvent event) {
         try {
             educationHistory = educationHistoryService.getAllDataByBioDataId(Long.parseLong(userId.substring(1)));
+            listPeopleInterest = peopleInterestService.getAllDataByBioDataId(Long.parseLong(userId.substring(1)));
             super.onDialogReturn(event);
         } catch (Exception ex) {
             Logger.getLogger(BioDataDetilController.class.getName()).log(Level.SEVERE, null, ex);
