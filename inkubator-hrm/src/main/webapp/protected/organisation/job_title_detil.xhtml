@@ -107,19 +107,19 @@
                                     </p:column>
                                     <p:column > 
                                         <f:facet name="header">  
-                                           <h:outputText value="#{appmsg['jobspec.jobspec_specification']}"/>
+                                            <h:outputText value="#{appmsg['jobspec.jobspec_specification']}"/>
                                         </f:facet>
                                         <h:outputLabel value=" #{listJobSpecifikasi.specificationAbility.name}" />
                                     </p:column> 
                                     <p:column style="width: 150px;text-align: center"> 
                                         <f:facet name="header" >  
-                                        <h:outputText value="#{appmsg['jobspec.jobspec_option_ability']}"/>
+                                            <h:outputText value="#{appmsg['jobspec.jobspec_option_ability']}"/>
                                         </f:facet>
                                         <p:outputLabel value="#{listJobSpecifikasi.optionAbility}" />
                                     </p:column>
                                     <p:column style="width: 80px;text-align: center"> 
                                         <f:facet name="header">  
-                                             <h:outputText value="#{appmsg['jobspec.jobspec_value']}"/>
+                                            <h:outputText value="#{appmsg['jobspec.jobspec_value']}"/>
                                         </f:facet>
                                         <p:outputLabel value="#{listJobSpecifikasi.value}" />
                                     </p:column>
@@ -141,7 +141,7 @@
                                         </f:facet>
                                         <h:outputLabel value=" #{listJobDeskrpsi.description}" />
                                     </p:column> 
-                                    <p:column style="width: 80px;text-align: center"> 
+                                    <p:column style="width: 100px;text-align: center"> 
                                         <f:facet name="header" >  
                                             <h:outputText value="#{appmsg['jabatan.category_task']}" />
                                         </f:facet>
@@ -157,6 +157,36 @@
                                             <f:converter converterId="jobTypeTimeConverter" />
                                         </p:outputLabel>
                                     </p:column>
+                                </p:dataTable> 
+                            </p:tab> 
+                            <p:tab id="jobWorkKlasificationTab" title="Kriteria Pekerjaan">  
+                                <!--<h:panelGrid columns="2" cellpadding="10">-->  
+                                <p:dataTable value="#{jabatanDetailController.selectedJabatan.kerjaJabatans}" var="listJobCriteria" rowIndexVar="no" id="jobWorkKlasificationId"
+                                             >
+                                    <p:column style="text-align: center;width: 25px;max-width: 25px">
+                                        <f:facet name="header">  
+                                            <h:outputText value="No." />
+                                        </f:facet>
+                                        <h:outputLabel value="#{no+1}." />
+                                    </p:column>
+                                    <p:column > 
+                                        <f:facet name="header" >  
+                                            <h:outputText value="Kode" />
+                                        </f:facet>
+                                        <p:outputLabel value="#{listJobCriteria.code}" />
+                                    </p:column>
+                                    <p:column > 
+                                        <f:facet name="header">  
+                                            <h:outputText value="Nama" />
+                                        </f:facet>
+                                        <p:outputLabel value="#{listJobCriteria.name}"/>
+                                    </p:column>
+                                    <p:column > 
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['global.description']}" />
+                                        </f:facet>
+                                        <h:outputLabel value=" #{listJobCriteria.description}" />
+                                    </p:column> 
                                 </p:dataTable> 
                             </p:tab>  
                         </p:tabView>

@@ -5,25 +5,32 @@
  */
 package com.inkubator.hrm.web.organisation;
 
+import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.CostCenter;
 import com.inkubator.hrm.entity.Department;
 import com.inkubator.hrm.entity.GolonganJabatan;
 import com.inkubator.hrm.entity.Jabatan;
+import com.inkubator.hrm.entity.KlasifikasiKerja;
+import com.inkubator.hrm.entity.KlasifikasiKerjaJabatan;
+import com.inkubator.hrm.entity.KlasifikasiKerjaJabatanId;
 import com.inkubator.hrm.entity.UnitKerja;
 import com.inkubator.hrm.service.CostCenterService;
 import com.inkubator.hrm.service.DepartmentService;
 import com.inkubator.hrm.service.GolonganJabatanService;
 import com.inkubator.hrm.service.JabatanService;
+import com.inkubator.hrm.service.KlasifikasiKerjaService;
 import com.inkubator.hrm.service.UnitKerjaService;
 import com.inkubator.hrm.util.MapUtil;
 import com.inkubator.hrm.web.model.JabatanModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -31,6 +38,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import org.primefaces.model.DualListModel;
 
 /**
  *
@@ -50,6 +58,8 @@ public class JabatanFormController extends BaseController {
     private GolonganJabatanService golonganJabatanService;
     @ManagedProperty(value = "#{jabatanService}")
     private JabatanService jabatanService;
+    @ManagedProperty(value = "#{klasifikasiKerjaService}")
+    private KlasifikasiKerjaService klasifikasiKerjaService;
     private Boolean isDisable;
     private Boolean isEdit;
     private JabatanModel jabatanModel;
@@ -58,6 +68,7 @@ public class JabatanFormController extends BaseController {
     private Map<String, Long> departments = new TreeMap<>();
     private Map<String, Long> posBiayas = new TreeMap<>();
     private Map<String, Long> jabatanAtasans = new TreeMap<>();
+    private DualListModel<KlasifikasiKerja> dualListModel = new DualListModel<>();
 
     @PostConstruct
     @Override
@@ -66,16 +77,25 @@ public class JabatanFormController extends BaseController {
             super.initialization();
             String id = FacesUtil.getRequestParameter("execution");
             if (id != null) {
-                Jabatan jabatan = jabatanService.getEntiyByPK(Long.parseLong(id.substring(1)));
+                Jabatan jabatan = jabatanService.getByIdWithKlasifikasiKerja(Long.parseLong(id.substring(1)));
                 isEdit = Boolean.TRUE;
                 jabatanModel = getJabatanModelFromEntity(jabatan);
 //                doChangeLevel();
                 System.out.println(" hahahah");
+                List<KlasifikasiKerja> source = this.klasifikasiKerjaService.getAllData();
+                List<KlasifikasiKerja> target = jabatan.getKerjaJabatans();
+                source.removeAll(target);
+                dualListModel = new DualListModel<>(source, target);
+//                sourceSpiRole.removeAll(targetRole);
+//                System.out.println(sourceSpiRole.size());
+//                dualListModel = new DualListModel<>(sourceSpiRole, targetRole);
             } else {
                 jabatanModel = new JabatanModel();
                 isEdit = Boolean.FALSE;
 //                jabatanModel.setLevelJabatan(1);
 //                doChangeLevel();
+                List<KlasifikasiKerja> source = this.klasifikasiKerjaService.getAllData();
+                dualListModel.setSource(source);
             }
 
             List<Department> listDepartemens = departmentService.getAllData();
@@ -119,12 +139,32 @@ public class JabatanFormController extends BaseController {
         Jabatan jabatan = getEntityFromView(jabatanModel);
         try {
             if (isEdit) {
-
+                Set<KlasifikasiKerjaJabatan> setToSave = new HashSet<>();
+                List<KlasifikasiKerja> klasifikasiKerjas = dualListModel.getTarget();
+                for (KlasifikasiKerja klasifikasiKerja : klasifikasiKerjas) {
+                    KlasifikasiKerjaJabatan kerjaJabatan = new KlasifikasiKerjaJabatan();
+                    kerjaJabatan.setId(new KlasifikasiKerjaJabatanId(jabatan.getId(), klasifikasiKerja.getId()));
+                    kerjaJabatan.setJabatan(jabatan);
+                    kerjaJabatan.setKlasifikasiKerja(klasifikasiKerja);
+                    setToSave.add(kerjaJabatan);
+                }
+                jabatan.setKlasifikasiKerjaJabatans(setToSave);
                 jabatanService.update(jabatan);
                 MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 
             } else {
+                jabatan.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+                Set<KlasifikasiKerjaJabatan> setToSave = new HashSet<>();
+                List<KlasifikasiKerja> klasifikasiKerjas = dualListModel.getTarget();
+                for (KlasifikasiKerja klasifikasiKerja : klasifikasiKerjas) {
+                    KlasifikasiKerjaJabatan kerjaJabatan = new KlasifikasiKerjaJabatan();
+                    kerjaJabatan.setId(new KlasifikasiKerjaJabatanId(jabatan.getId(), klasifikasiKerja.getId()));
+                    kerjaJabatan.setJabatan(jabatan);
+                    kerjaJabatan.setKlasifikasiKerja(klasifikasiKerja);
+                    setToSave.add(kerjaJabatan);
+                }
+                jabatan.setKlasifikasiKerjaJabatans(setToSave);
                 jabatanService.save(jabatan);
                 MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
@@ -299,6 +339,18 @@ public class JabatanFormController extends BaseController {
 
     public void setIsDisable(Boolean isDisable) {
         this.isDisable = isDisable;
+    }
+
+    public DualListModel<KlasifikasiKerja> getDualListModel() {
+        return dualListModel;
+    }
+
+    public void setDualListModel(DualListModel<KlasifikasiKerja> dualListModel) {
+        this.dualListModel = dualListModel;
+    }
+
+    public void setKlasifikasiKerjaService(KlasifikasiKerjaService klasifikasiKerjaService) {
+        this.klasifikasiKerjaService = klasifikasiKerjaService;
     }
 
 }

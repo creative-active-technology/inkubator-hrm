@@ -110,18 +110,18 @@
                                 </p:column>
 
                             </p:row>
-<!--                            <p:row>
-                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="#{appmsg['jabatan.jabatan_level']}"  for="levelJabatanId" styleClass="label_hrm"/>
-                                </p:column>
-                                <p:column style="width: 80%">
-                                    <p:spinner id="levelJabatanId" value="#{jabatanFormController.jabatanModel.levelJabatan}" size="2" required="true"
-                                               min="1" max="100" stepFactor="1" >
-                                        <p:ajax update="atasanId" process="@this" listener="#{jabatanFormController.doChangeLevel()}"/>
-                                    </p:spinner>
-                                    <p:message for="levelJabatanId"/>
-                                </p:column>
-                            </p:row>-->
+                            <!--                            <p:row>
+                                                            <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                                                <p:outputLabel  value="#{appmsg['jabatan.jabatan_level']}"  for="levelJabatanId" styleClass="label_hrm"/>
+                                                            </p:column>
+                                                            <p:column style="width: 80%">
+                                                                <p:spinner id="levelJabatanId" value="#{jabatanFormController.jabatanModel.levelJabatan}" size="2" required="true"
+                                                                           min="1" max="100" stepFactor="1" >
+                                                                    <p:ajax update="atasanId" process="@this" listener="#{jabatanFormController.doChangeLevel()}"/>
+                                                                </p:spinner>
+                                                                <p:message for="levelJabatanId"/>
+                                                            </p:column>
+                                                        </p:row>-->
 
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
@@ -158,7 +158,23 @@
                             </p:row>
                         </p:panelGrid>
                         <p:focus context="jobTitleFormId" />
-                        <p:separator style="margin-top: 20px;margin-bottom: 10px"/>
+                        <!--<p:separator style="margin-top: 20px;margin-bottom: 10px"/>-->
+                        <p:outputLabel value="Daftar Klasifikasi Kerja" styleClass="header_big" />
+                       <!--<p:outputLabel value="#{appmsg['user_view.header2']}" styleClass="header_small_no_bold" />-->
+                        <!--                                </h:panelGrid>
+                                                    </h:panelGroup>-->
+                        <!--</h:panelGrid>-->
+                        <p:separator/>
+                        <div align="center">
+                            <p:pickList value="#{jabatanFormController.dualListModel}" var="role" itemValue="#{role}" converter="klasifikasiKerjaConverter" id="picklistUserRoleId"
+                                        required="true"  style="margin-top: 15px;margin-bottom: 15px" label="#{appmsg['role_view.header1']}" styleClass="isitext_hrm"
+                                        itemLabel="#{role.name}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
+                                        removeLabel="#{appmsg['global.remove']}"/>
+                            <p:message for="picklistUserRoleId" />
+                        </div>  
+                        <!--</p:panel>-->
+
+                        <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
                         <div style="margin-bottom: 5px">
                             <p:commandButton value="#{appmsg['global.save']}" ajax="true" action="#{jabatanFormController.doSave()}"
                                              styleClass="isitext_hrm" 

@@ -21,7 +21,7 @@ public interface JabatanDao extends IDAO<Jabatan> {
 
     public Long getTotalJabatanByParam(JabatanSearchParameter searchParameter);
 
-    Jabatan getJabatanByLevelOne(Integer level);
+    public Jabatan getJabatanByLevelOne(Integer level);
 
     public List<Jabatan> getJabatanByParentCode(String parentCode);
 
@@ -30,4 +30,6 @@ public interface JabatanDao extends IDAO<Jabatan> {
     public List<Jabatan> getJabatansByLevel(Integer level);
 
     public Jabatan getByIdWithJobDeskripsi(long id) throws Exception;
+
+    public void saveAndMerge(Jabatan jabatan);
 }
