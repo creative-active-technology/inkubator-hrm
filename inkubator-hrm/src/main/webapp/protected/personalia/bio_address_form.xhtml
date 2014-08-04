@@ -40,7 +40,7 @@
                                 <h:outputLabel for="typeId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 36%">
-                            	<p:selectOneMenu id="typeId" styleClass="isitext_hrm" value="#{bioAddressFormController.model.type}" style="width:196px;">
+                            	<p:selectOneMenu id="typeId" styleClass="isitext_hrm" value="#{bioAddressFormController.model.type}" style="width:245px;">
 	                            	<!--Cek HRM Constanta..-->
 	                                <f:selectItem itemLabel="#{appmsg['bioaddress.identityCard']}" itemValue="0" />
 	                                <f:selectItem itemLabel="#{appmsg['bioaddress.residence']}" itemValue="1" />
@@ -55,7 +55,7 @@
                                 <h:outputLabel for="statusAddressId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 36%">
-                            	<p:selectOneMenu id="statusAddressId" styleClass="isitext_hrm" value="#{bioAddressFormController.model.statusAddress}" style="width:196px;">
+                            	<p:selectOneMenu id="statusAddressId" styleClass="isitext_hrm" value="#{bioAddressFormController.model.statusAddress}" style="width:245px;">
 	                            	<!--Cek HRM Constanta..-->
 	                                <f:selectItem itemLabel="#{appmsg['bioaddress.family']}" itemValue="0" />
 	                                <f:selectItem itemLabel="#{appmsg['bioaddress.relatives']}" itemValue="1" />
@@ -80,7 +80,7 @@
                             </p:column>
                             <p:column  style="width: 36%">
                             	<p:inputText id="contactNameId" title="#{appmsg['bioaddress.contact_name']}" value="#{bioAddressFormController.model.contactName}" 
-                                    		 required="true" maxlength="60" styleClass="isitext_hrm" style="width:190px;" />
+                                    		 required="true" maxlength="60" styleClass="isitext_hrm" style="width:238px;" />
                             </p:column>
                             
                             <p:column style="width: 13%">
@@ -91,7 +91,7 @@
                             </p:column>
                             <p:column  style="width: 36%">
                             	<p:inputText id="phoneNumbeId" title="#{appmsg['global.phone_number']}" value="#{bioAddressFormController.model.phoneNumber}" 
-                                    		 required="true" maxlength="45" styleClass="isitext_hrm" style="width:190px;" />
+                                    		 required="true" maxlength="45" styleClass="isitext_hrm" style="width:238px;" />
                             </p:column>
                         </p:row>
                         <p:row>
@@ -110,7 +110,7 @@
                                 <h:outputLabel for="countryId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 36%">
-                            	<p:selectOneMenu id="countryId" filter="true" styleClass="isitext_hrm" value="#{bioAddressFormController.model.countryId}">
+                            	<p:selectOneMenu id="countryId" filter="true" styleClass="isitext_hrm" value="#{bioAddressFormController.model.countryId}" style="width:245px;">
 	                            	<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
 	                                <f:selectItems value="#{bioAddressFormController.countries}" var="country" itemValue="#{country.id}" itemLabel="#{country.countryName}"/>
 	                                <p:ajax listener="#{bioAddressFormController.onChangeCountries()}" update="provinceId,cityId"/>
@@ -125,7 +125,7 @@
                             </p:column>
                             <p:column  style="width: 36%">
                             	<p:inputText id="subDistrictId" title="#{appmsg['bioaddress.sub_district']}" value="#{bioAddressFormController.model.subDistrict}" 
-                                    		 maxlength="60" styleClass="isitext_hrm" style="width:190px;" />
+                                    		 maxlength="60" styleClass="isitext_hrm" style="width:238px;" />
                             </p:column>
                         </p:row>
                         <p:row>
@@ -144,7 +144,7 @@
                                 <h:outputLabel for="provinceId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 36%">
-                            	<p:selectOneMenu id="provinceId" filter="true" styleClass="isitext_hrm" value="#{bioAddressFormController.model.provinceId}">
+                            	<p:selectOneMenu id="provinceId" filter="true" styleClass="isitext_hrm" value="#{bioAddressFormController.model.provinceId}" style="width:245px;">
 	                            	<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
 	                                <f:selectItems value="#{bioAddressFormController.provinces}" var="province" itemValue="#{province.id}" itemLabel="#{province.provinceName}"/>
 	                                <p:ajax listener="#{bioAddressFormController.onChangeProvinces()}" update="cityId"/>
@@ -159,7 +159,7 @@
                             </p:column>
                             <p:column  style="width: 36%">
                             	<p:inputText id="villageId" title="#{appmsg['bioaddress.village']}" value="#{bioAddressFormController.model.village}" 
-                                    		 maxlength="60" styleClass="isitext_hrm" style="width:190px;" />
+                                    		 maxlength="60" styleClass="isitext_hrm" style="width:238px;" />
                             </p:column>
                         </p:row>
                         <p:row>
@@ -178,7 +178,7 @@
                                 <h:outputLabel for="cityId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 36%">
-                            	<p:selectOneMenu id="cityId" filter="true" styleClass="isitext_hrm" value="#{bioAddressFormController.model.cityId}">
+                            	<p:selectOneMenu id="cityId" filter="true" styleClass="isitext_hrm" value="#{bioAddressFormController.model.cityId}" style="width:245px;">
 	                            	<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
 	                                <f:selectItems value="#{bioAddressFormController.cities}" var="city" itemValue="#{city.id}" itemLabel="#{city.cityName}"/>
 	                            </p:selectOneMenu>
@@ -192,7 +192,7 @@
                             </p:column>
                             <p:column  style="width: 36%">
                             	<p:inputText id="zipCodeId" title="#{appmsg['global.zip_code']}" value="#{bioAddressFormController.model.zipCode}" 
-                                    		 maxlength="10" styleClass="isitext_hrm" style="width:190px;" />
+                                    		 maxlength="10" styleClass="isitext_hrm" style="width:238px;" />
                             </p:column>
                         </p:row>
                         <p:row>
@@ -212,7 +212,7 @@
                             </p:column>
                             <p:column  style="width: 36%">
                             	<p:inputTextarea id="addressDetailId" title="#{appmsg['global.address']}" value="#{bioAddressFormController.model.addressDetail}" 
-                                    		 required="true" maxlength="1000" styleClass="isitext_hrm" style="width:190px;" />
+                                    		 required="true" maxlength="1000" styleClass="isitext_hrm" style="width:238px;" />
                             </p:column>
                             
                         	<p:column style="width: 13%">
@@ -223,7 +223,7 @@
                             </p:column>
                             <p:column  style="width: 36%">
                             	<p:inputTextarea id="notesId" title="#{appmsg['global.notes']}" value="#{bioAddressFormController.model.notes}" 
-                                    		 maxlength="1000" styleClass="isitext_hrm" style="width:190px;" />
+                                    		 maxlength="1000" styleClass="isitext_hrm" style="width:238px;" />
                             </p:column>              
                         </p:row>
                         <p:row>

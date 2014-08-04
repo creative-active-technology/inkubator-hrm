@@ -165,7 +165,7 @@ public class BioDataDetilController extends BaseController {
 
     public void doSelectBioAddress() {
         try {
-            selectedBioAddress = bioAddressService.getEntiyByPK(selectedBioAddress.getId());
+            selectedBioAddress = bioAddressService.getEntityByPKWithDetail(selectedBioAddress.getId());
         } catch (Exception e) {
             LOGGER.error("Error", e);
         }
@@ -214,7 +214,7 @@ public class BioDataDetilController extends BaseController {
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 900);
-        options.put("contentHeight", 450);
+        options.put("contentHeight", 400);
         RequestContext.getCurrentInstance().openDialog("bio_address_form", options, params);
     }
     

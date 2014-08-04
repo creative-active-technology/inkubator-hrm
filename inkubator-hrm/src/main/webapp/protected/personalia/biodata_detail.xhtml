@@ -431,16 +431,56 @@
                         <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmBioAddress.hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
-                <p:dialog widgetVar="dialogDetailBioAddress" header="#{appmsg['bioaddress.detail_address']}" styleClass="header_small_no_bold" width="450" modal="true" resizable="false" hideEffect="puff" 
+                <p:dialog widgetVar="dialogDetailBioAddress" header="#{appmsg['bioaddress.detail_address']}" styleClass="header_small_no_bold" width="900" modal="true" resizable="false" hideEffect="puff" 
                           showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogBioAddressDetailId" style="width:100%;margin:5px;">
                         <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['global.address']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedBioAddress.addressDetail}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:15%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['global.type']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:35%;">
+                            	<p:outputLabel value="#{bioDataDetilController.selectedBioAddress.type}" styleClass="label_hrm">
+                            		<f:converter converterId="bioAddressTypeConverter"/>
+                            	</p:outputLabel>
+                            </p:column>
+                            <p:column style="width:15%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['global.status']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:35%;">
+                            	<p:outputLabel value="#{bioDataDetilController.selectedBioAddress.statusAddress}" styleClass="label_hrm">
+                            		<f:converter converterId="bioAddressStatusConverter"/>
+                            	</p:outputLabel>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:15%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['bioaddress.contact_name']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:35%;"><p:outputLabel value="#{bioDataDetilController.selectedBioAddress.contactName}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:15%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['global.phone_number']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:35%;"><p:outputLabel value="#{bioDataDetilController.selectedBioAddress.phoneNumber}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:15%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['country.country']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:35%;"><p:outputLabel value="#{bioDataDetilController.selectedBioAddress.city.province.country.countryName}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:15%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['bioaddress.sub_district']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:35%;"><p:outputLabel value="#{bioDataDetilController.selectedBioAddress.subDistrict}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:15%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['province.province']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:35%;"><p:outputLabel value="#{bioDataDetilController.selectedBioAddress.city.province.provinceName}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:15%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['bioaddress.village']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:35%;"><p:outputLabel value="#{bioDataDetilController.selectedBioAddress.village}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:15%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['city.city']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:35%;"><p:outputLabel value="#{bioDataDetilController.selectedBioAddress.city.cityName}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:15%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['global.zip_code']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:35%;"><p:outputLabel value="#{bioDataDetilController.selectedBioAddress.zipCode}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:15%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['global.address']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:35%;"><p:outputLabel value="#{bioDataDetilController.selectedBioAddress.addressDetail}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:15%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['global.notes']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:35%;"><p:outputLabel value="#{bioDataDetilController.selectedBioAddress.notes}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <f:facet name="footer">
                             <p:row>
-                                <p:column colspan="2"><p:outputLabel value="#{appmsg['menu.personalia']} - #{appmsg['global.address']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
+                                <p:column colspan="4"><p:outputLabel value="#{appmsg['menu.personalia']} - #{appmsg['global.address']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
                             </p:row>
                         </f:facet>
                     </p:panelGrid>
