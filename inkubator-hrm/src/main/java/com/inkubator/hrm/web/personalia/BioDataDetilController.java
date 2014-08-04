@@ -160,7 +160,19 @@ public class BioDataDetilController extends BaseController {
      * START Bio Address method
      */
     public void doUpdateBioAddressMap() {
-
+    	Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 1000);
+        options.put("contentHeight", 500);
+        
+        Map<String, List<String>> params = new HashMap<>();
+        List<String> bioAddressId = new ArrayList<>();
+        bioAddressId.add(String.valueOf(selectedBioAddress.getId()));
+        params.put("bioAddressId", bioAddressId);
+        
+        RequestContext.getCurrentInstance().openDialog("bio_address_map", options, params);
     }
 
     public void doSelectBioAddress() {

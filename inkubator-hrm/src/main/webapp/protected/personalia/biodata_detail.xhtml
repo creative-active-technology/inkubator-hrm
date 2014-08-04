@@ -266,9 +266,9 @@
 		                            </p:column>
 		                            <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
 		                                <p:commandButton icon="ui-icon-clipboard" title="#{appmsg['global.maps']}" label="#{appmsg['global.maps']}"  
-		                                				 style="font-size: 10px!important" update=":growlBioDetailFormId" 
-		                                				 action="#{bioDataDetilController.doUpdateBioAddressMap()}">
+		                                				 style="font-size: 10px!important" action="#{bioDataDetilController.doUpdateBioAddressMap()}">
 		                                    <f:setPropertyActionListener value="#{bioAddressesData}" target="#{bioDataDetilController.selectedBioAddress}" />
+		                                    <p:ajax event="dialogReturn" listener="#{bioDataDetilController.onDialogReturnBioAddress}"  update="tableBioAdressId,:growlBioDetailFormId"/>
 		                                </p:commandButton>
 		                                -
 		                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
