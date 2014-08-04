@@ -56,7 +56,7 @@ public class WtHolidayLazyModel extends LazyDataModel<WtHoliday> implements Seri
             }
         } else {
             try {
-                wtHolidays = wtHolidayService.getByParam(holidaySearchParameter, first, pageSize, Order.desc("holidayName"));
+                wtHolidays = wtHolidayService.getByParam(holidaySearchParameter, first, pageSize, Order.asc("holidayDate"));
                 jumlahData = Integer.parseInt(String.valueOf(wtHolidayService.getTotalWtHolidayByParam(holidaySearchParameter)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);

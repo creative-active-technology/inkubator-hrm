@@ -5,20 +5,24 @@
  */
 package com.inkubator.hrm.service.impl;
 
-import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.CostCenterDao;
 import com.inkubator.hrm.dao.DepartmentDao;
 import com.inkubator.hrm.dao.GolonganJabatanDao;
 import com.inkubator.hrm.dao.JabatanDao;
+import com.inkubator.hrm.dao.KlasifikasiKerjaJabatanDao;
 import com.inkubator.hrm.dao.UnitKerjaDao;
 import com.inkubator.hrm.entity.Jabatan;
+import com.inkubator.hrm.entity.KlasifikasiKerja;
+import com.inkubator.hrm.entity.KlasifikasiKerjaJabatan;
 import com.inkubator.hrm.service.JabatanService;
 import com.inkubator.hrm.web.search.JabatanSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -45,6 +49,8 @@ public class JabatanServiceImpl extends IServiceImpl implements JabatanService {
     private DepartmentDao departmentDao;
     @Autowired
     private GolonganJabatanDao golonganJabatanDao;
+    @Autowired
+    private KlasifikasiKerjaJabatanDao klasifikasiKerjaJabatanDao;
 
     @Override
     public Jabatan getEntiyByPK(String id) throws Exception {
@@ -69,7 +75,7 @@ public class JabatanServiceImpl extends IServiceImpl implements JabatanService {
         if (totalDuplicate > 0) {
             throw new BussinessException("jabatan.jabatan_duplicate_code");
         }
-        entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+//        entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         entity.setCostCenter(this.costCenterDao.getEntiyByPK(entity.getCostCenter().getId()));
         entity.setDepartment(this.departmentDao.getEntiyByPK(entity.getDepartment().getId()));
         entity.setGolonganJabatan(this.golonganJabatanDao.getEntiyByPK(entity.getGolonganJabatan().getId()));
@@ -79,6 +85,12 @@ public class JabatanServiceImpl extends IServiceImpl implements JabatanService {
         entity.setUnitKerja(this.unitKerjaDao.getEntiyByPK(entity.getUnitKerja().getId()));
         entity.setCreatedBy(UserInfoUtil.getUserName());
         entity.setCreatedOn(new Date());
+        Set<KlasifikasiKerjaJabatan> klasifikasiKerjaJabatans = entity.getKlasifikasiKerjaJabatans();
+        for (KlasifikasiKerjaJabatan klasifikasiKerjaJabatan : klasifikasiKerjaJabatans) {
+            System.out.println(klasifikasiKerjaJabatan.getJabatan().getCode());
+            System.out.println(klasifikasiKerjaJabatan.getKlasifikasiKerja().getName());
+            System.out.println(klasifikasiKerjaJabatan.getId());
+        }
         this.jabatanDao.save(entity);
     }
 
@@ -90,6 +102,7 @@ public class JabatanServiceImpl extends IServiceImpl implements JabatanService {
             throw new BussinessException("jabatan.jabatan_duplicate_code");
         }
         Jabatan jabatan = this.jabatanDao.getEntiyByPK(entity.getId());
+        jabatan.getKlasifikasiKerjaJabatans().clear();
         jabatan.setCode(entity.getCode());
         jabatan.setCostCenter(this.costCenterDao.getEntiyByPK(entity.getCostCenter().getId()));
         jabatan.setDepartment(this.departmentDao.getEntiyByPK(entity.getDepartment().getId()));
@@ -104,8 +117,13 @@ public class JabatanServiceImpl extends IServiceImpl implements JabatanService {
         jabatan.setTujuanJabatan(entity.getTujuanJabatan());
         jabatan.setUpdatedBy(UserInfoUtil.getUserName());
         jabatan.setUpdatedOn(new Date());
-        this.jabatanDao.update(jabatan);
-
+        this.jabatanDao.saveAndMerge(jabatan);
+        Set<KlasifikasiKerjaJabatan> getKlasifikasiKerjaJabatans=entity.getKlasifikasiKerjaJabatans();
+        for (KlasifikasiKerjaJabatan klasifikasiKerjaJabatan : getKlasifikasiKerjaJabatans) {
+            klasifikasiKerjaJabatan.setJabatan(jabatan);
+            klasifikasiKerjaJabatanDao.save(klasifikasiKerjaJabatan);
+        }
+        
     }
 
     @Override
@@ -288,7 +306,25 @@ public class JabatanServiceImpl extends IServiceImpl implements JabatanService {
     public Jabatan getByIdWithJobDeskripsi(long id) throws Exception {
         Jabatan jabatan = jabatanDao.getByIdWithJobDeskripsi(id);
         jabatan.getGolonganJabatan().getPangkat().getPangkatName();
+        List<KlasifikasiKerja> kerjaJabatans = new ArrayList<>();
+        for (KlasifikasiKerjaJabatan klasifikasiKerjaJabatan : klasifikasiKerjaJabatanDao.getByJabatanId(id)) {
+            kerjaJabatans.add(klasifikasiKerjaJabatan.getKlasifikasiKerja());
+        }
+        jabatan.setKerjaJabatans(kerjaJabatans);
         return jabatan;
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Jabatan getByIdWithKlasifikasiKerja(long id) throws Exception {
+        Jabatan jabatan = jabatanDao.getEntiyByPK(id);
+        List<KlasifikasiKerja> kerjaJabatans = new ArrayList<>();
+        for (KlasifikasiKerjaJabatan klasifikasiKerjaJabatan : klasifikasiKerjaJabatanDao.getByJabatanId(id)) {
+            kerjaJabatans.add(klasifikasiKerjaJabatan.getKlasifikasiKerja());
+        }
+        jabatan.setKerjaJabatans(kerjaJabatans);
+        return jabatan;
+
     }
 
 }

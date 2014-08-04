@@ -1,9 +1,12 @@
 package com.inkubator.hrm.entity;
 // Generated Jun 17, 2014 4:36:40 PM by Hibernate Tools 3.6.0
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,6 +18,7 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 
@@ -45,6 +49,7 @@ public class Jabatan implements java.io.Serializable {
     private Set<JabatanDeskripsi> jabatanDeskripsis = new HashSet<JabatanDeskripsi>(0);
     private Set<JabatanSpesifikasi> jabatanSpesifikasis = new HashSet<JabatanSpesifikasi>(0);
     private Set<KlasifikasiKerjaJabatan> klasifikasiKerjaJabatans = new HashSet<KlasifikasiKerjaJabatan>(0);
+    private List<KlasifikasiKerja> kerjaJabatans = new ArrayList<KlasifikasiKerja>();
 
     public Jabatan() {
     }
@@ -246,13 +251,23 @@ public class Jabatan implements java.io.Serializable {
         this.jabatanSpesifikasis = jabatanSpesifikasis;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "jabatan")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "jabatan", orphanRemoval = true)
     public Set<KlasifikasiKerjaJabatan> getKlasifikasiKerjaJabatans() {
+        System.out.println(" hahahhahah");
         return this.klasifikasiKerjaJabatans;
     }
 
     public void setKlasifikasiKerjaJabatans(Set<KlasifikasiKerjaJabatan> klasifikasiKerjaJabatans) {
         this.klasifikasiKerjaJabatans = klasifikasiKerjaJabatans;
+    }
+
+    @Transient
+    public List<KlasifikasiKerja> getKerjaJabatans() {
+        return kerjaJabatans;
+    }
+
+    public void setKerjaJabatans(List<KlasifikasiKerja> kerjaJabatans) {
+        this.kerjaJabatans = kerjaJabatans;
     }
 
 }

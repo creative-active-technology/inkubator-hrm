@@ -135,8 +135,14 @@ public class JabatanDaoImpl extends IDAOImpl<Jabatan> implements JabatanDao {
         criteria.setFetchMode("jabatan", FetchMode.JOIN);
         criteria.setFetchMode("jabatanDeskripsis", FetchMode.JOIN);
         criteria.setFetchMode("jabatanSpesifikasis", FetchMode.JOIN);
-         criteria.setFetchMode("jabatanSpesifikasis.specificationAbility", FetchMode.JOIN);
+        criteria.setFetchMode("jabatanSpesifikasis.specificationAbility", FetchMode.JOIN);
         return (Jabatan) criteria.uniqueResult();
+    }
+
+    @Override
+    public void saveAndMerge(Jabatan jabatan) {
+        getCurrentSession().update(jabatan);
+        getCurrentSession().flush();
     }
 
 }

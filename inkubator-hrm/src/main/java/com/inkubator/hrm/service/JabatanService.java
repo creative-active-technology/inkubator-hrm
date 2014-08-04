@@ -31,4 +31,6 @@ public interface JabatanService extends IService<Jabatan> {
 
     public Jabatan getByIdWithJobDeskripsi(long id) throws Exception;
 
+    public Jabatan getByIdWithKlasifikasiKerja(long id) throws Exception;
+
 }
