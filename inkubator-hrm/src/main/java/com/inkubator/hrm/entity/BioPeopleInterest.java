@@ -21,7 +21,7 @@ import javax.persistence.Version;
  * @author Deni
  */
 @Entity
-@Table(name="people_interest"
+@Table(name="bio_people_interest"
     ,catalog="hrm"
 )
 public class BioPeopleInterest implements java.io.Serializable{
