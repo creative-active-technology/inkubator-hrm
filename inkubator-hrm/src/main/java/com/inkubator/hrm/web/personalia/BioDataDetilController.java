@@ -204,12 +204,24 @@ public class BioDataDetilController extends BaseController {
      * START Bio Address method
      */
     public void doUpdateBioAddressMap() {
-
+    	Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 800);
+        options.put("contentHeight", 500);
+        
+        Map<String, List<String>> params = new HashMap<>();
+        List<String> bioAddressId = new ArrayList<>();
+        bioAddressId.add(String.valueOf(selectedBioAddress.getId()));
+        params.put("bioAddressId", bioAddressId);
+        
+        RequestContext.getCurrentInstance().openDialog("bio_address_map", options, params);
     }
 
     public void doSelectBioAddress() {
         try {
-            selectedBioAddress = bioAddressService.getEntiyByPK(selectedBioAddress.getId());
+            selectedBioAddress = bioAddressService.getEntityByPKWithDetail(selectedBioAddress.getId());
         } catch (Exception e) {
             LOGGER.error("Error", e);
         }
@@ -258,7 +270,7 @@ public class BioDataDetilController extends BaseController {
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 900);
-        options.put("contentHeight", 450);
+        options.put("contentHeight", 400);
         RequestContext.getCurrentInstance().openDialog("bio_address_form", options, params);
     }
     
