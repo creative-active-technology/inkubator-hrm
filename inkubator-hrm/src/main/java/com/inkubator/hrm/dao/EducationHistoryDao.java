@@ -5,16 +5,16 @@
 package com.inkubator.hrm.dao;
 
 import com.inkubator.datacore.dao.IDAO;
-import com.inkubator.hrm.entity.EducationHistory;
+import com.inkubator.hrm.entity.BioEducationHistory;
 import java.util.List;
 
 /**
  *
  * @author Deni
  */
-public interface EducationHistoryDao extends IDAO<EducationHistory>{
+public interface EducationHistoryDao extends IDAO<BioEducationHistory>{
     
-    public EducationHistory getAllDataByPK(Long id);
+    public BioEducationHistory getAllDataByPK(Long id);
     
-    public List<EducationHistory> getAllDataByBioDataId(Long bioDataId);
+    public List<BioEducationHistory> getAllDataByBioDataId(Long bioDataId);
 }

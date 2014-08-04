@@ -7,8 +7,8 @@ package com.inkubator.hrm.web.personalia;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.BioAddress;
 import com.inkubator.hrm.entity.BioData;
-import com.inkubator.hrm.entity.EducationHistory;
-import com.inkubator.hrm.entity.PeopleInterest;
+import com.inkubator.hrm.entity.BioEducationHistory;
+import com.inkubator.hrm.entity.BioPeopleInterest;
 import com.inkubator.hrm.service.BioAddressService;
 import com.inkubator.hrm.service.BioDataService;
 import com.inkubator.hrm.service.EducationHistoryService;
@@ -44,8 +44,8 @@ public class BioDataDetilController extends BaseController {
     private BioData selectedBioData;
     private BioAddress selectedBioAddress;
     private List<BioAddress> bioAddresses;
-    private EducationHistory selectedEduHistory;
-    private List<EducationHistory> educationHistory;
+    private BioEducationHistory selectedEduHistory;
+    private List<BioEducationHistory> educationHistory;
     @ManagedProperty(value = "#{bioDataService}")
     private BioDataService bioDataService;
     @ManagedProperty(value = "#{bioAddressService}")
@@ -55,8 +55,8 @@ public class BioDataDetilController extends BaseController {
     private String userId;
     
 //people interest / minat
-    private PeopleInterest selectedPeopleInterest;
-    private List<PeopleInterest> listPeopleInterest; 
+    private BioPeopleInterest selectedPeopleInterest;
+    private List<BioPeopleInterest> listPeopleInterest; 
     @ManagedProperty(value = "#{peopleInterestService}")
     private PeopleInterestService peopleInterestService;
 //end people interest / minat
@@ -96,19 +96,19 @@ public class BioDataDetilController extends BaseController {
         return selectedBioAddress;
     }
 
-    public EducationHistory getSelectedEduHistory() {
+    public BioEducationHistory getSelectedEduHistory() {
         return selectedEduHistory;
     }
 
-    public void setSelectedEduHistory(EducationHistory selectedEduHistory) {
+    public void setSelectedEduHistory(BioEducationHistory selectedEduHistory) {
         this.selectedEduHistory = selectedEduHistory;
     }
 
-    public List<EducationHistory> getEducationHistory() {
+    public List<BioEducationHistory> getEducationHistory() {
         return educationHistory;
     }
 
-    public void setEducationHistory(List<EducationHistory> educationHistory) {
+    public void setEducationHistory(List<BioEducationHistory> educationHistory) {
         this.educationHistory = educationHistory;
     }
 
@@ -156,19 +156,19 @@ public class BioDataDetilController extends BaseController {
         this.userId = userId;
     }
 
-    public PeopleInterest getSelectedPeopleInterest() {
+    public BioPeopleInterest getSelectedPeopleInterest() {
         return selectedPeopleInterest;
     }
 
-    public void setSelectedPeopleInterest(PeopleInterest selectedPeopleInterest) {
+    public void setSelectedPeopleInterest(BioPeopleInterest selectedPeopleInterest) {
         this.selectedPeopleInterest = selectedPeopleInterest;
     }
 
-    public List<PeopleInterest> getListPeopleInterest() {
+    public List<BioPeopleInterest> getListPeopleInterest() {
         return listPeopleInterest;
     }
 
-    public void setListPeopleInterest(List<PeopleInterest> listPeopleInterest) {
+    public void setListPeopleInterest(List<BioPeopleInterest> listPeopleInterest) {
         this.listPeopleInterest = listPeopleInterest;
     }
 

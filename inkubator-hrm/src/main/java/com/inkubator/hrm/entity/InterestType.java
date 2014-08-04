@@ -36,7 +36,7 @@ public class InterestType implements java.io.Serializable {
     private String updatedBy;
     private Date updatedOn;
     private String description;
-    private Set<PeopleInterest> peopleInterests = new HashSet<PeopleInterest>(0);
+    private Set<BioPeopleInterest> peopleInterests = new HashSet<BioPeopleInterest>(0);
 
     public InterestType() {
     }
@@ -45,7 +45,7 @@ public class InterestType implements java.io.Serializable {
         this.id = id;
     }
 
-    public InterestType(long id, Integer version, String name, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String description, Set<PeopleInterest> peopleInterests) {
+    public InterestType(long id, Integer version, String name, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String description, Set<BioPeopleInterest> peopleInterests) {
         this.id = id;
         this.version = version;
         this.name = name;
@@ -136,11 +136,11 @@ public class InterestType implements java.io.Serializable {
     }
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "interestType")
-    public Set<PeopleInterest> getPeopleInterests() {
+    public Set<BioPeopleInterest> getPeopleInterests() {
         return peopleInterests;
     }
 
-    public void setPeopleInterests(Set<PeopleInterest> peopleInterests) {
+    public void setPeopleInterests(Set<BioPeopleInterest> peopleInterests) {
         this.peopleInterests = peopleInterests;
     }
      

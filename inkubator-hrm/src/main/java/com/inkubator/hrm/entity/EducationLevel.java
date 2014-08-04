@@ -26,7 +26,7 @@ public class EducationLevel implements Serializable {
     private String updatedBy;
     private Date createdOn;
     private Date updatedOn;
-    private Set<EducationHistory> educationHistorys = new HashSet<EducationHistory>(0);
+    private Set<BioEducationHistory> educationHistorys = new HashSet<BioEducationHistory>(0);
 
     public EducationLevel() {
 
@@ -118,11 +118,11 @@ public class EducationLevel implements Serializable {
     }
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "educationLevel")
-    public Set<EducationHistory> getEducationHistorys() {
+    public Set<BioEducationHistory> getEducationHistorys() {
         return educationHistorys;
     }
 
-    public void setEducationHistorys(Set<EducationHistory> educationHistorys) {
+    public void setEducationHistorys(Set<BioEducationHistory> educationHistorys) {
         this.educationHistorys = educationHistorys;
     }
     

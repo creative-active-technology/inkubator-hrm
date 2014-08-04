@@ -12,7 +12,7 @@ import com.inkubator.hrm.dao.EducationLevelDao;
 import com.inkubator.hrm.dao.FacultyDao;
 import com.inkubator.hrm.dao.InstitutionEducationDao;
 import com.inkubator.hrm.dao.MajorDao;
-import com.inkubator.hrm.entity.EducationHistory;
+import com.inkubator.hrm.entity.BioEducationHistory;
 import com.inkubator.hrm.service.EducationHistoryService;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import java.util.Date;
@@ -47,24 +47,24 @@ public class EducationHistoryServiceImpl extends IServiceImpl implements Educati
     private MajorDao majorDao;
 
     @Override
-    public EducationHistory getEntiyByPK(String id) throws Exception {
+    public BioEducationHistory getEntiyByPK(String id) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public EducationHistory getEntiyByPK(Integer id) throws Exception {
+    public BioEducationHistory getEntiyByPK(Integer id) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public EducationHistory getEntiyByPK(Long id) throws Exception {
+    public BioEducationHistory getEntiyByPK(Long id) throws Exception {
         return educationHistoryDao.getEntiyByPK(id);
     }
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void save(EducationHistory entity) throws Exception {
+    public void save(BioEducationHistory entity) throws Exception {
         entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         entity.setBiodata(bioDataDao.getEntiyByPK(entity.getBiodata().getId()));
         entity.setEducationLevel(educationLevelDao.getEntiyByPK(entity.getEducationLevel().getId()));
@@ -80,8 +80,8 @@ public class EducationHistoryServiceImpl extends IServiceImpl implements Educati
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void update(EducationHistory entity) throws Exception {
-        EducationHistory update = educationHistoryDao.getEntiyByPK(entity.getId());
+    public void update(BioEducationHistory entity) throws Exception {
+        BioEducationHistory update = educationHistoryDao.getEntiyByPK(entity.getId());
         update.setBiodata(bioDataDao.getEntiyByPK(entity.getBiodata().getId()));
         update.setEducationLevel(educationLevelDao.getEntiyByPK(entity.getEducationLevel().getId()));
         update.setInstitutionEducation(institutionEducationDao.getEntiyByPK(entity.getInstitutionEducation().getId()));
@@ -95,78 +95,78 @@ public class EducationHistoryServiceImpl extends IServiceImpl implements Educati
     }
 
     @Override
-    public void saveOrUpdate(EducationHistory enntity) throws Exception {
+    public void saveOrUpdate(BioEducationHistory enntity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public EducationHistory saveData(EducationHistory entity) throws Exception {
+    public BioEducationHistory saveData(BioEducationHistory entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public EducationHistory updateData(EducationHistory entity) throws Exception {
+    public BioEducationHistory updateData(BioEducationHistory entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public EducationHistory saveOrUpdateData(EducationHistory entity) throws Exception {
+    public BioEducationHistory saveOrUpdateData(BioEducationHistory entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public EducationHistory getEntityByPkIsActive(String id, Integer isActive) throws Exception {
+    public BioEducationHistory getEntityByPkIsActive(String id, Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public EducationHistory getEntityByPkIsActive(String id, Byte isActive) throws Exception {
+    public BioEducationHistory getEntityByPkIsActive(String id, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public EducationHistory getEntityByPkIsActive(String id, Boolean isActive) throws Exception {
+    public BioEducationHistory getEntityByPkIsActive(String id, Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public EducationHistory getEntityByPkIsActive(Integer id, Integer isActive) throws Exception {
+    public BioEducationHistory getEntityByPkIsActive(Integer id, Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public EducationHistory getEntityByPkIsActive(Integer id, Byte isActive) throws Exception {
+    public BioEducationHistory getEntityByPkIsActive(Integer id, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public EducationHistory getEntityByPkIsActive(Integer id, Boolean isActive) throws Exception {
+    public BioEducationHistory getEntityByPkIsActive(Integer id, Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public EducationHistory getEntityByPkIsActive(Long id, Integer isActive) throws Exception {
+    public BioEducationHistory getEntityByPkIsActive(Long id, Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public EducationHistory getEntityByPkIsActive(Long id, Byte isActive) throws Exception {
+    public BioEducationHistory getEntityByPkIsActive(Long id, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public EducationHistory getEntityByPkIsActive(Long id, Boolean isActive) throws Exception {
+    public BioEducationHistory getEntityByPkIsActive(Long id, Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor =Exception.class)
-    public void delete(EducationHistory entity) throws Exception {
+    public void delete(BioEducationHistory entity) throws Exception {
         this.educationHistoryDao.delete(entity);
     }
 
     @Override
-    public void softDelete(EducationHistory entity) throws Exception {
+    public void softDelete(BioEducationHistory entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -191,54 +191,54 @@ public class EducationHistoryServiceImpl extends IServiceImpl implements Educati
     }
 
     @Override
-    public List<EducationHistory> getAllData() throws Exception {
+    public List<BioEducationHistory> getAllData() throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<EducationHistory> getAllData(Boolean isActive) throws Exception {
+    public List<BioEducationHistory> getAllData(Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<EducationHistory> getAllData(Integer isActive) throws Exception {
+    public List<BioEducationHistory> getAllData(Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<EducationHistory> getAllData(Byte isActive) throws Exception {
+    public List<BioEducationHistory> getAllData(Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<EducationHistory> getAllDataPageAble(int firstResult, int maxResults, Order order) throws Exception {
+    public List<BioEducationHistory> getAllDataPageAble(int firstResult, int maxResults, Order order) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<EducationHistory> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Boolean isActive) throws Exception {
+    public List<BioEducationHistory> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<EducationHistory> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Integer isActive) throws Exception {
+    public List<BioEducationHistory> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<EducationHistory> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
+    public List<BioEducationHistory> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
-    public EducationHistory getAllDataByPK(Long id) {
+    public BioEducationHistory getAllDataByPK(Long id) {
         return educationHistoryDao.getAllDataByPK(id);
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<EducationHistory> getAllDataByBioDataId(Long bioDataId) throws Exception {
+    public List<BioEducationHistory> getAllDataByBioDataId(Long bioDataId) throws Exception {
         return educationHistoryDao.getAllDataByBioDataId(bioDataId);
     }
     

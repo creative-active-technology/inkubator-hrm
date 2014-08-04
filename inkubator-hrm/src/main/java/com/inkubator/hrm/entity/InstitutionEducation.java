@@ -40,7 +40,7 @@ public class InstitutionEducation  implements java.io.Serializable {
      private String institutionEducationName;
      private String address;
      private Integer postalCode;
-     private Set<EducationHistory> educationHistorys = new HashSet<EducationHistory>(0);
+     private Set<BioEducationHistory> educationHistorys = new HashSet<BioEducationHistory>(0);
 
     public InstitutionEducation() {
     }
@@ -49,7 +49,7 @@ public class InstitutionEducation  implements java.io.Serializable {
     public InstitutionEducation(long id) {
         this.id = id;
     }
-    public InstitutionEducation(long id, City city, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String institutionEducationCode, String institutionEducationName, String address, Integer postalCode,Set<EducationHistory> educationHistorys) {
+    public InstitutionEducation(long id, City city, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String institutionEducationCode, String institutionEducationName, String address, Integer postalCode,Set<BioEducationHistory> educationHistorys) {
        this.id = id;
        this.city = city;
        this.createdBy = createdBy;
@@ -176,11 +176,11 @@ public class InstitutionEducation  implements java.io.Serializable {
     }
     
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "institutionEducation")
-    public Set<EducationHistory> getEducationHistorys() {
+    public Set<BioEducationHistory> getEducationHistorys() {
         return educationHistorys;
     }
 
-    public void setEducationHistorys(Set<EducationHistory> educationHistorys) {
+    public void setEducationHistorys(Set<BioEducationHistory> educationHistorys) {
         this.educationHistorys = educationHistorys;
     }
 

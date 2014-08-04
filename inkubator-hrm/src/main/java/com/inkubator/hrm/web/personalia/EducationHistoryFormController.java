@@ -7,7 +7,7 @@ package com.inkubator.hrm.web.personalia;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.BioData;
-import com.inkubator.hrm.entity.EducationHistory;
+import com.inkubator.hrm.entity.BioEducationHistory;
 import com.inkubator.hrm.entity.EducationLevel;
 import com.inkubator.hrm.entity.Faculty;
 import com.inkubator.hrm.entity.InstitutionEducation;
@@ -53,7 +53,7 @@ public class EducationHistoryFormController extends BaseController{
     private MajorService majorService;
     
     private Long bioDataId;
-    private EducationHistory selected;
+    private BioEducationHistory selected;
     private EducationHistoryModel model;
     private Boolean isEdit;
     
@@ -109,7 +109,7 @@ public class EducationHistoryFormController extends BaseController{
             if (param.contains("e")) {
                 isEdit = Boolean.TRUE;
                 long educationId = Long.parseLong(param.substring(1));
-                EducationHistory educationHistory = educationHistoryService.getAllDataByPK(educationId);
+                BioEducationHistory educationHistory = educationHistoryService.getAllDataByPK(educationId);
                 model.setId(educationHistory.getId());
                 model.setBiodataId(educationHistory.getBiodata().getId());
                 model.setEducationLevelId(educationHistory.getEducationLevel().getId());
@@ -157,7 +157,7 @@ public class EducationHistoryFormController extends BaseController{
     
     public void doSave() {
         System.out.println("masuk dosave");
-        EducationHistory educationHistory = getEntityFromViewModel(model);
+        BioEducationHistory educationHistory = getEntityFromViewModel(model);
         try {
             if (isEdit) {
                 educationHistoryService.update(educationHistory);
@@ -178,8 +178,8 @@ public class EducationHistoryFormController extends BaseController{
 //        cleanAndExit();
     }
     
-    private EducationHistory getEntityFromViewModel(EducationHistoryModel model) {
-        EducationHistory educationHistory = new EducationHistory();
+    private BioEducationHistory getEntityFromViewModel(EducationHistoryModel model) {
+        BioEducationHistory educationHistory = new BioEducationHistory();
         if (model.getId() != null) {
             educationHistory.setId(model.getId());
         }
@@ -233,11 +233,11 @@ public class EducationHistoryFormController extends BaseController{
         this.majorService = majorService;
     }
 
-    public EducationHistory getSelected() {
+    public BioEducationHistory getSelected() {
         return selected;
     }
 
-    public void setSelected(EducationHistory selected) {
+    public void setSelected(BioEducationHistory selected) {
         this.selected = selected;
     }
 

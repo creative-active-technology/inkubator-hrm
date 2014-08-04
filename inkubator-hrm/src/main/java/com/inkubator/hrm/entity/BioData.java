@@ -53,9 +53,9 @@ public class BioData implements java.io.Serializable {
     private String noKK;
     private String jamsostek;
     private String npwp;
-    private Set<EducationHistory> educationHistories = new HashSet<EducationHistory>(0);
+    private Set<BioEducationHistory> educationHistories = new HashSet<BioEducationHistory>(0);
     private Set<BioAddress> bioAddresses = new HashSet<BioAddress>(0);
-    private Set<PeopleInterest> peopleInterests = new HashSet<PeopleInterest>(0);
+    private Set<BioPeopleInterest> peopleInterests = new HashSet<BioPeopleInterest>(0);
 
 
     public BioData() {
@@ -65,7 +65,7 @@ public class BioData implements java.io.Serializable {
         this.id = id;
     }
 
-    public BioData(long id, Nationality nationality, Dialect dialect, Religion religion, City city, Race race, MaritalStatus maritalStatus, String firstName, String lastName, String title, String nickname, Integer gender, Integer bloodType, Date dateOfBirth, String personalEmail, String mobilePhone, Double bodyTall, Double bodyWeight, String createdBy, Date createdOn, String updatedBy, Date updatedOn, Set<EducationHistory> educationHistories, Set<PeopleInterest> peopleInterests) {
+    public BioData(long id, Nationality nationality, Dialect dialect, Religion religion, City city, Race race, MaritalStatus maritalStatus, String firstName, String lastName, String title, String nickname, Integer gender, Integer bloodType, Date dateOfBirth, String personalEmail, String mobilePhone, Double bodyTall, Double bodyWeight, String createdBy, Date createdOn, String updatedBy, Date updatedOn, Set<BioEducationHistory> educationHistories, Set<BioPeopleInterest> peopleInterests) {
         this.id = id;
         this.nationality = nationality;
         this.dialect = dialect;
@@ -374,20 +374,20 @@ public class BioData implements java.io.Serializable {
     }
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "biodata")
-    public Set<EducationHistory> getEducationHistories() {
+    public Set<BioEducationHistory> getEducationHistories() {
         return educationHistories;
     }
 
-    public void setEducationHistories(Set<EducationHistory> educationHistories) {
+    public void setEducationHistories(Set<BioEducationHistory> educationHistories) {
         this.educationHistories = educationHistories;
     }
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "biodata")
-    public Set<PeopleInterest> getPeopleInterests() {
+    public Set<BioPeopleInterest> getPeopleInterests() {
         return peopleInterests;
     }
 
-    public void setPeopleInterests(Set<PeopleInterest> peopleInterests) {
+    public void setPeopleInterests(Set<BioPeopleInterest> peopleInterests) {
         this.peopleInterests = peopleInterests;
     }
     

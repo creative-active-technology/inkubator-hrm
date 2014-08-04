@@ -35,7 +35,7 @@ public class Faculty  implements java.io.Serializable {
      private Date updatedOn;
      private String facultyName;
      private String description;
-     private Set<EducationHistory> educationHistorys = new HashSet<EducationHistory>(0);
+     private Set<BioEducationHistory> educationHistorys = new HashSet<BioEducationHistory>(0);
 
     public Faculty() {
     }
@@ -44,7 +44,7 @@ public class Faculty  implements java.io.Serializable {
     public Faculty(long id) {
         this.id = id;
     }
-    public Faculty(long id, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String facultyName, String description, Set<EducationHistory> educationHistorys) {
+    public Faculty(long id, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String facultyName, String description, Set<BioEducationHistory> educationHistorys) {
        this.id = id;
        this.createdBy = createdBy;
        this.createdOn = createdOn;
@@ -138,11 +138,11 @@ public class Faculty  implements java.io.Serializable {
     }
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "faculty")
-    public Set<EducationHistory> getEducationHistorys() {
+    public Set<BioEducationHistory> getEducationHistorys() {
         return educationHistorys;
     }
 
-    public void setEducationHistorys(Set<EducationHistory> educationHistorys) {
+    public void setEducationHistorys(Set<BioEducationHistory> educationHistorys) {
         this.educationHistorys = educationHistorys;
     }
 

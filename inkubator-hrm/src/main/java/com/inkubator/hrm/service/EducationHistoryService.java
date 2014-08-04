@@ -5,15 +5,15 @@
 package com.inkubator.hrm.service;
 
 import com.inkubator.datacore.service.IService;
-import com.inkubator.hrm.entity.EducationHistory;
+import com.inkubator.hrm.entity.BioEducationHistory;
 import java.util.List;
 
 /**
  *
  * @author Deni
  */
-public interface EducationHistoryService extends IService<EducationHistory>{
-    public EducationHistory getAllDataByPK(Long id);
+public interface EducationHistoryService extends IService<BioEducationHistory>{
+    public BioEducationHistory getAllDataByPK(Long id);
     
-    public List<EducationHistory> getAllDataByBioDataId(Long bioDataId) throws Exception;
+    public List<BioEducationHistory> getAllDataByBioDataId(Long bioDataId) throws Exception;
 }

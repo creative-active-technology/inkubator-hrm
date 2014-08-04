@@ -24,7 +24,7 @@ import javax.persistence.Version;
 @Table(name="education_history"
     ,catalog="hrm"
 )
-public class EducationHistory implements java.io.Serializable{
+public class BioEducationHistory implements java.io.Serializable{
      private long id;
      private Integer version;
      private BioData biodata;
@@ -39,14 +39,14 @@ public class EducationHistory implements java.io.Serializable{
      private String updatedBy;
      private Date updatedOn;
 
-    public EducationHistory() {
+    public BioEducationHistory() {
     }
 
-    public EducationHistory(long id) {
+    public BioEducationHistory(long id) {
         this.id = id;
     }
 
-    public EducationHistory(long id, Integer version, BioData biodata, EducationLevel educationLevel, InstitutionEducation institutionEducation, Faculty faculty, Major major, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String certificateNumber, Double score) {
+    public BioEducationHistory(long id, Integer version, BioData biodata, EducationLevel educationLevel, InstitutionEducation institutionEducation, Faculty faculty, Major major, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String certificateNumber, Double score) {
         this.id = id;
         this.version = version;
         this.biodata = biodata;
