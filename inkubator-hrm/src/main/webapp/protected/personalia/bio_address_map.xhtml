@@ -37,7 +37,7 @@
                                 <h:outputLabel value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 36%">
-                            	<p:inputText id="latitudeId" title="#{appmsg['country.latitude']}" value="#{bioAddressMapController.model.latitude}" disabled="true"
+                            	<p:inputText id="latitudeId" title="#{appmsg['country.latitude']}" value="#{bioAddressMapController.model.latitude}" readonly="true"
                                              maxlength="60" styleClass="isitext_hrm" style="width:75%;" />
                             </p:column>
                             
@@ -57,7 +57,7 @@
                                 <h:outputLabel value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 36%">
-                            	<p:inputText id="longitudeId" title="#{appmsg['country.longitude']}" value="#{bioAddressMapController.model.longitude}" disabled="true"
+                            	<p:inputText id="longitudeId" title="#{appmsg['country.longitude']}" value="#{bioAddressMapController.model.longitude}" readonly="true"
                                              maxlength="60" styleClass="isitext_hrm" style="width:75%;" />
                             </p:column>
                         </p:row>
