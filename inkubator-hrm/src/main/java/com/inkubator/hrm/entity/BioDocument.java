@@ -11,7 +11,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.Version;
+
+import org.apache.commons.lang3.StringUtils;
 
 @Entity
 @Table(name = "bio_document", catalog = "hrm")
@@ -141,4 +144,9 @@ public class BioDocument implements java.io.Serializable {
     public void setUpdatedOn(Date updatedOn) {
         this.updatedOn = updatedOn;
     }
+    	
+	@Transient
+	public String getUploadFileName(){
+		return StringUtils.substringAfterLast(uploadPath, "/");
+	}
 }
