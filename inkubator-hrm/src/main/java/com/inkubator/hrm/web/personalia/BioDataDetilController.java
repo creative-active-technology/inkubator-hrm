@@ -301,7 +301,7 @@ public class BioDataDetilController extends BaseController {
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", false);
-        options.put("contentWidth", 400);
+        options.put("contentWidth", 600);
         options.put("contentHeight", 370);
         Map<String, List<String>> dataToSend = new HashMap<>();
         List<String> dataIsi = new ArrayList<>();
@@ -315,7 +315,7 @@ public class BioDataDetilController extends BaseController {
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", false);
-        options.put("contentWidth", 400);
+        options.put("contentWidth", 600);
         options.put("contentHeight", 370);
         Map<String, List<String>> dataToSend = new HashMap<>();
         List<String> dataIsi = new ArrayList<>();
