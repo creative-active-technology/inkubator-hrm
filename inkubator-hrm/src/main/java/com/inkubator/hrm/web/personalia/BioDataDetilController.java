@@ -7,10 +7,12 @@ package com.inkubator.hrm.web.personalia;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.BioAddress;
 import com.inkubator.hrm.entity.BioData;
+import com.inkubator.hrm.entity.BioDocument;
 import com.inkubator.hrm.entity.BioEducationHistory;
 import com.inkubator.hrm.entity.BioPeopleInterest;
 import com.inkubator.hrm.service.BioAddressService;
 import com.inkubator.hrm.service.BioDataService;
+import com.inkubator.hrm.service.BioDocumentService;
 import com.inkubator.hrm.service.EducationHistoryService;
 import com.inkubator.hrm.service.PeopleInterestService;
 import com.inkubator.webcore.controller.BaseController;
@@ -42,17 +44,27 @@ import org.springframework.dao.DataIntegrityViolationException;
 public class BioDataDetilController extends BaseController {
 
     private BioData selectedBioData;
-    private BioAddress selectedBioAddress;
-    private List<BioAddress> bioAddresses;
     private BioEducationHistory selectedEduHistory;
     private List<BioEducationHistory> educationHistory;
     @ManagedProperty(value = "#{bioDataService}")
     private BioDataService bioDataService;
-    @ManagedProperty(value = "#{bioAddressService}")
-    private BioAddressService bioAddressService;
     @ManagedProperty(value = "#{educationHistoryService}")
     private EducationHistoryService educationHistoryService;
     private String userId;
+    
+//start. bio address
+    private BioAddress selectedBioAddress;
+    private List<BioAddress> bioAddresses;
+    @ManagedProperty(value = "#{bioAddressService}")
+    private BioAddressService bioAddressService;
+//end. bio address
+
+//start. bio document
+    private BioDocument selectedBioDocument;
+    private List<BioDocument> bioDocuments;
+    @ManagedProperty(value = "#{bioDocumentService}")
+    private BioDocumentService bioDocumentService;
+//end. bio document
     
 //people interest / minat
     private BioPeopleInterest selectedPeopleInterest;
@@ -69,6 +81,7 @@ public class BioDataDetilController extends BaseController {
             userId = FacesUtil.getRequestParameter("execution");
             selectedBioData = bioDataService.getEntiyByPK(Long.parseLong(userId.substring(1)));
             bioAddresses = bioAddressService.getAllDataByBioDataId(selectedBioData.getId());
+            bioDocuments = bioDocumentService.getAllDataByBioDataId(selectedBioData.getId());
             educationHistory = educationHistoryService.getAllDataByBioDataId(selectedBioData.getId());
             listPeopleInterest = peopleInterestService.getAllDataByBioDataId(selectedBioData.getId());
         } catch (Exception ex) {
@@ -89,7 +102,9 @@ public class BioDataDetilController extends BaseController {
         educationHistoryService = null;
         userId = null;
         selectedPeopleInterest = null;
-
+        selectedBioDocument = null;
+        bioDocuments = null;
+        bioDocumentService = null;
     }
 
     public BioAddress getSelectedBioAddress() {
@@ -148,7 +163,27 @@ public class BioDataDetilController extends BaseController {
         this.selectedBioData = selectedBioData;
     }
 
-    public String getUserId() {
+    public BioDocument getSelectedBioDocument() {
+		return selectedBioDocument;
+	}
+
+	public void setSelectedBioDocument(BioDocument selectedBioDocument) {
+		this.selectedBioDocument = selectedBioDocument;
+	}
+
+	public List<BioDocument> getBioDocuments() {
+		return bioDocuments;
+	}
+
+	public void setBioDocuments(List<BioDocument> bioDocuments) {
+		this.bioDocuments = bioDocuments;
+	}
+
+	public void setBioDocumentService(BioDocumentService bioDocumentService) {
+		this.bioDocumentService = bioDocumentService;
+	}
+
+	public String getUserId() {
         return userId;
     }
 
@@ -283,6 +318,73 @@ public class BioDataDetilController extends BaseController {
 		}
     }
     /** END Bio Address method */
+    
+    
+    /**
+     * START Bio Document method
+     */
+    public void doSelectBioDocument() {
+        try {
+            selectedBioDocument = bioDocumentService.getEntiyByPK(selectedBioDocument.getId());
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+
+    public void doUpdateBioDocument() {
+        List<String> bioDocumentId = new ArrayList<>();
+        bioDocumentId.add(String.valueOf(selectedBioDocument.getId()));
+
+        List<String> bioDataId = new ArrayList<>();
+        bioDataId.add(String.valueOf(selectedBioData.getId()));
+
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("bioDocumentId", bioDocumentId);
+        dataToSend.put("bioDataId", bioDataId);
+        showDialogBioDocument(dataToSend);
+    }
+
+    public void doAddBioDocument() {
+        List<String> bioDataId = new ArrayList<>();
+        bioDataId.add(String.valueOf(selectedBioData.getId()));
+
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("bioDataId", bioDataId);
+        showDialogBioDocument(dataToSend);
+    }
+    
+    public void doDeleteBioDocument(){
+    	try {
+    		bioDocumentService.delete(selectedBioDocument);
+    		bioDocuments = bioDocumentService.getAllDataByBioDataId(selectedBioDocument.getBioData().getId());
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+
+        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (Exception ex) {
+            LOGGER.error("Error when doDelete bioDocument", ex);
+        }
+    }
+
+    private void showDialogBioDocument(Map<String, List<String>> params) {
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 900);
+        options.put("contentHeight", 400);
+        RequestContext.getCurrentInstance().openDialog("bio_document_form", options, params);
+    }
+    
+    public void onDialogReturnBioDocument(SelectEvent event){
+    	try {
+			bioDocuments = bioDocumentService.getAllDataByBioDataId(selectedBioData.getId());
+			super.onDialogReturn(event);
+		} catch (Exception e) {
+			LOGGER.error("Error", e);
+		}
+    }    
+    /** END Bio Document method */
  
     
     /**

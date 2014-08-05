@@ -56,6 +56,7 @@ public class BioData implements java.io.Serializable {
     private Set<BioEducationHistory> educationHistories = new HashSet<BioEducationHistory>(0);
     private Set<BioAddress> bioAddresses = new HashSet<BioAddress>(0);
     private Set<BioPeopleInterest> peopleInterests = new HashSet<BioPeopleInterest>(0);
+    private Set<BioDocument> bioDocuments = new HashSet<BioDocument>(0);
 
 
     public BioData() {
@@ -65,7 +66,7 @@ public class BioData implements java.io.Serializable {
         this.id = id;
     }
 
-    public BioData(long id, Nationality nationality, Dialect dialect, Religion religion, City city, Race race, MaritalStatus maritalStatus, String firstName, String lastName, String title, String nickname, Integer gender, Integer bloodType, Date dateOfBirth, String personalEmail, String mobilePhone, Double bodyTall, Double bodyWeight, String createdBy, Date createdOn, String updatedBy, Date updatedOn, Set<BioEducationHistory> educationHistories, Set<BioPeopleInterest> peopleInterests) {
+    public BioData(long id, Nationality nationality, Dialect dialect, Religion religion, City city, Race race, MaritalStatus maritalStatus, String firstName, String lastName, String title, String nickname, Integer gender, Integer bloodType, Date dateOfBirth, String personalEmail, String mobilePhone, Double bodyTall, Double bodyWeight, String createdBy, Date createdOn, String updatedBy, Date updatedOn, Set<BioEducationHistory> educationHistories, Set<BioPeopleInterest> peopleInterests, Set<BioAddress> bioAddresses, Set<BioDocument> bioDocuments) {
         this.id = id;
         this.nationality = nationality;
         this.dialect = dialect;
@@ -90,6 +91,8 @@ public class BioData implements java.io.Serializable {
         this.updatedOn = updatedOn;
         this.educationHistories = educationHistories;
         this.peopleInterests = peopleInterests;
+        this.bioAddresses = bioAddresses;
+        this.bioDocuments = bioDocuments;
     }
 
     @Id
@@ -390,7 +393,14 @@ public class BioData implements java.io.Serializable {
     public void setPeopleInterests(Set<BioPeopleInterest> peopleInterests) {
         this.peopleInterests = peopleInterests;
     }
-    
-    
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "bioData")
+	public Set<BioDocument> getBioDocuments() {
+		return bioDocuments;
+	}
+
+	public void setBioDocuments(Set<BioDocument> bioDocuments) {
+		this.bioDocuments = bioDocuments;
+	}
 
 }
