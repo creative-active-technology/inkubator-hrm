@@ -697,6 +697,33 @@
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['educationhistory.score']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedEduHistory.score}" styleClass="label_hrm"/></p:column>
                         </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="Ijazah" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;">
+                                <p:graphicImage value="#{imageBioDataStreamerController.ijazahFile}" height="176" width="120" style="border:  2px solid #003366 !important; border-radius: 5px !important" cache="false">
+                                    <f:param name="id" value="#{bioDataDetilController.selectedEduHistory.id}"/>
+                                </p:graphicImage>
+                                <p:dialog modal="true" widgetVar="statusDialog" header="Status" draggable="false" closable="false" resizable="false">
+                                    <p:graphicImage library="images" name="loading.gif" />
+                                    <p:graphicImage library="images" name="bio_data.png" height="36" width="36" />
+                                </p:dialog>
+                                <h:form>
+                                    <p:commandButton value="Download" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
+                                        <p:fileDownload value="#{imageBioDataStreamerController.ijazahFile}" />
+                                        <f:param name="id" value="#{bioDataDetilController.selectedEduHistory.id}"/>
+                                    </p:commandButton>
+                                </h:form>
+                                <script type="text/javascript">
+                                    function start() {
+                                        PF('statusDialog').show();
+                                    }
+
+                                    function stop() {
+                                        PF('statusDialog').hide();
+                                    }
+                                </script>
+                            </p:column>
+                        </p:row>
                         <f:facet name="footer">
                             <p:row>
                                 <p:column colspan="2"><p:outputLabel value="#{appmsg['menu.personalia']} - #{appmsg['educationhistory.education_history']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
