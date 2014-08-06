@@ -230,6 +230,7 @@ public class EducationHistoryFormController extends BaseController{
     public void handingFotoUpload(FileUploadEvent fileUploadEvent) {
         fotoFile = fileUploadEvent.getFile();
         fotoFileName = fotoFile.getFileName();
+        System.out.println(fotoFileName+"+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
     }
     
     public EducationHistoryService getEducationHistoryService() {
