@@ -147,6 +147,19 @@ public class BioDocument implements java.io.Serializable {
     	
 	@Transient
 	public String getUploadFileName(){
-		return StringUtils.substringAfterLast(uploadPath, "/");
+		String fileName = StringUtils.EMPTY;
+		if(uploadPath!=null){
+			fileName = StringUtils.substringAfterLast(uploadPath, "/");
+		}
+		return fileName;
+	}
+	
+	@Transient
+	public String getUploadFileExtension(){
+		String fileName = StringUtils.EMPTY;
+		if(uploadPath!=null){
+			fileName = StringUtils.substringAfterLast(uploadPath, ".");
+		}
+		return fileName;
 	}
 }

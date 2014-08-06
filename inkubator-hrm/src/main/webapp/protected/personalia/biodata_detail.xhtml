@@ -455,9 +455,14 @@
 		                                <f:facet name="header">  
 		                                    <h:outputText value="#{appmsg['biodocument.attachments']}"/>
 		                                </f:facet>
-		                                <h:outputLabel value= "#{bioDocumentData.uploadFileName}"/>
+		                                <h:outputLabel value= "#{bioDocumentData.uploadFileExtension}"/>
 		                            </p:column>
 		                            <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
+		                            	<p:commandButton ajax="false" title="Download" style="font-size: 10px!important" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
+	                                        <p:fileDownload value="#{imageBioDataStreamerController.documentFile}" />
+	                                        <f:param name="id" value="#{bioDocumentData.id}"/>
+	                                    </p:commandButton>
+	                                    -
 		                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
 		                                				 style="font-size: 10px!important" update=":panelDialogBioDocumentDetailId" 
 		                                				 action="#{bioDataDetilController.doSelectBioDocument()}" onclick="statusDialog.show()"  oncomplete="dialogDetailBioDocument.show()">                        
@@ -630,7 +635,16 @@
                         </p:row>
                         <p:row>
                             <p:column style="width:30%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['biodocument.attachments']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedBioDocument.uploadFileName}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;">
+                            <h:form>
+                            	<p:outputLabel value="#{bioDataDetilController.selectedBioDocument.uploadFileExtension}" styleClass="label_hrm"/>
+                            	&nbsp;&nbsp;
+                            	<p:commandButton ajax="false" value="Download" title="Download" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
+	                            	<p:fileDownload value="#{imageBioDataStreamerController.documentFile}" />
+	                                <f:param name="id" value="#{bioDataDetilController.selectedBioDocument.id}"/>
+	                            </p:commandButton>
+	                        </h:form>
+                            </p:column>
                         </p:row>
                         <p:row>
                             <p:column style="width:30%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/></p:column>
@@ -696,6 +710,33 @@
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['educationhistory.score']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedEduHistory.score}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="Ijazah" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;">
+                                <p:graphicImage value="#{imageBioDataStreamerController.ijazahFile}" height="176" width="120" style="border:  2px solid #003366 !important; border-radius: 5px !important" cache="false">
+                                    <f:param name="id" value="#{bioDataDetilController.selectedEduHistory.id}"/>
+                                </p:graphicImage>
+                                <p:dialog modal="true" widgetVar="statusDialog" header="Status" draggable="false" closable="false" resizable="false">
+                                    <p:graphicImage library="images" name="loading.gif" />
+                                    <p:graphicImage library="images" name="bio_data.png" height="36" width="36" />
+                                </p:dialog>
+                                <h:form>
+                                    <p:commandButton value="Download" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
+                                        <p:fileDownload value="#{imageBioDataStreamerController.ijazahFile}" />
+                                        <f:param name="id" value="#{bioDataDetilController.selectedEduHistory.id}"/>
+                                    </p:commandButton>
+                                </h:form>
+                                <script type="text/javascript">
+                                    function start() {
+                                        PF('statusDialog').show();
+                                    }
+
+                                    function stop() {
+                                        PF('statusDialog').hide();
+                                    }
+                                </script>
+                            </p:column>
                         </p:row>
                         <f:facet name="footer">
                             <p:row>
