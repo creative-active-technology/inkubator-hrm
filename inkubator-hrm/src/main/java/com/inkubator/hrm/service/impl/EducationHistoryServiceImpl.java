@@ -73,6 +73,8 @@ public class EducationHistoryServiceImpl extends IServiceImpl implements Educati
         entity.setMajor(majorDao.getEntiyByPK(entity.getMajor().getId()));
         entity.setCertificateNumber(entity.getCertificateNumber());
         entity.setScore(entity.getScore());
+        entity.setYearIn(entity.getYearIn());
+        entity.setYearOut(entity.getYearOut());
         entity.setCreatedBy(UserInfoUtil.getUserName());
         entity.setCreatedOn(new Date());
         this.educationHistoryDao.save(entity);
@@ -89,6 +91,8 @@ public class EducationHistoryServiceImpl extends IServiceImpl implements Educati
         update.setMajor(majorDao.getEntiyByPK(entity.getMajor().getId()));
         update.setCertificateNumber(entity.getCertificateNumber());
         update.setScore(entity.getScore());
+        update.setYearIn(entity.getYearIn());
+        update.setYearOut(entity.getYearOut());
         update.setUpdatedBy(UserInfoUtil.getUserName());
         update.setUpdatedOn(new Date());
         this.educationHistoryDao.update(update);
