@@ -19,6 +19,8 @@ public class EducationHistoryModel implements Serializable{
      private Long majorId;
      private String certificateNumber;
      private Double score;
+     private Integer yearIn;
+     private Integer yearOut;
 
     public Long getId() {
         return id;
@@ -82,6 +84,22 @@ public class EducationHistoryModel implements Serializable{
 
     public void setScore(Double score) {
         this.score = score;
+    }
+
+    public Integer getYearIn() {
+        return yearIn;
+    }
+
+    public void setYearIn(Integer yearIn) {
+        this.yearIn = yearIn;
+    }
+
+    public Integer getYearOut() {
+        return yearOut;
+    }
+
+    public void setYearOut(Integer yearOut) {
+        this.yearOut = yearOut;
     }
      
      

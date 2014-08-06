@@ -21,10 +21,10 @@ import javax.persistence.Version;
  * @author Deni
  */
 @Entity
-@Table(name="people_interest"
+@Table(name="bio_people_interest"
     ,catalog="hrm"
 )
-public class PeopleInterest implements java.io.Serializable{
+public class BioPeopleInterest implements java.io.Serializable{
      private long id;
      private Integer version;
      private BioData biodata;
@@ -35,14 +35,14 @@ public class PeopleInterest implements java.io.Serializable{
      private String updatedBy;
      private Date updatedOn;
 
-    public PeopleInterest() {
+    public BioPeopleInterest() {
     }
 
-    public PeopleInterest(long id) {
+    public BioPeopleInterest(long id) {
         this.id = id;
     }
 
-    public PeopleInterest(long id, Integer version, BioData biodata, InterestType interestType, String name, String createdBy, Date createdOn, String updatedBy, Date updatedOn) {
+    public BioPeopleInterest(long id, Integer version, BioData biodata, InterestType interestType, String name, String createdBy, Date createdOn, String updatedBy, Date updatedOn) {
         this.id = id;
         this.version = version;
         this.biodata = biodata;

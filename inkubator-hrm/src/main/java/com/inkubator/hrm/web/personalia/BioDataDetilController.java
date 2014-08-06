@@ -7,10 +7,12 @@ package com.inkubator.hrm.web.personalia;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.BioAddress;
 import com.inkubator.hrm.entity.BioData;
-import com.inkubator.hrm.entity.EducationHistory;
-import com.inkubator.hrm.entity.PeopleInterest;
+import com.inkubator.hrm.entity.BioDocument;
+import com.inkubator.hrm.entity.BioEducationHistory;
+import com.inkubator.hrm.entity.BioPeopleInterest;
 import com.inkubator.hrm.service.BioAddressService;
 import com.inkubator.hrm.service.BioDataService;
+import com.inkubator.hrm.service.BioDocumentService;
 import com.inkubator.hrm.service.EducationHistoryService;
 import com.inkubator.hrm.service.PeopleInterestService;
 import com.inkubator.webcore.controller.BaseController;
@@ -42,21 +44,31 @@ import org.springframework.dao.DataIntegrityViolationException;
 public class BioDataDetilController extends BaseController {
 
     private BioData selectedBioData;
-    private BioAddress selectedBioAddress;
-    private List<BioAddress> bioAddresses;
-    private EducationHistory selectedEduHistory;
-    private List<EducationHistory> educationHistory;
+    private BioEducationHistory selectedEduHistory;
+    private List<BioEducationHistory> educationHistory;
     @ManagedProperty(value = "#{bioDataService}")
     private BioDataService bioDataService;
-    @ManagedProperty(value = "#{bioAddressService}")
-    private BioAddressService bioAddressService;
     @ManagedProperty(value = "#{educationHistoryService}")
     private EducationHistoryService educationHistoryService;
     private String userId;
     
+//start. bio address
+    private BioAddress selectedBioAddress;
+    private List<BioAddress> bioAddresses;
+    @ManagedProperty(value = "#{bioAddressService}")
+    private BioAddressService bioAddressService;
+//end. bio address
+
+//start. bio document
+    private BioDocument selectedBioDocument;
+    private List<BioDocument> bioDocuments;
+    @ManagedProperty(value = "#{bioDocumentService}")
+    private BioDocumentService bioDocumentService;
+//end. bio document
+    
 //people interest / minat
-    private PeopleInterest selectedPeopleInterest;
-    private List<PeopleInterest> listPeopleInterest; 
+    private BioPeopleInterest selectedPeopleInterest;
+    private List<BioPeopleInterest> listPeopleInterest; 
     @ManagedProperty(value = "#{peopleInterestService}")
     private PeopleInterestService peopleInterestService;
 //end people interest / minat
@@ -69,6 +81,7 @@ public class BioDataDetilController extends BaseController {
             userId = FacesUtil.getRequestParameter("execution");
             selectedBioData = bioDataService.getEntiyByPK(Long.parseLong(userId.substring(1)));
             bioAddresses = bioAddressService.getAllDataByBioDataId(selectedBioData.getId());
+            bioDocuments = bioDocumentService.getAllDataByBioDataId(selectedBioData.getId());
             educationHistory = educationHistoryService.getAllDataByBioDataId(selectedBioData.getId());
             listPeopleInterest = peopleInterestService.getAllDataByBioDataId(selectedBioData.getId());
         } catch (Exception ex) {
@@ -89,26 +102,28 @@ public class BioDataDetilController extends BaseController {
         educationHistoryService = null;
         userId = null;
         selectedPeopleInterest = null;
-
+        selectedBioDocument = null;
+        bioDocuments = null;
+        bioDocumentService = null;
     }
 
     public BioAddress getSelectedBioAddress() {
         return selectedBioAddress;
     }
 
-    public EducationHistory getSelectedEduHistory() {
+    public BioEducationHistory getSelectedEduHistory() {
         return selectedEduHistory;
     }
 
-    public void setSelectedEduHistory(EducationHistory selectedEduHistory) {
+    public void setSelectedEduHistory(BioEducationHistory selectedEduHistory) {
         this.selectedEduHistory = selectedEduHistory;
     }
 
-    public List<EducationHistory> getEducationHistory() {
+    public List<BioEducationHistory> getEducationHistory() {
         return educationHistory;
     }
 
-    public void setEducationHistory(List<EducationHistory> educationHistory) {
+    public void setEducationHistory(List<BioEducationHistory> educationHistory) {
         this.educationHistory = educationHistory;
     }
 
@@ -148,7 +163,27 @@ public class BioDataDetilController extends BaseController {
         this.selectedBioData = selectedBioData;
     }
 
-    public String getUserId() {
+    public BioDocument getSelectedBioDocument() {
+		return selectedBioDocument;
+	}
+
+	public void setSelectedBioDocument(BioDocument selectedBioDocument) {
+		this.selectedBioDocument = selectedBioDocument;
+	}
+
+	public List<BioDocument> getBioDocuments() {
+		return bioDocuments;
+	}
+
+	public void setBioDocuments(List<BioDocument> bioDocuments) {
+		this.bioDocuments = bioDocuments;
+	}
+
+	public void setBioDocumentService(BioDocumentService bioDocumentService) {
+		this.bioDocumentService = bioDocumentService;
+	}
+
+	public String getUserId() {
         return userId;
     }
 
@@ -156,19 +191,19 @@ public class BioDataDetilController extends BaseController {
         this.userId = userId;
     }
 
-    public PeopleInterest getSelectedPeopleInterest() {
+    public BioPeopleInterest getSelectedPeopleInterest() {
         return selectedPeopleInterest;
     }
 
-    public void setSelectedPeopleInterest(PeopleInterest selectedPeopleInterest) {
+    public void setSelectedPeopleInterest(BioPeopleInterest selectedPeopleInterest) {
         this.selectedPeopleInterest = selectedPeopleInterest;
     }
 
-    public List<PeopleInterest> getListPeopleInterest() {
+    public List<BioPeopleInterest> getListPeopleInterest() {
         return listPeopleInterest;
     }
 
-    public void setListPeopleInterest(List<PeopleInterest> listPeopleInterest) {
+    public void setListPeopleInterest(List<BioPeopleInterest> listPeopleInterest) {
         this.listPeopleInterest = listPeopleInterest;
     }
 
@@ -283,6 +318,73 @@ public class BioDataDetilController extends BaseController {
 		}
     }
     /** END Bio Address method */
+    
+    
+    /**
+     * START Bio Document method
+     */
+    public void doSelectBioDocument() {
+        try {
+            selectedBioDocument = bioDocumentService.getEntiyByPK(selectedBioDocument.getId());
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+
+    public void doUpdateBioDocument() {
+        List<String> bioDocumentId = new ArrayList<>();
+        bioDocumentId.add(String.valueOf(selectedBioDocument.getId()));
+
+        List<String> bioDataId = new ArrayList<>();
+        bioDataId.add(String.valueOf(selectedBioData.getId()));
+
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("bioDocumentId", bioDocumentId);
+        dataToSend.put("bioDataId", bioDataId);
+        showDialogBioDocument(dataToSend);
+    }
+
+    public void doAddBioDocument() {
+        List<String> bioDataId = new ArrayList<>();
+        bioDataId.add(String.valueOf(selectedBioData.getId()));
+
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("bioDataId", bioDataId);
+        showDialogBioDocument(dataToSend);
+    }
+    
+    public void doDeleteBioDocument(){
+    	try {
+    		bioDocumentService.delete(selectedBioDocument);
+    		bioDocuments = bioDocumentService.getAllDataByBioDataId(selectedBioDocument.getBioData().getId());
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+
+        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (Exception ex) {
+            LOGGER.error("Error when doDelete bioDocument", ex);
+        }
+    }
+
+    private void showDialogBioDocument(Map<String, List<String>> params) {
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 900);
+        options.put("contentHeight", 400);
+        RequestContext.getCurrentInstance().openDialog("bio_document_form", options, params);
+    }
+    
+    public void onDialogReturnBioDocument(SelectEvent event){
+    	try {
+			bioDocuments = bioDocumentService.getAllDataByBioDataId(selectedBioData.getId());
+			super.onDialogReturn(event);
+		} catch (Exception e) {
+			LOGGER.error("Error", e);
+		}
+    }    
+    /** END Bio Document method */
  
     
     /**
@@ -301,7 +403,7 @@ public class BioDataDetilController extends BaseController {
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", false);
-        options.put("contentWidth", 400);
+        options.put("contentWidth", 600);
         options.put("contentHeight", 370);
         Map<String, List<String>> dataToSend = new HashMap<>();
         List<String> dataIsi = new ArrayList<>();
@@ -315,7 +417,7 @@ public class BioDataDetilController extends BaseController {
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", false);
-        options.put("contentWidth", 400);
+        options.put("contentWidth", 600);
         options.put("contentHeight", 370);
         Map<String, List<String>> dataToSend = new HashMap<>();
         List<String> dataIsi = new ArrayList<>();

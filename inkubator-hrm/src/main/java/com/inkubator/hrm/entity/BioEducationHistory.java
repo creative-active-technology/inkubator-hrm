@@ -21,10 +21,10 @@ import javax.persistence.Version;
  * @author Deni
  */
 @Entity
-@Table(name="education_history"
+@Table(name="bio_education_history"
     ,catalog="hrm"
 )
-public class EducationHistory implements java.io.Serializable{
+public class BioEducationHistory implements java.io.Serializable{
      private long id;
      private Integer version;
      private BioData biodata;
@@ -33,20 +33,23 @@ public class EducationHistory implements java.io.Serializable{
      private Faculty faculty;
      private Major major;
      private String certificateNumber;
+     private String pathFoto;
      private Double score;
      private String createdBy;
      private Date createdOn;
      private String updatedBy;
      private Date updatedOn;
+     private Integer yearIn;
+     private Integer yearOut;
 
-    public EducationHistory() {
+    public BioEducationHistory() {
     }
 
-    public EducationHistory(long id) {
+    public BioEducationHistory(long id) {
         this.id = id;
     }
 
-    public EducationHistory(long id, Integer version, BioData biodata, EducationLevel educationLevel, InstitutionEducation institutionEducation, Faculty faculty, Major major, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String certificateNumber, Double score) {
+    public BioEducationHistory(long id, Integer version, BioData biodata, EducationLevel educationLevel, InstitutionEducation institutionEducation, Faculty faculty, Major major, String certificateNumber, String pathFoto, Double score, String createdBy, Date createdOn, String updatedBy, Date updatedOn, Integer yearIn, Integer yearOut) {
         this.id = id;
         this.version = version;
         this.biodata = biodata;
@@ -54,13 +57,20 @@ public class EducationHistory implements java.io.Serializable{
         this.institutionEducation = institutionEducation;
         this.faculty = faculty;
         this.major = major;
+        this.certificateNumber = certificateNumber;
+        this.pathFoto = pathFoto;
+        this.score = score;
         this.createdBy = createdBy;
         this.createdOn = createdOn;
         this.updatedBy = updatedBy;
         this.updatedOn = updatedOn;
-        this.certificateNumber = certificateNumber;
-        this.score = score;
+        this.yearIn = yearIn;
+        this.yearOut = yearOut;
     }
+
+    
+
+    
 
     @Id 
 
@@ -188,6 +198,33 @@ public class EducationHistory implements java.io.Serializable{
 
     public void setScore(Double score) {
         this.score = score;
+    }
+
+    @Column(name="year_in", length=5)
+    public Integer getYearIn() {
+        return yearIn;
+    }
+
+    public void setYearIn(Integer yearIn) {
+        this.yearIn = yearIn;
+    }
+
+    @Column(name="year_out", length=5)
+    public Integer getYearOut() {
+        return yearOut;
+    }
+
+    public void setYearOut(Integer yearOut) {
+        this.yearOut = yearOut;
+    }
+
+    @Column(name = "path_foto", length = 100)
+    public String getPathFoto() {
+        return pathFoto;
+    }
+
+    public void setPathFoto(String pathFoto) {
+        this.pathFoto = pathFoto;
     }
      
      

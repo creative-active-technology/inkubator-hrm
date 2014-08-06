@@ -8,7 +8,7 @@ import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.BioData;
 import com.inkubator.hrm.entity.InterestType;
-import com.inkubator.hrm.entity.PeopleInterest;
+import com.inkubator.hrm.entity.BioPeopleInterest;
 import com.inkubator.hrm.service.InterestTypeService;
 import com.inkubator.hrm.service.PeopleInterestService;
 import com.inkubator.hrm.util.MapUtil;
@@ -40,7 +40,7 @@ public class PeopleInterestFormController extends BaseController{
     @ManagedProperty(value = "#{interestTypeService}")
     private InterestTypeService interestTypeService;
     private Long bioDataId;
-    private PeopleInterest selected;
+    private BioPeopleInterest selected;
     private PeopleInterestModel model;
     private Boolean isEdit;
     
@@ -75,7 +75,7 @@ public class PeopleInterestFormController extends BaseController{
             if (param.contains("e")) {
                 isEdit = Boolean.TRUE;
                 long educationId = Long.parseLong(param.substring(1));
-                PeopleInterest peopleInterest = peopleInterestService.getAllDataByPK(educationId);
+                BioPeopleInterest peopleInterest = peopleInterestService.getAllDataByPK(educationId);
                 model.setId(peopleInterest.getId());
                 model.setInterestId(peopleInterest.getInterestType().getId());
                 model.setName(peopleInterest.getName());
@@ -100,7 +100,7 @@ public class PeopleInterestFormController extends BaseController{
 
     public void doSave() {
         System.out.println("masuk dosave");
-        PeopleInterest peopleInterest = getEntityFromViewModel(model);
+        BioPeopleInterest peopleInterest = getEntityFromViewModel(model);
         try {
             if (isEdit) {
                 peopleInterestService.update(peopleInterest);
@@ -118,8 +118,8 @@ public class PeopleInterestFormController extends BaseController{
         }
     }
     
-    private PeopleInterest getEntityFromViewModel(PeopleInterestModel model) {
-        PeopleInterest peopleInterest = new PeopleInterest();
+    private BioPeopleInterest getEntityFromViewModel(PeopleInterestModel model) {
+        BioPeopleInterest peopleInterest = new BioPeopleInterest();
         if (model.getId() != null) {
             peopleInterest.setId(model.getId());
         }
@@ -154,11 +154,11 @@ public class PeopleInterestFormController extends BaseController{
         this.bioDataId = bioDataId;
     }
 
-    public PeopleInterest getSelected() {
+    public BioPeopleInterest getSelected() {
         return selected;
     }
 
-    public void setSelected(PeopleInterest selected) {
+    public void setSelected(BioPeopleInterest selected) {
         this.selected = selected;
     }
 

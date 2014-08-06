@@ -7,7 +7,7 @@ package com.inkubator.hrm.web.personalia;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.BioData;
-import com.inkubator.hrm.entity.EducationHistory;
+import com.inkubator.hrm.entity.BioEducationHistory;
 import com.inkubator.hrm.entity.EducationLevel;
 import com.inkubator.hrm.entity.Faculty;
 import com.inkubator.hrm.entity.InstitutionEducation;
@@ -20,8 +20,10 @@ import com.inkubator.hrm.service.MajorService;
 import com.inkubator.hrm.util.MapUtil;
 import com.inkubator.hrm.web.model.EducationHistoryModel;
 import com.inkubator.webcore.controller.BaseController;
+import com.inkubator.webcore.util.FacesIO;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +35,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.UploadedFile;
 
 /**
  *
@@ -51,11 +55,15 @@ public class EducationHistoryFormController extends BaseController{
     private FacultyService facultyService;
     @ManagedProperty(value = "#{majorService}")
     private MajorService majorService;
+    @ManagedProperty(value = "#{facesIO}")
+    private FacesIO facesIO;
     
     private Long bioDataId;
-    private EducationHistory selected;
+    private BioEducationHistory selected;
     private EducationHistoryModel model;
     private Boolean isEdit;
+    private UploadedFile fotoFile;
+    private String fotoFileName;
     
     //List Dropdown
     
@@ -70,6 +78,8 @@ public class EducationHistoryFormController extends BaseController{
     
     private Map<String, Long> listMajors = new TreeMap<String, Long>();;
     private List<Major> listMajor = new ArrayList<>();
+    
+    private Map<Integer, Integer> listYears = new TreeMap<Integer, Integer>();
     
     
     @PreDestroy
@@ -91,6 +101,10 @@ public class EducationHistoryFormController extends BaseController{
         listMajor = null;
         listMajors = null;
         bioDataId = null;
+        listYears = null;
+        fotoFile = null;
+        fotoFileName = null;
+        facesIO = null;
     }
     
     @PostConstruct
@@ -109,7 +123,7 @@ public class EducationHistoryFormController extends BaseController{
             if (param.contains("e")) {
                 isEdit = Boolean.TRUE;
                 long educationId = Long.parseLong(param.substring(1));
-                EducationHistory educationHistory = educationHistoryService.getAllDataByPK(educationId);
+                BioEducationHistory educationHistory = educationHistoryService.getAllDataByPK(educationId);
                 model.setId(educationHistory.getId());
                 model.setBiodataId(educationHistory.getBiodata().getId());
                 model.setEducationLevelId(educationHistory.getEducationLevel().getId());
@@ -118,6 +132,8 @@ public class EducationHistoryFormController extends BaseController{
                 model.setMajorId(educationHistory.getMajor().getId());
                 model.setCertificateNumber(educationHistory.getCertificateNumber());
                 model.setScore(educationHistory.getScore());
+                model.setYearIn(educationHistory.getYearIn());
+                model.setYearOut(educationHistory.getYearOut());
                 bioDataId = educationHistory.getBiodata().getId();
             } else {
                 isEdit = Boolean.FALSE;
@@ -149,6 +165,10 @@ public class EducationHistoryFormController extends BaseController{
         for (Major major : listMajor) {
             listMajors.put(major.getMajorName(), major.getId());
         }
+        //
+        for(int i = 1980; i < 2050; i++){
+            listYears.put(i, i);
+        }
         MapUtil.sortByValue(listEducationLevels);
         MapUtil.sortByValue(listInstitutionEducations);
         MapUtil.sortByValue(listFaculties);
@@ -157,7 +177,7 @@ public class EducationHistoryFormController extends BaseController{
     
     public void doSave() {
         System.out.println("masuk dosave");
-        EducationHistory educationHistory = getEntityFromViewModel(model);
+        BioEducationHistory educationHistory = getEntityFromViewModel(model);
         try {
             if (isEdit) {
                 educationHistoryService.update(educationHistory);
@@ -166,6 +186,11 @@ public class EducationHistoryFormController extends BaseController{
                 educationHistoryService.save(educationHistory);
                 RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
             }
+            if (fotoFile != null) {
+                facesIO.transferFile(fotoFile);
+                File fotoOldFile = new File(facesIO.getPathUpload() + fotoFileName);
+                fotoOldFile.renameTo(new File(educationHistory.getPathFoto()));
+            }
             cleanAndExit();
         } catch (BussinessException ex) { //data already exist(duplicate)
             LOGGER.error("Error", ex);
@@ -173,13 +198,17 @@ public class EducationHistoryFormController extends BaseController{
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
-            //cleanAndExit();
-
-//        cleanAndExit();
     }
     
-    private EducationHistory getEntityFromViewModel(EducationHistoryModel model) {
-        EducationHistory educationHistory = new EducationHistory();
+    private BioEducationHistory getEntityFromViewModel(EducationHistoryModel model) {
+        if(fotoFile != null){
+            fotoFileName = fotoFile.getFileName();
+            System.out.println(fotoFileName+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+            System.out.println(fotoFile.getFileName() + "---------------------######################----------------------" + fotoFileName);
+        }else{
+            System.out.println("NULLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
+        }
+        BioEducationHistory educationHistory = new BioEducationHistory();
         if (model.getId() != null) {
             educationHistory.setId(model.getId());
         }
@@ -190,9 +219,19 @@ public class EducationHistoryFormController extends BaseController{
         educationHistory.setMajor(new Major(model.getMajorId()));
         educationHistory.setCertificateNumber(model.getCertificateNumber());
         educationHistory.setScore(model.getScore());
+        educationHistory.setYearIn(model.getYearIn());
+        educationHistory.setYearOut(model.getYearOut());
+        if (fotoFile != null) {
+            educationHistory.setPathFoto(facesIO.getPathUpload() + educationHistory.getId() + "_" + fotoFileName);
+        }
         return educationHistory;
     }
 
+    public void handingFotoUpload(FileUploadEvent fileUploadEvent) {
+        fotoFile = fileUploadEvent.getFile();
+        fotoFileName = fotoFile.getFileName();
+    }
+    
     public EducationHistoryService getEducationHistoryService() {
         return educationHistoryService;
     }
@@ -233,11 +272,11 @@ public class EducationHistoryFormController extends BaseController{
         this.majorService = majorService;
     }
 
-    public EducationHistory getSelected() {
+    public BioEducationHistory getSelected() {
         return selected;
     }
 
-    public void setSelected(EducationHistory selected) {
+    public void setSelected(BioEducationHistory selected) {
         this.selected = selected;
     }
 
@@ -319,6 +358,34 @@ public class EducationHistoryFormController extends BaseController{
 
     public void setListMajor(List<Major> listMajor) {
         this.listMajor = listMajor;
+    }
+
+    public Map<Integer, Integer> getListYears() {
+        return listYears;
+    }
+
+    public void setListYears(Map<Integer, Integer> listYears) {
+        this.listYears = listYears;
+    }
+
+    public void setFacesIO(FacesIO facesIO) {
+        this.facesIO = facesIO;
+    }
+
+    public UploadedFile getFotoFile() {
+        return fotoFile;
+    }
+
+    public void setFotoFile(UploadedFile fotoFile) {
+        this.fotoFile = fotoFile;
+    }
+
+    public String getFotoFileName() {
+        return fotoFileName;
+    }
+
+    public void setFotoFileName(String fotoFileName) {
+        this.fotoFileName = fotoFileName;
     }
     
     
