@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.criterion.Order;
 import org.primefaces.model.UploadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -158,9 +159,12 @@ public class BioDocumentServiceImpl extends IServiceImpl implements BioDocumentS
 
 	@Override
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void delete(BioDocument entity) throws Exception {
+	public void delete(BioDocument entity) throws Exception {		
+		//remove entity
 		bioDocumentDao.delete(entity);
-
+		//remove physical file
+		File oldFile = new File(entity.getUploadPath());
+		oldFile.delete();
 	}
 
 	@Override
@@ -263,15 +267,16 @@ public class BioDocumentServiceImpl extends IServiceImpl implements BioDocumentS
 		entity.setCreatedOn(new Date());
 		bioDocumentDao.save(entity);
 		
-		String uploadPath = facesIO.getPathUpload() + entity.getId() + "_" + documentFile.getFileName();
+		
 		if (documentFile != null) {
+			String uploadPath = getUploadPath(entity.getId(),documentFile);
             facesIO.transferFile(documentFile);
             File file = new File(facesIO.getPathUpload() + documentFile.getFileName());
             file.renameTo(new File(uploadPath));
+            
+            entity.setUploadPath(uploadPath);
+    		bioDocumentDao.update(entity);
         }
-		
-		entity.setUploadPath(uploadPath);
-		bioDocumentDao.update(entity);		
 	}
 
 	@Override
@@ -279,14 +284,15 @@ public class BioDocumentServiceImpl extends IServiceImpl implements BioDocumentS
 	public void update(BioDocument entity, UploadedFile documentFile) throws Exception {
 		
 		BioDocument bioDocument = bioDocumentDao.getEntiyByPK(entity.getId());
+		String uploadPath = StringUtils.EMPTY;
 		
-		String uploadPath = facesIO.getPathUpload() + entity.getId() + "_" + documentFile.getFileName();
-		if (documentFile != null) {
+		if (documentFile != null) {			
 			//remove old file
 			File oldFile = new File(bioDocument.getUploadPath());
 			oldFile.delete();
 			
 			//added new file
+			uploadPath = getUploadPath(bioDocument.getId(),documentFile);
             facesIO.transferFile(documentFile);
             File file = new File(facesIO.getPathUpload() + documentFile.getFileName());
             file.renameTo(new File(uploadPath));
@@ -301,6 +307,12 @@ public class BioDocumentServiceImpl extends IServiceImpl implements BioDocumentS
 		bioDocument.setUpdatedOn(new Date());
 		
 		bioDocumentDao.update(bioDocument);		
+	}
+	
+	private String getUploadPath(Long id, UploadedFile documentFile){
+		String extension = StringUtils.substringAfterLast(documentFile.getFileName(), "."); 
+		String uploadPath = facesIO.getPathUpload() + "biodoc_" + id + "." + extension;
+		return uploadPath;
 	}
 
 }
