@@ -101,13 +101,11 @@ public class ImageBioDataStreamerController extends BaseController {
             try {
                 url = educationHistoryService.getEntiyByPK(Long.parseLong(bioId)).getPathFoto();
                 is = facesIO.getInputStreamFromURL(url);
-                ResourceBundle resourceBundle = ResourceBundle.getBundle("application");
-                filename = url.replace(resourceBundle.getString("webcore.util.path_upload"),"");
             } catch (Exception ex) {
                 LOGGER.error(ex, ex);
                 return new DefaultStreamedContent();
             }
-            return new DefaultStreamedContent(is, null, filename);
+            return new DefaultStreamedContent(is, null, StringUtils.substringAfterLast(url, "/"));
 
         }
 

@@ -21,7 +21,17 @@ public class EducationHistoryModel implements Serializable{
      private Double score;
      private Integer yearIn;
      private Integer yearOut;
+     private Long cityId;
 
+    public Long getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(Long cityId) {
+        this.cityId = cityId;
+    }
+
+     
     public Long getId() {
         return id;
     }

@@ -41,6 +41,7 @@ public class BioEducationHistory implements java.io.Serializable{
      private Date updatedOn;
      private Integer yearIn;
      private Integer yearOut;
+     private City city;
 
     public BioEducationHistory() {
     }
@@ -49,7 +50,7 @@ public class BioEducationHistory implements java.io.Serializable{
         this.id = id;
     }
 
-    public BioEducationHistory(long id, Integer version, BioData biodata, EducationLevel educationLevel, InstitutionEducation institutionEducation, Faculty faculty, Major major, String certificateNumber, String pathFoto, Double score, String createdBy, Date createdOn, String updatedBy, Date updatedOn, Integer yearIn, Integer yearOut) {
+    public BioEducationHistory(long id, Integer version, BioData biodata, EducationLevel educationLevel, InstitutionEducation institutionEducation, Faculty faculty, Major major, String certificateNumber, String pathFoto, Double score, String createdBy, Date createdOn, String updatedBy, Date updatedOn, Integer yearIn, Integer yearOut, City city) {
         this.id = id;
         this.version = version;
         this.biodata = biodata;
@@ -66,6 +67,7 @@ public class BioEducationHistory implements java.io.Serializable{
         this.updatedOn = updatedOn;
         this.yearIn = yearIn;
         this.yearOut = yearOut;
+        this.city = city;
     }
 
     
@@ -225,6 +227,16 @@ public class BioEducationHistory implements java.io.Serializable{
 
     public void setPathFoto(String pathFoto) {
         this.pathFoto = pathFoto;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "city_id")
+    public City getCity() {
+        return city;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
     }
      
      

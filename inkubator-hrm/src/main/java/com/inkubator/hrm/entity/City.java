@@ -39,6 +39,7 @@ public class City implements java.io.Serializable {
     private Set<InstitutionEducation> institutionEducations = new HashSet<InstitutionEducation>(0);
     private Set<BioData> bioDatas = new HashSet<BioData>(0);
     private Set<BioAddress> bioAddresses = new HashSet<BioAddress>(0);
+    private Set<BioEducationHistory> bioEducationHistorys = new HashSet<BioEducationHistory>(0);
 
     public City() {
     }
@@ -47,7 +48,7 @@ public class City implements java.io.Serializable {
         this.id = id;
     }
 
-    public City(long id, Province province, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String cityCode, String cityName, String latitude, String longitude, Set<InstitutionEducation> institutionEducations) {
+    public City(long id, Province province, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String cityCode, String cityName, String latitude, String longitude, Set<InstitutionEducation> institutionEducations, Set<BioEducationHistory> bioEducationHistorys) {
         this.id = id;
         this.province = province;
         this.createdBy = createdBy;
@@ -59,6 +60,7 @@ public class City implements java.io.Serializable {
         this.latitude = latitude;
         this.longitude = longitude;
         this.institutionEducations = institutionEducations;
+        this.bioEducationHistorys = bioEducationHistorys;
     }
 
     @Id
@@ -193,4 +195,14 @@ public class City implements java.io.Serializable {
 		this.bioAddresses = bioAddresses;
 	}   
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "city")
+    public Set<BioEducationHistory> getBioEducationHistorys() {
+        return bioEducationHistorys;
+    }
+
+    public void setBioEducationHistorys(Set<BioEducationHistory> bioEducationHistorys) {
+        this.bioEducationHistorys = bioEducationHistorys;
+    }
+
+        
 }

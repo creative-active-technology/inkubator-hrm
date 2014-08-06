@@ -15,6 +15,7 @@ import com.inkubator.hrm.service.BioDataService;
 import com.inkubator.hrm.service.BioDocumentService;
 import com.inkubator.hrm.service.EducationHistoryService;
 import com.inkubator.hrm.service.PeopleInterestService;
+import com.inkubator.hrm.web.model.BioEducationHistoryViewController;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
@@ -45,7 +46,8 @@ public class BioDataDetilController extends BaseController {
 
     private BioData selectedBioData;
     private BioEducationHistory selectedEduHistory;
-    private List<BioEducationHistory> educationHistory;
+    private BioEducationHistoryViewController selectedBioEducationHistoryViewController;
+    private List<BioEducationHistoryViewController> educationHistory;
     @ManagedProperty(value = "#{bioDataService}")
     private BioDataService bioDataService;
     @ManagedProperty(value = "#{educationHistoryService}")
@@ -105,6 +107,7 @@ public class BioDataDetilController extends BaseController {
         selectedBioDocument = null;
         bioDocuments = null;
         bioDocumentService = null;
+        selectedBioEducationHistoryViewController = null;
     }
 
     public BioAddress getSelectedBioAddress() {
@@ -119,11 +122,11 @@ public class BioDataDetilController extends BaseController {
         this.selectedEduHistory = selectedEduHistory;
     }
 
-    public List<BioEducationHistory> getEducationHistory() {
+    public List<BioEducationHistoryViewController> getEducationHistory() {
         return educationHistory;
     }
 
-    public void setEducationHistory(List<BioEducationHistory> educationHistory) {
+    public void setEducationHistory(List<BioEducationHistoryViewController> educationHistory) {
         this.educationHistory = educationHistory;
     }
 
@@ -392,12 +395,20 @@ public class BioDataDetilController extends BaseController {
      */
     public void doSelectBioEduHistory() {
         try {
-            selectedEduHistory = this.educationHistoryService.getAllDataByPK(selectedEduHistory.getId());
+            selectedEduHistory = this.educationHistoryService.getAllDataByPK(selectedBioEducationHistoryViewController.getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
     }
-
+            
+    public void doDetailBioEduHistory() {
+        try {
+            selectedBioEducationHistoryViewController = this.educationHistoryService.getAllByPKByController(selectedBioEducationHistoryViewController.getId());
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
+        }
+    }
+    
     public void doUpdateBioEduHistory() {
         Map<String, Object> options = new HashMap<>();
         options.put("modal", true);
@@ -407,7 +418,7 @@ public class BioDataDetilController extends BaseController {
         options.put("contentHeight", 370);
         Map<String, List<String>> dataToSend = new HashMap<>();
         List<String> dataIsi = new ArrayList<>();
-        dataIsi.add("e" + String.valueOf(selectedEduHistory.getId()));
+        dataIsi.add("e" + String.valueOf(selectedBioEducationHistoryViewController.getId()));
         dataToSend.put("param", dataIsi);
         RequestContext.getCurrentInstance().openDialog("education_history_form", options, dataToSend);
     }
@@ -517,4 +528,13 @@ public class BioDataDetilController extends BaseController {
 
     }
 
+    public BioEducationHistoryViewController getSelectedBioEducationHistoryViewController() {
+        return selectedBioEducationHistoryViewController;
+    }
+
+    public void setSelectedBioEducationHistoryViewController(BioEducationHistoryViewController selectedBioEducationHistoryViewController) {
+        this.selectedBioEducationHistoryViewController = selectedBioEducationHistoryViewController;
+    }
+
+    
 }

@@ -8,10 +8,12 @@ import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.BioData;
 import com.inkubator.hrm.entity.BioEducationHistory;
+import com.inkubator.hrm.entity.City;
 import com.inkubator.hrm.entity.EducationLevel;
 import com.inkubator.hrm.entity.Faculty;
 import com.inkubator.hrm.entity.InstitutionEducation;
 import com.inkubator.hrm.entity.Major;
+import com.inkubator.hrm.service.CityService;
 import com.inkubator.hrm.service.EducationHistoryService;
 import com.inkubator.hrm.service.EducationLevelService;
 import com.inkubator.hrm.service.FacultyService;
@@ -55,6 +57,8 @@ public class EducationHistoryFormController extends BaseController{
     private FacultyService facultyService;
     @ManagedProperty(value = "#{majorService}")
     private MajorService majorService;
+    @ManagedProperty(value = "#{cityService}")
+    private CityService cityService;
     @ManagedProperty(value = "#{facesIO}")
     private FacesIO facesIO;
     
@@ -78,6 +82,9 @@ public class EducationHistoryFormController extends BaseController{
     
     private Map<String, Long> listMajors = new TreeMap<String, Long>();;
     private List<Major> listMajor = new ArrayList<>();
+    
+    private Map<String, Long> listCitys = new TreeMap<String, Long>();;
+    private List<City> listCity = new ArrayList<>();
     
     private Map<Integer, Integer> listYears = new TreeMap<Integer, Integer>();
     
@@ -105,6 +112,8 @@ public class EducationHistoryFormController extends BaseController{
         fotoFile = null;
         fotoFileName = null;
         facesIO = null;
+        listCity = null;
+        listCitys = null;
     }
     
     @PostConstruct
@@ -132,6 +141,9 @@ public class EducationHistoryFormController extends BaseController{
                 model.setMajorId(educationHistory.getMajor().getId());
                 model.setCertificateNumber(educationHistory.getCertificateNumber());
                 model.setScore(educationHistory.getScore());
+                if(educationHistory.getCity() != null ){
+                    model.setCityId(educationHistory.getCity().getId());
+                }
                 model.setYearIn(educationHistory.getYearIn());
                 model.setYearOut(educationHistory.getYearOut());
                 bioDataId = educationHistory.getBiodata().getId();
@@ -165,10 +177,16 @@ public class EducationHistoryFormController extends BaseController{
         for (Major major : listMajor) {
             listMajors.put(major.getMajorName(), major.getId());
         }
-        //
+        //City
+        listCity = cityService.getAllData();
+        for (City city : listCity) {
+            listCitys.put(city.getCityName(), city.getId());
+        }
+        //years
         for(int i = 1980; i < 2050; i++){
             listYears.put(i, i);
         }
+        MapUtil.sortByValue(listCitys);
         MapUtil.sortByValue(listEducationLevels);
         MapUtil.sortByValue(listInstitutionEducations);
         MapUtil.sortByValue(listFaculties);
@@ -201,13 +219,6 @@ public class EducationHistoryFormController extends BaseController{
     }
     
     private BioEducationHistory getEntityFromViewModel(EducationHistoryModel model) {
-        if(fotoFile != null){
-            fotoFileName = fotoFile.getFileName();
-            System.out.println(fotoFileName+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-            System.out.println(fotoFile.getFileName() + "---------------------######################----------------------" + fotoFileName);
-        }else{
-            System.out.println("NULLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
-        }
         BioEducationHistory educationHistory = new BioEducationHistory();
         if (model.getId() != null) {
             educationHistory.setId(model.getId());
@@ -217,6 +228,7 @@ public class EducationHistoryFormController extends BaseController{
         educationHistory.setInstitutionEducation(new InstitutionEducation(model.getInstitutionEducationId()));
         educationHistory.setFaculty(new Faculty(model.getFacultyId()));
         educationHistory.setMajor(new Major(model.getMajorId()));
+        educationHistory.setCity(new City(model.getCityId()));
         educationHistory.setCertificateNumber(model.getCertificateNumber());
         educationHistory.setScore(model.getScore());
         educationHistory.setYearIn(model.getYearIn());
@@ -230,7 +242,6 @@ public class EducationHistoryFormController extends BaseController{
     public void handingFotoUpload(FileUploadEvent fileUploadEvent) {
         fotoFile = fileUploadEvent.getFile();
         fotoFileName = fotoFile.getFileName();
-        System.out.println(fotoFileName+"+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
     }
     
     public EducationHistoryService getEducationHistoryService() {
@@ -387,6 +398,30 @@ public class EducationHistoryFormController extends BaseController{
 
     public void setFotoFileName(String fotoFileName) {
         this.fotoFileName = fotoFileName;
+    }
+
+    public CityService getCityService() {
+        return cityService;
+    }
+
+    public void setCityService(CityService cityService) {
+        this.cityService = cityService;
+    }
+
+    public Map<String, Long> getListCitys() {
+        return listCitys;
+    }
+
+    public void setListCitys(Map<String, Long> listCitys) {
+        this.listCitys = listCitys;
+    }
+
+    public List<City> getListCity() {
+        return listCity;
+    }
+
+    public void setListCity(List<City> listCity) {
+        this.listCity = listCity;
     }
     
     
