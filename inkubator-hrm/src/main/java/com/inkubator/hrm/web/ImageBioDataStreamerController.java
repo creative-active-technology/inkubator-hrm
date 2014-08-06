@@ -5,6 +5,7 @@
  */
 package com.inkubator.hrm.web;
 
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.service.BioDataService;
 import com.inkubator.hrm.service.EducationHistoryService;
 import com.inkubator.webcore.controller.BaseController;
@@ -12,11 +13,14 @@ import com.inkubator.webcore.util.FacesIO;
 import com.inkubator.webcore.util.FacesUtil;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
+import org.apache.commons.lang3.StringUtils;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
@@ -81,26 +85,22 @@ public class ImageBioDataStreamerController extends BaseController {
 
         FacesContext context = FacesUtil.getFacesContext();
         String bioId = context.getExternalContext().getRequestParameterMap().get("id");
+        String url;
+        String filename;
         if (context.getRenderResponse() || bioId == null) {
             return new DefaultStreamedContent();
         } else {
             InputStream is = null;
             try {
-                String url = educationHistoryService.getEntiyByPK(Long.parseLong(bioId)).getPathFoto();
-                System.out.println(" hahahahha" + url);
-                if(url==null|| url.isEmpty()){
-                    url=facesIO.getPathUpload()+"no_image.png";
-                }
+                url = educationHistoryService.getEntiyByPK(Long.parseLong(bioId)).getPathFoto();
                 is = facesIO.getInputStreamFromURL(url);
-                InputStream stream = ((ServletContext)FacesContext.getCurrentInstance().getExternalContext().getContext()).getResourceAsStream(url);
-                ijazahFile = new DefaultStreamedContent(stream, "image/jpg", url);
-                System.out.println(ijazahFile.getName() + "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" + url);
+                ResourceBundle resourceBundle = ResourceBundle.getBundle("application");
+                filename = url.replace(resourceBundle.getString("webcore.util.path_upload"),"");
             } catch (Exception ex) {
-//                return new DefaultStreamedContent();
                 LOGGER.error(ex, ex);
                 return new DefaultStreamedContent();
             }
-            return new DefaultStreamedContent(is);
+            return new DefaultStreamedContent(is, null, filename);
 
         }
 

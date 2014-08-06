@@ -700,9 +700,6 @@
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="Ijazah" styleClass="label_hrm"/></p:column>
                             <p:column style="width:70%;">
-                                <p:graphicImage value="#{imageBioDataStreamerController.ijazahFile}" height="176" width="120" style="border:  2px solid #003366 !important; border-radius: 5px !important" cache="false">
-                                    <f:param name="id" value="#{bioDataDetilController.selectedEduHistory.id}"/>
-                                </p:graphicImage>
                                 <p:dialog modal="true" widgetVar="statusDialog" header="Status" draggable="false" closable="false" resizable="false">
                                     <p:graphicImage library="images" name="loading.gif" />
                                     <p:graphicImage library="images" name="bio_data.png" height="36" width="36" />
