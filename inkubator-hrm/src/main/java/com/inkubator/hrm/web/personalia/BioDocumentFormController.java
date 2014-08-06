@@ -8,6 +8,7 @@ import javax.faces.bean.ViewScoped;
 
 import org.apache.commons.lang3.StringUtils;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
 import com.inkubator.hrm.HRMConstant;
@@ -44,7 +45,7 @@ public class BioDocumentFormController extends BaseController {
             
             String bioDocumentId = FacesUtil.getRequestParameter("bioDocumentId");
             if (StringUtils.isNotEmpty(bioDocumentId)) {
-            	BioDocument bioDocument = bioDocumentService.getEntiyByPK(bioDocumentId);
+            	BioDocument bioDocument = bioDocumentService.getEntiyByPK(Long.parseLong(bioDocumentId));
             	if(bioDocument != null){
             		model = getModelFromEntity(bioDocument);
             		isUpdate = Boolean.TRUE;
@@ -107,6 +108,11 @@ public class BioDocumentFormController extends BaseController {
         }
     }
 	
+	public void handingFileUpload(FileUploadEvent fileUploadEvent) {
+		documentFile = fileUploadEvent.getFile();
+		model.setUploadFileName(documentFile.getFileName());
+	}
+	
 	private BioDocument getEntityFromViewModel(BioDocumentModel model) {
 		BioDocument entity = new BioDocument();
 		if(model.getId() != null){
@@ -126,6 +132,7 @@ public class BioDocumentFormController extends BaseController {
 		bioDocumentModel.setDocumentTitle(entity.getDocumentTitle());
 		bioDocumentModel.setDocumentNo(entity.getDocumentNo());
 		bioDocumentModel.setDescription(entity.getDescription());
+		bioDocumentModel.setUploadFileName(entity.getUploadFileName());
 		return bioDocumentModel;
 	}
 }

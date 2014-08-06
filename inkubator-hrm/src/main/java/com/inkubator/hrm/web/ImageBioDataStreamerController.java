@@ -5,7 +5,9 @@
  */
 package com.inkubator.hrm.web;
 
+import com.inkubator.hrm.entity.BioDocument;
 import com.inkubator.hrm.service.BioDataService;
+import com.inkubator.hrm.service.BioDocumentService;
 import com.inkubator.hrm.service.EducationHistoryService;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesIO;
@@ -17,6 +19,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
+
+import org.apache.commons.lang3.StringUtils;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
@@ -34,6 +38,8 @@ public class ImageBioDataStreamerController extends BaseController {
     private BioDataService bioDataService;
     @ManagedProperty(value = "#{educationHistoryService}")
     private EducationHistoryService educationHistoryService;
+    @ManagedProperty(value = "#{bioDocumentService}")
+    private BioDocumentService bioDocumentService;
     private StreamedContent ijazahFile;
     
     
@@ -46,7 +52,11 @@ public class ImageBioDataStreamerController extends BaseController {
         this.educationHistoryService = educationHistoryService;
     }
     
-    public void setFacesIO(FacesIO facesIO) {
+    public void setBioDocumentService(BioDocumentService bioDocumentService) {
+		this.bioDocumentService = bioDocumentService;
+	}
+
+	public void setFacesIO(FacesIO facesIO) {
         this.facesIO = facesIO;
     }
 
@@ -156,5 +166,29 @@ public class ImageBioDataStreamerController extends BaseController {
 
         }
 
+    }
+    
+    public StreamedContent getDocumentFile() throws IOException {
+        FacesContext context = FacesUtil.getFacesContext();
+        String id = context.getExternalContext().getRequestParameterMap().get("id");
+        if (context.getRenderResponse() || id == null) {
+            return new DefaultStreamedContent();
+        } else {
+            InputStream is = null;
+            try {
+            	BioDocument bioDocument = bioDocumentService.getEntiyByPK(Long.parseLong(id));
+                String path = bioDocument.getUploadPath();
+                  if(StringUtils.isEmpty(path)){
+                    path=facesIO.getPathUpload()+"no_image.png";
+                }
+                is = facesIO.getInputStreamFromURL(path);
+                
+                return new DefaultStreamedContent(is, null, StringUtils.substringAfterLast(path, "/"));
+                
+            } catch (Exception ex) {
+                LOGGER.error(ex, ex);
+                return new DefaultStreamedContent();
+            }
+        }
     }
 }

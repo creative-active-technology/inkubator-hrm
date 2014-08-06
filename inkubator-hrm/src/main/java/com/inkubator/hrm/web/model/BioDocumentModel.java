@@ -10,6 +10,7 @@ public class BioDocumentModel {
 	private String documentTitle;
     private String documentNo;
     private String description;
+    private String uploadFileName;
     
 	public Long getId() {
 		return id;
@@ -40,5 +41,12 @@ public class BioDocumentModel {
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	public String getUploadFileName() {
+		return uploadFileName;
+	}
+	public void setUploadFileName(String uploadFileName) {
+		this.uploadFileName = uploadFileName;
 	}   
+	
 }

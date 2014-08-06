@@ -48,7 +48,58 @@
                             <p:column colspan="3">
                                 <p:message for="documentNameId"/>
                             </p:column>
-                        </p:row>                        
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 26%">
+                                <p:outputLabel for="documentNoId" value="#{appmsg['biodocument.document_no']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="documentNoId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 80%">
+                            	<p:inputText id="documentNoId" title="#{appmsg['biodocument.document_no']}" value="#{bioDocumentFormController.model.documentNo}" 
+                                    		 required="true" maxlength="60" styleClass="isitext_hrm" style="width:238px;" />
+                            </p:column>
+                            <p:column  style="width: 12%">
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="4">
+                                <p:message for="documentNoId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 26%">
+                                <p:outputLabel for="descriptionId" value="#{appmsg['global.description']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="descriptionId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 80%">
+                            	<p:inputTextarea id="descriptionId" title="#{appmsg['global.description']}" value="#{bioDocumentFormController.model.description}" 
+                                    		 	 maxlength="1000" styleClass="isitext_hrm" style="width:238px;" />
+                            </p:column>
+                            <p:column  style="width: 12%">
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="4">
+                                <p:message for="descriptionId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                        	<p:column colspan="3">
+	                        	<p:fileUpload required="true" sizeLimit="209715200" label="#{appmsg['global.choose_file']}" fileUploadListener="#{bioDocumentFormController.handingFileUpload}"
+	                                          mode="advanced"  id="uploadFoto"  style="margin-top:10px;margin-bottom:10px;width: 100%;text-align: left!important"
+	                                          dragDropSupport="true" multiple="false" update="fileNameId"
+	                                          allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/> 
+	                            <p:outputLabel value="#{appmsg['global.file_name']}"/>
+	                            <p:outputLabel value=":" style="margin-left: 5px;margin-right: 5px"/>
+	                            <p:outputLabel value="#{bioDocumentFormController.model.uploadFileName}" id="fileNameId"/>  
+                            </p:column>
+                            <p:column  style="width: 12%">
+                            </p:column>
+                    	</p:row>                      
                     </p:panelGrid>
                     <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
                     <h:panelGrid columns="2" style="margin-bottom: -30px!important">
