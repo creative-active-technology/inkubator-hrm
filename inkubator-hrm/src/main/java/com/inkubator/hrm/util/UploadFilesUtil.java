@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.primefaces.model.UploadedFile;
-import org.springframework.stereotype.Component;
 
 /**
  *
@@ -22,39 +21,47 @@ public class UploadFilesUtil {
 	private Long pptSizeLimit;
 	private Long ppsSizeLimit;
 	
-	public Map<String, String> checkUploadFileSizeLimit(UploadedFile file){
-		Map<String, String> results = new HashMap<String, String>();
+	public Map<String, String> checkUploadFileSizeLimit(UploadedFile file){		
 		String extension = StringUtils.substringAfterLast(file.getFileName(), ".");
-		
+		boolean isValid = Boolean.TRUE;
+		long sizeMax = 0;
 		if(StringUtils.equals(extension , "jpg") && file.getSize() > jpgSizeLimit){
-			results.put("result", "false");
-			results.put("sizeMax", String.valueOf(jpgSizeLimit/1000000));
+			isValid =  Boolean.FALSE;
+			sizeMax = jpgSizeLimit;
 		} else if(StringUtils.equals(extension , "png") && file.getSize() > pngSizeLimit){
-			results.put("result", "false");
-			results.put("sizeMax", String.valueOf(pngSizeLimit/1000000));
+			isValid =  Boolean.FALSE;
+			sizeMax = pngSizeLimit;
 		} else if(StringUtils.equals(extension , "mp4") && file.getSize() > mp4SizeLimit){
-			results.put("result", "false");
-			results.put("sizeMax", String.valueOf(mp4SizeLimit/1000000));
+			isValid =  Boolean.FALSE;
+			sizeMax = mp4SizeLimit;
 		} else if(StringUtils.equals(extension , "flv") && file.getSize() > flvSizeLimit){
-			results.put("result", "false");
-			results.put("sizeMax", String.valueOf(flvSizeLimit/1000000));
+			isValid =  Boolean.FALSE;
+			sizeMax = flvSizeLimit;
 		} else if((StringUtils.equals(extension , "doc") || StringUtils.equals(extension , "docx"))  && file.getSize() > docSizeLimit){
-			results.put("result", "false");
-			results.put("sizeMax", String.valueOf(docSizeLimit/1000000));
+			isValid =  Boolean.FALSE;
+			sizeMax = docSizeLimit;
 		} else if((StringUtils.equals(extension , "xls")  || StringUtils.equals(extension , "xlsx")) && file.getSize() > xlsSizeLimit){
-			results.put("result", "false");
-			results.put("sizeMax", String.valueOf(xlsSizeLimit/1000000));
+			isValid =  Boolean.FALSE;
+			sizeMax = xlsSizeLimit;
 		} else if(StringUtils.equals(extension , "pdf") && file.getSize() > pdfSizeLimit){
-			results.put("result", "false");
-			results.put("sizeMax", String.valueOf(pdfSizeLimit/1000000));
+			isValid =  Boolean.FALSE;
+			sizeMax = pdfSizeLimit;
 		} else if((StringUtils.equals(extension , "ppt") || StringUtils.equals(extension , "pptx")) && file.getSize() > pptSizeLimit){
-			results.put("result", "false");
-			results.put("sizeMax", String.valueOf(pptSizeLimit/1000000));
+			isValid =  Boolean.FALSE;
+			sizeMax = pptSizeLimit;
 		} else if((StringUtils.equals(extension , "pps") || StringUtils.equals(extension , "ppsx")) && file.getSize() > ppsSizeLimit){
-			results.put("result", "false");
-			results.put("sizeMax", String.valueOf(ppsSizeLimit/1000000));
-		} else {
+			isValid =  Boolean.FALSE;
+			sizeMax = ppsSizeLimit;
+		}
+		
+		//set messages to resultMap
+		Map<String, String> results = new HashMap<String, String>();
+		if(isValid){
 			results.put("result", "true");
+		} else {
+			String sizeMaxMessage = sizeMax/1000000 != 0 ? String.valueOf(sizeMax/1000000) + "MB" : String.valueOf(sizeMax/1000) + "kB";
+			results.put("result", "false");
+			results.put("sizeMax", sizeMaxMessage);
 		}
 		
 		return results;

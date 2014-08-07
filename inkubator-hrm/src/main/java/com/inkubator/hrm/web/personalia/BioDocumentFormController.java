@@ -128,7 +128,7 @@ public class BioDocumentFormController extends BaseController {
 			model.setUploadFileName(documentFile.getFileName());
 		} else {
 			ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
-			String errorMsg = messages.getString("global.file_size_should_not_bigger_than") + " " + results.get("sizeMax")+ "MB";
+			String errorMsg = messages.getString("global.file_size_should_not_bigger_than") + " " + results.get("sizeMax");
 			MessagesResourceUtil.setMessagesFromException(FacesMessage.SEVERITY_ERROR, "global.error", errorMsg, FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 		}
 	}
