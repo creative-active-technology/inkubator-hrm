@@ -104,7 +104,7 @@ public class JabatanFormController extends BaseController {
             List<GolonganJabatan> listGolonganJabatans = golonganJabatanService.getAllWithDetail();
             List<Jabatan> listJabatans = jabatanService.getAllData();
             for (Jabatan jabatan : listJabatans) {
-                jabatanAtasans.put(jabatan.getName(), jabatan.getId());
+                jabatanAtasans.put(jabatan.getCode()+" | "+ jabatan.getName(), jabatan.getId());
             }
             for (GolonganJabatan golonganJabatan : listGolonganJabatans) {
                 golJabatans.put(golonganJabatan.getCode() + " - " + golonganJabatan.getPangkat().getPangkatName(), golonganJabatan.getId());
