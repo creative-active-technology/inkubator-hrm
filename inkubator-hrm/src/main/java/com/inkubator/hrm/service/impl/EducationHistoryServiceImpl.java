@@ -7,6 +7,7 @@ package com.inkubator.hrm.service.impl;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.dao.BioDataDao;
+import com.inkubator.hrm.dao.CityDao;
 import com.inkubator.hrm.dao.EducationHistoryDao;
 import com.inkubator.hrm.dao.EducationLevelDao;
 import com.inkubator.hrm.dao.FacultyDao;
@@ -14,7 +15,9 @@ import com.inkubator.hrm.dao.InstitutionEducationDao;
 import com.inkubator.hrm.dao.MajorDao;
 import com.inkubator.hrm.entity.BioEducationHistory;
 import com.inkubator.hrm.service.EducationHistoryService;
+import com.inkubator.hrm.web.model.BioEducationHistoryViewController;
 import com.inkubator.securitycore.util.UserInfoUtil;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.hibernate.criterion.Order;
@@ -45,6 +48,8 @@ public class EducationHistoryServiceImpl extends IServiceImpl implements Educati
     private FacultyDao facultyDao;
     @Autowired
     private MajorDao majorDao;
+    @Autowired
+    private CityDao cityDao; 
 
     @Override
     public BioEducationHistory getEntiyByPK(String id) throws Exception {
@@ -72,6 +77,7 @@ public class EducationHistoryServiceImpl extends IServiceImpl implements Educati
         entity.setFaculty(facultyDao.getEntiyByPK(entity.getFaculty().getId()));
         entity.setMajor(majorDao.getEntiyByPK(entity.getMajor().getId()));
         entity.setCertificateNumber(entity.getCertificateNumber());
+        entity.setCity(cityDao.getEntiyByPK(entity.getCity().getId()));
         entity.setScore(entity.getScore());
         entity.setYearIn(entity.getYearIn());
         entity.setYearOut(entity.getYearOut());
@@ -93,8 +99,12 @@ public class EducationHistoryServiceImpl extends IServiceImpl implements Educati
         update.setScore(entity.getScore());
         update.setYearIn(entity.getYearIn());
         update.setYearOut(entity.getYearOut());
+        update.setCity(cityDao.getEntiyByPK(entity.getCity().getId()));
         update.setUpdatedBy(UserInfoUtil.getUserName());
         update.setUpdatedOn(new Date());
+        if (entity.getPathFoto() != null) {
+            update.setPathFoto(entity.getPathFoto());
+        }
         this.educationHistoryDao.update(update);
     }
 
@@ -242,8 +252,55 @@ public class EducationHistoryServiceImpl extends IServiceImpl implements Educati
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<BioEducationHistory> getAllDataByBioDataId(Long bioDataId) throws Exception {
-        return educationHistoryDao.getAllDataByBioDataId(bioDataId);
+    public List<BioEducationHistoryViewController> getAllDataByBioDataId(Long bioDataId) throws Exception {
+        List<BioEducationHistoryViewController> modelViews = new ArrayList<BioEducationHistoryViewController>();
+        List<BioEducationHistory> bioEducationHistorys = educationHistoryDao.getAllDataByBioDataId(bioDataId);
+        for (BioEducationHistory bioEducationHistory : bioEducationHistorys) {
+            BioEducationHistoryViewController bioEduHistory = new BioEducationHistoryViewController();
+            
+            bioEduHistory.setId(bioEducationHistory.getId());
+            bioEduHistory.setCertificateNumber(bioEducationHistory.getCertificateNumber());
+            bioEduHistory.setYearOut(bioEducationHistory.getYearOut());
+            bioEduHistory.setInstitutionEducation(bioEducationHistory.getInstitutionEducation().getInstitutionEducationName());
+            bioEduHistory.setScore(bioEducationHistory.getScore());
+            if( bioEducationHistory.getCity() != null ){
+                bioEduHistory.setCity(bioEducationHistory.getCity().getCityName());
+            }else{
+                bioEduHistory.setCity(bioEducationHistory.getInstitutionEducation().getCity().getCityName());
+            }
+            //bioEduHistory.setEducationLevelId(bioEducationHistory.getEducationLevel().getId());
+            modelViews.add(bioEduHistory);
+        }
+        return modelViews;
+        
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public BioEducationHistoryViewController getAllByPKByController(Long id) throws Exception {
+        BioEducationHistory bioEducationHistory = educationHistoryDao.getAllDataByPK(id);
+        BioEducationHistoryViewController view = new BioEducationHistoryViewController();
+        view.setScore(bioEducationHistory.getScore());
+        view.setCertificateNumber(bioEducationHistory.getCertificateNumber());
+        view.setFaculty(bioEducationHistory.getFaculty().getFacultyName());
+        view.setInstitutionEducation(bioEducationHistory.getInstitutionEducation().getInstitutionEducationName());
+        view.setId(bioEducationHistory.getId());
+        view.setMajor(bioEducationHistory.getMajor().getMajorName());
+        view.setYearIn(bioEducationHistory.getYearIn());
+        view.setYearOut(bioEducationHistory.getYearOut());
+        view.setEducationLevel(bioEducationHistory.getEducationLevel().getName());
+        if( bioEducationHistory.getCity() != null ){
+            view.setCity(bioEducationHistory.getCity().getCityName());
+        }else{
+            view.setCity(bioEducationHistory.getInstitutionEducation().getCity().getCityName());
+        }
+        if(bioEducationHistory.getPathFoto() != null ){
+            view.setIsDownload(Boolean.TRUE);
+        }else{
+            view.setIsDownload(Boolean.FALSE);
+            view.setIsDownloadString("File Not Available");
+        }
+        return view;
     }
     
 }

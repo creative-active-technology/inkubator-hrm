@@ -46,7 +46,7 @@
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:inputText value="#{bioDataFormController.bioDataModel.title}" styleClass="isitext_hrm" style="width: 75%" label="Gelar"
-                                                 required="true" id="titleId"  />
+                                                 required="false" id="titleId"  />
                                     <p:message for="titleId"/>
                                 </p:column>
 
@@ -57,7 +57,7 @@
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:inputText value="#{bioDataFormController.bioDataModel.lastName}" styleClass="isitext_hrm" style="width: 75%" label="Nama Belakang"
-                                                 required="true" id="lastNameId" />
+                                                 required="false" id="lastNameId" />
                                     <p:message for="lastNameId"/>
                                 </p:column>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
@@ -65,7 +65,7 @@
                                 </p:column>
                                 <p:column style="width: 37%" >
                                     <p:inputText  value="#{bioDataFormController.bioDataModel.nickname}" styleClass="isitext_hrm" style="width: 75%" label="Nama Panggilan"
-                                                  required="true" id="nickNameId"/>
+                                                  required="false" id="nickNameId"/>
                                     <p:message for="nickNameId"/>
                                 </p:column>
                             </p:row>
@@ -74,7 +74,7 @@
                                     <p:outputLabel  value="Tempat Lahir" styleClass="label_hrm" for="placeOfBirthId"/>
                                 </p:column>
                                 <p:column style="width: 37%">
-                                    <p:selectOneMenu  style="margin-right: 3px;width: 77%" id="placeOfBirthId" filter="true" required="true" label="Tempat Lahir"
+                                    <p:selectOneMenu  style="margin-right: 3px;width: 77%" id="placeOfBirthId" filter="true" required="false" label="Tempat Lahir"
                                                       value="#{bioDataFormController.bioDataModel.cityid}"   >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{bioDataFormController.tempatlahir}"  />
@@ -109,7 +109,7 @@
                                     <p:outputLabel  value="Ras" styleClass="label_hrm" for="rasId"/>
                                 </p:column>
                                 <p:column style="width: 37%">
-                                    <p:selectOneMenu  style="margin-right: 3px;width: 77%" id="rasId" filter="true" required="true" value="#{bioDataFormController.bioDataModel.raceId}"
+                                    <p:selectOneMenu  style="margin-right: 3px;width: 77%" id="rasId" filter="true" required="false" value="#{bioDataFormController.bioDataModel.raceId}"
                                                       label="Ras">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{bioDataFormController.mapRas}"  />
@@ -124,7 +124,7 @@
                                     <p:outputLabel  value="Gender" styleClass="label_hrm" for="genderId"/>
                                 </p:column>
                                 <p:column style="width: 37%" >
-                                    <p:selectOneRadio id="genderId" styleClass="isitext_hrm" required="true" value="#{bioDataFormController.bioDataModel.gender}" label="Gender">
+                                    <p:selectOneRadio id="genderId" styleClass="isitext_hrm" required="false" value="#{bioDataFormController.bioDataModel.gender}" label="Gender">
                                         <!--Cek HRM Constanta..-->
                                         <f:selectItem itemLabel="Laki-Laki" itemValue="1" />
                                         <f:selectItem itemLabel="Perempuan" itemValue="0" />
@@ -136,7 +136,7 @@
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:selectOneMenu  style="margin-right: 3px;width: 77%" id="dialekId" filter="true" value="#{bioDataFormController.bioDataModel.doialekId}"
-                                                      required="true" label="Dialek">
+                                                      required="false" label="Dialek">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{bioDataFormController.mapDialek}"  />
                                     </p:selectOneMenu>
@@ -175,7 +175,7 @@
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:inputText value="#{bioDataFormController.bioDataModel.noKK}" styleClass="isitext_hrm" label="No. KK"
-                                                 style="width: 75%" required="true" id="noKKId" />
+                                                 style="width: 75%" required="false" id="noKKId" />
                                     <p:message for="noKKId"/>
                                 </p:column>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important">
@@ -183,7 +183,7 @@
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:inputText value="#{bioDataFormController.bioDataModel.mobilePhone}" styleClass="isitext_hrm" style="width: 75%" label="No HP"
-                                                 required="true" id="mobilePhoneId"  />
+                                                 required="false" id="mobilePhoneId"  />
                                     <p:message for="mobilePhoneId"/>
                                 </p:column>
 
@@ -194,7 +194,7 @@
                                     <p:outputLabel  value="Golongan Darah"  for="bloddId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 37%">
-                                    <p:selectOneRadio id="bloddId" styleClass="isitext_hrm" required="true" value="#{bioDataFormController.bioDataModel.bloodType}" label="Golongan Darah">
+                                    <p:selectOneRadio id="bloddId" styleClass="isitext_hrm" required="false" value="#{bioDataFormController.bioDataModel.bloodType}" label="Golongan Darah">
 
                                         <f:selectItem itemLabel="A" itemValue="1" />
                                         <f:selectItem itemLabel="B" itemValue="2" />
@@ -208,7 +208,7 @@
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:inputText value="#{bioDataFormController.bioDataModel.personalEmail}" styleClass="isitext_hrm" style="width: 75%" label="Alamat Email"
-                                                 required="true" id="personalEmailId" />
+                                                 required="false" id="personalEmailId" />
                                     <p:message for="personalEmailId"/>
                                 </p:column>
 
@@ -219,7 +219,7 @@
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:inputText value="#{bioDataFormController.bioDataModel.jamsostek}" styleClass="isitext_hrm" label="Jamsostek"
-                                                 style="width: 75%" required="true" id="jamsostekId" />
+                                                 style="width: 75%" required="false" id="jamsostekId" />
                                     <p:message for="jamsostekId"/>
                                 </p:column>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important">
@@ -227,7 +227,7 @@
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:inputText value="#{bioDataFormController.bioDataModel.npwp}" styleClass="isitext_hrm" style="width: 75%" label="NPWP"
-                                                 required="true" id="npwpID"  />
+                                                 required="false" id="npwpID"  />
                                     <p:message for="npwpID"/>
                                 </p:column>
 

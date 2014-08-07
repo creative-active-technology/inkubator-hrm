@@ -33,7 +33,7 @@ public class EducationHistoryDaoImpl extends IDAOImpl<BioEducationHistory> imple
         criteria.add(Restrictions.eq("id", id));
         criteria.setFetchMode("biodata", FetchMode.JOIN);
         criteria.setFetchMode("educationLevel", FetchMode.JOIN);
-        criteria.setFetchMode("institutionEducation", FetchMode.JOIN);
+        criteria.setFetchMode("institutionEducation.city.cityName", FetchMode.JOIN);
         criteria.setFetchMode("faculty", FetchMode.JOIN);
         criteria.setFetchMode("major", FetchMode.JOIN);
         return (BioEducationHistory) criteria.uniqueResult();
@@ -45,6 +45,7 @@ public class EducationHistoryDaoImpl extends IDAOImpl<BioEducationHistory> imple
         criteria.add(Restrictions.eq("biodata.id", bioDataId));
         criteria.setFetchMode("educationLevel", FetchMode.JOIN);
         criteria.setFetchMode("institutionEducation", FetchMode.JOIN);
+        criteria.setFetchMode("city", FetchMode.JOIN);
         criteria.setFetchMode("faculty", FetchMode.JOIN);
         criteria.setFetchMode("major", FetchMode.JOIN);
         return criteria.list();

@@ -182,7 +182,26 @@
                                 <p:message for="score"/>
                             </p:column>
                         </p:row>
-
+                        <p:row>
+                            <p:column style="width: 15%">
+                                <p:outputLabel for="cityId" value="city" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="cityId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 30%">
+                                <p:selectOneMenu id="cityId" value="#{educationHistoryFormController.model.cityId}" style="width: 150px;margin-right: 3px">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{educationHistoryFormController.listCitys}"/>
+                                    </p:selectOneMenu>
+                            </p:column>
+                        
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="cityId"/>
+                            </p:column>
+                        </p:row>
                         <p:row>
                             <p:column style="width: 40%">
                                 <p:outputLabel for="uploadFoto" value="Lampiran Ijazah" styleClass="label_hrm"/>
@@ -191,10 +210,10 @@
                                 <h:outputLabel for="uploadFoto" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 100%" colspan="5">
-                                <p:fileUpload required="true" sizeLimit="209715200" label="Pilih Foto" fileUploadListener="#{educationHistoryFormController.handingFotoUpload}" 
+                                <p:fileUpload required="false" sizeLimit="209715200" label="Pilih Foto" fileUploadListener="#{educationHistoryFormController.handingFotoUpload}" 
                                            mode="advanced"  id="uploadFoto"  style="margin-top:10px;margin-bottom:10px;width: 100%;text-align: left!important"
-                                          dragDropSupport="true" multiple="false" update="fotoNameId" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/> 
-                                <p:outputLabel value="File Name"/>
+                                          dragDropSupport="true" multiple="false" update="fotoNameId" allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|doc|docx|rar|zip)$/"/> 
+                                <p:outputLabel value="#{appmsg['global.file_name']}"/>
                                 <p:outputLabel value=":" style="margin-left: 5px;margin-right: 5px"/>
                                 <p:outputLabel value="#{educationHistoryFormController.fotoFileName}" id="fotoNameId"/>
                             </p:column>

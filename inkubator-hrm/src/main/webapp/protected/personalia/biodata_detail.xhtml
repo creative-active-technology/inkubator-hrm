@@ -314,47 +314,53 @@
                                         </f:facet>
                                         <h:outputLabel value="#{no+1}." />
                                     </p:column>
-                                    <p:column sortBy="name" style="width: 20%">
+                                    <p:column style="width: 20%">
+                                        <f:facet name="header">
+                                            <h:outputText value="#{appmsg['educationhistory.year_out']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{bioEducationData.yearOut}" />
+                                    </p:column>
+                                    <p:column style="width: 20%">
                                         <f:facet name="header">
                                             <h:outputText value="#{appmsg['educationhistory.education_level']}"/>
                                         </f:facet>
-                                        <h:outputLabel value= "#{bioEducationData.educationLevel.name}" />
+                                        <h:outputLabel value= "#{bioEducationData.certificateNumber}" />
                                     </p:column>
-                                    <p:column sortBy="name" style="width: 20%">
+                                    <p:column style="width: 15%">
                                         <f:facet name="header">
                                             <h:outputText value="#{appmsg['educationhistory.institution_level']}"/>
                                         </f:facet>
-                                        <h:outputLabel value= "#{bioEducationData.institutionEducation.institutionEducationName}" />
+                                        <h:outputLabel value= "#{bioEducationData.institutionEducation}" />
                                     </p:column>
-                                    <p:column sortBy="name" style="width: 20%">
+                                    <p:column style="width: 20%">
                                         <f:facet name="header">
-                                            <h:outputText value="#{appmsg['educationhistory.faculty']}"/>
+                                            <h:outputText value="#{appmsg['institutionEducation.city_name']}"/>
                                         </f:facet>
-                                        <h:outputLabel value= "#{bioEducationData.faculty.facultyName}" />
+                                        <h:outputLabel value= "#{bioEducationData.city}" />
                                     </p:column>
-                                    <p:column sortBy="name" style="width: 20%">
+                                    <p:column style="width:10%">
                                         <f:facet name="header">
-                                            <h:outputText value="#{appmsg['educationhistory.major']}"/>
+                                            <h:outputText value="#{appmsg['educationhistory.score']}"/>
                                         </f:facet>
-                                        <h:outputLabel value= "#{bioEducationData.major.majorName}" />
+                                        <h:outputLabel value= "#{bioEducationData.score}" />
                                     </p:column>
 
                                     <p:column headerText="#{appmsg['global.action']}" style="width: 12%;text-align: center" exportable="false">
                                         <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                                          style="font-size: 10px!important" update=":panelDialogBioEducationDetailId" 
-                                                         action="#{bioDataDetilController.doSelectBioEduHistory()}" onclick="statusDialog.show()"  oncomplete="dialogDetailEducation.show()">                        
-                                            <f:setPropertyActionListener value="#{bioEducationData}" target="#{bioDataDetilController.selectedEduHistory}" />
+                                                         action="#{bioDataDetilController.doDetailBioEduHistory()}" onclick="statusDialog.show()"  oncomplete="dialogDetailEducation.show()">                        
+                                            <f:setPropertyActionListener value="#{bioEducationData}" target="#{bioDataDetilController.selectedBioEducationHistoryViewController}" />
                                         </p:commandButton>
                                         - 
                                         <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                                          style="font-size: 10px!important" update=":panelDialogConfirmId" 
                                                          action="#{bioDataDetilController.doSelectBioEduHistory()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmDelete.show()">
-                                            <f:setPropertyActionListener value="#{bioEducationData}" target="#{bioDataDetilController.selectedEduHistory}" />
+                                            <f:setPropertyActionListener value="#{bioEducationData}" target="#{bioDataDetilController.selectedBioEducationHistoryViewController}" />
                                         </p:commandButton>
                                         -
                                         <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
                                                          action="#{bioDataDetilController.doUpdateBioEduHistory()}" >
-                                            <f:setPropertyActionListener value="#{bioEducationData}" target="#{bioDataDetilController.selectedEduHistory}" />
+                                            <f:setPropertyActionListener value="#{bioEducationData}" target="#{bioDataDetilController.selectedBioEducationHistoryViewController}" />
                                             <p:ajax event="dialogReturn" listener="#{bioDataDetilController.onDialogReturn}"  update="tableEducationId,:growlBioDetailFormId"/>
                                         </p:commandButton>
                                     </p:column>
@@ -687,36 +693,38 @@
                 <p:dialog widgetVar="dialogDetailEducation" header="#{appmsg['educationhistory.detail_education']}" styleClass="header_small_no_bold" width="450" modal="true" resizable="false" hideEffect="puff" 
                           showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogBioEducationDetailId" style="width:100%;margin:5px;">
-                        <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['educationhistory.education_level']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedEduHistory.educationLevel.name}" styleClass="label_hrm"/></p:column>
-                        </p:row>
+                        
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['educationhistory.institution_level']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedEduHistory.institutionEducation.institutionEducationName}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedBioEducationHistoryViewController.institutionEducation}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['educationhistory.education_level']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedBioEducationHistoryViewController.educationLevel}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['educationhistory.faculty']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedEduHistory.faculty.facultyName}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedBioEducationHistoryViewController.faculty}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['institutionEducation.city_name']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedBioEducationHistoryViewController.city}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['educationhistory.major']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedEduHistory.major.majorName}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedBioEducationHistoryViewController.major}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['educationhistory.certificate_number']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedEduHistory.certificateNumber}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedBioEducationHistoryViewController.certificateNumber}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['educationhistory.score']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedEduHistory.score}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedBioEducationHistoryViewController.educationLevel}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="Ijazah" styleClass="label_hrm"/></p:column>
                             <p:column style="width:70%;">
-                                <p:graphicImage value="#{imageBioDataStreamerController.ijazahFile}" height="176" width="120" style="border:  2px solid #003366 !important; border-radius: 5px !important" cache="false">
-                                    <f:param name="id" value="#{bioDataDetilController.selectedEduHistory.id}"/>
-                                </p:graphicImage>
                                 <p:dialog modal="true" widgetVar="statusDialog" header="Status" draggable="false" closable="false" resizable="false">
                                     <p:graphicImage library="images" name="loading.gif" />
                                     <p:graphicImage library="images" name="bio_data.png" height="36" width="36" />
@@ -724,9 +732,10 @@
                                 <h:form>
                                     <p:commandButton value="Download" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
                                         <p:fileDownload value="#{imageBioDataStreamerController.ijazahFile}" />
-                                        <f:param name="id" value="#{bioDataDetilController.selectedEduHistory.id}"/>
+                                        <f:param name="id" value="#{bioDataDetilController.selectedBioEducationHistoryViewController.id}"/>
                                     </p:commandButton>
                                 </h:form>
+                                
                                 <script type="text/javascript">
                                     function start() {
                                         PF('statusDialog').show();
@@ -737,6 +746,8 @@
                                     }
                                 </script>
                             </p:column>
+                            <!--<p:column style="width:70%;" rendered="#{!bioDataDetilController.selectedBioEducationHistoryViewController.isDownload}"><p:outputLabel value="#{bioDataDetilController.selectedBioEducationHistoryViewController.isDownloadString}" styleClass="label_hrm"/></p:column>-->
+                        
                         </p:row>
                         <f:facet name="footer">
                             <p:row>
