@@ -6,6 +6,8 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.primefaces.model.UploadedFile;
 
+import com.inkubator.common.util.FilesUtil;
+
 /**
  *
  * @author rizkykojek
@@ -59,7 +61,7 @@ public class UploadFilesUtil {
 		if(isValid){
 			results.put("result", "true");
 		} else {
-			String sizeMaxMessage = sizeMax/1000000 != 0 ? String.valueOf(sizeMax/1000000) + "MB" : String.valueOf(sizeMax/1000) + "kB";
+			String sizeMaxMessage = FilesUtil.getHumanReadableSize(sizeMax);
 			results.put("result", "false");
 			results.put("sizeMax", sizeMaxMessage);
 		}
