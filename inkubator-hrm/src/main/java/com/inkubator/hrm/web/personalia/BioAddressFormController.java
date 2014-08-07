@@ -187,7 +187,6 @@ public class BioAddressFormController extends BaseController {
 		bioModel.setBioDataId(entity.getBioData().getId());
 	    bioModel.setStatusAddress(entity.getStatusAddress());
 	    bioModel.setType(entity.getType());
-	    bioModel.setContactName(entity.getContactName());
 	    bioModel.setPhoneNumber(entity.getPhoneNumber());
 	    bioModel.setAddressDetail(entity.getAddressDetail());
 	    bioModel.setCountryId(entity.getCity().getProvince().getCountry().getId());
@@ -195,7 +194,6 @@ public class BioAddressFormController extends BaseController {
 	    bioModel.setCityId(entity.getCity().getId());
 	    bioModel.setSubDistrict(entity.getSubDistrict());
 	    bioModel.setVillage(entity.getVillage());
-	    bioModel.setZipCode(entity.getZipCode());
 	    bioModel.setNotes(entity.getNotes());
 		
 		return bioModel;
@@ -210,7 +208,6 @@ public class BioAddressFormController extends BaseController {
 		bioAddress.setBioData(new BioData(model.getBioDataId()));
 		bioAddress.setStatusAddress(model.getStatusAddress());
 		bioAddress.setType(model.getType());
-		bioAddress.setContactName(model.getContactName());
 		bioAddress.setPhoneNumber(model.getPhoneNumber());
 		bioAddress.setAddressDetail(model.getAddressDetail());
 		if(model.getCityId() != null){
@@ -218,7 +215,6 @@ public class BioAddressFormController extends BaseController {
 		}		
 		bioAddress.setSubDistrict(model.getSubDistrict());
 		bioAddress.setVillage(model.getVillage());
-		bioAddress.setZipCode(model.getZipCode());
 		bioAddress.setNotes(model.getNotes());
 		
 	    return bioAddress;
