@@ -74,15 +74,15 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>                            
-                            <p:column sortBy="institutionEducationCode"  style="width: 5%">
+                            <p:column sortBy="institutionEducationCode"  style="width: 5%;text-align: center;">
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['global.code']}"/>
+                                    <h:outputText value="#{appmsg['global.code']}" style="text-align: center;"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{institutionEducationData.institutionEducationCode}"/>
                             </p:column>  
-                            <p:column sortBy="institutionEducationName"  style="width: 25%">
+                            <p:column sortBy="institutionEducationName"  style="width: 25%; ">
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['global.name']}"/>
+                                    <h:outputText value="#{appmsg['global.name']}" style=""/>
                                 </f:facet>
                                 <h:outputLabel value= "#{institutionEducationData.institutionEducationName}"/>
                             </p:column>
@@ -98,7 +98,7 @@
                                 </f:facet>
                                  <h:outputLabel value= "#{institutionEducationData.address}"/>
                             </p:column>  
-                            <p:column sortBy="postalCode"  style="width: 8%">
+                            <p:column sortBy="postalCode"  style="width: 8%; text-align: center;">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['institutionEducation.postal_code']}"/>
                                 </f:facet>

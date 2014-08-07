@@ -1,0 +1,200 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>TODO supply a title</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg" style="margin: 10px">
+                    <h:form id="formId">
+                        <h:panelGrid style="margin-bottom: 5px" columns="2">
+                            <p:graphicImage library="images" name="marital_status.png" height="36" width="36" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="#{appmsg['paysalarygrade.paysalarygrade']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['paysalarygrade.pay_salary_grade_header']}" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:growl id="growlId" globalOnly="true" showDetail="true" />
+                        <p:toolbar  style="margin-top: 10px">
+                            <p:toolbarGroup align="left">
+                                <h:panelGrid columns="5">
+                                    <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm" />
+                                    <p:outputLabel value=":" />
+                                    <p:selectOneMenu value="#{paySalaryGradeController.searchParameter.keyParam}" style="width: 150px;margin-right: 3px" >
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItem itemLabel="#{appmsg['paysalarygrade.grade']}" itemValue="gradeSalary"/>
+<!--                                        <f:selectItem itemLabel="#{appmsg['paysalarygrade.min_salary']}" itemValue="minSalary"/>
+                                        <f:selectItem itemLabel="#{appmsg['paysalarygrade.medium_salary']}" itemValue="mediumSalary"/>
+                                        <f:selectItem itemLabel="#{appmsg['paysalarygrade.max_salary']}" itemValue="maxSalary"/>-->
+                                        <f:selectItem itemLabel="#{appmsg['currency.currency']}" itemValue="currency"/>
+                                    </p:selectOneMenu>
+                                    <p:inputText id="searchId" value="#{paySalaryGradeController.searchParameter.parameter}" style="width: 250px" styleClass="label_button"/>
+                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{paySalaryGradeController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                            <p:toolbarGroup align="right">
+                                <h:panelGrid columns="3" >
+                                    <p:commandButton value="Export to XLS" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
+                                        <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Pay_Salary_Grade"/>
+                                    </p:commandButton>
+                                    <p:commandButton value="#{appmsg['global.add']}" actionListener="#{paySalaryGradeController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
+                                        <p:ajax event="dialogReturn" listener="#{paySalaryGradeController.onDialogReturn}"  update="tableId, growlId"/>
+                                    </p:commandButton>
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{maritalStatusController.doClose()}" icon="ui-icon-home" />
+                                    
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                        </p:toolbar>
+                        <p:focus for="searchId" />
+                        <p:dataTable  var="data"  value="#{paySalaryGradeController.lazy}" lazy="true" paginator="true" pageLinks="7"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['paysalarygrade.list_of_pay_salary_grade']}"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 3%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column sortBy="name" style="width: 15%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['paysalarygrade.grade']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.gradeSalary}" />
+                            </p:column>
+                            <p:column sortBy="name" style="width: 15%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['paysalarygrade.min_salary']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.minSalary}" />
+                            </p:column>
+                            <p:column sortBy="name" style="width: 15%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['paysalarygrade.medium_salary']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.mediumSalary}" />
+                            </p:column>
+                            <p:column sortBy="name" style="width: 15%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['paysalarygrade.max_salary']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.maxSalary}" />
+                            </p:column>
+                            <p:column sortBy="name" style="width: 18%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['currency.currency']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.currency.name}" />
+                            </p:column>
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
+                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
+                                                 onclick="statusDialog.show()"  oncomplete="detail.show()" update=":detailPanel"
+                                                 style="font-size: 10px!important" action="#{paySalaryGradeController.doSelectEntity()}">                        
+                                    <f:setPropertyActionListener value="#{data}" target="#{paySalaryGradeController.selected}" />
+                                </p:commandButton>
+                                - 
+                                <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+                                				 style="font-size: 10px!important" update=":panelDialogConfirmId" 
+                                                                 action="#{paySalaryGradeController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmDelete.show()">
+                                    <f:setPropertyActionListener value="#{data}" target="#{paySalaryGradeController.selected}" />
+                                </p:commandButton>
+                                -
+                                <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" ajax="true"
+                                                  action="#{paySalaryGradeController.doEdit()}" >
+                                    <f:setPropertyActionListener value="#{data}" target="#{paySalaryGradeController.selected}" />
+                                    <p:ajax event="dialogReturn" listener="#{paySalaryGradeController.onDialogReturn}" update="tableId" />
+                                </p:commandButton> 
+                            </p:column> 
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : "/>
+                                <p:outputLabel value="#{paySalaryGradeController.lazy.rowCount}"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px"/>
+                            </f:facet>  
+                        </p:dataTable>
+                        <p:blockUI block="formId" trigger="tableId,btnSearchId" >
+                            <h:panelGrid columns="2" styleClass="grid_no_border">
+                                <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
+                                <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
+                            </h:panelGrid>
+                        </p:blockUI>
+                    </h:form>
+                </div>
+                <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
+                    <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
+                </p:dialog>
+                <p:dialog widgetVar="dialogConfirmDelete" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                          appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
+                    <div align="center">
+                        <div align="center">
+                            <h:panelGrid columns="2" style="text-align: justify">
+                                <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
+                                <h:panelGroup>
+                                    <h:panelGrid style="text-align: center">
+                                        <p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
+                                    </h:panelGrid>
+                                </h:panelGroup>
+                            </h:panelGrid>
+                        </div>
+                        <h:panelGrid id="panelDialogConfirmId"  columns="3">
+                            <p:outputLabel value="#{appmsg['paysalarygrade.grade']}"  style="font-weight: bold"/>
+                            <p:outputLabel value=":"  style="font-weight: bold"/>
+                            <p:outputLabel value="#{paySalaryGradeController.selected.gradeSalary}" styleClass="label_hrm"/>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:commandButton value="#{appmsg['global.yes']}" action="#{paySalaryGradeController.doDelete()}" update="formId"
+                                         oncomplete="dialogConfirmDelete.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmDelete.hide()" icon="ui-icon-close" />                     	
+                    </div>
+                </p:dialog>
+                <p:dialog widgetVar="detail" header="#{appmsg['paysalarygrade.pay_salary_grade_detail']}" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
+                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)" dynamic="true">
+                    <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
+
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['paysalarygrade.grade']}" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{paySalaryGradeController.selected.gradeSalary}"/> </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['paysalarygrade.min_salary']}" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{paySalaryGradeController.selected.minSalary}"/> </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['paysalarygrade.medium_salary']}" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{paySalaryGradeController.selected.mediumSalary}"/> </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['paysalarygrade.max_salary']}" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{paySalaryGradeController.selected.maxSalary}"/> </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['currency.currency']}" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{paySalaryGradeController.selected.currency.name}"/> </p:column>
+                        </p:row>
+
+                        <f:facet name="footer">
+                            <p:row>
+                                <p:column colspan="2"><p:outputLabel value="#{appmsg['paysalarygrade.pay_salary_grade_header']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
+                            </p:row>
+                        </f:facet>
+                    </p:panelGrid>
+                </p:dialog>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

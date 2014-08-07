@@ -6,13 +6,11 @@ package com.inkubator.hrm.service.impl;
 
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
-import com.inkubator.exception.BussinessException;
-import com.inkubator.hrm.dao.CountryDao;
 import com.inkubator.hrm.dao.CurrencyDao;
-import com.inkubator.hrm.entity.Country;
-import com.inkubator.hrm.entity.Currency;
-import com.inkubator.hrm.service.CurrencyService;
-import com.inkubator.hrm.web.search.CurrencySearchParameter;
+import com.inkubator.hrm.dao.PaySalaryGradeDao;
+import com.inkubator.hrm.entity.PaySalaryGrade;
+import com.inkubator.hrm.service.PaySalaryGradeService;
+import com.inkubator.hrm.web.search.PaySalaryGradeSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import java.util.Date;
 import java.util.List;
@@ -28,157 +26,139 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author Deni
  */
-@Service(value = "currencyService")
+@Service(value = "paySalaryGradeService")
 @Lazy
-public class CurrencyServiceImpl extends IServiceImpl implements CurrencyService{
+public class PaySalaryGradeServiceImpl extends IServiceImpl implements PaySalaryGradeService{
 
     @Autowired
-    private CurrencyDao currencyDao;
+    private PaySalaryGradeDao paySalaryGradeDao;
     @Autowired
-    private CountryDao countryDao;
+    private CurrencyDao currencyDao;
     
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<Currency> getByParam(CurrencySearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
-        return currencyDao.getByParam(searchParameter, firstResult, maxResults, order);
+    public List<PaySalaryGrade> getByParam(PaySalaryGradeSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
+        return paySalaryGradeDao.getByParam(searchParameter, firstResult, maxResults, order);
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getTotalCurrencyByParam(CurrencySearchParameter searchParameter) throws Exception {
-        return currencyDao.getTotalCurrencyByParam(searchParameter);
+    public Long getTotalPaySalaryGradeByParam(PaySalaryGradeSearchParameter searchParameter) throws Exception {
+        return paySalaryGradeDao.getTotalPaySalaryGradeByParam(searchParameter);
     }
 
     @Override
-    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getByCurrencyCode(String code) throws Exception {
-        return currencyDao.getByCurrencyCode(code);
-    }
-
-    @Override
-    public Currency getEntiyByPK(String id) throws Exception {
+    public PaySalaryGrade getEntiyByPK(String id) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Currency getEntiyByPK(Integer id) throws Exception {
+    public PaySalaryGrade getEntiyByPK(Integer id) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Currency getEntiyByPK(Long id) throws Exception {
-        return currencyDao.getEntiyByPK(id);
+    public PaySalaryGrade getEntiyByPK(Long id) throws Exception {
+        return paySalaryGradeDao.getEntiyByPK(id);
     }
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void save(Currency entity) throws Exception {
-        // check duplicate name
-        long totalDuplicates = currencyDao.getByCurrencyCode(entity.getCode());
-        if (totalDuplicates > 0) {
-            throw new BussinessException("costcenter.error_duplicate_cost_center_code");
-        }
+    public void save(PaySalaryGrade entity) throws Exception {
         entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
-        entity.setCode(entity.getCode());
-        entity.setName(entity.getName());
-        entity.setCountry(this.countryDao.getEntiyByPK(entity.getCountry().getId()));
-        entity.setDescription(entity.getDescription());
+        entity.setCurrency(currencyDao.getEntiyByPK(entity.getCurrency().getId()));
         entity.setCreatedBy(UserInfoUtil.getUserName());
         entity.setCreatedOn(new Date());
-        this.currencyDao.save(entity);
+        this.paySalaryGradeDao.save(entity);
     }
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void update(Currency entity) throws Exception {
-        long totalDuplicates = currencyDao.getTotalByCodeAndNotId(entity.getCode(), entity.getId());
-        if (totalDuplicates > 0) {
-            throw new BussinessException("costcenter.error_duplicate_cost_center_code");
-        }
-        Currency update = this.currencyDao.getEntiyByPK(entity.getId());
-        update.setCode(entity.getCode());
-        update.setName(entity.getName());
-        update.setCountry(this.countryDao.getEntiyByPK(entity.getCountry().getId()));
-        update.setDescription(entity.getDescription());
+    public void update(PaySalaryGrade entity) throws Exception {
+        PaySalaryGrade update = paySalaryGradeDao.getEntiyByPK(entity.getId());
+        update.setCurrency(currencyDao.getEntiyByPK(entity.getCurrency().getId()));
+        update.setMinSalary(entity.getMinSalary());
+        update.setMediumSalary(entity.getMediumSalary());
+        update.setMaxSalary(entity.getMediumSalary());
         update.setUpdatedBy(UserInfoUtil.getUserName());
         update.setUpdatedOn(new Date());
-        this.currencyDao.update(update);
+        this.paySalaryGradeDao.update(update);
     }
 
     @Override
-    public void saveOrUpdate(Currency enntity) throws Exception {
+    public void saveOrUpdate(PaySalaryGrade enntity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Currency saveData(Currency entity) throws Exception {
+    public PaySalaryGrade saveData(PaySalaryGrade entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Currency updateData(Currency entity) throws Exception {
+    public PaySalaryGrade updateData(PaySalaryGrade entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Currency saveOrUpdateData(Currency entity) throws Exception {
+    public PaySalaryGrade saveOrUpdateData(PaySalaryGrade entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Currency getEntityByPkIsActive(String id, Integer isActive) throws Exception {
+    public PaySalaryGrade getEntityByPkIsActive(String id, Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Currency getEntityByPkIsActive(String id, Byte isActive) throws Exception {
+    public PaySalaryGrade getEntityByPkIsActive(String id, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Currency getEntityByPkIsActive(String id, Boolean isActive) throws Exception {
+    public PaySalaryGrade getEntityByPkIsActive(String id, Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Currency getEntityByPkIsActive(Integer id, Integer isActive) throws Exception {
+    public PaySalaryGrade getEntityByPkIsActive(Integer id, Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Currency getEntityByPkIsActive(Integer id, Byte isActive) throws Exception {
+    public PaySalaryGrade getEntityByPkIsActive(Integer id, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Currency getEntityByPkIsActive(Integer id, Boolean isActive) throws Exception {
+    public PaySalaryGrade getEntityByPkIsActive(Integer id, Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Currency getEntityByPkIsActive(Long id, Integer isActive) throws Exception {
+    public PaySalaryGrade getEntityByPkIsActive(Long id, Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Currency getEntityByPkIsActive(Long id, Byte isActive) throws Exception {
+    public PaySalaryGrade getEntityByPkIsActive(Long id, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Currency getEntityByPkIsActive(Long id, Boolean isActive) throws Exception {
+    public PaySalaryGrade getEntityByPkIsActive(Long id, Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor =Exception.class)
-    public void delete(Currency entity) throws Exception {
-        this.currencyDao.delete(entity);
+    public void delete(PaySalaryGrade entity) throws Exception {
+        this.paySalaryGradeDao.delete(entity);
     }
 
     @Override
-    public void softDelete(Currency entity) throws Exception {
+    public void softDelete(PaySalaryGrade entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -204,49 +184,49 @@ public class CurrencyServiceImpl extends IServiceImpl implements CurrencyService
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ,propagation = Propagation.SUPPORTS, timeout = 30)
-    public List<Currency> getAllData() throws Exception {
-        return currencyDao.getAllData();
+    public List<PaySalaryGrade> getAllData() throws Exception {
+        return paySalaryGradeDao.getAllData();
     }
 
     @Override
-    public List<Currency> getAllData(Boolean isActive) throws Exception {
+    public List<PaySalaryGrade> getAllData(Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<Currency> getAllData(Integer isActive) throws Exception {
+    public List<PaySalaryGrade> getAllData(Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<Currency> getAllData(Byte isActive) throws Exception {
+    public List<PaySalaryGrade> getAllData(Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<Currency> getAllDataPageAble(int firstResult, int maxResults, Order order) throws Exception {
+    public List<PaySalaryGrade> getAllDataPageAble(int firstResult, int maxResults, Order order) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<Currency> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Boolean isActive) throws Exception {
+    public List<PaySalaryGrade> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<Currency> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Integer isActive) throws Exception {
+    public List<PaySalaryGrade> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<Currency> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
+    public List<PaySalaryGrade> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
-    public Currency getCurrencyByIdWithCountry(Long id) throws Exception {
-        return currencyDao.getCurrencyByIdWithCountry(id);
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public PaySalaryGrade getByPaySalaryGradeId(Long id) throws Exception {
+        return paySalaryGradeDao.getByPaySalaryGradeId(id);
     }
     
 }

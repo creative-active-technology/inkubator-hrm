@@ -15,7 +15,7 @@ import com.inkubator.hrm.dao.InstitutionEducationDao;
 import com.inkubator.hrm.dao.MajorDao;
 import com.inkubator.hrm.entity.BioEducationHistory;
 import com.inkubator.hrm.service.EducationHistoryService;
-import com.inkubator.hrm.web.model.BioEducationHistoryViewController;
+import com.inkubator.hrm.web.model.BioEducationHistoryViewModel;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import java.util.ArrayList;
 import java.util.Date;
@@ -252,11 +252,11 @@ public class EducationHistoryServiceImpl extends IServiceImpl implements Educati
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<BioEducationHistoryViewController> getAllDataByBioDataId(Long bioDataId) throws Exception {
-        List<BioEducationHistoryViewController> modelViews = new ArrayList<BioEducationHistoryViewController>();
+    public List<BioEducationHistoryViewModel> getAllDataByBioDataId(Long bioDataId) throws Exception {
+        List<BioEducationHistoryViewModel> modelViews = new ArrayList<BioEducationHistoryViewModel>();
         List<BioEducationHistory> bioEducationHistorys = educationHistoryDao.getAllDataByBioDataId(bioDataId);
         for (BioEducationHistory bioEducationHistory : bioEducationHistorys) {
-            BioEducationHistoryViewController bioEduHistory = new BioEducationHistoryViewController();
+            BioEducationHistoryViewModel bioEduHistory = new BioEducationHistoryViewModel();
             
             bioEduHistory.setId(bioEducationHistory.getId());
             bioEduHistory.setCertificateNumber(bioEducationHistory.getCertificateNumber());
@@ -277,9 +277,9 @@ public class EducationHistoryServiceImpl extends IServiceImpl implements Educati
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
-    public BioEducationHistoryViewController getAllByPKByController(Long id) throws Exception {
+    public BioEducationHistoryViewModel getAllByPKByController(Long id) throws Exception {
         BioEducationHistory bioEducationHistory = educationHistoryDao.getAllDataByPK(id);
-        BioEducationHistoryViewController view = new BioEducationHistoryViewController();
+        BioEducationHistoryViewModel view = new BioEducationHistoryViewModel();
         view.setScore(bioEducationHistory.getScore());
         view.setCertificateNumber(bioEducationHistory.getCertificateNumber());
         view.setFaculty(bioEducationHistory.getFaculty().getFacultyName());
