@@ -724,11 +724,11 @@
                         </p:row>
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="Ijazah" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;">
-                                <p:dialog modal="true" widgetVar="statusDialog" header="Status" draggable="false" closable="false" resizable="false">
+                            <p:column style="width:70%;" rendered="#{bioDataDetilController.selectedBioEducationHistoryViewController.isDownload}">
+<!--                                <p:dialog modal="true" widgetVar="statusDialog" header="Status" draggable="false" closable="false" resizable="false">
                                     <p:graphicImage library="images" name="loading.gif" />
                                     <p:graphicImage library="images" name="bio_data.png" height="36" width="36" />
-                                </p:dialog>
+                                </p:dialog>-->
                                 <h:form>
                                     <p:commandButton value="Download" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
                                         <p:fileDownload value="#{imageBioDataStreamerController.ijazahFile}" />
@@ -746,7 +746,7 @@
                                     }
                                 </script>
                             </p:column>
-                            <!--<p:column style="width:70%;" rendered="#{!bioDataDetilController.selectedBioEducationHistoryViewController.isDownload}"><p:outputLabel value="#{bioDataDetilController.selectedBioEducationHistoryViewController.isDownloadString}" styleClass="label_hrm"/></p:column>-->
+                            <p:column style="width:70%;" rendered="#{!bioDataDetilController.selectedBioEducationHistoryViewController.isDownload}"><p:outputLabel value="#{bioDataDetilController.selectedBioEducationHistoryViewController.isDownloadString}" styleClass="label_hrm"/></p:column>
                         
                         </p:row>
                         <f:facet name="footer">
