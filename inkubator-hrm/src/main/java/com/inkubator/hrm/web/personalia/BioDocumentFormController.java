@@ -1,7 +1,12 @@
 package com.inkubator.hrm.web.personalia;
 
+import java.util.Locale;
+import java.util.Map;
+import java.util.ResourceBundle;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -15,9 +20,11 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.BioData;
 import com.inkubator.hrm.entity.BioDocument;
 import com.inkubator.hrm.service.BioDocumentService;
+import com.inkubator.hrm.util.UploadFilesUtil;
 import com.inkubator.hrm.web.model.BioDocumentModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
+import com.inkubator.webcore.util.MessagesResourceUtil;
 
 /**
  *
@@ -32,6 +39,8 @@ public class BioDocumentFormController extends BaseController {
 	private UploadedFile documentFile;
 	@ManagedProperty(value = "#{bioDocumentService}")
 	private BioDocumentService bioDocumentService;
+	@ManagedProperty(value = "#{uploadFilesUtil}")
+	private UploadFilesUtil uploadFilesUtil;
 	
 	@PostConstruct
     @Override
@@ -84,6 +93,10 @@ public class BioDocumentFormController extends BaseController {
 		this.bioDocumentService = bioDocumentService;
 	}
 	
+	public void setUploadFilesUtil(UploadFilesUtil uploadFilesUtil) {
+		this.uploadFilesUtil = uploadFilesUtil;
+	}
+
 	public UploadedFile getDocumentFile() {
 		return documentFile;
 	}
@@ -109,8 +122,15 @@ public class BioDocumentFormController extends BaseController {
     }
 	
 	public void handingFileUpload(FileUploadEvent fileUploadEvent) {
-		documentFile = fileUploadEvent.getFile();
-		model.setUploadFileName(documentFile.getFileName());
+		Map<String, String> results = uploadFilesUtil.checkUploadFileSizeLimit(fileUploadEvent.getFile());
+		if(StringUtils.equals(results.get("result"),"true")){
+			documentFile = fileUploadEvent.getFile();
+			model.setUploadFileName(documentFile.getFileName());
+		} else {
+			ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+			String errorMsg = messages.getString("global.file_size_should_not_bigger_than") + " " + results.get("sizeMax")+ "MB";
+			MessagesResourceUtil.setMessagesFromException(FacesMessage.SEVERITY_ERROR, "global.error", errorMsg, FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+		}
 	}
 	
 	private BioDocument getEntityFromViewModel(BioDocumentModel model) {

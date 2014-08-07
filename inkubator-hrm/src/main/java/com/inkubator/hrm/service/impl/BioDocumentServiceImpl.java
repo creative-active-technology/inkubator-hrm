@@ -284,7 +284,7 @@ public class BioDocumentServiceImpl extends IServiceImpl implements BioDocumentS
 	public void update(BioDocument entity, UploadedFile documentFile) throws Exception {
 		
 		BioDocument bioDocument = bioDocumentDao.getEntiyByPK(entity.getId());
-		String uploadPath = StringUtils.EMPTY;
+		String uploadPath = bioDocument.getUploadPath();
 		
 		if (documentFile != null) {			
 			//remove old file

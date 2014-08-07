@@ -89,10 +89,10 @@
                         </p:row>
                         <p:row>
                         	<p:column colspan="3">
-	                        	<p:fileUpload required="true" sizeLimit="209715200" label="#{appmsg['global.choose_file']}" fileUploadListener="#{bioDocumentFormController.handingFileUpload}"
+	                        	<p:fileUpload required="true" sizeLimit="1000000000" label="#{appmsg['global.choose_file']}" fileUploadListener="#{bioDocumentFormController.handingFileUpload}"
 	                                          mode="advanced"  id="uploadFoto"  style="margin-top:10px;margin-bottom:10px;width: 100%;text-align: left!important"
-	                                          dragDropSupport="true" multiple="false" update="fileNameId"
-	                                          allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/> 
+	                                          dragDropSupport="true" multiple="false" update="fileNameId,:growlBioDocumentFormlId"
+	                                          allowTypes="/(\.|\/)(jpe?g|png|mp4|flv|doc|docx|xls|xlsx|pdf|ppt|pptx|pps|ppsx)$/"/> 
 	                            <p:outputLabel value="#{appmsg['global.file_name']}"/>
 	                            <p:outputLabel value=":" style="margin-left: 5px;margin-right: 5px"/>
 	                            <p:outputLabel value="#{bioDocumentFormController.model.uploadFileName}" id="fileNameId"/>  
