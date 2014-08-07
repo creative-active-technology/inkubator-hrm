@@ -246,23 +246,17 @@
 		                                </f:facet>
 		                                <h:outputLabel value= "#{bioAddressesData.addressDetail}"/>
 		                            </p:column>
-		                            <p:column style="text-align: center;width: 15%">
+		                            <p:column style="text-align: center;width: 20%">
 		                                <f:facet name="header">  
 		                                    <h:outputText value="#{appmsg['city.city']}"/>
 		                                </f:facet>
 		                                <h:outputLabel value= "#{bioAddressesData.city.cityName}"/>
 		                            </p:column>
-		                            <p:column style="text-align: center;width: 15%">
+		                            <p:column style="text-align: center;width: 20%">
 		                                <f:facet name="header">  
 		                                    <h:outputText value="#{appmsg['province.province']}"/>
 		                                </f:facet>
 		                                <h:outputLabel value= "#{bioAddressesData.city.province.provinceName}"/>
-		                            </p:column>
-		                            <p:column style="text-align: center;width: 10%">
-		                                <f:facet name="header">  
-		                                    <h:outputText value="#{appmsg['global.zip_code']}"/>
-		                                </f:facet>
-		                                <h:outputLabel value= "#{bioAddressesData.zipCode}"/>
 		                            </p:column>
 		                            <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
 		                                <p:commandButton icon="ui-icon-clipboard" title="#{appmsg['global.maps']}" label="#{appmsg['global.maps']}"  
@@ -291,7 +285,7 @@
 		                            </p:column>
 		                   		</p:dataTable>
 		                   		<h:panelGrid columns="1">
-		                    		<p:commandButton value="#{appmsg['global.add']} #{appmsg['global.address']}" title="#{appmsg['global.add']} #{appmsg['global.address']}" label="#{appmsg['global.add']} #{appmsg['global.address']}" styleClass="label_button" icon="ui-icon-search" 
+		                    		<p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']} #{appmsg['global.address']}" label="#{appmsg['global.add']} #{appmsg['global.address']}" styleClass="label_button" icon="ui-icon-document" 
 		                    						 actionListener="#{bioDataDetilController.doAddBioAddress()}" ajax="true" immediate="true">
 		                            	<p:ajax event="dialogReturn" listener="#{bioDataDetilController.onDialogReturnBioAddress}"  update="tableBioAdressId,:growlBioDetailFormId"/>
 		                           	</p:commandButton>
@@ -489,7 +483,7 @@
 		                            </p:column>
 		                   		</p:dataTable>
 		                   		<h:panelGrid columns="1">
-		                    		<p:commandButton value="#{appmsg['global.add']} #{appmsg['biodocument.document']}" title="#{appmsg['global.add']} #{appmsg['biodocument.document']}" label="#{appmsg['global.add']} #{appmsg['biodocument.document']}" styleClass="label_button" icon="ui-icon-search" 
+		                    		<p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']} #{appmsg['biodocument.document']}" label="#{appmsg['global.add']} #{appmsg['biodocument.document']}" styleClass="label_button" icon="ui-icon-document" 
 		                    						 actionListener="#{bioDataDetilController.doAddBioDocument()}" ajax="true" immediate="true">
 		                            	<p:ajax event="dialogReturn" listener="#{bioDataDetilController.onDialogReturnBioDocument}"  update="tableBioDocumentId,:growlBioDetailFormId"/>
 		                           	</p:commandButton>
@@ -557,7 +551,7 @@
                             		<f:converter converterId="bioAddressTypeConverter"/>
                             	</p:outputLabel>
                             </p:column>
-                            <p:column style="width:15%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['global.status']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:15%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['bioaddress.ownership_status']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:35%;">
                             	<p:outputLabel value="#{bioDataDetilController.selectedBioAddress.statusAddress}" styleClass="label_hrm">
                             		<f:converter converterId="bioAddressStatusConverter"/>
@@ -565,28 +559,22 @@
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width:15%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['bioaddress.contact_name']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:35%;"><p:outputLabel value="#{bioDataDetilController.selectedBioAddress.contactName}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:15%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['country.country']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:35%;"><p:outputLabel value="#{bioDataDetilController.selectedBioAddress.city.province.country.countryName}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:15%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['global.phone_number']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:35%;"><p:outputLabel value="#{bioDataDetilController.selectedBioAddress.phoneNumber}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width:15%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['country.country']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:35%;"><p:outputLabel value="#{bioDataDetilController.selectedBioAddress.city.province.country.countryName}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:15%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['province.province']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:35%;"><p:outputLabel value="#{bioDataDetilController.selectedBioAddress.city.province.provinceName}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:15%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['bioaddress.sub_district']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:35%;"><p:outputLabel value="#{bioDataDetilController.selectedBioAddress.subDistrict}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width:15%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['province.province']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:35%;"><p:outputLabel value="#{bioDataDetilController.selectedBioAddress.city.province.provinceName}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:15%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['bioaddress.village']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:35%;"><p:outputLabel value="#{bioDataDetilController.selectedBioAddress.village}" styleClass="label_hrm"/></p:column>
-                        </p:row>
-                        <p:row>
                             <p:column style="width:15%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['city.city']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:35%;"><p:outputLabel value="#{bioDataDetilController.selectedBioAddress.city.cityName}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:15%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['global.zip_code']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:35%;"><p:outputLabel value="#{bioDataDetilController.selectedBioAddress.zipCode}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:15%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['bioaddress.village']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:35%;"><p:outputLabel value="#{bioDataDetilController.selectedBioAddress.village}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
                             <p:column style="width:15%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['global.address']}" styleClass="label_hrm"/></p:column>

@@ -49,7 +49,7 @@
                             </p:column>
                             
                             <p:column style="width: 13%">
-                                <p:outputLabel for="statusAddressId" value="#{appmsg['global.status']}" styleClass="label_hrm"/>
+                                <p:outputLabel for="statusAddressId" value="#{appmsg['bioaddress.ownership_status']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="statusAddressId" value=":" styleClass="label_hrm"/>
@@ -71,37 +71,6 @@
                                 <p:message for="statusAddressId"/>
                             </p:column>
                         </p:row>
-                        <p:row>
-                            <p:column style="width: 13%">
-                                <p:outputLabel for="contactNameId" value="#{appmsg['bioaddress.contact_name']}" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="contactNameId" value=":" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column  style="width: 36%">
-                            	<p:inputText id="contactNameId" title="#{appmsg['bioaddress.contact_name']}" value="#{bioAddressFormController.model.contactName}" 
-                                    		 required="true" maxlength="60" styleClass="isitext_hrm" style="width:238px;" />
-                            </p:column>
-                            
-                            <p:column style="width: 13%">
-                                <p:outputLabel for="phoneNumbeId" value="#{appmsg['global.phone_number']}" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="phoneNumbeId" value=":" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column  style="width: 36%">
-                            	<p:inputText id="phoneNumbeId" title="#{appmsg['global.phone_number']}" value="#{bioAddressFormController.model.phoneNumber}" 
-                                    		 required="true" maxlength="45" styleClass="isitext_hrm" style="width:238px;" />
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:message for="contactNameId"/>
-                            </p:column>
-                            <p:column colspan="3">
-                                <p:message for="phoneNumbeId"/>
-                            </p:column>
-                        </p:row>
                         <p:row>                            
                             <p:column style="width: 13%">
                                 <p:outputLabel for="countryId" value="#{appmsg['country.country']}" styleClass="label_hrm"/>
@@ -115,17 +84,17 @@
 	                                <f:selectItems value="#{bioAddressFormController.countries}" var="country" itemValue="#{country.id}" itemLabel="#{country.countryName}"/>
 	                                <p:ajax listener="#{bioAddressFormController.onChangeCountries()}" update="provinceId,cityId"/>
 	                            </p:selectOneMenu>
-                            </p:column>
+                            </p:column>                            
                             
-                            <p:column style="width: 13%">
-                                <p:outputLabel for="subDistrictId" value="#{appmsg['bioaddress.sub_district']}" styleClass="label_hrm"/>
+                        	<p:column style="width: 13%">
+                                <p:outputLabel for="phoneNumbeId" value="#{appmsg['global.phone_number']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
-                                <h:outputLabel for="subDistrictId" value=":" styleClass="label_hrm"/>
+                                <h:outputLabel for="phoneNumbeId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 36%">
-                            	<p:inputText id="subDistrictId" title="#{appmsg['bioaddress.sub_district']}" value="#{bioAddressFormController.model.subDistrict}" 
-                                    		 maxlength="60" styleClass="isitext_hrm" style="width:238px;" />
+                            	<p:inputText id="phoneNumbeId" title="#{appmsg['global.phone_number']}" value="#{bioAddressFormController.model.phoneNumber}" 
+                                    		 required="true" maxlength="45" styleClass="isitext_hrm" style="width:238px;" />
                             </p:column>
                         </p:row>
                         <p:row>
@@ -133,7 +102,7 @@
                                 <p:message for="countryId"/>
                             </p:column>
                             <p:column colspan="3">
-                                <p:message for="subDistrictId"/>
+                                <p:message for="phoneNumbeId"/>
                             </p:column>
                         </p:row>
                         <p:row>
@@ -152,22 +121,22 @@
                             </p:column>
                             
                             <p:column style="width: 13%">
-                                <p:outputLabel for="villageId" value="#{appmsg['bioaddress.village']}" styleClass="label_hrm"/>
+                                <p:outputLabel for="subDistrictId" value="#{appmsg['bioaddress.sub_district']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
-                                <h:outputLabel for="villageId" value=":" styleClass="label_hrm"/>
+                                <h:outputLabel for="subDistrictId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 36%">
-                            	<p:inputText id="villageId" title="#{appmsg['bioaddress.village']}" value="#{bioAddressFormController.model.village}" 
+                            	<p:inputText id="subDistrictId" title="#{appmsg['bioaddress.sub_district']}" value="#{bioAddressFormController.model.subDistrict}" 
                                     		 maxlength="60" styleClass="isitext_hrm" style="width:238px;" />
-                            </p:column>
+                            </p:column>                            
                         </p:row>
                         <p:row>
                             <p:column colspan="3">
                                 <p:message for="provinceId"/>
                             </p:column>
                             <p:column colspan="3">
-                                <p:message for="villageId"/>
+                                <p:message for="subDistrictId"/>
                             </p:column>
                         </p:row>
                         <p:row>
@@ -185,14 +154,14 @@
                             </p:column>
                         	
                         	<p:column style="width: 13%">
-                                <p:outputLabel for="zipCodeId" value="#{appmsg['global.zip_code']}" styleClass="label_hrm"/>
+                                <p:outputLabel for="villageId" value="#{appmsg['bioaddress.village']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
-                                <h:outputLabel for="zipCodeId" value=":" styleClass="label_hrm"/>
+                                <h:outputLabel for="villageId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 36%">
-                            	<p:inputText id="zipCodeId" title="#{appmsg['global.zip_code']}" value="#{bioAddressFormController.model.zipCode}" 
-                                    		 maxlength="10" styleClass="isitext_hrm" style="width:238px;" />
+                            	<p:inputText id="villageId" title="#{appmsg['bioaddress.village']}" value="#{bioAddressFormController.model.village}" 
+                                    		 maxlength="60" styleClass="isitext_hrm" style="width:238px;" />
                             </p:column>
                         </p:row>
                         <p:row>
@@ -200,7 +169,7 @@
                                 <p:message for="cityId"/>
                             </p:column>
                             <p:column colspan="3">
-                                <p:message for="zipCodeId"/>
+                                <p:message for="villageId"/>
                             </p:column>
                         </p:row>
                         <p:row>
