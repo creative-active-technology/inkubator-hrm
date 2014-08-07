@@ -10,4 +10,15 @@
         <property name="pathUpload" value="${webcore.util.path_upload}"/>
         <property name="bufferSize" value="${webcore.util.buffer_size}"/>
     </bean>
+    <bean class="com.inkubator.hrm.util.UploadFilesUtil" id="uploadFilesUtil" lazy-init="true" >
+        <property name="jpgSizeLimit" value="${application.jpg_file_size_limit}"/>
+        <property name="pngSizeLimit" value="${application.png_file_size_limit}"/>
+        <property name="mp4SizeLimit" value="${application.mp4_file_size_limit}"/>
+        <property name="flvSizeLimit" value="${application.flv_file_size_limit}"/>
+        <property name="docSizeLimit" value="${application.doc_file_size_limit}"/>
+        <property name="xlsSizeLimit" value="${application.xls_file_size_limit}"/>
+        <property name="pdfSizeLimit" value="${application.pdf_file_size_limit}"/>
+        <property name="pptSizeLimit" value="${application.ppt_file_size_limit}"/>
+        <property name="ppsSizeLimit" value="${application.pps_file_size_limit}"/>
+    </bean>
 </beans>
