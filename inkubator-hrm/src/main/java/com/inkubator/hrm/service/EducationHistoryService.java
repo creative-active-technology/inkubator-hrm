@@ -6,7 +6,7 @@ package com.inkubator.hrm.service;
 
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.BioEducationHistory;
-import com.inkubator.hrm.web.model.BioEducationHistoryViewController;
+import com.inkubator.hrm.web.model.BioEducationHistoryViewModel;
 import java.util.List;
 
 /**
@@ -16,8 +16,8 @@ import java.util.List;
 public interface EducationHistoryService extends IService<BioEducationHistory>{
     public BioEducationHistory getAllDataByPK(Long id) throws Exception;
     
-    public BioEducationHistoryViewController getAllByPKByController(Long id) throws Exception;
+    public BioEducationHistoryViewModel getAllByPKByController(Long id) throws Exception;
     
-    public List<BioEducationHistoryViewController> getAllDataByBioDataId(Long bioDataId) throws Exception;
+    public List<BioEducationHistoryViewModel> getAllDataByBioDataId(Long bioDataId) throws Exception;
     
 }

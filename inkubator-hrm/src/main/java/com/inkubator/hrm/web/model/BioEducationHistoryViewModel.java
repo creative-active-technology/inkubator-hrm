@@ -8,7 +8,7 @@ package com.inkubator.hrm.web.model;
  *
  * @author Deni
  */
-public class BioEducationHistoryViewController {
+public class BioEducationHistoryViewModel {
      private Long id;
      private String biodata;
      private String educationLevel;

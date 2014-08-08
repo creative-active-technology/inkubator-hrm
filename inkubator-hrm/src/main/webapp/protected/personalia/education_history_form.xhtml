@@ -43,7 +43,10 @@
                                 <p:selectOneMenu id="yearIn" value="#{educationHistoryFormController.model.yearIn}" style="width: 150px;margin-right: 3px"  >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{educationHistoryFormController.listYears}"/>
-                                    </p:selectOneMenu>
+                                <f:validator validatorId="integerNumberBetweenValidator"  />
+                                <f:attribute name="endNumberInteger" value="#{yearOut}"/>
+                                <f:attribute name="validatorMessage" value="#{appmsg['paysalarygrade.min_salary_could_not_greater_than_med_salary']}"/>
+                                </p:selectOneMenu>
                             </p:column>
                             
                             <p:column style="width: 15%">
@@ -53,7 +56,7 @@
                                 <h:outputLabel for="yearOut" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 30%">
-                                <p:selectOneMenu id="yearOut" value="#{educationHistoryFormController.model.yearOut}" style="width: 150px;margin-right: 3px"  >
+                                <p:selectOneMenu id="yearOut" value="#{educationHistoryFormController.model.yearOut}" binding="#{yearOut}" style="width: 150px;margin-right: 3px"  >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{educationHistoryFormController.listYears}"/>
                                     </p:selectOneMenu>

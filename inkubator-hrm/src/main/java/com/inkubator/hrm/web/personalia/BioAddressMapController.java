@@ -43,12 +43,33 @@ public class BioAddressMapController extends BaseController {
         	mapModel =  new DefaultMapModel();
         	String bioAddressId = FacesUtil.getRequestParameter("bioAddressId");
             if (StringUtils.isNotEmpty(bioAddressId)) {
-            	BioAddress bioAddress = bioAddressService.getEntiyByPK(Long.parseLong(bioAddressId));
+            	BioAddress bioAddress = bioAddressService.getEntityByPKWithDetail(Long.parseLong(bioAddressId));
             	if(bioAddress != null){
             		model.setId(bioAddress.getId());
             		model.setAddressDetail(bioAddress.getAddressDetail());
-            		Double latitude = bioAddress.getLatitude() == null ? HRMConstant.DEFAULT_LATITUDE : Double.parseDouble(bioAddress.getLatitude());
-            		Double longitude = bioAddress.getLongitude() == null ? HRMConstant.DEFAULT_LONGITUDE : Double.parseDouble(bioAddress.getLongitude());
+            		
+            		Double latitude;
+            		if(StringUtils.isNotEmpty(bioAddress.getLatitude())) {
+            			latitude = Double.parseDouble(bioAddress.getLatitude());
+            		} else {
+            			if(StringUtils.isNotEmpty(bioAddress.getCity().getLatitude())){
+            				latitude = Double.parseDouble(bioAddress.getCity().getLatitude());
+            			} else {
+            				latitude = HRMConstant.DEFAULT_LATITUDE;
+            			}
+            		}
+            		
+            		Double longitude;
+            		if(StringUtils.isNotEmpty(bioAddress.getLongitude())) {
+            			longitude = Double.parseDouble(bioAddress.getLongitude());
+            		} else {
+            			if(StringUtils.isNotEmpty(bioAddress.getCity().getLongitude())){
+            				longitude = Double.parseDouble(bioAddress.getCity().getLongitude());
+            			} else {
+            				longitude = HRMConstant.DEFAULT_LONGITUDE;
+            			}
+            		}
+            		
             		model.setLatitude(latitude);
             		model.setLongitude(longitude);
 

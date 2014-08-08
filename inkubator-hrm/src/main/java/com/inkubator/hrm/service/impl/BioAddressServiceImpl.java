@@ -84,12 +84,10 @@ public class BioAddressServiceImpl extends IServiceImpl implements BioAddressSer
 		bioAddress.setCity(city);
 		bioAddress.setStatusAddress(entity.getStatusAddress());
 		bioAddress.setType(entity.getType());
-		bioAddress.setContactName(entity.getContactName());
 		bioAddress.setPhoneNumber(entity.getPhoneNumber());
 		bioAddress.setAddressDetail(entity.getAddressDetail());
 		bioAddress.setSubDistrict(entity.getSubDistrict());
 		bioAddress.setVillage(entity.getVillage());
-		bioAddress.setZipCode(entity.getZipCode());
 		bioAddress.setNotes(entity.getNotes());
 		bioAddress.setUpdatedBy(UserInfoUtil.getUserName());
 		bioAddress.setUpdatedOn(new Date());

@@ -13,7 +13,6 @@ public class BioAddressModel {
 	private Long bioDataId;
     private Integer statusAddress;
     private Integer type;
-    private String contactName;
     private String phoneNumber;
     private String addressDetail;
     private Long countryId;
@@ -21,7 +20,6 @@ public class BioAddressModel {
     private Long cityId;
     private String subDistrict;
     private String village;
-    private String zipCode;
     private String notes;
     private Double latitude;
     private Double longitude;
@@ -49,12 +47,6 @@ public class BioAddressModel {
 	}
 	public void setType(Integer type) {
 		this.type = type;
-	}
-	public String getContactName() {
-		return contactName;
-	}
-	public void setContactName(String contactName) {
-		this.contactName = contactName;
 	}
 	
 	@Pattern(regexp = "^[+][\\d() -]+", message = "{errorr_phone}")
@@ -99,12 +91,6 @@ public class BioAddressModel {
 	}
 	public void setVillage(String village) {
 		this.village = village;
-	}
-	public String getZipCode() {
-		return zipCode;
-	}
-	public void setZipCode(String zipCode) {
-		this.zipCode = zipCode;
 	}
 	public String getNotes() {
 		return notes;

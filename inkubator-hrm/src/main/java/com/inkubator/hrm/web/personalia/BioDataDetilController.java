@@ -17,7 +17,7 @@ import com.inkubator.hrm.service.BioDocumentService;
 import com.inkubator.hrm.service.BioEmergencyContactService;
 import com.inkubator.hrm.service.EducationHistoryService;
 import com.inkubator.hrm.service.PeopleInterestService;
-import com.inkubator.hrm.web.model.BioEducationHistoryViewController;
+import com.inkubator.hrm.web.model.BioEducationHistoryViewModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
@@ -48,8 +48,8 @@ public class BioDataDetilController extends BaseController {
 
     private BioData selectedBioData;
     private BioEducationHistory selectedEduHistory;
-    private BioEducationHistoryViewController selectedBioEducationHistoryViewController;
-    private List<BioEducationHistoryViewController> educationHistory;
+    private BioEducationHistoryViewModel selectedBioEducationHistoryViewController;
+    private List<BioEducationHistoryViewModel> educationHistory;
     @ManagedProperty(value = "#{bioDataService}")
     private BioDataService bioDataService;
     @ManagedProperty(value = "#{educationHistoryService}")
@@ -129,11 +129,11 @@ public class BioDataDetilController extends BaseController {
         this.selectedEduHistory = selectedEduHistory;
     }
 
-    public List<BioEducationHistoryViewController> getEducationHistory() {
+    public List<BioEducationHistoryViewModel> getEducationHistory() {
         return educationHistory;
     }
 
-    public void setEducationHistory(List<BioEducationHistoryViewController> educationHistory) {
+    public void setEducationHistory(List<BioEducationHistoryViewModel> educationHistory) {
         this.educationHistory = educationHistory;
     }
 
@@ -535,11 +535,11 @@ public class BioDataDetilController extends BaseController {
 
     }
 
-    public BioEducationHistoryViewController getSelectedBioEducationHistoryViewController() {
+    public BioEducationHistoryViewModel getSelectedBioEducationHistoryViewController() {
         return selectedBioEducationHistoryViewController;
     }
 
-    public void setSelectedBioEducationHistoryViewController(BioEducationHistoryViewController selectedBioEducationHistoryViewController) {
+    public void setSelectedBioEducationHistoryViewController(BioEducationHistoryViewModel selectedBioEducationHistoryViewController) {
         this.selectedBioEducationHistoryViewController = selectedBioEducationHistoryViewController;
     }
 

@@ -23,13 +23,11 @@ public class BioAddress implements java.io.Serializable {
     private BioData bioData;
     private Integer statusAddress;
     private Integer type;
-    private String contactName;
     private String phoneNumber;
     private String addressDetail;
     private City city;
     private String subDistrict;
     private String village;
-    private String zipCode;
     private String notes;
     private String latitude;
     private String longitude;
@@ -120,24 +118,6 @@ public class BioAddress implements java.io.Serializable {
 
 	public void setVillage(String village) {
 		this.village = village;
-	}
-
-	@Column(name = "zip_code", length = 10)
-	public String getZipCode() {
-		return zipCode;
-	}
-
-	public void setZipCode(String zipCode) {
-		this.zipCode = zipCode;
-	}
-
-	@Column(name = "contact_name", length = 60, nullable = false)
-	public String getContactName() {
-		return contactName;
-	}
-
-	public void setContactName(String contactName) {
-		this.contactName = contactName;
 	}
 
 	@Column(name = "phone_number", length = 45, nullable = false)
