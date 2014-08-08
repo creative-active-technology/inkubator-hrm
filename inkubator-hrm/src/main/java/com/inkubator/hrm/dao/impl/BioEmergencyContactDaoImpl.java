@@ -8,6 +8,9 @@ package com.inkubator.hrm.dao.impl;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.BioEmergencyContactDao;
 import com.inkubator.hrm.entity.BioEmergencyContact;
+import java.util.List;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -23,5 +26,15 @@ public class BioEmergencyContactDaoImpl extends IDAOImpl<BioEmergencyContact> im
     public Class<BioEmergencyContact> getEntityClass() {
         return BioEmergencyContact.class;
     }
+
+    @Override
+    public List<BioEmergencyContact> getAllDataByBioDataId(long id) {
+       
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("bioData.id", id));
+//		criteria.setFetchMode("city", FetchMode.JOIN);
+//		criteria.setFetchMode("city.province", FetchMode.JOIN);
+		return criteria.list();
+	}
 
 }

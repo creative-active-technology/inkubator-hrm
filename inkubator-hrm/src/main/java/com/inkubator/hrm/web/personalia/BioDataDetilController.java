@@ -9,10 +9,12 @@ import com.inkubator.hrm.entity.BioAddress;
 import com.inkubator.hrm.entity.BioData;
 import com.inkubator.hrm.entity.BioDocument;
 import com.inkubator.hrm.entity.BioEducationHistory;
+import com.inkubator.hrm.entity.BioEmergencyContact;
 import com.inkubator.hrm.entity.BioPeopleInterest;
 import com.inkubator.hrm.service.BioAddressService;
 import com.inkubator.hrm.service.BioDataService;
 import com.inkubator.hrm.service.BioDocumentService;
+import com.inkubator.hrm.service.BioEmergencyContactService;
 import com.inkubator.hrm.service.EducationHistoryService;
 import com.inkubator.hrm.service.PeopleInterestService;
 import com.inkubator.hrm.web.model.BioEducationHistoryViewController;
@@ -53,7 +55,7 @@ public class BioDataDetilController extends BaseController {
     @ManagedProperty(value = "#{educationHistoryService}")
     private EducationHistoryService educationHistoryService;
     private String userId;
-    
+
 //start. bio address
     private BioAddress selectedBioAddress;
     private List<BioAddress> bioAddresses;
@@ -67,14 +69,18 @@ public class BioDataDetilController extends BaseController {
     @ManagedProperty(value = "#{bioDocumentService}")
     private BioDocumentService bioDocumentService;
 //end. bio document
-    
+
 //people interest / minat
     private BioPeopleInterest selectedPeopleInterest;
-    private List<BioPeopleInterest> listPeopleInterest; 
+    private List<BioPeopleInterest> listPeopleInterest;
     @ManagedProperty(value = "#{peopleInterestService}")
     private PeopleInterestService peopleInterestService;
 //end people interest / minat
-    
+
+    private List<BioEmergencyContact> dataBioEmergencyContacs;
+    @ManagedProperty(value = "#{bioEmergencyContactService}")
+    private BioEmergencyContactService bioEmergencyContactService;
+
     @PostConstruct
     @Override
     public void initialization() {
@@ -86,6 +92,7 @@ public class BioDataDetilController extends BaseController {
             bioDocuments = bioDocumentService.getAllDataByBioDataId(selectedBioData.getId());
             educationHistory = educationHistoryService.getAllDataByBioDataId(selectedBioData.getId());
             listPeopleInterest = peopleInterestService.getAllDataByBioDataId(selectedBioData.getId());
+            dataBioEmergencyContacs=bioEmergencyContactService.getAllDataByBioDataId(selectedBioData.getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -167,26 +174,26 @@ public class BioDataDetilController extends BaseController {
     }
 
     public BioDocument getSelectedBioDocument() {
-		return selectedBioDocument;
-	}
+        return selectedBioDocument;
+    }
 
-	public void setSelectedBioDocument(BioDocument selectedBioDocument) {
-		this.selectedBioDocument = selectedBioDocument;
-	}
+    public void setSelectedBioDocument(BioDocument selectedBioDocument) {
+        this.selectedBioDocument = selectedBioDocument;
+    }
 
-	public List<BioDocument> getBioDocuments() {
-		return bioDocuments;
-	}
+    public List<BioDocument> getBioDocuments() {
+        return bioDocuments;
+    }
 
-	public void setBioDocuments(List<BioDocument> bioDocuments) {
-		this.bioDocuments = bioDocuments;
-	}
+    public void setBioDocuments(List<BioDocument> bioDocuments) {
+        this.bioDocuments = bioDocuments;
+    }
 
-	public void setBioDocumentService(BioDocumentService bioDocumentService) {
-		this.bioDocumentService = bioDocumentService;
-	}
+    public void setBioDocumentService(BioDocumentService bioDocumentService) {
+        this.bioDocumentService = bioDocumentService;
+    }
 
-	public String getUserId() {
+    public String getUserId() {
         return userId;
     }
 
@@ -217,7 +224,7 @@ public class BioDataDetilController extends BaseController {
     public void setPeopleInterestService(PeopleInterestService peopleInterestService) {
         this.peopleInterestService = peopleInterestService;
     }
-    
+
     public String doDetail() {
         return "/protected/personalia/biodata_detail.htm?faces-redirect=true&execution=e" + selectedBioData.getId();
     }
@@ -242,18 +249,18 @@ public class BioDataDetilController extends BaseController {
      * START Bio Address method
      */
     public void doUpdateBioAddressMap() {
-    	Map<String, Object> options = new HashMap<>();
+        Map<String, Object> options = new HashMap<>();
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 800);
         options.put("contentHeight", 500);
-        
+
         Map<String, List<String>> params = new HashMap<>();
         List<String> bioAddressId = new ArrayList<>();
         bioAddressId.add(String.valueOf(selectedBioAddress.getId()));
         params.put("bioAddressId", bioAddressId);
-        
+
         RequestContext.getCurrentInstance().openDialog("bio_address_map", options, params);
     }
 
@@ -288,11 +295,11 @@ public class BioDataDetilController extends BaseController {
         dataToSend.put("bioDataId", bioDataId);
         showDialogBioAddress(dataToSend);
     }
-    
-    public void doDeleteBioAddress(){
-    	try {
-    		bioAddressService.delete(selectedBioAddress);
-    		bioAddresses = bioAddressService.getAllDataByBioDataId(selectedBioAddress.getBioData().getId());
+
+    public void doDeleteBioAddress() {
+        try {
+            bioAddressService.delete(selectedBioAddress);
+            bioAddresses = bioAddressService.getAllDataByBioDataId(selectedBioAddress.getBioData().getId());
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 
         } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
@@ -311,18 +318,19 @@ public class BioDataDetilController extends BaseController {
         options.put("contentHeight", 400);
         RequestContext.getCurrentInstance().openDialog("bio_address_form", options, params);
     }
-    
-    public void onDialogReturnBioAddress(SelectEvent event){
-    	try {
-			bioAddresses = bioAddressService.getAllDataByBioDataId(selectedBioData.getId());
-			super.onDialogReturn(event);
-		} catch (Exception e) {
-			LOGGER.error("Error", e);
-		}
+
+    public void onDialogReturnBioAddress(SelectEvent event) {
+        try {
+            bioAddresses = bioAddressService.getAllDataByBioDataId(selectedBioData.getId());
+            super.onDialogReturn(event);
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
     }
-    /** END Bio Address method */
-    
-    
+
+    /**
+     * END Bio Address method
+     */
     /**
      * START Bio Document method
      */
@@ -355,11 +363,11 @@ public class BioDataDetilController extends BaseController {
         dataToSend.put("bioDataId", bioDataId);
         showDialogBioDocument(dataToSend);
     }
-    
-    public void doDeleteBioDocument(){
-    	try {
-    		bioDocumentService.delete(selectedBioDocument);
-    		bioDocuments = bioDocumentService.getAllDataByBioDataId(selectedBioDocument.getBioData().getId());
+
+    public void doDeleteBioDocument() {
+        try {
+            bioDocumentService.delete(selectedBioDocument);
+            bioDocuments = bioDocumentService.getAllDataByBioDataId(selectedBioDocument.getBioData().getId());
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 
         } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
@@ -378,18 +386,19 @@ public class BioDataDetilController extends BaseController {
         options.put("contentHeight", 420);
         RequestContext.getCurrentInstance().openDialog("bio_document_form", options, params);
     }
-    
-    public void onDialogReturnBioDocument(SelectEvent event){
-    	try {
-			bioDocuments = bioDocumentService.getAllDataByBioDataId(selectedBioData.getId());
-			super.onDialogReturn(event);
-		} catch (Exception e) {
-			LOGGER.error("Error", e);
-		}
-    }    
-    /** END Bio Document method */
- 
-    
+
+    public void onDialogReturnBioDocument(SelectEvent event) {
+        try {
+            bioDocuments = bioDocumentService.getAllDataByBioDataId(selectedBioData.getId());
+            super.onDialogReturn(event);
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+
+    /**
+     * END Bio Document method
+     */
     /**
      * START Bio Edu History method
      */
@@ -400,7 +409,7 @@ public class BioDataDetilController extends BaseController {
             LOGGER.error("Error", ex);
         }
     }
-            
+
     public void doDetailBioEduHistory() {
         try {
             selectedBioEducationHistoryViewController = this.educationHistoryService.getAllByPKByController(selectedBioEducationHistoryViewController.getId());
@@ -408,7 +417,7 @@ public class BioDataDetilController extends BaseController {
             LOGGER.error("Error", ex);
         }
     }
-    
+
     public void doUpdateBioEduHistory() {
         Map<String, Object> options = new HashMap<>();
         options.put("modal", true);
@@ -456,7 +465,6 @@ public class BioDataDetilController extends BaseController {
     /**
      * END Bio Address method
      */
-
     /**
      * START Bio People Interest method
      */
@@ -515,7 +523,6 @@ public class BioDataDetilController extends BaseController {
     /**
      * END BioPeople Interest method
      */
-    
     @Override
     public void onDialogReturn(SelectEvent event) {
         try {
@@ -534,6 +541,33 @@ public class BioDataDetilController extends BaseController {
 
     public void setSelectedBioEducationHistoryViewController(BioEducationHistoryViewController selectedBioEducationHistoryViewController) {
         this.selectedBioEducationHistoryViewController = selectedBioEducationHistoryViewController;
+    }
+
+    public void doAddEmergencyContact() {
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 500);
+        options.put("contentHeight", 435);
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        List<String> dataIsi = new ArrayList<>();
+        dataIsi.add("i" + String.valueOf(selectedBioData.getId()));
+        dataToSend.put("param", dataIsi);
+        RequestContext.getCurrentInstance().openDialog("bio_emergency_contact_form", options, dataToSend);
+    }
+
+    public void setBioEmergencyContactService(BioEmergencyContactService bioEmergencyContactService) {
+        this.bioEmergencyContactService = bioEmergencyContactService;
+    }
+
+    
+    public List<BioEmergencyContact> getDataBioEmergencyContacs() {
+        return dataBioEmergencyContacs;
+    }
+
+    public void setDataBioEmergencyContacs(List<BioEmergencyContact> dataBioEmergencyContacs) {
+        this.dataBioEmergencyContacs = dataBioEmergencyContacs;
     }
 
     
