@@ -57,7 +57,7 @@ public class BioData implements java.io.Serializable {
     private Set<BioAddress> bioAddresses = new HashSet<BioAddress>(0);
     private Set<BioPeopleInterest> peopleInterests = new HashSet<BioPeopleInterest>(0);
     private Set<BioDocument> bioDocuments = new HashSet<BioDocument>(0);
-
+    private Set<BioEmergencyContact> bioEmergencyContacts = new HashSet<BioEmergencyContact>(0);
 
     public BioData() {
     }
@@ -395,12 +395,21 @@ public class BioData implements java.io.Serializable {
     }
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "bioData")
-	public Set<BioDocument> getBioDocuments() {
-		return bioDocuments;
-	}
+    public Set<BioDocument> getBioDocuments() {
+        return bioDocuments;
+    }
 
-	public void setBioDocuments(Set<BioDocument> bioDocuments) {
-		this.bioDocuments = bioDocuments;
-	}
+    public void setBioDocuments(Set<BioDocument> bioDocuments) {
+        this.bioDocuments = bioDocuments;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "bioData")
+    public Set<BioEmergencyContact> getBioEmergencyContacts() {
+        return this.bioEmergencyContacts;
+    }
+
+    public void setBioEmergencyContacts(Set<BioEmergencyContact> bioEmergencyContacts) {
+        this.bioEmergencyContacts = bioEmergencyContacts;
+    }
 
 }

@@ -220,77 +220,77 @@
 
                             </p:tab>  
                             <p:tab id="alamatId" title="#{appmsg['global.address']}">
-								<p:dataTable  id="tableBioAdressId" var="bioAddressesData"  value="#{bioDataDetilController.bioAddresses}" lazy="false" paginator="false"
-		                                      style="margin-top: 10px;margin-bottom: 10px"
-		                                      rowIndexVar="no">
-		                            <f:facet name="header">  
-		                                <h:outputText value="#{appmsg['bioaddress.list_of_adress']}"/>
-		                            </f:facet>
-		                            <p:column style="text-align: center;width: 3%">
-		                                <f:facet name="header">  
-		                                    <h:outputText value="#{appmsg['global.number']}"/>
-		                                </f:facet>
-		                                <h:outputLabel value="#{no+1}." />
-		                            </p:column>
-		                            <p:column style="text-align: center;width: 10%">
-		                                <f:facet name="header">  
-		                                    <h:outputText value="#{appmsg['global.type']}"/>
-		                                </f:facet>
-		                                <h:outputLabel value= "#{bioAddressesData.type}">
-		                                	<f:converter converterId="bioAddressTypeConverter" />
-		                                </h:outputLabel>
-		                            </p:column>
-		                            <p:column style="text-align: center;width: 30%">
-		                                <f:facet name="header">  
-		                                    <h:outputText value="#{appmsg['global.address']}"/>
-		                                </f:facet>
-		                                <h:outputLabel value= "#{bioAddressesData.addressDetail}"/>
-		                            </p:column>
-		                            <p:column style="text-align: center;width: 20%">
-		                                <f:facet name="header">  
-		                                    <h:outputText value="#{appmsg['city.city']}"/>
-		                                </f:facet>
-		                                <h:outputLabel value= "#{bioAddressesData.city.cityName}"/>
-		                            </p:column>
-		                            <p:column style="text-align: center;width: 20%">
-		                                <f:facet name="header">  
-		                                    <h:outputText value="#{appmsg['province.province']}"/>
-		                                </f:facet>
-		                                <h:outputLabel value= "#{bioAddressesData.city.province.provinceName}"/>
-		                            </p:column>
-		                            <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
-		                                <p:commandButton icon="ui-icon-clipboard" title="#{appmsg['global.maps']}" label="#{appmsg['global.maps']}"  
-		                                				 style="font-size: 10px!important" action="#{bioDataDetilController.doUpdateBioAddressMap()}">
-		                                    <f:setPropertyActionListener value="#{bioAddressesData}" target="#{bioDataDetilController.selectedBioAddress}" />
-		                                    <p:ajax event="dialogReturn" listener="#{bioDataDetilController.onDialogReturnBioAddress}"  update="tableBioAdressId,:growlBioDetailFormId"/>
-		                                </p:commandButton>
-		                                -
-		                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
-		                                				 style="font-size: 10px!important" update=":panelDialogBioAddressDetailId" 
-		                                				 action="#{bioDataDetilController.doSelectBioAddress()}" onclick="statusDialog.show()"  oncomplete="dialogDetailBioAddress.show()">                        
-		                                    <f:setPropertyActionListener value="#{bioAddressesData}" target="#{bioDataDetilController.selectedBioAddress}" />
-		                                </p:commandButton>
-		                                - 
-		                                <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
-		                                				 style="font-size: 10px!important" update=":panelDialogBioAddressConfirmId" 
-		                                				 action="#{bioDataDetilController.doSelectBioAddress()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmBioAddress.show()">
-		                                    <f:setPropertyActionListener value="#{bioAddressesData}" target="#{bioDataDetilController.selectedBioAddress}" />
-		                                </p:commandButton>
-		                                -
-		                                <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
-		                                                 action="#{bioDataDetilController.doUpdateBioAddress()}" >
-		                                    <f:setPropertyActionListener value="#{bioAddressesData}" target="#{bioDataDetilController.selectedBioAddress}" />
-		                                    <p:ajax event="dialogReturn" listener="#{bioDataDetilController.onDialogReturnBioAddress}"  update="tableBioAdressId,:growlBioDetailFormId"/>
-		                                </p:commandButton>
-		                            </p:column>
-		                   		</p:dataTable>
-		                   		<h:panelGrid columns="1">
-		                    		<p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']} #{appmsg['global.address']}" label="#{appmsg['global.add']} #{appmsg['global.address']}" styleClass="label_button" icon="ui-icon-document" 
-		                    						 actionListener="#{bioDataDetilController.doAddBioAddress()}" ajax="true" immediate="true">
-		                            	<p:ajax event="dialogReturn" listener="#{bioDataDetilController.onDialogReturnBioAddress}"  update="tableBioAdressId,:growlBioDetailFormId"/>
-		                           	</p:commandButton>
-		                    	</h:panelGrid>
-                            </p:tab>  
+                                <p:dataTable  id="tableBioAdressId" var="bioAddressesData"  value="#{bioDataDetilController.bioAddresses}" lazy="false" paginator="false"
+                                              style="margin-top: 10px;margin-bottom: 10px"
+                                              rowIndexVar="no">
+                                    <f:facet name="header">  
+                                        <h:outputText value="#{appmsg['bioaddress.list_of_adress']}"/>
+                                    </f:facet>
+                                    <p:column style="text-align: center;width: 3%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['global.number']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value="#{no+1}." />
+                                    </p:column>
+                                    <p:column style="text-align: center;width: 10%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['global.type']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{bioAddressesData.type}">
+                                            <f:converter converterId="bioAddressTypeConverter" />
+                                        </h:outputLabel>
+                                    </p:column>
+                                    <p:column style="text-align: center;width: 30%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['global.address']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{bioAddressesData.addressDetail}"/>
+                                    </p:column>
+                                    <p:column style="text-align: center;width: 20%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['city.city']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{bioAddressesData.city.cityName}"/>
+                                    </p:column>
+                                    <p:column style="text-align: center;width: 20%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['province.province']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{bioAddressesData.city.province.provinceName}"/>
+                                    </p:column>
+                                    <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
+                                        <p:commandButton icon="ui-icon-clipboard" title="#{appmsg['global.maps']}" label="#{appmsg['global.maps']}"  
+                                                         style="font-size: 10px!important" action="#{bioDataDetilController.doUpdateBioAddressMap()}">
+                                            <f:setPropertyActionListener value="#{bioAddressesData}" target="#{bioDataDetilController.selectedBioAddress}" />
+                                            <p:ajax event="dialogReturn" listener="#{bioDataDetilController.onDialogReturnBioAddress}"  update="tableBioAdressId,:growlBioDetailFormId"/>
+                                        </p:commandButton>
+                                        -
+                                        <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
+                                                         style="font-size: 10px!important" update=":panelDialogBioAddressDetailId" 
+                                                         action="#{bioDataDetilController.doSelectBioAddress()}" onclick="statusDialog.show()"  oncomplete="dialogDetailBioAddress.show()">                        
+                                            <f:setPropertyActionListener value="#{bioAddressesData}" target="#{bioDataDetilController.selectedBioAddress}" />
+                                        </p:commandButton>
+                                        - 
+                                        <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+                                                         style="font-size: 10px!important" update=":panelDialogBioAddressConfirmId" 
+                                                         action="#{bioDataDetilController.doSelectBioAddress()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmBioAddress.show()">
+                                            <f:setPropertyActionListener value="#{bioAddressesData}" target="#{bioDataDetilController.selectedBioAddress}" />
+                                        </p:commandButton>
+                                        -
+                                        <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
+                                                         action="#{bioDataDetilController.doUpdateBioAddress()}" >
+                                            <f:setPropertyActionListener value="#{bioAddressesData}" target="#{bioDataDetilController.selectedBioAddress}" />
+                                            <p:ajax event="dialogReturn" listener="#{bioDataDetilController.onDialogReturnBioAddress}"  update="tableBioAdressId,:growlBioDetailFormId"/>
+                                        </p:commandButton>
+                                    </p:column>
+                                </p:dataTable>
+                                <h:panelGrid columns="1">
+                                    <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']} #{appmsg['global.address']}" label="#{appmsg['global.add']} #{appmsg['global.address']}" styleClass="label_button" icon="ui-icon-document" 
+                                                     actionListener="#{bioDataDetilController.doAddBioAddress()}" ajax="true" immediate="true">
+                                        <p:ajax event="dialogReturn" listener="#{bioDataDetilController.onDialogReturnBioAddress}"  update="tableBioAdressId,:growlBioDetailFormId"/>
+                                    </p:commandButton>
+                                </h:panelGrid>
+                            </p:tab>
                             <p:tab id="riwayatKerjaId" title="Riwayat Kerja">  
 
 
@@ -392,7 +392,7 @@
                                         </f:facet>
                                         <h:outputLabel value= "#{peopleInterestData.interestType.name}" />
                                     </p:column>
-                                    
+
 
                                     <p:column headerText="#{appmsg['global.action']}" style="width: 12%;text-align: center" exportable="false">
                                         <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
@@ -427,67 +427,70 @@
 
                             </p:tab>  
                             <p:tab id="documentId" title="#{appmsg['biodocument.document']}">  
-								<p:dataTable  id="tableBioDocumentId" var="bioDocumentData"  value="#{bioDataDetilController.bioDocuments}" lazy="false" paginator="false"
-		                                      style="margin-top: 10px;margin-bottom: 10px"
-		                                      rowIndexVar="no">
-		                            <f:facet name="header">  
-		                                <h:outputText value="#{appmsg['biodocument.list_of_document']}"/>
-		                            </f:facet>
-		                            <p:column style="text-align: center;width: 3%">
-		                                <f:facet name="header">  
-		                                    <h:outputText value="#{appmsg['global.number']}"/>
-		                                </f:facet>
-		                                <h:outputLabel value="#{no+1}." />
-		                            </p:column>
-		                            <p:column style="text-align: center;width: 30%">
-		                                <f:facet name="header">  
-		                                    <h:outputText value="#{appmsg['biodocument.document_name']}"/>
-		                                </f:facet>
-		                                <h:outputLabel value= "#{bioDocumentData.documentTitle}"/>
-		                            </p:column>
-		                            <p:column style="text-align: center;width: 30%">
-		                                <f:facet name="header">  
-		                                    <h:outputText value="#{appmsg['biodocument.document_no']}"/>
-		                                </f:facet>
-		                                <h:outputLabel value= "#{bioDocumentData.documentNo}"/>
-		                            </p:column>
-		                            <p:column style="text-align: center;width: 20%">
-		                                <f:facet name="header">  
-		                                    <h:outputText value="#{appmsg['biodocument.attachments']}"/>
-		                                </f:facet>
-		                                <h:outputLabel value= "#{bioDocumentData.uploadFileExtension}"/>
-		                            </p:column>
-		                            <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
-		                            	<p:commandButton ajax="false" title="Download" style="font-size: 10px!important" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
-	                                        <p:fileDownload value="#{imageBioDataStreamerController.documentFile}" />
-	                                        <f:param name="id" value="#{bioDocumentData.id}"/>
-	                                    </p:commandButton>
-	                                    -
-		                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
-		                                				 style="font-size: 10px!important" update=":panelDialogBioDocumentDetailId" 
-		                                				 action="#{bioDataDetilController.doSelectBioDocument()}" onclick="statusDialog.show()"  oncomplete="dialogDetailBioDocument.show()">                        
-		                                    <f:setPropertyActionListener value="#{bioDocumentData}" target="#{bioDataDetilController.selectedBioDocument}" />
-		                                </p:commandButton>
-		                                - 
-		                                <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
-		                                				 style="font-size: 10px!important" update=":panelDialogBioDocumentConfirmId" 
-		                                				 action="#{bioDataDetilController.doSelectBioDocument()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmBioDocument.show()">
-		                                    <f:setPropertyActionListener value="#{bioDocumentData}" target="#{bioDataDetilController.selectedBioDocument}" />
-		                                </p:commandButton>
-		                                -
-		                                <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
-		                                                 action="#{bioDataDetilController.doUpdateBioDocument()}" >
-		                                    <f:setPropertyActionListener value="#{bioDocumentData}" target="#{bioDataDetilController.selectedBioDocument}" />
-		                                    <p:ajax event="dialogReturn" listener="#{bioDataDetilController.onDialogReturnBioDocument}"  update="tableBioDocumentId,:growlBioDetailFormId"/>
-		                                </p:commandButton>
-		                            </p:column>
-		                   		</p:dataTable>
-		                   		<h:panelGrid columns="1">
-		                    		<p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']} #{appmsg['biodocument.document']}" label="#{appmsg['global.add']} #{appmsg['biodocument.document']}" styleClass="label_button" icon="ui-icon-document" 
-		                    						 actionListener="#{bioDataDetilController.doAddBioDocument()}" ajax="true" immediate="true">
-		                            	<p:ajax event="dialogReturn" listener="#{bioDataDetilController.onDialogReturnBioDocument}"  update="tableBioDocumentId,:growlBioDetailFormId"/>
-		                           	</p:commandButton>
-		                    	</h:panelGrid>
+                           
+                                
+                                <p:dataTable  id="tableBioDocumentId" var="bioDocumentData"  value="#{bioDataDetilController.bioDocuments}" lazy="false" paginator="false"
+                                              style="margin-top: 10px;margin-bottom: 10px"
+                                              rowIndexVar="no">
+                                    <f:facet name="header">  
+                                        <h:outputText value="#{appmsg['biodocument.list_of_document']}"/>
+                                    </f:facet>
+                                    <p:column style="text-align: center;width: 3%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['global.number']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value="#{no+1}." />
+                                    </p:column>
+                                    <p:column style="text-align: center;width: 30%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['biodocument.document_name']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{bioDocumentData.documentTitle}"/>
+                                    </p:column>
+                                    <p:column style="text-align: center;width: 30%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['biodocument.document_no']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{bioDocumentData.documentNo}"/>
+                                    </p:column>
+                                    <p:column style="text-align: center;width: 20%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['biodocument.attachments']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{bioDocumentData.uploadFileExtension}"/>
+                                    </p:column>
+                                    <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
+                                        <p:commandButton ajax="false" title="Download" style="font-size: 10px!important" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
+                                            <p:fileDownload value="#{imageBioDataStreamerController.documentFile}" />
+                                            <f:param name="id" value="#{bioDocumentData.id}"/>
+                                        </p:commandButton>
+                                        -
+                                        <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
+                                                         style="font-size: 10px!important" update=":panelDialogBioDocumentDetailId" 
+                                                         action="#{bioDataDetilController.doSelectBioDocument()}" onclick="statusDialog.show()"  oncomplete="dialogDetailBioDocument.show()">                        
+                                            <f:setPropertyActionListener value="#{bioDocumentData}" target="#{bioDataDetilController.selectedBioDocument}" />
+                                        </p:commandButton>
+                                        - 
+                                        <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+                                                         style="font-size: 10px!important" update=":panelDialogBioDocumentConfirmId" 
+                                                         action="#{bioDataDetilController.doSelectBioDocument()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmBioDocument.show()">
+                                            <f:setPropertyActionListener value="#{bioDocumentData}" target="#{bioDataDetilController.selectedBioDocument}" />
+                                        </p:commandButton>
+                                        -
+                                        <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
+                                                         action="#{bioDataDetilController.doUpdateBioDocument()}" >
+                                            <f:setPropertyActionListener value="#{bioDocumentData}" target="#{bioDataDetilController.selectedBioDocument}" />
+                                            <p:ajax event="dialogReturn" listener="#{bioDataDetilController.onDialogReturnBioDocument}"  update="tableBioDocumentId,:growlBioDetailFormId"/>
+                                        </p:commandButton>
+                                    </p:column>
+                                </p:dataTable>
+                                <h:panelGrid columns="1">
+                                    <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']} #{appmsg['biodocument.document']}" label="#{appmsg['global.add']} #{appmsg['biodocument.document']}" styleClass="label_button" icon="ui-icon-document" 
+                                                     actionListener="#{bioDataDetilController.doAddBioDocument()}" ajax="true" immediate="true">
+                                        <p:ajax event="dialogReturn" listener="#{bioDataDetilController.onDialogReturnBioDocument}"  update="tableBioDocumentId,:growlBioDetailFormId"/>
+                                    </p:commandButton>
+                                </h:panelGrid>
+                             
                             </p:tab>  
                             <p:tab id="bank" title="Bank">  
 
@@ -502,7 +505,20 @@
 
                             </p:tab>  
                             <p:tab id="contactId" title="Contact">  
+                                <p:dataTable  id="tableContactId" var="bioContacts"  value="#{bioDataDetilController.dataBioEmergencyContacs}" lazy="false" paginator="false"
+                                              style="margin-top: 10px;margin-bottom: 10px"
+                                              rowIndexVar="no">
+                                    <f:facet name="header">  
+                                        <h:outputText value="Daftar Emergency Contact"/>
+                                    </f:facet>
 
+                                </p:dataTable>
+                                <h:panelGrid columns="1">
+                                    <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']} #{appmsg['global.address']}" label="#{appmsg['global.add']} #{appmsg['global.address']}" styleClass="label_button" icon="ui-icon-search" 
+                                                     actionListener="#{bioDataDetilController.doAddEmergencyContact()}" ajax="true" immediate="true">
+                                        <p:ajax event="dialogReturn" listener="#{bioDataDetilController.onDialogReturnBioAddress}" />
+                                    </p:commandButton>
+                                </h:panelGrid>
 
                             </p:tab>  
 
@@ -547,15 +563,15 @@
                         <p:row>
                             <p:column style="width:15%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['global.type']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:35%;">
-                            	<p:outputLabel value="#{bioDataDetilController.selectedBioAddress.type}" styleClass="label_hrm">
-                            		<f:converter converterId="bioAddressTypeConverter"/>
-                            	</p:outputLabel>
+                                <p:outputLabel value="#{bioDataDetilController.selectedBioAddress.type}" styleClass="label_hrm">
+                                    <f:converter converterId="bioAddressTypeConverter"/>
+                                </p:outputLabel>
                             </p:column>
                             <p:column style="width:15%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['bioaddress.ownership_status']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:35%;">
-                            	<p:outputLabel value="#{bioDataDetilController.selectedBioAddress.statusAddress}" styleClass="label_hrm">
-                            		<f:converter converterId="bioAddressStatusConverter"/>
-                            	</p:outputLabel>
+                                <p:outputLabel value="#{bioDataDetilController.selectedBioAddress.statusAddress}" styleClass="label_hrm">
+                                    <f:converter converterId="bioAddressStatusConverter"/>
+                                </p:outputLabel>
                             </p:column>
                         </p:row>
                         <p:row>
@@ -590,7 +606,7 @@
                     </p:panelGrid>
                 </p:dialog>
                 <!-- END Bio Address DIALOG -->
-                
+
                 <!-- START Bio Document DIALOG --> 
                 <p:dialog widgetVar="dialogConfirmBioDocument" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
@@ -630,14 +646,14 @@
                         <p:row>
                             <p:column style="width:30%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['biodocument.attachments']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:70%;">
-                            <h:form>
-                            	<p:outputLabel value="#{bioDataDetilController.selectedBioDocument.uploadFileExtension}" styleClass="label_hrm"/>
-                            	&nbsp;&nbsp;
-                            	<p:commandButton ajax="false" value="Download" title="Download" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
-	                            	<p:fileDownload value="#{imageBioDataStreamerController.documentFile}" />
-	                                <f:param name="id" value="#{bioDataDetilController.selectedBioDocument.id}"/>
-	                            </p:commandButton>
-	                        </h:form>
+                                <h:form>
+                                    <p:outputLabel value="#{bioDataDetilController.selectedBioDocument.uploadFileExtension}" styleClass="label_hrm"/>
+                                    &nbsp;&nbsp;
+                                    <p:commandButton ajax="false" value="Download" title="Download" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
+                                        <p:fileDownload value="#{imageBioDataStreamerController.documentFile}" />
+                                        <f:param name="id" value="#{bioDataDetilController.selectedBioDocument.id}"/>
+                                    </p:commandButton>
+                                </h:form>
                             </p:column>
                         </p:row>
                         <p:row>
@@ -681,7 +697,7 @@
                 <p:dialog widgetVar="dialogDetailEducation" header="#{appmsg['educationhistory.detail_education']}" styleClass="header_small_no_bold" width="450" modal="true" resizable="false" hideEffect="puff" 
                           showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogBioEducationDetailId" style="width:100%;margin:5px;">
-                        
+
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['educationhistory.institution_level']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedBioEducationHistoryViewController.institutionEducation}" styleClass="label_hrm"/></p:column>
@@ -713,17 +729,17 @@
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="Ijazah" styleClass="label_hrm"/></p:column>
                             <p:column style="width:70%;" rendered="#{bioDataDetilController.selectedBioEducationHistoryViewController.isDownload}">
-<!--                                <p:dialog modal="true" widgetVar="statusDialog" header="Status" draggable="false" closable="false" resizable="false">
-                                    <p:graphicImage library="images" name="loading.gif" />
-                                    <p:graphicImage library="images" name="bio_data.png" height="36" width="36" />
-                                </p:dialog>-->
+                                <!--                                <p:dialog modal="true" widgetVar="statusDialog" header="Status" draggable="false" closable="false" resizable="false">
+                                                                    <p:graphicImage library="images" name="loading.gif" />
+                                                                    <p:graphicImage library="images" name="bio_data.png" height="36" width="36" />
+                                                                </p:dialog>-->
                                 <h:form>
                                     <p:commandButton value="Download" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
                                         <p:fileDownload value="#{imageBioDataStreamerController.ijazahFile}" />
                                         <f:param name="id" value="#{bioDataDetilController.selectedBioEducationHistoryViewController.id}"/>
                                     </p:commandButton>
                                 </h:form>
-                                
+
                                 <script type="text/javascript">
                                     function start() {
                                         PF('statusDialog').show();
@@ -735,7 +751,7 @@
                                 </script>
                             </p:column>
                             <p:column style="width:70%;" rendered="#{!bioDataDetilController.selectedBioEducationHistoryViewController.isDownload}"><p:outputLabel value="#{bioDataDetilController.selectedBioEducationHistoryViewController.isDownloadString}" styleClass="label_hrm"/></p:column>
-                        
+
                         </p:row>
                         <f:facet name="footer">
                             <p:row>
@@ -745,7 +761,7 @@
                     </p:panelGrid>
                 </p:dialog>
                 <!-- END Bio EducationHistory DIALOG --> 
-                
+
                 <!-- START Bio Minat DIALOG --> 
                 <p:dialog widgetVar="dialogConfirmDeleteMinat" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
@@ -782,7 +798,7 @@
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['interesttype.interesttype']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedPeopleInterest.interestType.name}" styleClass="label_hrm"/></p:column>
                         </p:row>
-                        
+
                         <f:facet name="footer">
                             <p:row>
                                 <p:column colspan="2"><p:outputLabel value="#{appmsg['menu.personalia']} - #{appmsg['interest.people_interest']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
