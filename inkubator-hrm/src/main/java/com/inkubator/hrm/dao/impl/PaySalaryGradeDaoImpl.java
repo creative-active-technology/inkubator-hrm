@@ -8,6 +8,7 @@ import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.PaySalaryGradeDao;
 import com.inkubator.hrm.entity.PaySalaryGrade;
 import com.inkubator.hrm.web.search.PaySalaryGradeSearchParameter;
+import java.math.BigDecimal;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
@@ -52,8 +53,31 @@ public class PaySalaryGradeDaoImpl extends IDAOImpl<PaySalaryGrade> implements P
     }
     
     private void doSearchPaySalaryGradeByParam(PaySalaryGradeSearchParameter searchParameter, Criteria criteria) {
+        BigDecimal bg = new BigDecimal("0");
+        int resMinSalary = 0;
+        int resMedSalary = 0;
+        int resMaxSalary = 0;
+        if(searchParameter.getMinSalary()!= null){
+            resMinSalary = searchParameter.getMinSalary().compareTo(bg);
+        }
+        if(searchParameter.getMedSalary()!= null){
+            resMedSalary = searchParameter.getMedSalary().compareTo(bg);
+        }
+        if(searchParameter.getMaxSalary()!= null){
+            resMaxSalary = searchParameter.getMaxSalary().compareTo(bg);
+        }
+        
         if (searchParameter.getGradeSalary()!= null && searchParameter.getGradeSalary()!= 0) {
             criteria.add(Restrictions.eq("gradeSalary", searchParameter.getGradeSalary()));
+        }
+        if (searchParameter.getMinSalary()!= null && resMinSalary != 0) {
+            criteria.add(Restrictions.eq("minSalary", searchParameter.getMinSalary()));
+        }
+        if (searchParameter.getMedSalary()!= null && resMedSalary != 0) {
+            criteria.add(Restrictions.eq("mediumSalary", searchParameter.getMedSalary()));
+        }
+        if (searchParameter.getMaxSalary()!= null && resMaxSalary != 0) {
+            criteria.add(Restrictions.eq("maxSalary", searchParameter.getMaxSalary()));
         }
         if (searchParameter.getCurrency()!= null) {
             criteria.createAlias("currency", "c", JoinType.INNER_JOIN);

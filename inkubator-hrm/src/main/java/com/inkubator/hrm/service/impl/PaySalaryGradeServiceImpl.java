@@ -80,7 +80,7 @@ public class PaySalaryGradeServiceImpl extends IServiceImpl implements PaySalary
         update.setCurrency(currencyDao.getEntiyByPK(entity.getCurrency().getId()));
         update.setMinSalary(entity.getMinSalary());
         update.setMediumSalary(entity.getMediumSalary());
-        update.setMaxSalary(entity.getMediumSalary());
+        update.setMaxSalary(entity.getMaxSalary());
         update.setUpdatedBy(UserInfoUtil.getUserName());
         update.setUpdatedOn(new Date());
         this.paySalaryGradeDao.update(update);
