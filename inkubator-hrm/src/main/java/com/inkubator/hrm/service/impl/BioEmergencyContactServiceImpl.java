@@ -5,8 +5,12 @@
  */
 package com.inkubator.hrm.service.impl;
 
+import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.hrm.dao.BioDataDao;
 import com.inkubator.hrm.dao.BioEmergencyContactDao;
+import com.inkubator.hrm.dao.CityDao;
+import com.inkubator.hrm.dao.FamilyRelationDao;
 import com.inkubator.hrm.entity.BioEmergencyContact;
 import com.inkubator.hrm.service.BioEmergencyContactService;
 import java.util.List;
@@ -28,7 +32,13 @@ public class BioEmergencyContactServiceImpl extends IServiceImpl implements BioE
 
     @Autowired
     private BioEmergencyContactDao bioEmergencyContactDao;
-
+    @Autowired
+    private CityDao cityDao;
+    @Autowired
+    private FamilyRelationDao familyRelationDao;
+    @Autowired
+    private BioDataDao bioDataDao;
+    
     @Override
     public BioEmergencyContact getEntiyByPK(String id) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -40,13 +50,19 @@ public class BioEmergencyContactServiceImpl extends IServiceImpl implements BioE
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public BioEmergencyContact getEntiyByPK(Long id) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return bioEmergencyContactDao.getEntiyByPK(id);
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(BioEmergencyContact entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+        entity.setBioData(bioDataDao.getEntiyByPK(entity.getBioData().getId()));
+        entity.setCity(cityDao.getEntiyByPK(entity.getCity().getId()));
+        entity.setFamilyRelation(familyRelationDao.getEntiyByPK(entity.getFamilyRelation().getId()));
+        entity.setCreatedBy(null);
     }
 
     @Override

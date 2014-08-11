@@ -77,10 +77,12 @@ public class BioDataDetilController extends BaseController {
     private PeopleInterestService peopleInterestService;
 //end people interest / minat
 
+//start. people interest / minat
     private List<BioEmergencyContact> dataBioEmergencyContacs;
     @ManagedProperty(value = "#{bioEmergencyContactService}")
     private BioEmergencyContactService bioEmergencyContactService;
-
+//end. people interest / minat
+    
     @PostConstruct
     @Override
     public void initialization() {

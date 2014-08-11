@@ -20,8 +20,8 @@
                         <p:graphicImage library="images" name="bio_data.png" height="36" width="36" />
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Detil Biodata" styleClass="header_big" />
-                                <p:outputLabel value="Data Biodata dari Personalia" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['biodata.detail_of_biodata']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['biodata.header_of_biodata']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -55,7 +55,7 @@
                                     <p:panelGrid style="width: 100%;margin-top: 10px;" styleClass="grid_border4">
                                         <p:row>
                                             <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                                <p:outputLabel  value="Nama" style="font-weight: bold"/>
+                                                <p:outputLabel  value="#{appmsg['global.name']}" style="font-weight: bold"/>
                                             </p:column>
                                             <p:column style="width: 80%">
                                                 <p:outputLabel  value=" #{bioDataDetilController.selectedBioData.title}. #{bioDataDetilController.selectedBioData.firstName} #{bioDataDetilController.selectedBioData.lastName}" />
@@ -65,7 +65,7 @@
                                         </p:row>
                                         <p:row>
                                             <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                                <p:outputLabel  value="Gender" style="font-weight: bold"/>
+                                                <p:outputLabel  value="#{appmsg['global.gender']}" style="font-weight: bold"/>
                                             </p:column>
                                             <p:column style="width: 80%">
                                                 <p:outputLabel  value="#{bioDataDetilController.selectedBioData.gender}" >
@@ -77,7 +77,7 @@
                                         </p:row>
                                         <p:row>
                                             <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                                <p:outputLabel  value="Tempat Lahir" style="font-weight: bold"/>
+                                                <p:outputLabel  value="#{appmsg['global.gender']}" style="font-weight: bold"/>
                                             </p:column>
                                             <p:column style="width: 80%">
                                                 <p:outputLabel  value="#{bioDataDetilController.selectedBioData.city.cityName}" />
@@ -87,7 +87,7 @@
                                         </p:row>
                                         <p:row>
                                             <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                                <p:outputLabel  value="Tanggal Lahir" style="font-weight: bold"/>
+                                                <p:outputLabel  value="#{appmsg['global.gender']}" style="font-weight: bold"/>
                                             </p:column>
                                             <p:column style="width: 80%">
                                                 <p:outputLabel  value="#{bioDataDetilController.selectedBioData.dateOfBirth}" >
