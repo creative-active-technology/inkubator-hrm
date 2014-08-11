@@ -7,15 +7,12 @@
 package com.inkubator.hrm.dao;
 
 import com.inkubator.datacore.dao.IDAO;
-import com.inkubator.hrm.entity.BioEmergencyContact;
-import java.util.List;
+import com.inkubator.hrm.entity.EmpData;
 
 /**
  *
  * @author Deni Husni FR
  */
-public interface BioEmergencyContactDao extends IDAO<BioEmergencyContact>{
-     public List<BioEmergencyContact> getAllDataByBioDataId(long id);
-     
-     public BioEmergencyContact getEntityByPKWithDetail(long id);
+public interface EmpDataDao extends IDAO<EmpData>{
+    
 }

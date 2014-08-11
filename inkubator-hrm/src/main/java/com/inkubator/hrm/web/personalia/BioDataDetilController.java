@@ -86,10 +86,13 @@ public class BioDataDetilController extends BaseController {
     private BioInsuranceService bioInsuranceService;
 //end. bio address
 
+//start. bio emergency 
     private List<BioEmergencyContact> dataBioEmergencyContacs;
     @ManagedProperty(value = "#{bioEmergencyContactService}")
     private BioEmergencyContactService bioEmergencyContactService;
-
+    private BioEmergencyContact seleBioEmergencyContact;
+//end. bio emergency 
+    
     @PostConstruct
     @Override
     public void initialization() {
@@ -128,6 +131,7 @@ public class BioDataDetilController extends BaseController {
         selectedBioInsurance = null;
         bioInsurances = null;
         bioInsuranceService = null;
+        seleBioEmergencyContact = null;
     }
 
     public BioAddress getSelectedBioAddress() {
@@ -596,6 +600,53 @@ public class BioDataDetilController extends BaseController {
         RequestContext.getCurrentInstance().openDialog("bio_emergency_contact_form", options, dataToSend);
     }
 
+    public void doUpdateBioContact() {
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 700);
+        options.put("contentHeight", 430);
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        List<String> dataIsi = new ArrayList<>();
+        dataIsi.add("e" + String.valueOf(seleBioEmergencyContact.getId()));
+        dataToSend.put("param", dataIsi);
+        RequestContext.getCurrentInstance().openDialog("bio_emergency_contact_form", options, dataToSend);
+    }
+    
+    public void onDialogReturnContact(SelectEvent event) {
+        try {
+            dataBioEmergencyContacs = bioEmergencyContactService.getAllDataByBioDataId(selectedBioData.getId());
+            super.onDialogReturn(event);
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+    
+    public void doSelectBioContact() {
+        try {
+            seleBioEmergencyContact = bioEmergencyContactService.getEntityByPKWithDetail(seleBioEmergencyContact.getId());
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+    
+    public void doDeleteBioContact() {
+        try {
+            this.bioEmergencyContactService.delete(seleBioEmergencyContact);
+            dataBioEmergencyContacs = bioEmergencyContactService.getAllDataByBioDataId(Long.parseLong(userId.substring(1)));
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully",
+                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+
+        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint",
+                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            LOGGER.error("Error", ex);
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
+        }
+    }
+    
     public void setBioEmergencyContactService(BioEmergencyContactService bioEmergencyContactService) {
         this.bioEmergencyContactService = bioEmergencyContactService;
     }
@@ -680,5 +731,15 @@ public class BioDataDetilController extends BaseController {
     /**
      * END Bio Insurance method
      */
+
+    public BioEmergencyContact getSeleBioEmergencyContact() {
+        return seleBioEmergencyContact;
+    }
+
+    public void setSeleBioEmergencyContact(BioEmergencyContact seleBioEmergencyContact) {
+        this.seleBioEmergencyContact = seleBioEmergencyContact;
+    }
+
+
     
 }

@@ -5,17 +5,22 @@
  */
 package com.inkubator.hrm.web;
 
-import com.inkubator.hrm.entity.RiwayatAkses;
-import com.inkubator.hrm.service.RiwayatAksesService;
-import com.inkubator.securitycore.util.UserInfoUtil;
-import com.inkubator.webcore.controller.BaseController;
 import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
+
 import org.hibernate.criterion.Order;
+
+import com.inkubator.hrm.entity.LoginHistory;
+import com.inkubator.hrm.entity.RiwayatAkses;
+import com.inkubator.hrm.service.LoginHistoryService;
+import com.inkubator.hrm.service.RiwayatAksesService;
+import com.inkubator.securitycore.util.UserInfoUtil;
+import com.inkubator.webcore.controller.BaseController;
 
 /**
  *
@@ -25,9 +30,12 @@ import org.hibernate.criterion.Order;
 @RequestScoped
 public class HomeHistoryController extends BaseController {
 
+	@ManagedProperty(value = "#{loginHistoryService}")
+	private LoginHistoryService loginHistoryService;
     @ManagedProperty(value = "#{riwayatAksesService}")
     private RiwayatAksesService riwayatAksesService;
     private List<RiwayatAkses> dataRiwayatAkses;
+    private List<LoginHistory> loginHistories;
 
     public void setRiwayatAksesService(RiwayatAksesService riwayatAksesService) {
         this.riwayatAksesService = riwayatAksesService;
@@ -37,7 +45,8 @@ public class HomeHistoryController extends BaseController {
     @Override
     public void initialization() {
         try {
-            dataRiwayatAkses = riwayatAksesService.getDataByUserId(UserInfoUtil.getUserName(), 0, 6, Order.desc("dateAccess"));
+            dataRiwayatAkses = riwayatAksesService.getDataByUserId(UserInfoUtil.getUserName(), 0, 4, Order.desc("dateAccess"));
+            loginHistories = loginHistoryService.getByParam(0, 5, Order.desc("loginDate"));
         } catch (Exception ex) {
            LOGGER.error("Error", ex);
         }
@@ -47,6 +56,8 @@ public class HomeHistoryController extends BaseController {
     public void cleanAndExit(){
         dataRiwayatAkses=null;
         riwayatAksesService=null;
+        loginHistoryService = null;
+        loginHistories = null;
         
     }
 
@@ -56,7 +67,18 @@ public class HomeHistoryController extends BaseController {
 
     public void setDataRiwayatAkses(List<RiwayatAkses> dataRiwayatAkses) {
         this.dataRiwayatAkses = dataRiwayatAkses;
-    }
+    }    
     
+    public List<LoginHistory> getLoginHistories() {
+		return loginHistories;
+	}
+
+	public void setLoginHistories(List<LoginHistory> loginHistories) {
+		this.loginHistories = loginHistories;
+	}
+
+	public void setLoginHistoryService(LoginHistoryService loginHistoryService) {
+		this.loginHistoryService = loginHistoryService;
+	}
     
 }

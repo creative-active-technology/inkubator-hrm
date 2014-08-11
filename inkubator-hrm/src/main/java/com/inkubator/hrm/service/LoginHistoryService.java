@@ -17,6 +17,8 @@ import org.hibernate.criterion.Order;
  */
 public interface LoginHistoryService extends IService<LoginHistory> {
 
+	public List<LoginHistory> getByParam(int firstResult, int maxResults, Order order) throws Exception;
+	
     public List<LoginHistory> getByParam(LoginHistorySearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
 
     public Long getTotalLoginHistoryByParam(LoginHistorySearchParameter searchParameter) throws Exception;

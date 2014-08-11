@@ -33,6 +33,16 @@ public class LoginHistoryDaoImpl extends IDAOImpl<LoginHistory> implements Login
     }
 
     @Override
+    public List<LoginHistory> getByParam(int firstResult, int maxResults, Order order) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("hrmUser", "hrmUser", JoinType.LEFT_OUTER_JOIN);
+        criteria.addOrder(order);
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResults);
+        return criteria.list();
+    }
+    
+    @Override
     public List<LoginHistory> getByParam(LoginHistorySearchParameter searchParameter, int firstResult, int maxResults, Order order) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchLoginHistByParam(searchParameter, criteria);
