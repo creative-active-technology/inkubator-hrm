@@ -87,8 +87,8 @@ public class BioEmergencyContactFormController extends BaseController {
             for (City city : dataCity) {
                 mapCity.put(city.getCityName(), city.getId());
             }
-            
-            List<FamilyRelation>dataFamily=familyRelationService.getAllData();
+
+            List<FamilyRelation> dataFamily = familyRelationService.getAllData();
             for (FamilyRelation familyRelation : dataFamily) {
                 mapRelationFamily.put(familyRelation.getRelasiName(), familyRelation.getId());
             }
@@ -132,41 +132,45 @@ public class BioEmergencyContactFormController extends BaseController {
     public void setMapCity(Map<String, Long> mapCity) {
         this.mapCity = mapCity;
     }
-    
-   public void doSave(){
-       System.out.println("masuk dosave");
-        BioEmergencyContact emergencyContact = getEntityFromViewModel(emergencyContactModel);
+    public void doSave() {
+        BioEmergencyContact bioEmergencyContact = getEntityFromView(emergencyContactModel);
         try {
             if (isEdit) {
-                bioEmergencyContactService.update(emergencyContact);
+
+                bioEmergencyContactService.update(bioEmergencyContact);
                 RequestContext.getCurrentInstance().closeDialog(HRMConstant.UPDATE_CONDITION);
+
             } else {
-                bioEmergencyContactService.save(emergencyContact);
+                bioEmergencyContactService.save(bioEmergencyContact);
                 RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
             }
-            cleanAndExit();
-        } catch (BussinessException ex) { //data already exist(duplicate)
-            LOGGER.error("Error", ex);
-            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
     }
-   
-    private BioEmergencyContact getEntityFromViewModel(EmergencyContactModel model) {
-        BioEmergencyContact emergencyContact = new BioEmergencyContact();
-        if (model.getId() != null) {
-            emergencyContact.setId(model.getId());
+
+    private BioEmergencyContact getEntityFromView(EmergencyContactModel emergencyContactModel) {
+        BioEmergencyContact bioEmergencyContact = new BioEmergencyContact();
+        if (emergencyContactModel.getId() != null) {
+            bioEmergencyContact.setId(emergencyContactModel.getId());
         }
-        emergencyContact.setBioData(new BioData(bioDataId));
-        emergencyContact.setContactName(model.getName());
-        emergencyContact.setPhoneNumber(model.getPhoneNumber());
-        emergencyContact.setAddress(model.getAddress());
-        emergencyContact.setCity(new City(model.getCityId()));
-        emergencyContact.setFamilyRelation(new FamilyRelation(model.getFamilyRelationId()));
-        emergencyContact.setIsSameHouse(model.getIsSameHouse());
-        return emergencyContact;
+
+        bioEmergencyContact.setAddress(emergencyContactModel.getAddress());
+        bioEmergencyContact.setBioData(new BioData(emergencyContactModel.getBioDataId()));
+        bioEmergencyContact.setCity(new City(emergencyContactModel.getCityId()));
+        bioEmergencyContact.setContactName(emergencyContactModel.getName());
+        bioEmergencyContact.setFamilyRelation(new FamilyRelation(emergencyContactModel.getFamilyRelationId()));
+        bioEmergencyContact.setIsSameHouse(emergencyContactModel.getIsSameHouse());
+        bioEmergencyContact.setPhoneNumber(emergencyContactModel.getPhoneNumber());
+        return bioEmergencyContact;
     }
-    
+
+    public Boolean getIsEdit() {
+        return isEdit;
+    }
+
+    public void setIsEdit(Boolean isEdit) {
+        this.isEdit = isEdit;
+    }
 
 }
