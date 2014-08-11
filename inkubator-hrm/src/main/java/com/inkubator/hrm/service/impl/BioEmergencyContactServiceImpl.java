@@ -13,6 +13,8 @@ import com.inkubator.hrm.dao.CityDao;
 import com.inkubator.hrm.dao.FamilyRelationDao;
 import com.inkubator.hrm.entity.BioEmergencyContact;
 import com.inkubator.hrm.service.BioEmergencyContactService;
+import com.inkubator.securitycore.util.UserInfoUtil;
+import java.util.Date;
 import java.util.List;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,12 +64,23 @@ public class BioEmergencyContactServiceImpl extends IServiceImpl implements BioE
         entity.setBioData(bioDataDao.getEntiyByPK(entity.getBioData().getId()));
         entity.setCity(cityDao.getEntiyByPK(entity.getCity().getId()));
         entity.setFamilyRelation(familyRelationDao.getEntiyByPK(entity.getFamilyRelation().getId()));
-        entity.setCreatedBy(null);
+        entity.setCreatedBy(UserInfoUtil.getUserName());
+        entity.setCreatedOn(new Date());
+        this.bioEmergencyContactDao.save(entity);
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(BioEmergencyContact entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        BioEmergencyContact update = bioEmergencyContactDao.getEntiyByPK(entity.getId());
+        update.setContactName(entity.getContactName());
+        update.setAddress(entity.getAddress());
+        update.setPhoneNumber(entity.getPhoneNumber());
+        update.setCity(cityDao.getEntiyByPK(entity.getCity().getId()));
+        update.setFamilyRelation(familyRelationDao.getEntiyByPK(entity.getFamilyRelation().getId()));
+        update.setUpdatedBy(UserInfoUtil.getUserName());
+        update.setUpdatedOn(new Date());
+        this.bioEmergencyContactDao.update(update);
     }
 
     @Override
@@ -136,8 +149,9 @@ public class BioEmergencyContactServiceImpl extends IServiceImpl implements BioE
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor =Exception.class)
     public void delete(BioEmergencyContact entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.bioEmergencyContactDao.delete(entity);
     }
 
     @Override
@@ -209,6 +223,12 @@ public class BioEmergencyContactServiceImpl extends IServiceImpl implements BioE
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<BioEmergencyContact> getAllDataByBioDataId(long id) throws Exception {
         return this.bioEmergencyContactDao.getAllDataByBioDataId(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public BioEmergencyContact getEntityByPKWithDetail(long id) throws Exception {
+        return bioEmergencyContactDao.getEntityByPKWithDetail(id);
     }
 
 }

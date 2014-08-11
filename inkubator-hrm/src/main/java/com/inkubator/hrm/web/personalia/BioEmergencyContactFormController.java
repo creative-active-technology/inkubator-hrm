@@ -69,7 +69,7 @@ public class BioEmergencyContactFormController extends BaseController {
             List<City> dataCity = cityService.getAllData();
             String param = FacesUtil.getRequestParameter("param");
             if(param.contains("e")){
-                BioEmergencyContact emergencyContact = bioEmergencyContactService.getEntiyByPK(Long.parseLong(param));
+                BioEmergencyContact emergencyContact = bioEmergencyContactService.getEntiyByPK(Long.parseLong(param.substring(1)));
                 isEdit = Boolean.TRUE;
                 emergencyContactModel.setId(emergencyContact.getId());
                 emergencyContactModel.setName(emergencyContact.getContactName());
@@ -79,6 +79,7 @@ public class BioEmergencyContactFormController extends BaseController {
                 emergencyContactModel.setFamilyRelationId(emergencyContact.getFamilyRelation().getId());
                 emergencyContactModel.setIsSameHouse(emergencyContact.getIsSameHouse());
                 emergencyContactModel.setBioDataId(emergencyContact.getBioData().getId());
+                bioDataId = emergencyContact.getBioData().getId();
             }
             if(param.contains("i")){
                 bioDataId = Long.parseLong(param.substring(1));
@@ -156,7 +157,7 @@ public class BioEmergencyContactFormController extends BaseController {
         }
 
         bioEmergencyContact.setAddress(emergencyContactModel.getAddress());
-        bioEmergencyContact.setBioData(new BioData(emergencyContactModel.getBioDataId()));
+        bioEmergencyContact.setBioData(new BioData(bioDataId));
         bioEmergencyContact.setCity(new City(emergencyContactModel.getCityId()));
         bioEmergencyContact.setContactName(emergencyContactModel.getName());
         bioEmergencyContact.setFamilyRelation(new FamilyRelation(emergencyContactModel.getFamilyRelationId()));
