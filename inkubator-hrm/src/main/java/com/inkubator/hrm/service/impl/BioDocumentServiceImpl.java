@@ -159,11 +159,16 @@ public class BioDocumentServiceImpl extends IServiceImpl implements BioDocumentS
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, noRollbackFor = IOException.class)
     public void delete(BioDocument entity) throws Exception {
-        //remove entity
+    	//remove physical file
+    	try {
+	        File oldFile = new File(entity.getUploadPath());
+	        oldFile.delete();
+    	} catch (Exception e){
+    		//if any error when removing file, system will continue deleting the record
+    	}
+    	
+    	//remove entity
         bioDocumentDao.delete(entity);
-        //remove physical file
-        File oldFile = new File(entity.getUploadPath());
-        oldFile.delete();
     }
 
     @Override
