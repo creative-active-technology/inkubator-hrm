@@ -10,11 +10,13 @@ import com.inkubator.hrm.entity.BioData;
 import com.inkubator.hrm.entity.BioDocument;
 import com.inkubator.hrm.entity.BioEducationHistory;
 import com.inkubator.hrm.entity.BioEmergencyContact;
+import com.inkubator.hrm.entity.BioInsurance;
 import com.inkubator.hrm.entity.BioPeopleInterest;
 import com.inkubator.hrm.service.BioAddressService;
 import com.inkubator.hrm.service.BioDataService;
 import com.inkubator.hrm.service.BioDocumentService;
 import com.inkubator.hrm.service.BioEmergencyContactService;
+import com.inkubator.hrm.service.BioInsuranceService;
 import com.inkubator.hrm.service.EducationHistoryService;
 import com.inkubator.hrm.service.PeopleInterestService;
 import com.inkubator.hrm.web.model.BioEducationHistoryViewModel;
@@ -76,11 +78,21 @@ public class BioDataDetilController extends BaseController {
     @ManagedProperty(value = "#{peopleInterestService}")
     private PeopleInterestService peopleInterestService;
 //end people interest / minat
+    
+    //start. bio insurance
+    private BioInsurance selectedBioInsurance;
+    private List<BioInsurance> bioInsurances;
+    @ManagedProperty(value = "#{bioInsuranceService}")
+    private BioInsuranceService bioInsuranceService;
+//end. bio address
 
+//start. bio emergency 
     private List<BioEmergencyContact> dataBioEmergencyContacs;
     @ManagedProperty(value = "#{bioEmergencyContactService}")
     private BioEmergencyContactService bioEmergencyContactService;
-
+    private BioEmergencyContact seleBioEmergencyContact;
+//end. bio emergency 
+    
     @PostConstruct
     @Override
     public void initialization() {
@@ -90,6 +102,7 @@ public class BioDataDetilController extends BaseController {
             selectedBioData = bioDataService.getEntiyByPK(Long.parseLong(userId.substring(1)));
             bioAddresses = bioAddressService.getAllDataByBioDataId(selectedBioData.getId());
             bioDocuments = bioDocumentService.getAllDataByBioDataId(selectedBioData.getId());
+            bioInsurances = bioInsuranceService.getAllDataByBioDataId(selectedBioData.getId());
             educationHistory = educationHistoryService.getAllDataByBioDataId(selectedBioData.getId());
             listPeopleInterest = peopleInterestService.getAllDataByBioDataId(selectedBioData.getId());
             dataBioEmergencyContacs=bioEmergencyContactService.getAllDataByBioDataId(selectedBioData.getId());
@@ -115,6 +128,10 @@ public class BioDataDetilController extends BaseController {
         bioDocuments = null;
         bioDocumentService = null;
         selectedBioEducationHistoryViewController = null;
+        selectedBioInsurance = null;
+        bioInsurances = null;
+        bioInsuranceService = null;
+        seleBioEmergencyContact = null;
     }
 
     public BioAddress getSelectedBioAddress() {
@@ -224,6 +241,32 @@ public class BioDataDetilController extends BaseController {
     public void setPeopleInterestService(PeopleInterestService peopleInterestService) {
         this.peopleInterestService = peopleInterestService;
     }
+
+    public BioInsurance getSelectedBioInsurance() {
+        return selectedBioInsurance;
+    }
+
+    public void setSelectedBioInsurance(BioInsurance selectedBioInsurance) {
+        this.selectedBioInsurance = selectedBioInsurance;
+    }
+
+    public List<BioInsurance> getBioInsurances() {
+        return bioInsurances;
+    }
+
+    public void setBioInsurances(List<BioInsurance> bioInsurances) {
+        this.bioInsurances = bioInsurances;
+    }
+
+    public BioInsuranceService getBioInsuranceService() {
+        return bioInsuranceService;
+    }
+
+    public void setBioInsuranceService(BioInsuranceService bioInsuranceService) {
+        this.bioInsuranceService = bioInsuranceService;
+    }
+    
+    
 
     public String doDetail() {
         return "/protected/personalia/biodata_detail.htm?faces-redirect=true&execution=e" + selectedBioData.getId();
@@ -557,6 +600,53 @@ public class BioDataDetilController extends BaseController {
         RequestContext.getCurrentInstance().openDialog("bio_emergency_contact_form", options, dataToSend);
     }
 
+    public void doUpdateBioContact() {
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 700);
+        options.put("contentHeight", 430);
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        List<String> dataIsi = new ArrayList<>();
+        dataIsi.add("e" + String.valueOf(seleBioEmergencyContact.getId()));
+        dataToSend.put("param", dataIsi);
+        RequestContext.getCurrentInstance().openDialog("bio_emergency_contact_form", options, dataToSend);
+    }
+    
+    public void onDialogReturnContact(SelectEvent event) {
+        try {
+            dataBioEmergencyContacs = bioEmergencyContactService.getAllDataByBioDataId(selectedBioData.getId());
+            super.onDialogReturn(event);
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+    
+    public void doSelectBioContact() {
+        try {
+            seleBioEmergencyContact = bioEmergencyContactService.getEntityByPKWithDetail(seleBioEmergencyContact.getId());
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+    
+    public void doDeleteBioContact() {
+        try {
+            this.bioEmergencyContactService.delete(seleBioEmergencyContact);
+            dataBioEmergencyContacs = bioEmergencyContactService.getAllDataByBioDataId(Long.parseLong(userId.substring(1)));
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully",
+                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+
+        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint",
+                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            LOGGER.error("Error", ex);
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
+        }
+    }
+    
     public void setBioEmergencyContactService(BioEmergencyContactService bioEmergencyContactService) {
         this.bioEmergencyContactService = bioEmergencyContactService;
     }
@@ -569,6 +659,87 @@ public class BioDataDetilController extends BaseController {
     public void setDataBioEmergencyContacs(List<BioEmergencyContact> dataBioEmergencyContacs) {
         this.dataBioEmergencyContacs = dataBioEmergencyContacs;
     }
+
+    /**
+     * START Bio Insurance method
+     */
+    
+    public void doSelectBioInsurance() {
+        try {
+            selectedBioInsurance = bioInsuranceService.getEntiyByPK(selectedBioInsurance.getId());
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+
+    public void doUpdateBioInsurance() {
+
+        List<String> bioInsuranceId = new ArrayList<>();
+        bioInsuranceId.add(String.valueOf(selectedBioInsurance.getId()));
+
+        List<String> bioDataId = new ArrayList<>();
+        bioDataId.add(String.valueOf(selectedBioData.getId()));
+
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("bioInsuranceId", bioInsuranceId);
+        dataToSend.put("bioDataId", bioDataId);
+        showDialogBioInsurance(dataToSend);
+
+    }
+
+    public void doAddBioInsurance() {
+        List<String> bioDataId = new ArrayList<>();
+        bioDataId.add(String.valueOf(selectedBioData.getId()));
+
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("bioDataId", bioDataId);
+        showDialogBioInsurance(dataToSend);
+    }
+
+    public void doDeleteBioInsurance() {
+        try {
+            bioInsuranceService.delete(selectedBioInsurance);
+            bioInsurances = bioInsuranceService.getAllDataByBioDataId(selectedBioInsurance.getBioData().getId());
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+
+        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (Exception ex) {
+            LOGGER.error("Error when doDelete bioInsurance", ex);
+        }
+    }
+
+    private void showDialogBioInsurance(Map<String, List<String>> params) {
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 450);
+        options.put("contentHeight", 420);
+        RequestContext.getCurrentInstance().openDialog("bio_insurance_form", options, params);
+    }
+
+    public void onDialogReturnBioInsurance(SelectEvent event) {
+        try {
+            bioInsurances = bioInsuranceService.getAllDataByBioDataId(selectedBioData.getId());
+            super.onDialogReturn(event);
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+
+    /**
+     * END Bio Insurance method
+     */
+
+    public BioEmergencyContact getSeleBioEmergencyContact() {
+        return seleBioEmergencyContact;
+    }
+
+    public void setSeleBioEmergencyContact(BioEmergencyContact seleBioEmergencyContact) {
+        this.seleBioEmergencyContact = seleBioEmergencyContact;
+    }
+
 
     
 }

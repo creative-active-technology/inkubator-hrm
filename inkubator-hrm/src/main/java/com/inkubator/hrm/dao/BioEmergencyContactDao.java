@@ -16,4 +16,6 @@ import java.util.List;
  */
 public interface BioEmergencyContactDao extends IDAO<BioEmergencyContact>{
      public List<BioEmergencyContact> getAllDataByBioDataId(long id);
+     
+     public BioEmergencyContact getEntityByPKWithDetail(long id);
 }

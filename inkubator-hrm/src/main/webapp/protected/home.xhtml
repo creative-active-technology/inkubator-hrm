@@ -5,7 +5,8 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:pe="http://primefaces.org/ui/extensions"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
     <h:head>
         <title>IGNORED</title>
     </h:head>
@@ -163,77 +164,27 @@
                         <p:column style="width: 25%" >
                             <p:panel  style="margin-left: 10px;margin-right: 0px;margin-top: 10px;height: 100%"> 
                                 <h:panelGrid style="margin-bottom: 5px">
-                                    <p:outputLabel value="Login History" styleClass="header_big" />
-                                    <p:outputLabel value="Daftar Karyawan yang Login Terakhir" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['loginhistory.login_history']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['loginhistory.list_of_user_login_history']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
 
                                 <p:panelGrid  styleClass="grid_border" style="width: 98%;margin-left: 5px;margin-right: 10px;margin-top: 0px;margin-bottom: 10px;color: #036;height: 100%">
-                                    <p:row>
-                                        <p:column style="width: 40%;text-align: center"  rowspan="2">
-                                            <p:outputLabel value="12-Juli-2014" styleClass="isitext_hrm" />
-                                            <br/>
-                                            <p:outputLabel value="12:00 PM"  styleClass="isitext_hrm"/>
-                                        </p:column>
-                                        <p:column style="width: 60%" >
-                                            <p:outputLabel value="Deni Husni FR" styleClass="isitext_hrm" />
-                                        </p:column>
-
-                                    </p:row>
-                                    <p:row>
-                                        <p:column style="width: 60%" >
-                                            <p:outputLabel value="System Architech" styleClass="isitext_hrm"/>
-                                        </p:column>
-                                    </p:row>
-
-                                    <p:row>
-                                        <p:column style="width: 40%;text-align: center"  rowspan="2">
-                                            <p:outputLabel value="13-Juli-2014" styleClass="isitext_hrm" />
-                                            <br/>
-                                            <p:outputLabel value="12:00 PM" styleClass="isitext_hrm"/>
-                                        </p:column>
-                                        <p:column style="width: 60%" >
-                                            <p:outputLabel value="Rizky Kozek" styleClass="isitext_hrm" />
-                                        </p:column>
-
-                                    </p:row>
-                                    <p:row>
-                                        <p:column style="width: 60%" >
-                                            <p:outputLabel value="Senior Developer" styleClass="isitext_hrm" />
-                                        </p:column>
-                                    </p:row>
-
-                                    <p:row>
-                                        <p:column style="width: 40%;text-align: center"  rowspan="2">
-                                            <p:outputLabel value="14-Juli-2014" styleClass="isitext_hrm"/>
-                                            <br/>
-                                            <p:outputLabel value="12:00 PM" styleClass="isitext_hrm"/>
-                                        </p:column>
-                                        <p:column style="width: 60%" >
-                                            <p:outputLabel value="Ahmad Albar"  styleClass="isitext_hrm"/>
-                                        </p:column>
-
-                                    </p:row>
-                                    <p:row>
-                                        <p:column style="width: 60%" >
-                                            <p:outputLabel value="Penyanyi" styleClass="isitext_hrm"/>
-                                        </p:column>
-                                    </p:row>
-                                    <p:row>
-                                        <p:column style="width: 40%;text-align: center"  rowspan="2">
-                                            <p:outputLabel value="15-Juli-2014" styleClass="isitext_hrm"/>
-                                            <br/>
-                                            <p:outputLabel value="12:00 PM"  styleClass="isitext_hrm"/>
-                                        </p:column>
-                                        <p:column style="width: 60%" >
-                                            <p:outputLabel value="Guntur Saketi" styleClass="isitext_hrm"/>
-                                        </p:column>
-
-                                    </p:row>
-                                    <p:row>
-                                        <p:column style="width: 60%" >
-                                            <p:outputLabel value="System Analis" styleClass="isitext_hrm" />
-                                        </p:column>
-                                    </p:row>
+                                    <c:forEach var="loginHistory" items="#{homeHistoryController.loginHistories}" varStatus="idx">
+	                                    <p:row>
+	                                        <p:column style="width: 40%;text-align: center">
+	                                            <p:outputLabel id="loginHistoryDate_${idx.index}" value="#{loginHistory.loginDate}" styleClass="isitext_hrm">
+		                                        	<f:convertDateTime pattern="dd-MMMM-yyyy" />
+		                                        </p:outputLabel>
+		                                        <br/>
+		                                        <p:outputLabel id="loginHistoryTime_${idx.index}" value="#{loginHistory.loginDate}" styleClass="isitext_hrm">
+		                                        	<f:convertDateTime pattern="HH:mm aa" />
+		                                        </p:outputLabel>
+	                                        </p:column>
+	                                        <p:column style="width: 60%" >
+	                                            <p:outputLabel id="loginHistoryName_${idx.index}" value="#{loginHistory.hrmUser.realName}" styleClass="isitext_hrm" />
+	                                        </p:column>
+	                                    </p:row>
+                                    </c:forEach>
                                 </p:panelGrid>
                             </p:panel>
                         </p:column>
@@ -255,29 +206,34 @@
                     </p:row>
                     	<p:row>
                         	<p:column style="width: 25%">
-	                            <p:panel  style="margin-left: 10px;margin-right: 0px;margin-top: 10px;height:180px;"> 
+	                            <p:panel  style="margin-left: 10px;margin-right: 0px;margin-top: 10px;height:200px;"> 
 	                                <h:panelGrid style="margin-bottom: 3px">
-	                                    <p:outputLabel value="Access History" styleClass="header_big" />
+	                                    <p:outputLabel value="#{appmsg['accesshistory.access_history']}" styleClass="header_big" />
+	                                    <p:outputLabel value="#{appmsg['accesshistory.list_access_history']}" styleClass="header_small_no_bold" />
 	                                </h:panelGrid>
-	                                <p:dataTable value="#{homeHistoryController.dataRiwayatAkses}"  rowIndexVar="no" var="riwayatAccess" styleClass="grid_border_table" style="margin-bottom: 5px" >
-	                                    <p:column style="text-align: center;width: 25px">
-	                                        <f:facet name="header">  
-	                                            <h:outputText value="No." />
-	                                        </f:facet>
-	                                        <h:outputLabel value="#{no+1}." />
-	                                    </p:column>
-	                                    <p:column style="width: 25px">
-	                                        <f:facet name="header">  
-	                                            <h:outputText value="Nama URL" />
-	                                        </f:facet>
-	                                        <h:outputLabel value="#{riwayatAccess.name}" />
-	                                    </p:column>
-	                                </p:dataTable>
+	                                <p:panelGrid  styleClass="grid_border" style="width: 98%;margin-left: 5px;margin-right: 10px;margin-top: 0px;margin-bottom: 10px;color: #036;height: 100%">
+		                                <c:forEach var="riwayatAkses" items="#{homeHistoryController.dataRiwayatAkses}">
+		                                	<p:row>
+		                                        <p:column style="width: 40%;text-align: center"  >
+		                                            <p:outputLabel value="#{riwayatAkses.dateAccess}" styleClass="isitext_hrm">
+		                                            	<f:convertDateTime pattern="dd-MMMM-yyyy" />
+		                                            </p:outputLabel>
+		                                            <br/>
+		                                            <p:outputLabel value="#{riwayatAkses.dateAccess}" styleClass="isitext_hrm">
+		                                            	<f:convertDateTime pattern="HH:mm aa" />
+		                                            </p:outputLabel>
+		                                        </p:column>
+		                                        <p:column style="width: 60%" >
+		                                            <p:outputLabel value="#{riwayatAkses.name}" styleClass="isitext_hrm"/>
+		                                        </p:column>	
+		                                    </p:row>
+		                                </c:forEach>
+	                                </p:panelGrid>
 	                            </p:panel>
 	                        </p:column>
 
                         	<p:column style="width: 53%;color: #990000">
-                            	<p:panel  style="margin-left: 0px;margin-right: 0px;margin-top: 10px; height: 180px;">
+                            	<p:panel  style="margin-left: 0px;margin-right: 0px;margin-top: 10px; height: 200px;">
                                 	<h:panelGrid style="margin-bottom: 3px">
                                     	<p:outputLabel value="Data Statistik Absensi" styleClass="header_big" />
                                 	</h:panelGrid>
@@ -341,7 +297,7 @@
                         </p:column>
                         
                         <p:column style="width: 25%;color: #990099">
-                        	<p:panel style="margin-left: 0px;margin-right: 10px;margin-top: 10px;height: 180px;"> 
+                        	<p:panel style="margin-left: 0px;margin-right: 10px;margin-top: 10px;height: 200px;"> 
                             	<h:panelGrid style="margin-bottom: 3px">
                                 	<p:outputLabel value="My Favorite Menu" styleClass="header_big" />
                                 </h:panelGrid>

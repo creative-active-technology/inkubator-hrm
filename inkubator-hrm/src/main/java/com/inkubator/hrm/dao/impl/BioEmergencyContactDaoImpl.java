@@ -10,6 +10,7 @@ import com.inkubator.hrm.dao.BioEmergencyContactDao;
 import com.inkubator.hrm.entity.BioEmergencyContact;
 import java.util.List;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
@@ -36,5 +37,14 @@ public class BioEmergencyContactDaoImpl extends IDAOImpl<BioEmergencyContact> im
 //		criteria.setFetchMode("city.province", FetchMode.JOIN);
 		return criteria.list();
 	}
+
+    @Override
+    public BioEmergencyContact getEntityByPKWithDetail(long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("id", id));
+        criteria.setFetchMode("city", FetchMode.JOIN);
+        criteria.setFetchMode("familyRelation", FetchMode.JOIN);
+        return (BioEmergencyContact) criteria.uniqueResult();
+    }
 
 }

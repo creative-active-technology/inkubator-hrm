@@ -20,8 +20,8 @@
                         <p:graphicImage library="images" name="bio_data.png" height="36" width="36" />
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Detil Biodata" styleClass="header_big" />
-                                <p:outputLabel value="Data Biodata dari Personalia" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['biodata.detail_of_biodata']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['biodata.header_of_biodata']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -55,7 +55,7 @@
                                     <p:panelGrid style="width: 100%;margin-top: 10px;" styleClass="grid_border4">
                                         <p:row>
                                             <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                                <p:outputLabel  value="Nama" style="font-weight: bold"/>
+                                                <p:outputLabel  value="#{appmsg['global.name']}" style="font-weight: bold"/>
                                             </p:column>
                                             <p:column style="width: 80%">
                                                 <p:outputLabel  value=" #{bioDataDetilController.selectedBioData.title}. #{bioDataDetilController.selectedBioData.firstName} #{bioDataDetilController.selectedBioData.lastName}" />
@@ -65,7 +65,7 @@
                                         </p:row>
                                         <p:row>
                                             <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                                <p:outputLabel  value="Gender" style="font-weight: bold"/>
+                                                <p:outputLabel  value="#{appmsg['global.gender']}" style="font-weight: bold"/>
                                             </p:column>
                                             <p:column style="width: 80%">
                                                 <p:outputLabel  value="#{bioDataDetilController.selectedBioData.gender}" >
@@ -77,7 +77,7 @@
                                         </p:row>
                                         <p:row>
                                             <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                                <p:outputLabel  value="Tempat Lahir" style="font-weight: bold"/>
+                                                <p:outputLabel  value="#{appmsg['global.gender']}" style="font-weight: bold"/>
                                             </p:column>
                                             <p:column style="width: 80%">
                                                 <p:outputLabel  value="#{bioDataDetilController.selectedBioData.city.cityName}" />
@@ -87,7 +87,7 @@
                                         </p:row>
                                         <p:row>
                                             <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                                <p:outputLabel  value="Tanggal Lahir" style="font-weight: bold"/>
+                                                <p:outputLabel  value="#{appmsg['global.gender']}" style="font-weight: bold"/>
                                             </p:column>
                                             <p:column style="width: 80%">
                                                 <p:outputLabel  value="#{bioDataDetilController.selectedBioData.dateOfBirth}" >
@@ -427,8 +427,8 @@
 
                             </p:tab>  
                             <p:tab id="documentId" title="#{appmsg['biodocument.document']}">  
-                           
-                                
+
+
                                 <p:dataTable  id="tableBioDocumentId" var="bioDocumentData"  value="#{bioDataDetilController.bioDocuments}" lazy="false" paginator="false"
                                               style="margin-top: 10px;margin-bottom: 10px"
                                               rowIndexVar="no">
@@ -490,7 +490,7 @@
                                         <p:ajax event="dialogReturn" listener="#{bioDataDetilController.onDialogReturnBioDocument}"  update="tableBioDocumentId,:growlBioDetailFormId"/>
                                     </p:commandButton>
                                 </h:panelGrid>
-                             
+
                             </p:tab>  
                             <p:tab id="bank" title="Bank">  
 
@@ -501,7 +501,63 @@
 
                             </p:tab>  
                             <p:tab id="asuransiId" title="Asuransi">  
+                                <p:dataTable  id="tableBioInsuranceId" var="bioInsuranceData"  value="#{bioDataDetilController.bioInsurances}" lazy="false" paginator="false"
+                                              style="margin-top: 10px;margin-bottom: 10px"
+                                              rowIndexVar="no">
+                                    <f:facet name="header">  
+                                        <h:outputText value="#{appmsg['bioInsurance.list_of_bioInsurance']}"/>
+                                    </f:facet> 
+                                    <p:column style="text-align: center;width: 5%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['global.number']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value="#{no+1}." />
+                                    </p:column>
+                                    <p:column sortBy="noPolicy"  style="width: 20%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['bioInsurance.bioInsurance_noPolicy']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{bioInsuranceData.noPolicy}"/>
+                                    </p:column>  
+                                    <p:column sortBy="instance"  style="width: 30%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['bioInsurance.bioInsurance_instance']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{bioInsuranceData.instance}"/>
+                                    </p:column>  
+                                    <p:column sortBy="facility"  style="width: 20%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['bioInsurance.bioInsurance_facility']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{bioInsuranceData.facility}"/>
+                                    </p:column>  
+                                    <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
 
+                                        <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
+                                                         style="font-size: 10px!important" update=":panelDialogBioInsuranceDetailId" 
+                                                         action="#{bioDataDetilController.doSelectBioInsurance()}" onclick="statusDialog.show()"  oncomplete="dialogDetailBioInsurance.show()">                        
+                                            <f:setPropertyActionListener value="#{bioInsuranceData}" target="#{bioDataDetilController.selectedBioInsurance}" />
+                                        </p:commandButton>
+                                        - 
+                                        <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+                                                         style="font-size: 10px!important" update=":panelDialogBioInsuranceConfirmId" 
+                                                         action="#{bioDataDetilController.doSelectBioInsurance()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmBioInsurance.show()">
+                                            <f:setPropertyActionListener value="#{bioInsuranceData}" target="#{bioDataDetilController.selectedBioInsurance}" />
+                                        </p:commandButton>
+                                        -
+                                        <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
+                                                         action="#{bioDataDetilController.doUpdateBioInsurance()}" >
+                                            <f:setPropertyActionListener value="#{bioInsuranceData}" target="#{bioDataDetilController.selectedBioInsurance}" />
+                                            <p:ajax event="dialogReturn" listener="#{bioDataDetilController.onDialogReturnBioInsurance}"  update="tableBioInsuranceId,:growlBioDetailFormId"/>
+                                        </p:commandButton>
+                                    </p:column>
+                                </p:dataTable>
+                                <h:panelGrid columns="1">
+                                    <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']} #{appmsg['bioInsurance.bioInsurance']}" label="#{appmsg['global.add']} #{appmsg['global.insurance']}" styleClass="label_button" icon="ui-icon-document" 
+                                                     actionListener="#{bioDataDetilController.doAddBioInsurance()}" ajax="true" immediate="true">
+                                        <p:ajax event="dialogReturn" listener="#{bioDataDetilController.onDialogReturnBioInsurance}"  update="tableBioInsuranceId,:growlBioDetailFormId"/>
+                                    </p:commandButton>
+                                </h:panelGrid>
 
                             </p:tab>  
                             <p:tab id="contactId" title="Contact">  
@@ -511,12 +567,54 @@
                                     <f:facet name="header">  
                                         <h:outputText value="Daftar Emergency Contact"/>
                                     </f:facet>
-
+                                    <p:column style="text-align: center;width: 3%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['global.number']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value="#{no+1}." />
+                                    </p:column>
+                                    <p:column style="text-align: center;width: 15%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="Nama Kontak"/>
+                                        </f:facet>
+                                        <h:outputLabel value="#{bioContacts.contactName}." />
+                                    </p:column>
+                                    <p:column style="text-align: center;width: 10%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="Phone Number"/>
+                                        </f:facet>
+                                        <h:outputLabel value="#{bioContacts.phoneNumber}." />
+                                    </p:column>
+                                    <p:column style="text-align: center;width: 60%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="Alamat"/>
+                                        </f:facet>
+                                        <h:outputLabel value="#{bioContacts.address}." />
+                                    </p:column>
+                                    <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
+                                        <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
+                                                         style="font-size: 10px!important" update=":panelDialogBioContactDetailId" 
+                                                         action="#{bioDataDetilController.doSelectBioContact()}" onclick="statusDialog.show()"  oncomplete="dialogDetailContact.show()">                        
+                                            <f:setPropertyActionListener value="#{bioContacts}" target="#{bioDataDetilController.seleBioEmergencyContact}" />
+                                        </p:commandButton>
+                                        - 
+                                        <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+                                                         style="font-size: 10px!important" update=":panelDialogConfirmContactId" 
+                                                         action="#{bioDataDetilController.doSelectBioContact()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmDeleteContact.show()">
+                                            <f:setPropertyActionListener value="#{bioContacts}" target="#{bioDataDetilController.seleBioEmergencyContact}" />
+                                        </p:commandButton>
+                                        -
+                                        <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
+                                                         action="#{bioDataDetilController.doUpdateBioContact()}" >
+                                            <f:setPropertyActionListener value="#{bioContacts}" target="#{bioDataDetilController.seleBioEmergencyContact}" />
+                                            <p:ajax event="dialogReturn" listener="#{bioDataDetilController.onDialogReturnContact}"  update="tableContactId,:growlBioDetailFormId"/>
+                                        </p:commandButton>
+                                    </p:column>
                                 </p:dataTable>
                                 <h:panelGrid columns="1">
                                     <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']} #{appmsg['global.address']}" label="#{appmsg['global.add']} #{appmsg['global.address']}" styleClass="label_button" icon="ui-icon-search" 
                                                      actionListener="#{bioDataDetilController.doAddEmergencyContact()}" ajax="true" immediate="true">
-                                        <p:ajax event="dialogReturn" listener="#{bioDataDetilController.onDialogReturnBioAddress}" />
+                                        <p:ajax event="dialogReturn" listener="#{bioDataDetilController.onDialogReturnBioAddress}" update="tableContactId,:growlBioDetailFormId" />
                                     </p:commandButton>
                                 </h:panelGrid>
 
@@ -807,6 +905,118 @@
                     </p:panelGrid>
                 </p:dialog>
                 <!-- END Bio Minat DIALOG --> 
+
+                <!-- START Bio Insurance DIALOG --> 
+                <p:dialog widgetVar="dialogConfirmBioInsurance" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                          appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
+                    <div align="center">
+                        <div align="center">
+                            <h:panelGrid columns="2" style="text-align: justify">
+                                <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
+                                <h:panelGroup>
+                                    <h:panelGrid style="text-align: center">
+                                        <p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
+                                    </h:panelGrid>
+                                </h:panelGroup>
+                            </h:panelGrid>
+                        </div>
+                        <h:panelGrid id="panelDialogBioInsuranceConfirmId"  columns="3">
+                            <p:outputLabel value="#{appmsg['bioInsurance.bioInsurance_noPolicy']}"  style="font-weight: bold"/>
+                            <p:outputLabel value=":"  style="font-weight: bold"/>
+                            <p:outputLabel value="#{bioDataDetilController.selectedBioInsurance.noPolicy}" styleClass="label_hrm"/>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:commandButton value="#{appmsg['global.yes']}" action="#{bioDataDetilController.doDeleteBioInsurance()}" update="formBioDetailFormId:tabView:tableBioInsuranceId,:growlBioDetailFormId"
+                                         oncomplete="dialogConfirmBioInsurance.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmBioInsurance.hide()" icon="ui-icon-close" />                     	
+                    </div>
+                </p:dialog>
+                <p:dialog widgetVar="dialogDetailBioInsurance" header="#{appmsg['bioInsurance.bioInsurance']}" styleClass="header_small_no_bold" width="900" modal="true" resizable="false" hideEffect="puff" 
+                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                    <p:panelGrid id="panelDialogBioInsuranceDetailId" style="width:100%;margin:5px;">
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['bioInsurance.bioInsurance_noPolicy']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedBioInsurance.noPolicy}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['bioInsurance.bioInsurance_instance']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedBioInsurance.instance}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['bioInsurance.bioInsurance_facility']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedBioInsurance.facility}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedBioInsurance.description}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <f:facet name="footer">
+                            <p:row>
+                                <p:column colspan="2"><p:outputLabel value="#{appmsg['menu.data_reference']} - #{appmsg['bioInsurance.bioInsurance']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
+                            </p:row>
+                        </f:facet>
+                    </p:panelGrid>
+                </p:dialog>
+                <!-- END Bio Insurance DIALOG -->
+                
+                <!--Bio Contact-->
+                <p:dialog widgetVar="dialogDetailContact" header="Contact Detail" styleClass="header_small_no_bold" width="450" modal="true" resizable="false" hideEffect="puff" 
+                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                    <p:panelGrid id="panelDialogBioContactDetailId" style="width:100%;margin:5px;">
+
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="Nama Contact" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.seleBioEmergencyContact.contactName}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="No. Telepon" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.seleBioEmergencyContact.phoneNumber}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="Alamat" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.seleBioEmergencyContact.address}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="Kota" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.seleBioEmergencyContact.city.cityName}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="Hubungan Keluarga" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.seleBioEmergencyContact.familyRelation.relasiName}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <f:facet name="footer">
+                            <p:row>
+                                <p:column colspan="2"><p:outputLabel value="#{appmsg['menu.personalia']} - #{appmsg['educationhistory.education_history']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
+                            </p:row>
+                        </f:facet>
+                    </p:panelGrid>
+                </p:dialog>
+                <p:dialog widgetVar="dialogConfirmDeleteContact" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                          appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
+                    <div align="center">
+                        <div align="center">
+                            <h:panelGrid columns="2" style="text-align: justify">
+                                <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
+                                <h:panelGroup>
+                                    <h:panelGrid style="text-align: center">
+                                        <p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
+                                    </h:panelGrid>
+                                </h:panelGroup>
+                            </h:panelGrid>
+                        </div>
+                        <h:panelGrid id="panelDialogConfirmContactId"  columns="3">
+                            <p:outputLabel value="Nama Kontak"  style="font-weight: bold"/>
+                            <p:outputLabel value=":"  style="font-weight: bold"/>
+                            <p:outputLabel value="#{bioDataDetilController.seleBioEmergencyContact.contactName}" styleClass="label_hrm"/>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:commandButton value="#{appmsg['global.yes']}" action="#{bioDataDetilController.doDeleteBioContact()}" update="formBioDetailFormId:tabView:tableContactId,:growlBioDetailFormId"
+                                         oncomplete="dialogConfirmDeleteContact.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmDeleteContact.hide()" icon="ui-icon-close" />                     	
+                    </div>
+                </p:dialog>
+                <!--End. Bio Contact-->
+
             </ui:define>
 
         </ui:composition>
