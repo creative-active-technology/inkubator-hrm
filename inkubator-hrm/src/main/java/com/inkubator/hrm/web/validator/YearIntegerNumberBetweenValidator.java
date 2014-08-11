@@ -1,3 +1,7 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package com.inkubator.hrm.web.validator;
 
 import javax.faces.application.FacesMessage;
@@ -10,10 +14,10 @@ import javax.faces.validator.ValidatorException;
 
 /**
  *
- * @author Deni Husni FR
+ * @author Deni
  */
-@FacesValidator(value = "integerNumberBetweenValidator")
-public class IntegerNumberBetweenValidator implements Validator {
+@FacesValidator(value = "yearIntegerNumberBetweenValidator")
+public class YearIntegerNumberBetweenValidator implements Validator {
 
     @Override
     public void validate(FacesContext facesContext, UIComponent component, Object obj) throws ValidatorException {
@@ -29,10 +33,11 @@ public class IntegerNumberBetweenValidator implements Validator {
             return; // Let required="true" do its job.
         }
 
-        if (beginNumber <= endNumber) {
+        if (beginNumber >= endNumber) {
             String validatorMessage = (String) component.getAttributes().get("validatorMessage");
             throw new ValidatorException(new FacesMessage(validatorMessage));
         }
     }
 
+    
 }

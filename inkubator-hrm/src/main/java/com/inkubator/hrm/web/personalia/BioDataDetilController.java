@@ -423,8 +423,8 @@ public class BioDataDetilController extends BaseController {
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", false);
-        options.put("contentWidth", 600);
-        options.put("contentHeight", 370);
+        options.put("contentWidth", 700);
+        options.put("contentHeight", 430);
         Map<String, List<String>> dataToSend = new HashMap<>();
         List<String> dataIsi = new ArrayList<>();
         dataIsi.add("e" + String.valueOf(selectedBioEducationHistoryViewController.getId()));
@@ -437,8 +437,8 @@ public class BioDataDetilController extends BaseController {
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", false);
-        options.put("contentWidth", 600);
-        options.put("contentHeight", 370);
+        options.put("contentWidth", 700);
+        options.put("contentHeight", 430);
         Map<String, List<String>> dataToSend = new HashMap<>();
         List<String> dataIsi = new ArrayList<>();
         dataIsi.add("i" + String.valueOf(selectedBioData.getId()));

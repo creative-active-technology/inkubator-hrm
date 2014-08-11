@@ -40,7 +40,7 @@
                                 <h:outputLabel for="interestId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <p:selectOneMenu id="interestId" value="#{peopleInterestFormController.model.interestId}" style="width: 150px;margin-right: 3px"  >
+                                <p:selectOneMenu id="interestId" value="#{peopleInterestFormController.model.interestId}" filter="true" style="width: 217px;margin-right: 3px"  >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{peopleInterestFormController.listInterestTypes}"/>
                                     </p:selectOneMenu>
