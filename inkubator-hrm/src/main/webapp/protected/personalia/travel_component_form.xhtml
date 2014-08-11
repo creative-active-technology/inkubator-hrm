@@ -1,0 +1,143 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/dialog_layout.xhtml">
+            <ui:define name="windowTitle">
+
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlTravelComponentFormlId" globalOnly="true" showDetail="true"/>
+                <h:form id="formTravelComponentFormId">
+                    <h:panelGrid  columns="2">
+                        <p:graphicImage library="images" name="travelComponent.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['travelComponent.form_travelComponent']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['travelComponent.travelComponent_data_from_reference']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="1" style="margin-bottom: 5px;margin-left: 0px">
+                        <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                        <h:outputLabel value="#{appmsg['travelComponent.dialog_info']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                        <h:outputLabel value="#{appmsg['travelComponent.dialog_info_2']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                    </h:panelGrid> 
+                    <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="codeId" value="#{appmsg['travelComponent.travelComponent_code']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="codeId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                                <p:focus for ="codeId">
+                                    <p:inputText id="codeId" title="#{appmsg['travelComponent.travelComponent_code']}" value="#{travelComponentFormController.travelComponentModel.code}" 
+                                                 required="true" requiredMessage="#{appmsg['travelComponent.travelComponent_code_should_not_be_empty']}" maxlength="8" styleClass="isitext_hrm" style="width:250px;" />
+                                </p:focus>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="codeId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="nameId" value="#{appmsg['travelComponent.travelComponent_name']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="nameId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                                <p:inputText id="nameId" title="#{appmsg['travelComponent.travelComponent_name']}" value="#{travelComponentFormController.travelComponentModel.name}" 
+                                             required="true" requiredMessage="#{appmsg['travelComponent.travelComponent_name_should_not_be_empty']}" maxlength="60" styleClass="isitext_hrm" style="width:250px;" />
+
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="nameId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="measurementId" value="#{appmsg['travelComponent.travelComponent_measurement']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="measurementId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                                <p:selectOneRadio id="measurementId" styleClass="isitext_hrm" required="true" value="#{travelComponentFormController.travelComponentModel.measurement}" label="#{appmsg['travelComponent.travelComponent_measurement']}">
+                                    <!--Cek HRM Constanta..-->
+                                    <f:selectItem itemLabel="#{appmsg['travelComponent.travelComponent_measurement_pack']}" itemValue="0" />
+                                    <f:selectItem itemLabel="#{appmsg['travelComponent.travelComponent_measurement_unit']}" itemValue="1" />
+                                    <f:selectItem itemLabel="#{appmsg['travelComponent.travelComponent_measurement_day']}" itemValue="2" />
+                                </p:selectOneRadio>
+
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="measurementId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="descriptionId" value="#{appmsg['global.description']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="descriptionId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                                <p:inputTextarea id="descriptionId" title="#{appmsg['global.description']}" value="#{travelComponentFormController.travelComponentModel.description}" 
+                                                 required="false" maxlength="500" counter="counter" counterTemplate="#{appmsg['global.remaining']}" styleClass="isitext_hrm" style="width:250px;" />
+
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%;" >
+                                <p:outputLabel  for="counter" styleClass="label_hrm" />
+                            </p:column>
+                            <p:column style="width: 1%;" >
+                                <p:outputLabel  for="counter" styleClass="label_hrm" />
+                            </p:column>
+                            <p:column style="width: 70%">
+                                <h:outputText id="counter" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="descriptionId"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="2" style="margin-bottom: -30px!important">
+                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formTravelComponentFormId,:growlTravelComponentFormlId"
+                                         action="#{travelComponentFormController.doSave()}" styleClass="isitext_hrm"
+                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
+                                         icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formTravelComponentFormId"
+                                         icon="ui-icon-refresh" styleClass="isitext_hrm" >  
+                            <p:resetInput target="formTravelComponentFormId" />  
+                        </p:commandButton>
+                    </h:panelGrid>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

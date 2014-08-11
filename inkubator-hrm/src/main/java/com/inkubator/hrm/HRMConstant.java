@@ -99,5 +99,16 @@ public class HRMConstant {
     public static final Integer BIOADDRESS_STATUS_RELATIVES = 1;
     public static final Integer BIOADDRESS_STATUS_OWNER = 2;
     /* END */
+    
+     /* Constant for Travel Components */
+    public static final Integer MEASUREMENT_PACK = 0;
+    public static final Integer MEASUREMENT_UNIT = 1;
+    public static final Integer MEASUREMENT_DAY = 2;
+    /* END */
+    
+    /* Constant for Travel Zone */
+    public static final Integer ZONE_DOMESTICS = 0;
+    public static final Integer ZONE_OVERSEAS = 1;
+    /* END */
 
 }
