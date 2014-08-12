@@ -111,4 +111,8 @@ public class HRMConstant {
     public static final Integer ZONE_OVERSEAS = 1;
     /* END */
 
+     /* Constant for BIO Medical Module */
+    public static final Integer BIOMEDICAL_HEALED = 0;
+    public static final Integer BIOMEDICAL_NOT_HEALED = 1;
+    /* END */
 }

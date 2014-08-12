@@ -58,7 +58,7 @@ public class TravelComponentFormController extends BaseController {
     @PreDestroy
     public void cleanAndExit() {
         travelComponentService = null;
-        travelComponentModel = null;
+//        travelComponentModel = null;
         isUpdate = null;
     }
 

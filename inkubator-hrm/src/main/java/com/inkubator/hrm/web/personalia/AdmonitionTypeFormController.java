@@ -57,7 +57,7 @@ public class AdmonitionTypeFormController extends BaseController {
     @PreDestroy
     public void cleanAndExit() {
         admonitionTypeService = null;
-        admonitionTypeModel = null;
+//        admonitionTypeModel = null;
         isUpdate = null;
     }
 

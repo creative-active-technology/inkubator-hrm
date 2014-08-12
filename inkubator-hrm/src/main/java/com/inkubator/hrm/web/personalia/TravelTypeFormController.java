@@ -57,7 +57,7 @@ public class TravelTypeFormController extends BaseController {
     @PreDestroy
     public void cleanAndExit() {
         travelTypeService = null;
-        travelTypeModel = null;
+//        travelTypeModel = null;
         isUpdate = null;
     }
 
