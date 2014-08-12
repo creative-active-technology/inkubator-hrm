@@ -59,7 +59,7 @@ public class TravelZoneFormController extends BaseController {
     @PreDestroy
     public void cleanAndExit() {
         travelZoneService = null;
-        travelZoneModel = null;
+//        travelZoneModel = null;
         isUpdate = null;
     }
 

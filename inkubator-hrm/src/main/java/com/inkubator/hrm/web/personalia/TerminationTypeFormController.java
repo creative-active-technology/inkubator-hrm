@@ -57,7 +57,7 @@ public class TerminationTypeFormController extends BaseController {
     @PreDestroy
     public void cleanAndExit() {
         terminationTypeService = null;
-        terminationTypeModel = null;
+//        terminationTypeModel = null;
         isUpdate = null;
     }
 

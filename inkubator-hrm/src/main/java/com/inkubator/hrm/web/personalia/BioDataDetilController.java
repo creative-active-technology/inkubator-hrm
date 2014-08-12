@@ -10,13 +10,17 @@ import com.inkubator.hrm.entity.BioData;
 import com.inkubator.hrm.entity.BioDocument;
 import com.inkubator.hrm.entity.BioEducationHistory;
 import com.inkubator.hrm.entity.BioEmergencyContact;
+import com.inkubator.hrm.entity.BioEmploymentHistory;
 import com.inkubator.hrm.entity.BioInsurance;
+import com.inkubator.hrm.entity.BioMedicalHistory;
 import com.inkubator.hrm.entity.BioPeopleInterest;
 import com.inkubator.hrm.service.BioAddressService;
 import com.inkubator.hrm.service.BioDataService;
 import com.inkubator.hrm.service.BioDocumentService;
 import com.inkubator.hrm.service.BioEmergencyContactService;
+import com.inkubator.hrm.service.BioEmploymentHistoryService;
 import com.inkubator.hrm.service.BioInsuranceService;
+import com.inkubator.hrm.service.BioMedicalHistoryService;
 import com.inkubator.hrm.service.EducationHistoryService;
 import com.inkubator.hrm.service.PeopleInterestService;
 import com.inkubator.hrm.web.model.BioEducationHistoryViewModel;
@@ -78,13 +82,13 @@ public class BioDataDetilController extends BaseController {
     @ManagedProperty(value = "#{peopleInterestService}")
     private PeopleInterestService peopleInterestService;
 //end people interest / minat
-    
+
     //start. bio insurance
     private BioInsurance selectedBioInsurance;
     private List<BioInsurance> bioInsurances;
     @ManagedProperty(value = "#{bioInsuranceService}")
     private BioInsuranceService bioInsuranceService;
-//end. bio address
+//end. bio insurance
 
 //start. bio emergency 
     private List<BioEmergencyContact> dataBioEmergencyContacs;
@@ -92,7 +96,21 @@ public class BioDataDetilController extends BaseController {
     private BioEmergencyContactService bioEmergencyContactService;
     private BioEmergencyContact seleBioEmergencyContact;
 //end. bio emergency 
-    
+
+    //start. bio medical
+    private BioMedicalHistory selectedBioMedicalHistory;
+    private List<BioMedicalHistory> bioMedicalHistorys;
+    @ManagedProperty(value = "#{bioMedicalHistoryService}")
+    private BioMedicalHistoryService bioMedicalHistoryService;
+//end. bio medical
+
+    //start. bio employment
+    private BioEmploymentHistory selectedBioEmploymentHistory;
+    private List<BioEmploymentHistory> bioEmploymentHistorys;
+    @ManagedProperty(value = "#{bioEmploymentHistoryService}")
+    private BioEmploymentHistoryService bioEmploymentHistoryService;
+//end. bio employment
+
     @PostConstruct
     @Override
     public void initialization() {
@@ -103,9 +121,11 @@ public class BioDataDetilController extends BaseController {
             bioAddresses = bioAddressService.getAllDataByBioDataId(selectedBioData.getId());
             bioDocuments = bioDocumentService.getAllDataByBioDataId(selectedBioData.getId());
             bioInsurances = bioInsuranceService.getAllDataByBioDataId(selectedBioData.getId());
+            bioMedicalHistorys = bioMedicalHistoryService.getAllDataByBioDataId(selectedBioData.getId());
+            bioEmploymentHistorys = bioEmploymentHistoryService.getAllDataByBioDataId(selectedBioData.getId());
             educationHistory = educationHistoryService.getAllDataByBioDataId(selectedBioData.getId());
             listPeopleInterest = peopleInterestService.getAllDataByBioDataId(selectedBioData.getId());
-            dataBioEmergencyContacs=bioEmergencyContactService.getAllDataByBioDataId(selectedBioData.getId());
+            dataBioEmergencyContacs = bioEmergencyContactService.getAllDataByBioDataId(selectedBioData.getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -132,6 +152,12 @@ public class BioDataDetilController extends BaseController {
         bioInsurances = null;
         bioInsuranceService = null;
         seleBioEmergencyContact = null;
+        selectedBioMedicalHistory = null;
+        bioMedicalHistorys = null;
+        bioMedicalHistoryService = null;
+        selectedBioEmploymentHistory = null;
+        bioEmploymentHistorys = null;
+        bioEmploymentHistoryService = null;
     }
 
     public BioAddress getSelectedBioAddress() {
@@ -264,6 +290,54 @@ public class BioDataDetilController extends BaseController {
 
     public void setBioInsuranceService(BioInsuranceService bioInsuranceService) {
         this.bioInsuranceService = bioInsuranceService;
+    }
+
+    public BioMedicalHistory getSelectedBioMedicalHistory() {
+        return selectedBioMedicalHistory;
+    }
+
+    public void setSelectedBioMedicalHistory(BioMedicalHistory selectedBioMedicalHistory) {
+        this.selectedBioMedicalHistory = selectedBioMedicalHistory;
+    }
+
+    public List<BioMedicalHistory> getBioMedicalHistorys() {
+        return bioMedicalHistorys;
+    }
+
+    public void setBioMedicalHistorys(List<BioMedicalHistory> bioMedicalHistorys) {
+        this.bioMedicalHistorys = bioMedicalHistorys;
+    }
+
+    public BioMedicalHistoryService getBioMedicalHistoryService() {
+        return bioMedicalHistoryService;
+    }
+
+    public void setBioMedicalHistoryService(BioMedicalHistoryService bioMedicalHistoryService) {
+        this.bioMedicalHistoryService = bioMedicalHistoryService;
+    }
+
+    public BioEmploymentHistory getSelectedBioEmploymentHistory() {
+        return selectedBioEmploymentHistory;
+    }
+
+    public void setSelectedBioEmploymentHistory(BioEmploymentHistory selectedBioEmploymentHistory) {
+        this.selectedBioEmploymentHistory = selectedBioEmploymentHistory;
+    }
+
+    public List<BioEmploymentHistory> getBioEmploymentHistorys() {
+        return bioEmploymentHistorys;
+    }
+
+    public void setBioEmploymentHistorys(List<BioEmploymentHistory> bioEmploymentHistorys) {
+        this.bioEmploymentHistorys = bioEmploymentHistorys;
+    }
+
+    public BioEmploymentHistoryService getBioEmploymentHistoryService() {
+        return bioEmploymentHistoryService;
+    }
+
+    public void setBioEmploymentHistoryService(BioEmploymentHistoryService bioEmploymentHistoryService) {
+        this.bioEmploymentHistoryService = bioEmploymentHistoryService;
     }
     
     
@@ -613,7 +687,7 @@ public class BioDataDetilController extends BaseController {
         dataToSend.put("param", dataIsi);
         RequestContext.getCurrentInstance().openDialog("bio_emergency_contact_form", options, dataToSend);
     }
-    
+
     public void onDialogReturnContact(SelectEvent event) {
         try {
             dataBioEmergencyContacs = bioEmergencyContactService.getAllDataByBioDataId(selectedBioData.getId());
@@ -622,7 +696,7 @@ public class BioDataDetilController extends BaseController {
             LOGGER.error("Error", e);
         }
     }
-    
+
     public void doSelectBioContact() {
         try {
             seleBioEmergencyContact = bioEmergencyContactService.getEntityByPKWithDetail(seleBioEmergencyContact.getId());
@@ -630,7 +704,7 @@ public class BioDataDetilController extends BaseController {
             LOGGER.error("Error", e);
         }
     }
-    
+
     public void doDeleteBioContact() {
         try {
             this.bioEmergencyContactService.delete(seleBioEmergencyContact);
@@ -646,12 +720,11 @@ public class BioDataDetilController extends BaseController {
             LOGGER.error("Error", ex);
         }
     }
-    
+
     public void setBioEmergencyContactService(BioEmergencyContactService bioEmergencyContactService) {
         this.bioEmergencyContactService = bioEmergencyContactService;
     }
 
-    
     public List<BioEmergencyContact> getDataBioEmergencyContacs() {
         return dataBioEmergencyContacs;
     }
@@ -663,7 +736,6 @@ public class BioDataDetilController extends BaseController {
     /**
      * START Bio Insurance method
      */
-    
     public void doSelectBioInsurance() {
         try {
             selectedBioInsurance = bioInsuranceService.getEntiyByPK(selectedBioInsurance.getId());
@@ -731,7 +803,6 @@ public class BioDataDetilController extends BaseController {
     /**
      * END Bio Insurance method
      */
-
     public BioEmergencyContact getSeleBioEmergencyContact() {
         return seleBioEmergencyContact;
     }
@@ -740,6 +811,145 @@ public class BioDataDetilController extends BaseController {
         this.seleBioEmergencyContact = seleBioEmergencyContact;
     }
 
+    /**
+     * START Bio MedicalHistory method
+     */
+    public void doSelectBioMedicalHistory() {
+        try {
+            selectedBioMedicalHistory = bioMedicalHistoryService.getEntiyByPK(selectedBioMedicalHistory.getId());
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
 
+    public void doUpdateBioMedicalHistory() {
+
+        List<String> bioMedicalHistoryId = new ArrayList<>();
+        bioMedicalHistoryId.add(String.valueOf(selectedBioMedicalHistory.getId()));
+
+        List<String> bioDataId = new ArrayList<>();
+        bioDataId.add(String.valueOf(selectedBioData.getId()));
+
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("bioMedicalHistoryId", bioMedicalHistoryId);
+        dataToSend.put("bioDataId", bioDataId);
+        showDialogBioMedicalHistory(dataToSend);
+
+    }
+
+    public void doAddBioMedicalHistory() {
+        List<String> bioDataId = new ArrayList<>();
+        bioDataId.add(String.valueOf(selectedBioData.getId()));
+
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("bioDataId", bioDataId);
+        showDialogBioMedicalHistory(dataToSend);
+    }
+
+    public void doDeleteBioMedicalHistory() {
+        try {
+            bioMedicalHistoryService.delete(selectedBioMedicalHistory);
+            bioMedicalHistorys = bioMedicalHistoryService.getAllDataByBioDataId(selectedBioMedicalHistory.getBioData().getId());
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+
+        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (Exception ex) {
+            LOGGER.error("Error when doDelete bioMedicalHistory", ex);
+        }
+    }
+
+    private void showDialogBioMedicalHistory(Map<String, List<String>> params) {
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 450);
+        options.put("contentHeight", 420);
+        RequestContext.getCurrentInstance().openDialog("bio_medical_history_form", options, params);
+    }
+
+    public void onDialogReturnBioMedicalHistory(SelectEvent event) {
+        try {
+            bioMedicalHistorys = bioMedicalHistoryService.getAllDataByBioDataId(selectedBioData.getId());
+            super.onDialogReturn(event);
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+
+    /**
+     * END Bio MedicalHistory method
+     */
     
+    /**
+     * START Bio EmploymentHistory method
+     */
+    public void doSelectBioEmploymentHistory() {
+        try {
+            selectedBioEmploymentHistory = bioEmploymentHistoryService.getEntiyByPK(selectedBioEmploymentHistory.getId());
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+
+    public void doUpdateBioEmploymentHistory() {
+
+        List<String> bioEmploymentHistoryId = new ArrayList<>();
+        bioEmploymentHistoryId.add(String.valueOf(selectedBioEmploymentHistory.getId()));
+
+        List<String> bioDataId = new ArrayList<>();
+        bioDataId.add(String.valueOf(selectedBioData.getId()));
+
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("bioEmploymentHistoryId", bioEmploymentHistoryId);
+        dataToSend.put("bioDataId", bioDataId);
+        showDialogBioEmploymentHistory(dataToSend);
+
+    }
+
+    public void doAddBioEmploymentHistory() {
+        List<String> bioDataId = new ArrayList<>();
+        bioDataId.add(String.valueOf(selectedBioData.getId()));
+
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("bioDataId", bioDataId);
+        showDialogBioEmploymentHistory(dataToSend);
+    }
+
+    public void doDeleteBioEmploymentHistory() {
+        try {
+            bioEmploymentHistoryService.delete(selectedBioEmploymentHistory);
+            bioEmploymentHistorys = bioEmploymentHistoryService.getAllDataByBioDataId(selectedBioEmploymentHistory.getBioData().getId());
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+
+        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (Exception ex) {
+            LOGGER.error("Error when doDelete bioEmploymentHistory", ex);
+        }
+    }
+
+    private void showDialogBioEmploymentHistory(Map<String, List<String>> params) {
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 450);
+        options.put("contentHeight", 420);
+        RequestContext.getCurrentInstance().openDialog("bio_employment_history_form", options, params);
+    }
+
+    public void onDialogReturnBioEmploymentHistory(SelectEvent event) {
+        try {
+            bioEmploymentHistorys = bioEmploymentHistoryService.getAllDataByBioDataId(selectedBioData.getId());
+            super.onDialogReturn(event);
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+
+    /**
+     * END Bio EmploymentHistory method
+     */
 }
