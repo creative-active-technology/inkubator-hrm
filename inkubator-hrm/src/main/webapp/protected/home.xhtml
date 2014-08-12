@@ -163,12 +163,12 @@
                     <p:row>
                         <p:column style="width: 25%" >
                             <p:panel  style="margin-left: 10px;margin-right: 0px;margin-top: 10px;height: 100%"> 
-                                <h:panelGrid style="margin-bottom: 5px">
+                                <h:panelGrid style="margin-bottom: 15px">
                                     <p:outputLabel value="#{appmsg['loginhistory.login_history']}" styleClass="header_big" />
                                     <p:outputLabel value="#{appmsg['loginhistory.list_of_user_login_history']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
 
-                                <p:panelGrid  styleClass="grid_border" style="width: 98%;margin-left: 5px;margin-right: 10px;margin-top: 0px;margin-bottom: 10px;color: #036;height: 100%">
+                                <p:panelGrid  styleClass="grid_border" style="width: 98%;margin-left: 5px;margin-right: 10px;margin-top: 0px;margin-bottom: 18px;color: #036;height: 100%">
                                     <c:forEach var="loginHistory" items="#{homeHistoryController.loginHistories}" varStatus="idx">
 	                                    <p:row>
 	                                        <p:column style="width: 40%;text-align: center">
@@ -206,7 +206,7 @@
                     </p:row>
                     	<p:row>
                         	<p:column style="width: 25%">
-	                            <p:panel  style="margin-left: 10px;margin-right: 0px;margin-top: 10px;height:200px;"> 
+	                            <p:panel  style="margin-left: 10px;margin-right: 0px;margin-top: 10px;height:100%"> 
 	                                <h:panelGrid style="margin-bottom: 3px">
 	                                    <p:outputLabel value="#{appmsg['accesshistory.access_history']}" styleClass="header_big" />
 	                                    <p:outputLabel value="#{appmsg['accesshistory.list_access_history']}" styleClass="header_small_no_bold" />
@@ -233,12 +233,12 @@
 	                        </p:column>
 
                         	<p:column style="width: 53%;color: #990000">
-                            	<p:panel  style="margin-left: 0px;margin-right: 0px;margin-top: 10px; height: 200px;">
+                            	<p:panel  style="margin-left: 0px;margin-right: 0px;margin-top: 10px; height: 100%;">
                                 	<h:panelGrid style="margin-bottom: 3px">
                                     	<p:outputLabel value="Data Statistik Absensi" styleClass="header_big" />
                                 	</h:panelGrid>
                                 	<h:panelGroup  layout="block" style="margin-bottom: 8px">
-                                    	<div align="center">
+                                            <div align="center" style="margin-top: 25px;margin-bottom: 35px">
                                         	<h:panelGrid columns="6" >
                                             	<h:panelGrid columns="1" style="text-align: center;margin-bottom: 10px;margin-top: 10px">
                                                 	<p:graphicImage library="images" name="holiday.png"  cache="true" height="64" width="64"  />                                                 

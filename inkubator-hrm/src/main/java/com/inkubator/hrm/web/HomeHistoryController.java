@@ -5,22 +5,19 @@
  */
 package com.inkubator.hrm.web;
 
-import java.util.List;
-
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
-
-import org.hibernate.criterion.Order;
-
 import com.inkubator.hrm.entity.LoginHistory;
 import com.inkubator.hrm.entity.RiwayatAkses;
 import com.inkubator.hrm.service.LoginHistoryService;
 import com.inkubator.hrm.service.RiwayatAksesService;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.controller.BaseController;
+import java.util.List;
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.RequestScoped;
+import org.hibernate.criterion.Order;
 
 /**
  *
@@ -46,7 +43,7 @@ public class HomeHistoryController extends BaseController {
     public void initialization() {
         try {
             dataRiwayatAkses = riwayatAksesService.getDataByUserId(UserInfoUtil.getUserName(), 0, 4, Order.desc("dateAccess"));
-            loginHistories = loginHistoryService.getByParam(0, 5, Order.desc("loginDate"));
+            loginHistories = loginHistoryService.getByParam(0, 4, Order.desc("loginDate"));
         } catch (Exception ex) {
            LOGGER.error("Error", ex);
         }
