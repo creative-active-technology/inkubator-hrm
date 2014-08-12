@@ -6,6 +6,8 @@
 
 package com.inkubator.hrm.service;
 
+import java.util.Map;
+
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.EmpData;
 
@@ -15,4 +17,9 @@ import com.inkubator.hrm.entity.EmpData;
  */
 public interface EmpDataService extends IService<EmpData>{
     
+	public Map<String, Long> getTotalByGender() throws Exception;
+	
+	public Map<String, Long> getTotalByAge() throws Exception;
+	
+	public Map<String, Long> getTotalByDepartment() throws Exception;
 }

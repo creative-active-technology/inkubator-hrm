@@ -14,5 +14,7 @@ import com.inkubator.hrm.entity.EmpData;
  * @author Deni Husni FR
  */
 public interface EmpDataDao extends IDAO<EmpData>{
+
+	public Long getTotalByGender(Integer gender);
     
 }
