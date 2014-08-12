@@ -5,12 +5,6 @@
  */
 package com.inkubator.hrm.service.impl;
 
-import com.inkubator.datacore.service.impl.IServiceImpl;
-import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.dao.EmpDataDao;
-import com.inkubator.hrm.entity.EmpData;
-import com.inkubator.hrm.service.EmpDataService;
-
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -25,11 +19,18 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.dao.EmpDataDao;
+import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.service.EmpDataService;
+import com.inkubator.hrm.web.search.EmpDataSearchParameter;
+
 /**
  *
  * @author Deni Husni FR
  */
-@Service(value = "EmpDataService")
+@Service(value = "empDataService")
 @Lazy
 public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 
@@ -47,8 +48,12 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public EmpData getEntiyByPK(Long id) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        EmpData empData = empDataDao.getEntiyByPK(id);
+        empData.getBioData().getFirstName();
+        empData.getBioData().getLastName();
+        return empData;
     }
 
     @Override
@@ -127,8 +132,9 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void delete(EmpData entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+      this.empDataDao.delete(entity);
     }
 
     @Override
@@ -226,5 +232,17 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 		
 	}
+
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<EmpData> getByParam(EmpDataSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
+        return this.empDataDao.getByParam(searchParameter, firstResult, maxResults, order);
+    }
+
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalEmpDataByParam(EmpDataSearchParameter searchParameter) throws Exception {
+        return this.empDataDao.getTotalEmpDataByParam(searchParameter);
+    }
 
 }

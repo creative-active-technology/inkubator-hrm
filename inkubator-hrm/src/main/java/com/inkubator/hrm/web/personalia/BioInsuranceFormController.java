@@ -58,7 +58,7 @@ public class BioInsuranceFormController extends BaseController {
     @PreDestroy
     public void cleanAndExit() {
         bioInsuranceService = null;
-        bioInsuranceModel = null;
+//        bioInsuranceModel = null;
         isUpdate = null;
     }
 
