@@ -327,4 +327,10 @@ public class JabatanServiceImpl extends IServiceImpl implements JabatanService {
 
     }
 
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<Jabatan> getByDepartementId(long id) throws Exception {
+        return this.jabatanDao.getByDepartementId(id);
+    }
+
 }

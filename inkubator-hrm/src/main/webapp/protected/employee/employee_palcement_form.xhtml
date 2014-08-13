@@ -1,0 +1,183 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlUserFormId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
+                <h:form id="empDataFormId" >
+                    <div id="box_bg" style="margin: 10px">
+                        <!--<p:panel style="margin: 10px">-->
+                        <h:panelGrid style="margin-bottom: 5px" columns="2">
+                            <p:graphicImage library="images" name="user.png" height="36" width="36" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="Penempatan Karyawan Form" styleClass="header_big" />
+                                    <p:outputLabel value="Data Penempatan dari Karyawan" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator/>
+
+
+
+                        <p:panelGrid style="width: 100%;margin-bottom: 20px;margin-top: 20px" styleClass="grid_border3" >
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="NIK"  for="nik" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:inputText value="#{empDataFormController.empDataModel.nik}" maxlength="45"
+                                                 styleClass="isitext_hrm" label="Kode Kelompok Kerja"
+                                                 style="width: 350px" required="true" id="nik" onkeyup="this.value = this.value.toUpperCase();" />
+                                    <p:message for="nik"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Name"  for="name" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:inputText value="#{empDataFormController.empDataModel.nik}" maxlength="45"
+                                                 styleClass="isitext_hrm" label="Kode Kelompok Kerja"
+                                                 style="width: 350px" required="true" id="name"  />
+                                    <p:commandButton  style="margin-left: 5px" icon="ui-icon-search" title="Cari" action="#{empDataFormController.doSearch()}" ajax="true" immediate="true">
+                                        <p:ajax event="dialogReturn" listener="#{empDataFormController.onDialogReturn}"  update="name"/>
+
+                                    </p:commandButton>
+                                    <p:message for="name"/>
+                                </p:column>
+
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Tanggal Lahir"  for="birthDate" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:inputText value="#{empDataFormController.empDataModel.birthDate}" id="birthDate"  style="width: 350px"/>
+                                    <p:message for="birthDate"/>
+                                </p:column>
+
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Department"  for="departement" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectOneMenu  style="margin-right: 3px;width: 353px" id="departement" filter="true" required="false"
+                                                      value="#{empDataFormController.empDataModel.departementId}">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{empDataFormController.mapDepartements}" />
+                                        <p:ajax listener="#{empDataFormController.doChangeDepartement()}" update="jabatan"/>
+                                    </p:selectOneMenu>
+                                    <!--<p:message for="departement"/>-->
+                                </p:column>
+
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Jabatan"  for="jabatan" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectOneMenu  style="margin-right: 3px;width: 353px" id="jabatan" filter="true" required="true"
+                                                      value="#{empDataFormController.empDataModel.jabatanByJabatanId}">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{empDataFormController.mapJabatans}" />
+                                    </p:selectOneMenu>
+                                    <p:message for="jabatan"/>
+                                </p:column>
+
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Status Karyawan"  for="statusKaryawan" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectOneMenu  style="margin-right: 3px;width: 353px" id="statusKaryawan" filter="true" required="true"
+                                                      value="#{empDataFormController.empDataModel.employeeTypeId}">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{empDataFormController.mapStatusKaryawan}" />
+                                    </p:selectOneMenu>
+                                    <p:message for="statusKaryawan"/>
+                                </p:column>
+
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Tanggal Bekerja"  for="joinDate" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:calendar  id="joinDate" pattern="dd MMMM yyyy"/>
+                                    <p:message for="joinDate"/>
+                                </p:column>
+
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Salary Grade"  for="salaryGrade" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectOneMenu  style="margin-right: 3px;width: 353px" id="salaryGrade" filter="true" required="true"
+                                                      value="#{jabatanFormController.jabatanModel.golonganJabatanId}">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{empDataFormController.mapPaySalary}" />
+                                    </p:selectOneMenu>
+                                    <p:message for="salaryGrade"/>
+                                </p:column>
+
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Gaji Pokok"  for="mainSalary" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <pe:inputNumber id="mainSalary" value="#{empDataFormController.empDataModel.basicSalary}"  required="true"
+                                                    style="text-align: right;width: 350px"  /> 
+                                    <p:message for="mainSalary"/>
+                                </p:column>
+
+                            </p:row>
+
+                        </p:panelGrid>
+                        <p:focus context="empDataFormId" />
+
+
+                        <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
+                        <div style="margin-bottom: 5px">
+                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" action="#{empDataFormController.doSave()}"
+                                             styleClass="isitext_hrm" 
+                                             style="margin-right: 5px" label="#{appmsg['global.save']}" update="empDataFormId"
+                                             icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="empDataFormId" action="#{jabatanFormController.doReset()}"
+                                             icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px" >  
+                                <p:resetInput target="empDataFormId" />  
+                            </p:commandButton>
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}"  immediate="true" action="#{empDataFormController.doBack()}"
+                                             styleClass="label_button"/>
+                        </div>
+
+                    </div>
+
+
+                </h:form>
+<!--                <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
+                    <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
+                </p:dialog>-->
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

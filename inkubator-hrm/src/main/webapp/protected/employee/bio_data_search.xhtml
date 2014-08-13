@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/dialog_layout.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlUserFormId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
+                <h:form id="empDataFormId" >
+                    <div id="box_bg" style="margin: 10px">
+                        <!--<p:panel style="margin: 10px">-->
+                        <h:panelGrid style="margin-bottom: 5px" columns="2">
+                            <p:graphicImage library="images" name="bio_data.png" height="36" width="36" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="Pencarian Bio Data" styleClass="header_big" />
+                                    <p:outputLabel value="Biodata dari Apliaksi" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <h:panelGrid columns="3">
+                            <p:outputLabel value="Nama" styleClass="header_big" />
+                            <p:outputLabel value=":" styleClass="header_big" />
+                            <p:inputText style="width: 300px" />
+                        </h:panelGrid>
+                        <p:dataTable value="#{userDetailController.selectedHrmUser.roles}" var="listRole" rowIndexVar="no" style="margin-top: 20px;margin-bottom: 15px">
+<!--                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['role_view.header1']}" style="text-align: left" styleClass="label_hrm"/> 
+                            </f:facet>-->
+                            <p:column style="text-align: center;width: 25px;max-width: 25px">
+                                <f:facet name="header">  
+                                    <h:outputText value="No." />
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column  style="width:120px"> 
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['role_view.role_name']}" />
+                                </f:facet>
+                                <h:outputLabel value=" #{listRole.roleName}" />
+                            </p:column> 
+                            <p:column  style="width: 250px"> 
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['role_view.role_description']}" />
+                                </f:facet>
+                                <h:outputLabel value=" #{listRole.description}" />
+                            </p:column>
+                        </p:dataTable>
+
+
+
+                    </div>
+
+
+                </h:form>
+<!--                <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
+                    <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
+                </p:dialog>-->
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+
