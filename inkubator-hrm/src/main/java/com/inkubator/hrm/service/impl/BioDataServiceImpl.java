@@ -281,4 +281,10 @@ public class BioDataServiceImpl extends IServiceImpl implements BioDataService {
         return this.bioDataDao.getTotalByParam(parameter);
     }
 
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<BioData> getByName(String name) throws Exception {
+        return this.bioDataDao.getByName(name);
+    }
+
 }

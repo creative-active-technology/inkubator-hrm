@@ -36,6 +36,7 @@ public class Jabatan implements java.io.Serializable {
     private CostCenter costCenter;
     private GolonganJabatan golonganJabatan;
     private Department department;
+    private PaySalaryGrade paySalaryGrade;
     private UnitKerja unitKerja;
     private String code;
     private String name;
@@ -268,6 +269,16 @@ public class Jabatan implements java.io.Serializable {
 
     public void setKerjaJabatans(List<KlasifikasiKerja> kerjaJabatans) {
         this.kerjaJabatans = kerjaJabatans;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "salary_grade_id")
+    public PaySalaryGrade getPaySalaryGrade() {
+        return this.paySalaryGrade;
+    }
+
+    public void setPaySalaryGrade(PaySalaryGrade paySalaryGrade) {
+        this.paySalaryGrade = paySalaryGrade;
     }
 
 }

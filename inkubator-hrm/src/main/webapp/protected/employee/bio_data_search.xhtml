@@ -19,42 +19,59 @@
                 <h:form id="empDataFormId" >
                     <div id="box_bg" style="margin: 10px">
                         <!--<p:panel style="margin: 10px">-->
-                        <h:panelGrid style="margin-bottom: 5px" columns="2">
-                            <p:graphicImage library="images" name="bio_data.png" height="36" width="36" />
-                            <h:panelGroup layout="block">
-                                <h:panelGrid>
-                                    <p:outputLabel value="Pencarian Bio Data" styleClass="header_big" />
-                                    <p:outputLabel value="Biodata dari Apliaksi" styleClass="header_small_no_bold" />
-                                </h:panelGrid>
-                            </h:panelGroup>
-                        </h:panelGrid>
-                        <p:separator/>
-                        <h:panelGrid columns="3">
+                        <!--                        <h:panelGrid style="margin-bottom: 5px" columns="2">
+                                                    <p:graphicImage library="images" name="bio_data.png" height="36" width="36" />
+                                                    <h:panelGroup layout="block">
+                                                        <h:panelGrid>
+                                                            <p:outputLabel value="Pencarian Bio Data" styleClass="header_big" />
+                                                            <p:outputLabel value="Biodata dari Apliaksi" styleClass="header_small_no_bold" />
+                                                        </h:panelGrid>
+                                                    </h:panelGroup>
+                                                </h:panelGrid>
+                                                <p:separator/>-->
+                        <h:panelGrid columns="4">
                             <p:outputLabel value="Nama" styleClass="header_big" />
                             <p:outputLabel value=":" styleClass="header_big" />
-                            <p:inputText style="width: 300px" />
+                            <p:inputText style="width: 450px" value="#{empBioSearchController.biodataName}"/>
+                            <p:commandButton value="Cari" icon="ui-icon-search" action="#{empBioSearchController.doSearch()}" update="listBioId"  id="cariId"/>
                         </h:panelGrid>
-                        <p:dataTable value="#{userDetailController.selectedHrmUser.roles}" var="listRole" rowIndexVar="no" style="margin-top: 20px;margin-bottom: 15px">
-<!--                            <f:facet name="header">  
-                                <h:outputText value="#{appmsg['role_view.header1']}" style="text-align: left" styleClass="label_hrm"/> 
-                            </f:facet>-->
+                        <p:focus for="cariId" />
+                        <p:dataTable value="#{empBioSearchController.biodataToShow}" var="listBiodata" rowIndexVar="no" style="margin-top: 10px;margin-bottom: 10px" id="listBioId">
+                            <!--                            <f:facet name="header">  
+                                                            <h:outputText value="#{appmsg['role_view.header1']}" style="text-align: left" styleClass="label_hrm"/> 
+                                                        </f:facet>-->
                             <p:column style="text-align: center;width: 25px;max-width: 25px">
                                 <f:facet name="header">  
                                     <h:outputText value="No." />
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column  style="width:120px"> 
+
+                            <p:column> 
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['role_view.role_name']}" />
+                                    <h:outputText value="Nama" />
                                 </f:facet>
-                                <h:outputLabel value=" #{listRole.roleName}" />
+                                <p:outputLabel value=" #{listBiodata.firstName} #{listBiodata.lastName}" />
                             </p:column> 
-                            <p:column  style="width: 250px"> 
+                            <p:column > 
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['role_view.role_description']}" />
+                                    <h:outputText value="Tanggal Lahir" />
                                 </f:facet>
-                                <h:outputLabel value=" #{listRole.description}" />
+                                <p:outputLabel value="#{listBiodata.dateOfBirth}" >
+                                    <f:convertDateTime pattern="dd MMMM yyyy" />
+                                </p:outputLabel>
+                            </p:column>
+                            <p:column  > 
+                                <f:facet name="header">  
+                                    <h:outputText value="Email Address" />
+                                </f:facet>
+                                <h:outputLabel value=" #{listBiodata.personalEmail}" />
+                            </p:column>
+                            <p:column style="text-align: center" > 
+                                <f:facet name="header">  
+                                    <h:outputText value="Aksi" />
+                                </f:facet>
+                                <p:commandButton value="Select"  style="font-size: 11px!important" action="#{empBioSearchController.doSelect(listBiodata)}"/>
                             </p:column>
                         </p:dataTable>
 

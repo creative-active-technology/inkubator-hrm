@@ -20,4 +20,6 @@ public interface BioDataDao extends IDAO<BioData> {
     public List<BioData> getByParam(BioDataSearchParameter parameter, int firstResult, int maxResults, Order orderable);
 
     public Long getTotalByParam(BioDataSearchParameter parameter);
+
+    public List<BioData> getByName(String name);
 }

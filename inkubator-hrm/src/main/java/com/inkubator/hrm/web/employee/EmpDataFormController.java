@@ -5,6 +5,7 @@
  */
 package com.inkubator.hrm.web.employee;
 
+import com.inkubator.hrm.entity.BioData;
 import com.inkubator.hrm.entity.Department;
 import com.inkubator.hrm.entity.EmployeeType;
 import com.inkubator.hrm.entity.Jabatan;
@@ -32,7 +33,7 @@ import org.primefaces.event.SelectEvent;
 @ManagedBean(name = "empDataFormController")
 @ViewScoped
 public class EmpDataFormController extends BaseController {
-
+    
     private EmpDataModel empDataModel;
     private Map<String, Long> mapDepartements = new HashMap<String, Long>();
     private Map<String, Long> mapJabatans = new HashMap<String, Long>();
@@ -65,9 +66,9 @@ public class EmpDataFormController extends BaseController {
             List<Department> departements = departmentService.getAllData();
             for (Department department : departements) {
                 mapDepartements.put(department.getDepartmentName(), department.getId());
-
+                
             }
-
+            
             List<Jabatan> jabatanas = jabatanService.getAllData();
             for (Jabatan jabatan : jabatanas) {
                 mapJabatans.put(jabatan.getName(), jabatan.getId());
@@ -76,7 +77,7 @@ public class EmpDataFormController extends BaseController {
             for (EmployeeType employeeType : empTypeDatas) {
                 mapStatusKaryawan.put(employeeType.getName(), employeeType.getId());
             }
-
+            
             List<PaySalaryGrade> paysSalarys = paySalaryGradeService.getAllData();
             for (PaySalaryGrade paySalaryGrade : paysSalarys) {
                 mapPaySalary.put(paySalaryGrade.getGradeSalary(), paySalaryGrade.getId());
@@ -84,7 +85,7 @@ public class EmpDataFormController extends BaseController {
         } catch (Exception ex) {
             LOGGER.error("error", ex);
         }
-
+        
     }
 
 //
@@ -166,59 +167,59 @@ public class EmpDataFormController extends BaseController {
     public EmpDataModel getEmpDataModel() {
         return empDataModel;
     }
-
+    
     public void setEmpDataModel(EmpDataModel empDataModel) {
         this.empDataModel = empDataModel;
     }
-
+    
     public void setDepartmentService(DepartmentService departmentService) {
         this.departmentService = departmentService;
     }
-
+    
     public Map<String, Long> getMapDepartements() {
         return mapDepartements;
     }
-
+    
     public void setMapDepartements(Map<String, Long> mapDepartements) {
         this.mapDepartements = mapDepartements;
     }
-
+    
     public Map<String, Long> getMapJabatans() {
         return mapJabatans;
     }
-
+    
     public void setMapJabatans(Map<String, Long> mapJabatans) {
         this.mapJabatans = mapJabatans;
     }
-
+    
     public void setJabatanService(JabatanService jabatanService) {
         this.jabatanService = jabatanService;
     }
-
+    
     public void setEmployeeTypeService(EmployeeTypeService employeeTypeService) {
         this.employeeTypeService = employeeTypeService;
     }
-
+    
     public Map<String, Long> getMapStatusKaryawan() {
         return mapStatusKaryawan;
     }
-
+    
     public void setMapStatusKaryawan(Map<String, Long> mapStatusKaryawan) {
         this.mapStatusKaryawan = mapStatusKaryawan;
     }
-
+    
     public void setPaySalaryGradeService(PaySalaryGradeService paySalaryGradeService) {
         this.paySalaryGradeService = paySalaryGradeService;
     }
-
+    
     public Map<Integer, Long> getMapPaySalary() {
         return mapPaySalary;
     }
-
+    
     public void setMapPaySalary(Map<Integer, Long> mapPaySalary) {
         this.mapPaySalary = mapPaySalary;
     }
-
+    
     public void doChangeDepartement() {
         try {
             List<Jabatan> jabatanas = jabatanService.getByDepartementId(empDataModel.getDepartementId());
@@ -229,36 +230,38 @@ public class EmpDataFormController extends BaseController {
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
-
+        
     }
-
+    
     public void doSave() {
-
+        
     }
-
+    
     public String doBack() {
         return "/protected/employee/employee_palcement_view.htm?faces-redirect=true";
     }
-
+    
     public void doSearch() {
         System.out.println("sdfsdhfhdsfhd");
         Map<String, Object> options = new HashMap<>();
         options.put("modal", false);
         options.put("draggable", true);
         options.put("resizable", false);
-        options.put("contentWidth", 500);
-        options.put("contentHeight", 360);
+        options.put("contentWidth", 700);
+        options.put("contentHeight", 350);
 //        Map<String, List<String>> dataToSend = new HashMap<>();
 //        List<String> dataIsi = new ArrayList<>();
 ////        dataIsi.add("i" + String.valueOf(selectedJabatan.getId()));
 //        dataToSend.put("param", dataIsi);
         RequestContext.getCurrentInstance().openDialog("bio_data_search", options, null);
     }
-
+    
     @Override
     public void onDialogReturn(SelectEvent event) {
-
-        super.onDialogReturn(event);
-
+        BioData bioData = (BioData) event.getObject();
+        empDataModel.setBioDataId(bioData.getId());
+        empDataModel.setBioDataName(bioData.getFirstName() + " " + bioData.getLastName());
+        empDataModel.setBirthDate(bioData.getDateOfBirth());
+        
     }
 }

@@ -49,11 +49,11 @@
                                     <p:outputLabel  value="Name"  for="name" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:inputText value="#{empDataFormController.empDataModel.nik}" maxlength="45"
+                                    <p:inputText value="#{empDataFormController.empDataModel.bioDataName}" maxlength="45"
                                                  styleClass="isitext_hrm" label="Kode Kelompok Kerja"
                                                  style="width: 350px" required="true" id="name"  />
                                     <p:commandButton  style="margin-left: 5px" icon="ui-icon-search" title="Cari" action="#{empDataFormController.doSearch()}" ajax="true" immediate="true">
-                                        <p:ajax event="dialogReturn" listener="#{empDataFormController.onDialogReturn}"  update="name"/>
+                                        <p:ajax event="dialogReturn" listener="#{empDataFormController.onDialogReturn}"  update="name,birthDate"/>
 
                                     </p:commandButton>
                                     <p:message for="name"/>
@@ -65,7 +65,9 @@
                                     <p:outputLabel  value="Tanggal Lahir"  for="birthDate" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:inputText value="#{empDataFormController.empDataModel.birthDate}" id="birthDate"  style="width: 350px"/>
+                                    <p:inputText value="#{empDataFormController.empDataModel.birthDate}" id="birthDate"  style="width: 350px" readonly="true">
+                                        <f:convertDateTime pattern="dd MMMM yyyy" />
+                                    </p:inputText>
                                     <p:message for="birthDate"/>
                                 </p:column>
 
