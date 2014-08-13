@@ -14,5 +14,7 @@ import com.inkubator.hrm.entity.BioEmploymentHistory;
 public interface BioEmploymentHistoryService extends IService<BioEmploymentHistory> {
 
 	public List<BioEmploymentHistory> getAllDataByBioDataId(Long bioDataId) throws Exception;
+        
+        public BioEmploymentHistory getEntityByPKWithDetail(Long id) throws Exception;
 
 }

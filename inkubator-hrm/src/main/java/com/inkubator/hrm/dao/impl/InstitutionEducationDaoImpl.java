@@ -84,7 +84,7 @@ public class InstitutionEducationDaoImpl extends IDAOImpl<InstitutionEducation> 
         criteria.add(Restrictions.eq("id", id));
         criteria.setFetchMode("city", FetchMode.JOIN);
         criteria.setFetchMode("city.province", FetchMode.JOIN);
-        criteria.setFetchMode("province.country", FetchMode.JOIN);
+        criteria.setFetchMode("city.province.country", FetchMode.JOIN);
         return (InstitutionEducation) criteria.uniqueResult();
     }
 

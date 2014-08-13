@@ -43,6 +43,7 @@ public class CostCenter  implements java.io.Serializable {
      private Integer level;
      private Set<Jabatan> jabatans = new HashSet<>(0);
      private Set<CostCenter> costCenters = new HashSet<>(0);
+     private Set<PaySalaryJurnal> paySalaryJurnals = new HashSet<PaySalaryJurnal>(0);
 
     public CostCenter() {
     }
@@ -207,7 +208,17 @@ public class CostCenter  implements java.io.Serializable {
         this.costCenters = costCenters;
     }
 
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="costCenter")
+    public Set<PaySalaryJurnal> getPaySalaryJurnals() {
+        return paySalaryJurnals;
+    }
 
+    public void setPaySalaryJurnals(Set<PaySalaryJurnal> paySalaryJurnals) {
+        this.paySalaryJurnals = paySalaryJurnals;
+    }
+
+
+    
 
 
 }

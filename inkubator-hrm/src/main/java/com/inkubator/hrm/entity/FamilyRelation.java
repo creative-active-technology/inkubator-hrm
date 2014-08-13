@@ -30,6 +30,7 @@ public class FamilyRelation implements java.io.Serializable {
     private String updatedBy;
     private Date updatedOn;
     private Set<BioEmergencyContact> bioEmergencyContacts = new HashSet<BioEmergencyContact>(0);
+    private Set<BioFamilyRelationship> bioFamilyRelationships = new HashSet<BioFamilyRelationship>(0);
 
     public FamilyRelation() {
     }
@@ -124,4 +125,14 @@ public class FamilyRelation implements java.io.Serializable {
         this.bioEmergencyContacts = bioEmergencyContacts;
     }
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "familyRelation")
+    public Set<BioFamilyRelationship> getBioFamilyRelationships() {
+        return bioFamilyRelationships;
+    }
+
+    public void setBioFamilyRelationships(Set<BioFamilyRelationship> bioFamilyRelationships) {
+        this.bioFamilyRelationships = bioFamilyRelationships;
+    }
+
+    
 }
