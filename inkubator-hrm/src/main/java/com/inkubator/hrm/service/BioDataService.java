@@ -20,4 +20,6 @@ public interface BioDataService extends IService<BioData> {
     public List<BioData> getByParam(BioDataSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception;
 
     public Long getTotalByParam(BioDataSearchParameter parameter) throws Exception;
+    
+    public List<BioData> getEntityByPKWithDetail(long id) throws Exception;
 }

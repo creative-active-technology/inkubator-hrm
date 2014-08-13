@@ -281,4 +281,10 @@ public class BioDataServiceImpl extends IServiceImpl implements BioDataService {
         return this.bioDataDao.getTotalByParam(parameter);
     }
 
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public List<BioData> getEntityByPKWithDetail(long id) throws Exception {
+        return bioDataDao.getEntityByPKWithDetail(id);
+    }
+
 }
