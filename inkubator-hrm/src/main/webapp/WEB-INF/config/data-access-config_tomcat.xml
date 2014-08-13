@@ -24,7 +24,16 @@
     <!--Anotation and Transaction-->
     <aop:aspectj-autoproxy/>
     <tx:annotation-driven/>
+    
+    <!-- Enables the caching on annotated class, the context is in service, the implementation using ehcache  -->
     <cache:annotation-driven />
+    <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager"
+          p:cacheManager-ref="ehcache"/>
+    <bean id="ehcache" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"
+          p:configLocation="classpath:spring/spring_ehcache.xml" 
+          p:shared="true"/>
+          
+          
     <bean id="c3p0DataSourceAbstract" class="com.mchange.v2.c3p0.ComboPooledDataSource" 
           abstract="true" destroy-method="close">
         <property name="acquireIncrement" value="5"/>
@@ -77,10 +86,5 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <bean class="com.inkubator.datacore.util.ServiceLog" />
-    <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager"
-          p:cacheManager-ref="ehcache"/>
-    <bean id="ehcache" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"
-          p:configLocation="classpath:spring/spring_ehcache.xml" 
-          p:shared="true"/>
 
 </beans>

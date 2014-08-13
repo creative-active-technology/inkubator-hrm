@@ -27,6 +27,7 @@ public class EducationLevel implements Serializable {
     private Date createdOn;
     private Date updatedOn;
     private Set<BioEducationHistory> educationHistorys = new HashSet<BioEducationHistory>(0);
+    private Set<BioFamilyRelationship> bioFamilyRelationships = new HashSet<BioFamilyRelationship>(0);
 
     public EducationLevel() {
 
@@ -50,7 +51,7 @@ public class EducationLevel implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-    
+
     @Version
     @Column(name = "version")
     public Integer getVersion() {
@@ -72,14 +73,14 @@ public class EducationLevel implements Serializable {
 
     @Column(name = "level", nullable = false)
     public Integer getLevel() {
-		return level;
-	}
+        return level;
+    }
 
-	public void setLevel(Integer level) {
-		this.level = level;
-	}
+    public void setLevel(Integer level) {
+        this.level = level;
+    }
 
-	@Column(name = "created_by", length = 45)
+    @Column(name = "created_by", length = 45)
     public String getCreatedBy() {
         return this.createdBy;
     }
@@ -125,6 +126,16 @@ public class EducationLevel implements Serializable {
     public void setEducationHistorys(Set<BioEducationHistory> educationHistorys) {
         this.educationHistorys = educationHistorys;
     }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "educationLevel")
+    public Set<BioFamilyRelationship> getBioFamilyRelationships() {
+        return bioFamilyRelationships;
+    }
+
+    public void setBioFamilyRelationships(Set<BioFamilyRelationship> bioFamilyRelationships) {
+        this.bioFamilyRelationships = bioFamilyRelationships;
+    }
     
     
+
 }

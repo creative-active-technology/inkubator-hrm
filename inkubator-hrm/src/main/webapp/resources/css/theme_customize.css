@@ -225,4 +225,17 @@ and open the template in the editor.
     right: -30px
 }
 
+.watermark {
+	position:absolute;
+	/* right:400px;  */
+	font-size:24px !important; 
+	font-style: italic; 
+	opacity:0.7;
+	z-index:99;
+	color:red;
+	transform:rotate(-20deg);
+	-ms-transform:rotate(-20deg); /* IE 9 */
+	-webkit-transform:rotate(-20deg); /* Opera, Chrome, and Safari */
+}
+
 

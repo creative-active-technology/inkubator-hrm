@@ -36,72 +36,19 @@
   
         
    
-    <cache name="listSpiUserChartModel"
+    <cache name="totalEmployeeByGender"
            maxElementsInMemory="10000" eternal="false" timeToIdleSeconds="600"
-           timeToLiveSeconds="600" overflowToDisk="false"
+           timeToLiveSeconds="900" overflowToDisk="false"
            memoryStoreEvictionPolicy="LFU">
     </cache>
-    <cache name="totalPendingEmail"
+    <cache name="totalEmployeeByAge"
            maxElementsInMemory="10000" eternal="false" timeToIdleSeconds="600"
-           timeToLiveSeconds="600" overflowToDisk="false"
+           timeToLiveSeconds="900" overflowToDisk="false"
            memoryStoreEvictionPolicy="LFU">
     </cache>
-    <cache name="totalUserLock"
+    <cache name="totalEmployeeByDepartment"
            maxElementsInMemory="10000" eternal="false" timeToIdleSeconds="600"
-           timeToLiveSeconds="600" overflowToDisk="false"
-           memoryStoreEvictionPolicy="LFU">
-    </cache>
-    <cache name="totalUserExpired"
-           maxElementsInMemory="10000" eternal="false" timeToIdleSeconds="600"
-           timeToLiveSeconds="600" overflowToDisk="false"
-           memoryStoreEvictionPolicy="LFU">
-    </cache>
-    
-    <cache name="totalActiveUser"
-           maxElementsInMemory="10000" eternal="false" timeToIdleSeconds="600"
-           timeToLiveSeconds="600" overflowToDisk="false"
-           memoryStoreEvictionPolicy="LFU">
-    </cache>
-    <cache name="totalProduct"
-           maxElementsInMemory="10000" eternal="false" timeToIdleSeconds="600"
-           timeToLiveSeconds="600" overflowToDisk="false"
-           memoryStoreEvictionPolicy="LFU">
-    </cache>
-    <cache name="totalActiveBranch"
-           maxElementsInMemory="10000" eternal="false" timeToIdleSeconds="600"
-           timeToLiveSeconds="600" overflowToDisk="false"
-           memoryStoreEvictionPolicy="LFU">
-    </cache>
-    
-    <cache name="totalUserAll"
-           maxElementsInMemory="10000" eternal="false" timeToIdleSeconds="600"
-           timeToLiveSeconds="600" overflowToDisk="false"
-           memoryStoreEvictionPolicy="LFU">
-    </cache>
-    <cache name="totalPendingSms"
-           maxElementsInMemory="10000" eternal="false" timeToIdleSeconds="600"
-           timeToLiveSeconds="600" overflowToDisk="false"
-           memoryStoreEvictionPolicy="LFU">
-    </cache>
-    <cache name="totalRole"
-           maxElementsInMemory="10000" eternal="false" timeToIdleSeconds="600"
-           timeToLiveSeconds="600" overflowToDisk="false"
-           memoryStoreEvictionPolicy="LFU">
-    </cache>
-    
-    <cache name="historyPasswords"
-           maxElementsInMemory="10000" eternal="false" timeToIdleSeconds="7200"
-           timeToLiveSeconds="7200" overflowToDisk="false"
-           memoryStoreEvictionPolicy="LFU">
-    </cache>
-    <cache name="listSpiProductChartModel"
-           maxElementsInMemory="10000" eternal="false" timeToIdleSeconds="600"
-           timeToLiveSeconds="600" overflowToDisk="false"
-           memoryStoreEvictionPolicy="LFU">
-    </cache>
-    <cache name="data-4"
-           maxElementsInMemory="10000" eternal="false" timeToIdleSeconds="600"
-           timeToLiveSeconds="600" overflowToDisk="false"
+           timeToLiveSeconds="900" overflowToDisk="false"
            memoryStoreEvictionPolicy="LFU">
     </cache>
 	

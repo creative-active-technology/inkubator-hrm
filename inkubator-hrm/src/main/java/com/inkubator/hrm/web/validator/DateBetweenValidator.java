@@ -29,7 +29,7 @@ public class DateBetweenValidator implements Validator {
         try {
             endTime = parser.parse((String) endTimeComponent.getSubmittedValue());
         } catch (ParseException e) {
-
+            e.printStackTrace();
         }
 
         // Check if they both are filled in.

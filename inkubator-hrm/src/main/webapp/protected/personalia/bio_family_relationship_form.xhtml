@@ -1,0 +1,199 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/dialog_layout.xhtml">
+            <ui:define name="windowTitle">
+
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlBioFamilyRelationshipFormlId" globalOnly="true" showDetail="true"/>
+                <h:form id="formBioFamilyRelationshipFormId">
+                    <h:panelGrid  columns="2">
+                        <p:graphicImage library="images" name="bioFamilyRelationship.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['bioFamilyRelationship.form_bioFamilyRelationship']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_data_from_reference']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="1" style="margin-bottom: 5px;margin-left: 0px">
+                        <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                        <h:outputLabel value="#{appmsg['bioFamilyRelationship.dialog_info']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                        <h:outputLabel value="#{appmsg['bioFamilyRelationship.dialog_info_2']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                    </h:panelGrid> 
+                    <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="nameId" value="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_name']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="nameId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                                <p:focus for ="nameId">
+                                    <p:inputText id="nameId" title="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_name']}" value="#{bioFamilyRelationshipFormController.bioFamilyRelationshipModel.name}" 
+                                                 required="true" requiredMessage="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_name_should_not_be_empty']}" maxlength="60" styleClass="isitext_hrm" style="width:250px;" />
+                                </p:focus>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="nameId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="dateId" value="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_date']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="dateId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+
+                                <p:calendar id="dateId" navigator="true" value="#{bioFamilyRelationshipFormController.bioFamilyRelationshipModel.dateOfBirth}" style="width: 150px;margin-right: 3px" 
+                                                 required="true" requiredMessage="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_date_should_not_be_empty']}" />
+
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="dateId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="relationId" value="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_relation']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="relationId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+
+                                <p:selectOneMenu id="relationId" value="#{bioFamilyRelationshipFormController.bioFamilyRelationshipModel.familyRelationId}" style="width: 150px;margin-right: 3px" 
+                                                 required="true" requiredMessage="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_relation_should_not_be_empty']}">
+                                    <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                    <f:selectItems value="#{bioFamilyRelationshipFormController.familyRelations}"/>
+                                </p:selectOneMenu>
+
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="relationId"/>
+                            </p:column>
+                        </p:row>                        
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="genderId" value="#{appmsg['global.gender']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="genderId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                                <p:selectOneRadio id="genderId" styleClass="isitext_hrm" required="true" value="#{bioFamilyRelationshipFormController.bioFamilyRelationshipModel.gender}" label="#{appmsg['global.gender']}">
+                                    <!--Cek HRM Constanta..-->
+                                    <f:selectItem itemLabel="#{appmsg['global_male']}" itemValue="1" />
+                                    <f:selectItem itemLabel="#{appmsg['global_female']}" itemValue="0" />
+                                </p:selectOneRadio>
+
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="genderId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="dependentsId" value="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_dependents']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="dependentsId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+
+                                <p:selectOneRadio id="dependentsId" styleClass="isitext_hrm" required="true" value="#{bioFamilyRelationshipFormController.bioFamilyRelationshipModel.dependents}" label="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_dependents']}">
+                                    <!--Cek HRM Constanta..-->
+                                    <f:selectItem itemLabel="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_dependents_yes']}" itemValue="0" />
+                                    <f:selectItem itemLabel="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_dependents']}" itemValue="1" />
+                                </p:selectOneRadio>
+
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="dependentsId"/>
+                            </p:column>
+                        </p:row>         
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="lastId" value="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_last']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="lastId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+
+                                <p:selectOneMenu id="lastId" value="#{bioFamilyRelationshipFormController.bioFamilyRelationshipModel.educationLevelId}" style="width: 150px;margin-right: 3px" 
+                                                 required="true" requiredMessage="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_last_should_not_be_empty']}">
+                                    <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                    <f:selectItems value="#{bioFamilyRelationshipFormController.educationLevels}"/>
+                                </p:selectOneMenu>
+
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="lastId"/>
+                            </p:column>
+                        </p:row>      
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="occupationId" value="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_occupation']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="occupationId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                                <p:focus for ="occupationId">
+                                    <p:inputText id="occupationId" title="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_occupation']}" value="#{bioFamilyRelationshipFormController.bioFamilyRelationshipModel.occupation}" 
+                                                 required="true" requiredMessage="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_occupation_should_not_be_empty']}" maxlength="60" styleClass="isitext_hrm" style="width:250px;" />
+                                </p:focus>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="occupationId"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="2" style="margin-bottom: -30px!important">
+                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formBioFamilyRelationshipFormId,:growlBioFamilyRelationshipFormlId"
+                                         action="#{bioFamilyRelationshipFormController.doSave()}" styleClass="isitext_hrm"
+                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
+                                         icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formBioFamilyRelationshipFormId"
+                                         icon="ui-icon-refresh" styleClass="isitext_hrm" >  
+                            <p:resetInput target="formBioFamilyRelationshipFormId" />  
+                        </p:commandButton>
+                    </h:panelGrid>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

@@ -78,13 +78,7 @@ public class InstitutionEducationFormController extends BaseController {
             }
 
             MapUtil.sortByValue(countrys);
-//            List<City> listCitys = cityService.getAllData();
-//            
-//            for (City city : listCitys) {
-//                citys.put(city.getCityName(), city.getId());
-//            }
-//            
-//            MapUtil.sortByValue(citys);
+
             if (StringUtils.isNumeric(param)) {
                 try {
                     InstitutionEducation institutionEducation = institutionEducationService.getInstitutionEducationByIdWithDetail(Long.parseLong(param));
@@ -98,6 +92,22 @@ public class InstitutionEducationFormController extends BaseController {
                         institutionEducationModel.setAddress(institutionEducation.getAddress());
                         institutionEducationModel.setPostalCode(institutionEducation.getPostalCode());
                         isUpdate = Boolean.TRUE;
+                        disabledCity = Boolean.FALSE;
+                        disabledProvince = Boolean.FALSE;
+                        List<Province> listProvinces = provinceService.getByCountryIdWithDetail(institutionEducationModel.getCountryId());
+                        for (Province province : listProvinces) {
+                            provinces.put(province.getProvinceName(), province.getId());
+                        }
+
+                        MapUtil.sortByValue(provinces);
+
+                        List<City> listCities = cityService.getByProvinceIdWithDetail(institutionEducationModel.getProvinceId());
+
+                        for (City city : listCities) {
+                            citys.put(city.getCityName(), city.getId());
+                        }
+
+                        MapUtil.sortByValue(citys);
                     }
 
                 } catch (Exception e) {
@@ -146,7 +156,7 @@ public class InstitutionEducationFormController extends BaseController {
 
     public void setCityService(CityService cityService) {
         this.cityService = cityService;
-        
+
     }
 
     public Map<String, Long> getCountrys() {
@@ -164,8 +174,6 @@ public class InstitutionEducationFormController extends BaseController {
     public void setProvinces(Map<String, Long> provinces) {
         this.provinces = provinces;
     }
-    
-    
 
     public Map<String, Long> getCitys() {
         return citys;
@@ -190,8 +198,6 @@ public class InstitutionEducationFormController extends BaseController {
     public void setDisabledCity(Boolean disabledCity) {
         this.disabledCity = disabledCity;
     }
-    
-    
 
     public void doSave() {
         InstitutionEducation institutionEducation = getEntityFromViewModel(institutionEducationModel);
@@ -224,7 +230,7 @@ public class InstitutionEducationFormController extends BaseController {
         institutionEducation.setPostalCode(institutionEducationModel.getPostalCode());
         return institutionEducation;
     }
-    
+
     public void countryChanged(ValueChangeEvent event) {
         try {
             System.out.println("New value: " + event.getNewValue());
@@ -237,7 +243,7 @@ public class InstitutionEducationFormController extends BaseController {
             System.out.println("ukuran " + listProvinces.size());
             if (listProvinces.isEmpty() || listProvinces == null) {
                 disabledProvince = Boolean.TRUE;
-                
+
                 FacesContext.getCurrentInstance().addMessage("formInstitutionEducationFormId:provinceId", new FacesMessage(FacesMessage.SEVERITY_ERROR, messages.getString("global.error"), messages.getString("city.province_is_empty")));
 
             } else {
@@ -254,7 +260,7 @@ public class InstitutionEducationFormController extends BaseController {
             LOGGER.error("Error", ex);
         }
     }
-    
+
     public void provinceChanged(ValueChangeEvent event) {
         try {
             System.out.println("Province Id  " + institutionEducationModel.getProvinceId());
@@ -265,7 +271,7 @@ public class InstitutionEducationFormController extends BaseController {
 
             if (listCities.isEmpty() || listCities == null) {
                 disabledCity = Boolean.TRUE;
-                
+
                 FacesContext.getCurrentInstance().addMessage("formInstitutionEducationFormId:cityId", new FacesMessage(FacesMessage.SEVERITY_ERROR, messages.getString("global.error"), messages.getString("city.province_is_empty")));
 
             } else {

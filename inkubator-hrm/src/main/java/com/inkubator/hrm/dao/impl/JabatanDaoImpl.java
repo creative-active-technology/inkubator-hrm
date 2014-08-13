@@ -145,4 +145,13 @@ public class JabatanDaoImpl extends IDAOImpl<Jabatan> implements JabatanDao {
         getCurrentSession().flush();
     }
 
+    @Override
+    public List<Jabatan> getByDepartementId(long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("department", "d", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("d.id", id));
+        return criteria.list();
+
+    }
+
 }

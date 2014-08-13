@@ -1,0 +1,182 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/dialog_layout.xhtml">
+            <ui:define name="windowTitle">
+
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlBioEmploymentHistoryFormlId" globalOnly="true" showDetail="true"/>
+                <h:form id="formBioEmploymentHistoryFormId">
+                    <h:panelGrid  columns="2">
+                        <p:graphicImage library="images" name="bioEmploymentHistory.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['bioEmploymentHistory.form_bioEmploymentHistory']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_data_from_reference']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="1" style="margin-bottom: 5px;margin-left: 0px">
+                        <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                        <h:outputLabel value="#{appmsg['bioEmploymentHistory.dialog_info']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                        <h:outputLabel value="#{appmsg['bioEmploymentHistory.dialog_info_2']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                    </h:panelGrid> 
+                    <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="yearId" value="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_year']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="yearId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                                <p:focus for ="yearId">
+                                    <p:selectOneMenu id="yearId" value="#{bioEmploymentHistoryFormController.bioEmploymentHistoryModel.yearIn}" style="width: 150px;margin-right: 3px" 
+                                                     required="true" requiredMessage="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_year_should_not_be_empty']}">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{bioEmploymentHistoryFormController.listYears}"/>
+                                        <f:validator validatorId="yearIntegerNumberBetweenValidator"  />
+                                        <f:attribute name="endNumberInteger" value="#{yearOut}"/>
+                                        <f:attribute name="validatorMessage" value="#{appmsg['global.DateIn_validator ']}"/>
+                                    </p:selectOneMenu>
+                                </p:focus>
+                                 <h:outputLabel for="yearId" value="-" styleClass="label_hrm"/>
+                                <p:selectOneMenu id="yearOut" value="#{bioEmploymentHistoryFormController.bioEmploymentHistoryModel.yearOut}" binding="#{yearOut}" style="width: 150px;margin-right: 3px" 
+                                                 required="true" requiredMessage="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_year_should_not_be_empty']}">
+                                    <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                    <f:selectItems value="#{bioEmploymentHistoryFormController.listYears}"/>
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="yearId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="yearOut"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="companyId" value="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_company']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="companyId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                                <p:inputText id="companyId" title="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_company']}" value="#{bioEmploymentHistoryFormController.bioEmploymentHistoryModel.companyName}" 
+                                             required="true" requiredMessage="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_company_should_not_be_empty']}" maxlength="60" styleClass="isitext_hrm" style="width:250px;" />
+
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="companyId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="lastId" value="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_last']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="lastId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                                <p:inputText id="lastId" title="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_last']}" value="#{bioEmploymentHistoryFormController.bioEmploymentHistoryModel.lastOccupation}" 
+                                             required="true" requiredMessage="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_last_should_not_be_empty']}" maxlength="60" styleClass="isitext_hrm" style="width:250px;" />
+
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="lastId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="salaryId" value="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_salary']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="salaryId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                                <pe:inputNumber id="salaryId" title="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_salary']}" value="#{bioEmploymentHistoryFormController.bioEmploymentHistoryModel.salary}"  
+                                                required="true" requiredMessage="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_salary_should_not_be_empty']}" styleClass="isitext_hrm" style="width:250px;" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="salaryId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="cityId" value="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_city']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="cityId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                                <p:autoComplete id="cityId" title="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_city']}" 
+                                                value="#{bioEmploymentHistoryFormController.bioEmploymentHistoryModel.city}"
+                                                completeMethod="#{bioEmploymentHistoryFormController.completeCity}"
+                                                var="city" 
+                                                itemValue="#{city}"
+                                                itemLabel="#{city.cityName}"
+                                                converter="cityConverter"
+                                                required="true" requiredMessage="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_city_should_not_be_empty']}" styleClass="isitext_hrm" style="width:250px;"></p:autoComplete>
+
+
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="cityId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="sectorId" value="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_sector']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="sectorId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                                <p:inputText id="sectorId" title="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_sector']}" value="#{bioEmploymentHistoryFormController.bioEmploymentHistoryModel.jobSector}" 
+                                             required="true" requiredMessage="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_sector_should_not_be_empty']}" maxlength="60" styleClass="isitext_hrm" style="width:250px;" />
+
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="2" style="margin-bottom: -30px!important">
+                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formBioEmploymentHistoryFormId,:growlBioEmploymentHistoryFormlId"
+                                         action="#{bioEmploymentHistoryFormController.doSave()}" styleClass="isitext_hrm"
+                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
+                                         icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formBioEmploymentHistoryFormId"
+                                         icon="ui-icon-refresh" styleClass="isitext_hrm" >  
+                            <p:resetInput target="formBioEmploymentHistoryFormId" />  
+                        </p:commandButton>
+                    </h:panelGrid>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+
