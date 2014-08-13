@@ -14,5 +14,8 @@ import com.inkubator.hrm.entity.BioEmploymentHistory;
 public interface BioEmploymentHistoryDao extends IDAO<BioEmploymentHistory> {
 
     public List<BioEmploymentHistory> getAllDataByBioDataId(Long bioDataId);
+    
+    public BioEmploymentHistory getEntityByPKWithDetail(Long id);
+    
 
 }

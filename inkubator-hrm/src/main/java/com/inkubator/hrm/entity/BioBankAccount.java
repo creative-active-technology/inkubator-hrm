@@ -1,5 +1,5 @@
 package com.inkubator.hrm.entity;
-// Generated Aug 11, 2014 1:21:52 PM by Hibernate Tools 3.6.0
+// Generated Aug 13, 2014 10:47:17 AM by Hibernate Tools 3.6.0
 
 
 import java.util.Date;
@@ -37,11 +37,11 @@ public class BioBankAccount  implements java.io.Serializable {
      private String updatedBy;
      private Date updatedOn;
      private String ownerName;
-     private Integer accountNumber;
+     private String accountNumber;
      private String branch;
      private String address;
      private Integer savingType;
-     private Integer swiftCode;
+     private String swiftCode;
      private Integer defaultAccount;
 
     public BioBankAccount() {
@@ -54,7 +54,7 @@ public class BioBankAccount  implements java.io.Serializable {
         this.currency = currency;
         this.city = city;
     }
-    public BioBankAccount(long id, BioData bioData, Currency currency, City city, Bank bank, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String ownerName, Integer accountNumber, String branch, String address, Integer savingType, Integer swiftCode, Integer defaultAccount) {
+    public BioBankAccount(long id, BioData bioData, Currency currency, City city, Bank bank, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String ownerName, String accountNumber, String branch, String address, Integer savingType, String swiftCode, Integer defaultAccount) {
        this.id = id;
        this.bioData = bioData;
        this.currency = currency;
@@ -186,12 +186,12 @@ public class BioBankAccount  implements java.io.Serializable {
     }
 
     
-    @Column(name="account_number", unique=true)
-    public Integer getAccountNumber() {
+    @Column(name="account_number", unique=true, length=60)
+    public String getAccountNumber() {
         return this.accountNumber;
     }
     
-    public void setAccountNumber(Integer accountNumber) {
+    public void setAccountNumber(String accountNumber) {
         this.accountNumber = accountNumber;
     }
 
@@ -226,12 +226,12 @@ public class BioBankAccount  implements java.io.Serializable {
     }
 
     
-    @Column(name="swift_code", unique=true)
-    public Integer getSwiftCode() {
+    @Column(name="swift_code", unique=true, length=60)
+    public String getSwiftCode() {
         return this.swiftCode;
     }
     
-    public void setSwiftCode(Integer swiftCode) {
+    public void setSwiftCode(String swiftCode) {
         this.swiftCode = swiftCode;
     }
 

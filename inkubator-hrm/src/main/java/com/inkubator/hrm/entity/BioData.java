@@ -58,6 +58,12 @@ public class BioData implements java.io.Serializable {
     private Set<BioPeopleInterest> peopleInterests = new HashSet<BioPeopleInterest>(0);
     private Set<BioDocument> bioDocuments = new HashSet<BioDocument>(0);
     private Set<BioEmergencyContact> bioEmergencyContacts = new HashSet<BioEmergencyContact>(0);
+    private Set<BioEmploymentHistory> bioEmploymentHistories = new HashSet<BioEmploymentHistory>(0);
+    private Set<BioMedicalHistory> bioMedicalHistories = new HashSet<BioMedicalHistory>(0);
+    private Set<BioFamilyRelationship> bioFamilyRelationships = new HashSet<BioFamilyRelationship>(0);
+    private Set<BioIdCard> bioIdCards = new HashSet<BioIdCard>(0);
+    private Set<BioInsurance> bioInsurances = new HashSet<BioInsurance>(0);
+    private Set<BioBankAccount> bioBankAccounts = new HashSet<BioBankAccount>(0);
 
     public BioData() {
     }
@@ -411,5 +417,61 @@ public class BioData implements java.io.Serializable {
     public void setBioEmergencyContacts(Set<BioEmergencyContact> bioEmergencyContacts) {
         this.bioEmergencyContacts = bioEmergencyContacts;
     }
+    
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "bioData")
+    public Set<BioEmploymentHistory> getBioEmploymentHistories() {
+        return bioEmploymentHistories;
+    }
+
+    public void setBioEmploymentHistories(Set<BioEmploymentHistory> bioEmploymentHistories) {
+        this.bioEmploymentHistories = bioEmploymentHistories;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "bioData")
+    public Set<BioMedicalHistory> getBioMedicalHistories() {
+        return bioMedicalHistories;
+    }
+
+    public void setBioMedicalHistories(Set<BioMedicalHistory> bioMedicalHistories) {
+        this.bioMedicalHistories = bioMedicalHistories;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "bioData")
+    public Set<BioFamilyRelationship> getBioFamilyRelationships() {
+        return bioFamilyRelationships;
+    }
+
+    public void setBioFamilyRelationships(Set<BioFamilyRelationship> bioFamilyRelationships) {
+        this.bioFamilyRelationships = bioFamilyRelationships;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "bioData")
+    public Set<BioIdCard> getBioIdCards() {
+        return bioIdCards;
+    }
+
+    public void setBioIdCards(Set<BioIdCard> bioIdCards) {
+        this.bioIdCards = bioIdCards;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "bioData")
+    public Set<BioInsurance> getBioInsurances() {
+        return bioInsurances;
+    }
+
+    public void setBioInsurances(Set<BioInsurance> bioInsurances) {
+        this.bioInsurances = bioInsurances;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "bioData")
+    public Set<BioBankAccount> getBioBankAccounts() {
+        return bioBankAccounts;
+    }
+
+    public void setBioBankAccounts(Set<BioBankAccount> bioBankAccounts) {
+        this.bioBankAccounts = bioBankAccounts;
+    }
+    
+    
 
 }

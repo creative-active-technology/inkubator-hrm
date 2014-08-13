@@ -41,6 +41,9 @@ public class City implements java.io.Serializable {
     private Set<BioAddress> bioAddresses = new HashSet<BioAddress>(0);
     private Set<BioEducationHistory> bioEducationHistorys = new HashSet<BioEducationHistory>(0);
     private Set<BioEmergencyContact> bioEmergencyContacts = new HashSet<BioEmergencyContact>(0);
+    private Set<BioEmploymentHistory> bioEmploymentHistories = new HashSet<BioEmploymentHistory>(0);
+    private Set<BioBankAccount> bioBankAccounts = new HashSet<BioBankAccount>(0);
+    private Set<BioIdCard> bioIdCards = new HashSet<BioIdCard>(0);
 
     public City() {
     }
@@ -214,4 +217,32 @@ public class City implements java.io.Serializable {
         this.bioEmergencyContacts = bioEmergencyContacts;
     }
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "city")
+    public Set<BioEmploymentHistory> getBioEmploymentHistories() {
+        return bioEmploymentHistories;
+    }
+
+    public void setBioEmploymentHistories(Set<BioEmploymentHistory> bioEmploymentHistories) {
+        this.bioEmploymentHistories = bioEmploymentHistories;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "city")
+    public Set<BioBankAccount> getBioBankAccounts() {
+        return bioBankAccounts;
+    }
+
+    public void setBioBankAccounts(Set<BioBankAccount> bioBankAccounts) {
+        this.bioBankAccounts = bioBankAccounts;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "city")
+    public Set<BioIdCard> getBioIdCards() {
+        return bioIdCards;
+    }
+
+    public void setBioIdCards(Set<BioIdCard> bioIdCards) {
+        this.bioIdCards = bioIdCards;
+    }
+
+    
 }

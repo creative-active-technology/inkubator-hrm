@@ -115,4 +115,18 @@ public class HRMConstant {
     public static final Integer BIOMEDICAL_HEALED = 0;
     public static final Integer BIOMEDICAL_NOT_HEALED = 1;
     /* END */
+    
+     /* Constant for BIO Family Relation Module */
+    public static final Integer BIOFAMILY_DEPENDENTS_YES = 0;
+    public static final Integer BIOFAMILY_DEPENDENTS_NO = 1;
+    /* END */
+    
+     /* Constant for BIO Bank Account Module */
+    public static final Integer BANK_SAVING_TYPE_DEPOSITO = 0;
+    public static final Integer BANK_SAVING_TYPE_SAVING = 1;
+    public static final Integer BANK_SAVING_TYPE_GIRO = 2;
+    public static final Integer BANK_SAVING_TYPE_CHECKING = 3;
+    public static final Integer BANK_DEFAULT_ACCOUNT_YES = 0;
+    public static final Integer BANK_DEFAULT_ACCOUNT_NO = 1;
+    /* END */
 }

@@ -6,19 +6,25 @@ package com.inkubator.hrm.web.personalia;
 
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.BioAddress;
+import com.inkubator.hrm.entity.BioBankAccount;
 import com.inkubator.hrm.entity.BioData;
 import com.inkubator.hrm.entity.BioDocument;
 import com.inkubator.hrm.entity.BioEducationHistory;
 import com.inkubator.hrm.entity.BioEmergencyContact;
 import com.inkubator.hrm.entity.BioEmploymentHistory;
+import com.inkubator.hrm.entity.BioFamilyRelationship;
+import com.inkubator.hrm.entity.BioIdCard;
 import com.inkubator.hrm.entity.BioInsurance;
 import com.inkubator.hrm.entity.BioMedicalHistory;
 import com.inkubator.hrm.entity.BioPeopleInterest;
 import com.inkubator.hrm.service.BioAddressService;
+import com.inkubator.hrm.service.BioBankAccountService;
 import com.inkubator.hrm.service.BioDataService;
 import com.inkubator.hrm.service.BioDocumentService;
 import com.inkubator.hrm.service.BioEmergencyContactService;
 import com.inkubator.hrm.service.BioEmploymentHistoryService;
+import com.inkubator.hrm.service.BioFamilyRelationshipService;
+import com.inkubator.hrm.service.BioIdCardService;
 import com.inkubator.hrm.service.BioInsuranceService;
 import com.inkubator.hrm.service.BioMedicalHistoryService;
 import com.inkubator.hrm.service.EducationHistoryService;
@@ -111,6 +117,27 @@ public class BioDataDetilController extends BaseController {
     private BioEmploymentHistoryService bioEmploymentHistoryService;
 //end. bio employment
 
+    //start. bio family
+    private BioFamilyRelationship selectedBioFamilyRelationship;
+    private List<BioFamilyRelationship> bioFamilyRelationships;
+    @ManagedProperty(value = "#{bioFamilyRelationshipService}")
+    private BioFamilyRelationshipService bioFamilyRelationshipService;
+//end. bio family
+
+    //start. bio bank
+    private BioBankAccount selectedBioBankAccount;
+    private List<BioBankAccount> bioBankAccounts;
+    @ManagedProperty(value = "#{bioBankAccountService}")
+    private BioBankAccountService bioBankAccountService;
+//end. bio bank
+
+    //start. bio bank
+    private BioIdCard selectedBioIdCard;
+    private List<BioIdCard> bioIdCards;
+    @ManagedProperty(value = "#{bioIdCardService}")
+    private BioIdCardService bioIdCardService;
+//end. bio bank
+
     @PostConstruct
     @Override
     public void initialization() {
@@ -123,6 +150,9 @@ public class BioDataDetilController extends BaseController {
             bioInsurances = bioInsuranceService.getAllDataByBioDataId(selectedBioData.getId());
             bioMedicalHistorys = bioMedicalHistoryService.getAllDataByBioDataId(selectedBioData.getId());
             bioEmploymentHistorys = bioEmploymentHistoryService.getAllDataByBioDataId(selectedBioData.getId());
+            bioFamilyRelationships = bioFamilyRelationshipService.getAllDataByBioDataId(selectedBioData.getId());
+            bioBankAccounts = bioBankAccountService.getAllDataByBioDataId(selectedBioData.getId());
+            bioIdCards = bioIdCardService.getAllDataByBioDataId(selectedBioData.getId());
             educationHistory = educationHistoryService.getAllDataByBioDataId(selectedBioData.getId());
             listPeopleInterest = peopleInterestService.getAllDataByBioDataId(selectedBioData.getId());
             dataBioEmergencyContacs = bioEmergencyContactService.getAllDataByBioDataId(selectedBioData.getId());
@@ -158,6 +188,15 @@ public class BioDataDetilController extends BaseController {
         selectedBioEmploymentHistory = null;
         bioEmploymentHistorys = null;
         bioEmploymentHistoryService = null;
+        selectedBioFamilyRelationship = null;
+        bioFamilyRelationships = null;
+        bioFamilyRelationshipService = null;
+        selectedBioBankAccount = null;
+        bioBankAccounts = null;
+        bioBankAccountService = null;
+        selectedBioIdCard = null;
+        bioIdCards = null;
+        bioIdCardService = null;
     }
 
     public BioAddress getSelectedBioAddress() {
@@ -338,6 +377,78 @@ public class BioDataDetilController extends BaseController {
 
     public void setBioEmploymentHistoryService(BioEmploymentHistoryService bioEmploymentHistoryService) {
         this.bioEmploymentHistoryService = bioEmploymentHistoryService;
+    }
+
+    public BioFamilyRelationship getSelectedBioFamilyRelationship() {
+        return selectedBioFamilyRelationship;
+    }
+
+    public void setSelectedBioFamilyRelationship(BioFamilyRelationship selectedBioFamilyRelationship) {
+        this.selectedBioFamilyRelationship = selectedBioFamilyRelationship;
+    }
+
+    public List<BioFamilyRelationship> getBioFamilyRelationships() {
+        return bioFamilyRelationships;
+    }
+
+    public void setBioFamilyRelationships(List<BioFamilyRelationship> bioFamilyRelationships) {
+        this.bioFamilyRelationships = bioFamilyRelationships;
+    }
+
+    public BioFamilyRelationshipService getBioFamilyRelationshipService() {
+        return bioFamilyRelationshipService;
+    }
+
+    public void setBioFamilyRelationshipService(BioFamilyRelationshipService bioFamilyRelationshipService) {
+        this.bioFamilyRelationshipService = bioFamilyRelationshipService;
+    }
+
+    public BioBankAccount getSelectedBioBankAccount() {
+        return selectedBioBankAccount;
+    }
+
+    public void setSelectedBioBankAccount(BioBankAccount selectedBioBankAccount) {
+        this.selectedBioBankAccount = selectedBioBankAccount;
+    }
+
+    public List<BioBankAccount> getBioBankAccounts() {
+        return bioBankAccounts;
+    }
+
+    public void setBioBankAccounts(List<BioBankAccount> bioBankAccounts) {
+        this.bioBankAccounts = bioBankAccounts;
+    }
+
+    public BioBankAccountService getBioBankAccountService() {
+        return bioBankAccountService;
+    }
+
+    public void setBioBankAccountService(BioBankAccountService bioBankAccountService) {
+        this.bioBankAccountService = bioBankAccountService;
+    }
+
+    public BioIdCard getSelectedBioIdCard() {
+        return selectedBioIdCard;
+    }
+
+    public void setSelectedBioIdCard(BioIdCard selectedBioIdCard) {
+        this.selectedBioIdCard = selectedBioIdCard;
+    }
+
+    public List<BioIdCard> getBioIdCards() {
+        return bioIdCards;
+    }
+
+    public void setBioIdCards(List<BioIdCard> bioIdCards) {
+        this.bioIdCards = bioIdCards;
+    }
+
+    public BioIdCardService getBioIdCardService() {
+        return bioIdCardService;
+    }
+
+    public void setBioIdCardService(BioIdCardService bioIdCardService) {
+        this.bioIdCardService = bioIdCardService;
     }
     
     
@@ -881,13 +992,12 @@ public class BioDataDetilController extends BaseController {
     /**
      * END Bio MedicalHistory method
      */
-    
     /**
      * START Bio EmploymentHistory method
      */
     public void doSelectBioEmploymentHistory() {
         try {
-            selectedBioEmploymentHistory = bioEmploymentHistoryService.getEntiyByPK(selectedBioEmploymentHistory.getId());
+            selectedBioEmploymentHistory = bioEmploymentHistoryService.getEntityByPKWithDetail(selectedBioEmploymentHistory.getId());
         } catch (Exception e) {
             LOGGER.error("Error", e);
         }
@@ -935,8 +1045,8 @@ public class BioDataDetilController extends BaseController {
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", false);
-        options.put("contentWidth", 450);
-        options.put("contentHeight", 420);
+        options.put("contentWidth", 550);
+        options.put("contentHeight", 450);
         RequestContext.getCurrentInstance().openDialog("bio_employment_history_form", options, params);
     }
 
@@ -951,5 +1061,216 @@ public class BioDataDetilController extends BaseController {
 
     /**
      * END Bio EmploymentHistory method
+     */
+    /**
+     * START Bio FamilyRelationship method
+     */
+    public void doSelectBioFamilyRelationship() {
+        try {
+            selectedBioFamilyRelationship = bioFamilyRelationshipService.getEntityByPKWithDetail(selectedBioFamilyRelationship.getId());
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+
+    public void doUpdateBioFamilyRelationship() {
+
+        List<String> bioFamilyRelationshipId = new ArrayList<>();
+        bioFamilyRelationshipId.add(String.valueOf(selectedBioFamilyRelationship.getId()));
+
+        List<String> bioDataId = new ArrayList<>();
+        bioDataId.add(String.valueOf(selectedBioData.getId()));
+
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("bioFamilyRelationshipId", bioFamilyRelationshipId);
+        dataToSend.put("bioDataId", bioDataId);
+        showDialogBioFamilyRelationship(dataToSend);
+
+    }
+
+    public void doAddBioFamilyRelationship() {
+        List<String> bioDataId = new ArrayList<>();
+        bioDataId.add(String.valueOf(selectedBioData.getId()));
+
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("bioDataId", bioDataId);
+        showDialogBioFamilyRelationship(dataToSend);
+    }
+
+    public void doDeleteBioFamilyRelationship() {
+        try {
+            bioFamilyRelationshipService.delete(selectedBioFamilyRelationship);
+            bioFamilyRelationships = bioFamilyRelationshipService.getAllDataByBioDataId(selectedBioFamilyRelationship.getBioData().getId());
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+
+        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (Exception ex) {
+            LOGGER.error("Error when doDelete bioFamilyRelationship", ex);
+        }
+    }
+
+    private void showDialogBioFamilyRelationship(Map<String, List<String>> params) {
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 500);
+        options.put("contentHeight", 500);
+        RequestContext.getCurrentInstance().openDialog("bio_family_relationship_form", options, params);
+    }
+
+    public void onDialogReturnBioFamilyRelationship(SelectEvent event) {
+        try {
+            bioFamilyRelationships = bioFamilyRelationshipService.getAllDataByBioDataId(selectedBioData.getId());
+            super.onDialogReturn(event);
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+
+    /**
+     * END Bio FamilyRelationship method
+     */
+    /**
+     * START Bio BankAccount method
+     */
+    public void doSelectBioBankAccount() {
+        try {
+            selectedBioBankAccount = bioBankAccountService.getEntityByPKWithDetail(selectedBioBankAccount.getId());
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+
+    public void doUpdateBioBankAccount() {
+
+        List<String> bioBankAccountId = new ArrayList<>();
+        bioBankAccountId.add(String.valueOf(selectedBioBankAccount.getId()));
+
+        List<String> bioDataId = new ArrayList<>();
+        bioDataId.add(String.valueOf(selectedBioData.getId()));
+
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("bioBankAccountId", bioBankAccountId);
+        dataToSend.put("bioDataId", bioDataId);
+        showDialogBioBankAccount(dataToSend);
+
+    }
+
+    public void doAddBioBankAccount() {
+        List<String> bioDataId = new ArrayList<>();
+        bioDataId.add(String.valueOf(selectedBioData.getId()));
+
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("bioDataId", bioDataId);
+        showDialogBioBankAccount(dataToSend);
+    }
+
+    public void doDeleteBioBankAccount() {
+        try {
+            bioBankAccountService.delete(selectedBioBankAccount);
+            bioBankAccounts = bioBankAccountService.getAllDataByBioDataId(selectedBioBankAccount.getBioData().getId());
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+
+        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (Exception ex) {
+            LOGGER.error("Error when doDelete bioBankAccount", ex);
+        }
+    }
+
+    private void showDialogBioBankAccount(Map<String, List<String>> params) {
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 500);
+        options.put("contentHeight", 500);
+        RequestContext.getCurrentInstance().openDialog("bio_bank_account_form", options, params);
+    }
+
+    public void onDialogReturnBioBankAccount(SelectEvent event) {
+        try {
+            bioBankAccounts = bioBankAccountService.getAllDataByBioDataId(selectedBioData.getId());
+            super.onDialogReturn(event);
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+
+    /**
+     * END Bio BankAccount method
+     */
+    
+    /**
+     * START Bio IdCard method
+     */
+    public void doSelectBioIdCard() {
+        try {
+            selectedBioIdCard = bioIdCardService.getEntityByPKWithDetail(selectedBioIdCard.getId());
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+
+    public void doUpdateBioIdCard() {
+
+        List<String> bioIdCardId = new ArrayList<>();
+        bioIdCardId.add(String.valueOf(selectedBioIdCard.getId()));
+
+        List<String> bioDataId = new ArrayList<>();
+        bioDataId.add(String.valueOf(selectedBioData.getId()));
+
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("bioIdCardId", bioIdCardId);
+        dataToSend.put("bioDataId", bioDataId);
+        showDialogBioIdCard(dataToSend);
+
+    }
+
+    public void doAddBioIdCard() {
+        List<String> bioDataId = new ArrayList<>();
+        bioDataId.add(String.valueOf(selectedBioData.getId()));
+
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("bioDataId", bioDataId);
+        showDialogBioIdCard(dataToSend);
+    }
+
+    public void doDeleteBioIdCard() {
+        try {
+            bioIdCardService.delete(selectedBioIdCard);
+            bioIdCards = bioIdCardService.getAllDataByBioDataId(selectedBioIdCard.getBioData().getId());
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+
+        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (Exception ex) {
+            LOGGER.error("Error when doDelete bioIdCard", ex);
+        }
+    }
+
+    private void showDialogBioIdCard(Map<String, List<String>> params) {
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 500);
+        options.put("contentHeight", 500);
+        RequestContext.getCurrentInstance().openDialog("bio_id_card_form", options, params);
+    }
+
+    public void onDialogReturnBioIdCard(SelectEvent event) {
+        try {
+            bioIdCards = bioIdCardService.getAllDataByBioDataId(selectedBioData.getId());
+            super.onDialogReturn(event);
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+
+    /**
+     * END Bio IdCard method
      */
 }
