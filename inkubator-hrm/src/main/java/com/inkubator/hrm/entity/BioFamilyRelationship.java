@@ -1,5 +1,5 @@
 package com.inkubator.hrm.entity;
-// Generated Aug 11, 2014 1:21:52 PM by Hibernate Tools 3.6.0
+// Generated Aug 12, 2014 10:31:26 AM by Hibernate Tools 3.6.0
 
 
 import java.util.Date;
@@ -27,6 +27,7 @@ public class BioFamilyRelationship  implements java.io.Serializable {
      private long id;
      private Integer version;
      private BioData bioData;
+     private EducationLevel educationLevel;
      private FamilyRelation familyRelation;
      private String createdBy;
      private Date createdOn;
@@ -36,21 +37,22 @@ public class BioFamilyRelationship  implements java.io.Serializable {
      private Date dateOfBirth;
      private Integer gender;
      private Integer dependents;
-     private Integer lastEducation;
      private String occupation;
 
     public BioFamilyRelationship() {
     }
 
 	
-    public BioFamilyRelationship(long id, BioData bioData, FamilyRelation familyRelation) {
+    public BioFamilyRelationship(long id, BioData bioData, EducationLevel educationLevel, FamilyRelation familyRelation) {
         this.id = id;
         this.bioData = bioData;
+        this.educationLevel = educationLevel;
         this.familyRelation = familyRelation;
     }
-    public BioFamilyRelationship(long id, BioData bioData, FamilyRelation familyRelation, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String name, Date dateOfBirth, Integer gender, Integer dependents, Integer lastEducation, String occupation) {
+    public BioFamilyRelationship(long id, BioData bioData, EducationLevel educationLevel, FamilyRelation familyRelation, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String name, Date dateOfBirth, Integer gender, Integer dependents, String occupation) {
        this.id = id;
        this.bioData = bioData;
+       this.educationLevel = educationLevel;
        this.familyRelation = familyRelation;
        this.createdBy = createdBy;
        this.createdOn = createdOn;
@@ -60,7 +62,6 @@ public class BioFamilyRelationship  implements java.io.Serializable {
        this.dateOfBirth = dateOfBirth;
        this.gender = gender;
        this.dependents = dependents;
-       this.lastEducation = lastEducation;
        this.occupation = occupation;
     }
    
@@ -94,6 +95,16 @@ public class BioFamilyRelationship  implements java.io.Serializable {
     
     public void setBioData(BioData bioData) {
         this.bioData = bioData;
+    }
+
+@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="education_level_id", nullable=false)
+    public EducationLevel getEducationLevel() {
+        return this.educationLevel;
+    }
+    
+    public void setEducationLevel(EducationLevel educationLevel) {
+        this.educationLevel = educationLevel;
     }
 
 @ManyToOne(fetch=FetchType.LAZY)
@@ -184,16 +195,6 @@ public class BioFamilyRelationship  implements java.io.Serializable {
     
     public void setDependents(Integer dependents) {
         this.dependents = dependents;
-    }
-
-    
-    @Column(name="last_education")
-    public Integer getLastEducation() {
-        return this.lastEducation;
-    }
-    
-    public void setLastEducation(Integer lastEducation) {
-        this.lastEducation = lastEducation;
     }
 
     

@@ -32,4 +32,11 @@ public class BioEmploymentHistoryDaoImpl extends IDAOImpl<BioEmploymentHistory> 
         return criteria.list();
     }
 
+    @Override
+    public BioEmploymentHistory getEntityByPKWithDetail(Long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("id", id));
+        criteria.setFetchMode("city", FetchMode.JOIN);
+        return (BioEmploymentHistory) criteria.uniqueResult();
+    }
 }

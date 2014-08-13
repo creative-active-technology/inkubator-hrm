@@ -1,0 +1,322 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/dialog_layout.xhtml">
+            <ui:define name="windowTitle">
+
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlBioBankAccountFormlId" globalOnly="true" showDetail="true"/>
+                <h:form id="formBioBankAccountFormId">
+                    <h:panelGrid  columns="2">
+                        <p:graphicImage library="images" name="bioBankAccount.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['bioBankAccount.form_bioBankAccount']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['bioBankAccount.bioBankAccount_data_from_reference']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="1" style="margin-bottom: 5px;margin-left: 0px">
+                        <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                        <h:outputLabel value="#{appmsg['bioBankAccount.dialog_info']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                        <h:outputLabel value="#{appmsg['bioBankAccount.dialog_info_2']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                    </h:panelGrid> 
+                    <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="nameId" value="#{appmsg['bioBankAccount.bioBankAccount_name']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="nameId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                                <p:focus for ="nameId">
+                                    <p:inputText id="nameId" title="#{appmsg['bioBankAccount.bioBankAccount_name']}" value="#{bioBankAccountFormController.bioBankAccountModel.ownerName}" 
+                                                 required="true" requiredMessage="#{appmsg['bioBankAccount.bioBankAccount_name_should_not_be_empty']}" maxlength="60" styleClass="isitext_hrm" style="width:250px;" />
+                                </p:focus>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="nameId"/>
+                            </p:column>
+                        </p:row>
+                         <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="bankId" value="#{appmsg['bioBankAccount.bioBankAccount_bank']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="bankId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+
+                                <p:selectOneMenu id="bankId" value="#{bioBankAccountFormController.bioBankAccountModel.bankId}" style="width: 150px;margin-right: 3px" 
+                                                 required="true" requiredMessage="#{appmsg['bioBankAccount.bioBankAccount_bank_should_not_be_empty']}">
+                                    <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                    <f:selectItems value="#{bioBankAccountFormController.banks}"/>
+                                </p:selectOneMenu>
+
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="bankId"/>
+                            </p:column>
+                        </p:row>     
+                         <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="numberId" value="#{appmsg['bioBankAccount.bioBankAccount_number']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="numberId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+
+                                <p:inputText id="numberId" title="#{appmsg['bioBankAccount.bioBankAccount_number']}" value="#{bioBankAccountFormController.bioBankAccountModel.accountNumber}" 
+                                                 required="true" requiredMessage="#{appmsg['bioBankAccount.bioBankAccount_number_should_not_be_empty']}" maxlength="60" styleClass="isitext_hrm" style="width:250px;" >
+                                        <pe:keyFilter mask="num"></pe:keyFilter>
+                                    </p:inputText>
+
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="numberId"/>
+                            </p:column>
+                        </p:row>     
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="branchId" value="#{appmsg['bioBankAccount.bioBankAccount_branch']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="branchId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                                <p:focus for ="branchId">
+                                    <p:inputText id="branchId" title="#{appmsg['bioBankAccount.bioBankAccount_branch']}" value="#{bioBankAccountFormController.bioBankAccountModel.branch}" 
+                                                 required="true" requiredMessage="#{appmsg['bioBankAccount.bioBankAccount_branch_should_not_be_empty']}" maxlength="60" styleClass="isitext_hrm" style="width:250px;" />
+                                </p:focus>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="branchId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="addressId" value="#{appmsg['global.address']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="addressId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                                <p:inputTextarea id="addressId" title="#{appmsg['global.address']}" value="#{bioBankAccountFormController.bioBankAccountModel.address}" 
+                                                 required="true" maxlength="500" requiredMessage="#{appmsg['bioBankAccount.bioBankAccount_address_should_not_be_empty']}" counter="counter" counterTemplate="#{appmsg['global.remaining']}" styleClass="isitext_hrm" style="width:250px;" />
+
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%;" >
+                                <p:outputLabel  for="counter" styleClass="label_hrm" />
+                            </p:column>
+                            <p:column style="width: 1%;" >
+                                <p:outputLabel  for="counter" styleClass="label_hrm" />
+                            </p:column>
+                            <p:column style="width: 70%">
+                                <h:outputText id="counter" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="addressId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%" >
+                                <p:outputLabel for="countryId" value="#{appmsg['country.country_name']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="countryId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 70%">
+                                <p:selectOneMenu id="countryId" value="#{bioBankAccountFormController.bioBankAccountModel.countryId}" required="true" valueChangeListener="#{bioBankAccountFormController.countryChanged}" 
+                                                 style="width: 250px" filter="true" requiredMessage="#{appmsg['country.country_name_should_not_be_empty']}">
+                                    <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue="" />
+                                    <f:selectItems value="#{bioBankAccountFormController.countrys}"  />
+                                    <p:ajax update="provinceIdA, provinceId" event="change" />
+                                </p:selectOneMenu>
+                            </p:column>                            
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="countryId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%;background-color: #e1f0f0!important" >
+                                <p:outputLabel for="provinceIdA" value="#{appmsg['city.province_name']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="provinceIdA" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 70%">
+                                <p:selectOneMenu id="provinceIdA" value="#{bioBankAccountFormController.bioBankAccountModel.provinceId}" required="true" valueChangeListener="#{bioBankAccountFormController.provinceChanged}"
+                                                 style="width: 250px" filter="true" requiredMessage="#{appmsg['city.province_should_not_be_empty']}" disabled="#{bioBankAccountFormController.disabledProvince}">
+                                    <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue="" />
+                                    <f:selectItems value="#{bioBankAccountFormController.provinces}"  />
+                                    <p:ajax update="cityIdA, cityId" event="change" />
+                                </p:selectOneMenu>                                
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message id="provinceId" for="provinceId"/>
+                                <p:message for="provinceIdA"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="cityId" value="#{appmsg['institutionEducation.city_name']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="cityIdA" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                                <p:focus for ="cityIdA">
+                                    <p:selectOneMenu id="cityIdA" value="#{bioBankAccountFormController.bioBankAccountModel.cityId}" required="true"
+                                                     style="width: 250px" filter="true" requiredMessage="#{appmsg['institutionEducation.city_should_not_be_empty']}" disabled="#{bioBankAccountFormController.disabledCity}">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{bioBankAccountFormController.citys}" />
+                                    </p:selectOneMenu>
+                                </p:focus>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message id="cityId" for="cityId"/>
+                                <p:message for="cityIdA"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="typeId" value="#{appmsg['bioBankAccount.bioBankAccount_type']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="typeId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+
+                                <p:selectOneMenu id="typeId" value="#{bioBankAccountFormController.bioBankAccountModel.savingType}" style="width: 150px;margin-right: 3px" 
+                                                 required="true" requiredMessage="#{appmsg['bioBankAccount.bioBankAccount_type_should_not_be_empty']}">
+                                    <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                    <f:selectItem itemLabel="#{appmsg['bioBankAccount.bioBankAccount_type_deposito']}" itemValue="0"/>
+                                    <f:selectItem itemLabel="#{appmsg['bioBankAccount.bioBankAccount_type_giro']}" itemValue="2"/>
+                                    <f:selectItem itemLabel="#{appmsg['bioBankAccount.bioBankAccount_type_saving']}" itemValue="1"/>
+                                    <f:selectItem itemLabel="#{appmsg['bioBankAccount.bioBankAccount_type_checking']}" itemValue="3"/>
+                                </p:selectOneMenu>
+
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="typeId"/>
+                            </p:column>
+                        </p:row>     
+                         <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="currencyId" value="#{appmsg['bioBankAccount.bioBankAccount_currency']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="currencyId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+
+                                <p:selectOneMenu id="currencyId" value="#{bioBankAccountFormController.bioBankAccountModel.currencyId}" style="width: 150px;margin-right: 3px" 
+                                                 required="true" requiredMessage="#{appmsg['bioBankAccount.bioBankAccount_currency_should_not_be_empty']}">
+                                    <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                    <f:selectItems value="#{bioBankAccountFormController.currencys}"/>
+                                </p:selectOneMenu>
+
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="currencyId"/>
+                            </p:column>
+                        </p:row>   
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="swiftId" value="#{appmsg['bioBankAccount.bioBankAccount_swift']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="swiftId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+
+                                <p:inputText id="swiftId" title="#{appmsg['bioBankAccount.bioBankAccount_swift']}" value="#{bioBankAccountFormController.bioBankAccountModel.swiftCode}" 
+                                                 required="true" requiredMessage="#{appmsg['bioBankAccount.bioBankAccount_swift_should_not_be_empty']}" maxlength="60" styleClass="isitext_hrm" style="width:250px;" >
+                                        <pe:keyFilter mask="num"></pe:keyFilter>
+                                    </p:inputText>
+
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="swiftId"/>
+                            </p:column>
+                        </p:row>     
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="defaultId" value="#{appmsg['bioBankAccount.bioBankAccount_default']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="defaultId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+
+                                <p:selectOneRadio id="defaultId" styleClass="isitext_hrm" required="true" value="#{bioBankAccountFormController.bioBankAccountModel.defaultAccount}" label="#{appmsg['bioBankAccount.bioBankAccount_default']}">
+                                    <!--Cek HRM Constanta..-->
+                                    <f:selectItem itemLabel="#{appmsg['bioBankAccount.bioBankAccount_default_yes']}" itemValue="0" />
+                                    <f:selectItem itemLabel="#{appmsg['bioBankAccount.bioBankAccount_default_no']}" itemValue="1" />
+                                </p:selectOneRadio>
+
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="defaultId"/>
+                            </p:column>
+                        </p:row>         
+                        
+                    </p:panelGrid>
+                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="2" style="margin-bottom: -30px!important">
+                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formBioBankAccountFormId,:growlBioBankAccountFormlId"
+                                         action="#{bioBankAccountFormController.doSave()}" styleClass="isitext_hrm"
+                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
+                                         icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formBioBankAccountFormId"
+                                         icon="ui-icon-refresh" styleClass="isitext_hrm" >  
+                            <p:resetInput target="formBioBankAccountFormId" />  
+                        </p:commandButton>
+                    </h:panelGrid>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

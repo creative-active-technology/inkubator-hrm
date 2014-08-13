@@ -4,12 +4,14 @@ import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.BioDataDao;
-import com.inkubator.hrm.dao.BioEmploymentHistoryDao;
-import com.inkubator.hrm.dao.CityDao;
+import com.inkubator.hrm.dao.BioFamilyRelationshipDao;
+import com.inkubator.hrm.dao.EducationLevelDao;
+import com.inkubator.hrm.dao.FamilyRelationDao;
 import com.inkubator.hrm.entity.BioData;
-import com.inkubator.hrm.entity.BioEmploymentHistory;
-import com.inkubator.hrm.entity.City;
-import com.inkubator.hrm.service.BioEmploymentHistoryService;
+import com.inkubator.hrm.entity.BioFamilyRelationship;
+import com.inkubator.hrm.entity.EducationLevel;
+import com.inkubator.hrm.entity.FamilyRelation;
+import com.inkubator.hrm.service.BioFamilyRelationshipService;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import java.util.Date;
 import java.util.List;
@@ -25,154 +27,156 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author Taufik Hidayat
  */
-@Service(value = "bioEmploymentHistoryService")
+@Service(value = "bioFamilyRelationshipService")
 @Lazy
-public class BioEmploymentHistoryServiceImpl extends IServiceImpl implements BioEmploymentHistoryService {
+public class BioFamilyRelationshipServiceImpl extends IServiceImpl implements BioFamilyRelationshipService {
 
     @Autowired
-    private BioEmploymentHistoryDao bioEmploymentHistoryDao;
+    private BioFamilyRelationshipDao bioFamilyRelationshipDao;
     @Autowired
     private BioDataDao bioDataDao;
     @Autowired
-    private CityDao cityDao;
+    private FamilyRelationDao familyRelationDao;
+    @Autowired
+    private EducationLevelDao educationLevelDao;
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void delete(BioEmploymentHistory bioEmploymentHistory) throws Exception {
-        bioEmploymentHistoryDao.delete(bioEmploymentHistory);
+    public void delete(BioFamilyRelationship bioFamilyRelationship) throws Exception {
+        bioFamilyRelationshipDao.delete(bioFamilyRelationship);
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<BioEmploymentHistory> getAllData() throws Exception {
-        return this.bioEmploymentHistoryDao.getAllData();
+    public List<BioFamilyRelationship> getAllData() throws Exception {
+        return this.bioFamilyRelationshipDao.getAllData();
     }
 
     @Override
-    public List<BioEmploymentHistory> getAllData(Boolean arg0) throws Exception {
+    public List<BioFamilyRelationship> getAllData(Boolean arg0) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
     }
 
     @Override
-    public List<BioEmploymentHistory> getAllData(Integer arg0) throws Exception {
+    public List<BioFamilyRelationship> getAllData(Integer arg0) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
     }
 
     @Override
-    public List<BioEmploymentHistory> getAllData(Byte arg0) throws Exception {
+    public List<BioFamilyRelationship> getAllData(Byte arg0) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
     }
 
     @Override
-    public List<BioEmploymentHistory> getAllDataPageAble(int arg0, int arg1, Order arg2)
+    public List<BioFamilyRelationship> getAllDataPageAble(int arg0, int arg1, Order arg2)
             throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
     }
 
     @Override
-    public List<BioEmploymentHistory> getAllDataPageAbleIsActive(int arg0, int arg1,
+    public List<BioFamilyRelationship> getAllDataPageAbleIsActive(int arg0, int arg1,
             Order arg2, Boolean arg3) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
     }
 
     @Override
-    public List<BioEmploymentHistory> getAllDataPageAbleIsActive(int arg0, int arg1,
+    public List<BioFamilyRelationship> getAllDataPageAbleIsActive(int arg0, int arg1,
             Order arg2, Integer arg3) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
     }
 
     @Override
-    public List<BioEmploymentHistory> getAllDataPageAbleIsActive(int arg0, int arg1,
+    public List<BioFamilyRelationship> getAllDataPageAbleIsActive(int arg0, int arg1,
             Order arg2, Byte arg3) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
     }
 
     @Override
-    public BioEmploymentHistory getEntityByPkIsActive(String arg0, Integer arg1)
+    public BioFamilyRelationship getEntityByPkIsActive(String arg0, Integer arg1)
             throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
     }
 
     @Override
-    public BioEmploymentHistory getEntityByPkIsActive(String arg0, Byte arg1)
+    public BioFamilyRelationship getEntityByPkIsActive(String arg0, Byte arg1)
             throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
     }
 
     @Override
-    public BioEmploymentHistory getEntityByPkIsActive(String arg0, Boolean arg1)
+    public BioFamilyRelationship getEntityByPkIsActive(String arg0, Boolean arg1)
             throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
     }
 
     @Override
-    public BioEmploymentHistory getEntityByPkIsActive(Integer arg0, Integer arg1)
+    public BioFamilyRelationship getEntityByPkIsActive(Integer arg0, Integer arg1)
             throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
     }
 
     @Override
-    public BioEmploymentHistory getEntityByPkIsActive(Integer arg0, Byte arg1)
+    public BioFamilyRelationship getEntityByPkIsActive(Integer arg0, Byte arg1)
             throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
     }
 
     @Override
-    public BioEmploymentHistory getEntityByPkIsActive(Integer arg0, Boolean arg1)
+    public BioFamilyRelationship getEntityByPkIsActive(Integer arg0, Boolean arg1)
             throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
     }
 
     @Override
-    public BioEmploymentHistory getEntityByPkIsActive(Long arg0, Integer arg1)
+    public BioFamilyRelationship getEntityByPkIsActive(Long arg0, Integer arg1)
             throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
     }
 
     @Override
-    public BioEmploymentHistory getEntityByPkIsActive(Long arg0, Byte arg1)
+    public BioFamilyRelationship getEntityByPkIsActive(Long arg0, Byte arg1)
             throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
     }
 
     @Override
-    public BioEmploymentHistory getEntityByPkIsActive(Long arg0, Boolean arg1)
+    public BioFamilyRelationship getEntityByPkIsActive(Long arg0, Boolean arg1)
             throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
     }
 
     @Override
-    public BioEmploymentHistory getEntiyByPK(String arg0) throws Exception {
+    public BioFamilyRelationship getEntiyByPK(String arg0) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
     }
 
     @Override
-    public BioEmploymentHistory getEntiyByPK(Integer arg0) throws Exception {
+    public BioFamilyRelationship getEntiyByPK(Integer arg0) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-    public BioEmploymentHistory getEntiyByPK(Long id) throws Exception {
-        return bioEmploymentHistoryDao.getEntiyByPK(id);
+    public BioFamilyRelationship getEntiyByPK(Long id) throws Exception {
+        return bioFamilyRelationshipDao.getEntiyByPK(id);
     }
 
     @Override
@@ -201,78 +205,80 @@ public class BioEmploymentHistoryServiceImpl extends IServiceImpl implements Bio
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void save(BioEmploymentHistory bioEmploymentHistory) throws Exception {
-        BioData biodata = bioDataDao.getEntiyByPK(bioEmploymentHistory.getBioData().getId());
-        City city = cityDao.getEntiyByPK(bioEmploymentHistory.getCity().getId());
-
-        bioEmploymentHistory.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
-        bioEmploymentHistory.setBioData(biodata);
-        bioEmploymentHistory.setCity(city);
-        bioEmploymentHistory.setCreatedBy(UserInfoUtil.getUserName());
-        bioEmploymentHistory.setCreatedOn(new Date());
-        bioEmploymentHistoryDao.save(bioEmploymentHistory);
+    public void save(BioFamilyRelationship bioFamilyRelationship) throws Exception {
+        BioData biodata = bioDataDao.getEntiyByPK(bioFamilyRelationship.getBioData().getId());
+        FamilyRelation familyRelation = familyRelationDao.getEntiyByPK(bioFamilyRelationship.getFamilyRelation().getId());
+        EducationLevel educationLevel = educationLevelDao.getEntiyByPK(bioFamilyRelationship.getEducationLevel().getId());
+        bioFamilyRelationship.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+        bioFamilyRelationship.setBioData(biodata);
+        bioFamilyRelationship.setFamilyRelation(familyRelation);
+        bioFamilyRelationship.setEducationLevel(educationLevel);
+        bioFamilyRelationship.setCreatedBy(UserInfoUtil.getUserName());
+        bioFamilyRelationship.setCreatedOn(new Date());
+        bioFamilyRelationshipDao.save(bioFamilyRelationship);
     }
 
     @Override
-    public BioEmploymentHistory saveData(BioEmploymentHistory arg0) throws Exception {
+    public BioFamilyRelationship saveData(BioFamilyRelationship arg0) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
     }
 
     @Override
-    public void saveOrUpdate(BioEmploymentHistory arg0) throws Exception {
+    public void saveOrUpdate(BioFamilyRelationship arg0) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
     }
 
     @Override
-    public BioEmploymentHistory saveOrUpdateData(BioEmploymentHistory arg0) throws Exception {
+    public BioFamilyRelationship saveOrUpdateData(BioFamilyRelationship arg0) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
     }
 
     @Override
-    public void softDelete(BioEmploymentHistory arg0) throws Exception {
+    public void softDelete(BioFamilyRelationship arg0) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
     }
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void update(BioEmploymentHistory b) throws Exception {
+    public void update(BioFamilyRelationship b) throws Exception {
         BioData biodata = bioDataDao.getEntiyByPK(b.getBioData().getId());
-        City city = cityDao.getEntiyByPK(b.getCity().getId());
-        BioEmploymentHistory bioEmploymentHistory = bioEmploymentHistoryDao.getEntiyByPK(b.getId());
-        bioEmploymentHistory.setBioData(biodata);
-        bioEmploymentHistory.setCity(city);
-        bioEmploymentHistory.setYearIn(b.getYearIn());
-        bioEmploymentHistory.setYearOut(b.getYearOut());
-        bioEmploymentHistory.setCompanyName(b.getCompanyName());
-        bioEmploymentHistory.setLastOccupation(b.getLastOccupation());
-        bioEmploymentHistory.setSalary(b.getSalary());
-        bioEmploymentHistory.setJobSector(b.getJobSector());
-        bioEmploymentHistory.setUpdatedBy(UserInfoUtil.getUserName());
-        bioEmploymentHistory.setUpdatedOn(new Date());
-        bioEmploymentHistoryDao.update(bioEmploymentHistory);
+        FamilyRelation familyRelation = familyRelationDao.getEntiyByPK(b.getFamilyRelation().getId());
+        EducationLevel educationLevel = educationLevelDao.getEntiyByPK(b.getEducationLevel().getId());
+        BioFamilyRelationship bioFamilyRelationship = bioFamilyRelationshipDao.getEntiyByPK(b.getId());
+        bioFamilyRelationship.setBioData(biodata);
+        bioFamilyRelationship.setFamilyRelation(familyRelation);
+        bioFamilyRelationship.setEducationLevel(educationLevel);
+        bioFamilyRelationship.setName(b.getName());
+        bioFamilyRelationship.setDateOfBirth(b.getDateOfBirth());
+        bioFamilyRelationship.setGender(b.getGender());
+        bioFamilyRelationship.setDependents(b.getDependents());
+        bioFamilyRelationship.setOccupation(b.getOccupation());
+        bioFamilyRelationship.setUpdatedBy(UserInfoUtil.getUserName());
+        bioFamilyRelationship.setUpdatedOn(new Date());
+        bioFamilyRelationshipDao.update(bioFamilyRelationship);
     }
 
     @Override
-    public BioEmploymentHistory updateData(BioEmploymentHistory arg0) throws Exception {
+    public BioFamilyRelationship updateData(BioFamilyRelationship arg0) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<BioEmploymentHistory> getAllDataByBioDataId(Long bioDataId) throws Exception {
-        return bioEmploymentHistoryDao.getAllDataByBioDataId(bioDataId);
+    public List<BioFamilyRelationship> getAllDataByBioDataId(Long bioDataId) throws Exception {
+        return bioFamilyRelationshipDao.getAllDataByBioDataId(bioDataId);
 
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-    public BioEmploymentHistory getEntityByPKWithDetail(Long id) throws Exception {
-        return bioEmploymentHistoryDao.getEntityByPKWithDetail(id);
+    public BioFamilyRelationship getEntityByPKWithDetail(Long id) throws Exception {
+        return bioFamilyRelationshipDao.getEntityByPKWithDetail(id);
     }
     
 }

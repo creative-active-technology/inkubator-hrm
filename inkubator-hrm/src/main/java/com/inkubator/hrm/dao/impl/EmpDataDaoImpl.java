@@ -5,11 +5,9 @@
  */
 package com.inkubator.hrm.dao.impl;
 
-import com.inkubator.datacore.dao.impl.IDAOImpl;
-import com.inkubator.hrm.dao.EmpDataDao;
-import com.inkubator.hrm.entity.EmpData;
-import com.inkubator.hrm.web.search.EmpDataSearchParameter;
+import java.util.Date;
 import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.Disjunction;
@@ -20,6 +18,11 @@ import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
+
+import com.inkubator.datacore.dao.impl.IDAOImpl;
+import com.inkubator.hrm.dao.EmpDataDao;
+import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.web.search.EmpDataSearchParameter;
 
 /**
  *
@@ -33,6 +36,47 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     public Class<EmpData> getEntityClass() {
         return EmpData.class;
     }
+
+	@Override
+	public Long getTotalByGender(Integer gender) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
+		criteria.add(Restrictions.eq("bioData.gender", gender));
+		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
+	
+	@Override
+	public Long getTotalByAgeBetween(Date startDate, Date endDate) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
+		criteria.add(Restrictions.gt("bioData.dateOfBirth", startDate));
+		criteria.add(Restrictions.lt("bioData.dateOfBirth", endDate));
+		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
+
+	@Override
+	public Long getTotalByAgeLessThan(Date date) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
+		criteria.add(Restrictions.lt("bioData.dateOfBirth", date));
+		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
+
+	@Override
+	public Long getTotalByAgeMoreThan(Date date) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
+		criteria.add(Restrictions.gt("bioData.dateOfBirth", date));
+		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
+	
+	@Override
+	public Long getTotalByDepartmentId(Long departmentId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("jabatanByJabatanId", "jabatan", JoinType.INNER_JOIN);
+		criteria.add(Restrictions.eq("jabatan.department.id", departmentId));
+		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();		
+	}
 
     @Override
     public List<EmpData> getByParam(EmpDataSearchParameter searchParameter, int firstResult, int maxResults, Order order) {

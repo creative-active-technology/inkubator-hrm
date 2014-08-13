@@ -44,7 +44,6 @@ public class BioEmploymentHistoryFormController extends BaseController {
     @ManagedProperty(value = "#{cityService}")
     private CityService cityService;
     private Map<Integer, Integer> listYears = new TreeMap<>();
-    private Map<String, Long> citys = new TreeMap<>();
 
     @PostConstruct
     @Override
@@ -57,21 +56,13 @@ public class BioEmploymentHistoryFormController extends BaseController {
             bioEmploymentHistoryModel.setBioDataId(Long.parseLong(bioDataId));
 
             int year = Calendar.getInstance().get(Calendar.YEAR);
-            for (int i = year - 100; i <= year; i++) {
+            for (int i = year; i >= year - 100; i--) {
                 listYears.put(i, i);
             }
 
-            List<City> listCity = cityService.getAllData();
-
-            for (City city : listCity) {
-                citys.put(city.getCityName(), city.getId());
-            }
-
-            MapUtil.sortByValue(citys);
-
             String bioEmploymentHistoryId = FacesUtil.getRequestParameter("bioEmploymentHistoryId");
             if (StringUtils.isNotEmpty(bioEmploymentHistoryId)) {
-                BioEmploymentHistory bioEmploymentHistory = bioEmploymentHistoryService.getEntiyByPK(Long.parseLong(bioEmploymentHistoryId));
+                BioEmploymentHistory bioEmploymentHistory = bioEmploymentHistoryService.getEntityByPKWithDetail(Long.parseLong(bioEmploymentHistoryId));
                 if (bioEmploymentHistoryId != null) {
                     bioEmploymentHistoryModel = getModelFromEntity(bioEmploymentHistory);
                     isUpdate = Boolean.TRUE;
@@ -121,14 +112,7 @@ public class BioEmploymentHistoryFormController extends BaseController {
         this.cityService = cityService;
     }
 
-    public Map<String, Long> getCitys() {
-        return citys;
-    }
-
-    public void setCitys(Map<String, Long> citys) {
-        this.citys = citys;
-    }
-
+    
     public void doSave() {
         BioEmploymentHistory bioEmploymentHistory = getEntityFromViewModel(bioEmploymentHistoryModel);
         try {
@@ -183,7 +167,7 @@ public class BioEmploymentHistoryFormController extends BaseController {
             List<City> allCity = cityService.getAllData();
             List<City> queried = new ArrayList<City>();
             for (City city : allCity) {
-                if (city.getCityName().startsWith(query)) {
+                if (city.getCityName().toLowerCase().startsWith(query)  || city.getCityName().startsWith(query)) {
                     queried.add(city);
                 }
             }

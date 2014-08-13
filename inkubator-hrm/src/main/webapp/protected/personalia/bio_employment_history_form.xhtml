@@ -49,8 +49,9 @@
                                         <f:validator validatorId="yearIntegerNumberBetweenValidator"  />
                                         <f:attribute name="endNumberInteger" value="#{yearOut}"/>
                                         <f:attribute name="validatorMessage" value="#{appmsg['global.DateIn_validator ']}"/>
-                                    </p:selectOneMenu> - 
+                                    </p:selectOneMenu>
                                 </p:focus>
+                                 <h:outputLabel for="yearId" value="-" styleClass="label_hrm"/>
                                 <p:selectOneMenu id="yearOut" value="#{bioEmploymentHistoryFormController.bioEmploymentHistoryModel.yearOut}" binding="#{yearOut}" style="width: 150px;margin-right: 3px" 
                                                  required="true" requiredMessage="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_year_should_not_be_empty']}">
                                     <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>

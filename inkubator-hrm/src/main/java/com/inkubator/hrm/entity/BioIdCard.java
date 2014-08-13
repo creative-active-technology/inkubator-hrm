@@ -1,5 +1,5 @@
 package com.inkubator.hrm.entity;
-// Generated Aug 11, 2014 1:21:52 PM by Hibernate Tools 3.6.0
+// Generated Aug 13, 2014 10:47:17 AM by Hibernate Tools 3.6.0
 
 
 import java.util.Date;
@@ -35,7 +35,7 @@ public class BioIdCard  implements java.io.Serializable {
      private String updatedBy;
      private Date updatedOn;
      private String type;
-     private Integer cardNumber;
+     private String cardNumber;
      private Date validDate;
      private Date issuedDate;
 
@@ -48,7 +48,7 @@ public class BioIdCard  implements java.io.Serializable {
         this.bioData = bioData;
         this.city = city;
     }
-    public BioIdCard(long id, BioData bioData, City city, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String type, Integer cardNumber, Date validDate, Date issuedDate) {
+    public BioIdCard(long id, BioData bioData, City city, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String type, String cardNumber, Date validDate, Date issuedDate) {
        this.id = id;
        this.bioData = bioData;
        this.city = city;
@@ -155,12 +155,12 @@ public class BioIdCard  implements java.io.Serializable {
     }
 
     
-    @Column(name="card_number", unique=true)
-    public Integer getCardNumber() {
+    @Column(name="card_number", unique=true, length=60)
+    public String getCardNumber() {
         return this.cardNumber;
     }
     
-    public void setCardNumber(Integer cardNumber) {
+    public void setCardNumber(String cardNumber) {
         this.cardNumber = cardNumber;
     }
 

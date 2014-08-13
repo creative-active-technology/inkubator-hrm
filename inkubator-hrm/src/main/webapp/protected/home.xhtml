@@ -188,22 +188,22 @@
                                 </p:panelGrid>
                             </p:panel>
                         </p:column>
-                        <p:column style="width: 70%;color: #990000" colspan="2">
+                        <p:column style="width: 70%;color: #990000" colspan="2">                        	
                             <p:panel  style="margin-left: 0px;margin-right: 10px;margin-top: 10px;height: 100%" >
-                                <h:panelGrid style="margin-bottom: 3px">
-                                    <p:outputLabel value="History Kehadiran Karyawan"  styleClass="header_big" />
+                                <h:panelGrid style="margin-bottom: 3px" columns="2">
+                                    <p:outputLabel value="History Kehadiran Karyawan"  styleClass="header_big"  />
+                                    <p:outputLabel value=" "  styleClass="header_big"  />
                                     <p:outputLabel value="Pada Setiap Departement (Update Data Per Week)" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="Available in version 2.0" styleClass="header_big" style="position:relative;color:red;right:-400px !important;font-style:italic"/>
                                 </h:panelGrid>
                                 <p:barChart id="basic" value="#{homeController.persentasiKehadiranPerWeek}" legendPosition="ne"  stacked="false" seriesColors="66cc00,629de1,003366,990000,cccc00,6600cc"   animate="false"
                                             showDatatip="true"  legendCols="6" max="150" min="0"
                                             style="height:180px;font-size: 11px"/> 
 
                             </p:panel>
-
                         </p:column>
-
-
                     </p:row>
+                    
                     	<p:row>
                         	<p:column style="width: 25%">
 	                            <p:panel  style="margin-left: 10px;margin-right: 0px;margin-top: 10px;height:100%"> 
@@ -233,9 +233,11 @@
 	                        </p:column>
 
                         	<p:column style="width: 53%;color: #990000">
-                            	<p:panel  style="margin-left: 0px;margin-right: 0px;margin-top: 10px; height: 100%;">
-                                	<h:panelGrid style="margin-bottom: 3px">
+                            	<p:panel  style="margin-left: 0px;margin-right: 0px;margin-top: 10px; height: 200px;">
+                                	<h:panelGrid style="margin-bottom: 3px" columns="2">
+
                                     	<p:outputLabel value="Data Statistik Absensi" styleClass="header_big" />
+                                    	<p:outputLabel value="Available in version 2.0" styleClass="header_big" style="position:relative;color:red;right:-270px !important;font-style:italic"/>
                                 	</h:panelGrid>
                                 	<h:panelGroup  layout="block" style="margin-bottom: 8px">
                                             <div align="center" style="margin-top: 25px;margin-bottom: 35px">
@@ -324,7 +326,7 @@
                             <p:panel style="margin-left: 10px;margin-right: 0px;margin-top: 10px"> 
                                 <h:panelGrid style="margin-bottom: 3px">
                                     <p:outputLabel value="Distribusi Karyawan" styleClass="header_big" />
-                                    <p:outputLabel value="Usia (Data Update per Bulan)" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="Usia (data update per hari)" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
 
                                 <p:pieChart id="custo2" value="#{homeController.pieModel}" legendPosition="e" fill="false" showDataLabels="true" seriesColors="66cc00,629de1,003366,990000,cccc00,6600cc"
@@ -334,11 +336,13 @@
 
                         <p:column style="width: 53%;color: #990000">
                             <p:panel  style="margin-left: 0px;margin-right: 0px;margin-top: 10px">
-                                <h:panelGrid style="margin-bottom: 3px">
+                                <h:panelGrid style="margin-bottom: 3px" columns="2">
                                     <p:outputLabel value="Presensi Absen Karyawan" styleClass="header_big" />
+                                    <p:outputLabel value=" "  styleClass="header_big"  />
                                     <p:outputLabel value="Minggu Ke 3 Juni 2014 (Data Update per Hari)" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="Available in version 2.0" styleClass="header_big" style="position:relative;color:red;right:-155px !important;font-style:italic"/>
                                 </h:panelGrid>
-                                <p:barChart id="basic1" value="#{homeController.presensiModel}" legendPosition="se"  stacked="true" seriesColors="66cc00,629de1,003366,990000,cccc00,6600cc"   animate="false" 
+                                <p:barChart id="basic1" value="#{homeController.presensiModel}" legendPosition="se"  stacked="true" seriesColors="66cc00,629de1,003366,990000,cccc00,6600cc,d500d5,ff2a55"   animate="false" 
                                             showDatatip="true" orientation="horizontal" max="300" 
                                             style="height:180px;font-size: 11px"/> 
 
@@ -349,7 +353,7 @@
                             <p:panel  style="margin-left: 0px;margin-right: 10px;margin-top: 10px"> 
                                 <h:panelGrid style="margin-bottom: 3px">
                                     <p:outputLabel value="Distribusi Karyawan" styleClass="header_big" />
-                                    <p:outputLabel value="Gender (Data Update per Bulan)" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="Gender (data update per hari)" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                                 <div align="center" style="margin-bottom: 15px;margin-top: 15px">
                                     <p:panelGrid>
@@ -363,10 +367,10 @@
                                         </p:row>
                                         <p:row>
                                             <p:column style="width: 50%;text-align: center">
-                                                <p:outputLabel value="1200" style="font-size: 30px !important;font-weight: bold;color: #069;font-family: Digital-7 !important" />
+                                                <p:outputLabel value="#{homeController.totalMale}" style="font-size: 30px !important;font-weight: bold;color: #069;font-family: Digital-7 !important" />
                                             </p:column>
                                             <p:column style="width: 50%; text-align: center">
-                                                <p:outputLabel value="2000" style="font-size: 30px !important;font-weight: bold; color: #069;font-family: Digital-7  !important" />
+                                                <p:outputLabel value="#{homeController.totalFemale}" style="font-size: 30px !important;font-weight: bold; color: #069;font-family: Digital-7  !important" />
                                             </p:column>
                                         </p:row>
 
@@ -380,6 +384,7 @@
                         <p:column style="width: 25%">
                             <p:panel  style="margin-left: 10px;margin-right: 0px;margin-top: 10px"> 
                                 <h:panelGrid style="margin-bottom: 3px">
+                                	<p:outputLabel value="Available in version 2.0" styleClass="header_big" style="position:relative;color:red;right:-80px !important;font-style:italic"/>
                                     <p:outputLabel value="Resume Data Karyawan" styleClass="header_big" />
                                     <p:outputLabel value="Statistik Informasi" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
@@ -417,10 +422,10 @@
                             <p:panel  style="margin-left: 0px;margin-right: 0px;margin-top: 10px">
                                 <h:panelGrid style="margin-bottom: 3px">
                                     <p:outputLabel value="Distribusi Karyawan"  styleClass="header_big" />
-                                    <p:outputLabel value="Departement" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="Departemen (data update per hari)" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                                 <p:barChart id="basic11" value="#{homeController.distribusiKaryawanPerDepartment}" legendPosition="ne"  stacked="false" seriesColors="66cc00,629de1,003366,990000,cccc00,6600cc,006666"   animate="false"
-                                            showDatatip="true"  legendCols="7" 
+                                            showDatatip="true"  legendCols="8" 
                                             style="height:180px;font-size: 11px"/> 
 
                             </p:panel>
@@ -428,6 +433,9 @@
                         </p:column>
                         <p:column style="width: 25%;" >
                             <p:panel  style="margin-left: 0px;margin-right: 10px;margin-top: 10px;height: 242px" > 
+                            	<h:panelGrid style="margin-bottom: 3px">
+                            		<p:outputLabel value="Available in version 2.0" styleClass="header_big" style="position:relative;color:red;right:-60px !important;font-style:italic"/>
+                            	</h:panelGrid>
                                 <div align="center" style="margin-top: 5%">
                                     <p:calendar  mode="inline" id="inlineCal" />
                                     <!--<p:schedule />-->

@@ -62,4 +62,36 @@ public class StringsUtils extends StringUtils {
         }
         return isCondition;
     }
+    
+    /**
+     * <p>Potong kalimat berdasarkan inputan panjang karakter, tetapi dipotong per-kata</p>
+     *
+     * <pre>
+     * StringUtils.slicePerWord("rizky kojek cute", 13)   = "rizky kojek"
+     * StringUtils.slicePerWord("rizky kojek cute", 12)   = "rizky kojek"
+     * StringUtils.slicePerWord("rizky kojek cute", 11)   = "rizky kojek"
+     * StringUtils.slicePerWord("rizky kojek cute", 10)   = "rizky"
+     * StringUtils.slicePerWord("rizky kojek cute", 5)   = "rizky"
+     * StringUtils.slicePerWord("rizky kojek cute", 3)   = "riz"
+     * </pre>
+     *
+     * @param str  the String to get the substring from, may be null
+     * @param len  the maximum character
+     * @return string which already slice
+     */
+    public static String slicePerWord(String str, int len){
+    	
+    	String result = EMPTY;
+    	if (str == null || str.length() == 0) {
+            return result;
+        }
+    	
+    	String chr = substring(str, len-1, len);
+		result = substring(str, 0, len);
+    	if(isAlphanumeric(chr) && !equals(substring(str, len, len+1), " ")){
+    		result = substringBeforeLast(result, " ");
+    	} 
+    	
+    	return result;
+    }
 }

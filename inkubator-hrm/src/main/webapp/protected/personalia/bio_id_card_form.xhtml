@@ -1,0 +1,162 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/dialog_layout.xhtml">
+            <ui:define name="windowTitle">
+
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlBioIdCardFormlId" globalOnly="true" showDetail="true"/>
+                <h:form id="formBioIdCardFormId">
+                    <h:panelGrid  columns="2">
+                        <p:graphicImage library="images" name="bioIdCard.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['bioIdCard.form_bioIdCard']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['bioIdCard.bioIdCard_data_from_reference']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="1" style="margin-bottom: 5px;margin-left: 0px">
+                        <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                        <h:outputLabel value="#{appmsg['bioIdCard.dialog_info']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                        <h:outputLabel value="#{appmsg['bioIdCard.dialog_info_2']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                    </h:panelGrid> 
+                    <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="typeId" value="#{appmsg['bioIdCard.bioIdCard_type']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="typeId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                                <p:focus for ="typeId">
+                                    <p:inputText id="typeId" title="#{appmsg['bioIdCard.bioIdCard_type']}" value="#{bioIdCardFormController.bioIdCardModel.type}" 
+                                                 required="true" requiredMessage="#{appmsg['bioIdCard.bioIdCard_type_should_not_be_empty']}" maxlength="60" styleClass="isitext_hrm" style="width:250px;" />
+                                </p:focus>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="typeId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="numberId" value="#{appmsg['bioIdCard.bioIdCard_number']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="numberId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+
+                                <p:inputText id="numberId" title="#{appmsg['bioIdCard.bioIdCard_number']}" value="#{bioIdCardFormController.bioIdCardModel.cardNumber}" 
+                                             required="true" requiredMessage="#{appmsg['bioIdCard.bioIdCard_number_should_not_be_empty']}" maxlength="60" styleClass="isitext_hrm" style="width:250px;" >
+                                    <pe:keyFilter mask="num"></pe:keyFilter>
+                                </p:inputText>
+
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="numberId"/>
+                            </p:column>
+                        </p:row>     
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="issuedId" value="#{appmsg['bioIdCard.bioIdCard_issued']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="issuedId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+
+                                <p:calendar id="issuedId" pattern="dd MMMM yyyy" value="#{bioIdCardFormController.bioIdCardModel.issuedDate}" style="width: 150px;margin-right: 3px" 
+                                            required="true" requiredMessage="#{appmsg['bioIdCard.bioIdCard_issued_should_not_be_empty']}" navigator="true">
+                                    <f:validator validatorId="dateBetweenValidator"  />
+                                    <f:attribute name="endTime" value="#{validId}"/>
+                                    <f:attribute name="validatorMessage" value="#{appmsg['bioIdCard.bioIdCard_dateValidator']}"/>
+                                </p:calendar>
+
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="issuedId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="cityId" value="#{appmsg['bioIdCard.bioIdCard_place']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="cityId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                                <p:autoComplete id="cityId" title="#{appmsg['bioIdCard.bioIdCard_place']}" 
+                                                value="#{bioIdCardFormController.bioIdCardModel.city}"
+                                                completeMethod="#{bioIdCardFormController.completeCity}"
+                                                var="city"
+                                                itemValue="#{city}"
+                                                itemLabel="#{city.cityName}"
+                                                converter="cityConverter"
+                                                required="true" requiredMessage="#{appmsg['bioIdCard.bioIdCard_place_should_not_be_empty']}" styleClass="isitext_hrm" style="width:250px;"></p:autoComplete>
+
+
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="cityId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="validId" value="#{appmsg['bioIdCard.bioIdCard_valid']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="validId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+
+                                <p:calendar id="validId" locale="en" pattern="dd MMMM yyyy" binding="#{validId}" value="#{bioIdCardFormController.bioIdCardModel.validDate}" style="width: 150px;margin-right: 3px" 
+                                            required="true" requiredMessage="#{appmsg['bioIdCard.bioIdCard_valid_should_not_be_empty']}" navigator="true" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="validId"/>
+                            </p:column>
+                        </p:row>                        
+                        
+                    </p:panelGrid>
+                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="2" style="margin-bottom: -30px!important">
+                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formBioIdCardFormId,:growlBioIdCardFormlId"
+                                         action="#{bioIdCardFormController.doSave()}" styleClass="isitext_hrm"
+                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
+                                         icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formBioIdCardFormId"
+                                         icon="ui-icon-refresh" styleClass="isitext_hrm" >  
+                            <p:resetInput target="formBioIdCardFormId" />  
+                        </p:commandButton>
+                    </h:panelGrid>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+
