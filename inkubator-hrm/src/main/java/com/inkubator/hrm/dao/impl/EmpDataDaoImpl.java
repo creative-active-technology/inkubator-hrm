@@ -5,6 +5,7 @@
  */
 package com.inkubator.hrm.dao.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -42,6 +43,39 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 		criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
 		criteria.add(Restrictions.eq("bioData.gender", gender));
 		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
+	
+	@Override
+	public Long getTotalByAgeBetween(Date startDate, Date endDate) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
+		criteria.add(Restrictions.gt("bioData.dateOfBirth", startDate));
+		criteria.add(Restrictions.lt("bioData.dateOfBirth", endDate));
+		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
+
+	@Override
+	public Long getTotalByAgeLessThan(Date date) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
+		criteria.add(Restrictions.lt("bioData.dateOfBirth", date));
+		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
+
+	@Override
+	public Long getTotalByAgeMoreThan(Date date) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
+		criteria.add(Restrictions.gt("bioData.dateOfBirth", date));
+		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
+	
+	@Override
+	public Long getTotalByDepartmentId(Long departmentId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("jabatanByJabatanId", "jabatan", JoinType.INNER_JOIN);
+		criteria.add(Restrictions.eq("jabatan.department.id", departmentId));
+		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();		
 	}
 
     @Override

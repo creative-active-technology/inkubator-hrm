@@ -338,7 +338,7 @@
                                     <p:outputLabel value="Presensi Absen Karyawan" styleClass="header_big" />
                                     <p:outputLabel value="Minggu Ke 3 Juni 2014 (Data Update per Hari)" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
-                                <p:barChart id="basic1" value="#{homeController.presensiModel}" legendPosition="se"  stacked="true" seriesColors="66cc00,629de1,003366,990000,cccc00,6600cc"   animate="false" 
+                                <p:barChart id="basic1" value="#{homeController.presensiModel}" legendPosition="se"  stacked="true" seriesColors="66cc00,629de1,003366,990000,cccc00,6600cc,d500d5,ff2a55"   animate="false" 
                                             showDatatip="true" orientation="horizontal" max="300" 
                                             style="height:180px;font-size: 11px"/> 
 
@@ -363,10 +363,10 @@
                                         </p:row>
                                         <p:row>
                                             <p:column style="width: 50%;text-align: center">
-                                                <p:outputLabel value="1200" style="font-size: 30px !important;font-weight: bold;color: #069;font-family: Digital-7 !important" />
+                                                <p:outputLabel value="#{homeController.totalMale}" style="font-size: 30px !important;font-weight: bold;color: #069;font-family: Digital-7 !important" />
                                             </p:column>
                                             <p:column style="width: 50%; text-align: center">
-                                                <p:outputLabel value="2000" style="font-size: 30px !important;font-weight: bold; color: #069;font-family: Digital-7  !important" />
+                                                <p:outputLabel value="#{homeController.totalFemale}" style="font-size: 30px !important;font-weight: bold; color: #069;font-family: Digital-7  !important" />
                                             </p:column>
                                         </p:row>
 
@@ -420,7 +420,7 @@
                                     <p:outputLabel value="Departement" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                                 <p:barChart id="basic11" value="#{homeController.distribusiKaryawanPerDepartment}" legendPosition="ne"  stacked="false" seriesColors="66cc00,629de1,003366,990000,cccc00,6600cc,006666"   animate="false"
-                                            showDatatip="true"  legendCols="7" 
+                                            showDatatip="true"  legendCols="8" 
                                             style="height:180px;font-size: 11px"/> 
 
                             </p:panel>

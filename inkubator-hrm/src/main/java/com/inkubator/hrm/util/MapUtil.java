@@ -18,6 +18,9 @@ import java.util.Map;
  */
 public class MapUtil {
 
+	/*
+	 * Sorting maps Ascending based on value
+	 */
     public static <K, V extends Comparable<? super V>> Map<K, V>
             sortByValue(Map<K, V> map) {
         List<Map.Entry<K, V>> list
@@ -34,5 +37,24 @@ public class MapUtil {
             result.put(entry.getKey(), entry.getValue());
         }
         return result;
+    }
+    
+    /*
+	 * Sorting maps Descending based on value
+	 */
+    public static <K, V extends Comparable<? super V>> Map<K, V> sortByValueDesc(Map<K, V> map) {
+    	List<Map.Entry<K, V>> list = new LinkedList<>(map.entrySet());
+    	Collections.sort(list, new Comparator<Map.Entry<K, V>>() {
+		    @Override
+		    public int compare(Map.Entry<K, V> o1, Map.Entry<K, V> o2) {
+		        return (o2.getValue()).compareTo(o1.getValue());
+		    }
+    	});
+
+    	Map<K, V> result = new LinkedHashMap<>();
+		for (Map.Entry<K, V> entry : list) {
+		    result.put(entry.getKey(), entry.getValue());
+		}
+		return result;
     }
 }

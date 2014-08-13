@@ -5,7 +5,6 @@
  */
 package com.inkubator.hrm.service.impl;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -13,17 +12,24 @@ import java.util.Map;
 
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.inkubator.common.CommonUtilConstant;
+import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.dao.DepartmentDao;
 import com.inkubator.hrm.dao.EmpDataDao;
+import com.inkubator.hrm.entity.Department;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.service.EmpDataService;
+import com.inkubator.hrm.util.MapUtil;
+import com.inkubator.hrm.util.StringsUtils;
 import com.inkubator.hrm.web.search.EmpDataSearchParameter;
 
 /**
@@ -36,6 +42,8 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 
     @Autowired
     private EmpDataDao empDataDao;
+    @Autowired
+    private DepartmentDao departmentDao;
 
     @Override
     public EmpData getEntiyByPK(String id) throws Exception {
@@ -203,6 +211,7 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     }
 
 	@Override
+	@Cacheable(value="totalEmployeeByGender")
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
 	public Map<String, Long> getTotalByGender() throws Exception {
 		Long male = empDataDao.getTotalByGender(HRMConstant.GLOBAL_MALE);
@@ -216,21 +225,61 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 	}
 
 	@Override
+	@Cacheable(value="totalEmployeeByAge")
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
 	public Map<String, Long> getTotalByAge() throws Exception {
 		Date now = new Date();
-		Calendar cal = Calendar.getInstance();
+		Date startDate = new Date();
+		Date endDate = new Date();
 		
-		cal.setTime(now);
-		cal.add(Calendar.YEAR, -25);
-		return null;
+		//age less than 26
+		startDate = DateTimeUtil.getDateFrom(now, -26, CommonUtilConstant.DATE_FORMAT_YEAR);
+		Long lessThan26 = empDataDao.getTotalByAgeLessThan(startDate);
+		
+		//age between 26 - 30
+		startDate = DateTimeUtil.getDateFrom(now, -30, CommonUtilConstant.DATE_FORMAT_YEAR);
+		endDate = DateTimeUtil.getDateFrom(now, -26, CommonUtilConstant.DATE_FORMAT_YEAR);
+		Long between26And30 = empDataDao.getTotalByAgeBetween(startDate, endDate);
+		
+		//age between 31 - 35
+		startDate = DateTimeUtil.getDateFrom(now, -35, CommonUtilConstant.DATE_FORMAT_YEAR);
+		endDate = DateTimeUtil.getDateFrom(now, -31, CommonUtilConstant.DATE_FORMAT_YEAR);
+		Long between31And35 = empDataDao.getTotalByAgeBetween(startDate, endDate);
+		
+		//age between 36 - 40
+		startDate = DateTimeUtil.getDateFrom(now, -40, CommonUtilConstant.DATE_FORMAT_YEAR);
+		endDate = DateTimeUtil.getDateFrom(now, -36, CommonUtilConstant.DATE_FORMAT_YEAR);
+		Long between36And40 = empDataDao.getTotalByAgeBetween(startDate, endDate);
+		
+		//age more than 40
+		startDate = DateTimeUtil.getDateFrom(now, -40, CommonUtilConstant.DATE_FORMAT_YEAR);
+		Long moreThan40 = empDataDao.getTotalByAgeMoreThan(startDate);
+		
+		
+		Map<String, Long> results = new HashMap<String, Long>();
+		results.put("lessThan26", lessThan26);
+		results.put("between26And30", between26And30);
+		results.put("between31And35", between31And35);
+		results.put("between36And40", between36And40);
+		results.put("moreThan40", moreThan40);
+		
+		return results;
 	}
 
 	@Override
+	@Cacheable(value="totalEmployeeByDepartment")
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
 	public Map<String, Long> getTotalByDepartment() throws Exception {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+		List<Department> departments =  departmentDao.getAllData();
+		Map<String, Long> results = new HashMap<String, Long>();
+		for(Department department: departments){
+			Long total = empDataDao.getTotalByDepartmentId(department.getId());
+			results.put(StringsUtils.slicePerWord(department.getDepartmentName(), 25) , total);
+		}
+		//sorting by value (dari yang besar ke yang kecil)
+		results = MapUtil.sortByValueDesc(results);
 		
+		return results;
 	}
 
     @Override
