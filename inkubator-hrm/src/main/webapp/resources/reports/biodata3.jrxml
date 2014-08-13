@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="biodata3" language="groovy" pageWidth="242" pageHeight="153" orientation="Landscape" columnWidth="226" leftMargin="8" rightMargin="8" topMargin="34" bottomMargin="8" uuid="a88436a3-9945-4fe1-a08c-5ab9bbe8f177">
+	<property name="ireport.zoom" value="1.7715610000000017"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="83">
+			<staticText>
+				<reportElement x="70" y="14" width="100" height="12" uuid="b59bd9c2-35dc-448f-8291-8faca9f2eeec"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Deni Arianto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="70" y="26" width="100" height="12" uuid="64959a3a-17ee-43eb-9851-622702940d76"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Deni Arianto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="70" y="2" width="100" height="12" uuid="28305002-b5d8-4997-89d5-4fc03bad9eec"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Deni Arianto]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+</jasperReport>
