@@ -5,7 +5,7 @@
 package com.inkubator.hrm.dao.impl;
 
 import com.inkubator.datacore.dao.impl.IDAOImpl;
-import com.inkubator.hrm.dao.EducationHistoryDao;
+import com.inkubator.hrm.dao.BioEducationHistoryDao;
 import com.inkubator.hrm.entity.BioEducationHistory;
 import java.util.List;
 import org.hibernate.Criteria;
@@ -18,9 +18,9 @@ import org.springframework.stereotype.Repository;
  *
  * @author Deni
  */
-@Repository(value = "educationHistoryDao")
+@Repository(value = "bioEducationHistoryDao")
 @Lazy
-public class EducationHistoryDaoImpl extends IDAOImpl<BioEducationHistory> implements EducationHistoryDao{
+public class BioEducationHistoryDaoImpl extends IDAOImpl<BioEducationHistory> implements BioEducationHistoryDao{
 
     @Override
     public Class<BioEducationHistory> getEntityClass() {

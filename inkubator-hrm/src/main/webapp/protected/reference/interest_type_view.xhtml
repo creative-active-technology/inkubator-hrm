@@ -62,25 +62,25 @@
                             <f:facet name="header">  
                                 <h:outputText value="#{appmsg['interesttype.list_of_interestType']}"/>
                             </f:facet> 
-                            <p:column style="text-align: center;width: 5%">
+                            <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.number']}"/>
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="name" style="width: 40%">
+                            <p:column sortBy="name" style="width: 37%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['interesttype.name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.name}" />
                             </p:column>
-                            <p:column sortBy="country" style="width: 40%">
+                            <p:column sortBy="country" style="width: 50%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.description']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.description}" />
                             </p:column>
-                            <p:column headerText="#{appmsg['global.action']}" style="width: 200px;text-align: center" exportable="false">
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
                                                  onclick="statusDialog.show()"  oncomplete="detail.show()" update=":detailPanel"
                                                  style="font-size: 10px!important" action="#{interestTypeController.doSelectEntity()}">                        

@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @author Deni
  */
-public interface EducationHistoryService extends IService<BioEducationHistory>{
+public interface BioEducationHistoryService extends IService<BioEducationHistory>{
     public BioEducationHistory getAllDataByPK(Long id) throws Exception;
     
     public BioEducationHistoryViewModel getAllByPKByController(Long id) throws Exception;

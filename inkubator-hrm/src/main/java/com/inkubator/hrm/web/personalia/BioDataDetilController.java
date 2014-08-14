@@ -4,7 +4,6 @@
  */
 package com.inkubator.hrm.web.personalia;
 
-import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.BioAddress;
 import com.inkubator.hrm.entity.BioBankAccount;
@@ -28,14 +27,12 @@ import com.inkubator.hrm.service.BioFamilyRelationshipService;
 import com.inkubator.hrm.service.BioIdCardService;
 import com.inkubator.hrm.service.BioInsuranceService;
 import com.inkubator.hrm.service.BioMedicalHistoryService;
-import com.inkubator.hrm.service.EducationHistoryService;
-import com.inkubator.hrm.service.PeopleInterestService;
-import com.inkubator.hrm.util.CommonReportUtil;
+import com.inkubator.hrm.service.BioEducationHistoryService;
+import com.inkubator.hrm.service.BioPeopleInterestService;
 import com.inkubator.hrm.web.model.BioEducationHistoryViewModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -48,12 +45,9 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
-import net.sf.jasperreports.engine.JRException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
-import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.springframework.dao.DataIntegrityViolationException;
 
@@ -71,12 +65,9 @@ public class BioDataDetilController extends BaseController {
     private List<BioEducationHistoryViewModel> educationHistory;
     @ManagedProperty(value = "#{bioDataService}")
     private BioDataService bioDataService;
-    @ManagedProperty(value = "#{educationHistoryService}")
-    private EducationHistoryService educationHistoryService;
+    @ManagedProperty(value = "#{bioEducationHistoryService}")
+    private BioEducationHistoryService educationHistoryService;
     private String userId;
-    
-//report
-    private StreamedContent fileContent;
     
 //start. bio address
     private BioAddress selectedBioAddress;
@@ -95,8 +86,8 @@ public class BioDataDetilController extends BaseController {
 //people interest / minat
     private BioPeopleInterest selectedPeopleInterest;
     private List<BioPeopleInterest> listPeopleInterest;
-    @ManagedProperty(value = "#{peopleInterestService}")
-    private PeopleInterestService peopleInterestService;
+    @ManagedProperty(value = "#{bioPeopleInterestService}")
+    private BioPeopleInterestService peopleInterestService;
 //end people interest / minat
 
     //start. bio insurance
@@ -117,6 +108,7 @@ public class BioDataDetilController extends BaseController {
     private List<BioData> bioDataList;
     private Map<String, Object> params;
     private String bioId;
+    private StreamedContent fileContent;
 //end. report
 
     //start. bio medical
@@ -236,11 +228,11 @@ public class BioDataDetilController extends BaseController {
         this.educationHistory = educationHistory;
     }
 
-    public EducationHistoryService getEducationHistoryService() {
+    public BioEducationHistoryService getEducationHistoryService() {
         return educationHistoryService;
     }
 
-    public void setEducationHistoryService(EducationHistoryService educationHistoryService) {
+    public void setEducationHistoryService(BioEducationHistoryService educationHistoryService) {
         this.educationHistoryService = educationHistoryService;
     }
 
@@ -316,11 +308,11 @@ public class BioDataDetilController extends BaseController {
         this.listPeopleInterest = listPeopleInterest;
     }
 
-    public PeopleInterestService getPeopleInterestService() {
+    public BioPeopleInterestService getPeopleInterestService() {
         return peopleInterestService;
     }
 
-    public void setPeopleInterestService(PeopleInterestService peopleInterestService) {
+    public void setPeopleInterestService(BioPeopleInterestService peopleInterestService) {
         this.peopleInterestService = peopleInterestService;
     }
 
@@ -674,7 +666,7 @@ public class BioDataDetilController extends BaseController {
         List<String> dataIsi = new ArrayList<>();
         dataIsi.add("e" + String.valueOf(selectedBioEducationHistoryViewController.getId()));
         dataToSend.put("param", dataIsi);
-        RequestContext.getCurrentInstance().openDialog("education_history_form", options, dataToSend);
+        RequestContext.getCurrentInstance().openDialog("bio_education_history_form", options, dataToSend);
     }
 
     public void doAddBioEduHistory() {
@@ -688,7 +680,7 @@ public class BioDataDetilController extends BaseController {
         List<String> dataIsi = new ArrayList<>();
         dataIsi.add("i" + String.valueOf(selectedBioData.getId()));
         dataToSend.put("param", dataIsi);
-        RequestContext.getCurrentInstance().openDialog("education_history_form", options, dataToSend);
+        RequestContext.getCurrentInstance().openDialog("bio_education_history_form", options, dataToSend);
     }
 
     public void doDeleteBioEduHistory() {
@@ -732,7 +724,7 @@ public class BioDataDetilController extends BaseController {
         List<String> dataIsi = new ArrayList<>();
         dataIsi.add("e" + String.valueOf(selectedPeopleInterest.getId()));
         dataToSend.put("param", dataIsi);
-        RequestContext.getCurrentInstance().openDialog("people_interest_form", options, dataToSend);
+        RequestContext.getCurrentInstance().openDialog("bio_people_interest_form", options, dataToSend);
     }
 
     public void doAddBioPeopleInterest() {
@@ -746,7 +738,7 @@ public class BioDataDetilController extends BaseController {
         List<String> dataIsi = new ArrayList<>();
         dataIsi.add("i" + String.valueOf(selectedBioData.getId()));
         dataToSend.put("param", dataIsi);
-        RequestContext.getCurrentInstance().openDialog("people_interest_form", options, dataToSend);
+        RequestContext.getCurrentInstance().openDialog("bio_people_interest_form", options, dataToSend);
     }
 
     public void doDeleteBioPeopleInterest() {
@@ -931,6 +923,10 @@ public class BioDataDetilController extends BaseController {
     /**
      * END Bio Insurance method
      */
+    
+    /*
+     *Start Report BioData
+     */
     public BioEmergencyContact getSeleBioEmergencyContact() {
         return seleBioEmergencyContact;
     }
@@ -944,18 +940,6 @@ public class BioDataDetilController extends BaseController {
     }
 
     public String doReportBiodata() {
-        System.out.println(selectedBioData.getId());
-//        Map<String, Object> options = new HashMap<>();
-//        options.put("modal", true);
-//        options.put("draggable", true);
-//        options.put("resizable", false);
-//        options.put("contentWidth", 355);
-//        options.put("contentHeight", 220);
-//        Map<String, List<String>> dataToSend = new HashMap<>();
-//        List<String> dataIsi = new ArrayList<>();
-//        dataIsi.add(String.valueOf(selectedBioData.getId()));
-//        dataToSend.put("param", dataIsi);
-//        RequestContext.getCurrentInstance().openDialog("bio_report_view", options, dataToSend);
         return "/protected/personalia/bio_report_view.htm?faces-redirect=true&execution=e" + selectedBioData.getId();
     }
     
@@ -968,6 +952,10 @@ public class BioDataDetilController extends BaseController {
         }
     }
 
+    /*
+     *End Report BioData
+     */
+    
     public List<BioData> getBioDataList() {
         return bioDataList;
     }

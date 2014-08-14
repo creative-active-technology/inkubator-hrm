@@ -29,4 +29,6 @@ public interface EmpDataService extends IService<EmpData>{
     public List<EmpData> getByParam(EmpDataSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
 
     public Long getTotalEmpDataByParam(EmpDataSearchParameter searchParameter) throws Exception;
+    
+    public EmpData getByBioDataIdWithDepartment(long id) throws Exception;
 }

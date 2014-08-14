@@ -38,6 +38,11 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <dependency>
+            <groupId>net.sourceforge.barbecue</groupId>
+            <artifactId>barbecue</artifactId>
+            <version>1.5-beta1</version>
+        </dependency>
 <!--        <dependency> 
             <groupId>com.inkubator</groupId>
             <artifactId>entity-service-hrm</artifactId>

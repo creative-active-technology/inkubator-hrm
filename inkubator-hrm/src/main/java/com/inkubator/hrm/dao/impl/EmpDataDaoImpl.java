@@ -120,4 +120,14 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
             criteria.add(disjunction);
         }
     }
+
+    @Override
+    public EmpData getByBioDataWithDepartment(long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("bioData.id", id));
+        criteria.setFetchMode("bioData", FetchMode.JOIN);
+        criteria.setFetchMode("jabatanByJabatanGajiId", FetchMode.JOIN);
+        criteria.setFetchMode("jabatanByJabatanGajiId.department", FetchMode.JOIN);
+        return (EmpData) criteria.uniqueResult();
+    }
 }

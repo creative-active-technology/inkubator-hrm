@@ -294,4 +294,10 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         return this.empDataDao.getTotalEmpDataByParam(searchParameter);
     }
 
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public EmpData getByBioDataIdWithDepartment(long id) throws Exception {
+        return empDataDao.getByBioDataWithDepartment(id);
+    }
+
 }

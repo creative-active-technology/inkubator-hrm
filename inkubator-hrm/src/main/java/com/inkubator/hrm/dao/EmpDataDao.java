@@ -32,5 +32,7 @@ public interface EmpDataDao extends IDAO<EmpData> {
     public List<EmpData> getByParam(EmpDataSearchParameter searchParameter, int firstResult, int maxResults, Order order);
 
     public Long getTotalEmpDataByParam(EmpDataSearchParameter searchParameter);
+    
+    public EmpData getByBioDataWithDepartment(long id);
 
 }

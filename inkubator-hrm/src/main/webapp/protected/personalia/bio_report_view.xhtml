@@ -10,24 +10,43 @@
         <title>IGNORED</title>
     </h:head>
     <h:body>
-        <ui:composition template="/templates/dialog_layout.xhtml">
+        <ui:composition template="/templates/master_layout_full.xhtml">
             <ui:define name="windowTitle">
-
+                Role View
             </ui:define>
             <ui:define name="center">
-                <!--<p:growl id="growlDepartmentFormlId" globalOnly="true" showDetail="true"/>-->
+                <div id="box_bg" style="margin: 10px">
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="bio_data.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="Kartu Nama" styleClass="header_big" />
+                                <p:outputLabel value="Preview" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator/>
+                    
                 <h:form id="formDepartmentId">
-                    #{bioDataReportViewController.bioDataId}
+                    
+                    
                     <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
                         <p:row>
                             <p:column colspan="3">
-                                <p:media value="#{reportStreamController.file}" player="pdf" width="350px" height="215px">
+                                <p:media value="#{reportStreamController.file}" player="pdf" width="350px" height="215px" cache="false">
                                     <f:param name="id" value="#{bioDataReportViewController.bioDataId}" />
                                 </p:media>
                             </p:column>
                         </p:row>
                     </p:panelGrid>
+                    <p:separator/>
+                    <p:toolbarGroup align="right">
+                                <h:panelGrid columns="3">
+                                    <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{bioDataReportViewController.doBack()}" styleClass="label_button"/>
+                                </h:panelGrid>
+                            </p:toolbarGroup>
                 </h:form>
+                </div>
             </ui:define>
 
         </ui:composition>
