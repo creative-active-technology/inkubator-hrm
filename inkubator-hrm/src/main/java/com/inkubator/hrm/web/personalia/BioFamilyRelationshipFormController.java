@@ -7,9 +7,11 @@ import com.inkubator.hrm.entity.BioData;
 import com.inkubator.hrm.entity.BioFamilyRelationship;
 import com.inkubator.hrm.entity.EducationLevel;
 import com.inkubator.hrm.entity.FamilyRelation;
+import com.inkubator.hrm.entity.OccupationType;
 import com.inkubator.hrm.service.BioFamilyRelationshipService;
 import com.inkubator.hrm.service.EducationLevelService;
 import com.inkubator.hrm.service.FamilyRelationService;
+import com.inkubator.hrm.service.OccupationTypeService;
 import com.inkubator.hrm.util.MapUtil;
 import com.inkubator.hrm.web.model.BioFamilyRelationshipModel;
 import com.inkubator.webcore.controller.BaseController;
@@ -17,8 +19,10 @@ import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -47,6 +51,8 @@ public class BioFamilyRelationshipFormController extends BaseController {
     private FamilyRelationService familyRelationService;
     @ManagedProperty(value = "#{educationLevelService}")
     private EducationLevelService educationLevelService;
+    @ManagedProperty(value = "#{occupationTypeService}")
+    private OccupationTypeService occupationTypeService;
     private Map<String, Long> familyRelations = new TreeMap<>();
     private Map<String, Long> educationLevels = new TreeMap<>();
 
@@ -60,7 +66,6 @@ public class BioFamilyRelationshipFormController extends BaseController {
             String bioDataId = FacesUtil.getRequestParameter("bioDataId");
             bioFamilyRelationshipModel.setBioDataId(Long.parseLong(bioDataId));
 
-
             List<FamilyRelation> listFamilyRelation = familyRelationService.getAllData();
 
             for (FamilyRelation familyRelation : listFamilyRelation) {
@@ -68,7 +73,7 @@ public class BioFamilyRelationshipFormController extends BaseController {
             }
 
             MapUtil.sortByValue(familyRelations);
-            
+
             List<EducationLevel> listEducationLevel = educationLevelService.getAllData();
 
             for (EducationLevel educationLevel : listEducationLevel) {
@@ -117,7 +122,6 @@ public class BioFamilyRelationshipFormController extends BaseController {
         this.bioFamilyRelationshipService = bioFamilyRelationshipService;
     }
 
-    
     public void setFamilyRelationService(FamilyRelationService familyRelationService) {
         this.familyRelationService = familyRelationService;
     }
@@ -141,9 +145,13 @@ public class BioFamilyRelationshipFormController extends BaseController {
     public void setEducationLevels(Map<String, Long> educationLevels) {
         this.educationLevels = educationLevels;
     }
-    
-    
 
+    public void setOccupationTypeService(OccupationTypeService occupationTypeService) {
+        this.occupationTypeService = occupationTypeService;
+    }
+
+    
+    
     public void doSave() {
         BioFamilyRelationship bioFamilyRelationship = getEntityFromViewModel(bioFamilyRelationshipModel);
         try {
@@ -193,5 +201,23 @@ public class BioFamilyRelationshipFormController extends BaseController {
         return bioFamilyRelationshipModel;
     }
 
-    
+    public List<String> completeOccupation(String query) {
+        try {
+            List<OccupationType> allOccupationType = occupationTypeService.getAllData();
+            List<String> queried = new ArrayList<>();
+            for (OccupationType occupationType : allOccupationType) {
+                if (occupationType.getOccupationTypeName().toLowerCase().startsWith(query) || occupationType.getOccupationTypeName().startsWith(query)) {
+                    queried.add(occupationType.getOccupationTypeName());
+                }
+            }
+
+            Set<String> setOccupation = new HashSet<>(queried);
+            List<String> listOccupation = new ArrayList<>(setOccupation);
+            return listOccupation;
+        } catch (Exception ex) {
+            Logger.getLogger(OccupationTypeFormController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
 }

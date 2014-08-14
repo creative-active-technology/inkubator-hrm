@@ -42,6 +42,9 @@ public class BioEmploymentHistory  implements java.io.Serializable {
     public BioEmploymentHistory() {
     }
 
+    public BioEmploymentHistory(long id) {
+        this.id = id;
+    }
 	
     public BioEmploymentHistory(long id, BioData bioData, City city) {
         this.id = id;

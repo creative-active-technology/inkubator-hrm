@@ -10,9 +10,16 @@ import com.inkubator.hrm.web.model.BioMedicalHistoryModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
@@ -34,7 +41,7 @@ public class BioMedicalHistoryFormController extends BaseController {
     private Boolean isUpdate;
     @ManagedProperty(value = "#{bioMedicalHistoryService}")
     private BioMedicalHistoryService bioMedicalHistoryService;
-    private Map<Integer, Integer> listYears = new TreeMap<Integer, Integer>();
+    private Map<Integer, Integer> listYears = new TreeMap<>(Collections.reverseOrder());
 
     @PostConstruct
     @Override
@@ -47,7 +54,7 @@ public class BioMedicalHistoryFormController extends BaseController {
             bioMedicalHistoryModel.setBioDataId(Long.parseLong(bioDataId));
 
             int year = Calendar.getInstance().get(Calendar.YEAR);
-            for (int i = year-100; i <= year; i++) {
+            for (int i = year-54; i <= year; i++) {
                 listYears.put(i, i);
             }
 
@@ -140,5 +147,24 @@ public class BioMedicalHistoryFormController extends BaseController {
         bioMedicalHistoryModel.setStatus(entity.getStatus());
         bioMedicalHistoryModel.setDescription(entity.getDescription());
         return bioMedicalHistoryModel;
+    }
+    
+    public List<String> completeDisease(String query) {
+        try {
+            List<BioMedicalHistory> allBioMedicalHistory = bioMedicalHistoryService.getAllData();
+            List<String> queried = new ArrayList<>();
+            
+            for (BioMedicalHistory bioMedicalHistory : allBioMedicalHistory) {
+                if (bioMedicalHistory.getDisease().toLowerCase().startsWith(query)  || bioMedicalHistory.getDisease().startsWith(query)) {
+                    queried.add(bioMedicalHistory.getDisease());
+                }
+            }
+            Set<String> setCompany = new HashSet<>(queried);
+            List<String> listCompany = new ArrayList<>(setCompany);
+            return listCompany;
+        } catch (Exception ex) {
+            Logger.getLogger(BioMedicalHistoryFormController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 }
