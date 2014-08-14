@@ -81,12 +81,16 @@ public class BioDataDaoImpl extends IDAOImpl<BioData> implements BioDataDao {
         criteria.setFetchMode("nationality", FetchMode.JOIN);
         return criteria.list();
     }
+    @Override
     public List<BioData> getByName(String name) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+//        criteria.createAlias("empDatas", "emp",JoinType.INNER_JOIN);
         Disjunction disjunction = Restrictions.disjunction();
         disjunction.add(Restrictions.like("firstName", name, MatchMode.ANYWHERE));
         disjunction.add(Restrictions.like("lastName", name, MatchMode.ANYWHERE));
+       
         criteria.add(disjunction);
+        criteria.add(Restrictions.isEmpty("empDatas"));
         criteria.addOrder(Order.asc("firstName"));
         criteria.setFirstResult(0);
         criteria.setMaxResults(7);

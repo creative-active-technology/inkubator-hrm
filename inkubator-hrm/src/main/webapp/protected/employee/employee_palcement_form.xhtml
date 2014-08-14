@@ -15,7 +15,7 @@
                 Home
             </ui:define>
             <ui:define name="center">
-                <p:growl id="growlUserFormId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
+                <p:growl id="growlEmpDataFormId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
                 <h:form id="empDataFormId" >
                     <div id="box_bg" style="margin: 10px">
                         <!--<p:panel style="margin: 10px">-->
@@ -39,7 +39,7 @@
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:inputText value="#{empDataFormController.empDataModel.nik}" maxlength="45"
-                                                 styleClass="isitext_hrm" label="Kode Kelompok Kerja"
+                                                 styleClass="isitext_hrm" label="NIK"
                                                  style="width: 350px" required="true" id="nik" onkeyup="this.value = this.value.toUpperCase();" />
                                     <p:message for="nik"/>
                                 </p:column>
@@ -50,9 +50,10 @@
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:inputText value="#{empDataFormController.empDataModel.bioDataName}" maxlength="45"
-                                                 styleClass="isitext_hrm" label="Kode Kelompok Kerja"
+                                                 styleClass="isitext_hrm" label="Name" 
                                                  style="width: 350px" required="true" id="name"  />
-                                    <p:commandButton  style="margin-left: 5px" icon="ui-icon-search" title="Cari" action="#{empDataFormController.doSearch()}" ajax="true" immediate="true">
+                                    <p:commandButton  style="margin-left: 5px" icon="ui-icon-search" title="Cari" action="#{empDataFormController.doSearch()}" widgetVar="cariId"
+                                                      ajax="true" immediate="true">
                                         <p:ajax event="dialogReturn" listener="#{empDataFormController.onDialogReturn}"  update="name,birthDate"/>
 
                                     </p:commandButton>
@@ -120,7 +121,7 @@
                                     <p:outputLabel  value="Tanggal Bekerja"  for="joinDate" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:calendar  id="joinDate" pattern="dd MMMM yyyy"/>
+                                    <p:calendar  id="joinDate" pattern="dd MMMM yyyy" value="#{empDataFormController.empDataModel.joinDate}"/>
                                     <p:message for="joinDate"/>
                                 </p:column>
 
@@ -130,8 +131,8 @@
                                     <p:outputLabel  value="Salary Grade"  for="salaryGrade" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneMenu  style="margin-right: 3px;width: 353px" id="salaryGrade" filter="true" required="true"
-                                                      value="#{jabatanFormController.jabatanModel.golonganJabatanId}">
+                                    <p:selectOneMenu  style="margin-right: 3px;width: 158px" id="salaryGrade" filter="true" required="true"
+                                                      value="#{empDataFormController.empDataModel.paySalaryGradeId}">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{empDataFormController.mapPaySalary}" />
                                     </p:selectOneMenu>
@@ -159,7 +160,7 @@
                         <div style="margin-bottom: 5px">
                             <p:commandButton value="#{appmsg['global.save']}" ajax="true" action="#{empDataFormController.doSave()}"
                                              styleClass="isitext_hrm" 
-                                             style="margin-right: 5px" label="#{appmsg['global.save']}" update="empDataFormId"
+                                             style="margin-right: 5px" label="#{appmsg['global.save']}" update="empDataFormId,:growlEmpDataFormId"
                                              icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
                             <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="empDataFormId" action="#{jabatanFormController.doReset()}"
                                              icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px" >  

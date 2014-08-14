@@ -5,21 +5,28 @@
  */
 package com.inkubator.hrm.web.employee;
 
+import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.BioData;
 import com.inkubator.hrm.entity.Department;
+import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.EmployeeType;
 import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.entity.PaySalaryGrade;
 import com.inkubator.hrm.service.DepartmentService;
+import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.EmployeeTypeService;
 import com.inkubator.hrm.service.JabatanService;
 import com.inkubator.hrm.service.PaySalaryGradeService;
 import com.inkubator.hrm.web.model.EmpDataModel;
 import com.inkubator.webcore.controller.BaseController;
+import com.inkubator.webcore.util.FacesUtil;
+import com.inkubator.webcore.util.MessagesResourceUtil;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -51,6 +58,8 @@ public class EmpDataFormController extends BaseController {
     private EmployeeTypeService employeeTypeService;
     @ManagedProperty(value = "#{paySalaryGradeService}")
     private PaySalaryGradeService paySalaryGradeService;
+    @ManagedProperty(value = "#{empDataService}")
+    private EmpDataService empDataService;
 //
 //    public void setHrmUserService(HrmUserService hrmUserService) {
 //        this.hrmUserService = hrmUserService;
@@ -83,6 +92,8 @@ public class EmpDataFormController extends BaseController {
             for (PaySalaryGrade paySalaryGrade : paysSalarys) {
                 mapPaySalary.put(paySalaryGrade.getGradeSalary(), paySalaryGrade.getId());
             }
+
+            isEdit = Boolean.FALSE;
         } catch (Exception ex) {
             LOGGER.error("error", ex);
         }
@@ -235,11 +246,22 @@ public class EmpDataFormController extends BaseController {
     }
 
     public String doSave() {
-        if(isEdit){
-            
-        }else{
-            
+        EmpData empData = getEntityFromViewModel(empDataModel);
+        if (isEdit) {
+
+        } else {
+            try {
+                empDataService.save(empData);
+                 return "/protected/employee/employee_placement_detail.htm?faces-redirect=true&execution=e" + empData.getId();
+            } catch (BussinessException ex) {
+//                LOGGER.error("Error", ex);
+                MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+
+            } catch (Exception ex) {
+                LOGGER.error("Error", ex);
+            }
         }
+
         return null;
     }
 
@@ -278,6 +300,31 @@ public class EmpDataFormController extends BaseController {
     public void setIsEdit(Boolean isEdit) {
         this.isEdit = isEdit;
     }
-    
-    
+
+    private EmpData getEntityFromViewModel(EmpDataModel empDataModel) {
+        EmpData empData = new EmpData();
+        if (empDataModel.getId() != null) {
+            empData.setId(empDataModel.getId());
+        }
+        empData.setBasicSalary(empDataModel.getBasicSalary());
+        empData.setBioData(new BioData(empDataModel.getBioDataId()));
+        empData.setEmployeeType(new EmployeeType(empDataModel.getEmployeeTypeId()));
+        empData.setHeatlyPremi(Boolean.TRUE);
+        empData.setInsentifStatus(Boolean.TRUE);
+        empData.setIsFinger(Boolean.TRUE);
+        empData.setJabatanByJabatanGajiId(new Jabatan(empDataModel.getJabatanByJabatanId()));
+        empData.setJabatanByJabatanId(new Jabatan(empDataModel.getJabatanByJabatanId()));
+        empData.setJoinDate(empDataModel.getJoinDate());
+        empData.setNik(empDataModel.getNik());
+        empData.setPaySalaryGrade(new PaySalaryGrade(empDataModel.getPaySalaryGradeId()));
+        empData.setPtkpStatus(Boolean.FALSE);
+        empData.setPtkpNumber(0);
+//        empData.setWtGroupWorking(new WtGroupWorking());
+        return empData;
+    }
+
+    public void setEmpDataService(EmpDataService empDataService) {
+        this.empDataService = empDataService;
+    }
+
 }

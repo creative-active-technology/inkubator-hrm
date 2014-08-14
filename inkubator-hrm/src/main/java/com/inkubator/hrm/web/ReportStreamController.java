@@ -4,7 +4,6 @@
  */
 package com.inkubator.hrm.web;
 
-import com.inkubator.hrm.service.BioDataService;
 import com.inkubator.hrm.util.CommonReportUtil;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
@@ -14,14 +13,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.PostConstruct;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import net.sf.jasperreports.engine.JRException;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
@@ -34,27 +31,20 @@ public class ReportStreamController extends BaseController {
     private Map<String, Object> params;
     private String whereCondition;
 
-    @PostConstruct
-    @Override
-    public void initialization() {
-        System.out.println("init");
-        super.initialization();
-        String param = FacesUtil.getRequestParameter("execution");
-        System.out.println(param);
-    }
-
+  
     public StreamedContent getFile() {
         System.out.println("execute getFile");
         FacesContext context = FacesUtil.getFacesContext();
-        String bioId = context.getExternalContext().getRequestParameterMap().get("id");
-        System.out.println(bioId + "aaa");
+        String bioReportId = context.getExternalContext().getRequestParameterMap().get("bioReportId");
+        System.out.println(bioReportId + "aaa");
 //        countryId = "1";
         List test = new ArrayList<>();
         Map<String, String> mapData = new HashMap<String, String>();
         List<Map<String, String>> maps = new ArrayList<Map<String, String>>();
         mapData.put("NIK", "hehe");
         maps.add(mapData);
-        if (context.getRenderResponse() || bioId == null) {
+        params=new HashMap();
+        if (context.getRenderResponse() || bioReportId == null) {
             System.out.println("di lakukan pemanggilan");
             // So, we're rendering the view. Return a stub StreamedContent so that it will generate right URL.
             return new DefaultStreamedContent();

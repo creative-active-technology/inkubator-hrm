@@ -4,7 +4,6 @@
  */
 package com.inkubator.hrm.web.personalia;
 
-import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.BioAddress;
 import com.inkubator.hrm.entity.BioBankAccount;
@@ -30,12 +29,10 @@ import com.inkubator.hrm.service.BioInsuranceService;
 import com.inkubator.hrm.service.BioMedicalHistoryService;
 import com.inkubator.hrm.service.EducationHistoryService;
 import com.inkubator.hrm.service.PeopleInterestService;
-import com.inkubator.hrm.util.CommonReportUtil;
 import com.inkubator.hrm.web.model.BioEducationHistoryViewModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -48,12 +45,9 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
-import net.sf.jasperreports.engine.JRException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
-import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.springframework.dao.DataIntegrityViolationException;
 
@@ -943,20 +937,20 @@ public class BioDataDetilController extends BaseController {
         return fileContent;
     }
 
-    public String doReportBiodata() {
+    public void doReportBiodata() {
         System.out.println(selectedBioData.getId());
-//        Map<String, Object> options = new HashMap<>();
-//        options.put("modal", true);
-//        options.put("draggable", true);
-//        options.put("resizable", false);
-//        options.put("contentWidth", 355);
-//        options.put("contentHeight", 220);
-//        Map<String, List<String>> dataToSend = new HashMap<>();
-//        List<String> dataIsi = new ArrayList<>();
-//        dataIsi.add(String.valueOf(selectedBioData.getId()));
-//        dataToSend.put("param", dataIsi);
-//        RequestContext.getCurrentInstance().openDialog("bio_report_view", options, dataToSend);
-        return "/protected/personalia/bio_report_view.htm?faces-redirect=true&execution=e" + selectedBioData.getId();
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 355);
+        options.put("contentHeight", 220);
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        List<String> dataIsi = new ArrayList<>();
+        dataIsi.add(String.valueOf(selectedBioData.getId()));
+        dataToSend.put("param", dataIsi);
+        RequestContext.getCurrentInstance().openDialog("bio_report_view", options, dataToSend);
+//        return "/protected/personalia/bio_report_view.htm?faces-redirect=true&execution=e" + selectedBioData.getId();
     }
     
     public void onDialogReturnReport(SelectEvent event) {

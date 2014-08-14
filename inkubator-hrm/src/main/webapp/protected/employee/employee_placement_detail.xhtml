@@ -1,0 +1,350 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg">
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="bio_data.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="Penempatan Karyawan Detil" styleClass="header_big" />
+                                <p:outputLabel value="Data Penempatan Karyawan" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator />
+                    <p:growl id="growlBioDetailFormId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
+                    <h:form id="formBioDetailFormId" >
+                        <p:panelGrid style="width: 100%;margin-bottom: 10px" styleClass="grid_no_border">
+                            <p:row>
+                                <p:column style="width: 13%;vertical-align: middle!important" >
+                                    <p:graphicImage value="#{imageBioDataStreamerController.fotoImage}" height="178" width="150" style="border:  2px solid #003366 !important; border-radius: 5px !important;margin-top: 10px" cache="false" >
+                                        <f:param name="id" value="#{empDataDetilController.selectedEmpData.bioData.id}"/>
+                                    </p:graphicImage>
+
+                                </p:column>
+
+                                <p:column style="width: 87%;vertical-align: middle !important" >
+                                    <p:panelGrid style="width: 100%;margin-top: 10px;" styleClass="grid_border4">
+                                        <p:row>
+                                            <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                                <p:outputLabel  value="NIK" style="font-weight: bold"/>
+                                            </p:column>
+                                            <p:column style="width: 80%">
+                                                <p:outputLabel  value=" #{empDataDetilController.selectedEmpData.nik}" />
+                                            </p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                                <p:outputLabel  value="Department" style="font-weight: bold"/>
+                                            </p:column>
+                                            <p:column style="width: 80%">
+                                                <p:outputLabel  value="#{empDataDetilController.selectedEmpData.jabatanByJabatanId.department.departmentName}" />
+
+                                                <!--</p:outputLabel>-->
+                                            </p:column>
+
+
+                                        </p:row>
+                                        <p:row>
+                                            <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                                <p:outputLabel  value="Jabatan" style="font-weight: bold"/>
+                                            </p:column>
+                                            <p:column style="width: 80%">
+                                                <p:outputLabel  value="#{empDataDetilController.selectedEmpData.jabatanByJabatanId.name}" />
+                                            </p:column>
+
+
+                                        </p:row>
+                                        <p:row>
+                                            <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                                <p:outputLabel  value="Nama" style="font-weight: bold"/>
+                                            </p:column>
+                                            <p:column style="width: 80%">
+                                                <p:outputLabel  value="#{empDataDetilController.selectedEmpData.bioData.firstName} #{empDataDetilController.selectedEmpData.bioData.lastName}" />
+
+
+                                            </p:column>
+
+
+                                        </p:row>
+                                        <p:row>
+                                            <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                                <p:outputLabel  value="Tanggal Bergabung" style="font-weight: bold"/>
+                                            </p:column>
+                                            <p:column style="width: 80%">
+                                                <p:outputLabel  value="#{empDataDetilController.selectedEmpData.joinDate}" >
+                                                    <f:convertDateTime pattern="dd MMMM yyyy" />
+                                                </p:outputLabel>
+                                            </p:column>
+
+
+                                        </p:row>
+                                        <p:row>
+                                            <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                                <p:outputLabel  value="Type Karyawan" style="font-weight: bold"/>
+                                            </p:column>
+                                            <p:column style="width: 80%">
+                                                <p:outputLabel  value="#{empDataDetilController.selectedEmpData.employeeType.name}"/>
+
+                                            </p:column>
+
+
+                                        </p:row>
+
+                                        <p:row>
+                                            <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                                <p:outputLabel  value="Unit Kerja" style="font-weight: bold"/>
+                                            </p:column>
+                                            <p:column style="width: 80%">
+                                                <p:outputLabel  value="#{empDataDetilController.selectedEmpData.jabatanByJabatanId.unitKerja.name}" />
+                                            </p:column>
+
+
+                                        </p:row>
+                                        <p:row>
+                                            <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                                <p:outputLabel  value="Group Jadwal Kerja" style="font-weight: bold"/>
+                                            </p:column>
+                                            <p:column style="width: 80%">
+                                                <p:outputLabel  value="#{empDataDetilController.selectedEmpData.wtGroupWorking.name}" />
+                                            </p:column>
+
+
+                                        </p:row>
+                                        <!--                                        <p:row>
+                                                                                    <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                                                                        <p:outputLabel  value="Mobile Phone" style="font-weight: bold"/>
+                                                                                    </p:column>
+                                                                                    <p:column style="width: 80%">
+                                                                                        <p:outputLabel  value="#{bioDataDetilController.selectedBioData.mobilePhone}" />
+                                                                                    </p:column>
+                                        
+                                                                                </p:row>-->
+
+                                    </p:panelGrid>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                        <p:tabView id="tabView" dynamic="true"  cache="true" styleClass="tabview_hrm" style="margin-top: 15px;margin-bottom: 15px;margin-left: 5px;margin-right: 5px" scrollable="true" >
+                            <p:tab id="detailId" title="Detail" >  
+                                <p:panelGrid style="width: 100%;margin-top: 10px;" styleClass="grid_border4">
+                                    <p:row>
+                                        <p:column style="width: 15%;background-color: #e1f0f0!important" >
+                                            <p:outputLabel  value="PPMP" style="font-weight: bold"/>
+                                        </p:column>
+                                        <p:column style="width: 75%">
+                                            <p:outputLabel  value="#{empDataDetilController.selectedEmpData.ppmp}" />
+                                        </p:column>
+
+
+
+                                    </p:row>
+                                    <p:row>
+                                        <p:column style="width: 15%;background-color: #e1f0f0!important" >
+                                            <p:outputLabel  value="PPIP" style="font-weight: bold"/>
+                                        </p:column>
+                                        <p:column style="width: 75%">
+                                            <p:outputLabel  value="#{empDataDetilController.selectedEmpData.ppip}" />
+                                        </p:column>
+
+
+
+                                    </p:row>
+                                    <p:row>
+                                        <p:column style="width: 15%;background-color: #e1f0f0!important" >
+                                            <p:outputLabel  value="Finger" style="font-weight: bold"/>
+                                        </p:column>
+                                        <p:column style="width: 75%">
+                                            <p:outputLabel  value="#{empDataDetilController.selectedEmpData.isFinger}" >
+                                                <f:converter converterId="booleanMessageConverter"/>
+                                            </p:outputLabel>
+                                        </p:column>
+
+
+
+                                    </p:row>
+                                    <p:row>
+                                        <p:column style="width: 15%;background-color: #e1f0f0!important" >
+                                            <p:outputLabel  value="Premi Kesehatan" style="font-weight: bold"/>
+                                        </p:column>
+                                        <p:column style="width: 75%">
+                                            <p:outputLabel  value="#{empDataDetilController.selectedEmpData.heatlyPremi}" >
+                                                <f:converter converterId="booleanMessageConverter"/></p:outputLabel>
+                                        </p:column>
+
+
+
+                                    </p:row>
+                                    <p:row>
+                                        <p:column style="width: 15%;background-color: #e1f0f0!important" >
+                                            <p:outputLabel  value="Insentif Status" style="font-weight: bold"/>
+                                        </p:column>
+                                        <p:column style="width: 75%">
+                                            <p:outputLabel  value="#{empDataDetilController.selectedEmpData.heatlyPremi}" >
+                                                <f:converter converterId="booleanMessageConverter"/>
+                                            </p:outputLabel>
+
+
+                                        </p:column>
+
+
+
+                                    </p:row>
+                                    <p:row>
+                                        <p:column style="width: 15%;background-color: #e1f0f0!important" >
+                                            <p:outputLabel  value="PTKP Status" style="font-weight: bold"/>
+                                        </p:column>
+                                        <p:column style="width: 75%">
+                                            <p:outputLabel  value="#{empDataDetilController.selectedEmpData.ptkpStatus}" >
+                                                <f:converter converterId="mariedMessageConverter"/>
+                                            </p:outputLabel>
+                                        </p:column>
+
+
+
+                                    </p:row>
+                                    <p:row>
+                                        <p:column style="width: 15%;background-color: #e1f0f0!important" >
+                                            <p:outputLabel  value="Jumlah PTKP" style="font-weight: bold"/>
+                                        </p:column>
+                                        <p:column style="width: 75%">
+                                            <p:outputLabel  value="#{empDataDetilController.selectedEmpData.ptkpNumber}" />
+                                        </p:column>
+
+
+
+                                    </p:row>
+
+                                </p:panelGrid>
+                            </p:tab>  
+                            <p:tab id="spekJabatanId" title="Spesifikasi Jabatan">  
+                                <p:dataTable value="#{empDataDetilController.listJabatanSpesifikasi}" var="listJobSpecifikasi" rowIndexVar="no" id="jobDesId"
+                                             >
+                                    <p:column style="text-align: center;width: 25px;max-width: 25px">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['global.number']}" />
+                                        </f:facet>
+                                        <h:outputLabel value="#{no+1}." />
+                                    </p:column>
+                                    <p:column > 
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['jobspec.jobspec_specification']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value=" #{listJobSpecifikasi.specificationAbility.name}" />
+                                    </p:column> 
+                                    <p:column style="width: 150px;text-align: center"> 
+                                        <f:facet name="header" >  
+                                            <h:outputText value="#{appmsg['jobspec.jobspec_option_ability']}"/>
+                                        </f:facet>
+                                        <p:outputLabel value="#{listJobSpecifikasi.optionAbility}" />
+                                    </p:column>
+                                    <p:column style="width: 80px;text-align: center"> 
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['jobspec.jobspec_value']}"/>
+                                        </f:facet>
+                                        <p:outputLabel value="#{listJobSpecifikasi.value}" />
+                                    </p:column>
+                                </p:dataTable>  
+                               
+
+                            </p:tab>  
+
+                            <p:tab id="alamatId" title="Jobs Deskripsi">
+                                <p:dataTable value="#{empDataDetilController.jabatanDeskripsis}" var="listJobDeskrpsi" rowIndexVar="no" id="jobDesTableId"
+                                             >
+                                    <p:column style="text-align: center;width: 25px;max-width: 25px">
+                                        <f:facet name="header">  
+                                            <h:outputText value="No." />
+                                        </f:facet>
+                                        <h:outputLabel value="#{no+1}." />
+                                    </p:column>
+                                    <p:column > 
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['global.description']}" />
+                                        </f:facet>
+                                        <h:outputLabel value=" #{listJobDeskrpsi.description}" />
+                                    </p:column> 
+                                    <p:column style="width: 100px;text-align: center"> 
+                                        <f:facet name="header" >  
+                                            <h:outputText value="#{appmsg['jabatan.category_task']}" />
+                                        </f:facet>
+                                        <p:outputLabel value="#{listJobDeskrpsi.kategoryTugas}" >
+                                            <f:converter converterId="jobCategoryConverter" />
+                                        </p:outputLabel>
+                                    </p:column>
+                                    <p:column style="width: 80px;text-align: center"> 
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['jabatan.type_time']}" />
+                                        </f:facet>
+                                        <p:outputLabel value="#{listJobDeskrpsi.typeWaktu}" >
+                                            <f:converter converterId="jobTypeTimeConverter" />
+                                        </p:outputLabel>
+                                    </p:column>
+                                </p:dataTable> 
+                                
+                            </p:tab>
+                            <p:tab id="riwayatKerjaId" title="Karir">  
+                               
+
+                            </p:tab>  
+                            <p:tab id="pendidikanId" title="Pinjaman">  
+                               
+                            </p:tab>  
+
+                            <p:tab id="minatId" title="Prestasi">  
+                                
+
+                            </p:tab>  
+                            <p:tab id="dataKeluargaid" title="Tata Terrib">  
+                               
+
+
+                            </p:tab>  
+                            <p:tab id="documentId" title="Riwayat Penilaian">  
+
+
+                                
+
+                            </p:tab>  
+                            <p:tab id="bank" title="Riwayat Pelatihan">  
+                               
+
+                            </p:tab>  
+                            <p:tab id="diCardId" title="Projects">  
+                                
+
+                            </p:tab>  
+
+
+                        </p:tabView>
+                        <p:separator/>
+                        <h:panelGrid columns="2" style="margin-bottom: 5px;float: left">
+                            <p:commandButton value="#{appmsg['global.edit']}"  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" action="#{empDataDetilController.doEdit()}" styleClass="label_button"/>
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{empDataDetilController.doBack()}" styleClass="label_button"/>
+
+                        </h:panelGrid>
+                        <div style="clear: both"/>
+                    </h:form>
+                </div>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

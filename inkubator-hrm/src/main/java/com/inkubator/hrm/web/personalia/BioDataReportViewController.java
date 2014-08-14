@@ -14,7 +14,6 @@ import javax.annotation.PreDestroy;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
@@ -36,8 +35,8 @@ public class BioDataReportViewController extends BaseController{
     public void initialization() {
         System.out.println("init");
         super.initialization();
-        String param = FacesUtil.getRequestParameter("execution");
-        bioDataId = Long.parseLong(param.substring(1));
+        bioDataId = Long.valueOf(FacesUtil.getRequestParameter("param"));
+//        bioDataId = Long.parseLong(param.substring(1));
 
         System.out.println(bioDataId+"BIODATA");
     }
