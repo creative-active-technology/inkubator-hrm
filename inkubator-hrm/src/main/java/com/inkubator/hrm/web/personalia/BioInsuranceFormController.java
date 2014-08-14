@@ -10,6 +10,12 @@ import com.inkubator.hrm.web.model.BioInsuranceModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
@@ -124,4 +130,24 @@ public class BioInsuranceFormController extends BaseController {
         bioInsuranceModel.setFacility(entity.getFacility());
         return bioInsuranceModel;
     }
+    
+        public List<String> completeProvider(String query) {
+        try {
+            List<BioInsurance> allBioInsurance = bioInsuranceService.getAllData();
+            List<String> queried = new ArrayList<>();
+            
+            for (BioInsurance bioInsurance : allBioInsurance) {
+                if (bioInsurance.getInstance().toLowerCase().startsWith(query)  || bioInsurance.getInstance().startsWith(query)) {
+                    queried.add(bioInsurance.getInstance());
+                }
+            }
+            Set<String> setProvider = new HashSet<>(queried);
+            List<String> listProvider = new ArrayList<>(setProvider);
+            return listProvider;
+        } catch (Exception ex) {
+            Logger.getLogger(BioInsuranceFormController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
 }
