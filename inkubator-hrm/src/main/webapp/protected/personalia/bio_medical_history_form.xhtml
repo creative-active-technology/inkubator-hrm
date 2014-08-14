@@ -63,8 +63,10 @@
                                 <h:outputLabel for="diseaseId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 70%">
-                                <p:inputText id="diseaseId" title="#{appmsg['bioMedicalHistory.bioMedicalHistory_disease']}" value="#{bioMedicalHistoryFormController.bioMedicalHistoryModel.disease}" 
-                                             required="true" requiredMessage="#{appmsg['bioMedicalHistory.bioMedicalHistory_disease_should_not_be_empty']}" maxlength="60" styleClass="isitext_hrm" style="width:250px;" />
+                                <p:autoComplete id="diseaseId" title="#{appmsg['bioMedicalHistory.bioMedicalHistory_disease']}" 
+                                                value="#{bioMedicalHistoryFormController.bioMedicalHistoryModel.disease}"
+                                                completeMethod="#{bioMedicalHistoryFormController.completeDisease}" scrollHeight="100"
+                                                required="true" requiredMessage="#{appmsg['bioMedicalHistory.bioMedicalHistory_disease_should_not_be_empty']}" styleClass="isitext_hrm" style="width:250px;"></p:autoComplete>
 
                             </p:column>
                         </p:row>

@@ -51,7 +51,7 @@
                                         <f:attribute name="validatorMessage" value="#{appmsg['global.DateIn_validator ']}"/>
                                     </p:selectOneMenu>
                                 </p:focus>
-                                 <h:outputLabel for="yearId" value="-" styleClass="label_hrm"/>
+                                 <h:outputLabel for="yearOut" value=" - " styleClass="label_hrm" />
                                 <p:selectOneMenu id="yearOut" value="#{bioEmploymentHistoryFormController.bioEmploymentHistoryModel.yearOut}" binding="#{yearOut}" style="width: 150px;margin-right: 3px" 
                                                  required="true" requiredMessage="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_year_should_not_be_empty']}">
                                     <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
@@ -77,8 +77,11 @@
                                 <h:outputLabel for="companyId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 70%">
-                                <p:inputText id="companyId" title="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_company']}" value="#{bioEmploymentHistoryFormController.bioEmploymentHistoryModel.companyName}" 
-                                             required="true" requiredMessage="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_company_should_not_be_empty']}" maxlength="60" styleClass="isitext_hrm" style="width:250px;" />
+                                <p:autoComplete id="companyId" title="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_company']}" 
+                                                value="#{bioEmploymentHistoryFormController.bioEmploymentHistoryModel.companyName}"
+                                                completeMethod="#{bioEmploymentHistoryFormController.completeCompany}" scrollHeight="100"
+                                                required="true" requiredMessage="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_company_should_not_be_empty']}" styleClass="isitext_hrm" style="width:250px;"></p:autoComplete>
+
 
                             </p:column>
                         </p:row>
@@ -130,7 +133,7 @@
                                 <h:outputLabel for="cityId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 70%">
-                                <p:autoComplete id="cityId" title="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_city']}" 
+                                <p:autoComplete id="cityId" title="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_city']}" scrollHeight="100" 
                                                 value="#{bioEmploymentHistoryFormController.bioEmploymentHistoryModel.city}"
                                                 completeMethod="#{bioEmploymentHistoryFormController.completeCity}"
                                                 var="city"
@@ -155,8 +158,10 @@
                                 <h:outputLabel for="sectorId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 70%">
-                                <p:inputText id="sectorId" title="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_sector']}" value="#{bioEmploymentHistoryFormController.bioEmploymentHistoryModel.jobSector}" 
-                                             required="true" requiredMessage="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_sector_should_not_be_empty']}" maxlength="60" styleClass="isitext_hrm" style="width:250px;" />
+                                <p:autoComplete id="sectorId" title="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_sector']}" scrollHeight="100" 
+                                                value="#{bioEmploymentHistoryFormController.bioEmploymentHistoryModel.jobSector}"
+                                                completeMethod="#{bioEmploymentHistoryFormController.completeOccupation}"
+                                                required="true" requiredMessage="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_sector_should_not_be_empty']}" styleClass="isitext_hrm" style="width:250px;"></p:autoComplete>
 
                             </p:column>
                         </p:row>

@@ -1,6 +1,8 @@
 package com.inkubator.hrm.web.model;
 
+import com.inkubator.hrm.entity.BioEmploymentHistory;
 import com.inkubator.hrm.entity.City;
+import com.inkubator.hrm.entity.OccupationType;
 import java.io.Serializable;
 
 /**
@@ -61,13 +63,7 @@ public class BioEmploymentHistoryModel implements Serializable {
         this.yearOut = yearOut;
     }
 
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
+   
 
     public String getLastOccupation() {
         return lastOccupation;
@@ -85,6 +81,14 @@ public class BioEmploymentHistoryModel implements Serializable {
         this.salary = salary;
     }
 
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
     public String getJobSector() {
         return jobSector;
     }
@@ -92,6 +96,9 @@ public class BioEmploymentHistoryModel implements Serializable {
     public void setJobSector(String jobSector) {
         this.jobSector = jobSector;
     }
+
+    
+    
 
     
 }
