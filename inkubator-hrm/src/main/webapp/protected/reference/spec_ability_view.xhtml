@@ -66,32 +66,32 @@
                             <f:facet name="header">  
                                 <h:outputText value="#{appmsg['specificationability.list_of_specification_ability']}"/>
                             </f:facet> 
-                            <p:column style="text-align: center;width: 5%">
+                            <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.number']}"/>
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="name"  style="width: 40%">
+                            <p:column sortBy="name"  style="width: 31%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['specificationability.specification_ability']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{specAbilityData.name}"/>
                             </p:column>
-                            <p:column sortBy="optionAbility"  style="width: 20%">
+                            <p:column sortBy="optionAbility"  style="width: 31%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['specificationability.option']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{specAbilityData.optionAbility}"/>
                             </p:column>
-                            <p:column sortBy="scaleValue"  style="width: 20%">
+                            <p:column sortBy="scaleValue"  style="width: 25%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['specificationability.scale_value']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{specAbilityData.scaleValue}"/>
                             </p:column>
 
-                            <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                 				 style="font-size: 10px!important" update=":panelDialogDetailId" 
                                 				 action="#{specAbilityViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogDetailSpecAbilityLevel.show()">                        

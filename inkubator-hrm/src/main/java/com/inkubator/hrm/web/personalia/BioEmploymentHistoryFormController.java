@@ -6,8 +6,10 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.BioData;
 import com.inkubator.hrm.entity.BioEmploymentHistory;
 import com.inkubator.hrm.entity.City;
+import com.inkubator.hrm.entity.OccupationType;
 import com.inkubator.hrm.service.BioEmploymentHistoryService;
 import com.inkubator.hrm.service.CityService;
+import com.inkubator.hrm.service.OccupationTypeService;
 import com.inkubator.hrm.util.MapUtil;
 import com.inkubator.hrm.web.model.BioEmploymentHistoryModel;
 import com.inkubator.webcore.controller.BaseController;
@@ -15,8 +17,11 @@ import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -43,7 +48,9 @@ public class BioEmploymentHistoryFormController extends BaseController {
     private BioEmploymentHistoryService bioEmploymentHistoryService;
     @ManagedProperty(value = "#{cityService}")
     private CityService cityService;
-    private Map<Integer, Integer> listYears = new TreeMap<>();
+    @ManagedProperty(value = "#{occupationTypeService}")
+    private OccupationTypeService occupationTypeService;
+    private Map<Integer, Integer> listYears = new TreeMap<>(Collections.reverseOrder());
 
     @PostConstruct
     @Override
@@ -56,9 +63,10 @@ public class BioEmploymentHistoryFormController extends BaseController {
             bioEmploymentHistoryModel.setBioDataId(Long.parseLong(bioDataId));
 
             int year = Calendar.getInstance().get(Calendar.YEAR);
-            for (int i = year; i >= year - 100; i--) {
+            for (int i = year; i >= year - 54; i--) {
                 listYears.put(i, i);
             }
+            
 
             String bioEmploymentHistoryId = FacesUtil.getRequestParameter("bioEmploymentHistoryId");
             if (StringUtils.isNotEmpty(bioEmploymentHistoryId)) {
@@ -112,6 +120,11 @@ public class BioEmploymentHistoryFormController extends BaseController {
         this.cityService = cityService;
     }
 
+    public void setOccupationTypeService(OccupationTypeService occupationTypeService) {
+        this.occupationTypeService = occupationTypeService;
+    }
+
+    
     
     public void doSave() {
         BioEmploymentHistory bioEmploymentHistory = getEntityFromViewModel(bioEmploymentHistoryModel);
@@ -133,19 +146,24 @@ public class BioEmploymentHistoryFormController extends BaseController {
     }
 
     private BioEmploymentHistory getEntityFromViewModel(BioEmploymentHistoryModel bioEmploymentHistoryModel) {
-        BioEmploymentHistory bioEmploymentHistory = new BioEmploymentHistory();
-        if (bioEmploymentHistoryModel.getId() != null) {
-            bioEmploymentHistory.setId(bioEmploymentHistoryModel.getId());
+        try {
+            BioEmploymentHistory bioEmploymentHistory = new BioEmploymentHistory();
+            if (bioEmploymentHistoryModel.getId() != null) {
+                bioEmploymentHistory.setId(bioEmploymentHistoryModel.getId());
+            }
+            bioEmploymentHistory.setBioData(new BioData(bioEmploymentHistoryModel.getBioDataId()));
+            bioEmploymentHistory.setCity(bioEmploymentHistoryModel.getCity());
+            bioEmploymentHistory.setYearIn(bioEmploymentHistoryModel.getYearIn());
+            bioEmploymentHistory.setYearOut(bioEmploymentHistoryModel.getYearOut());
+            bioEmploymentHistory.setCompanyName(bioEmploymentHistoryModel.getCompanyName());
+            bioEmploymentHistory.setLastOccupation(bioEmploymentHistoryModel.getLastOccupation());
+            bioEmploymentHistory.setSalary(bioEmploymentHistoryModel.getSalary());
+            bioEmploymentHistory.setJobSector(bioEmploymentHistoryModel.getJobSector());
+            return bioEmploymentHistory;
+        } catch (Exception ex) {
+            Logger.getLogger(BioEmploymentHistoryFormController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        bioEmploymentHistory.setBioData(new BioData(bioEmploymentHistoryModel.getBioDataId()));
-        bioEmploymentHistory.setCity(bioEmploymentHistoryModel.getCity());
-        bioEmploymentHistory.setYearIn(bioEmploymentHistoryModel.getYearIn());
-        bioEmploymentHistory.setYearOut(bioEmploymentHistoryModel.getYearOut());
-        bioEmploymentHistory.setCompanyName(bioEmploymentHistoryModel.getCompanyName());
-        bioEmploymentHistory.setLastOccupation(bioEmploymentHistoryModel.getLastOccupation());
-        bioEmploymentHistory.setSalary(bioEmploymentHistoryModel.getSalary());
-        bioEmploymentHistory.setJobSector(bioEmploymentHistoryModel.getJobSector());
-        return bioEmploymentHistory;
+        return null;
     }
 
     private BioEmploymentHistoryModel getModelFromEntity(BioEmploymentHistory entity) {
@@ -175,6 +193,44 @@ public class BioEmploymentHistoryFormController extends BaseController {
             return queried;
         } catch (Exception ex) {
             Logger.getLogger(BioEmploymentHistoryFormController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    public List<String> completeCompany(String query) {
+        try {
+            List<BioEmploymentHistory> allBioEmploymentHistory = bioEmploymentHistoryService.getAllData();
+            List<String> queried = new ArrayList<>();
+            
+            for (BioEmploymentHistory bioEmploymentHistory : allBioEmploymentHistory) {
+                if (bioEmploymentHistory.getCompanyName().toLowerCase().startsWith(query)  || bioEmploymentHistory.getCompanyName().startsWith(query)) {
+                    queried.add(bioEmploymentHistory.getCompanyName());
+                }
+            }
+            Set<String> setCompany = new HashSet<>(queried);
+            List<String> listCompany = new ArrayList<>(setCompany);
+            return listCompany;
+        } catch (Exception ex) {
+            Logger.getLogger(BioEmploymentHistoryFormController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    public List<String> completeOccupation(String query) {
+        try {
+            List<OccupationType> allOccupationType = occupationTypeService.getAllData();
+            List<String> queried = new ArrayList<>();
+            for (OccupationType occupationType : allOccupationType) {
+                if (occupationType.getOccupationTypeName().toLowerCase().startsWith(query)  || occupationType.getOccupationTypeName().startsWith(query)) {
+                    queried.add(occupationType.getOccupationTypeName());
+                }
+            }
+
+            Set<String> setOccupation = new HashSet<>(queried);
+            List<String> listOccupation = new ArrayList<>(setOccupation);
+            return listOccupation;
+        } catch (Exception ex) {
+            Logger.getLogger(OccupationTypeFormController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }

@@ -301,8 +301,20 @@
                                                 <p:menuitem value="#{appmsg['leave.leave']}" icon="img-permit" style="font-size: 12px !important;color: #003366" title="#{appmsg['leave.leave']}" url="/protected/working_time/leave_view.htm" />
                                                 <p:menuitem value="#{appmsg['leavescheme.leave_scheme']}" icon="img-leave-scheme" style="font-size: 12px !important;color: #003366" title="#{appmsg['leavescheme.leave_scheme']}" url="/protected/working_time/leave_scheme_view.htm" />
                                             </p:submenu>
+                                            <p:submenu label="Personalia"  styleClass="menu_child" >
+                                                <p:submenu label="Dinas"  styleClass="menu_child" >
+                                                    <p:menuitem value="Travel Components" icon="img-periode" style="font-size: 12px !important;color: #003366" title="Travel Components" url="/protected/personalia/travel_component_view.htm" /> 
+                                                    <p:menuitem value="Travel Type" icon="img-periode" style="font-size: 12px !important;color: #003366" title="Travel Type" url="/protected/personalia/travel_type_view.htm" /> 
+                                                    <p:menuitem value="Travel Zone" icon="img-periode" style="font-size: 12px !important;color: #003366" title="Travel Zone" url="/protected/personalia/travel_zone_view.htm" /> 
+                                                </p:submenu>
+                                                <p:submenu label="Others"  styleClass="menu_child" >
+                                                    <p:menuitem value="Admonition Type" icon="img-periode" style="font-size: 12px !important;color: #003366" title="Admonition Type" url="/protected/personalia/admonition_type_view.htm" /> 
+                                                    <p:menuitem value="Termination Type" icon="img-periode" style="font-size: 12px !important;color: #003366" title="Termination Type" url="/protected/personalia/termination_type_view.htm" /> 
+                                                </p:submenu>
+                                            </p:submenu>
                                             <p:submenu label="Payroll"  styleClass="menu_child" >
                                                 <p:menuitem value="Pay Salary Grade" icon="img-periode" style="font-size: 12px !important;color: #003366" title="Pay Salary Grade" url="/protected/payroll/pay_salary_grade_view.htm" /> 
+                                                <p:menuitem value="Pay Salary Jurnal" icon="img-periode" style="font-size: 12px !important;color: #003366" title="Pay Salary Jurnal" url="/protected/payroll/pay_salary_jurnal_view.htm" /> 
                                             </p:submenu>
                                         </p:submenu>
                                         <p:submenu label="Personalia"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-employees">
@@ -313,32 +325,32 @@
                                                 <p:menuitem value="Penempatan" icon="img-emp-data" style="font-size: 12px !important;color: #003366" title="Bio Data" url="/protected/employee/employee_palcement_view.htm" />  
                                             </p:submenu>
                                         </p:submenu>
-                                            <p:submenu label="#{appmsg['menu.working_time']}"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-task">
+                                        <p:submenu label="#{appmsg['menu.working_time']}"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-task">
 
-                                            </p:submenu>
-                                            <p:submenu label="Payroll"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-payroll">
-                                                <p:menuitem value="Price Simulator" icon="img-price-simulator" style="font-size: 12px !important;color: #003366" title="Make Price Simulation" url="/protected/price_simulator.htm" /> 
-                                                <p:menuitem value="Price Offer" icon="img-button-price" style="font-size: 12px !important;color: #003366" title="Create Offering Price" url="/protected/price_offer.htm" />  
-                                            </p:submenu>
-                                            <p:submenu label="Pengembangan"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-training">
-                                                <p:menuitem value="Price Simulator" icon="img-price-simulator" style="font-size: 12px !important;color: #003366" title="Make Price Simulation" url="/protected/price_simulator.htm" /> 
-                                                <p:menuitem value="Price Offer" icon="img-button-price" style="font-size: 12px !important;color: #003366" title="Create Offering Price" url="/protected/price_offer.htm" />  
-                                            </p:submenu>
-                                            <!-- 
-                                            <p:submenu label="Approval Metrix"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu">
-                                                <p:menuitem value="User Account" icon="img-price-simulator" style="font-size: 12px !important;color: #003366" title="Make Price Simulation" url="/protected/price_simulator.htm" /> 
-                                                <p:menuitem value="User Role" icon="img-button-price" style="font-size: 12px !important;color: #003366" title="Create Offering Price" url="/protected/price_offer.htm" /> 
-                                                <p:separator/>
-                                                <p:menuitem value="Password Setting" icon="img-button-price" style="font-size: 12px !important;color: #003366" title="Create Offering Price" url="/protected/price_offer.htm" />  
-                                                <p:menuitem value="Password History" icon="img-button-price" style="font-size: 12px !important;color: #003366" title="Create Offering Price" url="/protected/price_offer.htm" /> 
-                                                <p:menuitem value="Login History" icon="img-button-price" style="font-size: 12px !important;color: #003366" title="Create Offering Price" url="/protected/price_offer.htm" />  
-                                            </p:submenu> 
-                                            -->
-                                            <p:submenu label="Laporan"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-reporting">
-                                                <p:menuitem value="Price Simulator" icon="img-price-simulator" style="font-size: 12px !important;color: #003366" title="Make Price Simulation" url="/protected/price_simulator.htm" /> 
-                                                <p:menuitem value="Price Offer" icon="img-button-price" style="font-size: 12px !important;color: #003366" title="Create Offering Price" url="/protected/price_offer.htm" />  
-                                            </p:submenu>
-                                            <p:menuitem value="Logout" icon="ui-icon-power" styleClass="menu" style="color: #ff9933 !important;font-size: 14px!important" title="Logout and Exit" url="/logout.htm" />  
+                                        </p:submenu>
+                                        <p:submenu label="Payroll"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-payroll">
+                                            <p:menuitem value="Price Simulator" icon="img-price-simulator" style="font-size: 12px !important;color: #003366" title="Make Price Simulation" url="/protected/price_simulator.htm" /> 
+                                            <p:menuitem value="Price Offer" icon="img-button-price" style="font-size: 12px !important;color: #003366" title="Create Offering Price" url="/protected/price_offer.htm" />  
+                                        </p:submenu>
+                                        <p:submenu label="Pengembangan"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-training">
+                                            <p:menuitem value="Price Simulator" icon="img-price-simulator" style="font-size: 12px !important;color: #003366" title="Make Price Simulation" url="/protected/price_simulator.htm" /> 
+                                            <p:menuitem value="Price Offer" icon="img-button-price" style="font-size: 12px !important;color: #003366" title="Create Offering Price" url="/protected/price_offer.htm" />  
+                                        </p:submenu>
+                                        <!-- 
+                                        <p:submenu label="Approval Metrix"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu">
+                                            <p:menuitem value="User Account" icon="img-price-simulator" style="font-size: 12px !important;color: #003366" title="Make Price Simulation" url="/protected/price_simulator.htm" /> 
+                                            <p:menuitem value="User Role" icon="img-button-price" style="font-size: 12px !important;color: #003366" title="Create Offering Price" url="/protected/price_offer.htm" /> 
+                                            <p:separator/>
+                                            <p:menuitem value="Password Setting" icon="img-button-price" style="font-size: 12px !important;color: #003366" title="Create Offering Price" url="/protected/price_offer.htm" />  
+                                            <p:menuitem value="Password History" icon="img-button-price" style="font-size: 12px !important;color: #003366" title="Create Offering Price" url="/protected/price_offer.htm" /> 
+                                            <p:menuitem value="Login History" icon="img-button-price" style="font-size: 12px !important;color: #003366" title="Create Offering Price" url="/protected/price_offer.htm" />  
+                                        </p:submenu> 
+                                        -->
+                                        <p:submenu label="Laporan"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-reporting">
+                                            <p:menuitem value="Price Simulator" icon="img-price-simulator" style="font-size: 12px !important;color: #003366" title="Make Price Simulation" url="/protected/price_simulator.htm" /> 
+                                            <p:menuitem value="Price Offer" icon="img-button-price" style="font-size: 12px !important;color: #003366" title="Create Offering Price" url="/protected/price_offer.htm" />  
+                                        </p:submenu>
+                                        <p:menuitem value="Logout" icon="ui-icon-power" styleClass="menu" style="color: #ff9933 !important;font-size: 14px!important" title="Logout and Exit" url="/logout.htm" />  
                                     </p:menubar>  
                                 </h:form>
                                 <div class="art-header" id="logoId">

@@ -21,8 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 @FacesConverter("cityConverter")
 public class CityConverter implements Converter {
-    @Autowired
-    private CityDao cityDao;
+
 
     public Object getAsObject(FacesContext contet, UIComponent component, String value) {
         if (value == null || value.equals("")) {

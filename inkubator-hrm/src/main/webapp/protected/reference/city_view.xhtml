@@ -68,31 +68,31 @@
                             <f:facet name="header">  
                                 <h:outputText value="#{appmsg['city.list_of_city']}"/>
                             </f:facet> 
-                            <p:column style="text-align: center;width: 5%">
+                            <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.number']}"/>
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="province.provinceName"  style="width: 15%">
+                            <p:column sortBy="province.provinceName"  style="width: 33%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['city.province_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{cityData.province.provinceName}"/>
                             </p:column>
-                            <p:column sortBy="cityCode"  style="width: 15%">
+                            <p:column sortBy="cityCode"  style="width: 20%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{cityData.cityCode}"/>
                             </p:column>  
-                            <p:column sortBy="cityName"  style="width: 35%">
+                            <p:column sortBy="cityName"  style="width: 33%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{cityData.cityName}"/>
                             </p:column>    
-                            <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                                  style="font-size: 10px!important"  
                                                  action="#{cityViewController.doDetail()}" >                        

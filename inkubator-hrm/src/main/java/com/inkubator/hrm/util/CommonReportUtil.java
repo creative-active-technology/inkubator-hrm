@@ -37,22 +37,25 @@ public class CommonReportUtil {
             String jasperName,
             Map<String, Object> params,
             String reportOutputFileName,
-            List listOfMap) throws JRException, SQLException {
+            List listOfMap) throws JRException, SQLException, Exception {
+        
         DefaultStreamedContent result;
         ByteArrayOutputStream output = new ByteArrayOutputStream();
-
-        InputStream input = FacesContext.getCurrentInstance().getExternalContext()
-                .getResourceAsStream("/resources/reports/" + jasperName);
+        
+        // get jasper name
+        InputStream input = FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream("/resources/reports/" + jasperName);
         HashMap hm = new HashMap();
+        // get list value
         JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(listOfMap);
+        // compile jasper design with value
         JasperPrint jasperPrint = JasperFillManager.fillReport(
                 input,
                 hm,
                 beanCollectionDataSource);
+        //export to pdf
         JasperExportManager.exportReportToPdfStream(jasperPrint, output);
         InputStream pdfInput = new ByteArrayInputStream(output.toByteArray());
         result = new DefaultStreamedContent(pdfInput, "application/pdf", reportOutputFileName);
-        System.out.println(result);
         return result;
     }
 

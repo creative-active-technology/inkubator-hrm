@@ -14,13 +14,13 @@ import com.inkubator.hrm.entity.Faculty;
 import com.inkubator.hrm.entity.InstitutionEducation;
 import com.inkubator.hrm.entity.Major;
 import com.inkubator.hrm.service.CityService;
-import com.inkubator.hrm.service.EducationHistoryService;
+import com.inkubator.hrm.service.BioEducationHistoryService;
 import com.inkubator.hrm.service.EducationLevelService;
 import com.inkubator.hrm.service.FacultyService;
 import com.inkubator.hrm.service.InstitutionEducationService;
 import com.inkubator.hrm.service.MajorService;
 import com.inkubator.hrm.util.MapUtil;
-import com.inkubator.hrm.web.model.EducationHistoryModel;
+import com.inkubator.hrm.web.model.BioEducationHistoryModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesIO;
 import com.inkubator.webcore.util.FacesUtil;
@@ -46,9 +46,9 @@ import org.primefaces.model.UploadedFile;
  */
 @ManagedBean(name = "educationHistoryFormController")
 @ViewScoped
-public class EducationHistoryFormController extends BaseController{
-    @ManagedProperty(value = "#{educationHistoryService}")
-    private EducationHistoryService educationHistoryService;
+public class BioEducationHistoryFormController extends BaseController{
+    @ManagedProperty(value = "#{bioEducationHistoryService}")
+    private BioEducationHistoryService educationHistoryService;
     @ManagedProperty(value = "#{educationLevelService}")
     private EducationLevelService educationLevelService;
     @ManagedProperty(value = "#{institutionEducationService}")
@@ -64,7 +64,7 @@ public class EducationHistoryFormController extends BaseController{
     
     private Long bioDataId;
     private BioEducationHistory selected;
-    private EducationHistoryModel model;
+    private BioEducationHistoryModel model;
     private Boolean isEdit;
     private UploadedFile fotoFile;
     private String fotoFileName;
@@ -122,7 +122,7 @@ public class EducationHistoryFormController extends BaseController{
         System.out.println("init");
         super.initialization();
         String param = FacesUtil.getRequestParameter("param");
-        model = new EducationHistoryModel();
+        model = new BioEducationHistoryModel();
         
         try {
             if(param.contains("i")){
@@ -218,7 +218,7 @@ public class EducationHistoryFormController extends BaseController{
         }
     }
     
-    private BioEducationHistory getEntityFromViewModel(EducationHistoryModel model) {
+    private BioEducationHistory getEntityFromViewModel(BioEducationHistoryModel model) {
         BioEducationHistory educationHistory = new BioEducationHistory();
         if (model.getId() != null) {
             educationHistory.setId(model.getId());
@@ -244,11 +244,11 @@ public class EducationHistoryFormController extends BaseController{
         fotoFileName = fotoFile.getFileName();
     }
     
-    public EducationHistoryService getEducationHistoryService() {
+    public BioEducationHistoryService getEducationHistoryService() {
         return educationHistoryService;
     }
 
-    public void setEducationHistoryService(EducationHistoryService educationHistoryService) {
+    public void setEducationHistoryService(BioEducationHistoryService educationHistoryService) {
         this.educationHistoryService = educationHistoryService;
     }
 
@@ -292,11 +292,11 @@ public class EducationHistoryFormController extends BaseController{
         this.selected = selected;
     }
 
-    public EducationHistoryModel getModel() {
+    public BioEducationHistoryModel getModel() {
         return model;
     }
 
-    public void setModel(EducationHistoryModel model) {
+    public void setModel(BioEducationHistoryModel model) {
         this.model = model;
     }
 

@@ -914,18 +914,11 @@
 
                         </p:tabView>
                         <p:separator/>
-                        <h:panelGrid columns="2" style="margin-bottom: 5px;float: left">
+                        <h:panelGrid columns="3" style="margin-bottom: 5px;float: left">
                             <p:commandButton value="#{appmsg['global.edit']}"  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" action="#{bioDataDetilController.doEdit()}" styleClass="label_button"/>
                             <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{bioDataDetilController.doBack()}" styleClass="label_button"/>
-
-                            <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
-                                             action="#{bioDataDetilController.doReportBiodata()}" >
-                                <!--<f:setPropertyActionListener value="#{bioContacts}" target="#{bioDataDetilController.seleBioEmergencyContact}" />-->
-                                <p:ajax event="dialogReturn" listener="#{bioDataDetilController.onDialogReturnReport}"  update=":growlBioDetailFormId"/>
-                            </p:commandButton>
-                            <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']} #{appmsg['biodocument.document']}" label="#{appmsg['global.add']} #{appmsg['biodocument.document']}" styleClass="label_button" icon="ui-icon-document" 
+                            <p:commandButton value="Kartu Nama" title="Kartu Nama" label="Kartu Nama" styleClass="label_button" icon="ui-icon-document" 
                                                      action="#{bioDataDetilController.doReportBiodata()}" ajax="true" immediate="true">
-                                <!--<p:ajax event="dialogReturn" listener="#{bioDataDetilController.onDialogReturnReport}"  update=":growlBioDetailFormId"/>-->
                             </p:commandButton>
                             
                         </h:panelGrid>

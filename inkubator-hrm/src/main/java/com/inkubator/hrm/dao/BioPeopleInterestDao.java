@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author Deni
  */
-public interface PeopleInterestDao extends IDAO<BioPeopleInterest>{
+public interface BioPeopleInterestDao extends IDAO<BioPeopleInterest>{
     public BioPeopleInterest getAllDataByPK(Long id);
     
     public List<BioPeopleInterest> getAllDataByBioDataId(Long bioDataId);

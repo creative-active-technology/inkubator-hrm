@@ -8,13 +8,13 @@ import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.dao.BioDataDao;
 import com.inkubator.hrm.dao.CityDao;
-import com.inkubator.hrm.dao.EducationHistoryDao;
+import com.inkubator.hrm.dao.BioEducationHistoryDao;
 import com.inkubator.hrm.dao.EducationLevelDao;
 import com.inkubator.hrm.dao.FacultyDao;
 import com.inkubator.hrm.dao.InstitutionEducationDao;
 import com.inkubator.hrm.dao.MajorDao;
 import com.inkubator.hrm.entity.BioEducationHistory;
-import com.inkubator.hrm.service.EducationHistoryService;
+import com.inkubator.hrm.service.BioEducationHistoryService;
 import com.inkubator.hrm.web.model.BioEducationHistoryViewModel;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import java.util.ArrayList;
@@ -32,12 +32,12 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author Deni
  */
-@Service(value = "educationHistoryService")
+@Service(value = "bioEducationHistoryService")
 @Lazy
-public class EducationHistoryServiceImpl extends IServiceImpl implements EducationHistoryService{
+public class BioEducationHistoryServiceImpl extends IServiceImpl implements BioEducationHistoryService{
 
     @Autowired
-    private EducationHistoryDao educationHistoryDao;
+    private BioEducationHistoryDao educationHistoryDao;
     @Autowired
     private BioDataDao bioDataDao;
     @Autowired

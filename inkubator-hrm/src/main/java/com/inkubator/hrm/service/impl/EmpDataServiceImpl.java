@@ -314,6 +314,75 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         return results;
     }
 
+//>>>>>>> origin/master
+//    @Override
+//    @Cacheable(value = "totalEmployeeByGender")
+//    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+//    public Map<String, Long> getTotalByGender() throws Exception {
+//        Long male = empDataDao.getTotalByGender(HRMConstant.GLOBAL_MALE);
+//        Long female = empDataDao.getTotalByGender(HRMConstant.GLOBAL_FEMALE);
+//
+//        Map<String, Long> results = new HashMap<String, Long>();
+//        results.put("male", male);
+//        results.put("female", female);
+//
+//        return results;
+//    }
+//    @Override
+//    @Cacheable(value = "totalEmployeeByAge")
+//    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+//    public Map<String, Long> getTotalByAge() throws Exception {
+//        Date now = new Date();
+//        Date startDate = new Date();
+//        Date endDate = new Date();
+//
+//        //age less than 26
+//        startDate = DateTimeUtil.getDateFrom(now, -26, CommonUtilConstant.DATE_FORMAT_YEAR);
+//        Long lessThan26 = empDataDao.getTotalByAgeLessThan(startDate);
+//
+//        //age between 26 - 30
+//        startDate = DateTimeUtil.getDateFrom(now, -30, CommonUtilConstant.DATE_FORMAT_YEAR);
+//        endDate = DateTimeUtil.getDateFrom(now, -26, CommonUtilConstant.DATE_FORMAT_YEAR);
+//        Long between26And30 = empDataDao.getTotalByAgeBetween(startDate, endDate);
+//
+//        //age between 31 - 35
+//        startDate = DateTimeUtil.getDateFrom(now, -35, CommonUtilConstant.DATE_FORMAT_YEAR);
+//        endDate = DateTimeUtil.getDateFrom(now, -31, CommonUtilConstant.DATE_FORMAT_YEAR);
+//        Long between31And35 = empDataDao.getTotalByAgeBetween(startDate, endDate);
+//
+//        //age between 36 - 40
+//        startDate = DateTimeUtil.getDateFrom(now, -40, CommonUtilConstant.DATE_FORMAT_YEAR);
+//        endDate = DateTimeUtil.getDateFrom(now, -36, CommonUtilConstant.DATE_FORMAT_YEAR);
+//        Long between36And40 = empDataDao.getTotalByAgeBetween(startDate, endDate);
+//
+//        //age more than 40
+//        startDate = DateTimeUtil.getDateFrom(now, -40, CommonUtilConstant.DATE_FORMAT_YEAR);
+//        Long moreThan40 = empDataDao.getTotalByAgeMoreThan(startDate);
+//
+//        Map<String, Long> results = new HashMap<String, Long>();
+//        results.put("lessThan26", lessThan26);
+//        results.put("between26And30", between26And30);
+//        results.put("between31And35", between31And35);
+//        results.put("between36And40", between36And40);
+//        results.put("moreThan40", moreThan40);
+//
+//        return results;
+//    }
+//    @Override
+//    @Cacheable(value = "totalEmployeeByDepartment")
+//    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+//    public Map<String, Long> getTotalByDepartment() throws Exception {
+//        List<Department> departments = departmentDao.getAllData();
+//        Map<String, Long> results = new HashMap<String, Long>();
+//        for (Department department : departments) {
+//            Long total = empDataDao.getTotalByDepartmentId(department.getId());
+//            results.put(StringsUtils.slicePerWord(department.getDepartmentName(), 25), total);
+//        }
+//        //sorting by value (dari yang besar ke yang kecil)
+//        results = MapUtil.sortByValueDesc(results);
+//
+//        return results;
+//    }
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<EmpData> getByParam(EmpDataSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
@@ -328,11 +397,18 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+
     public EmpData getByEmpIdWithDetail(long id) throws Exception {
         EmpData empData = empDataDao.getByEmpIdWithDetail(id);
         empData.getJabatanByJabatanId().getDepartment().getDepartmentName();
         empData.getJabatanByJabatanId().getUnitKerja().getName();
         return this.empDataDao.getByEmpIdWithDetail(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public EmpData getByBioDataIdWithDepartment(long id) throws Exception {
+        return empDataDao.getByBioDataWithDepartment(id);
     }
 
 }
