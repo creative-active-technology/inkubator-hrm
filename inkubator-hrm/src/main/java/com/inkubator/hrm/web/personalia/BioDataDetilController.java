@@ -4,6 +4,7 @@
  */
 package com.inkubator.hrm.web.personalia;
 
+import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.BioAddress;
 import com.inkubator.hrm.entity.BioBankAccount;
@@ -29,10 +30,12 @@ import com.inkubator.hrm.service.BioInsuranceService;
 import com.inkubator.hrm.service.BioMedicalHistoryService;
 import com.inkubator.hrm.service.EducationHistoryService;
 import com.inkubator.hrm.service.PeopleInterestService;
+import com.inkubator.hrm.util.CommonReportUtil;
 import com.inkubator.hrm.web.model.BioEducationHistoryViewModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -45,9 +48,13 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+import net.sf.jasperreports.engine.JRException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 import org.springframework.dao.DataIntegrityViolationException;
 
 /**
@@ -67,7 +74,10 @@ public class BioDataDetilController extends BaseController {
     @ManagedProperty(value = "#{educationHistoryService}")
     private EducationHistoryService educationHistoryService;
     private String userId;
-
+    
+//report
+    private StreamedContent fileContent;
+    
 //start. bio address
     private BioAddress selectedBioAddress;
     private List<BioAddress> bioAddresses;
@@ -102,6 +112,12 @@ public class BioDataDetilController extends BaseController {
     private BioEmergencyContactService bioEmergencyContactService;
     private BioEmergencyContact seleBioEmergencyContact;
 //end. bio emergency 
+    
+//start. report
+    private List<BioData> bioDataList;
+    private Map<String, Object> params;
+    private String bioId;
+//end. report
 
     //start. bio medical
     private BioMedicalHistory selectedBioMedicalHistory;
@@ -182,6 +198,7 @@ public class BioDataDetilController extends BaseController {
         bioInsurances = null;
         bioInsuranceService = null;
         seleBioEmergencyContact = null;
+        bioId = null;
         selectedBioMedicalHistory = null;
         bioMedicalHistorys = null;
         bioMedicalHistoryService = null;
@@ -922,6 +939,43 @@ public class BioDataDetilController extends BaseController {
         this.seleBioEmergencyContact = seleBioEmergencyContact;
     }
 
+    public StreamedContent getFileContent() {
+        return fileContent;
+    }
+
+    public String doReportBiodata() {
+        System.out.println(selectedBioData.getId());
+//        Map<String, Object> options = new HashMap<>();
+//        options.put("modal", true);
+//        options.put("draggable", true);
+//        options.put("resizable", false);
+//        options.put("contentWidth", 355);
+//        options.put("contentHeight", 220);
+//        Map<String, List<String>> dataToSend = new HashMap<>();
+//        List<String> dataIsi = new ArrayList<>();
+//        dataIsi.add(String.valueOf(selectedBioData.getId()));
+//        dataToSend.put("param", dataIsi);
+//        RequestContext.getCurrentInstance().openDialog("bio_report_view", options, dataToSend);
+        return "/protected/personalia/bio_report_view.htm?faces-redirect=true&execution=e" + selectedBioData.getId();
+    }
+    
+    public void onDialogReturnReport(SelectEvent event) {
+        try {
+            bioDataList = bioDataService.getEntityByPKWithDetail(selectedBioData.getId());
+            super.onDialogReturn(event);
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+
+    public List<BioData> getBioDataList() {
+        return bioDataList;
+    }
+
+    public void setBioDataList(List<BioData> bioDataList) {
+        this.bioDataList = bioDataList;
+    }
+    
     /**
      * START Bio MedicalHistory method
      */

@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/dialog_layout.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlUserFormId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
+                <h:form id="empDataFormId" >
+                    <div id="box_bg" style="margin: 10px">
+                        <!--<p:panel style="margin: 10px">-->
+                        <!--                        <h:panelGrid style="margin-bottom: 5px" columns="2">
+                                                    <p:graphicImage library="images" name="bio_data.png" height="36" width="36" />
+                                                    <h:panelGroup layout="block">
+                                                        <h:panelGrid>
+                                                            <p:outputLabel value="Pencarian Bio Data" styleClass="header_big" />
+                                                            <p:outputLabel value="Biodata dari Apliaksi" styleClass="header_small_no_bold" />
+                                                        </h:panelGrid>
+                                                    </h:panelGroup>
+                                                </h:panelGrid>
+                                                <p:separator/>-->
+                        <h:panelGrid columns="4">
+                            <p:outputLabel value="Nama" styleClass="header_big" />
+                            <p:outputLabel value=":" styleClass="header_big" />
+                            <p:inputText style="width: 450px" value="#{empBioSearchController.biodataName}"/>
+                            <p:commandButton value="Cari" icon="ui-icon-search" action="#{empBioSearchController.doSearch()}" update="listBioId"  id="cariId"/>
+                        </h:panelGrid>
+                        <p:focus for="cariId" />
+                        <p:dataTable value="#{empBioSearchController.biodataToShow}" var="listBiodata" rowIndexVar="no" style="margin-top: 10px;margin-bottom: 10px" id="listBioId">
+                            <!--                            <f:facet name="header">  
+                                                            <h:outputText value="#{appmsg['role_view.header1']}" style="text-align: left" styleClass="label_hrm"/> 
+                                                        </f:facet>-->
+                            <p:column style="text-align: center;width: 25px;max-width: 25px">
+                                <f:facet name="header">  
+                                    <h:outputText value="No." />
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+
+                            <p:column> 
+                                <f:facet name="header">  
+                                    <h:outputText value="Nama" />
+                                </f:facet>
+                                <p:outputLabel value=" #{listBiodata.firstName} #{listBiodata.lastName}" />
+                            </p:column> 
+                            <p:column > 
+                                <f:facet name="header">  
+                                    <h:outputText value="Tanggal Lahir" />
+                                </f:facet>
+                                <p:outputLabel value="#{listBiodata.dateOfBirth}" >
+                                    <f:convertDateTime pattern="dd MMMM yyyy" />
+                                </p:outputLabel>
+                            </p:column>
+                            <p:column  > 
+                                <f:facet name="header">  
+                                    <h:outputText value="Email Address" />
+                                </f:facet>
+                                <h:outputLabel value=" #{listBiodata.personalEmail}" />
+                            </p:column>
+                            <p:column style="text-align: center" > 
+                                <f:facet name="header">  
+                                    <h:outputText value="Aksi" />
+                                </f:facet>
+                                <p:commandButton value="Select"  style="font-size: 11px!important" action="#{empBioSearchController.doSelect(listBiodata)}"/>
+                            </p:column>
+                        </p:dataTable>
+
+
+
+                    </div>
+
+
+                </h:form>
+<!--                <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
+                    <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
+                </p:dialog>-->
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

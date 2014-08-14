@@ -5,22 +5,28 @@
  */
 package com.inkubator.hrm.web;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.PostConstruct;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.RequestScoped;
+
+import org.primefaces.model.chart.CartesianChartModel;
+import org.primefaces.model.chart.ChartSeries;
+import org.primefaces.model.chart.PieChartModel;
+
 import com.inkubator.hrm.entity.RiwayatAkses;
+import com.inkubator.hrm.service.DepartmentService;
+import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.RiwayatAksesService;
 import com.inkubator.hrm.web.model.LoginHistoryModel;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
-import org.primefaces.model.chart.CartesianChartModel;
-import org.primefaces.model.chart.ChartSeries;
-import org.primefaces.model.chart.PieChartModel;
 
 /**
  *
@@ -30,37 +36,38 @@ import org.primefaces.model.chart.PieChartModel;
 @RequestScoped
 public class HomeController extends BaseController {
 
+	private Long totalMale;
+	private Long totalFemale;
     private PieChartModel pieModel;
     private CartesianChartModel distribusiKaryawanPerDepartment;
     private CartesianChartModel presensiModel;
-    private PieChartModel distibusiPerDepartment;
     private CartesianChartModel persentasiKehadiranPerWeek;
     private List<LoginHistoryModel> logHistorys = new ArrayList<>();
     @ManagedProperty(value = "#{riwayatAksesService}")
     private RiwayatAksesService riwayatAksesService;
+    @ManagedProperty(value = "#{empDataService}")
+    private EmpDataService empDataService;
+    @ManagedProperty(value = "#{departmentService}")
+    private DepartmentService departmentService;
 
     public void setRiwayatAksesService(RiwayatAksesService riwayatAksesService) {
         this.riwayatAksesService = riwayatAksesService;
-    }
+    }    
+    
+    public void setEmpDataService(EmpDataService empDataService) {
+		this.empDataService = empDataService;
+	}
 
-    
-    
-    public CartesianChartModel getDistribusiKaryawanPerDepartment() {
+	public void setDepartmentService(DepartmentService departmentService) {
+		this.departmentService = departmentService;
+	}
+
+	public CartesianChartModel getDistribusiKaryawanPerDepartment() {
         return distribusiKaryawanPerDepartment;
     }
 
     public void setDistribusiKaryawanPerDepartment(CartesianChartModel distribusiKaryawanPerDepartment) {
         this.distribusiKaryawanPerDepartment = distribusiKaryawanPerDepartment;
-    }
-
-    private String haha;
-
-    public String getHaha() {
-        return haha;
-    }
-
-    public void setHaha(String haha) {
-        this.haha = haha;
     }
 
     @PostConstruct
@@ -77,8 +84,42 @@ public class HomeController extends BaseController {
            LOGGER.error("Error", ex);
         }
         super.initialization();
-        System.out.println("tereksekusi");
+        
         distribusiKaryawanPerDepartment = new CartesianChartModel();
+        pieModel = new PieChartModel();
+        totalMale = (long) 0;
+        totalFemale = (long) 0;
+        try {
+        	Map<String, Long> employeesByGender = empDataService.getTotalByGender();
+        	totalFemale = employeesByGender.get("male");
+        	totalMale = employeesByGender.get("female");
+        	
+	        Map<String, Long> employeesByDepartment = empDataService.getTotalByDepartment();	        
+	        int i = 0;
+	        for(Map.Entry<String, Long> entry : employeesByDepartment.entrySet()){
+	        	ChartSeries deptSeries = new ChartSeries();
+	            deptSeries.setLabel(entry.getKey());
+	            deptSeries.set("Department", entry.getValue());
+	            distribusiKaryawanPerDepartment.addSeries(deptSeries);
+	            
+	            i++;
+	            if(i == 8){ // only 8 department is allowed to show
+	            	break;
+	            }
+	        }
+	
+	        Map<String, Long> employeesByAge = empDataService.getTotalByAge();	        
+	        pieModel.set("< 26", employeesByAge.get("lessThan26"));
+	        pieModel.set("25-30", employeesByAge.get("between26And30"));
+	        pieModel.set("31-35", employeesByAge.get("between31And35"));
+	        pieModel.set("36-40", employeesByAge.get("between36And40"));
+	        pieModel.set("> 40", employeesByAge.get("moreThan40"));
+        
+        } catch (Exception e) {
+			
+			e.printStackTrace();
+		}
+        
         persentasiKehadiranPerWeek = new CartesianChartModel();
         ChartSeries itpercent = new ChartSeries();
         itpercent.setLabel("IT & RND");
@@ -88,10 +129,6 @@ public class HomeController extends BaseController {
         itpercent.set("Week 4", 95);
         itpercent.set("Week 5", 100);
         itpercent.set("Week 6", 80);
-//        itpercent.set("Week 7", 70);
-//        itpercent.set("Week 8", 75);
-//        itpercent.set("Week 9", 77);
-//        itpercent.set("Week 10", 98);
 
         ChartSeries hrgaPercent = new ChartSeries();
         hrgaPercent.setLabel("HR & GA");
@@ -101,10 +138,6 @@ public class HomeController extends BaseController {
         hrgaPercent.set("Week 4", 87);
         hrgaPercent.set("Week 5", 100);
         hrgaPercent.set("Week 6", 77);
-//        hrgaPercent.set("Week 7", 78);
-//        hrgaPercent.set("Week 8", 75);
-//        hrgaPercent.set("Week 9", 77);
-//        hrgaPercent.set("Week 10", 98);
 
         ChartSeries marketingPercent = new ChartSeries();
         marketingPercent.setLabel("MARKETING");
@@ -114,10 +147,6 @@ public class HomeController extends BaseController {
         marketingPercent.set("Week 4", 47);
         marketingPercent.set("Week 5", 69);
         marketingPercent.set("Week 6", 45);
-//        marketingPercent.set("Week 7", 77);
-//        marketingPercent.set("Week 8", 99);
-//        marketingPercent.set("Week 9", 67);
-//        marketingPercent.set("Week 10", 98);
 
         ChartSeries finacePercent = new ChartSeries();
         finacePercent.setLabel("FINANCE");
@@ -127,10 +156,7 @@ public class HomeController extends BaseController {
         finacePercent.set("Week 4", 47);
         finacePercent.set("Week 5", 99);
         finacePercent.set("Week 6", 90);
-//        finacePercent.set("Week 7", 77);
-//        finacePercent.set("Week 8", 99);
-//        finacePercent.set("Week 9", 100);
-//        finacePercent.set("Week 10", 98);
+        
         ChartSeries designPercent = new ChartSeries();
         designPercent.setLabel("DESIGN");
         designPercent.set("Week 1", 56);
@@ -139,10 +165,7 @@ public class HomeController extends BaseController {
         designPercent.set("Week 4", 99);
         designPercent.set("Week 5", 78);
         designPercent.set("Week 6", 100);
-//        designPercent.set("Week 7", 77);
-//        designPercent.set("Week 8", 75);
-//        designPercent.set("Week 9", 77);
-//        designPercent.set("Week 10", 66);
+        
         ChartSeries productionPercent = new ChartSeries();
         productionPercent.setLabel("PRODUCTION");
         productionPercent.set("Week 1", 89);
@@ -151,10 +174,6 @@ public class HomeController extends BaseController {
         productionPercent.set("Week 4", 100);
         productionPercent.set("Week 5", 89);
         productionPercent.set("Week 6", 77);
-//        productionPercent.set("Week 7", 89);
-//        productionPercent.set("Week 8", 60);
-//        productionPercent.set("Week 9", 99);
-//        productionPercent.set("Week 10", 88);
 
         persentasiKehadiranPerWeek.addSeries(itpercent);
         persentasiKehadiranPerWeek.addSeries(hrgaPercent);
@@ -162,49 +181,6 @@ public class HomeController extends BaseController {
         persentasiKehadiranPerWeek.addSeries(finacePercent);
         persentasiKehadiranPerWeek.addSeries(designPercent);
         persentasiKehadiranPerWeek.addSeries(productionPercent);
-
-        ChartSeries it = new ChartSeries();
-        it.setLabel("IT & RND");
-        it.set("Departement", 60);
-
-        ChartSeries hrga = new ChartSeries();
-        hrga.setLabel("HR & GA");
-        hrga.set("Departement", 20);
-
-        ChartSeries finance = new ChartSeries();
-        finance.setLabel("FINANCE");
-        finance.set("Departement", 15);
-
-        ChartSeries marketing = new ChartSeries();
-        marketing.setLabel("MARKETING");
-        marketing.set("Departement", 25);
-
-        ChartSeries production = new ChartSeries();
-        production.setLabel("PRODUCTION");
-        production.set("Departement", 100);
-
-        ChartSeries design = new ChartSeries();
-        design.setLabel("DESIGN");
-        design.set("Departement", 10);
-        ChartSeries warehouse = new ChartSeries();
-        warehouse.setLabel("GUDANG");
-        warehouse.set("Gudang", 24);
-
-        distribusiKaryawanPerDepartment.addSeries(it);
-        distribusiKaryawanPerDepartment.addSeries(hrga);
-        distribusiKaryawanPerDepartment.addSeries(finance);
-        distribusiKaryawanPerDepartment.addSeries(marketing);
-        distribusiKaryawanPerDepartment.addSeries(production);
-        distribusiKaryawanPerDepartment.addSeries(design);
-        distribusiKaryawanPerDepartment.addSeries(warehouse);
-
-        pieModel = new PieChartModel();
-
-        pieModel.set("< 25 Th", 540);
-        pieModel.set("25-30 Th", 325);
-        pieModel.set("30-35 Th", 702);
-        pieModel.set("35-40 Th", 421);
-        pieModel.set("> 40 Th", 333);
 
         presensiModel = new CartesianChartModel();
         ChartSeries cutiDanDinas = new ChartSeries();
@@ -243,13 +219,6 @@ public class HomeController extends BaseController {
         presensiModel.addSeries(ijinDanSakit);
         presensiModel.addSeries(tanpaKeterangan);
 
-        distibusiPerDepartment = new PieChartModel();
-        distibusiPerDepartment.set("IT & RND", 40);
-        distibusiPerDepartment.set("HR & GA", 15);
-        distibusiPerDepartment.set("FINANCE", 10);
-        distibusiPerDepartment.set("MARKETING", 30);
-        distibusiPerDepartment.set("PRODUCTION", 70);
-
     }
 
     public PieChartModel getPieModel() {
@@ -276,14 +245,6 @@ public class HomeController extends BaseController {
         this.logHistorys = logHistorys;
     }
 
-    public PieChartModel getDistibusiPerDepartment() {
-        return distibusiPerDepartment;
-    }
-
-    public void setDistibusiPerDepartment(PieChartModel distibusiPerDepartment) {
-        this.distibusiPerDepartment = distibusiPerDepartment;
-    }
-
     public CartesianChartModel getPersentasiKehadiranPerWeek() {
         return persentasiKehadiranPerWeek;
     }
@@ -292,4 +253,20 @@ public class HomeController extends BaseController {
         this.persentasiKehadiranPerWeek = persentasiKehadiranPerWeek;
     }
 
+	public Long getTotalMale() {
+		return totalMale;
+	}
+
+	public void setTotalMale(Long totalMale) {
+		this.totalMale = totalMale;
+	}
+
+	public Long getTotalFemale() {
+		return totalFemale;
+	}
+
+	public void setTotalFemale(Long totalFemale) {
+		this.totalFemale = totalFemale;
+	}
+    
 }

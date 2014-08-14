@@ -86,9 +86,9 @@ public class EmpDataViewController extends BaseController {
 //        lazyDataHrmUser = null;
 //    }
 //
-//    public String doAdd() {
-//        return "/protected/account/user_form.htm?faces-redirect=true";
-//    }
+    public String doAdd() {
+        return "/protected/employee/employee_palcement_form.htm?faces-redirect=true";
+    }
 //
 //    public String doDetail() {
 //        return "/protected/account/user_detail.htm?faces-redirect=true&execution=e" + selectedHrmUser.getId();

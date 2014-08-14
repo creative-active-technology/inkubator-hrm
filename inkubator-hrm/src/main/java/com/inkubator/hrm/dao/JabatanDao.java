@@ -32,4 +32,6 @@ public interface JabatanDao extends IDAO<Jabatan> {
     public Jabatan getByIdWithJobDeskripsi(long id) throws Exception;
 
     public void saveAndMerge(Jabatan jabatan);
+
+    public List<Jabatan> getByDepartementId(long id);
 }
