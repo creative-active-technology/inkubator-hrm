@@ -33,8 +33,7 @@ public interface EmpDataDao extends IDAO<EmpData> {
     public Long getTotalEmpDataByParam(EmpDataSearchParameter searchParameter);
 
     public EmpData getByEmpIdWithDetail(long id);
-    
-    public EmpData getByBioDataWithDepartment(long id);
 
+    public EmpData getByBioDataWithDepartment(long id);
 
 }

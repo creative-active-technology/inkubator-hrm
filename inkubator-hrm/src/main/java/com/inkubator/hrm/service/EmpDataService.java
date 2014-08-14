@@ -23,13 +23,13 @@ public interface EmpDataService extends IService<EmpData> {
     public Map<String, Long> getTotalByAge() throws Exception;
 
     public Map<String, Long> getTotalByDepartment() throws Exception;
-   
+
     public List<EmpData> getByParam(EmpDataSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
 
     public Long getTotalEmpDataByParam(EmpDataSearchParameter searchParameter) throws Exception;
-   
+
     public EmpData getByEmpIdWithDetail(long id) throws Exception;
 
     public EmpData getByBioDataIdWithDepartment(long id) throws Exception;
-    
+
 }
