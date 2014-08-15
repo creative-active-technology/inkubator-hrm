@@ -84,7 +84,7 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{empViewData.nik}"/>
                             </p:column>
-                            <p:column sortBy="firstName">
+                            <p:column sortBy="bioData">
                                 <f:facet name="header">  
                                     <h:outputText value="Nama"/>
                                 </f:facet>
@@ -104,7 +104,7 @@
                                 </f:facet>
                                 <p:outputLabel value= "#{empViewData.jabatanByJabatanId.code}"/>
                             </p:column>
-                            <p:column sortBy="firstName" >
+                            <p:column sortBy="jabatanByJabatanId" >
                                 <f:facet name="header">  
                                     <h:outputText value="Nama Jabatan"/>
                                 </f:facet>
@@ -113,7 +113,7 @@
 
                             <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
                                 <p:commandButton  icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
-                                                  action="#{userViewController.doDetail()}" style="font-size: 10px!important" >                        
+                                                  action="#{empDataViewController.doDetail()}" style="font-size: 10px!important" >                        
                                     <f:setPropertyActionListener value="#{empViewData}" target="#{empDataViewController.selectedEmpData}" />
                                 </p:commandButton>
                                 - 
@@ -123,7 +123,7 @@
                                 </p:commandButton>
                                 -
                                 <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
-                                                  action="#{userViewController.doEdit()}" >
+                                                  action="#{empDataViewController.doEdit()}" >
                                     <f:setPropertyActionListener value="#{empViewData}" target="#{empDataViewController.selectedEmpData}" />
 
                                 </p:commandButton> 

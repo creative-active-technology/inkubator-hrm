@@ -21,13 +21,13 @@ import com.inkubator.hrm.service.BioAddressService;
 import com.inkubator.hrm.service.BioBankAccountService;
 import com.inkubator.hrm.service.BioDataService;
 import com.inkubator.hrm.service.BioDocumentService;
+import com.inkubator.hrm.service.BioEducationHistoryService;
 import com.inkubator.hrm.service.BioEmergencyContactService;
 import com.inkubator.hrm.service.BioEmploymentHistoryService;
 import com.inkubator.hrm.service.BioFamilyRelationshipService;
 import com.inkubator.hrm.service.BioIdCardService;
 import com.inkubator.hrm.service.BioInsuranceService;
 import com.inkubator.hrm.service.BioMedicalHistoryService;
-import com.inkubator.hrm.service.BioEducationHistoryService;
 import com.inkubator.hrm.service.BioPeopleInterestService;
 import com.inkubator.hrm.web.model.BioEducationHistoryViewModel;
 import com.inkubator.webcore.controller.BaseController;
@@ -68,7 +68,7 @@ public class BioDataDetilController extends BaseController {
     @ManagedProperty(value = "#{bioEducationHistoryService}")
     private BioEducationHistoryService educationHistoryService;
     private String userId;
-    
+
 //start. bio address
     private BioAddress selectedBioAddress;
     private List<BioAddress> bioAddresses;
@@ -103,7 +103,7 @@ public class BioDataDetilController extends BaseController {
     private BioEmergencyContactService bioEmergencyContactService;
     private BioEmergencyContact seleBioEmergencyContact;
 //end. bio emergency 
-    
+
 //start. report
     private List<BioData> bioDataList;
     private Map<String, Object> params;
@@ -459,8 +459,6 @@ public class BioDataDetilController extends BaseController {
     public void setBioIdCardService(BioIdCardService bioIdCardService) {
         this.bioIdCardService = bioIdCardService;
     }
-    
-    
 
     public String doDetail() {
         return "/protected/personalia/biodata_detail.htm?faces-redirect=true&execution=e" + selectedBioData.getId();
@@ -923,7 +921,6 @@ public class BioDataDetilController extends BaseController {
     /**
      * END Bio Insurance method
      */
-    
     /*
      *Start Report BioData
      */
@@ -941,8 +938,9 @@ public class BioDataDetilController extends BaseController {
 
     public String doReportBiodata() {
         return "/protected/personalia/bio_report_view.htm?faces-redirect=true&execution=e" + selectedBioData.getId();
+
     }
-    
+
     public void onDialogReturnReport(SelectEvent event) {
         try {
             bioDataList = bioDataService.getEntityByPKWithDetail(selectedBioData.getId());
@@ -955,7 +953,6 @@ public class BioDataDetilController extends BaseController {
     /*
      *End Report BioData
      */
-    
     public List<BioData> getBioDataList() {
         return bioDataList;
     }
@@ -963,7 +960,7 @@ public class BioDataDetilController extends BaseController {
     public void setBioDataList(List<BioData> bioDataList) {
         this.bioDataList = bioDataList;
     }
-    
+
     /**
      * START Bio MedicalHistory method
      */
@@ -1244,7 +1241,6 @@ public class BioDataDetilController extends BaseController {
     /**
      * END Bio BankAccount method
      */
-    
     /**
      * START Bio IdCard method
      */

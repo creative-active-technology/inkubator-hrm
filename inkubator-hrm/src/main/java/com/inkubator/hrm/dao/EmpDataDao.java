@@ -8,7 +8,6 @@ package com.inkubator.hrm.dao;
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.web.search.EmpDataSearchParameter;
-
 import java.util.Date;
 import java.util.List;
 import org.hibernate.criterion.Order;
@@ -19,20 +18,22 @@ import org.hibernate.criterion.Order;
  */
 public interface EmpDataDao extends IDAO<EmpData> {
 
-	public Long getTotalByGender(Integer gender);
-	
-	public Long getTotalByAgeBetween(Date startDate, Date endDate);
-	
-	public Long getTotalByAgeLessThan(Date date);
-	
-	public Long getTotalByAgeMoreThan(Date date);
-	
-	public Long getTotalByDepartmentId(Long departmentId);
-	
+    public Long getTotalByGender(Integer gender);
+
+    public Long getTotalByAgeBetween(Date startDate, Date endDate);
+
+    public Long getTotalByAgeLessThan(Date date);
+
+    public Long getTotalByAgeMoreThan(Date date);
+
+    public Long getTotalByDepartmentId(Long departmentId);
+
     public List<EmpData> getByParam(EmpDataSearchParameter searchParameter, int firstResult, int maxResults, Order order);
 
     public Long getTotalEmpDataByParam(EmpDataSearchParameter searchParameter);
-    
+
+    public EmpData getByEmpIdWithDetail(long id);
+
     public EmpData getByBioDataWithDepartment(long id);
 
 }

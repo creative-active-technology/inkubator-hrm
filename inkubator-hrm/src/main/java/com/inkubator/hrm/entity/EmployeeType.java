@@ -1,7 +1,6 @@
 package com.inkubator.hrm.entity;
 
 import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -25,6 +24,10 @@ public class EmployeeType implements java.io.Serializable {
     private Date updatedOn;
 
     public EmployeeType() {
+    }
+
+    public EmployeeType(Long id) {
+        this.id = id;
     }
 
     public EmployeeType(Long id, String name) {

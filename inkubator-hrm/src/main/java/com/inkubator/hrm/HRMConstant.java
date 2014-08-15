@@ -89,7 +89,7 @@ public class HRMConstant {
     public static final Integer BLOOD_AB_TYPE = 3;
     public static final Integer BLOOD_O_TYPE = 4;
     /* END */
-    
+
     /* 
      * Constant for BIO address Module */
     public static final Integer BIOADDRESS_TYPE_IDENTITY_CARD = 0;
@@ -99,34 +99,45 @@ public class HRMConstant {
     public static final Integer BIOADDRESS_STATUS_RELATIVES = 1;
     public static final Integer BIOADDRESS_STATUS_OWNER = 2;
     /* END */
-    
-     /* Constant for Travel Components */
+
+    /* Constant for Travel Components */
     public static final Integer MEASUREMENT_PACK = 0;
     public static final Integer MEASUREMENT_UNIT = 1;
     public static final Integer MEASUREMENT_DAY = 2;
     /* END */
-    
+
     /* Constant for Travel Zone */
     public static final Integer ZONE_DOMESTICS = 0;
     public static final Integer ZONE_OVERSEAS = 1;
     /* END */
 
-     /* Constant for BIO Medical Module */
+    /* Constant for BIO Medical Module */
     public static final Integer BIOMEDICAL_HEALED = 0;
     public static final Integer BIOMEDICAL_NOT_HEALED = 1;
     /* END */
-    
-     /* Constant for BIO Family Relation Module */
+
+    /* Constant for BIO Family Relation Module */
     public static final Integer BIOFAMILY_DEPENDENTS_YES = 0;
     public static final Integer BIOFAMILY_DEPENDENTS_NO = 1;
     /* END */
-    
-     /* Constant for BIO Bank Account Module */
+
+    /* Constant for BIO Bank Account Module */
     public static final Integer BANK_SAVING_TYPE_DEPOSITO = 0;
     public static final Integer BANK_SAVING_TYPE_SAVING = 1;
     public static final Integer BANK_SAVING_TYPE_GIRO = 2;
     public static final Integer BANK_SAVING_TYPE_CHECKING = 3;
     public static final Integer BANK_DEFAULT_ACCOUNT_YES = 0;
     public static final Integer BANK_DEFAULT_ACCOUNT_NO = 1;
+    /* END */
+
+    /* Constant for Placement */
+    public static final Integer PLACEMENT_PREMI_HEATLY_YES = 1;
+    public static final Integer PLACEMENT_PREMI_HEATLY_NO = 0;
+    public static final Integer PLACEMENT_IS_FINGER_YES = 1;
+    public static final Integer PLACEMENT_IS_FINGER_NO = 0;
+    public static final Integer PLACEMENT_ISENTIF_YES = 1;
+    public static final Integer PLACEMENT_ISENTIF_NO = 0;
+    public static final Integer PLACEMENT_MARRIED = 1;
+    public static final Integer PLACEMENT_NO_MARRIED = 0;
     /* END */
 }
