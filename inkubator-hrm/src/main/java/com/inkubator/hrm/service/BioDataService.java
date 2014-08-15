@@ -24,4 +24,6 @@ public interface BioDataService extends IService<BioData> {
     public List<BioData> getEntityByPKWithDetail(long id) throws Exception;
 
     public List<BioData> getByName(String name) throws Exception;
+
+	public void generateCV(long id) throws Exception;
 }
