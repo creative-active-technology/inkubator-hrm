@@ -27,6 +27,7 @@ import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -183,7 +184,8 @@ public class BioEducationHistoryFormController extends BaseController{
             listCitys.put(city.getCityName(), city.getId());
         }
         //years
-        for(int i = 1980; i < 2050; i++){
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+        for(int i = 1980; i < year; i++){
             listYears.put(i, i);
         }
         MapUtil.sortByValue(listCitys);

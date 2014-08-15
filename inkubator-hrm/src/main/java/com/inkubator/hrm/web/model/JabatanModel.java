@@ -22,6 +22,8 @@ public class JabatanModel implements Serializable {
     private Long departementId;
     private Long posBiayaId;
     private String tujuanJabatan;
+    private Long salaryGradeId;
+    private String NIK;
 //    private Integer levelJabatan;
 
     public Long getId() {
@@ -96,17 +98,27 @@ public class JabatanModel implements Serializable {
         this.tujuanJabatan = tujuanJabatan;
     }
 
-//    public Integer getLevelJabatan() {
-//        return levelJabatan;
-//    }
-//
-//    public void setLevelJabatan(Integer levelJabatan) {
-//        this.levelJabatan = levelJabatan;
-//    }
-    
-    
-   
-   
+    //    public Integer getLevelJabatan() {
+    //        return levelJabatan;
+    //    }
+    //
+    //    public void setLevelJabatan(Integer levelJabatan) {
+    //        this.levelJabatan = levelJabatan;
+    //    }
+    public Long getSalaryGradeId() {
+        return salaryGradeId;
+    }
 
-   
+    public void setSalaryGradeId(Long salaryGradeId) {
+        this.salaryGradeId = salaryGradeId;
+    }
+
+    public String getNIK() {
+        return NIK;
+    }
+
+    public void setNIK(String NIK) {
+        this.NIK = NIK;
+    }
+    
 }
