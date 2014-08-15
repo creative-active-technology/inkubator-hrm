@@ -36,6 +36,7 @@ public class BioEducationHistoryDaoImpl extends IDAOImpl<BioEducationHistory> im
         criteria.setFetchMode("institutionEducation.city.cityName", FetchMode.JOIN);
         criteria.setFetchMode("faculty", FetchMode.JOIN);
         criteria.setFetchMode("major", FetchMode.JOIN);
+        criteria.setFetchMode("city", FetchMode.JOIN);
         return (BioEducationHistory) criteria.uniqueResult();
     }
 

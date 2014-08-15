@@ -28,15 +28,21 @@ import com.inkubator.webcore.util.MessagesResourceUtil;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import org.apache.commons.lang3.StringUtils;
+import org.castor.util.StringUtil;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
@@ -87,7 +93,7 @@ public class BioEducationHistoryFormController extends BaseController{
     private Map<String, Long> listCitys = new TreeMap<String, Long>();;
     private List<City> listCity = new ArrayList<>();
     
-    private Map<Integer, Integer> listYears = new TreeMap<Integer, Integer>();
+    private Map<Integer, Integer> listYears = new TreeMap<Integer, Integer>(Collections.reverseOrder());
     
     
     @PreDestroy
@@ -143,7 +149,7 @@ public class BioEducationHistoryFormController extends BaseController{
                 model.setCertificateNumber(educationHistory.getCertificateNumber());
                 model.setScore(educationHistory.getScore());
                 if(educationHistory.getCity() != null ){
-                    model.setCityId(educationHistory.getCity().getId());
+                    model.setCity(educationHistory.getCity());
                 }
                 model.setYearIn(educationHistory.getYearIn());
                 model.setYearOut(educationHistory.getYearOut());
@@ -165,8 +171,14 @@ public class BioEducationHistoryFormController extends BaseController{
         }
         //Institution Education
         listInstitutionsEducation = institutionEducationService.getAllData();
+        String institutionName = "";
         for (InstitutionEducation institutionEducation : listInstitutionsEducation) {
-            listInstitutionEducations.put(institutionEducation.getInstitutionEducationName(), institutionEducation.getId());
+            if(institutionEducation.getInstitutionEducationName().length() > 13){
+                institutionName = institutionEducation.getInstitutionEducationCode() + " - " + institutionEducation.getInstitutionEducationName().substring(0, 12) + "...";
+            }else{
+                institutionName = institutionEducation.getInstitutionEducationCode() + " - " + institutionEducation.getInstitutionEducationName();
+            }
+            listInstitutionEducations.put(institutionName, institutionEducation.getId());
         }
         //Faculty
         listFaculty = facultyService.getAllData();
@@ -185,7 +197,7 @@ public class BioEducationHistoryFormController extends BaseController{
         }
         //years
         int year = Calendar.getInstance().get(Calendar.YEAR);
-        for(int i = 1980; i < year; i++){
+        for(int i = 1980; i <= year; i++){
             listYears.put(i, i);
         }
         MapUtil.sortByValue(listCitys);
@@ -230,7 +242,7 @@ public class BioEducationHistoryFormController extends BaseController{
         educationHistory.setInstitutionEducation(new InstitutionEducation(model.getInstitutionEducationId()));
         educationHistory.setFaculty(new Faculty(model.getFacultyId()));
         educationHistory.setMajor(new Major(model.getMajorId()));
-        educationHistory.setCity(new City(model.getCityId()));
+        educationHistory.setCity(model.getCity());
         educationHistory.setCertificateNumber(model.getCertificateNumber());
         educationHistory.setScore(model.getScore());
         educationHistory.setYearIn(model.getYearIn());
@@ -241,6 +253,23 @@ public class BioEducationHistoryFormController extends BaseController{
         return educationHistory;
     }
 
+    public List<City> completeCity(String query) {
+        try {
+            List<City> allCity = cityService.getAllData();
+            List<City> queried = new ArrayList<City>();
+            for (City city : allCity) {
+                if (city.getCityName().toLowerCase().startsWith(query) || city.getCityName().endsWith(query)) {
+                    queried.add(city);
+                }
+            }
+
+            return queried;
+        } catch (Exception ex) {
+            Logger.getLogger(BioIdCardFormController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
     public void handingFotoUpload(FileUploadEvent fileUploadEvent) {
         fotoFile = fileUploadEvent.getFile();
         fotoFileName = fotoFile.getFileName();

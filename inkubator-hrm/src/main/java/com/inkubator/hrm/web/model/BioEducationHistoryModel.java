@@ -4,6 +4,7 @@
  */
 package com.inkubator.hrm.web.model;
 
+import com.inkubator.hrm.entity.City;
 import java.io.Serializable;
 
 /**
@@ -22,6 +23,7 @@ public class BioEducationHistoryModel implements Serializable{
      private Integer yearIn;
      private Integer yearOut;
      private Long cityId;
+     private City city;
 
     public Long getCityId() {
         return cityId;
@@ -110,6 +112,14 @@ public class BioEducationHistoryModel implements Serializable{
 
     public void setYearOut(Integer yearOut) {
         this.yearOut = yearOut;
+    }
+
+    public City getCity() {
+        return city;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
     }
      
      
