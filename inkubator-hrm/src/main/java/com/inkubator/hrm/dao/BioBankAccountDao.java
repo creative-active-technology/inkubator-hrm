@@ -24,5 +24,9 @@ public interface BioBankAccountDao extends IDAO<BioBankAccount> {
     public Long getTotalByAccountNumber(String accountNumber);
 
     public Long getTotalByAccountNumberAndNotId(String accountNumber, Long id);
+    
+    public Long getTotalByDefaultAndId(Long bioDataId);
+    
+    public Long getTotalByDefaultAndNotId(Long bioDataId, Long id);
 
 }

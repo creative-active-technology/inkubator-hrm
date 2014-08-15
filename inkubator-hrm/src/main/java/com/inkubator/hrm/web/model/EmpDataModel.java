@@ -15,9 +15,9 @@ import java.util.Date;
  */
 public class EmpDataModel implements Serializable {
 
-    private long id;
+    private Long id;
     private long workingGroupId;
-    private long employeeTypeId;
+    private Long employeeTypeId;
     private long bioDataId;
     private String bioDataName;
     private long paySalaryGradeId;
@@ -37,11 +37,11 @@ public class EmpDataModel implements Serializable {
     private Date birthDate;
     private long departementId;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -53,11 +53,11 @@ public class EmpDataModel implements Serializable {
         this.workingGroupId = workingGroupId;
     }
 
-    public long getEmployeeTypeId() {
+    public Long getEmployeeTypeId() {
         return employeeTypeId;
     }
 
-    public void setEmployeeTypeId(long employeeTypeId) {
+    public void setEmployeeTypeId(Long employeeTypeId) {
         this.employeeTypeId = employeeTypeId;
     }
 

@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author Deni
  */
-public interface PeopleInterestService extends IService<BioPeopleInterest>{
+public interface BioPeopleInterestService extends IService<BioPeopleInterest>{
     public BioPeopleInterest getAllDataByPK(Long id);
     
     public List<BioPeopleInterest> getAllDataByBioDataId(Long bioDataId) throws Exception;

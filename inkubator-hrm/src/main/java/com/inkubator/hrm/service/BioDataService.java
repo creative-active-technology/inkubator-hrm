@@ -7,6 +7,7 @@ package com.inkubator.hrm.service;
 
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.BioData;
+import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.web.search.BioDataSearchParameter;
 import java.util.List;
 import org.hibernate.criterion.Order;

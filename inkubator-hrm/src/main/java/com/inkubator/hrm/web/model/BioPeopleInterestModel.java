@@ -10,7 +10,7 @@ import java.io.Serializable;
  *
  * @author Deni
  */
-public class PeopleInterestModel implements Serializable{
+public class BioPeopleInterestModel implements Serializable{
     private Long id;
     private Long interestId;
     private Long biodataId;

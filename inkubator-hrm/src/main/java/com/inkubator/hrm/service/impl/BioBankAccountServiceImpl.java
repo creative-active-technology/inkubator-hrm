@@ -3,6 +3,7 @@ package com.inkubator.hrm.service.impl;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.BankDao;
 import com.inkubator.hrm.dao.BioDataDao;
 import com.inkubator.hrm.dao.BioBankAccountDao;
@@ -213,15 +214,22 @@ public class BioBankAccountServiceImpl extends IServiceImpl implements BioBankAc
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(BioBankAccount bioBankAccount) throws Exception {
         long swiftCodeDuplicates = bioBankAccountDao.getTotalBySwiftCode(bioBankAccount.getSwiftCode());
-        if(swiftCodeDuplicates > 0){
+        if (swiftCodeDuplicates > 0) {
             throw new BussinessException("bioBankAccount.error_duplicate_swift_code");
         }
-        
+
         long accountNumberDuplicates = bioBankAccountDao.getTotalByAccountNumber(bioBankAccount.getAccountNumber());
-        if(accountNumberDuplicates > 0){
+        if (accountNumberDuplicates > 0) {
             throw new BussinessException("bioBankAccount.error_duplicate_account_number");
         }
-        
+
+        long defaultAccount = bioBankAccountDao.getTotalByDefaultAndId(bioBankAccount.getBioData().getId());
+        if (defaultAccount > 0) {
+            if (bioBankAccount.getDefaultAccount().equals(HRMConstant.BANK_DEFAULT_ACCOUNT_YES)) {
+                throw new BussinessException("bioBankAccount.error_duplicate_default_account");
+            }
+        }
+
         BioData biodata = bioDataDao.getEntiyByPK(bioBankAccount.getBioData().getId());
         City city = cityDao.getEntiyByPK(bioBankAccount.getCity().getId());
         Bank bank = bankDao.getEntiyByPK(bioBankAccount.getBank().getId());
@@ -264,15 +272,22 @@ public class BioBankAccountServiceImpl extends IServiceImpl implements BioBankAc
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(BioBankAccount b) throws Exception {
         long swiftCodeDuplicates = bioBankAccountDao.getTotalBySwiftCodeAndNotId(b.getSwiftCode(), b.getId());
-        if(swiftCodeDuplicates > 0){
+        if (swiftCodeDuplicates > 0) {
             throw new BussinessException("bioBankAccount.error_duplicate_swift_code");
         }
-        
+
         long accountNumberDuplicates = bioBankAccountDao.getTotalByAccountNumberAndNotId(b.getAccountNumber(), b.getId());
-        if(accountNumberDuplicates > 0){
+        if (accountNumberDuplicates > 0) {
             throw new BussinessException("bioBankAccount.error_duplicate_account_number");
         }
-        
+
+        long defaultAccount = bioBankAccountDao.getTotalByDefaultAndNotId(b.getBioData().getId(), b.getId());
+        if (defaultAccount > 0) {
+            if (b.getDefaultAccount().equals(HRMConstant.BANK_DEFAULT_ACCOUNT_YES)) {
+                throw new BussinessException("bioBankAccount.error_duplicate_default_account");
+            }
+        }
+
         BioData biodata = bioDataDao.getEntiyByPK(b.getBioData().getId());
         City city = cityDao.getEntiyByPK(b.getCity().getId());
         Bank bank = bankDao.getEntiyByPK(b.getBank().getId());
@@ -312,5 +327,5 @@ public class BioBankAccountServiceImpl extends IServiceImpl implements BioBankAc
     public BioBankAccount getEntityByPKWithDetail(Long id) throws Exception {
         return bioBankAccountDao.getEntityByPKWithDetail(id);
     }
-    
+
 }

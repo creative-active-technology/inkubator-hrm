@@ -8,7 +8,7 @@ package com.inkubator.hrm.web;
 import com.inkubator.hrm.entity.BioDocument;
 import com.inkubator.hrm.service.BioDataService;
 import com.inkubator.hrm.service.BioDocumentService;
-import com.inkubator.hrm.service.EducationHistoryService;
+import com.inkubator.hrm.service.BioEducationHistoryService;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesIO;
 import com.inkubator.webcore.util.FacesUtil;
@@ -37,8 +37,8 @@ public class ImageBioDataStreamerController extends BaseController {
     private FacesIO facesIO;
     @ManagedProperty(value = "#{bioDataService}")
     private BioDataService bioDataService;
-    @ManagedProperty(value = "#{educationHistoryService}")
-    private EducationHistoryService educationHistoryService;
+    @ManagedProperty(value = "#{bioEducationHistoryService}")
+    private BioEducationHistoryService educationHistoryService;
     @ManagedProperty(value = "#{bioDocumentService}")
     private BioDocumentService bioDocumentService;
     private StreamedContent ijazahFile;
@@ -49,7 +49,7 @@ public class ImageBioDataStreamerController extends BaseController {
         this.bioDataService = bioDataService;
     }
 
-    public void setEducationHistoryService(EducationHistoryService educationHistoryService) {
+    public void setEducationHistoryService(BioEducationHistoryService educationHistoryService) {
         this.educationHistoryService = educationHistoryService;
     }
     
@@ -105,7 +105,7 @@ public class ImageBioDataStreamerController extends BaseController {
                 LOGGER.error(ex, ex);
                 return new DefaultStreamedContent();
             }
-            return new DefaultStreamedContent(is, null, StringUtils.substringAfterLast(url, "/"));
+            return new DefaultStreamedContent(is, null, url);
 
         }
 

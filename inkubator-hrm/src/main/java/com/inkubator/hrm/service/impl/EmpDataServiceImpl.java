@@ -5,11 +5,31 @@
  */
 package com.inkubator.hrm.service.impl;
 
+import com.inkubator.common.CommonUtilConstant;
+import com.inkubator.common.util.DateTimeUtil;
+import com.inkubator.common.util.RandomNumberUtil;
+import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.dao.DepartmentDao;
+import com.inkubator.hrm.dao.EmpDataDao;
+import com.inkubator.hrm.entity.Department;
+import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.Jabatan;
+import com.inkubator.hrm.entity.PaySalaryGrade;
+import com.inkubator.hrm.service.BioDataService;
+import com.inkubator.hrm.service.EmpDataService;
+import com.inkubator.hrm.service.EmployeeTypeService;
+import com.inkubator.hrm.service.JabatanService;
+import com.inkubator.hrm.service.PaySalaryGradeService;
+import com.inkubator.hrm.util.MapUtil;
+import com.inkubator.hrm.util.StringsUtils;
+import com.inkubator.hrm.web.search.EmpDataSearchParameter;
+import com.inkubator.securitycore.util.UserInfoUtil;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -18,19 +38,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.inkubator.common.CommonUtilConstant;
-import com.inkubator.common.util.DateTimeUtil;
-import com.inkubator.datacore.service.impl.IServiceImpl;
-import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.dao.DepartmentDao;
-import com.inkubator.hrm.dao.EmpDataDao;
-import com.inkubator.hrm.entity.Department;
-import com.inkubator.hrm.entity.EmpData;
-import com.inkubator.hrm.service.EmpDataService;
-import com.inkubator.hrm.util.MapUtil;
-import com.inkubator.hrm.util.StringsUtils;
-import com.inkubator.hrm.web.search.EmpDataSearchParameter;
 
 /**
  *
@@ -44,6 +51,14 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     private EmpDataDao empDataDao;
     @Autowired
     private DepartmentDao departmentDao;
+    @Autowired
+    private BioDataService bioDataService;
+    @Autowired
+    private EmployeeTypeService employeeTypeService;
+    @Autowired
+    private JabatanService jabatanService;
+    @Autowired
+    private PaySalaryGradeService paySalaryGradeService;
 
     @Override
     public EmpData getEntiyByPK(String id) throws Exception {
@@ -65,8 +80,26 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(EmpData entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
+        entity.setBioData(bioDataService.getEntiyByPK(entity.getBioData().getId()));
+        entity.setCreatedOn(new Date());
+        entity.setCreatedBy(UserInfoUtil.getUserName());
+        entity.setEmployeeType(employeeTypeService.getEntiyByPK(entity.getEmployeeType().getId()));
+        Jabatan jabatan = jabatanService.getEntiyByPK(entity.getJabatanByJabatanId().getId());
+        entity.setJabatanByJabatanId(jabatan);
+        entity.setJabatanByJabatanGajiId(jabatan);
+        entity.setGolonganJabatan(jabatan.getGolonganJabatan());
+        PaySalaryGrade paySalaryGrade = paySalaryGradeService.getEntiyByPK(entity.getPaySalaryGrade().getId());
+        entity.setPaySalaryGrade(paySalaryGradeService.getEntiyByPK(entity.getId()));
+        double min = paySalaryGrade.getMinSalary().doubleValue();
+        double max = paySalaryGrade.getMaxSalary().doubleValue();
+        if (entity.getBasicSalary().doubleValue() > max || entity.getBasicSalary().doubleValue() < min) {
+            throw new BussinessException("emp_data.error_salary_range");
+        }
+
+        empDataDao.save(entity);
     }
 
     @Override
@@ -142,7 +175,7 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void delete(EmpData entity) throws Exception {
-      this.empDataDao.delete(entity);
+        this.empDataDao.delete(entity);
     }
 
     @Override
@@ -210,88 +243,171 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-	@Override
-	@Cacheable(value="totalEmployeeByGender")
-	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public Map<String, Long> getTotalByGender() throws Exception {
-		Long male = empDataDao.getTotalByGender(HRMConstant.GLOBAL_MALE);
-		Long female = empDataDao.getTotalByGender(HRMConstant.GLOBAL_FEMALE);
-		
-		Map<String, Long> results = new HashMap<String, Long>();
-		results.put("male", male);
-		results.put("female", female);
-		
-		return results;		
-	}
+    @Override
+    @Cacheable(value = "totalEmployeeByGender")
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public Map<String, Long> getTotalByGender() throws Exception {
+        Long male = empDataDao.getTotalByGender(HRMConstant.GLOBAL_MALE);
+        Long female = empDataDao.getTotalByGender(HRMConstant.GLOBAL_FEMALE);
 
-	@Override
-	@Cacheable(value="totalEmployeeByAge")
-	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public Map<String, Long> getTotalByAge() throws Exception {
-		Date now = new Date();
-		Date startDate = new Date();
-		Date endDate = new Date();
-		
-		//age less than 26
-		startDate = DateTimeUtil.getDateFrom(now, -26, CommonUtilConstant.DATE_FORMAT_YEAR);
-		Long lessThan26 = empDataDao.getTotalByAgeLessThan(startDate);
-		
-		//age between 26 - 30
-		startDate = DateTimeUtil.getDateFrom(now, -30, CommonUtilConstant.DATE_FORMAT_YEAR);
-		endDate = DateTimeUtil.getDateFrom(now, -26, CommonUtilConstant.DATE_FORMAT_YEAR);
-		Long between26And30 = empDataDao.getTotalByAgeBetween(startDate, endDate);
-		
-		//age between 31 - 35
-		startDate = DateTimeUtil.getDateFrom(now, -35, CommonUtilConstant.DATE_FORMAT_YEAR);
-		endDate = DateTimeUtil.getDateFrom(now, -31, CommonUtilConstant.DATE_FORMAT_YEAR);
-		Long between31And35 = empDataDao.getTotalByAgeBetween(startDate, endDate);
-		
-		//age between 36 - 40
-		startDate = DateTimeUtil.getDateFrom(now, -40, CommonUtilConstant.DATE_FORMAT_YEAR);
-		endDate = DateTimeUtil.getDateFrom(now, -36, CommonUtilConstant.DATE_FORMAT_YEAR);
-		Long between36And40 = empDataDao.getTotalByAgeBetween(startDate, endDate);
-		
-		//age more than 40
-		startDate = DateTimeUtil.getDateFrom(now, -40, CommonUtilConstant.DATE_FORMAT_YEAR);
-		Long moreThan40 = empDataDao.getTotalByAgeMoreThan(startDate);
-		
-		
-		Map<String, Long> results = new HashMap<String, Long>();
-		results.put("lessThan26", lessThan26);
-		results.put("between26And30", between26And30);
-		results.put("between31And35", between31And35);
-		results.put("between36And40", between36And40);
-		results.put("moreThan40", moreThan40);
-		
-		return results;
-	}
+        Map<String, Long> results = new HashMap<String, Long>();
+        results.put("male", male);
+        results.put("female", female);
 
-	@Override
-	@Cacheable(value="totalEmployeeByDepartment")
-	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public Map<String, Long> getTotalByDepartment() throws Exception {
-		List<Department> departments =  departmentDao.getAllData();
-		Map<String, Long> results = new HashMap<String, Long>();
-		for(Department department: departments){
-			Long total = empDataDao.getTotalByDepartmentId(department.getId());
-			results.put(StringsUtils.slicePerWord(department.getDepartmentName(), 25) , total);
-		}
-		//sorting by value (dari yang besar ke yang kecil)
-		results = MapUtil.sortByValueDesc(results);
-		
-		return results;
-	}
+        return results;
+    }
 
     @Override
-    @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    @Cacheable(value = "totalEmployeeByAge")
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public Map<String, Long> getTotalByAge() throws Exception {
+        Date now = new Date();
+        Date startDate = new Date();
+        Date endDate = new Date();
+
+        //age less than 26
+        startDate = DateTimeUtil.getDateFrom(now, -26, CommonUtilConstant.DATE_FORMAT_YEAR);
+        Long lessThan26 = empDataDao.getTotalByAgeLessThan(startDate);
+
+        //age between 26 - 30
+        startDate = DateTimeUtil.getDateFrom(now, -30, CommonUtilConstant.DATE_FORMAT_YEAR);
+        endDate = DateTimeUtil.getDateFrom(now, -26, CommonUtilConstant.DATE_FORMAT_YEAR);
+        Long between26And30 = empDataDao.getTotalByAgeBetween(startDate, endDate);
+
+        //age between 31 - 35
+        startDate = DateTimeUtil.getDateFrom(now, -35, CommonUtilConstant.DATE_FORMAT_YEAR);
+        endDate = DateTimeUtil.getDateFrom(now, -31, CommonUtilConstant.DATE_FORMAT_YEAR);
+        Long between31And35 = empDataDao.getTotalByAgeBetween(startDate, endDate);
+
+        //age between 36 - 40
+        startDate = DateTimeUtil.getDateFrom(now, -40, CommonUtilConstant.DATE_FORMAT_YEAR);
+        endDate = DateTimeUtil.getDateFrom(now, -36, CommonUtilConstant.DATE_FORMAT_YEAR);
+        Long between36And40 = empDataDao.getTotalByAgeBetween(startDate, endDate);
+
+        //age more than 40
+        startDate = DateTimeUtil.getDateFrom(now, -40, CommonUtilConstant.DATE_FORMAT_YEAR);
+        Long moreThan40 = empDataDao.getTotalByAgeMoreThan(startDate);
+
+        Map<String, Long> results = new HashMap<String, Long>();
+        results.put("lessThan26", lessThan26);
+        results.put("between26And30", between26And30);
+        results.put("between31And35", between31And35);
+        results.put("between36And40", between36And40);
+        results.put("moreThan40", moreThan40);
+
+        return results;
+    }
+
+    @Override
+    @Cacheable(value = "totalEmployeeByDepartment")
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public Map<String, Long> getTotalByDepartment() throws Exception {
+        List<Department> departments = departmentDao.getAllData();
+        Map<String, Long> results = new HashMap<String, Long>();
+        for (Department department : departments) {
+            Long total = empDataDao.getTotalByDepartmentId(department.getId());
+            results.put(StringsUtils.slicePerWord(department.getDepartmentName(), 25), total);
+        }
+        //sorting by value (dari yang besar ke yang kecil)
+        results = MapUtil.sortByValueDesc(results);
+
+        return results;
+    }
+
+//>>>>>>> origin/master
+//    @Override
+//    @Cacheable(value = "totalEmployeeByGender")
+//    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+//    public Map<String, Long> getTotalByGender() throws Exception {
+//        Long male = empDataDao.getTotalByGender(HRMConstant.GLOBAL_MALE);
+//        Long female = empDataDao.getTotalByGender(HRMConstant.GLOBAL_FEMALE);
+//
+//        Map<String, Long> results = new HashMap<String, Long>();
+//        results.put("male", male);
+//        results.put("female", female);
+//
+//        return results;
+//    }
+//    @Override
+//    @Cacheable(value = "totalEmployeeByAge")
+//    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+//    public Map<String, Long> getTotalByAge() throws Exception {
+//        Date now = new Date();
+//        Date startDate = new Date();
+//        Date endDate = new Date();
+//
+//        //age less than 26
+//        startDate = DateTimeUtil.getDateFrom(now, -26, CommonUtilConstant.DATE_FORMAT_YEAR);
+//        Long lessThan26 = empDataDao.getTotalByAgeLessThan(startDate);
+//
+//        //age between 26 - 30
+//        startDate = DateTimeUtil.getDateFrom(now, -30, CommonUtilConstant.DATE_FORMAT_YEAR);
+//        endDate = DateTimeUtil.getDateFrom(now, -26, CommonUtilConstant.DATE_FORMAT_YEAR);
+//        Long between26And30 = empDataDao.getTotalByAgeBetween(startDate, endDate);
+//
+//        //age between 31 - 35
+//        startDate = DateTimeUtil.getDateFrom(now, -35, CommonUtilConstant.DATE_FORMAT_YEAR);
+//        endDate = DateTimeUtil.getDateFrom(now, -31, CommonUtilConstant.DATE_FORMAT_YEAR);
+//        Long between31And35 = empDataDao.getTotalByAgeBetween(startDate, endDate);
+//
+//        //age between 36 - 40
+//        startDate = DateTimeUtil.getDateFrom(now, -40, CommonUtilConstant.DATE_FORMAT_YEAR);
+//        endDate = DateTimeUtil.getDateFrom(now, -36, CommonUtilConstant.DATE_FORMAT_YEAR);
+//        Long between36And40 = empDataDao.getTotalByAgeBetween(startDate, endDate);
+//
+//        //age more than 40
+//        startDate = DateTimeUtil.getDateFrom(now, -40, CommonUtilConstant.DATE_FORMAT_YEAR);
+//        Long moreThan40 = empDataDao.getTotalByAgeMoreThan(startDate);
+//
+//        Map<String, Long> results = new HashMap<String, Long>();
+//        results.put("lessThan26", lessThan26);
+//        results.put("between26And30", between26And30);
+//        results.put("between31And35", between31And35);
+//        results.put("between36And40", between36And40);
+//        results.put("moreThan40", moreThan40);
+//
+//        return results;
+//    }
+//    @Override
+//    @Cacheable(value = "totalEmployeeByDepartment")
+//    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+//    public Map<String, Long> getTotalByDepartment() throws Exception {
+//        List<Department> departments = departmentDao.getAllData();
+//        Map<String, Long> results = new HashMap<String, Long>();
+//        for (Department department : departments) {
+//            Long total = empDataDao.getTotalByDepartmentId(department.getId());
+//            results.put(StringsUtils.slicePerWord(department.getDepartmentName(), 25), total);
+//        }
+//        //sorting by value (dari yang besar ke yang kecil)
+//        results = MapUtil.sortByValueDesc(results);
+//
+//        return results;
+//    }
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<EmpData> getByParam(EmpDataSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
         return this.empDataDao.getByParam(searchParameter, firstResult, maxResults, order);
     }
 
     @Override
-    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public Long getTotalEmpDataByParam(EmpDataSearchParameter searchParameter) throws Exception {
         return this.empDataDao.getTotalEmpDataByParam(searchParameter);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public EmpData getByEmpIdWithDetail(long id) throws Exception {
+        EmpData empData = empDataDao.getByEmpIdWithDetail(id);
+        empData.getJabatanByJabatanId().getDepartment().getDepartmentName();
+        empData.getJabatanByJabatanId().getUnitKerja().getName();
+        return this.empDataDao.getByEmpIdWithDetail(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public EmpData getByBioDataIdWithDepartment(long id) throws Exception {
+        return empDataDao.getByBioDataWithDepartment(id);
     }
 
 }

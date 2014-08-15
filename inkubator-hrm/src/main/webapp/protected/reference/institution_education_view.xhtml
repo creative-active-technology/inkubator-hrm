@@ -74,35 +74,17 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>                            
-                            <p:column sortBy="institutionEducationCode"  style="width: 5%;text-align: center;">
+                            <p:column sortBy="institutionEducationCode"  style="width: 22%;">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.code']}" style="text-align: center;"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{institutionEducationData.institutionEducationCode}"/>
                             </p:column>  
-                            <p:column sortBy="institutionEducationName"  style="width: 25%; ">
+                            <p:column sortBy="institutionEducationName"  style="width: 65%; ">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.name']}" style=""/>
                                 </f:facet>
                                 <h:outputLabel value= "#{institutionEducationData.institutionEducationName}"/>
-                            </p:column>
-                            <p:column sortBy="city.cityName"  style="width: 12%">
-                                <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['institutionEducation.city_name']}"/>
-                                </f:facet>
-                                <h:outputLabel value= "#{institutionEducationData.city.cityName}"/>
-                            </p:column>
-                             <p:column sortBy="address"  style="width: 27%">
-                                <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['institutionEducation.address']}"/>
-                                </f:facet>
-                                 <h:outputLabel value= "#{institutionEducationData.address}"/>
-                            </p:column>  
-                            <p:column sortBy="postalCode"  style="width: 8%; text-align: center;">
-                                <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['institutionEducation.postal_code']}"/>
-                                </f:facet>
-                                <h:outputLabel value= "#{institutionEducationData.postalCode}"/>
                             </p:column>
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 

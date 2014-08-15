@@ -5,7 +5,7 @@
 package com.inkubator.hrm.dao.impl;
 
 import com.inkubator.datacore.dao.impl.IDAOImpl;
-import com.inkubator.hrm.dao.PeopleInterestDao;
+import com.inkubator.hrm.dao.BioPeopleInterestDao;
 import com.inkubator.hrm.entity.BioPeopleInterest;
 import java.util.List;
 import org.hibernate.Criteria;
@@ -18,9 +18,9 @@ import org.springframework.stereotype.Repository;
  *
  * @author Deni
  */
-@Repository(value = "peopleInterestDao")
+@Repository(value = "bioPeopleInterestDao")
 @Lazy
-public class PeopleInterestDaoImpl extends IDAOImpl<BioPeopleInterest> implements PeopleInterestDao{
+public class BioPeopleInterestDaoImpl extends IDAOImpl<BioPeopleInterest> implements BioPeopleInterestDao{
 
     @Override
     public Class<BioPeopleInterest> getEntityClass() {

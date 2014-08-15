@@ -67,25 +67,25 @@
                             <f:facet name="header">  
                                 <h:outputText value="#{appmsg['dialect.list_of_dialect']}"/>
                             </f:facet> 
-                            <p:column style="text-align: center;width: 5%">
+                            <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.number']}"/>
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="dialectCode"  style="width: 20%">
+                            <p:column sortBy="dialectCode"  style="width: 17%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{dialectData.dialectCode}"/>
                             </p:column>  
-                            <p:column sortBy="dialectName"  style="width: 50%">
+                            <p:column sortBy="dialectName"  style="width: 70%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{dialectData.dialectName}"/>
                             </p:column>    
-                            <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                 				 style="font-size: 10px!important" update=":panelDialogDetailId" 
                                 				 action="#{dialectViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogDetailDialect.show()">                        

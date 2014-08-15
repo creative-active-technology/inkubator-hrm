@@ -62,19 +62,19 @@
                             <f:facet name="header">  
                                 <h:outputText value="#{appmsg['language.list_of_language']}"/>
                             </f:facet> 
-                            <p:column style="text-align: center;width: 5%">
+                            <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.number']}"/>
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="name"  style="width: 70%">
+                            <p:column sortBy="name"  style="width: 87%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{languageData.languageName}"/>
                             </p:column>    
-                            <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                 				 style="font-size: 10px!important" update=":panelDialogDetailId" 
                                 				 action="#{languageViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogDetailLanguage.show()">                        

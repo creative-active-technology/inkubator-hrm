@@ -8,9 +8,9 @@ import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.dao.BioDataDao;
 import com.inkubator.hrm.dao.InterestTypeDao;
-import com.inkubator.hrm.dao.PeopleInterestDao;
+import com.inkubator.hrm.dao.BioPeopleInterestDao;
 import com.inkubator.hrm.entity.BioPeopleInterest;
-import com.inkubator.hrm.service.PeopleInterestService;
+import com.inkubator.hrm.service.BioPeopleInterestService;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import java.util.Date;
 import java.util.List;
@@ -26,12 +26,12 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author Deni
  */
-@Service(value = "peopleInterestService")
+@Service(value = "bioPeopleInterestService")
 @Lazy
-public class PeopleInterestServiceImpl extends IServiceImpl implements PeopleInterestService{
+public class BioPeopleInterestServiceImpl extends IServiceImpl implements BioPeopleInterestService{
 
     @Autowired
-    private PeopleInterestDao peopleInterestDao;
+    private BioPeopleInterestDao peopleInterestDao;
     @Autowired
     private BioDataDao bioDataDao;
     @Autowired
