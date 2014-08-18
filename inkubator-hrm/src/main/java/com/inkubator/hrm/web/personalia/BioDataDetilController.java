@@ -18,6 +18,7 @@ import com.inkubator.hrm.entity.BioInsurance;
 import com.inkubator.hrm.entity.BioKeahlian;
 import com.inkubator.hrm.entity.BioMedicalHistory;
 import com.inkubator.hrm.entity.BioPeopleInterest;
+import com.inkubator.hrm.entity.BioSpesifikasiAbility;
 import com.inkubator.hrm.service.BioAddressService;
 import com.inkubator.hrm.service.BioBankAccountService;
 import com.inkubator.hrm.service.BioDataService;
@@ -31,6 +32,7 @@ import com.inkubator.hrm.service.BioInsuranceService;
 import com.inkubator.hrm.service.BioKeahlianService;
 import com.inkubator.hrm.service.BioMedicalHistoryService;
 import com.inkubator.hrm.service.BioPeopleInterestService;
+import com.inkubator.hrm.service.BioSpesifikasiAbilityService;
 import com.inkubator.hrm.web.model.BioEducationHistoryViewModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
@@ -148,11 +150,18 @@ public class BioDataDetilController extends BaseController {
     private BioIdCardService bioIdCardService;
 //end. bio bank
     
-        //start. bio bank
+    //start. bio keahlian
     private BioKeahlian selectedBioKeahlian;
     @ManagedProperty(value = "#{bioKeahlianService}")
     private BioKeahlianService bioKeahlianService;
     private List<BioKeahlian> bioKeahlians; 
+//end. bio bank
+    
+        //start. bio apesifikasi ability
+    private BioSpesifikasiAbility selectedDioSpesifikasiAbility;
+    @ManagedProperty(value = "#{bioSpesifikasiAbilityService}")
+    private BioSpesifikasiAbilityService bioSpesifikasiAbilityService;
+    private List<BioSpesifikasiAbility> spesifikasiAbilitys; 
 //end. bio bank
 
     
@@ -175,6 +184,7 @@ public class BioDataDetilController extends BaseController {
             listPeopleInterest = peopleInterestService.getAllDataByBioDataId(selectedBioData.getId());
             dataBioEmergencyContacs = bioEmergencyContactService.getAllDataByBioDataId(selectedBioData.getId());
             bioKeahlians = bioKeahlianService.getAllDataByBioDataId(selectedBioData.getId());
+            spesifikasiAbilitys = bioSpesifikasiAbilityService.getAllDataByBiodataId(selectedBioData.getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -182,6 +192,9 @@ public class BioDataDetilController extends BaseController {
 
     @PreDestroy
     public void cleanAndExit() {
+        selectedDioSpesifikasiAbility = null;
+        bioSpesifikasiAbilityService = null;
+        spesifikasiAbilitys = null;
         selectedBioKeahlian = null;
         bioKeahlianService = null;
         bioKeahlians = null;
@@ -496,6 +509,30 @@ public class BioDataDetilController extends BaseController {
 
     public void setBioKeahlianService(BioKeahlianService bioKeahlianService) {
         this.bioKeahlianService = bioKeahlianService;
+    }
+
+    public BioSpesifikasiAbility getSelectedDioSpesifikasiAbility() {
+        return selectedDioSpesifikasiAbility;
+    }
+
+    public void setSelectedDioSpesifikasiAbility(BioSpesifikasiAbility selectedDioSpesifikasiAbility) {
+        this.selectedDioSpesifikasiAbility = selectedDioSpesifikasiAbility;
+    }
+
+    public BioSpesifikasiAbilityService getBioSpesifikasiAbilityService() {
+        return bioSpesifikasiAbilityService;
+    }
+
+    public void setBioSpesifikasiAbilityService(BioSpesifikasiAbilityService bioSpesifikasiAbilityService) {
+        this.bioSpesifikasiAbilityService = bioSpesifikasiAbilityService;
+    }
+
+    public List<BioSpesifikasiAbility> getSpesifikasiAbilitys() {
+        return spesifikasiAbilitys;
+    }
+
+    public void setSpesifikasiAbilitys(List<BioSpesifikasiAbility> spesifikasiAbilitys) {
+        this.spesifikasiAbilitys = spesifikasiAbilitys;
     }
     
     public String doDetail() {
@@ -1351,7 +1388,7 @@ public class BioDataDetilController extends BaseController {
      */
     
      /**
-     * START Bio FamilyRelationship method
+     * START Bio Keahlian method
      */
     public void doSelectBioKeahlian() {
         try {
@@ -1404,13 +1441,84 @@ public class BioDataDetilController extends BaseController {
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 500);
-        options.put("contentHeight", 500);
+        options.put("contentHeight", 250);
         RequestContext.getCurrentInstance().openDialog("bio_keahlian_form", options, params);
     }
 
     public void onDialogReturnBioKeahlian(SelectEvent event) {
         try {
             bioKeahlians = bioKeahlianService.getAllDataByBioDataId(selectedBioData.getId());
+            super.onDialogReturn(event);
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+
+    /**
+     * END Bio Keahlian method
+     */
+    
+    /**
+     * START Bio Spesifikasi Ability method
+     */
+    public void doSelectBioSpesifikasiAbility() {
+        try {
+            selectedBioKeahlian = bioKeahlianService.getAllDataByPK(selectedBioKeahlian.getId());
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+
+    public void doUpdateBioSpesifikasiAbility() {
+
+        List<String> bioSpecAbi = new ArrayList<>();
+        bioSpecAbi.add(String.valueOf(selectedDioSpesifikasiAbility.getId()));
+
+        List<String> bioDataId = new ArrayList<>();
+        bioDataId.add(String.valueOf(selectedBioData.getId()));
+
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("bioSpecAbiId", bioSpecAbi);
+        dataToSend.put("bioDataId", bioDataId);
+        showDialogBioSpesifikasiAbility(dataToSend);
+
+    }
+
+    public void doAddBioSpesifikasiAbility() {
+        List<String> bioDataId = new ArrayList<>();
+        bioDataId.add(String.valueOf(selectedBioData.getId()));
+
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("bioDataId", bioDataId);
+        showDialogBioSpesifikasiAbility(dataToSend);
+    }
+
+    public void doDeleteBioSpesifikasiAbility() {
+        try {
+            bioSpesifikasiAbilityService.delete(selectedDioSpesifikasiAbility);
+            spesifikasiAbilitys = bioSpesifikasiAbilityService.getAllDataByBiodataId(selectedDioSpesifikasiAbility.getBiodata().getId());
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+
+        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (Exception ex) {
+            LOGGER.error("Error when doDelete bioFamilyRelationship", ex);
+        }
+    }
+
+    private void showDialogBioSpesifikasiAbility(Map<String, List<String>> params) {
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 500);
+        options.put("contentHeight", 250);
+        RequestContext.getCurrentInstance().openDialog("bio_spesifikasi_ability_form", options, params);
+    }
+
+    public void onDialogReturnBioSpesifikasiAbility(SelectEvent event) {
+        try {
+            spesifikasiAbilitys = bioSpesifikasiAbilityService.getAllDataByBiodataId(selectedBioData.getId());
             super.onDialogReturn(event);
         } catch (Exception e) {
             LOGGER.error("Error", e);
