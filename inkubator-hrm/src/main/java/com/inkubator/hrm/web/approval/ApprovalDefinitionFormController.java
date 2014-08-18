@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package com.inkubator.hrm.web;
+package com.inkubator.hrm.web.approval;
 
 import com.inkubator.webcore.controller.BaseController;
 

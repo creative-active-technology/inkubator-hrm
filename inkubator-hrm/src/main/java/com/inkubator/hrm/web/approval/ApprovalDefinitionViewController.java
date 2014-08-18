@@ -5,122 +5,51 @@
  */
 package com.inkubator.hrm.web.approval;
 
-import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.HrmUser;
-import com.inkubator.hrm.service.HrmUserService;
-import com.inkubator.hrm.web.lazymodel.HrmUserLazyDataModel;
-import com.inkubator.hrm.web.search.HrmUserSearchParameter;
+import com.inkubator.hrm.entity.ApprovalDefinition;
+import com.inkubator.hrm.service.ApprovalDefinitionService;
+import com.inkubator.hrm.web.lazymodel.ApprovalDefinitionLazyDataModel;
+import com.inkubator.hrm.web.search.ApprovalDefinitionSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
-import com.inkubator.webcore.util.FacesUtil;
-import com.inkubator.webcore.util.MessagesResourceUtil;
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import org.hibernate.exception.ConstraintViolationException;
 import org.primefaces.model.LazyDataModel;
-import org.springframework.dao.DataIntegrityViolationException;
 
 /**
  *
  * @author Deni Husni FR
  */
-@ManagedBean(name = "approvalDefinitionViewController")
+@ManagedBean(name = "approvalDefinitionController")
 @ViewScoped
 public class ApprovalDefinitionViewController extends BaseController {
 
-    private HrmUserSearchParameter hrmUserSearchParameter;
-    private LazyDataModel<HrmUser> lazyDataHrmUser;
-    private HrmUser selectedHrmUser;
-    @ManagedProperty(value = "#{hrmUserService}")
-    private HrmUserService hrmUserService;
+    private ApprovalDefinitionSearchParameter approvalDefinitionSearchParameter;
+    private LazyDataModel<ApprovalDefinition> lazyDataModelApprovalDefinition;
+    @ManagedProperty(value = "#{approvalDefinitionService}")
+    private ApprovalDefinitionService approvalDefinitionService;
 
-    public void setHrmUserService(HrmUserService hrmUserService) {
-        this.hrmUserService = hrmUserService;
+    public void setApprovalDefinitionService(ApprovalDefinitionService approvalDefinitionService) {
+        this.approvalDefinitionService = approvalDefinitionService;
     }
 
     @PostConstruct
     @Override
     public void initialization() {
         super.initialization();
-        hrmUserSearchParameter = new HrmUserSearchParameter();
-
+        approvalDefinitionSearchParameter=new ApprovalDefinitionSearchParameter();
+        
     }
 
-    public HrmUserSearchParameter getHrmUserSearchParameter() {
-        return hrmUserSearchParameter;
-    }
-
-    public void setHrmUserSearchParameter(HrmUserSearchParameter hrmUserSearchParameter) {
-        this.hrmUserSearchParameter = hrmUserSearchParameter;
-    }
-
-    public LazyDataModel<HrmUser> getLazyDataHrmUser() {
-        if (lazyDataHrmUser == null) {
-            lazyDataHrmUser = new HrmUserLazyDataModel(hrmUserSearchParameter, hrmUserService);
+    public LazyDataModel<ApprovalDefinition> getLazyDataModelApprovalDefinition() {
+        if (lazyDataModelApprovalDefinition == null) {
+            lazyDataModelApprovalDefinition = new ApprovalDefinitionLazyDataModel(approvalDefinitionSearchParameter, approvalDefinitionService);
         }
-        return lazyDataHrmUser;
+        return lazyDataModelApprovalDefinition;
     }
 
-    public void setLazyDataHrmUser(LazyDataModel<HrmUser> lazyDataHrmUser) {
-        this.lazyDataHrmUser = lazyDataHrmUser;
+    public void setLazyDataModelApprovalDefinition(LazyDataModel<ApprovalDefinition> lazyDataModelApprovalDefinition) {
+        this.lazyDataModelApprovalDefinition = lazyDataModelApprovalDefinition;
     }
 
-    public HrmUser getSelectedHrmUser() {
-        return selectedHrmUser;
-    }
-
-    public void setSelectedHrmUser(HrmUser selectedHrmUser) {
-        this.selectedHrmUser = selectedHrmUser;
-    }
-
-    public void doSearch() {
-        lazyDataHrmUser = null;
-    }
-
-    public String doAdd() {
-        return "/protected/account/user_form.htm?faces-redirect=true";
-    }
-
-    public String doDetail() {
-        return "/protected/account/user_detail.htm?faces-redirect=true&execution=e" + selectedHrmUser.getId();
-    }
-
-    public String doEdit() {
-        return "/protected/account/user_form.htm?faces-redirect=true&execution=e" + selectedHrmUser.getId();
-    }
-
-    public void onDelete() {
-        try {
-            selectedHrmUser = this.hrmUserService.getEntiyByPK(selectedHrmUser.getId());
-        } catch (Exception ex) {
-            LOGGER.error("Errpr", ex);
-
-        }
-    }
-
-    public void doDelete() {
-        try {
-            this.hrmUserService.delete(selectedHrmUser);
-            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully",
-                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-
-        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
-            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint",
-                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-            LOGGER.error("Error", ex);
-        } catch (Exception ex) {
-            LOGGER.error("Error", ex);
-        }
-    }
-
-    @PreDestroy
-    public void cleanAndExit() {
-        hrmUserSearchParameter = null;
-        lazyDataHrmUser = null;
-        selectedHrmUser = null;
-        hrmUserService = null;
-    }
 }
