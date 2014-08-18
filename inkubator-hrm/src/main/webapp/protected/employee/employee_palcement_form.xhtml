@@ -97,6 +97,7 @@
                                                       value="#{empDataFormController.empDataModel.jabatanByJabatanId}">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{empDataFormController.mapJabatans}" />
+                                        <p:ajax listener="#{empDataFormController.doChangeJabatan()}" update="salaryGrade"/>
                                     </p:selectOneMenu>
                                     <p:message for="jabatan"/>
                                 </p:column>
