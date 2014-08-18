@@ -15,6 +15,7 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -50,22 +51,29 @@ public class ApprovalDefinitionDaoImpl extends IDAOImpl<ApprovalDefinition> impl
 
     private void doSearchApprovalDefinitionByParam(ApprovalDefinitionSearchParameter searchParameter, Criteria criteria) {
         if (searchParameter.getProcessName() != null) {
-            
+
             criteria.add(Restrictions.like("name", searchParameter.getProcessName(), MatchMode.ANYWHERE));
         }
         if (searchParameter.getApproverPosition() != null) {
-            criteria.add(Restrictions.like("approverPosition", searchParameter.getApproverPosition(), MatchMode.ANYWHERE));
+            criteria.createAlias("jabatanByApproverPosition", "ap", JoinType.INNER_JOIN);
+            criteria.add(Restrictions.like("ap.name", searchParameter.getApproverPosition(), MatchMode.ANYWHERE));
         }
         if (searchParameter.getApproverIndividual() != null) {
-            criteria.add(Restrictions.like("approverIndividual", searchParameter.getApproverIndividual(), MatchMode.ANYWHERE));
-        }
-        if (searchParameter.getOnBehalfApproverPosition() != null) {
-            criteria.add(Restrictions.like("onBehalfIndividual", searchParameter.getOnBehaltAppriverIndividual(), MatchMode.ANYWHERE));
-        }
-        if (searchParameter.getOnBehaltAppriverIndividual() != null) {
-            criteria.add(Restrictions.like("onBehalfPosition", searchParameter.getOnBehalfApproverPosition(), MatchMode.ANYWHERE));
+            criteria.createAlias("hrmUserByApproverIndividual", "au", JoinType.INNER_JOIN);
+            criteria.add(Restrictions.like("au.realName", searchParameter.getApproverIndividual(), MatchMode.ANYWHERE));
         }
 
+        if (searchParameter.getOnBehalfApproverPosition() != null) {
+            criteria.createAlias("jabatanByOnBehalfPosition", "ap", JoinType.INNER_JOIN);
+            criteria.add(Restrictions.like("ap.name", searchParameter.getApproverPosition(), MatchMode.ANYWHERE));
+        }
+        if (searchParameter.getOnBehaltAppriverIndividual() != null) {
+            criteria.createAlias("hrmUserByOnBehalfIndividual", "au", JoinType.INNER_JOIN);
+            criteria.add(Restrictions.like("au.realName", searchParameter.getApproverIndividual(), MatchMode.ANYWHERE));
+        }
+        if (searchParameter.getApprovalType() != null) {
+            criteria.add(Restrictions.like("approverType", searchParameter.getApprovalType(), MatchMode.ANYWHERE));
+        }
         criteria.add(Restrictions.isNotNull("id"));
     }
 }
