@@ -105,7 +105,7 @@ public class ImageBioDataStreamerController extends BaseController {
                 LOGGER.error(ex, ex);
                 return new DefaultStreamedContent();
             }
-            return new DefaultStreamedContent(is, null, url);
+            return new DefaultStreamedContent(is, null, StringUtils.substringAfterLast(url, "/"));
 
         }
 

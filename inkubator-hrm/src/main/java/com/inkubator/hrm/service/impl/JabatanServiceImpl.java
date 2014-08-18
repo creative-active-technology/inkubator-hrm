@@ -12,6 +12,7 @@ import com.inkubator.hrm.dao.DepartmentDao;
 import com.inkubator.hrm.dao.GolonganJabatanDao;
 import com.inkubator.hrm.dao.JabatanDao;
 import com.inkubator.hrm.dao.KlasifikasiKerjaJabatanDao;
+import com.inkubator.hrm.dao.PaySalaryGradeDao;
 import com.inkubator.hrm.dao.UnitKerjaDao;
 import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.entity.KlasifikasiKerja;
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import org.apache.poi.ss.formula.functions.T;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -51,6 +53,8 @@ public class JabatanServiceImpl extends IServiceImpl implements JabatanService {
     private GolonganJabatanDao golonganJabatanDao;
     @Autowired
     private KlasifikasiKerjaJabatanDao klasifikasiKerjaJabatanDao;
+    @Autowired
+    private PaySalaryGradeDao paySalaryGradeDao;
 
     @Override
     public Jabatan getEntiyByPK(String id) throws Exception {
@@ -94,6 +98,14 @@ public class JabatanServiceImpl extends IServiceImpl implements JabatanService {
         this.jabatanDao.save(entity);
     }
 
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void updateForSalaryGrade(Jabatan entity) throws Exception {
+        Jabatan jabatan = this.jabatanDao.getEntiyByPK(entity.getId());
+        jabatan.setPaySalaryGrade(paySalaryGradeDao.getEntiyByPK(entity.getPaySalaryGrade().getId()));
+        this.jabatanDao.update(jabatan);
+    }
+    
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(Jabatan entity) throws Exception {
@@ -332,5 +344,13 @@ public class JabatanServiceImpl extends IServiceImpl implements JabatanService {
     public List<Jabatan> getByDepartementId(long id) throws Exception {
         return this.jabatanDao.getByDepartementId(id);
     }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Jabatan getByIdWithSalaryGrade(long id) throws Exception {
+        return jabatanDao.getByIdWithSalaryGrade(id);
+    }
+
+    
 
 }

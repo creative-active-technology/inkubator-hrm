@@ -43,6 +43,7 @@ public class JabatanDaoImpl extends IDAOImpl<Jabatan> implements JabatanDao {
         criteria.setFetchMode("department", FetchMode.JOIN);
         criteria.setFetchMode("unitKerja", FetchMode.JOIN);
         criteria.setFetchMode("jabatan", FetchMode.JOIN);
+        criteria.setFetchMode("paySalaryGrade", FetchMode.JOIN);
         criteria.addOrder(order);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
@@ -152,6 +153,14 @@ public class JabatanDaoImpl extends IDAOImpl<Jabatan> implements JabatanDao {
         criteria.add(Restrictions.eq("d.id", id));
         return criteria.list();
 
+    }
+
+    @Override
+    public Jabatan getByIdWithSalaryGrade(long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("id", id));
+        criteria.setFetchMode("paySalaryGrade", FetchMode.JOIN);
+        return (Jabatan) criteria.uniqueResult();
     }
 
 }
