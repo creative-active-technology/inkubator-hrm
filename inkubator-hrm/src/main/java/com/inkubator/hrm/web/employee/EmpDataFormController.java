@@ -94,7 +94,7 @@ public class EmpDataFormController extends BaseController {
                 mapPaySalary.put(paySalaryGrade.getGradeSalary(), paySalaryGrade.getId());
             }
             if (empId != null) {
-                isEdit = Boolean.FALSE;
+                isEdit = Boolean.TRUE;
                 EmpData empData = empDataService.getByEmpIdWithDetail(Long.parseLong(empId.substring(1)));
                 empDataModel.setBasicSalary(empData.getBasicSalary());
                 empDataModel.setBioDataId(empData.getBioData().getId());
@@ -121,7 +121,7 @@ public class EmpDataFormController extends BaseController {
                 }
 
             } else {
-                isEdit = Boolean.TRUE;
+                isEdit = Boolean.FALSE;
             }
         } catch (Exception ex) {
             LOGGER.error("error", ex);
