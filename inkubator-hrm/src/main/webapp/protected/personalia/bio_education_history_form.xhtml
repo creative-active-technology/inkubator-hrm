@@ -81,7 +81,7 @@
                                 <h:outputLabel for="educationId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 30%">
-                                <p:selectOneMenu id="educationId" value="#{educationHistoryFormController.model.educationLevelId}" style="width: 155px;margin-right: 3px" filter="true" >
+                                <p:selectOneMenu required="true" id="educationId" value="#{educationHistoryFormController.model.educationLevelId}" style="width: 155px;margin-right: 3px" filter="true" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{educationHistoryFormController.listEducationLevels}"/>
                                     </p:selectOneMenu>
@@ -94,7 +94,7 @@
                                 <h:outputLabel for="institution" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 33%">
-                                <p:selectOneMenu id="institution" value="#{educationHistoryFormController.model.institutionEducationId}" style="width: 150px;margin-right: 3px" filter="true" >
+                                <p:selectOneMenu required="true" id="institution" value="#{educationHistoryFormController.model.institutionEducationId}" style="width: 150px;margin-right: 3px" filter="true" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{educationHistoryFormController.listInstitutionEducations}"/>
                                     </p:selectOneMenu>
@@ -104,14 +104,6 @@
                         <p:row>
                             <p:column colspan="3">
                                 <p:message for="educationId"/>
-                            </p:column>
-                        </p:row>
-                        
-                        
-                        
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:message for="yearOut"/>
                             </p:column>
                             <p:column colspan="3">
                                 <p:message for="institution"/>

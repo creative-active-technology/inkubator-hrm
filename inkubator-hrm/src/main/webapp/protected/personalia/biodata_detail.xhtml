@@ -900,7 +900,7 @@
                                 <h:panelGrid columns="1">
                                     <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']} #{appmsg['global.address']}" label="#{appmsg['global.add']} #{appmsg['global.address']}" styleClass="label_button" icon="ui-icon-search" 
                                                      actionListener="#{bioDataDetilController.doAddEmergencyContact()}" ajax="true" immediate="true">
-                                        <p:ajax event="dialogReturn" listener="#{bioDataDetilController.onDialogReturnBioAddress}" update="tableContactId,:growlBioDetailFormId" />
+                                        <p:ajax event="dialogReturn" listener="#{bioDataDetilController.onDialogReturnContact}" update="tableContactId,:growlBioDetailFormId" />
                                     </p:commandButton>
                                 </h:panelGrid>
 
