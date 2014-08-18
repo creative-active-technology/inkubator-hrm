@@ -73,6 +73,7 @@ public class EmpDataFormController extends BaseController {
         try {
             super.initialization();
             empDataModel = new EmpDataModel();
+            String empId = FacesUtil.getRequestParameter("execution");
             List<Department> departements = departmentService.getAllData();
             for (Department department : departements) {
                 mapDepartements.put(department.getDepartmentName(), department.getId());
@@ -92,90 +93,46 @@ public class EmpDataFormController extends BaseController {
             for (PaySalaryGrade paySalaryGrade : paysSalarys) {
                 mapPaySalary.put(paySalaryGrade.getGradeSalary(), paySalaryGrade.getId());
             }
+            if (empId != null) {
+                isEdit = Boolean.TRUE;
+                EmpData empData = empDataService.getByEmpIdWithDetail(Long.parseLong(empId.substring(1)));
+                empDataModel.setBasicSalary(empData.getBasicSalary());
+                empDataModel.setBioDataId(empData.getBioData().getId());
+                empDataModel.setBioDataName(empData.getBioData().getFirstName() + " " + empData.getBioData().getLastName());
+                empDataModel.setBirthDate(empData.getBioData().getDateOfBirth());
+                empDataModel.setDepartementId(empData.getJabatanByJabatanId().getDepartment().getId());
+                empDataModel.setEmployeeTypeId(empData.getEmployeeType().getId());
+                empDataModel.setGolonganJabatan(empData.getGolonganJabatan().getId());
+                empDataModel.setHeatlyPremi(empData.getHeatlyPremi());
+                empDataModel.setId(empData.getId());
+                empDataModel.setInsentifStatus(empData.getInsentifStatus());
+                empDataModel.setIsFinger(empData.getIsFinger());
+                empDataModel.setJabatanByJabatanGajiId(empData.getJabatanByJabatanGajiId().getId());
+                empDataModel.setJabatanByJabatanId(empData.getJabatanByJabatanId().getId());
+                empDataModel.setJoinDate(empData.getJoinDate());
+                empDataModel.setNik(empData.getNik());
+                empDataModel.setPaySalaryGradeId(empData.getPaySalaryGrade().getId());
+                empDataModel.setPpip(empData.getPpip());
+                empDataModel.setPpmp(empData.getPpmp());
+                empDataModel.setPtkpNumber(empData.getPtkpNumber());
+                empDataModel.setPtkpStatus(empData.getPtkpStatus());
+                if (empData.getWtGroupWorking() != null) {
+                    empDataModel.setWorkingGroupId(empData.getWtGroupWorking().getId());
+                }
 
-            isEdit = Boolean.FALSE;
+            } else {
+                isEdit = Boolean.FALSE;
+            }
         } catch (Exception ex) {
             LOGGER.error("error", ex);
         }
 
     }
 
-//
-//    public HrmUserSearchParameter getHrmUserSearchParameter() {
-//        return hrmUserSearchParameter;
-//    }
-//
-//    public void setHrmUserSearchParameter(HrmUserSearchParameter hrmUserSearchParameter) {
-//        this.hrmUserSearchParameter = hrmUserSearchParameter;
-//    }
-//
-//    public LazyDataModel<HrmUser> getLazyDataHrmUser() {
-//        if (lazyDataHrmUser == null) {
-//            lazyDataHrmUser = new HrmUserLazyDataModel(hrmUserSearchParameter, hrmUserService);
-//        }
-//        return lazyDataHrmUser;
-//    }
-//
-//    public void setLazyDataHrmUser(LazyDataModel<HrmUser> lazyDataHrmUser) {
-//        this.lazyDataHrmUser = lazyDataHrmUser;
-//    }
-//
-//    public HrmUser getSelectedHrmUser() {
-//        return selectedHrmUser;
-//    }
-//
-//    public void setSelectedHrmUser(HrmUser selectedHrmUser) {
-//        this.selectedHrmUser = selectedHrmUser;
-//    }
-//
-//    public void doSearch() {
-//        lazyDataHrmUser = null;
-//    }
-//
     public String doAdd() {
         return "/protected/employee/employee_palcement_form.htm?faces-redirect=true";
     }
 
-//
-//    public String doDetail() {
-//        return "/protected/account/user_detail.htm?faces-redirect=true&execution=e" + selectedHrmUser.getId();
-//    }
-//
-//    public String doEdit() {
-//        return "/protected/account/user_form.htm?faces-redirect=true&execution=e" + selectedHrmUser.getId();
-//    }
-//
-//    public void onDelete() {
-//        try {
-//            selectedHrmUser = this.hrmUserService.getEntiyByPK(selectedHrmUser.getId());
-//        } catch (Exception ex) {
-//            LOGGER.error("Errpr", ex);
-//
-//        }
-//    }
-//
-//    public void doDelete() {
-//        try {
-//            this.hrmUserService.delete(selectedHrmUser);
-//            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully",
-//                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-//
-//        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
-//            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint",
-//                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-//            LOGGER.error("Error", ex);
-//        } catch (Exception ex) {
-//            LOGGER.error("Error", ex);
-//        }
-//    }
-//
-//    @PreDestroy
-//    public void cleanAndExit() {
-//        hrmUserSearchParameter = null;
-//        lazyDataHrmUser = null;
-//        selectedHrmUser = null;
-//        hrmUserService = null;
-//    }
     public EmpDataModel getEmpDataModel() {
         return empDataModel;
     }
@@ -248,11 +205,21 @@ public class EmpDataFormController extends BaseController {
     public String doSave() {
         EmpData empData = getEntityFromViewModel(empDataModel);
         if (isEdit) {
+            try {
+                empDataService.update(empData);
+                return "/protected/employee/employee_placement_detail.htm?faces-redirect=true&execution=e" + empData.getId();
+            } catch (BussinessException ex) {
+//                LOGGER.error("Error", ex);
+                MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+
+            } catch (Exception ex) {
+                LOGGER.error("Error", ex);
+            }
 
         } else {
             try {
                 empDataService.save(empData);
-                 return "/protected/employee/employee_placement_detail.htm?faces-redirect=true&execution=e" + empData.getId();
+                return "/protected/employee/employee_placement_detail.htm?faces-redirect=true&execution=e" + empData.getId();
             } catch (BussinessException ex) {
 //                LOGGER.error("Error", ex);
                 MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
@@ -325,6 +292,15 @@ public class EmpDataFormController extends BaseController {
 
     public void setEmpDataService(EmpDataService empDataService) {
         this.empDataService = empDataService;
+    }
+    
+    public void doChangeJabatan(){
+        try {
+            Jabatan jabatan=jabatanService.getJabatanByIdWithDetail(empDataModel.getJabatanByJabatanId());
+            empDataModel.setPaySalaryGradeId(jabatan.getPaySalaryGrade().getId());
+        } catch (Exception ex) {
+           LOGGER.error("Error", ex);
+        }
     }
 
 }

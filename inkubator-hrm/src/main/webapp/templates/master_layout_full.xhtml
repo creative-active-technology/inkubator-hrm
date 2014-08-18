@@ -255,6 +255,11 @@
                                             <p:menuitem value="#{appmsg['passwordhistory.password_history']}"  style="color: #003366" title="Create Offering Price" url="/protected/account/password_history.htm" icon="img-password-history" /> 
                                             <p:menuitem value="#{appmsg['loginhistory.login_history']}"  style="color: #003366" title="#{appmsg['loginhistory.login_history']}" url="/protected/account/login_history.htm" icon="img-login-history" />  
                                         </p:submenu>
+                                         <p:submenu label="Approval Matrix"  styleClass="menu" icon="img-approval-matrix">
+                                            <p:menuitem value="Approval Definition"  style="color: #003366" title="Approval Definition" url="/protected/approval/approval_definition_view.htm"  icon="img-approval-definition"/> 
+                                            <p:menuitem value="Approval Activity"  style="color: #003366" title="#{appmsg['menu.role_view']}" url="/protected/account/role_view.htm" icon="img-approval-activity" />
+                                            
+                                        </p:submenu>
 
                                         <p:submenu label="#{appmsg['menu.configuration']}" style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-configuration">
                                             <p:submenu label="#{appmsg['menu.data_reference']}"  styleClass="menu_child" >
@@ -315,6 +320,7 @@
                                             <p:submenu label="Payroll"  styleClass="menu_child" >
                                                 <p:menuitem value="Pay Salary Grade" icon="img-periode" style="font-size: 12px !important;color: #003366" title="Pay Salary Grade" url="/protected/payroll/pay_salary_grade_view.htm" /> 
                                                 <p:menuitem value="Pay Salary Jurnal" icon="img-periode" style="font-size: 12px !important;color: #003366" title="Pay Salary Jurnal" url="/protected/payroll/pay_salary_jurnal_view.htm" /> 
+                                                <p:menuitem value="Pay Salary Grade Position" icon="img-periode" style="font-size: 12px !important;color: #003366" title="Pay Salary Grade Position" url="/protected/payroll/pay_salary_grade_position_view.htm" /> 
                                             </p:submenu>
                                         </p:submenu>
                                         <p:submenu label="Personalia"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-employees">

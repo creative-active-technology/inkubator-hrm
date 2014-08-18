@@ -11,17 +11,18 @@ import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.dao.BioDataDao;
 import com.inkubator.hrm.dao.DepartmentDao;
 import com.inkubator.hrm.dao.EmpDataDao;
+import com.inkubator.hrm.dao.EmployeeTypeDao;
+import com.inkubator.hrm.dao.JabatanDao;
+import com.inkubator.hrm.dao.PaySalaryGradeDao;
+import com.inkubator.hrm.dao.WtGroupWorkingDao;
 import com.inkubator.hrm.entity.Department;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.entity.PaySalaryGrade;
-import com.inkubator.hrm.service.BioDataService;
 import com.inkubator.hrm.service.EmpDataService;
-import com.inkubator.hrm.service.EmployeeTypeService;
-import com.inkubator.hrm.service.JabatanService;
-import com.inkubator.hrm.service.PaySalaryGradeService;
 import com.inkubator.hrm.util.MapUtil;
 import com.inkubator.hrm.util.StringsUtils;
 import com.inkubator.hrm.web.search.EmpDataSearchParameter;
@@ -52,13 +53,15 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     @Autowired
     private DepartmentDao departmentDao;
     @Autowired
-    private BioDataService bioDataService;
+    private BioDataDao bioDataDao;
     @Autowired
-    private EmployeeTypeService employeeTypeService;
+    private EmployeeTypeDao employeeTypeDao;
     @Autowired
-    private JabatanService jabatanService;
+    private JabatanDao jabatanDao;
     @Autowired
-    private PaySalaryGradeService paySalaryGradeService;
+    private PaySalaryGradeDao paySalaryGradeDao;
+    @Autowired
+    private WtGroupWorkingDao wtGroupWorkingDao;
 
     @Override
     public EmpData getEntiyByPK(String id) throws Exception {
@@ -82,17 +85,22 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(EmpData entity) throws Exception {
+        long totalDuplicates = empDataDao.getTotalByNIK(entity.getNik());
+        if (totalDuplicates > 0) {
+            throw new BussinessException("emp_data.error_nik_duplicate");
+        }
+
         entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
-        entity.setBioData(bioDataService.getEntiyByPK(entity.getBioData().getId()));
+        entity.setBioData(bioDataDao.getEntiyByPK(entity.getBioData().getId()));
         entity.setCreatedOn(new Date());
         entity.setCreatedBy(UserInfoUtil.getUserName());
-        entity.setEmployeeType(employeeTypeService.getEntiyByPK(entity.getEmployeeType().getId()));
-        Jabatan jabatan = jabatanService.getEntiyByPK(entity.getJabatanByJabatanId().getId());
+        entity.setEmployeeType(employeeTypeDao.getEntiyByPK(entity.getEmployeeType().getId()));
+        Jabatan jabatan = jabatanDao.getEntiyByPK(entity.getJabatanByJabatanId().getId());
         entity.setJabatanByJabatanId(jabatan);
         entity.setJabatanByJabatanGajiId(jabatan);
         entity.setGolonganJabatan(jabatan.getGolonganJabatan());
-        PaySalaryGrade paySalaryGrade = paySalaryGradeService.getEntiyByPK(entity.getPaySalaryGrade().getId());
-        entity.setPaySalaryGrade(paySalaryGradeService.getEntiyByPK(entity.getId()));
+        PaySalaryGrade paySalaryGrade = paySalaryGradeDao.getEntiyByPK(entity.getPaySalaryGrade().getId());
+        entity.setPaySalaryGrade(paySalaryGradeDao.getEntiyByPK(entity.getId()));
         double min = paySalaryGrade.getMinSalary().doubleValue();
         double max = paySalaryGrade.getMaxSalary().doubleValue();
         if (entity.getBasicSalary().doubleValue() > max || entity.getBasicSalary().doubleValue() < min) {
@@ -103,8 +111,43 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(EmpData entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        long totalDuplicates = empDataDao.getTotalByNIKandId(entity.getNik(), entity.getId());
+        System.out.println(" nilai total "+totalDuplicates);
+        if (totalDuplicates > 0) {
+            throw new BussinessException("emp_data.error_nik_duplicate");
+        }
+        EmpData empData = this.empDataDao.getEntiyByPK(entity.getId());
+        empData.setBasicSalary(entity.getBasicSalary());
+        empData.setBioData(bioDataDao.getEntiyByPK(entity.getBioData().getId()));
+        empData.setEmployeeType(employeeTypeDao.getEntiyByPK(entity.getEmployeeType().getId()));
+        Jabatan jabatan = jabatanDao.getEntiyByPK(entity.getJabatanByJabatanId().getId());
+        empData.setJabatanByJabatanId(jabatan);
+        empData.setJabatanByJabatanGajiId(jabatan);
+        empData.setGolonganJabatan(jabatan.getGolonganJabatan());
+        empData.setHeatlyPremi(entity.getHeatlyPremi());
+        empData.setInsentifStatus(entity.getInsentifStatus());
+        empData.setIsFinger(entity.getIsFinger());
+        empData.setJoinDate(entity.getJoinDate());
+        empData.setNik(entity.getNik());
+        PaySalaryGrade paySalaryGrade = paySalaryGradeDao.getEntiyByPK(entity.getPaySalaryGrade().getId());
+        empData.setPaySalaryGrade(paySalaryGrade);
+        double min = paySalaryGrade.getMinSalary().doubleValue();
+        double max = paySalaryGrade.getMaxSalary().doubleValue();
+        if (entity.getBasicSalary().doubleValue() > max || entity.getBasicSalary().doubleValue() < min) {
+            throw new BussinessException("emp_data.error_salary_range");
+        }
+        empData.setPpip(entity.getPpip());
+        empData.setPpmp(entity.getPpmp());
+        empData.setPtkpNumber(entity.getPtkpNumber());
+        empData.setPtkpStatus(entity.getPtkpStatus());
+        empData.setUpdatedBy(UserInfoUtil.getUserName());
+        empData.setUpdatedOn(new Date());
+        if (entity.getWtGroupWorking() != null) {
+            empData.setWtGroupWorking(wtGroupWorkingDao.getEntiyByPK(entity.getWtGroupWorking().getId()));
+        }
+        this.empDataDao.update(empData);
     }
 
     @Override

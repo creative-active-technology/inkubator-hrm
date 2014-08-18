@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.inkubator.hrm.web;
+package com.inkubator.hrm.web.approval;
 //
 //import com.inkubator.hrm.entity.ProscessToApprove;
 //import com.inkubator.hrm.service.ProscessToApproveService;

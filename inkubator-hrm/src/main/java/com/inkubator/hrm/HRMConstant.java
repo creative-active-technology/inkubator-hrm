@@ -140,4 +140,23 @@ public class HRMConstant {
     public static final Integer PLACEMENT_MARRIED = 1;
     public static final Integer PLACEMENT_NO_MARRIED = 0;
     /* END */
+
+    /* Approval Definition */
+    public static final String BIO_DATA_EDIT = "BIO_DATA_EDIT";
+    public static final String BIO_HEATLY_EDIT = "BIO_HEATLY_EDIT";
+    public static final String BIO_OCCUPATIONAL_EDIT = "BIO_OCCUPATIONAL_EDIT";
+    public static final String BIO_EDUCATIONAL_EDIT = "BIO_EDUCATIONAL_EDIT";
+    public static final String BIO_HOBY_EDIT = "BIO_HOBY_EDIT";
+    public static final String BIO_FAMILY_EDIT = "BIO_FAMILY_EDIT";
+    public static final String BIO_DOCUMENT_EDIT = "BIO_DOCUMENT_EDIT";
+    public static final String BIO_BANK_EDIT = "BIO_BANK_EDIT";
+    public static final String BIO_ID_CARD_EDIT = "BIO_ID_CARD_EDIT";
+    public static final String BIO_INSURANCE_EDIT = "BIO_INSURANCE_EDIT";
+    public static final String BIO_CONTACT_EDIT = "BIO_CONTACT_EDIT";
+    public static final String BIO_SKILL_EDIT = "BIO_SKILL_EDIT";
+    public static final String TRAVEL_ADVANCE = "TRAVEL_ADVANCE";
+    public static final String REIMBERSMENT = "REIMBERSMENT";
+    public static final String LOAN = "LOAN";
+
+    /* END */
 }

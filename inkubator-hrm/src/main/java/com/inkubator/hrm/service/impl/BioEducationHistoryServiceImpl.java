@@ -14,6 +14,7 @@ import com.inkubator.hrm.dao.FacultyDao;
 import com.inkubator.hrm.dao.InstitutionEducationDao;
 import com.inkubator.hrm.dao.MajorDao;
 import com.inkubator.hrm.entity.BioEducationHistory;
+import com.inkubator.hrm.entity.City;
 import com.inkubator.hrm.service.BioEducationHistoryService;
 import com.inkubator.hrm.web.model.BioEducationHistoryViewModel;
 import com.inkubator.securitycore.util.UserInfoUtil;
@@ -70,6 +71,10 @@ public class BioEducationHistoryServiceImpl extends IServiceImpl implements BioE
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(BioEducationHistory entity) throws Exception {
+        if(entity.getCity()!=null){
+        City city = cityDao.getEntiyByPK(entity.getCity().getId());
+        entity.setCity(city);
+        }
         entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         entity.setBiodata(bioDataDao.getEntiyByPK(entity.getBiodata().getId()));
         entity.setEducationLevel(educationLevelDao.getEntiyByPK(entity.getEducationLevel().getId()));
@@ -77,7 +82,6 @@ public class BioEducationHistoryServiceImpl extends IServiceImpl implements BioE
         entity.setFaculty(facultyDao.getEntiyByPK(entity.getFaculty().getId()));
         entity.setMajor(majorDao.getEntiyByPK(entity.getMajor().getId()));
         entity.setCertificateNumber(entity.getCertificateNumber());
-        entity.setCity(cityDao.getEntiyByPK(entity.getCity().getId()));
         entity.setScore(entity.getScore());
         entity.setYearIn(entity.getYearIn());
         entity.setYearOut(entity.getYearOut());
@@ -90,6 +94,7 @@ public class BioEducationHistoryServiceImpl extends IServiceImpl implements BioE
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(BioEducationHistory entity) throws Exception {
         BioEducationHistory update = educationHistoryDao.getEntiyByPK(entity.getId());
+        City city = cityDao.getEntiyByPK(entity.getCity().getId());
         update.setBiodata(bioDataDao.getEntiyByPK(entity.getBiodata().getId()));
         update.setEducationLevel(educationLevelDao.getEntiyByPK(entity.getEducationLevel().getId()));
         update.setInstitutionEducation(institutionEducationDao.getEntiyByPK(entity.getInstitutionEducation().getId()));
@@ -99,7 +104,7 @@ public class BioEducationHistoryServiceImpl extends IServiceImpl implements BioE
         update.setScore(entity.getScore());
         update.setYearIn(entity.getYearIn());
         update.setYearOut(entity.getYearOut());
-        update.setCity(cityDao.getEntiyByPK(entity.getCity().getId()));
+        update.setCity(city);
         update.setUpdatedBy(UserInfoUtil.getUserName());
         update.setUpdatedOn(new Date());
         if (entity.getPathFoto() != null) {
@@ -261,7 +266,9 @@ public class BioEducationHistoryServiceImpl extends IServiceImpl implements BioE
             bioEduHistory.setId(bioEducationHistory.getId());
             bioEduHistory.setCertificateNumber(bioEducationHistory.getCertificateNumber());
             bioEduHistory.setYearOut(bioEducationHistory.getYearOut());
+            if(bioEducationHistory.getInstitutionEducation() != null){
             bioEduHistory.setInstitutionEducation(bioEducationHistory.getInstitutionEducation().getInstitutionEducationName());
+            }
             bioEduHistory.setScore(bioEducationHistory.getScore());
             if( bioEducationHistory.getCity() != null ){
                 bioEduHistory.setCity(bioEducationHistory.getCity().getCityName());

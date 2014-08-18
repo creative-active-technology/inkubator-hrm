@@ -40,7 +40,7 @@
                                 <h:outputLabel for="yearIn" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 30%">
-                                <p:selectOneMenu id="yearIn" value="#{educationHistoryFormController.model.yearIn}" style="width: 150px;margin-right: 3px"  >
+                                <p:selectOneMenu id="yearIn" value="#{educationHistoryFormController.model.yearIn}" style="width: 155px;margin-right: 3px"  >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{educationHistoryFormController.listYears}"/>
                                 <f:validator validatorId="yearIntegerNumberBetweenValidator"  />
@@ -49,13 +49,13 @@
                                 </p:selectOneMenu>
                             </p:column>
                             
-                            <p:column style="width: 20%">
+                            <p:column style="width: 17%">
                                 <p:outputLabel for="yearOut" value="#{appmsg['educationhistory.year_out']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="yearOut" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 30%">
+                            <p:column  style="width: 33%">
                                 <p:selectOneMenu id="yearOut" value="#{educationHistoryFormController.model.yearOut}" binding="#{yearOut}" style="width: 150px;margin-right: 3px"  >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{educationHistoryFormController.listYears}"/>
@@ -81,20 +81,20 @@
                                 <h:outputLabel for="educationId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 30%">
-                                <p:selectOneMenu id="educationId" value="#{educationHistoryFormController.model.educationLevelId}" style="width: 150px;margin-right: 3px"  >
+                                <p:selectOneMenu required="true" id="educationId" value="#{educationHistoryFormController.model.educationLevelId}" style="width: 155px;margin-right: 3px" filter="true" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{educationHistoryFormController.listEducationLevels}"/>
                                     </p:selectOneMenu>
                             </p:column>
                             
-                            <p:column style="width: 20%">
+                            <p:column style="width: 17%">
                                 <p:outputLabel for="institution" value="#{appmsg['educationhistory.institution_level']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="institution" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 30%">
-                                <p:selectOneMenu id="institution" value="#{educationHistoryFormController.model.institutionEducationId}" style="width: 150px;margin-right: 3px"  >
+                            <p:column  style="width: 33%">
+                                <p:selectOneMenu required="true" id="institution" value="#{educationHistoryFormController.model.institutionEducationId}" style="width: 150px;margin-right: 3px" filter="true" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{educationHistoryFormController.listInstitutionEducations}"/>
                                     </p:selectOneMenu>
@@ -104,14 +104,6 @@
                         <p:row>
                             <p:column colspan="3">
                                 <p:message for="educationId"/>
-                            </p:column>
-                        </p:row>
-                        
-                        
-                        
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:message for="yearOut"/>
                             </p:column>
                             <p:column colspan="3">
                                 <p:message for="institution"/>
@@ -126,20 +118,20 @@
                                 <h:outputLabel for="facultyId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 30%">
-                                <p:selectOneMenu id="facultyId" value="#{educationHistoryFormController.model.facultyId}" style="width: 150px;margin-right: 3px">
+                                <p:selectOneMenu id="facultyId" value="#{educationHistoryFormController.model.facultyId}" style="width: 155px;margin-right: 3px" filter="true">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{educationHistoryFormController.listFaculties}"/>
                                     </p:selectOneMenu>
                             </p:column>
                             
-                            <p:column style="width: 20%">
+                            <p:column style="width: 17%">
                                 <p:outputLabel for="major" value="#{appmsg['educationhistory.major']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="major" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 30%">
-                                <p:selectOneMenu id="major" value="#{educationHistoryFormController.model.majorId}" style="width: 150px;margin-right: 3px">
+                            <p:column  style="width: 33%">
+                                <p:selectOneMenu id="major" value="#{educationHistoryFormController.model.majorId}" style="width: 150px;margin-right: 3px" filter="true">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{educationHistoryFormController.listMajors}"/>
                                     </p:selectOneMenu>
@@ -164,15 +156,15 @@
                             </p:column>
                             <p:column  style="width: 30%">
                                 <p:inputText id="certificateNumber"  value="#{educationHistoryFormController.model.certificateNumber}"
-                                             required="true"  maxlength="45" styleClass="isitext_hrm" style="width:143px;" />
+                                             required="true"  maxlength="45" styleClass="isitext_hrm" style="width:155px;" />
                             </p:column>
-                            <p:column style="width: 20%">
+                            <p:column style="width: 17%">
                                 <p:outputLabel for="score" value="#{appmsg['educationhistory.score']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="score" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 30%">
+                            <p:column  style="width: 33%">
                                 <p:inputText id="score"  value="#{educationHistoryFormController.model.score}"
                                              required="true"  maxlength="45" styleClass="isitext_hrm" style="width:143px;" />
                             </p:column>
@@ -187,16 +179,24 @@
                         </p:row>
                         <p:row>
                             <p:column style="width: 20%">
-                                <p:outputLabel for="cityId" value="city" styleClass="label_hrm"/>
+                                <p:outputLabel for="cityId" value="City" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="cityId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 30%">
-                                <p:selectOneMenu id="cityId" value="#{educationHistoryFormController.model.cityId}" style="width: 150px;margin-right: 3px">
+<!--                                <p:selectOneMenu id="cityId" value="#{educationHistoryFormController.model.cityId}" style="width: 150px;margin-right: 3px" filter="true">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{educationHistoryFormController.listCitys}"/>
-                                    </p:selectOneMenu>
+                                    </p:selectOneMenu>-->
+                                            <p:autoComplete id="cityId" title="#{appmsg['bioIdCard.bioIdCard_place']}" 
+                                                value="#{educationHistoryFormController.model.city}"
+                                                completeMethod="#{educationHistoryFormController.completeCity}"
+                                                var="city"
+                                                itemValue="#{city}"
+                                                itemLabel="#{city.cityName}"
+                                                converter="cityConverter"
+                                                required="false" requiredMessage="#{appmsg['bioIdCard.bioIdCard_place_should_not_be_empty']}" styleClass="isitext_hrm" style="width:200px;"></p:autoComplete>
                             </p:column>
                         
                         </p:row>
