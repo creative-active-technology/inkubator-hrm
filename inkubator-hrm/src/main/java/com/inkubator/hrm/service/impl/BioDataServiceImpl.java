@@ -5,6 +5,24 @@
  */
 package com.inkubator.hrm.service.impl;
 
+import java.io.IOException;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.faces.context.FacesContext;
+
+import org.hibernate.criterion.Order;
+import org.primefaces.model.StreamedContent;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.dao.BioDataDao;
 import com.inkubator.hrm.dao.CityDao;
@@ -15,20 +33,10 @@ import com.inkubator.hrm.dao.RaceDao;
 import com.inkubator.hrm.dao.ReligionDao;
 import com.inkubator.hrm.entity.BioData;
 import com.inkubator.hrm.service.BioDataService;
+import com.inkubator.hrm.util.CommonReportUtil;
 import com.inkubator.hrm.web.search.BioDataSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesIO;
-import java.io.IOException;
-import java.util.Date;
-import java.util.List;
-import org.hibernate.criterion.Order;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -291,5 +299,31 @@ public class BioDataServiceImpl extends IServiceImpl implements BioDataService {
     public List<BioData> getByName(String name) throws Exception {
         return this.bioDataDao.getByName(name);
     }
+    
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public StreamedContent generateCV(long id) throws Exception {		
+		/*GsonBuilder gsonBuilder = new GsonBuilder();
+		gsonBuilder.setDateFormat("dd MMMM yyyy");
+		gsonBuilder.registerTypeAdapterFactory(HibernateProxyTypeAdapter.FACTORY);
+		gsonBuilder.setExclusionStrategies(new EntityExclusionStrategy());
+		Gson gson = gsonBuilder.create();
+		JsonParser parser = new JsonParser();		
+		JsonObject json = new JsonObject();
+		
+		BioData bioData = bioDataDao.getEntiyByPK(id);
+		boolean isBioDataExist = bioData != null;		
+		json.addProperty("isBioDataExist", isBioDataExist);
+		if(isBioDataExist){
+			json.add("bioData", parser.parse(gson.toJson(bioData)));
+		}*/
+		
+		Map<String, Object> params = new HashMap<>();
+		BioData bioData = bioDataDao.getEntiyByPK(id);
+		params.put("BIODATA_ID", id);
+		params.put("SUBREPORT_DIR", FacesContext.getCurrentInstance().getExternalContext().getRealPath("/resources/reports/") + "\\");
+		StreamedContent file = CommonReportUtil.exportReportToPDFStream("cv_builder.jasper", params, bioData.getFirstName() + ".pdf");
+		return file;
+	}
 
 }

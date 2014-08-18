@@ -66,6 +66,7 @@ public class BioData implements java.io.Serializable {
     private Set<BioBankAccount> bioBankAccounts = new HashSet<BioBankAccount>(0);
     private Set<EmpData> empDatas = new HashSet<EmpData>(0);
     private Set<BioKeahlian> bioKeahlians = new HashSet<BioKeahlian>(0);
+    private Set<BioSpesifikasiAbility> bioSpesifikasiAbilitys = new HashSet<BioSpesifikasiAbility>(0);
 
     public BioData() {
     }
@@ -74,7 +75,7 @@ public class BioData implements java.io.Serializable {
         this.id = id;
     }
 
-    public BioData(long id, Nationality nationality, Dialect dialect, Religion religion, City city, Race race, MaritalStatus maritalStatus, String firstName, String lastName, String title, String nickname, Integer gender, Integer bloodType, Date dateOfBirth, String personalEmail, String mobilePhone, Double bodyTall, Double bodyWeight, String createdBy, Date createdOn, String updatedBy, Date updatedOn, Set<BioEducationHistory> educationHistories, Set<BioPeopleInterest> peopleInterests, Set<BioAddress> bioAddresses, Set<BioDocument> bioDocuments, Set<BioKeahlian> bioKeahlians) {
+    public BioData(long id, Nationality nationality, Dialect dialect, Religion religion, City city, Race race, MaritalStatus maritalStatus, String firstName, String lastName, String title, String nickname, Integer gender, Integer bloodType, Date dateOfBirth, String personalEmail, String mobilePhone, Double bodyTall, Double bodyWeight, String createdBy, Date createdOn, String updatedBy, Date updatedOn, Set<BioEducationHistory> educationHistories, Set<BioPeopleInterest> peopleInterests, Set<BioAddress> bioAddresses, Set<BioDocument> bioDocuments, Set<BioKeahlian> bioKeahlians, Set<BioSpesifikasiAbility> bioSpesifikasiAbilitys) {
         this.id = id;
         this.nationality = nationality;
         this.dialect = dialect;
@@ -102,6 +103,7 @@ public class BioData implements java.io.Serializable {
         this.bioAddresses = bioAddresses;
         this.bioDocuments = bioDocuments;
         this.bioKeahlians = bioKeahlians;
+        this.bioSpesifikasiAbilitys = bioSpesifikasiAbilitys;
     }
 
     @Id
@@ -491,6 +493,15 @@ public class BioData implements java.io.Serializable {
 
     public void setBioKeahlians(Set<BioKeahlian> bioKeahlians) {
         this.bioKeahlians = bioKeahlians;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "biodata")
+    public Set<BioSpesifikasiAbility> getBioSpesifikasiAbilitys() {
+        return bioSpesifikasiAbilitys;
+    }
+
+    public void setBioSpesifikasiAbilitys(Set<BioSpesifikasiAbility> bioSpesifikasiAbilitys) {
+        this.bioSpesifikasiAbilitys = bioSpesifikasiAbilitys;
     }
     
     
