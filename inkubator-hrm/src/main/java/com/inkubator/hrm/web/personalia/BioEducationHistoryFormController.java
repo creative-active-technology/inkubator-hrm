@@ -250,7 +250,9 @@ public class BioEducationHistoryFormController extends BaseController{
         educationHistory.setInstitutionEducation(new InstitutionEducation(model.getInstitutionEducationId()));
         educationHistory.setFaculty(new Faculty(model.getFacultyId()));
         educationHistory.setMajor(new Major(model.getMajorId()));
-        educationHistory.setCity(model.getCity());
+        if(model.getCity()!=null){
+            educationHistory.setCity(model.getCity());
+        }
         educationHistory.setCertificateNumber(model.getCertificateNumber());
         educationHistory.setScore(model.getScore());
         educationHistory.setYearIn(model.getYearIn());

@@ -71,7 +71,10 @@ public class BioEducationHistoryServiceImpl extends IServiceImpl implements BioE
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(BioEducationHistory entity) throws Exception {
+        if(entity.getCity()!=null){
         City city = cityDao.getEntiyByPK(entity.getCity().getId());
+        entity.setCity(city);
+        }
         entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         entity.setBiodata(bioDataDao.getEntiyByPK(entity.getBiodata().getId()));
         entity.setEducationLevel(educationLevelDao.getEntiyByPK(entity.getEducationLevel().getId()));
@@ -79,7 +82,6 @@ public class BioEducationHistoryServiceImpl extends IServiceImpl implements BioE
         entity.setFaculty(facultyDao.getEntiyByPK(entity.getFaculty().getId()));
         entity.setMajor(majorDao.getEntiyByPK(entity.getMajor().getId()));
         entity.setCertificateNumber(entity.getCertificateNumber());
-        entity.setCity(city);
         entity.setScore(entity.getScore());
         entity.setYearIn(entity.getYearIn());
         entity.setYearOut(entity.getYearOut());

@@ -93,7 +93,9 @@ public class BioPeopleInterestFormController extends BaseController{
         //Interest Type
         listInterestType = interestTypeService.getAllData();
         for (InterestType interestType : listInterestType) {
-            listInterestTypes.put(interestType.getName(), interestType.getId());
+            if(interestType.getName() != null){
+                listInterestTypes.put(interestType.getName(), interestType.getId());
+            }
         }
         MapUtil.sortByValue(listInterestTypes);
     }
