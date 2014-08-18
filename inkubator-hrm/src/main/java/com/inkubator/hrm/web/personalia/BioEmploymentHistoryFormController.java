@@ -185,7 +185,7 @@ public class BioEmploymentHistoryFormController extends BaseController {
             List<City> allCity = cityService.getAllData();
             List<City> queried = new ArrayList<City>();
             for (City city : allCity) {
-                if (city.getCityName().toLowerCase().startsWith(query)  || city.getCityName().startsWith(query)) {
+                if (city.getCityName().toLowerCase().contains(query)  || city.getCityName().contains(query)) {
                     queried.add(city);
                 }
             }
