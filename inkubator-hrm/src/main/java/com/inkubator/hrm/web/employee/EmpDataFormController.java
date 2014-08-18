@@ -293,5 +293,14 @@ public class EmpDataFormController extends BaseController {
     public void setEmpDataService(EmpDataService empDataService) {
         this.empDataService = empDataService;
     }
+    
+    public void doChangeJabatan(){
+        try {
+            Jabatan jabatan=jabatanService.getJabatanByIdWithDetail(empDataModel.getJabatanByJabatanId());
+            empDataModel.setPaySalaryGradeId(jabatan.getPaySalaryGrade().getId());
+        } catch (Exception ex) {
+           LOGGER.error("Error", ex);
+        }
+    }
 
 }

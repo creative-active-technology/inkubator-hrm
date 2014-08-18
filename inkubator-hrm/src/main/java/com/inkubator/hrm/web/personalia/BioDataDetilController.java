@@ -554,6 +554,17 @@ public class BioDataDetilController extends BaseController {
     public String doBack() {
         return "/protected/personalia/biodata_view.htm?faces-redirect=true";
     }
+    
+    public StreamedContent doGenerateCV(){
+    	StreamedContent file = null;
+    	try {
+    		file = bioDataService.generateCV(selectedBioData.getId());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return file;
+    }
 
     /**
      * START Bio Address method

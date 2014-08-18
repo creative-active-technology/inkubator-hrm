@@ -58,7 +58,7 @@
                                                 <p:outputLabel  value="#{appmsg['global.name']}" style="font-weight: bold"/>
                                             </p:column>
                                             <p:column style="width: 80%">
-                                                <p:outputLabel  value=" #{bioDataDetilController.selectedBioData.title}. #{bioDataDetilController.selectedBioData.firstName} #{bioDataDetilController.selectedBioData.lastName}" />
+                                                <p:outputLabel  value=" #{bioDataDetilController.selectedBioData.title} #{bioDataDetilController.selectedBioData.firstName} #{bioDataDetilController.selectedBioData.lastName}" />
                                             </p:column>
 
 
@@ -1015,11 +1015,14 @@
 
                         </p:tabView>
                         <p:separator/>
-                        <h:panelGrid columns="3" style="margin-bottom: 5px;float: left">
+                        <h:panelGrid columns="4" style="margin-bottom: 5px;float: left">
                             <p:commandButton value="#{appmsg['global.edit']}"  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" action="#{bioDataDetilController.doEdit()}" styleClass="label_button"/>
                             <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{bioDataDetilController.doBack()}" styleClass="label_button"/>
                             <p:commandButton value="Kartu Nama" title="Kartu Nama" label="Kartu Nama" styleClass="label_button" icon="ui-icon-document" 
                                                      action="#{bioDataDetilController.doReportBiodata()}" ajax="true" immediate="true">
+                            </p:commandButton>
+                            <p:commandButton value="Generate CV" icon="ui-icon-document" title="Generate CV" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">                                	
+                                <p:fileDownload value="#{bioDataDetilController.doGenerateCV()}"/>
                             </p:commandButton>
                             
                         </h:panelGrid>

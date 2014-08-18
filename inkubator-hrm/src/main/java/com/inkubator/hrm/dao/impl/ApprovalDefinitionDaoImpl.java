@@ -11,12 +11,10 @@ import com.inkubator.hrm.entity.ApprovalDefinition;
 import com.inkubator.hrm.web.search.ApprovalDefinitionSearchParameter;
 import java.util.List;
 import org.hibernate.Criteria;
-import org.hibernate.FetchMode;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.sql.JoinType;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -37,7 +35,6 @@ public class ApprovalDefinitionDaoImpl extends IDAOImpl<ApprovalDefinition> impl
     public List<ApprovalDefinition> getByParam(ApprovalDefinitionSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchApprovalDefinitionByParam(searchParameter, criteria);
-        criteria.setFetchMode("proscessToApprove", FetchMode.JOIN);
         criteria.addOrder(order);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
@@ -53,8 +50,8 @@ public class ApprovalDefinitionDaoImpl extends IDAOImpl<ApprovalDefinition> impl
 
     private void doSearchApprovalDefinitionByParam(ApprovalDefinitionSearchParameter searchParameter, Criteria criteria) {
         if (searchParameter.getProcessName() != null) {
-            criteria.createAlias("proscessToApprove", "pa", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("pa.code", searchParameter.getProcessName(), MatchMode.ANYWHERE));
+            
+            criteria.add(Restrictions.like("name", searchParameter.getProcessName(), MatchMode.ANYWHERE));
         }
         if (searchParameter.getApproverPosition() != null) {
             criteria.add(Restrictions.like("approverPosition", searchParameter.getApproverPosition(), MatchMode.ANYWHERE));

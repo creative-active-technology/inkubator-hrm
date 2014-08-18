@@ -1,5 +1,5 @@
 package com.inkubator.hrm.entity;
-// Generated Mar 6, 2014 12:14:43 PM by Hibernate Tools 3.6.0
+// Generated Aug 18, 2014 1:42:18 PM by Hibernate Tools 3.6.0
 
 
 import java.util.Date;
@@ -9,12 +9,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 
 /**
@@ -23,13 +22,13 @@ import javax.persistence.Version;
 @Entity
 @Table(name="approval_definition"
     ,catalog="hrm"
+    , uniqueConstraints = @UniqueConstraint(columnNames="name") 
 )
 public class ApprovalDefinition  implements java.io.Serializable {
 
 
      private long id;
      private Integer version;
-     private ProscessToApprove proscessToApprove;
      private String name;
      private Integer sequence;
      private Integer minApprover;
@@ -37,7 +36,7 @@ public class ApprovalDefinition  implements java.io.Serializable {
      private String approverType;
      private String approverIndividual;
      private String approverPosition;
-     private Integer allowOnBehalf;
+     private Boolean allowOnBehalf;
      private String onBehalfType;
      private String onBehalfIndividual;
      private String onBehalfPosition;
@@ -54,9 +53,8 @@ public class ApprovalDefinition  implements java.io.Serializable {
     public ApprovalDefinition(long id) {
         this.id = id;
     }
-    public ApprovalDefinition(long id, ProscessToApprove proscessToApprove, String name, Integer sequence, Integer minApprover, Integer minRejector, String approverType, String approverIndividual, String approverPosition, Integer allowOnBehalf, String onBehalfType, String onBehalfIndividual, String onBehalfPosition, String createdBy, Date createdOn, String updatedBy, Date updatedOn, Set<ApprovalActivity> approvalActivities) {
+    public ApprovalDefinition(long id, String name, Integer sequence, Integer minApprover, Integer minRejector, String approverType, String approverIndividual, String approverPosition, Boolean allowOnBehalf, String onBehalfType, String onBehalfIndividual, String onBehalfPosition, String createdBy, Date createdOn, String updatedBy, Date updatedOn, Set<ApprovalActivity> approvalActivities) {
        this.id = id;
-       this.proscessToApprove = proscessToApprove;
        this.name = name;
        this.sequence = sequence;
        this.minApprover = minApprover;
@@ -97,18 +95,8 @@ public class ApprovalDefinition  implements java.io.Serializable {
         this.version = version;
     }
 
-@ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="process_to_approve_id")
-    public ProscessToApprove getProscessToApprove() {
-        return this.proscessToApprove;
-    }
     
-    public void setProscessToApprove(ProscessToApprove proscessToApprove) {
-        this.proscessToApprove = proscessToApprove;
-    }
-
-    
-    @Column(name="name", length=100)
+    @Column(name="name", unique=true, length=100)
     public String getName() {
         return this.name;
     }
@@ -179,11 +167,11 @@ public class ApprovalDefinition  implements java.io.Serializable {
 
     
     @Column(name="allow_on_behalf")
-    public Integer getAllowOnBehalf() {
+    public Boolean getAllowOnBehalf() {
         return this.allowOnBehalf;
     }
     
-    public void setAllowOnBehalf(Integer allowOnBehalf) {
+    public void setAllowOnBehalf(Boolean allowOnBehalf) {
         this.allowOnBehalf = allowOnBehalf;
     }
 

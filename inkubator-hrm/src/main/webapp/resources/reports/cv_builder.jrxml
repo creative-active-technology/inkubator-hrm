@@ -1,0 +1,474 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cv_builder" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="0" uuid="83697877-455a-4d56-a5c8-4858e62de398">
+	<property name="ireport.zoom" value="1.000000000000004"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="166"/>
+	<parameter name="BIODATA_ID" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["\\"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT bio_data.*, city.city_name as "city_name",
+religion.name as "religion_name",
+marital_status.name as "marital_status_name",
+nationality.nationality_name as "nationality_name",
+race.race_name as "race_name",
+dialect.dialect_name as "dialect_name"
+FROM bio_data
+LEFT JOIN city ON bio_data.place_of_birth=city.id
+LEFT JOIN religion ON bio_data.agama_id=religion.id
+LEFT JOIN marital_status ON bio_data.martial_id=marital_status.id
+LEFT JOIN nationality ON bio_data.warga_negara=nationality.id
+LEFT JOIN race ON bio_data.ras=race.id
+LEFT JOIN dialect ON bio_data.dialect=dialect.id
+WHERE bio_data.id=$P{BIODATA_ID}]]>
+	</queryString>
+	<field name="id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="first_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="last_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="title" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nickname" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="gender" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="blood_type" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="place_of_birth" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="date_of_birth" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="martial_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="agama_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="personal_email" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="mobile_phone" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="body_tall" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="body_weight" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="created_by" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="created_on" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="updated_by" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="updated_on" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="version" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="dialect" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ras" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="warga_negara" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="path_finger" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="path_foto" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="path_signature" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="no_kk" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="jamsostek" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="npwp" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="city_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="religion_name" class="java.lang.String"/>
+	<field name="marital_status_name" class="java.lang.String"/>
+	<field name="nationality_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="race_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="dialect_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<pageHeader>
+		<band height="45" splitType="Stretch">
+			<rectangle>
+				<reportElement x="-20" y="0" width="20" height="20" backcolor="#86D6F7" uuid="ae3cbac7-58b9-486c-b2ea-4e2abb939062"/>
+				<graphicElement>
+					<pen lineWidth="0.0" lineColor="#99CCFF"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="555" y="0" width="20" height="20" backcolor="#D6DF21" uuid="94fd80db-3b49-488f-b8ac-98eb86ecb38a"/>
+				<graphicElement>
+					<pen lineWidth="0.0" lineColor="#99CCFF"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="20" backcolor="#0099CC" uuid="32e7d1c4-1586-410b-937b-b81bd740fb96"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#0099CC"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="-20" y="20" width="20" height="25" backcolor="#F2F3F4" uuid="dec676af-ea43-46ad-a18a-9f678510e00d"/>
+				<graphicElement>
+					<pen lineWidth="0.0" lineColor="#CCCCCC"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="20" width="555" height="25" backcolor="#E6E7E9" uuid="d186a025-1efa-452c-bb0f-1ab6e6649456"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="555" y="20" width="20" height="25" backcolor="#F2F3F4" uuid="d15f9465-f125-4d21-9185-599984d9c3d3"/>
+				<graphicElement>
+					<pen lineWidth="0.0" lineColor="#CCCCCC"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="495" y="20" width="60" height="20" backcolor="#D6DF21" uuid="c0f88200-908d-41a1-a74c-b84e5efe19f2"/>
+				<graphicElement>
+					<pen lineWidth="0.0" lineColor="#99CCFF"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="20" width="60" height="20" backcolor="#86D6F7" uuid="a6763433-8f8e-4b30-aaca-d79ae50e47fa"/>
+				<graphicElement>
+					<pen lineWidth="0.0" lineColor="#99CCFF"/>
+				</graphicElement>
+			</rectangle>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="130" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="110" backcolor="#E6E7E9" uuid="c3351eeb-f512-4369-838e-44391e56f5b8"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#E6E7E9"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="-20" y="0" width="20" height="110" backcolor="#F2F3F4" uuid="0eec95fc-b61e-4bc5-a48f-92281a065a1a"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#F2F3F4"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="555" y="0" width="20" height="110" backcolor="#F2F3F4" uuid="5d0963a9-f11f-4d71-a9d3-4c8302e0a3ef"/>
+				<graphicElement>
+					<pen lineWidth="0.0" lineColor="#F0F0F0"/>
+				</graphicElement>
+			</rectangle>
+			<image>
+				<reportElement x="119" y="0" width="116" height="91" uuid="129d49be-b225-4ebb-beeb-70d4e402171a"/>
+				<imageExpression><![CDATA[$F{path_foto}]]></imageExpression>
+			</image>
+			<textField isBlankWhenNull="true">
+				<reportElement x="235" y="59" width="320" height="20" uuid="bd077c3a-155f-41b0-9cd9-182ce6ecd452"/>
+				<textElement>
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{first_name} + " " + $F{last_name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="235" y="79" width="320" height="20" uuid="acf73e92-387e-4efb-9d48-720a381bda9d"/>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{personal_email} == null ? "N/A" : $F{personal_email}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="285">
+			<line>
+				<reportElement x="0" y="20" width="210" height="1" forecolor="#0099CC" uuid="273badaf-a748-4b5d-9b7d-22c4230d575e"/>
+				<graphicElement>
+					<pen lineWidth="2.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="235" y="20" width="320" height="1" forecolor="#E6E7E9" uuid="d870b6bf-8971-4e2d-b44b-4838109e08be"/>
+				<graphicElement>
+					<pen lineWidth="2.0"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="0" y="25" width="135" height="20" forecolor="#0099CC" uuid="0bb08125-20ec-4866-92a7-89a4ecf4eb58"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Contact Details]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="75" y="145" width="135" height="20" forecolor="#000000" uuid="54fcf3c9-b539-4bdb-95c7-deda3cd10edd"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Jenis Kelamin]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="75" y="165" width="135" height="20" forecolor="#000000" uuid="4fb021c2-c22a-4561-adb9-eac73c06aaa9"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Kota Kelahiran]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="75" y="185" width="135" height="20" forecolor="#000000" uuid="5ecff05b-4589-42cc-9fc6-a49e78f85d4f"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Tanggal Kelahiran]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="235" y="145" width="320" height="20" uuid="29ef63e1-5fb4-424b-b75b-5f5b08e3705b"/>
+				<textElement>
+					<font fontName="Arial" size="11" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{gender} == 1 ? "Laki-laki":"Perempuan"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="235" y="165" width="320" height="20" uuid="fc3a18ac-14ed-4830-950f-0f7ffb4654cb"/>
+				<textElement>
+					<font fontName="Arial" size="11" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{city_name} == null ? "N/A" : $F{city_name}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd MMMMM yyyy" isBlankWhenNull="true">
+				<reportElement x="235" y="185" width="320" height="20" uuid="5c20b8fa-cc4b-473a-8635-962abfd9baf6"/>
+				<textElement>
+					<font fontName="Arial" size="11" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{date_of_birth} == null ? "N/A" : $F{date_of_birth}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="75" y="205" width="135" height="20" forecolor="#000000" uuid="78376c5a-22b6-40f7-be7b-daf04ba668d7"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Golongan Darah]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="75" y="225" width="135" height="20" forecolor="#000000" uuid="2869519c-1669-41cb-8459-ba72355a73b4"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Agama]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="235" y="205" width="320" height="20" uuid="bef8e873-25a3-4098-af62-b938ad185486"/>
+				<textElement>
+					<font fontName="Arial" size="11" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{blood_type} == 1 ? "A" :
+$F{blood_type} == 2 ? "B" :
+$F{blood_type} == 3 ? "AB" : "O"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="235" y="225" width="320" height="20" uuid="6ee9fb0e-621c-4d4d-b758-a289c8dda93b"/>
+				<textElement>
+					<font fontName="Arial" size="11" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{religion_name} == null ? "N/A" : $F{religion_name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="75" y="245" width="135" height="20" forecolor="#000000" uuid="6e151a9d-0878-4e5c-badf-05aecb0df0f5"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Status]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="235" y="245" width="320" height="20" uuid="3ff8c1f6-e112-4366-8a7c-add51da097d4"/>
+				<textElement>
+					<font fontName="Arial" size="11" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{marital_status_name} == null ? "N/A" : $F{marital_status_name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="75" y="265" width="135" height="20" forecolor="#000000" uuid="c7b1067b-a341-4f1c-9a33-e235159d76b7"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Mobile Phone]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="235" y="265" width="320" height="20" uuid="86f0c7fd-949a-4279-94b7-a0465631afb0"/>
+				<textElement>
+					<font fontName="Arial" size="11" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mobile_phone} == null ? "N/A" : $F{mobile_phone}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="75" y="45" width="135" height="20" forecolor="#000000" uuid="bdf92adf-9edd-44fd-a074-cd2d9de53ed9"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Nama Panggilan]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="235" y="45" width="320" height="20" uuid="b4118bff-7568-4196-8a8e-6e561f53a5c3"/>
+				<textElement>
+					<font fontName="Arial" size="11" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nickname} == null ? "N/A" : $F{nickname}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="235" y="65" width="320" height="20" uuid="7754beb4-2174-4ccf-b87c-a0918da94a41"/>
+				<textElement>
+					<font fontName="Arial" size="11" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{no_kk} == null ? "N/A" : $F{no_kk}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="75" y="65" width="135" height="20" forecolor="#000000" uuid="43b17058-41ac-48ed-9e22-02e229b9d894"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[No. KK]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="235" y="85" width="320" height="20" uuid="866e420e-5ca7-4ad4-924d-2f118c5c152b"/>
+				<textElement>
+					<font fontName="Arial" size="11" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nationality_name} == null ? "N/A" : $F{nationality_name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="75" y="85" width="135" height="20" forecolor="#000000" uuid="7cfd3599-ed7f-41c7-b5e1-301c03dd7e76"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Warga Negara]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="235" y="105" width="320" height="20" uuid="67b04d61-7678-491b-8eea-f21a4bcd8dc9"/>
+				<textElement>
+					<font fontName="Arial" size="11" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{race_name} == null ? "N/A" : $F{race_name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="75" y="105" width="135" height="20" forecolor="#000000" uuid="c0dd6f1d-0761-476a-8061-0eac5974c754"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Nama Ras]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="235" y="125" width="320" height="20" uuid="456045b2-3838-4ee2-a972-8c2737ae826b"/>
+				<textElement>
+					<font fontName="Arial" size="11" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dialect_name} == null ? "N/A" : $F{dialect_name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="75" y="125" width="135" height="20" forecolor="#000000" uuid="3f0df487-a925-4e7a-909a-782cb77ea72e"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Dialek]]></text>
+			</staticText>
+		</band>
+		<band height="50" splitType="Prevent">
+			<subreport>
+				<reportElement x="-20" y="0" width="200" height="45" uuid="1fcc8760-9381-4643-8d3f-25b28c37934d"/>
+				<subreportParameter name="BIODATA_ID">
+					<subreportParameterExpression><![CDATA[$P{BIODATA_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "sub_report_id_card.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="50" splitType="Prevent">
+			<subreport>
+				<reportElement x="-20" y="0" width="200" height="45" uuid="9b0734a1-7860-4c15-8d92-e5ce1ebc88af"/>
+				<subreportParameter name="BIODATA_ID">
+					<subreportParameterExpression><![CDATA[$P{BIODATA_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "sub_report_address.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="50" splitType="Prevent">
+			<subreport>
+				<reportElement x="-20" y="0" width="200" height="45" uuid="a6b5c134-0b02-4569-9a0d-c2a66f138dc4"/>
+				<subreportParameter name="BIODATA_ID">
+					<subreportParameterExpression><![CDATA[$P{BIODATA_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "sub_report_education_history.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="50" splitType="Prevent">
+			<subreport>
+				<reportElement x="-20" y="0" width="200" height="45" uuid="c3004175-1ee2-4dc2-acf8-eedfa92c71c0"/>
+				<subreportParameter name="BIODATA_ID">
+					<subreportParameterExpression><![CDATA[$P{BIODATA_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "sub_report_employment_history.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="40" splitType="Stretch">
+			<rectangle>
+				<reportElement x="-20" y="20" width="20" height="20" backcolor="#D6DF21" uuid="b54c5a53-2824-4807-ac9b-7576389cf6ff"/>
+				<graphicElement>
+					<pen lineWidth="0.0" lineColor="#99CCFF"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="555" y="20" width="20" height="20" backcolor="#86D6F7" uuid="f85c4794-bb18-4b95-bf69-3ac657da1a73"/>
+				<graphicElement>
+					<pen lineWidth="0.0" lineColor="#99CCFF"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="20" width="555" height="20" backcolor="#10B0D0" uuid="f3525a0a-7a9c-4f9c-8ccd-c8fe68b3183e"/>
+				<graphicElement>
+					<pen lineWidth="0.0" lineColor="#0099CC"/>
+				</graphicElement>
+			</rectangle>
+		</band>
+	</pageFooter>
+</jasperReport>
