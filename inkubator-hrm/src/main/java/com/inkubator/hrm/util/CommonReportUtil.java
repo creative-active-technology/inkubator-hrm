@@ -12,7 +12,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+
 import javax.faces.context.FacesContext;
+
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -20,6 +22,7 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
 import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
+
 import org.primefaces.model.DefaultStreamedContent;
 
 /**
@@ -31,6 +34,27 @@ public class CommonReportUtil {
         Random random = new Random();
         long randomLong = random.nextLong();
         return prefix + randomLong + "." + extension;
+    }
+    
+    public static DefaultStreamedContent exportReportToPDFStream(
+            String jasperName,
+            Map<String, Object> params,
+            String reportOutputFileName) throws JRException, SQLException {
+        DefaultStreamedContent result;
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+
+        InputStream input = FacesContext.getCurrentInstance().getExternalContext()
+                .getResourceAsStream("/resources/reports/" + jasperName);
+
+        JasperPrint jasperPrint = JasperFillManager.fillReport(
+                input,
+                params,
+                ServiceWebUtilCon.getConnection());
+        JasperExportManager.exportReportToPdfStream(jasperPrint, output);
+        InputStream pdfInput = new ByteArrayInputStream(output.toByteArray());
+        result = new DefaultStreamedContent(pdfInput, "application/pdf", reportOutputFileName);
+
+        return result;
     }
 
     public static DefaultStreamedContent exportReportToPDFStream(

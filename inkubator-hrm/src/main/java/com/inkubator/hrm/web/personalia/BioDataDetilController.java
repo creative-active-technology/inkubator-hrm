@@ -480,13 +480,15 @@ public class BioDataDetilController extends BaseController {
         return "/protected/personalia/biodata_view.htm?faces-redirect=true";
     }
     
-    public void doGenerateCV(){
+    public StreamedContent doGenerateCV(){
+    	StreamedContent file = null;
     	try {
-			bioDataService.generateCV(selectedBioData.getId());
+    		file = bioDataService.generateCV(selectedBioData.getId());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+    	return file;
     }
 
     /**
