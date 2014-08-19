@@ -207,14 +207,14 @@ WHERE bio_data_id=$P{BIODATA_ID}]]>
 				<textElement markup="styled">
 					<font fontName="Arial" size="11" isBold="false" isItalic="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Jabatan : " +$F{job_sector}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Jabatan : " + $F{last_occupation}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement x="20" y="60" width="320" height="20" uuid="dd3e1659-840c-4daf-ad8d-4aa00912e8d1"/>
 				<textElement markup="styled">
 					<font fontName="Arial" size="11" isBold="false" isItalic="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Bidang Pekerjaan : " + $F{last_occupation}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Bidang Pekerjaan : " + $F{job_sector}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
