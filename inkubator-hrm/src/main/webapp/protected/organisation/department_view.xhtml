@@ -63,25 +63,25 @@
                             <f:facet name="header">  
                                 <h:outputText value="#{appmsg['department.list_of_department']}"/>
                             </f:facet> 
-                            <p:column style="text-align: center;width: 5%">
+                            <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.number']}"/>
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="departmentCode" style="width: 10%">
+                            <p:column sortBy="departmentCode" style="width: 27%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['department.code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{departmentData.departmentCode}" />
                             </p:column>
-                            <p:column sortBy="departmentName" style="width: 70%">
+                            <p:column sortBy="departmentName" style="width: 60%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['department.name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{departmentData.departmentName}" />
                             </p:column>
-                            <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
                                                  onclick="statusDialog.show()"  oncomplete="detailDepartment.show()" update=":detailPanel"
                                                  style="font-size: 10px!important" action="#{departmentController.doDetail()}">                        

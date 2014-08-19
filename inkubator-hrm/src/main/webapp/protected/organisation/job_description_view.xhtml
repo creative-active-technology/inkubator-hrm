@@ -78,31 +78,31 @@
                              <f:facet name="header">  
                                 <h:outputText value="#{appmsg['user_view.header1']}" styleClass="label_hrm"/>
                             </f:facet> 
-                            <p:column style="text-align: center;width: 25px">
+                            <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.number']}"  />
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="code" style="width: 150px" >
+                            <p:column sortBy="code" style="width: 17%" >
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['jabat.jabatan_code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{jabatanDeskripsiModel.code}"/>
                             </p:column>
-                            <p:column sortBy="name" >
+                            <p:column sortBy="name" style="width: 24%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['jabatan.jabatan_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{jabatanDeskripsiModel.name}"/>
                             </p:column>
-                            <p:column sortBy="jabatan" >
+                            <p:column sortBy="jabatan" style="width: 23%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['jabatan.jabatan_deparment_boss']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{jabatanDeskripsiModel.jabatan.name}"/>
                             </p:column>
-                            <p:column sortBy="department" >
+                            <p:column sortBy="department" style="width: 23%" >
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['jabatan.jabatan_deparment']}"/>
                                 </f:facet>
@@ -110,7 +110,7 @@
                             </p:column> 
 
                           
-                            <p:column headerText="#{appmsg['global.action']}" style="width: 160px;text-align: center" exportable="false">
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton  icon="ui-icon-document" title="#{appmsg['global.add_or_edit']}" label="#{appmsg['global.add_or_edit']}" value="#{appmsg['global.add_or_edit']}"
                                                   action="#{jabatanDeskripsiViewController.doAdd()}" style="font-size: 10px!important" >                        
                                     <f:setPropertyActionListener value="#{jabatanDeskripsiModel}" target="#{jabatanDeskripsiViewController.selectedJabatan}" />

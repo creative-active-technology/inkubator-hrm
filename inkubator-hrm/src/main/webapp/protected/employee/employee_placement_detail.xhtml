@@ -20,8 +20,8 @@
                         <p:graphicImage library="images" name="bio_data.png" height="36" width="36" />
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Penempatan Karyawan Detil" styleClass="header_big" />
-                                <p:outputLabel value="Data Penempatan Karyawan" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['placement.placement_detail']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['placement.placement_header']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -41,7 +41,7 @@
                                     <p:panelGrid style="width: 100%;margin-top: 10px;" styleClass="grid_border4">
                                         <p:row>
                                             <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                                <p:outputLabel  value="NIK" style="font-weight: bold"/>
+                                                <p:outputLabel  value="#{appmsg['placement.nik']}" style="font-weight: bold"/>
                                             </p:column>
                                             <p:column style="width: 80%">
                                                 <p:outputLabel  value=" #{empDataDetilController.selectedEmpData.nik}" />
@@ -49,7 +49,7 @@
                                         </p:row>
                                         <p:row>
                                             <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                                <p:outputLabel  value="Department" style="font-weight: bold"/>
+                                                <p:outputLabel  value="#{appmsg['department.department']}" style="font-weight: bold"/>
                                             </p:column>
                                             <p:column style="width: 80%">
                                                 <p:outputLabel  value="#{empDataDetilController.selectedEmpData.jabatanByJabatanId.department.departmentName}" />
@@ -61,7 +61,7 @@
                                         </p:row>
                                         <p:row>
                                             <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                                <p:outputLabel  value="Jabatan" style="font-weight: bold"/>
+                                                <p:outputLabel  value="#{appmsg['placement.jabatan']}" style="font-weight: bold"/>
                                             </p:column>
                                             <p:column style="width: 80%">
                                                 <p:outputLabel  value="#{empDataDetilController.selectedEmpData.jabatanByJabatanId.name}" />
@@ -71,7 +71,7 @@
                                         </p:row>
                                         <p:row>
                                             <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                                <p:outputLabel  value="Nama" style="font-weight: bold"/>
+                                                <p:outputLabel  value="#{appmsg['global.name']}" style="font-weight: bold"/>
                                             </p:column>
                                             <p:column style="width: 80%">
                                                 <p:outputLabel  value="#{empDataDetilController.selectedEmpData.bioData.firstName} #{empDataDetilController.selectedEmpData.bioData.lastName}" />
@@ -83,7 +83,7 @@
                                         </p:row>
                                         <p:row>
                                             <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                                <p:outputLabel  value="Tanggal Bergabung" style="font-weight: bold"/>
+                                                <p:outputLabel  value="#{appmsg['placement.join_data']}" style="font-weight: bold"/>
                                             </p:column>
                                             <p:column style="width: 80%">
                                                 <p:outputLabel  value="#{empDataDetilController.selectedEmpData.joinDate}" >
@@ -95,7 +95,7 @@
                                         </p:row>
                                         <p:row>
                                             <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                                <p:outputLabel  value="Type Karyawan" style="font-weight: bold"/>
+                                                <p:outputLabel  value="#{appmsg['employeetype.employee_type']}" style="font-weight: bold"/>
                                             </p:column>
                                             <p:column style="width: 80%">
                                                 <p:outputLabel  value="#{empDataDetilController.selectedEmpData.employeeType.name}"/>
@@ -107,7 +107,7 @@
 
                                         <p:row>
                                             <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                                <p:outputLabel  value="Unit Kerja" style="font-weight: bold"/>
+                                                <p:outputLabel  value="#{appmsg['jabatan.unit_kerja']}" style="font-weight: bold"/>
                                             </p:column>
                                             <p:column style="width: 80%">
                                                 <p:outputLabel  value="#{empDataDetilController.selectedEmpData.jabatanByJabatanId.unitKerja.name}" />
@@ -117,7 +117,7 @@
                                         </p:row>
                                         <p:row>
                                             <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                                <p:outputLabel  value="Group Jadwal Kerja" style="font-weight: bold"/>
+                                                <p:outputLabel  value="#{appmsg['employeetype.jadwal_kerja']}" style="font-weight: bold"/>
                                             </p:column>
                                             <p:column style="width: 80%">
                                                 <p:outputLabel  value="#{empDataDetilController.selectedEmpData.wtGroupWorking.name}" />
@@ -144,7 +144,7 @@
                                 <p:panelGrid style="width: 100%;margin-top: 10px;" styleClass="grid_border4">
                                     <p:row>
                                         <p:column style="width: 15%;background-color: #e1f0f0!important" >
-                                            <p:outputLabel  value="PPMP" style="font-weight: bold"/>
+                                            <p:outputLabel  value="#{appmsg['placement.ppmp']}" style="font-weight: bold"/>
                                         </p:column>
                                         <p:column style="width: 75%">
                                             <p:outputLabel  value="#{empDataDetilController.selectedEmpData.ppmp}" />
@@ -155,7 +155,7 @@
                                     </p:row>
                                     <p:row>
                                         <p:column style="width: 15%;background-color: #e1f0f0!important" >
-                                            <p:outputLabel  value="PPIP" style="font-weight: bold"/>
+                                            <p:outputLabel  value="#{appmsg['placement.ppip']}" style="font-weight: bold"/>
                                         </p:column>
                                         <p:column style="width: 75%">
                                             <p:outputLabel  value="#{empDataDetilController.selectedEmpData.ppip}" />
@@ -166,7 +166,7 @@
                                     </p:row>
                                     <p:row>
                                         <p:column style="width: 15%;background-color: #e1f0f0!important" >
-                                            <p:outputLabel  value="Finger" style="font-weight: bold"/>
+                                            <p:outputLabel  value="#{appmsg['placement.finger']}" style="font-weight: bold"/>
                                         </p:column>
                                         <p:column style="width: 75%">
                                             <p:outputLabel  value="#{empDataDetilController.selectedEmpData.isFinger}" >
@@ -179,7 +179,7 @@
                                     </p:row>
                                     <p:row>
                                         <p:column style="width: 15%;background-color: #e1f0f0!important" >
-                                            <p:outputLabel  value="Premi Kesehatan" style="font-weight: bold"/>
+                                            <p:outputLabel  value="#{appmsg['placement.premi_kesehatan']}" style="font-weight: bold"/>
                                         </p:column>
                                         <p:column style="width: 75%">
                                             <p:outputLabel  value="#{empDataDetilController.selectedEmpData.heatlyPremi}" >
@@ -191,7 +191,7 @@
                                     </p:row>
                                     <p:row>
                                         <p:column style="width: 15%;background-color: #e1f0f0!important" >
-                                            <p:outputLabel  value="Insentif Status" style="font-weight: bold"/>
+                                            <p:outputLabel  value="#{appmsg['placement.premi_kesehatan']}" style="font-weight: bold"/>
                                         </p:column>
                                         <p:column style="width: 75%">
                                             <p:outputLabel  value="#{empDataDetilController.selectedEmpData.heatlyPremi}" >
@@ -206,7 +206,7 @@
                                     </p:row>
                                     <p:row>
                                         <p:column style="width: 15%;background-color: #e1f0f0!important" >
-                                            <p:outputLabel  value="PTKP Status" style="font-weight: bold"/>
+                                            <p:outputLabel  value="#{appmsg['placement.ptkp']}" style="font-weight: bold"/>
                                         </p:column>
                                         <p:column style="width: 75%">
                                             <p:outputLabel  value="#{empDataDetilController.selectedEmpData.ptkpStatus}" >
@@ -219,7 +219,7 @@
                                     </p:row>
                                     <p:row>
                                         <p:column style="width: 15%;background-color: #e1f0f0!important" >
-                                            <p:outputLabel  value="Jumlah PTKP" style="font-weight: bold"/>
+                                            <p:outputLabel  value="#{appmsg['placement.jumlah']}" style="font-weight: bold"/>
                                         </p:column>
                                         <p:column style="width: 75%">
                                             <p:outputLabel  value="#{empDataDetilController.selectedEmpData.ptkpNumber}" />
@@ -231,7 +231,7 @@
 
                                 </p:panelGrid>
                             </p:tab>  
-                            <p:tab id="spekJabatanId" title="Spesifikasi Jabatan">  
+                            <p:tab id="spekJabatanId" title="#{appmsg['jabatanspesifikasi.jabatanspesifikasi']}">  
                                 <p:dataTable value="#{empDataDetilController.listJabatanSpesifikasi}" var="listJobSpecifikasi" rowIndexVar="no" id="jobDesId"
                                              >
                                     <p:column style="text-align: center;width: 25px;max-width: 25px">
@@ -263,12 +263,12 @@
 
                             </p:tab>  
 
-                            <p:tab id="alamatId" title="Jobs Deskripsi">
+                            <p:tab id="alamatId" title="#{appmsg['jobdescription.job_description']}">
                                 <p:dataTable value="#{empDataDetilController.jabatanDeskripsis}" var="listJobDeskrpsi" rowIndexVar="no" id="jobDesTableId"
                                              >
                                     <p:column style="text-align: center;width: 25px;max-width: 25px">
                                         <f:facet name="header">  
-                                            <h:outputText value="No." />
+                                            <h:outputText value="#{appmsg['global.number']}." />
                                         </f:facet>
                                         <h:outputLabel value="#{no+1}." />
                                     </p:column>
@@ -297,34 +297,34 @@
                                 </p:dataTable> 
                                 
                             </p:tab>
-                            <p:tab id="riwayatKerjaId" title="Karir">  
+                            <p:tab id="riwayatKerjaId" title="#{appmsg['placement.career']}">  
                                <p:outputLabel value="Available on Version 1.2" styleClass="header_big" style="position:relative;color:red;right:-400px !important;font-style:italic"/>
 
                             </p:tab>  
-                            <p:tab id="pendidikanId" title="Pinjaman">  
+                            <p:tab id="pendidikanId" title="#{appmsg['placement.pinjaman']}">  
                                 <p:outputLabel value="Available on Version 1.2" styleClass="header_big" style="position:relative;color:red;right:-400px !important;font-style:italic"/>
                             </p:tab>  
 
-                            <p:tab id="minatId" title="Prestasi">  
+                            <p:tab id="minatId" title="#{appmsg['placement.prestasi']}">  
                                 <p:outputLabel value="Available on Version 1.2" styleClass="header_big" style="position:relative;color:red;right:-400px !important;font-style:italic"/>
 
                             </p:tab>  
-                            <p:tab id="dataKeluargaid" title="Tata Terrib">  
+                            <p:tab id="dataKeluargaid" title="#{appmsg['placement.tata_tertib']}">  
                                <p:outputLabel value="Available on Version 1.2" styleClass="header_big" style="position:relative;color:red;right:-400px !important;font-style:italic"/>
 
 
                             </p:tab>  
-                            <p:tab id="documentId" title="Riwayat Penilaian">  
+                            <p:tab id="documentId" title="#{appmsg['placement.riwayat_penilaian']}">  
                                 <p:outputLabel value="Available on Version 1.2" styleClass="header_big" style="position:relative;color:red;right:-400px !important;font-style:italic"/>
 
                                 
 
                             </p:tab>  
-                            <p:tab id="bank" title="Riwayat Pelatihan">  
+                            <p:tab id="bank" title="#{appmsg['placement.riwayat_pelatihan']}">  
                                <p:outputLabel value="Available on Version 1.2" styleClass="header_big" style="position:relative;color:red;right:-400px !important;font-style:italic"/>
 
                             </p:tab>  
-                            <p:tab id="diCardId" title="Projects">  
+                            <p:tab id="diCardId" title="#{appmsg['placement.project']}">  
                                 <p:outputLabel value="Available on Version 1.2" styleClass="header_big" style="position:relative;color:red;right:-400px !important;font-style:italic"/>
 
                             </p:tab>  
