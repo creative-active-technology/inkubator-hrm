@@ -99,7 +99,7 @@
                                         </p:row>
                                         <p:row>
                                             <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                                <p:outputLabel  value="Alamat Email" style="font-weight: bold"/>
+                                                <p:outputLabel  value="#{appmsg['biodata.email_address']}" style="font-weight: bold"/>
                                             </p:column>
                                             <p:column style="width: 80%">
                                                 <p:outputLabel  value="#{bioDataDetilController.selectedBioData.personalEmail}" />
@@ -109,7 +109,7 @@
                                         </p:row>
                                         <p:row>
                                             <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                                <p:outputLabel  value="Golongan Darah" style="font-weight: bold"/>
+                                                <p:outputLabel  value="#{appmsg['biodata.blood_type']}" style="font-weight: bold"/>
                                             </p:column>
                                             <p:column style="width: 80%">
                                                 <p:outputLabel  value="#{bioDataDetilController.selectedBioData.bloodType}" >
@@ -122,7 +122,7 @@
 
                                         <p:row>
                                             <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                                <p:outputLabel  value="Agama" style="font-weight: bold"/>
+                                                <p:outputLabel  value="#{appmsg['religion.religion']}" style="font-weight: bold"/>
                                             </p:column>
                                             <p:column style="width: 80%">
                                                 <p:outputLabel  value="#{bioDataDetilController.selectedBioData.religion.name}" />
@@ -132,7 +132,7 @@
                                         </p:row>
                                         <p:row>
                                             <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                                <p:outputLabel  value="Status" style="font-weight: bold"/>
+                                                <p:outputLabel  value="#{appmsg['maritalstatus.detail_maritalstatus']}" style="font-weight: bold"/>
                                             </p:column>
                                             <p:column style="width: 80%">
                                                 <p:outputLabel  value="#{bioDataDetilController.selectedBioData.maritalStatus.name}" />
@@ -142,7 +142,7 @@
                                         </p:row>
                                         <p:row>
                                             <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                                <p:outputLabel  value="Mobile Phone" style="font-weight: bold"/>
+                                                <p:outputLabel  value="#{appmsg['biodata.hp']}" style="font-weight: bold"/>
                                             </p:column>
                                             <p:column style="width: 80%">
                                                 <p:outputLabel  value="#{bioDataDetilController.selectedBioData.mobilePhone}" />
@@ -159,7 +159,7 @@
                                 <p:panelGrid style="width: 100%;margin-top: 10px;" styleClass="grid_border4">
                                     <p:row>
                                         <p:column style="width: 15%;background-color: #e1f0f0!important" >
-                                            <p:outputLabel  value="Nama Panggilan" style="font-weight: bold"/>
+                                            <p:outputLabel  value="#{appmsg['biodata.nickname']}" style="font-weight: bold"/>
                                         </p:column>
                                         <p:column style="width: 75%">
                                             <p:outputLabel  value="#{bioDataDetilController.selectedBioData.nickname}" />
@@ -170,7 +170,7 @@
                                     </p:row>
                                     <p:row>
                                         <p:column style="width: 15%;background-color: #e1f0f0!important" >
-                                            <p:outputLabel  value="No. KK" style="font-weight: bold"/>
+                                            <p:outputLabel  value="#{appmsg['biodata.family_identification_number']}" style="font-weight: bold"/>
                                         </p:column>
                                         <p:column style="width: 75%">
                                             <p:outputLabel  value="#{bioDataDetilController.selectedBioData.noKK}" />
@@ -181,7 +181,7 @@
                                     </p:row>
                                     <p:row>
                                         <p:column style="width: 15%;background-color: #e1f0f0!important" >
-                                            <p:outputLabel  value="Warga Negara" style="font-weight: bold"/>
+                                            <p:outputLabel  value="#{appmsg['biodata.citizen']}" style="font-weight: bold"/>
                                         </p:column>
                                         <p:column style="width: 75%">
                                             <p:outputLabel  value="#{bioDataDetilController.selectedBioData.nationality.nationalityName}" />
@@ -192,7 +192,7 @@
                                     </p:row>
                                     <p:row>
                                         <p:column style="width: 15%;background-color: #e1f0f0!important" >
-                                            <p:outputLabel  value="Nama Ras" style="font-weight: bold"/>
+                                            <p:outputLabel  value="#{appmsg['ras.ras']}" style="font-weight: bold"/>
                                         </p:column>
                                         <p:column style="width: 75%">
                                             <p:outputLabel  value="#{bioDataDetilController.selectedBioData.race.raceName}" />
@@ -203,7 +203,7 @@
                                     </p:row>
                                     <p:row>
                                         <p:column style="width: 15%;background-color: #e1f0f0!important" >
-                                            <p:outputLabel  value="Dialek" style="font-weight: bold"/>
+                                            <p:outputLabel  value="#{appmsg['dialect.dialect']}" style="font-weight: bold"/>
                                         </p:column>
                                         <p:column style="width: 75%">
                                             <p:outputLabel  value="#{bioDataDetilController.selectedBioData.dialect.dialectName}" />
@@ -215,7 +215,7 @@
 
                                 </p:panelGrid>
                             </p:tab>  
-                            <p:tab id="kesehatanId" title="Kesehatan">  
+                            <p:tab id="kesehatanId" title="#{appmsg['biodata.medical_history']}">  
                                 <p:dataTable  id="tableBioMedicalHistoryId" var="bioMedicalHistoryData"  value="#{bioDataDetilController.bioMedicalHistorys}" lazy="false" paginator="false"
                                               style="margin-top: 10px;margin-bottom: 10px"
                                               rowIndexVar="no">
@@ -344,7 +344,7 @@
                                     </p:commandButton>
                                 </h:panelGrid>
                             </p:tab>
-                            <p:tab id="riwayatKerjaId" title="Riwayat Kerja">  
+                            <p:tab id="riwayatKerjaId" title="#{appmsg['biodata.employment_history']}">  
                                 <p:dataTable  id="tableBioEmploymentHistoryId" var="bioEmploymentHistoryData"  value="#{bioDataDetilController.bioEmploymentHistorys}" lazy="false" paginator="false"
                                               style="margin-top: 10px;margin-bottom: 10px"
                                               rowIndexVar="no">
@@ -405,7 +405,7 @@
 
 
                             </p:tab>  
-                            <p:tab id="pendidikanId" title="Pendidikan">  
+                            <p:tab id="pendidikanId" title="#{appmsg['biodata.Education_history']}">  
                                 <p:dataTable  id="tableEducationId" var="bioEducationData"  value="#{bioDataDetilController.educationHistory}" lazy="false" paginator="false"
                                               style="margin-top: 10px;margin-bottom: 10px"
                                               rowIndexVar="no">
@@ -477,7 +477,7 @@
                                 </h:panelGrid>
                             </p:tab>  
 
-                            <p:tab id="minatId" title="Minat">  
+                            <p:tab id="minatId" title="#{appmsg['interest.interest']}">  
                                 <p:dataTable  id="tableMinatId" var="peopleInterestData"  value="#{bioDataDetilController.listPeopleInterest}" lazy="false" paginator="false"
                                               style="margin-top: 10px;margin-bottom: 10px"
                                               rowIndexVar="no">
@@ -532,7 +532,7 @@
                                 </h:panelGrid>
 
                             </p:tab>  
-                            <p:tab id="dataKeluargaid" title="Data Keluarga">  
+                            <p:tab id="dataKeluargaid" title="#{appmsg['biodata.family_data']}">  
                                 <p:dataTable  id="tableBioFamilyRelationshipId" var="bioFamilyRelationshipData"  value="#{bioDataDetilController.bioFamilyRelationships}" lazy="false" paginator="false"
                                               style="margin-top: 10px;margin-bottom: 10px"
                                               rowIndexVar="no">
@@ -846,12 +846,12 @@
                                 </h:panelGrid>
 
                             </p:tab>  
-                            <p:tab id="contactId" title="Contact">  
+                            <p:tab id="contactId" title="#{appmsg['biodata.contact']}">  
                                 <p:dataTable  id="tableContactId" var="bioContacts"  value="#{bioDataDetilController.dataBioEmergencyContacs}" lazy="false" paginator="false"
                                               style="margin-top: 10px;margin-bottom: 10px"
                                               rowIndexVar="no">
                                     <f:facet name="header">  
-                                        <h:outputText value="Daftar Emergency Contact"/>
+                                        <h:outputText value="#{appmsg['biodata.list_of_emergency_contact']}"/>
                                     </f:facet>
                                     <p:column style="text-align: center;width: 3%">
                                         <f:facet name="header">  
@@ -861,19 +861,19 @@
                                     </p:column>
                                     <p:column style="text-align: center;width: 15%">
                                         <f:facet name="header">  
-                                            <h:outputText value="Nama Kontak"/>
+                                            <h:outputText value="#{appmsg['global.name']}"/>
                                         </f:facet>
                                         <h:outputLabel value="#{bioContacts.contactName}." />
                                     </p:column>
                                     <p:column style="text-align: center;width: 10%">
                                         <f:facet name="header">  
-                                            <h:outputText value="Phone Number"/>
+                                            <h:outputText value="#{appmsg['global.phone_number']}"/>
                                         </f:facet>
                                         <h:outputLabel value="#{bioContacts.phoneNumber}." />
                                     </p:column>
                                     <p:column style="text-align: center;width: 60%">
                                         <f:facet name="header">  
-                                            <h:outputText value="Alamat"/>
+                                            <h:outputText value="#{appmsg['global.address']}"/>
                                         </f:facet>
                                         <h:outputLabel value="#{bioContacts.address}." />
                                     </p:column>
@@ -905,12 +905,12 @@
                                 </h:panelGrid>
 
                             </p:tab>
-                            <p:tab id="keahlianId" title="Keahlian">  
+                            <p:tab id="keahlianId" title="#{appmsg['biodata.skill']}">  
                                 <p:dataTable  id="tableKeahlianId" var="bioKeahlian"  value="#{bioDataDetilController.bioKeahlians}" lazy="false" paginator="false"
                                               style="margin-top: 10px;margin-bottom: 10px"
                                               rowIndexVar="no">
                                     <f:facet name="header">  
-                                        <h:outputText value="Daftar Emergency Contact"/>
+                                        <h:outputText value="#{appmsg['biodata.list_of_skill']}"/>
                                     </f:facet>
                                     <p:column style="text-align: center;width: 3%">
                                         <f:facet name="header">  
@@ -920,13 +920,13 @@
                                     </p:column>
                                     <p:column style="text-align: center;width: 57%">
                                         <f:facet name="header">  
-                                            <h:outputText value="Nama Keahlian"/>
+                                            <h:outputText value="#{appmsg['biodata.skill_name']}"/>
                                         </f:facet>
                                         <h:outputLabel value="#{bioKeahlian.name}." />
                                     </p:column>
                                     <p:column style="text-align: center;width: 30%">
                                         <f:facet name="header">  
-                                            <h:outputText value="Tingkat Keahlian"/>
+                                            <h:outputText value="#{appmsg['biodata.skill_level']}"/>
                                         </f:facet>
                                         <p:outputLabel value="#{bioKeahlian.tingkatKeahlian}" >
                                             <f:converter converterId="tingkatKeahlianConverter" />
@@ -960,12 +960,12 @@
                                 </h:panelGrid>
                             </p:tab> 
                             
-                            <p:tab id="spesifikasiAbilityId" title="Spesifikasi Kemampuan">  
+                            <p:tab id="spesifikasiAbilityId" title="#{appmsg['biodata.spesifikasi_ability']}">  
                                 <p:dataTable  id="tableSpecAbilityId" var="bioSpecAbi"  value="#{bioDataDetilController.spesifikasiAbilitys}" lazy="false" paginator="false"
                                               style="margin-top: 10px;margin-bottom: 10px"
                                               rowIndexVar="no">
                                     <f:facet name="header">  
-                                        <h:outputText value="Daftar Spesifikasi Abiity"/>
+                                        <h:outputText value="#{appmsg['biodata.list_of_spesifikasi_ability']}"/>
                                     </f:facet>
                                     <p:column style="text-align: center;width: 3%">
                                         <f:facet name="header">  
@@ -975,13 +975,13 @@
                                     </p:column>
                                     <p:column style="text-align: center;width: 57%">
                                         <f:facet name="header">  
-                                            <h:outputText value="Nama Spesifikasi"/>
+                                            <h:outputText value="#{appmsg['biodata.spesifikasi_ability']}"/>
                                         </f:facet>
                                         <h:outputLabel value="#{bioSpecAbi.specificationAbility.name}." />
                                     </p:column>
                                     <p:column style="text-align: center;width: 30%">
                                         <f:facet name="header">  
-                                            <h:outputText value="Score"/>
+                                            <h:outputText value="#{appmsg['biodata.score']}"/>
                                         </f:facet>
                                         <p:outputLabel value="#{bioSpecAbi.score}" />
                                     </p:column>
@@ -1018,9 +1018,6 @@
                         <h:panelGrid columns="4" style="margin-bottom: 5px;float: left">
                             <p:commandButton value="#{appmsg['global.edit']}"  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" action="#{bioDataDetilController.doEdit()}" styleClass="label_button"/>
                             <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{bioDataDetilController.doBack()}" styleClass="label_button"/>
-                            <p:commandButton value="Kartu Nama" title="Kartu Nama" label="Kartu Nama" styleClass="label_button" icon="ui-icon-document" 
-                                                     action="#{bioDataDetilController.doReportBiodata()}" ajax="true" immediate="true">
-                            </p:commandButton>
                             <p:commandButton value="Generate CV" icon="ui-icon-document" title="Generate CV" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">                                	
                                 <p:fileDownload value="#{bioDataDetilController.doGenerateCV()}"/>
                             </p:commandButton>

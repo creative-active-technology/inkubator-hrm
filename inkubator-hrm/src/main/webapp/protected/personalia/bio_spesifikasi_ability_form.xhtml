@@ -21,8 +21,8 @@
                         <p:graphicImage library="images" name="bio_data.png" height="36" width="36"  cache="true"/>
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Spesifikasi Ability" styleClass="header_big" />
-                                <p:outputLabel value="Data Spesifikasi Ability dari BioData" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['biodata.spesifikasi_ability_form']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['biodata.spesifikasi_ability_header']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -35,7 +35,7 @@
                                                
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="specId" value="Spesifikasi Ability" styleClass="label_hrm"/>
+                                <p:outputLabel for="specId" value="#{appmsg['biodata.spesifikasi_ability']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="specId" value=":" styleClass="label_hrm"/>
@@ -56,7 +56,7 @@
 
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="value" value="Score" styleClass="label_hrm"/>
+                                <p:outputLabel for="value" value="#{appmsg['biodata.score']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="value" value=":" styleClass="label_hrm"/>

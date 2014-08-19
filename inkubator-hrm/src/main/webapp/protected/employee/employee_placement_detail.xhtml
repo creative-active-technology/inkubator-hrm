@@ -332,15 +332,38 @@
 
                         </p:tabView>
                         <p:separator/>
-                        <h:panelGrid columns="2" style="margin-bottom: 5px;float: left">
+                        <h:panelGrid columns="3" style="margin-bottom: 5px;float: left">
                             <p:commandButton value="#{appmsg['global.edit']}"  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" action="#{empDataDetilController.doEdit()}" styleClass="label_button"/>
                             <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{empDataDetilController.doBack()}" styleClass="label_button"/>
-
+                            <p:commandButton value="#{appmsg['biodata.card_name']}" icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" styleClass="label_button"
+                                    update=":panelDialogBioAddressDetailId" 
+                                    action="#{empDataDetilController.doSelectEmpReport()}" onclick="statusDialog.show()"  oncomplete="dialogDetailBioAddress.show()">                        
+                                <f:setPropertyActionListener target="#{empDataDetilController.id}" value="#{empDataDetilController.selectedEmpData.bioData.id}" />
+                            </p:commandButton>
                         </h:panelGrid>
                         <div style="clear: both"/>
                     </h:form>
                 </div>
-
+                        
+                    <p:dialog widgetVar="dialogDetailBioAddress" header="#{appmsg['bioaddress.detail_address']}" styleClass="header_small_no_bold" width="400" modal="true" resizable="false" hideEffect="puff" 
+                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                    <p:panelGrid id="panelDialogBioAddressDetailId" style="width:100%;margin:5px;">
+                        
+                        <p:row>
+                            <!--<p:column style="width:15%;background-color: #e1f0f0!important"><p:outputLabel value="#{empDataDetilController.id}" styleClass="label_hrm"/></p:column>-->
+                            <p:column>
+                                <p:media value="#{reportStreamController.file}" player="pdf" width="350px" height="325px" cache="false">
+                                    <f:param name="id" value="#{empDataDetilController.selectedEmpData.bioData.id}" />
+                                </p:media>
+                            </p:column>
+                        </p:row>
+                        <f:facet name="footer">
+                            <p:row>
+                                <p:column colspan="4"><p:outputLabel value="#{appmsg['menu.personalia']} - #{appmsg['global.address']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
+                            </p:row>
+                        </f:facet>
+                    </p:panelGrid>
+                    </p:dialog>
             </ui:define>
 
         </ui:composition>

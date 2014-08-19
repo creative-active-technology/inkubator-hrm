@@ -31,6 +31,7 @@ public class EmpDataDetilController extends BaseController {
     private EmpData selectedEmpData;
     private List<JabatanSpesifikasi> listJabatanSpesifikasi;
     private List<JabatanDeskripsi> jabatanDeskripsis;
+    private String id;
 
     @PostConstruct
     @Override
@@ -47,6 +48,14 @@ public class EmpDataDetilController extends BaseController {
 
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+    
     public EmpData getSelectedEmpData() {
         return selectedEmpData;
     }
@@ -83,5 +92,12 @@ public class EmpDataDetilController extends BaseController {
         this.jabatanDeskripsis = jabatanDeskripsis;
     }
 
+    public void doSelectEmpReport() {
+        try {
+            selectedEmpData = empDataService.getByEmpIdWithDetail(selectedEmpData.getId());
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
     
 }

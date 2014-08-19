@@ -21,8 +21,8 @@
                         <p:graphicImage library="images" name="bio_data.png" height="36" width="36"  cache="true"/>
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Keahlian" styleClass="header_big" />
-                                <p:outputLabel value="Data Keahlian dari BioData" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['biodata.skill_form']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['biodata.skill_header']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -33,7 +33,7 @@
                     <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="name" value="Nama Keahlian" styleClass="label_hrm"/>
+                                <p:outputLabel for="name" value="#{appmsg['biodata.skill_name']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="name" value=":" styleClass="label_hrm"/>
@@ -51,7 +51,7 @@
                         
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="tingkatKeahlian" value="Tingkat Keahlian" styleClass="label_hrm"/>
+                                <p:outputLabel for="tingkatKeahlian" value="#{appmsg['biodata.skill_level']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="tingkatKeahlian" value=":" styleClass="label_hrm"/>

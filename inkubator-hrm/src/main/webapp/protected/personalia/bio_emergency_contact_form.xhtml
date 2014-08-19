@@ -22,8 +22,8 @@
                         <p:graphicImage library="images" name="bio_data.png" height="36" width="36" />
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Form Emergency Contact" styleClass="header_big" />
-                                <p:outputLabel value="Emergenct Contack dari BioData" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['bioemergency.emergency_contact_form']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['bioemergency.emergency_contact_header']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -34,7 +34,7 @@
                     <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
                         <p:row>
                             <p:column style="width: 25%">
-                                <p:outputLabel for="contactName" value="Name" styleClass="label_hrm"/>
+                                <p:outputLabel for="contactName" value="#{appmsg['global.name']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="contactName" value=":" styleClass="label_hrm"/>
@@ -52,7 +52,7 @@
                         </p:row>
                         <p:row>
                             <p:column style="width: 25%">
-                                <p:outputLabel for="falmilyRelationId" value="Family Relation" styleClass="label_hrm"/>
+                                <p:outputLabel for="falmilyRelationId" value="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_relation']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="falmilyRelationId" value=":" styleClass="label_hrm"/>
@@ -74,7 +74,7 @@
                         </p:row>
                         <p:row>
                             <p:column style="width: 25%">
-                                <p:outputLabel for="cityId" value="Nama Kota" styleClass="label_hrm"/>
+                                <p:outputLabel for="cityId" value="#{appmsg['city.city_name']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="cityId" value=":" styleClass="label_hrm"/>
@@ -96,7 +96,7 @@
                         </p:row>
                         <p:row>
                             <p:column style="width: 25%">
-                                <p:outputLabel for="phoneNumber" value="Phone Number" styleClass="label_hrm"/>
+                                <p:outputLabel for="phoneNumber" value="#{appmsg['global.phone_number']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="phoneNumber" value=":" styleClass="label_hrm"/>
@@ -114,7 +114,7 @@
                         </p:row>
                         <p:row>
                             <p:column style="width: 25%">
-                                <p:outputLabel for="isSameHouse" value="Serumah" styleClass="label_hrm"/>
+                                <p:outputLabel for="isSameHouse" value="#{appmsg['bioemergency.is_same_house']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="isSameHouse" value=":" styleClass="label_hrm"/>
@@ -133,7 +133,7 @@
                         </p:row>
                         <p:row>
                             <p:column style="width: 25%">
-                                <p:outputLabel for="address" value="Alamat" styleClass="label_hrm"/>
+                                <p:outputLabel for="address" value="#{appmsg['global.address']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="address" value=":" styleClass="label_hrm"/>

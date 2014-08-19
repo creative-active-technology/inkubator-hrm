@@ -159,25 +159,25 @@
                                     </p:column>
                                 </p:dataTable> 
                             </p:tab> 
-                            <p:tab id="jobWorkKlasificationTab" title="Kriteria Pekerjaan">  
+                            <p:tab id="jobWorkKlasificationTab" title="#{appmsg['jabatan.job_criteria']}">  
                                 <!--<h:panelGrid columns="2" cellpadding="10">-->  
                                 <p:dataTable value="#{jabatanDetailController.selectedJabatan.kerjaJabatans}" var="listJobCriteria" rowIndexVar="no" id="jobWorkKlasificationId"
                                              >
                                     <p:column style="text-align: center;width: 25px;max-width: 25px">
                                         <f:facet name="header">  
-                                            <h:outputText value="No." />
+                                            <h:outputText value="#{appmsg['global.number']}" />
                                         </f:facet>
                                         <h:outputLabel value="#{no+1}." />
                                     </p:column>
                                     <p:column > 
                                         <f:facet name="header" >  
-                                            <h:outputText value="Kode" />
+                                            <h:outputText value="#{appmsg['global.code']}" />
                                         </f:facet>
                                         <p:outputLabel value="#{listJobCriteria.code}" />
                                     </p:column>
                                     <p:column > 
                                         <f:facet name="header">  
-                                            <h:outputText value="Nama" />
+                                            <h:outputText value="#{appmsg['global.name']}" />
                                         </f:facet>
                                         <p:outputLabel value="#{listJobCriteria.name}"/>
                                     </p:column>

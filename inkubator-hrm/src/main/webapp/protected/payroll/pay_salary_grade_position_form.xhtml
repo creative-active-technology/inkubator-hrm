@@ -34,14 +34,14 @@
                         
                         <p:row>
                             <p:column style="width: 30%">
-                                <p:outputLabel for="name" value="Nama Jabatan" styleClass="label_hrm"/>
+                                <p:outputLabel for="name" value="#{appmsg['payroll.job_title_name']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="name" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 69%">
                                 <p:inputText id="name"  value="#{paySalaryGradePositionFormController.jabatanModel.NIK} / #{paySalaryGradePositionFormController.jabatanModel.namaJabatan}"
-                                              maxlength="45" styleClass="isitext_hrm" style="width:250px;" disabled="true" />
+                                              maxlength="45" styleClass="isitext_hrm" style="width:200px;" disabled="true" />
                             </p:column>
                         </p:row>
                         <p:row>
@@ -51,13 +51,13 @@
                         </p:row>
                         <p:row>
                             <p:column style="width: 30%">
-                                <p:outputLabel for="grade" value="Grade Level" styleClass="label_hrm"/>
+                                <p:outputLabel for="grade" value="#{appmsg['payroll.grade_level']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="grade" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 69%">
-                                <p:selectOneMenu id="grade" value="#{paySalaryGradePositionFormController.jabatanModel.salaryGradeId}" style="width: 50px;margin-right: 3px">
+                                <p:selectOneMenu id="grade" value="#{paySalaryGradePositionFormController.jabatanModel.salaryGradeId}" style="width: 150px;margin-right: 3px">
                                     <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                     <f:selectItems value="#{paySalaryGradePositionFormController.listDropDownGrade}"/>
                                 </p:selectOneMenu>
