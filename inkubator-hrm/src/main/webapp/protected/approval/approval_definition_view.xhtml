@@ -38,7 +38,7 @@
                                                      style="width: 150px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItem itemLabel="Nama Process" itemValue="processName"/>
-                                        <f:selectItem itemLabel="Approver Type" itemValue="approvalType" />
+                                        <f:selectItem itemLabel="Approver Type" itemValue="approverType" />
                                         <f:selectItem itemLabel="Jabatan Approver" itemValue="approverPosition" />
                                         <f:selectItem itemLabel="Individu Approver" itemValue="approverIndividual" />
                                         <f:selectItem itemLabel="On Behalf Jabatan" itemValue="onBehalfApproverPosition" />
@@ -86,11 +86,17 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{approvalDefinitionData.name}"/>
                             </p:column>
-                            <p:column sortBy="sequence"  style="text-align: center">
+                            <p:column sortBy="sequence"  >
                                 <f:facet name="header">  
                                     <h:outputText value="Process Name"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{approvalDefinitionData.processType}"/>
+                            </p:column>
+                            <p:column sortBy="approverType">
+                                <f:facet name="header">  
+                                    <h:outputText value="Approver Type"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{approvalDefinitionData.approverType}"/>
                             </p:column>
                             <p:column sortBy="sequence"  style="text-align: center">
                                 <f:facet name="header">  
@@ -165,6 +171,10 @@
                                 <p:outputLabel value="Approval Definition Name" styleClass="label_hrm"/>
                                 <p:outputLabel value=":"  styleClass="label_hrm" />
                                 <p:outputLabel value="#{approvalDefinitionController.selectedApprovalDefinition.name}" styleClass="isitext_hrm"/>
+
+                                <p:outputLabel value="Process Name" styleClass="label_hrm"/>
+                                <p:outputLabel value=":"  styleClass="label_hrm" />
+                                <p:outputLabel value="#{approvalDefinitionController.selectedApprovalDefinition.processType}" styleClass="isitext_hrm"/>
                                 <p:outputLabel value="Urutan Approval" styleClass="label_hrm"/>
                                 <p:outputLabel value=":"  styleClass="label_hrm" />
                                 <p:outputLabel value="#{approvalDefinitionController.selectedApprovalDefinition.sequence}" styleClass="isitext_hrm"/>

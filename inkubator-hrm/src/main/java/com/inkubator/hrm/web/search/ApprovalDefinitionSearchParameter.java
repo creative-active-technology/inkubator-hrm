@@ -19,7 +19,7 @@ public class ApprovalDefinitionSearchParameter extends SearchParameter {
     private String approverIndividual;
     private String onBehalfApproverPosition;
     private String onBehaltAppriverIndividual;
-    private String approvalType;
+    private String approverType;
 
     public String getApproverPosition() {
         if (StringUtils.equalsIgnoreCase(getKeyParam(), "approverPosition")) {
@@ -86,17 +86,17 @@ public class ApprovalDefinitionSearchParameter extends SearchParameter {
         this.onBehaltAppriverIndividual = onBehaltAppriverIndividual;
     }
 
-    public String getApprovalType() {
-        if (StringUtils.equalsIgnoreCase(getKeyParam(), "approvalType")) {
-            approvalType = getParameter();
+    public String getApproverType() {
+        if (StringUtils.equalsIgnoreCase(getKeyParam(), "approverType")) {
+            approverType = getParameter();
         } else {
-            approvalType = null;
+            approverType = null;
         }
-        return approvalType;
+        return approverType;
     }
 
-    public void setApprovalType(String approvalType) {
-        this.approvalType = approvalType;
+    public void setApproverType(String approverType) {
+        this.approverType = approverType;
     }
 
 }

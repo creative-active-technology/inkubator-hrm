@@ -52,7 +52,7 @@ public class ApprovalDefinitionDaoImpl extends IDAOImpl<ApprovalDefinition> impl
     private void doSearchApprovalDefinitionByParam(ApprovalDefinitionSearchParameter searchParameter, Criteria criteria) {
         if (searchParameter.getProcessName() != null) {
 
-            criteria.add(Restrictions.like("name", searchParameter.getProcessName(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("processType", searchParameter.getProcessName(), MatchMode.ANYWHERE));
         }
         if (searchParameter.getApproverPosition() != null) {
             criteria.createAlias("jabatanByApproverPosition", "ap", JoinType.INNER_JOIN);
@@ -71,8 +71,8 @@ public class ApprovalDefinitionDaoImpl extends IDAOImpl<ApprovalDefinition> impl
             criteria.createAlias("hrmUserByOnBehalfIndividual", "au", JoinType.INNER_JOIN);
             criteria.add(Restrictions.like("au.realName", searchParameter.getApproverIndividual(), MatchMode.ANYWHERE));
         }
-        if (searchParameter.getApprovalType() != null) {
-            criteria.add(Restrictions.like("approverType", searchParameter.getApprovalType(), MatchMode.ANYWHERE));
+        if (searchParameter.getApproverType()!= null) {
+            criteria.add(Restrictions.like("approverType", searchParameter.getApproverType(), MatchMode.ANYWHERE));
         }
         criteria.add(Restrictions.isNotNull("id"));
     }
