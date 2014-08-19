@@ -6,6 +6,7 @@
 package com.inkubator.hrm.service.impl;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.Map;
 
 import javax.faces.context.FacesContext;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.criterion.Order;
 import org.primefaces.model.StreamedContent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.dao.BioDataDao;
+import com.inkubator.hrm.dao.BioDocumentDao;
 import com.inkubator.hrm.dao.CityDao;
 import com.inkubator.hrm.dao.DialectDao;
 import com.inkubator.hrm.dao.MaritalStatusDao;
@@ -32,6 +35,7 @@ import com.inkubator.hrm.dao.NationalityDao;
 import com.inkubator.hrm.dao.RaceDao;
 import com.inkubator.hrm.dao.ReligionDao;
 import com.inkubator.hrm.entity.BioData;
+import com.inkubator.hrm.entity.BioDocument;
 import com.inkubator.hrm.service.BioDataService;
 import com.inkubator.hrm.util.CommonReportUtil;
 import com.inkubator.hrm.web.search.BioDataSearchParameter;
@@ -62,6 +66,8 @@ public class BioDataServiceImpl extends IServiceImpl implements BioDataService {
     private ReligionDao religionDao;
     @Autowired
     private FacesIO facesIO;
+    @Autowired
+    private BioDocumentDao bioDocumentDao;
 
     @Override
     public BioData getEntiyByPK(String id) throws Exception {
@@ -317,12 +323,18 @@ public class BioDataServiceImpl extends IServiceImpl implements BioDataService {
 		if(isBioDataExist){
 			json.add("bioData", parser.parse(gson.toJson(bioData)));
 		}*/
-		
-		Map<String, Object> params = new HashMap<>();
 		BioData bioData = bioDataDao.getEntiyByPK(id);
+		List<BioDocument> bioDocuments = bioDocumentDao.getAllDataByBioDataId(id);
+		List<String> attachments = new ArrayList<String>();
+		for(BioDocument document:bioDocuments){
+			if(StringUtils.isNotEmpty(document.getUploadPath())){
+				attachments.add(document.getUploadPath());
+			}			
+		}
+		Map<String, Object> params = new HashMap<>();		
 		params.put("BIODATA_ID", id);
 		params.put("SUBREPORT_DIR", FacesContext.getCurrentInstance().getExternalContext().getRealPath("/resources/reports/") + "\\");
-		StreamedContent file = CommonReportUtil.exportReportToPDFStream("cv_builder.jasper", params, bioData.getFirstName() + ".pdf");
+		StreamedContent file = CommonReportUtil.exportReportToPDFStreamWithAttachment("cv_builder.jasper", params, bioData.getFirstName() + ".pdf", attachments);
 		return file;
 	}
 
