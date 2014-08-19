@@ -21,8 +21,8 @@
                         <p:graphicImage library="images" name="bio_data.png" height="36" width="36"  cache="true"/>
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="#{appmsg['interest.people_interest_form']}" styleClass="header_big" />
-                                <p:outputLabel value="#{appmsg['interest.people_interest_header_form']}" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="Spesifikasi Ability" styleClass="header_big" />
+                                <p:outputLabel value="Data Spesifikasi Ability dari BioData" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -31,52 +31,56 @@
                         <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
                     </h:panelGrid> 
                     <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
-                        <!--Interest Type-->
+                        
+                                               
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="interestId" value="#{appmsg['interesttype.interesttype']}" styleClass="label_hrm"/>
+                                <p:outputLabel for="specId" value="Spesifikasi Ability" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
-                                <h:outputLabel for="interestId" value=":" styleClass="label_hrm"/>
+                                <h:outputLabel for="specId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <p:selectOneMenu id="interestId" value="#{peopleInterestFormController.model.interestId}" filter="true" style="width: 217px;margin-right: 3px"  >
-                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItems value="#{peopleInterestFormController.listInterestTypes}"/>
-                                    </p:selectOneMenu>
+                                <p:selectOneMenu id="specId" value="#{bioSpesifikasiAbilityController.model.specId}" style="width: 150px;margin-right: 3px" >
+                                    <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                    <f:selectItems value="#{bioSpesifikasiAbilityController.listSpecAbility}"/>
+                                    <p:ajax update="value" process="@this" listener="#{bioSpesifikasiAbilityController.doChangeValue()}"/>
+                                </p:selectOneMenu>
                             </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="specId"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column style="width: 40%">
+                                <p:outputLabel for="value" value="Score" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="value" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                                <p:selectOneMenu id="value" value="#{bioSpesifikasiAbilityController.model.score}" style="width: 150px;margin-right: 3px">
+                                    <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                    <f:selectItems value="#{bioSpesifikasiAbilityController.listValue}"/>
+                                </p:selectOneMenu>
+                            </p:column>
+                            <h:inputHidden value="#{bioSpesifikasiAbilityController.listValue}" id="optionValue" />
                         </p:row>
                         
                         <p:row>
                             <p:column colspan="3">
-                                <p:message for="interestId"/>
+                                <p:message for="value"/>
                             </p:column>
                         </p:row>
-                                               
-                        <p:row>
-                            <p:column style="width: 40%">
-                                <p:outputLabel for="name" value="#{appmsg['interest.interest_name']}" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="name" value=":" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column  style="width: 50%">
-                                <p:inputText id="name"  value="#{peopleInterestFormController.model.name}"
-                                             required="true"  maxlength="45" styleClass="isitext_hrm" style="width:210px;" />
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:message for="name"/>
-                            </p:column>
-                        </p:row>
-
                     </p:panelGrid>
                     <p:focus context="formDepartmentId" />
                     <p:separator style="margin-top: 20px;margin-bottom: 10px"/>
                     <h:panelGrid columns="2" style="margin-bottom: -30px!important">
                         <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formDepartmentId,:growlDepartmentFormlId"
-                                         action="#{peopleInterestFormController.doSave()}" styleClass="isitext_hrm"
+                                         action="#{bioSpesifikasiAbilityController.doSave()}" styleClass="isitext_hrm"
                                          style="margin-right: 5px" label="#{appmsg['global.save']}"
                                          icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
                         <p:commandButton value="#{appmsg['global.clear']}" title="#{appmsg['global.clear']}" process="@this" update="formDepartmentId" 

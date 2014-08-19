@@ -2,6 +2,7 @@ package com.inkubator.hrm.entity;
 // Generated Aug 18, 2014 1:42:18 PM by Hibernate Tools 3.6.0
 
 
+
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,10 +25,11 @@ import javax.persistence.Version;
 public class ApprovalActivity  implements java.io.Serializable {
 
 
+  
      private long id;
      private Integer version;
      private ApprovalDefinition approvalDefinition;
-     private String approvalRequest;
+     private String requestBy;
      private Integer approvalStatus;
      private Date approvalTime;
      private String approvedBy;
@@ -35,6 +37,9 @@ public class ApprovalActivity  implements java.io.Serializable {
      private Integer approvalCount;
      private Integer rejectCount;
      private String pendingData;
+     private String activityNumber;
+     private Integer sequence;
+     private Boolean notificationSend;
 
     public ApprovalActivity() {
     }
@@ -43,10 +48,10 @@ public class ApprovalActivity  implements java.io.Serializable {
     public ApprovalActivity(long id) {
         this.id = id;
     }
-    public ApprovalActivity(long id, ApprovalDefinition approvalDefinition, String approvalRequest, Integer approvalStatus, Date approvalTime, String approvedBy, String approvalCommment, Integer approvalCount, Integer rejectCount, String pendingData) {
+    public ApprovalActivity(long id, ApprovalDefinition approvalDefinition, String requestBy, Integer approvalStatus, Date approvalTime, String approvedBy, String approvalCommment, Integer approvalCount, Integer rejectCount, String pendingData, String activityNumber, Integer sequence, Boolean notificationSend) {
        this.id = id;
        this.approvalDefinition = approvalDefinition;
-       this.approvalRequest = approvalRequest;
+       this.requestBy = requestBy;
        this.approvalStatus = approvalStatus;
        this.approvalTime = approvalTime;
        this.approvedBy = approvedBy;
@@ -54,6 +59,9 @@ public class ApprovalActivity  implements java.io.Serializable {
        this.approvalCount = approvalCount;
        this.rejectCount = rejectCount;
        this.pendingData = pendingData;
+       this.activityNumber = activityNumber;
+       this.sequence = sequence;
+       this.notificationSend = notificationSend;
     }
    
      @Id 
@@ -89,13 +97,13 @@ public class ApprovalActivity  implements java.io.Serializable {
     }
 
     
-    @Column(name="approval_request", length=45)
-    public String getApprovalRequest() {
-        return this.approvalRequest;
+    @Column(name="request_by", length=45)
+    public String getRequestBy() {
+        return this.requestBy;
     }
     
-    public void setApprovalRequest(String approvalRequest) {
-        this.approvalRequest = approvalRequest;
+    public void setRequestBy(String requestBy) {
+        this.requestBy = requestBy;
     }
 
     
@@ -167,6 +175,37 @@ public class ApprovalActivity  implements java.io.Serializable {
     public void setPendingData(String pendingData) {
         this.pendingData = pendingData;
     }
+
+    
+    @Column(name="activity_number", length=45)
+    public String getActivityNumber() {
+        return this.activityNumber;
+    }
+    
+    public void setActivityNumber(String activityNumber) {
+        this.activityNumber = activityNumber;
+    }
+
+    
+    @Column(name="sequence")
+    public Integer getSequence() {
+        return this.sequence;
+    }
+    
+    public void setSequence(Integer sequence) {
+        this.sequence = sequence;
+    }
+
+    
+    @Column(name="notification_send")
+    public Boolean getNotificationSend() {
+        return this.notificationSend;
+    }
+    
+    public void setNotificationSend(Boolean notificationSend) {
+        this.notificationSend = notificationSend;
+    }
+
 
 
 

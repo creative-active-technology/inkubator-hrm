@@ -56,7 +56,7 @@ public class ApprovalDefinitionLazyDataModel extends LazyDataModel<ApprovalDefin
             }
         } else {
             try {
-                approvalDefinitions = approvalDefinitionService.getByParam(approvalDefinitionSearchParameter, first, pageSize, Order.desc("proscessToApprove"));
+                approvalDefinitions = approvalDefinitionService.getByParam(approvalDefinitionSearchParameter, first, pageSize, Order.desc("name"));
                 jumlahData = Integer.parseInt(String.valueOf(approvalDefinitionService.getTotalApprovalDefinitionByParam(approvalDefinitionSearchParameter)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);

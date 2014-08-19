@@ -288,7 +288,7 @@ public class SpecificationAbilityServiceImpl extends IServiceImpl implements Spe
             modelView.setName(specAbi.getName());
             modelView.setOptionAbility(specAbi.getOptionAbility());
             modelView.setScaleValue(specAbi.getScaleValue());
-            if(specAbi.getJabatanSpesifikasis().isEmpty()){
+            if(specAbi.getJabatanSpesifikasis().isEmpty() || specAbi.getBioSpesifikasiAbilitys().isEmpty()){
                 modelView.setIsEdit(Boolean.TRUE);
             }else{
                 modelView.setIsEdit(Boolean.FALSE);

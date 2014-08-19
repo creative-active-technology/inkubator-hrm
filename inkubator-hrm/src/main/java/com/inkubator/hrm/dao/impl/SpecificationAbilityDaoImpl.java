@@ -91,7 +91,6 @@ public class SpecificationAbilityDaoImpl extends IDAOImpl<SpecificationAbility> 
     public List<SpecificationAbility> getDataBySpecAbilityNotExistInJabatanSpec(SpecificationAbilitySearchParameter parameter, int firstResult, int maxResult, Order order) {   
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchByParam(parameter, criteria);
-        criteria.createAlias("jabatanSpesifikasis","jabspec",JoinType.LEFT_OUTER_JOIN);
         criteria.addOrder(order);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResult);

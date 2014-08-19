@@ -34,23 +34,26 @@
                                 <h:panelGrid columns="5">
                                     <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm"/>
                                     <p:outputLabel value=":" styleClass="label_hrm" />
-                                    <p:selectOneMenu id="pencarianSelectId" value="#{userViewController.hrmUserSearchParameter.keyParam}"
+                                    <p:selectOneMenu id="pencarianSelectId" value="#{approvalDefinitionController.approvalDefinitionSearchParameter.keyParam}"
                                                      style="width: 150px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemLabel="#{appmsg['global.user_id']}" itemValue="userId"/>
-                                        <f:selectItem itemLabel="#{appmsg['user_view.user_name']}" itemValue="realName" />
-                                        <f:selectItem itemLabel="Role Name" itemValue="roleName" />
+                                        <f:selectItem itemLabel="Nama Process" itemValue="processName"/>
+                                        <f:selectItem itemLabel="Approver Type" itemValue="approverType" />
+                                        <f:selectItem itemLabel="Jabatan Approver" itemValue="approverPosition" />
+                                        <f:selectItem itemLabel="Individu Approver" itemValue="approverIndividual" />
+                                        <f:selectItem itemLabel="On Behalf Jabatan" itemValue="onBehalfApproverPosition" />
+                                        <f:selectItem itemLabel="On Behalf Individu" itemValue="onBehaltAppriverIndividual" />
                                     </p:selectOneMenu>
-                                    <p:inputText value="#{userViewController.hrmUserSearchParameter.parameter}" style="width: 250px" id="pencarianId" styleClass="isitext_hrm" 
+                                    <p:inputText value="#{approvalDefinitionController.approvalDefinitionSearchParameter.parameter}" style="width: 250px" id="pencarianId" styleClass="isitext_hrm" 
                                                  label="#{appmsg['global.searching']}" title="#{appmsg['global.searching']}"/>
-                                    <p:commandButton value="#{appmsg['global.search']}" action="#{userViewController.doSearch()}" style="width: 75px" update="tableUserId" icon="ui-icon-search"
+                                    <p:commandButton value="#{appmsg['global.search']}" action="#{approvalDefinitionController.doSearch()}" style="width: 75px" update="tableApprovalDevId" icon="ui-icon-search"
                                                      styleClass="label_button" title="#{appmsg['global.search']}" id="btnPencarianId" />
                                 </h:panelGrid>
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3">
                                     <p:commandButton value="Export to XLS" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
-                                        <pe:exporter target="tableUserId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_User"/>
+                                        <pe:exporter target="tableApprovalDevId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_User"/>
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.add']}" action="#{userViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" icon="ui-icon-document"
                                                      styleClass="label_button" ajax="true" immediate="true">
@@ -64,9 +67,9 @@
                         </p:toolbar>
                         <p:focus for="pencarianId" />
 
-                        <p:dataTable  var="userViewData"  value="#{userViewController.lazyDataHrmUser}" lazy="true" paginator="true" pageLinks="7" 
+                        <p:dataTable  var="approvalDefinitionData"  value="#{approvalDefinitionController.lazyDataModelApprovalDefinition}" lazy="true" paginator="true" pageLinks="7" 
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
-                                      id="tableUserId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      id="tableApprovalDevId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
                                 <h:outputText value="#{appmsg['user_view.header1']}" styleClass="label_hrm"/>
@@ -77,53 +80,67 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="userId" style="width: 150px" >
+                            <p:column sortBy="name" >
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['user_view.user_id']}"/>
+                                    <h:outputText value="Approval Name"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{userViewData.userId}"/>
+                                <h:outputLabel value= "#{approvalDefinitionData.name}"/>
                             </p:column>
-                            <p:column sortBy="realName" >
+                            <p:column sortBy="sequence"  >
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['user_view.user_name']}"/>
+                                    <h:outputText value="Process Name"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{userViewData.realName}"/>
+                                <h:outputLabel value= "#{approvalDefinitionData.processType}"/>
                             </p:column>
-                            <p:column sortBy="emailAddress" >
+                            <p:column sortBy="approverType">
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['user_form.email_address']}"/>
+                                    <h:outputText value="Approver Type"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{userViewData.emailAddress}"/>
+                                <h:outputLabel value= "#{approvalDefinitionData.approverType}"/>
                             </p:column>
-                            <p:column sortBy="phoneNumber" >
+                            <p:column sortBy="sequence"  style="text-align: center">
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['user_form.phone_number']}"/>
+                                    <h:outputText value="Urutan Approval"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{userViewData.phoneNumber}"/>
-                            </p:column>                                                       
+                                <h:outputLabel value= "#{approvalDefinitionData.sequence}"/>
+                            </p:column>
+                            <p:column sortBy="minApprover" style="text-align: center">
+                                <f:facet name="header">  
+                                    <h:outputText value="Min. Approve"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{approvalDefinitionData.minApprover}"/>
+                            </p:column>
+                            <p:column sortBy="minRejector" style="text-align: center">
+                                <f:facet name="header">  
+                                    <h:outputText value="Min. Reject"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{approvalDefinitionData.minRejector}"/>
+                            </p:column>
+
                             <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
                                 <p:commandButton  icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
                                                   action="#{userViewController.doDetail()}" style="font-size: 10px!important" >                        
-                                    <f:setPropertyActionListener value="#{userViewData}" target="#{userViewController.selectedHrmUser}" />
+                                    <f:setPropertyActionListener value="#{approvalDefinitionData}" target="#{approvalDefinitionController.selectedApprovalDefinition}" />
                                 </p:commandButton>
                                 - 
-                                <p:commandButton  icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  style="font-size: 10px!important" update=":deleteDialogUserId"
-                                                  onclick="statusDialog.show()"  oncomplete="confirmDialogHrmUser.show()" action="#{userViewController.onDelete()}" >
-                                    <f:setPropertyActionListener value="#{userViewData}" target="#{userViewController.selectedHrmUser}" />
+                                <p:commandButton  icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  style="font-size: 10px!important" update=":deleteApprovalDefinitionId"
+                                                  onclick="statusDialog.show()"  oncomplete="confirmDialogHrmUser.show()" action="#{approvalDefinitionController.onDelete()}" >
+                                    <f:setPropertyActionListener value="#{approvalDefinitionData}" target="#{approvalDefinitionController.selectedApprovalDefinition}" />
                                 </p:commandButton>
                                 -
                                 <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
                                                   action="#{userViewController.doEdit()}" >
-                                    <f:setPropertyActionListener value="#{userViewData}" target="#{userViewController.selectedHrmUser}" />
+                                    <f:setPropertyActionListener value="#{approvalDefinitionData}" target="#{approvalDefinitionController.selectedApprovalDefinition}" />
 
                                 </p:commandButton> 
-                            </p:column>                                                      <f:facet name="footer">
+                            </p:column>                                                    
+                            <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : " styleClass="label_hrm" />
-                                <p:outputLabel value="#{userViewController.lazyDataHrmUser.rowCount}" styleClass="label_hrm"/>
+                                <p:outputLabel value="#{approvalDefinitionController.lazyDataModelApprovalDefinition.rowCount}" styleClass="label_hrm"/>
                                 <p:outputLabel value="Data" style="margin-left: 3px" styleClass="label_hrm"/>
                             </f:facet>  
                         </p:dataTable>
-                        <p:blockUI block="userViewId" trigger="tableUserId,btnPencarianId" >
+                        <p:blockUI block="userViewId" trigger="tableApprovalDevId,btnPencarianId" >
                             <h:panelGrid columns="2" styleClass="grid_no_border">
                                 <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
                                 <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
@@ -138,7 +155,7 @@
                 </div>
                 <p:dialog widgetVar="confirmDialogHrmUser" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
                           appendTo="@(body)" resizable="false" id="confirmDialogHrmRoleId" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
-                    <h:form id="deleteDialogUserId">
+                    <h:form id="deleteApprovalDefinitionId">
                         <div align="center">
                             <div align="center">
                                 <h:panelGrid columns="2" style="text-align: justify">
@@ -151,12 +168,19 @@
                                 </h:panelGrid>
                             </div>
                             <h:panelGrid  columns="3">
-                                <p:outputLabel value="#{appmsg['user_view.user_name']}" styleClass="label_hrm"/>
+                                <p:outputLabel value="Approval Definition Name" styleClass="label_hrm"/>
                                 <p:outputLabel value=":"  styleClass="label_hrm" />
-                                <p:outputLabel value="#{userViewController.selectedHrmUser.realName}" styleClass="isitext_hrm"/>
+                                <p:outputLabel value="#{approvalDefinitionController.selectedApprovalDefinition.name}" styleClass="isitext_hrm"/>
+
+                                <p:outputLabel value="Process Name" styleClass="label_hrm"/>
+                                <p:outputLabel value=":"  styleClass="label_hrm" />
+                                <p:outputLabel value="#{approvalDefinitionController.selectedApprovalDefinition.processType}" styleClass="isitext_hrm"/>
+                                <p:outputLabel value="Urutan Approval" styleClass="label_hrm"/>
+                                <p:outputLabel value=":"  styleClass="label_hrm" />
+                                <p:outputLabel value="#{approvalDefinitionController.selectedApprovalDefinition.sequence}" styleClass="isitext_hrm"/>
                             </h:panelGrid>
                             <p:separator/>
-                            <p:commandButton value="#{appmsg['global.yes']}" action="#{userViewController.doDelete()}" update=":userViewId,:userViewGrowlId" id="yesId" title="#{appmsg['global.yes']}" styleClass="isitext_hrm"
+                            <p:commandButton value="#{appmsg['global.yes']}" action="#{approvalDefinitionController.doDelete()}" update=":userViewId,:userViewGrowlId" id="yesId" title="#{appmsg['global.yes']}" styleClass="isitext_hrm"
                                              oncomplete="confirmDialogHrmUser.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
                             <p:commandButton value="#{appmsg['global.no']}" oncomplete="confirmDialogHrmUser.hide()" icon="ui-icon-close" title="#{appmsg['global.no']}"  styleClass="isitext_hrm"/>
 

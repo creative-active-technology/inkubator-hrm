@@ -1,7 +1,6 @@
 package com.inkubator.hrm.entity;
 // Generated Aug 18, 2014 1:42:18 PM by Hibernate Tools 3.6.0
 
-
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -9,11 +8,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 
 /**
@@ -22,24 +22,24 @@ import javax.persistence.Version;
 @Entity
 @Table(name="approval_definition"
     ,catalog="hrm"
-    , uniqueConstraints = @UniqueConstraint(columnNames="name") 
 )
 public class ApprovalDefinition  implements java.io.Serializable {
 
 
      private long id;
      private Integer version;
+     private HrmUser hrmUserByOnBehalfIndividual;
+     private Jabatan jabatanByApproverPosition;
+     private HrmUser hrmUserByApproverIndividual;
+     private Jabatan jabatanByOnBehalfPosition;
      private String name;
      private Integer sequence;
      private Integer minApprover;
      private Integer minRejector;
+     private String processType;
      private String approverType;
-     private String approverIndividual;
-     private String approverPosition;
      private Boolean allowOnBehalf;
      private String onBehalfType;
-     private String onBehalfIndividual;
-     private String onBehalfPosition;
      private String createdBy;
      private Date createdOn;
      private String updatedBy;
@@ -53,19 +53,20 @@ public class ApprovalDefinition  implements java.io.Serializable {
     public ApprovalDefinition(long id) {
         this.id = id;
     }
-    public ApprovalDefinition(long id, String name, Integer sequence, Integer minApprover, Integer minRejector, String approverType, String approverIndividual, String approverPosition, Boolean allowOnBehalf, String onBehalfType, String onBehalfIndividual, String onBehalfPosition, String createdBy, Date createdOn, String updatedBy, Date updatedOn, Set<ApprovalActivity> approvalActivities) {
+    public ApprovalDefinition(long id, HrmUser hrmUserByOnBehalfIndividual, Jabatan jabatanByApproverPosition, HrmUser hrmUserByApproverIndividual, Jabatan jabatanByOnBehalfPosition, String name, Integer sequence, Integer minApprover, Integer minRejector, String processType, String approverType, Boolean allowOnBehalf, String onBehalfType, String createdBy, Date createdOn, String updatedBy, Date updatedOn, Set<ApprovalActivity> approvalActivities) {
        this.id = id;
+       this.hrmUserByOnBehalfIndividual = hrmUserByOnBehalfIndividual;
+       this.jabatanByApproverPosition = jabatanByApproverPosition;
+       this.hrmUserByApproverIndividual = hrmUserByApproverIndividual;
+       this.jabatanByOnBehalfPosition = jabatanByOnBehalfPosition;
        this.name = name;
        this.sequence = sequence;
        this.minApprover = minApprover;
        this.minRejector = minRejector;
+       this.processType = processType;
        this.approverType = approverType;
-       this.approverIndividual = approverIndividual;
-       this.approverPosition = approverPosition;
        this.allowOnBehalf = allowOnBehalf;
        this.onBehalfType = onBehalfType;
-       this.onBehalfIndividual = onBehalfIndividual;
-       this.onBehalfPosition = onBehalfPosition;
        this.createdBy = createdBy;
        this.createdOn = createdOn;
        this.updatedBy = updatedBy;
@@ -95,8 +96,48 @@ public class ApprovalDefinition  implements java.io.Serializable {
         this.version = version;
     }
 
+@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="on_behalf_individual")
+    public HrmUser getHrmUserByOnBehalfIndividual() {
+        return this.hrmUserByOnBehalfIndividual;
+    }
     
-    @Column(name="name", unique=true, length=100)
+    public void setHrmUserByOnBehalfIndividual(HrmUser hrmUserByOnBehalfIndividual) {
+        this.hrmUserByOnBehalfIndividual = hrmUserByOnBehalfIndividual;
+    }
+
+@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="approver_position")
+    public Jabatan getJabatanByApproverPosition() {
+        return this.jabatanByApproverPosition;
+    }
+    
+    public void setJabatanByApproverPosition(Jabatan jabatanByApproverPosition) {
+        this.jabatanByApproverPosition = jabatanByApproverPosition;
+    }
+
+@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="approver_individual")
+    public HrmUser getHrmUserByApproverIndividual() {
+        return this.hrmUserByApproverIndividual;
+    }
+    
+    public void setHrmUserByApproverIndividual(HrmUser hrmUserByApproverIndividual) {
+        this.hrmUserByApproverIndividual = hrmUserByApproverIndividual;
+    }
+
+@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="on_behalf_position")
+    public Jabatan getJabatanByOnBehalfPosition() {
+        return this.jabatanByOnBehalfPosition;
+    }
+    
+    public void setJabatanByOnBehalfPosition(Jabatan jabatanByOnBehalfPosition) {
+        this.jabatanByOnBehalfPosition = jabatanByOnBehalfPosition;
+    }
+
+    
+    @Column(name="name", length=100)
     public String getName() {
         return this.name;
     }
@@ -136,6 +177,16 @@ public class ApprovalDefinition  implements java.io.Serializable {
     }
 
     
+    @Column(name="process_type", length=45)
+    public String getProcessType() {
+        return this.processType;
+    }
+    
+    public void setProcessType(String processType) {
+        this.processType = processType;
+    }
+
+    
     @Column(name="approver_type", length=45)
     public String getApproverType() {
         return this.approverType;
@@ -143,26 +194,6 @@ public class ApprovalDefinition  implements java.io.Serializable {
     
     public void setApproverType(String approverType) {
         this.approverType = approverType;
-    }
-
-    
-    @Column(name="approver_individual", length=100)
-    public String getApproverIndividual() {
-        return this.approverIndividual;
-    }
-    
-    public void setApproverIndividual(String approverIndividual) {
-        this.approverIndividual = approverIndividual;
-    }
-
-    
-    @Column(name="approver_position", length=100)
-    public String getApproverPosition() {
-        return this.approverPosition;
-    }
-    
-    public void setApproverPosition(String approverPosition) {
-        this.approverPosition = approverPosition;
     }
 
     
@@ -183,26 +214,6 @@ public class ApprovalDefinition  implements java.io.Serializable {
     
     public void setOnBehalfType(String onBehalfType) {
         this.onBehalfType = onBehalfType;
-    }
-
-    
-    @Column(name="on_behalf_individual", length=100)
-    public String getOnBehalfIndividual() {
-        return this.onBehalfIndividual;
-    }
-    
-    public void setOnBehalfIndividual(String onBehalfIndividual) {
-        this.onBehalfIndividual = onBehalfIndividual;
-    }
-
-    
-    @Column(name="on_behalf_position", length=100)
-    public String getOnBehalfPosition() {
-        return this.onBehalfPosition;
-    }
-    
-    public void setOnBehalfPosition(String onBehalfPosition) {
-        this.onBehalfPosition = onBehalfPosition;
     }
 
     

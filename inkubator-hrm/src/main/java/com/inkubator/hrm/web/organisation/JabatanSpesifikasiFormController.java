@@ -179,10 +179,11 @@ public class JabatanSpesifikasiFormController extends BaseController{
         selectSpecAbility = specificationAbilityService.getEntiyByPK(model.getSpecId());
         StringTokenizer st2 = new StringTokenizer(selectSpecAbility.getScaleValue(), "|");
         StringTokenizer st3 = new StringTokenizer(selectSpecAbility.getOptionAbility(), "|");
-        listValue = new HashMap<String, String>();
+        listValue = new TreeMap<String, String>();
         while (st2.hasMoreElements() && st3.hasMoreElements()) {
             listValue.put(st3.nextElement().toString(), st2.nextElement().toString());
         }
+        MapUtil.sortByValue(listValue);
     }
     
     @PreDestroy
