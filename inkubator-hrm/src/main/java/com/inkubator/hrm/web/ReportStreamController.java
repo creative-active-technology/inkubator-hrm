@@ -49,7 +49,7 @@ public class ReportStreamController extends BaseController {
         empDataService = null;
     }
 
-    public StreamedContent getFile() throws JRException, Exception {
+    public StreamedContent getFileCardName() throws JRException, Exception {
         Map<String, Object> params = new HashMap<>();
         FacesContext fc = FacesContext.getCurrentInstance();
         String id = fc.getExternalContext().getRequestParameterMap().get("id");
@@ -74,7 +74,7 @@ public class ReportStreamController extends BaseController {
             return new DefaultStreamedContent();
         } else {
             try {
-                return CommonReportUtil.exportReportToPDFStream("biodata4.jasper", params, "Biodata", maps);
+                return CommonReportUtil.exportReportToPDFStream("card_name.jasper", params, "Biodata", maps);
             } catch (Exception ex) {
                 LOGGER.error(ex, ex);
                 return new DefaultStreamedContent();

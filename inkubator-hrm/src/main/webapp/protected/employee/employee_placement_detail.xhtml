@@ -337,8 +337,8 @@
                             <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{empDataDetilController.doBack()}" styleClass="label_button"/>
                             <p:commandButton value="#{appmsg['biodata.card_name']}" icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" styleClass="label_button"
                                     update=":panelDialogBioAddressDetailId" 
-                                    action="#{empDataDetilController.doSelectEmpReport()}" onclick="statusDialog.show()"  oncomplete="dialogDetailBioAddress.show()">                        
-                                <f:setPropertyActionListener target="#{empDataDetilController.id}" value="#{empDataDetilController.selectedEmpData.bioData.id}" />
+                                    action="#{empDataDetilController.doSelectEmpCardName()}" onclick="statusDialog.show()"  oncomplete="dialogDetailBioAddress.show()">                        
+                                <!--<f:setPropertyActionListener target="#{empDataDetilController.id}" value="#{empDataDetilController.selectedEmpData.bioData.id}" />-->
                             </p:commandButton>
                         </h:panelGrid>
                         <div style="clear: both"/>
@@ -352,7 +352,7 @@
                         <p:row>
                             <!--<p:column style="width:15%;background-color: #e1f0f0!important"><p:outputLabel value="#{empDataDetilController.id}" styleClass="label_hrm"/></p:column>-->
                             <p:column>
-                                <p:media value="#{reportStreamController.file}" player="pdf" width="350px" height="325px" cache="false">
+                                <p:media value="#{reportStreamController.fileCardName}" player="pdf" width="350px" height="325px" cache="false">
                                     <f:param name="id" value="#{empDataDetilController.selectedEmpData.bioData.id}" />
                                 </p:media>
                             </p:column>

@@ -92,7 +92,7 @@ public class EmpDataDetilController extends BaseController {
         this.jabatanDeskripsis = jabatanDeskripsis;
     }
 
-    public void doSelectEmpReport() {
+    public void doSelectEmpCardName() {
         try {
             selectedEmpData = empDataService.getByEmpIdWithDetail(selectedEmpData.getId());
         } catch (Exception e) {
