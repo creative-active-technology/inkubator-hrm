@@ -333,6 +333,10 @@ public class BioDataServiceImpl extends IServiceImpl implements BioDataService {
 		}
 		Map<String, Object> params = new HashMap<>();		
 		params.put("BIODATA_ID", id);
+		params.put("IS_RENDER_ADDRESS", !bioData.getBioAddresses().isEmpty());
+		params.put("IS_RENDER_EDU_HISTORY", !bioData.getEducationHistories().isEmpty());
+		params.put("IS_RENDER_ID_CARD", !bioData.getBioIdCards().isEmpty());
+		params.put("IS_RENDER_EMP_HISTORY", !bioData.getBioEmploymentHistories().isEmpty());
 		params.put("SUBREPORT_DIR", FacesContext.getCurrentInstance().getExternalContext().getRealPath("/resources/reports/") + "\\");
 		StreamedContent file = CommonReportUtil.exportReportToPDFStreamWithAttachment("cv_builder.jasper", params, bioData.getFirstName() + ".pdf", attachments);
 		return file;

@@ -9,6 +9,18 @@
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["\\"]]></defaultValueExpression>
 	</parameter>
+	<parameter name="IS_RENDER_ADDRESS" class="java.lang.Boolean">
+		<defaultValueExpression><![CDATA[true]]></defaultValueExpression>
+	</parameter>
+	<parameter name="IS_RENDER_EDU_HISTORY" class="java.lang.Boolean">
+		<defaultValueExpression><![CDATA[true]]></defaultValueExpression>
+	</parameter>
+	<parameter name="IS_RENDER_ID_CARD" class="java.lang.Boolean">
+		<defaultValueExpression><![CDATA[true]]></defaultValueExpression>
+	</parameter>
+	<parameter name="IS_RENDER_EMP_HISTORY" class="java.lang.Boolean">
+		<defaultValueExpression><![CDATA[true]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[SELECT bio_data.*, city.city_name as "city_name",
 religion.name as "religion_name",
@@ -409,6 +421,7 @@ $F{blood_type} == 3 ? "AB" : "O"]]></textFieldExpression>
 			</staticText>
 		</band>
 		<band height="50" splitType="Prevent">
+			<printWhenExpression><![CDATA[$P{IS_RENDER_ID_CARD}]]></printWhenExpression>
 			<subreport>
 				<reportElement x="-20" y="0" width="200" height="45" uuid="1fcc8760-9381-4643-8d3f-25b28c37934d"/>
 				<subreportParameter name="BIODATA_ID">
@@ -419,6 +432,7 @@ $F{blood_type} == 3 ? "AB" : "O"]]></textFieldExpression>
 			</subreport>
 		</band>
 		<band height="50" splitType="Prevent">
+			<printWhenExpression><![CDATA[$P{IS_RENDER_ADDRESS}]]></printWhenExpression>
 			<subreport>
 				<reportElement x="-20" y="0" width="200" height="45" uuid="9b0734a1-7860-4c15-8d92-e5ce1ebc88af"/>
 				<subreportParameter name="BIODATA_ID">
@@ -429,6 +443,7 @@ $F{blood_type} == 3 ? "AB" : "O"]]></textFieldExpression>
 			</subreport>
 		</band>
 		<band height="50" splitType="Prevent">
+			<printWhenExpression><![CDATA[$P{IS_RENDER_EDU_HISTORY}]]></printWhenExpression>
 			<subreport>
 				<reportElement x="-20" y="0" width="200" height="45" uuid="a6b5c134-0b02-4569-9a0d-c2a66f138dc4"/>
 				<subreportParameter name="BIODATA_ID">
@@ -439,6 +454,7 @@ $F{blood_type} == 3 ? "AB" : "O"]]></textFieldExpression>
 			</subreport>
 		</band>
 		<band height="50" splitType="Prevent">
+			<printWhenExpression><![CDATA[$P{IS_RENDER_EMP_HISTORY}]]></printWhenExpression>
 			<subreport>
 				<reportElement x="-20" y="0" width="200" height="45" uuid="c3004175-1ee2-4dc2-acf8-eedfa92c71c0"/>
 				<subreportParameter name="BIODATA_ID">
