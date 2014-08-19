@@ -34,7 +34,7 @@
                                 <h:panelGrid columns="5">
                                     <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm"/>
                                     <p:outputLabel value=":" styleClass="label_hrm" />
-                                    <p:selectOneMenu id="pencarianSelectId" value="#{approvalDefinitionController.approvalDefinitionSearchParameter.keyParam}"
+                                    <p:selectOneMenu id="pencarianSelectId" value="#{approvalDefinitionViewController.approvalDefinitionSearchParameter.keyParam}"
                                                      style="width: 150px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItem itemLabel="Nama Process" itemValue="processName"/>
@@ -44,9 +44,9 @@
                                         <f:selectItem itemLabel="On Behalf Jabatan" itemValue="onBehalfApproverPosition" />
                                         <f:selectItem itemLabel="On Behalf Individu" itemValue="onBehaltAppriverIndividual" />
                                     </p:selectOneMenu>
-                                    <p:inputText value="#{approvalDefinitionController.approvalDefinitionSearchParameter.parameter}" style="width: 250px" id="pencarianId" styleClass="isitext_hrm" 
+                                    <p:inputText value="#{approvalDefinitionViewController.approvalDefinitionSearchParameter.parameter}" style="width: 250px" id="pencarianId" styleClass="isitext_hrm" 
                                                  label="#{appmsg['global.searching']}" title="#{appmsg['global.searching']}"/>
-                                    <p:commandButton value="#{appmsg['global.search']}" action="#{approvalDefinitionController.doSearch()}" style="width: 75px" update="tableApprovalDevId" icon="ui-icon-search"
+                                    <p:commandButton value="#{appmsg['global.search']}" action="#{approvalDefinitionViewController.doSearch()}" style="width: 75px" update="tableApprovalDevId" icon="ui-icon-search"
                                                      styleClass="label_button" title="#{appmsg['global.search']}" id="btnPencarianId" />
                                 </h:panelGrid>
                             </p:toolbarGroup>
@@ -55,7 +55,7 @@
                                     <p:commandButton value="Export to XLS" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
                                         <pe:exporter target="tableApprovalDevId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_User"/>
                                     </p:commandButton>
-                                    <p:commandButton value="#{appmsg['global.add']}" action="#{userViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" icon="ui-icon-document"
+                                    <p:commandButton value="#{appmsg['global.add']}" action="#{approvalDefinitionViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" icon="ui-icon-document"
                                                      styleClass="label_button" ajax="true" immediate="true">
 
                                     </p:commandButton>
@@ -67,7 +67,7 @@
                         </p:toolbar>
                         <p:focus for="pencarianId" />
 
-                        <p:dataTable  var="approvalDefinitionData"  value="#{approvalDefinitionController.lazyDataModelApprovalDefinition}" lazy="true" paginator="true" pageLinks="7" 
+                        <p:dataTable  var="approvalDefinitionData"  value="#{approvalDefinitionViewController.lazyDataModelApprovalDefinition}" lazy="true" paginator="true" pageLinks="7" 
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
                                       id="tableApprovalDevId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
@@ -119,24 +119,24 @@
 
                             <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
                                 <p:commandButton  icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
-                                                  action="#{userViewController.doDetail()}" style="font-size: 10px!important" >                        
-                                    <f:setPropertyActionListener value="#{approvalDefinitionData}" target="#{approvalDefinitionController.selectedApprovalDefinition}" />
+                                                  action="#{approvalDefinitionViewController.doDetail()}" style="font-size: 10px!important" >                        
+                                    <f:setPropertyActionListener value="#{approvalDefinitionData}" target="#{approvalDefinitionViewController.selectedApprovalDefinition}" />
                                 </p:commandButton>
                                 - 
                                 <p:commandButton  icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  style="font-size: 10px!important" update=":deleteApprovalDefinitionId"
-                                                  onclick="statusDialog.show()"  oncomplete="confirmDialogHrmUser.show()" action="#{approvalDefinitionController.onDelete()}" >
-                                    <f:setPropertyActionListener value="#{approvalDefinitionData}" target="#{approvalDefinitionController.selectedApprovalDefinition}" />
+                                                  onclick="statusDialog.show()"  oncomplete="confirmDialogHrmUser.show()" action="#{approvalDefinitionViewController.onDelete()}" >
+                                    <f:setPropertyActionListener value="#{approvalDefinitionData}" target="#{approvalDefinitionViewController.selectedApprovalDefinition}" />
                                 </p:commandButton>
                                 -
                                 <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
-                                                  action="#{userViewController.doEdit()}" >
-                                    <f:setPropertyActionListener value="#{approvalDefinitionData}" target="#{approvalDefinitionController.selectedApprovalDefinition}" />
+                                                  action="#{approvalDefinitionViewController.doEdit()}" >
+                                    <f:setPropertyActionListener value="#{approvalDefinitionData}" target="#{approvalDefinitionViewController.selectedApprovalDefinition}" />
 
                                 </p:commandButton> 
                             </p:column>                                                    
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : " styleClass="label_hrm" />
-                                <p:outputLabel value="#{approvalDefinitionController.lazyDataModelApprovalDefinition.rowCount}" styleClass="label_hrm"/>
+                                <p:outputLabel value="#{approvalDefinitionViewController.lazyDataModelApprovalDefinition.rowCount}" styleClass="label_hrm"/>
                                 <p:outputLabel value="Data" style="margin-left: 3px" styleClass="label_hrm"/>
                             </f:facet>  
                         </p:dataTable>
@@ -170,17 +170,17 @@
                             <h:panelGrid  columns="3">
                                 <p:outputLabel value="Approval Definition Name" styleClass="label_hrm"/>
                                 <p:outputLabel value=":"  styleClass="label_hrm" />
-                                <p:outputLabel value="#{approvalDefinitionController.selectedApprovalDefinition.name}" styleClass="isitext_hrm"/>
+                                <p:outputLabel value="#{approvalDefinitionViewController.selectedApprovalDefinition.name}" styleClass="isitext_hrm"/>
 
                                 <p:outputLabel value="Process Name" styleClass="label_hrm"/>
                                 <p:outputLabel value=":"  styleClass="label_hrm" />
-                                <p:outputLabel value="#{approvalDefinitionController.selectedApprovalDefinition.processType}" styleClass="isitext_hrm"/>
+                                <p:outputLabel value="#{approvalDefinitionViewController.selectedApprovalDefinition.processType}" styleClass="isitext_hrm"/>
                                 <p:outputLabel value="Urutan Approval" styleClass="label_hrm"/>
                                 <p:outputLabel value=":"  styleClass="label_hrm" />
-                                <p:outputLabel value="#{approvalDefinitionController.selectedApprovalDefinition.sequence}" styleClass="isitext_hrm"/>
+                                <p:outputLabel value="#{approvalDefinitionViewController.selectedApprovalDefinition.sequence}" styleClass="isitext_hrm"/>
                             </h:panelGrid>
                             <p:separator/>
-                            <p:commandButton value="#{appmsg['global.yes']}" action="#{approvalDefinitionController.doDelete()}" update=":userViewId,:userViewGrowlId" id="yesId" title="#{appmsg['global.yes']}" styleClass="isitext_hrm"
+                            <p:commandButton value="#{appmsg['global.yes']}" action="#{approvalDefinitionViewController.doDelete()}" update=":userViewId,:userViewGrowlId" id="yesId" title="#{appmsg['global.yes']}" styleClass="isitext_hrm"
                                              oncomplete="confirmDialogHrmUser.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
                             <p:commandButton value="#{appmsg['global.no']}" oncomplete="confirmDialogHrmUser.hide()" icon="ui-icon-close" title="#{appmsg['global.no']}"  styleClass="isitext_hrm"/>
 

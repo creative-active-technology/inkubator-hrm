@@ -26,7 +26,7 @@ import org.springframework.dao.DataIntegrityViolationException;
  *
  * @author Deni Husni FR
  */
-@ManagedBean(name = "approvalDefinitionController")
+@ManagedBean(name = "approvalDefinitionViewController")
 @ViewScoped
 public class ApprovalDefinitionViewController extends BaseController {
 
@@ -101,5 +101,13 @@ public class ApprovalDefinitionViewController extends BaseController {
             LOGGER.error("Error", ex);
         }
     }
+    
+     public String doDetail() {
+        return "/protected/approval/approval_definition_detail.htm?faces-redirect=true&execution=e" + selectedApprovalDefinition.getId();
+    }
 
+     
+     public String doAdd(){
+         return "/protected/approval/approval_definition_form.htm?faces-redirect=true";
+     }
 }

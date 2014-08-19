@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.context.FacesContext;
 
 import org.hibernate.criterion.Order;
 import org.primefaces.model.StreamedContent;
@@ -37,6 +36,7 @@ import com.inkubator.hrm.util.CommonReportUtil;
 import com.inkubator.hrm.web.search.BioDataSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesIO;
+import com.inkubator.webcore.util.FacesUtil;
 
 /**
  *
@@ -317,11 +317,11 @@ public class BioDataServiceImpl extends IServiceImpl implements BioDataService {
 		if(isBioDataExist){
 			json.add("bioData", parser.parse(gson.toJson(bioData)));
 		}*/
-		
+		         
 		Map<String, Object> params = new HashMap<>();
 		BioData bioData = bioDataDao.getEntiyByPK(id);
 		params.put("BIODATA_ID", id);
-		params.put("SUBREPORT_DIR", FacesContext.getCurrentInstance().getExternalContext().getRealPath("/resources/reports/") + "\\");
+		params.put("SUBREPORT_DIR",  FacesUtil.getExternalContext().getRealPath("/resources/reports/") + "\\");
 		StreamedContent file = CommonReportUtil.exportReportToPDFStream("cv_builder.jasper", params, bioData.getFirstName() + ".pdf");
 		return file;
 	}
