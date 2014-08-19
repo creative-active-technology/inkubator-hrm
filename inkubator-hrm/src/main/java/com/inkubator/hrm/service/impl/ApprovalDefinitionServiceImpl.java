@@ -26,194 +26,211 @@ import org.springframework.transaction.annotation.Transactional;
 @Service(value = "approvalDefinitionService")
 @Lazy
 public class ApprovalDefinitionServiceImpl extends IServiceImpl implements ApprovalDefinitionService {
-    
+
     @Autowired
     private ApprovalDefinitionDao approvalDefinitionDao;
-    
+
     @Override
     public ApprovalDefinition getEntiyByPK(String id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public ApprovalDefinition getEntiyByPK(Integer id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public ApprovalDefinition getEntiyByPK(Long id) {
+        ApprovalDefinition approvalDefinition = this.approvalDefinitionDao.getEntiyByPK(id);
+        if (approvalDefinition.getHrmUserByApproverIndividual() != null) {
+            approvalDefinition.getHrmUserByApproverIndividual().getRealName();
+        }
+
+        if (approvalDefinition.getHrmUserByOnBehalfIndividual() != null) {
+            approvalDefinition.getHrmUserByOnBehalfIndividual().getRealName();
+        }
+
+        if (approvalDefinition.getJabatanByApproverPosition() != null) {
+            approvalDefinition.getJabatanByApproverPosition().getName();
+        }
+
+        if (approvalDefinition.getJabatanByOnBehalfPosition() != null) {
+            approvalDefinition.getJabatanByOnBehalfPosition().getName();
+        }
+
         return this.approvalDefinitionDao.getEntiyByPK(id);
     }
-    
+
     @Override
     public void save(ApprovalDefinition entity) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public void update(ApprovalDefinition entity) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public void saveOrUpdate(ApprovalDefinition enntity) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public ApprovalDefinition saveData(ApprovalDefinition entity) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public ApprovalDefinition updateData(ApprovalDefinition entity) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public ApprovalDefinition saveOrUpdateData(ApprovalDefinition entity) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public ApprovalDefinition getEntityByPkIsActive(String id, Integer isActive) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public ApprovalDefinition getEntityByPkIsActive(String id, Byte isActive) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public ApprovalDefinition getEntityByPkIsActive(String id, Boolean isActive) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public ApprovalDefinition getEntityByPkIsActive(Integer id, Integer isActive) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public ApprovalDefinition getEntityByPkIsActive(Integer id, Byte isActive) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public ApprovalDefinition getEntityByPkIsActive(Integer id, Boolean isActive) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public ApprovalDefinition getEntityByPkIsActive(Long id, Integer isActive) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public ApprovalDefinition getEntityByPkIsActive(Long id, Byte isActive) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public ApprovalDefinition getEntityByPkIsActive(Long id, Boolean isActive) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void delete(ApprovalDefinition entity) {
         this.approvalDefinitionDao.delete(entity);
     }
-    
+
     @Override
     public void softDelete(ApprovalDefinition entity) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public Long getTotalData() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public Long getTotalDataIsActive(Boolean isActive) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public Long getTotalDataIsActive(Integer isActive) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public Long getTotalDataIsActive(Byte isActive) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public List<ApprovalDefinition> getAllData() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public List<ApprovalDefinition> getAllData(Boolean isActive) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public List<ApprovalDefinition> getAllData(Integer isActive) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public List<ApprovalDefinition> getAllData(Byte isActive) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public List<ApprovalDefinition> getAllDataPageAble(int firstResult, int maxResults, Order order) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public List<ApprovalDefinition> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Boolean isActive) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public List<ApprovalDefinition> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Integer isActive) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public List<ApprovalDefinition> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<ApprovalDefinition> getByParam(ApprovalDefinitionSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
         return this.approvalDefinitionDao.getByParam(searchParameter, firstResult, maxResults, order);
     }
-    
+
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public Long getTotalApprovalDefinitionByParam(ApprovalDefinitionSearchParameter searchParameter) throws Exception {
         return this.approvalDefinitionDao.getTotalApprovalDefinitionByParam(searchParameter);
     }
-    
+
     public Long getTotalByCode(String arg0) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     public Long getTotalByCodeAndNotId(String arg0, Long arg1) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     public Long getTotalByName(String arg0) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
 }

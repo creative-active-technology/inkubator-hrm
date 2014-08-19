@@ -144,6 +144,7 @@ public class HRMConstant {
     /* Approval Definition */
     public static final String APPROVAL_TYPE_INDIVIDUAL = "APPROVAL_TYPE_INDIVIDUAL";
     public static final String APPROVAL_TYPE_POSITION = "APPROVAL_TYPE_POSITION";
+    public static final String APPROVAL_TYPE_DEPARTMENT = "APPROVAL_TYPE_DEPARTMENT";
     public static final String BIO_DATA_EDIT = "BIO_DATA_EDIT";
     public static final String BIO_HEATLY_EDIT = "BIO_HEATLY_EDIT";
     public static final String BIO_OCCUPATIONAL_EDIT = "BIO_OCCUPATIONAL_EDIT";
