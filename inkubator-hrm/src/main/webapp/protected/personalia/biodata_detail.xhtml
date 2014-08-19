@@ -1021,8 +1021,8 @@
                             <p:commandButton value="Kartu Nama" title="Kartu Nama" label="Kartu Nama" styleClass="label_button" icon="ui-icon-document" 
                                                      action="#{bioDataDetilController.doReportBiodata()}" ajax="true" immediate="true">
                             </p:commandButton>
-                            <p:commandButton value="Generate CV" icon="ui-icon-document" title="Generate CV" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">                                	
-                                <p:fileDownload value="#{bioDataDetilController.doGenerateCV()}"/>
+                            <p:commandButton value="Generate CV" title="Generate CV" label="Generate CV" styleClass="label_button" icon="ui-icon-document" 
+                                                     action="#{bioDataDetilController.doGenerateCV()}" ajax="true" immediate="true">
                             </p:commandButton>
                             
                         </h:panelGrid>
