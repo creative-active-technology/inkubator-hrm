@@ -3,7 +3,7 @@
  */
 package com.inkubator.hrm.web;
 
-import com.inkubator.hrm.entity.BioData;
+
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.service.BioDataService;
 import com.inkubator.hrm.service.EmpDataService;
@@ -35,7 +35,14 @@ public class ReportStreamController extends BaseController {
     private BioDataService bioDataService;
     @ManagedProperty(value = "#{empDataService}")
     private EmpDataService empDataService;
-
+    
+    @PostConstruct
+    @Override
+    public void initialization() {
+        super.initialization();
+        
+    }
+    
     @PreDestroy
     private void cleanAndExit() {
         bioDataService = null;
@@ -72,9 +79,21 @@ public class ReportStreamController extends BaseController {
                 LOGGER.error(ex, ex);
                 return new DefaultStreamedContent();
             }
-
-
         }
+    }
+    
+    public StreamedContent getFileCv() {
+    	FacesContext context = FacesUtil.getFacesContext();
+        String param = context.getExternalContext().getRequestParameterMap().get("id");
+    	StreamedContent file = null;
+    	try {
+    		file = bioDataService.generateCV(Long.parseLong(param));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			LOGGER.error(e, e);
+			file = new DefaultStreamedContent();
+		}
+    	return file;
     }
 
     public BioDataService getBioDataService() {
