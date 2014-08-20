@@ -40,10 +40,11 @@ public class CostCenter  implements java.io.Serializable {
      private Date updatedOn;
      private String description;
      private BigDecimal balance;
-     private Integer level;
      private Set<Jabatan> jabatans = new HashSet<>(0);
      private Set<CostCenter> costCenters = new HashSet<>(0);
      private Set<PaySalaryJurnal> paySalaryJurnals = new HashSet<PaySalaryJurnal>(0);
+     private Set<TravelComponentCostRate> travelComponentCostRates  = new HashSet<TravelComponentCostRate>(0);
+     private Set<BusinessTravelComponent> businessTravelComponents = new HashSet<BusinessTravelComponent>(0);
 
     public CostCenter() {
     }
@@ -52,7 +53,7 @@ public class CostCenter  implements java.io.Serializable {
     public CostCenter(long id) {
         this.id = id;
     }
-    public CostCenter(long id, CostCenter costCenter, String code, String name, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String description, BigDecimal balance, Integer level, Set<Jabatan> jabatans, Set<CostCenter> costCenters) {
+    public CostCenter(long id, CostCenter costCenter, String code, String name, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String description, BigDecimal balance, Set<Jabatan> jabatans, Set<CostCenter> costCenters, Set<PaySalaryJurnal> paySalaryJurnals, Set<TravelComponentCostRate> travelComponentCostRates, Set<BusinessTravelComponent> businessTravelComponents) {
        this.id = id;
        this.costCenter = costCenter;
        this.code = code;
@@ -63,14 +64,14 @@ public class CostCenter  implements java.io.Serializable {
        this.updatedOn = updatedOn;
        this.description = description;
        this.balance = balance;
-//       this.level = level;
        this.jabatans = jabatans;
        this.costCenters = costCenters;
+       this.paySalaryJurnals = paySalaryJurnals;
+       this.travelComponentCostRates = travelComponentCostRates;
+       this.businessTravelComponents = businessTravelComponents;
     }
    
-     @Id 
-
-    
+    @Id 
     @Column(name="id", unique=true, nullable=false)
     public long getId() {
         return this.id;
@@ -90,7 +91,7 @@ public class CostCenter  implements java.io.Serializable {
         this.version = version;
     }
 
-@ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="parent_id")
     public CostCenter getCostCenter() {
         return this.costCenter;
@@ -99,7 +100,6 @@ public class CostCenter  implements java.io.Serializable {
     public void setCostCenter(CostCenter costCenter) {
         this.costCenter = costCenter;
     }
-
     
     @Column(name="code", unique=true, length=6)
     public String getCode() {
@@ -109,7 +109,6 @@ public class CostCenter  implements java.io.Serializable {
     public void setCode(String code) {
         this.code = code;
     }
-
     
     @Column(name="name", length=100)
     public String getName() {
@@ -119,7 +118,6 @@ public class CostCenter  implements java.io.Serializable {
     public void setName(String name) {
         this.name = name;
     }
-
     
     @Column(name="created_by", length=45)
     public String getCreatedBy() {
@@ -139,7 +137,6 @@ public class CostCenter  implements java.io.Serializable {
     public void setCreatedOn(Date createdOn) {
         this.createdOn = createdOn;
     }
-
     
     @Column(name="updated_by", length=45)
     public String getUpdatedBy() {
@@ -159,7 +156,6 @@ public class CostCenter  implements java.io.Serializable {
     public void setUpdatedOn(Date updatedOn) {
         this.updatedOn = updatedOn;
     }
-
     
     @Column(name="description", length=65535)
     public String getDescription() {
@@ -169,7 +165,6 @@ public class CostCenter  implements java.io.Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
-
     
     @Column(name="balance", precision=10, scale=0)
     public BigDecimal getBalance() {
@@ -180,17 +175,7 @@ public class CostCenter  implements java.io.Serializable {
         this.balance = balance;
     }
 
-    
-//    @Column(name="level")
-//    public Integer getLevel() {
-//        return this.level;
-//    }
-//    
-//    public void setLevel(Integer level) {
-//        this.level = level;
-//    }
-
-@OneToMany(fetch=FetchType.LAZY, mappedBy="costCenter")
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="costCenter")
     public Set<Jabatan> getJabatans() {
         return this.jabatans;
     }
@@ -199,7 +184,7 @@ public class CostCenter  implements java.io.Serializable {
         this.jabatans = jabatans;
     }
 
-@OneToMany(fetch=FetchType.LAZY, mappedBy="costCenter")
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="costCenter")
     public Set<CostCenter> getCostCenters() {
         return this.costCenters;
     }
@@ -217,10 +202,26 @@ public class CostCenter  implements java.io.Serializable {
         this.paySalaryJurnals = paySalaryJurnals;
     }
 
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="costCenter")
+	public Set<TravelComponentCostRate> getTravelComponentCostRates() {
+		return travelComponentCostRates;
+	}
 
-    
+
+	public void setTravelComponentCostRates(Set<TravelComponentCostRate> travelComponentCostRates) {
+		this.travelComponentCostRates = travelComponentCostRates;
+	}
+
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="costCenter")
+	public Set<BusinessTravelComponent> getBusinessTravelComponents() {
+		return businessTravelComponents;
+	}
 
 
+	public void setBusinessTravelComponents(Set<BusinessTravelComponent> businessTravelComponents) {
+		this.businessTravelComponents = businessTravelComponents;
+	}
+	
 }
 
 

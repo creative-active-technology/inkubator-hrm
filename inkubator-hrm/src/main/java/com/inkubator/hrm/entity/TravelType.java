@@ -3,9 +3,14 @@ package com.inkubator.hrm.entity;
 
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -32,6 +37,7 @@ public class TravelType  implements java.io.Serializable {
      private String code;
      private String name;
      private String description;
+     private Set<BusinessTravel> businessTravels = new HashSet<BusinessTravel>(0);
 
     public TravelType() {
     }
@@ -40,7 +46,7 @@ public class TravelType  implements java.io.Serializable {
     public TravelType(long id) {
         this.id = id;
     }
-    public TravelType(long id, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String code, String name, String description) {
+    public TravelType(long id, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String code, String name, String description, Set<BusinessTravel> businessTravels) {
        this.id = id;
        this.createdBy = createdBy;
        this.createdOn = createdOn;
@@ -49,6 +55,7 @@ public class TravelType  implements java.io.Serializable {
        this.code = code;
        this.name = name;
        this.description = description;
+       this.businessTravels = businessTravels;
     }
    
      @Id 
@@ -143,8 +150,14 @@ public class TravelType  implements java.io.Serializable {
         this.description = description;
     }
 
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="travelType")
+	public Set<BusinessTravel> getBusinessTravels() {
+		return businessTravels;
+	}
 
-
+	public void setBusinessTravels(Set<BusinessTravel> businessTravels) {
+		this.businessTravels = businessTravels;
+	}
 
 }
 
