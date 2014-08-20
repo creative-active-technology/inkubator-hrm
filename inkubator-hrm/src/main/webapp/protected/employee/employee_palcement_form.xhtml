@@ -23,8 +23,8 @@
                             <p:graphicImage library="images" name="user.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="Penempatan Karyawan Form" styleClass="header_big" />
-                                    <p:outputLabel value="Data Penempatan dari Karyawan" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['placement.placement_form']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['placement.placement_header']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -35,7 +35,7 @@
                         <p:panelGrid style="width: 100%;margin-bottom: 20px;margin-top: 20px" styleClass="grid_border3" >
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="NIK"  for="nik" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['placement.nik']}"  for="nik" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:inputText value="#{empDataFormController.empDataModel.nik}" maxlength="45"
@@ -46,7 +46,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Name"  for="name" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['global.name']}"  for="name" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:inputText value="#{empDataFormController.empDataModel.bioDataName}" maxlength="45"
@@ -63,7 +63,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Tanggal Lahir"  for="birthDate" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_date']}"  for="birthDate" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:inputText value="#{empDataFormController.empDataModel.birthDate}" id="birthDate"  style="width: 350px" readonly="true">
@@ -75,7 +75,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Department"  for="departement" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['department.department']}"  for="departement" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:selectOneMenu  style="margin-right: 3px;width: 353px" id="departement" filter="true" required="false"
@@ -90,13 +90,14 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Jabatan"  for="jabatan" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['placement.jabatan']}"  for="jabatan" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:selectOneMenu  style="margin-right: 3px;width: 353px" id="jabatan" filter="true" required="true"
                                                       value="#{empDataFormController.empDataModel.jabatanByJabatanId}">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{empDataFormController.mapJabatans}" />
+                                        <p:ajax listener="#{empDataFormController.doChangeJabatan()}" update="salaryGrade"/>
                                     </p:selectOneMenu>
                                     <p:message for="jabatan"/>
                                 </p:column>
@@ -104,7 +105,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Status Karyawan"  for="statusKaryawan" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['employeetype.employee_type']}"  for="statusKaryawan" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:selectOneMenu  style="margin-right: 3px;width: 353px" id="statusKaryawan" filter="true" required="true"
@@ -118,7 +119,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Tanggal Bekerja"  for="joinDate" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['placement.join_data']}"  for="joinDate" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:calendar  id="joinDate" pattern="dd MMMM yyyy" value="#{empDataFormController.empDataModel.joinDate}"/>
@@ -128,7 +129,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Salary Grade"  for="salaryGrade" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['paysalarygrade.paysalarygrade']}"  for="salaryGrade" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:selectOneMenu  style="margin-right: 3px;width: 158px" id="salaryGrade" filter="true" required="true"
@@ -142,7 +143,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Gaji Pokok"  for="mainSalary" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['placement.gaji_pokok']}"  for="mainSalary" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <pe:inputNumber id="mainSalary" value="#{empDataFormController.empDataModel.basicSalary}"  required="true"

@@ -21,8 +21,8 @@
                         <p:graphicImage library="images" name="user.png" height="36" width="36" />
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Daftar Pengangkatan Karyawan" styleClass="header_big" />
-                                <p:outputLabel value="Data Pengangkatan Karyawan dari Aplikasi" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['placement.list_of_placement']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['placement.placement_header']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -37,10 +37,10 @@
                                     <p:selectOneMenu id="pencarianSelectId" value="#{empDataViewController.empDataSearchParameter.keyParam}"
                                                      style="width: 150px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemLabel="NIK" itemValue="NIK"/>
-                                        <f:selectItem itemLabel="Name" itemValue="name" />
-                                        <f:selectItem itemLabel="Kode Jabatan" itemValue="jabatanKode" />
-                                        <f:selectItem itemLabel="Nama Jabatan" itemValue="jabatanName" />
+                                        <f:selectItem itemLabel="#{appmsg['placement.nik']}" itemValue="NIK"/>
+                                        <f:selectItem itemLabel="#{appmsg['global.name']}" itemValue="name" />
+                                        <f:selectItem itemLabel="#{appmsg['placement.jabatan_code']}" itemValue="jabatanKode" />
+                                        <f:selectItem itemLabel="#{appmsg['placement.jabatan_name']}" itemValue="jabatanName" />
                                     </p:selectOneMenu>
                                     <p:inputText value="#{empDataViewController.empDataSearchParameter.parameter}" style="width: 250px" id="pencarianId" styleClass="isitext_hrm" 
                                                  label="#{appmsg['global.searching']}" title="#{appmsg['global.searching']}"/>
@@ -70,29 +70,29 @@
                                       id="tableEmpDataId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="#{appmsg['user_view.header1']}" styleClass="label_hrm"/>
+                                <h:outputText value="#{appmsg['placement.placement_header']}" styleClass="label_hrm"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 25px">
                                 <f:facet name="header">  
-                                    <h:outputText value="No."  />
+                                    <h:outputText value="#{appmsg['global.number']}"  />
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
                             <p:column sortBy="nik" >
                                 <f:facet name="header">  
-                                    <h:outputText value="NIK"/>
+                                    <h:outputText value="#{appmsg['placement.nik']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{empViewData.nik}"/>
                             </p:column>
                             <p:column sortBy="bioData">
                                 <f:facet name="header">  
-                                    <h:outputText value="Nama"/>
+                                    <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{empViewData.bioData.firstName} #{empViewData.bioData.lastName}"/>
                             </p:column>
                             <p:column sortBy="joinDate"  >
                                 <f:facet name="header">  
-                                    <h:outputText value="Tanggal Bekerja"/>
+                                    <h:outputText value="#{appmsg['placement.join_data']}"/>
                                 </f:facet>
                                 <p:outputLabel value= "#{empViewData.joinDate}">
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
@@ -100,13 +100,13 @@
                             </p:column>
                             <p:column sortBy="jabatanByJabatanId" style="text-align: center" >
                                 <f:facet name="header">  
-                                    <h:outputText value="Kode Jabatan"/>
+                                    <h:outputText value="#{appmsg['placement.jabatan_code']}"/>
                                 </f:facet>
                                 <p:outputLabel value= "#{empViewData.jabatanByJabatanId.code}"/>
                             </p:column>
                             <p:column sortBy="jabatanByJabatanId" >
                                 <f:facet name="header">  
-                                    <h:outputText value="Nama Jabatan"/>
+                                    <h:outputText value="#{appmsg['placement.jabatan_name']}"/>
                                 </f:facet>
                                 <p:outputLabel value= "#{empViewData.jabatanByJabatanId.name}"/>
                             </p:column>
@@ -162,7 +162,7 @@
                                 </h:panelGrid>
                             </div>
                             <h:panelGrid  columns="3">
-                                <p:outputLabel value="#{appmsg['user_view.user_name']}" styleClass="label_hrm"/>
+                                <p:outputLabel value="#{appmsg['global.name']}" styleClass="label_hrm"/>
                                 <p:outputLabel value=":"  styleClass="label_hrm" />
                                 <p:outputLabel value="#{empDataViewController.selectedEmpData.bioData.firstName} #{empDataViewController.selectedEmpData.bioData.lastName}" styleClass="isitext_hrm"/>
                             </h:panelGrid>

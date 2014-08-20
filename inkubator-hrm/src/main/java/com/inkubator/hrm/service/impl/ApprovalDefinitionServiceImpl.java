@@ -41,8 +41,26 @@ public class ApprovalDefinitionServiceImpl extends IServiceImpl implements Appro
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public ApprovalDefinition getEntiyByPK(Long id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ApprovalDefinition approvalDefinition = this.approvalDefinitionDao.getEntiyByPK(id);
+        if (approvalDefinition.getHrmUserByApproverIndividual() != null) {
+            approvalDefinition.getHrmUserByApproverIndividual().getRealName();
+        }
+
+        if (approvalDefinition.getHrmUserByOnBehalfIndividual() != null) {
+            approvalDefinition.getHrmUserByOnBehalfIndividual().getRealName();
+        }
+
+        if (approvalDefinition.getJabatanByApproverPosition() != null) {
+            approvalDefinition.getJabatanByApproverPosition().getName();
+        }
+
+        if (approvalDefinition.getJabatanByOnBehalfPosition() != null) {
+            approvalDefinition.getJabatanByOnBehalfPosition().getName();
+        }
+
+        return this.approvalDefinitionDao.getEntiyByPK(id);
     }
 
     @Override
@@ -121,8 +139,9 @@ public class ApprovalDefinitionServiceImpl extends IServiceImpl implements Appro
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void delete(ApprovalDefinition entity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.approvalDefinitionDao.delete(entity);
     }
 
     @Override
@@ -202,15 +221,15 @@ public class ApprovalDefinitionServiceImpl extends IServiceImpl implements Appro
         return this.approvalDefinitionDao.getTotalApprovalDefinitionByParam(searchParameter);
     }
 
-        public Long getTotalByCode(String arg0) {
+    public Long getTotalByCode(String arg0) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-        public Long getTotalByCodeAndNotId(String arg0, Long arg1) {
+    public Long getTotalByCodeAndNotId(String arg0, Long arg1) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-        public Long getTotalByName(String arg0) {
+    public Long getTotalByName(String arg0) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

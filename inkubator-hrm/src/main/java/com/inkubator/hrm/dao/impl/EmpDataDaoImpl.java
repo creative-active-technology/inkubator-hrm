@@ -131,6 +131,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.setFetchMode("jabatanByJabatanId.jabatanDeskripsis", FetchMode.JOIN);
         criteria.setFetchMode("jabatanByJabatanId.jabatanSpesifikasis", FetchMode.JOIN);
         criteria.setFetchMode("jabatanByJabatanId.jabatanSpesifikasis.specificationAbility", FetchMode.JOIN);
+        criteria.setFetchMode("wtGroupWorking", FetchMode.JOIN);
         return (EmpData) criteria.uniqueResult();
     }
 
@@ -142,5 +143,20 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.setFetchMode("jabatanByJabatanGajiId", FetchMode.JOIN);
         criteria.setFetchMode("jabatanByJabatanGajiId.department", FetchMode.JOIN);
         return (EmpData) criteria.uniqueResult();
+    }
+
+    @Override
+    public Long getTotalByNIKandId(String nik, Long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("nik", nik));
+        criteria.add(Restrictions.ne("id", id));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+
+    @Override
+    public Long getTotalByNIK(String nik) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("nik", nik));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 }

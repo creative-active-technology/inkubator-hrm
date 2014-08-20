@@ -22,8 +22,8 @@
                             <p:graphicImage library="images" name="bio_data.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="Biodata Form" styleClass="header_big" />
-                                    <p:outputLabel value="Data Bidodata dari Aplikasi" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['biodata.biodata_form']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['biodata.biodata_header']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -34,7 +34,7 @@
                         <p:panelGrid style="width: 100%;margin-bottom: 20px;margin-top: 20px" styleClass="grid_border3" >
                             <p:row>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Nama Depan"  for="firstNameId" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['biodata.front_name']}"  for="firstNameId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:inputText value="#{bioDataFormController.bioDataModel.firstName}" styleClass="isitext_hrm" label="Nama Depan"
@@ -42,7 +42,7 @@
                                     <p:message for="firstNameId"/>
                                 </p:column>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important">
-                                    <p:outputLabel  value="Gelar" styleClass="label_hrm" for="titleId"/>
+                                    <p:outputLabel  value="#{appmsg['biodata.title']}" styleClass="label_hrm" for="titleId"/>
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:inputText value="#{bioDataFormController.bioDataModel.title}" styleClass="isitext_hrm" style="width: 75%" label="Gelar"
@@ -53,7 +53,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Nama Belakang" styleClass="label_hrm" for="lastNameId"/>
+                                    <p:outputLabel  value="#{appmsg['biodata.last_name']}" styleClass="label_hrm" for="lastNameId"/>
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:inputText value="#{bioDataFormController.bioDataModel.lastName}" styleClass="isitext_hrm" style="width: 75%" label="Nama Belakang"
@@ -61,7 +61,7 @@
                                     <p:message for="lastNameId"/>
                                 </p:column>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Nama Panggilan" styleClass="label_hrm" for="nickNameId"/>
+                                    <p:outputLabel  value="#{appmsg['biodata.nickname']}" styleClass="label_hrm" for="nickNameId"/>
                                 </p:column>
                                 <p:column style="width: 37%" >
                                     <p:inputText  value="#{bioDataFormController.bioDataModel.nickname}" styleClass="isitext_hrm" style="width: 75%" label="Nama Panggilan"
@@ -71,7 +71,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Tempat Lahir" styleClass="label_hrm" for="placeOfBirthId"/>
+                                    <p:outputLabel  value="#{appmsg['global.tempat_lahir']}" styleClass="label_hrm" for="placeOfBirthId"/>
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:selectOneMenu  style="margin-right: 3px;width: 77%" id="placeOfBirthId" filter="true" required="false" label="Tempat Lahir"
@@ -82,7 +82,7 @@
                                     <p:message for="placeOfBirthId"/>
                                 </p:column>
                                 <p:column style="width: 13%;background-color: #e1f0f0 !important" >
-                                    <p:outputLabel  value="Agama" styleClass="label_hrm" for="religionId"/>
+                                    <p:outputLabel  value="#{appmsg['religion.religion']}" styleClass="label_hrm" for="religionId"/>
                                 </p:column>
                                 <p:column style="width: 37%" >
                                     <p:selectOneMenu  style="margin-right: 3px;width: 77%" id="religionId" filter="true" value="#{bioDataFormController.bioDataModel.religionId}"
@@ -95,7 +95,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Tanggal Lahir" styleClass="label_hrm" for="tanggalLahirid" />
+                                    <p:outputLabel  value="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_date']}" styleClass="label_hrm" for="tanggalLahirid" />
                                 </p:column>
                                 <p:column style="width: 37%" >
                                     <p:calendar  id="tanggalLahirid" pattern="dd MMMM yyyy" label="Tanggal Lahir" value="#{bioDataFormController.bioDataModel.dateOfBirth}"
@@ -106,7 +106,7 @@
                                     <p:message for="tanggalLahirid"/>
                                 </p:column>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Ras" styleClass="label_hrm" for="rasId"/>
+                                    <p:outputLabel  value="#{appmsg['ras.ras']}" styleClass="label_hrm" for="rasId"/>
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:selectOneMenu  style="margin-right: 3px;width: 77%" id="rasId" filter="true" required="false" value="#{bioDataFormController.bioDataModel.raceId}"
@@ -121,18 +121,18 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Gender" styleClass="label_hrm" for="genderId"/>
+                                    <p:outputLabel  value="#{appmsg['global.gender']}" styleClass="label_hrm" for="genderId"/>
                                 </p:column>
                                 <p:column style="width: 37%" >
                                     <p:selectOneRadio id="genderId" styleClass="isitext_hrm" required="false" value="#{bioDataFormController.bioDataModel.gender}" label="Gender">
                                         <!--Cek HRM Constanta..-->
-                                        <f:selectItem itemLabel="Laki-Laki" itemValue="1" />
-                                        <f:selectItem itemLabel="Perempuan" itemValue="0" />
+                                        <f:selectItem itemLabel="#{appmsg['global_male']}" itemValue="1" />
+                                        <f:selectItem itemLabel="#{appmsg['global_female']}" itemValue="0" />
                                     </p:selectOneRadio>
                                     <p:message for="genderId"/>
                                 </p:column>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Dialek" styleClass="label_hrm" for="dialekId"/>
+                                    <p:outputLabel  value="#{appmsg['dialect.dialect']}" styleClass="label_hrm" for="dialekId"/>
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:selectOneMenu  style="margin-right: 3px;width: 77%" id="dialekId" filter="true" value="#{bioDataFormController.bioDataModel.doialekId}"
@@ -147,7 +147,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Marital Status"  for="maritalId" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['maritalstatus.detail_maritalstatus']}"  for="maritalId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:selectOneMenu  style="margin-right: 3px;width: 77%" id="maritalId" filter="true" required="true" value="#{bioDataFormController.bioDataModel.maritalStatusId}"
@@ -158,7 +158,7 @@
                                     <p:message for="maritalId"/>
                                 </p:column>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important">
-                                    <p:outputLabel  value="Warga Negara" styleClass="label_hrm" for="wargaNegaraId"/>
+                                    <p:outputLabel  value="#{appmsg['biodata.citizen']}" styleClass="label_hrm" for="wargaNegaraId"/>
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:selectOneMenu  style="margin-right: 3px;width: 77%" id="wargaNegaraId" filter="true" required="true" value="#{bioDataFormController.bioDataModel.nationalitiId}" >
@@ -171,7 +171,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="No. KK"  for="noKKId" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['biodata.family_identification_number']}"  for="noKKId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:inputText value="#{bioDataFormController.bioDataModel.noKK}" styleClass="isitext_hrm" label="No. KK"
@@ -179,7 +179,7 @@
                                     <p:message for="noKKId"/>
                                 </p:column>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important">
-                                    <p:outputLabel  value="No HP" styleClass="label_hrm" for="mobilePhoneId"/>
+                                    <p:outputLabel  value="#{appmsg['biodata.hp']}" styleClass="label_hrm" for="mobilePhoneId"/>
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:inputText value="#{bioDataFormController.bioDataModel.mobilePhone}" styleClass="isitext_hrm" style="width: 75%" label="No HP"
@@ -191,7 +191,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Golongan Darah"  for="bloddId" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['biodata.blood_type']}"  for="bloddId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:selectOneRadio id="bloddId" styleClass="isitext_hrm" required="false" value="#{bioDataFormController.bioDataModel.bloodType}" label="Golongan Darah">
@@ -204,7 +204,7 @@
                                     <p:message for="bloddId"/>
                                 </p:column>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important">
-                                    <p:outputLabel  value="Alamat Email" styleClass="label_hrm" for="personalEmailId"/>
+                                    <p:outputLabel  value="#{appmsg['biodata.email_address']}" styleClass="label_hrm" for="personalEmailId"/>
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:inputText value="#{bioDataFormController.bioDataModel.personalEmail}" styleClass="isitext_hrm" style="width: 75%" label="Alamat Email"
@@ -215,7 +215,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Jamsostek"  for="jamsostekId" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['biodata.jamsostek']}"  for="jamsostekId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:inputText value="#{bioDataFormController.bioDataModel.jamsostek}" styleClass="isitext_hrm" label="Jamsostek"
@@ -223,7 +223,7 @@
                                     <p:message for="jamsostekId"/>
                                 </p:column>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important">
-                                    <p:outputLabel  value="NPWP" styleClass="label_hrm" for="npwpID"/>
+                                    <p:outputLabel  value="#{appmsg['biodata.npwp']}" styleClass="label_hrm" for="npwpID"/>
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:inputText value="#{bioDataFormController.bioDataModel.npwp}" styleClass="isitext_hrm" style="width: 75%" label="NPWP"
@@ -237,33 +237,33 @@
 
                         <!--</p:panel>-->
                         <p:focus  context="bioDataFormId"/>
-                        <p:outputLabel value="Upload Images" styleClass="header_big"/>
+                        <p:outputLabel value="#{appmsg['global.upload_image']}" styleClass="header_big"/>
                         <p:separator/>
                         <div>
 
-                            <p:fileUpload required="true" sizeLimit="209715200" label="Pilih Foto" fileUploadListener="#{bioDataFormController.handingFotoUpload}"
+                            <p:fileUpload required="true" sizeLimit="209715200" label="#{appmsg['global.choose_photo']}" fileUploadListener="#{bioDataFormController.handingFotoUpload}"
                                           mode="advanced"  id="uploadFoto"  style="margin-top:10px;margin-bottom:10px;width: 100%;text-align: left!important"
                                           dragDropSupport="true" multiple="false" update="fotoNameId"
                                           allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/> 
-                            <p:outputLabel value="File Name"/>
+                            <p:outputLabel value="#{appmsg['global.file_name']}"/>
                             <p:outputLabel value=":" style="margin-left: 5px;margin-right: 5px"/>
                             <p:outputLabel value="#{bioDataFormController.fotoFileName}" id="fotoNameId"/>
 
 
-                            <p:fileUpload required="true" sizeLimit="209715200" label="Pilih Sidik Jari" fileUploadListener="#{bioDataFormController.handingFingerUpload}"
+                            <p:fileUpload required="true" sizeLimit="209715200" label="#{appmsg['global.choose_fingerprint']}" fileUploadListener="#{bioDataFormController.handingFingerUpload}"
                                           mode="advanced"  id="uploadFinger"  style="margin-top:10px;margin-bottom:10px;width: 100%;text-align: left!important"
                                           dragDropSupport="true" multiple="false" update="fingerNameId"
                                           allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/> 
-                            <p:outputLabel value="File Name"/>
+                            <p:outputLabel value="#{appmsg['global.file_name']}"/>
                             <p:outputLabel value=":" style="margin-left: 5px;margin-right: 5px"/>
                             <p:outputLabel value="#{bioDataFormController.fingerFileName}" id="fingerNameId"/>
 
 
-                            <p:fileUpload required="true" sizeLimit="209715200" label="Pilih Tanda Tangan " fileUploadListener="#{bioDataFormController.handingSignatureUpload}"
+                            <p:fileUpload required="true" sizeLimit="209715200" label="#{appmsg['global.choose_signature']}" fileUploadListener="#{bioDataFormController.handingSignatureUpload}"
                                           mode="advanced"  id="uploadSignature"  style="margin-top:10px;margin-bottom:10px;width: 100%;text-align: left!important"
                                           dragDropSupport="true" multiple="false" update="signatureId"
                                           allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/> 
-                            <p:outputLabel value="File Name"/>
+                            <p:outputLabel value="#{appmsg['global.file_name']}"/>
                             <p:outputLabel value=":" style="margin-left: 5px;margin-right: 5px"/>
                             <p:outputLabel value="#{bioDataFormController.signatureFileName}" id="signatureId"/>
 

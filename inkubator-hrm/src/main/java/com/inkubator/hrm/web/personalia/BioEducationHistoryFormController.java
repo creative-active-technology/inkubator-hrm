@@ -142,10 +142,18 @@ public class BioEducationHistoryFormController extends BaseController{
                 BioEducationHistory educationHistory = educationHistoryService.getAllDataByPK(educationId);
                 model.setId(educationHistory.getId());
                 model.setBiodataId(educationHistory.getBiodata().getId());
-                model.setEducationLevelId(educationHistory.getEducationLevel().getId());
-                model.setInstitutionEducationId(educationHistory.getInstitutionEducation().getId());
-                model.setFacultyId(educationHistory.getFaculty().getId());
-                model.setMajorId(educationHistory.getMajor().getId());
+                if(educationHistory.getEducationLevel() != null){
+                    model.setEducationLevelId(educationHistory.getEducationLevel().getId());
+                }
+                if(educationHistory.getInstitutionEducation() != null){
+                    model.setInstitutionEducationId(educationHistory.getInstitutionEducation().getId());
+                }
+                if(educationHistory.getFaculty()!=null){
+                    model.setFacultyId(educationHistory.getFaculty().getId());
+                }
+                if(educationHistory.getMajor()!=null){
+                    model.setMajorId(educationHistory.getMajor().getId());
+                }
                 model.setCertificateNumber(educationHistory.getCertificateNumber());
                 model.setScore(educationHistory.getScore());
                 if(educationHistory.getCity() != null ){
@@ -242,7 +250,9 @@ public class BioEducationHistoryFormController extends BaseController{
         educationHistory.setInstitutionEducation(new InstitutionEducation(model.getInstitutionEducationId()));
         educationHistory.setFaculty(new Faculty(model.getFacultyId()));
         educationHistory.setMajor(new Major(model.getMajorId()));
-        educationHistory.setCity(model.getCity());
+        if(model.getCity()!=null){
+            educationHistory.setCity(model.getCity());
+        }
         educationHistory.setCertificateNumber(model.getCertificateNumber());
         educationHistory.setScore(model.getScore());
         educationHistory.setYearIn(model.getYearIn());

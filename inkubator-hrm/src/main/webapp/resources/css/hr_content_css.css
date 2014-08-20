@@ -832,6 +832,26 @@ div.art-logo
     padding-right: 2px;
 }
 
+.img-approval-matrix
+{
+    background-image:url(../images/approval_matrix_ico.png)!important;
+    background-size: 80% auto;
+    padding-right: 2px;
+}
+
+.img-approval-definition
+{
+    background-image:url(../images/approval_defition_ico.png)!important;
+    background-size: 80% auto;
+    padding-right: 2px;
+}
+
+.img-approval-activity
+{
+    background-image:url(../images/approval_activity_ico.png)!important;
+    background-size: 80% auto;
+    padding-right: 2px;
+}
 
 #box_bg
 {

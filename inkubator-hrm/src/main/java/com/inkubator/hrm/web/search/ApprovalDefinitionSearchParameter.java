@@ -6,6 +6,7 @@
 package com.inkubator.hrm.web.search;
 
 import com.inkubator.webcore.util.SearchParameter;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -18,8 +19,14 @@ public class ApprovalDefinitionSearchParameter extends SearchParameter {
     private String approverIndividual;
     private String onBehalfApproverPosition;
     private String onBehaltAppriverIndividual;
+    private String approverType;
 
     public String getApproverPosition() {
+        if (StringUtils.equalsIgnoreCase(getKeyParam(), "approverPosition")) {
+            approverPosition = getParameter();
+        } else {
+            approverPosition = null;
+        }
         return approverPosition;
     }
 
@@ -28,6 +35,11 @@ public class ApprovalDefinitionSearchParameter extends SearchParameter {
     }
 
     public String getApproverIndividual() {
+        if (StringUtils.equalsIgnoreCase(getKeyParam(), "approverIndividual")) {
+            approverIndividual = getParameter();
+        } else {
+            approverIndividual = null;
+        }
         return approverIndividual;
     }
 
@@ -36,6 +48,11 @@ public class ApprovalDefinitionSearchParameter extends SearchParameter {
     }
 
     public String getProcessName() {
+        if (StringUtils.equalsIgnoreCase(getKeyParam(), "processName")) {
+            processName = getParameter();
+        } else {
+            processName = null;
+        }
         return processName;
     }
 
@@ -44,6 +61,11 @@ public class ApprovalDefinitionSearchParameter extends SearchParameter {
     }
 
     public String getOnBehalfApproverPosition() {
+        if (StringUtils.equalsIgnoreCase(getKeyParam(), "onBehalfApproverPosition")) {
+            onBehalfApproverPosition = getParameter();
+        } else {
+            onBehalfApproverPosition = null;
+        }
         return onBehalfApproverPosition;
     }
 
@@ -52,6 +74,11 @@ public class ApprovalDefinitionSearchParameter extends SearchParameter {
     }
 
     public String getOnBehaltAppriverIndividual() {
+        if (StringUtils.equalsIgnoreCase(getKeyParam(), "onBehaltAppriverIndividual")) {
+            onBehaltAppriverIndividual = getParameter();
+        } else {
+            onBehaltAppriverIndividual = null;
+        }
         return onBehaltAppriverIndividual;
     }
 
@@ -59,6 +86,17 @@ public class ApprovalDefinitionSearchParameter extends SearchParameter {
         this.onBehaltAppriverIndividual = onBehaltAppriverIndividual;
     }
 
-   
+    public String getApproverType() {
+        if (StringUtils.equalsIgnoreCase(getKeyParam(), "approverType")) {
+            approverType = getParameter();
+        } else {
+            approverType = null;
+        }
+        return approverType;
+    }
+
+    public void setApproverType(String approverType) {
+        this.approverType = approverType;
+    }
 
 }

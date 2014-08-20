@@ -28,6 +28,7 @@ public class SpecificationAbility implements Serializable {
     private Date createdOn;
     private Date updatedOn;
     private Set<JabatanSpesifikasi> jabatanSpesifikasis = new HashSet<JabatanSpesifikasi>(0);
+    private Set<BioSpesifikasiAbility> bioSpesifikasiAbilitys = new HashSet<BioSpesifikasiAbility>(0);
 
     public SpecificationAbility() {
 
@@ -130,4 +131,15 @@ public class SpecificationAbility implements Serializable {
     public void setJabatanSpesifikasis(Set<JabatanSpesifikasi> jabatanSpesifikasis) {
         this.jabatanSpesifikasis = jabatanSpesifikasis;
     }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "specificationAbility")
+    public Set<BioSpesifikasiAbility> getBioSpesifikasiAbilitys() {
+        return bioSpesifikasiAbilitys;
+    }
+
+    public void setBioSpesifikasiAbilitys(Set<BioSpesifikasiAbility> bioSpesifikasiAbilitys) {
+        this.bioSpesifikasiAbilitys = bioSpesifikasiAbilitys;
+    }
+    
+    
 }

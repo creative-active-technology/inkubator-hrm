@@ -21,8 +21,8 @@
                         <p:graphicImage library="images" name="bio_data.png" height="36" width="36" />
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Daftar Biodata" styleClass="header_big" />
-                                <p:outputLabel value="Data Biodata dari Personalia" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['biodata.biodata_list']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['biodata.biodata_header']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -37,9 +37,9 @@
                                     <p:selectOneMenu id="pencarianSelectId" value="#{bioDataViewController.bioDataSearchParameter.keyParam}"
                                                      style="width: 150px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemLabel="Nama Panggilan" itemValue="nickName"/>
-                                        <f:selectItem itemLabel="Nama Lengkap" itemValue="name" />
-                                        <f:selectItem itemLabel="Alamat Email" itemValue="emailAddress" />
+                                        <f:selectItem itemLabel="#{appmsg['biodata.nickname']}" itemValue="nickName"/>
+                                        <f:selectItem itemLabel="#{appmsg['biodata.fullname']}" itemValue="name" />
+                                        <f:selectItem itemLabel="#{appmsg['biodata.email_address']}" itemValue="emailAddress" />
                                     </p:selectOneMenu>
                                     <p:inputText value="#{bioDataViewController.bioDataSearchParameter.parameter}" style="width: 250px" id="pencarianId" styleClass="isitext_hrm" 
                                                  label="#{appmsg['global.searching']}" title="#{appmsg['global.searching']}"/>
@@ -69,7 +69,7 @@
                                       id="tableBiodataId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="Daftar Biodata" styleClass="label_hrm"/>
+                                <h:outputText value="#{appmsg['biodata.biodata_list']}" styleClass="label_hrm"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 25px">
                                 <f:facet name="header">  
@@ -79,13 +79,13 @@
                             </p:column>
                             <p:column sortBy="firstName" >
                                 <f:facet name="header">  
-                                    <h:outputText value="Nama"/>
+                                    <h:outputText value="#{appmsg['biodata.fullname']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{biodataView.firstName} #{biodataView.lastName}"/>
                             </p:column>
                             <p:column sortBy="realName" style="text-align: center">
                                 <f:facet name="header">  
-                                    <h:outputText value="Umur"/>
+                                    <h:outputText value="#{appmsg['biodata.age']}"/>
                                 </f:facet>
                                 <p:outputLabel value= "#{biodataView.dateOfBirth}">
                                     <f:converter converterId="ageByDateConverter" />
@@ -93,7 +93,7 @@
                             </p:column>
                             <p:column sortBy="gender" >
                                 <f:facet name="header">  
-                                    <h:outputText value="Gender"/>
+                                    <h:outputText value="#{appmsg['global.gender']}"/>
                                 </f:facet>
                                 <p:outputLabel value= "#{biodataView.gender}">
                                     <f:converter converterId="genderConverter" />
@@ -101,23 +101,23 @@
                             </p:column>
                             <p:column sortBy="religion" >
                                 <f:facet name="header">  
-                                    <h:outputText value="Agama"/>
+                                    <h:outputText value="#{appmsg['religion.religion']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{biodataView.religion.name}"/>
                             </p:column>
                              <p:column sortBy="maritalStatus" >
                                 <f:facet name="header">  
-                                    <h:outputText value="Status"/>
+                                    <h:outputText value="#{appmsg['global.status']}"/>
                                 </f:facet>
                                  <h:outputLabel value= "#{biodataView.maritalStatus.name}"/>
                             </p:column>
                             <p:column sortBy="personalEmail" >
                                 <f:facet name="header">  
-                                    <h:outputText value="Alamat Email"/>
+                                    <h:outputText value="#{appmsg['biodata.email_address']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{biodataView.personalEmail}"/>
                             </p:column>                                                       
-                            <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton  icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
                                                   action="#{bioDataViewController.doDetail()}" style="font-size: 10px!important" >                        
                                     <f:setPropertyActionListener value="#{biodataView}" target="#{bioDataViewController.selectedBioData}" />
@@ -168,7 +168,7 @@
                                 </h:panelGrid>
                             </div>
                             <h:panelGrid  columns="3">
-                                <p:outputLabel value="Nama" styleClass="label_hrm"/>
+                                <p:outputLabel value="#{appmsg['biodata.fullname']}" styleClass="label_hrm"/>
                                 <p:outputLabel value=":"  styleClass="label_hrm" />
                                 <p:outputLabel value="#{bioDataViewController.selectedBioData.firstName} #{bioDataViewController.selectedBioData.lastName}" styleClass="isitext_hrm"/>
                             </h:panelGrid>

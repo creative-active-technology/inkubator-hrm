@@ -15,8 +15,10 @@ import com.inkubator.hrm.entity.BioEmploymentHistory;
 import com.inkubator.hrm.entity.BioFamilyRelationship;
 import com.inkubator.hrm.entity.BioIdCard;
 import com.inkubator.hrm.entity.BioInsurance;
+import com.inkubator.hrm.entity.BioKeahlian;
 import com.inkubator.hrm.entity.BioMedicalHistory;
 import com.inkubator.hrm.entity.BioPeopleInterest;
+import com.inkubator.hrm.entity.BioSpesifikasiAbility;
 import com.inkubator.hrm.service.BioAddressService;
 import com.inkubator.hrm.service.BioBankAccountService;
 import com.inkubator.hrm.service.BioDataService;
@@ -27,8 +29,10 @@ import com.inkubator.hrm.service.BioEmploymentHistoryService;
 import com.inkubator.hrm.service.BioFamilyRelationshipService;
 import com.inkubator.hrm.service.BioIdCardService;
 import com.inkubator.hrm.service.BioInsuranceService;
+import com.inkubator.hrm.service.BioKeahlianService;
 import com.inkubator.hrm.service.BioMedicalHistoryService;
 import com.inkubator.hrm.service.BioPeopleInterestService;
+import com.inkubator.hrm.service.BioSpesifikasiAbilityService;
 import com.inkubator.hrm.web.model.BioEducationHistoryViewModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
@@ -145,7 +149,22 @@ public class BioDataDetilController extends BaseController {
     @ManagedProperty(value = "#{bioIdCardService}")
     private BioIdCardService bioIdCardService;
 //end. bio bank
+    
+    //start. bio keahlian
+    private BioKeahlian selectedBioKeahlian;
+    @ManagedProperty(value = "#{bioKeahlianService}")
+    private BioKeahlianService bioKeahlianService;
+    private List<BioKeahlian> bioKeahlians; 
+//end. bio bank
+    
+        //start. bio apesifikasi ability
+    private BioSpesifikasiAbility selectedDioSpesifikasiAbility;
+    @ManagedProperty(value = "#{bioSpesifikasiAbilityService}")
+    private BioSpesifikasiAbilityService bioSpesifikasiAbilityService;
+    private List<BioSpesifikasiAbility> spesifikasiAbilitys; 
+//end. bio bank
 
+    
     @PostConstruct
     @Override
     public void initialization() {
@@ -164,6 +183,8 @@ public class BioDataDetilController extends BaseController {
             educationHistory = educationHistoryService.getAllDataByBioDataId(selectedBioData.getId());
             listPeopleInterest = peopleInterestService.getAllDataByBioDataId(selectedBioData.getId());
             dataBioEmergencyContacs = bioEmergencyContactService.getAllDataByBioDataId(selectedBioData.getId());
+            bioKeahlians = bioKeahlianService.getAllDataByBioDataId(selectedBioData.getId());
+            spesifikasiAbilitys = bioSpesifikasiAbilityService.getAllDataByBiodataId(selectedBioData.getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -171,6 +192,12 @@ public class BioDataDetilController extends BaseController {
 
     @PreDestroy
     public void cleanAndExit() {
+        selectedDioSpesifikasiAbility = null;
+        bioSpesifikasiAbilityService = null;
+        spesifikasiAbilitys = null;
+        selectedBioKeahlian = null;
+        bioKeahlianService = null;
+        bioKeahlians = null;
         selectedBioData = null;
         selectedBioAddress = null;
         bioAddresses = null;
@@ -460,6 +487,54 @@ public class BioDataDetilController extends BaseController {
         this.bioIdCardService = bioIdCardService;
     }
 
+    public BioKeahlian getSelectedBioKeahlian() {
+        return selectedBioKeahlian;
+    }
+
+    public void setSelectedBioKeahlian(BioKeahlian selectedBioKeahlian) {
+        this.selectedBioKeahlian = selectedBioKeahlian;
+    }
+
+    public List<BioKeahlian> getBioKeahlians() {
+        return bioKeahlians;
+    }
+
+    public void setBioKeahlians(List<BioKeahlian> bioKeahlians) {
+        this.bioKeahlians = bioKeahlians;
+    }
+
+    public BioKeahlianService getBioKeahlianService() {
+        return bioKeahlianService;
+    }
+
+    public void setBioKeahlianService(BioKeahlianService bioKeahlianService) {
+        this.bioKeahlianService = bioKeahlianService;
+    }
+
+    public BioSpesifikasiAbility getSelectedDioSpesifikasiAbility() {
+        return selectedDioSpesifikasiAbility;
+    }
+
+    public void setSelectedDioSpesifikasiAbility(BioSpesifikasiAbility selectedDioSpesifikasiAbility) {
+        this.selectedDioSpesifikasiAbility = selectedDioSpesifikasiAbility;
+    }
+
+    public BioSpesifikasiAbilityService getBioSpesifikasiAbilityService() {
+        return bioSpesifikasiAbilityService;
+    }
+
+    public void setBioSpesifikasiAbilityService(BioSpesifikasiAbilityService bioSpesifikasiAbilityService) {
+        this.bioSpesifikasiAbilityService = bioSpesifikasiAbilityService;
+    }
+
+    public List<BioSpesifikasiAbility> getSpesifikasiAbilitys() {
+        return spesifikasiAbilitys;
+    }
+
+    public void setSpesifikasiAbilitys(List<BioSpesifikasiAbility> spesifikasiAbilitys) {
+        this.spesifikasiAbilitys = spesifikasiAbilitys;
+    }
+    
     public String doDetail() {
         return "/protected/personalia/biodata_detail.htm?faces-redirect=true&execution=e" + selectedBioData.getId();
     }
@@ -478,6 +553,10 @@ public class BioDataDetilController extends BaseController {
 
     public String doBack() {
         return "/protected/personalia/biodata_view.htm?faces-redirect=true";
+    }
+    
+    public String doGenerateCV(){
+    	return "/protected/personalia/bio_generate_cv_view.htm?faces-redirect=true&execution=e" + selectedBioData.getId();
     }
 
     /**
@@ -1310,5 +1389,147 @@ public class BioDataDetilController extends BaseController {
 
     /**
      * END Bio IdCard method
+     */
+    
+     /**
+     * START Bio Keahlian method
+     */
+    public void doSelectBioKeahlian() {
+        try {
+            selectedBioKeahlian = bioKeahlianService.getAllDataByPK(selectedBioKeahlian.getId());
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+
+    public void doUpdateBioKeahlian() {
+
+        List<String> bioKeahlian = new ArrayList<>();
+        bioKeahlian.add(String.valueOf(selectedBioKeahlian.getId()));
+
+        List<String> bioDataId = new ArrayList<>();
+        bioDataId.add(String.valueOf(selectedBioData.getId()));
+
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("bioKeahlianId", bioKeahlian);
+        dataToSend.put("bioDataId", bioDataId);
+        showDialogBioKahlian(dataToSend);
+
+    }
+
+    public void doAddBioKeahlian() {
+        List<String> bioDataId = new ArrayList<>();
+        bioDataId.add(String.valueOf(selectedBioData.getId()));
+
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("bioDataId", bioDataId);
+        showDialogBioKahlian(dataToSend);
+    }
+
+    public void doDeleteBioKeahlian() {
+        try {
+            bioKeahlianService.delete(selectedBioKeahlian);
+            bioKeahlians = bioKeahlianService.getAllDataByBioDataId(selectedBioKeahlian.getBiodata().getId());
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+
+        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (Exception ex) {
+            LOGGER.error("Error when doDelete bioFamilyRelationship", ex);
+        }
+    }
+
+    private void showDialogBioKahlian(Map<String, List<String>> params) {
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 500);
+        options.put("contentHeight", 250);
+        RequestContext.getCurrentInstance().openDialog("bio_keahlian_form", options, params);
+    }
+
+    public void onDialogReturnBioKeahlian(SelectEvent event) {
+        try {
+            bioKeahlians = bioKeahlianService.getAllDataByBioDataId(selectedBioData.getId());
+            super.onDialogReturn(event);
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+
+    /**
+     * END Bio Keahlian method
+     */
+    
+    /**
+     * START Bio Spesifikasi Ability method
+     */
+    public void doSelectBioSpesifikasiAbility() {
+        try {
+            selectedBioKeahlian = bioKeahlianService.getAllDataByPK(selectedBioKeahlian.getId());
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+
+    public void doUpdateBioSpesifikasiAbility() {
+
+        List<String> bioSpecAbi = new ArrayList<>();
+        bioSpecAbi.add(String.valueOf(selectedDioSpesifikasiAbility.getId()));
+
+        List<String> bioDataId = new ArrayList<>();
+        bioDataId.add(String.valueOf(selectedBioData.getId()));
+
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("bioSpecAbiId", bioSpecAbi);
+        dataToSend.put("bioDataId", bioDataId);
+        showDialogBioSpesifikasiAbility(dataToSend);
+
+    }
+
+    public void doAddBioSpesifikasiAbility() {
+        List<String> bioDataId = new ArrayList<>();
+        bioDataId.add(String.valueOf(selectedBioData.getId()));
+
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("bioDataId", bioDataId);
+        showDialogBioSpesifikasiAbility(dataToSend);
+    }
+
+    public void doDeleteBioSpesifikasiAbility() {
+        try {
+            bioSpesifikasiAbilityService.delete(selectedDioSpesifikasiAbility);
+            spesifikasiAbilitys = bioSpesifikasiAbilityService.getAllDataByBiodataId(selectedDioSpesifikasiAbility.getBiodata().getId());
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+
+        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (Exception ex) {
+            LOGGER.error("Error when doDelete bioFamilyRelationship", ex);
+        }
+    }
+
+    private void showDialogBioSpesifikasiAbility(Map<String, List<String>> params) {
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 500);
+        options.put("contentHeight", 250);
+        RequestContext.getCurrentInstance().openDialog("bio_spesifikasi_ability_form", options, params);
+    }
+
+    public void onDialogReturnBioSpesifikasiAbility(SelectEvent event) {
+        try {
+            spesifikasiAbilitys = bioSpesifikasiAbilityService.getAllDataByBiodataId(selectedBioData.getId());
+            super.onDialogReturn(event);
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+
+    /**
+     * END Bio FamilyRelationship method
      */
 }

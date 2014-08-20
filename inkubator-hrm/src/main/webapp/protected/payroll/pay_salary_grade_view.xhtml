@@ -66,37 +66,37 @@
                             <f:facet name="header">  
                                 <h:outputText value="#{appmsg['paysalarygrade.list_of_pay_salary_grade']}"/>
                             </f:facet> 
-                            <p:column style="text-align: center;width: 3%">
-                                <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['global.number']}"/>
-                                </f:facet>
-                                <h:outputLabel value="#{no+1}." />
-                            </p:column>
-                            <p:column sortBy="name" style="width: 15%">
+                            <p:column sortBy="gradeSalary" style="width: 15%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['paysalarygrade.grade']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.gradeSalary}" />
                             </p:column>
-                            <p:column sortBy="name" style="width: 15%">
+                            <p:column sortBy="minSalary" style="width: 15%;text-align: right;">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['paysalarygrade.min_salary']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.minSalary}" />
+                                <h:outputLabel value= "#{data.minSalary}" >
+                                    <f:convertNumber pattern="###,###" type="currency"/>
+                                </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="name" style="width: 15%">
+                            <p:column sortBy="mediumSalary" style="width: 15%;text-align: right;">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['paysalarygrade.medium_salary']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.mediumSalary}" />
+                                <h:outputLabel value= "#{data.mediumSalary}" >
+                                    <f:convertNumber pattern="###,###" type="currency"/>
+                                </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="name" style="width: 15%">
+                            <p:column sortBy="maxSalary" style="width: 15%;text-align: right;">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['paysalarygrade.max_salary']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.maxSalary}" />
+                                <h:outputLabel value= "#{data.maxSalary}" >
+                                    <f:convertNumber pattern="###,###" type="currency"/>
+                                </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="name" style="width: 18%">
+                            <p:column sortBy="currency" style="width: 18%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['currency.currency']}"/>
                                 </f:facet>

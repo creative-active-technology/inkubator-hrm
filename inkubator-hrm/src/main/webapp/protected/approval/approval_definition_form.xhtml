@@ -10,213 +10,211 @@
         <title>IGNORED</title>
     </h:head>
     <h:body>
-        <ui:composition template="/templates/master_layout.xhtml">
+        <ui:composition template="/templates/master_layout_full.xhtml">
             <ui:define name="windowTitle">
                 Home
             </ui:define>
             <ui:define name="center">
+                <div id="box_bg">
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="approval_defition.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="Detil Approval Definitions" styleClass="header_big" />
+                                <p:outputLabel value="Data Approval Defitions dari Aplikasi" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator />
+                    <p:growl id="growlUserFormId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
+                    <h:form id="userFormDetail" >
 
-                <pe:layout fullPage="false" style="width: 97%; height: 100%;margin-left: 20px;
-                           margin-top: 10px;min-height: 480px;margin-bottom: 8px"> 
-                    <pe:layoutPane position="east" size="270" resizable="false" maxWidth="100%" maxHeight="100%" maxSize="100%">  
-                        <f:facet name="header">  
-                            <h:outputText value="Help and Informations" style="font-family: Trebuchet MS;font-size: 12px;font-weight: bold"/>  
-                        </f:facet>  
-                        <p:panelGrid columns="2" style="margin-left: 5px;margin-right: 5px;margin-top: 5px">
-                            <f:facet name="header">  
-                                <h:outputText value="Password Expired Help" style="font-family: Trebuchet MS;font-size: 12px;font-weight: bold"/>  
-                            </f:facet>
+                        <p:panelGrid style="width: 100%;margin-top: 20px;" styleClass="grid_border3">
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Approval Name" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:selectOneMenu id="approvalName" styleClass="isitext_hrm" value="#{approvalDefinitionFormController.approvalDefinitionModel.name}" style="width: 75%" required="true">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <!--Cek HRM Constanta..-->
+                                        <f:selectItem itemLabel="Proses Perubahan Bio Data" itemValue="BIO_DATA_EDIT" />
+                                        <f:selectItem itemLabel="Proses Perubahan Riwayat Kesehantan" itemValue="BIO_HEATLY_EDIT" />
+                                        <f:selectItem itemLabel="Proses Perubahan Riwayat Kerja" itemValue="BIO_OCCUPATIONAL_EDIT" />
+                                    </p:selectOneMenu>
+                                    <p:message for="approvalName"/>
 
-                            <h:outputLabel value="Expired Period"/>
-                            <h:outputLabel value="Menyatakan berapa lama sebuah password dari accoount tertentu kadaluarsa dan hari di barukan.
-                                           Satuan Exxpired Period dalam bulan." />
-                            <h:outputLabel value="Expired Notification"/>
-                            <h:outputLabel value="Menyatakan berapa lama sebuah password dari accoount tertentu kadaluarsa dan hari di barukan.
-                                           Satuan Exxpired Period dalam bulan." />
-                            <h:outputLabel value="Notifationi Period"/>
-                            <h:outputLabel value="Menyatakan berapa lama sebuah password dari accoount tertentu kadaluarsa dan hari di barukan.
-                                           Satuan Exxpired Period dalam bulan." />
-                            <h:outputLabel value="Password must Different"/>
-                            <h:outputLabel value="Menyatakan berapa lama sebuah password dari accoount tertentu kadaluarsa dan hari di barukan.
-                                           Satuan Exxpired Period dalam bulan." />
+                                </p:column>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important">
+                                    <p:outputLabel  value="Process Name" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:selectOneMenu id="procesName" styleClass="isitext_hrm" value="#{bioAddressFormController.model.type}" style="width: 75%" required="true">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <!--Cek HRM Constanta..-->
+                                        <f:selectItem itemLabel="Saat Proses Approval" itemValue="APPROVAL_PROCESS" />
+                                        <f:selectItem itemLabel="Saat Permintaan Disetujui" itemValue="ON_APPROVE_INFO" />
+                                        <f:selectItem itemLabel="Saat Permintaan Ditolak" itemValue="ON_REJECT_INFO" />
+                                    </p:selectOneMenu>
+                                    <p:message for="procesName"/>
+                                </p:column>
+
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Urutan Approval" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:spinner id="sequenceId" value="#{menuFormController.model.menuLevel}" size="2" required="true"
+                                               min="1" max="100" stepFactor="1" >
+
+                                    </p:spinner>
+                                    <p:message for="sequenceId"/>
+                                </p:column>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Approver Type" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%" >
+                                    <p:selectOneMenu id="approverType" styleClass="isitext_hrm" value="#{bioAddressFormController.model.type}" style="width: 75%" required="true">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <!--Cek HRM Constanta..-->
+                                        <f:selectItem itemLabel="Disetujui Berdasarkan Jabatan" itemValue="APPROVAL_TYPE_POSITION" />
+                                        <f:selectItem itemLabel="Disetujui Berdasarkan Individu" itemValue="APPROVAL_TYPE_INDIVIDUAL" />
+                                        <f:selectItem itemLabel="Disetujui Berdasarkan Hirarki Departement" itemValue="APPROVAL_TYPE_DEPARTMENT" />
+                                    </p:selectOneMenu>
+                                    <p:message for="approverType"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Minimum Approver" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:spinner id="minApproverId" value="#{menuFormController.model.menuLevel}" size="2" required="true"
+                                               min="1" max="100" stepFactor="1" >
+                                    </p:spinner>
+                                    <p:message for="minApproverId"/>
+                                </p:column>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Approver Individual" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:inputText value="#{empDataFormController.empDataModel.bioDataName}" maxlength="45"
+                                                 styleClass="isitext_hrm" label="Name" 
+                                                 style="width: 73%" required="true" id="approverIndividualId"  />
+                                    <p:commandButton  style="margin-left: 5px" icon="ui-icon-search" title="Cari" action="#{empDataFormController.doSearch()}" widgetVar="cariId"
+                                                      ajax="true" immediate="true">
+                                        <p:ajax event="dialogReturn" listener="#{empDataFormController.onDialogReturn}"/>
+
+                                    </p:commandButton>
+                                    <p:message for="approverIndividualId"/>
+                                    
+                                   
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Minimum Rejector" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%" >
+                                    <p:spinner id="minRejectId" value="#{menuFormController.model.menuLevel}" size="2" required="true"
+                                               min="1" max="100" stepFactor="1" >
+                                    </p:spinner>
+                                    <p:message for="minRejectId"/>
+                                </p:column>
+                               
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Approver Position" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%" >
+                                     <p:inputText value="#{empDataFormController.empDataModel.bioDataName}" maxlength="45"
+                                                 styleClass="isitext_hrm" label="Name" 
+                                                 style="width: 73%" required="true" id="approverPositionId"  />
+                                    <p:commandButton  style="margin-left: 5px" icon="ui-icon-search" title="Cari" action="#{empDataFormController.doSearch()}" widgetVar="cariId"
+                                                      ajax="true" immediate="true">
+                                        <p:ajax event="dialogReturn" listener="#{empDataFormController.onDialogReturn}"/>
+
+                                    </p:commandButton>
+                                    <p:message for="approverPositionId"/>
+                                    
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="On Behalf" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:selectBooleanButton value="#{approvalDefinitionFormController.approvalDefinitionModel.allowOnBehalf}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
+                                                           offIcon="ui-icon-close"  id="isExpired" styleClass="label_button" >
+                                        <p:ajax listener="#{approvalDefinitionFormController.onChange()}" immediate="true" update="onBehalfIndividualId,onBehalfId,cariId1,onBehalfPositionId,cariId2"/>
+                                    </p:selectBooleanButton>
+                                </p:column>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="On Behalf Type" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%" >
+                                    <p:selectOneMenu id="onBehalfId" styleClass="isitext_hrm" value="#{bioAddressFormController.model.type}" style="width: 75%" required="true" disabled="#{approvalDefinitionFormController.onBehalf}">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <!--Cek HRM Constanta..-->
+                                        <f:selectItem itemLabel="Disetujui Berdasarkan Jabatan" itemValue="APPROVAL_TYPE_POSITION" />
+                                        <f:selectItem itemLabel="Disetujui Berdasarkan Individu" itemValue="APPROVAL_TYPE_INDIVIDUAL" />
+                                        <f:selectItem itemLabel="Disetujui Berdasarkan Hirarki Departement" itemValue="APPROVAL_TYPE_DEPARTMENT" />
+                                    </p:selectOneMenu>
+                                    <p:message for="onBehalfId"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="On Behalf Individual" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                     <p:inputText value="#{empDataFormController.empDataModel.bioDataName}" maxlength="45"
+                                                 styleClass="isitext_hrm" label="Name" disabled="#{approvalDefinitionFormController.onBehalf}"
+                                                 style="width: 73%" required="true" id="onBehalfIndividualId"  />
+                                     <p:commandButton  style="margin-left: 5px" icon="ui-icon-search" title="Cari" action="#{empDataFormController.doSearch()}" widgetVar="cariId" id="cariId1"
+                                                      ajax="true" immediate="true" disabled="#{approvalDefinitionFormController.onBehalf}">
+                                        <p:ajax event="dialogReturn" listener="#{empDataFormController.onDialogReturn}"/>
+
+                                    </p:commandButton>
+                                    <p:message for="onBehalfIndividualId"/>
+                                    
+                                </p:column>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="On Behalf Position" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%" >
+                                     <p:inputText value="#{empDataFormController.empDataModel.bioDataName}" maxlength="45" disabled="#{approvalDefinitionFormController.onBehalf}"
+                                                 styleClass="isitext_hrm" label="Name" 
+                                                 style="width: 73%" required="true" id="onBehalfPositionId"  />
+                                    <p:commandButton  style="margin-left: 5px" icon="ui-icon-search" title="Cari" action="#{empDataFormController.doSearch()}" widgetVar="cariId" disabled="#{approvalDefinitionFormController.onBehalf}"
+                                                      ajax="true" immediate="true" id="cariId2">
+                                        <p:ajax event="dialogReturn" listener="#{empDataFormController.onDialogReturn}"/>
+
+                                    </p:commandButton>
+                                    <p:message for="onBehalfPositionId"/>
+                                </p:column>
+                            </p:row>
 
                         </p:panelGrid>
-                        <p:panelGrid columns="2"  style="margin-left: 5px;margin-right:5px;margin-bottom: 5px;text-align: left" styleClass="header_panel">
-                            <f:facet name="header">  
-                                <h:outputText value="Password Complexity Help" style="font-family: Trebuchet MS;font-size: 12px;font-weight: bold"/>  
-                            </f:facet>
 
-                            <h:outputLabel value="Maximum Character"/>
-                            <h:outputLabel value="Menyatakan berapa lama sebuah password dari accoount tertentu kadaluarsa dan hari di barukan.
-                                           Satuan Exxpired Period dalam bulan." />
-                            <h:outputLabel value="Expired Notification"/>
-                            <h:outputLabel value="Menyatakan berapa lama sebuah password dari accoount tertentu kadaluarsa dan hari di barukan.
-                                           Satuan Exxpired Period dalam bulan." />
-                            <h:outputLabel value="Notifationi Period"/>
-                            <h:outputLabel value="Menyatakan berapa lama sebuah password dari accoount tertentu kadaluarsa dan hari di barukan.
-                                           Satuan Exxpired Period dalam bulan." />
-                            <h:outputLabel value="Password must Different"/>
-                            <h:outputLabel value="Menyatakan berapa lama sebuah password dari accoount tertentu kadaluarsa dan hari di barukan.
-                                           Satuan Exxpired Period dalam bulan." />
-
-                        </p:panelGrid>
-                    </pe:layoutPane>  
-                    <pe:layoutPane position="center" maxWidth="100%" maxHeight="100%" maxSize="100%">  
-                        <f:facet name="header">  
-                            <h:outputText value="Approval Definition" style="font-family: Trebuchet MS;font-size: 12px;font-weight: bold"/>  
-                        </f:facet> 
-                        <p:growl id ="passwordConfigFormGrowlId" showSummary="true" showDetail="true" globalOnly="true" escape="true" life="4000"/>
-                        <h:form id="passwordConfigFormId">
-                            <h:panelGrid columns="4" style="margin-left: 20px;margin-top: 10px;margin-bottom: 10px">
-                                <!--                                <p:commandButton value="Edit" style="width: 75px" icon="ui-icon-check" title="Edit Password Configuration" update="passwordConfigFormId"
-                                                                                 action="#{passwordConfigController.doEdit()}" disabled="#{!passwordConfigController.isDisable}"/>-->
-                                <p:commandButton value="Save" style="width: 75px" icon="ui-icon-disk"  title="Save Password Configuration" action="#{passwordConfigController.doSave()}" 
-                                                 update="passwordConfigFormId,:passwordConfigFormGrowlId"/>
-                                <p:commandButton value="Reset" icon="ui-icon-refresh" title="Reset"  process="@this" 
-                                                 style="width:75px;"  update="passwordConfigFormId">
-                                    <p:resetInput target="passwordConfigFormId"/>
-                                </p:commandButton>
-
-                                <p:commandButton value="Close" style="width: 75px" icon="ui-icon-home"  title="Close and Back to Home" action="#{passwordConfigController.doClose()}"/>
-                            </h:panelGrid>
-                            <h:outputLabel value="Approval Definition Form" style="margin-left: 23px;font-size: 13px;font-weight: bold;margin-top: 20px"/>
-                            <p:separator style="margin-left: 20px;margin-right: 20px;"/>
-                            <h:panelGrid columns="4" style="margin-left: 30px;margin-top: 10px;margin-bottom: 20px" >
-                                <p:outputLabel value="Approval Process" style="font-weight: bold"/>
-                                <p:outputLabel value=":"/>
-                                <p:selectOneMenu value="#{passwordConfigController.expiredPeriod}" id="expiredPeriodId" style="width: 210px">
-                                    <!--<f:selectItems value="#{passwordConfigController.period}" />-->
-                                    <f:selectItem  itemLabel="UPDATED USER" />
-                                    <f:selectItem  itemLabel="CREATE USER" />
-                                    <f:selectItem  itemLabel="CREATE USER" />
-                                    <f:selectItem  itemLabel="CREATE USER" />
-                                </p:selectOneMenu>
-                                <p:message for="expiredPeriodId" />
-
-                                <p:outputLabel value="Approval Name" style="font-weight: bold"/>
-                                <p:outputLabel value=":"/>
-                                <p:inputText  id="approvalNameId" style="width: 204px"/>
-                                <p:message for="approvalNameId"/>
-
-                                <p:outputLabel value="Approval Sequence" style="font-weight: bold"/>
-                                <p:outputLabel value=":"/>
-                                <p:spinner id="approvalSequenceId" size="25"
-                                           value="#{spinnerController.number3}" min="1" max="5"/>
-                                <p:message for="approvalSequenceId" />
-
-                                <p:outputLabel value="Min Approver" style="font-weight: bold"/>
-                                <p:outputLabel value=":"/>
-                                <p:spinner id="minApproverId" size="25"
-                                           value="#{spinnerController.number3}" min="1" max="5"/>
-                                <p:message for="maxApproverId"/>
-
-                                <p:outputLabel value="Min Rejector" style="font-weight: bold"/>
-                                <p:outputLabel value=":"/>
-                                <p:spinner id="maxApproverId" size="25"
-                                           value="#{spinnerController.number3}" min="1" max="5"/>
-                                <p:message for="maxApproverId"/>
-
-                                <p:outputLabel value="Approver Type" style="font-weight: bold"/>
-                                <p:outputLabel value=":"/>
-                                <p:selectOneRadio value="#{passwordConfigController.expiredPeriod}" id="approverTypeId" style="width: 200px">
-                                    <!--<f:selectItems value="#{passwordConfigController.period}" />-->
-                                    <f:selectItem  itemLabel="By Individual"  itemValue="1"/>
-                                    <f:selectItem  itemLabel="By Position" itemValue="2"/>
-                                </p:selectOneRadio>
-                                <p:message for="approverTypeId"/>
-
-                                <p:outputLabel value="Approver Individual" style="font-weight: bold"/>
-                                <p:outputLabel value=":"/>
-                                <h:panelGroup layout="block">
-                                    <h:panelGrid columns="2" style="margin-left: -4px">
-                                        <p:inputText id="approverIndividualId" style="width: 204px"/>
-                                        <p:commandButton value="Cari"/>
-                                    </h:panelGrid>
-                                </h:panelGroup>
-                                <p:message for="approverIndividualId"/>
-
-                                <p:outputLabel value="Approver Position" style="font-weight: bold"/>
-                                <p:outputLabel value=":"/>
-                                <p:selectOneMenu value="#{passwordConfigController.expiredPeriod}" id="approverPositionId" style="width: 210px" >
-                                    <!--<f:selectItems value="#{passwordConfigController.period}" />-->
-                                    <f:selectItem  itemLabel="HR STAFF" />
-                                    <f:selectItem  itemLabel="SUVERVISOR STAFF" />
-                                    <f:selectItem  itemLabel="HR STAFF" />
-                                    <f:selectItem  itemLabel="SUVERVISOR STAFF" />
-                                    <f:selectItem  itemLabel="HR STAFF" />
-                                    <f:selectItem  itemLabel="SUVERVISOR STAFF" />
-
-                                </p:selectOneMenu>
-                                <p:message for="approverPositionId"/>
-
-                                <p:outputLabel value="Allow On Behalf" style="font-weight: bold"/>
-                                <p:outputLabel value=":"/>
-                                <p:selectBooleanButton value="#{passwordConfigController.isMustHaveSPCharacter}" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" 
-                                                       offIcon="ui-icon-close" style="width: 60px" id="allowOnBehalfId"/>   
-                                <p:message for="allowOnBehalfId"/>
-
-                                <p:outputLabel value="Is Active" style="font-weight: bold"/>
-                                <p:outputLabel value=":"/>
-                                <p:selectBooleanButton value="#{passwordConfigController.isMustHaveSPCharacter}" onLabel="Yes" offLabel="No" onIcon="ui-icon-check"
-                                                       offIcon="ui-icon-close" style="width: 60px" id="isActiveId"/>   
-                                <p:message for="isActiveId"/>
-
-                                <p:outputLabel value="On Behalf Type" style="font-weight: bold"/>
-                                <p:outputLabel value=":"/>
-                                <p:selectOneRadio value="#{passwordConfigController.expiredPeriod}" id="onBehalfTypeId" style="width: 200px" >
-                                    <!--<f:selectItems value="#{passwordConfigController.period}" />-->
-                                    <f:selectItem  itemLabel="By Individual" />
-                                    <f:selectItem  itemLabel="By Position" />
-                                </p:selectOneRadio>
-                                <p:message for="onBehalfTypeId"/>
-
-                                <p:outputLabel value="On Behalf Individual" style="font-weight: bold"/>
-                                <p:outputLabel value=":"/>
-                                <h:panelGroup layout="block">
-                                    <h:panelGrid columns="2" style="margin-left: -4px">
-                                        <p:inputText id="onBehalfIndividualId" style="width: 204px"/>
-                                        <p:commandButton value="Cari"/>
-                                    </h:panelGrid>
-                                </h:panelGroup>
-                                <p:message for="onBehalfIndividualId"/>
-
-                                <p:outputLabel value="On Behalf Position" style="font-weight: bold"/>
-                                <p:outputLabel value=":"/>
-                                <p:selectOneMenu value="#{passwordConfigController.expiredPeriod}" id="onBehalfPositionId" style="width: 210px">
-                                    <!--<f:selectItems value="#{passwordConfigController.period}" />-->
-                                    <f:selectItem  itemLabel="HR STAFF" />
-                                    <f:selectItem  itemLabel="STAFF Information Tecjnology" />
-                                    <f:selectItem  itemLabel="HR STAFF" />
-                                    <f:selectItem  itemLabel="SUVERVISOR STAFF" />
-                                    <f:selectItem  itemLabel="HR STAFF" />
-                                    <f:selectItem  itemLabel="SUVERVISOR STAFF" />
-
-                                </p:selectOneMenu>
-                                <p:message for="onBehalfPositionId"/>
-
-                            </h:panelGrid>
-
-
-                            <p:separator style="margin-left: 20px;margin-right: 20px;"/>
-                            <h:panelGrid columns="4" style="margin-left: 20px;margin-top: 10px;margin-bottom: 10px">
-                                <!--                                <p:commandButton value="Edit" style="width: 75px" icon="ui-icon-check" title="Edit Password Configuration" update="passwordConfigFormId"
-                                                                                 action="#{passwordConfigController.doEdit()}" disabled="#{!passwordConfigController.isDisable}"/>-->
-                                <p:commandButton value="Save" style="width: 75px" icon="ui-icon-disk"  title="Save Password Configuration" action="#{passwordConfigController.doSave()}"
-                                                 update="passwordConfigFormId,:passwordConfigFormGrowlId"/>
-                                <p:commandButton value="Reset" icon="ui-icon-refresh" title="Reset"  process="@this" 
-                                                 style="width:75px;"  update="passwordConfigFormId">
-                                    <p:resetInput target="passwordConfigFormId"/>
-                                </p:commandButton>
-
-                                <p:commandButton value="Close" style="width: 75px" icon="ui-icon-home"  title="Close and Back to Home" action="#{passwordConfigController.doClose()}"/>
-                            </h:panelGrid>
-                        </h:form>
-                    </pe:layoutPane>  
-                </pe:layout>  
-
-
-                <h:outputScript library="js" name="tabmenu.js" />
-                <script> tabmenu.select("approvalDevinitionPage");</script>
+                        <p:separator/>
+                        <div style="margin-bottom: 5px">
+                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" 
+                                             action="#{userFormController.doSave()}" styleClass="label_button"
+                                             style="margin-right: 5px" label="#{appmsg['global.save']}"
+                                             icon="ui-icon-disk"
+                                             id="buttonSave" title="#{appmsg['global.save']}"/>
+                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}"
+                                             process="@this" icon="ui-icon-refresh" id="cleareId"  styleClass="label_button"  style="margin-right: 5px">  
+                                <p:resetInput target="userFormId" />  
+                            </p:commandButton>
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{userFormController.doBack()}" immediate="true"
+                                             styleClass="label_button"/>
+                            <!--</p:panel>-->
+                        </div>
+                        <div style="clear: both"/>
+                    </h:form>
+                </div>
             </ui:define>
 
         </ui:composition>

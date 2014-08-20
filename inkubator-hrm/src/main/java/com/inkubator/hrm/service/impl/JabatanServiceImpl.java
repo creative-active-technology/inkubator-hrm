@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
-import org.apache.poi.ss.formula.functions.T;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -304,6 +303,7 @@ public class JabatanServiceImpl extends IServiceImpl implements JabatanService {
     public Jabatan getJabatanByIdWithDetail(Long id) throws Exception {
         Jabatan jabatan = jabatanDao.getJabatanByIdWithDetail(id);
         jabatan.getGolonganJabatan().getPangkat().getPangkatName();
+        jabatan.getPaySalaryGrade().getId();
         return jabatan;
     }
 

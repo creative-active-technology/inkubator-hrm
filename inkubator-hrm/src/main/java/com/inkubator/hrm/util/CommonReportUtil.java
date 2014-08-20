@@ -6,13 +6,17 @@ package com.inkubator.hrm.util;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+
 import javax.faces.context.FacesContext;
+
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -20,6 +24,9 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
 import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
+
+import org.apache.pdfbox.exceptions.COSVisitorException;
+import org.apache.pdfbox.util.PDFMergerUtility;
 import org.primefaces.model.DefaultStreamedContent;
 
 /**
@@ -31,6 +38,63 @@ public class CommonReportUtil {
         Random random = new Random();
         long randomLong = random.nextLong();
         return prefix + randomLong + "." + extension;
+    }
+    
+    public static DefaultStreamedContent exportReportToPDFStream(
+            String jasperName,
+            Map<String, Object> params,
+            String reportOutputFileName) throws JRException, SQLException {
+    	
+    	//generate report from jrxml
+        InputStream input = FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream("/resources/reports/" + jasperName);
+        JasperPrint jasperPrint = JasperFillManager.fillReport(input, params, ServiceWebUtilCon.getConnection());
+        
+        //stream the output file
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        JasperExportManager.exportReportToPdfStream(jasperPrint, output);
+        InputStream pdfInput = new ByteArrayInputStream(output.toByteArray());
+        DefaultStreamedContent result = new DefaultStreamedContent(pdfInput, "application/pdf", reportOutputFileName);
+
+        return result;
+    }
+    
+    public static DefaultStreamedContent exportReportToPDFStreamWithAttachment(
+            String jasperName,
+            Map<String, Object> params,
+            String reportOutputFileName, List<String> attachments) throws JRException, SQLException {
+        
+    	//initial merging utility
+    	PDFMergerUtility mergerPDF = new PDFMergerUtility();
+    	
+    	//generate master report from jrxml
+        InputStream masterStream = FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream("/resources/reports/" + jasperName);
+        JasperPrint masterJP = JasperFillManager.fillReport(masterStream, params, ServiceWebUtilCon.getConnection());
+        ByteArrayOutputStream masterOutput = new ByteArrayOutputStream();
+        JasperExportManager.exportReportToPdfStream(masterJP, masterOutput);
+        InputStream masterPDF = new ByteArrayInputStream(masterOutput.toByteArray());
+        mergerPDF.addSource(masterPDF);
+        
+        //attachment pdf
+        for(String path : attachments){
+        	File file = new File(path);
+            mergerPDF.addSource(file);
+        }
+        
+        //merging process
+        ByteArrayOutputStream mergerOutput = new ByteArrayOutputStream();
+        mergerPDF.setDestinationStream(mergerOutput);
+        try {
+        	mergerPDF.mergeDocuments();			
+		} catch (COSVisitorException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}   
+        
+        //stream the output file
+        InputStream output = new ByteArrayInputStream(mergerOutput.toByteArray());        
+        DefaultStreamedContent result = new DefaultStreamedContent(output, "application/pdf", reportOutputFileName);
+        
+        return result;
     }
 
     public static DefaultStreamedContent exportReportToPDFStream(

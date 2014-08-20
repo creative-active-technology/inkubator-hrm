@@ -7,6 +7,7 @@ package com.inkubator.hrm.service.impl;
 
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.dao.BioDataDao;
+import com.inkubator.hrm.dao.BioDocumentDao;
 import com.inkubator.hrm.dao.CityDao;
 import com.inkubator.hrm.dao.DialectDao;
 import com.inkubator.hrm.dao.MaritalStatusDao;
@@ -14,14 +15,22 @@ import com.inkubator.hrm.dao.NationalityDao;
 import com.inkubator.hrm.dao.RaceDao;
 import com.inkubator.hrm.dao.ReligionDao;
 import com.inkubator.hrm.entity.BioData;
+import com.inkubator.hrm.entity.BioDocument;
 import com.inkubator.hrm.service.BioDataService;
+import com.inkubator.hrm.util.CommonReportUtil;
 import com.inkubator.hrm.web.search.BioDataSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesIO;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import javax.faces.context.FacesContext;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.criterion.Order;
+import org.primefaces.model.StreamedContent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -54,6 +63,8 @@ public class BioDataServiceImpl extends IServiceImpl implements BioDataService {
     private ReligionDao religionDao;
     @Autowired
     private FacesIO facesIO;
+    @Autowired
+    private BioDocumentDao bioDocumentDao;
 
     @Override
     public BioData getEntiyByPK(String id) throws Exception {
@@ -291,5 +302,41 @@ public class BioDataServiceImpl extends IServiceImpl implements BioDataService {
     public List<BioData> getByName(String name) throws Exception {
         return this.bioDataDao.getByName(name);
     }
+    
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public StreamedContent generateCV(long id) throws Exception {		
+		/*GsonBuilder gsonBuilder = new GsonBuilder();
+		gsonBuilder.setDateFormat("dd MMMM yyyy");
+		gsonBuilder.registerTypeAdapterFactory(HibernateProxyTypeAdapter.FACTORY);
+		gsonBuilder.setExclusionStrategies(new EntityExclusionStrategy());
+		Gson gson = gsonBuilder.create();
+		JsonParser parser = new JsonParser();		
+		JsonObject json = new JsonObject();
+		
+		BioData bioData = bioDataDao.getEntiyByPK(id);
+		boolean isBioDataExist = bioData != null;		
+		json.addProperty("isBioDataExist", isBioDataExist);
+		if(isBioDataExist){
+			json.add("bioData", parser.parse(gson.toJson(bioData)));
+		}*/
+		BioData bioData = bioDataDao.getEntiyByPK(id);
+		List<BioDocument> bioDocuments = bioDocumentDao.getAllDataByBioDataId(id);
+		List<String> attachments = new ArrayList<String>();
+		for(BioDocument document:bioDocuments){
+			if(StringUtils.isNotEmpty(document.getUploadPath())){
+				attachments.add(document.getUploadPath());
+			}			
+		}
+		Map<String, Object> params = new HashMap<>();		
+		params.put("BIODATA_ID", id);
+		params.put("IS_RENDER_ADDRESS", !bioData.getBioAddresses().isEmpty());
+		params.put("IS_RENDER_EDU_HISTORY", !bioData.getEducationHistories().isEmpty());
+		params.put("IS_RENDER_ID_CARD", !bioData.getBioIdCards().isEmpty());
+		params.put("IS_RENDER_EMP_HISTORY", !bioData.getBioEmploymentHistories().isEmpty());
+		params.put("SUBREPORT_DIR", FacesContext.getCurrentInstance().getExternalContext().getRealPath("/resources/reports/") + "\\");
+		StreamedContent file = CommonReportUtil.exportReportToPDFStreamWithAttachment("cv_builder.jasper", params, bioData.getFirstName() + ".pdf", attachments);
+		return file;
+	}
 
 }
