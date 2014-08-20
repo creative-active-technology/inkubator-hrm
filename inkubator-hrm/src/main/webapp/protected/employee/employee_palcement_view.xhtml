@@ -51,7 +51,7 @@
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3">
                                     <p:commandButton value="Export to XLS" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
-                                        <pe:exporter target="tableEmpDataId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_User"/>
+                                        <pe:exporter target="tableEmpDataIdExpand" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Employee_Placement"/>
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.add']}" action="#{empDataViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" icon="ui-icon-document"
                                                      styleClass="label_button" ajax="true" immediate="true">
@@ -134,15 +134,122 @@
                                 <p:outputLabel value="Data" style="margin-left: 3px" styleClass="label_hrm"/>
                             </f:facet>  
                         </p:dataTable>
+                        
+                        <!-- 
+                        	hide datatable, used for reporting expand 
+                        -->
+                        <p:dataTable  var="empViewData" rendered="false"  value="#{empDataViewController.empDataLazyDataModel}" lazy="true" paginator="true" pageLinks="7" 
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      id="tableEmpDataIdExpand" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['placement.placement_header']}" styleClass="label_hrm"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 25px">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"  />
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['placement.nik']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{empViewData.nik}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.name']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{empViewData.bioData.firstName} #{empViewData.bioData.lastName}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.tempat_lahir']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{empViewData.bioData.city.cityName}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.birth_date']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{empViewData.bioData.dateOfBirth}">
+                                	<f:convertDateTime pattern="dd MMMM yyyy" />
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.gender']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{empViewData.bioData.gender}">
+                                	<f:converter converterId="genderConverter" />
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['biodata.blood_type']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{empViewData.bioData.bloodType}">
+                                	<f:converter converterId="blodTypeConverter"/>
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['biodata.email_address']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{empViewData.bioData.personalEmail}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['biodata.hp']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{empViewData.bioData.mobilePhone}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['placement.join_data']}"/>
+                                </f:facet>
+                                <p:outputLabel value= "#{empViewData.joinDate}">
+                                    <f:convertDateTime pattern="dd MMMM yyyy" />
+                                </p:outputLabel>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['placement.jabatan_code']}"/>
+                                </f:facet>
+                                <p:outputLabel value= "#{empViewData.jabatanByJabatanId.code}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['placement.jabatan_name']}"/>
+                                </f:facet>
+                                <p:outputLabel value= "#{empViewData.jabatanByJabatanId.name}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['functiongroup.function_group']}"/>
+                                </f:facet>
+                                <p:outputLabel value= "#{empViewData.golonganJabatan.code}-#{empViewData.golonganJabatan.pangkat.pangkatName}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['department.department']}"/>
+                                </f:facet>
+                                <p:outputLabel value= "#{empViewData.jabatanByJabatanId.department.departmentName}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.unit']}"/>
+                                </f:facet>
+                                <p:outputLabel value= "#{empViewData.jabatanByJabatanId.unitKerja.name}"/>
+                            </p:column>
+                        </p:dataTable>
                         <p:blockUI block="userViewId" trigger="tableEmpDataId,btnPencarianId" >
                             <h:panelGrid columns="2" styleClass="grid_no_border">
                                 <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
                                 <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
                             </h:panelGrid>
                         </p:blockUI>
-<!--                        <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
-                            <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
-                        </p:dialog>-->
 
                     </h:form>
                     <!--</p:panel>-->
