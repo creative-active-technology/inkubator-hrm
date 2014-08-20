@@ -40,14 +40,6 @@
                                         </h:panelGroup>
                                         <h:panelGroup layout="block">
                                             <h:panelGrid columns="1" style="text-align: center">
-                                                <h:outputLink id="approvalId" value="#">
-                                                    <p:graphicImage library="images" name="approval_matrix.png" style="width: 60px;height: 60px;" cache="true" /> 
-                                                </h:outputLink>
-                                                <h:outputLabel value="Approval" styleClass="label_quick"/>
-                                            </h:panelGrid>
-                                        </h:panelGroup>
-                                        <h:panelGroup layout="block">
-                                            <h:panelGrid columns="1" style="text-align: center">
                                                 <h:outputLink id="createUserId5" value="${request.contextPath}/protected/account/login_history.htm">
                                                     <p:graphicImage library="images" name="login_history.png" style="width: 60px;height: 60px;" cache="true" /> 
                                                 </h:outputLink>
@@ -60,6 +52,14 @@
                                                     <p:graphicImage library="images" name="diagram.png" style="width: 60px;height: 60px;" cache="true" /> 
                                                 </h:outputLink>
                                                 <h:outputLabel value="Organisasi" styleClass="label_quick"/>
+                                            </h:panelGrid>
+                                        </h:panelGroup>
+                                        <h:panelGroup layout="block">
+                                            <h:panelGrid columns="1" style="text-align: center">
+                                                <h:outputLink id="approvalId" value="#">
+                                                    <p:graphicImage library="images" name="approval_matrix.png" style="opacity: 0.3;width: 60px;height: 60px;" cache="true" /> 
+                                                </h:outputLink>
+                                                <h:outputLabel value="Approval" styleClass="label_quick"/>
                                             </h:panelGrid>
                                         </h:panelGroup>
                                         <h:panelGroup layout="block">
