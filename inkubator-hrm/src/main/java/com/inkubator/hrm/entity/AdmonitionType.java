@@ -1,5 +1,5 @@
 package com.inkubator.hrm.entity;
-// Generated Aug 11, 2014 12:16:39 PM by Hibernate Tools 3.6.0
+// Generated Aug 20, 2014 9:17:56 AM by Hibernate Tools 3.6.0
 
 
 import java.util.Date;
@@ -32,6 +32,9 @@ public class AdmonitionType  implements java.io.Serializable {
      private String code;
      private String name;
      private String description;
+     private Integer longTerm;
+     private Integer suspend;
+     private Double salaryCut;
 
     public AdmonitionType() {
     }
@@ -40,7 +43,7 @@ public class AdmonitionType  implements java.io.Serializable {
     public AdmonitionType(long id) {
         this.id = id;
     }
-    public AdmonitionType(long id, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String code, String name, String description) {
+    public AdmonitionType(long id, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String code, String name, String description, Integer longTerm, Integer suspend, Double salaryCut) {
        this.id = id;
        this.createdBy = createdBy;
        this.createdOn = createdOn;
@@ -49,6 +52,9 @@ public class AdmonitionType  implements java.io.Serializable {
        this.code = code;
        this.name = name;
        this.description = description;
+       this.longTerm = longTerm;
+       this.suspend = suspend;
+       this.salaryCut = salaryCut;
     }
    
      @Id 
@@ -141,6 +147,36 @@ public class AdmonitionType  implements java.io.Serializable {
     
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    
+    @Column(name="long_term")
+    public Integer getLongTerm() {
+        return this.longTerm;
+    }
+    
+    public void setLongTerm(Integer longTerm) {
+        this.longTerm = longTerm;
+    }
+
+    
+    @Column(name="suspend")
+    public Integer getSuspend() {
+        return this.suspend;
+    }
+    
+    public void setSuspend(Integer suspend) {
+        this.suspend = suspend;
+    }
+
+    
+    @Column(name="salary_cut", precision=22, scale=0)
+    public Double getSalaryCut() {
+        return this.salaryCut;
+    }
+    
+    public void setSalaryCut(Double salaryCut) {
+        this.salaryCut = salaryCut;
     }
 
 

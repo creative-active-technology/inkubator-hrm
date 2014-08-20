@@ -244,6 +244,9 @@ public class AdmonitionTypeServiceImpl extends IServiceImpl implements Admonitio
         admonitionType.setCode(b.getCode());
         admonitionType.setName(b.getName());
         admonitionType.setDescription(b.getDescription());
+        admonitionType.setLongTerm(b.getLongTerm());
+        admonitionType.setSuspend(b.getSuspend());
+        admonitionType.setSalaryCut(b.getSalaryCut());
         admonitionType.setUpdatedBy(UserInfoUtil.getUserName());
         admonitionType.setUpdatedOn(new Date());
         admonitionTypeDao.update(admonitionType);

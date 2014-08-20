@@ -72,6 +72,67 @@
                         </p:row>
                         <p:row>
                             <p:column style="width: 29%">
+                                <p:outputLabel for="longId" value="#{appmsg['admonitionType.admonitionType_long']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="longId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+
+                                <p:inputText id="longId" title="#{appmsg['admonitionType.admonitionType_long']}" value="#{admonitionTypeFormController.admonitionTypeModel.longTerm}" 
+                                             required="true" requiredMessage="#{appmsg['admonitionType.admonitionType_long_should_not_be_empty']}" maxlength="11" styleClass="isitext_hrm" style="width:150px;" >
+                                    <pe:keyFilter mask="num"></pe:keyFilter>
+                                </p:inputText>
+                                <h:outputLabel for="longId" value="   #{appmsg['admonitionType.admonitionType_day']}" styleClass="label_hrm"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="longId"/>
+                            </p:column>
+                        </p:row>     
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="suspendId" value="#{appmsg['admonitionType.admonitionType_suspend']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="suspendId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+
+                                <p:inputText id="suspendId" title="#{appmsg['admonitionType.admonitionType_suspend']}" value="#{admonitionTypeFormController.admonitionTypeModel.suspend}" 
+                                             required="true" requiredMessage="#{appmsg['admonitionType.admonitionType_suspend_should_not_be_empty']}" maxlength="11" styleClass="isitext_hrm" style="width:150px;" >
+                                    <pe:keyFilter mask="num"></pe:keyFilter>
+                                </p:inputText>
+                                <h:outputLabel for="suspendId" value="   #{appmsg['admonitionType.admonitionType_month']}" styleClass="label_hrm"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="suspendId"/>
+                            </p:column>
+                        </p:row> 
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="cutId" value="#{appmsg['admonitionType.admonitionType_cut']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="cutId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+
+                                <p:spinner id="cutId" title="#{appmsg['admonitionType.admonitionType_cut']}" value="#{admonitionTypeFormController.admonitionTypeModel.salaryCut}" stepFactor="0.25"
+                                             required="true" requiredMessage="#{appmsg['admonitionType.admonitionType_cut_should_not_be_empty']}"  />
+                                <h:outputLabel for="cutId" value="   %" styleClass="label_hrm"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="cutId"/>
+                            </p:column>
+                        </p:row> 
+                        <p:row>
+                            <p:column style="width: 29%">
                                 <p:outputLabel for="descriptionId" value="#{appmsg['global.description']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
