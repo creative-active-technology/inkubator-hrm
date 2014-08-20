@@ -158,6 +158,18 @@
                             <p:column style="width:70%;"><p:outputLabel value="#{admonitionTypeViewController.selectedAdmonitionType.name}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['admonitionType.admonitionType_long']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{admonitionTypeViewController.selectedAdmonitionType.longTerm} #{appmsg['admonitionType.admonitionType_month']}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['admonitionType.admonitionType_suspend']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{admonitionTypeViewController.selectedAdmonitionType.suspend} #{appmsg['admonitionType.admonitionType_day']}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['admonitionType.admonitionType_cut']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{admonitionTypeViewController.selectedAdmonitionType.salaryCut} %" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:70%;"><p:outputLabel value="#{admonitionTypeViewController.selectedAdmonitionType.description}" styleClass="label_hrm"/></p:column>
                         </p:row>

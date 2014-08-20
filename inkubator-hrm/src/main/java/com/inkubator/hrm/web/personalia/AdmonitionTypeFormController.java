@@ -46,6 +46,9 @@ public class AdmonitionTypeFormController extends BaseController {
                     admonitionTypeModel.setCode(admonitionType.getCode());
                     admonitionTypeModel.setName(admonitionType.getName());
                     admonitionTypeModel.setDescription(admonitionType.getDescription());
+                    admonitionTypeModel.setLongTerm(admonitionType.getLongTerm());
+                    admonitionTypeModel.setSuspend(admonitionType.getSuspend());
+                    admonitionTypeModel.setSalaryCut(admonitionType.getSalaryCut());
                     isUpdate = Boolean.TRUE;
                 }
             } catch (Exception e) {
@@ -108,6 +111,9 @@ public class AdmonitionTypeFormController extends BaseController {
         admonitionType.setCode(admonitionTypeModel.getCode());
         admonitionType.setName(admonitionTypeModel.getName());
         admonitionType.setDescription(admonitionTypeModel.getDescription());
+        admonitionType.setLongTerm(admonitionTypeModel.getLongTerm());
+        admonitionType.setSuspend(admonitionTypeModel.getSuspend());
+        admonitionType.setSalaryCut(admonitionTypeModel.getSalaryCut());
         return admonitionType;
     }
 }

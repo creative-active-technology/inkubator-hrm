@@ -12,6 +12,9 @@ public class AdmonitionTypeModel implements Serializable {
     private String code;
     private String name;
     private String description;
+    private Integer longTerm;
+    private Integer suspend;
+    private Double salaryCut;
 
     public Long getId() {
         return id;
@@ -37,8 +40,6 @@ public class AdmonitionTypeModel implements Serializable {
         this.name = name;
     }
 
-    
-
     public String getDescription() {
         return description;
     }
@@ -46,6 +47,31 @@ public class AdmonitionTypeModel implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public Integer getLongTerm() {
+        return longTerm;
+    }
+
+    public void setLongTerm(Integer longTerm) {
+        this.longTerm = longTerm;
+    }
+
+    public Integer getSuspend() {
+        return suspend;
+    }
+
+    public void setSuspend(Integer suspend) {
+        this.suspend = suspend;
+    }
+
+    public Double getSalaryCut() {
+        return salaryCut;
+    }
+
+    public void setSalaryCut(Double salaryCut) {
+        this.salaryCut = salaryCut;
+    }
     
     
+
 }
