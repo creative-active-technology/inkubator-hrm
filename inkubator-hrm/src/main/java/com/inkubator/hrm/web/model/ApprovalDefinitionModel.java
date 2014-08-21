@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.inkubator.hrm.web.model;
 
 import java.io.Serializable;
@@ -12,20 +11,25 @@ import java.io.Serializable;
  *
  * @author Deni Husni FR
  */
-public class ApprovalDefinitionModel implements Serializable{
-     private Long id;
-     private long hrmUserByOnBehalfIndividualId;
-     private long jabatanByApproverPositionId;
-     private long hrmUserByApproverIndividualId;
-     private long jabatanByOnBehalfPositionId;
-     private String name;
-     private Integer sequence;
-     private Integer minApprover;
-     private Integer minRejector;
-     private String processType;
-     private String approverType;
-     private Boolean allowOnBehalf;
-     private String onBehalfType;
+public class ApprovalDefinitionModel implements Serializable {
+
+    private Long id;
+    private long hrmUserByOnBehalfIndividualId;
+    private String hrmUserByOnBehalfIndividualName;
+    private long jabatanByApproverPositionId;
+    private String jabatanByApproverPositionName;
+    private long hrmUserByApproverIndividualId;
+    private String hrmUserByApproverIndividualName;
+    private long jabatanByOnBehalfPositionId;
+    private String jabatanByOnBehalfPositionName;
+    private String name;
+    private Integer sequence=1;
+    private Integer minApprover=1;
+    private Integer minRejector=1;
+    private String processType;
+    private String approverType;
+    private Boolean allowOnBehalf;
+    private String onBehalfType;
 
     public Long getId() {
         return id;
@@ -130,6 +134,39 @@ public class ApprovalDefinitionModel implements Serializable{
     public void setOnBehalfType(String onBehalfType) {
         this.onBehalfType = onBehalfType;
     }
-     
-     
+
+    public String getHrmUserByOnBehalfIndividualName() {
+        return hrmUserByOnBehalfIndividualName;
+    }
+
+    public void setHrmUserByOnBehalfIndividualName(String hrmUserByOnBehalfIndividualName) {
+        this.hrmUserByOnBehalfIndividualName = hrmUserByOnBehalfIndividualName;
+    }
+
+    public String getJabatanByApproverPositionName() {
+        return jabatanByApproverPositionName;
+    }
+
+    public void setJabatanByApproverPositionName(String jabatanByApproverPositionName) {
+        this.jabatanByApproverPositionName = jabatanByApproverPositionName;
+    }
+
+    public String getHrmUserByApproverIndividualName() {
+        return hrmUserByApproverIndividualName;
+    }
+
+    public void setHrmUserByApproverIndividualName(String hrmUserByApproverIndividualName) {
+        this.hrmUserByApproverIndividualName = hrmUserByApproverIndividualName;
+    }
+
+    public String getJabatanByOnBehalfPositionName() {
+        return jabatanByOnBehalfPositionName;
+    }
+
+    public void setJabatanByOnBehalfPositionName(String jabatanByOnBehalfPositionName) {
+        this.jabatanByOnBehalfPositionName = jabatanByOnBehalfPositionName;
+    }
+    
+    
+
 }
