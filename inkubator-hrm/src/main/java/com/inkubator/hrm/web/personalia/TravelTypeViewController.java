@@ -93,7 +93,7 @@ public class TravelTypeViewController extends BaseController {
 
     public void doDetail() {
         try {
-            selectedTravelType = this.travelTypeService.getEntiyByPK(selectedTravelType.getId());
+            selectedTravelType = this.travelTypeService.getEntityByPKWithDetail(selectedTravelType.getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -129,8 +129,8 @@ public class TravelTypeViewController extends BaseController {
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", false);
-        options.put("contentWidth", 400);
-        options.put("contentHeight", 430);
+        options.put("contentWidth", 450);
+        options.put("contentHeight", 475);
         RequestContext.getCurrentInstance().openDialog("travel_type_form", options, params);
     }
 

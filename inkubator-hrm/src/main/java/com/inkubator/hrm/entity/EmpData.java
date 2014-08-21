@@ -51,6 +51,7 @@ public class EmpData implements java.io.Serializable {
     private String updatedBy;
     private Date updatedOn;
     private Set<EmpPersonAchievement> empPersonAchievements = new HashSet<EmpPersonAchievement>(0);
+    private Set<BusinessTravel> businessTravels = new HashSet<BusinessTravel>(0);
 
     public EmpData() {
     }
@@ -59,7 +60,7 @@ public class EmpData implements java.io.Serializable {
         this.id = id;
     }
 
-    public EmpData(long id, WtGroupWorking wtGroupWorking, EmployeeType employeeType, BioData bioData, PaySalaryGrade paySalaryGrade, Jabatan jabatanByJabatanId, GolonganJabatan golonganJabatan, Jabatan jabatanByJabatanGajiId, String nik, Date joinDate, String ppmp, String ppip, Boolean isFinger, Boolean heatlyPremi, Boolean ptkpStatus, Integer ptkpNumber, Boolean insentifStatus, BigDecimal basicSalary, String createdBy, Date createdOn, String updatedBy, Date updatedOn, Set<EmpPersonAchievement> empPersonAchievements) {
+    public EmpData(long id, WtGroupWorking wtGroupWorking, EmployeeType employeeType, BioData bioData, PaySalaryGrade paySalaryGrade, Jabatan jabatanByJabatanId, GolonganJabatan golonganJabatan, Jabatan jabatanByJabatanGajiId, String nik, Date joinDate, String ppmp, String ppip, Boolean isFinger, Boolean heatlyPremi, Boolean ptkpStatus, Integer ptkpNumber, Boolean insentifStatus, BigDecimal basicSalary, String createdBy, Date createdOn, String updatedBy, Date updatedOn, Set<BusinessTravel> businessTravels, Set<EmpPersonAchievement> empPersonAchievements) {
         this.id = id;
         this.wtGroupWorking = wtGroupWorking;
         this.employeeType = employeeType;
@@ -83,10 +84,10 @@ public class EmpData implements java.io.Serializable {
         this.updatedBy = updatedBy;
         this.updatedOn = updatedOn;
         this.empPersonAchievements = empPersonAchievements;
+        this.businessTravels = businessTravels;
     }
 
     @Id
-
     @Column(name = "id", unique = true, nullable = false)
     public long getId() {
         return this.id;
@@ -319,4 +320,13 @@ public class EmpData implements java.io.Serializable {
         String data = nik + " - " + bioData.getFirstName() + " " + bioData.getLastName();
         return data;
     }
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="empData")
+	public Set<BusinessTravel> getBusinessTravels() {
+		return businessTravels;
+	}
+
+	public void setBusinessTravels(Set<BusinessTravel> businessTravels) {
+		this.businessTravels = businessTravels;
+	}
+
 }

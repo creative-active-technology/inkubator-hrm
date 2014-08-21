@@ -39,6 +39,7 @@ public class GolonganJabatan  implements java.io.Serializable {
      private String updatedBy;
      private Date updatedOn;
      private Set<Jabatan> jabatans = new HashSet<Jabatan>(0);
+     private Set<TravelComponentCostRate> travelComponentCostRates = new HashSet<TravelComponentCostRate>(0);
 
     public GolonganJabatan() {
     }
@@ -47,7 +48,7 @@ public class GolonganJabatan  implements java.io.Serializable {
     public GolonganJabatan(long id) {
         this.id = id;
     }
-    public GolonganJabatan(long id, Pangkat pangkat, String code, Boolean overtime, String createdBy, Date createdOn, String updatedBy, Date updatedOn, Set<Jabatan> jabatans) {
+    public GolonganJabatan(long id, Pangkat pangkat, String code, Boolean overtime, String createdBy, Date createdOn, String updatedBy, Date updatedOn, Set<Jabatan> jabatans, Set<TravelComponentCostRate> travelComponentCostRates) {
        this.id = id;
        this.pangkat = pangkat;
        this.code = code;
@@ -57,6 +58,7 @@ public class GolonganJabatan  implements java.io.Serializable {
        this.updatedBy = updatedBy;
        this.updatedOn = updatedOn;
        this.jabatans = jabatans;
+       this.travelComponentCostRates = travelComponentCostRates;
     }
    
     @Id 
@@ -156,6 +158,16 @@ public class GolonganJabatan  implements java.io.Serializable {
     public void setJabatans(Set<Jabatan> jabatans) {
         this.jabatans = jabatans;
     }
+
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="golonganJabatan")
+	public Set<TravelComponentCostRate> getTravelComponentCostRates() {
+		return travelComponentCostRates;
+	}
+
+	public void setTravelComponentCostRates(Set<TravelComponentCostRate> travelComponentCostRates) {
+		this.travelComponentCostRates = travelComponentCostRates;
+	}
+	
 }
 
 

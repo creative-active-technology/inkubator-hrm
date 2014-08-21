@@ -3,9 +3,14 @@ package com.inkubator.hrm.entity;
 
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -34,6 +39,8 @@ public class TravelZone  implements java.io.Serializable {
      private String description;
      private Integer category;
      private Double distance;
+     private Set<TravelComponentCostRate> travelComponentCostRates  = new HashSet<TravelComponentCostRate>(0);
+     private Set<BusinessTravel> businessTravels = new HashSet<BusinessTravel>(0);
 
     public TravelZone() {
     }
@@ -42,7 +49,7 @@ public class TravelZone  implements java.io.Serializable {
     public TravelZone(long id) {
         this.id = id;
     }
-    public TravelZone(long id, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String code, String name, String description, Integer category, Double distance) {
+    public TravelZone(long id, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String code, String name, String description, Integer category, Double distance, Set<TravelComponentCostRate> travelComponentCostRates, Set<BusinessTravel> businessTravels) {
        this.id = id;
        this.createdBy = createdBy;
        this.createdOn = createdOn;
@@ -53,6 +60,8 @@ public class TravelZone  implements java.io.Serializable {
        this.description = description;
        this.category = category;
        this.distance = distance;
+       this.travelComponentCostRates = travelComponentCostRates;
+       this.businessTravels = businessTravels;
     }
    
      @Id 
@@ -167,8 +176,23 @@ public class TravelZone  implements java.io.Serializable {
         this.distance = distance;
     }
 
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="travelZone")
+	public Set<TravelComponentCostRate> getTravelComponentCostRates() {
+		return travelComponentCostRates;
+	}
 
+	public void setTravelComponentCostRates(Set<TravelComponentCostRate> travelComponentCostRates) {
+		this.travelComponentCostRates = travelComponentCostRates;
+	}
 
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="travelZone")
+	public Set<BusinessTravel> getBusinessTravels() {
+		return businessTravels;
+	}
+
+	public void setBusinessTravels(Set<BusinessTravel> businessTravels) {
+		this.businessTravels = businessTravels;
+	}
 
 }
 

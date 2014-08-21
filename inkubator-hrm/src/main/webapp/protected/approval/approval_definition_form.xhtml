@@ -49,12 +49,13 @@
                                     <p:outputLabel  value="Process Name" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%">
-                                    <p:selectOneMenu id="procesName" styleClass="isitext_hrm" value="#{bioAddressFormController.model.type}" style="width: 75%" required="true">
+                                    <p:selectOneMenu id="procesName" styleClass="isitext_hrm" value="#{approvalDefinitionFormController.approvalDefinitionModel.processType}" style="width: 75%" required="true">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <!--Cek HRM Constanta..-->
                                         <f:selectItem itemLabel="Saat Proses Approval" itemValue="APPROVAL_PROCESS" />
                                         <f:selectItem itemLabel="Saat Permintaan Disetujui" itemValue="ON_APPROVE_INFO" />
                                         <f:selectItem itemLabel="Saat Permintaan Ditolak" itemValue="ON_REJECT_INFO" />
+                                        <p:ajax listener="#{approvalDefinitionFormController.onProcessCange()}" update="minApproverId,minRejectId"/>
                                     </p:selectOneMenu>
                                     <p:message for="procesName"/>
                                 </p:column>
@@ -65,8 +66,8 @@
                                     <p:outputLabel  value="Urutan Approval" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%">
-                                    <p:spinner id="sequenceId" value="#{menuFormController.model.menuLevel}" size="2" required="true"
-                                               min="1" max="100" stepFactor="1" >
+                                    <p:spinner id="sequenceId" value="#{approvalDefinitionFormController.approvalDefinitionModel.sequence}" size="2" required="true"
+                                               min="1" max="100" stepFactor="1"  >
 
                                     </p:spinner>
                                     <p:message for="sequenceId"/>
@@ -75,7 +76,7 @@
                                     <p:outputLabel  value="Approver Type" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%" >
-                                    <p:selectOneMenu id="approverType" styleClass="isitext_hrm" value="#{bioAddressFormController.model.type}" style="width: 75%" required="true">
+                                    <p:selectOneMenu id="approverType" styleClass="isitext_hrm" value="#{approvalDefinitionFormController.approvalDefinitionModel.approverType}" style="width: 75%" required="true">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <!--Cek HRM Constanta..-->
                                         <f:selectItem itemLabel="Disetujui Berdasarkan Jabatan" itemValue="APPROVAL_TYPE_POSITION" />
@@ -90,8 +91,8 @@
                                     <p:outputLabel  value="Minimum Approver" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%">
-                                    <p:spinner id="minApproverId" value="#{menuFormController.model.menuLevel}" size="2" required="true"
-                                               min="1" max="100" stepFactor="1" >
+                                    <p:spinner id="minApproverId" value="#{approvalDefinitionFormController.approvalDefinitionModel.minApprover}" size="2" required="true"
+                                               min="1" max="100" stepFactor="1"  disabled="#{approvalDefinitionFormController.onProcess}">
                                     </p:spinner>
                                     <p:message for="minApproverId"/>
                                 </p:column>
@@ -99,7 +100,7 @@
                                     <p:outputLabel  value="Approver Individual" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%">
-                                    <p:inputText value="#{empDataFormController.empDataModel.bioDataName}" maxlength="45"
+                                    <p:inputText value="#{approvalDefinitionFormController.approvalDefinitionModel.hrmUserByApproverIndividualName}" maxlength="45"
                                                  styleClass="isitext_hrm" label="Name" 
                                                  style="width: 73%" required="true" id="approverIndividualId"  />
                                     <p:commandButton  style="margin-left: 5px" icon="ui-icon-search" title="Cari" action="#{empDataFormController.doSearch()}" widgetVar="cariId"
@@ -108,8 +109,8 @@
 
                                     </p:commandButton>
                                     <p:message for="approverIndividualId"/>
-                                    
-                                   
+
+
                                 </p:column>
                             </p:row>
                             <p:row>
@@ -117,17 +118,17 @@
                                     <p:outputLabel  value="Minimum Rejector" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%" >
-                                    <p:spinner id="minRejectId" value="#{menuFormController.model.menuLevel}" size="2" required="true"
-                                               min="1" max="100" stepFactor="1" >
+                                    <p:spinner id="minRejectId" value="#{approvalDefinitionFormController.approvalDefinitionModel.minRejector}" size="2" required="true"
+                                               min="1" max="100" stepFactor="1" disabled="#{approvalDefinitionFormController.onProcess}">
                                     </p:spinner>
                                     <p:message for="minRejectId"/>
                                 </p:column>
-                               
+
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="Approver Position" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%" >
-                                     <p:inputText value="#{empDataFormController.empDataModel.bioDataName}" maxlength="45"
+                                    <p:inputText value="#{approvalDefinitionFormController.approvalDefinitionModel.jabatanByApproverPositionName}" maxlength="45"
                                                  styleClass="isitext_hrm" label="Name" 
                                                  style="width: 73%" required="true" id="approverPositionId"  />
                                     <p:commandButton  style="margin-left: 5px" icon="ui-icon-search" title="Cari" action="#{empDataFormController.doSearch()}" widgetVar="cariId"
@@ -136,7 +137,7 @@
 
                                     </p:commandButton>
                                     <p:message for="approverPositionId"/>
-                                    
+
                                 </p:column>
                             </p:row>
                             <p:row>
@@ -153,7 +154,7 @@
                                     <p:outputLabel  value="On Behalf Type" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%" >
-                                    <p:selectOneMenu id="onBehalfId" styleClass="isitext_hrm" value="#{bioAddressFormController.model.type}" style="width: 75%" required="true" disabled="#{approvalDefinitionFormController.onBehalf}">
+                                    <p:selectOneMenu id="onBehalfId" styleClass="isitext_hrm" value="#{approvalDefinitionFormController.approvalDefinitionModel.onBehalfType}" style="width: 75%" required="true" disabled="#{approvalDefinitionFormController.onBehalf}">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <!--Cek HRM Constanta..-->
                                         <f:selectItem itemLabel="Disetujui Berdasarkan Jabatan" itemValue="APPROVAL_TYPE_POSITION" />
@@ -168,22 +169,22 @@
                                     <p:outputLabel  value="On Behalf Individual" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%">
-                                     <p:inputText value="#{empDataFormController.empDataModel.bioDataName}" maxlength="45"
+                                    <p:inputText value="#{approvalDefinitionFormController.approvalDefinitionModel.hrmUserByOnBehalfIndividualName}" maxlength="45"
                                                  styleClass="isitext_hrm" label="Name" disabled="#{approvalDefinitionFormController.onBehalf}"
                                                  style="width: 73%" required="true" id="onBehalfIndividualId"  />
-                                     <p:commandButton  style="margin-left: 5px" icon="ui-icon-search" title="Cari" action="#{empDataFormController.doSearch()}" widgetVar="cariId" id="cariId1"
+                                    <p:commandButton  style="margin-left: 5px" icon="ui-icon-search" title="Cari" action="#{empDataFormController.doSearch()}" widgetVar="cariId" id="cariId1"
                                                       ajax="true" immediate="true" disabled="#{approvalDefinitionFormController.onBehalf}">
                                         <p:ajax event="dialogReturn" listener="#{empDataFormController.onDialogReturn}"/>
 
                                     </p:commandButton>
                                     <p:message for="onBehalfIndividualId"/>
-                                    
+
                                 </p:column>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="On Behalf Position" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%" >
-                                     <p:inputText value="#{empDataFormController.empDataModel.bioDataName}" maxlength="45" disabled="#{approvalDefinitionFormController.onBehalf}"
+                                    <p:inputText value="#{approvalDefinitionFormController.approvalDefinitionModel.jabatanByOnBehalfPositionName}" maxlength="45" disabled="#{approvalDefinitionFormController.onBehalf}"
                                                  styleClass="isitext_hrm" label="Name" 
                                                  style="width: 73%" required="true" id="onBehalfPositionId"  />
                                     <p:commandButton  style="margin-left: 5px" icon="ui-icon-search" title="Cari" action="#{empDataFormController.doSearch()}" widgetVar="cariId" disabled="#{approvalDefinitionFormController.onBehalf}"
