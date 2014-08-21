@@ -17,5 +17,7 @@ public interface TravelTypeService extends IService<TravelType> {
 	public List<TravelType> getByParam(TravelTypeSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception;
 
 	public Long getTotalByParam(TravelTypeSearchParameter parameter) throws Exception;
+        
+        public TravelType getEntityByPKWithDetail(Long id) throws Exception;
 
 }

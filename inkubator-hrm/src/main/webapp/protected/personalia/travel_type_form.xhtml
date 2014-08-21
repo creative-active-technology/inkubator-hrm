@@ -70,6 +70,28 @@
                                 <p:message for="nameId"/>
                             </p:column>
                         </p:row>
+                         <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="attendanceId" value="#{appmsg['travelType.travelType_attendance']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="attendanceId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+
+                                <p:selectOneMenu id="attendanceId" value="#{travelTypeFormController.travelTypeModel.attendanceStatusId}" style="width: 150px;margin-right: 3px" 
+                                                 required="true" requiredMessage="#{appmsg['travelType.travelType_attendance_should_not_be_empty']}">
+                                    <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                    <f:selectItems value="#{travelTypeFormController.attendances}"/>
+                                </p:selectOneMenu>
+
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="attendanceId"/>
+                            </p:column>
+                        </p:row>   
                         <p:row>
                             <p:column style="width: 29%">
                                 <p:outputLabel for="descriptionId" value="#{appmsg['global.description']}" styleClass="label_hrm"/>

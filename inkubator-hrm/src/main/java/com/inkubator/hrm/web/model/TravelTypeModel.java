@@ -12,6 +12,7 @@ public class TravelTypeModel implements Serializable {
     private String code;
     private String name;
     private String description;
+    private Long attendanceStatusId;
 
     public Long getId() {
         return id;
@@ -37,8 +38,6 @@ public class TravelTypeModel implements Serializable {
         this.name = name;
     }
 
-    
-
     public String getDescription() {
         return description;
     }
@@ -46,6 +45,13 @@ public class TravelTypeModel implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
-    
-    
+
+    public Long getAttendanceStatusId() {
+        return attendanceStatusId;
+    }
+
+    public void setAttendanceStatusId(Long attendanceStatusId) {
+        this.attendanceStatusId = attendanceStatusId;
+    }
+
 }

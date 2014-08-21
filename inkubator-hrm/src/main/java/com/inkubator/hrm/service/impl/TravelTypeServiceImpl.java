@@ -3,7 +3,9 @@ package com.inkubator.hrm.service.impl;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.dao.AttendanceStatusDao;
 import com.inkubator.hrm.dao.TravelTypeDao;
+import com.inkubator.hrm.entity.AttendanceStatus;
 import com.inkubator.hrm.entity.TravelType;
 import com.inkubator.hrm.service.TravelTypeService;
 import com.inkubator.hrm.web.search.TravelTypeSearchParameter;
@@ -28,6 +30,8 @@ public class TravelTypeServiceImpl extends IServiceImpl implements TravelTypeSer
 
     @Autowired
     private TravelTypeDao travelTypeDao;
+    @Autowired
+    private AttendanceStatusDao attendanceStatusDao;
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -200,8 +204,10 @@ public class TravelTypeServiceImpl extends IServiceImpl implements TravelTypeSer
         if (totalDuplicates > 0) {
             throw new BussinessException("travelType.error_duplicate_travelType_code");
         }
-
+        
+        AttendanceStatus attendanceStatus = attendanceStatusDao.getEntiyByPK(travelType.getAttendanceStatus().getId());
         travelType.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+        travelType.setAttendanceStatus(attendanceStatus);
         travelType.setCreatedBy(UserInfoUtil.getUserName());
         travelType.setCreatedOn(new Date());
         travelTypeDao.save(travelType);
@@ -241,9 +247,11 @@ public class TravelTypeServiceImpl extends IServiceImpl implements TravelTypeSer
         }
 
         TravelType travelType = travelTypeDao.getEntiyByPK(b.getId());
+        AttendanceStatus attendanceStatus = attendanceStatusDao.getEntiyByPK(b.getAttendanceStatus().getId());
         travelType.setCode(b.getCode());
         travelType.setName(b.getName());
         travelType.setDescription(b.getDescription());
+        travelType.setAttendanceStatus(attendanceStatus);
         travelType.setUpdatedBy(UserInfoUtil.getUserName());
         travelType.setUpdatedOn(new Date());
         travelTypeDao.update(travelType);
@@ -265,6 +273,12 @@ public class TravelTypeServiceImpl extends IServiceImpl implements TravelTypeSer
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
     public Long getTotalByParam(TravelTypeSearchParameter parameter) throws Exception {
         return this.travelTypeDao.getTotalTravelTypeByParam(parameter);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public TravelType getEntityByPKWithDetail(Long id) throws Exception {
+        return travelTypeDao.getEntityByPKWithDetail(id);
     }
 
 }

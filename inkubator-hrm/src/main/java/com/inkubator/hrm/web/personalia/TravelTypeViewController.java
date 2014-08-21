@@ -93,7 +93,7 @@ public class TravelTypeViewController extends BaseController {
 
     public void doDetail() {
         try {
-            selectedTravelType = this.travelTypeService.getEntiyByPK(selectedTravelType.getId());
+            selectedTravelType = this.travelTypeService.getEntityByPKWithDetail(selectedTravelType.getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
