@@ -22,7 +22,7 @@ import org.springframework.stereotype.Repository;
  *
  * @author Deni
  */
-@Repository(value = "travelComponentCostRateDaoImpl")
+@Repository(value = "travelComponentCostRateDao")
 @Lazy
 public class TravelComponentCostRateDaoImpl extends IDAOImpl<TravelComponentCostRate> implements TravelComponentCostRateDao{
 
