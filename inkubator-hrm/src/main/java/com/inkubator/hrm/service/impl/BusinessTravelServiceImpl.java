@@ -1,0 +1,250 @@
+package com.inkubator.hrm.service.impl;
+
+import java.util.List;
+
+import org.hibernate.criterion.Order;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.hrm.dao.BusinessTravelDao;
+import com.inkubator.hrm.entity.BusinessTravel;
+import com.inkubator.hrm.service.BusinessTravelService;
+import com.inkubator.hrm.web.search.BusinessTravelSearchParameter;
+
+/**
+ *
+ * @author rizkykojek
+ */
+@Service(value = "businessTravelService")
+@Lazy
+public class BusinessTravelServiceImpl extends IServiceImpl implements BusinessTravelService {
+	
+	@Autowired
+	private BusinessTravelDao businessTravelDao;
+
+	@Override
+	public BusinessTravel getEntiyByPK(String id) throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public BusinessTravel getEntiyByPK(Integer id) throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public BusinessTravel getEntiyByPK(Long id) throws Exception {
+		return businessTravelDao.getEntiyByPK(id);
+
+	}
+
+	@Override
+	public void save(BusinessTravel entity) throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public void update(BusinessTravel entity) throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public void saveOrUpdate(BusinessTravel enntity) throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public BusinessTravel saveData(BusinessTravel entity) throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public BusinessTravel updateData(BusinessTravel entity) throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public BusinessTravel saveOrUpdateData(BusinessTravel entity)
+			throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public BusinessTravel getEntityByPkIsActive(String id, Integer isActive)
+			throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public BusinessTravel getEntityByPkIsActive(String id, Byte isActive)
+			throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public BusinessTravel getEntityByPkIsActive(String id, Boolean isActive)
+			throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public BusinessTravel getEntityByPkIsActive(Integer id, Integer isActive)
+			throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public BusinessTravel getEntityByPkIsActive(Integer id, Byte isActive)
+			throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public BusinessTravel getEntityByPkIsActive(Integer id, Boolean isActive)
+			throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public BusinessTravel getEntityByPkIsActive(Long id, Integer isActive)
+			throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public BusinessTravel getEntityByPkIsActive(Long id, Byte isActive)
+			throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public BusinessTravel getEntityByPkIsActive(Long id, Boolean isActive)
+			throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public void delete(BusinessTravel entity) throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public void softDelete(BusinessTravel entity) throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public Long getTotalData() throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public Long getTotalDataIsActive(Boolean isActive) throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public Long getTotalDataIsActive(Integer isActive) throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public Long getTotalDataIsActive(Byte isActive) throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<BusinessTravel> getAllData() throws Exception {
+		return businessTravelDao.getAllData();
+
+	}
+
+	@Override
+	public List<BusinessTravel> getAllData(Boolean isActive) throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public List<BusinessTravel> getAllData(Integer isActive) throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public List<BusinessTravel> getAllData(Byte isActive) throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public List<BusinessTravel> getAllDataPageAble(int firstResult,
+			int maxResults, Order order) throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public List<BusinessTravel> getAllDataPageAbleIsActive(int firstResult,
+			int maxResults, Order order, Boolean isActive) throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public List<BusinessTravel> getAllDataPageAbleIsActive(int firstResult,
+			int maxResults, Order order, Integer isActive) throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public List<BusinessTravel> getAllDataPageAbleIsActive(int firstResult,
+			int maxResults, Order order, Byte isActive) throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+	
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<BusinessTravel> getByParam(BusinessTravelSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception {
+		return businessTravelDao.getByParam(parameter, firstResult, maxResults, orderable);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Long getTotalByParam(BusinessTravelSearchParameter parameter) throws Exception {
+		return businessTravelDao.getTotalByParam(parameter);
+	}
+
+}
