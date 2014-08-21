@@ -3,12 +3,16 @@ package com.inkubator.hrm.entity;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -46,6 +50,7 @@ public class EmpData implements java.io.Serializable {
     private Date createdOn;
     private String updatedBy;
     private Date updatedOn;
+    private Set<BusinessTravel> businessTravels = new HashSet<BusinessTravel>(0);
 
     public EmpData() {
     }
@@ -54,7 +59,7 @@ public class EmpData implements java.io.Serializable {
         this.id = id;
     }
 
-    public EmpData(long id, WtGroupWorking wtGroupWorking, EmployeeType employeeType, BioData bioData, PaySalaryGrade paySalaryGrade, Jabatan jabatanByJabatanId, GolonganJabatan golonganJabatan, Jabatan jabatanByJabatanGajiId, String nik, Date joinDate, String ppmp, String ppip, Boolean isFinger, Boolean heatlyPremi, Boolean ptkpStatus, Integer ptkpNumber, Boolean insentifStatus, BigDecimal basicSalary, String createdBy, Date createdOn, String updatedBy, Date updatedOn) {
+    public EmpData(long id, WtGroupWorking wtGroupWorking, EmployeeType employeeType, BioData bioData, PaySalaryGrade paySalaryGrade, Jabatan jabatanByJabatanId, GolonganJabatan golonganJabatan, Jabatan jabatanByJabatanGajiId, String nik, Date joinDate, String ppmp, String ppip, Boolean isFinger, Boolean heatlyPremi, Boolean ptkpStatus, Integer ptkpNumber, Boolean insentifStatus, BigDecimal basicSalary, String createdBy, Date createdOn, String updatedBy, Date updatedOn, Set<BusinessTravel> businessTravels) {
         this.id = id;
         this.wtGroupWorking = wtGroupWorking;
         this.employeeType = employeeType;
@@ -77,10 +82,10 @@ public class EmpData implements java.io.Serializable {
         this.createdOn = createdOn;
         this.updatedBy = updatedBy;
         this.updatedOn = updatedOn;
+        this.businessTravels = businessTravels;
     }
 
     @Id
-
     @Column(name = "id", unique = true, nullable = false)
     public long getId() {
         return this.id;
@@ -298,5 +303,14 @@ public class EmpData implements java.io.Serializable {
     public void setUpdatedOn(Date updatedOn) {
         this.updatedOn = updatedOn;
     }
+
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="empData")
+	public Set<BusinessTravel> getBusinessTravels() {
+		return businessTravels;
+	}
+
+	public void setBusinessTravels(Set<BusinessTravel> businessTravels) {
+		this.businessTravels = businessTravels;
+	}
 
 }

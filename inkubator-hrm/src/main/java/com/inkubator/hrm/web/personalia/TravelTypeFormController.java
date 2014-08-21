@@ -38,7 +38,7 @@ public class TravelTypeFormController extends BaseController {
     private Boolean isUpdate;
     @ManagedProperty(value = "#{travelTypeService}")
     private TravelTypeService travelTypeService;
-    @ManagedProperty(value = "#{currencyService}")
+    @ManagedProperty(value = "#{attendanceStatusService}")
     private AttendanceStatusService attendanceStatusService;
     private Map<String, Long> attendances = new TreeMap<>();
 

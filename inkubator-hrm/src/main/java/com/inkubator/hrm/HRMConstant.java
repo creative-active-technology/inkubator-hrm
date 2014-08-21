@@ -160,6 +160,9 @@ public class HRMConstant {
     public static final String TRAVEL_ADVANCE = "TRAVEL_ADVANCE";
     public static final String REIMBERSMENT = "REIMBERSMENT";
     public static final String LOAN = "LOAN";
+    public static final String APPROVAL_PROCESS = "APPROVAL_PROCESS";
+    public static final String ON_APPROVE_INFO = "ON_APPROVE_INFO";
+    public static final String ON_REJECT_INFO = "ON_REJECT_INFO";
 
     /* END */
 }

@@ -3,12 +3,16 @@ package com.inkubator.hrm.entity;
 
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -36,6 +40,7 @@ public class TravelType  implements java.io.Serializable {
      private String code;
      private String name;
      private String description;
+     private Set<BusinessTravel> businessTravels = new HashSet<BusinessTravel>(0);
 
     public TravelType() {
     }
@@ -45,7 +50,7 @@ public class TravelType  implements java.io.Serializable {
         this.id = id;
         this.attendanceStatus = attendanceStatus;
     }
-    public TravelType(long id, AttendanceStatus attendanceStatus, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String code, String name, String description) {
+    public TravelType(long id, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String code, String name, String description, Set<BusinessTravel> businessTravels) {
        this.id = id;
        this.attendanceStatus = attendanceStatus;
        this.createdBy = createdBy;
@@ -55,6 +60,7 @@ public class TravelType  implements java.io.Serializable {
        this.code = code;
        this.name = name;
        this.description = description;
+       this.businessTravels = businessTravels;
     }
    
      @Id 
@@ -159,8 +165,14 @@ public class TravelType  implements java.io.Serializable {
         this.description = description;
     }
 
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="travelType")
+	public Set<BusinessTravel> getBusinessTravels() {
+		return businessTravels;
+	}
 
-
+	public void setBusinessTravels(Set<BusinessTravel> businessTravels) {
+		this.businessTravels = businessTravels;
+	}
 
 }
 
