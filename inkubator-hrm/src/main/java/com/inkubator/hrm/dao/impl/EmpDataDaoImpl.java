@@ -159,4 +159,11 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.add(Restrictions.eq("nik", nik));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
+
+    @Override
+    public List<EmpData> getAllDataWithRelation() {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.setFetchMode("bioData", FetchMode.JOIN);
+        return criteria.list();
+    }
 }
