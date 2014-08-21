@@ -65,7 +65,11 @@ public class ReportStreamController extends BaseController {
             mapData.put("jabatan", empData.getJabatanByJabatanId().getName());
             mapData.put("department", empData.getJabatanByJabatanId().getDepartment().getDepartmentName());
             mapData.put("tmb", String.valueOf(empData.getJoinDate()));
-            mapData.put("photo", empData.getBioData().getPathFoto());
+            if(empData.getBioData() != null){
+                mapData.put("photo", empData.getBioData().getPathFoto());
+            }else{
+                mapData.put("photo", "C:/tmp/FolderUpload/no_image.png");
+            }
             mapData.put("barcode", empData.getNik());
             maps.add(mapData);
         }

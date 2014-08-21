@@ -32,42 +32,10 @@
                                         </h:panelGroup>
                                         <h:panelGroup layout="block">
                                             <h:panelGrid columns="1" style="text-align: center">
-                                                <h:outputLink id="jadwalKerjaId" value="${request.contextPath}/flow-protected/user">
-                                                    <p:graphicImage library="images" name="task.png" style="width: 60px;height: 60px;" cache="true" /> 
-                                                </h:outputLink>
-                                                <h:outputLabel value="Jadwal Kerja" styleClass="label_quick"/>
-                                            </h:panelGrid>
-                                        </h:panelGroup>
-                                        <h:panelGroup layout="block">
-                                            <h:panelGrid columns="1" style="text-align: center">
-                                                <h:outputLink id="createUserId1" value="${request.contextPath}/flow-protected/user">
-                                                    <p:graphicImage library="images" name="overtime.png" style="width: 60px;height: 60px;" cache="true" /> 
-                                                </h:outputLink>
-                                                <h:outputLabel value="Lembur" styleClass="label_quick"/>
-                                            </h:panelGrid>
-                                        </h:panelGroup>
-                                        <h:panelGroup layout="block">
-                                            <h:panelGrid columns="1" style="text-align: center">
-                                                <h:outputLink id="createUserId2" value="${request.contextPath}/flow-protected/user">
-                                                    <p:graphicImage library="images" name="broadcast.png" style="width: 60px;height: 60px;" cache="true" /> 
-                                                </h:outputLink>
-                                                <h:outputLabel value="Broadcast Info" styleClass="label_quick"/>
-                                            </h:panelGrid>
-                                        </h:panelGroup>
-                                        <h:panelGroup layout="block">
-                                            <h:panelGrid columns="1" style="text-align: center">
-                                                <h:outputLink id="createUserId3" value="${request.contextPath}/flow-protected/user">
+                                                <h:outputLink id="createUserId3" value="${request.contextPath}/protected/employee/employee_palcement_view.htm">
                                                     <p:graphicImage library="images" name="user.png" style="width: 60px;height: 60px;" cache="true" /> 
                                                 </h:outputLink>
                                                 <h:outputLabel value="Karyawan" styleClass="label_quick"/>
-                                            </h:panelGrid>
-                                        </h:panelGroup>
-                                        <h:panelGroup layout="block">
-                                            <h:panelGrid columns="1" style="text-align: center">
-                                                <h:outputLink id="createUserId4" value="${request.contextPath}/flow-protected/user">
-                                                    <p:graphicImage library="images" name="payroll.png" style="width: 60px;height: 60px;" cache="true" /> 
-                                                </h:outputLink>
-                                                <h:outputLabel value="Payroll" styleClass="label_quick"/>
                                             </h:panelGrid>
                                         </h:panelGroup>
                                         <h:panelGroup layout="block">
@@ -80,40 +48,73 @@
                                         </h:panelGroup>
                                         <h:panelGroup layout="block">
                                             <h:panelGrid columns="1" style="text-align: center">
-                                                <h:outputLink id="createUserId6" value="${request.contextPath}/flow-protected/user">
-                                                    <p:graphicImage library="images" name="finger_scan.png" style="width: 60px;height: 60px;" cache="true" /> 
+                                                <h:outputLink id="createUserId6" value="${request.contextPath}/protected/organisation/job_title_diagram.htm">
+                                                    <p:graphicImage library="images" name="diagram.png" style="width: 60px;height: 60px;" cache="true" /> 
                                                 </h:outputLink>
-                                                <h:outputLabel value="Finger" styleClass="label_quick"/>
+                                                <h:outputLabel value="Organisasi" styleClass="label_quick"/>
                                             </h:panelGrid>
                                         </h:panelGroup>
                                         <h:panelGroup layout="block">
                                             <h:panelGrid columns="1" style="text-align: center">
-                                                <h:outputLink id="createUserId7" value="${request.contextPath}/flow-protected/user">
-                                                    <p:graphicImage library="images" name="permit.png" style="width: 60px;height: 60px;" cache="true" /> 
-                                                </h:outputLink>
-                                                <h:outputLabel value="Cuti" styleClass="label_quick"/>
-                                            </h:panelGrid>
-                                        </h:panelGroup>
-                                        <h:panelGroup layout="block">
-                                            <h:panelGrid columns="1" style="text-align: center">
-                                                <h:outputLink id="createUserId9" value="${request.contextPath}/flow-protected/user">
-                                                    <p:graphicImage library="images" name="nurse.png" style="width: 60px;height: 60px;" cache="true" /> 
-                                                </h:outputLink>
-                                                <h:outputLabel value="Izin &amp; Sakit" styleClass="label_quick"/>
-                                            </h:panelGrid>
-                                        </h:panelGroup>
-                                        <h:panelGroup layout="block">
-                                            <h:panelGrid columns="1" style="text-align: center">
-                                                <h:outputLink id="approvalId" value="${request.contextPath}/flow-protected/user">
-                                                    <p:graphicImage library="images" name="approval_matrix.png" style="width: 60px;height: 60px;" cache="true" /> 
+                                                <h:outputLink id="approvalId" value="#">
+                                                    <p:graphicImage library="images" name="approval_matrix.png" style="opacity: 0.3;width: 60px;height: 60px;" cache="true" /> 
                                                 </h:outputLink>
                                                 <h:outputLabel value="Approval" styleClass="label_quick"/>
                                             </h:panelGrid>
                                         </h:panelGroup>
                                         <h:panelGroup layout="block">
                                             <h:panelGrid columns="1" style="text-align: center">
-                                                <h:outputLink id="createUserId8" value="${request.contextPath}/flow-protected/user">
-                                                    <p:graphicImage library="images" name="laporan.png" style="width: 60px;height: 60px;" cache="true" /> 
+                                                <h:outputLink id="createUserId4" value="#">
+                                                    <p:graphicImage library="images" name="payroll.png" style="opacity: 0.3;width: 60px;height: 60px;" cache="true" /> 
+                                                </h:outputLink>
+                                                <h:outputLabel value="Payroll" styleClass="label_quick"/>
+                                            </h:panelGrid>
+                                        </h:panelGroup>
+                                        <h:panelGroup layout="block">
+                                            <h:panelGrid columns="1" style="text-align: center">
+                                                <h:outputLink id="jadwalKerjaId" value="#">
+                                                    <p:graphicImage library="images" name="task.png" style="opacity: 0.3;width: 60px;height: 60px;" cache="true" /> 
+                                                </h:outputLink>
+                                                <h:outputLabel value="Jadwal Kerja" styleClass="label_quick"/>
+                                            </h:panelGrid>
+                                        </h:panelGroup>
+                                        <h:panelGroup layout="block">
+                                            <h:panelGrid columns="1" style="text-align: center">
+                                                <h:outputLink id="createUserId1" value="#">
+                                                    <p:graphicImage library="images" name="overtime.png" style="opacity: 0.3;width: 60px;height: 60px;" cache="true" /> 
+                                                </h:outputLink>
+                                                <h:outputLabel value="Lembur" styleClass="label_quick"/>
+                                            </h:panelGrid>
+                                        </h:panelGroup>
+                                        <h:panelGroup layout="block">
+                                            <h:panelGrid columns="1" style="text-align: center">
+                                                <h:outputLink id="createUserId2" value="#">
+                                                    <p:graphicImage library="images" name="broadcast.png" style="opacity: 0.3;width: 60px;height: 60px;" cache="true" /> 
+                                                </h:outputLink>
+                                                <h:outputLabel value="Broadcast Info" styleClass="label_quick"/>
+                                            </h:panelGrid>
+                                        </h:panelGroup>
+                                        <h:panelGroup layout="block">
+                                            <h:panelGrid columns="1" style="text-align: center">
+                                                <h:outputLink id="createUserId7" value="#">
+                                                    <p:graphicImage library="images" name="permit.png" style="opacity: 0.3;width: 60px;height: 60px;" cache="true" /> 
+                                                </h:outputLink>
+                                                <h:outputLabel value="Cuti" styleClass="label_quick"/>
+                                            </h:panelGrid>
+                                        </h:panelGroup>
+                                        <h:panelGroup layout="block">
+                                            <h:panelGrid columns="1" style="text-align: center">
+                                                <h:outputLink id="createUserId9" value="#">
+                                                    <p:graphicImage library="images" name="nurse.png" style="opacity: 0.3;width: 60px;height: 60px;" cache="true" /> 
+                                                </h:outputLink>
+                                                <h:outputLabel value="Izin &amp; Sakit" styleClass="label_quick"/>
+                                            </h:panelGrid>
+                                        </h:panelGroup>
+                                        
+                                        <h:panelGroup layout="block">
+                                            <h:panelGrid columns="1" style="text-align: center">
+                                                <h:outputLink id="createUserId8" value="#">
+                                                    <p:graphicImage library="images" name="laporan.png" style="opacity: 0.3;width: 60px;height: 60px;" cache="true" /> 
                                                 </h:outputLink>
                                                 <h:outputLabel value="Laporan" styleClass="label_quick"/>
                                             </h:panelGrid>
