@@ -453,4 +453,10 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         return empDataDao.getByBioDataWithDepartment(id);
     }
 
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public List<EmpData> getAllDataWithRelation() throws Exception {
+        return empDataDao.getAllDataWithRelation();
+    }
+
 }

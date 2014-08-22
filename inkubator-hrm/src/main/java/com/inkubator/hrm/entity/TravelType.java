@@ -1,5 +1,5 @@
 package com.inkubator.hrm.entity;
-// Generated Aug 11, 2014 12:16:39 PM by Hibernate Tools 3.6.0
+// Generated Aug 21, 2014 8:21:58 AM by Hibernate Tools 3.6.0
 
 
 import java.util.Date;
@@ -10,6 +10,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -30,6 +32,7 @@ public class TravelType  implements java.io.Serializable {
 
      private long id;
      private Integer version;
+     private AttendanceStatus attendanceStatus;
      private String createdBy;
      private Date createdOn;
      private String updatedBy;
@@ -43,11 +46,13 @@ public class TravelType  implements java.io.Serializable {
     }
 
 	
-    public TravelType(long id) {
+    public TravelType(long id, AttendanceStatus attendanceStatus) {
         this.id = id;
+        this.attendanceStatus = attendanceStatus;
     }
     public TravelType(long id, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String code, String name, String description, Set<BusinessTravel> businessTravels) {
        this.id = id;
+       this.attendanceStatus = attendanceStatus;
        this.createdBy = createdBy;
        this.createdOn = createdOn;
        this.updatedBy = updatedBy;
@@ -78,6 +83,16 @@ public class TravelType  implements java.io.Serializable {
     
     public void setVersion(Integer version) {
         this.version = version;
+    }
+
+@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="attendance_status_id", nullable=false)
+    public AttendanceStatus getAttendanceStatus() {
+        return this.attendanceStatus;
+    }
+    
+    public void setAttendanceStatus(AttendanceStatus attendanceStatus) {
+        this.attendanceStatus = attendanceStatus;
     }
 
     

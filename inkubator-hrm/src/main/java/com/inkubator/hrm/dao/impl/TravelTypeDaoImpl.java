@@ -7,6 +7,7 @@ import com.inkubator.hrm.web.search.TravelTypeSearchParameter;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -53,6 +54,14 @@ public class TravelTypeDaoImpl extends IDAOImpl<TravelType> implements TravelTyp
             criteria.add(Restrictions.like("name", parameter.getName(), MatchMode.ANYWHERE));
         }
         criteria.add(Restrictions.isNotNull("id"));
+    }
+    
+    @Override
+    public TravelType getEntityByPKWithDetail(Long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("id", id));
+        criteria.setFetchMode("attendanceStatus", FetchMode.JOIN);
+        return (TravelType) criteria.uniqueResult();
     }
 
 }

@@ -158,6 +158,10 @@
                             <p:column style="width:70%;"><p:outputLabel value="#{travelTypeViewController.selectedTravelType.name}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['travelType.travelType_attendance']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{travelTypeViewController.selectedTravelType.attendanceStatus.statusKehadrian}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:70%;"><p:outputLabel value="#{travelTypeViewController.selectedTravelType.description}" styleClass="label_hrm"/></p:column>
                         </p:row>
