@@ -14,9 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-
 import javax.faces.context.FacesContext;
-
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -24,7 +22,6 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
 import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
-
 import org.apache.pdfbox.exceptions.COSVisitorException;
 import org.apache.pdfbox.util.PDFMergerUtility;
 import org.primefaces.model.DefaultStreamedContent;
@@ -34,21 +31,22 @@ import org.primefaces.model.DefaultStreamedContent;
  * @author Deni
  */
 public class CommonReportUtil {
+
     public static String generateRandomFileName(String prefix, String extension) {
         Random random = new Random();
         long randomLong = random.nextLong();
         return prefix + randomLong + "." + extension;
     }
-    
+
     public static DefaultStreamedContent exportReportToPDFStream(
             String jasperName,
             Map<String, Object> params,
             String reportOutputFileName) throws JRException, SQLException {
-    	
-    	//generate report from jrxml
+
+        //generate report from jrxml
         InputStream input = FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream("/resources/reports/" + jasperName);
         JasperPrint jasperPrint = JasperFillManager.fillReport(input, params, ServiceWebUtilCon.getConnection());
-        
+
         //stream the output file
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         JasperExportManager.exportReportToPdfStream(jasperPrint, output);
@@ -57,43 +55,43 @@ public class CommonReportUtil {
 
         return result;
     }
-    
+
     public static DefaultStreamedContent exportReportToPDFStreamWithAttachment(
             String jasperName,
             Map<String, Object> params,
             String reportOutputFileName, List<String> attachments) throws JRException, SQLException {
-        
-    	//initial merging utility
-    	PDFMergerUtility mergerPDF = new PDFMergerUtility();
-    	
-    	//generate master report from jrxml
+
+        //initial merging utility
+        PDFMergerUtility mergerPDF = new PDFMergerUtility();
+
+        //generate master report from jrxml
         InputStream masterStream = FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream("/resources/reports/" + jasperName);
         JasperPrint masterJP = JasperFillManager.fillReport(masterStream, params, ServiceWebUtilCon.getConnection());
         ByteArrayOutputStream masterOutput = new ByteArrayOutputStream();
         JasperExportManager.exportReportToPdfStream(masterJP, masterOutput);
         InputStream masterPDF = new ByteArrayInputStream(masterOutput.toByteArray());
         mergerPDF.addSource(masterPDF);
-        
+
         //attachment pdf
-        for(String path : attachments){
-        	File file = new File(path);
+        for (String path : attachments) {
+            File file = new File(path);
             mergerPDF.addSource(file);
         }
-        
+
         //merging process
         ByteArrayOutputStream mergerOutput = new ByteArrayOutputStream();
         mergerPDF.setDestinationStream(mergerOutput);
         try {
-        	mergerPDF.mergeDocuments();			
-		} catch (COSVisitorException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}   
-        
+            mergerPDF.mergeDocuments();
+        } catch (COSVisitorException | IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
         //stream the output file
-        InputStream output = new ByteArrayInputStream(mergerOutput.toByteArray());        
+        InputStream output = new ByteArrayInputStream(mergerOutput.toByteArray());
         DefaultStreamedContent result = new DefaultStreamedContent(output, "application/pdf", reportOutputFileName);
-        
+
         return result;
     }
 
@@ -102,10 +100,10 @@ public class CommonReportUtil {
             Map<String, Object> params,
             String reportOutputFileName,
             List listOfMap) throws JRException, SQLException, Exception {
-        
+
         DefaultStreamedContent result;
         ByteArrayOutputStream output = new ByteArrayOutputStream();
-        
+
         // get jasper name
         InputStream input = FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream("/resources/reports/" + jasperName);
         HashMap hm = new HashMap();

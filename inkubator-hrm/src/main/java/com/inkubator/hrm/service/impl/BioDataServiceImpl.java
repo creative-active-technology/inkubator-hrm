@@ -320,6 +320,7 @@ public class BioDataServiceImpl extends IServiceImpl implements BioDataService {
 		if(isBioDataExist){
 			json.add("bioData", parser.parse(gson.toJson(bioData)));
 		}*/
+            
 		BioData bioData = bioDataDao.getEntiyByPK(id);
 		List<BioDocument> bioDocuments = bioDocumentDao.getAllDataByBioDataId(id);
 		List<String> attachments = new ArrayList<String>();

@@ -5,11 +5,17 @@
  */
 package com.inkubator.hrm.service.impl;
 
+import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.ApprovalDefinitionDao;
+import com.inkubator.hrm.dao.HrmUserDao;
+import com.inkubator.hrm.dao.JabatanDao;
 import com.inkubator.hrm.entity.ApprovalDefinition;
 import com.inkubator.hrm.service.ApprovalDefinitionService;
 import com.inkubator.hrm.web.search.ApprovalDefinitionSearchParameter;
+import com.inkubator.securitycore.util.UserInfoUtil;
+import java.util.Date;
 import java.util.List;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +35,10 @@ public class ApprovalDefinitionServiceImpl extends IServiceImpl implements Appro
 
     @Autowired
     private ApprovalDefinitionDao approvalDefinitionDao;
+    @Autowired
+    private HrmUserDao hrmUserDao;
+    @Autowired
+    private JabatanDao jabatanDao;
 
     @Override
     public ApprovalDefinition getEntiyByPK(String id) {
@@ -42,7 +52,7 @@ public class ApprovalDefinitionServiceImpl extends IServiceImpl implements Appro
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public ApprovalDefinition getEntiyByPK(Long id) {
+    public ApprovalDefinition getEntiyByPK(Long id) throws Exception {
         ApprovalDefinition approvalDefinition = this.approvalDefinitionDao.getEntiyByPK(id);
         if (approvalDefinition.getHrmUserByApproverIndividual() != null) {
             approvalDefinition.getHrmUserByApproverIndividual().getRealName();
@@ -64,8 +74,38 @@ public class ApprovalDefinitionServiceImpl extends IServiceImpl implements Appro
     }
 
     @Override
-    public void save(ApprovalDefinition entity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void save(ApprovalDefinition entity) throws Exception {
+        long totalApprovalaNameWithSeq1 = this.approvalDefinitionDao.getTotalAprpovalExistWithSequenceOne(entity.getName());
+        long totalExist = this.approvalDefinitionDao.getTotalSameAprrovalProsesExist(entity.getName(), entity.getProcessType(), entity.getSequence());
+        if (totalExist > 0) {
+            throw new BussinessException("department.error_duplicate_department_name");
+        }
+        System.out.println("nilaiaiai " + totalApprovalaNameWithSeq1);
+        if (entity.getSequence() > 1) {
+            if (totalApprovalaNameWithSeq1 < 1) {
+                throw new BussinessException("department.error_duplicate_department_name");
+            }
+        } else {
+            entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+            entity.setCreatedBy(UserInfoUtil.getUserName());
+            entity.setCreatedOn(new Date());
+            if (entity.getHrmUserByApproverIndividual() != null) {
+                entity.setHrmUserByApproverIndividual(hrmUserDao.getEntiyByPK(entity.getHrmUserByApproverIndividual().getId()));
+            }
+            if (entity.getHrmUserByOnBehalfIndividual() != null) {
+                entity.setHrmUserByOnBehalfIndividual(hrmUserDao.getEntiyByPK(entity.getHrmUserByOnBehalfIndividual().getId()));
+            }
+
+            if (entity.getJabatanByApproverPosition() != null) {
+                entity.setJabatanByApproverPosition(jabatanDao.getEntiyByPK(entity.getJabatanByApproverPosition().getId()));
+            }
+            if (entity.getJabatanByOnBehalfPosition() != null) {
+                entity.setJabatanByOnBehalfPosition(jabatanDao.getEntiyByPK(entity.getJabatanByOnBehalfPosition().getId()));
+            }
+            this.approvalDefinitionDao.save(entity);
+        }
+
     }
 
     @Override

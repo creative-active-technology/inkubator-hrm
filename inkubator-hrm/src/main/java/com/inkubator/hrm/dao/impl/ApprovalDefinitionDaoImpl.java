@@ -71,9 +71,27 @@ public class ApprovalDefinitionDaoImpl extends IDAOImpl<ApprovalDefinition> impl
             criteria.createAlias("hrmUserByOnBehalfIndividual", "au", JoinType.INNER_JOIN);
             criteria.add(Restrictions.like("au.realName", searchParameter.getApproverIndividual(), MatchMode.ANYWHERE));
         }
-        if (searchParameter.getApproverType()!= null) {
+        if (searchParameter.getApproverType() != null) {
             criteria.add(Restrictions.like("approverType", searchParameter.getApproverType(), MatchMode.ANYWHERE));
         }
         criteria.add(Restrictions.isNotNull("id"));
+    }
+
+    @Override
+    public Long getTotalSameAprrovalProsesExist(String approvalName, String procesName, int sequance) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("name", approvalName));
+        criteria.add(Restrictions.eq("processType", procesName));
+        criteria.add(Restrictions.eq("sequence", sequance));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+
+    }
+
+    @Override
+    public Long getTotalAprpovalExistWithSequenceOne(String approvalName) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("name", approvalName));
+        criteria.add(Restrictions.eq("sequence", 1));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 }
