@@ -94,4 +94,15 @@ public class TravelComponentCostRateDaoImpl extends IDAOImpl<TravelComponentCost
         criteria.add(Restrictions.like("code", code, MatchMode.ANYWHERE));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
+
+	@Override
+	public List<TravelComponentCostRate> getAllDataByGolJabatanIdAndTravelZoneId(Long golJabatanId, Long travelZoneId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("golonganJabatan.id", golJabatanId));
+		criteria.add(Restrictions.eq("travelZone.id", travelZoneId));
+		criteria.setFetchMode("costCenter", FetchMode.JOIN);
+		criteria.setFetchMode("travelComponent", FetchMode.JOIN);
+		return criteria.list();
+		
+	}
 }

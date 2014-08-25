@@ -24,4 +24,6 @@ public interface TravelComponentCostRateDao extends IDAO<TravelComponentCostRate
     public Long getTotalByCodeAndNotId(String code, Long id);
     
     public Long getByTravelComponentCostRateCode(String code);
+
+	public List<TravelComponentCostRate> getAllDataByGolJabatanIdAndTravelZoneId(Long golJabatanId, Long travelZoneId);
 }

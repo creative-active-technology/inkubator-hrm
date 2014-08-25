@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+      	http://www.springframework.org/schema/webflow
+      	http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd"
+	start-state="add_business_travel">
+      	
+      	
+    <on-start>
+    	<set name="flowScope.param" value="requestParameters.param" type="java.lang.String" />
+      	<evaluate expression="businessTravelFormController.initBusinessTravelProcessFlow(flowRequestContext)" result="flowScope.businessTravelModel"/>
+	</on-start>
+
+    <view-state id="add_business_travel" view="business_travel_form.xhtml">
+
+		<transition on="next" to="add_business_travel_component">
+			<evaluate expression="businessTravelFormController.setBusinessTravelComponents(flowRequestContext)"/> 
+		</transition>
+		<transition on="end" to="end"/>
+    </view-state>
+    
+    <view-state id="add_business_travel_component" view="business_travel_component_form.xhtml">
+    
+    	<transition on="back" to="add_business_travel"/>
+    	<transition on="save" to="save_verification"/>
+    	<transition on="end" to="end"/>
+    </view-state>
+
+	<action-state id="save_verification">
+        <evaluate expression="businessTravelFormController.doSave(flowRequestContext)"/>
+        <transition on="true" to="success_end"/>
+        <transition on="false" to="add_business_travel_component"/>
+    </action-state >
+
+    <end-state id="success_end" view="externalRedirect:contextRelative:/protected/personalia/business_travel_detail.htm?execution=s#{businessTravelModel.id}"/>
+    <end-state id="end" view="externalRedirect:contextRelative:/protected/personalia/business_travel_view.htm" />
+    
+</flow>

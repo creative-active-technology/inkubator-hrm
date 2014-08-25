@@ -163,4 +163,15 @@ public class JabatanDaoImpl extends IDAOImpl<Jabatan> implements JabatanDao {
         return (Jabatan) criteria.uniqueResult();
     }
 
+    @Override
+    public List<Jabatan> getByName(String name) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.like("name", name, MatchMode.ANYWHERE));
+        criteria.addOrder(Order.asc("name"));
+        criteria.setFetchMode("department", FetchMode.JOIN);
+        criteria.setFirstResult(0);
+        criteria.setMaxResults(7);
+        return criteria.list();
+    }
+
 }

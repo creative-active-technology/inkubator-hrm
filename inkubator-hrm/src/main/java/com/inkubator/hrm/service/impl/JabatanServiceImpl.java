@@ -104,7 +104,7 @@ public class JabatanServiceImpl extends IServiceImpl implements JabatanService {
         jabatan.setPaySalaryGrade(paySalaryGradeDao.getEntiyByPK(entity.getPaySalaryGrade().getId()));
         this.jabatanDao.update(jabatan);
     }
-    
+
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(Jabatan entity) throws Exception {
@@ -129,12 +129,12 @@ public class JabatanServiceImpl extends IServiceImpl implements JabatanService {
         jabatan.setUpdatedBy(UserInfoUtil.getUserName());
         jabatan.setUpdatedOn(new Date());
         this.jabatanDao.saveAndMerge(jabatan);
-        Set<KlasifikasiKerjaJabatan> getKlasifikasiKerjaJabatans=entity.getKlasifikasiKerjaJabatans();
+        Set<KlasifikasiKerjaJabatan> getKlasifikasiKerjaJabatans = entity.getKlasifikasiKerjaJabatans();
         for (KlasifikasiKerjaJabatan klasifikasiKerjaJabatan : getKlasifikasiKerjaJabatans) {
             klasifikasiKerjaJabatan.setJabatan(jabatan);
             klasifikasiKerjaJabatanDao.save(klasifikasiKerjaJabatan);
         }
-        
+
     }
 
     @Override
@@ -351,6 +351,10 @@ public class JabatanServiceImpl extends IServiceImpl implements JabatanService {
         return jabatanDao.getByIdWithSalaryGrade(id);
     }
 
-    
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    @Override
+    public List<Jabatan> getByName(String name) throws Exception {
+        return this.jabatanDao.getByName(name);
+    }
 
 }
