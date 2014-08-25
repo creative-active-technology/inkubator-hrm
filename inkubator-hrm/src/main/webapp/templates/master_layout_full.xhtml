@@ -306,11 +306,13 @@
                                                 <p:menuitem value="#{appmsg['leave.leave']}" icon="img-permit" style="font-size: 12px !important;color: #003366" title="#{appmsg['leave.leave']}" url="/protected/working_time/leave_view.htm" />
                                                 <p:menuitem value="#{appmsg['leavescheme.leave_scheme']}" icon="img-leave-scheme" style="font-size: 12px !important;color: #003366" title="#{appmsg['leavescheme.leave_scheme']}" url="/protected/working_time/leave_scheme_view.htm" />
                                             </p:submenu>
-                                            <p:submenu label="Personalia"  styleClass="menu_child" >
+                                            <p:submenu label="Personalia"  styleClass="menu_child">
                                                 <p:submenu label="Dinas"  styleClass="menu_child" >
                                                     <p:menuitem value="Travel Components" icon="img-periode" style="font-size: 12px !important;color: #003366" title="Travel Components" url="/protected/personalia/travel_component_view.htm" /> 
                                                     <p:menuitem value="Travel Type" icon="img-periode" style="font-size: 12px !important;color: #003366" title="Travel Type" url="/protected/personalia/travel_type_view.htm" /> 
                                                     <p:menuitem value="Travel Zone" icon="img-periode" style="font-size: 12px !important;color: #003366" title="Travel Zone" url="/protected/personalia/travel_zone_view.htm" /> 
+                                                    <p:menuitem value="#{appmsg['travelcomponentcostrate.travelcomponentcostrate']}" icon="img-periode" style="font-size: 12px !important;color: #003366; width: 190px;" title="#{appmsg['travelcomponentcostrate.travelcomponentcostrate']}" url="/protected/personalia/travel_component_cost_rate_view.htm" /> 
+                                                
                                                 </p:submenu>
                                                 <p:submenu label="Others"  styleClass="menu_child" >
                                                     <p:menuitem value="Admonition Type" icon="img-periode" style="font-size: 12px !important;color: #003366" title="Admonition Type" url="/protected/personalia/admonition_type_view.htm" /> 
@@ -327,9 +329,10 @@
 
 
                                             <p:menuitem value="Bio Data" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="Bio Data" url="/protected/personalia/biodata_view.htm" />  
-                                            <p:submenu label="Karyawanan"  styleClass="menu_child" >
+                                            <p:submenu label="Kekaryawanan"  styleClass="menu_child" >
                                                 <p:menuitem value="#{appmsg['placement.placement']}" icon="img-emp-data" style="font-size: 12px !important;color: #003366" title="Bio Data" url="/protected/employee/employee_palcement_view.htm" />  
                                             </p:submenu>
+                                            <p:menuitem value="#{appmsg['personachievement.personachievement']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['personachievement.personachievement']}" url="/protected/employee/emp_person_achievement_view.htm" />
                                         </p:submenu>
                                         <p:submenu label="#{appmsg['menu.working_time']}"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-task">
 
