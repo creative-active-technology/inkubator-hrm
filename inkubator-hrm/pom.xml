@@ -25,7 +25,7 @@
         <dependency>
             <groupId>com.inkubator</groupId>
             <artifactId>web-core</artifactId>
-            <version>1.1.1.RELEASE</version>
+            <version>1.2.0.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>com.inkubator</groupId>
@@ -43,12 +43,12 @@
             <artifactId>barbecue</artifactId>
             <version>1.5-beta1</version>
         </dependency>
-<!--        <dependency> 
+        <!--        <dependency> 
             <groupId>com.inkubator</groupId>
             <artifactId>entity-service-hrm</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>-->
-         <dependency> 
+        <dependency> 
             <groupId>com.inkubator</groupId>
             <artifactId>common-notification</artifactId>
             <version>1.0.0.RELEASE</version>
@@ -81,16 +81,16 @@
             <version>5.5.0</version>
         </dependency>
         <dependency>
-		    <groupId>org.apache.pdfbox</groupId>
-		    <artifactId>pdfbox</artifactId>
-		    <version>1.8.6</version>
-		</dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>1.8.6</version>
+        </dependency>
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-all</artifactId>
             <version>2.2.2</version>
         </dependency>
-         <dependency>
+        <dependency>
             <groupId>com.inkubator</groupId>
             <artifactId>messaging-core</artifactId>
             <version>1.0-SNAPSHOT</version>
@@ -108,6 +108,23 @@
     </dependencies>
     <build>
         <plugins>
+<!--            <plugin> ruunning here for production olny.. will compress all CSS and JavaScrip 
+                <groupId>org.primefaces.extensions</groupId>
+                <artifactId>resources-optimizer-maven-plugin</artifactId>
+             
+                <version>1.1.0</version>
+                <executions>
+                    <execution>
+                        <id>optimize</id>
+                        <goals>
+                            <goal>optimize</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <inputDir>${project.build.directory}/src/main/webapp/resources</inputDir>
+                </configuration>
+            </plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

@@ -51,6 +51,8 @@ public class Jabatan implements java.io.Serializable {
     private Set<JabatanSpesifikasi> jabatanSpesifikasis = new HashSet<JabatanSpesifikasi>(0);
     private Set<KlasifikasiKerjaJabatan> klasifikasiKerjaJabatans = new HashSet<KlasifikasiKerjaJabatan>(0);
     private List<KlasifikasiKerja> kerjaJabatans = new ArrayList<KlasifikasiKerja>();
+    private Set<EmpRotasi> empRotasisForNewFunctionId = new HashSet<EmpRotasi>(0);
+    private Set<EmpRotasi> empRotasisForOldFunctionId = new HashSet<EmpRotasi>(0);
 
     public Jabatan() {
     }
@@ -279,6 +281,24 @@ public class Jabatan implements java.io.Serializable {
 
     public void setPaySalaryGrade(PaySalaryGrade paySalaryGrade) {
         this.paySalaryGrade = paySalaryGrade;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "jabatanByNewFunctionId")
+    public Set<EmpRotasi> getEmpRotasisForNewFunctionId() {
+        return this.empRotasisForNewFunctionId;
+    }
+
+    public void setEmpRotasisForNewFunctionId(Set<EmpRotasi> empRotasisForNewFunctionId) {
+        this.empRotasisForNewFunctionId = empRotasisForNewFunctionId;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "jabatanByOldFunctionId")
+    public Set<EmpRotasi> getEmpRotasisForOldFunctionId() {
+        return this.empRotasisForOldFunctionId;
+    }
+
+    public void setEmpRotasisForOldFunctionId(Set<EmpRotasi> empRotasisForOldFunctionId) {
+        this.empRotasisForOldFunctionId = empRotasisForOldFunctionId;
     }
 
 }

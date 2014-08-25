@@ -8,6 +8,7 @@ package com.inkubator.hrm.service.impl;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.ApprovalDefinitionDao;
 import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.dao.JabatanDao;
@@ -70,41 +71,49 @@ public class ApprovalDefinitionServiceImpl extends IServiceImpl implements Appro
             approvalDefinition.getJabatanByOnBehalfPosition().getName();
         }
 
-        return this.approvalDefinitionDao.getEntiyByPK(id);
+        return approvalDefinition;
     }
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(ApprovalDefinition entity) throws Exception {
-        long totalApprovalaNameWithSeq1 = this.approvalDefinitionDao.getTotalAprpovalExistWithSequenceOne(entity.getName());
+
         long totalExist = this.approvalDefinitionDao.getTotalSameAprrovalProsesExist(entity.getName(), entity.getProcessType(), entity.getSequence());
         if (totalExist > 0) {
-            throw new BussinessException("department.error_duplicate_department_name");
+            throw new BussinessException("approval.error_unik");
         }
-        System.out.println("nilaiaiai " + totalApprovalaNameWithSeq1);
-        if (entity.getSequence() > 1) {
-            if (totalApprovalaNameWithSeq1 < 1) {
-                throw new BussinessException("department.error_duplicate_department_name");
-            }
-        } else {
-            entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
-            entity.setCreatedBy(UserInfoUtil.getUserName());
-            entity.setCreatedOn(new Date());
-            if (entity.getHrmUserByApproverIndividual() != null) {
-                entity.setHrmUserByApproverIndividual(hrmUserDao.getEntiyByPK(entity.getHrmUserByApproverIndividual().getId()));
-            }
-            if (entity.getHrmUserByOnBehalfIndividual() != null) {
-                entity.setHrmUserByOnBehalfIndividual(hrmUserDao.getEntiyByPK(entity.getHrmUserByOnBehalfIndividual().getId()));
-            }
 
-            if (entity.getJabatanByApproverPosition() != null) {
-                entity.setJabatanByApproverPosition(jabatanDao.getEntiyByPK(entity.getJabatanByApproverPosition().getId()));
+        if (entity.getSequence() > 1) {
+            long totalApprovalaNameWithSeq1 = this.approvalDefinitionDao.getTotalAprpovalExistWithSequenceOne(entity.getName());
+            if (totalApprovalaNameWithSeq1 < 1) {
+                throw new BussinessException("approval.error_first");
             }
-            if (entity.getJabatanByOnBehalfPosition() != null) {
-                entity.setJabatanByOnBehalfPosition(jabatanDao.getEntiyByPK(entity.getJabatanByOnBehalfPosition().getId()));
-            }
-            this.approvalDefinitionDao.save(entity);
         }
+
+        if (entity.getProcessType().equalsIgnoreCase(HRMConstant.APPROVAL_PROCESS)) {
+            long totalLower = this.approvalDefinitionDao.getTotalDataWithSequenceLower(entity.getName(), entity.getSequence());
+            if (totalLower > 0) {
+                throw new Exception("jajajajaj");
+            }
+        }
+        entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+        entity.setCreatedBy(UserInfoUtil.getUserName());
+        entity.setCreatedOn(new Date());
+        if (entity.getHrmUserByApproverIndividual() != null) {
+            entity.setHrmUserByApproverIndividual(hrmUserDao.getEntiyByPK(entity.getHrmUserByApproverIndividual().getId()));
+        }
+        if (entity.getHrmUserByOnBehalfIndividual() != null) {
+            entity.setHrmUserByOnBehalfIndividual(hrmUserDao.getEntiyByPK(entity.getHrmUserByOnBehalfIndividual().getId()));
+        }
+
+        if (entity.getJabatanByApproverPosition() != null) {
+            entity.setJabatanByApproverPosition(jabatanDao.getEntiyByPK(entity.getJabatanByApproverPosition().getId()));
+        }
+        if (entity.getJabatanByOnBehalfPosition() != null) {
+            entity.setJabatanByOnBehalfPosition(jabatanDao.getEntiyByPK(entity.getJabatanByOnBehalfPosition().getId()));
+        }
+
+        this.approvalDefinitionDao.save(entity);
 
     }
 

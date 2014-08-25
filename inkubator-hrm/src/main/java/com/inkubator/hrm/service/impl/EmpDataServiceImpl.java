@@ -7,7 +7,6 @@ package com.inkubator.hrm.service.impl;
 
 import com.inkubator.common.CommonUtilConstant;
 import com.inkubator.common.util.DateTimeUtil;
-import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
@@ -90,7 +89,7 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
             throw new BussinessException("emp_data.error_nik_duplicate");
         }
 
-        entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
+//        entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
         entity.setBioData(bioDataDao.getEntiyByPK(entity.getBioData().getId()));
         entity.setCreatedOn(new Date());
         entity.setCreatedBy(UserInfoUtil.getUserName());

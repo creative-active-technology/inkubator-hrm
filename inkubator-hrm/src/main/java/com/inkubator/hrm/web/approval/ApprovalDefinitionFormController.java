@@ -192,6 +192,7 @@ public class ApprovalDefinitionFormController extends BaseController {
     }
 
     public ApprovalDefinition getEntityFromView(ApprovalDefinitionModel approvalDefinitionModel) {
+        System.out.println(approvalDefinitionModel);
         ApprovalDefinition approvalDefinition = new ApprovalDefinition();
         if (approvalDefinitionModel.getId() != null) {
             approvalDefinition.setId(approvalDefinitionModel.getId());
