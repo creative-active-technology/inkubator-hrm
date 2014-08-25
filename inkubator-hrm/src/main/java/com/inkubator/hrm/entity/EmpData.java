@@ -8,10 +8,13 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -91,6 +94,8 @@ public class EmpData implements java.io.Serializable {
 
     @Id
     @Column(name = "id", unique = true, nullable = false)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "employee_data_seq_gen")
+    @SequenceGenerator(name = "employee_data_seq_gen", sequenceName = "EMPLOYEE_DATA_SEQ")
     public long getId() {
         return this.id;
     }
