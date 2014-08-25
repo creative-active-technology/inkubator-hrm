@@ -166,6 +166,11 @@ public class ApprovalDefinitionModel implements Serializable {
     public void setJabatanByOnBehalfPositionName(String jabatanByOnBehalfPositionName) {
         this.jabatanByOnBehalfPositionName = jabatanByOnBehalfPositionName;
     }
+
+    @Override
+    public String toString() {
+        return "ApprovalDefinitionModel{" + "id=" + id + ", hrmUserByOnBehalfIndividualId=" + hrmUserByOnBehalfIndividualId + ", hrmUserByOnBehalfIndividualName=" + hrmUserByOnBehalfIndividualName + ", jabatanByApproverPositionId=" + jabatanByApproverPositionId + ", jabatanByApproverPositionName=" + jabatanByApproverPositionName + ", hrmUserByApproverIndividualId=" + hrmUserByApproverIndividualId + ", hrmUserByApproverIndividualName=" + hrmUserByApproverIndividualName + ", jabatanByOnBehalfPositionId=" + jabatanByOnBehalfPositionId + ", jabatanByOnBehalfPositionName=" + jabatanByOnBehalfPositionName + ", name=" + name + ", sequence=" + sequence + ", minApprover=" + minApprover + ", minRejector=" + minRejector + ", processType=" + processType + ", approverType=" + approverType + ", allowOnBehalf=" + allowOnBehalf + ", onBehalfType=" + onBehalfType + '}';
+    }
     
     
 
