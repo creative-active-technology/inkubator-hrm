@@ -1,8 +1,11 @@
 package com.inkubator.hrm.web.validator;
 
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.webcore.util.FacesUtil;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
@@ -24,7 +27,7 @@ public class DateBetweenValidator implements Validator {
 
         // Obtain the component and submitted value of the end time component.
         UIInput endTimeComponent = (UIInput) component.getAttributes().get("endTime");
-        SimpleDateFormat parser = new SimpleDateFormat("dd MMMM yyyy");
+        SimpleDateFormat parser = new SimpleDateFormat("dd MMMM yyyy", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
         Date endTime = null;
         try {
             endTime = parser.parse((String) endTimeComponent.getSubmittedValue());
