@@ -54,7 +54,7 @@ public class TravelComponentCostRateLazyDataModel extends LazyDataModel<TravelCo
             }
         } else {
             try {
-                travelComponentCostRateList = service.getAllDataWithAllRelation(parameter, first, pageSize, Order.desc("achievementName"));
+                travelComponentCostRateList = service.getAllDataWithAllRelation(parameter, first, pageSize, Order.desc("code"));
                 jumlahData = Integer.parseInt(String.valueOf(service.getTotalTravelComponentRateByParam(parameter)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);

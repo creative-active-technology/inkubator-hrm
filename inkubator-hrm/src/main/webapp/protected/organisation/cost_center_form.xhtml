@@ -119,7 +119,9 @@
                             </p:column>
                             <p:column  style="width: 50%">
                                 <p:inputText id="balance"  value="#{costCenterFormController.costCenterModel.balance}"
-                                             required="true"  maxlength="45" styleClass="isitext_hrm" style="width:210px;" />
+                                             required="true"  maxlength="45" styleClass="isitext_hrm" style="width:210px;" >
+                                <f:convertNumber pattern="###,###" type="currency"/>
+                                </p:inputText>
                             </p:column>
                         </p:row>
                         <p:row>

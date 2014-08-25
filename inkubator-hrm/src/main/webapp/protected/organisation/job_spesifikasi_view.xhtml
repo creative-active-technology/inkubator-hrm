@@ -78,7 +78,7 @@
                              <f:facet name="header">  
                                 <h:outputText value="#{appmsg['user_view.header1']}" styleClass="label_hrm"/>
                             </f:facet> 
-                            <p:column style="text-align: center;width: 10%">
+                            <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.number']}"  />
                                 </f:facet>
@@ -110,7 +110,7 @@
                             </p:column> 
 
                           
-                            <p:column headerText="#{appmsg['global.action']}" style="width: 16%;text-align: center" exportable="false">
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton  icon="ui-icon-document" title="#{appmsg['global.add_or_edit']}" label="#{appmsg['global.add_or_edit']}" value="#{appmsg['global.add_or_edit']}"
                                                   action="#{jabatanSpesifikasiViewController.doDetail()}" style="font-size: 10px!important" >                        
                                     <f:setPropertyActionListener value="#{jabatanDeskripsiModel}" target="#{jabatanSpesifikasiViewController.selectedJabatan}" />

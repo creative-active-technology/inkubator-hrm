@@ -9,12 +9,14 @@ import com.inkubator.hrm.dao.TravelComponentCostRateDao;
 import com.inkubator.hrm.entity.TravelComponentCostRate;
 import com.inkubator.hrm.web.search.TravelComponentCostRateSearchParameter;
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -67,7 +69,22 @@ public class TravelComponentCostRateDaoImpl extends IDAOImpl<TravelComponentCost
         if (searchParameter.getCode()!= null) {
         	criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.ANYWHERE));
         } 
-
+        if (StringUtils.isNotEmpty(searchParameter.getCostCenter())) {
+            criteria.createAlias("costCenter", "cc", JoinType.INNER_JOIN);
+            criteria.add(Restrictions.like("cc.name", searchParameter.getCostCenter(), MatchMode.ANYWHERE));
+        }
+        if (StringUtils.isNotEmpty(searchParameter.getGolonganJabatan())) {
+            criteria.createAlias("golonganJabatan", "gj", JoinType.INNER_JOIN);
+            criteria.add(Restrictions.like("gj.code", searchParameter.getGolonganJabatan(), MatchMode.ANYWHERE));
+        }
+        if (StringUtils.isNotEmpty(searchParameter.getTravelComponent())) {
+            criteria.createAlias("travelComponent", "tc", JoinType.INNER_JOIN);
+            criteria.add(Restrictions.like("tc.name", searchParameter.getTravelComponent(), MatchMode.ANYWHERE));
+        }
+        if (StringUtils.isNotEmpty(searchParameter.getTravelZone())) {
+            criteria.createAlias("travelZone", "tz", JoinType.INNER_JOIN);
+            criteria.add(Restrictions.like("tc.name", searchParameter.getTravelZone(), MatchMode.ANYWHERE));
+        }
         criteria.add(Restrictions.isNotNull("id"));
     }
 
