@@ -21,4 +21,5 @@ public interface TravelComponentCostRateService extends IService<TravelComponent
     
     public TravelComponentCostRate getEntityByPkWithAllRelation(Long code) throws Exception;
     
+    public List<TravelComponentCostRate> getAllDataByEmpDataIdAndTravelZoneId(Long golJabatanId, Long travelZoneId) throws Exception;
 }
