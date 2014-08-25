@@ -1,11 +1,14 @@
 package com.inkubator.hrm.web.personalia;
 
+import java.io.IOException;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
 
 import org.hibernate.exception.ConstraintViolationException;
 import org.primefaces.model.LazyDataModel;
@@ -109,11 +112,21 @@ public class BusinessTravelViewController extends BaseController {
         }
     }
 
-    public String doAdd() {
-        return "/protected/working_time/leave_form.htm?faces-redirect=true";
+    public void doAdd() {
+        try {
+            ExternalContext red = FacesUtil.getExternalContext();
+            red.redirect(red.getRequestContextPath() + "/flow-protected/business_travel");
+        } catch (IOException ex) {
+          LOGGER.error("Erorr", ex);
+        }
     }
 
-    public String doUpdate() {
-        return "/protected/working_time/leave_form.htm?faces-redirect=true&execution=e" + selectedBusinessTravel.getId();
+    public void doUpdate() {
+    	try {
+            ExternalContext red = FacesUtil.getExternalContext();
+            red.redirect(red.getRequestContextPath() + "/flow-protected/business_travel?id=" + selectedBusinessTravel.getId());
+        } catch (IOException ex) {
+          LOGGER.error("Erorr", ex);
+        }
     }
 }

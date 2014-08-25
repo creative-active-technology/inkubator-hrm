@@ -3,10 +3,15 @@ package com.inkubator.hrm.service.impl;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.hrm.dao.BusinessTravelComponentDao;
 import com.inkubator.hrm.entity.BusinessTravelComponent;
 import com.inkubator.hrm.service.BusinessTravelComponentService;
 
@@ -18,6 +23,9 @@ import com.inkubator.hrm.service.BusinessTravelComponentService;
 @Lazy
 public class BusinessTravelComponentServiceImpl extends IServiceImpl implements
 		BusinessTravelComponentService {
+	
+	@Autowired
+	private BusinessTravelComponentDao businessTravelComponentDao;
 
 	@Override
 	public BusinessTravelComponent getEntiyByPK(String id) throws Exception {
@@ -231,6 +239,13 @@ public class BusinessTravelComponentServiceImpl extends IServiceImpl implements
 			throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<BusinessTravelComponent> getAllDataByBusinessTravelId(Long businessTravelId) throws Exception {
+		return businessTravelComponentDao.getAllDataByBusinessTravelId(businessTravelId);
+		
 	}
 
 }
