@@ -4,10 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
 import org.springframework.webflow.execution.RequestContext;
 
 import com.inkubator.hrm.entity.BusinessTravel;
@@ -22,8 +21,8 @@ import com.inkubator.hrm.web.model.BusinessTravelModel;
  *
  * @author rizkykojek
  */
-@ManagedBean(name = "businessTravelFormController")
-@ViewScoped
+@Component(value = "businessTravelFormController")
+@Lazy
 public class BusinessTravelFormController implements Serializable{
 
 	org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(getClass());
