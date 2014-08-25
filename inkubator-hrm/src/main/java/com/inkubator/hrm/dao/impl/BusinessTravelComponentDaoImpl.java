@@ -1,5 +1,10 @@
 package com.inkubator.hrm.dao.impl;
 
+import java.util.List;
+
+import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -19,6 +24,15 @@ public class BusinessTravelComponentDaoImpl extends IDAOImpl<BusinessTravelCompo
 	public Class<BusinessTravelComponent> getEntityClass() {
 		return BusinessTravelComponent.class;
 		
+	}
+
+	@Override
+	public List<BusinessTravelComponent> getAllDataByBusinessTravelId(Long businessTravelId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("businessTravel", businessTravelId));
+		criteria.setFetchMode("travelComponent", FetchMode.JOIN);
+		criteria.setFetchMode("costCenter", FetchMode.JOIN);
+		return criteria.list();
 	}	
 
 }

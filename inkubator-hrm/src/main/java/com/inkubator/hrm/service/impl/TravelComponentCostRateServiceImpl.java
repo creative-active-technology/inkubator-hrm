@@ -7,10 +7,12 @@ package com.inkubator.hrm.service.impl;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.CostCenterDao;
+import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.GolonganJabatanDao;
 import com.inkubator.hrm.dao.TravelComponentCostRateDao;
 import com.inkubator.hrm.dao.TravelComponentDao;
 import com.inkubator.hrm.dao.TravelZoneDao;
+import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.TravelComponentCostRate;
 import com.inkubator.hrm.service.TravelComponentCostRateService;
 import com.inkubator.hrm.web.search.TravelComponentCostRateSearchParameter;
@@ -43,6 +45,8 @@ public class TravelComponentCostRateServiceImpl extends IServiceImpl implements 
     private TravelZoneDao travelZoneDao;
     @Autowired
     private TravelComponentCostRateDao travelComponentCostRateDao;
+    @Autowired
+    private EmpDataDao empDataDao;
     
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ,propagation = Propagation.SUPPORTS, timeout = 30)
@@ -252,5 +256,13 @@ public class TravelComponentCostRateServiceImpl extends IServiceImpl implements 
     public List<TravelComponentCostRate> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<TravelComponentCostRate> getAllDataByEmpDataIdAndTravelZoneId(Long empDataId, Long travelZoneId) throws Exception {
+		EmpData empData = empDataDao.getEntiyByPK(empDataId);
+		return travelComponentCostRateDao.getAllDataByGolJabatanIdAndTravelZoneId(empData.getGolonganJabatan().getId(), travelZoneId);
+		
+	}
     
 }
