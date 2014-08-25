@@ -57,6 +57,7 @@ public class EmpData implements java.io.Serializable {
     private Set<BusinessTravel> businessTravels = new HashSet<BusinessTravel>(0);
     private Long defEmpId;
     private String nikLama;
+    private Set<EmpRotasi> empRotasis = new HashSet<EmpRotasi>(0);
 
     public EmpData() {
     }
@@ -353,6 +354,15 @@ public class EmpData implements java.io.Serializable {
 
     public void setNikLama(String nikLama) {
         this.nikLama = nikLama;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "empData")
+    public Set<EmpRotasi> getEmpRotasis() {
+        return this.empRotasis;
+    }
+
+    public void setEmpRotasis(Set<EmpRotasi> empRotasis) {
+        this.empRotasis = empRotasis;
     }
 
 }
