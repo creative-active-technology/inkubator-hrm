@@ -49,7 +49,7 @@ public class TravelComponentCostRateServiceImpl extends IServiceImpl implements 
     private EmpDataDao empDataDao;
     
     @Override
-    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ,propagation = Propagation.SUPPORTS, timeout = 30)
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ,propagation = Propagation.SUPPORTS, timeout = 50)
     public List<TravelComponentCostRate> getAllDataWithAllRelation(TravelComponentCostRateSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
         return travelComponentCostRateDao.getAllDataWithAllRelation(searchParameter, firstResult, maxResults, order);
     }
