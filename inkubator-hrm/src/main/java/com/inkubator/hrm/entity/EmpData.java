@@ -58,6 +58,7 @@ public class EmpData implements java.io.Serializable {
 //    private Long defEmpId;
 //    private String nikLama;
     private Set<EmpRotasi> empRotasis = new HashSet<EmpRotasi>(0);
+    private String status;
 
     public EmpData() {
     }
@@ -355,7 +356,6 @@ public class EmpData implements java.io.Serializable {
 //    public void setNikLama(String nikLama) {
 //        this.nikLama = nikLama;
 //    }
-
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "empData")
     public Set<EmpRotasi> getEmpRotasis() {
         return this.empRotasis;
@@ -363,6 +363,15 @@ public class EmpData implements java.io.Serializable {
 
     public void setEmpRotasis(Set<EmpRotasi> empRotasis) {
         this.empRotasis = empRotasis;
+    }
+
+    @Column(name = "status", length = 45)
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
 }
