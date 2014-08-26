@@ -21,5 +21,5 @@ public interface PersonalDisciplineService extends IService<PersonalDiscipline>{
     
     public PersonalDiscipline getEntityByPkWithAllRelation(Long id) throws Exception;
     
-    
+    public List<PersonalDiscipline> getAllDataByEmployeeId(Long id) throws Exception;
 }

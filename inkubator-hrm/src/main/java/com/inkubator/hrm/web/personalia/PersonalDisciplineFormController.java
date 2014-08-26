@@ -13,13 +13,16 @@ import com.inkubator.hrm.service.AdmonitionTypeService;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.PersonalDisciplineService;
 import com.inkubator.hrm.util.MapUtil;
+import com.inkubator.hrm.web.employee.EmpPersonAchievementFormController;
 import com.inkubator.hrm.web.model.PersonalDisciplineModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import javax.annotation.PostConstruct;
@@ -107,9 +110,7 @@ public class PersonalDisciplineFormController extends BaseController{
         model.setDescription(entity.getDescription());
         model.setExpireDate(entity.getExpiredDate());
         model.setStartDate(entity.getStartDate());
-        if(entity.getEmpData()!= null){
-            model.setEmpData(entity.getEmpData());
-        }
+        model.setNikWithFullName(entity.getEmpData().getNikWithFullName());
         return model;
     }
 
@@ -128,6 +129,28 @@ public class PersonalDisciplineFormController extends BaseController{
             return queried;
         } catch (Exception ex) {
             java.util.logging.Logger.getLogger(PersonalDisciplineFormController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
+       return null;
+    }
+    
+    public List<String> completeEmployeeString(String query) {
+            
+        try {
+            List<EmpData> allEmployee;
+            allEmployee = empDataService.getAllDataWithRelation();
+            List<String> queried = new ArrayList<String>();
+            
+            for (EmpData empData : allEmployee) {
+                if (empData.getNik().toLowerCase().startsWith(query)  || empData.getNik().startsWith(query) && empData.getNik() != null ) {
+                    queried.add(empData.getNikWithFullName());
+                }
+            }
+            Set<String> setFullName = new HashSet<>(queried);
+            List<String> listName = new ArrayList<>(setFullName);
+            return listName;
+        } catch (Exception ex) {
+            java.util.logging.Logger.getLogger(EmpPersonAchievementFormController.class.getName()).log(Level.SEVERE, null, ex);
         }
             
        return null;
@@ -157,10 +180,11 @@ public class PersonalDisciplineFormController extends BaseController{
         if (model.getId() != null) {
             personalDiscipline.setId(model.getId());
         }
+        EmpData selectedEmployee = empDataService.getEntityByNik(StringUtils.substringBefore(model.getNikWithFullName(), " - "));
+        personalDiscipline.setEmpData(new EmpData(selectedEmployee.getId()));
         personalDiscipline.setDescription(model.getDescription());
         personalDiscipline.setStartDate(model.getStartDate());
         personalDiscipline.setExpiredDate(model.getExpireDate());
-        personalDiscipline.setEmpData(model.getEmpData());
         personalDiscipline.setAdmonitionType(new AdmonitionType(model.getAdmonitionType()));
         return personalDiscipline;
     }

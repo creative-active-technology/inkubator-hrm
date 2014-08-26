@@ -75,4 +75,12 @@ public class PersonalDisciplineDaoImpl extends IDAOImpl<PersonalDiscipline> impl
         }
         criteria.add(Restrictions.isNotNull("id"));
     }
+
+    @Override
+    public List<PersonalDiscipline> getAllDataByEmployeeId(Long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("empData.id", id));
+        criteria.setFetchMode("admonitionType", FetchMode.JOIN);
+        return criteria.list();
+    }
 }

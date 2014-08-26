@@ -33,5 +33,7 @@ public interface EmpDataService extends IService<EmpData> {
     public EmpData getByBioDataIdWithDepartment(long id) throws Exception;
     
     public List<EmpData> getAllDataWithRelation() throws Exception;
+    
+    public EmpData getEntityByNik(String nik) throws Exception;
 
 }

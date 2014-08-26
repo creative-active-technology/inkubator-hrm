@@ -305,14 +305,75 @@
                                 <p:outputLabel value="Available on Version 1.2" styleClass="header_big" style="position:relative;color:red;right:-400px !important;font-style:italic"/>
                             </p:tab>  
 
-                            <p:tab id="minatId" title="#{appmsg['placement.prestasi']}">  
-                                <p:outputLabel value="Available on Version 1.2" styleClass="header_big" style="position:relative;color:red;right:-400px !important;font-style:italic"/>
-
+                            <p:tab id="achievementTabId" title="#{appmsg['placement.prestasi']}">  
+                                <p:dataTable value="#{empDataDetilController.listPersonAchievement}" var="achievement" rowIndexVar="no" id="achievementId"
+                                             >
+                                    <p:column style="text-align: center;width: 3%;">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['global.number']}." />
+                                        </f:facet>
+                                        <h:outputLabel value="#{no+1}." />
+                                    </p:column>
+                                    <p:column style="width: 29%"> 
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['personachievement.achievement']}" />
+                                        </f:facet>
+                                        <h:outputLabel value=" #{achievement.achievementName}" />
+                                    </p:column> 
+                                    <p:column style="width: 30%"> 
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['global.description']}" />
+                                        </f:facet>
+                                        <h:outputLabel value=" #{achievement.description}" />
+                                    </p:column> 
+                                    <p:column style="width: 19%;text-align: center"> 
+                                        <f:facet name="header" >  
+                                            <h:outputText value="#{appmsg['personachievement.achievement_date']}" />
+                                        </f:facet>
+                                        <p:outputLabel value="#{achievement.dateAchievement}" >
+                                            <f:convertDateTime pattern="dd MMMM yyyy" />
+                                        </p:outputLabel>
+                                    </p:column>
+                                </p:dataTable> 
                             </p:tab>  
-                            <p:tab id="dataKeluargaid" title="#{appmsg['placement.tata_tertib']}">  
-                               <p:outputLabel value="Available on Version 1.2" styleClass="header_big" style="position:relative;color:red;right:-400px !important;font-style:italic"/>
-
-
+                            <p:tab id="personalDisciplineTabId" title="#{appmsg['placement.tata_tertib']}">  
+                                <p:dataTable value="#{empDataDetilController.listPersonalDiscipline}" var="discipline" rowIndexVar="no" id="personalDisciplineId"
+                                             >
+                                    <p:column style="text-align: center;width: 3%;">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['global.number']}." />
+                                        </f:facet>
+                                        <h:outputLabel value="#{no+1}." />
+                                    </p:column>
+                                    <p:column style="width: 29%"> 
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['admonitionType.admonitionType']}" />
+                                        </f:facet>
+                                        <h:outputLabel value=" #{discipline.admonitionType.name}" />
+                                    </p:column> 
+                                    <p:column style="width: 30%"> 
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['global.description']}" />
+                                        </f:facet>
+                                        <h:outputLabel value=" #{discipline.description}" />
+                                    </p:column> 
+                                    <p:column style="width: 19%;text-align: center"> 
+                                        <f:facet name="header" >  
+                                            <h:outputText value="#{appmsg['workinggroup.working_group_start_date']}" />
+                                        </f:facet>
+                                        <p:outputLabel value="#{discipline.startDate}" >
+                                            <f:convertDateTime pattern="dd MMMM yyyy" />
+                                        </p:outputLabel>
+                                    </p:column>
+                                    <p:column style="width: 19%;text-align: center"> 
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['personaldiscipline.expire_date']}" />
+                                        </f:facet>
+                                        <p:outputLabel value="#{discipline.expiredDate}" >
+                                            <f:convertDateTime pattern="dd MMMM yyyy" />
+                                        </p:outputLabel>
+                                    </p:column>
+                                </p:dataTable> 
                             </p:tab>  
                             <p:tab id="documentId" title="#{appmsg['placement.riwayat_penilaian']}">  
                                 <p:outputLabel value="Available on Version 1.2" styleClass="header_big" style="position:relative;color:red;right:-400px !important;font-style:italic"/>

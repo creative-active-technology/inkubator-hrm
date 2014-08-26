@@ -38,7 +38,7 @@ public class PersonalDisciplineServiceImpl extends IServiceImpl implements Perso
     private AdmonitionTypeDao admonitionTypeDao;
 
     @Override
-    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ,propagation = Propagation.SUPPORTS, timeout = 30)
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ,propagation = Propagation.SUPPORTS, timeout = 50)
     public List<PersonalDiscipline> getAllDataWithAllRelation(PersonalDisciplineSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
         return personalDisciplineDao.getAllDataWithAllRelation(searchParameter, firstResult, maxResults, order);
     }
@@ -229,6 +229,12 @@ public class PersonalDisciplineServiceImpl extends IServiceImpl implements Perso
     @Override
     public List<PersonalDiscipline> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ,propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<PersonalDiscipline> getAllDataByEmployeeId(Long id) throws Exception {
+        return personalDisciplineDao.getAllDataByEmployeeId(id);
     }
     
 }

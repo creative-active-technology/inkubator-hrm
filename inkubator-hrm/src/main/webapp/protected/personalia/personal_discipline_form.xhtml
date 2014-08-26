@@ -41,14 +41,10 @@
                             <p:column  style="width: 60%">
                                 <p:autoComplete id="employeeId" 
                                                 title="#{appmsg['personachievement.employee_name']}" 
-                                                value="#{personalDisciplineFormController.model.empData}"
-                                                completeMethod="#{personalDisciplineFormController.completeEmployee}" 
-                                                var="empData"
+                                                value="#{personalDisciplineFormController.model.nikWithFullName}"
+                                                completeMethod="#{personalDisciplineFormController.completeEmployeeString}"
                                                 scrollHeight="100"
-                                                required="true" 
-                                                itemValue="#{empData}"
-                                                itemLabel="#{empData.nikWithFullName}"
-                                                converter="empDataConverter"
+                                                required="true"
                                                 requiredMessage="#{appmsg['personachievement.person_achievement_should_not_be_empty']}" 
                                                 styleClass="isitext_hrm" style="width:250px;">
                                 </p:autoComplete>

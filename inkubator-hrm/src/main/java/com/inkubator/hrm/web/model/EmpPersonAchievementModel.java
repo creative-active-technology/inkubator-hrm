@@ -18,6 +18,7 @@ public class EmpPersonAchievementModel {
     private String description;
     private Date dateAchievement;
     private EmpData empData;
+    private String nikWithFullName;
 
     public long getEmpDataId() {
         return empDataId;
@@ -65,6 +66,14 @@ public class EmpPersonAchievementModel {
 
     public void setEmpData(EmpData empData) {
         this.empData = empData;
+    }
+
+    public String getNikWithFullName() {
+        return nikWithFullName;
+    }
+
+    public void setNikWithFullName(String nikWithFullName) {
+        this.nikWithFullName = nikWithFullName;
     }
     
     

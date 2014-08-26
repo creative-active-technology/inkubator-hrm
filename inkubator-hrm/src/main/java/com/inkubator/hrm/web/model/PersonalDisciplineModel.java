@@ -18,6 +18,7 @@ public class PersonalDisciplineModel {
     private Date startDate;
     private Date expireDate;
     private String description;
+    private String nikWithFullName;
     private EmpData empData;
 
     public Long getId() {
@@ -74,6 +75,14 @@ public class PersonalDisciplineModel {
 
     public void setEmpData(EmpData empData) {
         this.empData = empData;
+    }
+
+    public String getNikWithFullName() {
+        return nikWithFullName;
+    }
+
+    public void setNikWithFullName(String nikWithFullName) {
+        this.nikWithFullName = nikWithFullName;
     }
     
     
