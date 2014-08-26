@@ -55,8 +55,8 @@ public class EmpData implements java.io.Serializable {
     private Date updatedOn;
     private Set<EmpPersonAchievement> empPersonAchievements = new HashSet<EmpPersonAchievement>(0);
     private Set<BusinessTravel> businessTravels = new HashSet<BusinessTravel>(0);
-    private Long defEmpId;
-    private String nikLama;
+//    private Long defEmpId;
+//    private String nikLama;
     private Set<EmpRotasi> empRotasis = new HashSet<EmpRotasi>(0);
 
     public EmpData() {
@@ -338,23 +338,23 @@ public class EmpData implements java.io.Serializable {
         this.businessTravels = businessTravels;
     }
 
-    @Column(name = "def_emp_id")
-    public Long getDefEmpId() {
-        return this.defEmpId;
-    }
-
-    public void setDefEmpId(Long defEmpId) {
-        this.defEmpId = defEmpId;
-    }
-
-    @Column(name = "nik_lama", length = 45)
-    public String getNikLama() {
-        return this.nikLama;
-    }
-
-    public void setNikLama(String nikLama) {
-        this.nikLama = nikLama;
-    }
+//    @Column(name = "def_emp_id")
+//    public Long getDefEmpId() {
+//        return this.defEmpId;
+//    }
+//
+//    public void setDefEmpId(Long defEmpId) {
+//        this.defEmpId = defEmpId;
+//    }
+//
+//    @Column(name = "nik_lama", length = 45)
+//    public String getNikLama() {
+//        return this.nikLama;
+//    }
+//
+//    public void setNikLama(String nikLama) {
+//        this.nikLama = nikLama;
+//    }
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "empData")
     public Set<EmpRotasi> getEmpRotasis() {
