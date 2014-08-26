@@ -85,7 +85,7 @@ public class EmpDataDetilController extends BaseController {
     }
 
     public String doEdit() {
-        return "/protected/personalia/biodata_form.htm?faces-redirect=true&execution=e" + selectedEmpData.getId();
+        return "/protected/employee/employee_palcement_form.htm?faces-redirect=true&execution=e" + selectedEmpData.getId();
     }
 
     public String doBack() {

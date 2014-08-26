@@ -24,4 +24,6 @@ public interface GolonganJabatanService extends IService<GolonganJabatan> {
     public GolonganJabatan getEntityByPkFetchAttendPangkat(Long id) throws Exception;
 
     public List<GolonganJabatan> getAllWithDetail() throws Exception;
+    
+   
 }

@@ -18,11 +18,11 @@
                 <div id="box_bg" style="margin: 10px">
                     <!--<p:panel style="margin: 10px" >-->
                     <h:panelGrid style="margin-bottom: 5px" columns="2">
-                        <p:graphicImage library="images" name="user.png" height="36" width="36" />
+                        <p:graphicImage library="images" name="employee-rotation.png" height="36" width="36" />
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="#{appmsg['placement.list_of_placement']}" styleClass="header_big" />
-                                <p:outputLabel value="#{appmsg['placement.placement_header']}" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="Daftar Rotasi Karyawan" styleClass="header_big" />
+                                <p:outputLabel value="Data Rotasi Karyawan dari Aplikasi" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -34,17 +34,17 @@
                                 <h:panelGrid columns="5">
                                     <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm"/>
                                     <p:outputLabel value=":" styleClass="label_hrm" />
-                                    <p:selectOneMenu id="pencarianSelectId" value="#{empDataViewController.empDataSearchParameter.keyParam}"
+                                    <p:selectOneMenu id="pencarianSelectId" value="#{empRotasiViewController.empRotasiSearchParameter.keyParam}"
                                                      style="width: 150px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItem itemLabel="#{appmsg['placement.nik']}" itemValue="NIK"/>
                                         <f:selectItem itemLabel="#{appmsg['global.name']}" itemValue="name" />
-                                        <f:selectItem itemLabel="#{appmsg['placement.jabatan_code']}" itemValue="jabatanKode" />
-                                        <f:selectItem itemLabel="#{appmsg['placement.jabatan_name']}" itemValue="jabatanName" />
+                                        <f:selectItem itemLabel="Jabatan Lama" itemValue="jabatanLama" />
+                                        <f:selectItem itemLabel="Jabatan Baru" itemValue="jabatanBaru" />
                                     </p:selectOneMenu>
-                                    <p:inputText value="#{empDataViewController.empDataSearchParameter.parameter}" style="width: 250px" id="pencarianId" styleClass="isitext_hrm" 
+                                    <p:inputText value="#{empRotasiViewController.empRotasiSearchParameter.parameter}" style="width: 250px" id="pencarianId" styleClass="isitext_hrm" 
                                                  label="#{appmsg['global.searching']}" title="#{appmsg['global.searching']}"/>
-                                    <p:commandButton value="#{appmsg['global.search']}" action="#{empDataViewController.doSearch()}" style="width: 75px" update="tableEmpDataId" icon="ui-icon-search"
+                                    <p:commandButton value="#{appmsg['global.search']}" action="#{empRotasiViewController.doSearch()}" style="width: 75px" update="tableEmpDataId" icon="ui-icon-search"
                                                      styleClass="label_button" title="#{appmsg['global.search']}" id="btnPencarianId" />
                                 </h:panelGrid>
                             </p:toolbarGroup>
@@ -53,11 +53,11 @@
                                     <p:commandButton value="Export to XLS" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
                                         <pe:exporter target="tableEmpDataIdExpand" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Employee_Placement"/>
                                     </p:commandButton>
-                                    <p:commandButton value="#{appmsg['global.add']}" action="#{empDataViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" icon="ui-icon-document"
+                                    <p:commandButton value="#{appmsg['global.add']}" action="#{empRotasiViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" icon="ui-icon-document"
                                                      styleClass="label_button" ajax="true" immediate="true">
 
                                     </p:commandButton>
-                                    <p:commandButton value="#{appmsg['global.close']}"  styleClass="label_button" action="#{empDataViewController.doClose()}" title="#{appmsg['global.close']}" icon="ui-icon-home"
+                                    <p:commandButton value="#{appmsg['global.close']}"  styleClass="label_button" action="#{empRotasiViewController.doClose()}" title="#{appmsg['global.close']}" icon="ui-icon-home"
                                                      label="#{appmsg['global.close']}"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
@@ -65,7 +65,7 @@
                         </p:toolbar>
                         <p:focus for="pencarianId" />
 
-                        <p:dataTable  var="empViewData"  value="#{empDataViewController.empDataLazyDataModel}" lazy="true" paginator="true" pageLinks="7" 
+                        <p:dataTable  var="empViewData"  value="#{empRotasiViewController.empRotasiLazyDataModel}" lazy="true" paginator="true" pageLinks="7" 
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
                                       id="tableEmpDataId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
