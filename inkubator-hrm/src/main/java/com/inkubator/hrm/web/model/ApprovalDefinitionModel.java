@@ -14,18 +14,18 @@ import java.io.Serializable;
 public class ApprovalDefinitionModel implements Serializable {
 
     private Long id;
-    private long hrmUserByOnBehalfIndividualId;
+    private Long hrmUserByOnBehalfIndividualId;
     private String hrmUserByOnBehalfIndividualName;
-    private long jabatanByApproverPositionId;
+    private Long jabatanByApproverPositionId;
     private String jabatanByApproverPositionName;
-    private long hrmUserByApproverIndividualId;
+    private Long hrmUserByApproverIndividualId;
     private String hrmUserByApproverIndividualName;
-    private long jabatanByOnBehalfPositionId;
+    private Long jabatanByOnBehalfPositionId;
     private String jabatanByOnBehalfPositionName;
     private String name;
     private Integer sequence=1;
-    private Integer minApprover=1;
-    private Integer minRejector=1;
+    private Integer minApprover;
+    private Integer minRejector;
     private String processType;
     private String approverType;
     private Boolean allowOnBehalf;
@@ -39,35 +39,35 @@ public class ApprovalDefinitionModel implements Serializable {
         this.id = id;
     }
 
-    public long getHrmUserByOnBehalfIndividualId() {
+    public Long getHrmUserByOnBehalfIndividualId() {
         return hrmUserByOnBehalfIndividualId;
     }
 
-    public void setHrmUserByOnBehalfIndividualId(long hrmUserByOnBehalfIndividualId) {
+    public void setHrmUserByOnBehalfIndividualId(Long hrmUserByOnBehalfIndividualId) {
         this.hrmUserByOnBehalfIndividualId = hrmUserByOnBehalfIndividualId;
     }
 
-    public long getJabatanByApproverPositionId() {
+    public Long getJabatanByApproverPositionId() {
         return jabatanByApproverPositionId;
     }
 
-    public void setJabatanByApproverPositionId(long jabatanByApproverPositionId) {
+    public void setJabatanByApproverPositionId(Long jabatanByApproverPositionId) {
         this.jabatanByApproverPositionId = jabatanByApproverPositionId;
     }
 
-    public long getHrmUserByApproverIndividualId() {
+    public Long getHrmUserByApproverIndividualId() {
         return hrmUserByApproverIndividualId;
     }
 
-    public void setHrmUserByApproverIndividualId(long hrmUserByApproverIndividualId) {
+    public void setHrmUserByApproverIndividualId(Long hrmUserByApproverIndividualId) {
         this.hrmUserByApproverIndividualId = hrmUserByApproverIndividualId;
     }
 
-    public long getJabatanByOnBehalfPositionId() {
+    public Long getJabatanByOnBehalfPositionId() {
         return jabatanByOnBehalfPositionId;
     }
 
-    public void setJabatanByOnBehalfPositionId(long jabatanByOnBehalfPositionId) {
+    public void setJabatanByOnBehalfPositionId(Long jabatanByOnBehalfPositionId) {
         this.jabatanByOnBehalfPositionId = jabatanByOnBehalfPositionId;
     }
 
@@ -165,6 +165,11 @@ public class ApprovalDefinitionModel implements Serializable {
 
     public void setJabatanByOnBehalfPositionName(String jabatanByOnBehalfPositionName) {
         this.jabatanByOnBehalfPositionName = jabatanByOnBehalfPositionName;
+    }
+
+    @Override
+    public String toString() {
+        return "ApprovalDefinitionModel{" + "id=" + id + ", hrmUserByOnBehalfIndividualId=" + hrmUserByOnBehalfIndividualId + ", hrmUserByOnBehalfIndividualName=" + hrmUserByOnBehalfIndividualName + ", jabatanByApproverPositionId=" + jabatanByApproverPositionId + ", jabatanByApproverPositionName=" + jabatanByApproverPositionName + ", hrmUserByApproverIndividualId=" + hrmUserByApproverIndividualId + ", hrmUserByApproverIndividualName=" + hrmUserByApproverIndividualName + ", jabatanByOnBehalfPositionId=" + jabatanByOnBehalfPositionId + ", jabatanByOnBehalfPositionName=" + jabatanByOnBehalfPositionName + ", name=" + name + ", sequence=" + sequence + ", minApprover=" + minApprover + ", minRejector=" + minRejector + ", processType=" + processType + ", approverType=" + approverType + ", allowOnBehalf=" + allowOnBehalf + ", onBehalfType=" + onBehalfType + '}';
     }
     
     

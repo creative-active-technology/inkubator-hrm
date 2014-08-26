@@ -5,17 +5,20 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 
@@ -50,7 +53,11 @@ public class EmpData implements java.io.Serializable {
     private Date createdOn;
     private String updatedBy;
     private Date updatedOn;
+    private Set<EmpPersonAchievement> empPersonAchievements = new HashSet<EmpPersonAchievement>(0);
     private Set<BusinessTravel> businessTravels = new HashSet<BusinessTravel>(0);
+//    private Long defEmpId;
+//    private String nikLama;
+    private Set<EmpRotasi> empRotasis = new HashSet<EmpRotasi>(0);
 
     public EmpData() {
     }
@@ -59,7 +66,7 @@ public class EmpData implements java.io.Serializable {
         this.id = id;
     }
 
-    public EmpData(long id, WtGroupWorking wtGroupWorking, EmployeeType employeeType, BioData bioData, PaySalaryGrade paySalaryGrade, Jabatan jabatanByJabatanId, GolonganJabatan golonganJabatan, Jabatan jabatanByJabatanGajiId, String nik, Date joinDate, String ppmp, String ppip, Boolean isFinger, Boolean heatlyPremi, Boolean ptkpStatus, Integer ptkpNumber, Boolean insentifStatus, BigDecimal basicSalary, String createdBy, Date createdOn, String updatedBy, Date updatedOn, Set<BusinessTravel> businessTravels) {
+    public EmpData(long id, WtGroupWorking wtGroupWorking, EmployeeType employeeType, BioData bioData, PaySalaryGrade paySalaryGrade, Jabatan jabatanByJabatanId, GolonganJabatan golonganJabatan, Jabatan jabatanByJabatanGajiId, String nik, Date joinDate, String ppmp, String ppip, Boolean isFinger, Boolean heatlyPremi, Boolean ptkpStatus, Integer ptkpNumber, Boolean insentifStatus, BigDecimal basicSalary, String createdBy, Date createdOn, String updatedBy, Date updatedOn, Set<BusinessTravel> businessTravels, Set<EmpPersonAchievement> empPersonAchievements) {
         this.id = id;
         this.wtGroupWorking = wtGroupWorking;
         this.employeeType = employeeType;
@@ -82,11 +89,14 @@ public class EmpData implements java.io.Serializable {
         this.createdOn = createdOn;
         this.updatedBy = updatedBy;
         this.updatedOn = updatedOn;
+        this.empPersonAchievements = empPersonAchievements;
         this.businessTravels = businessTravels;
     }
 
     @Id
     @Column(name = "id", unique = true, nullable = false)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "employee_data_seq_gen")
+    @SequenceGenerator(name = "employee_data_seq_gen", sequenceName = "EMPLOYEE_DATA_SEQ")
     public long getId() {
         return this.id;
     }
@@ -304,13 +314,55 @@ public class EmpData implements java.io.Serializable {
         this.updatedOn = updatedOn;
     }
 
-    @OneToMany(fetch=FetchType.LAZY, mappedBy="empData")
-	public Set<BusinessTravel> getBusinessTravels() {
-		return businessTravels;
-	}
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "empData")
+    public Set<EmpPersonAchievement> getEmpPersonAchievements() {
+        return empPersonAchievements;
+    }
 
-	public void setBusinessTravels(Set<BusinessTravel> businessTravels) {
-		this.businessTravels = businessTravels;
-	}
+    public void setEmpPersonAchievements(Set<EmpPersonAchievement> empPersonAchievements) {
+        this.empPersonAchievements = empPersonAchievements;
+    }
+
+    @Transient
+    public String getNikWithFullName() {
+        String data = nik + " - " + bioData.getFirstName() + " " + bioData.getLastName();
+        return data;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "empData")
+    public Set<BusinessTravel> getBusinessTravels() {
+        return businessTravels;
+    }
+
+    public void setBusinessTravels(Set<BusinessTravel> businessTravels) {
+        this.businessTravels = businessTravels;
+    }
+
+//    @Column(name = "def_emp_id")
+//    public Long getDefEmpId() {
+//        return this.defEmpId;
+//    }
+//
+//    public void setDefEmpId(Long defEmpId) {
+//        this.defEmpId = defEmpId;
+//    }
+//
+//    @Column(name = "nik_lama", length = 45)
+//    public String getNikLama() {
+//        return this.nikLama;
+//    }
+//
+//    public void setNikLama(String nikLama) {
+//        this.nikLama = nikLama;
+//    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "empData")
+    public Set<EmpRotasi> getEmpRotasis() {
+        return this.empRotasis;
+    }
+
+    public void setEmpRotasis(Set<EmpRotasi> empRotasis) {
+        this.empRotasis = empRotasis;
+    }
 
 }

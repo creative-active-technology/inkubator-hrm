@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/dialog_layout.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlUserFormId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
+                <h:form id="empDataFormId" >
+                    <div id="box_bg" style="margin: 10px">
+                        <h:panelGrid columns="4">
+                            <p:outputLabel value="Nama" styleClass="header_big" />
+                            <p:outputLabel value=":" styleClass="header_big" />
+                            <p:inputText style="width: 450px" value="#{positionSearchController.jabatanName}"/>
+                            <p:commandButton value="Cari" icon="ui-icon-search" action="#{positionSearchController.doSearch()}" update="listBioId"  id="cariId"/>
+                        </h:panelGrid>
+                        <p:focus for="cariId" />
+                        <p:dataTable value="#{positionSearchController.jabatanDataToShow}" var="listJabatan" rowIndexVar="no" style="margin-top: 10px;margin-bottom: 10px" id="listBioId">
+                            <!--                            <f:facet name="header">  
+                                                            <h:outputText value="#{appmsg['role_view.header1']}" style="text-align: left" styleClass="label_hrm"/> 
+                                                        </f:facet>-->
+                            <p:column style="text-align: center;width: 25px;max-width: 25px">
+                                <f:facet name="header">  
+                                    <h:outputText value="No." />
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+
+                            <p:column> 
+                                <f:facet name="header">  
+                                    <h:outputText value="Nama" />
+                                </f:facet>
+                                <p:outputLabel value=" #{listJabatan.code}" />
+                            </p:column> 
+                            <p:column > 
+                                <f:facet name="header">  
+                                    <h:outputText value="Tanggal Lahir" />
+                                </f:facet>
+                                <p:outputLabel value="#{listJabatan.name}" />
+                            </p:column>
+                            <p:column  > 
+                                <f:facet name="header">  
+                                    <h:outputText value="Email Address" />
+                                </f:facet>
+                                <h:outputLabel value=" #{listJabatan.department.departmentName}" />
+                            </p:column>
+                            <p:column style="text-align: center" > 
+                                <f:facet name="header">  
+                                    <h:outputText value="Aksi" />
+                                </f:facet>
+                                <p:commandButton value="Select"  style="font-size: 11px!important" action="#{positionSearchController.doSelect(listJabatan)}"/>
+                            </p:column>
+                        </p:dataTable>
+
+
+
+                    </div>
+
+
+                </h:form>
+<!--                <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
+                    <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
+                </p:dialog>-->
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

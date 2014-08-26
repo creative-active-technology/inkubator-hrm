@@ -11,11 +11,13 @@ import com.inkubator.hrm.entity.BioData;
 import com.inkubator.hrm.entity.Department;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.EmployeeType;
+import com.inkubator.hrm.entity.GolonganJabatan;
 import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.entity.PaySalaryGrade;
 import com.inkubator.hrm.service.DepartmentService;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.EmployeeTypeService;
+import com.inkubator.hrm.service.GolonganJabatanService;
 import com.inkubator.hrm.service.JabatanService;
 import com.inkubator.hrm.service.PaySalaryGradeService;
 import com.inkubator.hrm.web.model.EmpDataModel;
@@ -46,6 +48,7 @@ public class EmpDataFormController extends BaseController {
     private Map<String, Long> mapJabatans = new HashMap<String, Long>();
     private Map<String, Long> mapStatusKaryawan = new HashMap<String, Long>();
     private Map<Integer, Long> mapPaySalary = new HashMap<Integer, Long>();
+    private Map<String, Long> mapGolonganJabatan = new HashMap<String, Long>();
 
 //    private HrmUserSearchParameter hrmUserSearchParameter;
 //    private LazyDataModel<HrmUser> lazyDataHrmUser;
@@ -60,6 +63,8 @@ public class EmpDataFormController extends BaseController {
     private PaySalaryGradeService paySalaryGradeService;
     @ManagedProperty(value = "#{empDataService}")
     private EmpDataService empDataService;
+    @ManagedProperty(value = "#{golonganJabatanService}")
+    private GolonganJabatanService golonganJabatanService;
 //
 //    public void setHrmUserService(HrmUserService hrmUserService) {
 //        this.hrmUserService = hrmUserService;
@@ -74,6 +79,10 @@ public class EmpDataFormController extends BaseController {
             super.initialization();
             empDataModel = new EmpDataModel();
             String empId = FacesUtil.getRequestParameter("execution");
+            List<GolonganJabatan> golJabatans = golonganJabatanService.getAllWithDetail();
+            for (GolonganJabatan golonganJabatan : golJabatans) {
+                mapGolonganJabatan.put(golonganJabatan.getCode() + "-" + golonganJabatan.getPangkat().getPangkatName(), golonganJabatan.getId());
+            }
             List<Department> departements = departmentService.getAllData();
             for (Department department : departements) {
                 mapDepartements.put(department.getDepartmentName(), department.getId());
@@ -123,6 +132,7 @@ public class EmpDataFormController extends BaseController {
             } else {
                 isEdit = Boolean.FALSE;
             }
+
         } catch (Exception ex) {
             LOGGER.error("error", ex);
         }
@@ -204,6 +214,8 @@ public class EmpDataFormController extends BaseController {
 
     public String doSave() {
         EmpData empData = getEntityFromViewModel(empDataModel);
+        System.out.println("ememem 1" + empData.getGolonganJabatan().getId());
+        System.out.println("ememem 2" + empDataModel.getGolonganJabatan());
         if (isEdit) {
             try {
                 empDataService.update(empData);
@@ -286,6 +298,8 @@ public class EmpDataFormController extends BaseController {
         empData.setPaySalaryGrade(new PaySalaryGrade(empDataModel.getPaySalaryGradeId()));
         empData.setPtkpStatus(Boolean.FALSE);
         empData.setPtkpNumber(0);
+        empData.setGolonganJabatan(new GolonganJabatan(empDataModel.getGolonganJabatan()));
+        System.out.println(" nilai golonganjabatabab " + empDataModel.getGolonganJabatan());
 //        empData.setWtGroupWorking(new WtGroupWorking());
         return empData;
     }
@@ -293,14 +307,27 @@ public class EmpDataFormController extends BaseController {
     public void setEmpDataService(EmpDataService empDataService) {
         this.empDataService = empDataService;
     }
-    
-    public void doChangeJabatan(){
+
+    public void doChangeJabatan() {
         try {
-            Jabatan jabatan=jabatanService.getJabatanByIdWithDetail(empDataModel.getJabatanByJabatanId());
+            Jabatan jabatan = jabatanService.getJabatanByIdWithDetail(empDataModel.getJabatanByJabatanId());
             empDataModel.setPaySalaryGradeId(jabatan.getPaySalaryGrade().getId());
+            empDataModel.setGolonganJabatan(jabatan.getGolonganJabatan().getId());
         } catch (Exception ex) {
-           LOGGER.error("Error", ex);
+            LOGGER.error("Error", ex);
         }
+    }
+
+    public Map<String, Long> getMapGolonganJabatan() {
+        return mapGolonganJabatan;
+    }
+
+    public void setMapGolonganJabatan(Map<String, Long> mapGolonganJabatan) {
+        this.mapGolonganJabatan = mapGolonganJabatan;
+    }
+
+    public void setGolonganJabatanService(GolonganJabatanService golonganJabatanService) {
+        this.golonganJabatanService = golonganJabatanService;
     }
 
 }

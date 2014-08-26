@@ -9,7 +9,6 @@ import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.web.search.JabatanSearchParameter;
 import java.util.List;
-import org.apache.poi.ss.formula.functions.T;
 import org.hibernate.criterion.Order;
 
 /**
@@ -39,5 +38,7 @@ public interface JabatanService extends IService<Jabatan> {
     public void updateForSalaryGrade(Jabatan entity) throws Exception;
     
     public Jabatan getByIdWithSalaryGrade(long id) throws Exception;
+    
+    public List<Jabatan>getByName(String name)throws Exception;
 
 }

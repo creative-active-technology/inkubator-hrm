@@ -275,7 +275,7 @@ public class BioEducationHistoryFormController extends BaseController{
 
             return queried;
         } catch (Exception ex) {
-            Logger.getLogger(BioIdCardFormController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(BioEducationHistoryFormController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }

@@ -6,11 +6,13 @@
 package com.inkubator.hrm.dao.impl;
 
 import com.inkubator.datacore.dao.impl.IDAOImpl;
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.ApprovalDefinitionDao;
 import com.inkubator.hrm.entity.ApprovalDefinition;
 import com.inkubator.hrm.web.search.ApprovalDefinitionSearchParameter;
 import java.util.List;
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -50,6 +52,9 @@ public class ApprovalDefinitionDaoImpl extends IDAOImpl<ApprovalDefinition> impl
     }
 
     private void doSearchApprovalDefinitionByParam(ApprovalDefinitionSearchParameter searchParameter, Criteria criteria) {
+        if (searchParameter.getApprovalName() != null) {
+            criteria.add(Restrictions.like("name", searchParameter.getApprovalName(), MatchMode.ANYWHERE));
+        }
         if (searchParameter.getProcessName() != null) {
 
             criteria.add(Restrictions.like("processType", searchParameter.getProcessName(), MatchMode.ANYWHERE));
@@ -71,9 +76,39 @@ public class ApprovalDefinitionDaoImpl extends IDAOImpl<ApprovalDefinition> impl
             criteria.createAlias("hrmUserByOnBehalfIndividual", "au", JoinType.INNER_JOIN);
             criteria.add(Restrictions.like("au.realName", searchParameter.getApproverIndividual(), MatchMode.ANYWHERE));
         }
-        if (searchParameter.getApproverType()!= null) {
+        if (searchParameter.getApproverType() != null) {
             criteria.add(Restrictions.like("approverType", searchParameter.getApproverType(), MatchMode.ANYWHERE));
         }
         criteria.add(Restrictions.isNotNull("id"));
+    }
+
+    @Override
+    public Long getTotalSameAprrovalProsesExist(String approvalName, String procesName, int sequance) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("name", approvalName));
+        criteria.add(Restrictions.eq("processType", procesName));
+        criteria.add(Restrictions.eq("sequence", sequance));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+
+    }
+
+    @Override
+    public Long getTotalAprpovalExistWithSequenceOne(String approvalName) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("name", approvalName));
+        criteria.add(Restrictions.eq("sequence", 1));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+
+    @Override
+    public Long getTotalDataWithSequenceLower(String approvalName, int sequance) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        Disjunction disjunction = Restrictions.disjunction();
+        disjunction.add(Restrictions.eq("processType", HRMConstant.ON_APPROVE_INFO));
+        disjunction.add(Restrictions.eq("processType", HRMConstant.ON_REJECT_INFO));
+        criteria.add(Restrictions.eq("name", approvalName));
+        criteria.add(Restrictions.le("sequence", sequance));
+        criteria.add(disjunction);
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 }

@@ -50,7 +50,7 @@
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:inputText value="#{empDataFormController.empDataModel.bioDataName}" maxlength="45"
-                                                 styleClass="isitext_hrm" label="Name" 
+                                                 styleClass="isitext_hrm" label="Name" readonly="true"
                                                  style="width: 350px" required="true" id="name"  />
                                     <p:commandButton  style="margin-left: 5px" icon="ui-icon-search" title="Cari" action="#{empDataFormController.doSearch()}" widgetVar="cariId"
                                                       ajax="true" immediate="true">
@@ -97,9 +97,23 @@
                                                       value="#{empDataFormController.empDataModel.jabatanByJabatanId}">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{empDataFormController.mapJabatans}" />
-                                        <p:ajax listener="#{empDataFormController.doChangeJabatan()}" update="salaryGrade"/>
+                                        <p:ajax listener="#{empDataFormController.doChangeJabatan()}" update="salaryGrade,golJabatan"/>
                                     </p:selectOneMenu>
                                     <p:message for="jabatan"/>
+                                </p:column>
+
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['functiongroup.function_group']}"  for="golJabatan" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectOneMenu  style="margin-right: 3px;width: 353px" id="golJabatan" filter="true" required="true" disabled="#{!empDataFormController.isEdit}"
+                                                      value="#{empDataFormController.empDataModel.golonganJabatan}">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{empDataFormController.mapGolonganJabatan}" />
+                                    </p:selectOneMenu>
+                                    <p:message for="golJabatan"/>
                                 </p:column>
 
                             </p:row>

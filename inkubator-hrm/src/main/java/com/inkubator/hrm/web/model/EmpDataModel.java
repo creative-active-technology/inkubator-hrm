@@ -36,6 +36,7 @@ public class EmpDataModel implements Serializable {
     private BigDecimal basicSalary;
     private Date birthDate;
     private long departementId;
+   
 
     public Long getId() {
         return id;
@@ -204,7 +205,8 @@ public class EmpDataModel implements Serializable {
     public void setDepartementId(long departementId) {
         this.departementId = departementId;
     }
-    
+
+   
     
     
 }

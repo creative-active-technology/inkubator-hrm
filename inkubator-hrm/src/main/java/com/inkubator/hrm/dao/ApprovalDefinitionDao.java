@@ -20,4 +20,10 @@ public interface ApprovalDefinitionDao extends IDAO<ApprovalDefinition> {
     public List<ApprovalDefinition> getByParam(ApprovalDefinitionSearchParameter searchParameter, int firstResult, int maxResults, Order order);
 
     public Long getTotalApprovalDefinitionByParam(ApprovalDefinitionSearchParameter searchParameter);
+    
+    public Long getTotalSameAprrovalProsesExist(String approvalName, String procesName, int sequance);
+    
+    public Long getTotalAprpovalExistWithSequenceOne(String approvalName);
+    
+    public Long getTotalDataWithSequenceLower(String approvalName, int sequance);
 }
