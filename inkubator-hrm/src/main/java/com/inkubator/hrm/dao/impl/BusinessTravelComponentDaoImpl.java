@@ -29,7 +29,7 @@ public class BusinessTravelComponentDaoImpl extends IDAOImpl<BusinessTravelCompo
 	@Override
 	public List<BusinessTravelComponent> getAllDataByBusinessTravelId(Long businessTravelId) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.add(Restrictions.eq("businessTravel", businessTravelId));
+		criteria.add(Restrictions.eq("businessTravel.id", businessTravelId));
 		criteria.setFetchMode("travelComponent", FetchMode.JOIN);
 		criteria.setFetchMode("costCenter", FetchMode.JOIN);
 		return criteria.list();

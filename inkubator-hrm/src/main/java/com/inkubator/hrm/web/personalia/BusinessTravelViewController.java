@@ -88,7 +88,7 @@ public class BusinessTravelViewController extends BaseController {
     }
 
     public String doDetail() {
-        return "/protected/working_time/leave_detail.htm?faces-redirect=true&execution=e" + selectedBusinessTravel.getId();
+        return "/protected/personalia/business_travel_detail.htm?faces-redirect=true&execution=e" + selectedBusinessTravel.getId();
     }
 
     public void doSelectEntity() {

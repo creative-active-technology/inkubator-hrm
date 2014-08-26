@@ -1,5 +1,6 @@
 package com.inkubator.hrm.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
@@ -11,10 +12,20 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.dao.BusinessTravelComponentDao;
 import com.inkubator.hrm.dao.BusinessTravelDao;
+import com.inkubator.hrm.dao.EmpDataDao;
+import com.inkubator.hrm.dao.TravelTypeDao;
+import com.inkubator.hrm.dao.TravelZoneDao;
 import com.inkubator.hrm.entity.BusinessTravel;
+import com.inkubator.hrm.entity.BusinessTravelComponent;
+import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.TravelType;
+import com.inkubator.hrm.entity.TravelZone;
 import com.inkubator.hrm.service.BusinessTravelService;
 import com.inkubator.hrm.web.search.BusinessTravelSearchParameter;
+import com.inkubator.securitycore.util.UserInfoUtil;
 
 /**
  *
@@ -26,6 +37,14 @@ public class BusinessTravelServiceImpl extends IServiceImpl implements BusinessT
 	
 	@Autowired
 	private BusinessTravelDao businessTravelDao;
+	@Autowired
+	private BusinessTravelComponentDao businessTravelComponentDao;
+	@Autowired
+	private TravelTypeDao travelTypeDao;
+	@Autowired
+	private TravelZoneDao travelZoneDao;
+	@Autowired
+	private EmpDataDao empDataDao;
 
 	@Override
 	public BusinessTravel getEntiyByPK(String id) throws Exception {
@@ -147,9 +166,10 @@ public class BusinessTravelServiceImpl extends IServiceImpl implements BusinessT
 	}
 
 	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void delete(BusinessTravel entity) throws Exception {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
-
+		BusinessTravel businessTravel = businessTravelDao.getEntiyByPK(entity.getId());
+		businessTravelDao.delete(businessTravel);
 	}
 
 	@Override
@@ -245,6 +265,83 @@ public class BusinessTravelServiceImpl extends IServiceImpl implements BusinessT
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
 	public Long getTotalByParam(BusinessTravelSearchParameter parameter) throws Exception {
 		return businessTravelDao.getTotalByParam(parameter);
+	}
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void save(BusinessTravel entity, List<BusinessTravelComponent> btcList) throws Exception {
+		// check duplicate business travel number
+        long totalDuplicates = businessTravelDao.getTotalByBusinessTravelNo(entity.getBusinessTravelNo());
+        if (totalDuplicates > 0) {
+            throw new BussinessException("businesstravel.error_duplicate_business_travel_no");
+        }
+		
+		EmpData empData = empDataDao.getEntiyByPK(entity.getEmpData().getId());
+		TravelZone travelZone = travelZoneDao.getEntiyByPK(entity.getTravelZone().getId());
+		TravelType travelType = travelTypeDao.getEntiyByPK(entity.getTravelType().getId());
+		entity.setEmpData(empData);
+		entity.setTravelType(travelType);
+		entity.setTravelZone(travelZone);		
+		entity.setCreatedBy(UserInfoUtil.getUserName());
+		entity.setCreatedOn(new Date());
+		businessTravelDao.save(entity);
+		
+		for(BusinessTravelComponent btc : btcList){
+			btc.setBusinessTravel(entity);
+			btc.setCreatedBy(UserInfoUtil.getUserName());
+			btc.setCreatedOn(new Date());
+			businessTravelComponentDao.save(btc);
+		}
+	}
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void update(BusinessTravel bt, List<BusinessTravelComponent> btcList) throws Exception {
+		// check duplicate business travel number
+        long totalDuplicates = businessTravelDao.getTotalByBusinessTravelNoAndNotId(bt.getBusinessTravelNo(), bt.getId());
+        if (totalDuplicates > 0) {
+            throw new BussinessException("businesstravel.error_duplicate_business_travel_no");
+        }
+		
+		BusinessTravel businessTravel = businessTravelDao.getEntiyByPK(bt.getId());
+		businessTravel.setBusinessTravelNo(bt.getBusinessTravelNo());
+		businessTravel.setDestination(bt.getDestination());
+		businessTravel.setDescription(bt.getDescription());
+		businessTravel.setProposeDate(bt.getProposeDate());
+		businessTravel.setStartDate(bt.getStartDate());
+		businessTravel.setEndDate(bt.getEndDate());
+		EmpData empData = empDataDao.getEntiyByPK(bt.getEmpData().getId());
+		TravelZone travelZone = travelZoneDao.getEntiyByPK(bt.getTravelZone().getId());
+		TravelType travelType = travelTypeDao.getEntiyByPK(bt.getTravelType().getId());
+		businessTravel.setEmpData(empData);
+		businessTravel.setTravelType(travelType);
+		businessTravel.setTravelZone(travelZone);
+		businessTravel.setUpdatedBy(UserInfoUtil.getUserName());
+		businessTravel.setUpdatedOn(new Date());
+		businessTravel.getBusinessTravelComponents().clear(); //clear list one to many
+		businessTravelDao.save(businessTravel);
+		
+		/**
+		 * mekanismenya, clear list child-nya, lalu create ulang child-nya 
+		 */
+		for(BusinessTravelComponent btc : btcList){
+			btc.setBusinessTravel(businessTravel);
+			btc.setCreatedBy(UserInfoUtil.getUserName());
+			btc.setCreatedOn(new Date());
+			businessTravelComponentDao.save(btc);
+		}		
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public BusinessTravel getEntityByPkWithDetail(Long id) throws Exception {
+		return businessTravelDao.getEntityByPkWithDetail(id);
+	}
+	
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public BusinessTravel getEntityByBusinessTravelNoWithDetail(String businessTravelNo) throws Exception {
+		return businessTravelDao.getEntityByBusinessTravelNoWithDetail(businessTravelNo);
 	}
 
 }

@@ -70,4 +70,41 @@ public class BusinessTravelDaoImpl extends IDAOImpl<BusinessTravel> implements B
         criteria.add(Restrictions.isNotNull("id"));
     }
 
+	@Override
+	public BusinessTravel getEntityByPkWithDetail(Long id) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("id", id));
+		criteria.setFetchMode("empData", FetchMode.JOIN);
+		criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+		criteria.setFetchMode("travelZone", FetchMode.JOIN);
+		criteria.setFetchMode("travelType", FetchMode.JOIN);
+		return (BusinessTravel) criteria.uniqueResult();
+	}
+	
+	@Override
+	public BusinessTravel getEntityByBusinessTravelNoWithDetail(String businessTravelNo) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("businessTravelNo", businessTravelNo));
+		criteria.setFetchMode("empData", FetchMode.JOIN);
+		criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+		criteria.setFetchMode("travelZone", FetchMode.JOIN);
+		criteria.setFetchMode("travelType", FetchMode.JOIN);
+		return (BusinessTravel) criteria.uniqueResult();
+	}
+	
+	@Override
+    public Long getTotalByBusinessTravelNo(String businessTravelNo) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("businessTravelNo", businessTravelNo));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+
+    @Override
+    public Long getTotalByBusinessTravelNoAndNotId(String businessTravelNo, Long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("businessTravelNo", businessTravelNo));
+        criteria.add(Restrictions.ne("id", id));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+
 }

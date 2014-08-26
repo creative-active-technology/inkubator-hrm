@@ -1,0 +1,145 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+				Home
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlBusinessTravelComponentFormlId" globalOnly="true" showDetail="true"/>                
+                <h:form id="formBusinessTravelComponentFormId">
+                	<p:focus context="formBusinessTravelComponentFormId"/>
+                	<div id="box_bg" style="margin: 10px">
+	                    <h:panelGrid  columns="2">
+	                        <p:graphicImage library="images" name="bio_data.png" height="36" width="36" />
+	                        <h:panelGroup layout="block">
+	                            <h:panelGrid>
+	                                <p:outputLabel value="#{appmsg['businesstravel.form_business_travel']}" styleClass="header_big" />
+	                                <p:outputLabel value="#{appmsg['businesstravel.business_traveldata_from_application']}" styleClass="header_small_no_bold" />
+	                            </h:panelGrid>
+	                        </h:panelGroup>
+	                    </h:panelGrid>
+	                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+	                    <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px">
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['businesstravel.business_travel_number']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:inplace editor="true">
+	                            		<p:inputText value="#{businessTravelModel.businessTravelNo}" required="true" label="text"/>
+	                            	</p:inplace>
+	                            	<p:outputLabel value="Clik To Edit"  style="font-style: italic;margin-left: 10px;font-size: 11px!important"/>
+	                            </p:column>
+	                        </p:row> 
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['businesstravel.employee']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:outputLabel value="#{businessTravelModel.empData.nik} #{businessTravelModel.empData.bioData.firstName} #{businessTravelModel.empData.bioData.lastName}"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['businesstravel.destination']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:outputLabel value="#{businessTravelModel.destination}"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['functiongroup.function_group']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:outputLabel value="#{businessTravelModel.empData.golonganJabatan.code} - #{businessTravelModel.empData.golonganJabatan.pangkat.pangkatName}"/>
+	                            </p:column>
+	                        </p:row>	                              
+	                 	</p:panelGrid>
+	                 	<div style="margin-bottom: 20px;margin-left: 5px">
+                            <p:outputLabel value="*)Lakukan perubahan code jika terjadi duplicate, tidak usah kembali ke halman sebelumnya" style="font-size: 10px"/>
+                        </div>
+	                 	
+	                 	<p:dataTable  id="tableBusinessTravelComponentId" var="businessTravelComponentData"  value="#{businessTravelModel.businessTravelComponents}" lazy="false" paginator="false" pageLinks="7"
+	                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+	                                      rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+	                                      rowIndexVar="no"> 
+	                            <p:column style="text-align: center;width: 5%">
+	                                <f:facet name="header">  
+	                                    <h:outputText value="#{appmsg['global.number']}"/>
+	                                </f:facet>
+	                                <h:outputLabel value="#{no+1}." />
+	                            </p:column>  
+	                            <p:column style="text-align: center;width: 20%">
+	                                <f:facet name="header">  
+	                                    <h:outputText value="#{appmsg['businesstravel.travel_component']}"/>
+	                                </f:facet>
+	                                <h:outputLabel value= "#{businessTravelComponentData.travelComponent.name}"/>
+	                            </p:column>
+	                            <p:column style="text-align: center;width: 10%">
+	                                <f:facet name="header">  
+	                                    <h:outputText value="#{appmsg['businesstravel.rate']}"/>
+	                                </f:facet>
+	                                <h:outputLabel value= "#{businessTravelComponentData.defaultRate}"/>
+	                            </p:column>
+	                            <p:column style="text-align: center;width: 10%">
+	                                <f:facet name="header">  
+	                                    <h:outputText value="#{appmsg['businesstravel.quantity']}"/>
+	                                </f:facet>
+	                               	<p:spinner value="#{businessTravelComponentData.quantity}" size="4" min="0" styleClass="isitext_hrm" required="true">
+	                               		<p:ajax update="tableBusinessTravelComponentId,:formBusinessTravelComponentFormId:totalAmountId" process="@this" listener="#{businessTravelFormController.doAdjustPayByAmount(flowRequestContext)}"/>
+	                               	</p:spinner>
+	                            </p:column>
+	                            <p:column style="text-align: center;width: 10%">
+	                                <f:facet name="header">  
+	                                    <h:outputText value="#{appmsg['businesstravel.earned_per_quatity']}"/>
+	                                </f:facet>
+	                                <pe:inputNumber title="#{appmsg['businesstravel.earned_per_quatity']}" value="#{businessTravelComponentData.earnedPerQuantity}" 
+	                                				decimalPlaces="0" required="true" styleClass="isitext_hrm" style="width:190px;">
+	                                	<p:ajax update="tableBusinessTravelComponentId,:formBusinessTravelComponentFormId:totalAmountId" process="@this" listener="#{businessTravelFormController.doAdjustPayByAmount(flowRequestContext)}"/>
+	                                </pe:inputNumber>
+	                            </p:column>
+	                            <p:column style="text-align: center;width: 10%">
+	                                <f:facet name="header">  
+	                                    <h:outputText value="#{appmsg['businesstravel.pay_by_amount']}"/>
+	                                </f:facet>
+	                                <h:outputLabel value= "#{businessTravelComponentData.payByAmount}"/>
+	                            </p:column>
+	                    </p:dataTable>
+	                    <h:panelGrid  style="text-align:right;" width="100%">
+	                    	<p:outputLabel id="totalAmountId" style="font-weight:bold;margin-right:20px;" value="#{appmsg['businesstravel.total_amount']} : #{businessTravelModel.totalAmount}" />
+	                    </h:panelGrid>
+	                 	
+	                 		                    
+	                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+	                    <div style="margin-bottom: 5px">
+	                    	<p:commandButton value="#{appmsg['global.previous']}" title="#{appmsg['global.previous']}" styleClass="label_button" icon="ui-icon-arrow-1-w" 
+	                        				 action="back" immediate="true"/>	
+	                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formBusinessTravelComponentFormId" action="#{businessTravelFormController.doResetBusinessTravelComponentForm(flowRequestContext)}"
+                                                 icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px">  
+	                            <p:resetInput target="formBusinessTravelComponentFormId" />  
+	                        </p:commandButton>                        
+	                        <p:commandButton value="#{appmsg['global.save']}" styleClass="isitext_hrm" style="margin-right: 5px" 
+	                        				 label="#{appmsg['global.save']}" icon="ui-icon-disk" title="#{appmsg['global.save']}"
+                                             ajax="true" action="save" update=":growlBusinessTravelComponentFormlId" />
+                            <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" icon="ui-icon-contact" 
+	                        				 action="end" immediate="true"/>
+	                    </div>
+                    </div>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

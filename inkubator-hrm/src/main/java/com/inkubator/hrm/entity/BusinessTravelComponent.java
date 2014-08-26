@@ -15,6 +15,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 
 /**
@@ -30,7 +31,8 @@ public class BusinessTravelComponent implements Serializable {
     private TravelComponent travelComponent;
     private CostCenter costCenter;    
     private Integer quantity;
-    private Double earnedPerQuantity;    
+    private Double earnedPerQuantity; 
+    private Double defaultRate;
     private String createdBy;
     private Date createdOn;
     private String updatedBy;
@@ -114,6 +116,15 @@ public class BusinessTravelComponent implements Serializable {
 		this.earnedPerQuantity = earnedPerQuantity;
 	}
 
+	@Column(name="default_rate", nullable = false)
+	public Double getDefaultRate() {
+		return defaultRate;
+	}
+
+	public void setDefaultRate(Double defaultRate) {
+		this.defaultRate = defaultRate;
+	}
+
 	@Column(name = "created_by", length = 45)
     public String getCreatedBy() {
         return this.createdBy;
@@ -150,5 +161,14 @@ public class BusinessTravelComponent implements Serializable {
 
     public void setUpdatedOn(Date updatedOn) {
         this.updatedOn = updatedOn;
+    }
+    
+    @Transient
+    public Double getPayByAmount(){
+    	double payByAmount = 0;
+    	if(quantity != null && earnedPerQuantity != null){
+    		payByAmount = quantity * earnedPerQuantity;
+    	}
+    	return payByAmount;
     }
 }

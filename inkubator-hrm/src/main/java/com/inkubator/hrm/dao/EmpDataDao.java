@@ -42,4 +42,8 @@ public interface EmpDataDao extends IDAO<EmpData> {
     
     public List<EmpData> getAllDataWithRelation();
 
+	public List<EmpData> getAllDataByNameOrNik(String param);
+	
+	public EmpData getByIdWithDetail(long id);
+
 }

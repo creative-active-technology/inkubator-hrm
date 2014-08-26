@@ -459,4 +459,16 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         return empDataDao.getAllDataWithRelation();
     }
 
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<EmpData> getAllDataByNameOrNik(String param) throws Exception {
+		return empDataDao.getAllDataByNameOrNik(param);
+	}
+	
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+	public EmpData getByIdWithDetail(long id) throws Exception {
+		return empDataDao.getByIdWithDetail(id);
+	}
+
 }

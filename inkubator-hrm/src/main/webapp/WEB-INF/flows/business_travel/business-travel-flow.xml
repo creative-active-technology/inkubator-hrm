@@ -8,14 +8,14 @@
       	
       	
     <on-start>
-    	<set name="flowScope.param" value="requestParameters.param" type="java.lang.String" />
-      	<evaluate expression="businessTravelFormController.initBusinessTravelProcessFlow(flowRequestContext)" result="flowScope.businessTravelModel"/>
+    	<set name="flowScope.id" value="requestParameters.id" type="java.lang.Long" />
+      	<evaluate expression="businessTravelFormController.initBusinessTravelProcessFlow(flowRequestContext)"/>
 	</on-start>
 
     <view-state id="add_business_travel" view="business_travel_form.xhtml">
 
 		<transition on="next" to="add_business_travel_component">
-			<evaluate expression="businessTravelFormController.setBusinessTravelComponents(flowRequestContext)"/> 
+			<evaluate expression="businessTravelFormController.setBusinessTravelComponents(flowRequestContext)" result="flowScope.businessTravelModel"/> 
 		</transition>
 		<transition on="end" to="end"/>
     </view-state>
@@ -33,7 +33,7 @@
         <transition on="false" to="add_business_travel_component"/>
     </action-state >
 
-    <end-state id="success_end" view="externalRedirect:contextRelative:/protected/personalia/business_travel_detail.htm?execution=s#{businessTravelModel.id}"/>
+    <end-state id="success_end" view="externalRedirect:contextRelative:/protected/personalia/business_travel_detail.htm?execution=s#{flowScope.businessTravelModel.businessTravelNo}"/>
     <end-state id="end" view="externalRedirect:contextRelative:/protected/personalia/business_travel_view.htm" />
     
 </flow>

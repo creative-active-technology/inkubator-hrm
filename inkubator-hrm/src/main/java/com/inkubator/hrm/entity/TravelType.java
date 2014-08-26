@@ -43,8 +43,12 @@ public class TravelType  implements java.io.Serializable {
      private Set<BusinessTravel> businessTravels = new HashSet<BusinessTravel>(0);
 
     public TravelType() {
+    	
     }
-
+    
+    public TravelType(long id) {
+    	this.id = id;
+    }
 	
     public TravelType(long id, AttendanceStatus attendanceStatus) {
         this.id = id;

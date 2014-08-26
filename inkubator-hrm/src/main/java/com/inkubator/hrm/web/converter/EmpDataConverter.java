@@ -4,30 +4,44 @@
  */
 package com.inkubator.hrm.web.converter;
 
-import com.inkubator.hrm.entity.EmpData;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ApplicationScoped;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
-import javax.faces.convert.FacesConverter;
+
+import org.apache.commons.lang3.StringUtils;
+
+import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.service.EmpDataService;
 
 /**
  *
  * @author Deni
  */
-@FacesConverter("empDataConverter")
+@ManagedBean(name = "empDataConverter")
+@ApplicationScoped
 public class EmpDataConverter implements Converter {
 
-    @Override
+	@ManagedProperty(value = "#{empDataService}")
+	private EmpDataService empDataService;
+
+	public void setEmpDataService(EmpDataService empDataService) {
+		this.empDataService = empDataService;
+	}
+
+	@Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
-        if (value == null || value.equals("")) {
+        if (!StringUtils.isNumeric(value)) {
             return null;
         }
         try {
             Long id = Long.parseLong(value);
-            System.out.println("id" + id);
-            return new EmpData(id);
+            EmpData empData = empDataService.getByIdWithDetail(id);
+            return empData;
         } catch (Exception e) {
             e.printStackTrace();
             throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Marca no válida", ""));

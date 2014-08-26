@@ -34,4 +34,8 @@ public interface EmpDataService extends IService<EmpData> {
     
     public List<EmpData> getAllDataWithRelation() throws Exception;
 
+	public List<EmpData> getAllDataByNameOrNik(String param) throws Exception;
+	
+	public EmpData getByIdWithDetail(long id) throws Exception;
+
 }

@@ -171,4 +171,26 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.setFetchMode("bioData", FetchMode.JOIN);
         return criteria.list();
     }
+
+	@Override
+	public List<EmpData> getAllDataByNameOrNik(String param) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
+		Disjunction disjunction = Restrictions.disjunction();
+        disjunction.add(Restrictions.like("bioData.firstName", param, MatchMode.ANYWHERE));
+        disjunction.add(Restrictions.like("bioData.lastName", param, MatchMode.ANYWHERE));
+        disjunction.add(Restrictions.like("nik", param, MatchMode.ANYWHERE));
+        criteria.add(disjunction);
+        return criteria.list();
+	}
+	
+	@Override
+    public EmpData getByIdWithDetail(long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("id", id));
+        criteria.setFetchMode("bioData", FetchMode.JOIN);
+        criteria.setFetchMode("golonganJabatan", FetchMode.JOIN);
+        criteria.setFetchMode("golonganJabatan.pangkat", FetchMode.JOIN);
+        return (EmpData) criteria.uniqueResult();
+	}
 }

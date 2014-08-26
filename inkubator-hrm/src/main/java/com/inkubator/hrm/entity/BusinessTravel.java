@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -199,7 +201,7 @@ public class BusinessTravel implements Serializable {
         this.updatedOn = updatedOn;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "businessTravel")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "businessTravel", orphanRemoval = true)
     public Set<BusinessTravelComponent> getBusinessTravelComponents() {
         return businessTravelComponents;
     }

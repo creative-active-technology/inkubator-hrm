@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.inkubator.hrm.entity.BusinessTravelComponent;
+import com.inkubator.hrm.entity.EmpData;
 
 /**
  *
@@ -15,8 +16,7 @@ public class BusinessTravelModel implements Serializable {
 	
 	private Long id;
 	private String businessTravelNo;
-	private Long empDataId;
-	private String empDataName;
+	private EmpData empData;
 	private String destination;
 	private Date proposeDate;
 	private Long travelZoneId;
@@ -43,17 +43,11 @@ public class BusinessTravelModel implements Serializable {
 	public void setBusinessTravelNo(String businessTravelNo) {
 		this.businessTravelNo = businessTravelNo;
 	}
-	public Long getEmpDataId() {
-		return empDataId;
+	public EmpData getEmpData() {
+		return empData;
 	}
-	public void setEmpDataId(Long empDataId) {
-		this.empDataId = empDataId;
-	}
-	public String getEmpDataName() {
-		return empDataName;
-	}
-	public void setEmpDataName(String empDataName) {
-		this.empDataName = empDataName;
+	public void setEmpData(EmpData empData) {
+		this.empData = empData;
 	}
 	public String getDestination() {
 		return destination;
