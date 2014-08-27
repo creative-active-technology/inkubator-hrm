@@ -50,9 +50,9 @@
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:inputText value="#{empDataFormController.empDataModel.bioDataName}" maxlength="45"
-                                                 styleClass="isitext_hrm" label="Name" readonly="true"
+                                                 styleClass="isitext_hrm" label="Name" readonly="true" disabled="#{empDataFormController.isEdit}"
                                                  style="width: 350px" required="true" id="name"  />
-                                    <p:commandButton  style="margin-left: 5px" icon="ui-icon-search" title="Cari" action="#{empDataFormController.doSearch()}" widgetVar="cariId"
+                                    <p:commandButton  style="margin-left: 5px" icon="ui-icon-search" title="Cari" action="#{empDataFormController.doSearch()}" widgetVar="cariId" disabled="#{empDataFormController.isEdit}"
                                                       ajax="true" immediate="true">
                                         <p:ajax event="dialogReturn" listener="#{empDataFormController.onDialogReturn}"  update="name,birthDate"/>
 
@@ -66,7 +66,7 @@
                                     <p:outputLabel  value="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_date']}"  for="birthDate" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:inputText value="#{empDataFormController.empDataModel.birthDate}" id="birthDate"  style="width: 350px" readonly="true">
+                                    <p:inputText value="#{empDataFormController.empDataModel.birthDate}" id="birthDate"  style="width: 350px" readonly="true" disabled="#{empDataFormController.isEdit}">
                                         <f:convertDateTime pattern="dd MMMM yyyy" />
                                     </p:inputText>
                                     <p:message for="birthDate"/>
@@ -78,7 +78,7 @@
                                     <p:outputLabel  value="#{appmsg['department.department']}"  for="departement" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneMenu  style="margin-right: 3px;width: 353px" id="departement" filter="true" required="false"
+                                    <p:selectOneMenu  style="margin-right: 3px;width: 353px" id="departement" filter="true" required="false" disabled="#{empDataFormController.isEdit}"
                                                       value="#{empDataFormController.empDataModel.departementId}">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{empDataFormController.mapDepartements}" />
@@ -93,7 +93,7 @@
                                     <p:outputLabel  value="#{appmsg['placement.jabatan']}"  for="jabatan" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneMenu  style="margin-right: 3px;width: 353px" id="jabatan" filter="true" required="true"
+                                    <p:selectOneMenu  style="margin-right: 3px;width: 353px" id="jabatan" filter="true" required="true" disabled="#{empDataFormController.isEdit}"
                                                       value="#{empDataFormController.empDataModel.jabatanByJabatanId}">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{empDataFormController.mapJabatans}" />
@@ -108,7 +108,7 @@
                                     <p:outputLabel  value="#{appmsg['functiongroup.function_group']}"  for="golJabatan" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneMenu  style="margin-right: 3px;width: 353px" id="golJabatan" filter="true" required="true" disabled="#{!empDataFormController.isEdit}"
+                                    <p:selectOneMenu  style="margin-right: 3px;width: 353px" id="golJabatan" filter="true" required="true" disabled="true"
                                                       value="#{empDataFormController.empDataModel.golonganJabatan}">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{empDataFormController.mapGolonganJabatan}" />
@@ -122,7 +122,7 @@
                                     <p:outputLabel  value="#{appmsg['employeetype.employee_type']}"  for="statusKaryawan" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneMenu  style="margin-right: 3px;width: 353px" id="statusKaryawan" filter="true" required="true"
+                                    <p:selectOneMenu  style="margin-right: 3px;width: 353px" id="statusKaryawan" filter="true" required="true" 
                                                       value="#{empDataFormController.empDataModel.employeeTypeId}">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{empDataFormController.mapStatusKaryawan}" />
@@ -133,10 +133,22 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="SK Penempatan"  for="penempatanId" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:inputText value="#{empDataFormController.empDataModel.noSk}" maxlength="45"
+                                                 styleClass="isitext_hrm" label="Sk Penemapatan"
+                                                 style="width: 350px"  id="penempatanId" onkeyup="this.value = this.value.toUpperCase();" />
+                                    <p:message for="penempatanId"/>
+                                </p:column>
+
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="#{appmsg['placement.join_data']}"  for="joinDate" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:calendar  id="joinDate" pattern="dd MMMM yyyy" value="#{empDataFormController.empDataModel.joinDate}"/>
+                                    <p:calendar  id="joinDate" pattern="dd MMMM yyyy" value="#{empDataFormController.empDataModel.joinDate}" required="true"/>
                                     <p:message for="joinDate"/>
                                 </p:column>
 

@@ -5,6 +5,7 @@
  */
 package com.inkubator.hrm.web.employee;
 
+import com.inkubator.common.util.AESUtil;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.BioData;
@@ -24,6 +25,7 @@ import com.inkubator.hrm.web.model.EmpDataModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -105,7 +107,8 @@ public class EmpDataFormController extends BaseController {
             if (empId != null) {
                 isEdit = Boolean.TRUE;
                 EmpData empData = empDataService.getByEmpIdWithDetail(Long.parseLong(empId.substring(1)));
-                empDataModel.setBasicSalary(empData.getBasicSalary());
+                String basicSalaryDecript = AESUtil.getAESDescription(empData.getBasicSalary(), HRMConstant.KEYVALUE, HRMConstant.AES_ALGO);
+                empDataModel.setBasicSalary(new BigDecimal(basicSalaryDecript));
                 empDataModel.setBioDataId(empData.getBioData().getId());
                 empDataModel.setBioDataName(empData.getBioData().getFirstName() + " " + empData.getBioData().getLastName());
                 empDataModel.setBirthDate(empData.getBioData().getDateOfBirth());
@@ -125,6 +128,7 @@ public class EmpDataFormController extends BaseController {
                 empDataModel.setPpmp(empData.getPpmp());
                 empDataModel.setPtkpNumber(empData.getPtkpNumber());
                 empDataModel.setPtkpStatus(empData.getPtkpStatus());
+                empDataModel.setNoSk(empData.getNoSk());
                 if (empData.getWtGroupWorking() != null) {
                     empDataModel.setWorkingGroupId(empData.getWtGroupWorking().getId());
                 }
@@ -285,7 +289,8 @@ public class EmpDataFormController extends BaseController {
         if (empDataModel.getId() != null) {
             empData.setId(empDataModel.getId());
         }
-        empData.setBasicSalary(empDataModel.getBasicSalary());
+        String encriptBasicSalary = AESUtil.getAESEncription(empDataModel.getBasicSalary().toString(), HRMConstant.KEYVALUE, HRMConstant.AES_ALGO);
+        empData.setBasicSalary(encriptBasicSalary);
         empData.setBioData(new BioData(empDataModel.getBioDataId()));
         empData.setEmployeeType(new EmployeeType(empDataModel.getEmployeeTypeId()));
         empData.setHeatlyPremi(Boolean.TRUE);
@@ -299,6 +304,10 @@ public class EmpDataFormController extends BaseController {
         empData.setPtkpStatus(Boolean.FALSE);
         empData.setPtkpNumber(0);
         empData.setGolonganJabatan(new GolonganJabatan(empDataModel.getGolonganJabatan()));
+        if (empDataModel.getNoSk() != null) {
+            empData.setNoSk(empDataModel.getNoSk());
+        }
+
         System.out.println(" nilai golonganjabatabab " + empDataModel.getGolonganJabatan());
 //        empData.setWtGroupWorking(new WtGroupWorking());
         return empData;
