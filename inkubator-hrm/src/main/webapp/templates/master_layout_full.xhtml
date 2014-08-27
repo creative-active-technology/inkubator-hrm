@@ -320,7 +320,7 @@
                                                 </p:submenu>
                                             </p:submenu>
                                             <p:submenu label="Payroll"  styleClass="menu_child" >
-                                                <p:menuitem value="#{appmsg['payroll.pay_salary_grade']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['payroll.pay_salary_grade']}" url="/protected/payroll/pay_salary_grade_view.htm" /> 
+                                                <p:menuitem value="#{appmsg['payroll.pay_salary_grade']}" icon="img-grade-level" style="font-size: 12px !important;color: #003366" title="#{appmsg['payroll.pay_salary_grade']}" url="/protected/payroll/pay_salary_grade_view.htm" /> 
                                                 <p:menuitem value="#{appmsg['payroll.pay_salary_grade_position']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['payroll.pay_salary_grade_position']}" url="/protected/payroll/pay_salary_grade_position_view.htm" /> 
                                                 <p:menuitem value="#{appmsg['payroll.pay_salary_jurnal']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['payroll.pay_salary_jurnal']}" url="/protected/payroll/pay_salary_jurnal_view.htm" /> 
                                             </p:submenu>
@@ -333,11 +333,12 @@
 
                                             <p:submenu label="#{appmsg['employement.employement']}"  styleClass="menu_child" >
                                                 <p:menuitem value="#{appmsg['placement.placement']}" icon="img-emp-data" style="font-size: 12px !important;color: #003366" title="Bio Data" url="/protected/employee/employee_palcement_view.htm" />  
-                                                <p:menuitem value="Rotasi Karyawan" icon="img-employee_rotation" style="font-size: 12px !important;color: #003366" title="Rotasi Karyawan" url="/protected/employee/employee_palcement_view.htm" />  
+                                                <p:menuitem value="#{appmsg['placement.rotation']}" icon="img-employee_rotation" style="font-size: 12px !important;color: #003366" title="#{appmsg['placement.rotation']}" url="/protected/employee/employee_palcement_view.htm" />
+                                                <p:menuitem value="#{appmsg['placement.termination']}" icon="img-termination" style="font-size: 12px !important;color: #003366" title="#{appmsg['placement.termination']}" url="/protected/personalia/termination_view.htm" />
                                             </p:submenu>
                                             <p:submenu label="#{appmsg['ranking.ranking']}"  styleClass="menu_child" >
-                                                <p:menuitem value="#{appmsg['personachievement.personachievement']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['personachievement.personachievement']}" url="/protected/employee/emp_person_achievement_view.htm" />
-                                                <p:menuitem value="#{appmsg['personaldisipline.personal_disipline']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['personaldisipline.personal_disipline']}" url="/protected/personalia/personal_discipline_view.htm" />
+                                                <p:menuitem value="#{appmsg['personachievement.personachievement']}" icon="img-achievement" style="font-size: 12px !important;color: #003366" title="#{appmsg['personachievement.personachievement']}" url="/protected/employee/emp_person_achievement_view.htm" />
+                                                <p:menuitem value="#{appmsg['personaldisipline.personal_disipline']}" icon="img-rule" style="font-size: 12px !important;color: #003366" title="#{appmsg['personaldisipline.personal_disipline']}" url="/protected/personalia/personal_discipline_view.htm" />
                                             </p:submenu>
                                         </p:submenu>
                                         <p:submenu label="#{appmsg['menu.working_time']}"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-task">

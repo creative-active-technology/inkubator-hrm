@@ -5,10 +5,10 @@
 package com.inkubator.hrm.web.personalia;
 
 import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.PersonalDiscipline;
-import com.inkubator.hrm.service.PersonalDisciplineService;
-import com.inkubator.hrm.web.lazymodel.PersonalDisciplineLazyDataModel;
-import com.inkubator.hrm.web.search.PersonalDisciplineSearchParameter;
+import com.inkubator.hrm.entity.Termination;
+import com.inkubator.hrm.service.TerminationService;
+import com.inkubator.hrm.web.lazymodel.TerminationLazyDataModel;
+import com.inkubator.hrm.web.search.TerminationSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
@@ -32,21 +32,20 @@ import org.springframework.dao.DataIntegrityViolationException;
  *
  * @author Deni
  */
-@ManagedBean(name = "personalDisciplineViewController")
+@ManagedBean(name = "terminationViewController")
 @ViewScoped
-public class PersonalDisciplineViewController extends BaseController{
-    @ManagedProperty(value = "#{personalDisciplineService}")
-    private PersonalDisciplineService service;
-    private PersonalDisciplineSearchParameter searchParameter;
-    private LazyDataModel<PersonalDiscipline> lazy;
-    private PersonalDiscipline selected;
-
+public class TerminationViewController extends BaseController{
+    @ManagedProperty(value = "#{terminationService}")
+    private TerminationService service;
+    private TerminationSearchParameter searchParameter;
+    private LazyDataModel<Termination> lazy;
+    private Termination selected;
     
     @PostConstruct
     @Override
     public void initialization() {
         super.initialization();
-        searchParameter = new PersonalDisciplineSearchParameter();
+        searchParameter = new TerminationSearchParameter();
     }
     
     @PreDestroy
@@ -101,7 +100,7 @@ public class PersonalDisciplineViewController extends BaseController{
         Map<String, List<String>> dataToSend = new HashMap<>();
         List<String> values = new ArrayList<>();
         values.add(String.valueOf(selected.getId()));
-        dataToSend.put("personalDisciplineId", values);
+        dataToSend.put("terminationId", values);
         showDialog(dataToSend);
 
     }
@@ -112,8 +111,8 @@ public class PersonalDisciplineViewController extends BaseController{
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 500);
-        options.put("contentHeight", 430);
-        RequestContext.getCurrentInstance().openDialog("personal_discipline_form", options, params);
+        options.put("contentHeight", 420);
+        RequestContext.getCurrentInstance().openDialog("termination_form", options, params);
     }
     
     @Override
@@ -131,40 +130,40 @@ public class PersonalDisciplineViewController extends BaseController{
         }
     }
 
-    public PersonalDisciplineService getService() {
+    public TerminationService getService() {
         return service;
     }
 
-    public void setService(PersonalDisciplineService service) {
+    public void setService(TerminationService service) {
         this.service = service;
     }
 
-    public PersonalDisciplineSearchParameter getSearchParameter() {
+    public TerminationSearchParameter getSearchParameter() {
         return searchParameter;
     }
 
-    public void setSearchParameter(PersonalDisciplineSearchParameter searchParameter) {
+    public void setSearchParameter(TerminationSearchParameter searchParameter) {
         this.searchParameter = searchParameter;
     }
 
-    public LazyDataModel<PersonalDiscipline> getLazy() {
+    public LazyDataModel<Termination> getLazy() {
         if (lazy == null) {
-            lazy = new PersonalDisciplineLazyDataModel(searchParameter, service);
+            lazy = new TerminationLazyDataModel(searchParameter, service);
         }
         return lazy;
     }
 
-    public void setLazy(LazyDataModel<PersonalDiscipline> lazy) {
+    public void setLazy(LazyDataModel<Termination> lazy) {
         this.lazy = lazy;
     }
 
-    public PersonalDiscipline getSelected() {
+    public Termination getSelected() {
         return selected;
     }
 
-    public void setSelected(PersonalDiscipline selected) {
+    public void setSelected(Termination selected) {
         this.selected = selected;
     }
-    
      
+    
 }

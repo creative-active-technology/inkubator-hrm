@@ -18,7 +18,7 @@
                 <div id="box_bg" style="margin: 10px">
                     <h:form id="formId">
                         <h:panelGrid style="margin-bottom: 5px" columns="2">
-                            <p:graphicImage library="images" name="marital_status.png" height="36" width="36" />
+                            <p:graphicImage library="images" name="rule.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
                                     <p:outputLabel value="#{appmsg['personaldisipline.personal_disipline']}" styleClass="header_big" />
@@ -35,11 +35,8 @@
                                     <p:outputLabel value=":" />
                                     <p:selectOneMenu value="#{personalDisciplineViewController.searchParameter.keyParam}" style="width: 150px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemLabel="#{appmsg['global.code']}" itemValue="code"/>
-                                        <f:selectItem itemLabel="#{appmsg['jabatan.cost_center']}" itemValue="costCenter"/>
-                                        <f:selectItem itemLabel="#{appmsg['functiongroup.function_group']}" itemValue="golonganJabatan"/>
-                                        <f:selectItem itemLabel="#{appmsg['travelComponent.travelComponent']}" itemValue="travelComponent"/>
-                                        <f:selectItem itemLabel="#{appmsg['travelZone.travelZone']}" itemValue="travelZone"/>
+                                        <f:selectItem itemLabel="#{appmsg['personachievement.employee_name']}" itemValue="empData"/>
+                                        <f:selectItem itemLabel="#{appmsg['admonitionType.admonitionType']}" itemValue="admonitionType"/>
                                     </p:selectOneMenu>
                                     <p:inputText id="searchId" value="#{personalDisciplineViewController.searchParameter.parameter}" style="width: 250px" styleClass="label_button"/>
                                     <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{personalDisciplineViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>

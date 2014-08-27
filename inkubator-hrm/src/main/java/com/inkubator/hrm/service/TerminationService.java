@@ -17,7 +17,7 @@ import org.hibernate.criterion.Order;
 public interface TerminationService extends IService<Termination>{
     public List<Termination> getAllDataWithAllRelation(TerminationSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
 
-    public Long getTotalTravelComponentRateByParam(TerminationSearchParameter searchParameter) throws Exception;
+    public Long getTotalTerminateByParam(TerminationSearchParameter searchParameter) throws Exception;
     
     public Termination getEntityByPkWithAllRelation(Long code) throws Exception;
 }
