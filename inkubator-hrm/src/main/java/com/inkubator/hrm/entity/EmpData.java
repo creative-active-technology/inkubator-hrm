@@ -60,6 +60,7 @@ public class EmpData implements java.io.Serializable {
     private Set<EmpRotasi> empRotasis = new HashSet<EmpRotasi>(0);
     private String status;
     private String noSk;
+    private Date rotasiDate;
 
     public EmpData() {
     }
@@ -390,6 +391,16 @@ public class EmpData implements java.io.Serializable {
 
     public void setBasicSalary(String basicSalary) {
         this.basicSalary = basicSalary;
+    }
+
+    @Temporal(TemporalType.DATE)
+    @Column(name = "rotasi_date", length = 10)
+    public Date getRotasiDate() {
+        return rotasiDate;
+    }
+
+    public void setRotasiDate(Date rotasiDate) {
+        this.rotasiDate = rotasiDate;
     }
 
 }

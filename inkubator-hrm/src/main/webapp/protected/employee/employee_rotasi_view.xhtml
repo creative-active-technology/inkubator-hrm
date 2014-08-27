@@ -34,17 +34,17 @@
                                 <h:panelGrid columns="5">
                                     <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm"/>
                                     <p:outputLabel value=":" styleClass="label_hrm" />
-                                    <p:selectOneMenu id="pencarianSelectId" value="#{empRotasiViewController.empRotasiSearchParameter.keyParam}"
+                                    <p:selectOneMenu id="pencarianSelectId" value="#{empDataViewController.empDataSearchParameter.keyParam}"
                                                      style="width: 150px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItem itemLabel="#{appmsg['placement.nik']}" itemValue="NIK"/>
                                         <f:selectItem itemLabel="#{appmsg['global.name']}" itemValue="name" />
-                                        <f:selectItem itemLabel="Jabatan Lama" itemValue="jabatanLama" />
-                                        <f:selectItem itemLabel="Jabatan Baru" itemValue="jabatanBaru" />
+                                        <f:selectItem itemLabel="#{appmsg['placement.jabatan_code']}" itemValue="jabatanKode" />
+                                        <f:selectItem itemLabel="#{appmsg['placement.jabatan_name']}" itemValue="jabatanName" />
                                     </p:selectOneMenu>
-                                    <p:inputText value="#{empRotasiViewController.empRotasiSearchParameter.parameter}" style="width: 250px" id="pencarianId" styleClass="isitext_hrm" 
+                                    <p:inputText value="#{empDataViewController.empDataSearchParameter.parameter}" style="width: 250px" id="pencarianId" styleClass="isitext_hrm" 
                                                  label="#{appmsg['global.searching']}" title="#{appmsg['global.searching']}"/>
-                                    <p:commandButton value="#{appmsg['global.search']}" action="#{empRotasiViewController.doSearch()}" style="width: 75px" update="tableEmpDataId" icon="ui-icon-search"
+                                    <p:commandButton value="#{appmsg['global.search']}" action="#{empDataViewController.doSearch()}" style="width: 75px" update="tableEmpDataId" icon="ui-icon-search"
                                                      styleClass="label_button" title="#{appmsg['global.search']}" id="btnPencarianId" />
                                 </h:panelGrid>
                             </p:toolbarGroup>
@@ -53,11 +53,11 @@
                                     <p:commandButton value="Export to XLS" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
                                         <pe:exporter target="tableEmpDataIdExpand" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Employee_Placement"/>
                                     </p:commandButton>
-                                    <p:commandButton value="#{appmsg['global.add']}" action="#{empRotasiViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" icon="ui-icon-document"
+<!--                                    <p:commandButton value="#{appmsg['global.add']}" action="#{empDataViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" icon="ui-icon-document"
                                                      styleClass="label_button" ajax="true" immediate="true">
 
-                                    </p:commandButton>
-                                    <p:commandButton value="#{appmsg['global.close']}"  styleClass="label_button" action="#{empRotasiViewController.doClose()}" title="#{appmsg['global.close']}" icon="ui-icon-home"
+                                    </p:commandButton>-->
+                                    <p:commandButton value="#{appmsg['global.close']}"  styleClass="label_button" action="#{empDataViewController.doClose()}" title="#{appmsg['global.close']}" icon="ui-icon-home"
                                                      label="#{appmsg['global.close']}"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
@@ -65,12 +65,12 @@
                         </p:toolbar>
                         <p:focus for="pencarianId" />
 
-                        <p:dataTable  var="empViewData"  value="#{empRotasiViewController.empRotasiLazyDataModel}" lazy="true" paginator="true" pageLinks="7" 
+                        <p:dataTable  var="empViewData"  value="#{empDataViewController.empDataLazyDataModel}" lazy="true" paginator="true" pageLinks="7" 
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
                                       id="tableEmpDataId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="#{appmsg['placement.placement_header']}" styleClass="label_hrm"/>
+                                <h:outputText value="Data Karyawan" styleClass="label_hrm"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 25px">
                                 <f:facet name="header">  
@@ -112,18 +112,9 @@
                             </p:column>
 
                             <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
-                                <p:commandButton  icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
-                                                  action="#{empDataViewController.doDetail()}" style="font-size: 10px!important" >                        
-                                    <f:setPropertyActionListener value="#{empViewData}" target="#{empDataViewController.selectedEmpData}" />
-                                </p:commandButton>
-                                - 
-                                <p:commandButton  icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  style="font-size: 10px!important" update=":deleteDialogEmpDataId"
-                                                  onclick="statusDialog.show()"  oncomplete="confirmDialogEmpData.show()" action="#{empDataViewController.onDelete()}" >
-                                    <f:setPropertyActionListener value="#{empViewData}" target="#{empDataViewController.selectedEmpData}" />
-                                </p:commandButton>
-                                -
-                                <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
-                                                  action="#{empDataViewController.doEdit()}" >
+
+                                <p:commandButton  icon="ui-icon-refresh" title="Rotasi / Mutasi" label="Rotasi / Mutasi" value="Rotasi / Mutasi" style="font-size: 10px!important" 
+                                                  action="#{empDataViewController.doRotasi()}" >
                                     <f:setPropertyActionListener value="#{empViewData}" target="#{empDataViewController.selectedEmpData}" />
 
                                 </p:commandButton> 
@@ -134,9 +125,9 @@
                                 <p:outputLabel value="Data" style="margin-left: 3px" styleClass="label_hrm"/>
                             </f:facet>  
                         </p:dataTable>
-                        
+
                         <!-- 
-                        	hide datatable, used for reporting expand 
+                                hide datatable, used for reporting expand 
                         -->
                         <p:dataTable  var="empViewData" rendered="false"  value="#{empDataViewController.empDataLazyDataModel}" lazy="true" paginator="true" pageLinks="7" 
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
@@ -174,7 +165,7 @@
                                     <h:outputText value="#{appmsg['global.birth_date']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{empViewData.bioData.dateOfBirth}">
-                                	<f:convertDateTime pattern="dd MMMM yyyy" />
+                                    <f:convertDateTime pattern="dd MMMM yyyy" />
                                 </h:outputLabel>
                             </p:column>
                             <p:column>
@@ -182,7 +173,7 @@
                                     <h:outputText value="#{appmsg['global.gender']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{empViewData.bioData.gender}">
-                                	<f:converter converterId="genderConverter" />
+                                    <f:converter converterId="genderConverter" />
                                 </h:outputLabel>
                             </p:column>
                             <p:column>
@@ -190,7 +181,7 @@
                                     <h:outputText value="#{appmsg['biodata.blood_type']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{empViewData.bioData.bloodType}">
-                                	<f:converter converterId="blodTypeConverter"/>
+                                    <f:converter converterId="blodTypeConverter"/>
                                 </h:outputLabel>
                             </p:column>
                             <p:column>

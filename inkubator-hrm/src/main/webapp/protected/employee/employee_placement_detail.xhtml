@@ -142,6 +142,16 @@
                         <p:tabView id="tabView" dynamic="true"  cache="true" styleClass="tabview_hrm" style="margin-top: 15px;margin-bottom: 15px;margin-left: 5px;margin-right: 5px" scrollable="true" >
                             <p:tab id="detailId" title="Detail" >  
                                 <p:panelGrid style="width: 100%;margin-top: 10px;" styleClass="grid_border4">
+                                     <p:row>
+                                        <p:column style="width: 15%;background-color: #e1f0f0!important" >
+                                            <p:outputLabel  value="Tanggal Mutasi" style="font-weight: bold"/>
+                                        </p:column>
+                                        <p:column style="width: 75%">
+                                            <p:outputLabel  value="#{empDataDetilController.selectedEmpData.rotasiDate}">
+                                                <f:convertDateTime pattern="dd MMMM yyyy" />
+                                            </p:outputLabel>
+                                        </p:column>
+                                    </p:row>
                                     <p:row>
                                         <p:column style="width: 15%;background-color: #e1f0f0!important" >
                                             <p:outputLabel  value="SK Number" style="font-weight: bold"/>
@@ -354,7 +364,8 @@
                                             <h:outputText value="Salary"/>
                                         </f:facet>
                                         <p:outputLabel value="#{listCareerHistory.salary}" >
-                                            <f:convertNumber maxFractionDigits="2"/>
+                                            <f:converter converterId="salaryConverter" />
+                                           
                                         </p:outputLabel>
                                     </p:column>
                                     <p:column > 

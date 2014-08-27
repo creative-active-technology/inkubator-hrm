@@ -132,7 +132,9 @@ public class EmpDataFormController extends BaseController {
                 if (empData.getWtGroupWorking() != null) {
                     empDataModel.setWorkingGroupId(empData.getWtGroupWorking().getId());
                 }
-
+                if (empData.getRotasiDate() != null) {
+                    empDataModel.setRotasiDate(empData.getRotasiDate());
+                }
             } else {
                 isEdit = Boolean.FALSE;
             }
@@ -303,6 +305,7 @@ public class EmpDataFormController extends BaseController {
         empData.setPaySalaryGrade(new PaySalaryGrade(empDataModel.getPaySalaryGradeId()));
         empData.setPtkpStatus(Boolean.FALSE);
         empData.setPtkpNumber(0);
+        empData.setRotasiDate(empDataModel.getRotasiDate());
         empData.setGolonganJabatan(new GolonganJabatan(empDataModel.getGolonganJabatan()));
         if (empDataModel.getNoSk() != null) {
             empData.setNoSk(empDataModel.getNoSk());
@@ -339,4 +342,19 @@ public class EmpDataFormController extends BaseController {
         this.golonganJabatanService = golonganJabatanService;
     }
 
+    public String doSaveRotasi() {
+        EmpData empData = getEntityFromViewModel(empDataModel);
+        try {
+            this.empDataService.doSaveRotasi(empData);
+            return "/protected/employee/employee_placement_detail.htm?faces-redirect=true&execution=e" + empData.getId();
+        } catch (BussinessException ex) {
+//                LOGGER.error("Error", ex);
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
+        }
+
+        return null;
+    }
 }

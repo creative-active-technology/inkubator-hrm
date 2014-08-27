@@ -37,6 +37,7 @@ public class EmpDataModel implements Serializable {
     private Date birthDate;
     private long departementId;
     private String noSk;
+    private Date rotasiDate;
    
 
     public Long getId() {
@@ -213,6 +214,14 @@ public class EmpDataModel implements Serializable {
 
     public void setNoSk(String noSk) {
         this.noSk = noSk;
+    }
+
+    public Date getRotasiDate() {
+        return rotasiDate;
+    }
+
+    public void setRotasiDate(Date rotasiDate) {
+        this.rotasiDate = rotasiDate;
     }
 
    
