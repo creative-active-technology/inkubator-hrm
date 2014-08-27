@@ -1,17 +1,19 @@
 package com.inkubator.hrm.entity;
 // Generated Aug 8, 2014 10:14:25 AM by Hibernate Tools 3.6.0
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -45,13 +47,20 @@ public class EmpData implements java.io.Serializable {
     private Boolean ptkpStatus;
     private Integer ptkpNumber;
     private Boolean insentifStatus;
-    private BigDecimal basicSalary;
+//    private BigDecimal basicSalary;
+    private String basicSalary;
     private String createdBy;
     private Date createdOn;
     private String updatedBy;
     private Date updatedOn;
     private Set<EmpPersonAchievement> empPersonAchievements = new HashSet<EmpPersonAchievement>(0);
     private Set<BusinessTravel> businessTravels = new HashSet<BusinessTravel>(0);
+//    private Long defEmpId;
+//    private String nikLama;
+    private Set<EmpRotasi> empRotasis = new HashSet<EmpRotasi>(0);
+    private String status;
+    private String noSk;
+    private Date rotasiDate;
 
     public EmpData() {
     }
@@ -60,7 +69,7 @@ public class EmpData implements java.io.Serializable {
         this.id = id;
     }
 
-    public EmpData(long id, WtGroupWorking wtGroupWorking, EmployeeType employeeType, BioData bioData, PaySalaryGrade paySalaryGrade, Jabatan jabatanByJabatanId, GolonganJabatan golonganJabatan, Jabatan jabatanByJabatanGajiId, String nik, Date joinDate, String ppmp, String ppip, Boolean isFinger, Boolean heatlyPremi, Boolean ptkpStatus, Integer ptkpNumber, Boolean insentifStatus, BigDecimal basicSalary, String createdBy, Date createdOn, String updatedBy, Date updatedOn, Set<BusinessTravel> businessTravels, Set<EmpPersonAchievement> empPersonAchievements) {
+    public EmpData(long id, WtGroupWorking wtGroupWorking, EmployeeType employeeType, BioData bioData, PaySalaryGrade paySalaryGrade, Jabatan jabatanByJabatanId, GolonganJabatan golonganJabatan, Jabatan jabatanByJabatanGajiId, String nik, Date joinDate, String ppmp, String ppip, Boolean isFinger, Boolean heatlyPremi, Boolean ptkpStatus, Integer ptkpNumber, Boolean insentifStatus, String basicSalary, String createdBy, Date createdOn, String updatedBy, Date updatedOn, Set<BusinessTravel> businessTravels, Set<EmpPersonAchievement> empPersonAchievements) {
         this.id = id;
         this.wtGroupWorking = wtGroupWorking;
         this.employeeType = employeeType;
@@ -89,6 +98,8 @@ public class EmpData implements java.io.Serializable {
 
     @Id
     @Column(name = "id", unique = true, nullable = false)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "employee_data_seq_gen")
+    @SequenceGenerator(name = "employee_data_seq_gen", sequenceName = "EMPLOYEE_DATA_SEQ")
     public long getId() {
         return this.id;
     }
@@ -259,15 +270,14 @@ public class EmpData implements java.io.Serializable {
         this.insentifStatus = insentifStatus;
     }
 
-    @Column(name = "basic_salary", precision = 10, scale = 0)
-    public BigDecimal getBasicSalary() {
-        return this.basicSalary;
-    }
-
-    public void setBasicSalary(BigDecimal basicSalary) {
-        this.basicSalary = basicSalary;
-    }
-
+//    @Column(name = "basic_salary", precision = 10, scale = 0)
+//    public BigDecimal getBasicSalary() {
+//        return this.basicSalary;
+//    }
+//
+//    public void setBasicSalary(BigDecimal basicSalary) {
+//        this.basicSalary = basicSalary;
+//    }
     @Column(name = "created_by", length = 45)
     public String getCreatedBy() {
         return this.createdBy;
@@ -320,13 +330,77 @@ public class EmpData implements java.io.Serializable {
         String data = nik + " - " + bioData.getFirstName() + " " + bioData.getLastName();
         return data;
     }
-    @OneToMany(fetch=FetchType.LAZY, mappedBy="empData")
-	public Set<BusinessTravel> getBusinessTravels() {
-		return businessTravels;
-	}
 
-	public void setBusinessTravels(Set<BusinessTravel> businessTravels) {
-		this.businessTravels = businessTravels;
-	}
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "empData")
+    public Set<BusinessTravel> getBusinessTravels() {
+        return businessTravels;
+    }
+
+    public void setBusinessTravels(Set<BusinessTravel> businessTravels) {
+        this.businessTravels = businessTravels;
+    }
+
+//    @Column(name = "def_emp_id")
+//    public Long getDefEmpId() {
+//        return this.defEmpId;
+//    }
+//
+//    public void setDefEmpId(Long defEmpId) {
+//        this.defEmpId = defEmpId;
+//    }
+//
+//    @Column(name = "nik_lama", length = 45)
+//    public String getNikLama() {
+//        return this.nikLama;
+//    }
+//
+//    public void setNikLama(String nikLama) {
+//        this.nikLama = nikLama;
+//    }
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "empData")
+    public Set<EmpRotasi> getEmpRotasis() {
+        return this.empRotasis;
+    }
+
+    public void setEmpRotasis(Set<EmpRotasi> empRotasis) {
+        this.empRotasis = empRotasis;
+    }
+
+    @Column(name = "status", length = 45)
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    @Column(name = "no_sk", length = 45)
+    public String getNoSk() {
+        return this.noSk;
+    }
+
+    public void setNoSk(String noSk) {
+        this.noSk = noSk;
+    }
+
+    @Column(name = "basic_salary", length = 65535)
+    public String getBasicSalary() {
+        return this.basicSalary;
+    }
+
+    public void setBasicSalary(String basicSalary) {
+        this.basicSalary = basicSalary;
+    }
+
+    @Temporal(TemporalType.DATE)
+    @Column(name = "rotasi_date", length = 10)
+    public Date getRotasiDate() {
+        return rotasiDate;
+    }
+
+    public void setRotasiDate(Date rotasiDate) {
+        this.rotasiDate = rotasiDate;
+    }
 
 }

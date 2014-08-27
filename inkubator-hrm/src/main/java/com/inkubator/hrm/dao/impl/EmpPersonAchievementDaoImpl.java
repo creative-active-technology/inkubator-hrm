@@ -80,4 +80,11 @@ public class EmpPersonAchievementDaoImpl extends IDAOImpl<EmpPersonAchievement> 
         criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
         return criteria.list();
     }
+
+    @Override
+    public List<EmpPersonAchievement> getAllDataByEmployeeId(Long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("empData.id", id));
+        return criteria.list();
+    }
 }

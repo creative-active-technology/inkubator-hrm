@@ -24,4 +24,6 @@ public interface ApprovalDefinitionDao extends IDAO<ApprovalDefinition> {
     public Long getTotalSameAprrovalProsesExist(String approvalName, String procesName, int sequance);
     
     public Long getTotalAprpovalExistWithSequenceOne(String approvalName);
+    
+    public Long getTotalDataWithSequenceLower(String approvalName, int sequance);
 }

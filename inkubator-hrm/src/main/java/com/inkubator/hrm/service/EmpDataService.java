@@ -38,4 +38,8 @@ public interface EmpDataService extends IService<EmpData> {
 	
 	public EmpData getByIdWithDetail(long id) throws Exception;
 
+    public EmpData getEntityByNik(String nik) throws Exception;
+
+    public void doSaveRotasi(EmpData empData) throws Exception;
+
 }

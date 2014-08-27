@@ -164,5 +164,10 @@ public class HRMConstant {
     public static final String ON_APPROVE_INFO = "ON_APPROVE_INFO";
     public static final String ON_REJECT_INFO = "ON_REJECT_INFO";
 
+    /*Placement */
+    public static final String EMP_PLACEMENT = "EMP_PLACEMENT";
+    public static final String EMP_ROTATION = "EMP_ROTATION";
+    public static final String EMP_TERMINATION = "EMP_TERMINATION";
+
     /* END */
 }

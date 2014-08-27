@@ -193,4 +193,11 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.setFetchMode("golonganJabatan.pangkat", FetchMode.JOIN);
         return (EmpData) criteria.uniqueResult();
 	}
+    
+    @Override
+    public EmpData getEntityByNik(String nik) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("nik", nik));
+        return (EmpData) criteria.uniqueResult();
+    }
 }

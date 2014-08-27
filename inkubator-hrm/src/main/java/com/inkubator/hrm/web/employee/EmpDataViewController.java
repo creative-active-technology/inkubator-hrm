@@ -197,4 +197,10 @@ public class EmpDataViewController extends BaseController {
     public String doEdit() {
         return "/protected/employee/employee_palcement_form.htm?faces-redirect=true&execution=e" + selectedEmpData.getId();
     }
+
+    public String doRotasi() {
+
+        return "/protected/employee/employee_rotasi_form.htm?faces-redirect=true&execution=r" + selectedEmpData.getId();
+    }
+
 }

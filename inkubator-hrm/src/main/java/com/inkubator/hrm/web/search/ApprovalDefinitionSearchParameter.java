@@ -14,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class ApprovalDefinitionSearchParameter extends SearchParameter {
 
+    private String approvalName;
     private String processName;
     private String approverPosition;
     private String approverIndividual;
@@ -97,6 +98,19 @@ public class ApprovalDefinitionSearchParameter extends SearchParameter {
 
     public void setApproverType(String approverType) {
         this.approverType = approverType;
+    }
+
+    public String getApprovalName() {
+        if (StringUtils.equalsIgnoreCase(getKeyParam(), "approvalName")) {
+            approvalName = getParameter();
+        } else {
+            approvalName = null;
+        }
+        return approvalName;
+    }
+
+    public void setApprovalName(String approvalName) {
+        this.approvalName = approvalName;
     }
 
 }

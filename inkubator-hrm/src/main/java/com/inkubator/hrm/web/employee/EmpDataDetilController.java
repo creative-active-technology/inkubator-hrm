@@ -5,10 +5,16 @@
  */
 package com.inkubator.hrm.web.employee;
 
+import com.inkubator.hrm.entity.EmpCareerHistory;
 import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.EmpPersonAchievement;
 import com.inkubator.hrm.entity.JabatanDeskripsi;
 import com.inkubator.hrm.entity.JabatanSpesifikasi;
+import com.inkubator.hrm.entity.PersonalDiscipline;
+import com.inkubator.hrm.service.EmpCareerHistoryService;
 import com.inkubator.hrm.service.EmpDataService;
+import com.inkubator.hrm.service.EmpPersonAchievementService;
+import com.inkubator.hrm.service.PersonalDisciplineService;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import java.util.ArrayList;
@@ -22,6 +28,8 @@ import javax.faces.bean.ViewScoped;
  *
  * @author Deni Husni FR
  */
+
+
 @ManagedBean(name = "empDataDetilController")
 @ViewScoped
 public class EmpDataDetilController extends BaseController {
@@ -31,7 +39,20 @@ public class EmpDataDetilController extends BaseController {
     private EmpData selectedEmpData;
     private List<JabatanSpesifikasi> listJabatanSpesifikasi;
     private List<JabatanDeskripsi> jabatanDeskripsis;
+    private List<EmpCareerHistory> listCareerHistory;
     private String id;
+    @ManagedProperty(value = "#{empCareerHistoryService}")
+    private EmpCareerHistoryService empCareerHistoryService;
+
+    //personal discipline
+    @ManagedProperty(value = "#{personalDisciplineService}")
+    private PersonalDisciplineService personalDisciplineService;
+    private List<PersonalDiscipline> listPersonalDiscipline;
+
+    //Achievement
+    @ManagedProperty(value = "#{empPersonAchievementService}")
+    private EmpPersonAchievementService empPersonAchievementService;
+    private List<EmpPersonAchievement> listPersonAchievement;
 
     @PostConstruct
     @Override
@@ -42,6 +63,11 @@ public class EmpDataDetilController extends BaseController {
             selectedEmpData = empDataService.getByEmpIdWithDetail(Long.parseLong(empId.substring(1)));
             jabatanDeskripsis = new ArrayList<>(selectedEmpData.getJabatanByJabatanId().getJabatanDeskripsis());
             listJabatanSpesifikasi = new ArrayList<>(selectedEmpData.getJabatanByJabatanId().getJabatanSpesifikasis());
+            listCareerHistory = empCareerHistoryService.getEmployeeCareerByBioId(selectedEmpData.getBioData().getId());
+            System.out.println("ini nilaiiaiaia " + listCareerHistory.size());
+            listPersonalDiscipline = personalDisciplineService.getAllDataByEmployeeId(selectedEmpData.getId());
+            listPersonAchievement = empPersonAchievementService.getAllDataByEmployeeId(selectedEmpData.getId());
+
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -55,7 +81,7 @@ public class EmpDataDetilController extends BaseController {
     public void setId(String id) {
         this.id = id;
     }
-    
+
     public EmpData getSelectedEmpData() {
         return selectedEmpData;
     }
@@ -69,7 +95,7 @@ public class EmpDataDetilController extends BaseController {
     }
 
     public String doEdit() {
-        return "/protected/personalia/biodata_form.htm?faces-redirect=true&execution=e" + selectedEmpData.getId();
+        return "/protected/employee/employee_palcement_form.htm?faces-redirect=true&execution=e" + selectedEmpData.getId();
     }
 
     public String doBack() {
@@ -99,5 +125,55 @@ public class EmpDataDetilController extends BaseController {
             LOGGER.error("Error", e);
         }
     }
+
     
+
+    public void setEmpCareerHistoryService(EmpCareerHistoryService empCareerHistoryService) {
+        this.empCareerHistoryService = empCareerHistoryService;
+    }
+
+    public List<EmpCareerHistory> getListCareerHistory() {
+        return listCareerHistory;
+    }
+
+    public void setListCareerHistory(List<EmpCareerHistory> listCareerHistory) {
+        this.listCareerHistory = listCareerHistory;
+    }
+
+    
+    public PersonalDisciplineService getPersonalDisciplineService() {
+        return personalDisciplineService;
+    }
+
+    public void setPersonalDisciplineService(PersonalDisciplineService personalDisciplineService) {
+        this.personalDisciplineService = personalDisciplineService;
+    }
+
+    public List<PersonalDiscipline> getListPersonalDiscipline() {
+        return listPersonalDiscipline;
+    }
+
+    public void setListPersonalDiscipline(List<PersonalDiscipline> listPersonalDiscipline) {
+        this.listPersonalDiscipline = listPersonalDiscipline;
+    }
+
+    public EmpPersonAchievementService getEmpPersonAchievementService() {
+        return empPersonAchievementService;
+    }
+
+    public void setEmpPersonAchievementService(EmpPersonAchievementService empPersonAchievementService) {
+        this.empPersonAchievementService = empPersonAchievementService;
+    }
+
+    public List<EmpPersonAchievement> getListPersonAchievement() {
+        return listPersonAchievement;
+    }
+
+    public void setListPersonAchievement(List<EmpPersonAchievement> listPersonAchievement) {
+        this.listPersonAchievement = listPersonAchievement;
+    }
+
+    
+    
+
 }

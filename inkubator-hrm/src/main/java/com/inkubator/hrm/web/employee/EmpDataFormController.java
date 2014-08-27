@@ -5,23 +5,27 @@
  */
 package com.inkubator.hrm.web.employee;
 
+import com.inkubator.common.util.AESUtil;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.BioData;
 import com.inkubator.hrm.entity.Department;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.EmployeeType;
+import com.inkubator.hrm.entity.GolonganJabatan;
 import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.entity.PaySalaryGrade;
 import com.inkubator.hrm.service.DepartmentService;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.EmployeeTypeService;
+import com.inkubator.hrm.service.GolonganJabatanService;
 import com.inkubator.hrm.service.JabatanService;
 import com.inkubator.hrm.service.PaySalaryGradeService;
 import com.inkubator.hrm.web.model.EmpDataModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,6 +50,7 @@ public class EmpDataFormController extends BaseController {
     private Map<String, Long> mapJabatans = new HashMap<String, Long>();
     private Map<String, Long> mapStatusKaryawan = new HashMap<String, Long>();
     private Map<Integer, Long> mapPaySalary = new HashMap<Integer, Long>();
+    private Map<String, Long> mapGolonganJabatan = new HashMap<String, Long>();
 
 //    private HrmUserSearchParameter hrmUserSearchParameter;
 //    private LazyDataModel<HrmUser> lazyDataHrmUser;
@@ -60,6 +65,8 @@ public class EmpDataFormController extends BaseController {
     private PaySalaryGradeService paySalaryGradeService;
     @ManagedProperty(value = "#{empDataService}")
     private EmpDataService empDataService;
+    @ManagedProperty(value = "#{golonganJabatanService}")
+    private GolonganJabatanService golonganJabatanService;
 //
 //    public void setHrmUserService(HrmUserService hrmUserService) {
 //        this.hrmUserService = hrmUserService;
@@ -74,6 +81,10 @@ public class EmpDataFormController extends BaseController {
             super.initialization();
             empDataModel = new EmpDataModel();
             String empId = FacesUtil.getRequestParameter("execution");
+            List<GolonganJabatan> golJabatans = golonganJabatanService.getAllWithDetail();
+            for (GolonganJabatan golonganJabatan : golJabatans) {
+                mapGolonganJabatan.put(golonganJabatan.getCode() + "-" + golonganJabatan.getPangkat().getPangkatName(), golonganJabatan.getId());
+            }
             List<Department> departements = departmentService.getAllData();
             for (Department department : departements) {
                 mapDepartements.put(department.getDepartmentName(), department.getId());
@@ -96,7 +107,8 @@ public class EmpDataFormController extends BaseController {
             if (empId != null) {
                 isEdit = Boolean.TRUE;
                 EmpData empData = empDataService.getByEmpIdWithDetail(Long.parseLong(empId.substring(1)));
-                empDataModel.setBasicSalary(empData.getBasicSalary());
+                String basicSalaryDecript = AESUtil.getAESDescription(empData.getBasicSalary(), HRMConstant.KEYVALUE, HRMConstant.AES_ALGO);
+                empDataModel.setBasicSalary(new BigDecimal(basicSalaryDecript));
                 empDataModel.setBioDataId(empData.getBioData().getId());
                 empDataModel.setBioDataName(empData.getBioData().getFirstName() + " " + empData.getBioData().getLastName());
                 empDataModel.setBirthDate(empData.getBioData().getDateOfBirth());
@@ -116,13 +128,17 @@ public class EmpDataFormController extends BaseController {
                 empDataModel.setPpmp(empData.getPpmp());
                 empDataModel.setPtkpNumber(empData.getPtkpNumber());
                 empDataModel.setPtkpStatus(empData.getPtkpStatus());
+                empDataModel.setNoSk(empData.getNoSk());
                 if (empData.getWtGroupWorking() != null) {
                     empDataModel.setWorkingGroupId(empData.getWtGroupWorking().getId());
                 }
-
+                if (empData.getRotasiDate() != null) {
+                    empDataModel.setRotasiDate(empData.getRotasiDate());
+                }
             } else {
                 isEdit = Boolean.FALSE;
             }
+
         } catch (Exception ex) {
             LOGGER.error("error", ex);
         }
@@ -204,6 +220,8 @@ public class EmpDataFormController extends BaseController {
 
     public String doSave() {
         EmpData empData = getEntityFromViewModel(empDataModel);
+        System.out.println("ememem 1" + empData.getGolonganJabatan().getId());
+        System.out.println("ememem 2" + empDataModel.getGolonganJabatan());
         if (isEdit) {
             try {
                 empDataService.update(empData);
@@ -273,7 +291,8 @@ public class EmpDataFormController extends BaseController {
         if (empDataModel.getId() != null) {
             empData.setId(empDataModel.getId());
         }
-        empData.setBasicSalary(empDataModel.getBasicSalary());
+        String encriptBasicSalary = AESUtil.getAESEncription(empDataModel.getBasicSalary().toString(), HRMConstant.KEYVALUE, HRMConstant.AES_ALGO);
+        empData.setBasicSalary(encriptBasicSalary);
         empData.setBioData(new BioData(empDataModel.getBioDataId()));
         empData.setEmployeeType(new EmployeeType(empDataModel.getEmployeeTypeId()));
         empData.setHeatlyPremi(Boolean.TRUE);
@@ -286,6 +305,13 @@ public class EmpDataFormController extends BaseController {
         empData.setPaySalaryGrade(new PaySalaryGrade(empDataModel.getPaySalaryGradeId()));
         empData.setPtkpStatus(Boolean.FALSE);
         empData.setPtkpNumber(0);
+        empData.setRotasiDate(empDataModel.getRotasiDate());
+        empData.setGolonganJabatan(new GolonganJabatan(empDataModel.getGolonganJabatan()));
+        if (empDataModel.getNoSk() != null) {
+            empData.setNoSk(empDataModel.getNoSk());
+        }
+
+        System.out.println(" nilai golonganjabatabab " + empDataModel.getGolonganJabatan());
 //        empData.setWtGroupWorking(new WtGroupWorking());
         return empData;
     }
@@ -293,14 +319,42 @@ public class EmpDataFormController extends BaseController {
     public void setEmpDataService(EmpDataService empDataService) {
         this.empDataService = empDataService;
     }
-    
-    public void doChangeJabatan(){
+
+    public void doChangeJabatan() {
         try {
-            Jabatan jabatan=jabatanService.getJabatanByIdWithDetail(empDataModel.getJabatanByJabatanId());
+            Jabatan jabatan = jabatanService.getJabatanByIdWithDetail(empDataModel.getJabatanByJabatanId());
             empDataModel.setPaySalaryGradeId(jabatan.getPaySalaryGrade().getId());
+            empDataModel.setGolonganJabatan(jabatan.getGolonganJabatan().getId());
         } catch (Exception ex) {
-           LOGGER.error("Error", ex);
+            LOGGER.error("Error", ex);
         }
     }
 
+    public Map<String, Long> getMapGolonganJabatan() {
+        return mapGolonganJabatan;
+    }
+
+    public void setMapGolonganJabatan(Map<String, Long> mapGolonganJabatan) {
+        this.mapGolonganJabatan = mapGolonganJabatan;
+    }
+
+    public void setGolonganJabatanService(GolonganJabatanService golonganJabatanService) {
+        this.golonganJabatanService = golonganJabatanService;
+    }
+
+    public String doSaveRotasi() {
+        EmpData empData = getEntityFromViewModel(empDataModel);
+        try {
+            this.empDataService.doSaveRotasi(empData);
+            return "/protected/employee/employee_placement_detail.htm?faces-redirect=true&execution=e" + empData.getId();
+        } catch (BussinessException ex) {
+//                LOGGER.error("Error", ex);
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
+        }
+
+        return null;
+    }
 }
