@@ -144,6 +144,14 @@
                                 <p:panelGrid style="width: 100%;margin-top: 10px;" styleClass="grid_border4">
                                     <p:row>
                                         <p:column style="width: 15%;background-color: #e1f0f0!important" >
+                                            <p:outputLabel  value="SK Number" style="font-weight: bold"/>
+                                        </p:column>
+                                        <p:column style="width: 75%">
+                                            <p:outputLabel  value="#{empDataDetilController.selectedEmpData.noSk}"/>
+                                        </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column style="width: 15%;background-color: #e1f0f0!important" >
                                             <p:outputLabel  value="#{appmsg['functiongroup.function_group']}" style="font-weight: bold"/>
                                         </p:column>
                                         <p:column style="width: 75%">
@@ -309,7 +317,56 @@
 
                             </p:tab>
                             <p:tab id="riwayatKerjaId" title="#{appmsg['placement.career']}">  
-                                <p:outputLabel value="Available on Version 1.2" styleClass="header_big" style="position:relative;color:red;right:-400px !important;font-style:italic"/>
+                                <p:dataTable value="#{empDataDetilController.listCareerHistory}" var="listCareerHistory" rowIndexVar="no" id="careerHistoryId"
+                                             >
+                                    <p:column style="text-align: center;width: 25px;max-width: 25px">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['global.number']}" />
+                                        </f:facet>
+                                        <h:outputLabel value="#{no+1}." />
+                                    </p:column>
+                                    <p:column > 
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['placement.nik']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value=" #{listCareerHistory.nik}" />
+                                    </p:column> 
+                                    <p:column > 
+                                        <f:facet name="header">  
+                                            <h:outputText value="Jabatan"/>
+                                        </f:facet>
+                                        <h:outputLabel value=" #{listCareerHistory.jabatan.name}" />
+                                    </p:column> 
+                                    <p:column > 
+                                        <f:facet name="header">  
+                                            <h:outputText value="Golongan Jabatan"/>
+                                        </f:facet>
+                                        <p:outputLabel value=" #{listCareerHistory.golonganJabatan.code}-#{listCareerHistory.golonganJabatan.pangkat.pangkatName}" />
+                                    </p:column>
+                                    <p:column > 
+                                        <f:facet name="header" >  
+                                            <h:outputText value="SK Penempatan"/>
+                                        </f:facet>
+                                        <p:outputLabel value="#{listCareerHistory.noSk}" />
+                                    </p:column>
+                                    <p:column style="text-align: right"> 
+                                        <f:facet name="header">  
+                                            <h:outputText value="Salary"/>
+                                        </f:facet>
+                                        <p:outputLabel value="#{listCareerHistory.salary}" >
+                                            <f:convertNumber maxFractionDigits="2"/>
+                                        </p:outputLabel>
+                                    </p:column>
+                                    <p:column > 
+                                        <f:facet name="header">  
+                                            <h:outputText value="Tangal Mutasi"/>
+                                        </f:facet>
+                                        <p:outputLabel value="#{listCareerHistory.tglPenganngkatan}" >
+                                            <f:convertDateTime pattern="dd MMMM yyyy"/>
+                                        </p:outputLabel>
+                                    </p:column>
+                                </p:dataTable>  
+
 
                             </p:tab>  
                             <p:tab id="pendidikanId" title="#{appmsg['placement.pinjaman']}">  

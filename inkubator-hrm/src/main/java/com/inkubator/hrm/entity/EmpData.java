@@ -1,7 +1,6 @@
 package com.inkubator.hrm.entity;
 // Generated Aug 8, 2014 10:14:25 AM by Hibernate Tools 3.6.0
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -48,7 +47,8 @@ public class EmpData implements java.io.Serializable {
     private Boolean ptkpStatus;
     private Integer ptkpNumber;
     private Boolean insentifStatus;
-    private BigDecimal basicSalary;
+//    private BigDecimal basicSalary;
+    private String basicSalary;
     private String createdBy;
     private Date createdOn;
     private String updatedBy;
@@ -59,6 +59,7 @@ public class EmpData implements java.io.Serializable {
 //    private String nikLama;
     private Set<EmpRotasi> empRotasis = new HashSet<EmpRotasi>(0);
     private String status;
+    private String noSk;
 
     public EmpData() {
     }
@@ -67,7 +68,7 @@ public class EmpData implements java.io.Serializable {
         this.id = id;
     }
 
-    public EmpData(long id, WtGroupWorking wtGroupWorking, EmployeeType employeeType, BioData bioData, PaySalaryGrade paySalaryGrade, Jabatan jabatanByJabatanId, GolonganJabatan golonganJabatan, Jabatan jabatanByJabatanGajiId, String nik, Date joinDate, String ppmp, String ppip, Boolean isFinger, Boolean heatlyPremi, Boolean ptkpStatus, Integer ptkpNumber, Boolean insentifStatus, BigDecimal basicSalary, String createdBy, Date createdOn, String updatedBy, Date updatedOn, Set<BusinessTravel> businessTravels, Set<EmpPersonAchievement> empPersonAchievements) {
+    public EmpData(long id, WtGroupWorking wtGroupWorking, EmployeeType employeeType, BioData bioData, PaySalaryGrade paySalaryGrade, Jabatan jabatanByJabatanId, GolonganJabatan golonganJabatan, Jabatan jabatanByJabatanGajiId, String nik, Date joinDate, String ppmp, String ppip, Boolean isFinger, Boolean heatlyPremi, Boolean ptkpStatus, Integer ptkpNumber, Boolean insentifStatus, String basicSalary, String createdBy, Date createdOn, String updatedBy, Date updatedOn, Set<BusinessTravel> businessTravels, Set<EmpPersonAchievement> empPersonAchievements) {
         this.id = id;
         this.wtGroupWorking = wtGroupWorking;
         this.employeeType = employeeType;
@@ -268,15 +269,14 @@ public class EmpData implements java.io.Serializable {
         this.insentifStatus = insentifStatus;
     }
 
-    @Column(name = "basic_salary", precision = 10, scale = 0)
-    public BigDecimal getBasicSalary() {
-        return this.basicSalary;
-    }
-
-    public void setBasicSalary(BigDecimal basicSalary) {
-        this.basicSalary = basicSalary;
-    }
-
+//    @Column(name = "basic_salary", precision = 10, scale = 0)
+//    public BigDecimal getBasicSalary() {
+//        return this.basicSalary;
+//    }
+//
+//    public void setBasicSalary(BigDecimal basicSalary) {
+//        this.basicSalary = basicSalary;
+//    }
     @Column(name = "created_by", length = 45)
     public String getCreatedBy() {
         return this.createdBy;
@@ -372,6 +372,24 @@ public class EmpData implements java.io.Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    @Column(name = "no_sk", length = 45)
+    public String getNoSk() {
+        return this.noSk;
+    }
+
+    public void setNoSk(String noSk) {
+        this.noSk = noSk;
+    }
+
+    @Column(name = "basic_salary", length = 65535)
+    public String getBasicSalary() {
+        return this.basicSalary;
+    }
+
+    public void setBasicSalary(String basicSalary) {
+        this.basicSalary = basicSalary;
     }
 
 }

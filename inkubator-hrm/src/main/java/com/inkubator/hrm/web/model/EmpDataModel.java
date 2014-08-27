@@ -36,6 +36,7 @@ public class EmpDataModel implements Serializable {
     private BigDecimal basicSalary;
     private Date birthDate;
     private long departementId;
+    private String noSk;
    
 
     public Long getId() {
@@ -204,6 +205,14 @@ public class EmpDataModel implements Serializable {
 
     public void setDepartementId(long departementId) {
         this.departementId = departementId;
+    }
+
+    public String getNoSk() {
+        return noSk;
+    }
+
+    public void setNoSk(String noSk) {
+        this.noSk = noSk;
     }
 
    

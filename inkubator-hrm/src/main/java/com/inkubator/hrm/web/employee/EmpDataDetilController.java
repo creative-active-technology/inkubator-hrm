@@ -5,9 +5,11 @@
  */
 package com.inkubator.hrm.web.employee;
 
+import com.inkubator.hrm.entity.EmpCareerHistory;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.JabatanDeskripsi;
 import com.inkubator.hrm.entity.JabatanSpesifikasi;
+import com.inkubator.hrm.service.EmpCareerHistoryService;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
@@ -31,7 +33,10 @@ public class EmpDataDetilController extends BaseController {
     private EmpData selectedEmpData;
     private List<JabatanSpesifikasi> listJabatanSpesifikasi;
     private List<JabatanDeskripsi> jabatanDeskripsis;
+    private List<EmpCareerHistory> listCareerHistory;
     private String id;
+    @ManagedProperty(value = "#{empCareerHistoryService}")
+    private EmpCareerHistoryService empCareerHistoryService;
 
     @PostConstruct
     @Override
@@ -42,6 +47,8 @@ public class EmpDataDetilController extends BaseController {
             selectedEmpData = empDataService.getByEmpIdWithDetail(Long.parseLong(empId.substring(1)));
             jabatanDeskripsis = new ArrayList<>(selectedEmpData.getJabatanByJabatanId().getJabatanDeskripsis());
             listJabatanSpesifikasi = new ArrayList<>(selectedEmpData.getJabatanByJabatanId().getJabatanSpesifikasis());
+            listCareerHistory = empCareerHistoryService.getEmployeeCareerByBioId(selectedEmpData.getBioData().getId());
+            System.out.println("ini nilaiiaiaia "+listCareerHistory.size());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -55,7 +62,7 @@ public class EmpDataDetilController extends BaseController {
     public void setId(String id) {
         this.id = id;
     }
-    
+
     public EmpData getSelectedEmpData() {
         return selectedEmpData;
     }
@@ -99,5 +106,19 @@ public class EmpDataDetilController extends BaseController {
             LOGGER.error("Error", e);
         }
     }
+
+    public void setEmpCareerHistoryService(EmpCareerHistoryService empCareerHistoryService) {
+        this.empCareerHistoryService = empCareerHistoryService;
+    }
+
+    public List<EmpCareerHistory> getListCareerHistory() {
+        return listCareerHistory;
+    }
+
+    public void setListCareerHistory(List<EmpCareerHistory> listCareerHistory) {
+        this.listCareerHistory = listCareerHistory;
+    }
     
+    
+
 }

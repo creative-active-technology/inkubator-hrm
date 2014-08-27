@@ -6,12 +6,15 @@
 package com.inkubator.hrm.service.impl;
 
 import com.inkubator.common.CommonUtilConstant;
+import com.inkubator.common.util.AESUtil;
 import com.inkubator.common.util.DateTimeUtil;
+import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.BioDataDao;
 import com.inkubator.hrm.dao.DepartmentDao;
+import com.inkubator.hrm.dao.EmpCareerHistoryDao;
 import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.EmployeeTypeDao;
 import com.inkubator.hrm.dao.GolonganJabatanDao;
@@ -19,6 +22,7 @@ import com.inkubator.hrm.dao.JabatanDao;
 import com.inkubator.hrm.dao.PaySalaryGradeDao;
 import com.inkubator.hrm.dao.WtGroupWorkingDao;
 import com.inkubator.hrm.entity.Department;
+import com.inkubator.hrm.entity.EmpCareerHistory;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.entity.PaySalaryGrade;
@@ -47,7 +51,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service(value = "empDataService")
 @Lazy
 public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
-    
+
     @Autowired
     private EmpDataDao empDataDao;
     @Autowired
@@ -64,17 +68,19 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     private WtGroupWorkingDao wtGroupWorkingDao;
     @Autowired
     private GolonganJabatanDao golonganJabatanDao;
-    
+    @Autowired
+    private EmpCareerHistoryDao empCareerHistoryDao;
+
     @Override
     public EmpData getEntiyByPK(String id) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public EmpData getEntiyByPK(Integer id) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public EmpData getEntiyByPK(Long id) throws Exception {
@@ -83,7 +89,7 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         empData.getBioData().getLastName();
         return empData;
     }
-    
+
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(EmpData entity) throws Exception {
@@ -99,19 +105,36 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         entity.setEmployeeType(employeeTypeDao.getEntiyByPK(entity.getEmployeeType().getId()));
         Jabatan jabatan = jabatanDao.getEntiyByPK(entity.getJabatanByJabatanId().getId());
         entity.setJabatanByJabatanId(jabatan);
+        entity.setStatus(HRMConstant.EMP_PLACEMENT);
         entity.setJabatanByJabatanGajiId(jabatan);
         entity.setGolonganJabatan(jabatan.getGolonganJabatan());
         PaySalaryGrade paySalaryGrade = paySalaryGradeDao.getEntiyByPK(entity.getPaySalaryGrade().getId());
-        entity.setPaySalaryGrade(paySalaryGradeDao.getEntiyByPK(entity.getId()));
+        entity.setPaySalaryGrade(paySalaryGrade);
         double min = paySalaryGrade.getMinSalary().doubleValue();
         double max = paySalaryGrade.getMaxSalary().doubleValue();
-        if (entity.getBasicSalary().doubleValue() > max || entity.getBasicSalary().doubleValue() < min) {
+        String basicSalaryDecript = AESUtil.getAESDescription(entity.getBasicSalary(), HRMConstant.KEYVALUE, HRMConstant.AES_ALGO);
+        double valueDecript = Double.parseDouble(basicSalaryDecript);
+        if (valueDecript > max || valueDecript < min) {
             throw new BussinessException("emp_data.error_salary_range");
         }
-        
+
         empDataDao.save(entity);
+        EmpCareerHistory careerHistory = new EmpCareerHistory();
+        careerHistory.setBioData(bioDataDao.getEntiyByPK(entity.getBioData().getId()));
+        careerHistory.setCreatedBy(UserInfoUtil.getUserName());
+        careerHistory.setCreatedOn(new Date());
+        careerHistory.setGolonganJabatan(jabatan.getGolonganJabatan());
+        careerHistory.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+        careerHistory.setJabatan(jabatan);
+        careerHistory.setNik(entity.getNik());
+        careerHistory.setNoSk(entity.getNoSk());
+        careerHistory.setSalary(entity.getBasicSalary());
+        careerHistory.setTglPenganngkatan(entity.getJoinDate());
+        careerHistory.setStatus(HRMConstant.EMP_PLACEMENT);
+        empCareerHistoryDao.save(careerHistory);
+
     }
-    
+
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(EmpData entity) throws Exception {
@@ -127,18 +150,21 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         Jabatan jabatan = jabatanDao.getEntiyByPK(entity.getJabatanByJabatanId().getId());
         empData.setJabatanByJabatanId(jabatan);
         empData.setJabatanByJabatanGajiId(jabatan);
-        System.out.println(" niaiaiai "+empData.getGolonganJabatan().getId());
+        System.out.println(" niaiaiai " + empData.getGolonganJabatan().getId());
         empData.setGolonganJabatan(golonganJabatanDao.getEntiyByPK(entity.getGolonganJabatan().getId()));
         empData.setHeatlyPremi(entity.getHeatlyPremi());
         empData.setInsentifStatus(entity.getInsentifStatus());
         empData.setIsFinger(entity.getIsFinger());
         empData.setJoinDate(entity.getJoinDate());
         empData.setNik(entity.getNik());
+        empData.setNoSk(entity.getNoSk());
         PaySalaryGrade paySalaryGrade = paySalaryGradeDao.getEntiyByPK(entity.getPaySalaryGrade().getId());
         empData.setPaySalaryGrade(paySalaryGrade);
         double min = paySalaryGrade.getMinSalary().doubleValue();
         double max = paySalaryGrade.getMaxSalary().doubleValue();
-        if (entity.getBasicSalary().doubleValue() > max || entity.getBasicSalary().doubleValue() < min) {
+        String basicSalaryDecript = AESUtil.getAESDescription(entity.getBasicSalary(), HRMConstant.KEYVALUE, HRMConstant.AES_ALGO);
+        double valueDecript = Double.parseDouble(basicSalaryDecript);
+        if (valueDecript > max || valueDecript < min) {
             throw new BussinessException("emp_data.error_salary_range");
         }
         empData.setPpip(entity.getPpip());
@@ -151,158 +177,167 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
             empData.setWtGroupWorking(wtGroupWorkingDao.getEntiyByPK(entity.getWtGroupWorking().getId()));
         }
         this.empDataDao.update(empData);
+        EmpCareerHistory careerHistory = this.empCareerHistoryDao.getByBioIdandStatus(empData.getBioData().getId(), HRMConstant.EMP_PLACEMENT);
+        careerHistory.setNik(empData.getNik());
+        careerHistory.setNoSk(empData.getNoSk());
+        careerHistory.setStatus(empData.getStatus());
+        careerHistory.setSalary(empData.getBasicSalary());
+        careerHistory.setTglPenganngkatan(empData.getJoinDate());
+        careerHistory.setUpdateBy(UserInfoUtil.getUserName());
+        careerHistory.setUpdatedOn(new Date());
+        this.empCareerHistoryDao.update(careerHistory);
     }
-    
+
     @Override
     public void saveOrUpdate(EmpData enntity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public EmpData saveData(EmpData entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public EmpData updateData(EmpData entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public EmpData saveOrUpdateData(EmpData entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public EmpData getEntityByPkIsActive(String id, Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public EmpData getEntityByPkIsActive(String id, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public EmpData getEntityByPkIsActive(String id, Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public EmpData getEntityByPkIsActive(Integer id, Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public EmpData getEntityByPkIsActive(Integer id, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public EmpData getEntityByPkIsActive(Integer id, Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public EmpData getEntityByPkIsActive(Long id, Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public EmpData getEntityByPkIsActive(Long id, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public EmpData getEntityByPkIsActive(Long id, Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void delete(EmpData entity) throws Exception {
         this.empDataDao.delete(entity);
     }
-    
+
     @Override
     public void softDelete(EmpData entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public Long getTotalData() throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public Long getTotalDataIsActive(Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public Long getTotalDataIsActive(Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public Long getTotalDataIsActive(Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public List<EmpData> getAllData() throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public List<EmpData> getAllData(Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public List<EmpData> getAllData(Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public List<EmpData> getAllData(Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public List<EmpData> getAllDataPageAble(int firstResult, int maxResults, Order order) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public List<EmpData> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public List<EmpData> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public List<EmpData> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     @Cacheable(value = "totalEmployeeByGender")
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public Map<String, Long> getTotalByGender() throws Exception {
         Long male = empDataDao.getTotalByGender(HRMConstant.GLOBAL_MALE);
         Long female = empDataDao.getTotalByGender(HRMConstant.GLOBAL_FEMALE);
-        
+
         Map<String, Long> results = new HashMap<String, Long>();
         results.put("male", male);
         results.put("female", female);
-        
+
         return results;
     }
-    
+
     @Override
     @Cacheable(value = "totalEmployeeByAge")
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
@@ -333,17 +368,17 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         //age more than 40
         startDate = DateTimeUtil.getDateFrom(now, -40, CommonUtilConstant.DATE_FORMAT_YEAR);
         Long moreThan40 = empDataDao.getTotalByAgeMoreThan(startDate);
-        
+
         Map<String, Long> results = new HashMap<String, Long>();
         results.put("lessThan26", lessThan26);
         results.put("between26And30", between26And30);
         results.put("between31And35", between31And35);
         results.put("between36And40", between36And40);
         results.put("moreThan40", moreThan40);
-        
+
         return results;
     }
-    
+
     @Override
     @Cacheable(value = "totalEmployeeByDepartment")
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
@@ -356,7 +391,7 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         }
         //sorting by value (dari yang besar ke yang kecil)
         results = MapUtil.sortByValueDesc(results);
-        
+
         return results;
     }
 
@@ -434,13 +469,13 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     public List<EmpData> getByParam(EmpDataSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
         return this.empDataDao.getByParam(searchParameter, firstResult, maxResults, order);
     }
-    
+
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public Long getTotalEmpDataByParam(EmpDataSearchParameter searchParameter) throws Exception {
         return this.empDataDao.getTotalEmpDataByParam(searchParameter);
     }
-    
+
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public EmpData getByEmpIdWithDetail(long id) throws Exception {
@@ -451,17 +486,17 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         empData.getGolonganJabatan().getPangkat().getPangkatName();
         return this.empDataDao.getByEmpIdWithDetail(id);
     }
-    
+
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public EmpData getByBioDataIdWithDepartment(long id) throws Exception {
         return empDataDao.getByBioDataWithDepartment(id);
     }
-    
+
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<EmpData> getAllDataWithRelation() throws Exception {
         return empDataDao.getAllDataWithRelation();
     }
-    
+
 }
