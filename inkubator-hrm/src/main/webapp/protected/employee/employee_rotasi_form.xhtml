@@ -20,11 +20,11 @@
                     <div id="box_bg" style="margin: 10px">
                         <!--<p:panel style="margin: 10px">-->
                         <h:panelGrid style="margin-bottom: 5px" columns="2">
-                            <p:graphicImage library="images" name="user.png" height="36" width="36" />
+                            <p:graphicImage library="images" name="employee-rotation.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="#{appmsg['placement.placement_form']}" styleClass="header_big" />
-                                    <p:outputLabel value="#{appmsg['placement.placement_header']}" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="Formulir Rotasi Karyawan" styleClass="header_big" />
+                                    <p:outputLabel value="Data Rotasi Karyawan dari Aplikasi" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -50,9 +50,9 @@
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:inputText value="#{empDataFormController.empDataModel.bioDataName}" maxlength="45"
-                                                 styleClass="isitext_hrm" label="Name" readonly="true" disabled="#{empDataFormController.isEdit}"
+                                                 styleClass="isitext_hrm" label="Name" readonly="true" disabled="true"
                                                  style="width: 350px" required="true" id="name"  />
-                                    <p:commandButton  style="margin-left: 5px" icon="ui-icon-search" title="Cari" action="#{empDataFormController.doSearch()}" widgetVar="cariId" disabled="#{empDataFormController.isEdit}"
+                                    <p:commandButton  style="margin-left: 5px" icon="ui-icon-search" title="Cari" action="#{empDataFormController.doSearch()}" widgetVar="cariId" disabled="true"
                                                       ajax="true" immediate="true">
                                         <p:ajax event="dialogReturn" listener="#{empDataFormController.onDialogReturn}"  update="name,birthDate"/>
 
@@ -66,7 +66,7 @@
                                     <p:outputLabel  value="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_date']}"  for="birthDate" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:inputText value="#{empDataFormController.empDataModel.birthDate}" id="birthDate"  style="width: 350px" readonly="true" disabled="#{empDataFormController.isEdit}">
+                                    <p:inputText value="#{empDataFormController.empDataModel.birthDate}" id="birthDate"  style="width: 350px" readonly="true" disabled="true">
                                         <f:convertDateTime pattern="dd MMMM yyyy" />
                                     </p:inputText>
                                     <p:message for="birthDate"/>
@@ -78,7 +78,7 @@
                                     <p:outputLabel  value="#{appmsg['department.department']}"  for="departement" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneMenu  style="margin-right: 3px;width: 353px" id="departement" filter="true" required="false" disabled="#{empDataFormController.isEdit}"
+                                    <p:selectOneMenu  style="margin-right: 3px;width: 353px" id="departement" filter="true" required="true" 
                                                       value="#{empDataFormController.empDataModel.departementId}">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{empDataFormController.mapDepartements}" />
@@ -93,7 +93,7 @@
                                     <p:outputLabel  value="#{appmsg['placement.jabatan']}"  for="jabatan" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneMenu  style="margin-right: 3px;width: 353px" id="jabatan" filter="true" required="true" disabled="#{empDataFormController.isEdit}"
+                                    <p:selectOneMenu  style="margin-right: 3px;width: 353px" id="jabatan" filter="true" required="true" 
                                                       value="#{empDataFormController.empDataModel.jabatanByJabatanId}">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{empDataFormController.mapJabatans}" />
@@ -108,7 +108,7 @@
                                     <p:outputLabel  value="#{appmsg['functiongroup.function_group']}"  for="golJabatan" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneMenu  style="margin-right: 3px;width: 353px" id="golJabatan" filter="true" required="true" disabled="true"
+                                    <p:selectOneMenu  style="margin-right: 3px;width: 353px" id="golJabatan" filter="true" required="true" 
                                                       value="#{empDataFormController.empDataModel.golonganJabatan}">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{empDataFormController.mapGolonganJabatan}" />
@@ -148,17 +148,17 @@
                                     <p:outputLabel  value="#{appmsg['placement.join_data']}"  for="joinDate" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:calendar  id="joinDate" pattern="dd MMMM yyyy" value="#{empDataFormController.empDataModel.joinDate}" required="true"/>
+                                    <p:calendar  id="joinDate" pattern="dd MMMM yyyy" value="#{empDataFormController.empDataModel.joinDate}" required="false" disabled="true"/>
                                     <p:message for="joinDate"/>
                                 </p:column>
 
                             </p:row>
-                              <p:row>
+                            <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="Tanggal Rotasi"  for="rotasiDate" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:calendar  id="rotasiDate" pattern="dd MMMM yyyy" value="#{empDataFormController.empDataModel.rotasiDate}" required="false"/>
+                                    <p:calendar  id="rotasiDate" pattern="dd MMMM yyyy" value="#{empDataFormController.empDataModel.rotasiDate}" required="true"/>
                                     <p:message for="rotasiDate"/>
                                 </p:column>
 
@@ -195,7 +195,7 @@
 
                         <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
                         <div style="margin-bottom: 5px">
-                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" action="#{empDataFormController.doSave()}"
+                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" action="#{empDataFormController.doSaveRotasi()}"
                                              styleClass="isitext_hrm" 
                                              style="margin-right: 5px" label="#{appmsg['global.save']}" update="empDataFormId,:growlEmpDataFormId"
                                              icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
