@@ -41,5 +41,9 @@ public interface EmpDataDao extends IDAO<EmpData> {
     public Long getTotalByNIK(String nik);
     
     public List<EmpData> getAllDataWithRelation();
+    
+    public EmpData getEntityByNik(String nik);
+    
+    
 
 }

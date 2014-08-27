@@ -75,7 +75,7 @@ public class EmpPersonAchievementFormController extends BaseController{
     private EmpPersonAchievementModel getModelFromEntity(EmpPersonAchievement entity) {
         EmpPersonAchievementModel achievementModel = new EmpPersonAchievementModel();
         achievementModel.setId(entity.getId());
-        achievementModel.setEmpData(entity.getEmpData());
+        achievementModel.setNikWithFullName(entity.getEmpData().getNikWithFullName());
         achievementModel.setDescription(entity.getDescription());
         achievementModel.setAchievementName(entity.getAchievementName());
         achievementModel.setDateAchievement(entity.getDateAchievement());
@@ -95,6 +95,28 @@ public class EmpPersonAchievementFormController extends BaseController{
                 }
             }
             return queried;
+        } catch (Exception ex) {
+            java.util.logging.Logger.getLogger(EmpPersonAchievementFormController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
+       return null;
+    }
+    
+    public List<String> completeEmployeeString(String query) {
+            
+        try {
+            List<EmpData> allEmployee;
+            allEmployee = empDataService.getAllDataWithRelation();
+            List<String> queried = new ArrayList<String>();
+            
+            for (EmpData empData : allEmployee) {
+                if (empData.getNik().toLowerCase().startsWith(query)  || empData.getNik().startsWith(query) && empData.getNik() != null ) {
+                    queried.add(empData.getNikWithFullName());
+                }
+            }
+            Set<String> setFullName = new HashSet<>(queried);
+            List<String> listName = new ArrayList<>(setFullName);
+            return listName;
         } catch (Exception ex) {
             java.util.logging.Logger.getLogger(EmpPersonAchievementFormController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -152,7 +174,8 @@ public class EmpPersonAchievementFormController extends BaseController{
         personAchievement.setAchievementName(model.getAchievementName());
         personAchievement.setDateAchievement(model.getDateAchievement());
         personAchievement.setDescription(model.getDescription());
-        personAchievement.setEmpData(model.getEmpData());
+        EmpData selectedEmployee = empDataService.getEntityByNik(StringUtils.substringBefore(model.getNikWithFullName(), " - "));
+        personAchievement.setEmpData(new EmpData(selectedEmployee.getId()));
         return personAchievement;
     }
     

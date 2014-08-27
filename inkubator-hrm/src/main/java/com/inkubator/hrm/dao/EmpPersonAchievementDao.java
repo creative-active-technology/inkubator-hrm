@@ -22,4 +22,6 @@ public interface EmpPersonAchievementDao extends IDAO<EmpPersonAchievement>{
     public EmpPersonAchievement getEntityByPkWithEmployee(Long id);
     
     public List<EmpPersonAchievement> getAllDataWithEmployee();
+    
+    public List<EmpPersonAchievement> getAllDataByEmployeeId(Long id);
 }

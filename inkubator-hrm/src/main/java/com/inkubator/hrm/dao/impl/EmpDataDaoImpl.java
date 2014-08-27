@@ -171,4 +171,11 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.setFetchMode("bioData", FetchMode.JOIN);
         return criteria.list();
     }
+    
+    @Override
+    public EmpData getEntityByNik(String nik) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("nik", nik));
+        return (EmpData) criteria.uniqueResult();
+    }
 }

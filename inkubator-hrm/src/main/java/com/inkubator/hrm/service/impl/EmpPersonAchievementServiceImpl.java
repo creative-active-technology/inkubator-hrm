@@ -36,7 +36,7 @@ public class EmpPersonAchievementServiceImpl extends IServiceImpl implements Emp
     private EmpDataDao empDataDao;
     
     @Override
-    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ,propagation = Propagation.SUPPORTS, timeout = 30)
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ,propagation = Propagation.SUPPORTS, timeout = 50)
     public List<EmpPersonAchievement> getAllDataWithEmployee(EmpPersonAchievementSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
         return achievementDao.getAllDataWithEmployee(searchParameter, firstResult, maxResults, order);
     }
@@ -233,5 +233,12 @@ public class EmpPersonAchievementServiceImpl extends IServiceImpl implements Emp
     public List<EmpPersonAchievement> getAllDataWithEmployee() throws Exception {
         return achievementDao.getAllDataWithEmployee();
     }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ,propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<EmpPersonAchievement> getAllDataByEmployeeId(Long id) throws Exception {
+        return achievementDao.getAllDataByEmployeeId(id);
+    }
+
     
 }

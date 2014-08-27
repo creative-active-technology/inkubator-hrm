@@ -7,10 +7,14 @@ package com.inkubator.hrm.web.employee;
 
 import com.inkubator.hrm.entity.EmpCareerHistory;
 import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.EmpPersonAchievement;
 import com.inkubator.hrm.entity.JabatanDeskripsi;
 import com.inkubator.hrm.entity.JabatanSpesifikasi;
+import com.inkubator.hrm.entity.PersonalDiscipline;
 import com.inkubator.hrm.service.EmpCareerHistoryService;
 import com.inkubator.hrm.service.EmpDataService;
+import com.inkubator.hrm.service.EmpPersonAchievementService;
+import com.inkubator.hrm.service.PersonalDisciplineService;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import java.util.ArrayList;
@@ -24,6 +28,8 @@ import javax.faces.bean.ViewScoped;
  *
  * @author Deni Husni FR
  */
+
+
 @ManagedBean(name = "empDataDetilController")
 @ViewScoped
 public class EmpDataDetilController extends BaseController {
@@ -38,6 +44,16 @@ public class EmpDataDetilController extends BaseController {
     @ManagedProperty(value = "#{empCareerHistoryService}")
     private EmpCareerHistoryService empCareerHistoryService;
 
+    //personal discipline
+    @ManagedProperty(value = "#{personalDisciplineService}")
+    private PersonalDisciplineService personalDisciplineService;
+    private List<PersonalDiscipline> listPersonalDiscipline;
+
+    //Achievement
+    @ManagedProperty(value = "#{empPersonAchievementService}")
+    private EmpPersonAchievementService empPersonAchievementService;
+    private List<EmpPersonAchievement> listPersonAchievement;
+
     @PostConstruct
     @Override
     public void initialization() {
@@ -48,7 +64,10 @@ public class EmpDataDetilController extends BaseController {
             jabatanDeskripsis = new ArrayList<>(selectedEmpData.getJabatanByJabatanId().getJabatanDeskripsis());
             listJabatanSpesifikasi = new ArrayList<>(selectedEmpData.getJabatanByJabatanId().getJabatanSpesifikasis());
             listCareerHistory = empCareerHistoryService.getEmployeeCareerByBioId(selectedEmpData.getBioData().getId());
-            System.out.println("ini nilaiiaiaia "+listCareerHistory.size());
+            System.out.println("ini nilaiiaiaia " + listCareerHistory.size());
+            listPersonalDiscipline = personalDisciplineService.getAllDataByEmployeeId(selectedEmpData.getId());
+            listPersonAchievement = empPersonAchievementService.getAllDataByEmployeeId(selectedEmpData.getId());
+
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -107,6 +126,8 @@ public class EmpDataDetilController extends BaseController {
         }
     }
 
+    
+
     public void setEmpCareerHistoryService(EmpCareerHistoryService empCareerHistoryService) {
         this.empCareerHistoryService = empCareerHistoryService;
     }
@@ -118,6 +139,40 @@ public class EmpDataDetilController extends BaseController {
     public void setListCareerHistory(List<EmpCareerHistory> listCareerHistory) {
         this.listCareerHistory = listCareerHistory;
     }
+
+    
+    public PersonalDisciplineService getPersonalDisciplineService() {
+        return personalDisciplineService;
+    }
+
+    public void setPersonalDisciplineService(PersonalDisciplineService personalDisciplineService) {
+        this.personalDisciplineService = personalDisciplineService;
+    }
+
+    public List<PersonalDiscipline> getListPersonalDiscipline() {
+        return listPersonalDiscipline;
+    }
+
+    public void setListPersonalDiscipline(List<PersonalDiscipline> listPersonalDiscipline) {
+        this.listPersonalDiscipline = listPersonalDiscipline;
+    }
+
+    public EmpPersonAchievementService getEmpPersonAchievementService() {
+        return empPersonAchievementService;
+    }
+
+    public void setEmpPersonAchievementService(EmpPersonAchievementService empPersonAchievementService) {
+        this.empPersonAchievementService = empPersonAchievementService;
+    }
+
+    public List<EmpPersonAchievement> getListPersonAchievement() {
+        return listPersonAchievement;
+    }
+
+    public void setListPersonAchievement(List<EmpPersonAchievement> listPersonAchievement) {
+        this.listPersonAchievement = listPersonAchievement;
+    }
+
     
     
 

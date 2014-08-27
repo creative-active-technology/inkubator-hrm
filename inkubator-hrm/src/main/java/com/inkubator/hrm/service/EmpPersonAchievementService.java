@@ -22,4 +22,6 @@ public interface EmpPersonAchievementService extends IService<EmpPersonAchieveme
     public EmpPersonAchievement getEntityByPkWithEmployee(Long code) throws Exception;
     
     public List<EmpPersonAchievement> getAllDataWithEmployee() throws Exception;
+    
+    public List<EmpPersonAchievement> getAllDataByEmployeeId(Long id) throws Exception;
 }
