@@ -1,17 +1,16 @@
 package com.inkubator.hrm.web.personalia;
 
-import com.inkubator.hrm.web.reference.*;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.BioData;
-import com.inkubator.hrm.entity.BioBankAccount;
 import com.inkubator.hrm.entity.Bank;
+import com.inkubator.hrm.entity.BioBankAccount;
+import com.inkubator.hrm.entity.BioData;
 import com.inkubator.hrm.entity.City;
 import com.inkubator.hrm.entity.Country;
 import com.inkubator.hrm.entity.Currency;
 import com.inkubator.hrm.entity.Province;
-import com.inkubator.hrm.service.BioBankAccountService;
 import com.inkubator.hrm.service.BankService;
+import com.inkubator.hrm.service.BioBankAccountService;
 import com.inkubator.hrm.service.CityService;
 import com.inkubator.hrm.service.CountryService;
 import com.inkubator.hrm.service.CurrencyService;
@@ -21,15 +20,11 @@ import com.inkubator.hrm.web.model.BioBankAccountModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
@@ -319,14 +314,12 @@ public class BioBankAccountFormController extends BaseController {
 
     public void countryChanged(ValueChangeEvent event) {
         try {
-            System.out.println("New value: " + event.getNewValue());
-            System.out.println("Country Id  " + bioBankAccountModel.getCountryId());
+           
 
             Country country = countryService.getEntiyByPK(Long.parseLong(String.valueOf(event.getNewValue())));
 
             List<Province> listProvinces = provinceService.getByCountryIdWithDetail(Long.parseLong(String.valueOf(event.getNewValue())));
-            System.out.println("list province " + listProvinces);
-            System.out.println("ukuran " + listProvinces.size());
+           
             if (listProvinces.isEmpty() || listProvinces == null) {
                 disabledProvince = Boolean.TRUE;
 

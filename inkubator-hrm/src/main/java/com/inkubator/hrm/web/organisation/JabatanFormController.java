@@ -279,7 +279,7 @@ public class JabatanFormController extends BaseController {
     }
 
     public Map<String, Long> getDepartments() {
-        System.out.println("hahah");
+      
         return departments;
     }
 

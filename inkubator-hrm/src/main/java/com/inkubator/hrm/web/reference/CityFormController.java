@@ -2,12 +2,12 @@ package com.inkubator.hrm.web.reference;
 
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.Province;
 import com.inkubator.hrm.entity.City;
 import com.inkubator.hrm.entity.Country;
-import com.inkubator.hrm.service.ProvinceService;
+import com.inkubator.hrm.entity.Province;
 import com.inkubator.hrm.service.CityService;
 import com.inkubator.hrm.service.CountryService;
+import com.inkubator.hrm.service.ProvinceService;
 import com.inkubator.hrm.util.MapUtil;
 import com.inkubator.hrm.web.model.CityModel;
 import com.inkubator.webcore.controller.BaseController;
@@ -18,8 +18,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
@@ -28,8 +26,6 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
-import org.apache.commons.lang3.StringUtils;
-import org.primefaces.context.RequestContext;
 import org.primefaces.event.map.PointSelectEvent;
 import org.primefaces.model.map.DefaultMapModel;
 import org.primefaces.model.map.LatLng;
@@ -225,7 +221,7 @@ public class CityFormController extends BaseController {
 
         try {
             City city = getEntityFromViewModel(cityModel);
-            System.out.println("city lat :" + city.getLatitude());
+          
             if (isUpdate) {
                 cityService.update(city);
                 MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
@@ -268,7 +264,7 @@ public class CityFormController extends BaseController {
         city.setCityCode(cityModel.getCityCode());
         city.setCityName(cityModel.getCityName());
         city.setProvince(new Province(cityModel.getProvinceId()));
-        System.out.println("Latitude : " + lat);
+    
         city.setLatitude(String.valueOf(lat));
         city.setLongitude(String.valueOf(lng));
         return city;
@@ -288,8 +284,7 @@ public class CityFormController extends BaseController {
 
     public void countryChanged(ValueChangeEvent event) {
         try {
-            System.out.println("New value: " + event.getNewValue());
-            System.out.println("Country Id  " + cityModel.getCountryId());
+           
 
             Country country = countryService.getEntiyByPK(Long.parseLong(String.valueOf(event.getNewValue())));
 
