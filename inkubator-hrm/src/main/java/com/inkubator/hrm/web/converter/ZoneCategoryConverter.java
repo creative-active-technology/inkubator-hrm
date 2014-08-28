@@ -25,7 +25,7 @@ public class ZoneCategoryConverter implements Converter {
     public String getAsString(FacesContext facesContext, UIComponent uiComponent, Object obj) {
 
         ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
-        System.out.println(" nilai obj " + obj);
+      
         Integer data = (Integer) obj;
         if (data.equals(HRMConstant.ZONE_DOMESTICS)) {
             return messages.getString("travelZone.travelZone_category_domestics");

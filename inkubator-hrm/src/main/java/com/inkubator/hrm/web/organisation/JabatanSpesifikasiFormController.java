@@ -18,7 +18,6 @@ import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -138,7 +137,7 @@ public class JabatanSpesifikasiFormController extends BaseController{
     @PostConstruct
     @Override
     public void initialization() {
-        System.out.println("init");
+        
         super.initialization();
         String param = FacesUtil.getRequestParameter("param");
         model = new JabatanSpesifikasiModel();

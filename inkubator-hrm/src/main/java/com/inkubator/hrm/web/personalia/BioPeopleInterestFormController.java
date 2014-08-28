@@ -7,10 +7,10 @@ package com.inkubator.hrm.web.personalia;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.BioData;
-import com.inkubator.hrm.entity.InterestType;
 import com.inkubator.hrm.entity.BioPeopleInterest;
-import com.inkubator.hrm.service.InterestTypeService;
+import com.inkubator.hrm.entity.InterestType;
 import com.inkubator.hrm.service.BioPeopleInterestService;
+import com.inkubator.hrm.service.InterestTypeService;
 import com.inkubator.hrm.util.MapUtil;
 import com.inkubator.hrm.web.model.BioPeopleInterestModel;
 import com.inkubator.webcore.controller.BaseController;
@@ -62,7 +62,7 @@ public class BioPeopleInterestFormController extends BaseController{
     @PostConstruct
     @Override
     public void initialization() {
-        System.out.println("init");
+     
         super.initialization();
         String param = FacesUtil.getRequestParameter("param");
         model = new BioPeopleInterestModel();
@@ -101,7 +101,7 @@ public class BioPeopleInterestFormController extends BaseController{
     }
 
     public void doSave() {
-        System.out.println("masuk dosave");
+     
         BioPeopleInterest peopleInterest = getEntityFromViewModel(model);
         try {
             if (isEdit) {

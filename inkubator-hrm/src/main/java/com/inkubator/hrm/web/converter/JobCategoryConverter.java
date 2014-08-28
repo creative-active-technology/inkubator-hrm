@@ -25,10 +25,10 @@ public class JobCategoryConverter implements Converter {
     public String getAsString(FacesContext facesContext, UIComponent uiComponent, Object obj) {
 
         ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
-        System.out.println(" nilai obj " + obj);
+  
         Integer data= (Integer) obj;
         if (data.equals(HRMConstant.JOB_DESCRIPTION_PRIMER)) {
-            System.out.println(" hehehehehh");
+           
             return messages.getString("jobs_desk.primer_taks");
 
         }

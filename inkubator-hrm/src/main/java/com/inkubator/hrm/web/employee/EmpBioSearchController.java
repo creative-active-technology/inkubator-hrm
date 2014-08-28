@@ -11,6 +11,7 @@ import com.inkubator.webcore.controller.BaseController;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -39,7 +40,7 @@ public class EmpBioSearchController extends BaseController {
     public void doSearch() {
         try {
             biodataToShow= new ArrayList();
-            System.out.println("nanana "+biodataName);
+            
             biodataToShow = bioDataService.getByName(biodataName);
         } catch (Exception ex) {
            LOGGER.error("Error", ex);
@@ -69,5 +70,13 @@ public class EmpBioSearchController extends BaseController {
     
     public void doSelect(BioData bioData){
         RequestContext.getCurrentInstance().closeDialog(bioData);
+    }
+    
+     @PreDestroy
+    public void cleanAndExit() {
+        bioDataService=null;
+        biodataName=null;
+        biodataToShow=null;
+        
     }
 }

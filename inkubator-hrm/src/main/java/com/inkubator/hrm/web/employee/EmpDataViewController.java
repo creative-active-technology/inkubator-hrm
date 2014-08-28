@@ -14,6 +14,7 @@ import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -36,16 +37,6 @@ public class EmpDataViewController extends BaseController {
     private EmpDataService empDataService;
     private EmpData selectedEmpData;
 
-//    private HrmUserSearchParameter hrmUserSearchParameter;
-//    private LazyDataModel<HrmUser> lazyDataHrmUser;
-//    private HrmUser selectedHrmUser;
-//    @ManagedProperty(value = "#{hrmUserService}")
-//    private HrmUserService hrmUserService;
-//
-//    public void setHrmUserService(HrmUserService hrmUserService) {
-//        this.hrmUserService = hrmUserService;
-//    }
-//
     @PostConstruct
     @Override
     public void initialization() {
@@ -54,81 +45,9 @@ public class EmpDataViewController extends BaseController {
 
     }
 
-//
-//    public HrmUserSearchParameter getHrmUserSearchParameter() {
-//        return hrmUserSearchParameter;
-//    }
-//
-//    public void setHrmUserSearchParameter(HrmUserSearchParameter hrmUserSearchParameter) {
-//        this.hrmUserSearchParameter = hrmUserSearchParameter;
-//    }
-//
-//    public LazyDataModel<HrmUser> getLazyDataHrmUser() {
-//        if (lazyDataHrmUser == null) {
-//            lazyDataHrmUser = new HrmUserLazyDataModel(hrmUserSearchParameter, hrmUserService);
-//        }
-//        return lazyDataHrmUser;
-//    }
-//
-//    public void setLazyDataHrmUser(LazyDataModel<HrmUser> lazyDataHrmUser) {
-//        this.lazyDataHrmUser = lazyDataHrmUser;
-//    }
-//
-//    public HrmUser getSelectedHrmUser() {
-//        return selectedHrmUser;
-//    }
-//
-//    public void setSelectedHrmUser(HrmUser selectedHrmUser) {
-//        this.selectedHrmUser = selectedHrmUser;
-//    }
-//
-//    public void doSearch() {
-//        lazyDataHrmUser = null;
-//    }
-//
     public String doAdd() {
         return "/protected/employee/employee_palcement_form.htm?faces-redirect=true";
     }
-//
-//    public String doDetail() {
-//        return "/protected/account/user_detail.htm?faces-redirect=true&execution=e" + selectedHrmUser.getId();
-//    }
-//
-//    public String doEdit() {
-//        return "/protected/account/user_form.htm?faces-redirect=true&execution=e" + selectedHrmUser.getId();
-//    }
-//
-//    public void onDelete() {
-//        try {
-//            selectedHrmUser = this.hrmUserService.getEntiyByPK(selectedHrmUser.getId());
-//        } catch (Exception ex) {
-//            LOGGER.error("Errpr", ex);
-//
-//        }
-//    }
-//
-//    public void doDelete() {
-//        try {
-//            this.hrmUserService.delete(selectedHrmUser);
-//            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully",
-//                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-//
-//        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
-//            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint",
-//                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-//            LOGGER.error("Error", ex);
-//        } catch (Exception ex) {
-//            LOGGER.error("Error", ex);
-//        }
-//    }
-//
-//    @PreDestroy
-//    public void cleanAndExit() {
-//        hrmUserSearchParameter = null;
-//        lazyDataHrmUser = null;
-//        selectedHrmUser = null;
-//        hrmUserService = null;
-//    }
 
     public EmpDataSearchParameter getEmpDataSearchParameter() {
         return empDataSearchParameter;
@@ -203,4 +122,13 @@ public class EmpDataViewController extends BaseController {
         return "/protected/employee/employee_rotasi_form.htm?faces-redirect=true&execution=r" + selectedEmpData.getId();
     }
 
+    @PreDestroy
+    public void cleanAndExit() {
+        empDataSearchParameter = null;
+        empDataLazyDataModel=null;
+        empDataService=null;
+        selectedEmpData=null;
+        
+
+    }
 }

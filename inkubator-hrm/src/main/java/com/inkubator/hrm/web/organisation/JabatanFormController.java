@@ -81,7 +81,7 @@ public class JabatanFormController extends BaseController {
                 isEdit = Boolean.TRUE;
                 jabatanModel = getJabatanModelFromEntity(jabatan);
 //                doChangeLevel();
-                System.out.println(" hahahah");
+             
                 List<KlasifikasiKerja> source = this.klasifikasiKerjaService.getAllData();
                 List<KlasifikasiKerja> target = jabatan.getKerjaJabatans();
                 source.removeAll(target);
@@ -279,7 +279,7 @@ public class JabatanFormController extends BaseController {
     }
 
     public Map<String, Long> getDepartments() {
-        System.out.println("hahah");
+      
         return departments;
     }
 

@@ -13,8 +13,8 @@ import com.inkubator.hrm.entity.EducationLevel;
 import com.inkubator.hrm.entity.Faculty;
 import com.inkubator.hrm.entity.InstitutionEducation;
 import com.inkubator.hrm.entity.Major;
-import com.inkubator.hrm.service.CityService;
 import com.inkubator.hrm.service.BioEducationHistoryService;
+import com.inkubator.hrm.service.CityService;
 import com.inkubator.hrm.service.EducationLevelService;
 import com.inkubator.hrm.service.FacultyService;
 import com.inkubator.hrm.service.InstitutionEducationService;
@@ -28,7 +28,6 @@ import com.inkubator.webcore.util.MessagesResourceUtil;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -41,8 +40,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import org.apache.commons.lang3.StringUtils;
-import org.castor.util.StringUtil;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
@@ -126,7 +123,7 @@ public class BioEducationHistoryFormController extends BaseController{
     @PostConstruct
     @Override
     public void initialization() {
-        System.out.println("init");
+       
         super.initialization();
         String param = FacesUtil.getRequestParameter("param");
         model = new BioEducationHistoryModel();
@@ -216,7 +213,7 @@ public class BioEducationHistoryFormController extends BaseController{
     }
     
     public void doSave() {
-        System.out.println("masuk dosave");
+    
         BioEducationHistory educationHistory = getEntityFromViewModel(model);
         try {
             if (isEdit) {

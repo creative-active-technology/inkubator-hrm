@@ -30,6 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -220,8 +221,7 @@ public class EmpDataFormController extends BaseController {
 
     public String doSave() {
         EmpData empData = getEntityFromViewModel(empDataModel);
-        System.out.println("ememem 1" + empData.getGolonganJabatan().getId());
-        System.out.println("ememem 2" + empDataModel.getGolonganJabatan());
+       
         if (isEdit) {
             try {
                 empDataService.update(empData);
@@ -255,7 +255,7 @@ public class EmpDataFormController extends BaseController {
     }
 
     public void doSearch() {
-        System.out.println("sdfsdhfhdsfhd");
+      
         Map<String, Object> options = new HashMap<>();
         options.put("modal", false);
         options.put("draggable", true);
@@ -311,7 +311,7 @@ public class EmpDataFormController extends BaseController {
             empData.setNoSk(empDataModel.getNoSk());
         }
 
-        System.out.println(" nilai golonganjabatabab " + empDataModel.getGolonganJabatan());
+      
 //        empData.setWtGroupWorking(new WtGroupWorking());
         return empData;
     }
@@ -356,5 +356,22 @@ public class EmpDataFormController extends BaseController {
         }
 
         return null;
+    }
+
+    @PreDestroy
+    public void cleanAndExit() {
+        empDataModel = null;
+        mapDepartements = null;
+        mapJabatans = null;
+        mapStatusKaryawan = null;
+        mapPaySalary = null;
+        mapGolonganJabatan=null;
+        departmentService=null;
+        jabatanService=null;
+        employeeTypeService=null;
+        paySalaryGradeService=null;
+        empDataService=null;
+        golonganJabatanService=null;
+
     }
 }

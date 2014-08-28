@@ -256,7 +256,6 @@ public class Jabatan implements java.io.Serializable {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "jabatan", orphanRemoval = true)
     public Set<KlasifikasiKerjaJabatan> getKlasifikasiKerjaJabatans() {
-        System.out.println(" hahahhahah");
         return this.klasifikasiKerjaJabatans;
     }
 

@@ -131,6 +131,7 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         careerHistory.setSalary(entity.getBasicSalary());
         careerHistory.setTglPenganngkatan(entity.getJoinDate());
         careerHistory.setStatus(HRMConstant.EMP_PLACEMENT);
+        careerHistory.setEmployeeType(employeeTypeDao.getEntiyByPK(entity.getEmployeeType().getId()));
         empCareerHistoryDao.save(careerHistory);
 
     }
@@ -139,7 +140,7 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(EmpData entity) throws Exception {
         long totalDuplicates = empDataDao.getTotalByNIKandId(entity.getNik(), entity.getId());
-        System.out.println(" nilai total " + totalDuplicates);
+
         if (totalDuplicates > 0) {
             throw new BussinessException("emp_data.error_nik_duplicate");
         }
@@ -150,7 +151,6 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         Jabatan jabatan = jabatanDao.getEntiyByPK(entity.getJabatanByJabatanId().getId());
         empData.setJabatanByJabatanId(jabatan);
         empData.setJabatanByJabatanGajiId(jabatan);
-        System.out.println(" niaiaiai " + empData.getGolonganJabatan().getId());
         empData.setGolonganJabatan(golonganJabatanDao.getEntiyByPK(entity.getGolonganJabatan().getId()));
         empData.setHeatlyPremi(entity.getHeatlyPremi());
         empData.setInsentifStatus(entity.getInsentifStatus());
@@ -186,6 +186,7 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         careerHistory.setTglPenganngkatan(empData.getJoinDate());
         careerHistory.setUpdateBy(UserInfoUtil.getUserName());
         careerHistory.setUpdatedOn(new Date());
+        careerHistory.setEmployeeType(employeeTypeDao.getEntiyByPK(entity.getEmployeeType().getId()));
         this.empCareerHistoryDao.update(careerHistory);
     }
 
@@ -500,17 +501,17 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         return empDataDao.getAllDataWithRelation();
     }
 
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<EmpData> getAllDataByNameOrNik(String param) throws Exception {
-		return empDataDao.getAllDataByNameOrNik(param);
-	}
-	
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-	public EmpData getByIdWithDetail(long id) throws Exception {
-		return empDataDao.getByIdWithDetail(id);
-	}
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<EmpData> getAllDataByNameOrNik(String param) throws Exception {
+        return empDataDao.getAllDataByNameOrNik(param);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public EmpData getByIdWithDetail(long id) throws Exception {
+        return empDataDao.getByIdWithDetail(id);
+    }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
@@ -522,7 +523,6 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void doSaveRotasi(EmpData entity) throws Exception {
         long totalDuplicates = empDataDao.getTotalByNIKandId(entity.getNik(), entity.getId());
-        System.out.println(" nilai total " + totalDuplicates);
         if (totalDuplicates > 0) {
             throw new BussinessException("emp_data.error_nik_duplicate");
         }
@@ -533,7 +533,6 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         Jabatan jabatan = jabatanDao.getEntiyByPK(entity.getJabatanByJabatanId().getId());
         empData.setJabatanByJabatanId(jabatan);
         empData.setJabatanByJabatanGajiId(jabatan);
-        System.out.println(" niaiaiai " + empData.getGolonganJabatan().getId());
         empData.setGolonganJabatan(golonganJabatanDao.getEntiyByPK(entity.getGolonganJabatan().getId()));
         empData.setHeatlyPremi(entity.getHeatlyPremi());
         empData.setInsentifStatus(entity.getInsentifStatus());
@@ -574,6 +573,7 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         careerHistory.setSalary(entity.getBasicSalary());
         careerHistory.setTglPenganngkatan(entity.getRotasiDate());
         careerHistory.setStatus(HRMConstant.EMP_ROTATION);
+        careerHistory.setEmployeeType(employeeTypeDao.getEntiyByPK(entity.getEmployeeType().getId()));
         empCareerHistoryDao.save(careerHistory);
     }
 

@@ -205,7 +205,7 @@ public class CountryServiceImpl extends IServiceImpl implements CountryService {
 //        if (totalPhoneCodeDuplicates > 0) {
 //            throw new BussinessException("country.error_duplicate_country_phone_code");
 //        }
-        System.out.println("Country Icon :" + country.getFlagIcon());
+        
         country.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         country.setCreatedBy(UserInfoUtil.getUserName());
         country.setCreatedOn(new Date());

@@ -192,7 +192,7 @@ public class ApprovalDefinitionFormController extends BaseController {
     }
 
     public ApprovalDefinition getEntityFromView(ApprovalDefinitionModel approvalDefinitionModel) {
-        System.out.println(approvalDefinitionModel);
+     
         ApprovalDefinition approvalDefinition = new ApprovalDefinition();
         if (approvalDefinitionModel.getId() != null) {
             approvalDefinition.setId(approvalDefinitionModel.getId());
@@ -231,7 +231,7 @@ public class ApprovalDefinitionFormController extends BaseController {
     }
 
     public void doSearchJabatan() {
-        System.out.println("sdfsdhfhdsfhd");
+   
         Map<String, Object> options = new HashMap<>();
         options.put("modal", false);
         options.put("draggable", true);

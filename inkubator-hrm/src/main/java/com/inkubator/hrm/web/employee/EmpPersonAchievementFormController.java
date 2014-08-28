@@ -26,7 +26,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -35,14 +34,15 @@ import org.primefaces.context.RequestContext;
  */
 @ManagedBean(name = "empPersonAchievementFormController")
 @ViewScoped
-public class EmpPersonAchievementFormController extends BaseController{
+public class EmpPersonAchievementFormController extends BaseController {
+
     private EmpPersonAchievementModel model;
     private Boolean isUpdate;
     @ManagedProperty(value = "#{empPersonAchievementService}")
     private EmpPersonAchievementService empPersonAchievementService;
     @ManagedProperty(value = "#{empDataService}")
     private EmpDataService empDataService;
-    
+
     @PostConstruct
     @Override
     public void initialization() {
@@ -63,7 +63,7 @@ public class EmpPersonAchievementFormController extends BaseController{
             LOGGER.error("Error", e);
         }
     }
-    
+
     @PreDestroy
     public void cleanAndExit() {
         empPersonAchievementService = null;
@@ -71,7 +71,7 @@ public class EmpPersonAchievementFormController extends BaseController{
         model = null;
         empDataService = null;
     }
-    
+
     private EmpPersonAchievementModel getModelFromEntity(EmpPersonAchievement entity) {
         EmpPersonAchievementModel achievementModel = new EmpPersonAchievementModel();
         achievementModel.setId(entity.getId());
@@ -81,16 +81,16 @@ public class EmpPersonAchievementFormController extends BaseController{
         achievementModel.setDateAchievement(entity.getDateAchievement());
         return achievementModel;
     }
-    
+
     public List<EmpData> completeEmployee(String query) {
-            
+
         try {
             List<EmpData> allEmployee;
             allEmployee = empDataService.getAllDataWithRelation();
             List<EmpData> queried = new ArrayList<EmpData>();
-            
+
             for (EmpData empData : allEmployee) {
-                if (empData.getNik().toLowerCase().startsWith(query)  || empData.getNik().endsWith(query) && empData.getNik() != null ) {
+                if (empData.getNik().toLowerCase().startsWith(query) || empData.getNik().endsWith(query) && empData.getNik() != null) {
                     queried.add(empData);
                 }
             }
@@ -98,19 +98,19 @@ public class EmpPersonAchievementFormController extends BaseController{
         } catch (Exception ex) {
             java.util.logging.Logger.getLogger(EmpPersonAchievementFormController.class.getName()).log(Level.SEVERE, null, ex);
         }
-            
-       return null;
+
+        return null;
     }
-    
+
     public List<String> completeEmployeeString(String query) {
-            
+
         try {
             List<EmpData> allEmployee;
             allEmployee = empDataService.getAllDataWithRelation();
             List<String> queried = new ArrayList<String>();
-            
+
             for (EmpData empData : allEmployee) {
-                if (empData.getNik().toLowerCase().startsWith(query)  || empData.getNik().startsWith(query) && empData.getNik() != null ) {
+                if (empData.getNik().toLowerCase().startsWith(query) || empData.getNik().startsWith(query) && empData.getNik() != null) {
                     queried.add(empData.getNikWithFullName());
                 }
             }
@@ -120,35 +120,34 @@ public class EmpPersonAchievementFormController extends BaseController{
         } catch (Exception ex) {
             java.util.logging.Logger.getLogger(EmpPersonAchievementFormController.class.getName()).log(Level.SEVERE, null, ex);
         }
-            
-       return null;
+
+        return null;
     }
-    
+
     public List<String> completeAchievement(String query) {
         try {
             List<EmpPersonAchievement> allBioMedicalHistory;
             allBioMedicalHistory = empPersonAchievementService.getAllData();
             List<String> queried = new ArrayList<>();
-            
+
             for (EmpPersonAchievement personAchievement : allBioMedicalHistory) {
-                if (personAchievement.getAchievementName().toLowerCase().startsWith(query)  || personAchievement.getAchievementName().startsWith(query)) {
+                if (personAchievement.getAchievementName().toLowerCase().startsWith(query) || personAchievement.getAchievementName().startsWith(query)) {
                     queried.add(personAchievement.getAchievementName());
                 }
             }
             Set<String> setCompany = new HashSet<>(queried);
             List<String> listCompany = new ArrayList<>(setCompany);
             return listCompany;
-            
+
         } catch (Exception ex) {
             java.util.logging.Logger.getLogger(EmpPersonAchievementFormController.class.getName()).log(Level.SEVERE, null, ex);
         }
-            
-        
+
         return null;
     }
-    
+
     public void doSave() throws Exception {
-        EmpPersonAchievement  empPersonAchievement = getEntityFromViewModel(model);
+        EmpPersonAchievement empPersonAchievement = getEntityFromViewModel(model);
         try {
             if (isUpdate) {
                 empPersonAchievementService.update(empPersonAchievement);
@@ -178,7 +177,7 @@ public class EmpPersonAchievementFormController extends BaseController{
         personAchievement.setEmpData(new EmpData(selectedEmployee.getId()));
         return personAchievement;
     }
-    
+
     public EmpPersonAchievementModel getModel() {
         return model;
     }
@@ -211,6 +210,5 @@ public class EmpPersonAchievementFormController extends BaseController{
         this.empDataService = empDataService;
     }
 
-    
     
 }

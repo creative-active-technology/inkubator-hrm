@@ -50,7 +50,7 @@ public class PaySalaryGradePositionFormController extends BaseController{
             String id = FacesUtil.getRequestParameter("param");
             Jabatan jabatan = jabatanService.getByIdWithSalaryGrade(Long.parseLong(id));
             jabatanModel = getJabatanModelFromEntity(jabatan);
-            System.out.println(" hahahah");
+           
             //list dropdown
             listDropDownGrade();
         } catch (Exception ex) {
