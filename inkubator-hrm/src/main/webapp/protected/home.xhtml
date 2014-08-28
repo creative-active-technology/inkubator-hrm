@@ -54,17 +54,17 @@
                                                 <h:outputLabel value="Organisasi" styleClass="label_quick"/>
                                             </h:panelGrid>
                                         </h:panelGroup>
-                                        <h:panelGroup layout="block">
+<!--                                        <h:panelGroup layout="block">
                                             <h:panelGrid columns="1" style="text-align: center">
                                                 <h:outputLink id="approvalId" value="#">
                                                     <p:graphicImage library="images" name="approval_matrix.png" style="opacity: 0.3;width: 60px;height: 60px;" cache="true" /> 
                                                 </h:outputLink>
                                                 <h:outputLabel value="Approval" styleClass="label_quick"/>
                                             </h:panelGrid>
-                                        </h:panelGroup>
+                                        </h:panelGroup>-->
                                         <h:panelGroup layout="block">
                                             <h:panelGrid columns="1" style="text-align: center">
-                                                <h:outputLink id="createUserId4" value="#">
+                                                <h:outputLink id="payrollId" value="#">
                                                     <p:graphicImage library="images" name="payroll.png" style="opacity: 0.3;width: 60px;height: 60px;" cache="true" /> 
                                                 </h:outputLink>
                                                 <h:outputLabel value="Payroll" styleClass="label_quick"/>
@@ -80,7 +80,7 @@
                                         </h:panelGroup>
                                         <h:panelGroup layout="block">
                                             <h:panelGrid columns="1" style="text-align: center">
-                                                <h:outputLink id="createUserId1" value="#">
+                                                <h:outputLink id="lemburId" value="#">
                                                     <p:graphicImage library="images" name="overtime.png" style="opacity: 0.3;width: 60px;height: 60px;" cache="true" /> 
                                                 </h:outputLink>
                                                 <h:outputLabel value="Lembur" styleClass="label_quick"/>
@@ -88,7 +88,7 @@
                                         </h:panelGroup>
                                         <h:panelGroup layout="block">
                                             <h:panelGrid columns="1" style="text-align: center">
-                                                <h:outputLink id="createUserId2" value="#">
+                                                <h:outputLink id="broadcastId" value="#">
                                                     <p:graphicImage library="images" name="broadcast.png" style="opacity: 0.3;width: 60px;height: 60px;" cache="true" /> 
                                                 </h:outputLink>
                                                 <h:outputLabel value="Broadcast Info" styleClass="label_quick"/>
@@ -96,7 +96,7 @@
                                         </h:panelGroup>
                                         <h:panelGroup layout="block">
                                             <h:panelGrid columns="1" style="text-align: center">
-                                                <h:outputLink id="createUserId7" value="#">
+                                                <h:outputLink id="cutiId" value="#">
                                                     <p:graphicImage library="images" name="permit.png" style="opacity: 0.3;width: 60px;height: 60px;" cache="true" /> 
                                                 </h:outputLink>
                                                 <h:outputLabel value="Cuti" styleClass="label_quick"/>
@@ -104,7 +104,7 @@
                                         </h:panelGroup>
                                         <h:panelGroup layout="block">
                                             <h:panelGrid columns="1" style="text-align: center">
-                                                <h:outputLink id="createUserId9" value="#">
+                                                <h:outputLink id="izinId" value="#">
                                                     <p:graphicImage library="images" name="nurse.png" style="opacity: 0.3;width: 60px;height: 60px;" cache="true" /> 
                                                 </h:outputLink>
                                                 <h:outputLabel value="Izin &amp; Sakit" styleClass="label_quick"/>
@@ -113,7 +113,7 @@
                                         
                                         <h:panelGroup layout="block">
                                             <h:panelGrid columns="1" style="text-align: center">
-                                                <h:outputLink id="createUserId8" value="#">
+                                                <h:outputLink id="laporanId" value="#">
                                                     <p:graphicImage library="images" name="laporan.png" style="opacity: 0.3;width: 60px;height: 60px;" cache="true" /> 
                                                 </h:outputLink>
                                                 <h:outputLabel value="Laporan" styleClass="label_quick"/>
@@ -143,7 +143,6 @@
                                             His beloved son Michael has just come home from the war, but does not intend to become part of his father's business. T  
                                             hrough Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, kind and benevolent to those who give respect,  
                                             but given to ruthless violence whenever anything stands against the good of the family." />  
-                                    </h:panelGrid>  
                                 </p:tab>  
 
                                 <p:tab id="tab21" title="Pending Request (3) Available on Version 2">  
@@ -448,6 +447,18 @@
                 <pe:tooltip for="userAccountId" value="Click to Create User" showEffect="slideToggle"
                             hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>
                 <pe:tooltip for="jadwalKerjaId" value="Click to Create Jadwal Kerja" showEffect="slideToggle"
+                            hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>
+                <pe:tooltip for="payrollId" value="Available on version 1.2" showEffect="slideToggle"
+                            hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>
+                <pe:tooltip for="lemburId" value="Available on version 1.2" showEffect="slideToggle"
+                            hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>
+                <pe:tooltip for="broadcastId" value="Available on version 1.2" showEffect="slideToggle"
+                            hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>
+                <pe:tooltip for="cutiId" value="Available on version 1.2" showEffect="slideToggle"
+                            hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>
+                <pe:tooltip for="izinId" value="Available on version 1.2" showEffect="slideToggle"
+                            hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>
+                <pe:tooltip for="laporanId" value="Available on version 1.2" showEffect="slideToggle"
                             hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>
 <!--                <pe:tooltip for=":tabView1:createCabangId" value="#{appmsg['dashboard.tooltip.viewbranch']}" showEffect="slideToggle"
                             hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>
