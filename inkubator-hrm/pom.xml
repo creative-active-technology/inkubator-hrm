@@ -108,7 +108,7 @@
     </dependencies>
     <build>
         <plugins>
-<!--            <plugin> ruunning here for production olny.. will compress all CSS and JavaScrip 
+            <plugin> 
                 <groupId>org.primefaces.extensions</groupId>
                 <artifactId>resources-optimizer-maven-plugin</artifactId>
              
@@ -124,7 +124,7 @@
                 <configuration>
                     <inputDir>${basedir}/src/main/webapp/resources</inputDir>
                 </configuration>
-            </plugin>-->
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
