@@ -139,7 +139,7 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(EmpData entity) throws Exception {
         long totalDuplicates = empDataDao.getTotalByNIKandId(entity.getNik(), entity.getId());
-        System.out.println(" nilai total " + totalDuplicates);
+     
         if (totalDuplicates > 0) {
             throw new BussinessException("emp_data.error_nik_duplicate");
         }
@@ -150,7 +150,6 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         Jabatan jabatan = jabatanDao.getEntiyByPK(entity.getJabatanByJabatanId().getId());
         empData.setJabatanByJabatanId(jabatan);
         empData.setJabatanByJabatanGajiId(jabatan);
-        System.out.println(" niaiaiai " + empData.getGolonganJabatan().getId());
         empData.setGolonganJabatan(golonganJabatanDao.getEntiyByPK(entity.getGolonganJabatan().getId()));
         empData.setHeatlyPremi(entity.getHeatlyPremi());
         empData.setInsentifStatus(entity.getInsentifStatus());
@@ -522,7 +521,6 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void doSaveRotasi(EmpData entity) throws Exception {
         long totalDuplicates = empDataDao.getTotalByNIKandId(entity.getNik(), entity.getId());
-        System.out.println(" nilai total " + totalDuplicates);
         if (totalDuplicates > 0) {
             throw new BussinessException("emp_data.error_nik_duplicate");
         }
@@ -533,7 +531,6 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         Jabatan jabatan = jabatanDao.getEntiyByPK(entity.getJabatanByJabatanId().getId());
         empData.setJabatanByJabatanId(jabatan);
         empData.setJabatanByJabatanGajiId(jabatan);
-        System.out.println(" niaiaiai " + empData.getGolonganJabatan().getId());
         empData.setGolonganJabatan(golonganJabatanDao.getEntiyByPK(entity.getGolonganJabatan().getId()));
         empData.setHeatlyPremi(entity.getHeatlyPremi());
         empData.setInsentifStatus(entity.getInsentifStatus());

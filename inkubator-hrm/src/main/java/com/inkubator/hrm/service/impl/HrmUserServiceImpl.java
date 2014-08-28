@@ -5,25 +5,6 @@
  */
 package com.inkubator.hrm.service.impl;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
-
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.Session;
-
-import org.hibernate.criterion.Order;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.jms.core.JmsTemplate;
-import org.springframework.jms.core.MessageCreator;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.inkubator.common.util.AESUtil;
 import com.inkubator.common.util.HashingUtils;
 import com.inkubator.common.util.JsonConverter;
@@ -42,6 +23,22 @@ import com.inkubator.hrm.service.HrmUserService;
 import com.inkubator.hrm.web.search.HrmUserSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesUtil;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Session;
+import org.hibernate.criterion.Order;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -101,7 +98,6 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
         hrmUser.setRealName(entity.getRealName());
         this.hrmUserDao.saveAndMerge(hrmUser);
         Set<HrmUserRole> dataToSave = entity.getHrmUserRoles();
-        System.out.println("Size " + dataToSave.size());
         for (HrmUserRole hrmUserRole : dataToSave) {
             hrmUserRole.setHrmUser(hrmUser);
             this.hrmUserRoleDao.save(hrmUserRole);
@@ -264,7 +260,7 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
         for (HrmUserRole hrmRole : this.hrmUserRoleDao.getByUserId(id)) {
             hrmRoles.add(hrmRole.getHrmRole());
         }
-        System.out.println(hrmRoles.get(0).getRoleName());
+     
         hrmUser.setRoles(hrmRoles);
         return hrmUser;
     }
@@ -303,15 +299,15 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
         passwordHistory.setCreatedOn(new Date());
         List<String> dataRole = new ArrayList<>();
         List<HrmRole> hrmRoles = new ArrayList<>();
-        System.out.println(" nilai user Id" + hrmUser.getId());
+    
         for (HrmUserRole hrmUserRole : hrmUserRoleDao.getByUserId(hrmUser.getId())) {
             hrmRoles.add(hrmUserRole.getHrmRole());
         }
-        System.out.println("Ukuran " + hrmRoles.size());
+      
         for (HrmRole hrmRole : hrmRoles) {
             dataRole.add(hrmRole.getRoleName());
         }
-        System.out.println("List Role " + dataRole.size());
+        
         passwordHistory.setListRole(jsonConverter.getJson(dataRole.toArray(new String[dataRole.size()])));
 
         this.passwordHistoryDao.save(passwordHistory);

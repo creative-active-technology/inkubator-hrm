@@ -51,7 +51,7 @@ public class RiwayatAccessMessagesListener extends IServiceImpl implements Messa
                 d = StringUtils.reverse(c);
                 riwayatAccess.setName(d);
             }
-            System.out.println("hahaah"+riwayatAccess.getName());
+        
             riwayatAksesDao.save(riwayatAccess);
         } catch (JMSException ex) {
             LOGGER.error("Error", ex);

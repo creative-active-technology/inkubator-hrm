@@ -49,8 +49,6 @@ public class WtPeriodeDaoImpl extends IDAOImpl<WtPeriode> implements WtPeriodeDa
     }
 
     private void doSearchWtPeriodeByParam(WtPeriodeSearchParameter searchParameter, Criteria criteria) {
-        System.out.println(searchParameter.getBulan());
-        System.out.println(searchParameter.getTahun());
         if (searchParameter.getTahun() != null) {
             criteria.add(Restrictions.like("tahun", searchParameter.getTahun(), MatchMode.ANYWHERE));
         }

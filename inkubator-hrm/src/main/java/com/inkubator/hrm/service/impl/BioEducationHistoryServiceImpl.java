@@ -7,8 +7,8 @@ package com.inkubator.hrm.service.impl;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.dao.BioDataDao;
-import com.inkubator.hrm.dao.CityDao;
 import com.inkubator.hrm.dao.BioEducationHistoryDao;
+import com.inkubator.hrm.dao.CityDao;
 import com.inkubator.hrm.dao.EducationLevelDao;
 import com.inkubator.hrm.dao.FacultyDao;
 import com.inkubator.hrm.dao.InstitutionEducationDao;
@@ -317,10 +317,8 @@ public class BioEducationHistoryServiceImpl extends IServiceImpl implements BioE
             view.setCity(bioEducationHistory.getInstitutionEducation().getCity().getCityName());
         }
         if(bioEducationHistory.getPathFoto() != null ){
-            System.out.println("Masuk True");
             view.setIsDownload(Boolean.TRUE);
         }else{
-            System.out.println("Masuk False");
             view.setIsDownload(Boolean.FALSE);
             view.setIsDownloadString("File Not Available");
         }
