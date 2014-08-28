@@ -30,6 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -356,5 +357,22 @@ public class EmpDataFormController extends BaseController {
         }
 
         return null;
+    }
+
+    @PreDestroy
+    public void cleanAndExit() {
+        empDataModel = null;
+        mapDepartements = null;
+        mapJabatans = null;
+        mapStatusKaryawan = null;
+        mapPaySalary = null;
+        mapGolonganJabatan=null;
+        departmentService=null;
+        jabatanService=null;
+        employeeTypeService=null;
+        paySalaryGradeService=null;
+        empDataService=null;
+        golonganJabatanService=null;
+
     }
 }
