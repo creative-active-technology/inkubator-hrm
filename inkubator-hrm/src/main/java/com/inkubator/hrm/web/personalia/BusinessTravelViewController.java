@@ -1,6 +1,8 @@
 package com.inkubator.hrm.web.personalia;
 
 import java.io.IOException;
+import java.util.Date;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -16,6 +18,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.BusinessTravel;
+import com.inkubator.hrm.entity.BusinessTravelComponent;
+import com.inkubator.hrm.service.BusinessTravelComponentService;
 import com.inkubator.hrm.service.BusinessTravelService;
 import com.inkubator.hrm.web.lazymodel.BusinessTravelLazyDataModel;
 import com.inkubator.hrm.web.search.BusinessTravelSearchParameter;
@@ -31,11 +35,16 @@ import com.inkubator.webcore.util.MessagesResourceUtil;
 @ViewScoped
 public class BusinessTravelViewController extends BaseController {
 
+	private Date printDate;
+	private Double totalAmount;
+	private List<BusinessTravelComponent> businessTravelComponents;
     private BusinessTravelSearchParameter searchParameter;
     private LazyDataModel<BusinessTravel> lazyDataBusinessTravel;
     private BusinessTravel selectedBusinessTravel;
     @ManagedProperty(value = "#{businessTravelService}")
     private BusinessTravelService businessTravelService;
+    @ManagedProperty(value = "#{businessTravelComponentService}")
+    private BusinessTravelComponentService businessTravelComponentService;
 
     @PostConstruct
     @Override
@@ -50,6 +59,10 @@ public class BusinessTravelViewController extends BaseController {
         searchParameter = null;
         lazyDataBusinessTravel = null;
         selectedBusinessTravel = null;
+        totalAmount = null;
+        businessTravelComponents = null;
+        businessTravelComponentService = null;
+        printDate = null;
     }    
 
 	public LazyDataModel<BusinessTravel> getLazyDataBusinessTravel() {
@@ -83,6 +96,36 @@ public class BusinessTravelViewController extends BaseController {
 		this.businessTravelService = businessTravelService;
 	}
 
+	public Double getTotalAmount() {
+		return totalAmount;
+	}
+
+	public void setTotalAmount(Double totalAmount) {
+		this.totalAmount = totalAmount;
+	}
+
+	public List<BusinessTravelComponent> getBusinessTravelComponents() {
+		return businessTravelComponents;
+	}
+
+	public void setBusinessTravelComponents(
+			List<BusinessTravelComponent> businessTravelComponents) {
+		this.businessTravelComponents = businessTravelComponents;
+	}
+
+	public void setBusinessTravelComponentService(
+			BusinessTravelComponentService businessTravelComponentService) {
+		this.businessTravelComponentService = businessTravelComponentService;
+	}
+
+	public Date getPrintDate() {
+		return printDate;
+	}
+
+	public void setPrintDate(Date printDate) {
+		this.printDate = printDate;
+	}
+
 	public void doSearch() {
         lazyDataBusinessTravel = null;
     }
@@ -94,6 +137,21 @@ public class BusinessTravelViewController extends BaseController {
     public void doSelectEntity() {
         try {
             selectedBusinessTravel = this.businessTravelService.getEntiyByPK(selectedBusinessTravel.getId());
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
+        }
+    }
+    
+    public void doBeforePrint(){
+    	try {
+    		printDate = new Date();
+	    	selectedBusinessTravel = businessTravelService.getEntityByPkWithDetail(selectedBusinessTravel.getId());
+	        businessTravelComponents = businessTravelComponentService.getAllDataByBusinessTravelId(selectedBusinessTravel.getId());
+	        totalAmount  = 0.0;
+	        for(BusinessTravelComponent btc :businessTravelComponents){
+	        	totalAmount = totalAmount + btc.getPayByAmount();
+	        }
+	        
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }

@@ -92,6 +92,11 @@
                             </p:column>   
                             
                             <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
+                            	<p:commandButton icon="ui-icon-document" title="#{appmsg['global.print']}" label="#{appmsg['global.print']}" 
+                                				 style="font-size: 10px!important" action="#{businessTravelViewController.doBeforePrint()}" onclick="statusDialog.show()"  oncomplete="dialogPrint.show()">                        
+                                    <f:setPropertyActionListener value="#{businessTravelData}" target="#{businessTravelViewController.selectedBusinessTravel}" />
+                                </p:commandButton>
+                                -
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                 				 style="font-size: 10px!important" action="#{businessTravelViewController.doDetail()}">                        
                                     <f:setPropertyActionListener value="#{businessTravelData}" target="#{businessTravelViewController.selectedBusinessTravel}" />
@@ -144,6 +149,134 @@
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{businessTravelViewController.doDelete()}" update="formBusinessTravelViewId,:growlBusinessTravelViewlId"
                                          oncomplete="dialogConfirmBusinessTravel.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
                         <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmBusinessTravel.hide()" icon="ui-icon-close" />                     	
+                    </div>
+                </p:dialog>
+                <p:dialog widgetVar="dialogPrint" header="#{appmsg['global.header_confirmation']}" modal="true" width="500" dynamic="true" onShow="statusDialog.hide()"
+                          appendTo="@(body)" position="left,top" draggable="false" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
+                    <h:form id="formPrintId">
+	                    <div align="left">
+	                        <h:panelGrid>
+	                            <p:outputLabel value="#{appmsg['businesstravel.business_travel_payment_proof']}"  styleClass="header_big"/>
+	                        </h:panelGrid>
+	                        <h:panelGrid columns="6">
+	                        	<p:outputLabel value="#{appmsg['global.number2']} "/>
+	                        	<p:outputLabel value=": "/>
+	                        	<p:outputLabel value="#{businessTravelViewController.selectedBusinessTravel.businessTravelNo}"/>
+	                        	<p:outputLabel value="#{appmsg['global.print']} " style="margin-left:20px;"/>
+	                        	<p:outputLabel value=": "/>
+	                        	<p:outputLabel value="#{businessTravelViewController.printDate}">
+	                        		<f:convertDateTime pattern="dd-MM-yyyy hh:mm" />
+	                        	</p:outputLabel>
+	                        	<p:outputLabel value="#{appmsg['businesstravel.submission']} "/>
+	                        	<p:outputLabel value=": "/>
+	                        	<p:outputLabel value="#{businessTravelViewController.selectedBusinessTravel.proposeDate}">
+	                        		<f:convertDateTime pattern="dd-MM-yyyy" />
+	                        	</p:outputLabel>
+	                        </h:panelGrid> 
+	                        <br/>
+	                        <h:panelGrid>
+	                        	<p:outputLabel value="#{appmsg['businesstravel.paid_to']}" style="text-decoration: underline;"/>
+	                        </h:panelGrid>
+	                        <h:panelGrid columns="3">
+	                        	<p:outputLabel value="Nik "/>
+	                        	<p:outputLabel value=": "/>
+	                        	<p:outputLabel value="#{businessTravelViewController.selectedBusinessTravel.empData.nik}"/>
+	                        	
+	                        	<p:outputLabel value="#{appmsg['global.name']} "/>
+	                        	<p:outputLabel value=": "/>
+	                        	<p:outputLabel value="#{businessTravelViewController.selectedBusinessTravel.empData.bioData.fullName}"/>
+	                        	
+	                        	<p:outputLabel value="#{appmsg['functiongroup.function_group']} "/>
+	                        	<p:outputLabel value=": "/>
+	                        	<p:outputLabel value="#{businessTravelViewController.selectedBusinessTravel.empData.golonganJabatan.code} - #{businessTravelViewController.selectedBusinessTravel.empData.golonganJabatan.pangkat.pangkatName}"/>
+	                        </h:panelGrid>
+	                        <br/>
+	                        <h:panelGrid>
+	                        	<p:outputLabel value="#{appmsg['businesstravel.as_the_use_of_travel_expenses']}" style="text-decoration: underline;"/>
+	                        </h:panelGrid>
+	                        <h:panelGrid columns="3">
+	                        	<p:outputLabel value="#{appmsg['businesstravel.destination']} "/>
+	                        	<p:outputLabel value=": "/>
+	                        	<p:outputLabel value="#{businessTravelViewController.selectedBusinessTravel.destination}"/>
+	                        	
+	                        	<p:outputLabel value="#{appmsg['global.description']} "/>
+	                        	<p:outputLabel value=": "/>
+	                        	<p:outputLabel value="#{businessTravelViewController.selectedBusinessTravel.description}"/>
+	                        	
+	                        	<p:outputLabel value="#{appmsg['businesstravel.implementation_date']} "/>
+	                        	<p:outputLabel value=": "/>
+	                        	<h:panelGrid columns="3" style="margin-left:-4px;">
+		                        	<p:outputLabel value="#{businessTravelViewController.selectedBusinessTravel.startDate}">
+		                        		<f:convertDateTime pattern="dd-MM-yyyy" />
+		                        	</p:outputLabel>
+		                        	<p:outputLabel value=" s/d "/>
+		                        	<p:outputLabel value="#{businessTravelViewController.selectedBusinessTravel.endDate}">
+		                        		<f:convertDateTime pattern="dd-MM-yyyy" />
+		                        	</p:outputLabel>
+	                        	</h:panelGrid>
+	                        </h:panelGrid>
+	                        <br/>
+	                        <h:panelGrid>
+	                        	<p:outputLabel value="#{appmsg['businesstravel.terms_allowances']} :" style="font-weight: bold;"/>
+	                        </h:panelGrid>
+	                        <p:dataTable  id="tableBusinessTravelComponentId" var="businessTravelComponentData"  value="#{businessTravelViewController.businessTravelComponents}" lazy="false" paginator="false" pageLinks="7"
+	                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+	                                      rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+	                                      rowIndexVar="no"> 
+	                            <p:column style="text-align: center;width: 5%">
+	                                <f:facet name="header">  
+	                                    <p:outputLabel style="color:#000000;" value="#{appmsg['global.number']}"/>
+	                                </f:facet>
+	                                <p:outputLabel value="#{no+1}." />
+	                            </p:column>  
+	                            <p:column style="text-align: center;width: 20%">
+	                                <f:facet name="header">  
+	                                    <p:outputLabel style="color:#000000;" value="#{appmsg['businesstravel.travel_component']}"/>
+	                                </f:facet>
+	                                <p:outputLabel value= "#{businessTravelComponentData.travelComponent.name}"/>
+	                            </p:column>
+	                            <p:column style="text-align: center;width: 10%">
+	                                <f:facet name="header">  
+	                                    <p:outputLabel style="color:#000000;" value="#{appmsg['businesstravel.quantity']}"/>
+	                                </f:facet>
+	                                <p:outputLabel value= "#{businessTravelComponentData.quantity}"/>
+	                            </p:column>
+	                            <p:column style="text-align: center;width: 10%">
+	                                <f:facet name="header">  
+	                                    <p:outputLabel style="color:#000000;" value="#{appmsg['businesstravel.earned_per_quatity']}"/>
+	                                </f:facet>
+	                                <div style="text-align:right">
+		                                <p:outputLabel value= "#{businessTravelComponentData.earnedPerQuantity}">
+		                                	<f:convertNumber pattern="###,###" type="currency"/>
+		                                </p:outputLabel>
+	                                </div>
+	                            </p:column>
+	                            <p:column style="text-align: center;width: 10%">
+	                                <f:facet name="header">  
+	                                    <p:outputLabel style="color:#000000;" value="#{appmsg['businesstravel.pay_by_amount']}"/>
+	                                </f:facet>
+	                                <div style="text-align:right">
+		                                <p:outputLabel value= "#{businessTravelComponentData.payByAmount}">
+		                                	<f:convertNumber pattern="###,###" type="currency"/>
+		                                </p:outputLabel>
+	                                </div>
+	                            </p:column>
+	                    	</p:dataTable>
+	                    	<h:panelGrid columns="2" width="100%">
+	                        	<p:outputLabel value="Total Biaya : "/>
+	                        	<h:panelGrid width="100%" style="text-align:right;">
+	                        		<p:outputLabel value="#{businessTravelViewController.totalAmount}" style="margin-right:4px;">
+	                        			<f:convertNumber pattern="###,###" type="currency"/>
+	                        		</p:outputLabel>
+	                        	</h:panelGrid>
+	                        </h:panelGrid>
+	                        <br/>    	
+	                    </div>
+                    </h:form>
+                    <div>
+                    	<p:commandButton value="Print" type="button" icon="ui-icon-print" style="display:block;margin-bottom: 20px">
+    						<p:printer target="formPrintId" />
+						</p:commandButton>
                     </div>
                 </p:dialog>
             </ui:define>
