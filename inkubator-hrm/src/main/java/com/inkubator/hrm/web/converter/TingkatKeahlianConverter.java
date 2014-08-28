@@ -28,7 +28,7 @@ public class TingkatKeahlianConverter implements Converter {
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) {
         ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
-        System.out.println(" nilai value string converter tingkat keahlian " + value);
+        
         Integer data = (Integer) value;
         if (data.equals(1)) {
             return messages.getString("biokeahlian.basic");

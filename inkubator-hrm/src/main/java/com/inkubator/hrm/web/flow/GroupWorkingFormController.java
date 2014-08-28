@@ -214,7 +214,7 @@ public class GroupWorkingFormController implements Serializable {
     };
 
     public void doNeckTable(RequestContext context) {
-        System.out.println(" di eksekusususuus nexk");
+     
         GroupWorkingModel workingModel = (GroupWorkingModel) context.getFlowScope().get("groupWorkingModel");
         int page = workingModel.getPageNumber();
         List<ScheduleShiftModel> dataShiftModels = workingModel.getDataShiftModels();
@@ -224,8 +224,7 @@ public class GroupWorkingFormController implements Serializable {
         if (page < sisaBagi + 1) {
 
             workingModel.setPageNumber(page + 2);
-            System.out.println("Nilai Sisa bagi " + sisaBagi);
-            System.out.println("page numbar " + workingModel.getPageNumber());
+            
             if (workingModel.getPageNumber() != sisaBagi + 1) {
                 batas = workingModel.getPageNumber() * 7;
             } else {
@@ -251,13 +250,13 @@ public class GroupWorkingFormController implements Serializable {
     public void doBackTable(RequestContext requestContext) {
         GroupWorkingModel workingModel = (GroupWorkingModel) requestContext.getFlowScope().get("groupWorkingModel");
         int page = workingModel.getPageNumber();
-        System.out.println("Nilai page" + page);
+    
         if (page > 1) {
             workingModel.setPageNumber(page - 2);
             List<ScheduleShiftModel> dataShiftModels = workingModel.getDataShiftModels();
             int batas;
             double sisaBagi = dataShiftModels.size() / 7;
-            System.out.println("Nilai Sisa bagi " + sisaBagi);
+          
             if (workingModel.getPageNumber() != sisaBagi + 1) {
                 batas = workingModel.getPageNumber() * 7;
             } else {

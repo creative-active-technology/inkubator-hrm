@@ -248,7 +248,7 @@ public class WtGroupWorkingServiceImpl extends IServiceImpl implements WtGroupWo
 
         for (ScheduleShiftModel scheduleShiftModel : dataShiftModels) {
             if (scheduleShiftModel.getJamKerjaId() != null || scheduleShiftModel.getJamKerjaId2() != null) {
-                System.out.println(scheduleShiftModel);
+              
                 if (scheduleShiftModel.getJamKerjaId() != null) {
                     WtScheduleShift shift1 = new WtScheduleShift();
                     shift1.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
@@ -258,7 +258,7 @@ public class WtGroupWorkingServiceImpl extends IServiceImpl implements WtGroupWo
                     shift1.setWtGroupWorking(groupWorking);
                     shift1.setWtWorkingHour(wtWorkingHourDao.getEntiyByPK(scheduleShiftModel.getJamKerjaId()));
                     wtScheduleShifts.add(shift1);
-                    System.out.println("Nilai " + shift1.getScheduleDate());
+                  
                 }
                 if (scheduleShiftModel.getJamKerjaId2() != null) {
                     WtScheduleShift shift2 = new WtScheduleShift();
@@ -269,7 +269,7 @@ public class WtGroupWorkingServiceImpl extends IServiceImpl implements WtGroupWo
                     shift2.setWtGroupWorking(groupWorking);
                     shift2.setWtWorkingHour(wtWorkingHourDao.getEntiyByPK(scheduleShiftModel.getJamKerjaId2()));
                     wtScheduleShifts.add(shift2);
-                    System.out.println("Nilai " + shift2.getScheduleDate());
+                    
                 }
 
             }
@@ -279,7 +279,7 @@ public class WtGroupWorkingServiceImpl extends IServiceImpl implements WtGroupWo
         this.wtGroupWorkingDao.save(groupWorking);
 
         for (WtScheduleShift wtScheduleShift : wtScheduleShifts) {
-            System.out.println(" Datga " + wtScheduleShift.getWtWorkingHour().getName());
+         
         }
     }
 
@@ -326,7 +326,7 @@ public class WtGroupWorkingServiceImpl extends IServiceImpl implements WtGroupWo
 
         for (ScheduleShiftModel scheduleShiftModel : dataShiftModels) {
             if (scheduleShiftModel.getJamKerjaId() != null || scheduleShiftModel.getJamKerjaId2() != null) {
-                System.out.println(scheduleShiftModel);
+            
                 if (scheduleShiftModel.getJamKerjaId() != null) {
                     WtScheduleShift shift1 = new WtScheduleShift();
                     shift1.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));

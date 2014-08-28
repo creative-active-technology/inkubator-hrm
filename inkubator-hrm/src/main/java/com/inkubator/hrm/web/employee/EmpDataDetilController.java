@@ -65,7 +65,6 @@ public class EmpDataDetilController extends BaseController {
             jabatanDeskripsis = new ArrayList<>(selectedEmpData.getJabatanByJabatanId().getJabatanDeskripsis());
             listJabatanSpesifikasi = new ArrayList<>(selectedEmpData.getJabatanByJabatanId().getJabatanSpesifikasis());
             listCareerHistory = empCareerHistoryService.getEmployeeCareerByBioId(selectedEmpData.getBioData().getId());
-            System.out.println("ini nilaiiaiaia " + listCareerHistory.size());
             listPersonalDiscipline = personalDisciplineService.getAllDataByEmployeeId(selectedEmpData.getId());
             listPersonAchievement = empPersonAchievementService.getAllDataByEmployeeId(selectedEmpData.getId());
 

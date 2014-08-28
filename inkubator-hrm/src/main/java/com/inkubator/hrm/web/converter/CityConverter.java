@@ -5,7 +5,6 @@
  */
 package com.inkubator.hrm.web.converter;
 
-import com.inkubator.hrm.dao.CityDao;
 import com.inkubator.hrm.entity.City;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -13,7 +12,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.convert.FacesConverter;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
@@ -29,7 +27,7 @@ public class CityConverter implements Converter {
         }
         try {
             Long id = Long.parseLong(value);
-            System.out.println("id" + id);
+            
             return new City(id);
         } catch (Exception e) {
             e.printStackTrace();

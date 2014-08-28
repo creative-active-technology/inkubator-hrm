@@ -125,7 +125,7 @@ public class PasswordComplexityController extends BaseController {
     }
 
     public void doSave() {
-        System.out.println(" hehehehh");
+      
         PasswordComplexity passwordComplexity = fromPageUIToEntity();
         try {
             if (isEdit) {

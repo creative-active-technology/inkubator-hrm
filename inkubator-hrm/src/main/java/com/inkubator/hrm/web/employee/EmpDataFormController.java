@@ -221,8 +221,7 @@ public class EmpDataFormController extends BaseController {
 
     public String doSave() {
         EmpData empData = getEntityFromViewModel(empDataModel);
-        System.out.println("ememem 1" + empData.getGolonganJabatan().getId());
-        System.out.println("ememem 2" + empDataModel.getGolonganJabatan());
+       
         if (isEdit) {
             try {
                 empDataService.update(empData);
@@ -256,7 +255,7 @@ public class EmpDataFormController extends BaseController {
     }
 
     public void doSearch() {
-        System.out.println("sdfsdhfhdsfhd");
+      
         Map<String, Object> options = new HashMap<>();
         options.put("modal", false);
         options.put("draggable", true);
@@ -312,7 +311,7 @@ public class EmpDataFormController extends BaseController {
             empData.setNoSk(empDataModel.getNoSk());
         }
 
-        System.out.println(" nilai golonganjabatabab " + empDataModel.getGolonganJabatan());
+      
 //        empData.setWtGroupWorking(new WtGroupWorking());
         return empData;
     }
