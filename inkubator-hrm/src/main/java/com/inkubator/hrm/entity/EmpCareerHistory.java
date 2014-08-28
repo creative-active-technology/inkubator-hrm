@@ -36,6 +36,7 @@ public class EmpCareerHistory implements java.io.Serializable {
     private String updateBy;
     private Date updatedOn;
     private String status;
+    private EmployeeType employeeType;
 
     public EmpCareerHistory() {
     }
@@ -200,5 +201,15 @@ public class EmpCareerHistory implements java.io.Serializable {
 
     public void setSalary(String salary) {
         this.salary = salary;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "karyawan_type_id")
+    public EmployeeType getEmployeeType() {
+        return this.employeeType;
+    }
+
+    public void setEmployeeType(EmployeeType employeeType) {
+        this.employeeType = employeeType;
     }
 }
