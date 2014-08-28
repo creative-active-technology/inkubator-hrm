@@ -129,8 +129,8 @@ public class TravelComponentViewController extends BaseController {
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", false);
-        options.put("contentWidth", 400);
-        options.put("contentHeight", 500);
+        options.put("contentWidth", 530);
+        options.put("contentHeight", 420);
         RequestContext.getCurrentInstance().openDialog("travel_component_form", options, params);
     }
 

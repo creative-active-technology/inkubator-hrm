@@ -129,8 +129,8 @@ public class TravelZoneViewController extends BaseController {
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", false);
-        options.put("contentWidth", 400);
-        options.put("contentHeight", 500);
+        options.put("contentWidth", 500);
+        options.put("contentHeight", 430);
         RequestContext.getCurrentInstance().openDialog("travel_zone_form", options, params);
     }
 

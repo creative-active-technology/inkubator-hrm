@@ -133,7 +133,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="SK Penempatan"  for="penempatanId" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['placement.sk_penempatan']}"  for="penempatanId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:inputText value="#{empDataFormController.empDataModel.noSk}" maxlength="45"
@@ -155,7 +155,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Tanggal Rotasi"  for="rotasiDate" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['placement.rotation_date']}"  for="rotasiDate" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:calendar  id="rotasiDate" pattern="dd MMMM yyyy" value="#{empDataFormController.empDataModel.rotasiDate}" required="true"/>

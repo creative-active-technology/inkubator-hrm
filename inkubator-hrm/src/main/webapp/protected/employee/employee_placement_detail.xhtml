@@ -145,7 +145,7 @@
                                 <p:panelGrid style="width: 100%;margin-top: 10px;" styleClass="grid_border4">
                                     <p:row>
                                         <p:column style="width: 15%;background-color: #e1f0f0!important" >
-                                            <p:outputLabel  value="Salary" style="font-weight: bold"/>
+                                            <p:outputLabel  value="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_salary']}" style="font-weight: bold"/>
                                         </p:column>
                                         <p:column style="width: 75%">
                                             <p:outputLabel  value="#{empDataDetilController.selectedEmpData.basicSalary}" rendered="#{sec:areAnyGranted('SUPERVISOR_FINANCE_ROLE')}">
@@ -157,7 +157,7 @@
 
                                     <p:row>
                                         <p:column style="width: 15%;background-color: #e1f0f0!important" >
-                                            <p:outputLabel  value="Tanggal Mutasi" style="font-weight: bold"/>
+                                            <p:outputLabel  value="#{appmsg['placement.mutation_date']}" style="font-weight: bold"/>
                                         </p:column>
                                         <p:column style="width: 75%">
                                             <p:outputLabel  value="#{empDataDetilController.selectedEmpData.rotasiDate}">
@@ -167,7 +167,7 @@
                                     </p:row>
                                     <p:row>
                                         <p:column style="width: 15%;background-color: #e1f0f0!important" >
-                                            <p:outputLabel  value="SK Number" style="font-weight: bold"/>
+                                            <p:outputLabel  value="#{appmsg['placement.sk_penempatan']}" style="font-weight: bold"/>
                                         </p:column>
                                         <p:column style="width: 75%">
                                             <p:outputLabel  value="#{empDataDetilController.selectedEmpData.noSk}"/>
@@ -356,25 +356,25 @@
                                     </p:column> 
                                     <p:column > 
                                         <f:facet name="header">  
-                                            <h:outputText value="Jabatan"/>
+                                            <h:outputText value="#{appmsg['jabatan.jabatan']}"/>
                                         </f:facet>
                                         <h:outputLabel value=" #{listCareerHistory.jabatan.name}" />
                                     </p:column> 
                                     <p:column > 
                                         <f:facet name="header">  
-                                            <h:outputText value="Golongan Jabatan"/>
+                                            <h:outputText value="#{appmsg['functiongroup.function_group']}"/>
                                         </f:facet>
                                         <p:outputLabel value=" #{listCareerHistory.golonganJabatan.code}-#{listCareerHistory.golonganJabatan.pangkat.pangkatName}" />
                                     </p:column>
                                     <p:column > 
                                         <f:facet name="header" >  
-                                            <h:outputText value="SK Penempatan"/>
+                                            <h:outputText value="#{appmsg['placement.sk_penempatan']}"/>
                                         </f:facet>
                                         <p:outputLabel value="#{listCareerHistory.noSk}" />
                                     </p:column>
                                     <p:column style="text-align: right"> 
                                         <f:facet name="header">  
-                                            <h:outputText value="Salary"/>
+                                            <h:outputText value="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_salary']}"/>
                                         </f:facet>
 
                                         <p:outputLabel value="#{listCareerHistory.salary}" rendered="#{sec:areAnyGranted('SUPERVISOR_FINANCE_ROLE')}">
@@ -387,7 +387,7 @@
                                     </p:column>
                                     <p:column > 
                                         <f:facet name="header">  
-                                            <h:outputText value="Tangal Mutasi"/>
+                                            <h:outputText value="#{appmsg['placement.mutation_date']}"/>
                                         </f:facet>
                                         <p:outputLabel value="#{listCareerHistory.tglPenganngkatan}" >
                                             <f:convertDateTime pattern="dd MMMM yyyy"/>
