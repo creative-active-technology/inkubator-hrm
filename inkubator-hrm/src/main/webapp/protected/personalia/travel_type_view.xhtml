@@ -67,25 +67,25 @@
                             <f:facet name="header">  
                                 <h:outputText value="#{appmsg['travelType.list_of_travelType']}"/>
                             </f:facet> 
-                            <p:column style="text-align: center;width: 3%">
+                            <p:column style="text-align: center;width: 5%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.number']}"/>
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="code"  style="width: 12%">
+                            <p:column sortBy="code"  style="width: 20%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{travelTypeData.code}"/>
                             </p:column>  
-                            <p:column sortBy="name"  style="width: 72%">
+                            <p:column sortBy="name"  style="width: 50%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{travelTypeData.name}"/>
                             </p:column> 
-                            <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                 				 style="font-size: 10px!important" update=":panelDialogDetailId" 
                                 				 action="#{travelTypeViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogDetailTravelType.show()">                        

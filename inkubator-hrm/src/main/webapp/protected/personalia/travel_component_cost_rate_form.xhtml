@@ -50,25 +50,6 @@
                         </p:row>
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="defaultRate" value="#{appmsg['travelcomponentcostrate.default_rate']}" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="defaultRate" value=":" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column  style="width: 50%">
-                                <p:inputText id="defaultRate"  value="#{travelComponentCostRateFormController.model.defaultRateId}"
-                                             required="true"  maxlength="45" styleClass="isitext_hrm" style="width:210px;" >
-                                    <pe:keyFilter mask="num"></pe:keyFilter>
-                                </p:inputText>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:message for="defaultRate"/>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="width: 40%">
                                 <p:outputLabel for="costCenterId" value="#{appmsg['jabatan.cost_center']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
@@ -141,6 +122,25 @@
                         <p:row>
                             <p:column colspan="3">
                                 <p:message for="travelZoneId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 40%">
+                                <p:outputLabel for="defaultRate" value="#{appmsg['travelcomponentcostrate.default_rate']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="defaultRate" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                                <pe:inputNumber id="defaultRate"  value="#{travelComponentCostRateFormController.model.defaultRateId}"
+                                             required="true"  maxlength="45" styleClass="isitext_hrm" style="text-align: right;width:210px;" >
+                                    <pe:keyFilter mask="num"></pe:keyFilter>
+                                </pe:inputNumber>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="defaultRate"/>
                             </p:column>
                         </p:row>
                         <p:row>
