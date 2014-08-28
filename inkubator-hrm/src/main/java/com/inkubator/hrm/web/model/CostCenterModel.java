@@ -4,7 +4,6 @@
  */
 package com.inkubator.hrm.web.model;
 
-import com.inkubator.hrm.entity.CostCenter;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -71,7 +70,7 @@ public class CostCenterModel implements Serializable{
     }
 
     public Long getParentId() {
-        System.out.println("masuk parent id");
+     
         return parentId;
     }
 

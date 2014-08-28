@@ -242,7 +242,7 @@ public class WtHolidayServiceImpl extends IServiceImpl implements WtHolidayServi
    @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<WtHoliday> getBetweenDate(Date start, Date end) throws Exception {
-        System.out.println(" nilai awal "+start);
+      
         return this.wtHolidayDao.getBetweenDate(start, end);
     }
 

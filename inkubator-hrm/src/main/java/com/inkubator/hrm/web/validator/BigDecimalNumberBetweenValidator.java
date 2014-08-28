@@ -22,7 +22,7 @@ public class BigDecimalNumberBetweenValidator implements Validator{
 
     @Override
     public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
-        BigDecimal beginNumber = (BigDecimal) value;
+        BigDecimal beginNumber = new BigDecimal((double) value);
 
         // Obtain the component and submitted value of the end number component.
         UIInput endTimeComponent = (UIInput) component.getAttributes().get("endNumberInteger");

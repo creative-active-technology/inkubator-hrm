@@ -24,7 +24,7 @@ public class BioDataReportViewController extends BaseController{
     @PostConstruct
     @Override
     public void initialization() {
-        System.out.println("init");
+     
         super.initialization();
         String param = FacesUtil.getRequestParameter("execution");
         bioDataId = Long.parseLong(param.substring(1));

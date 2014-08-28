@@ -194,9 +194,9 @@
                                         <p:outputLabel value="#{realName}. " styleClass="label_welcome_header" style="color: #ffcc00 !important;font-weight: bold!important" />
                                         <p:outputLabel value="#{appmsg['master_layout.login_at']} : #{login_date}" styleClass="label_welcome_header" style="margin-right: 100px"/>
                                     </h:panelGroup>
-                                    <p:commandLink id="pendingId" action="#{userInformationController.doPendingTask()}" title="My Pending Task" >
+<!--                                    <p:commandLink id="pendingId" action="#{userInformationController.doPendingTask()}" title="My Pending Task" >
                                         <p:graphicImage library="images" name="task-manager_ico.png" width="22" height="22" id="ima" cache="true" /> 
-                                    </p:commandLink>
+                                    </p:commandLink>-->
                                     <p:commandLink id="userId" onclick="statusDialog.show()" oncomplete="dialogUserInfo.show()" update=":tabViewUserInfoId" action="#{userInfoController.onRenderUserInfo()}" title="User Profile" >
                                         <p:graphicImage library="images" name="user_ico.png" width="22" height="22" cache="true"/> 
                                     </p:commandLink>
@@ -214,8 +214,8 @@
                                     </h:outputLink>
                                 </h:panelGrid>
                                 <div class="isitext_hrm">
-                                    <pe:tooltip for="pendingId" value="My Pending Task" showEffect="slideToggle" 
-                                                hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>
+<!--                                    <pe:tooltip for="pendingId" value="My Pending Task" showEffect="slideToggle" 
+                                                hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>-->
                                     <pe:tooltip for="helpId" value="Need Help? Click Me" showEffect="slideToggle"
                                                 hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/> 
                                     <pe:tooltip for="calculatorId" value="Need Calculation Click Me" showEffect="slideToggle"
@@ -255,11 +255,11 @@
                                             <p:menuitem value="#{appmsg['passwordhistory.password_history']}"  style="color: #003366" title="Create Offering Price" url="/protected/account/password_history.htm" icon="img-password-history" /> 
                                             <p:menuitem value="#{appmsg['loginhistory.login_history']}"  style="color: #003366" title="#{appmsg['loginhistory.login_history']}" url="/protected/account/login_history.htm" icon="img-login-history" />  
                                         </p:submenu>
-                                        <p:submenu label="Approval Matrix"  styleClass="menu" icon="img-approval-matrix">
+<!--                                        <p:submenu label="Approval Matrix"  styleClass="menu" icon="img-approval-matrix">
                                             <p:menuitem value="Approval Definition"  style="color: #003366" title="Approval Definition" url="/protected/approval/approval_definition_view.htm"  icon="img-approval-definition"/> 
                                             <p:menuitem value="Approval Activity"  style="color: #003366" title="#{appmsg['menu.role_view']}" url="/protected/account/role_view.htm" icon="img-approval-activity" />
 
-                                        </p:submenu>
+                                        </p:submenu>-->
 
                                         <p:submenu label="#{appmsg['menu.configuration']}" style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-configuration">
                                             <p:submenu label="#{appmsg['menu.data_reference']}"  styleClass="menu_child" >
@@ -296,7 +296,7 @@
                                                 <p:menuitem value="#{appmsg['jabatandeskripsi.jabatandeskripsi']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['jabatandeskripsi.jabatandeskripsi']}" url="/protected/organisation/job_description_view.htm" icon="img-job-descriptions"/>
                                                 <p:menuitem value="#{appmsg['jabatanspesifikasi.jabatanspesifikasi']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['jabatanspesifikasi.jabatanspesifikasi']}" url="/protected/organisation/job_spesifikasi_view.htm" icon="img-job_spek"/>
                                             </p:submenu> 
-                                            <p:submenu label="#{appmsg['menu.working_time_setting']}"  styleClass="menu_child" >
+<!--                                            <p:submenu label="#{appmsg['menu.working_time_setting']}"  styleClass="menu_child" >
                                                 <p:menuitem value="#{appmsg['menu.work_period']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.work_period']}" url="/protected/working_time/periode_view.htm" /> 
                                                 <p:menuitem value="#{appmsg['menu.holiday']}" icon="img-holiday" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.holiday']}" url="/protected/working_time/holiday_view.htm" />
                                                 <p:menuitem value="#{appmsg['menu.presence_status']}" icon="img-status-attendance" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.presence_status']}" url="/protected/working_time/attendance_status_view.htm" />  	
@@ -305,7 +305,7 @@
                                                 <p:menuitem value="#{appmsg['menu.workgroup']}" icon="img-group-working" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.workgroup']}" url="/protected/working_time/working_group_view.htm" />  
                                                 <p:menuitem value="#{appmsg['leave.leave']}" icon="img-permit" style="font-size: 12px !important;color: #003366" title="#{appmsg['leave.leave']}" url="/protected/working_time/leave_view.htm" />
                                                 <p:menuitem value="#{appmsg['leavescheme.leave_scheme']}" icon="img-leave-scheme" style="font-size: 12px !important;color: #003366" title="#{appmsg['leavescheme.leave_scheme']}" url="/protected/working_time/leave_scheme_view.htm" />
-                                            </p:submenu>
+                                            </p:submenu>-->
                                             <p:submenu label="Personalia"  styleClass="menu_child">
                                                 <p:submenu label="#{appmsg['personalia.dinas']}"  styleClass="menu_child" >
                                                     <p:menuitem value="#{appmsg['personalia.type']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['personalia.type']}" url="/protected/personalia/travel_type_view.htm" /> 

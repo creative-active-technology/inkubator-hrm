@@ -101,7 +101,7 @@ public class CostCenterFormController extends BaseController{
     @PostConstruct
     @Override
     public void initialization() {
-        System.out.println("init");
+     
         super.initialization();
         String param = FacesUtil.getRequestParameter("param");
         costCenterModel = new CostCenterModel();

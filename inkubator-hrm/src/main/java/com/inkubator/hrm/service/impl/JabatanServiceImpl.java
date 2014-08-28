@@ -90,9 +90,9 @@ public class JabatanServiceImpl extends IServiceImpl implements JabatanService {
         entity.setCreatedOn(new Date());
         Set<KlasifikasiKerjaJabatan> klasifikasiKerjaJabatans = entity.getKlasifikasiKerjaJabatans();
         for (KlasifikasiKerjaJabatan klasifikasiKerjaJabatan : klasifikasiKerjaJabatans) {
-            System.out.println(klasifikasiKerjaJabatan.getJabatan().getCode());
-            System.out.println(klasifikasiKerjaJabatan.getKlasifikasiKerja().getName());
-            System.out.println(klasifikasiKerjaJabatan.getId());
+//            System.out.println(klasifikasiKerjaJabatan.getJabatan().getCode());
+//            System.out.println(klasifikasiKerjaJabatan.getKlasifikasiKerja().getName());
+//            System.out.println(klasifikasiKerjaJabatan.getId());
         }
         this.jabatanDao.save(entity);
     }

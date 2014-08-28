@@ -46,7 +46,7 @@ public class DepartmentViewController extends BaseController{
     }
 
     public void setDepartmentService(DepartmentService departmentService) {
-        System.out.println("test");
+    
         this.departmentService = departmentService;
     }
 

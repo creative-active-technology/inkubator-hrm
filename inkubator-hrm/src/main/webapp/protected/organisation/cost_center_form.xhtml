@@ -118,10 +118,8 @@
                                 <h:outputLabel for="balance" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <p:inputText id="balance"  value="#{costCenterFormController.costCenterModel.balance}"
-                                             required="true"  maxlength="45" styleClass="isitext_hrm" style="width:210px;" >
-                                <f:convertNumber pattern="###,###" type="currency"/>
-                                </p:inputText>
+                                <pe:inputNumber id="balance"  value="#{costCenterFormController.costCenterModel.balance}"
+                                             required="true"  maxlength="45" styleClass="isitext_hrm" style="text-align: right;width:210px;" />
                             </p:column>
                         </p:row>
                         <p:row>

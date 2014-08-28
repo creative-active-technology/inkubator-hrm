@@ -44,7 +44,7 @@ public class JabatanDeskripsiFormController extends BaseController {
         if (param.contains("i")) {
             jobsId = Long.parseLong(param.substring(1));
             isEdit = Boolean.FALSE;
-            System.out.println(" ini lhooooo");
+       
             jabatanDeskripsiModel = new JabatanDeskripsiModel();
         }
         if (param.contains("e")) {

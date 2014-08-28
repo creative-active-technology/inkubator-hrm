@@ -40,6 +40,7 @@ public class EmpCareerHistoryDaoImpl extends IDAOImpl<EmpCareerHistory> implemen
         criteria.setFetchMode("jabatan", FetchMode.JOIN);
         criteria.setFetchMode("golonganJabatan", FetchMode.JOIN);
         criteria.setFetchMode("golonganJabatan.pangkat", FetchMode.JOIN);
+        criteria.setFetchMode("employeeType", FetchMode.JOIN);
         criteria.addOrder(Order.asc("tglPenganngkatan"));
         return criteria.list();
     }

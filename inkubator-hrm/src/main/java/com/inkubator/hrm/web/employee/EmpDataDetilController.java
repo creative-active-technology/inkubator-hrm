@@ -20,6 +20,7 @@ import com.inkubator.webcore.util.FacesUtil;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -64,7 +65,6 @@ public class EmpDataDetilController extends BaseController {
             jabatanDeskripsis = new ArrayList<>(selectedEmpData.getJabatanByJabatanId().getJabatanDeskripsis());
             listJabatanSpesifikasi = new ArrayList<>(selectedEmpData.getJabatanByJabatanId().getJabatanSpesifikasis());
             listCareerHistory = empCareerHistoryService.getEmployeeCareerByBioId(selectedEmpData.getBioData().getId());
-            System.out.println("ini nilaiiaiaia " + listCareerHistory.size());
             listPersonalDiscipline = personalDisciplineService.getAllDataByEmployeeId(selectedEmpData.getId());
             listPersonAchievement = empPersonAchievementService.getAllDataByEmployeeId(selectedEmpData.getId());
 
@@ -173,7 +173,21 @@ public class EmpDataDetilController extends BaseController {
         this.listPersonAchievement = listPersonAchievement;
     }
 
-    
+     @PreDestroy
+    public void cleanAndExit() {
+        empDataService=null;
+        selectedEmpData=null;
+        listJabatanSpesifikasi=null;
+        jabatanDeskripsis=null;
+        listCareerHistory=null;
+        id=null;
+        empCareerHistoryService=null;
+        personalDisciplineService=null;
+        listPersonalDiscipline=null;
+        empPersonAchievementService=null;
+        listPersonAchievement=null;
+        
+    }
     
 
 }

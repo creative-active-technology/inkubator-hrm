@@ -14,13 +14,10 @@ import com.inkubator.webcore.util.FacesIO;
 import com.inkubator.webcore.util.FacesUtil;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Locale;
-import java.util.ResourceBundle;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
-import javax.servlet.ServletContext;
 import org.apache.commons.lang3.StringUtils;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
@@ -71,7 +68,7 @@ public class ImageBioDataStreamerController extends BaseController {
             InputStream is = null;
             try {
                 String url = bioDataService.getEntiyByPK(Long.parseLong(bioId)).getPathFoto();
-                System.out.println(" hahahahha");
+              
                 if(url==null|| url.isEmpty()){
                     url=facesIO.getPathUpload()+"no_image.png";
                 }

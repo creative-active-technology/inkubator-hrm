@@ -21,8 +21,8 @@
                         <p:graphicImage library="images" name="employee-rotation.png" height="36" width="36" />
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Daftar Rotasi Karyawan" styleClass="header_big" />
-                                <p:outputLabel value="Data Rotasi Karyawan dari Aplikasi" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['employeerotation.employee_rotation']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['employeerotation.employee_rotation_header']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -70,7 +70,7 @@
                                       id="tableEmpDataId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="Data Karyawan" styleClass="label_hrm"/>
+                                <h:outputText value="#{appmsg['employeerotation.list_employee_rotation']}" styleClass="label_hrm"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 25px">
                                 <f:facet name="header">  

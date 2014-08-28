@@ -62,7 +62,7 @@ public class PaySalaryGradeFormController extends BaseController{
     @PostConstruct
     @Override
     public void initialization() {
-        System.out.println("INITTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT");
+       
         super.initialization();
         String param = FacesUtil.getRequestParameter("param");
         paySalaryGradeModel = new PaySalaryGradeModel();

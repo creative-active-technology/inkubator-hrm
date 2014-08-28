@@ -30,10 +30,10 @@
                                                 </h:panelGrid>
                                                 <p:separator/>-->
                         <h:panelGrid columns="4">
-                            <p:outputLabel value="Nama" styleClass="header_big" />
+                            <p:outputLabel value="#{appmsg['global.name']}" styleClass="header_big" />
                             <p:outputLabel value=":" styleClass="header_big" />
                             <p:inputText style="width: 450px" value="#{empBioSearchController.biodataName}"/>
-                            <p:commandButton value="Cari" icon="ui-icon-search" action="#{empBioSearchController.doSearch()}" update="listBioId"  id="cariId"/>
+                            <p:commandButton value="#{appmsg['global.search']}" icon="ui-icon-search" action="#{empBioSearchController.doSearch()}" update="listBioId"  id="cariId"/>
                         </h:panelGrid>
                         <p:focus for="cariId" />
                         <p:dataTable value="#{empBioSearchController.biodataToShow}" var="listBiodata" rowIndexVar="no" style="margin-top: 10px;margin-bottom: 10px" id="listBioId">
@@ -42,20 +42,20 @@
                                                         </f:facet>-->
                             <p:column style="text-align: center;width: 25px;max-width: 25px">
                                 <f:facet name="header">  
-                                    <h:outputText value="No." />
+                                    <h:outputText value="#{appmsg['global.number']}." />
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
 
                             <p:column> 
                                 <f:facet name="header">  
-                                    <h:outputText value="Nama" />
+                                    <h:outputText value="#{appmsg['global.name']}" />
                                 </f:facet>
                                 <p:outputLabel value=" #{listBiodata.firstName} #{listBiodata.lastName}" />
                             </p:column> 
                             <p:column > 
                                 <f:facet name="header">  
-                                    <h:outputText value="Tanggal Lahir" />
+                                    <h:outputText value="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_date']}" />
                                 </f:facet>
                                 <p:outputLabel value="#{listBiodata.dateOfBirth}" >
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
@@ -63,13 +63,13 @@
                             </p:column>
                             <p:column  > 
                                 <f:facet name="header">  
-                                    <h:outputText value="Email Address" />
+                                    <h:outputText value="#{appmsg['biodata.email_address']}" />
                                 </f:facet>
                                 <h:outputLabel value=" #{listBiodata.personalEmail}" />
                             </p:column>
                             <p:column style="text-align: center" > 
                                 <f:facet name="header">  
-                                    <h:outputText value="Aksi" />
+                                    <h:outputText value="#{appmsg['global.action']}" />
                                 </f:facet>
                                 <p:commandButton value="Select"  style="font-size: 11px!important" action="#{empBioSearchController.doSelect(listBiodata)}"/>
                             </p:column>
