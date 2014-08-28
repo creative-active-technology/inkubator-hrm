@@ -11,6 +11,7 @@ import com.inkubator.hrm.web.lazymodel.EmpRotasiLazyDataModel;
 import com.inkubator.hrm.web.search.EmpRotasiSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -105,4 +106,11 @@ public class EmpRotasiViewController extends BaseController {
         this.selectedEmpRotasi = selectedEmpRotasi;
     }
 
+    @PreDestroy
+    public void cleanAndExit() {
+        empRotasiSearchParameter = null;
+        empRotasiLazyDataModel = null;
+        empRotasiService = null;
+        selectedEmpRotasi = null;
+    }
 }
