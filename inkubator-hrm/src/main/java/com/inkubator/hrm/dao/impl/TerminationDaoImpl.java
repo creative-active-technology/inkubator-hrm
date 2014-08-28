@@ -37,8 +37,9 @@ public class TerminationDaoImpl extends IDAOImpl<Termination> implements Termina
     public List<Termination> getAllDataWithAllRelation(TerminationSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchTerminationByParam(searchParameter, criteria);
-        criteria.setFetchMode("EmpData", FetchMode.JOIN);
-        criteria.setFetchMode("TerminationType", FetchMode.JOIN);
+        criteria.setFetchMode("empData", FetchMode.JOIN);
+        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+        criteria.setFetchMode("terminationType", FetchMode.JOIN);
         criteria.addOrder(order);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
@@ -56,8 +57,9 @@ public class TerminationDaoImpl extends IDAOImpl<Termination> implements Termina
     public Termination getEntityByPkWithAllRelation(Long id) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("id", id));
-        criteria.setFetchMode("EmpData", FetchMode.JOIN);
-        criteria.setFetchMode("TerminationType", FetchMode.JOIN);
+        criteria.setFetchMode("empData", FetchMode.JOIN);
+        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+        criteria.setFetchMode("terminationType", FetchMode.JOIN);
         return (Termination) criteria.uniqueResult();
     }
 
