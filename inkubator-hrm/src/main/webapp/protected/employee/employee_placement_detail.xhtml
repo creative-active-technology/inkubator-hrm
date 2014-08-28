@@ -145,6 +145,18 @@
                                 <p:panelGrid style="width: 100%;margin-top: 10px;" styleClass="grid_border4">
                                     <p:row>
                                         <p:column style="width: 15%;background-color: #e1f0f0!important" >
+                                            <p:outputLabel  value="Salary" style="font-weight: bold"/>
+                                        </p:column>
+                                        <p:column style="width: 75%">
+                                            <p:outputLabel  value="#{empDataDetilController.selectedEmpData.basicSalary}" rendered="#{sec:areAnyGranted('SUPERVISOR_FINANCE_ROLE')}">
+                                                <f:converter converterId="salaryConverter" />
+                                            </p:outputLabel>
+                                            <p:outputLabel value="#.###.###" rendered="#{sec:areNotGranted('SUPERVISOR_FINANCE_ROLE')}"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <p:column style="width: 15%;background-color: #e1f0f0!important" >
                                             <p:outputLabel  value="Tanggal Mutasi" style="font-weight: bold"/>
                                         </p:column>
                                         <p:column style="width: 75%">
@@ -369,9 +381,9 @@
                                             <f:converter converterId="salaryConverter" />
                                         </p:outputLabel>
                                         <p:outputLabel value="#.###.###" rendered="#{sec:areNotGranted('SUPERVISOR_FINANCE_ROLE')}">
-                                           
+
                                         </p:outputLabel>
-                                        
+
                                     </p:column>
                                     <p:column > 
                                         <f:facet name="header">  
