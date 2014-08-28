@@ -5,7 +5,8 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:pe="http://primefaces.org/ui/extensions">
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:sec="http://www.springframework.org/security/tags">
     <h:head>
         <title>IGNORED</title>
     </h:head>
@@ -142,7 +143,7 @@
                         <p:tabView id="tabView" dynamic="true"  cache="true" styleClass="tabview_hrm" style="margin-top: 15px;margin-bottom: 15px;margin-left: 5px;margin-right: 5px" scrollable="true" >
                             <p:tab id="detailId" title="Detail" >  
                                 <p:panelGrid style="width: 100%;margin-top: 10px;" styleClass="grid_border4">
-                                     <p:row>
+                                    <p:row>
                                         <p:column style="width: 15%;background-color: #e1f0f0!important" >
                                             <p:outputLabel  value="Tanggal Mutasi" style="font-weight: bold"/>
                                         </p:column>
@@ -363,10 +364,14 @@
                                         <f:facet name="header">  
                                             <h:outputText value="Salary"/>
                                         </f:facet>
-                                        <p:outputLabel value="#{listCareerHistory.salary}" >
+
+                                        <p:outputLabel value="#{listCareerHistory.salary}" rendered="#{sec:areAnyGranted('SUPERVISOR_FINANCE_ROLE')}">
                                             <f:converter converterId="salaryConverter" />
+                                        </p:outputLabel>
+                                        <p:outputLabel value="#.###.###" rendered="#{sec:areNotGranted('SUPERVISOR_FINANCE_ROLE')}">
                                            
                                         </p:outputLabel>
+                                        
                                     </p:column>
                                     <p:column > 
                                         <f:facet name="header">  
