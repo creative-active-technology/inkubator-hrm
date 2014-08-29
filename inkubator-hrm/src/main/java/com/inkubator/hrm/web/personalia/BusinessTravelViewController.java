@@ -12,6 +12,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.exception.ConstraintViolationException;
 import org.primefaces.model.LazyDataModel;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -21,6 +22,7 @@ import com.inkubator.hrm.entity.BusinessTravel;
 import com.inkubator.hrm.entity.BusinessTravelComponent;
 import com.inkubator.hrm.service.BusinessTravelComponentService;
 import com.inkubator.hrm.service.BusinessTravelService;
+import com.inkubator.hrm.util.TerbilangUtil;
 import com.inkubator.hrm.web.lazymodel.BusinessTravelLazyDataModel;
 import com.inkubator.hrm.web.search.BusinessTravelSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
@@ -37,6 +39,7 @@ public class BusinessTravelViewController extends BaseController {
 
 	private Date printDate;
 	private Double totalAmount;
+	private String totalAmountTerbilang;
 	private List<BusinessTravelComponent> businessTravelComponents;
     private BusinessTravelSearchParameter searchParameter;
     private LazyDataModel<BusinessTravel> lazyDataBusinessTravel;
@@ -60,6 +63,7 @@ public class BusinessTravelViewController extends BaseController {
         lazyDataBusinessTravel = null;
         selectedBusinessTravel = null;
         totalAmount = null;
+        totalAmountTerbilang = null;
         businessTravelComponents = null;
         businessTravelComponentService = null;
         printDate = null;
@@ -126,6 +130,14 @@ public class BusinessTravelViewController extends BaseController {
 		this.printDate = printDate;
 	}
 
+	public String getTotalAmountTerbilang() {
+		return totalAmountTerbilang;
+	}
+
+	public void setTotalAmountTerbilang(String totalAmountTerbilang) {
+		this.totalAmountTerbilang = totalAmountTerbilang;
+	}
+
 	public void doSearch() {
         lazyDataBusinessTravel = null;
     }
@@ -151,6 +163,10 @@ public class BusinessTravelViewController extends BaseController {
 	        for(BusinessTravelComponent btc :businessTravelComponents){
 	        	totalAmount = totalAmount + btc.getPayByAmount();
 	        }
+	        TerbilangUtil terbilang = new TerbilangUtil(totalAmount);
+	        totalAmountTerbilang = terbilang.toString();
+	        String capitalizeWord = StringUtils.capitalize(StringUtils.substring(totalAmountTerbilang, 0, 1));
+	        totalAmountTerbilang = capitalizeWord + StringUtils.substring(totalAmountTerbilang, 1, totalAmountTerbilang.length());
 	        
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
