@@ -27,7 +27,7 @@
                         </h:panelGroup>
                     </h:panelGrid>
                     <p:separator/>
-                    <p:growl id="userViewGrowlId" globalOnly="true" showDetail="true" />
+                    <p:growl id="growlId" globalOnly="true" showDetail="true" />
                     <h:form id="jobTitleViewId">
                         <p:toolbar  style="margin-top: 10px">
                             <p:toolbarGroup align="left">
@@ -47,14 +47,14 @@
                                     </p:selectOneMenu>
                                     <p:inputText value="#{jabatanViewController.jabatanSearchParameter.parameter}" style="width: 250px" id="pencarianId" styleClass="isitext_hrm" 
                                                  label="#{appmsg['global.searching']}" title="#{appmsg['global.searching']}"/>
-                                    <p:commandButton value="#{appmsg['global.search']}" action="#{jabatanViewController.doSearch()}" style="width: 75px" update="tableJabatanId" icon="ui-icon-search"
+                                    <p:commandButton value="#{appmsg['global.search']}" action="#{jabatanViewController.doSearch()}" style="width: 75px" update="tableId" icon="ui-icon-search"
                                                      styleClass="label_button" title="#{appmsg['global.search']}" id="btnPencarianId" />
                                 </h:panelGrid>
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="4">
                                     <p:commandButton value="Export to XLS" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
-                                        <pe:exporter target="tableJabatanId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Job_Title"/>
+                                        <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Pay_Salary_Grade_Position"/>
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.close']}"  styleClass="label_button" action="#{roleViewController.doClose()}" title="#{appmsg['global.close']}" icon="ui-icon-home"
                                                      label="#{appmsg['global.close']}"/>
@@ -66,7 +66,7 @@
 
                         <p:dataTable  var="jabatanViewData"  value="#{jabatanViewController.lazyJabatanDataModel}" lazy="true" paginator="true" pageLinks="7" 
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
-                                      id="tableJabatanId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
                                 <h:outputText value="#{appmsg['user_view.header1']}" styleClass="label_hrm"/>
@@ -118,7 +118,7 @@
                                 <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
                                                   action="#{paySalaryGradePositionController.doEdit()}" >
                                     <f:setPropertyActionListener value="#{jabatanViewData}" target="#{paySalaryGradePositionController.selectedJabatan}" />
-                                    <p:ajax event="dialogReturn" listener="#{paySalaryGradePositionController.onDialogReturn}"  update="tableJabatanId,:userViewGrowlId"/>
+                                    <p:ajax event="dialogReturn" listener="#{paySalaryGradePositionController.onDialogReturn}"  update="tableId,:growlId"/>
                                 </p:commandButton> 
                             </p:column>                                        
                             <f:facet name="footer">
@@ -127,7 +127,7 @@
                                 <p:outputLabel value="Data" style="margin-left: 3px" styleClass="label_hrm"/>
                             </f:facet>  
                         </p:dataTable>
-                        <p:blockUI block="jobTitleViewId" trigger="tableJabatanId,btnPencarianId" >
+                        <p:blockUI block="jobTitleViewId" trigger="tableId,btnPencarianId" >
                             <h:panelGrid columns="2" styleClass="grid_no_border">
                                 <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
                                 <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
@@ -156,7 +156,7 @@
                                 <p:outputLabel value="#{jabatanViewController.selectedJabatan.name}" styleClass="isitext_hrm"/>
                             </h:panelGrid>
                             <p:separator/>
-                            <p:commandButton value="#{appmsg['global.yes']}" action="#{jabatanViewController.doDelete()}" update=":jobTitleViewId,:userViewGrowlId" id="yesId" title="#{appmsg['global.yes']}" styleClass="isitext_hrm"
+                            <p:commandButton value="#{appmsg['global.yes']}" action="#{jabatanViewController.doDelete()}" update=":jobTitleViewId,:growlId" id="yesId" title="#{appmsg['global.yes']}" styleClass="isitext_hrm"
                                              oncomplete="confirmDialogJobTitle.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
                             <p:commandButton value="#{appmsg['global.no']}" oncomplete="confirmDialogJobTitle.hide()" icon="ui-icon-close" title="#{appmsg['global.no']}"  styleClass="isitext_hrm"/>
 
