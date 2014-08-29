@@ -76,6 +76,8 @@ public class BusinessTravelDaoImpl extends IDAOImpl<BusinessTravel> implements B
 		criteria.add(Restrictions.eq("id", id));
 		criteria.setFetchMode("empData", FetchMode.JOIN);
 		criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+		criteria.setFetchMode("empData.golonganJabatan", FetchMode.JOIN);
+		criteria.setFetchMode("empData.golonganJabatan.pangkat", FetchMode.JOIN);
 		criteria.setFetchMode("travelZone", FetchMode.JOIN);
 		criteria.setFetchMode("travelType", FetchMode.JOIN);
 		return (BusinessTravel) criteria.uniqueResult();

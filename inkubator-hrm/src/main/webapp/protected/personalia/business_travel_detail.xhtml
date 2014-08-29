@@ -102,7 +102,11 @@
 	                                <p:outputLabel value="#{appmsg['businesstravel.total_amount']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 30%">
-	                            	<b><p:outputLabel value="#{businessTravelDetailController.totalAmount}" style="font-size:16px;" /></b>
+	                            	<b>
+	                            		<p:outputLabel value="#{businessTravelDetailController.totalAmount}">
+	                            			<f:convertNumber pattern="###,###" type="currency"/>
+	                            		</p:outputLabel>
+	                            	</b>
 	                            </p:column>
 	                        </p:row>	                        	                              
 	                 	</p:panelGrid>
@@ -127,7 +131,9 @@
 	                                <f:facet name="header">  
 	                                    <h:outputText value="#{appmsg['businesstravel.rate']}"/>
 	                                </f:facet>
-	                                <h:outputLabel value= "#{businessTravelComponentData.defaultRate}"/>
+	                                <h:outputLabel value= "#{businessTravelComponentData.defaultRate}">
+	                                	<f:convertNumber pattern="###,###" type="currency"/>
+	                                </h:outputLabel>
 	                            </p:column>
 	                            <p:column style="text-align: center;width: 10%">
 	                                <f:facet name="header">  
@@ -139,13 +145,17 @@
 	                                <f:facet name="header">  
 	                                    <h:outputText value="#{appmsg['businesstravel.earned_per_quatity']}"/>
 	                                </f:facet>
-	                                <h:outputLabel value= "#{businessTravelComponentData.earnedPerQuantity}"/>
+	                                <h:outputLabel value= "#{businessTravelComponentData.earnedPerQuantity}">
+	                                	<f:convertNumber pattern="###,###" type="currency"/>
+	                                </h:outputLabel>
 	                            </p:column>
 	                            <p:column style="text-align: center;width: 10%">
 	                                <f:facet name="header">  
 	                                    <h:outputText value="#{appmsg['businesstravel.pay_by_amount']}"/>
 	                                </f:facet>
-	                                <h:outputLabel value= "#{businessTravelComponentData.payByAmount}"/>
+	                                <h:outputLabel value= "#{businessTravelComponentData.payByAmount}">
+	                                	<f:convertNumber pattern="###,###" type="currency"/>
+	                                </h:outputLabel>
 	                            </p:column>
 	                    </p:dataTable>
 	                 	

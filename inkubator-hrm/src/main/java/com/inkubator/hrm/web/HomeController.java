@@ -15,6 +15,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 
+import org.apache.commons.lang3.StringUtils;
 import org.primefaces.model.chart.CartesianChartModel;
 import org.primefaces.model.chart.ChartSeries;
 import org.primefaces.model.chart.PieChartModel;
@@ -36,6 +37,9 @@ import com.inkubator.webcore.util.FacesUtil;
 @RequestScoped
 public class HomeController extends BaseController {
 
+	private Date lastUpdateEmpDistByGender;
+	private Date lastUpdateEmpDistByDepartment;
+	private Date lastUpdateEmpDistByAge;
 	private Long totalMale;
 	private Long totalFemale;
     private PieChartModel pieModel;
@@ -50,29 +54,13 @@ public class HomeController extends BaseController {
     @ManagedProperty(value = "#{departmentService}")
     private DepartmentService departmentService;
 
-    public void setRiwayatAksesService(RiwayatAksesService riwayatAksesService) {
-        this.riwayatAksesService = riwayatAksesService;
-    }    
-    
-    public void setEmpDataService(EmpDataService empDataService) {
-		this.empDataService = empDataService;
-	}
-
-	public void setDepartmentService(DepartmentService departmentService) {
-		this.departmentService = departmentService;
-	}
-
-	public CartesianChartModel getDistribusiKaryawanPerDepartment() {
-        return distribusiKaryawanPerDepartment;
-    }
-
-    public void setDistribusiKaryawanPerDepartment(CartesianChartModel distribusiKaryawanPerDepartment) {
-        this.distribusiKaryawanPerDepartment = distribusiKaryawanPerDepartment;
-    }
-
     @PostConstruct
     @Override
     public void initialization() {
+    	super.initialization();
+    	
+    	/** 
+    	 * saving process of User Access History */
         StringBuffer urlPath = FacesUtil.getRequest().getRequestURL();
         RiwayatAkses akses=new RiwayatAkses();
         akses.setDateAccess(new Date());
@@ -81,43 +69,57 @@ public class HomeController extends BaseController {
         try {
             riwayatAksesService.doSaveAccess(akses);
         } catch (Exception ex) {
-           LOGGER.error("Error", ex);
+           LOGGER.error("Error when saving User Access History", ex);
         }
-        super.initialization();
         
         distribusiKaryawanPerDepartment = new CartesianChartModel();
         pieModel = new PieChartModel();
-        totalMale = (long) 0;
-        totalFemale = (long) 0;
+        totalMale = new Long(0);
+        totalFemale = new Long(0);
         try {
+        	/**
+        	 * calculate employee distribution based on GENDER */
         	Map<String, Long> employeesByGender = empDataService.getTotalByGender();
         	totalFemale = employeesByGender.get("male");
         	totalMale = employeesByGender.get("female");
+        	lastUpdateEmpDistByGender = new Date(employeesByGender.get("lastUpdate"));
         	
+        	
+        	/**
+        	 * calculate employee distribution based on DEPARTMENT */
 	        Map<String, Long> employeesByDepartment = empDataService.getTotalByDepartment();	        
 	        int i = 0;
 	        for(Map.Entry<String, Long> entry : employeesByDepartment.entrySet()){
+	        	
+	        	/** 
+	        	 * only 8 department is allowed to show
+	        	 * atau jika entry key nya "lastUpdate" berarti itu akhir dari list */	        	 
+	            if(i == 8 || StringUtils.equals(entry.getKey(), "lastUpdate")){ 
+	            	break;
+	            }
+	            i++;
+	            
 	        	ChartSeries deptSeries = new ChartSeries();
 	            deptSeries.setLabel(entry.getKey());
 	            deptSeries.set("Department", entry.getValue());
-	            distribusiKaryawanPerDepartment.addSeries(deptSeries);
-	            
-	            i++;
-	            if(i == 8){ // only 8 department is allowed to show
-	            	break;
-	            }
+	            distribusiKaryawanPerDepartment.addSeries(deptSeries);	            
 	        }
+	        lastUpdateEmpDistByDepartment = new Date(employeesByDepartment.get("lastUpdate"));
 	
+	        
+	        /**
+        	 * calculate employee distribution based on AGE */
 	        Map<String, Long> employeesByAge = empDataService.getTotalByAge();	        
 	        pieModel.set("< 26", employeesByAge.get("lessThan26"));
 	        pieModel.set("25-30", employeesByAge.get("between26And30"));
 	        pieModel.set("31-35", employeesByAge.get("between31And35"));
 	        pieModel.set("36-40", employeesByAge.get("between36And40"));
 	        pieModel.set("> 40", employeesByAge.get("moreThan40"));
+	        lastUpdateEmpDistByAge = new Date(employeesByAge.get("lastUpdate"));
+	        
         
-        } catch (Exception e) {
-			
-			e.printStackTrace();
+        } catch (Exception e) {			
+        	LOGGER.error("Error when calculate employee distribution based on Gender, Age or Department", e);
 		}
         
         persentasiKehadiranPerWeek = new CartesianChartModel();
@@ -220,8 +222,32 @@ public class HomeController extends BaseController {
         presensiModel.addSeries(tanpaKeterangan);
 
     }
+    
+    public Date getLastUpdateEmpDistByGender() {
+		return lastUpdateEmpDistByGender;
+	}
 
-    public PieChartModel getPieModel() {
+	public void setLastUpdateEmpDistByGender(Date lastUpdateEmpDistByGender) {
+		this.lastUpdateEmpDistByGender = lastUpdateEmpDistByGender;
+	}
+	
+	public Date getLastUpdateEmpDistByDepartment() {
+		return lastUpdateEmpDistByDepartment;
+	}
+
+	public void setLastUpdateEmpDistByDepartment(Date lastUpdateEmpDistByDepartment) {
+		this.lastUpdateEmpDistByDepartment = lastUpdateEmpDistByDepartment;
+	}
+
+	public Date getLastUpdateEmpDistByAge() {
+		return lastUpdateEmpDistByAge;
+	}
+
+	public void setLastUpdateEmpDistByAge(Date lastUpdateEmpDistByAge) {
+		this.lastUpdateEmpDistByAge = lastUpdateEmpDistByAge;
+	}
+
+	public PieChartModel getPieModel() {
         return pieModel;
     }
 
@@ -269,4 +295,23 @@ public class HomeController extends BaseController {
 		this.totalFemale = totalFemale;
 	}
     
+	public void setRiwayatAksesService(RiwayatAksesService riwayatAksesService) {
+        this.riwayatAksesService = riwayatAksesService;
+    }    
+    
+    public void setEmpDataService(EmpDataService empDataService) {
+		this.empDataService = empDataService;
+	}
+
+	public void setDepartmentService(DepartmentService departmentService) {
+		this.departmentService = departmentService;
+	}
+
+	public CartesianChartModel getDistribusiKaryawanPerDepartment() {
+        return distribusiKaryawanPerDepartment;
+    }
+
+    public void setDistribusiKaryawanPerDepartment(CartesianChartModel distribusiKaryawanPerDepartment) {
+        this.distribusiKaryawanPerDepartment = distribusiKaryawanPerDepartment;
+    }
 }

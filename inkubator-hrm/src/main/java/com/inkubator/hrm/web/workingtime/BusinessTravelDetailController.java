@@ -47,7 +47,7 @@ public class BusinessTravelDetailController extends BaseController {
             selectedBusinessTravel = businessTravelService.getEntityByBusinessTravelNoWithDetail(id.substring(1));
             businessTravelComponents = businessTravelComponentService.getAllDataByBusinessTravelId(selectedBusinessTravel.getId());
             for(BusinessTravelComponent btc :businessTravelComponents){
-            	totalAmount = totalAmount + btc.getEarnedPerQuantity();
+            	totalAmount = totalAmount + btc.getPayByAmount();
             }
         } catch (Exception ex) {
             LOGGER.error("Error", ex);

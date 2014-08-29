@@ -39,7 +39,7 @@
 	                            	<p:inplace editor="true">
 	                            		<p:inputText value="#{businessTravelModel.businessTravelNo}" required="true" label="text"/>
 	                            	</p:inplace>
-	                            	<p:outputLabel value="Clik To Edit"  style="font-style: italic;margin-left: 10px;font-size: 11px!important"/>
+	                            	<p:outputLabel value="#{appmsg['global.click_to_edit']}"  style="font-style: italic;margin-left: 10px;font-size: 11px!important"/>
 	                            </p:column>
 	                        </p:row> 
 	                        <p:row>
@@ -68,7 +68,7 @@
 	                        </p:row>	                              
 	                 	</p:panelGrid>
 	                 	<div style="margin-bottom: 20px;margin-left: 5px">
-                            <p:outputLabel value="*)Lakukan perubahan code jika terjadi duplicate, tidak usah kembali ke halman sebelumnya" style="font-size: 10px"/>
+                            <p:outputLabel value="*)#{appmsg['businesstravel.business_number_flow_message']}" style="font-size: 10px"/>
                         </div>
 	                 	
 	                 	<p:dataTable  id="tableBusinessTravelComponentId" var="businessTravelComponentData"  value="#{businessTravelModel.businessTravelComponents}" lazy="false" paginator="false" pageLinks="7"
@@ -91,7 +91,9 @@
 	                                <f:facet name="header">  
 	                                    <h:outputText value="#{appmsg['businesstravel.rate']}"/>
 	                                </f:facet>
-	                                <h:outputLabel value= "#{businessTravelComponentData.defaultRate}"/>
+	                                <h:outputLabel value= "#{businessTravelComponentData.defaultRate}">
+	                                	<f:convertNumber pattern="###,###" type="currency"/>
+	                                </h:outputLabel>
 	                            </p:column>
 	                            <p:column style="text-align: center;width: 10%">
 	                                <f:facet name="header">  
@@ -114,11 +116,20 @@
 	                                <f:facet name="header">  
 	                                    <h:outputText value="#{appmsg['businesstravel.pay_by_amount']}"/>
 	                                </f:facet>
-	                                <h:outputLabel value= "#{businessTravelComponentData.payByAmount}"/>
+	                                <h:outputLabel value= "#{businessTravelComponentData.payByAmount}">
+	                                	<f:convertNumber pattern="###,###" type="currency"/>
+	                                </h:outputLabel>
 	                            </p:column>
 	                    </p:dataTable>
 	                    <h:panelGrid  style="text-align:right;" width="100%">
-	                    	<p:outputLabel id="totalAmountId" style="font-weight:bold;margin-right:20px;" value="#{appmsg['businesstravel.total_amount']} : #{businessTravelModel.totalAmount}" />
+	                    	<p:row>
+	                            <p:column>
+	                            	<p:outputLabel style="font-weight:bold;" value="#{appmsg['businesstravel.total_amount']} : "/>
+	                            	<p:outputLabel id="totalAmountId" style="font-weight:bold;margin-right:30px;" value="#{businessTravelModel.totalAmount}">
+			                    		<f:convertNumber pattern="###,###" type="currency"/>
+			                    	</p:outputLabel>
+	                            </p:column>
+	                        </p:row>
 	                    </h:panelGrid>
 	                 	
 	                 		                    
