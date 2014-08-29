@@ -263,18 +263,22 @@
 	                            </p:column>
 	                    	</p:dataTable>
 	                    	<h:panelGrid columns="2" width="100%">
-	                        	<p:outputLabel value="Total Biaya : "/>
+	                        	<p:outputLabel value="#{appmsg['businesstravel.total_amount']}"/>
 	                        	<h:panelGrid width="100%" style="text-align:right;">
 	                        		<p:outputLabel value="#{businessTravelViewController.totalAmount}" style="margin-right:4px;">
 	                        			<f:convertNumber pattern="###,###" type="currency"/>
 	                        		</p:outputLabel>
 	                        	</h:panelGrid>
 	                        </h:panelGrid>
+	                        <h:panelGrid width="100%">
+	                        	<p:outputLabel value="Terbilang : "/>
+	                        	<p:outputLabel value="#{businessTravelViewController.totalAmountTerbilang}"/>
+	                        </h:panelGrid>
 	                        <br/>    	
 	                    </div>
                     </h:form>
                     <div>
-                    	<p:commandButton value="Print" type="button" icon="ui-icon-print" style="display:block;margin-bottom: 20px">
+                    	<p:commandButton value="#{appmsg['global.print']}" type="button" icon="ui-icon-print" style="display:block;margin-bottom: 20px">
     						<p:printer target="formPrintId" />
 						</p:commandButton>
                     </div>
