@@ -1012,6 +1012,61 @@
                                     </p:commandButton>
                                 </h:panelGrid>
                             </p:tab> 
+                            <p:tab id="proyekId" title="#{appmsg['bioProject.bioProject']}">  
+                                <p:dataTable  id="tableBioProjectId" var="bioProjectData"  value="#{bioDataDetilController.bioProjects}" lazy="false" paginator="false"
+                                              style="margin-top: 10px;margin-bottom: 10px"
+                                              rowIndexVar="no">
+                                    <f:facet name="header">  
+                                        <h:outputText value="#{appmsg['bioProject.list_of_bioProject']}"/>
+                                    </f:facet> 
+                                    <p:column style="text-align: center;width: 3%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['global.number']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value="#{no+1}." />
+                                    </p:column>
+                                    <p:column sortBy="yearIn"  style="text-align: center;width: 17%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['bioProject.bioProject_code']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{bioProjectData.code}"/>
+                                    </p:column>  
+                                    <p:column sortBy="companyName"  style="width: 40%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['bioProject.bioProject_name']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{bioProjectData.name}"/>
+                                    </p:column>                                     
+                                    <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
+
+                                        <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
+                                                         style="font-size: 10px!important" update=":panelDialogBioProjectDetailId" 
+                                                         action="#{bioDataDetilController.doSelectBioProject()}" onclick="statusDialog.show()"  oncomplete="dialogDetailBioProject.show()">                        
+                                            <f:setPropertyActionListener value="#{bioProjectData}" target="#{bioDataDetilController.selectedBioProject}" />
+                                        </p:commandButton>
+                                        - 
+                                        <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+                                                         style="font-size: 10px!important" update=":panelDialogBioProjectConfirmId" 
+                                                         action="#{bioDataDetilController.doSelectBioProject()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmBioProject.show()">
+                                            <f:setPropertyActionListener value="#{bioProjectData}" target="#{bioDataDetilController.selectedBioProject}" />
+                                        </p:commandButton>
+                                        -
+                                        <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
+                                                         action="#{bioDataDetilController.doUpdateBioProject()}" >
+                                            <f:setPropertyActionListener value="#{bioProjectData}" target="#{bioDataDetilController.selectedBioProject}" />
+                                            <p:ajax event="dialogReturn" listener="#{bioDataDetilController.onDialogReturnBioProject}"  update="tableBioProjectId,:growlBioDetailFormId"/>
+                                        </p:commandButton>
+                                    </p:column>
+                                </p:dataTable>
+                                <h:panelGrid columns="1">
+                                    <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']} #{appmsg['bioProject.bioProject']}" label="#{appmsg['global.add']} #{appmsg['bioProject.bioProject']}" styleClass="label_button" icon="ui-icon-document" 
+                                                     actionListener="#{bioDataDetilController.doAddBioProject()}" ajax="true" immediate="true">
+                                        <p:ajax event="dialogReturn" listener="#{bioDataDetilController.onDialogReturnBioProject}"  update="tableBioProjectId,:growlBioDetailFormId"/>
+                                    </p:commandButton>
+                                </h:panelGrid>
+
+
+                            </p:tab>  
 
                         </p:tabView>
                         <p:separator/>
@@ -1863,6 +1918,67 @@
                     </p:panelGrid>
                 </p:dialog>
                 <!-- END Bio Spesifikasi Ability DIALOG -->
+                
+                <!-- START Bio Project DIALOG --> 
+                <p:dialog widgetVar="dialogConfirmBioProject" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                          appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
+                    <div align="center">
+                        <div align="center">
+                            <h:panelGrid columns="2" style="text-align: justify">
+                                <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
+                                <h:panelGroup>
+                                    <h:panelGrid style="text-align: center">
+                                        <p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
+                                    </h:panelGrid>
+                                </h:panelGroup>
+                            </h:panelGrid>
+                        </div>
+                        <h:panelGrid id="panelDialogBioProjectConfirmId"  columns="3">
+                            <p:outputLabel value="#{appmsg['bioProject.bioProject_name']}"  style="font-weight: bold"/>
+                            <p:outputLabel value=":"  style="font-weight: bold"/>
+                            <p:outputLabel value="#{bioDataDetilController.selectedBioProject.name}" styleClass="label_hrm"/>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:commandButton value="#{appmsg['global.yes']}" action="#{bioDataDetilController.doDeleteBioProject()}" update="formBioDetailFormId:tabView:tableBioProjectId,:growlBioDetailFormId"
+                                         oncomplete="dialogConfirmBioProject.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmBioProject.hide()" icon="ui-icon-close" />                     	
+                    </div>
+                </p:dialog>
+                <p:dialog widgetVar="dialogDetailBioProject" header="#{appmsg['bioProject.bioProject']}" styleClass="header_small_no_bold" width="900" modal="true" resizable="false" hideEffect="puff" 
+                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                    <p:panelGrid id="panelDialogBioProjectDetailId" style="width:100%;margin:5px;">
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['bioProject.bioProject_code']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedBioProject.code}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['bioProject.bioProject_name']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedBioProject.name}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['bioProject.bioProject_position']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedBioProject.position}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['bioProject.bioProject_start']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedBioProject.startDate}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['bioProject.bioProject_end']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedBioProject.endDate}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedBioProject.description}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <f:facet name="footer">
+                            <p:row>
+                                <p:column colspan="2"><p:outputLabel value="#{appmsg['menu.data_reference']} - #{appmsg['bioProject.bioProject']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
+                            </p:row>
+                        </f:facet>
+                    </p:panelGrid>
+                </p:dialog>
+                <!-- END Bio Project DIALOG -->
             </ui:define>
 
         </ui:composition>
