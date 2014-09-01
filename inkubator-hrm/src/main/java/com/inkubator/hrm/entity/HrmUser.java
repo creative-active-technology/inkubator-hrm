@@ -11,6 +11,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -39,6 +41,7 @@ public class HrmUser implements java.io.Serializable {
     private Integer isActive;
     private Integer isLock;
     private Integer isExpired;
+    private EmpData empData;
     private String createdBy;
     private String updatedBy;
     private Date createdOn;
@@ -55,7 +58,7 @@ public class HrmUser implements java.io.Serializable {
         this.id = id;
     }
 
-    public HrmUser(long id, String userId, String realName, String emailAddress, String password, Integer isActive, Integer isLock, Integer isExpired, String createdBy, String updatedBy, Date createdOn, Date updatedOn, Set<HrmUserRole> hrmUserRoles, Set<LoginHistory> loginHistories) {
+    public HrmUser(long id, String userId, String realName, String emailAddress, String password, Integer isActive, Integer isLock, Integer isExpired, EmpData empData, String createdBy, String updatedBy, Date createdOn, Date updatedOn, Set<HrmUserRole> hrmUserRoles, Set<LoginHistory> loginHistories) {
         this.id = id;
         this.userId = userId;
         this.realName = realName;
@@ -64,6 +67,7 @@ public class HrmUser implements java.io.Serializable {
         this.isActive = isActive;
         this.isLock = isLock;
         this.isExpired = isExpired;
+        this.empData = empData;
         this.createdBy = createdBy;
         this.updatedBy = updatedBy;
         this.createdOn = createdOn;
@@ -156,7 +160,17 @@ public class HrmUser implements java.io.Serializable {
         this.isExpired = isExpired;
     }
 
-    @Column(name = "created_by", length = 45)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "emp_data_id")
+    public EmpData getEmpData() {
+		return empData;
+	}
+
+	public void setEmpData(EmpData empData) {
+		this.empData = empData;
+	}
+
+	@Column(name = "created_by", length = 45)
     public String getCreatedBy() {
         return this.createdBy;
     }

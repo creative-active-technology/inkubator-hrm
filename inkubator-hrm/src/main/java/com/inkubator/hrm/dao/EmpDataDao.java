@@ -47,5 +47,9 @@ public interface EmpDataDao extends IDAO<EmpData> {
 	public List<EmpData> getAllDataByNameOrNik(String param);
 	
 	public EmpData getByIdWithDetail(long id);
+	
+	public List<EmpData> getAllDataNotExistInUserByParam(String param, int firstResult, int maxResults, Order order);
+	
+	public Long getTotalNotExistInUserByParam(String param);
 
 }

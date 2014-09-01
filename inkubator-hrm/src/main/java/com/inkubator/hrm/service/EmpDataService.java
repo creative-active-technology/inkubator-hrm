@@ -41,5 +41,9 @@ public interface EmpDataService extends IService<EmpData> {
     public EmpData getEntityByNik(String nik) throws Exception;
 
     public void doSaveRotasi(EmpData empData) throws Exception;
+    
+    public List<EmpData> getAllDataNotExistInUserByParam(String param, int firstResult, int maxResults, Order order) throws Exception;
+    
+    public Long getTotalNotExistInUserByParam(String param) throws Exception;
 
 }

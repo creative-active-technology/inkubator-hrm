@@ -25,6 +25,8 @@ public class UserModel implements Serializable {
     private Boolean isActive;
     private Boolean isExpired;
     private Boolean isLock;
+    private Long empDataId;
+    private String empDataFullName;
 
     public Long getId() {
         return id;
@@ -108,5 +110,21 @@ public class UserModel implements Serializable {
     public void setIsLock(Boolean isLock) {
         this.isLock = isLock;
     }
+
+	public Long getEmpDataId() {
+		return empDataId;
+	}
+
+	public void setEmpDataId(Long empDataId) {
+		this.empDataId = empDataId;
+	}
+
+	public String getEmpDataFullName() {
+		return empDataFullName;
+	}
+
+	public void setEmpDataFullName(String empDataFullName) {
+		this.empDataFullName = empDataFullName;
+	}
 
 }

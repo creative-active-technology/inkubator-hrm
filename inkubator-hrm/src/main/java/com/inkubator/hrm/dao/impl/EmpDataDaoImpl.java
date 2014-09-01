@@ -5,23 +5,29 @@
  */
 package com.inkubator.hrm.dao.impl;
 
-import com.inkubator.datacore.dao.impl.IDAOImpl;
-import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.dao.EmpDataDao;
-import com.inkubator.hrm.entity.EmpData;
-import com.inkubator.hrm.web.search.EmpDataSearchParameter;
 import java.util.Date;
 import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Subqueries;
 import org.hibernate.sql.JoinType;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
+
+import com.inkubator.datacore.dao.impl.IDAOImpl;
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.dao.EmpDataDao;
+import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.HrmUser;
+import com.inkubator.hrm.web.search.EmpDataSearchParameter;
 
 /**
  *
@@ -203,4 +209,44 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.add(Restrictions.eq("nik", nik));
         return (EmpData) criteria.uniqueResult();
     }
+
+	@Override
+	public List<EmpData> getAllDataNotExistInUserByParam(String param, int firstResult, int maxResults, Order order) {
+		DetachedCriteria subQuery = DetachedCriteria.forClass(HrmUser.class, "user").setProjection(Projections.property("user.id"));
+		subQuery.add(Property.forName("employee.id").eqProperty("user.empData.id"));		
+		
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass(), "employee");
+		criteria.add(Subqueries.notExists(subQuery));
+		criteria = doSearchNotExistInUserByParam(param, criteria);
+        
+		criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResults);
+        criteria.addOrder(order);
+		
+		return criteria.list();
+	}
+	
+	@Override
+	public Long getTotalNotExistInUserByParam(String param) {
+		DetachedCriteria subQuery = DetachedCriteria.forClass(HrmUser.class, "user").setProjection(Projections.property("user.id"));
+		subQuery.add(Property.forName("employee.id").eqProperty("user.empData.id"));		
+		
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass(), "employee");
+		criteria.add(Subqueries.notExists(subQuery));
+		criteria = doSearchNotExistInUserByParam(param, criteria);
+		
+		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
+	
+	private Criteria doSearchNotExistInUserByParam(String param, Criteria criteria){
+		criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
+		if(param != null){
+			Disjunction disjunction = Restrictions.disjunction();
+	        disjunction.add(Restrictions.like("bioData.firstName", param, MatchMode.ANYWHERE));
+	        disjunction.add(Restrictions.like("bioData.lastName", param, MatchMode.ANYWHERE));
+	        disjunction.add(Restrictions.like("nik", param, MatchMode.ANYWHERE));
+	        criteria.add(disjunction);
+		}
+        return criteria;
+	}
 }

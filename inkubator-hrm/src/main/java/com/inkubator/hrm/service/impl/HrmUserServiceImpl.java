@@ -12,9 +12,11 @@ import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.dao.HrmUserRoleDao;
 import com.inkubator.hrm.dao.PasswordHistoryDao;
+import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.HrmRole;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.HrmUserRole;
@@ -58,6 +60,8 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
     private JmsTemplate jmsTemplate;
     @Autowired
     private PasswordHistoryDao passwordHistoryDao;
+    @Autowired
+    private EmpDataDao empDataDao;
 
     @Override
     public HrmUser getEntiyByPK(String id) throws Exception {
@@ -86,6 +90,10 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
     public void update(HrmUser entity) throws Exception {
         HrmUser hrmUser = this.hrmUserDao.getEntiyByPK(entity.getId());
         hrmUser.getHrmUserRoles().clear();
+        if(entity.getEmpData() != null){
+    		EmpData empData = empDataDao.getEntiyByPK(entity.getEmpData().getId());
+    		hrmUser.setEmpData(empData);
+    	}
         hrmUser.setEmailAddress(entity.getEmailAddress());
         hrmUser.setIsActive(entity.getIsActive());
         hrmUser.setIsExpired(entity.getIsExpired());
@@ -255,7 +263,7 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public HrmUser getEntiyByPkWithDetail(long id) throws Exception {
-        HrmUser hrmUser = hrmUserDao.getEntiyByPK(id);
+        HrmUser hrmUser = hrmUserDao.getEntityByPkWithDetail(id);
         List<HrmRole> hrmRoles = new ArrayList<>();
         for (HrmUserRole hrmRole : this.hrmUserRoleDao.getByUserId(id)) {
             hrmRoles.add(hrmRole.getHrmRole());
@@ -280,6 +288,10 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void saveAndNotification(HrmUser hrmUser) throws Exception {
+    	if(hrmUser.getEmpData() != null){
+    		EmpData empData = empDataDao.getEntiyByPK(hrmUser.getEmpData().getId());
+    		hrmUser.setEmpData(empData);
+    	}    	
         final PasswordHistory passwordHistory = new PasswordHistory();
         passwordHistory.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
         passwordHistory.setPassword(AESUtil.getAESEncription(hrmUser.getPassword(), HRMConstant.KEYVALUE, HRMConstant.AES_ALGO));

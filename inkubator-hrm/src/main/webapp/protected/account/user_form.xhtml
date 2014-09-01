@@ -60,6 +60,20 @@
                                                  required="true" id="emailAddress" />
                                     <p:message for="emailAddress"/>
                                 </p:column>
+                                
+                                <p:column style="width: 13%;background-color: #e1f0f0 !important" >
+                                    <p:outputLabel  value="#{appmsg['businesstravel.employee']}" styleClass="label_hrm" for="employee"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:inputText  value="#{userFormController.userModel.empDataFullName}" styleClass="isitext_hrm" style="width: 75%" label="#{appmsg['businesstravel.employee']}"
+                                                  required="false" readonly="true" id="employee"/>
+                                    <p:commandButton  style="margin-left: 5px" icon="ui-icon-search" title="Cari" action="#{userFormController.doSearchEmployee()}" ajax="true" immediate="true">
+                                        <p:ajax event="dialogReturn" listener="#{userFormController.onDialogReturnEmployee}"  update="employee"/>
+                                    </p:commandButton>
+                                    <p:message for="employee"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>                                
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="#{appmsg['user_form.phone_number']}" styleClass="label_hrm" for="phone"/>
                                 </p:column>
@@ -67,6 +81,14 @@
                                     <p:inputText  value="#{userFormController.userModel.phoneNumber}" styleClass="isitext_hrm" style="width: 75%" label="#{appmsg['user_form.phone_number']}"
                                                   required="true" id="phone"/>
                                     <p:message for="phone"/>
+                                </p:column>
+                                
+                                <p:column style="width: 13%;background-color: #e1f0f0 !important" >
+                                    <p:outputLabel  value="#{appmsg['user_form.is_expired']}" styleClass="label_hrm" for="isExpired"/>
+                                </p:column>
+                                <p:column style="width: 37%" >
+                                    <p:selectBooleanButton value="#{userFormController.userModel.isExpired}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
+                                                           offIcon="ui-icon-close"  id="isExpired" styleClass="label_button" />
                                 </p:column>
                             </p:row>
                             <p:row>
@@ -82,15 +104,18 @@
                                     </p:password>
                                     <p:message for="password"/>
                                 </p:column>
-                                <p:column style="width: 13%;background-color: #e1f0f0 !important" >
-                                    <p:outputLabel  value="#{appmsg['user_form.is_expired']}" styleClass="label_hrm" for="isExpired"/>
+                                
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['user_form.is_active']}" styleClass="label_hrm" for="isActive"/>
                                 </p:column>
-                                <p:column style="width: 37%" >
-                                    <p:selectBooleanButton value="#{userFormController.userModel.isExpired}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
-                                                           offIcon="ui-icon-close"  id="isExpired" styleClass="label_button" />
+                                <p:column style="width: 37%">
+                                    <p:selectBooleanButton value="#{userFormController.userModel.isActive}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
+                                                           offIcon="ui-icon-close"  id="isActive" styleClass="label_button" />
                                 </p:column>
+
+
                             </p:row>
-                            <p:row>
+                            <p:row>                                
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="#{appmsg['user_form_check_password']}" styleClass="label_hrm" for="checkpassword"/>
                                 </p:column>
@@ -102,18 +127,6 @@
                                     </p:password>
                                     <p:message for="checkpassword"/>
                                 </p:column>
-                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="#{appmsg['user_form.is_active']}" styleClass="label_hrm" for="isActive"/>
-                                </p:column>
-                                <p:column style="width: 37%">
-                                    <p:selectBooleanButton value="#{userFormController.userModel.isActive}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
-                                                           offIcon="ui-icon-close"  id="isActive" styleClass="label_button" />
-                                </p:column>
-
-
-                            </p:row>
-                            <p:row>
-                                <p:column colspan="2" />
 
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="#{appmsg['user_form.is_lock']}" styleClass="label_hrm" for="isLock"/>
