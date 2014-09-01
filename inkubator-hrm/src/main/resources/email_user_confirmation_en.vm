@@ -13,7 +13,7 @@
             <br />
             ${headerInfo}
 
-            You can access this application at <a href="http://apps.incubatechnology.com/OPTIMA-HR/" target="_blank">http://apps.incubatechnology.com/OPTIMA-HR/</a><br/>
+            You can access this application at <a href="${applicationUrl}" target="_blank">${applicationUrl}</a><br/>
             Please fill with data bellow,<br/>
             <table  cellspacing="4" cellpadding="1" style="border: 1px solid white; width: 100%; margin-bottom: 10px;margin-top:10px;margin-left: -10px">
                
@@ -43,9 +43,9 @@ Your roles are :</br>
             Best Regards,
             <br/>
             <br/>
-            ADMINISTRATOR
+            ${ownerAdministrator}
         </div>
-        <div style="font-family:Trebuchet MS ;margin-top: 20px;font-weight: bold;color: black;padding: 3px 3px 3px 10px;background-image: linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -o-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -moz-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -webkit-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -ms-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -webkit-gradient(linear,left bottom,left topcolor-stop(0.68, rgb(114,185,215)));">Price Generator @PT. Indonesia Inkubator Teknologi
+        <div style="font-family:Trebuchet MS ;margin-top: 20px;font-weight: bold;color: black;padding: 3px 3px 3px 10px;background-image: linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -o-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -moz-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -webkit-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -ms-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -webkit-gradient(linear,left bottom,left topcolor-stop(0.68, rgb(114,185,215)));">${applicationName} @${ownerCompany}
         </div>
     </body>
 </html>
