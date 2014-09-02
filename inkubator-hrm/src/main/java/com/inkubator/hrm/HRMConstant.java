@@ -157,8 +157,8 @@ public class HRMConstant {
     public static final String BIO_INSURANCE_EDIT = "BIO_INSURANCE_EDIT";
     public static final String BIO_CONTACT_EDIT = "BIO_CONTACT_EDIT";
     public static final String BIO_SKILL_EDIT = "BIO_SKILL_EDIT";
-    public static final String TRAVEL_ADVANCE = "TRAVEL_ADVANCE";
-    public static final String REIMBERSMENT = "REIMBERSMENT";
+    public static final String BUSINESS_TRAVEL = "BUSINESS_TRAVEL";
+    public static final String REIMBURSEMENT = "REIMBURSEMENT";
     public static final String LOAN = "LOAN";
     public static final String APPROVAL_PROCESS = "APPROVAL_PROCESS";
     public static final String ON_APPROVE_INFO = "ON_APPROVE_INFO";
