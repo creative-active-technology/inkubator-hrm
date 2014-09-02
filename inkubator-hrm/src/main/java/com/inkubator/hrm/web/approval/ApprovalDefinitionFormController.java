@@ -33,7 +33,7 @@ import org.primefaces.event.SelectEvent;
 @ManagedBean(name = "approvalDefinitionFormController")
 @ViewScoped
 public class ApprovalDefinitionFormController extends BaseController {
-
+    
     private ApprovalDefinitionModel approvalDefinitionModel;
     private Boolean onBehalf;
     private Boolean onProcess;
@@ -42,9 +42,10 @@ public class ApprovalDefinitionFormController extends BaseController {
     private Boolean approverTypeDepartment;
     private Boolean onBehalfApproverTypeIndividual;
     private Boolean onBehalfApproverTypePosition;
+    private Boolean onAutoApprove;
     @ManagedProperty(value = "#{approvalDefinitionService}")
     private ApprovalDefinitionService approvalDefinitionService;
-
+    
     @PostConstruct
     @Override
     public void initialization() {
@@ -57,30 +58,33 @@ public class ApprovalDefinitionFormController extends BaseController {
         approverTypeDepartment = Boolean.TRUE;
         onBehalfApproverTypeIndividual = Boolean.TRUE;
         onBehalfApproverTypePosition = Boolean.TRUE;
+        onAutoApprove = Boolean.TRUE;
+        approvalDefinitionModel.setAutoApproveOnDelay(onAutoApprove);
+        approvalDefinitionModel.setEscalateOnDelay(!onAutoApprove);
 //        onBehalfApproverTypeDepartment = Boolean.TRUE;
 
     }
-
+    
     public ApprovalDefinitionModel getApprovalDefinitionModel() {
         return approvalDefinitionModel;
     }
-
+    
     public void setApprovalDefinitionModel(ApprovalDefinitionModel approvalDefinitionModel) {
         this.approvalDefinitionModel = approvalDefinitionModel;
     }
-
+    
     public Boolean getOnBehalf() {
         return onBehalf;
     }
-
+    
     public void setOnBehalf(Boolean onBehalf) {
         this.onBehalf = onBehalf;
     }
-
+    
     public void onChange() {
         onBehalf = approvalDefinitionModel.getAllowOnBehalf();
     }
-
+    
     public void onProcessCange() {
         String approvalProcess = approvalDefinitionModel.getProcessType();
         if (StringUtils.equalsIgnoreCase(approvalProcess, HRMConstant.ON_APPROVE_INFO)
@@ -91,33 +95,33 @@ public class ApprovalDefinitionFormController extends BaseController {
             onProcess = Boolean.FALSE;
         }
     }
-
+    
     public void onAppoverChange() {
         String apporverType = approvalDefinitionModel.getApproverType();
         if (StringUtils.equalsIgnoreCase(apporverType, HRMConstant.APPROVAL_TYPE_INDIVIDUAL)) {
             approverTypeIndividual = Boolean.FALSE;
             approverTypePosition = Boolean.TRUE;
             approverTypeDepartment = Boolean.TRUE;
-
+            
         }
         if (StringUtils.equalsIgnoreCase(apporverType, HRMConstant.APPROVAL_TYPE_DEPARTMENT)) {
             approverTypeIndividual = Boolean.TRUE;
             approverTypePosition = Boolean.TRUE;
             approverTypeDepartment = Boolean.FALSE;
         }
-
+        
         if (StringUtils.equalsIgnoreCase(apporverType, HRMConstant.APPROVAL_TYPE_POSITION)) {
             approverTypeIndividual = Boolean.TRUE;
             approverTypePosition = Boolean.FALSE;
             approverTypeDepartment = Boolean.TRUE;
         }
-
+        
         approvalDefinitionModel.setHrmUserByApproverIndividualId(null);
         approvalDefinitionModel.setHrmUserByApproverIndividualName("");
         approvalDefinitionModel.setJabatanByApproverPositionId(null);
         approvalDefinitionModel.setJabatanByApproverPositionName("");
     }
-
+    
     public void onBehalfAppoverChange() {
         String apporverType = approvalDefinitionModel.getOnBehalfType();
         if (StringUtils.equalsIgnoreCase(apporverType, HRMConstant.APPROVAL_TYPE_INDIVIDUAL)) {
@@ -130,7 +134,7 @@ public class ApprovalDefinitionFormController extends BaseController {
             onBehalfApproverTypePosition = Boolean.TRUE;
 //            onBehalfApproverTypeDepartment = Boolean.FALSE;
         }
-
+        
         if (StringUtils.equalsIgnoreCase(apporverType, HRMConstant.APPROVAL_TYPE_POSITION)) {
             onBehalfApproverTypeIndividual = Boolean.TRUE;
             onBehalfApproverTypePosition = Boolean.FALSE;
@@ -140,41 +144,41 @@ public class ApprovalDefinitionFormController extends BaseController {
         approvalDefinitionModel.setHrmUserByOnBehalfIndividualName("");
         approvalDefinitionModel.setJabatanByOnBehalfPositionId(null);
         approvalDefinitionModel.setJabatanByOnBehalfPositionName("");
-
+        
     }
-
+    
     public Boolean getOnProcess() {
         return onProcess;
     }
-
+    
     public void setOnProcess(Boolean onProcess) {
         this.onProcess = onProcess;
     }
-
+    
     public Boolean getApproverTypeIndividual() {
         return approverTypeIndividual;
     }
-
+    
     public void setApproverTypeIndividual(Boolean approverTypeIndividual) {
         this.approverTypeIndividual = approverTypeIndividual;
     }
-
+    
     public Boolean getApproverTypePosition() {
         return approverTypePosition;
     }
-
+    
     public void setApproverTypePosition(Boolean approverTypePosition) {
         this.approverTypePosition = approverTypePosition;
     }
-
+    
     public Boolean getApproverTypeDepartment() {
         return approverTypeDepartment;
     }
-
+    
     public void setApproverTypeDepartment(Boolean approverTypeDepartment) {
         this.approverTypeDepartment = approverTypeDepartment;
     }
-
+    
     public String doSave() {
         ApprovalDefinition approvalDefinition = getEntityFromView(approvalDefinitionModel);
         try {
@@ -190,9 +194,9 @@ public class ApprovalDefinitionFormController extends BaseController {
         }
         return null;
     }
-
+    
     public ApprovalDefinition getEntityFromView(ApprovalDefinitionModel approvalDefinitionModel) {
-     
+        
         ApprovalDefinition approvalDefinition = new ApprovalDefinition();
         if (approvalDefinitionModel.getId() != null) {
             approvalDefinition.setId(approvalDefinitionModel.getId());
@@ -205,19 +209,19 @@ public class ApprovalDefinitionFormController extends BaseController {
         if (approvalDefinitionModel.getHrmUserByOnBehalfIndividualId() != null) {
             approvalDefinition.setHrmUserByOnBehalfIndividual(new HrmUser(approvalDefinitionModel.getHrmUserByOnBehalfIndividualId()));
         }
-
+        
         if (approvalDefinitionModel.getJabatanByApproverPositionId() != null) {
             approvalDefinition.setJabatanByApproverPosition(new Jabatan(approvalDefinitionModel.getJabatanByApproverPositionId()));
         }
-
+        
         if (approvalDefinitionModel.getJabatanByOnBehalfPositionId() != null) {
             approvalDefinition.setJabatanByOnBehalfPosition(new Jabatan(approvalDefinitionModel.getJabatanByOnBehalfPositionId()));
         }
-
+        
         if (approvalDefinitionModel.getMinApprover() != null) {
             approvalDefinition.setMinApprover(approvalDefinitionModel.getMinApprover());
         }
-
+        
         if (approvalDefinitionModel.getMinRejector() != null) {
             approvalDefinition.setMinRejector(approvalDefinitionModel.getMinRejector());
         }
@@ -227,11 +231,14 @@ public class ApprovalDefinitionFormController extends BaseController {
         }
         approvalDefinition.setProcessType(approvalDefinitionModel.getProcessType());
         approvalDefinition.setSequence(approvalDefinitionModel.getSequence());
+        approvalDefinition.setAutoApproveOnDelay(approvalDefinitionModel.getAutoApproveOnDelay());
+        approvalDefinition.setEscalateOnDelay(approvalDefinitionModel.getEscalateOnDelay());
+        approvalDefinition.setDelayTime(approvalDefinitionModel.getDelayTime());
         return approvalDefinition;
     }
-
+    
     public void doSearchJabatan() {
-   
+        
         Map<String, Object> options = new HashMap<>();
         options.put("modal", false);
         options.put("draggable", true);
@@ -244,33 +251,33 @@ public class ApprovalDefinitionFormController extends BaseController {
 //        dataToSend.put("param", dataIsi);
         RequestContext.getCurrentInstance().openDialog("jabatan_data_search", options, null);
     }
-
+    
     public void onDialogReturnJabatan(SelectEvent event) {
         Jabatan jabatan = (Jabatan) event.getObject();
         approvalDefinitionModel.setJabatanByApproverPositionId(jabatan.getId());
         approvalDefinitionModel.setJabatanByApproverPositionName(jabatan.getName());
-
+        
     }
-
+    
     public void onDialogReturnJabatanBehalf(SelectEvent event) {
         Jabatan jabatan = (Jabatan) event.getObject();
         approvalDefinitionModel.setJabatanByOnBehalfPositionId(jabatan.getId());
         approvalDefinitionModel.setJabatanByOnBehalfPositionName(jabatan.getName());
-
+        
     }
-
+    
     public Boolean getOnBehalfApproverTypeIndividual() {
         return onBehalfApproverTypeIndividual;
     }
-
+    
     public void setOnBehalfApproverTypeIndividual(Boolean onBehalfApproverTypeIndividual) {
         this.onBehalfApproverTypeIndividual = onBehalfApproverTypeIndividual;
     }
-
+    
     public Boolean getOnBehalfApproverTypePosition() {
         return onBehalfApproverTypePosition;
     }
-
+    
     public void setOnBehalfApproverTypePosition(Boolean onBehalfApproverTypePosition) {
         this.onBehalfApproverTypePosition = onBehalfApproverTypePosition;
     }
@@ -284,5 +291,27 @@ public class ApprovalDefinitionFormController extends BaseController {
 //    }
     public void setApprovalDefinitionService(ApprovalDefinitionService approvalDefinitionService) {
         this.approvalDefinitionService = approvalDefinitionService;
+    }
+    
+    public String doBack() {
+        return "/protected/approval/approval_definition_view.htm?faces-redirect=true";
+    }
+    
+    public Boolean getOnAutoApprove() {
+        return onAutoApprove;
+    }
+    
+    public void setOnAutoApprove(Boolean onAutoApprove) {
+        this.onAutoApprove = onAutoApprove;
+    }
+    
+    public void autoApproveOnDelay() {
+//        onAutoApprove = Boolean.FALSE;
+//        approvalDefinitionModel.setAutoApproveOnDelay(onAutoApprove);
+        approvalDefinitionModel.setEscalateOnDelay(approvalDefinitionModel.getAutoApproveOnDelay());
+    }
+    
+    public void escalateOnDelay() {
+        approvalDefinitionModel.setAutoApproveOnDelay(approvalDefinitionModel.getEscalateOnDelay());
     }
 }

@@ -119,6 +119,35 @@
                                     <p:outputLabel value="#{approvalDefinitionDetilController.selectedApprovalDefinition.jabatanByOnBehalfPosition.name}" />
                                 </p:column>
                             </p:row>
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Auto Approve On Delay" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:outputLabel  value="#{approvalDefinitionDetilController.selectedApprovalDefinition.autoApproveOnDelay}" >
+                                        <f:converter converterId="booleanMessageConverter" />
+                                    </p:outputLabel>
+                                </p:column>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Escalate On Delay" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%" >
+                                    <p:outputLabel value="#{approvalDefinitionDetilController.selectedApprovalDefinition.escalateOnDelay}" >
+                                        <f:converter converterId="booleanMessageConverter" />
+                                    </p:outputLabel>
+                                </p:column>
+                            </p:row>
+                             <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Delay Time" style="font-weight: bold"/>
+                                </p:column>
+                                 <p:column style="width: 37%" colspan="3">
+                                     <p:outputLabel  value="#{approvalDefinitionDetilController.selectedApprovalDefinition.delayTime}" >
+                                     <p:outputLabel  value="" >
+                                    </p:outputLabel>
+                                </p:column>
+                                
+                            </p:row>
 
                         </p:panelGrid>
 

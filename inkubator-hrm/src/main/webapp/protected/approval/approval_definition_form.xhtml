@@ -195,7 +195,37 @@
                                     <p:message for="onBehalfPositionId"/>
                                 </p:column>
                             </p:row>
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Auto Approve On Delay" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:selectBooleanButton value="#{approvalDefinitionFormController.approvalDefinitionModel.autoApproveOnDelay}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
+                                                           offIcon="ui-icon-close"  id="approveOnDelay" styleClass="label_button" >
+                                        <p:ajax listener="#{approvalDefinitionFormController.autoApproveOnDelay()}" immediate="true" update="approveOnDelay,escalateOnDelay"/>
+                                    </p:selectBooleanButton>
+                                </p:column>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Escalate On Delay" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%" >
 
+                                    <p:selectBooleanButton value="#{approvalDefinitionFormController.approvalDefinitionModel.escalateOnDelay}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
+                                                           offIcon="ui-icon-close"  id="escalateOnDelay" styleClass="label_button" >
+                                        <p:ajax listener="#{approvalDefinitionFormController.escalateOnDelay()}" immediate="true" update="approveOnDelay,escalateOnDelay"/>
+                                    </p:selectBooleanButton>
+
+                                </p:column>
+                            </p:row>
+                            <p:row>
+
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Delay Time" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%"  colspan="3">
+                                    <p:spinner min="1" max="100" size="2" stepFactor="1" value="#{approvalDefinitionFormController.approvalDefinitionModel.delayTime}"/>
+                                </p:column>
+                            </p:row>
                         </p:panelGrid>
 
                         <p:separator/>
@@ -209,7 +239,7 @@
                                              process="@this" icon="ui-icon-refresh" id="cleareId"  styleClass="label_button"  style="margin-right: 5px" update="approvalFormId">  
                                 <p:resetInput target="approvalFormId" />  
                             </p:commandButton>
-                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{userFormController.doBack()}" immediate="true"
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{approvalDefinitionFormController.doBack()}" immediate="true"
                                              styleClass="label_button"/>
                             <!--</p:panel>-->
                         </div>
