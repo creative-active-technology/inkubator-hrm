@@ -36,6 +36,12 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public class NotificationUserMessagesListener extends IServiceImpl implements MessageListener {
 
+	private String applicationUrl;
+	private String applicationName;
+	private String ownerEmail;
+	private String ownerCompany;
+	private String ownerAdministrator;
+	
     @Autowired
     private JsonConverter jsonConverter;
     @Autowired
@@ -55,13 +61,13 @@ public class NotificationUserMessagesListener extends IServiceImpl implements Me
             if (Objects.equals(passwordHistory.getEmailNotification(), HRMConstant.EMAIL_NOTIFICATION_NOT_YET_SEND)) {
                 VelocityTempalteModel vtm = new VelocityTempalteModel();
                 List<String> toSend = new ArrayList<>();
-                List<String> toSentCC = new ArrayList<>();
-                vtm.setFrom("noreplaypriceoffer@gmail.com");
+                List<String> toSentCC = new ArrayList<String>();
+                vtm.setFrom(ownerEmail);
                 toSend.add(passwordHistory.getEmailAddress());
-                toSentCC.add("rizal2_dhfr@yahoo.com");
                 vtm.setTo(toSend.toArray(new String[toSend.size()]));
                 vtm.setCc(toSentCC.toArray(new String[toSentCC.size()]));
-                vtm.setSubject("User Notifications");
+                vtm.setBcc(toSentCC.toArray(new String[toSentCC.size()]));
+                vtm.setSubject("User Notification");
                 Map maptoSend = new HashMap();
                 if (passwordHistory.getLocalId().equals("en")) {
                     vtm.setTemplatePath("email_user_confirmation_en.vm");
@@ -95,6 +101,10 @@ public class NotificationUserMessagesListener extends IServiceImpl implements Me
                 List<String> dataRole = gson.fromJson(passwordHistory.getListRole(), token.getType());
                 maptoSend.put("role", dataRole);
                 maptoSend.put("user", passwordHistory);
+                maptoSend.put("ownerAdministrator", ownerAdministrator);
+                maptoSend.put("ownerCompany", ownerCompany);
+                maptoSend.put("applicationUrl", applicationUrl);
+                maptoSend.put("applicationName", applicationName);
                 velocityTemplateSender.sendMail(vtm, maptoSend);
                 passwordHistory.setEmailNotification(1);
                 passwordHistory.setPassword(HashingUtils.getHashSHA256(passwordHistory.getPassword()));
@@ -104,4 +114,46 @@ public class NotificationUserMessagesListener extends IServiceImpl implements Me
             LOGGER.error("Error", ex);
         }
     }
+
+	public String getApplicationUrl() {
+		return applicationUrl;
+	}
+
+	public void setApplicationUrl(String applicationUrl) {
+		this.applicationUrl = applicationUrl;
+	}
+
+	public String getApplicationName() {
+		return applicationName;
+	}
+
+	public void setApplicationName(String applicationName) {
+		this.applicationName = applicationName;
+	}
+
+	public String getOwnerEmail() {
+		return ownerEmail;
+	}
+
+	public void setOwnerEmail(String ownerEmail) {
+		this.ownerEmail = ownerEmail;
+	}
+
+	public String getOwnerCompany() {
+		return ownerCompany;
+	}
+
+	public void setOwnerCompany(String ownerCompany) {
+		this.ownerCompany = ownerCompany;
+	}
+
+	public String getOwnerAdministrator() {
+		return ownerAdministrator;
+	}
+
+	public void setOwnerAdministrator(String ownerAdministrator) {
+		this.ownerAdministrator = ownerAdministrator;
+	}
+    
+    
 }

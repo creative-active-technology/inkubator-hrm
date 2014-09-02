@@ -12,15 +12,8 @@ import org.springframework.stereotype.Repository;
 
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.SpecificationAbilityDao;
-import com.inkubator.hrm.entity.JabatanSpesifikasi;
 import com.inkubator.hrm.entity.SpecificationAbility;
 import com.inkubator.hrm.web.search.SpecificationAbilitySearchParameter;
-import org.hibernate.FetchMode;
-import org.hibernate.criterion.CriteriaSpecification;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Property;
-import org.hibernate.criterion.Subqueries;
-import org.hibernate.sql.JoinType;
 
 /**
 *

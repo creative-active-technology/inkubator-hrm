@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/dialog_layout.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <h:form id="userEmployeeFormId" >
+                    <div id="box_bg" style="margin: 10px">
+                        <h:panelGrid columns="4">
+                            <p:outputLabel value="NIK / #{appmsg['global.name']}" styleClass="header_big" />
+                            <p:outputLabel value=":" styleClass="header_big" />
+                            <p:inputText id="searchId" style="width: 450px" value="#{userEmployeeSearchController.param}"/>
+                            <p:commandButton value="#{appmsg['global.search']}" icon="ui-icon-search" action="#{userEmployeeSearchController.doSearch()}" update="tableEmpDataId"/>
+                        </h:panelGrid>
+                        <p:focus for="searchId" />
+                        <p:dataTable  id="tableEmpDataId" var="empData"  value="#{userEmployeeSearchController.lazyDataEmpData}" lazy="true" paginator="true" pageLinks="7"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <p:column style="text-align: center;width: 25px;max-width: 25px">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}" />
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+
+                            <p:column sortBy="nik"> 
+                                <f:facet name="header">  
+                                    <h:outputText value="NIK" />
+                                </f:facet>
+                                <p:outputLabel value=" #{empData.nik}" />
+                            </p:column> 
+                            <p:column sortBy="bioData.firstName"> 
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.name']}" />
+                                </f:facet>
+                                <p:outputLabel value=" #{empData.bioData.fullName}" />
+                            </p:column>
+                            <p:column style="text-align: center" > 
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.action']}" />
+                                </f:facet>
+                                <p:commandButton value="#{appmsg['global.select']}"  style="font-size: 11px!important" action="#{userEmployeeSearchController.doSelect(empData)}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </div>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

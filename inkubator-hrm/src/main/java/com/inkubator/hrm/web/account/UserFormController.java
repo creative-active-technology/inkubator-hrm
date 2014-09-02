@@ -5,8 +5,28 @@
  */
 package com.inkubator.hrm.web.account;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+
+import org.apache.commons.lang3.StringUtils;
+import org.primefaces.context.RequestContext;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.model.DualListModel;
+
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.HrmRole;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.HrmUserRole;
@@ -19,18 +39,6 @@ import com.inkubator.hrm.web.model.UserModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
-import org.apache.commons.lang3.StringUtils;
-import org.primefaces.model.DualListModel;
 
 /**
  *
@@ -49,19 +57,7 @@ public class UserFormController extends BaseController {
     private PasswordComplexity passwordComplexity;
     @ManagedProperty(value = "#{passwordComplexityService}")
     private PasswordComplexityService passwordComplexityService;
-     private Boolean isEdit;
-
-    public void setPasswordComplexityService(PasswordComplexityService passwordComplexityService) {
-        this.passwordComplexityService = passwordComplexityService;
-    }
-   
-    public void setHrmUserService(HrmUserService hrmUserService) {
-        this.hrmUserService = hrmUserService;
-    }
-
-    public void setHrmRoleService(HrmRoleService hrmRoleService) {
-        this.hrmRoleService = hrmRoleService;
-    }
+    private Boolean isEdit;
 
     @PostConstruct
     @Override
@@ -89,6 +85,27 @@ public class UserFormController extends BaseController {
             LOGGER.error("Error", ex);
         }
     }
+    
+    @PreDestroy
+    public void cleanAndExit() {
+        dualListModel = null;
+        hrmUserService = null;
+        hrmRoleService = null;
+        passwordComplexity = null;
+        passwordComplexityService = null;
+    }
+    
+    public void setPasswordComplexityService(PasswordComplexityService passwordComplexityService) {
+        this.passwordComplexityService = passwordComplexityService;
+    }
+   
+    public void setHrmUserService(HrmUserService hrmUserService) {
+        this.hrmUserService = hrmUserService;
+    }
+
+    public void setHrmRoleService(HrmRoleService hrmRoleService) {
+        this.hrmRoleService = hrmRoleService;
+    }
 
     public DualListModel<HrmRole> getDualListModel() {
         return dualListModel;
@@ -104,6 +121,22 @@ public class UserFormController extends BaseController {
 
     public void setUserModel(UserModel userModel) {
         this.userModel = userModel;
+    }
+    
+    public Boolean getIsEdit() {
+        return isEdit;
+    }
+
+    public void setIsEdit(Boolean isEdit) {
+        this.isEdit = isEdit;
+    }
+    
+    public PasswordComplexity getPasswordComplexity() {
+        return passwordComplexity;
+    }
+
+    public void setPasswordComplexity(PasswordComplexity passwordComplexity) {
+        this.passwordComplexity = passwordComplexity;
     }
 
     public String doBack() {
@@ -189,13 +222,21 @@ public class UserFormController extends BaseController {
         }
         return null;
     }
-
-    public Boolean getIsEdit() {
-        return isEdit;
+    
+    public void doSearchEmployee() {        
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", false);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 700);
+        options.put("contentHeight", 350);
+        RequestContext.getCurrentInstance().openDialog("user_employee_search", options, null);
     }
 
-    public void setIsEdit(Boolean isEdit) {
-        this.isEdit = isEdit;
+    public void onDialogReturnEmployee(SelectEvent event) {
+        EmpData empData = (EmpData) event.getObject();
+        userModel.setEmpDataId(empData.getId());
+        userModel.setEmpDataFullName(empData.getNikWithFullName());
     }
 
     public HrmUser getEntityFromView(UserModel userModel) {
@@ -225,6 +266,9 @@ public class UserFormController extends BaseController {
         hrmUser.setPhoneNumber(userModel.getPhoneNumber());
         hrmUser.setRealName(userModel.getRealName());
         hrmUser.setUserId(userModel.getUserId());
+        if(userModel.getEmpDataId() != null){
+        	hrmUser.setEmpData(new EmpData(userModel.getEmpDataId()));
+        }
         return hrmUser;
     }
 
@@ -251,25 +295,10 @@ public class UserFormController extends BaseController {
         us.setPhoneNumber(hrmUser.getPhoneNumber());
         us.setRealName(hrmUser.getRealName());
         us.setUserId(hrmUser.getUserId());
+        if(hrmUser.getEmpData() != null){
+	        us.setEmpDataId(hrmUser.getEmpData().getId());
+	        us.setEmpDataFullName(hrmUser.getEmpData().getNikWithFullName());
+        }
         return us;
-    }
-
-    @PreDestroy
-    public void cleanAndExit() {
-        dualListModel = null;
-        hrmUserService = null;
-        hrmRoleService = null;
-        passwordComplexity = null;
-        passwordComplexityService = null;
-    }
-
-    public PasswordComplexity getPasswordComplexity() {
-        return passwordComplexity;
-    }
-
-    public void setPasswordComplexity(PasswordComplexity passwordComplexity) {
-        this.passwordComplexity = passwordComplexity;
-    }
-
-    
+    }    
 }

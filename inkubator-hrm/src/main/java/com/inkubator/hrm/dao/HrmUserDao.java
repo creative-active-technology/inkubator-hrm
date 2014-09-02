@@ -30,4 +30,6 @@ public interface HrmUserDao extends IDAO<HrmUser> {
     public HrmUser getByUserIdOrEmail(String param);
 
 	public Long getTotalByEmailAndNotUserId(String emailAddress, String userId);
+	
+	public HrmUser getEntityByPkWithDetail(Long id);
 }

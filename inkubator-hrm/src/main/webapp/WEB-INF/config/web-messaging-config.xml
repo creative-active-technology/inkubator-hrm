@@ -65,7 +65,13 @@
     
     
     <!--<bean id="loginHistoryMessagesListener" class="com.csl.idm.web.listener.LoginHistoryMessagesListener" lazy-init="true"/>-->
-    <bean id="notificationUserMessagesListener" class="com.inkubator.hrm.service.impl.NotificationUserMessagesListener" lazy-init="true"/>
+    <bean id="notificationUserMessagesListener" class="com.inkubator.hrm.service.impl.NotificationUserMessagesListener" lazy-init="true">
+    	<property name="applicationUrl" value="${email_param_application_url}"/>
+    	<property name="applicationName" value="${email_param_application_name}"/>
+    	<property name="ownerEmail" value="${email_param_owner_email}"/>
+    	<property name="ownerCompany" value="${email_param_owner_company}"/>
+    	<property name="ownerAdministrator" value="${email_param_owner_administrator}"/>
+    </bean>
     <bean id="riwayatAccessMessagesListener" class="com.inkubator.hrm.service.impl.RiwayatAccessMessagesListener" lazy-init="true"/>
     <jms:listener-container container-type="default" connection-factory="connectionFactoryComsume" acknowledge="transacted" 
                             transaction-manager="jsmTransaction"   >
