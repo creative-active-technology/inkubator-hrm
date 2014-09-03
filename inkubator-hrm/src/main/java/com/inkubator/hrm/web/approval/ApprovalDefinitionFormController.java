@@ -45,24 +45,75 @@ public class ApprovalDefinitionFormController extends BaseController {
     private Boolean onAutoApprove;
     @ManagedProperty(value = "#{approvalDefinitionService}")
     private ApprovalDefinitionService approvalDefinitionService;
+    private Boolean isEdit;
 
     @PostConstruct
     @Override
     public void initialization() {
         super.initialization();
         approvalDefinitionModel = new ApprovalDefinitionModel();
-        onBehalf = Boolean.TRUE;
-        onProcess = Boolean.TRUE;
-        approverTypeIndividual = Boolean.TRUE;
-        approverTypePosition = Boolean.TRUE;
-        approverTypeDepartment = Boolean.TRUE;
-        onBehalfApproverTypeIndividual = Boolean.TRUE;
-        onBehalfApproverTypePosition = Boolean.TRUE;
-        onAutoApprove = Boolean.TRUE;
-        approvalDefinitionModel.setAutoApproveOnDelay(onAutoApprove);
-        approvalDefinitionModel.setEscalateOnDelay(!onAutoApprove);
-//        onBehalfApproverTypeDepartment = Boolean.TRUE;
+        String approvalDefId = FacesUtil.getRequestParameter("execution");
+        if (approvalDefId != null) {
+            try {
+                isEdit = Boolean.TRUE;
+                ApprovalDefinition ad = approvalDefinitionService.getEntiyByPK(Long.parseLong(approvalDefId.substring(1)));
+                approvalDefinitionModel.setAllowOnBehalf(ad.getAllowOnBehalf());
+                approvalDefinitionModel.setApproverType(ad.getApproverType());
+                approvalDefinitionModel.setAutoApproveOnDelay(ad.getAutoApproveOnDelay());
+                approvalDefinitionModel.setDelayTime(ad.getDelayTime());
+                approvalDefinitionModel.setEscalateOnDelay(ad.getEscalateOnDelay());
 
+                if (ad.getApproverType().equalsIgnoreCase(HRMConstant.APPROVAL_TYPE_INDIVIDUAL)) {
+                    approvalDefinitionModel.setHrmUserByApproverIndividualId(ad.getHrmUserByApproverIndividual().getId());
+                    approvalDefinitionModel.setHrmUserByApproverIndividualName(ad.getHrmUserByApproverIndividual().getRealName());
+                    approverTypeIndividual = Boolean.FALSE;
+                    approverTypePosition = Boolean.TRUE;
+                    approverTypeDepartment = Boolean.TRUE;
+                }
+
+                if (ad.getApproverType().equalsIgnoreCase(HRMConstant.APPROVAL_TYPE_POSITION)) {
+                    approvalDefinitionModel.setJabatanByApproverPositionId(ad.getJabatanByApproverPosition().getId());
+                    approvalDefinitionModel.setJabatanByApproverPositionName(ad.getJabatanByApproverPosition().getName());
+                    approverTypeIndividual = Boolean.TRUE;
+                    approverTypePosition = Boolean.FALSE;
+                    approverTypeDepartment = Boolean.TRUE;
+                }
+                if (ad.getApproverType().equalsIgnoreCase(HRMConstant.APPROVAL_TYPE_DEPARTMENT)) {
+
+                    approverTypeIndividual = Boolean.TRUE;
+                    approverTypePosition = Boolean.TRUE;
+                    approverTypeDepartment = Boolean.FALSE;
+                }
+                approvalDefinitionModel.setId(ad.getId());
+                approvalDefinitionModel.setMinApprover(ad.getMinApprover());
+                approvalDefinitionModel.setMinRejector(ad.getMinRejector());
+                onBehalf = !ad.getAllowOnBehalf();
+                onBehalfApproverTypeIndividual = onBehalf;
+                onBehalfApproverTypePosition = onBehalf;
+                approvalDefinitionModel.setName(ad.getName());
+                if (ad.getOnBehalfType() != null) {
+                    approvalDefinitionModel.setOnBehalfType(bahasa);
+                }
+
+            } catch (Exception ex) {
+                LOGGER.error("Error", ex);
+            }
+
+        } else {
+            isEdit = Boolean.FALSE;
+            onBehalf = Boolean.TRUE;
+            onProcess = Boolean.TRUE;
+            approverTypeIndividual = Boolean.TRUE;
+            approverTypePosition = Boolean.TRUE;
+            approverTypeDepartment = Boolean.TRUE;
+            onBehalfApproverTypeIndividual = Boolean.TRUE;
+            onBehalfApproverTypePosition = Boolean.TRUE;
+            onAutoApprove = Boolean.TRUE;
+            approvalDefinitionModel.setAutoApproveOnDelay(onAutoApprove);
+            approvalDefinitionModel.setEscalateOnDelay(!onAutoApprove);
+        }
+
+//        onBehalfApproverTypeDepartment = Boolean.TRUE;
     }
 
     public ApprovalDefinitionModel getApprovalDefinitionModel() {
@@ -337,4 +388,13 @@ public class ApprovalDefinitionFormController extends BaseController {
     public void escalateOnDelay() {
         approvalDefinitionModel.setAutoApproveOnDelay(approvalDefinitionModel.getEscalateOnDelay());
     }
+
+    public Boolean getIsEdit() {
+        return isEdit;
+    }
+
+    public void setIsEdit(Boolean isEdit) {
+        this.isEdit = isEdit;
+    }
+
 }
