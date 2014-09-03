@@ -92,9 +92,23 @@ public class ApprovalDefinitionFormController extends BaseController {
                 onBehalfApproverTypePosition = onBehalf;
                 approvalDefinitionModel.setName(ad.getName());
                 if (ad.getOnBehalfType() != null) {
-                    approvalDefinitionModel.setOnBehalfType(bahasa);
-                }
+                    approvalDefinitionModel.setOnBehalfType(ad.getOnBehalfType());
+                    if (ad.getHrmUserByOnBehalfIndividual() != null) {
+                        approvalDefinitionModel.setHrmUserByOnBehalfIndividualId(ad.getHrmUserByOnBehalfIndividual().getId());
+                        approvalDefinitionModel.setHrmUserByOnBehalfIndividualName(ad.getHrmUserByOnBehalfIndividual().getRealName());
+                        onBehalfApproverTypeIndividual = Boolean.FALSE;
+                        onBehalfApproverTypePosition = Boolean.TRUE;
+                    }
+                    if (ad.getJabatanByOnBehalfPosition() != null) {
+                        approvalDefinitionModel.setJabatanByOnBehalfPositionId(ad.getJabatanByOnBehalfPosition().getId());
+                        approvalDefinitionModel.setJabatanByOnBehalfPositionName(ad.getJabatanByOnBehalfPosition().getName());
+                        onBehalfApproverTypeIndividual = Boolean.TRUE;
+                        onBehalfApproverTypePosition = Boolean.FALSE;
+                    }
 
+                }
+                approvalDefinitionModel.setProcessType(ad.getProcessType());
+                approvalDefinitionModel.setSequence(ad.getSequence());
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
             }
@@ -232,17 +246,32 @@ public class ApprovalDefinitionFormController extends BaseController {
 
     public String doSave() {
         ApprovalDefinition approvalDefinition = getEntityFromView(approvalDefinitionModel);
-        try {
-            approvalDefinitionService.save(approvalDefinition);
-            MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
-                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-            return "/protected/approval/approval_definition_detail.htm?faces-redirect=true&execution=e" + approvalDefinition.getId();
-        } catch (BussinessException ex) { //data already exist(duplicate)
+        if (isEdit) {
+            try {
+                approvalDefinitionService.update(approvalDefinition);
+                MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
+                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+                return "/protected/approval/approval_definition_detail.htm?faces-redirect=true&execution=e" + approvalDefinition.getId();
+            } catch (BussinessException ex) { //data already exist(duplicate)
 //            LOGGER.error("Error", ex);
-            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-        } catch (Exception ex) {
-            LOGGER.error("Error", ex);
+                MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            } catch (Exception ex) {
+                LOGGER.error("Error", ex);
+            }
+        } else {
+            try {
+                approvalDefinitionService.save(approvalDefinition);
+                MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
+                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+                return "/protected/approval/approval_definition_detail.htm?faces-redirect=true&execution=e" + approvalDefinition.getId();
+            } catch (BussinessException ex) { //data already exist(duplicate)
+//            LOGGER.error("Error", ex);
+                MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            } catch (Exception ex) {
+                LOGGER.error("Error", ex);
+            }
         }
+
         return null;
     }
 
@@ -337,6 +366,14 @@ public class ApprovalDefinitionFormController extends BaseController {
         Jabatan jabatan = (Jabatan) event.getObject();
         approvalDefinitionModel.setJabatanByOnBehalfPositionId(jabatan.getId());
         approvalDefinitionModel.setJabatanByOnBehalfPositionName(jabatan.getName());
+
+    }
+
+    public void onDialogReturnHrmUserBehalf(SelectEvent event) {
+        System.out.println(" hahaahw waduddu");
+        HrmUser hrmUser = (HrmUser) event.getObject();
+        approvalDefinitionModel.setHrmUserByOnBehalfIndividualId(hrmUser.getId());
+        approvalDefinitionModel.setHrmUserByOnBehalfIndividualName(hrmUser.getRealName());
 
     }
 
