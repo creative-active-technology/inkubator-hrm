@@ -163,11 +163,15 @@ public class HRMConstant {
     public static final String APPROVAL_PROCESS = "APPROVAL_PROCESS";
     public static final String ON_APPROVE_INFO = "ON_APPROVE_INFO";
     public static final String ON_REJECT_INFO = "ON_REJECT_INFO";
+    public static final Integer APPROVAL_STATUS_WAITING = 0;
+    public static final Integer APPROVAL_STATUS_APPROVED = 1;
+    public static final Integer APPROVAL_STATUS_REJECTED = 2;
+    /* END */
+    
 
     /*Placement */
     public static final String EMP_PLACEMENT = "EMP_PLACEMENT";
     public static final String EMP_ROTATION = "EMP_ROTATION";
     public static final String EMP_TERMINATION = "EMP_TERMINATION";
-
     /* END */
 }

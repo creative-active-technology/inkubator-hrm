@@ -217,7 +217,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 		
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass(), "employee");
 		criteria.add(Subqueries.notExists(subQuery));
-		criteria = doSearchNotExistInUserByParam(param, criteria);
+		criteria = this.doSearchNotExistInUserByParam(param, criteria);
         
 		criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
@@ -233,7 +233,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 		
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass(), "employee");
 		criteria.add(Subqueries.notExists(subQuery));
-		criteria = doSearchNotExistInUserByParam(param, criteria);
+		criteria = this.doSearchNotExistInUserByParam(param, criteria);
 		
 		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
 	}
@@ -248,5 +248,14 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 	        criteria.add(disjunction);
 		}
         return criteria;
+	}
+
+	@Override
+	public List<EmpData> getAllDataByJabatanId(Long jabatanId, Order order) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("jabatanByJabatanId.id", jabatanId));
+		criteria.addOrder(order);
+		
+		return criteria.list();
 	}
 }

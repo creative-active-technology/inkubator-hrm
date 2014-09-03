@@ -111,4 +111,23 @@ public class ApprovalDefinitionDaoImpl extends IDAOImpl<ApprovalDefinition> impl
         criteria.add(disjunction);
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
+
+	@Override
+	public List<ApprovalDefinition> getAllDataByNameAndProcessType(String name, String processType, Order order) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("name", name));
+		criteria.add(Restrictions.eq("processType", processType));
+		criteria.addOrder(order);
+		return criteria.list();
+	}
+
+	@Override
+	public List<ApprovalDefinition> getAllDataByNameAndProcessTypeAndSequenceGreater(String name, String processType, int sequence) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("name", name));
+		criteria.add(Restrictions.eq("processType", processType));
+		criteria.add(Restrictions.gt("sequence", sequence));
+		criteria.addOrder(Order.asc("sequence"));
+		return criteria.list();
+	}
 }
