@@ -129,8 +129,51 @@
                         <p:column style="width: 95%" colspan="3">
                             <p:tabView id="tabView1" dynamic="true" cache="true" styleClass="tabview_hrm" > 
                                 <p:tab id="tab31" title="Request History">  
-                                    <p:dataTable value="#{homeApproalActivityController.requestHistory}"  rowIndexVar="no" var="favoriteMenu" styleClass="grid_border_table" style="margin-bottom: 5px" >
-
+                                    <p:dataTable value="#{homeApproalActivityController.requestHistory}"  rowIndexVar="no" var="approval" styleClass="grid_border_table" style="margin-bottom: 5px" >
+                                        <p:column style="text-align: center;width: 10px">
+                                            <f:facet name="header">  
+                                                <h:outputText value="No." />
+                                            </f:facet>
+                                            <h:outputLabel value="#{no+1}." />
+                                        </p:column>
+                                        <p:column >
+                                            <f:facet name="header">  
+                                                <h:outputText value="Request Name" />
+                                            </f:facet>
+                                            <p:outputLabel value="#{approval.approvalDefinition.name}" />
+                                        </p:column>
+                                         <p:column >
+                                            <f:facet name="header">  
+                                                <h:outputText value="Tanggal Pengajuan" />
+                                            </f:facet>
+                                            <p:outputLabel value="#{approval.approvalDefinition.name}" />
+                                        </p:column>
+                                        <p:column >
+                                            <f:facet name="header">  
+                                                <h:outputText value="No Pengajuan" />
+                                            </f:facet>
+                                            <p:outputLabel value="#{approval.activityNumber}" />
+                                        </p:column>
+                                        <p:column >
+                                            <f:facet name="header">  
+                                                <h:outputText value="Approve By" />
+                                            </f:facet>
+                                            <p:outputLabel value="#{approval.approvedBy}" />
+                                        </p:column>
+                                        <p:column >
+                                            <f:facet name="header">  
+                                                <h:outputText value="Status" />
+                                            </f:facet>
+                                            <p:outputLabel value="#{approval.approvalStatus}">
+                                                <f:converter converterId="approvalStatusConverter"/>
+                                            </p:outputLabel>
+                                        </p:column>
+                                        <p:column >
+                                            <f:facet name="header">  
+                                                <h:outputText value="Detail Information" />
+                                            </f:facet>
+                                            <p:outputLabel value="#{approval.approvalStatus}" />
+                                        </p:column>
                                     </p:dataTable>
                                 </p:tab>  
                                 <p:tab id="tba11" title="Pending Task">  
