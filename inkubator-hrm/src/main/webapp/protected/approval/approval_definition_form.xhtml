@@ -171,9 +171,9 @@
                                     <p:inputText value="#{approvalDefinitionFormController.approvalDefinitionModel.hrmUserByOnBehalfIndividualName}" maxlength="45"
                                                  styleClass="isitext_hrm" label="Name" disabled="#{approvalDefinitionFormController.onBehalfApproverTypeIndividual}"
                                                  style="width: 73%" required="true" id="onBehalfIndividualId"  />
-                                    <p:commandButton  style="margin-left: 5px" icon="ui-icon-search" title="Cari" action="#{empDataFormController.doSearch()}" widgetVar="cariId" id="cariId1"
+                                    <p:commandButton  style="margin-left: 5px" icon="ui-icon-search" title="Cari" action="#{approvalDefinitionFormController.doSearchUser()}"  id="cariId1"
                                                       ajax="true" immediate="true" disabled="#{approvalDefinitionFormController.onBehalfApproverTypeIndividual}">
-                                        <p:ajax event="dialogReturn" listener="#{empDataFormController.onDialogReturn}"/>
+                                        <p:ajax event="dialogReturn" listener="#{approvalDefinitionFormController.onDialogReturnHrmUserBehalf}" update="onBehalfIndividualId"/>
 
                                     </p:commandButton>
                                     <p:message for="onBehalfIndividualId"/>
@@ -186,7 +186,7 @@
                                     <p:inputText value="#{approvalDefinitionFormController.approvalDefinitionModel.jabatanByOnBehalfPositionName}" maxlength="45" disabled="#{approvalDefinitionFormController.onBehalfApproverTypePosition}"
                                                  styleClass="isitext_hrm" label="Name" 
                                                  style="width: 73%" required="true" id="onBehalfPositionId"  />
-                                    <p:commandButton  style="margin-left: 5px" icon="ui-icon-search" title="Cari" action="#{approvalDefinitionFormController.doSearchJabatan()}" widgetVar="cariId" disabled="#{approvalDefinitionFormController.onBehalfApproverTypePosition}"
+                                    <p:commandButton  style="margin-left: 5px" icon="ui-icon-search" title="Cari" action="#{approvalDefinitionFormController.doSearchJabatan()}"  disabled="#{approvalDefinitionFormController.onBehalfApproverTypePosition}"
                                                       ajax="true" immediate="true" id="cariId2">
                                         <p:ajax event="dialogReturn" listener="#{approvalDefinitionFormController.onDialogReturnJabatanBehalf}" update="onBehalfPositionId"/>
 

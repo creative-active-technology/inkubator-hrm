@@ -14,6 +14,7 @@ import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -112,5 +113,14 @@ public class ApprovalDefinitionViewController extends BaseController {
 
     public String doAdd() {
         return "/protected/approval/approval_definition_form.htm?faces-redirect=true";
+    }
+
+    @PreDestroy
+    public void cleanAndExit() {
+        approvalDefinitionSearchParameter = null;
+        lazyDataModelApprovalDefinition = null;
+        approvalDefinitionService = null;
+        selectedApprovalDefinition = null;
+
     }
 }
