@@ -11,6 +11,7 @@ import com.inkubator.webcore.controller.BaseController;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -38,10 +39,10 @@ public class PositionSearchController extends BaseController {
 
     public void doSearch() {
         try {
-            jabatanDataToShow= new ArrayList();
+            jabatanDataToShow = new ArrayList();
             jabatanDataToShow = jabatanService.getByName(jabatanName);
         } catch (Exception ex) {
-           LOGGER.error("Error", ex);
+            LOGGER.error("Error", ex);
         }
     }
 
@@ -60,17 +61,21 @@ public class PositionSearchController extends BaseController {
     public void setJabatanDataToShow(List<Jabatan> jabatanDataToShow) {
         this.jabatanDataToShow = jabatanDataToShow;
     }
- 
 
     public void setJabatanService(JabatanService jabatanService) {
         this.jabatanService = jabatanService;
     }
 
-   
-    
-    public void doSelect(Jabatan jabatan){
+    public void doSelect(Jabatan jabatan) {
         RequestContext.getCurrentInstance().closeDialog(jabatan);
+        cleanAndExit();
     }
-    
-    
+
+    @PreDestroy
+    public void cleanAndExit() {
+        jabatanService = null;
+        jabatanName = null;
+        jabatanDataToShow = null;
+
+    }
 }

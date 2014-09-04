@@ -11,6 +11,7 @@ import com.inkubator.webcore.controller.BaseController;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -62,13 +63,20 @@ public class UserSearchController extends BaseController {
     }
 
     public void doSelect(HrmUser hrmUser) {
-        System.out.println(" ahahh");
-        System.out.println(hrmUser.getRealName());
         RequestContext.getCurrentInstance().closeDialog(hrmUser);
+        cleanAndExit();
     }
 
     public void setHrmUserService(HrmUserService hrmUserService) {
         this.hrmUserService = hrmUserService;
+    }
+
+    @PreDestroy
+    public void cleanAndExit() {
+        hrmUserService = null;
+        userName = null;
+        userDataToShow = null;
+
     }
 
 }

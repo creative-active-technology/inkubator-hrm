@@ -10,6 +10,7 @@ import com.inkubator.hrm.service.ApprovalDefinitionService;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -57,6 +58,12 @@ public class ApprovalDefinitionDetilController extends BaseController {
 
     public String doBack() {
         return "/protected/approval/approval_definition_view.htm?faces-redirect=true";
+    }
+
+    @PreDestroy
+    public void cleanAndExit() {
+        approvalDefinitionService = null;
+        selectedApprovalDefinition = null;
     }
 
 }

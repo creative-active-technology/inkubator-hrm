@@ -18,6 +18,7 @@ import com.inkubator.webcore.util.MessagesResourceUtil;
 import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -432,6 +433,25 @@ public class ApprovalDefinitionFormController extends BaseController {
 
     public void setIsEdit(Boolean isEdit) {
         this.isEdit = isEdit;
+    }
+
+    @PreDestroy
+    public void cleanAndExit() {
+        approvalDefinitionService = null;
+        approvalDefinitionModel = null;
+        onBehalf=null;
+        onProcess=null;
+        approverTypeIndividual=null;
+        approverTypePosition=null;
+        approverTypeDepartment=null;
+        onBehalfApproverTypeIndividual=null;
+        onBehalfApproverTypePosition=null;
+        onAutoApprove=null;
+        approvalDefinitionService=null;
+        isEdit=null;
+        
+        
+                
     }
 
 }
