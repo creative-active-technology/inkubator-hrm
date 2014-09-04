@@ -30,6 +30,7 @@ public class ApprovalActivity  implements java.io.Serializable {
      private Integer version;
      private ApprovalDefinition approvalDefinition;
      private String requestBy;
+     private Date requestTime;
      private Integer approvalStatus;
      private Date approvalTime;
      private String approvedBy;
@@ -48,10 +49,11 @@ public class ApprovalActivity  implements java.io.Serializable {
     public ApprovalActivity(long id) {
         this.id = id;
     }
-    public ApprovalActivity(long id, ApprovalDefinition approvalDefinition, String requestBy, Integer approvalStatus, Date approvalTime, String approvedBy, String approvalCommment, Integer approvalCount, Integer rejectCount, String pendingData, String activityNumber, Integer sequence, Boolean notificationSend) {
+    public ApprovalActivity(long id, ApprovalDefinition approvalDefinition, String requestBy, Date requestTime, Integer approvalStatus, Date approvalTime, String approvedBy, String approvalCommment, Integer approvalCount, Integer rejectCount, String pendingData, String activityNumber, Integer sequence, Boolean notificationSend) {
        this.id = id;
        this.approvalDefinition = approvalDefinition;
        this.requestBy = requestBy;
+       this.requestTime = requestTime;
        this.approvalStatus = approvalStatus;
        this.approvalTime = approvalTime;
        this.approvedBy = approvedBy;
@@ -106,8 +108,17 @@ public class ApprovalActivity  implements java.io.Serializable {
         this.requestBy = requestBy;
     }
 
-    
-    @Column(name="approval_status")
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name="request_time", length=19)
+	public Date getRequestTime() {
+		return requestTime;
+	}
+
+	public void setRequestTime(Date requestTime) {
+		this.requestTime = requestTime;
+	}
+
+	@Column(name="approval_status")
     public Integer getApprovalStatus() {
         return this.approvalStatus;
     }
@@ -137,7 +148,7 @@ public class ApprovalActivity  implements java.io.Serializable {
     }
 
     
-    @Column(name="approval_commment", length=65535)
+    @Column(name="approval_commment", length=65535, columnDefinition = "Text")
     public String getApprovalCommment() {
         return this.approvalCommment;
     }
@@ -167,7 +178,7 @@ public class ApprovalActivity  implements java.io.Serializable {
     }
 
     
-    @Column(name="pending_data", length=65535)
+    @Column(name="pending_data", length=65535, columnDefinition = "Text")
     public String getPendingData() {
         return this.pendingData;
     }
