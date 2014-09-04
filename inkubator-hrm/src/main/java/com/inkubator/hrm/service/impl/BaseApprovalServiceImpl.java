@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.google.gson.GsonBuilder;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.HRMConstant;
@@ -16,6 +17,8 @@ import com.inkubator.hrm.entity.ApprovalDefinition;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.Jabatan;
+import com.inkubator.hrm.json.util.EntityExclusionStrategy;
+import com.inkubator.hrm.json.util.HibernateProxyTypeAdapter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 
 /**
@@ -38,7 +41,8 @@ public class BaseApprovalServiceImpl extends IServiceImpl {
 			String approverUserId = this.getApproverByAppDefinition(appDef);
 			
 			if(StringUtils.isNotEmpty(approverUserId)){				
-				appActivity = new ApprovalActivity();				
+				appActivity = new ApprovalActivity();
+				appActivity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
 				appActivity.setApprovalDefinition(appDef);			
 				appActivity.setApprovedBy(approverUserId);
 				appActivity.setApprovalStatus(HRMConstant.APPROVAL_STATUS_WAITING);
@@ -89,6 +93,15 @@ public class BaseApprovalServiceImpl extends IServiceImpl {
 		}
 		
 		return userId;
+	}
+	
+	protected GsonBuilder getGsonBuilder(){
+		GsonBuilder gsonBuilder = new GsonBuilder();
+    	gsonBuilder.serializeNulls();
+		gsonBuilder.setDateFormat("dd MMMM yyyy");
+		gsonBuilder.registerTypeAdapterFactory(HibernateProxyTypeAdapter.FACTORY);
+		gsonBuilder.setExclusionStrategies(new EntityExclusionStrategy());
+		return gsonBuilder;
 	}
 
 }

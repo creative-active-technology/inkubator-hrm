@@ -136,7 +136,7 @@ public class BusinessTravelFormController implements Serializable{
 		
 		try {
 			if(businessTravel.getId() == null) {
-				businessTravelService.save(businessTravel, model.getBusinessTravelComponents());
+				businessTravelService.save(businessTravel, model.getBusinessTravelComponents(), false);
 			} else {
 				businessTravelService.update(businessTravel, model.getBusinessTravelComponents());
 			}

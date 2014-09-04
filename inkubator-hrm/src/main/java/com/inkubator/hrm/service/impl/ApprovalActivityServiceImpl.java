@@ -1,17 +1,8 @@
 package com.inkubator.hrm.service.impl;
 
-import com.inkubator.common.util.RandomNumberUtil;
-import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.dao.ApprovalActivityDao;
-import com.inkubator.hrm.dao.ApprovalDefinitionDao;
-import com.inkubator.hrm.dao.HrmUserDao;
-import com.inkubator.hrm.entity.ApprovalActivity;
-import com.inkubator.hrm.entity.ApprovalDefinition;
-import com.inkubator.hrm.entity.HrmUser;
-import com.inkubator.hrm.entity.Jabatan;
-import com.inkubator.hrm.service.ApprovalActivityService;
 import java.util.Date;
 import java.util.List;
+
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -19,6 +10,24 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
+import com.inkubator.common.util.RandomNumberUtil;
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.dao.ApprovalActivityDao;
+import com.inkubator.hrm.dao.ApprovalDefinitionDao;
+import com.inkubator.hrm.dao.HrmUserDao;
+import com.inkubator.hrm.entity.ApprovalActivity;
+import com.inkubator.hrm.entity.ApprovalDefinition;
+import com.inkubator.hrm.entity.BusinessTravel;
+import com.inkubator.hrm.entity.BusinessTravelComponent;
+import com.inkubator.hrm.entity.HrmUser;
+import com.inkubator.hrm.entity.Jabatan;
+import com.inkubator.hrm.service.ApprovalActivityService;
+import com.inkubator.hrm.service.BusinessTravelService;
 
 /**
  *
@@ -34,6 +43,8 @@ public class ApprovalActivityServiceImpl extends BaseApprovalServiceImpl impleme
     private ApprovalDefinitionDao approvalDefinitionDao;
     @Autowired
     private HrmUserDao hrmUserDao;
+    @Autowired
+    private BusinessTravelService businessTravelService;
 
     @Override
     public ApprovalActivity getEntiyByPK(String id) throws Exception {
@@ -245,7 +256,7 @@ public class ApprovalActivityServiceImpl extends BaseApprovalServiceImpl impleme
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public ApprovalActivity approved(Long appActivityId, String comment) throws Exception {
+    public void approved(Long appActivityId, String comment) throws Exception {
 
         /* update APPROVED approval activity */
         ApprovalActivity approvalActivity = approvalActivityDao.getEntiyByPK(appActivityId);
@@ -294,18 +305,32 @@ public class ApprovalActivityServiceImpl extends BaseApprovalServiceImpl impleme
             }
         }
 
-        if (newEntity != null) {
-            // jika newEntity sama dengan null, berarti sudah tidak ada lagi proses approval, lanjut ke saving objek dari "pendingData" json
-            return newEntity;
+        if (newEntity == null) {
+        	// jika newEntity sama dengan null, berarti sudah tidak ada lagi proses approval, lanjut ke saving objek dari "pendingData" json
+        	GsonBuilder gsonBuilder = super.getGsonBuilder();
+        	Gson gson = gsonBuilder.create();
+        	
+            switch (approvalActivity.getApprovalDefinition().getName()) {
+			case HRMConstant.BUSINESS_TRAVEL:
+				JsonObject jsonObject =  gson.fromJson(approvalActivity.getPendingData(), JsonObject.class);
+				List<BusinessTravelComponent> businessTravelComponents = gson.fromJson(jsonObject.get("businessTravelComponents"), new TypeToken<List<BusinessTravelComponent>>(){}.getType());
+				BusinessTravel businessTravel = gson.fromJson(approvalActivity.getPendingData(), BusinessTravel.class);
+				businessTravelService.save(businessTravel, businessTravelComponents, true);
+				break;
+
+			default:
+				break;
+			}
+            
         } else {
             // jika newEntity tidak sama dengan null, maka lanjut ke proses kirim email ke approver
-            return approvalActivity;
+            
         }
     }
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public ApprovalActivity rejected(Long appActivityId, String comment) throws Exception {
+    public void rejected(Long appActivityId, String comment) throws Exception {
 
         /* update REJECTED approval activity */
         ApprovalActivity approvalActivity = approvalActivityDao.getEntiyByPK(appActivityId);
@@ -315,8 +340,7 @@ public class ApprovalActivityServiceImpl extends BaseApprovalServiceImpl impleme
         approvalActivity.setRejectCount(rejectedCount);
         approvalActivity.setApprovalTime(new Date());
         approvalActivityDao.save(approvalActivity);
-
-        return null;
+        
     }
 
     private ApprovalActivity createNewApprovalActivity(String approverUserId, ApprovalDefinition appDef, ApprovalActivity previousAppActv) {

@@ -19,7 +19,7 @@ public interface BusinessTravelService extends IService<BusinessTravel> {
 
 	public Long getTotalByParam(BusinessTravelSearchParameter parameter) throws Exception;
 	
-	public void save(BusinessTravel businessTravel, List<BusinessTravelComponent> businessTravelComponents) throws Exception;
+	public void save(BusinessTravel businessTravel, List<BusinessTravelComponent> businessTravelComponents, boolean isBypassApprovalChecking) throws Exception;
 	
 	public void update(BusinessTravel businessTravel, List<BusinessTravelComponent> businessTravelComponents) throws Exception;
 	

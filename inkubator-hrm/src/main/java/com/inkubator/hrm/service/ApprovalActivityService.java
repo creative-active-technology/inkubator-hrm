@@ -10,9 +10,9 @@ import java.util.List;
  */
 public interface ApprovalActivityService extends IService<ApprovalActivity> {
 
-    public ApprovalActivity approved(Long appActivityId, String comment) throws Exception;
+    public void approved(Long appActivityId, String comment) throws Exception;
 
-    public ApprovalActivity rejected(Long appActivityId, String comment) throws Exception;
+    public void rejected(Long appActivityId, String comment) throws Exception;
     
     public List<ApprovalActivity> getRequestHistory(String userName)throws Exception;
 

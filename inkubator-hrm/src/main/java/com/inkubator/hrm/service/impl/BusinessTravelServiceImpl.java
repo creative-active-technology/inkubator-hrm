@@ -1,7 +1,9 @@
 package com.inkubator.hrm.service.impl;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,13 +13,19 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.dao.ApprovalActivityDao;
 import com.inkubator.hrm.dao.BusinessTravelComponentDao;
 import com.inkubator.hrm.dao.BusinessTravelDao;
 import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.TravelTypeDao;
 import com.inkubator.hrm.dao.TravelZoneDao;
+import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.BusinessTravel;
 import com.inkubator.hrm.entity.BusinessTravelComponent;
 import com.inkubator.hrm.entity.EmpData;
@@ -33,7 +41,7 @@ import com.inkubator.securitycore.util.UserInfoUtil;
  */
 @Service(value = "businessTravelService")
 @Lazy
-public class BusinessTravelServiceImpl extends IServiceImpl implements BusinessTravelService {
+public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implements BusinessTravelService {
 	
 	@Autowired
 	private BusinessTravelDao businessTravelDao;
@@ -45,6 +53,8 @@ public class BusinessTravelServiceImpl extends IServiceImpl implements BusinessT
 	private TravelZoneDao travelZoneDao;
 	@Autowired
 	private EmpDataDao empDataDao;
+	@Autowired
+	private ApprovalActivityDao approvalActivityDao;
 
 	@Override
 	public BusinessTravel getEntiyByPK(String id) throws Exception {
@@ -269,13 +279,13 @@ public class BusinessTravelServiceImpl extends IServiceImpl implements BusinessT
 
 	@Override
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void save(BusinessTravel entity, List<BusinessTravelComponent> btcList) throws Exception {
+	public void save(BusinessTravel entity, List<BusinessTravelComponent> btcList, boolean isBypassApprovalChecking) throws Exception {
 		// check duplicate business travel number
         long totalDuplicates = businessTravelDao.getTotalByBusinessTravelNo(entity.getBusinessTravelNo());
         if (totalDuplicates > 0) {
             throw new BussinessException("businesstravel.error_duplicate_business_travel_no");
         }
-		
+        
 		EmpData empData = empDataDao.getEntiyByPK(entity.getEmpData().getId());
 		TravelZone travelZone = travelZoneDao.getEntiyByPK(entity.getTravelZone().getId());
 		TravelType travelType = travelTypeDao.getEntiyByPK(entity.getTravelType().getId());
@@ -284,14 +294,34 @@ public class BusinessTravelServiceImpl extends IServiceImpl implements BusinessT
 		entity.setTravelZone(travelZone);		
 		entity.setCreatedBy(UserInfoUtil.getUserName());
 		entity.setCreatedOn(new Date());
-		businessTravelDao.save(entity);
 		
+		Set<BusinessTravelComponent> businessTravelComponents =  new HashSet<BusinessTravelComponent>();
 		for(BusinessTravelComponent btc : btcList){
 			btc.setBusinessTravel(entity);
 			btc.setCreatedBy(UserInfoUtil.getUserName());
 			btc.setCreatedOn(new Date());
-			businessTravelComponentDao.save(btc);
+			businessTravelComponents.add(btc);
 		}
+		entity.setBusinessTravelComponents(businessTravelComponents);
+				
+		ApprovalActivity approvalActivity = isBypassApprovalChecking ? null : super.checkApprovalProcess(HRMConstant.BUSINESS_TRAVEL);
+        if(approvalActivity == null){
+        	businessTravelDao.save(entity);
+        	
+        } else {
+        	JsonParser parser = new JsonParser();
+    		Gson gson = super.getGsonBuilder().create();
+    		JsonObject jsonObject = (JsonObject) parser.parse(gson.toJson(entity));    		
+    		JsonArray arrayComponents = new JsonArray();
+    		for(BusinessTravelComponent btc: businessTravelComponents){
+    			JsonObject component = (JsonObject) parser.parse(gson.toJson(btc));
+    			arrayComponents.add(component);
+    		}
+    		jsonObject.add("businessTravelComponents", arrayComponents);
+    		
+    		approvalActivity.setPendingData(gson.toJson(jsonObject));
+    		approvalActivityDao.save(approvalActivity);
+        }
 	}
 
 	@Override
@@ -335,6 +365,14 @@ public class BusinessTravelServiceImpl extends IServiceImpl implements BusinessT
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
 	public BusinessTravel getEntityByPkWithDetail(Long id) throws Exception {
+		/*BusinessTravel bt = businessTravelDao.getEntiyByPK(id);
+		GsonBuilder gsonBuilder = new GsonBuilder();
+		gsonBuilder.setDateFormat("dd MMMM yyyy");
+		//gsonBuilder.registerTypeAdapterFactory(HibernateProxyTypeAdapter.FACTORY);
+		gsonBuilder.setExclusionStrategies(new EntityExclusionStrategy());
+		Gson gson = gsonBuilder.create();
+		String xx = gson.toJson(bt);
+		System.out.println(xx);*/
 		return businessTravelDao.getEntityByPkWithDetail(id);
 	}
 	
