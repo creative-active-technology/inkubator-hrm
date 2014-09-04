@@ -8,8 +8,6 @@ import com.inkubator.hrm.entity.ApprovalActivity;
  * @author rizkykojek
  */
 public interface ApprovalActivityService extends IService<ApprovalActivity> {
-
-	public ApprovalActivity checkApprovalProcess(String processName) throws Exception;
 	
 	public ApprovalActivity approved(Long appActivityId, String comment) throws Exception;
 	
