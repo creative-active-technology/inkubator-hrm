@@ -7,7 +7,7 @@
         <div style="font-family:Trebuchet MS;margin-bottom: 20px;font-weight: bold;color: black;padding: 3px 3px 3px 10px;background-image: linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -o-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -moz-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -webkit-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -ms-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -webkit-gradient(linear,left bottom,left topcolor-stop(0.68, rgb(114,185,215)));">
             PERMOHONAN PERJALANAN DINAS ${nik} NOMOR ${businessTravelNo}</div>
         <div style="padding-left: 10px;font-family: Verdana">
-            Yth {requesterName},
+            Yth ${requesterName},
             <br />
             <br />
             <br />

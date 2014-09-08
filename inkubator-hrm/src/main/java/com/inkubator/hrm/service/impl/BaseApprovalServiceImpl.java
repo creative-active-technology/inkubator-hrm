@@ -122,7 +122,7 @@ public class BaseApprovalServiceImpl extends IServiceImpl {
 		return gsonBuilder;
 	}
 	
-	protected Map<String, String> approved(Long appActivityId, String comment) throws Exception {
+	protected Map<String, String> approvedAndCheck(Long appActivityId, String comment) throws Exception {
 
         /* update APPROVED approval activity */
         ApprovalActivity approvalActivity = approvalActivityDao.getEntiyByPK(appActivityId);
@@ -142,6 +142,7 @@ public class BaseApprovalServiceImpl extends IServiceImpl {
         	result.put("status", String.valueOf(HRMConstant.APPROVAL_STATUS_APPROVED));
             result.put("pendingData", approvalActivity.getPendingData());
             result.put("approvalActivityNumber", approvalActivity.getActivityNumber());
+            sendingEmailNotification(approvalActivity);
         } else {
             // jika nextApproval tidak sama dengan null, maka lanjut ke proses kirim email ke approver
         	result.put("status", String.valueOf(HRMConstant.APPROVAL_STATUS_WAITING));
@@ -151,7 +152,7 @@ public class BaseApprovalServiceImpl extends IServiceImpl {
         return result;
     }
 	
-	protected Map<String, String> rejected(Long appActivityId, String comment) throws Exception {
+	protected Map<String, String> rejectedAndCheck(Long appActivityId, String comment) throws Exception {
 
         /* update REJECTED approval activity */
         ApprovalActivity approvalActivity = approvalActivityDao.getEntiyByPK(appActivityId);
@@ -171,18 +172,19 @@ public class BaseApprovalServiceImpl extends IServiceImpl {
         	result.put("status", String.valueOf(HRMConstant.APPROVAL_STATUS_REJECTED));
             result.put("pendingData", approvalActivity.getPendingData());
             result.put("approvalActivityNumber", approvalActivity.getActivityNumber());
+            sendingEmailNotification(approvalActivity);
         } else {
             // jika nextApproval tidak sama dengan null, maka lanjut ke proses kirim email ke approver
         	result.put("status", String.valueOf(HRMConstant.APPROVAL_STATUS_WAITING));
         	sendingEmailNotification(nextApproval);
         }
         
-        return null;
+        return result;
         
     }
 	
-	protected void sendingEmailNotification(ApprovalActivity nextApproval){
-		//this method will override in child object
+	protected void sendingEmailNotification(ApprovalActivity nextApproval) throws Exception {
+		throw new UnsupportedOperationException("This method, should implement in his child object"); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 	}
 	
 	private ApprovalActivity checkingNextApproval(ApprovalActivity previousAppActivity){

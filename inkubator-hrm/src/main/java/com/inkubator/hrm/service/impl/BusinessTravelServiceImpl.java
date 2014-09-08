@@ -326,6 +326,7 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
         	businessTravelDao.save(entity);
         	
         } else {
+        	//parsing object to json
         	JsonParser parser = new JsonParser();
     		Gson gson = super.getGsonBuilder().create();
     		JsonObject jsonObject = (JsonObject) parser.parse(gson.toJson(entity));    		
@@ -336,9 +337,11 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
     		}
     		jsonObject.add("businessTravelComponents", arrayComponents);
     		
+    		//save approval activity
     		approvalActivity.setPendingData(gson.toJson(jsonObject));
     		approvalActivityDao.save(approvalActivity);
     		
+    		//sending email notification
     		this.sendingEmailNotification(approvalActivity);
         }
 	}
@@ -396,7 +399,7 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
 	@Override
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void approved(long approvalActivityId, String comment) throws Exception {
-		Map<String, String> result = super.approved(approvalActivityId, comment);
+		Map<String, String> result = super.approvedAndCheck(approvalActivityId, comment);
 		if(Integer.parseInt(result.get("status")) == HRMConstant.APPROVAL_STATUS_APPROVED){
 			/** kalau status akhir sudah di approved, maka langsung insert ke database */
 			Gson gson = super.getGsonBuilder().create();
@@ -411,7 +414,7 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
 	@Override
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void rejected(long approvalActivityId, String comment)throws Exception {
-		Map<String, String> result = super.rejected(approvalActivityId, comment);
+		Map<String, String> result = super.rejectedAndCheck(approvalActivityId, comment);
 		if(Integer.parseInt(result.get("status")) == HRMConstant.APPROVAL_STATUS_REJECTED){
 			/** kalau status akhir sudah di reject, maka langsung insert ke database */
 			Gson gson = super.getGsonBuilder().create();
@@ -425,24 +428,22 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
 	}
 	
 	@Override
-	protected void sendingEmailNotification(ApprovalActivity nextApproval){
+	protected void sendingEmailNotification(ApprovalActivity appActivity) throws Exception{
 		//initialization
-		JsonParser parser = new JsonParser();
 		Gson gson = this.getGsonBuilder().create();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMMM-yyyy");
 		
 		//parsing object data to json, for email purpose
-		JsonObject businessTravelObj =  gson.fromJson(nextApproval.getPendingData(), JsonObject.class);
+		JsonObject businessTravelObj =  gson.fromJson(appActivity.getPendingData(), JsonObject.class);
 		List<BusinessTravelComponent> businessTravelComponents = gson.fromJson(businessTravelObj.get("businessTravelComponents"), new TypeToken<List<BusinessTravelComponent>>(){}.getType());
 		double totalAmount = 0;
 		for(BusinessTravelComponent btc:businessTravelComponents){
 			totalAmount = totalAmount + btc.getPayByAmount();
 		}
-		BusinessTravel businessTravel = gson.fromJson(nextApproval.getPendingData(), BusinessTravel.class);    	
-		JsonObject appActivityObj = (JsonObject) parser.parse(gson.toJson(nextApproval));    	
+		BusinessTravel businessTravel = gson.fromJson(appActivity.getPendingData(), BusinessTravel.class);   	
 		final JSONObject jsonObj = new JSONObject();
         try {        	
-            jsonObj.put("approvalActivity", appActivityObj);
+            jsonObj.put("approvalActivityId", appActivity.getId());
             jsonObj.put("locale", FacesUtil.getFacesContext().getViewRoot().getLocale());
             jsonObj.put("businessTravelNo", businessTravel.getBusinessTravelNo());
             jsonObj.put("proposeDate", dateFormat.format(businessTravel.getProposeDate()));

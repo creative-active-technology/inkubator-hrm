@@ -61,77 +61,79 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
             String json = textMessage.getText();
             JsonObject jsonObject =  (JsonObject) jsonConverter.getClassFromJson(json, JsonObject.class);
             String locale = jsonObject.get("locale").getAsString();
-            ApprovalActivity appActivity = (ApprovalActivity) jsonConverter.getClassFromJson(jsonObject.get("approvalActivity").getAsString(), ApprovalActivity.class);
-            if (appActivity.getNotificationSend() == false) {
-                HrmUser approverUser = hrmUserDao.getByUserId(appActivity.getApprovedBy());
-            	HrmUser requesterUser = hrmUserDao.getByUserId(appActivity.getRequestBy());
+            ApprovalActivity appActivity = approvalActivityDao.getEntiyByPK(jsonObject.get("approvalActivityId").getAsLong());
+            HrmUser approverUser = hrmUserDao.getByUserId(appActivity.getApprovedBy());
+            HrmUser requesterUser = hrmUserDao.getByUserId(appActivity.getRequestBy());
                 
-                VelocityTempalteModel vtm = new VelocityTempalteModel();
-                List<String> toSend = new ArrayList<>();
-                List<String> toSentCC = new ArrayList<String>();
+            VelocityTempalteModel vtm = new VelocityTempalteModel();
+            List<String> toSend = new ArrayList<>();
+            List<String> toSentCC = new ArrayList<String>();
                 
-                vtm.setFrom(ownerEmail);
-                /*if(appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING) {
+            vtm.setFrom(ownerEmail);
+            /*if(appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING) {
                 	toSend.add(approverUser.getEmailAddress()); //kirim email ke approver nya jika status waiting
-                } else {
+            } else {
                 	toSend.add(requesterUser.getEmailAddress()); //kirim email ke requester nya jika statusnya sudah di approved/rejected
-                }*/
-                toSend.add("rizkykojek@gmail.com");
-                vtm.setTo(toSend.toArray(new String[toSend.size()]));
-                vtm.setCc(toSentCC.toArray(new String[toSentCC.size()]));
-                vtm.setBcc(toSentCC.toArray(new String[toSentCC.size()]));
+            }*/
+            toSend.add("rizkykojek@gmail.com");
+            vtm.setTo(toSend.toArray(new String[toSend.size()]));
+            vtm.setCc(toSentCC.toArray(new String[toSentCC.size()]));
+            vtm.setBcc(toSentCC.toArray(new String[toSentCC.size()]));
                 
-                Map maptoSend = new HashMap();
-                if (StringUtils.equals(locale, "en")) {
-                	vtm.setSubject("Permohonan Perjalanan Dinas");
-                    //not yet implemented
+            Map maptoSend = new HashMap();
+            if (StringUtils.equals(locale, "en")) {
+            	vtm.setSubject("Permohonan Perjalanan Dinas");
+                //not yet implemented
                     
-                } else {
-                	vtm.setSubject("Permohonan Perjalanan Dinas");
-                	if(appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING) {
+            } else {
+            	vtm.setSubject("Permohonan Perjalanan Dinas");
+                if(appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING) {
+                	//update approval activity, set notification true
+                    appActivity.setNotificationSend(true);
+                    this.approvalActivityDao.update(appActivity);
+                        
+                    //configure email parameter based on approval name
+                    switch (appActivity.getApprovalDefinition().getName()) {
+    					case HRMConstant.BUSINESS_TRAVEL:
+    						vtm.setTemplatePath("email_travel_waiting_approval.vm");
+    						maptoSend.put("approverName", approverUser.getEmpData().getBioData().getFullName());
+    		                maptoSend.put("requesterName", requesterUser.getEmpData().getBioData().getFullName());
+    		                maptoSend.put("nik", requesterUser.getEmpData().getNik());
+    		                maptoSend.put("businessTravelNo", jsonObject.get("businessTravelNo").getAsString());
+    		                maptoSend.put("proposeDate", jsonObject.get("proposeDate").getAsString());
+    		                maptoSend.put("destination", jsonObject.get("destination").getAsString());
+    		                maptoSend.put("start", jsonObject.get("start").getAsString());
+    		                maptoSend.put("end", jsonObject.get("end").getAsString());
+    		                maptoSend.put("description", jsonObject.get("description").getAsString());
+    		                maptoSend.put("totalAmount", jsonObject.get("totalAmount").getAsString());
+    						break;	
+    					default:
+    						break;
+    				}
+                } else if((appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_APPROVED) || 
+                		 (appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_REJECTED)) {
                 		
-                        switch (appActivity.getApprovalDefinition().getName()) {
-    						case HRMConstant.BUSINESS_TRAVEL:
-    							vtm.setTemplatePath("email_travel_waiting_approval.vm");
-    							maptoSend.put("approverName", approverUser.getEmpData().getBioData().getFullName());
-    		                    maptoSend.put("requesterName", requesterUser.getEmpData().getBioData().getFullName());
-    		                    maptoSend.put("nik", requesterUser.getEmpData().getNik());
-    		                    maptoSend.put("businessTravelNo", jsonObject.get("businessTravelNo").getAsString());
-    		                    maptoSend.put("proposeDate", jsonObject.get("proposeDate").getAsString());
-    		                    maptoSend.put("destination", jsonObject.get("destination").getAsString());
-    		                    maptoSend.put("start", jsonObject.get("start").getAsString());
-    		                    maptoSend.put("end", jsonObject.get("end").getAsString());
-    		                    maptoSend.put("description", jsonObject.get("description").getAsString());
-    		                    maptoSend.put("totalAmount", jsonObject.get("totalAmount").getAsString());
-    							break;	
-    						default:
-    							break;
-    					}
-                	} else if((appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_APPROVED) || 
-                			(appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_REJECTED)) {
-                		
-                        switch (appActivity.getApprovalDefinition().getName()) {
-    						case HRMConstant.BUSINESS_TRAVEL:
-    							vtm.setTemplatePath("email_travel_approved_or_rejected_approval.vm");
-    		                    maptoSend.put("requesterName", requesterUser.getEmpData().getBioData().getFullName());
-    		                    maptoSend.put("businessTravelNo", jsonObject.get("businessTravelNo").getAsString());
-    		                    maptoSend.put("proposeDate", jsonObject.get("proposeDate").getAsString());
-    		                    maptoSend.put("destination", jsonObject.get("destination").getAsString());
-    		                    maptoSend.put("start", jsonObject.get("start").getAsString());
-    		                    maptoSend.put("end", jsonObject.get("end").getAsString());
-    		                    maptoSend.put("description", jsonObject.get("description").getAsString());
-    		                    maptoSend.put("totalAmount", jsonObject.get("totalAmount").getAsString());
-    		                    if(appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_APPROVED){
-    		                    	maptoSend.put("statusDesc", "Permohonan Diterima");
-    		                    } else if(appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_REJECTED){
-    		                    	maptoSend.put("statusDesc", "Permohonan Ditolak");
-    		                    }
-    							break;	
-    						default:
-    							break;
-    					}
-                	}                    
-                    
+                	switch (appActivity.getApprovalDefinition().getName()) {
+    					case HRMConstant.BUSINESS_TRAVEL:
+    						vtm.setTemplatePath("email_travel_approved_or_rejected_approval.vm");
+    		                maptoSend.put("requesterName", requesterUser.getEmpData().getBioData().getFullName());
+    		                maptoSend.put("nik", requesterUser.getEmpData().getNik());
+    		                maptoSend.put("businessTravelNo", jsonObject.get("businessTravelNo").getAsString());
+    		                maptoSend.put("proposeDate", jsonObject.get("proposeDate").getAsString());
+    		                maptoSend.put("destination", jsonObject.get("destination").getAsString());
+    		                maptoSend.put("start", jsonObject.get("start").getAsString());
+    		                maptoSend.put("end", jsonObject.get("end").getAsString());
+    		                maptoSend.put("description", jsonObject.get("description").getAsString());
+    		                maptoSend.put("totalAmount", jsonObject.get("totalAmount").getAsString());
+    		                if(appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_APPROVED){
+    		                	maptoSend.put("statusDesc", "Permohonan Diterima");
+    		                } else if(appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_REJECTED){
+    		                    maptoSend.put("statusDesc", "Permohonan Ditolak");
+    		                }
+    						break;	
+    					default:
+    						break;
+    				}
                 }
                 
                 maptoSend.put("ownerAdministrator", ownerAdministrator);
@@ -139,10 +141,6 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                 maptoSend.put("applicationUrl", applicationUrl);
                 maptoSend.put("applicationName", applicationName);
                 velocityTemplateSender.sendMail(vtm, maptoSend);
-                
-                //update approval activity, set notification true
-                appActivity.setNotificationSend(true);
-                this.approvalActivityDao.update(appActivity);
             }
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
