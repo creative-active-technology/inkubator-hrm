@@ -174,4 +174,27 @@ public class HRMConstant {
     public static final String EMP_ROTATION = "EMP_ROTATION";
     public static final String EMP_TERMINATION = "EMP_TERMINATION";
     /* END */
+    
+    /* Constant for LoanSchema */
+    public static final Integer ANNUITY = 0;
+    public static final Integer FLAT = 1;
+    public static final Integer FLOATING = 2;
+    
+    public static final Integer NOMINAL = 0;
+    public static final Integer SALARY = 1;
+    /* END */
+    
+    /* Constant for ReimbursmentSchema */
+    public static final Integer REIMBURSMENT_UNIT = 0;
+    public static final Integer REIMBURSMENT_NOMINAL = 1;
+    
+    public static final Integer PAYROLL_COMPONENT_NO = 0;
+    public static final Integer PAYROLL_COMPONENT_YES = 1;
+    
+    public static final Integer TIME_RANGE_MONTHLY = 0;
+    public static final Integer TIME_RANGE_YEARLY = 1;
+    public static final Integer TIME_RANGE_PER_EMPLOYEE = 2;
+    
+    
+    
 }

@@ -4,9 +4,13 @@ import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.ApprovalActivityDao;
 import com.inkubator.hrm.entity.ApprovalActivity;
+import com.inkubator.hrm.web.search.ApprovalActivitySearchParameter;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
@@ -35,4 +39,37 @@ public class ApprovalActivityDaoImpl extends IDAOImpl<ApprovalActivity> implemen
         return criteria.list();
     }
 
+    @Override
+    public List<ApprovalActivity> getAllDataWithAllRelation(ApprovalActivitySearchParameter searchParameter, int firstResult, int maxResults, Order order) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        doSearchByParam(searchParameter, criteria);
+        criteria.setFetchMode("approvalDefinition", FetchMode.JOIN);
+        criteria.addOrder(order);
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResults);
+        return criteria.list();
+    }
+
+    @Override
+    public Long getTotalByParam(ApprovalActivitySearchParameter searchParameter) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        doSearchByParam(searchParameter, criteria);
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+    
+    @Override
+    public ApprovalActivity getEntityByPkWithAllRelation(Long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("id", id));
+        criteria.setFetchMode("approvalDefinition", FetchMode.JOIN);
+        return (ApprovalActivity) criteria.uniqueResult();
+    }
+
+    private void doSearchByParam(ApprovalActivitySearchParameter searchParameter, Criteria criteria) {
+        if (searchParameter.getRequestBy()!= null) {
+        	criteria.add(Restrictions.like("requestBy", searchParameter.getRequestBy(), MatchMode.ANYWHERE));
+        } 
+        
+        criteria.add(Restrictions.isNotNull("id"));
+    }
 }
