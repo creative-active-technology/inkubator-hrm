@@ -142,11 +142,13 @@
                                             </f:facet>
                                             <p:outputLabel value="#{approval.approvalDefinition.name}" />
                                         </p:column>
-                                         <p:column >
+                                        <p:column >
                                             <f:facet name="header">  
                                                 <h:outputText value="Tanggal Pengajuan" />
                                             </f:facet>
-                                            <p:outputLabel value="#{approval.approvalDefinition.name}" />
+                                            <p:outputLabel value="#{approval.requestTime}" >
+                                                <f:convertDateTime pattern="dd MMMM yyyy" />
+                                            </p:outputLabel>
                                         </p:column>
                                         <p:column >
                                             <f:facet name="header">  
@@ -156,7 +158,7 @@
                                         </p:column>
                                         <p:column >
                                             <f:facet name="header">  
-                                                <h:outputText value="Approve By" />
+                                                <h:outputText value="Approver By" />
                                             </f:facet>
                                             <p:outputLabel value="#{approval.approvedBy}" />
                                         </p:column>
@@ -168,24 +170,127 @@
                                                 <f:converter converterId="approvalStatusConverter"/>
                                             </p:outputLabel>
                                         </p:column>
-                                        <p:column >
-                                            <f:facet name="header">  
-                                                <h:outputText value="Detail Information" />
+                                        <p:column style="text-align: center" >
+                                            <f:facet name="header" >  
+                                                <h:outputText value="Aksi" />
                                             </f:facet>
-                                            <p:outputLabel value="#{approval.approvalStatus}" />
+                                            <p:commandLink action="#{homeApproalActivityController.doDetailRequestHistory()}"
+                                                           title="Detail Request" ajax="true">  
+                                                <h:outputText value="Detail"/>
+                                                <f:setPropertyActionListener value="#{approval}" target="#{homeApproalActivityController.selectedApprovalActivity}" />   
+                                            </p:commandLink>
+                                            <!--<h:outputLink value="Detail">Detail</h:outputLink>-->
                                         </p:column>
                                     </p:dataTable>
                                 </p:tab>  
                                 <p:tab id="tba11" title="Pending Task">  
-                                    <p:dataTable value="#{homeApproalActivityController.requestHistory}"  rowIndexVar="no" var="favoriteMenu" styleClass="grid_border_table" style="margin-bottom: 5px" >
-
+                                    <p:dataTable value="#{homeApproalActivityController.pendingTask}"  rowIndexVar="no" var="approval" styleClass="grid_border_table" style="margin-bottom: 5px" >
+                                        <p:column style="text-align: center;width: 10px">
+                                            <f:facet name="header">  
+                                                <h:outputText value="No." />
+                                            </f:facet>
+                                            <h:outputLabel value="#{no+1}." />
+                                        </p:column>
+                                        <p:column >
+                                            <f:facet name="header">  
+                                                <h:outputText value="Request Name" />
+                                            </f:facet>
+                                            <p:outputLabel value="#{approval.approvalDefinition.name}" />
+                                        </p:column>
+                                        <p:column >
+                                            <f:facet name="header">  
+                                                <h:outputText value="Tanggal Pengajuan" />
+                                            </f:facet>
+                                            <p:outputLabel value="#{approval.requestTime}" >
+                                                <f:convertDateTime pattern="dd MMMM yyyy" />
+                                            </p:outputLabel>
+                                        </p:column>
+                                        <p:column >
+                                            <f:facet name="header">  
+                                                <h:outputText value="No Pengajuan" />
+                                            </f:facet>
+                                            <p:outputLabel value="#{approval.activityNumber}" />
+                                        </p:column>
+                                        <p:column >
+                                            <f:facet name="header">  
+                                                <h:outputText value="Approver By" />
+                                            </f:facet>
+                                            <p:outputLabel value="#{approval.approvedBy}" />
+                                        </p:column>
+                                        <p:column >
+                                            <f:facet name="header">  
+                                                <h:outputText value="Status" />
+                                            </f:facet>
+                                            <p:outputLabel value="#{approval.approvalStatus}">
+                                                <f:converter converterId="approvalStatusConverter"/>
+                                            </p:outputLabel>
+                                        </p:column>
+                                        <p:column style="text-align: center" >
+                                            <f:facet name="header" >  
+                                                <h:outputText value="Aksi" />
+                                            </f:facet>
+                                            <p:commandLink action="#{homeApproalActivityController.doApprove()}"
+                                                           title="Detail Request" ajax="true">  
+                                                <h:outputText value="Detail"/>
+                                                <f:setPropertyActionListener value="#{approval}" target="#{homeApproalActivityController.selectedApprovalActivity}" />   
+                                            </p:commandLink>
+                                        </p:column>
                                     </p:dataTable>
                                 </p:tab>  
 
                                 <p:tab id="tab21" title="Pending Request">  
-                                    <p:dataTable value="#{homeApproalActivityController.requestHistory}"  rowIndexVar="no" var="favoriteMenu" styleClass="grid_border_table" style="margin-bottom: 5px" >
-
-                                    </p:dataTable> 
+                                    <p:dataTable value="#{homeApproalActivityController.pendingRequest}"  rowIndexVar="no" var="approval" styleClass="grid_border_table" style="margin-bottom: 5px" >
+                                        <p:column style="text-align: center;width: 10px">
+                                            <f:facet name="header">  
+                                                <h:outputText value="No." />
+                                            </f:facet>
+                                            <h:outputLabel value="#{no+1}." />
+                                        </p:column>
+                                        <p:column >
+                                            <f:facet name="header">  
+                                                <h:outputText value="Request Name" />
+                                            </f:facet>
+                                            <p:outputLabel value="#{approval.approvalDefinition.name}" />
+                                        </p:column>
+                                        <p:column >
+                                            <f:facet name="header">  
+                                                <h:outputText value="Tanggal Pengajuan" />
+                                            </f:facet>
+                                            <p:outputLabel value="#{approval.requestTime}" >
+                                                <f:convertDateTime pattern="dd MMMM yyyy" />
+                                            </p:outputLabel>
+                                        </p:column>
+                                        <p:column >
+                                            <f:facet name="header">  
+                                                <h:outputText value="No Pengajuan" />
+                                            </f:facet>
+                                            <p:outputLabel value="#{approval.activityNumber}" />
+                                        </p:column>
+                                        <p:column >
+                                            <f:facet name="header">  
+                                                <h:outputText value="Approver By" />
+                                            </f:facet>
+                                            <p:outputLabel value="#{approval.approvedBy}" />
+                                        </p:column>
+                                        <p:column >
+                                            <f:facet name="header">  
+                                                <h:outputText value="Status" />
+                                            </f:facet>
+                                            <p:outputLabel value="#{approval.approvalStatus}">
+                                                <f:converter converterId="approvalStatusConverter"/>
+                                            </p:outputLabel>
+                                        </p:column>
+                                        <p:column style="text-align: center" >
+                                            <f:facet name="header" >  
+                                                <h:outputText value="Aksi" />
+                                            </f:facet>
+                                            <p:commandLink action="#{homeApproalActivityController.doDetailRequestPending()}"
+                                                           title="Detail Request" ajax="true">  
+                                                <h:outputText value="Detail"/>
+                                                <f:setPropertyActionListener value="#{approval}" target="#{homeApproalActivityController.selectedApprovalActivity}" />   
+                                            </p:commandLink>
+                                        </p:column>
+                                    </p:dataTable>
                                 </p:tab>  
 
 

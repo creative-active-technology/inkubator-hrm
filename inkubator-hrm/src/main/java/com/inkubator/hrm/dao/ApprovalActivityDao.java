@@ -19,4 +19,10 @@ public interface ApprovalActivityDao extends IDAO<ApprovalActivity> {
     public Long getTotalByParam(ApprovalActivitySearchParameter searchParameter);
     
     public ApprovalActivity getEntityByPkWithAllRelation(Long id);
+
+    public List<ApprovalActivity> getReguestHistoryById(long id);
+
+    public List<ApprovalActivity> getPendingRequest(String userName);
+
+    public List<ApprovalActivity> getPendingTask(String userName);
 }

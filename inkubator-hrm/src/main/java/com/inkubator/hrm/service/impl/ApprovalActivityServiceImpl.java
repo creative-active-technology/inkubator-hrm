@@ -275,7 +275,8 @@ public class ApprovalActivityServiceImpl extends BaseApprovalServiceImpl impleme
             Jabatan parentJabatan = jabatan.getJabatan();
             /**
              * jika approver mempunyai atasan maka lanjut approval ke atasannya,
-             * jika tidak punya atasan langsung approve saja(dilewat proses checking)
+             * jika tidak punya atasan langsung approve saja(dilewat proses
+             * checking)
              */
             if (parentJabatan != null) {
                 String approverUserId = this.getApproverByJabatanId(parentJabatan.getId());
@@ -361,6 +362,22 @@ public class ApprovalActivityServiceImpl extends BaseApprovalServiceImpl impleme
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ,propagation = Propagation.SUPPORTS, timeout = 30)
     public ApprovalActivity getEntityByPkWithAllRelation(Long id) throws Exception {
         return approvalActivityDao.getEntityByPkWithAllRelation(id);
+    }
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<ApprovalActivity> getReguestHistoryById(long id) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<ApprovalActivity> getPendingRequest(String userName) throws Exception {
+        return this.approvalActivityDao.getPendingRequest(userName);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<ApprovalActivity> getPendingTask(String userName) throws Exception {
+        return this.approvalActivityDao.getPendingTask(userName);
     }
 
 }
