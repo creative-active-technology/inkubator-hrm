@@ -23,13 +23,16 @@ public class ApprovalDefinitionModel implements Serializable {
     private Long jabatanByOnBehalfPositionId;
     private String jabatanByOnBehalfPositionName;
     private String name;
-    private Integer sequence=1;
+    private Integer sequence = 1;
     private Integer minApprover;
     private Integer minRejector;
     private String processType;
     private String approverType;
     private Boolean allowOnBehalf;
     private String onBehalfType;
+    private Boolean autoApproveOnDelay;
+    private Boolean escalateOnDelay;
+    private Integer delayTime=1;
 
     public Long getId() {
         return id;
@@ -171,7 +174,30 @@ public class ApprovalDefinitionModel implements Serializable {
     public String toString() {
         return "ApprovalDefinitionModel{" + "id=" + id + ", hrmUserByOnBehalfIndividualId=" + hrmUserByOnBehalfIndividualId + ", hrmUserByOnBehalfIndividualName=" + hrmUserByOnBehalfIndividualName + ", jabatanByApproverPositionId=" + jabatanByApproverPositionId + ", jabatanByApproverPositionName=" + jabatanByApproverPositionName + ", hrmUserByApproverIndividualId=" + hrmUserByApproverIndividualId + ", hrmUserByApproverIndividualName=" + hrmUserByApproverIndividualName + ", jabatanByOnBehalfPositionId=" + jabatanByOnBehalfPositionId + ", jabatanByOnBehalfPositionName=" + jabatanByOnBehalfPositionName + ", name=" + name + ", sequence=" + sequence + ", minApprover=" + minApprover + ", minRejector=" + minRejector + ", processType=" + processType + ", approverType=" + approverType + ", allowOnBehalf=" + allowOnBehalf + ", onBehalfType=" + onBehalfType + '}';
     }
-    
-    
 
+    public Boolean getAutoApproveOnDelay() {
+        return autoApproveOnDelay;
+    }
+
+    public void setAutoApproveOnDelay(Boolean autoApproveOnDelay) {
+        this.autoApproveOnDelay = autoApproveOnDelay;
+    }
+
+    public Boolean getEscalateOnDelay() {
+        return escalateOnDelay;
+    }
+
+    public void setEscalateOnDelay(Boolean escalateOnDelay) {
+        this.escalateOnDelay = escalateOnDelay;
+    }
+
+    public Integer getDelayTime() {
+        return delayTime;
+    }
+
+    public void setDelayTime(Integer delayTime) {
+        this.delayTime = delayTime;
+    }
+
+    
 }

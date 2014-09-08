@@ -6,6 +6,7 @@
 package com.inkubator.hrm.dao.impl;
 
 import com.inkubator.datacore.dao.impl.IDAOImpl;
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.web.search.HrmUserSearchParameter;
@@ -95,24 +96,34 @@ public class HrmUserDaoImpl extends IDAOImpl<HrmUser> implements HrmUserDao {
         disjunction.add(Restrictions.eq("userId", param));
         disjunction.add(Restrictions.eq("emailAddress", param));
         criteria.add(disjunction);
-        return  (HrmUser) criteria.uniqueResult();
+        return (HrmUser) criteria.uniqueResult();
     }
 
-	@Override
-	public Long getTotalByEmailAndNotUserId(String emailAddress, String userId) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.add(Restrictions.eq("emailAddress", emailAddress));
-		criteria.add(Restrictions.ne("userId", userId));
-		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
-	}
+    @Override
+    public Long getTotalByEmailAndNotUserId(String emailAddress, String userId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("emailAddress", emailAddress));
+        criteria.add(Restrictions.ne("userId", userId));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
 
-	@Override
-	public HrmUser getEntityByPkWithDetail(Long id) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.add(Restrictions.eq("id", id));
-		criteria.setFetchMode("empData", FetchMode.JOIN);
-		criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
-		return  (HrmUser) criteria.uniqueResult();
-	}
+    @Override
+    public HrmUser getEntityByPkWithDetail(Long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("id", id));
+        criteria.setFetchMode("empData", FetchMode.JOIN);
+        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+        return (HrmUser) criteria.uniqueResult();
+    }
+
+    @Override
+    public List<HrmUser> getByName(String name) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.like("realName", name,MatchMode.ANYWHERE));
+        criteria.add(Restrictions.eq("isActive", HRMConstant.ACTIVE));
+        criteria.setFirstResult(0);
+        criteria.setMaxResults(7);
+        return criteria.list();
+    }
 
 }

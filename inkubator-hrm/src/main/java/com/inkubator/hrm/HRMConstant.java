@@ -157,18 +157,22 @@ public class HRMConstant {
     public static final String BIO_INSURANCE_EDIT = "BIO_INSURANCE_EDIT";
     public static final String BIO_CONTACT_EDIT = "BIO_CONTACT_EDIT";
     public static final String BIO_SKILL_EDIT = "BIO_SKILL_EDIT";
-    public static final String TRAVEL_ADVANCE = "TRAVEL_ADVANCE";
-    public static final String REIMBERSMENT = "REIMBERSMENT";
+    public static final String BUSINESS_TRAVEL = "BUSINESS_TRAVEL";
+    public static final String REIMBURSEMENT = "REIMBURSEMENT";
     public static final String LOAN = "LOAN";
     public static final String APPROVAL_PROCESS = "APPROVAL_PROCESS";
     public static final String ON_APPROVE_INFO = "ON_APPROVE_INFO";
     public static final String ON_REJECT_INFO = "ON_REJECT_INFO";
+    public static final Integer APPROVAL_STATUS_WAITING = 0;
+    public static final Integer APPROVAL_STATUS_APPROVED = 1;
+    public static final Integer APPROVAL_STATUS_REJECTED = 2;
+    /* END */
+    
 
     /*Placement */
     public static final String EMP_PLACEMENT = "EMP_PLACEMENT";
     public static final String EMP_ROTATION = "EMP_ROTATION";
     public static final String EMP_TERMINATION = "EMP_TERMINATION";
-
     /* END */
     /* Constant for  Model Component */
     public static final Integer BASIC_SALARY = 0;

@@ -54,14 +54,14 @@
                                                 <h:outputLabel value="Organisasi" styleClass="label_quick"/>
                                             </h:panelGrid>
                                         </h:panelGroup>
-<!--                                        <h:panelGroup layout="block">
-                                            <h:panelGrid columns="1" style="text-align: center">
-                                                <h:outputLink id="approvalId" value="#">
-                                                    <p:graphicImage library="images" name="approval_matrix.png" style="opacity: 0.3;width: 60px;height: 60px;" cache="true" /> 
-                                                </h:outputLink>
-                                                <h:outputLabel value="Approval" styleClass="label_quick"/>
-                                            </h:panelGrid>
-                                        </h:panelGroup>-->
+                                        <!--                                        <h:panelGroup layout="block">
+                                                                                    <h:panelGrid columns="1" style="text-align: center">
+                                                                                        <h:outputLink id="approvalId" value="#">
+                                                                                            <p:graphicImage library="images" name="approval_matrix.png" style="opacity: 0.3;width: 60px;height: 60px;" cache="true" /> 
+                                                                                        </h:outputLink>
+                                                                                        <h:outputLabel value="Approval" styleClass="label_quick"/>
+                                                                                    </h:panelGrid>
+                                                                                </h:panelGroup>-->
                                         <h:panelGroup layout="block">
                                             <h:panelGrid columns="1" style="text-align: center">
                                                 <h:outputLink id="payrollId" value="#">
@@ -110,7 +110,7 @@
                                                 <h:outputLabel value="Izin &amp; Sakit" styleClass="label_quick"/>
                                             </h:panelGrid>
                                         </h:panelGroup>
-                                        
+
                                         <h:panelGroup layout="block">
                                             <h:panelGrid columns="1" style="text-align: center">
                                                 <h:outputLink id="laporanId" value="#">
@@ -124,37 +124,160 @@
                             </p:panel>
                         </p:column>
                     </p:row>
-					
-					<!-- 
+
                     <p:row>
                         <p:column style="width: 95%" colspan="3">
                             <p:tabView id="tabView1" dynamic="true" cache="true" styleClass="tabview_hrm" > 
-                                <p:tab id="tab31" title="Request History Available on Version 2">  
-                                    <h:panelGrid columns="2" cellpadding="10">  
-                                        <p:graphicImage id="tab3Img" value="/images/godfather/godfather3.jpg" />  
-                                        <h:outputText value="After a break of more than 15 years, director Francis Ford Coppola and writer Mario Puzo returned to the well for this third and final story of the fictional Corleone crime family.  
-                                                      Two decades have passed, and crime kingpin Michael Corleone, now divorced from his wife Kay has nearly succeeded in keeping his promise that his family would one day be completely legitimate."/>  
-                                    </h:panelGrid>  
+                                <p:tab id="tab31" title="Request History">  
+                                    <p:dataTable value="#{homeApproalActivityController.requestHistory}"  rowIndexVar="no" var="approval" styleClass="grid_border_table" style="margin-bottom: 5px" >
+                                        <p:column style="text-align: center;width: 10px">
+                                            <f:facet name="header">  
+                                                <h:outputText value="No." />
+                                            </f:facet>
+                                            <h:outputLabel value="#{no+1}." />
+                                        </p:column>
+                                        <p:column >
+                                            <f:facet name="header">  
+                                                <h:outputText value="Request Name" />
+                                            </f:facet>
+                                            <p:outputLabel value="#{approval.approvalDefinition.name}" />
+                                        </p:column>
+                                         <p:column >
+                                            <f:facet name="header">  
+                                                <h:outputText value="Tanggal Pengajuan" />
+                                            </f:facet>
+                                             <p:outputLabel value="#{approval.requestTime}" >
+                                                 <f:convertDateTime pattern="dd MMMM yyyy" />
+                                             </p:outputLabel>
+                                        </p:column>
+                                        <p:column >
+                                            <f:facet name="header">  
+                                                <h:outputText value="No Pengajuan" />
+                                            </f:facet>
+                                            <p:outputLabel value="#{approval.activityNumber}" />
+                                        </p:column>
+                                        <p:column >
+                                            <f:facet name="header">  
+                                                <h:outputText value="Approve By" />
+                                            </f:facet>
+                                            <p:outputLabel value="#{approval.approvedBy}" />
+                                        </p:column>
+                                        <p:column >
+                                            <f:facet name="header">  
+                                                <h:outputText value="Status" />
+                                            </f:facet>
+                                            <p:outputLabel value="#{approval.approvalStatus}">
+                                                <f:converter converterId="approvalStatusConverter"/>
+                                            </p:outputLabel>
+                                        </p:column>
+                                        <p:column style="text-align: center" >
+                                            <f:facet name="header" >  
+                                                <h:outputText value="Aksi" />
+                                            </f:facet>
+                                            <h:outputLink value="Detail">Detail</h:outputLink>
+                                        </p:column>
+                                    </p:dataTable>
                                 </p:tab>  
-                                <p:tab id="tba11" title="Pending Task (2) Available on Version 2">  
-                                    <h:panelGrid columns="2" cellpadding="10">  
-                                        <p:graphicImage id="tab1Img" value="/images/godfather/godfather1.jpg" />  
-                                        <h:outputText  
-                                            value="The story begins as Don Vito Corleone, the head of a New York Mafia family, oversees his daughter's wedding.  
-                                            His beloved son Michael has just come home from the war, but does not intend to become part of his father's business. T  
-                                            hrough Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, kind and benevolent to those who give respect,  
-                                            but given to ruthless violence whenever anything stands against the good of the family." >
-                                        </h:outputText>
-                                    </h:panelGrid>
+                                <p:tab id="tba11" title="Pending Task">  
+                                     <p:dataTable value="#{homeApproalActivityController.requestHistory}"  rowIndexVar="no" var="approval" styleClass="grid_border_table" style="margin-bottom: 5px" >
+                                        <p:column style="text-align: center;width: 10px">
+                                            <f:facet name="header">  
+                                                <h:outputText value="No." />
+                                            </f:facet>
+                                            <h:outputLabel value="#{no+1}." />
+                                        </p:column>
+                                        <p:column >
+                                            <f:facet name="header">  
+                                                <h:outputText value="Request Name" />
+                                            </f:facet>
+                                            <p:outputLabel value="#{approval.approvalDefinition.name}" />
+                                        </p:column>
+                                         <p:column >
+                                            <f:facet name="header">  
+                                                <h:outputText value="Tanggal Pengajuan" />
+                                            </f:facet>
+                                             <p:outputLabel value="#{approval.requestTime}" >
+                                                 <f:convertDateTime pattern="dd MMMM yyyy" />
+                                             </p:outputLabel>
+                                        </p:column>
+                                        <p:column >
+                                            <f:facet name="header">  
+                                                <h:outputText value="No Pengajuan" />
+                                            </f:facet>
+                                            <p:outputLabel value="#{approval.activityNumber}" />
+                                        </p:column>
+                                        <p:column >
+                                            <f:facet name="header">  
+                                                <h:outputText value="Approve By" />
+                                            </f:facet>
+                                            <p:outputLabel value="#{approval.approvedBy}" />
+                                        </p:column>
+                                        <p:column >
+                                            <f:facet name="header">  
+                                                <h:outputText value="Status" />
+                                            </f:facet>
+                                            <p:outputLabel value="#{approval.approvalStatus}">
+                                                <f:converter converterId="approvalStatusConverter"/>
+                                            </p:outputLabel>
+                                        </p:column>
+                                        <p:column style="text-align: center" >
+                                            <f:facet name="header" >  
+                                                <h:outputText value="Aksi" />
+                                            </f:facet>
+                                            <h:outputLink value="Approve">Approve</h:outputLink>
+                                        </p:column>
+                                    </p:dataTable>
                                 </p:tab>  
 
-                                <p:tab id="tab21" title="Pending Request (3) Available on Version 2">  
-                                    <h:panelGrid columns="2" cellpadding="10">  
-                                        <p:graphicImage id="tab2Img" value="/images/godfather/godfather2.jpg" />  
-                                        <h:outputText value="Francis Ford Coppola's legendary continuation and sequel to his landmark 1972 film, The_Godfather, parallels the young Vito Corleone's rise with his son Michael's spiritual fall, deepening The_Godfather's depiction of the dark side of the American dream.  
-                                                      In the early 1900s, the child Vito flees his Sicilian village for America after the local Mafia kills his family. Vito struggles to make a living, legally or illegally, for his wife and growing brood in Little Italy,  
-                                                      killing the local Black Hand Fanucci after he demands his customary cut of the tyro's business. With Fanucci gone, Vito's communal stature grows."/>  
-                                    </h:panelGrid>  
+                                <p:tab id="tab21" title="Pending Request">  
+                                     <p:dataTable value="#{homeApproalActivityController.requestHistory}"  rowIndexVar="no" var="approval" styleClass="grid_border_table" style="margin-bottom: 5px" >
+                                        <p:column style="text-align: center;width: 10px">
+                                            <f:facet name="header">  
+                                                <h:outputText value="No." />
+                                            </f:facet>
+                                            <h:outputLabel value="#{no+1}." />
+                                        </p:column>
+                                        <p:column >
+                                            <f:facet name="header">  
+                                                <h:outputText value="Request Name" />
+                                            </f:facet>
+                                            <p:outputLabel value="#{approval.approvalDefinition.name}" />
+                                        </p:column>
+                                         <p:column >
+                                            <f:facet name="header">  
+                                                <h:outputText value="Tanggal Pengajuan" />
+                                            </f:facet>
+                                             <p:outputLabel value="#{approval.requestTime}" >
+                                                 <f:convertDateTime pattern="dd MMMM yyyy" />
+                                             </p:outputLabel>
+                                        </p:column>
+                                        <p:column >
+                                            <f:facet name="header">  
+                                                <h:outputText value="No Pengajuan" />
+                                            </f:facet>
+                                            <p:outputLabel value="#{approval.activityNumber}" />
+                                        </p:column>
+                                        <p:column >
+                                            <f:facet name="header">  
+                                                <h:outputText value="Approve By" />
+                                            </f:facet>
+                                            <p:outputLabel value="#{approval.approvedBy}" />
+                                        </p:column>
+                                        <p:column >
+                                            <f:facet name="header">  
+                                                <h:outputText value="Status" />
+                                            </f:facet>
+                                            <p:outputLabel value="#{approval.approvalStatus}">
+                                                <f:converter converterId="approvalStatusConverter"/>
+                                            </p:outputLabel>
+                                        </p:column>
+                                        <p:column style="text-align: center" >
+                                            <f:facet name="header" >  
+                                                <h:outputText value="Aksi" />
+                                            </f:facet>
+                                            <h:outputLink value="Detail">Detail</h:outputLink>
+                                        </p:column>
+                                    </p:dataTable>
                                 </p:tab>  
 
 
@@ -162,8 +285,8 @@
                             </p:tabView>
                         </p:column>
                     </p:row>                  
-                 	 -->
-                 	 
+
+
                     <p:row>
                         <p:column style="width: 25%" >
                             <p:panel  style="margin-left: 10px;margin-right: 0px;margin-top: 10px;height: 100%"> 
@@ -172,28 +295,28 @@
                                     <p:outputLabel value="#{appmsg['loginhistory.list_of_user_login_history']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
 
-                                <p:panelGrid  styleClass="grid_border" style="width: 98%;margin-left: 5px;margin-right: 10px;margin-top: 0px;margin-bottom: 18px;color: #036;height: 100%">
+                                <p:panelGrid  styleClass="grid_border" style="width: 98%;margin-left: 5px;margin-right: 10px;margin-top: 0px;margin-bottom: 18px;color: #036;height: 161px">
                                     <c:forEach var="loginHistory" items="#{homeHistoryController.loginHistories}" varStatus="idx">
-	                                    <p:row>
-	                                        <p:column style="width: 40%;text-align: center">
-	                                            <p:outputLabel id="loginHistoryDate_${idx.index}" value="#{loginHistory.loginDate}" styleClass="isitext_hrm">
-		                                        	<f:convertDateTime pattern="dd-MMM-yyyy" />
-		                                        </p:outputLabel>
-		                                        <br/>
-		                                        <p:outputLabel id="loginHistoryTime_${idx.index}" value="#{loginHistory.loginDate}" styleClass="isitext_hrm">
-		                                        	<f:convertDateTime pattern="HH:mm aa" />
-		                                        </p:outputLabel>
-	                                        </p:column>
-	                                        <p:column style="width: 60%" >
-	                                            <p:outputLabel id="loginHistoryName_${idx.index}" value="#{loginHistory.hrmUser.realName}" styleClass="isitext_hrm" />
-	                                        </p:column>
-	                                    </p:row>
+                                        <p:row>
+                                            <p:column style="width: 40%;text-align: center">
+                                                <p:outputLabel id="loginHistoryDate_${idx.index}" value="#{loginHistory.loginDate}" styleClass="isitext_hrm">
+                                                    <f:convertDateTime pattern="dd-MMM-yyyy" />
+                                                </p:outputLabel>
+                                                <br/>
+                                                <p:outputLabel id="loginHistoryTime_${idx.index}" value="#{loginHistory.loginDate}" styleClass="isitext_hrm">
+                                                    <f:convertDateTime pattern="HH:mm aa" />
+                                                </p:outputLabel>
+                                            </p:column>
+                                            <p:column style="width: 60%" >
+                                                <p:outputLabel id="loginHistoryName_${idx.index}" value="#{loginHistory.hrmUser.realName}" styleClass="isitext_hrm" />
+                                            </p:column>
+                                        </p:row>
                                     </c:forEach>
                                 </p:panelGrid>
                             </p:panel>
                         </p:column>
                         <p:column style="width: 70%;color: #990000" colspan="2">                        	
-                            <p:panel  style="margin-left: 0px;margin-right: 10px;margin-top: 10px;height: 100%" >
+                            <p:panel  style="margin-left: 0px;margin-right: 10px;margin-top: 10px;height: 250px" >
                                 <h:panelGrid style="margin-bottom: 3px" columns="2">
                                     <p:outputLabel value="History Kehadiran Karyawan"  styleClass="header_big"  />
                                     <p:outputLabel value=" "  styleClass="header_big"  />
@@ -207,47 +330,47 @@
                             </p:panel>
                         </p:column>
                     </p:row>
-                    
-                    	<p:row>
-                        	<p:column style="width: 25%">
-	                            <p:panel  style="margin-left: 10px;margin-right: 0px;margin-top: 10px;height:100%"> 
-	                                <h:panelGrid style="margin-bottom: 3px">
-	                                    <p:outputLabel value="#{appmsg['accesshistory.access_history']}" styleClass="header_big" />
-	                                    <p:outputLabel value="#{appmsg['accesshistory.list_access_history']}" styleClass="header_small_no_bold" />
-	                                </h:panelGrid>
-	                                <p:panelGrid  styleClass="grid_border" style="width: 98%;margin-left: 5px;margin-right: 10px;margin-top: 0px;margin-bottom: 10px;color: #036;height: 100%">
-		                                <c:forEach var="riwayatAkses" items="#{homeHistoryController.dataRiwayatAkses}">
-		                                	<p:row>
-		                                        <p:column style="width: 40%;text-align: center"  >
-		                                            <p:outputLabel value="#{riwayatAkses.dateAccess}" styleClass="isitext_hrm">
-		                                            	<f:convertDateTime pattern="dd-MMM-yyyy" />
-		                                            </p:outputLabel>
-		                                            <br/>
-		                                            <p:outputLabel value="#{riwayatAkses.dateAccess}" styleClass="isitext_hrm">
-		                                            	<f:convertDateTime pattern="HH:mm aa" />
-		                                            </p:outputLabel>
-		                                        </p:column>
-		                                        <p:column style="width: 60%" >
-		                                            <p:outputLabel value="#{riwayatAkses.name}" styleClass="isitext_hrm"/>
-		                                        </p:column>	
-		                                    </p:row>
-		                                </c:forEach>
-	                                </p:panelGrid>
-	                            </p:panel>
-	                        </p:column>
 
-                        	<p:column style="width: 53%;color: #990000">
-                            	<p:panel  style="margin-left: 0px;margin-right: 0px;margin-top: 10px; height: 200px;">
-                                	<h:panelGrid style="margin-bottom: 3px" columns="2">
+                    <p:row>
+                        <p:column style="width: 25%">
+                            <p:panel  style="margin-left: 10px;margin-right: 0px;margin-top: 10px;height:100%"> 
+                                <h:panelGrid style="margin-bottom: 3px">
+                                    <p:outputLabel value="#{appmsg['accesshistory.access_history']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['accesshistory.list_access_history']}" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                                <p:panelGrid  styleClass="grid_border" style="width: 98%;margin-left: 5px;margin-right: 10px;margin-top: 0px;margin-bottom: 10px;color: #036;height: 161px">
+                                    <c:forEach var="riwayatAkses" items="#{homeHistoryController.dataRiwayatAkses}">
+                                        <p:row>
+                                            <p:column style="width: 40%;text-align: center"  >
+                                                <p:outputLabel value="#{riwayatAkses.dateAccess}" styleClass="isitext_hrm">
+                                                    <f:convertDateTime pattern="dd-MMM-yyyy" />
+                                                </p:outputLabel>
+                                                <br/>
+                                                <p:outputLabel value="#{riwayatAkses.dateAccess}" styleClass="isitext_hrm">
+                                                    <f:convertDateTime pattern="HH:mm aa" />
+                                                </p:outputLabel>
+                                            </p:column>
+                                            <p:column style="width: 60%" >
+                                                <p:outputLabel value="#{riwayatAkses.name}" styleClass="isitext_hrm"/>
+                                            </p:column>	
+                                        </p:row>
+                                    </c:forEach>
+                                </p:panelGrid>
+                            </p:panel>
+                        </p:column>
 
-                                    	<p:outputLabel value="Data Statistik Absensi" styleClass="header_big" />
-                                    	<p:outputLabel value="Available in version 2.0" styleClass="header_big" style="position:relative;color:red;right:-270px !important;font-style:italic"/>
-                                	</h:panelGrid>
-                                	<h:panelGroup  layout="block" style="margin-bottom: 8px">
-                                            <div align="center" style="margin-top: 25px;margin-bottom: 35px">
-                                        	<h:panelGrid columns="6" >
-                                            	<h:panelGrid columns="1" style="text-align: center;margin-bottom: 10px;margin-top: 10px">
-                                                	<p:graphicImage library="images" name="holiday.png"  cache="true" height="64" width="64"  />                                                 
+                        <p:column style="width: 53%;color: #990000">
+                            <p:panel  style="margin-left: 0px;margin-right: 0px;margin-top: 10px; height: 230px;">
+                                <h:panelGrid style="margin-bottom: 3px" columns="2">
+
+                                    <p:outputLabel value="Data Statistik Absensi" styleClass="header_big" />
+                                    <p:outputLabel value="Available in version 2.0" styleClass="header_big" style="position:relative;color:red;right:-270px !important;font-style:italic"/>
+                                </h:panelGrid>
+                                <h:panelGroup  layout="block" style="margin-bottom: 8px">
+                                    <div align="center" style="margin-top: 25px;margin-bottom: 35px">
+                                        <h:panelGrid columns="6" >
+                                            <h:panelGrid columns="1" style="text-align: center;margin-bottom: 10px;margin-top: 10px">
+                                                <p:graphicImage library="images" name="holiday.png"  cache="true" height="64" width="64"  />                                                 
                                                 <h:panelGroup layout="block">
                                                     <h:panelGrid columns="3" style="text-align: left">
                                                         <h:outputLabel value="Cuti" styleClass="header_big"/>
@@ -301,22 +424,22 @@
                                 </h:panelGroup>
                             </p:panel>
                         </p:column>
-                        
+
                         <p:column style="width: 25%;color: #990099">
-                        	<p:panel style="margin-left: 0px;margin-right: 10px;margin-top: 10px;height: 200px;"> 
-                            	<h:panelGrid style="margin-bottom: 3px">
-                                	<p:outputLabel value="My Favorite Menu" styleClass="header_big" />
+                            <p:panel style="margin-left: 0px;margin-right: 10px;margin-top: 10px;height: 231px;"> 
+                                <h:panelGrid style="margin-bottom: 3px">
+                                    <p:outputLabel value="My Favorite Menu" styleClass="header_big" />
                                 </h:panelGrid>
                                 <p:dataTable value="#{homeFavoriteMenuController.favoriteMenus}"  rowIndexVar="no" var="favoriteMenu" styleClass="grid_border_table" style="margin-bottom: 5px" >
-                                	<p:column style="text-align: center;width: 10px">
-                                    	<f:facet name="header">  
-                                        	<h:outputText value="No." />
+                                    <p:column style="text-align: center;width: 10px">
+                                        <f:facet name="header">  
+                                            <h:outputText value="No." />
                                         </f:facet>
                                         <h:outputLabel value="#{no+1}." />
                                     </p:column>
                                     <p:column style="width: 25px">
-                                    	<f:facet name="header">  
-                                        	<h:outputText value="#{appmsg['hrm_menu.url_name']}" />
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['hrm_menu.url_name']}" />
                                         </f:facet>
                                         <h:outputLink value="#{favoriteMenu.urlName}">#{favoriteMenu.name}</h:outputLink>
                                     </p:column>
@@ -324,17 +447,17 @@
                             </p:panel>
                         </p:column>
                     </p:row>
-                    
+
                     <p:row>
                         <p:column style="width: 25%;color: #990099">
-                            <p:panel style="margin-left: 10px;margin-right: 0px;margin-top: 10px"> 
+                            <p:panel style="margin-left: 10px;margin-right: 0px;margin-top: 10px;height: 240px;"> 
                                 <h:panelGrid style="margin-bottom: 3px">
                                     <p:outputLabel value="Distribusi Karyawan" styleClass="header_big" />
                                     <h:panelGrid columns="2" style="margin-left:-6px;">
-                                    	<p:outputLabel value="Updated :" styleClass="header_small_no_bold" />
-                                    	<p:outputLabel value="#{homeController.lastUpdateEmpDistByAge}" style="margin-left:-8px;" styleClass="header_small_no_bold">
-                                    		<f:convertDateTime pattern="dd-MMM-yyyy hh:mm"/>
-                                    	</p:outputLabel>
+                                        <p:outputLabel value="Updated :" styleClass="header_small_no_bold" />
+                                        <p:outputLabel value="#{homeController.lastUpdateEmpDistByAge}" style="margin-left:-8px;" styleClass="header_small_no_bold">
+                                            <f:convertDateTime pattern="dd-MMM-yyyy hh:mm"/>
+                                        </p:outputLabel>
                                     </h:panelGrid>
                                 </h:panelGrid>
 
@@ -344,7 +467,7 @@
                         </p:column>
 
                         <p:column style="width: 53%;color: #990000">
-                            <p:panel  style="margin-left: 0px;margin-right: 0px;margin-top: 10px">
+                            <p:panel  style="margin-left: 0px;margin-right: 0px;margin-top: 10px;height: 240px;">
                                 <h:panelGrid style="margin-bottom: 3px" columns="2">
                                     <p:outputLabel value="Presensi Absen Karyawan" styleClass="header_big" />
                                     <p:outputLabel value=" "  styleClass="header_big"  />
@@ -359,14 +482,14 @@
 
                         </p:column>
                         <p:column style="width: 25%">
-                            <p:panel  style="margin-left: 0px;margin-right: 10px;margin-top: 10px"> 
+                            <p:panel  style="margin-left: 0px;margin-right: 10px;margin-top: 10px;height: 240px;"> 
                                 <h:panelGrid style="margin-bottom: 3px">
                                     <p:outputLabel value="Distribusi Karyawan" styleClass="header_big" />
                                     <h:panelGrid columns="2" style="margin-left:-6px;">
-                                    	<p:outputLabel value="Updated :" styleClass="header_small_no_bold" />
-                                    	<p:outputLabel value="#{homeController.lastUpdateEmpDistByGender}" style="margin-left:-8px;" styleClass="header_small_no_bold">
-                                    		<f:convertDateTime pattern="dd-MMM-yyyy hh:mm"/>
-                                    	</p:outputLabel>
+                                        <p:outputLabel value="Updated :" styleClass="header_small_no_bold" />
+                                        <p:outputLabel value="#{homeController.lastUpdateEmpDistByGender}" style="margin-left:-8px;" styleClass="header_small_no_bold">
+                                            <f:convertDateTime pattern="dd-MMM-yyyy hh:mm"/>
+                                        </p:outputLabel>
                                     </h:panelGrid>
                                 </h:panelGrid>
                                 <div align="center" style="margin-bottom: 15px;margin-top: 15px">
@@ -396,9 +519,9 @@
                     </p:row>
                     <p:row>
                         <p:column style="width: 25%">
-                            <p:panel  style="margin-left: 10px;margin-right: 0px;margin-top: 10px"> 
+                            <p:panel  style="margin-left: 10px;margin-right: 0px;margin-top: 10px;height: 242px;"> 
                                 <h:panelGrid style="margin-bottom: 3px">
-                                	<p:outputLabel value="Available in version 2.0" styleClass="header_big" style="position:relative;color:red;right:-80px !important;font-style:italic"/>
+                                    <p:outputLabel value="Available in version 2.0" styleClass="header_big" style="position:relative;color:red;right:-80px !important;font-style:italic"/>
                                     <p:outputLabel value="Resume Data Karyawan" styleClass="header_big" />
                                     <p:outputLabel value="Statistik Informasi" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
@@ -437,10 +560,10 @@
                                 <h:panelGrid style="margin-bottom: 3px">
                                     <p:outputLabel value="Distribusi Karyawan"  styleClass="header_big" />
                                     <h:panelGrid columns="2" style="margin-left:-6px;">
-                                    	<p:outputLabel value="Updated :" styleClass="header_small_no_bold" />
-                                    	<p:outputLabel value="#{homeController.lastUpdateEmpDistByDepartment}" style="margin-left:-8px;" styleClass="header_small_no_bold">
-                                    		<f:convertDateTime pattern="dd-MMM-yyyy hh:mm"/>
-                                    	</p:outputLabel>
+                                        <p:outputLabel value="Updated :" styleClass="header_small_no_bold" />
+                                        <p:outputLabel value="#{homeController.lastUpdateEmpDistByDepartment}" style="margin-left:-8px;" styleClass="header_small_no_bold">
+                                            <f:convertDateTime pattern="dd-MMM-yyyy hh:mm"/>
+                                        </p:outputLabel>
                                     </h:panelGrid>
                                 </h:panelGrid>
                                 <p:barChart id="basic11" value="#{homeController.distribusiKaryawanPerDepartment}" legendPosition="ne"  stacked="false" seriesColors="66cc00,629de1,003366,990000,cccc00,6600cc,006666"   animate="false"
@@ -452,9 +575,9 @@
                         </p:column>
                         <p:column style="width: 25%;" >
                             <p:panel  style="margin-left: 0px;margin-right: 10px;margin-top: 10px;height: 242px" > 
-                            	<h:panelGrid style="margin-bottom: 3px">
-                            		<p:outputLabel value="Available in version 2.0" styleClass="header_big" style="position:relative;color:red;right:-60px !important;font-style:italic"/>
-                            	</h:panelGrid>
+                                <h:panelGrid style="margin-bottom: 3px">
+                                    <p:outputLabel value="Available in version 2.0" styleClass="header_big" style="position:relative;color:red;right:-60px !important;font-style:italic"/>
+                                </h:panelGrid>
                                 <div align="center" style="margin-top: 5%">
                                     <p:calendar  mode="inline" id="inlineCal" />
                                     <!--<p:schedule />-->

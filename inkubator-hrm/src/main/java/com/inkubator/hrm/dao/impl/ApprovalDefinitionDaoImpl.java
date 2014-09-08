@@ -111,4 +111,33 @@ public class ApprovalDefinitionDaoImpl extends IDAOImpl<ApprovalDefinition> impl
         criteria.add(disjunction);
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
+
+    @Override
+    public List<ApprovalDefinition> getAllDataByNameAndProcessType(String name, String processType, Order order) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("name", name));
+        criteria.add(Restrictions.eq("processType", processType));
+        criteria.addOrder(order);
+        return criteria.list();
+    }
+
+    @Override
+    public List<ApprovalDefinition> getAllDataByNameAndProcessTypeAndSequenceGreater(String name, String processType, int sequence) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("name", name));
+        criteria.add(Restrictions.eq("processType", processType));
+        criteria.add(Restrictions.gt("sequence", sequence));
+        criteria.addOrder(Order.asc("sequence"));
+        return criteria.list();
+    }
+
+    @Override
+    public Long getTotalSameAprrovalProsesExistAndNotId(String approvalName, String procesName, int sequance, long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("name", approvalName));
+        criteria.add(Restrictions.eq("processType", procesName));
+        criteria.add(Restrictions.eq("sequence", sequance));
+        criteria.add(Restrictions.ne("id", id));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
 }
