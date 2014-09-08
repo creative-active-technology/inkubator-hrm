@@ -1,0 +1,169 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg">
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="approval_defition.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="Detil Approval Definitions" styleClass="header_big" />
+                                <p:outputLabel value="Data Approval Defitions dari Aplikasi" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator />
+                    <p:growl id="growlUserFormId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
+                    <h:form id="userFormDetail" >
+
+                        <p:panelGrid style="width: 100%;margin-top: 20px;" styleClass="grid_border3">
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Approval Name" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:outputLabel  value="#{approvalDefinitionDetilController.selectedApprovalDefinition.name}" />
+                                </p:column>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important">
+                                    <p:outputLabel  value="Process Name" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:outputLabel  value="#{approvalDefinitionDetilController.selectedApprovalDefinition.processType}" />
+                                </p:column>
+
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Urutan Approval" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:outputLabel  value="#{approvalDefinitionDetilController.selectedApprovalDefinition.sequence}" />
+                                </p:column>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Approver Type" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%" >
+                                    <p:outputLabel value="#{approvalDefinitionDetilController.selectedApprovalDefinition.approverType}" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Minimum Approver" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:outputLabel  value="#{approvalDefinitionDetilController.selectedApprovalDefinition.minApprover}" />
+                                </p:column>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Minimum Rejector" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%" >
+                                    <p:outputLabel value="#{approvalDefinitionDetilController.selectedApprovalDefinition.minRejector}" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Approver Individual" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:outputLabel  value="#{approvalDefinitionDetilController.selectedApprovalDefinition.hrmUserByApproverIndividual.realName}" />
+                                </p:column>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Approver Position" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%" >
+                                    <p:outputLabel value="#{approvalDefinitionDetilController.selectedApprovalDefinition.jabatanByApproverPosition.name}" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="On Behalf" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:outputLabel  value="#{approvalDefinitionDetilController.selectedApprovalDefinition.allowOnBehalf}" >
+                                        <f:converter converterId="booleanMessageConverter" />
+                                    </p:outputLabel>
+                                </p:column>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="On Behalf Type" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%" >
+                                    <p:outputLabel value="#{approvalDefinitionDetilController.selectedApprovalDefinition.onBehalfType}" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="On Behalf Individual" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:outputLabel  value="#{approvalDefinitionDetilController.selectedApprovalDefinition.hrmUserByOnBehalfIndividual.realName}" >
+                                        
+                                    </p:outputLabel>
+                                </p:column>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="On Behalf Position" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%" >
+                                    <p:outputLabel value="#{approvalDefinitionDetilController.selectedApprovalDefinition.jabatanByOnBehalfPosition.name}" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Auto Approve On Delay" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:outputLabel  value="#{approvalDefinitionDetilController.selectedApprovalDefinition.autoApproveOnDelay}" >
+                                        <f:converter converterId="booleanMessageConverter" />
+                                    </p:outputLabel>
+                                </p:column>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Escalate On Delay" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%" >
+                                    <p:outputLabel value="#{approvalDefinitionDetilController.selectedApprovalDefinition.escalateOnDelay}" >
+                                        <f:converter converterId="booleanMessageConverter" />
+                                    </p:outputLabel>
+                                </p:column>
+                            </p:row>
+                             <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Delay Time" style="font-weight: bold"/>
+                                </p:column>
+                                 <p:column style="width: 37%" colspan="3">
+                                     <p:outputLabel value="#{approvalDefinitionDetilController.selectedApprovalDefinition.delayTime}" >
+                                         <p:outputLabel value="#{appmsg['global.day']}"  style="margin-left: 3px"/>
+                                    </p:outputLabel>
+                                </p:column>
+                                
+                            </p:row>
+
+                        </p:panelGrid>
+
+                        <p:separator/>
+                        <h:panelGrid columns="2" style="margin-bottom: 5px;float: left">
+                            <p:commandButton value="#{appmsg['global.edit']}"  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" action="#{approvalDefinitionDetilController.doEdit()}" styleClass="label_button"/>
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{approvalDefinitionDetilController.doBack()}" styleClass="label_button"/>
+                        </h:panelGrid>
+                        <div style="clear: both"/>
+                    </h:form>
+                </div>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

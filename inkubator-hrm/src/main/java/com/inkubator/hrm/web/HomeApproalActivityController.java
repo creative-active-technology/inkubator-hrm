@@ -23,49 +23,75 @@ import javax.faces.bean.RequestScoped;
 @ManagedBean(name = "homeApproalActivityController")
 @RequestScoped
 public class HomeApproalActivityController extends BaseController {
-    
+
     @ManagedProperty(value = "#{approvalActivityService}")
     private ApprovalActivityService approvalActivityService;
     private List<ApprovalActivity> requestHistory = new ArrayList<>();
     private List<ApprovalActivity> pendingTask = new ArrayList<>();
     private List<ApprovalActivity> pendingRequest = new ArrayList<>();
-    
+    private ApprovalActivity selectedApprovalActivity;
+
     @PostConstruct
     @Override
     public void initialization() {
         try {
             requestHistory = this.approvalActivityService.getRequestHistory(UserInfoUtil.getUserName());
+            pendingRequest = this.approvalActivityService.getPendingRequest(UserInfoUtil.getUserName());
+            pendingTask = this.approvalActivityService.getPendingTask(UserInfoUtil.getUserName());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
     }
-    
+
     public List<ApprovalActivity> getRequestHistory() {
         return requestHistory;
     }
-    
+
     public void setRequestHistory(List<ApprovalActivity> requestHistory) {
         this.requestHistory = requestHistory;
     }
-    
+
     public List<ApprovalActivity> getPendingTask() {
         return pendingTask;
     }
-    
+
     public void setPendingTask(List<ApprovalActivity> pendingTask) {
         this.pendingTask = pendingTask;
     }
-    
+
     public List<ApprovalActivity> getPendingRequest() {
         return pendingRequest;
     }
-    
+
     public void setPendingRequest(List<ApprovalActivity> pendingRequest) {
         this.pendingRequest = pendingRequest;
     }
-    
+
     public void setApprovalActivityService(ApprovalActivityService approvalActivityService) {
         this.approvalActivityService = approvalActivityService;
     }
-    
+
+    public String doDetailRequest() {
+        return "/protected/approval/approval_request_detail.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
+    }
+
+    public ApprovalActivity getSelectedApprovalActivity() {
+        return selectedApprovalActivity;
+    }
+
+    public void setSelectedApprovalActivity(ApprovalActivity selectedApprovalActivity) {
+        this.selectedApprovalActivity = selectedApprovalActivity;
+    }
+
+    public String doDetailRequestHistory() {
+        return "/protected/approval/approval_request_detail.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
+    }
+
+    public String doApprove() {
+        return null;
+    }
+
+    public String doDetailRequestPending() {
+        return "/protected/approval/biodata_pending_request_detail.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
+    }
 }
