@@ -233,12 +233,30 @@ public class ApprovalActivityServiceImpl extends BaseApprovalServiceImpl impleme
             int maxResults, Order order, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
-    }    
+    }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<ApprovalActivity> getRequestHistory(String userName) throws Exception {
         return this.approvalActivityDao.getRequestHistory(userName);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<ApprovalActivity> getReguestHistoryById(long id) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<ApprovalActivity> getPendingRequest(String userName) throws Exception {
+        return this.approvalActivityDao.getPendingRequest(userName);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<ApprovalActivity> getPendingTask(String userName) throws Exception {
+        return this.approvalActivityDao.getPendingTask(userName);
     }
 
 }

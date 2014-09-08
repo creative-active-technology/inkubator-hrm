@@ -11,4 +11,10 @@ import java.util.List;
 public interface ApprovalActivityDao extends IDAO<ApprovalActivity> {
 
     public List<ApprovalActivity> getRequestHistory(String userName);
+
+    public List<ApprovalActivity> getReguestHistoryById(long id);
+
+    public List<ApprovalActivity> getPendingRequest(String userName);
+
+    public List<ApprovalActivity> getPendingTask(String userName);
 }
