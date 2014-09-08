@@ -449,4 +449,10 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
         hrmUserDao.update(user);
 
     }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<HrmUser> getByName(String name) throws Exception {
+        return this.hrmUserDao.getByName(name);
+    }
 }

@@ -237,6 +237,7 @@ public class UserFormController extends BaseController {
         EmpData empData = (EmpData) event.getObject();
         userModel.setEmpDataId(empData.getId());
         userModel.setEmpDataFullName(empData.getNikWithFullName());
+        userModel.setRealName(empData.getBioData().getFullName());
     }
 
     public HrmUser getEntityFromView(UserModel userModel) {

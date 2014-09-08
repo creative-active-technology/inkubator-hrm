@@ -103,10 +103,9 @@
                                     <p:inputText value="#{approvalDefinitionFormController.approvalDefinitionModel.hrmUserByApproverIndividualName}" maxlength="45"
                                                  styleClass="isitext_hrm" label="Name" disabled="#{approvalDefinitionFormController.approverTypeIndividual}"
                                                  style="width: 73%" required="true" id="approverIndividualId"  />
-                                    <p:commandButton  style="margin-left: 5px" icon="ui-icon-search" title="Cari" action="#{empDataFormController.doSearch()}" widgetVar="cariId"
+                                    <p:commandButton  style="margin-left: 5px" icon="ui-icon-search" title="Cari" action="#{approvalDefinitionFormController.doSearchUser()}"
                                                       ajax="true" immediate="true" disabled="#{approvalDefinitionFormController.approverTypeIndividual}" id="cariButton1">
-                                        <p:ajax event="dialogReturn" listener="#{empDataFormController.onDialogReturn}"/>
-
+                                        <p:ajax event="dialogReturn" listener="#{approvalDefinitionFormController.onDialogReturnHrmUser}" update="approverIndividualId"/>
                                     </p:commandButton>
                                     <p:message for="approverIndividualId"/>
 
@@ -131,7 +130,7 @@
                                     <p:inputText value="#{approvalDefinitionFormController.approvalDefinitionModel.jabatanByApproverPositionName}" maxlength="45"
                                                  styleClass="isitext_hrm" label="Name" disabled="#{approvalDefinitionFormController.approverTypePosition}"
                                                  style="width: 73%"  id="approverPositionId" required="true" />
-                                    <p:commandButton  style="margin-left: 5px" icon="ui-icon-search" title="Cari" action="#{approvalDefinitionFormController.doSearchJabatan()}" widgetVar="cariId"
+                                    <p:commandButton  style="margin-left: 5px" icon="ui-icon-search" title="Cari" action="#{approvalDefinitionFormController.doSearchJabatan()}" 
                                                       ajax="true" immediate="true" disabled="#{approvalDefinitionFormController.approverTypePosition}" id="cariButton2">
                                         <p:ajax event="dialogReturn" listener="#{approvalDefinitionFormController.onDialogReturnJabatan}" update="approverPositionId"/>
 
@@ -172,9 +171,9 @@
                                     <p:inputText value="#{approvalDefinitionFormController.approvalDefinitionModel.hrmUserByOnBehalfIndividualName}" maxlength="45"
                                                  styleClass="isitext_hrm" label="Name" disabled="#{approvalDefinitionFormController.onBehalfApproverTypeIndividual}"
                                                  style="width: 73%" required="true" id="onBehalfIndividualId"  />
-                                    <p:commandButton  style="margin-left: 5px" icon="ui-icon-search" title="Cari" action="#{empDataFormController.doSearch()}" widgetVar="cariId" id="cariId1"
+                                    <p:commandButton  style="margin-left: 5px" icon="ui-icon-search" title="Cari" action="#{approvalDefinitionFormController.doSearchUser()}"  id="cariId1"
                                                       ajax="true" immediate="true" disabled="#{approvalDefinitionFormController.onBehalfApproverTypeIndividual}">
-                                        <p:ajax event="dialogReturn" listener="#{empDataFormController.onDialogReturn}"/>
+                                        <p:ajax event="dialogReturn" listener="#{approvalDefinitionFormController.onDialogReturnHrmUserBehalf}" update="onBehalfIndividualId"/>
 
                                     </p:commandButton>
                                     <p:message for="onBehalfIndividualId"/>
@@ -187,7 +186,7 @@
                                     <p:inputText value="#{approvalDefinitionFormController.approvalDefinitionModel.jabatanByOnBehalfPositionName}" maxlength="45" disabled="#{approvalDefinitionFormController.onBehalfApproverTypePosition}"
                                                  styleClass="isitext_hrm" label="Name" 
                                                  style="width: 73%" required="true" id="onBehalfPositionId"  />
-                                    <p:commandButton  style="margin-left: 5px" icon="ui-icon-search" title="Cari" action="#{approvalDefinitionFormController.doSearchJabatan()}" widgetVar="cariId" disabled="#{approvalDefinitionFormController.onBehalfApproverTypePosition}"
+                                    <p:commandButton  style="margin-left: 5px" icon="ui-icon-search" title="Cari" action="#{approvalDefinitionFormController.doSearchJabatan()}"  disabled="#{approvalDefinitionFormController.onBehalfApproverTypePosition}"
                                                       ajax="true" immediate="true" id="cariId2">
                                         <p:ajax event="dialogReturn" listener="#{approvalDefinitionFormController.onDialogReturnJabatanBehalf}" update="onBehalfPositionId"/>
 
@@ -195,7 +194,37 @@
                                     <p:message for="onBehalfPositionId"/>
                                 </p:column>
                             </p:row>
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Auto Approve On Delay" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:selectBooleanButton value="#{approvalDefinitionFormController.approvalDefinitionModel.autoApproveOnDelay}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
+                                                           offIcon="ui-icon-close"  id="approveOnDelay" styleClass="label_button" >
+                                        <p:ajax listener="#{approvalDefinitionFormController.autoApproveOnDelay()}" immediate="true" update="approveOnDelay,escalateOnDelay"/>
+                                    </p:selectBooleanButton>
+                                </p:column>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Escalate On Delay" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%" >
 
+                                    <p:selectBooleanButton value="#{approvalDefinitionFormController.approvalDefinitionModel.escalateOnDelay}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
+                                                           offIcon="ui-icon-close"  id="escalateOnDelay" styleClass="label_button" >
+                                        <p:ajax listener="#{approvalDefinitionFormController.escalateOnDelay()}" immediate="true" update="approveOnDelay,escalateOnDelay"/>
+                                    </p:selectBooleanButton>
+
+                                </p:column>
+                            </p:row>
+                            <p:row>
+
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Delay Time" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%"  colspan="3">
+                                    <p:spinner min="1" max="100" size="2" stepFactor="1" value="#{approvalDefinitionFormController.approvalDefinitionModel.delayTime}"/>
+                                </p:column>
+                            </p:row>
                         </p:panelGrid>
 
                         <p:separator/>
@@ -209,7 +238,7 @@
                                              process="@this" icon="ui-icon-refresh" id="cleareId"  styleClass="label_button"  style="margin-right: 5px" update="approvalFormId">  
                                 <p:resetInput target="approvalFormId" />  
                             </p:commandButton>
-                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{userFormController.doBack()}" immediate="true"
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{approvalDefinitionFormController.doBack()}" immediate="true"
                                              styleClass="label_button"/>
                             <!--</p:panel>-->
                         </div>

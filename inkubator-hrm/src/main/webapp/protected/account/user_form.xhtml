@@ -68,7 +68,7 @@
                                     <p:inputText  value="#{userFormController.userModel.empDataFullName}" styleClass="isitext_hrm" style="width: 75%" label="#{appmsg['businesstravel.employee']}"
                                                   required="false" readonly="true" id="employee"/>
                                     <p:commandButton  style="margin-left: 5px" icon="ui-icon-search" title="Cari" action="#{userFormController.doSearchEmployee()}" ajax="true" immediate="true">
-                                        <p:ajax event="dialogReturn" listener="#{userFormController.onDialogReturnEmployee}"  update="employee"/>
+                                        <p:ajax event="dialogReturn" listener="#{userFormController.onDialogReturnEmployee}"  update="employee,realName"/>
                                     </p:commandButton>
                                     <p:message for="employee"/>
                                 </p:column>
