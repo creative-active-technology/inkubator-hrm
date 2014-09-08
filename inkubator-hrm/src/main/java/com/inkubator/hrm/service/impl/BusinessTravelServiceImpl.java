@@ -1,13 +1,23 @@
 package com.inkubator.hrm.service.impl;
 
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Session;
+
 import org.hibernate.criterion.Order;
+import org.primefaces.json.JSONException;
+import org.primefaces.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -17,23 +27,27 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.ApprovalActivityDao;
 import com.inkubator.hrm.dao.BusinessTravelComponentDao;
 import com.inkubator.hrm.dao.BusinessTravelDao;
 import com.inkubator.hrm.dao.EmpDataDao;
+import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.dao.TravelTypeDao;
 import com.inkubator.hrm.dao.TravelZoneDao;
 import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.BusinessTravel;
 import com.inkubator.hrm.entity.BusinessTravelComponent;
 import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.TravelType;
 import com.inkubator.hrm.entity.TravelZone;
 import com.inkubator.hrm.service.BusinessTravelService;
 import com.inkubator.hrm.web.search.BusinessTravelSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+import com.inkubator.webcore.util.FacesUtil;
 
 /**
  *
@@ -55,6 +69,8 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
 	private EmpDataDao empDataDao;
 	@Autowired
 	private ApprovalActivityDao approvalActivityDao;
+	@Autowired
+	private HrmUserDao hrmUserDao;
 
 	@Override
 	public BusinessTravel getEntiyByPK(String id) throws Exception {
@@ -304,7 +320,8 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
 		}
 		entity.setBusinessTravelComponents(businessTravelComponents);
 				
-		ApprovalActivity approvalActivity = isBypassApprovalChecking ? null : super.checkApprovalProcess(HRMConstant.BUSINESS_TRAVEL);
+		HrmUser requestUser = hrmUserDao.getByEmpDataId(empData.getId());
+		ApprovalActivity approvalActivity = isBypassApprovalChecking ? null : super.checkApprovalProcess(HRMConstant.BUSINESS_TRAVEL, requestUser.getUserId());
         if(approvalActivity == null){
         	businessTravelDao.save(entity);
         	
@@ -321,6 +338,8 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
     		
     		approvalActivity.setPendingData(gson.toJson(jsonObject));
     		approvalActivityDao.save(approvalActivity);
+    		
+    		this.sendingEmailNotification(approvalActivity);
         }
 	}
 
@@ -349,7 +368,7 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
 		businessTravel.setUpdatedBy(UserInfoUtil.getUserName());
 		businessTravel.setUpdatedOn(new Date());
 		businessTravel.getBusinessTravelComponents().clear(); //clear list one to many
-		businessTravelDao.save(businessTravel);
+		businessTravelDao.update(businessTravel);
 		
 		/**
 		 * mekanismenya, clear list child-nya, lalu create ulang child-nya 
@@ -365,14 +384,6 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
 	public BusinessTravel getEntityByPkWithDetail(Long id) throws Exception {
-		/*BusinessTravel bt = businessTravelDao.getEntiyByPK(id);
-		GsonBuilder gsonBuilder = new GsonBuilder();
-		gsonBuilder.setDateFormat("dd MMMM yyyy");
-		//gsonBuilder.registerTypeAdapterFactory(HibernateProxyTypeAdapter.FACTORY);
-		gsonBuilder.setExclusionStrategies(new EntityExclusionStrategy());
-		Gson gson = gsonBuilder.create();
-		String xx = gson.toJson(bt);
-		System.out.println(xx);*/
 		return businessTravelDao.getEntityByPkWithDetail(id);
 	}
 	
@@ -380,6 +391,78 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
 	public BusinessTravel getEntityByBusinessTravelNoWithDetail(String businessTravelNo) throws Exception {
 		return businessTravelDao.getEntityByBusinessTravelNoWithDetail(businessTravelNo);
+	}
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void approved(long approvalActivityId, String comment) throws Exception {
+		Map<String, String> result = super.approved(approvalActivityId, comment);
+		if(Integer.parseInt(result.get("status")) == HRMConstant.APPROVAL_STATUS_APPROVED){
+			/** kalau status akhir sudah di approved, maka langsung insert ke database */
+			Gson gson = super.getGsonBuilder().create();
+			String pendingData = result.get("pendingData");
+			JsonObject jsonObject =  gson.fromJson(pendingData, JsonObject.class);
+			List<BusinessTravelComponent> businessTravelComponents = gson.fromJson(jsonObject.get("businessTravelComponents"), new TypeToken<List<BusinessTravelComponent>>(){}.getType());
+			BusinessTravel businessTravel = gson.fromJson(pendingData, BusinessTravel.class);
+			this.save(businessTravel, businessTravelComponents, true);
+		}
+	}
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void rejected(long approvalActivityId, String comment)throws Exception {
+		Map<String, String> result = super.rejected(approvalActivityId, comment);
+		if(Integer.parseInt(result.get("status")) == HRMConstant.APPROVAL_STATUS_REJECTED){
+			/** kalau status akhir sudah di reject, maka langsung insert ke database */
+			Gson gson = super.getGsonBuilder().create();
+			String pendingData = result.get("pendingData");
+			JsonObject jsonObject =  gson.fromJson(pendingData, JsonObject.class);
+			List<BusinessTravelComponent> businessTravelComponents = gson.fromJson(jsonObject.get("businessTravelComponents"), new TypeToken<List<BusinessTravelComponent>>(){}.getType());
+			BusinessTravel businessTravel = gson.fromJson(pendingData, BusinessTravel.class);
+			this.save(businessTravel, businessTravelComponents, true);
+		}
+		
+	}
+	
+	@Override
+	protected void sendingEmailNotification(ApprovalActivity nextApproval){
+		//initialization
+		JsonParser parser = new JsonParser();
+		Gson gson = this.getGsonBuilder().create();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMMM-yyyy");
+		
+		//parsing object data to json, for email purpose
+		JsonObject businessTravelObj =  gson.fromJson(nextApproval.getPendingData(), JsonObject.class);
+		List<BusinessTravelComponent> businessTravelComponents = gson.fromJson(businessTravelObj.get("businessTravelComponents"), new TypeToken<List<BusinessTravelComponent>>(){}.getType());
+		double totalAmount = 0;
+		for(BusinessTravelComponent btc:businessTravelComponents){
+			totalAmount = totalAmount + btc.getPayByAmount();
+		}
+		BusinessTravel businessTravel = gson.fromJson(nextApproval.getPendingData(), BusinessTravel.class);    	
+		JsonObject appActivityObj = (JsonObject) parser.parse(gson.toJson(nextApproval));    	
+		final JSONObject jsonObj = new JSONObject();
+        try {        	
+            jsonObj.put("approvalActivity", appActivityObj);
+            jsonObj.put("locale", FacesUtil.getFacesContext().getViewRoot().getLocale());
+            jsonObj.put("businessTravelNo", businessTravel.getBusinessTravelNo());
+            jsonObj.put("proposeDate", dateFormat.format(businessTravel.getProposeDate()));
+            jsonObj.put("destination", businessTravel.getDestination());
+            jsonObj.put("start", dateFormat.format(businessTravel.getStartDate()));
+            jsonObj.put("end", dateFormat.format(businessTravel.getEndDate()));
+            jsonObj.put("description", businessTravel.getDescription());
+            jsonObj.put("totalAmount", new DecimalFormat("###,###").format(totalAmount));
+            
+        } catch (JSONException e) {
+            LOGGER.error("Error when create json Object ", e);
+        }
+
+        //send messaging, to trigger sending email
+        super.jmsTemplateApproval.send(new MessageCreator() {
+            @Override
+            public Message createMessage(Session session) throws JMSException {
+                return session.createTextMessage(jsonObj.toString());
+            }
+        });
 	}
 
 }

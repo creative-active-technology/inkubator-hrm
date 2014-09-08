@@ -34,4 +34,6 @@ public interface HrmUserDao extends IDAO<HrmUser> {
     public HrmUser getEntityByPkWithDetail(Long id);
 
     public List<HrmUser> getByName(String name);
+    
+    public HrmUser getByEmpDataId(long empDataId);
 }

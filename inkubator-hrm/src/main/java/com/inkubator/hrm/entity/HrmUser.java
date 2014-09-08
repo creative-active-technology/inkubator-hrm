@@ -161,7 +161,7 @@ public class HrmUser implements java.io.Serializable {
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "emp_data_id")
+    @JoinColumn(name = "emp_data_id", unique=true)
     public EmpData getEmpData() {
 		return empData;
 	}
