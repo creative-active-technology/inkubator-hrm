@@ -12,6 +12,7 @@ import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.criterion.Order;
 import org.primefaces.json.JSONException;
 import org.primefaces.json.JSONObject;
@@ -24,6 +25,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -295,7 +297,9 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
 
 	@Override
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void save(BusinessTravel entity, List<BusinessTravelComponent> btcList, boolean isBypassApprovalChecking) throws Exception {
+	public String save(BusinessTravel entity, List<BusinessTravelComponent> btcList, boolean isBypassApprovalChecking) throws Exception {
+		String message = "error";
+		
 		// check duplicate business travel number
         long totalDuplicates = businessTravelDao.getTotalByBusinessTravelNo(entity.getBusinessTravelNo());
         if (totalDuplicates > 0) {
@@ -324,7 +328,7 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
 		ApprovalActivity approvalActivity = isBypassApprovalChecking ? null : super.checkApprovalProcess(HRMConstant.BUSINESS_TRAVEL, requestUser.getUserId());
         if(approvalActivity == null){
         	businessTravelDao.save(entity);
-        	
+        	message = "success_without_approval";
         } else {
         	//parsing object to json
         	JsonParser parser = new JsonParser();
@@ -343,7 +347,11 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
     		
     		//sending email notification
     		this.sendingEmailNotification(approvalActivity);
+    		
+    		message = "success_need_approval";
         }
+        
+        return message;
 	}
 
 	@Override
@@ -399,32 +407,41 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
 	@Override
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void approved(long approvalActivityId, String comment) throws Exception {
-		Map<String, String> result = super.approvedAndCheck(approvalActivityId, comment);
-		if(Integer.parseInt(result.get("status")) == HRMConstant.APPROVAL_STATUS_APPROVED){
-			/** kalau status akhir sudah di approved, maka langsung insert ke database */
+		Map<String, Object> result = super.approvedAndCheckNextApproval(approvalActivityId, comment);
+		ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
+		if(StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")){
+			/** kalau status akhir sudah di approved dan tidak ada next approval, 
+			 * berarti langsung insert ke database */
 			Gson gson = super.getGsonBuilder().create();
-			String pendingData = result.get("pendingData");
-			JsonObject jsonObject =  gson.fromJson(pendingData, JsonObject.class);
-			List<BusinessTravelComponent> businessTravelComponents = gson.fromJson(jsonObject.get("businessTravelComponents"), new TypeToken<List<BusinessTravelComponent>>(){}.getType());
-			BusinessTravel businessTravel = gson.fromJson(pendingData, BusinessTravel.class);
-			this.save(businessTravel, businessTravelComponents, true);
-		}
-	}
-
-	@Override
-	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void rejected(long approvalActivityId, String comment)throws Exception {
-		Map<String, String> result = super.rejectedAndCheck(approvalActivityId, comment);
-		if(Integer.parseInt(result.get("status")) == HRMConstant.APPROVAL_STATUS_REJECTED){
-			/** kalau status akhir sudah di reject, maka langsung insert ke database */
-			Gson gson = super.getGsonBuilder().create();
-			String pendingData = result.get("pendingData");
+			String pendingData = appActivity.getPendingData();
 			JsonObject jsonObject =  gson.fromJson(pendingData, JsonObject.class);
 			List<BusinessTravelComponent> businessTravelComponents = gson.fromJson(jsonObject.get("businessTravelComponents"), new TypeToken<List<BusinessTravelComponent>>(){}.getType());
 			BusinessTravel businessTravel = gson.fromJson(pendingData, BusinessTravel.class);
 			this.save(businessTravel, businessTravelComponents, true);
 		}
 		
+		//if there is no error, then sending the email notification
+		sendingEmailNotification(appActivity);
+	}
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void rejected(long approvalActivityId, String comment)throws Exception {
+		Map<String, Object> result = super.rejectedAndCheckNextApproval(approvalActivityId, comment);
+		ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
+		if(StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")){
+			/** kalau status akhir sudah di reject dan tidak ada next approval, 
+			 * berarti langsung insert ke database */
+			Gson gson = super.getGsonBuilder().create();
+			String pendingData = appActivity.getPendingData();
+			JsonObject jsonObject =  gson.fromJson(pendingData, JsonObject.class);
+			List<BusinessTravelComponent> businessTravelComponents = gson.fromJson(jsonObject.get("businessTravelComponents"), new TypeToken<List<BusinessTravelComponent>>(){}.getType());
+			BusinessTravel businessTravel = gson.fromJson(pendingData, BusinessTravel.class);
+			this.save(businessTravel, businessTravelComponents, true);
+		}
+		
+		//if there is no error, then sending the email notification
+		sendingEmailNotification(appActivity);
 	}
 	
 	@Override
@@ -464,6 +481,11 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
                 return session.createTextMessage(jsonObj.toString());
             }
         });
+	}
+	
+	@Override
+	public GsonBuilder getGsonBuilder(){
+		return super.getGsonBuilder();
 	}
 
 }

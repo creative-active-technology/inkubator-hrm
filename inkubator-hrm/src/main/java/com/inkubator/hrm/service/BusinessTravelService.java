@@ -19,12 +19,11 @@ public interface BusinessTravelService extends IService<BusinessTravel>,BaseAppr
 
 	public Long getTotalByParam(BusinessTravelSearchParameter parameter) throws Exception;
 	
-	public void save(BusinessTravel businessTravel, List<BusinessTravelComponent> businessTravelComponents, boolean isBypassApprovalChecking) throws Exception;
+	public String save(BusinessTravel businessTravel, List<BusinessTravelComponent> businessTravelComponents, boolean isBypassApprovalChecking) throws Exception;
 	
 	public void update(BusinessTravel businessTravel, List<BusinessTravelComponent> businessTravelComponents) throws Exception;
 	
 	public BusinessTravel getEntityByPkWithDetail(Long id) throws Exception;
 	
-	public BusinessTravel getEntityByBusinessTravelNoWithDetail(String businessTravelNo) throws Exception;	
-	
+	public BusinessTravel getEntityByBusinessTravelNoWithDetail(String businessTravelNo) throws Exception;
 }

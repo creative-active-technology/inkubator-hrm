@@ -40,8 +40,9 @@ public class ApprovalActivityServiceImpl extends BaseApprovalServiceImpl impleme
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
     public ApprovalActivity getEntiyByPK(Long id) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+        return approvalActivityDao.getEntiyByPK(id);
 
     }
 
@@ -258,5 +259,12 @@ public class ApprovalActivityServiceImpl extends BaseApprovalServiceImpl impleme
     public List<ApprovalActivity> getPendingTask(String userName) throws Exception {
         return this.approvalActivityDao.getPendingTask(userName);
     }
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public ApprovalActivity getEntityByPkWithDetail(Long id) throws Exception {
+		return this.approvalActivityDao.getEntityByPkWithDetail(id);
+		
+	}
 
 }

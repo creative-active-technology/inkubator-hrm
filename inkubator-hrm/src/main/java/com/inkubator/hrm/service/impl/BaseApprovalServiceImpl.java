@@ -122,7 +122,7 @@ public class BaseApprovalServiceImpl extends IServiceImpl {
 		return gsonBuilder;
 	}
 	
-	protected Map<String, String> approvedAndCheck(Long appActivityId, String comment) throws Exception {
+	protected Map<String, Object> approvedAndCheckNextApproval(Long appActivityId, String comment) throws Exception {
 
         /* update APPROVED approval activity */
         ApprovalActivity approvalActivity = approvalActivityDao.getEntiyByPK(appActivityId);
@@ -136,23 +136,23 @@ public class BaseApprovalServiceImpl extends IServiceImpl {
 
         /** checking process if there is any nextApproval for ApprovalActivity */
         ApprovalActivity nextApproval = this.checkingNextApproval(approvalActivity);
-        HashMap<String, String> result = new HashMap<String, String>();        
+        HashMap<String, Object> result = new HashMap<String, Object>();        
         if (nextApproval == null) {
-        	// jika nextApproval sama dengan null, berarti sudah tidak ada lagi proses approval, lanjut ke saving objek dari "pendingData" json  
-        	result.put("status", String.valueOf(HRMConstant.APPROVAL_STATUS_APPROVED));
-            result.put("pendingData", approvalActivity.getPendingData());
-            result.put("approvalActivityNumber", approvalActivity.getActivityNumber());
-            sendingEmailNotification(approvalActivity);
+        	// jika nextApproval sama dengan null, berarti sudah tidak ada lagi proses approval, lanjut ke saving objek dari "pendingData" json
+        	// kirim approval activity yg current untuk diproses saving
+        	result.put("isEndOfApprovalProcess", "true");
+        	result.put("approvalActivity", approvalActivity);            
         } else {
             // jika nextApproval tidak sama dengan null, maka lanjut ke proses kirim email ke approver
-        	result.put("status", String.valueOf(HRMConstant.APPROVAL_STATUS_WAITING));
-        	sendingEmailNotification(nextApproval);
+        	// kirim approval activity yg new(next) untuk diproses kirim email
+        	result.put("isEndOfApprovalProcess", "false");
+        	result.put("approvalActivity", nextApproval); 
         }
         
         return result;
     }
 	
-	protected Map<String, String> rejectedAndCheck(Long appActivityId, String comment) throws Exception {
+	protected Map<String, Object> rejectedAndCheckNextApproval(Long appActivityId, String comment) throws Exception {
 
         /* update REJECTED approval activity */
         ApprovalActivity approvalActivity = approvalActivityDao.getEntiyByPK(appActivityId);
@@ -166,17 +166,17 @@ public class BaseApprovalServiceImpl extends IServiceImpl {
         
         /** checking process if there is any nextApproval for ApprovalActivity */
         ApprovalActivity nextApproval = this.checkingNextApproval(approvalActivity);
-        HashMap<String, String> result = new HashMap<String, String>();        
+        HashMap<String, Object> result = new HashMap<String, Object>();         
         if (nextApproval == null) {
-        	// jika nextApproval sama dengan null, berarti sudah tidak ada lagi proses approval, lanjut ke saving objek dari "pendingData" json  
-        	result.put("status", String.valueOf(HRMConstant.APPROVAL_STATUS_REJECTED));
-            result.put("pendingData", approvalActivity.getPendingData());
-            result.put("approvalActivityNumber", approvalActivity.getActivityNumber());
-            sendingEmailNotification(approvalActivity);
+        	// jika nextApproval sama dengan null, berarti sudah tidak ada lagi proses approval, lanjut ke saving objek dari "pendingData" json 
+        	// kirim approval activity yg current untuk diproses saving
+        	result.put("isEndOfApprovalProcess", "true");
+        	result.put("approvalActivity", approvalActivity);
         } else {
             // jika nextApproval tidak sama dengan null, maka lanjut ke proses kirim email ke approver
-        	result.put("status", String.valueOf(HRMConstant.APPROVAL_STATUS_WAITING));
-        	sendingEmailNotification(nextApproval);
+        	// kirim approval activity yg new(next) untuk diproses kirim email
+        	result.put("isEndOfApprovalProcess", "false");
+        	result.put("approvalActivity", nextApproval); 
         }
         
         return result;

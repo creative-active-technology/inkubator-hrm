@@ -10,6 +10,8 @@ import java.util.List;
  */
 public interface ApprovalActivityService extends IService<ApprovalActivity> {
 
+	public ApprovalActivity getEntityByPkWithDetail(Long id) throws Exception;
+	
     public List<ApprovalActivity> getRequestHistory(String userName) throws Exception;
 
     public List<ApprovalActivity> getReguestHistoryById(long id) throws Exception;
