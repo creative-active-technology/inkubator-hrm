@@ -1,5 +1,5 @@
 package com.inkubator.hrm.entity;
-// Generated Aug 30, 2014 9:56:50 AM by Hibernate Tools 3.6.0
+// Generated Sep 1, 2014 6:34:04 PM by Hibernate Tools 3.6.0
 
 
 import java.util.Date;
@@ -39,6 +39,7 @@ public class BioProject  implements java.io.Serializable {
      private String name;
      private String description;
      private String position;
+     private String companyName;
 
     public BioProject() {
     }
@@ -48,7 +49,7 @@ public class BioProject  implements java.io.Serializable {
         this.id = id;
         this.bioData = bioData;
     }
-    public BioProject(long id, BioData bioData, String createdBy, Date createdOn, String updatedBy, Date updatedOn, Date startDate, Date endDate, String code, String name, String description, String position) {
+    public BioProject(long id, BioData bioData, String createdBy, Date createdOn, String updatedBy, Date updatedOn, Date startDate, Date endDate, String code, String name, String description, String position, String companyName) {
        this.id = id;
        this.bioData = bioData;
        this.createdBy = createdBy;
@@ -61,6 +62,7 @@ public class BioProject  implements java.io.Serializable {
        this.name = name;
        this.description = description;
        this.position = position;
+       this.companyName = companyName;
     }
    
      @Id 
@@ -193,6 +195,16 @@ public class BioProject  implements java.io.Serializable {
     
     public void setPosition(String position) {
         this.position = position;
+    }
+
+    
+    @Column(name="company_name", length=60)
+    public String getCompanyName() {
+        return this.companyName;
+    }
+    
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
 

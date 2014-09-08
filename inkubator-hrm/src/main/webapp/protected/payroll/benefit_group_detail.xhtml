@@ -1,0 +1,186 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+
+            <ui:define name="windowTitle">
+                Benefit Group Detail     
+            </ui:define>
+
+            <ui:define name="jsInclude">
+                <script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"></script>
+
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlBenefitGroupFormlId" globalOnly="true" showDetail="true"/>
+                <h:form id="formBenefitGroupFormId">
+                    <div id="box_bg" style="margin: 10px">
+                        <h:panelGrid  columns="2">
+                            <p:graphicImage library="images" name="benefitGroup.png" height="36" width="36" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="#{appmsg['benefitGroup.form_benefitGroup']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['benefitGroup.benefitGroup_data_from_reference']}" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator  />
+                        <p:panelGrid style="width: 100%;margin-bottom: 5px;margin-top: 20px" styleClass="grid_border3" >
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel value="#{appmsg['benefitGroup.benefitGroup_code']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:outputLabel value="#{benefitGroupDetailController.selectedBenefitGroup.code}" styleClass="label_hrm"/>
+                                </p:column>
+
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel value="#{appmsg['benefitGroup.benefitGroup_name']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:outputLabel value="#{benefitGroupDetailController.selectedBenefitGroup.name}" styleClass="label_hrm"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel value="#{appmsg['benefitGroup.benefitGroup_validDate']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 37%">
+                                    <p:outputLabel value="#{benefitGroupDetailController.selectedBenefitGroup.validDate}" styleClass="label_hrm"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 37%">
+                                    <p:outputLabel value="#{benefitGroupDetailController.selectedBenefitGroup.description}" styleClass="label_hrm"/>
+                                </p:column>
+                            </p:row>
+
+                        </p:panelGrid>
+                        <p:dataTable  id="tableBenefitGroupRateId" var="benefitGroupRateData"  value="#{benefitGroupDetailController.benefitGroupRates}" lazy="false" paginator="false"
+                                      style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['benefitGroupRate.list_of_benefitGroupRate']}"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 3%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column sortBy="golonganJabatan.code"  style="text-align: center;width: 37%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['benefitGroupRate.benefitGroupRate_golongan']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{benefitGroupRateData.golonganJabatan.code}"/>
+                            </p:column>  
+                            <p:column sortBy="companyName"  style="width: 40%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['benefitGroupRate.benefitGroupRate_nominal']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{benefitGroupRateData.nominal}"/>
+                            </p:column>  
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
+
+                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
+                                                 style="font-size: 10px!important" update=":panelDialogBenefitGroupRateDetailId" 
+                                                 action="#{benefitGroupDetailController.doSelectBenefitGroupRate()}" onclick="statusDialog.show()"  oncomplete="dialogDetailBenefitGroupRate.show()">                        
+                                    <f:setPropertyActionListener value="#{benefitGroupRateData}" target="#{benefitGroupDetailController.selectedBenefitGroupRate}" />
+                                </p:commandButton>
+                                - 
+                                <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+                                                 style="font-size: 10px!important" update=":panelDialogBenefitGroupRateConfirmId" 
+                                                 action="#{benefitGroupDetailController.doSelectBenefitGroupRate()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmBenefitGroupRate.show()">
+                                    <f:setPropertyActionListener value="#{benefitGroupRateData}" target="#{benefitGroupDetailController.selectedBenefitGroupRate}" />
+                                </p:commandButton>
+                                -
+                                <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
+                                                 action="#{benefitGroupDetailController.doUpdateBenefitGroupRate()}" >
+                                    <f:setPropertyActionListener value="#{benefitGroupRateData}" target="#{benefitGroupDetailController.selectedBenefitGroupRate}" />
+                                    <p:ajax event="dialogReturn" listener="#{benefitGroupDetailController.onDialogReturnBenefitGroupRate}"  update="tableBenefitGroupRateId,:growlBenefitGroupFormlId"/>
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
+                        <h:panelGrid columns="1">
+                            <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']} #{appmsg['benefitGroupRate.benefitGroupRate']}" label="#{appmsg['global.add']} #{appmsg['benefitGroupRate.benefitGroupRate']}" styleClass="label_button" icon="ui-icon-document" 
+                                             actionListener="#{benefitGroupDetailController.doAddBenefitGroupRate()}" ajax="true" immediate="true">
+                                <p:ajax event="dialogReturn" listener="#{benefitGroupDetailController.onDialogReturnBenefitGroupRate}"  update="tableBenefitGroupRateId,:growlBenefitGroupFormlId"/>
+                            </p:commandButton>
+                        </h:panelGrid>
+                        <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
+                        <div style="margin-bottom: 5px">                     
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{benefitGroupDetailController.doBack()}" styleClass="label_button"/>
+                        </div>
+                    </div>
+                </h:form>
+                
+                 <p:dialog widgetVar="dialogConfirmBenefitGroupRate" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                          appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
+                    <div align="center">
+                        <div align="center">
+                            <h:panelGrid columns="2" style="text-align: justify">
+                                <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
+                                <h:panelGroup>
+                                    <h:panelGrid style="text-align: center">
+                                        <p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
+                                    </h:panelGrid>
+                                </h:panelGroup>
+                            </h:panelGrid>
+                        </div>
+                        <h:panelGrid id="panelDialogBenefitGroupRateConfirmId"  columns="3">
+                            <p:outputLabel value="#{appmsg['benefitGroupRate.benefitGroupRate_golongan']}"  style="font-weight: bold"/>
+                            <p:outputLabel value=":"  style="font-weight: bold"/>
+                            <p:outputLabel value="#{benefitGroupDetailController.selectedBenefitGroupRate.golonganJabatan.code}" styleClass="label_hrm"/>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:commandButton value="#{appmsg['global.yes']}" action="#{benefitGroupDetailController.doDeleteBenefitGroupRate()}" update="formBenefitGroupFormId:tableBenefitGroupRateId,:growlBenefitGroupFormlId"
+                                         oncomplete="dialogConfirmBenefitGroupRate.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmBenefitGroupRate.hide()" icon="ui-icon-close" />                     	
+                    </div>
+                </p:dialog>
+                <p:dialog widgetVar="dialogDetailBenefitGroupRate" header="#{appmsg['benefitGroupRate.benefitGroupRate']}" styleClass="header_small_no_bold" width="900" modal="true" resizable="false" hideEffect="puff" 
+                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                    <p:panelGrid id="panelDialogBenefitGroupRateDetailId" style="width:100%;margin:5px;">
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['benefitGroup.benefitGroup_name']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{benefitGroupDetailController.selectedBenefitGroup.name}" styleClass="label_hrm"/></p:column>
+                        </p:row>    
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['benefitGroupRate.benefitGroupRate_golongan']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{benefitGroupDetailController.selectedBenefitGroupRate.golonganJabatan.code}" styleClass="label_hrm"/></p:column>
+                        </p:row>                       
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['benefitGroupRate.benefitGroupRate_nominal']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{benefitGroupDetailController.selectedBenefitGroupRate.nominal}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <f:facet name="footer">
+                            <p:row>
+                                <p:column colspan="2"><p:outputLabel value="#{appmsg['menu.data_reference']} - #{appmsg['benefitGroupRate.benefitGroupRate']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
+                            </p:row>
+                        </f:facet>
+                    </p:panelGrid>
+                </p:dialog>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+
+
+</html>
+

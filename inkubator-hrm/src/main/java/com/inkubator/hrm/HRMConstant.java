@@ -170,4 +170,19 @@ public class HRMConstant {
     public static final String EMP_TERMINATION = "EMP_TERMINATION";
 
     /* END */
+    /* Constant for  Model Component */
+    public static final Integer BASIC_SALARY = 0;
+    public static final Integer CEIL = 1;
+    public static final Integer TAX_TOTAL = 2;
+    public static final Integer UPLOAD = 3;
+    public static final Integer LIMITED_TIME = 4;
+    public static final Integer FORMULA = 5;
+    /* END */
+
+    /* Constant for  Appraisal Element */
+    public static final Integer LEADER_YES = 1;
+    public static final Integer LEADER_NO = 0;
+    public static final Integer OPERATOR_YES = 1;
+    public static final Integer OPERATOR_NO = 0;
+    /* END */
 }

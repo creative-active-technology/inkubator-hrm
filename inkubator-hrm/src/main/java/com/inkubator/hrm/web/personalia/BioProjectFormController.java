@@ -114,6 +114,7 @@ public class BioProjectFormController extends BaseController {
             bioProject.setStartDate(bioProjectModel.getStartDate());
             bioProject.setEndDate(bioProjectModel.getEndDate());
             bioProject.setPosition(bioProjectModel.getPosition());
+            bioProject.setCompanyName(bioProjectModel.getCompanyName());
             bioProject.setDescription(bioProjectModel.getDescription());
             return bioProject;
         } catch (Exception ex) {
@@ -131,6 +132,7 @@ public class BioProjectFormController extends BaseController {
         bioProjectModel.setStartDate(entity.getStartDate());
         bioProjectModel.setEndDate(entity.getEndDate());
         bioProjectModel.setPosition(entity.getPosition());
+        bioProjectModel.setCompanyName(entity.getCompanyName());
         bioProjectModel.setDescription(entity.getDescription());
         return bioProjectModel;
     }
