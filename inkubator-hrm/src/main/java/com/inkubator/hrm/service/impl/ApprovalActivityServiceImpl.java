@@ -10,6 +10,7 @@ import com.inkubator.hrm.entity.ApprovalDefinition;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.service.ApprovalActivityService;
+import com.inkubator.hrm.web.search.ApprovalActivitySearchParameter;
 import java.util.Date;
 import java.util.List;
 import org.hibernate.criterion.Order;
@@ -346,6 +347,22 @@ public class ApprovalActivityServiceImpl extends BaseApprovalServiceImpl impleme
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ,propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<ApprovalActivity> getAllDataWithAllRelation(ApprovalActivitySearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
+        return approvalActivityDao.getAllDataWithAllRelation(searchParameter, firstResult, maxResults, order);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ,propagation = Propagation.SUPPORTS, timeout = 50)
+    public Long getTotalByParam(ApprovalActivitySearchParameter searchParameter) throws Exception {
+        return approvalActivityDao.getTotalByParam(searchParameter);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ,propagation = Propagation.SUPPORTS, timeout = 30)
+    public ApprovalActivity getEntityByPkWithAllRelation(Long id) throws Exception {
+        return approvalActivityDao.getEntityByPkWithAllRelation(id);
+    }
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<ApprovalActivity> getReguestHistoryById(long id) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
