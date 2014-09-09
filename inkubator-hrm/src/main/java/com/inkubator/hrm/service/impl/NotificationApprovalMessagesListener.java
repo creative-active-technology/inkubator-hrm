@@ -20,11 +20,8 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
 import com.inkubator.common.notification.model.VelocityTempalteModel;
 import com.inkubator.common.notification.service.VelocityTemplateSender;
 import com.inkubator.common.util.JsonConverter;
@@ -33,7 +30,6 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.ApprovalActivityDao;
 import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.entity.ApprovalActivity;
-import com.inkubator.hrm.entity.BusinessTravelComponent;
 import com.inkubator.hrm.entity.HrmUser;
 
 /**
@@ -76,7 +72,7 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
             List<String> toSentBCC = new ArrayList<String>();
                 
             vtm.setFrom(ownerEmail);
-            if(appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING) {
+            /*if(appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING) {
             	//kirim email ke approver nya jika status waiting
                 toSend.add(approverUser.getEmailAddress()); 
             } else {
@@ -85,8 +81,8 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                 for(JsonElement el:jsonObject.get("ccEmailAddresses").getAsJsonArray()){
                 	toSentCC.add(el.getAsString());
                 }
-            }
-            //toSend.add("rizkykojek@gmail.com");
+            }*/
+            toSend.add("rizkykojek@gmail.com");
             vtm.setTo(toSend.toArray(new String[toSend.size()]));
             vtm.setCc(toSentCC.toArray(new String[toSentCC.size()]));
             vtm.setBcc(toSentBCC.toArray(new String[toSentBCC.size()]));
@@ -98,11 +94,7 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                     
             } else {
             	vtm.setSubject("Permohonan Perjalanan Dinas");
-                if(appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING) {
-                	//update approval activity, set notification true
-                    appActivity.setNotificationSend(true);
-                    this.approvalActivityDao.update(appActivity);
-                        
+                if(appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING) {                        
                     //configure email parameter based on approval name
                     switch (appActivity.getApprovalDefinition().getName()) {
     					case HRMConstant.BUSINESS_TRAVEL:
@@ -118,12 +110,19 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
     		                maptoSend.put("description", jsonObject.get("description").getAsString());
     		                maptoSend.put("totalAmount", jsonObject.get("totalAmount").getAsString());
     						break;	
+    						
+    					case HRMConstant.REIMBURSEMENT:    						
+    						break;
+    						
+    					case HRMConstant.LOAN:    						
+    						break;
+    						
     					default:
     						break;
     				}
                 } else if((appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_APPROVED) || 
                 		 (appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_REJECTED)) {
-                		
+                	//configure email parameter based on approval name	
                 	switch (appActivity.getApprovalDefinition().getName()) {
     					case HRMConstant.BUSINESS_TRAVEL:
     						vtm.setTemplatePath("email_travel_approved_or_rejected_approval.vm");
@@ -142,6 +141,13 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
     		                    maptoSend.put("statusDesc", "Permohonan Ditolak");
     		                }
     						break;	
+    						
+    					case HRMConstant.REIMBURSEMENT:    						
+    						break;
+    						
+    					case HRMConstant.LOAN:    						
+    						break;
+    						
     					default:
     						break;
     				}
@@ -152,6 +158,12 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                 maptoSend.put("applicationUrl", applicationUrl);
                 maptoSend.put("applicationName", applicationName);
                 velocityTemplateSender.sendMail(vtm, maptoSend);
+                
+                //update approval activity, set notification true
+                if(appActivity.getNotificationSend() == false){
+                	appActivity.setNotificationSend(true);
+                	this.approvalActivityDao.update(appActivity);
+                }
             }
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
