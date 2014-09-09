@@ -394,7 +394,7 @@ public class EmpData implements java.io.Serializable {
         this.noSk = noSk;
     }
 
-    @Column(name = "basic_salary", length = 65535)
+    @Column(name = "basic_salary", length = 65535, columnDefinition="Text")
     public String getBasicSalary() {
         return this.basicSalary;
     }

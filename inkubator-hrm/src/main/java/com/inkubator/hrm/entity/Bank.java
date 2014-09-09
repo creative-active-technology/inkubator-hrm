@@ -142,7 +142,7 @@ public class Bank  implements java.io.Serializable {
     }
 
     
-    @Column(name="description", length=65535)
+    @Column(name="description", length=65535, columnDefinition="Text")
     public String getDescription() {
         return this.description;
     }

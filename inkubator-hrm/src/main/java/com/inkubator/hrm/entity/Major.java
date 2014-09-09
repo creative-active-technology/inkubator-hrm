@@ -119,7 +119,7 @@ public class Major implements java.io.Serializable {
         this.majorName = majorName;
     }
 
-    @Column(name = "description", length = 65535)
+    @Column(name = "description", length = 65535, columnDefinition="Text")
     public String getDescription() {
         return this.description;
     }

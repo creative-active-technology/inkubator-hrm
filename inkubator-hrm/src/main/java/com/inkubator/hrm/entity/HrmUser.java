@@ -124,7 +124,7 @@ public class HrmUser implements java.io.Serializable {
         this.emailAddress = emailAddress;
     }
 
-    @Column(name = "password", length = 65535)
+    @Column(name = "password", length = 65535, columnDefinition="Text")
     public String getPassword() {
         return this.password;
     }
