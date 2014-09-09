@@ -5,27 +5,29 @@
  */
 package com.inkubator.hrm.web.workingtime;
 
-import java.io.IOException;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.ExternalContext;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.BusinessTravel;
 import com.inkubator.hrm.entity.BusinessTravelComponent;
 import com.inkubator.hrm.service.ApprovalActivityService;
-import com.inkubator.hrm.service.BusinessTravelComponentService;
 import com.inkubator.hrm.service.BusinessTravelService;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
+import com.inkubator.webcore.util.MessagesResourceUtil;
 
 /**
  *
@@ -38,6 +40,8 @@ public class BusinessTravelApprovalFormController extends BaseController {
 	private Double totalAmount = 0.0;
     private BusinessTravel selectedBusinessTravel;
     private List<BusinessTravelComponent> businessTravelComponents;
+    private String comment;
+    private ApprovalActivity selectedApprovalActivity;
     @ManagedProperty(value = "#{businessTravelService}")
     private BusinessTravelService businessTravelService;
     @ManagedProperty(value = "#{approvalActivityService}")
@@ -49,11 +53,11 @@ public class BusinessTravelApprovalFormController extends BaseController {
         try {
             super.initialization();
             String id = FacesUtil.getRequestParameter("execution");
-            ApprovalActivity appActivity = approvalActivityService.getEntiyByPK(Long.parseLong(id.substring(1)));
+            selectedApprovalActivity = approvalActivityService.getEntiyByPK(Long.parseLong(id.substring(1)));
             Gson gson = businessTravelService.getGsonBuilder().create();
-			JsonObject jsonObject =  gson.fromJson(appActivity.getPendingData(), JsonObject.class);
+			JsonObject jsonObject =  gson.fromJson(selectedApprovalActivity.getPendingData(), JsonObject.class);
 			businessTravelComponents = gson.fromJson(jsonObject.get("businessTravelComponents"), new TypeToken<List<BusinessTravelComponent>>(){}.getType());
-			selectedBusinessTravel = gson.fromJson(appActivity.getPendingData(), BusinessTravel.class);
+			selectedBusinessTravel = gson.fromJson(selectedApprovalActivity.getPendingData(), BusinessTravel.class);
             for(BusinessTravelComponent btc :businessTravelComponents){
             	totalAmount = totalAmount + btc.getPayByAmount();
             }
@@ -68,9 +72,10 @@ public class BusinessTravelApprovalFormController extends BaseController {
     	businessTravelComponents =null;
         selectedBusinessTravel = null;
         businessTravelService = null;
-        businessTravelComponents = null;
+        selectedApprovalActivity = null;
         totalAmount = null;
         approvalActivityService = null;
+        comment = null;
     }   
 
 	public BusinessTravel getSelectedBusinessTravel() {
@@ -101,21 +106,61 @@ public class BusinessTravelApprovalFormController extends BaseController {
 		this.totalAmount = totalAmount;
 	}
 	
-	public void setApprovalActivityService(
-			ApprovalActivityService approvalActivityService) {
+	public void setApprovalActivityService(ApprovalActivityService approvalActivityService) {
 		this.approvalActivityService = approvalActivityService;
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 
 	public String doBack() {
         return "/protected/home.htm";
     }
 
-	public void doApproved() {
-    	
+	public String doApproved() {
+    	try {
+    		Gson gson = businessTravelService.getGsonBuilder().create();
+    		JsonParser parser = new JsonParser();
+    		JsonArray arrayComponents = new JsonArray();
+    		JsonObject jsonObject =  gson.fromJson(selectedApprovalActivity.getPendingData(), JsonObject.class);
+    		for(BusinessTravelComponent btc: businessTravelComponents){
+    			JsonObject component = (JsonObject) parser.parse(gson.toJson(btc));
+    			arrayComponents.add(component);
+    		}
+    		jsonObject.add("businessTravelComponents", arrayComponents);
+    		
+			businessTravelService.approved(selectedApprovalActivity.getId(), gson.toJson(jsonObject), comment);
+			MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.approval_info", "global.approved_successfully",
+                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+			return "/protected/home.htm?faces-redirect=true";
+		} catch (Exception e) {
+			LOGGER.error("Error when approved process ", e);
+		}
+    	return null;
     }
 	
-	public void doRejected() {
-    	
+	public String doRejected() {
+		try {
+			businessTravelService.rejected(selectedApprovalActivity.getId(), comment);
+			MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.approval_info", "global.rejected_successfully",
+                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+			return "/protected/home.htm?faces-redirect=true";
+		} catch (Exception e) {
+			LOGGER.error("Error when rejected process ", e);
+		}
+    	return null;
     }
+	
+	public void doAdjustPayByAmount(){
+		totalAmount = 0.0;
+		for(BusinessTravelComponent btc: businessTravelComponents){
+			totalAmount = totalAmount + btc.getPayByAmount();
+		}
+	}
 
 }

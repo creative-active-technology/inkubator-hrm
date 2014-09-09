@@ -1,6 +1,7 @@
 package com.inkubator.hrm.service;
 
 import com.google.gson.GsonBuilder;
+import com.inkubator.hrm.entity.ApprovalActivity;
 
 
 /**
@@ -9,9 +10,11 @@ import com.google.gson.GsonBuilder;
  */
 public interface BaseApprovalService {
 
-	public void approved(long approvalActivityId, String comment) throws Exception;
+	public void approved(long approvalActivityId, String pendingDataUpdate, String comment) throws Exception;
 	
 	public void rejected(long approvalActivityId, String comment) throws Exception;
+	
+	public void sendingEmailApprovalNotif(ApprovalActivity appActivity) throws Exception;
 	
 	public GsonBuilder getGsonBuilder();
 	

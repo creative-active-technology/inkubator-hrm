@@ -346,7 +346,7 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
     		approvalActivityDao.save(approvalActivity);
     		
     		//sending email notification
-    		this.sendingEmailNotification(approvalActivity);
+    		this.sendingEmailApprovalNotif(approvalActivity);
     		
     		message = "success_need_approval";
         }
@@ -406,8 +406,8 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
 
 	@Override
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void approved(long approvalActivityId, String comment) throws Exception {
-		Map<String, Object> result = super.approvedAndCheckNextApproval(approvalActivityId, comment);
+	public void approved(long approvalActivityId, String pendingDataUpdate, String comment) throws Exception {
+		Map<String, Object> result = super.approvedAndCheckNextApproval(approvalActivityId, pendingDataUpdate, comment);
 		ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
 		if(StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")){
 			/** kalau status akhir sudah di approved dan tidak ada next approval, 
@@ -415,19 +415,22 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
 			Gson gson = super.getGsonBuilder().create();
 			String pendingData = appActivity.getPendingData();
 			JsonObject jsonObject =  gson.fromJson(pendingData, JsonObject.class);
+			
 			List<BusinessTravelComponent> businessTravelComponents = gson.fromJson(jsonObject.get("businessTravelComponents"), new TypeToken<List<BusinessTravelComponent>>(){}.getType());
 			BusinessTravel businessTravel = gson.fromJson(pendingData, BusinessTravel.class);
+			businessTravel.setApprovalActivityNumber(appActivity.getActivityNumber());  //set approval activity number, for history approval purpose
+			
 			this.save(businessTravel, businessTravelComponents, true);
 		}
 		
 		//if there is no error, then sending the email notification
-		sendingEmailNotification(appActivity);
+		sendingEmailApprovalNotif(appActivity);
 	}
 
 	@Override
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void rejected(long approvalActivityId, String comment)throws Exception {
-		Map<String, Object> result = super.rejectedAndCheckNextApproval(approvalActivityId, comment);
+		Map<String, Object> result = super.rejectedAndCheckNextApproval(approvalActivityId, null, comment);
 		ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
 		if(StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")){
 			/** kalau status akhir sudah di reject dan tidak ada next approval, 
@@ -435,17 +438,20 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
 			Gson gson = super.getGsonBuilder().create();
 			String pendingData = appActivity.getPendingData();
 			JsonObject jsonObject =  gson.fromJson(pendingData, JsonObject.class);
+			
 			List<BusinessTravelComponent> businessTravelComponents = gson.fromJson(jsonObject.get("businessTravelComponents"), new TypeToken<List<BusinessTravelComponent>>(){}.getType());
 			BusinessTravel businessTravel = gson.fromJson(pendingData, BusinessTravel.class);
+			businessTravel.setApprovalActivityNumber(appActivity.getActivityNumber());  //set approval activity number, for history approval purpose 
+			
 			this.save(businessTravel, businessTravelComponents, true);
 		}
 		
 		//if there is no error, then sending the email notification
-		sendingEmailNotification(appActivity);
+		sendingEmailApprovalNotif(appActivity);
 	}
 	
 	@Override
-	protected void sendingEmailNotification(ApprovalActivity appActivity) throws Exception{
+	public void sendingEmailApprovalNotif(ApprovalActivity appActivity) throws Exception{
 		//initialization
 		Gson gson = this.getGsonBuilder().create();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMMM-yyyy");
