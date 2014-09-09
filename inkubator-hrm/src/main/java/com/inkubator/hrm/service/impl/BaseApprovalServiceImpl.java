@@ -12,6 +12,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
@@ -45,6 +46,27 @@ public class BaseApprovalServiceImpl extends IServiceImpl {
 	@Autowired
 	protected JmsTemplate jmsTemplateApproval;
 	
+	/**
+     * <p>Method untuk mengecek apakah di processName/module tersebut terdapat approval proses. 
+     * Jika return-nya berupa null, maka module tersebut tidak memerlukan approval proses, tapi jika !=null maka memerlukan proses approval.
+     * Selanjutnya nanti di objek yang memanggil method ini, harus menge-set approvalActivity.setPendingData(pendingData) dari entity module tersebut
+     * 
+     * </p>
+     *
+     * <pre>
+     * ApprovalActivity appActivity = checkApprovalProcess(HRMConstant.BUSINESS_TRAVEL, requestUser.getUserId());
+     * if(approvalActivity == null){
+     *   businessTravelDao.save(entity);
+     * } else {
+     *   approvalActivity.setPendingData(gson.toJson(entity));
+     *   approvalActivityDao.save(approvalActivity);
+     * }
+     * </pre>
+     *
+     * @param processName  ProcessName/module yg terdapat di approvalDefinition
+     * @param requestByEmployee  Employee yang me-request/create
+     * @return approvalActivity object
+     */
 	protected ApprovalActivity checkApprovalProcess(String processName, String requestByEmployee) throws Exception {
 		
 		ApprovalActivity appActivity = null;
@@ -115,6 +137,25 @@ public class BaseApprovalServiceImpl extends IServiceImpl {
 		return userId;
 	}
 	
+	/**
+     * <p>Method untuk meng-approved suatu activity sekaligus akan mengecek apakah terdapat nextApproval nya. 
+     * Return-nya berupa Map<String, Object>, nanti di cek jika "isEndOfApprovalProcess" == "false", maka artinya terdapat nextApproval.
+     * Tapi jika "isEndOfApprovalProcess" == "true", maka berarti sudah tidak terdapat nextApproval, 
+     * sehingga bisa langsung melakukan proses parsing dari json ke entity dan melakukan saving objek entity tersebut
+     * </p>
+     *
+     * <pre>
+     * Map<String, Object> result = approvedAndCheckNextApproval(approvalActivityId, pendingDataUpdate, comment);
+     * if(StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")){
+     *    lakukan proses parsing json ke entity dan saving entity objek
+     * }
+     * </pre>
+     *
+     * @param appActivityId  Approval Activity id
+     * @param pendingDataUpdate  Json dari entity yg akan disave(jika terjadi perubahan), jika tidak ada perubahan cukup set "null", nanti method ini akan mengcopy dari value approvalActivity sebelumnya
+     * @param comment String
+     * @return Map<String, Object> Key value dari map tersebut "isEndOfApprovalProcess" berupa String dan "approvalActivity" berupa objek ApprovalActivity
+     */
 	protected Map<String, Object> approvedAndCheckNextApproval(Long appActivityId, String pendingDataUpdate, String comment) throws Exception {
 
         /* update APPROVED approval activity */
@@ -156,7 +197,25 @@ public class BaseApprovalServiceImpl extends IServiceImpl {
         return result;
     }
 	
-	protected Map<String, Object> rejectedAndCheckNextApproval(Long appActivityId, String pendingDataUpdate, String comment) throws Exception {
+	/**
+     * <p>Method untuk meng-rejected suatu activity sekaligus akan mengecek apakah terdapat nextApproval nya. 
+     * Return-nya berupa Map<String, Object>, nanti di cek jika "isEndOfApprovalProcess" == "false", maka artinya terdapat nextApproval.
+     * Tapi jika "isEndOfApprovalProcess" == "true", maka berarti sudah tidak terdapat nextApproval, 
+     * sehingga bisa langsung melakukan proses parsing dari json ke entity dan melakukan saving objek entity tersebut
+     * </p>
+     *
+     * <pre>
+     * Map<String, Object> result = rejectedAndCheckNextApproval(approvalActivityId, comment);
+     * if(StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")){
+     *    lakukan proses parsing json ke entity dan saving entity objek
+     * }
+     * </pre>
+     *
+     * @param appActivityId  Approval Activity id
+     * @param comment String
+     * @return Map<String, Object> Key value dari map tersebut "isEndOfApprovalProcess" berupa String dan "approvalActivity" berupa objek ApprovalActivity
+     */
+	protected Map<String, Object> rejectedAndCheckNextApproval(Long appActivityId, String comment) throws Exception {
 
         /* update REJECTED approval activity */
         ApprovalActivity approvalActivity = approvalActivityDao.getEntiyByPK(appActivityId);
@@ -169,7 +228,7 @@ public class BaseApprovalServiceImpl extends IServiceImpl {
         
         
         /** checking process if there is any nextApproval for ApprovalActivity */
-        ApprovalActivity nextApproval = this.checkingNextApproval(approvalActivity, pendingDataUpdate);
+        ApprovalActivity nextApproval = this.checkingNextApproval(approvalActivity, null);
         HashMap<String, Object> result = new HashMap<String, Object>();         
         if (nextApproval == null) {
         	// jika nextApproval sama dengan null, berarti sudah tidak ada lagi proses approval, lanjut ke saving objek dari "pendingData" json 
@@ -246,6 +305,17 @@ public class BaseApprovalServiceImpl extends IServiceImpl {
         return newEntity;
     }
     
+    /**
+     * <p>Method untuk mendapatkan List dari emailAddresses yang akan di sendCC, hanya jika approval status adalah APPROVED or REJECTED 
+     * </p>
+     *
+     * <pre>
+     * List<String> ccEmailAddresses = getCcEmailAddressesOnApproveOrReject(appActivity);
+     * </pre>
+     *
+     * @param appActivity  Approval Activity id
+     * @return comment String
+     */
     protected List<String> getCcEmailAddressesOnApproveOrReject(ApprovalActivity appActivity){
     	//initialization
     	List<String> emailAdresses = new ArrayList<String>();
@@ -271,6 +341,16 @@ public class BaseApprovalServiceImpl extends IServiceImpl {
     	return emailAdresses;
     }
     
+    /**
+     * <p>Method untuk mendapatkan GsonBuilder, yang akan digunakan untuk parsing dari entity ke json (ataupun sebaliknya) 
+     * </p>
+     *
+     * <pre>
+     * Gson gson = getGsonBuilder().create();
+     * </pre>
+     *
+     * @return GsonBuilder GsonBuilder
+     */
     protected GsonBuilder getGsonBuilder(){
 		GsonBuilder gsonBuilder = new GsonBuilder();
     	gsonBuilder.serializeNulls();

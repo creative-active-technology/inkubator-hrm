@@ -431,7 +431,7 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
 	@Override
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void rejected(long approvalActivityId, String comment)throws Exception {
-		Map<String, Object> result = super.rejectedAndCheckNextApproval(approvalActivityId, null, comment);
+		Map<String, Object> result = super.rejectedAndCheckNextApproval(approvalActivityId, comment);
 		ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
 		if(StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")){
 			/** kalau status akhir sudah di reject dan tidak ada next approval, 
