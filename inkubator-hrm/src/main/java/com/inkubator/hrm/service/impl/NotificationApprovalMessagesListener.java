@@ -20,7 +20,11 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 import com.inkubator.common.notification.model.VelocityTempalteModel;
 import com.inkubator.common.notification.service.VelocityTemplateSender;
 import com.inkubator.common.util.JsonConverter;
@@ -29,6 +33,7 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.ApprovalActivityDao;
 import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.entity.ApprovalActivity;
+import com.inkubator.hrm.entity.BusinessTravelComponent;
 import com.inkubator.hrm.entity.HrmUser;
 
 /**
@@ -68,17 +73,23 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
             VelocityTempalteModel vtm = new VelocityTempalteModel();
             List<String> toSend = new ArrayList<>();
             List<String> toSentCC = new ArrayList<String>();
+            List<String> toSentBCC = new ArrayList<String>();
                 
             vtm.setFrom(ownerEmail);
-            /*if(appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING) {
-                	toSend.add(approverUser.getEmailAddress()); //kirim email ke approver nya jika status waiting
+            if(appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING) {
+            	//kirim email ke approver nya jika status waiting
+                toSend.add(approverUser.getEmailAddress()); 
             } else {
-                	toSend.add(requesterUser.getEmailAddress()); //kirim email ke requester nya jika statusnya sudah di approved/rejected
-            }*/
-            toSend.add("rizkykojek@gmail.com");
+            	//kirim email ke requester nya jika statusnya sudah di approved/rejected. Dan cc email (if any)
+                toSend.add(requesterUser.getEmailAddress()); 
+                for(JsonElement el:jsonObject.get("ccEmailAddresses").getAsJsonArray()){
+                	toSentCC.add(el.getAsString());
+                }
+            }
+            //toSend.add("rizkykojek@gmail.com");
             vtm.setTo(toSend.toArray(new String[toSend.size()]));
             vtm.setCc(toSentCC.toArray(new String[toSentCC.size()]));
-            vtm.setBcc(toSentCC.toArray(new String[toSentCC.size()]));
+            vtm.setBcc(toSentBCC.toArray(new String[toSentBCC.size()]));
                 
             Map maptoSend = new HashMap();
             if (StringUtils.equals(locale, "en")) {

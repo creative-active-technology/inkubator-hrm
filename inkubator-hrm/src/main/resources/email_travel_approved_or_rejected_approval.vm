@@ -18,7 +18,7 @@
 			Tanggal perjalanan : ${start} s.d ${end}<br />
 			Total biaya : ${totalAmount}<br />
 			Deskripsi : ${description}<br />
-			Status : ${statusDesc}<br />			
+			Status : <b>${statusDesc}</b><br />			
             <br />
  			<br />
             Demikian pemberitahuan ini disampaikan, atas perhatian dan kerjasamanya disampaikan terima kasih.

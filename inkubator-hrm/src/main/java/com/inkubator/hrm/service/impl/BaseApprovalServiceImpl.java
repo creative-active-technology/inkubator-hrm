@@ -1,5 +1,6 @@
 package com.inkubator.hrm.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -243,6 +244,31 @@ public class BaseApprovalServiceImpl extends IServiceImpl {
         newEntity.setPendingData(pendingData);
 
         return newEntity;
+    }
+    
+    protected List<String> getCcEmailAddressesOnApproveOrReject(ApprovalActivity appActivity){
+    	//initialization
+    	List<String> emailAdresses = new ArrayList<String>();
+    	List<ApprovalDefinition> appDefinitions = new ArrayList<ApprovalDefinition>();
+    	
+    	//get list appDefinitions by process type (only on_approve OR on_reject)
+    	Integer approvalStatus = appActivity.getApprovalStatus();
+    	if(approvalStatus == HRMConstant.APPROVAL_STATUS_APPROVED){
+    		appDefinitions = approvalDefinitionDao.getAllDataByNameAndProcessType(appActivity.getApprovalDefinition().getName(), HRMConstant.ON_APPROVE_INFO, Order.asc("sequence"));    		
+    	} else if(approvalStatus == HRMConstant.APPROVAL_STATUS_REJECTED){
+    		appDefinitions = approvalDefinitionDao.getAllDataByNameAndProcessType(appActivity.getApprovalDefinition().getName(), HRMConstant.ON_REJECT_INFO, Order.asc("sequence"));    		
+    	}
+    	
+    	//get all email address 
+    	for(ApprovalDefinition appDefinition:appDefinitions){
+    		String userId = this.getApproverByAppDefinition(appDefinition, appActivity.getRequestBy());
+    		HrmUser user = hrmUserDao.getByUserId(userId);
+    		if(user != null){
+    			emailAdresses.add(user.getEmailAddress());
+    		}
+    	}
+    	
+    	return emailAdresses;
     }
     
     protected GsonBuilder getGsonBuilder(){

@@ -206,7 +206,6 @@ public class ApprovalActivity  implements java.io.Serializable {
     public void setSequence(Integer sequence) {
         this.sequence = sequence;
     }
-
     
     @Column(name="notification_send")
     public Boolean getNotificationSend() {
@@ -216,10 +215,6 @@ public class ApprovalActivity  implements java.io.Serializable {
     public void setNotificationSend(Boolean notificationSend) {
         this.notificationSend = notificationSend;
     }
-
-
-
-
 
 }
 

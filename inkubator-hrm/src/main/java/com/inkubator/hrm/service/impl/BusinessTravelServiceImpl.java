@@ -2,6 +2,7 @@ package com.inkubator.hrm.service.impl;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -455,11 +456,17 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
 		//initialization
 		Gson gson = this.getGsonBuilder().create();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMMM-yyyy");
+		double totalAmount = 0;
+		
+		//get all sendCC email address on status approve OR reject
+		List<String> ccEmailAddresses =  new ArrayList<String>();
+		if((appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_APPROVED)  || (appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_REJECTED)){
+			ccEmailAddresses = super.getCcEmailAddressesOnApproveOrReject(appActivity);
+		}
 		
 		//parsing object data to json, for email purpose
 		JsonObject businessTravelObj =  gson.fromJson(appActivity.getPendingData(), JsonObject.class);
-		List<BusinessTravelComponent> businessTravelComponents = gson.fromJson(businessTravelObj.get("businessTravelComponents"), new TypeToken<List<BusinessTravelComponent>>(){}.getType());
-		double totalAmount = 0;
+		List<BusinessTravelComponent> businessTravelComponents = gson.fromJson(businessTravelObj.get("businessTravelComponents"), new TypeToken<List<BusinessTravelComponent>>(){}.getType());		
 		for(BusinessTravelComponent btc:businessTravelComponents){
 			totalAmount = totalAmount + btc.getPayByAmount();
 		}
@@ -467,6 +474,7 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
 		final JSONObject jsonObj = new JSONObject();
         try {        	
             jsonObj.put("approvalActivityId", appActivity.getId());
+            jsonObj.put("ccEmailAddresses", ccEmailAddresses);
             jsonObj.put("locale", FacesUtil.getFacesContext().getViewRoot().getLocale());
             jsonObj.put("businessTravelNo", businessTravel.getBusinessTravelNo());
             jsonObj.put("proposeDate", dateFormat.format(businessTravel.getProposeDate()));
