@@ -76,6 +76,11 @@ public class JadwalPembayaran {
     public void setPokok(double pokok) {
         this.pokok = pokok;
     }
+
+    @Override
+    public String toString() {
+        return "JadwalPembayaran{" + "urutan=" + urutan + ", tanggalPembayaran=" + tanggalPembayaran + ", angsuran=" + angsuran + ", utangAwal=" + utangAwal + ", sisaUtang=" + sisaUtang + ", bunga=" + bunga + ", pokok=" + pokok + '}';
+    }
     
     
 
