@@ -21,8 +21,8 @@
                             <p:graphicImage library="images" name="travel_component.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="#{appmsg['travelcomponentcostrate.travelcomponentcostrate']}" styleClass="header_big" />
-                                    <p:outputLabel value="#{appmsg['travelcomponentcostrate.travelcomponentcostrate_header']}" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="Approval Activity" styleClass="header_big" />
+                                    <p:outputLabel value="Approval Activity from Approval" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -33,16 +33,14 @@
                                 <h:panelGrid columns="5">
                                     <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm" />
                                     <p:outputLabel value=":" />
-                                    <p:selectOneMenu value="#{travelComponentCostRateViewController.searchParameter.keyParam}" style="width: 150px;margin-right: 3px" >
+                                    <p:selectOneMenu value="#{approvalActivityViewController.searchParameter.keyParam}" style="width: 150px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemLabel="#{appmsg['global.code']}" itemValue="code"/>
-                                        <f:selectItem itemLabel="#{appmsg['jabatan.cost_center']}" itemValue="costCenter"/>
-                                        <f:selectItem itemLabel="#{appmsg['functiongroup.function_group']}" itemValue="golonganJabatan"/>
-                                        <f:selectItem itemLabel="#{appmsg['travelComponent.travelComponent']}" itemValue="travelComponent"/>
-                                        <f:selectItem itemLabel="#{appmsg['travelZone.travelZone']}" itemValue="travelZone"/>
+                                        <f:selectItem itemLabel="Request Name" itemValue="name"/>
+                                        <f:selectItem itemLabel="Request By" itemValue="requestBy"/>
+                                        <f:selectItem itemLabel="Approved By" itemValue="approvedBy"/>
                                     </p:selectOneMenu>
-                                    <p:inputText id="searchId" value="#{travelComponentCostRateViewController.searchParameter.parameter}" style="width: 250px" styleClass="label_button"/>
-                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{travelComponentCostRateViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
+                                    <p:inputText id="searchId" value="#{approvalActivityViewController.searchParameter.parameter}" style="width: 250px" styleClass="label_button"/>
+                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{approvalActivityViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
@@ -61,7 +59,7 @@
                                       id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="#{appmsg['travelcomponentcostrate.list_of_travel_component_cost_rate']}"/>
+                                <h:outputText value="List of Approval Activity"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
@@ -69,30 +67,53 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="requestBy" style="width: 10%">
+                            <p:column sortBy="requestBy" style="width: 16%">
                                 <f:facet name="header">
-                                    <h:outputText value="#{appmsg['global.code']}"/>
+                                    <h:outputText value="Request By"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.requestBy}" />
                             </p:column>
-                            <p:column sortBy="approvalDefinition" style="width: 10%">
+                            <p:column sortBy="approvalDefinition" style="width: 14%">
                                 <f:facet name="header">
-                                    <h:outputText value="#{appmsg['global.code']}"/>
+                                    <h:outputText value="Request Name"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.approvalDefinition.name}" />
                             </p:column>
-                            
+                            <p:column sortBy="approvalDefinition" style="width: 14%">
+                                <f:facet name="header">
+                                    <h:outputText value="Request Time"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.requestTime}" />
+                            </p:column>
+                            <p:column sortBy="approvalDefinition" style="width: 14%">
+                                <f:facet name="header">
+                                    <h:outputText value="Request Number"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.activityNumber}" />
+                            </p:column>
+                            <p:column sortBy="approvalDefinition" style="width: 14%">
+                                <f:facet name="header">
+                                    <h:outputText value="Approved By"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.approvedBy}" />
+                            </p:column>
+                            <p:column sortBy="approvalDefinition" style="width: 14%">
+                                <f:facet name="header">
+                                    <h:outputText value="Approval Status"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.approvalStatus}" />
+                            </p:column>
                             
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
-                                                         style="font-size: 10px!important" update=":detailPanel" 
-                                                         action="#{travelComponentCostRateViewController.doSelectEntityWithAllRelation()}" onclick="statusDialog.show()"  oncomplete="detail.show()">                        
-                                    <f:setPropertyActionListener value="#{data}" target="#{travelComponentCostRateViewController.selected}" />
+                                                         style="font-size: 10px!important"
+                                                         action="#{approvalActivityViewController.doDetail()}">                        
+                                    <f:setPropertyActionListener value="#{data}" target="#{approvalActivityViewController.selected}" />
                                 </p:commandButton>
                             </p:column> 
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>
-                                <p:outputLabel value="#{travelComponentCostRateViewController.lazy.rowCount}"/>
+                                <p:outputLabel value="#{approvalActivityViewController.lazy.rowCount}"/>
                                 <p:outputLabel value="Data" style="margin-left: 3px"/>
                             </f:facet>  
                         </p:dataTable>
@@ -104,49 +125,6 @@
                         </p:blockUI>
                     </h:form>
                 </div>
-                <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
-                    <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
-                </p:dialog>
-                <p:dialog widgetVar="detail" header="#{appmsg['travelcomponentcostrate.detail']}" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)" dynamic="true">
-                    <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
-
-                        <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['global.code']}" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{travelComponentCostRateViewController.selected.code}"/> </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['jabatan.cost_center']}" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{travelComponentCostRateViewController.selected.costCenter.name}"/> </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['functiongroup.function_group']}" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{travelComponentCostRateViewController.selected.golonganJabatan.code}"/> </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['travelComponent.travelComponent']}" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{travelComponentCostRateViewController.selected.travelComponent.name}"/> </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['travelZone.travelZone']}" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{travelComponentCostRateViewController.selected.travelZone.name}"/> </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['travelcomponentcostrate.default_rate']}" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{travelComponentCostRateViewController.selected.defaultRate}"/> </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{travelComponentCostRateViewController.selected.description}"><f:convertDateTime pattern="dd MMMM yyyy" /></p:outputLabel> </p:column>
-                        </p:row>
-
-                        <f:facet name="footer">
-                            <p:row>
-                                <p:column colspan="2"><p:outputLabel value="#{appmsg['travelcomponentcostrate.travelcomponentcostrate_header']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
-                            </p:row>
-                        </f:facet>
-                    </p:panelGrid>
-                </p:dialog>
             </ui:define>
         </ui:composition>
     </h:body>

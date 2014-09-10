@@ -89,7 +89,7 @@
                                     <p:outputLabel  value="#{appmsg['loan.max_period']}"  for="maxPeriod" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:spinner id="maxPeriod" value="#{loanSchemaFormController.model.maxPeriode}" min="0" max="11" required="true" size="2" 
+                                    <p:spinner id="maxPeriod" value="#{loanSchemaFormController.model.maxPeriode}" min="0" max="5" required="true" size="2" 
                                            validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
                                         <f:validateLongRange minimum="1" maximum="5"/>
                                     </p:spinner>     

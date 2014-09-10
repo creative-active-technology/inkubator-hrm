@@ -60,9 +60,9 @@
                                     <p:outputLabel  value="#{appmsg['reimbursment.effective_date']}"  for="effectiveDate" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:spinner id="effectiveDate" value="#{reimbursmentSchemaFormController.model.effectiveDate}" min="0" max="11" required="true" size="2" 
+                                    <p:spinner id="effectiveDate" value="#{reimbursmentSchemaFormController.model.effectiveDate}" min="0" max="12" required="true" size="2" 
                                            validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
-                                        <f:validateLongRange minimum="1" maximum="13"/>
+                                        <f:validateLongRange minimum="1" maximum="12"/>
                                     </p:spinner>
                                     <p:message for="effectiveDate"/>
                                 </p:column>

@@ -784,7 +784,7 @@
                                     </p:commandButton>
                                 </h:panelGrid>
 
-                                
+
                             </p:tab>  
                             <p:tab id="asuransiId" title="Asuransi">  
                                 <p:dataTable  id="tableBioInsuranceId" var="bioInsuranceData"  value="#{bioDataDetilController.bioInsurances}" lazy="false" paginator="false"
@@ -959,7 +959,7 @@
                                     </p:commandButton>
                                 </h:panelGrid>
                             </p:tab> 
-                            
+
                             <p:tab id="spesifikasiAbilityId" title="#{appmsg['biodata.spesifikasi_ability']}">  
                                 <p:dataTable  id="tableSpecAbilityId" var="bioSpecAbi"  value="#{bioDataDetilController.spesifikasiAbilitys}" lazy="false" paginator="false"
                                               style="margin-top: 10px;margin-bottom: 10px"
@@ -1074,9 +1074,9 @@
                             <p:commandButton value="#{appmsg['global.edit']}"  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" action="#{bioDataDetilController.doEdit()}" styleClass="label_button"/>
                             <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{bioDataDetilController.doBack()}" styleClass="label_button"/>
                             <p:commandButton value="Generate CV" title="Generate CV" label="Generate CV" styleClass="label_button" icon="ui-icon-document" 
-                                                     action="#{bioDataDetilController.doGenerateCV()}" ajax="true" immediate="true">
+                                             action="#{bioDataDetilController.doGenerateCV()}" ajax="true" immediate="true">
                             </p:commandButton>
-                            
+
                         </h:panelGrid>
                         <div style="clear: both"/>
                     </h:form>
@@ -1664,7 +1664,7 @@
                     </p:panelGrid>
                 </p:dialog>
                 <!-- END Bio FamilyRelationship DIALOG -->
-                
+
                 <!-- START Bio BankAccount DIALOG --> 
                 <p:dialog widgetVar="dialogConfirmBioBankAccount" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
@@ -1735,11 +1735,11 @@
                                 </p:outputLabel>
                             </p:column>
                         </p:row>
-                         <p:row>
+                        <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['bioBankAccount.bioBankAccount_currency']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedBioBankAccount.currency.name}" styleClass="label_hrm" /></p:column>
                         </p:row>
-                         <p:row>
+                        <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['bioBankAccount.bioBankAccount_swift']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedBioBankAccount.swiftCode}" styleClass="label_hrm" /></p:column>
                         </p:row>
@@ -1751,7 +1751,7 @@
                                 </p:outputLabel>
                             </p:column>
                         </p:row>
-                        
+
                         <f:facet name="footer">
                             <p:row>
                                 <p:column colspan="2"><p:outputLabel value="#{appmsg['menu.data_reference']} - #{appmsg['bioBankAccount.bioBankAccount']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
@@ -1760,8 +1760,8 @@
                     </p:panelGrid>
                 </p:dialog>
                 <!-- END Bio BankAccount DIALOG -->
-                
-                 <!-- START Bio IdCard DIALOG --> 
+
+                <!-- START Bio IdCard DIALOG --> 
                 <p:dialog widgetVar="dialogConfirmBioIdCard" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
@@ -1811,7 +1811,7 @@
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['bioIdCard.bioIdCard_valid']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedBioIdCard.validDate}" styleClass="label_hrm" /></p:column>
                         </p:row>
-                        
+
                         <f:facet name="footer">
                             <p:row>
                                 <p:column colspan="2"><p:outputLabel value="#{appmsg['menu.data_reference']} - #{appmsg['bioIdCard.bioIdCard']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
@@ -1820,7 +1820,7 @@
                     </p:panelGrid>
                 </p:dialog>
                 <!-- END Bio IdCard DIALOG -->
-                
+
                 <!-- START Bio Keahlian DIALOG --> 
                 <p:dialog widgetVar="dialogConfirmKeahlian" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
@@ -1861,7 +1861,7 @@
                                 </p:outputLabel>
                             </p:column>
                         </p:row>
-                        
+
                         <f:facet name="footer">
                             <p:row>
                                 <p:column colspan="2"><p:outputLabel value="#{appmsg['menu.data_reference']} - Keahlian" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
@@ -1870,7 +1870,7 @@
                     </p:panelGrid>
                 </p:dialog>
                 <!-- END Bio Keahlian DIALOG -->
-                
+
                 <!-- START Bio Spesifikasi Ability DIALOG --> 
                 <p:dialog widgetVar="dialogConfirmSpesifikasi" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
@@ -1909,7 +1909,7 @@
                                 <p:outputLabel value="#{bioDataDetilController.selectedDioSpesifikasiAbility.score}" styleClass="label_hrm" />
                             </p:column>
                         </p:row>
-                        
+
                         <f:facet name="footer">
                             <p:row>
                                 <p:column colspan="2"><p:outputLabel value="#{appmsg['menu.data_reference']} - Keahlian" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
@@ -1918,7 +1918,7 @@
                     </p:panelGrid>
                 </p:dialog>
                 <!-- END Bio Spesifikasi Ability DIALOG -->
-                
+
                 <!-- START Bio Project DIALOG --> 
                 <p:dialog widgetVar="dialogConfirmBioProject" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
@@ -1954,6 +1954,10 @@
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['bioProject.bioProject_name']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedBioProject.name}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_company']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedBioProject.companyName}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['bioProject.bioProject_position']}" styleClass="label_hrm"/></p:column>

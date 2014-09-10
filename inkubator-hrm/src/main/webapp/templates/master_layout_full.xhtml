@@ -214,8 +214,8 @@
                                     </h:outputLink>
                                 </h:panelGrid>
                                 <div class="isitext_hrm">
-<!--                                    <pe:tooltip for="pendingId" value="My Pending Task" showEffect="slideToggle" 
-                                                hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>-->
+                                    <!--                                    <pe:tooltip for="pendingId" value="My Pending Task" showEffect="slideToggle" 
+                                                                                    hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>-->
                                     <pe:tooltip for="helpId" value="Need Help? Click Me" showEffect="slideToggle"
                                                 hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/> 
                                     <pe:tooltip for="calculatorId" value="Need Calculation Click Me" showEffect="slideToggle"
@@ -258,6 +258,7 @@
                                         <p:submenu label="Approval Matrix"  styleClass="menu" icon="img-approval-matrix">
                                             <p:menuitem value="Approval Definition"  style="color: #003366" title="Approval Definition" url="/protected/approval/approval_definition_view.htm"  icon="img-approval-definition"/> 
                                             <p:menuitem value="Approval Activity"  style="color: #003366" title="#{appmsg['menu.role_view']}" url="/protected/account/role_view.htm" icon="img-approval-activity" />
+                                            <p:menuitem value="Approval Activity History"  style="color: #003366" title="Approval Activity History" url="/protected/approval/approval_activity_view.htm" icon="img-approval-activity" />
 
                                         </p:submenu>
 
@@ -299,7 +300,7 @@
 <!--                                            <p:submenu label="#{appmsg['menu.working_time_setting']}"  styleClass="menu_child" >
                                                 <p:menuitem value="#{appmsg['menu.work_period']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.work_period']}" url="/protected/working_time/periode_view.htm" /> 
                                                 <p:menuitem value="#{appmsg['menu.holiday']}" icon="img-holiday" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.holiday']}" url="/protected/working_time/holiday_view.htm" />
-                                                  	
+                                                        
                                                 <p:menuitem value="#{appmsg['workinghour.working_hour']}" icon="img-working-hour" style="font-size: 12px !important;color: #003366" title="#{appmsg['workinghour.working_hour']}" url="/protected/working_time/working_hour_view.htm" />  
                                                 <p:menuitem value="#{appmsg['menu.overtime']}" icon="img-over-time" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.overtime']}" url="/protected/working_time/over_time_view.htm" /> 
                                                 <p:menuitem value="#{appmsg['menu.workgroup']}" icon="img-group-working" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.workgroup']}" url="/protected/working_time/working_group_view.htm" />  
@@ -316,10 +317,17 @@
                                                 </p:submenu>
                                                 <p:submenu label="Others"  styleClass="menu_child" >
                                                     <p:menuitem value="Admonition Type" icon="img-periode" style="font-size: 12px !important;color: #003366" title="Admonition Type" url="/protected/personalia/admonition_type_view.htm" /> 
-                                                    <p:menuitem value="Termination Type" icon="img-periode" style="font-size: 12px !important;color: #003366" title="Termination Type" url="/protected/personalia/termination_type_view.htm" /> 
+                                                    <p:menuitem value="Termination Type" icon="img-periode" style="font-size: 12px !important;color: #003366" title="Termination Type" url="/protected/personalia/termination_type_view.htm" />
+                                                    <p:menuitem value="Reimbursment Schema" icon="img-periode" style="font-size: 12px !important;color: #003366" title="Reimbursment Schema" url="/protected/personalia/reimbursment_view.htm" />
+                                                    <p:menuitem value="Loan Schema" icon="img-periode" style="font-size: 12px !important;color: #003366" title="Loan Schema" url="/protected/personalia/loan_schema_view.htm" />
                                                 </p:submenu>
+
+                                            </p:submenu>
+                                            <p:submenu label="#{appmsg['menu.working_time']}"  styleClass="menu_child">
+                                                <p:menuitem value="#{appmsg['publicHoliday.publicHoliday']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['publicHoliday.publicHoliday']}" url="/protected/working_time/public_holiday_view.htm" /> 
                                             </p:submenu>
                                             <p:submenu label="Payroll"  styleClass="menu_child" >
+                                                <p:menuitem value="#{appmsg['benefitGroup.benefitGroup']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['benefitGroup.benefitGroup']}" url="/protected/payroll/benefit_group_view.htm" /> 
                                                 <p:menuitem value="#{appmsg['payroll.pay_salary_grade']}" icon="img-grade-level" style="font-size: 12px !important;color: #003366" title="#{appmsg['payroll.pay_salary_grade']}" url="/protected/payroll/pay_salary_grade_view.htm" /> 
                                                 <p:menuitem value="#{appmsg['payroll.pay_salary_grade_position']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['payroll.pay_salary_grade_position']}" url="/protected/payroll/pay_salary_grade_position_view.htm" /> 
                                                 <p:menuitem value="#{appmsg['payroll.pay_salary_jurnal']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['payroll.pay_salary_jurnal']}" url="/protected/payroll/pay_salary_jurnal_view.htm" /> 
@@ -340,6 +348,7 @@
                                         </p:submenu>
                                         <p:submenu label="#{appmsg['menu.working_time']}"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-task">
 
+                                            <p:menuitem value="#{appmsg['publicHolidayException.publicHolidayException']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['publicHolidayException.publicHolidayException']}" url="/protected/working_time/public_holiday_exception_view.htm" /> 
                                         </p:submenu>
                                         <p:submenu label="Payroll"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-payroll">
                                             <!--                                            <p:menuitem value="Price Simulator" icon="img-price-simulator" style="font-size: 12px !important;color: #003366" title="Make Price Simulation" url="/protected/price_simulator.htm" /> 

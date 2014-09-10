@@ -8,6 +8,7 @@ import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.LoanSchemaDao;
 import com.inkubator.hrm.entity.LoanSchema;
 import com.inkubator.hrm.web.search.LoanSchemaSearchParameter;
+import java.math.BigDecimal;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
@@ -74,8 +75,19 @@ public class LoanSchemaDaoImpl extends IDAOImpl<LoanSchema> implements LoanSchem
     }
     
     private void doSearchByParam(LoanSchemaSearchParameter searchParameter, Criteria criteria) {
+        BigDecimal bg = new BigDecimal("0");
+        Integer resMaxNominal = 0;
+        if(searchParameter.getMaxNominal()!= null){
+            resMaxNominal = searchParameter.getMaxNominal().compareTo(bg);
+        }
         if (searchParameter.getName()!= null) {
         	criteria.add(Restrictions.like("name", searchParameter.getName(), MatchMode.ANYWHERE));
+        }
+        if (searchParameter.getCode()!= null) {
+        	criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.ANYWHERE));
+        }
+        if (searchParameter.getMaxNominal()!= null && resMaxNominal != 0) {
+            criteria.add(Restrictions.eq("maxNominal", searchParameter.getMaxNominal()));
         }
         criteria.add(Restrictions.isNotNull("id"));
     }

@@ -49,6 +49,10 @@ public class ReimbursmentSchemaDetailController extends BaseController{
         return "/protected/personalia/reimbursment_view.htm?faces-redirect=true";
     }
     
+    public String doEdit() {
+        return "/protected/personalia/reimbursment_form.htm?faces-redirect=true&execution=e" + selectedReimbursmentSchema.getId();
+    }
+    
     @PreDestroy
     public void cleanAndExit() {
         selectedReimbursmentSchema = null;

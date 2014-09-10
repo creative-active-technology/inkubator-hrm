@@ -253,6 +253,7 @@ public class BioProjectServiceImpl extends IServiceImpl implements BioProjectSer
         bioProject.setBioData(biodata);
         bioProject.setCode(b.getCode());
         bioProject.setName(b.getName());
+        bioProject.setCompanyName(b.getCompanyName());
         bioProject.setStartDate(b.getStartDate());
         bioProject.setEndDate(b.getEndDate());
         bioProject.setPosition(b.getPosition());
