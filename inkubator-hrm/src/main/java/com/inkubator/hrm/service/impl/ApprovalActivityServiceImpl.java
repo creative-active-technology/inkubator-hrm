@@ -287,8 +287,19 @@ public class ApprovalActivityServiceImpl extends BaseApprovalServiceImpl impleme
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
 	public List<ApprovalActivity> getAllDataByActivityNumberWithDetail(String activityNumber) throws Exception {
-		return this.approvalActivityDao.getAllDataByActivityNumberWithDetail(activityNumber);
+		return this.approvalActivityDao.getAllDataByActivityNumberWithDetail(activityNumber, Order.asc("sequence"));
 		
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public ApprovalActivity getEntityByActivityNumberLastSequence(String activityNumber) {
+		List<ApprovalActivity> approvalActivities = this.approvalActivityDao.getAllDataByActivityNumberWithDetail(activityNumber, Order.desc("sequence"));
+		ApprovalActivity lastApprovalActivity = null;
+		if(!approvalActivities.isEmpty()){
+			lastApprovalActivity = approvalActivities.get(0);
+		}
+		return lastApprovalActivity;
 	}
 
 }

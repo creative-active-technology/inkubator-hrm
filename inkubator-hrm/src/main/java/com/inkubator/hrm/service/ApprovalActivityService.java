@@ -29,4 +29,6 @@ public interface ApprovalActivityService extends IService<ApprovalActivity> {
     public List<ApprovalActivity> getPendingTask(String userName) throws Exception;
     
     public List<ApprovalActivity> getAllDataByActivityNumberWithDetail(String activityNumber)  throws Exception;
+
+	public ApprovalActivity getEntityByActivityNumberLastSequence(String activityNumber);
 }

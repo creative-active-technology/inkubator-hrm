@@ -78,10 +78,6 @@ public class HomeApproalActivityController extends BaseController {
         this.approvalActivityService = approvalActivityService;
     }
 
-    public String doDetailRequest() {
-        return "/protected/approval/approval_request_detail.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
-    }
-
     public ApprovalActivity getSelectedApprovalActivity() {
         return selectedApprovalActivity;
     }
@@ -91,7 +87,20 @@ public class HomeApproalActivityController extends BaseController {
     }
 
     public String doDetailRequestHistory() {
-        return "/protected/approval/approval_request_detail.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
+    	String redirect = "";
+    	try {
+			selectedApprovalActivity = approvalActivityService.getEntityByPkWithDetail(selectedApprovalActivity.getId());
+			switch (selectedApprovalActivity.getApprovalDefinition().getName()) {
+				case HRMConstant.BUSINESS_TRAVEL:
+					redirect = "/protected/personalia/business_travel_detail.htm?faces-redirect=true&execution=a" + selectedApprovalActivity.getActivityNumber();
+					break;
+				default:
+					break;
+			}
+		} catch (Exception e) {
+			LOGGER.error("Error", e);
+		}
+        return redirect;
     }
 
     public String doApprove() {

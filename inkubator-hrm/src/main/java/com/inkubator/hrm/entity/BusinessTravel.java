@@ -164,7 +164,7 @@ public class BusinessTravel implements Serializable {
         this.description = description;
     }
 
-    @Column(name="approval_activity_number", length=45)
+    @Column(name="approval_activity_number", length=45, unique=true)
     public String getApprovalActivityNumber() {
 		return approvalActivityNumber;
 	}

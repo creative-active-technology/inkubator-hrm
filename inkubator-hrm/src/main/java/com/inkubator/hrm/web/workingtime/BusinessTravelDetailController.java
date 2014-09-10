@@ -15,8 +15,12 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 
+import org.apache.commons.lang.StringUtils;
+
+import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.BusinessTravel;
 import com.inkubator.hrm.entity.BusinessTravelComponent;
+import com.inkubator.hrm.service.ApprovalActivityService;
 import com.inkubator.hrm.service.BusinessTravelComponentService;
 import com.inkubator.hrm.service.BusinessTravelService;
 import com.inkubator.webcore.controller.BaseController;
@@ -32,20 +36,32 @@ public class BusinessTravelDetailController extends BaseController {
 
 	private Double totalAmount = 0.0;
     private BusinessTravel selectedBusinessTravel;
+    private ApprovalActivity selectedApprovalActivity;
     private List<BusinessTravelComponent> businessTravelComponents;
     @ManagedProperty(value = "#{businessTravelService}")
     private BusinessTravelService businessTravelService;
     @ManagedProperty(value = "#{businessTravelComponentService}")
     private BusinessTravelComponentService businessTravelComponentService;
+    @ManagedProperty(value = "#{approvalActivityService}")
+    private ApprovalActivityService approvalActivityService;
 
     @PostConstruct
     @Override
     public void initialization() {
         try {
             super.initialization();
-            String id = FacesUtil.getRequestParameter("execution");
-            selectedBusinessTravel = businessTravelService.getEntityByBusinessTravelNoWithDetail(id.substring(1));
-            businessTravelComponents = businessTravelComponentService.getAllDataByBusinessTravelId(selectedBusinessTravel.getId());
+            String execution = FacesUtil.getRequestParameter("execution");
+            String param = execution.substring(0, 1);
+            if(StringUtils.equals(param, "e")){
+            	/* parameter (businessTravelNo) ini datangnya dari businesstravel Flow atau View */
+            	selectedBusinessTravel = businessTravelService.getEntityByBusinessTravelNoWithDetail(execution.substring(1));
+            } else {
+            	/* parameter (activityNumber) ini datangnya dari home approval request history View */
+            	selectedBusinessTravel = businessTravelService.getEntityByApprovalActivityNumberWithDetail(execution.substring(1));
+            }
+            
+            selectedApprovalActivity = approvalActivityService.getEntityByActivityNumberLastSequence(selectedBusinessTravel.getApprovalActivityNumber());
+            businessTravelComponents = businessTravelComponentService.getAllDataByBusinessTravelId(selectedBusinessTravel.getId());            
             for(BusinessTravelComponent btc :businessTravelComponents){
             	totalAmount = totalAmount + btc.getPayByAmount();
             }
@@ -63,6 +79,8 @@ public class BusinessTravelDetailController extends BaseController {
         businessTravelComponents = null;
         businessTravelComponentService = null;
         totalAmount = null;
+        selectedApprovalActivity = null;
+        approvalActivityService = null;
     }   
 
 	public BusinessTravel getSelectedBusinessTravel() {
@@ -90,17 +108,35 @@ public class BusinessTravelDetailController extends BaseController {
 		this.businessTravelComponents = businessTravelComponents;
 	}
 
-	public String doBack() {
-        return "/protected/personalia/business_travel_view.htm?faces-redirect=true";
-    }
+	public ApprovalActivity getSelectedApprovalActivity() {
+		return selectedApprovalActivity;
+	}
 
-    public Double getTotalAmount() {
+	public void setSelectedApprovalActivity(
+			ApprovalActivity selectedApprovalActivity) {
+		this.selectedApprovalActivity = selectedApprovalActivity;
+	}
+
+	public void setApprovalActivityService(
+			ApprovalActivityService approvalActivityService) {
+		this.approvalActivityService = approvalActivityService;
+	}
+	
+	public Double getTotalAmount() {
 		return totalAmount;
 	}
 
 	public void setTotalAmount(Double totalAmount) {
 		this.totalAmount = totalAmount;
 	}
+
+	public Boolean getIsHaveApprovalActivity(){
+		return selectedApprovalActivity != null;
+	}
+	
+	public String doBack() {
+        return "/protected/personalia/business_travel_view.htm?faces-redirect=true";
+    }    
 
 	public void doUpdate() {
     	try {

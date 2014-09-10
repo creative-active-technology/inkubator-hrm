@@ -28,5 +28,5 @@ public interface ApprovalActivityDao extends IDAO<ApprovalActivity> {
 
 	public ApprovalActivity getEntityByPkWithDetail(Long id);
 
-	public List<ApprovalActivity> getAllDataByActivityNumberWithDetail(String activityNumber);
+	public List<ApprovalActivity> getAllDataByActivityNumberWithDetail(String activityNumber, Order order);
 }

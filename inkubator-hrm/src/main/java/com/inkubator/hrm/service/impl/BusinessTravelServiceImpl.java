@@ -502,4 +502,11 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
 		return super.getGsonBuilder();
 	}
 
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public BusinessTravel getEntityByApprovalActivityNumberWithDetail(String approvalActivityNumber) {
+		return businessTravelDao.getEntityByApprovalActivityNumberWithDetail(approvalActivityNumber);
+		
+	}
+
 }

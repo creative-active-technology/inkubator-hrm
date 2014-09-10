@@ -137,11 +137,11 @@ public class ApprovalActivityDaoImpl extends IDAOImpl<ApprovalActivity> implemen
     }
 
 	@Override
-	public List<ApprovalActivity> getAllDataByActivityNumberWithDetail(String activityNumber) {
+	public List<ApprovalActivity> getAllDataByActivityNumberWithDetail(String activityNumber, Order order) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
 		criteria.add(Restrictions.eq("activityNumber", activityNumber));
 		criteria.setFetchMode("approvalDefinition", FetchMode.JOIN);
-		criteria.addOrder(Order.asc("sequence"));
+		criteria.addOrder(order);
 		return criteria.list();
 	}
 }
