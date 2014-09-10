@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 
 /**
@@ -21,6 +22,7 @@ import javax.persistence.Version;
 @Entity
 @Table(name="approval_activity"
     ,catalog="hrm"
+    ,uniqueConstraints = @UniqueConstraint(columnNames={"sequence", "activity_number"}) 
 )
 public class ApprovalActivity  implements java.io.Serializable {
 
@@ -206,7 +208,6 @@ public class ApprovalActivity  implements java.io.Serializable {
     public void setSequence(Integer sequence) {
         this.sequence = sequence;
     }
-
     
     @Column(name="notification_send")
     public Boolean getNotificationSend() {
@@ -216,10 +217,6 @@ public class ApprovalActivity  implements java.io.Serializable {
     public void setNotificationSend(Boolean notificationSend) {
         this.notificationSend = notificationSend;
     }
-
-
-
-
 
 }
 

@@ -94,6 +94,15 @@ public class ApprovalActivityDaoImpl extends IDAOImpl<ApprovalActivity> implemen
         return criteria.list();
     }
 
+	@Override
+	public ApprovalActivity getEntityByPkWithDetail(Long id) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("id", id));
+		criteria.setFetchMode("approvalDefinition", FetchMode.JOIN);
+		return (ApprovalActivity) criteria.uniqueResult();
+		
+	}
+
     @Override
     public List<ApprovalActivity> getAllDataWithAllRelation(ApprovalActivitySearchParameter searchParameter, int firstResult, int maxResults, Order order) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());

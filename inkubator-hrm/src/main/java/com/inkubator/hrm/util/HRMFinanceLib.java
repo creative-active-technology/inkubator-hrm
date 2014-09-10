@@ -5,6 +5,8 @@
  */
 package com.inkubator.hrm.util;
 
+import com.inkubator.common.CommonUtilConstant;
+import com.inkubator.common.util.DateTimeUtil;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,7 +60,7 @@ public final class HRMFinanceLib {
     public static double interestRatePaymentFlateMode(double totalPinjaman, double interestRatePerYear) {
         return (totalPinjaman * interestRatePerYear) / 1200;
     }
-    
+
     public static double anuitas(double totalPinjaman, double interestRatePerYear, double lamaPinjaman, double paymentPeriod) {
         double interest = interestRatePerYear / 100 / (12 / paymentPeriod);
         double iM = totalPinjaman * interest;
@@ -67,11 +69,8 @@ public final class HRMFinanceLib {
         double totalInterestRateAllMin1 = totalInterestRateAll - 1;
         return iM * (totalInterestRateAll / totalInterestRateAllMin1);
     }
-    
-    public static double interestRatePaymentAnuitas(double totalPinjaman, double interestRatePerYear, double lamaPinjaman, double paymentPeriod) {
-        return 0.0;
-    }
-    
+
+   
     public static LoanPayment getLoanPaymentFlateMode(LoanPayment loanPayment) {
         LoanPayment lp = new LoanPayment();
         lp.setBungaPertahun(loanPayment.getBungaPertahun());
@@ -81,24 +80,101 @@ public final class HRMFinanceLib {
         lp.setTanggalBayar(loanPayment.getTanggalBayar());
         lp.setTotalPinjaman(loanPayment.getTotalPinjaman());
         double totalAnuistas = lp.getLamaPinjaman() / lp.getPaymentPeriod();
-//        double interest = lp.getBungaPertahun() / 100 / (12 / lp.getPaymentPeriod());
         List<JadwalPembayaran> data = new ArrayList<>();
-        for (double i = 1; i <= totalAnuistas; i++) {
+        for (int i = 1; i <= totalAnuistas; i++) {
+
             JadwalPembayaran jp = new JadwalPembayaran();
-            if(i==1){
+            if (i == 1) {
                 jp.setUtangAwal(lp.getTotalPinjaman());
-            }else{
-//                jp.set
             }
-            double pokokPermonth=mainPaymmentFlatMode(lp.getTotalPinjaman(), lp.getLamaPinjaman());
-            double bunga=interestRatePaymentFlateMode(lp.getTotalPinjaman(), lp.getBungaPertahun());
-            jp.setPokok(pokokPermonth*lp.getPaymentPeriod());
-            jp.setBunga(bunga*lp.getPaymentPeriod());
-            jp.setAngsuran(jp.getPokok()+jp.getBunga());
-            jp.setSisaUtang(bunga);
+            if (i > 1) {
+                jp.setUtangAwal(data.get(i - 2).getSisaUtang());
+            }
+
+            double pokokPermonth = mainPaymmentFlatMode(lp.getTotalPinjaman(), lp.getLamaPinjaman());
+            double bunga = interestRatePaymentFlateMode(lp.getTotalPinjaman(), lp.getBungaPertahun());
+            jp.setPokok(pokokPermonth * lp.getPaymentPeriod());
+            jp.setBunga(bunga * lp.getPaymentPeriod());
+            jp.setAngsuran(jp.getPokok() + jp.getBunga());
+            jp.setSisaUtang(jp.getUtangAwal() - jp.getPokok());
+            jp.setUrutan(i);
+            jp.setTanggalPembayaran(DateTimeUtil.getDateFrom(lp.getTanggalBayar(), i - 1, CommonUtilConstant.DATE_FORMAT_MONTH));
             data.add(jp);
         }
         lp.setJadwalPembayarans(data);
         return lp;
     }
+
+    public static LoanPayment getLoanPaymentPaymentEffectiveMode(LoanPayment loanPayment) {
+        LoanPayment lp = new LoanPayment();
+        lp.setBungaPertahun(loanPayment.getBungaPertahun());
+        lp.setLamaPinjaman(loanPayment.getLamaPinjaman());
+        lp.setName(lp.getName());
+        lp.setPaymentPeriod(loanPayment.getPaymentPeriod());
+        lp.setTanggalBayar(loanPayment.getTanggalBayar());
+        lp.setTotalPinjaman(loanPayment.getTotalPinjaman());
+        double totalAnuistas = lp.getLamaPinjaman() / lp.getPaymentPeriod();
+        List<JadwalPembayaran> data = new ArrayList<>();
+        for (int i = 1; i <= totalAnuistas; i++) {
+
+            JadwalPembayaran jp = new JadwalPembayaran();
+            if (i == 1) {
+                jp.setUtangAwal(lp.getTotalPinjaman());
+            }
+            if (i > 1) {
+                jp.setUtangAwal(data.get(i - 2).getSisaUtang());
+            }
+
+            double pokokPermonth = mainPaymmentFlatMode(lp.getTotalPinjaman(), lp.getLamaPinjaman());
+            double bunga = interestRatePaymentFlateMode(jp.getUtangAwal(), lp.getBungaPertahun());
+            jp.setPokok(pokokPermonth * lp.getPaymentPeriod());
+            jp.setBunga(bunga * lp.getPaymentPeriod());
+            jp.setAngsuran(jp.getPokok() + jp.getBunga());
+            jp.setSisaUtang(jp.getUtangAwal() - jp.getPokok());
+            jp.setUrutan(i);
+            jp.setTanggalPembayaran(DateTimeUtil.getDateFrom(lp.getTanggalBayar(), i - 1, CommonUtilConstant.DATE_FORMAT_MONTH));
+            data.add(jp);
+        }
+        lp.setJadwalPembayarans(data);
+        return lp;
+
+    }
+
+    public static LoanPayment getLoanPaymentAnuitas(LoanPayment loanPayment) {
+        LoanPayment lp = new LoanPayment();
+        lp.setBungaPertahun(loanPayment.getBungaPertahun());
+        lp.setLamaPinjaman(loanPayment.getLamaPinjaman());
+        lp.setName(lp.getName());
+        lp.setPaymentPeriod(loanPayment.getPaymentPeriod());
+        lp.setTanggalBayar(loanPayment.getTanggalBayar());
+        lp.setTotalPinjaman(loanPayment.getTotalPinjaman());
+        double anuitas = anuitas(lp.getTotalPinjaman(), lp.getBungaPertahun(), lp.getLamaPinjaman(), lp.getPaymentPeriod());
+        double totalAnuitas = lp.getLamaPinjaman() / lp.getPaymentPeriod();
+
+        List<JadwalPembayaran> data = new ArrayList<>();
+        for (int i = 1; i <= totalAnuitas; i++) {
+            JadwalPembayaran jp = new JadwalPembayaran();
+            jp.setAngsuran(anuitas);
+            if (i == 1) {
+                jp.setUtangAwal(lp.getTotalPinjaman());
+
+            }
+
+            if (i > 1) {
+                jp.setUtangAwal(data.get(i - 2).getSisaUtang());
+            }
+            double bungaPerPay = (lp.getPaymentPeriod() * (lp.getBungaPertahun() / 1200)) * jp.getUtangAwal();
+
+            jp.setBunga(bungaPerPay);
+            jp.setPokok(anuitas - bungaPerPay);
+            jp.setSisaUtang(jp.getUtangAwal() - jp.getPokok());
+            jp.setUrutan(i);
+            jp.setTanggalPembayaran(DateTimeUtil.getDateFrom(lp.getTanggalBayar(), i - 1, CommonUtilConstant.DATE_FORMAT_MONTH));
+            data.add(jp);
+        }
+        lp.setJadwalPembayarans(data);
+        return lp;
+
+    }
+
 }

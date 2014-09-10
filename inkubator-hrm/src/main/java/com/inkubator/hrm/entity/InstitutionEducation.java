@@ -156,7 +156,7 @@ public class InstitutionEducation  implements java.io.Serializable {
     }
 
     
-    @Column(name="address", length=65535)
+    @Column(name="address", length=65535, columnDefinition="Text")
     public String getAddress() {
         return this.address;
     }

@@ -40,6 +40,7 @@ public class BusinessTravel implements Serializable {
     private Date startDate;
     private Date endDate;
     private String description;
+    private String approvalActivityNumber;
     private String createdBy;
     private Date createdOn;
     private String updatedBy;
@@ -163,7 +164,16 @@ public class BusinessTravel implements Serializable {
         this.description = description;
     }
 
-    @Column(name = "created_by", length = 45)
+    @Column(name="approval_activity_number", length=45)
+    public String getApprovalActivityNumber() {
+		return approvalActivityNumber;
+	}
+
+	public void setApprovalActivityNumber(String approvalActivityNumber) {
+		this.approvalActivityNumber = approvalActivityNumber;
+	}
+
+	@Column(name = "created_by", length = 45)
     public String getCreatedBy() {
         return this.createdBy;
     }

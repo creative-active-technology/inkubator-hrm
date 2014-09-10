@@ -119,7 +119,7 @@ public class BusinessTravelFormController implements Serializable{
 	}
 	
 	public String doSave(RequestContext context) {
-		String savingResult = "false";
+		String message = "error";
 		
 		BusinessTravelModel model = (BusinessTravelModel) context.getFlowScope().get("businessTravelModel");
 		BusinessTravel businessTravel = new BusinessTravel();
@@ -136,12 +136,11 @@ public class BusinessTravelFormController implements Serializable{
 		
 		try {
 			if(businessTravel.getId() == null) {
-				businessTravelService.save(businessTravel, model.getBusinessTravelComponents());
+				message = businessTravelService.save(businessTravel, model.getBusinessTravelComponents(), false);
 			} else {
 				businessTravelService.update(businessTravel, model.getBusinessTravelComponents());
+				message = "success_without_approval";
 			}
-			
-			savingResult = "true";
 		} catch (BussinessException ex) { //data already exist(duplicate)
             LOGGER.error("Error", ex);
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
@@ -149,7 +148,7 @@ public class BusinessTravelFormController implements Serializable{
             LOGGER.error("Error", ex);
         }
 		
-		return savingResult;
+		return message;
 	}
 	
 	public List<EmpData> doAutoCompletEmployee(String param){
