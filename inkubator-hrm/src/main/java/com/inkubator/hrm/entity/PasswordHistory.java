@@ -65,7 +65,7 @@ public class PasswordHistory implements java.io.Serializable {
         this.id = id;
     }
 
-    @Column(name = "password", length = 65535)
+    @Column(name = "password", length = 65535, columnDefinition="Text")
     public String getPassword() {
         return this.password;
     }

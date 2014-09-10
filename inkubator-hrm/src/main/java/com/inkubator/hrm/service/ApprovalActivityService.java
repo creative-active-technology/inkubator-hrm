@@ -12,9 +12,7 @@ import org.hibernate.criterion.Order;
  */
 public interface ApprovalActivityService extends IService<ApprovalActivity> {
 
-    public ApprovalActivity approved(Long appActivityId, String comment) throws Exception;
-
-    public ApprovalActivity rejected(Long appActivityId, String comment) throws Exception;
+	public ApprovalActivity getEntityByPkWithDetail(Long id) throws Exception;
     
     public List<ApprovalActivity> getAllDataWithAllRelation(ApprovalActivitySearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
     

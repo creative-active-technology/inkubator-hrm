@@ -13,13 +13,13 @@ import com.inkubator.hrm.web.search.BusinessTravelSearchParameter;
  *
  * @author rizkykojek
  */
-public interface BusinessTravelService extends IService<BusinessTravel> {
+public interface BusinessTravelService extends IService<BusinessTravel>,BaseApprovalService {
 
 	public List<BusinessTravel> getByParam(BusinessTravelSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception;
 
 	public Long getTotalByParam(BusinessTravelSearchParameter parameter) throws Exception;
 	
-	public void save(BusinessTravel businessTravel, List<BusinessTravelComponent> businessTravelComponents) throws Exception;
+	public String save(BusinessTravel businessTravel, List<BusinessTravelComponent> businessTravelComponents, boolean isBypassApprovalChecking) throws Exception;
 	
 	public void update(BusinessTravel businessTravel, List<BusinessTravelComponent> businessTravelComponents) throws Exception;
 	

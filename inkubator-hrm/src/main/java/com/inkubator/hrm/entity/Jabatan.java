@@ -170,7 +170,7 @@ public class Jabatan implements java.io.Serializable {
         this.name = name;
     }
 
-    @Column(name = "tujuan_jabatan", length = 65535)
+    @Column(name = "tujuan_jabatan", length = 65535, columnDefinition="Text")
     public String getTujuanJabatan() {
         return this.tujuanJabatan;
     }

@@ -5,16 +5,19 @@
  */
 package com.inkubator.hrm.web;
 
-import com.inkubator.hrm.entity.ApprovalActivity;
-import com.inkubator.hrm.service.ApprovalActivityService;
-import com.inkubator.securitycore.util.UserInfoUtil;
-import com.inkubator.webcore.controller.BaseController;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
+
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.entity.ApprovalActivity;
+import com.inkubator.hrm.service.ApprovalActivityService;
+import com.inkubator.securitycore.util.UserInfoUtil;
+import com.inkubator.webcore.controller.BaseController;
 
 /**
  *
@@ -88,8 +91,22 @@ public class HomeApproalActivityController extends BaseController {
     }
 
     public String doApprove() {
-        
-        return null;
+    	String redirect = "/protected/home.htm";
+    	
+    	try {
+			selectedApprovalActivity = approvalActivityService.getEntityByPkWithDetail(selectedApprovalActivity.getId());
+			switch (selectedApprovalActivity.getApprovalDefinition().getName()) {
+				case HRMConstant.BUSINESS_TRAVEL:
+					redirect = "/protected/personalia/business_travel_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
+					break;
+				default:
+					break;
+			}
+		} catch (Exception e) {
+			LOGGER.error("Error", e);
+		}        
+    	
+    	return redirect;
     }
 
     public String doDetailRequestPending() {
