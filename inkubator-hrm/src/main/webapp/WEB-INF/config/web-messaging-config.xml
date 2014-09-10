@@ -70,7 +70,7 @@
     </bean> 
     
     
-    <bean id="loginHistoryMessagesListener" class="com.csl.idm.web.listener.LoginHistoryMessagesListener" lazy-init="true"/>
+    <!--<bean id="loginHistoryMessagesListener" class="com.csl.idm.web.listener.LoginHistoryMessagesListener" lazy-init="true"/>-->
     <bean id="notificationUserMessagesListener" class="com.inkubator.hrm.service.impl.NotificationUserMessagesListener" lazy-init="true">
     	<property name="applicationUrl" value="${email_param_application_url}"/>
     	<property name="applicationName" value="${email_param_application_name}"/>
