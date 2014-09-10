@@ -110,7 +110,8 @@ public class PersonalDisciplineFormController extends BaseController{
         model.setDescription(entity.getDescription());
         model.setExpireDate(entity.getExpiredDate());
         model.setStartDate(entity.getStartDate());
-        model.setNikWithFullName(entity.getEmpData().getNikWithFullName());
+//        model.setNikWithFullName(entity.getEmpData().getNikWithFullName());
+        model.setEmpData(entity.getEmpData());
         return model;
     }
 
@@ -133,6 +134,16 @@ public class PersonalDisciplineFormController extends BaseController{
             
        return null;
     }
+    
+    public List<EmpData> doAutoCompletEmployee(String param){
+		List<EmpData> empDatas = new ArrayList<EmpData>();
+		try {
+			empDatas = empDataService.getAllDataByNameOrNik(StringUtils.stripToEmpty(param));
+		} catch (Exception e) {
+			LOGGER.error("Error", e);
+		}
+		return empDatas;
+	}
     
     public List<String> completeEmployeeString(String query) {
             
@@ -180,8 +191,8 @@ public class PersonalDisciplineFormController extends BaseController{
         if (model.getId() != null) {
             personalDiscipline.setId(model.getId());
         }
-        EmpData selectedEmployee = empDataService.getEntityByNik(StringUtils.substringBefore(model.getNikWithFullName(), " - "));
-        personalDiscipline.setEmpData(new EmpData(selectedEmployee.getId()));
+//        EmpData selectedEmployee = empDataService.getEntityByNik(StringUtils.substringBefore(model.getNikWithFullName(), " - "));
+        personalDiscipline.setEmpData(model.getEmpData());
         personalDiscipline.setDescription(model.getDescription());
         personalDiscipline.setStartDate(model.getStartDate());
         personalDiscipline.setExpiredDate(model.getExpireDate());

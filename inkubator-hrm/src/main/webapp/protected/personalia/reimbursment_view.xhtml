@@ -33,16 +33,14 @@
                                 <h:panelGrid columns="5">
                                     <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm" />
                                     <p:outputLabel value=":" />
-                                    <p:selectOneMenu value="#{travelComponentCostRateViewController.searchParameter.keyParam}" style="width: 150px;margin-right: 3px" >
+                                    <p:selectOneMenu value="#{reimbursmentSchemaViewController.searchParameter.keyParam}" style="width: 150px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItem itemLabel="#{appmsg['global.code']}" itemValue="code"/>
-                                        <f:selectItem itemLabel="#{appmsg['jabatan.cost_center']}" itemValue="costCenter"/>
-                                        <f:selectItem itemLabel="#{appmsg['functiongroup.function_group']}" itemValue="golonganJabatan"/>
-                                        <f:selectItem itemLabel="#{appmsg['travelComponent.travelComponent']}" itemValue="travelComponent"/>
-                                        <f:selectItem itemLabel="#{appmsg['travelZone.travelZone']}" itemValue="travelZone"/>
+                                        <f:selectItem itemLabel="#{appmsg['global.name']}" itemValue="name"/>
+                                        <f:selectItem itemLabel="Nominal Unit" itemValue="nominalUnit"/>
                                     </p:selectOneMenu>
-                                    <p:inputText id="searchId" value="#{travelComponentCostRateViewController.searchParameter.parameter}" style="width: 250px" styleClass="label_button"/>
-                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{travelComponentCostRateViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
+                                    <p:inputText id="searchId" value="#{reimbursmentSchemaViewController.searchParameter.parameter}" style="width: 250px" styleClass="label_button"/>
+                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{reimbursmentSchemaViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
@@ -110,7 +108,7 @@
                             </p:column> 
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>
-                                <p:outputLabel value="#{travelComponentCostRateViewController.lazy.rowCount}"/>
+                                <p:outputLabel value="#{reimbursmentSchemaViewController.lazy.rowCount}"/>
                                 <p:outputLabel value="Data" style="margin-left: 3px"/>
                             </f:facet>  
                         </p:dataTable>

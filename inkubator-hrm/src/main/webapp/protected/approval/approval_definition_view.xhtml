@@ -21,8 +21,8 @@
                         <p:graphicImage library="images" name="approval_defition.png" height="36" width="36" />
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Daftar Approval Defition" styleClass="header_big" />
-                                <p:outputLabel value="#{appmsg['user_view.header2']}" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['approvaldefinition.approval_definition']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['approvaldefinition.approval_definition_header']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -37,9 +37,9 @@
                                     <p:selectOneMenu id="pencarianSelectId" value="#{approvalDefinitionViewController.approvalDefinitionSearchParameter.keyParam}"
                                                      style="width: 150px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemLabel="Nama Approval" itemValue="approvalName"/>
-                                        <f:selectItem itemLabel="Nama Process" itemValue="processName"/>
-                                        <f:selectItem itemLabel="Approver Type" itemValue="approverType" />
+                                        <f:selectItem itemLabel="#{appmsg['approvaldefinition.approval_name']}" itemValue="approvalName"/>
+                                        <f:selectItem itemLabel="#{appmsg['approvaldefinition.process_name']}" itemValue="processName"/>
+                                        <f:selectItem itemLabel="#{appmsg['approvaldefinition.approver_type']}" itemValue="approverType" />
                                         <f:selectItem itemLabel="Jabatan Approver" itemValue="approverPosition" />
                                         <f:selectItem itemLabel="Individu Approver" itemValue="approverIndividual" />
                                         <f:selectItem itemLabel="On Behalf Jabatan" itemValue="onBehalfApproverPosition" />
@@ -73,47 +73,47 @@
                                       id="tableApprovalDevId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="#{appmsg['user_view.header1']}" styleClass="label_hrm"/>
+                                <h:outputText value="#{appmsg['approvaldefinition.list_of_approval_definition']}" styleClass="label_hrm"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 25px">
                                 <f:facet name="header">  
-                                    <h:outputText value="No."  />
+                                    <h:outputText value="#{appmsg['global.number']}"  />
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
                             <p:column sortBy="name" >
                                 <f:facet name="header">  
-                                    <h:outputText value="Approval Name"/>
+                                    <h:outputText value="#{appmsg['approvaldefinition.approval_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{approvalDefinitionData.name}"/>
                             </p:column>
                             <p:column sortBy="sequence"  >
                                 <f:facet name="header">  
-                                    <h:outputText value="Process Name"/>
+                                    <h:outputText value="#{appmsg['approvaldefinition.process_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{approvalDefinitionData.processType}"/>
                             </p:column>
                             <p:column sortBy="approverType">
                                 <f:facet name="header">  
-                                    <h:outputText value="Approver Type"/>
+                                    <h:outputText value="#{appmsg['approvaldefinition.approver_type']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{approvalDefinitionData.approverType}"/>
                             </p:column>
                             <p:column sortBy="sequence"  style="text-align: center">
                                 <f:facet name="header">  
-                                    <h:outputText value="Urutan Approval"/>
+                                    <h:outputText value="#{appmsg['approvaldefinition.sequence_approval']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{approvalDefinitionData.sequence}"/>
                             </p:column>
                             <p:column sortBy="minApprover" style="text-align: center">
                                 <f:facet name="header">  
-                                    <h:outputText value="Min. Approve"/>
+                                    <h:outputText value="#{appmsg['approvaldefinition.min_approve']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{approvalDefinitionData.minApprover}"/>
                             </p:column>
                             <p:column sortBy="minRejector" style="text-align: center">
                                 <f:facet name="header">  
-                                    <h:outputText value="Min. Reject"/>
+                                    <h:outputText value="#{appmsg['approvaldefinition.min_reject']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{approvalDefinitionData.minRejector}"/>
                             </p:column>

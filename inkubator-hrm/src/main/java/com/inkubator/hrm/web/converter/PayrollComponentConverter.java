@@ -33,7 +33,7 @@ public class PayrollComponentConverter implements Converter{
         
         String messages = StringUtils.EMPTY;
         Integer convertValue;
-        if(value == true){
+        if(value == Boolean.TRUE){
             convertValue = 1;
         }else{
             convertValue = 0;

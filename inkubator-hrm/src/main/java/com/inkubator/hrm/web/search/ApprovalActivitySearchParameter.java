@@ -12,7 +12,9 @@ import org.apache.commons.lang3.StringUtils;
  * @author Deni
  */
 public class ApprovalActivitySearchParameter extends SearchParameter {
-    private String requestBy;
+     private String requestBy;
+     private String approvedBy;
+     private String name;
 
     public String getRequestBy() {
         if (StringUtils.equalsIgnoreCase(getKeyParam(), "requestBy")) {
@@ -26,6 +28,33 @@ public class ApprovalActivitySearchParameter extends SearchParameter {
     public void setRequestBy(String requestBy) {
         this.requestBy = requestBy;
     }
+
+    public String getApprovedBy() {
+        if (StringUtils.equalsIgnoreCase(getKeyParam(), "approvedBy")) {
+            approvedBy = getParameter();
+        } else {
+            approvedBy = null;
+        }
+        return approvedBy;
+    }
+
+    public void setApprovedBy(String approvedBy) {
+        this.approvedBy = approvedBy;
+    }
+
+    public String getName() {
+        if (StringUtils.equalsIgnoreCase(getKeyParam(), "name")) {
+            name = getParameter();
+        } else {
+            name = null;
+        }
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+    
     
     
 }

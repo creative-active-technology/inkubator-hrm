@@ -5,6 +5,7 @@
 package com.inkubator.hrm.web.search;
 
 import com.inkubator.webcore.util.SearchParameter;
+import java.math.BigDecimal;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -14,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 public class ReimbursmentSchemaSearchParameter extends SearchParameter{
     private String code;
     private String name;
+    private BigDecimal nominalUnit;
 
     public String getCode() {
         if (StringUtils.equalsIgnoreCase(getKeyParam(), "code")) {
@@ -39,6 +41,19 @@ public class ReimbursmentSchemaSearchParameter extends SearchParameter{
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public BigDecimal getNominalUnit() {
+        if (getKeyParam() != null) {
+            if (getKeyParam().equalsIgnoreCase("nominalUnit")&& getParameter()!=null) {
+                nominalUnit = new BigDecimal(getParameter());
+            }
+        }
+        return nominalUnit;
+    }
+
+    public void setNominalUnit(BigDecimal nominalUnit) {
+        this.nominalUnit = nominalUnit;
     }
     
     

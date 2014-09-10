@@ -195,7 +195,7 @@ public class ReimbursmentSchemaFormController extends BaseController{
                 reimbursmentSchemaService.update(reimbursmentSchema);
                 MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-                return "/protected/personalia/reimbursment_view.htm";
+                return "/protected/personalia/reimbursment_detail.htm?faces-redirect=true&execution=e" + reimbursmentSchema.getId();
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -218,7 +218,7 @@ public class ReimbursmentSchemaFormController extends BaseController{
                 reimbursmentSchemaService.saveAndNotification(reimbursmentSchema);
                 MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-                return "/protected/personalia/reimbursment_view.htm";
+                 return "/protected/personalia/reimbursment_detail.htm?faces-redirect=true&execution=e" + reimbursmentSchema.getId();
 
             
         } catch (Exception ex) {
@@ -245,6 +245,10 @@ public class ReimbursmentSchemaFormController extends BaseController{
         return reimbursmentSchema;
     }
 
+    public String doBack() {
+        return "/protected/personalia/reimbursment_view.htm?faces-redirect=true";
+    }
+    
     public ReimbursmentSchemaModel getModel() {
         return model;
     }
