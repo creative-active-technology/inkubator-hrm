@@ -202,6 +202,12 @@ public class BenefitGroupRateServiceImpl extends IServiceImpl implements Benefit
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(BenefitGroupRate benefitGroupRate) throws Exception {
+        long totalDuplicates = benefitGroupRateDao.getTotalByBenefitGroupAndGolonganJabatan(benefitGroupRate.getBenefitGroup().getId(), benefitGroupRate.getGolonganJabatan().getId());
+        if (totalDuplicates > 0) {
+            throw new BussinessException("benefitGroupRate.error_duplicate_golongan");
+        }
+        
+        
         BenefitGroup benefitGroup = benefitGroupDao.getEntiyByPK(benefitGroupRate.getBenefitGroup().getId());
         GolonganJabatan golonganJabatan = golonganJabatanDao.getEntiyByPK(benefitGroupRate.getGolonganJabatan().getId());
 
@@ -240,6 +246,11 @@ public class BenefitGroupRateServiceImpl extends IServiceImpl implements Benefit
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(BenefitGroupRate b) throws Exception {
+        long totalDuplicates = benefitGroupRateDao.getTotalByBenefitGroupAndGolonganJabatanAndNotId(b.getBenefitGroup().getId(), b.getGolonganJabatan().getId(), b.getId());
+        if (totalDuplicates > 0) {
+            throw new BussinessException("benefitGroupRate.error_duplicate_golongan");
+        }
+        
         BenefitGroup benefitGroup = benefitGroupDao.getEntiyByPK(b.getBenefitGroup().getId());
         GolonganJabatan golonganJabatan = golonganJabatanDao.getEntiyByPK(b.getGolonganJabatan().getId());
         BenefitGroupRate benefitGroupRate = benefitGroupRateDao.getEntiyByPK(b.getId());
@@ -268,6 +279,13 @@ public class BenefitGroupRateServiceImpl extends IServiceImpl implements Benefit
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
     public BenefitGroupRate getEntityByPKWithDetail(Long id) throws Exception {
         return benefitGroupRateDao.getEntityByPKWithDetail(id);
+    }
+    
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<BenefitGroupRate> getByGolonganJabatan(Long golonganId) throws Exception {
+        return benefitGroupRateDao.getByGolonganJabatan(golonganId);
+
     }
     
 }

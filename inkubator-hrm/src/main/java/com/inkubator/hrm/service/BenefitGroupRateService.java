@@ -16,5 +16,7 @@ public interface BenefitGroupRateService extends IService<BenefitGroupRate> {
 	public List<BenefitGroupRate> getAllDataByBenefitGroupId(Long benefitGroupId) throws Exception;
         
         public BenefitGroupRate getEntityByPKWithDetail(Long id) throws Exception;
+        
+        public List<BenefitGroupRate> getByGolonganJabatan(Long golonganId) throws Exception;
 
 }
