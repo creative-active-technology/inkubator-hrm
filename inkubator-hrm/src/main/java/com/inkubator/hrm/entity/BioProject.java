@@ -166,7 +166,7 @@ public class BioProject implements java.io.Serializable {
         this.name = name;
     }
 
-  
+
     @Column(name="description", length=65535, columnDefinition="Text")
     public String getDescription() {
         return this.description;
