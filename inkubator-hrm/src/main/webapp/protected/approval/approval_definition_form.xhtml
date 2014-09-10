@@ -95,7 +95,7 @@
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:spinner id="minApproverId" value="#{approvalDefinitionFormController.approvalDefinitionModel.minApprover}" size="2" required="true"
-                                               min="0" max="100" stepFactor="1"  disabled="#{approvalDefinitionFormController.onProcess}">
+                                               min="1" max="100" stepFactor="1"  disabled="#{approvalDefinitionFormController.onProcess}">
                                     </p:spinner>
                                     <p:message for="minApproverId"/>
                                 </p:column>
@@ -121,7 +121,7 @@
                                 </p:column>
                                 <p:column style="width: 37%" >
                                     <p:spinner id="minRejectId" value="#{approvalDefinitionFormController.approvalDefinitionModel.minRejector}" size="2" required="true"
-                                               min="0" max="100" stepFactor="1" disabled="#{approvalDefinitionFormController.onProcess}">
+                                               min="1" max="100" stepFactor="1" disabled="#{approvalDefinitionFormController.onProcess}">
                                     </p:spinner>
                                     <p:message for="minRejectId"/>
                                 </p:column>
