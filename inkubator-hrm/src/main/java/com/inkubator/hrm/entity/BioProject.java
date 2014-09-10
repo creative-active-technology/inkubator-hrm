@@ -61,22 +61,6 @@ public class BioProject implements java.io.Serializable {
        this.companyName = companyName;
     }
    
-     @Id 
-
-    public BioProject(long id, BioData bioData, String createdBy, Date createdOn, String updatedBy, Date updatedOn, Date startDate, Date endDate, String code, String name, String description, String position) {
-        this.id = id;
-        this.bioData = bioData;
-        this.createdBy = createdBy;
-        this.createdOn = createdOn;
-        this.updatedBy = updatedBy;
-        this.updatedOn = updatedOn;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.code = code;
-        this.name = name;
-        this.description = description;
-        this.position = position;
-    }
 
     @Id
 
