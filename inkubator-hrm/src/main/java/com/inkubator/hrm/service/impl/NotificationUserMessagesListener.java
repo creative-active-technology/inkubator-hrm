@@ -36,19 +36,19 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public class NotificationUserMessagesListener extends IServiceImpl implements MessageListener {
 
-	private String applicationUrl;
-	private String applicationName;
-	private String ownerEmail;
-	private String ownerCompany;
-	private String ownerAdministrator;
-	
+    private String applicationUrl;
+    private String applicationName;
+    private String ownerEmail;
+    private String ownerCompany;
+    private String ownerAdministrator;
+
     @Autowired
     private JsonConverter jsonConverter;
     @Autowired
     private VelocityTemplateSender velocityTemplateSender;
     @Autowired
     private PasswordHistoryDao passwordHistoryDao;
-    
+
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED,
             isolation = Isolation.READ_COMMITTED, timeout = 50, rollbackFor = Exception.class)
@@ -115,45 +115,44 @@ public class NotificationUserMessagesListener extends IServiceImpl implements Me
         }
     }
 
-	public String getApplicationUrl() {
-		return applicationUrl;
-	}
+    public String getApplicationUrl() {
+        return applicationUrl;
+    }
 
-	public void setApplicationUrl(String applicationUrl) {
-		this.applicationUrl = applicationUrl;
-	}
+    public void setApplicationUrl(String applicationUrl) {
+        this.applicationUrl = applicationUrl;
+    }
 
-	public String getApplicationName() {
-		return applicationName;
-	}
+    public String getApplicationName() {
+        return applicationName;
+    }
 
-	public void setApplicationName(String applicationName) {
-		this.applicationName = applicationName;
-	}
+    public void setApplicationName(String applicationName) {
+        this.applicationName = applicationName;
+    }
 
-	public String getOwnerEmail() {
-		return ownerEmail;
-	}
+    public String getOwnerEmail() {
+        return ownerEmail;
+    }
 
-	public void setOwnerEmail(String ownerEmail) {
-		this.ownerEmail = ownerEmail;
-	}
+    public void setOwnerEmail(String ownerEmail) {
+        this.ownerEmail = ownerEmail;
+    }
 
-	public String getOwnerCompany() {
-		return ownerCompany;
-	}
+    public String getOwnerCompany() {
+        return ownerCompany;
+    }
 
-	public void setOwnerCompany(String ownerCompany) {
-		this.ownerCompany = ownerCompany;
-	}
+    public void setOwnerCompany(String ownerCompany) {
+        this.ownerCompany = ownerCompany;
+    }
 
-	public String getOwnerAdministrator() {
-		return ownerAdministrator;
-	}
+    public String getOwnerAdministrator() {
+        return ownerAdministrator;
+    }
 
-	public void setOwnerAdministrator(String ownerAdministrator) {
-		this.ownerAdministrator = ownerAdministrator;
-	}
-    
-    
+    public void setOwnerAdministrator(String ownerAdministrator) {
+        this.ownerAdministrator = ownerAdministrator;
+    }
+
 }

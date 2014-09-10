@@ -20,8 +20,8 @@
                         <p:graphicImage library="images" name="approval_defition.png" height="36" width="36" />
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Detil Approval Definitions" styleClass="header_big" />
-                                <p:outputLabel value="Data Approval Defitions dari Aplikasi" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['approvaldefinition.approval_definition_form']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['approvaldefinition.approval_definition_header']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -30,30 +30,33 @@
                     <h:form id="approvalFormId" >
                         <p:panelGrid style="width: 100%;margin-top: 20px;" styleClass="grid_border3">
                             <p:row>
-                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Approval Name" style="font-weight: bold"/>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important;" >
+                                    <p:outputLabel  value="#{appmsg['approvaldefinition.approval_name']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:selectOneMenu id="approvalName" styleClass="isitext_hrm" value="#{approvalDefinitionFormController.approvalDefinitionModel.name}" style="width: 75%" required="true">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <!--Cek HRM Constanta..-->
-                                        <f:selectItem itemLabel="Proses Perubahan Bio Data" itemValue="BIO_DATA_EDIT" />
-                                        <f:selectItem itemLabel="Proses Perubahan Riwayat Kesehantan" itemValue="BIO_HEATLY_EDIT" />
-                                        <f:selectItem itemLabel="Proses Perubahan Riwayat Kerja" itemValue="BIO_OCCUPATIONAL_EDIT" />
+                                        <f:selectItem itemLabel="#{appmsg['aapprovaldefinition.change_process_biodata']}" itemValue="BIO_DATA_EDIT" />
+                                        <f:selectItem itemLabel="#{appmsg['bapprovaldefinition.change_process_medical_history']}" itemValue="BIO_HEATLY_EDIT" />
+                                        <f:selectItem itemLabel="#{appmsg['approvaldefinition.change_process_work_history']}" itemValue="BIO_OCCUPATIONAL_EDIT" />
+                                        <f:selectItem itemLabel="Proses Perubahan Penggantian Biaya" itemValue="REIMBURSEMENT" />
+                                        <f:selectItem itemLabel="Proses Perubahan Perjalanan Dinas" itemValue="BUSINESS_TRAVEL" />
+                                        <f:selectItem itemLabel="Proses Perubahan Pinjaman Dana" itemValue="LOAN" />
                                     </p:selectOneMenu>
                                     <p:message for="approvalName"/>
 
                                 </p:column>
-                                <p:column style="width: 13%;background-color: #e1f0f0!important">
-                                    <p:outputLabel  value="Process Name" style="font-weight: bold"/>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important;">
+                                    <p:outputLabel  value="#{appmsg['approvaldefinition.process_name']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:selectOneMenu id="procesName" styleClass="isitext_hrm" value="#{approvalDefinitionFormController.approvalDefinitionModel.processType}" style="width: 75%" required="true">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <!--Cek HRM Constanta..-->
-                                        <f:selectItem itemLabel="Saat Proses Approval" itemValue="APPROVAL_PROCESS" />
-                                        <f:selectItem itemLabel="Saat Permintaan Disetujui" itemValue="ON_APPROVE_INFO" />
-                                        <f:selectItem itemLabel="Saat Permintaan Ditolak" itemValue="ON_REJECT_INFO" />
+                                        <f:selectItem itemLabel="#{appmsg['approvaldefinition.current_process_approval']}" itemValue="APPROVAL_PROCESS" />
+                                        <f:selectItem itemLabel="#{appmsg['approvaldefinition.when_request_is_approved']}" itemValue="ON_APPROVE_INFO" />
+                                        <f:selectItem itemLabel="#{appmsg['approvaldefinition.when_request_is_rejected']}" itemValue="ON_REJECT_INFO" />
                                         <p:ajax listener="#{approvalDefinitionFormController.onProcessCange()}" update="minApproverId,minRejectId"/>
                                     </p:selectOneMenu>
                                     <p:message for="procesName"/>
@@ -61,8 +64,8 @@
 
                             </p:row>
                             <p:row>
-                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Urutan Approval" style="font-weight: bold"/>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important;" >
+                                    <p:outputLabel  value="#{appmsg['approvaldefinition.sequence_approval']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:spinner id="sequenceId" value="#{approvalDefinitionFormController.approvalDefinitionModel.sequence}" size="2" required="true"
@@ -71,24 +74,24 @@
                                     </p:spinner>
                                     <p:message for="sequenceId"/>
                                 </p:column>
-                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Approver Type" style="font-weight: bold"/>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important;" >
+                                    <p:outputLabel  value="#{appmsg['approvaldefinition.approver_type']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%" >
                                     <p:selectOneMenu id="approverType" styleClass="isitext_hrm" value="#{approvalDefinitionFormController.approvalDefinitionModel.approverType}" style="width: 75%" required="true">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <!--Cek HRM Constanta..-->
-                                        <f:selectItem itemLabel="Disetujui Berdasarkan Jabatan" itemValue="APPROVAL_TYPE_POSITION" />
-                                        <f:selectItem itemLabel="Disetujui Berdasarkan Individu" itemValue="APPROVAL_TYPE_INDIVIDUAL" />
-                                        <f:selectItem itemLabel="Disetujui Berdasarkan Hirarki Departement" itemValue="APPROVAL_TYPE_DEPARTMENT" />
+                                        <f:selectItem itemLabel="#{appmsg['approvaldefinition.approved_by_position']}" itemValue="APPROVAL_TYPE_POSITION" />
+                                        <f:selectItem itemLabel="#{appmsg['approvaldefinition.approver_by_individual']}" itemValue="APPROVAL_TYPE_INDIVIDUAL" />
+                                        <f:selectItem itemLabel="#{appmsg['approvaldefinition.approver_by_department_hierarchy']}" itemValue="APPROVAL_TYPE_DEPARTMENT" />
                                         <p:ajax listener="#{approvalDefinitionFormController.onAppoverChange()}" update="approverIndividualId,cariButton1,approverPositionId,cariButton2"/>
                                     </p:selectOneMenu>
                                     <p:message for="approverType"/>
                                 </p:column>
                             </p:row>
                             <p:row>
-                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Minimum Approver" style="font-weight: bold"/>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important;" >
+                                    <p:outputLabel  value="#{appmsg['approvaldefinition.min_approve']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:spinner id="minApproverId" value="#{approvalDefinitionFormController.approvalDefinitionModel.minApprover}" size="2" required="true"
@@ -96,8 +99,8 @@
                                     </p:spinner>
                                     <p:message for="minApproverId"/>
                                 </p:column>
-                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Approver Individual" style="font-weight: bold"/>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important;" >
+                                    <p:outputLabel  value="#{appmsg['approvaldefinition.approval_individual']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:inputText value="#{approvalDefinitionFormController.approvalDefinitionModel.hrmUserByApproverIndividualName}" maxlength="45"
@@ -113,8 +116,8 @@
                                 </p:column>
                             </p:row>
                             <p:row>
-                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Minimum Rejector" style="font-weight: bold"/>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important;" >
+                                    <p:outputLabel  value="#{appmsg['approvaldefinition.min_reject']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%" >
                                     <p:spinner id="minRejectId" value="#{approvalDefinitionFormController.approvalDefinitionModel.minRejector}" size="2" required="true"
@@ -123,8 +126,8 @@
                                     <p:message for="minRejectId"/>
                                 </p:column>
 
-                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Approver Position" style="font-weight: bold"/>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important;" >
+                                    <p:outputLabel  value="#{appmsg['approvaldefinition.approver_position']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%" >
                                     <p:inputText value="#{approvalDefinitionFormController.approvalDefinitionModel.jabatanByApproverPositionName}" maxlength="45"
@@ -140,8 +143,8 @@
                                 </p:column>
                             </p:row>
                             <p:row>
-                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="On Behalf" style="font-weight: bold"/>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important;" >
+                                    <p:outputLabel  value="#{appmsg['approvaldefinition.on_behalf']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:selectBooleanButton value="#{approvalDefinitionFormController.approvalDefinitionModel.allowOnBehalf}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
@@ -149,23 +152,23 @@
                                         <p:ajax listener="#{approvalDefinitionFormController.onChange()}" immediate="true" update="onBehalfIndividualId,onBehalfId,cariId1,onBehalfPositionId,cariId2"/>
                                     </p:selectBooleanButton>
                                 </p:column>
-                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="On Behalf Type" style="font-weight: bold"/>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important;" >
+                                    <p:outputLabel  value="#{appmsg['approvaldefinition.on_behalf_type']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%" >
                                     <p:selectOneMenu id="onBehalfId" styleClass="isitext_hrm" value="#{approvalDefinitionFormController.approvalDefinitionModel.onBehalfType}" style="width: 75%" required="true" disabled="#{approvalDefinitionFormController.onBehalf}">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <!--Cek HRM Constanta..-->
-                                        <f:selectItem itemLabel="Disetujui Berdasarkan Jabatan" itemValue="APPROVAL_TYPE_POSITION" />
-                                        <f:selectItem itemLabel="Disetujui Berdasarkan Individu" itemValue="APPROVAL_TYPE_INDIVIDUAL" />
+                                        <f:selectItem itemLabel="#{appmsg['approvaldefinition.approved_by_position']}" itemValue="APPROVAL_TYPE_POSITION" />
+                                        <f:selectItem itemLabel="#{appmsg['approvaldefinition.approver_by_individual']}" itemValue="APPROVAL_TYPE_INDIVIDUAL" />
                                         <p:ajax listener="#{approvalDefinitionFormController.onBehalfAppoverChange()}" update="onBehalfIndividualId,cariId1,onBehalfPositionId,cariId2"/>
                                     </p:selectOneMenu>
                                     <p:message for="onBehalfId"/>
                                 </p:column>
                             </p:row>
                             <p:row>
-                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="On Behalf Individual" style="font-weight: bold"/>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important;" >
+                                    <p:outputLabel  value="#{appmsg['approvaldefinition.on_behalf_individual']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:inputText value="#{approvalDefinitionFormController.approvalDefinitionModel.hrmUserByOnBehalfIndividualName}" maxlength="45"
@@ -180,7 +183,7 @@
 
                                 </p:column>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="On Behalf Position" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['approvaldefinition.on_behalf_position']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%" >
                                     <p:inputText value="#{approvalDefinitionFormController.approvalDefinitionModel.jabatanByOnBehalfPositionName}" maxlength="45" disabled="#{approvalDefinitionFormController.onBehalfApproverTypePosition}"
@@ -196,7 +199,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Auto Approve On Delay" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['approvaldefinition.auto_approved_on_delay']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:selectBooleanButton value="#{approvalDefinitionFormController.approvalDefinitionModel.autoApproveOnDelay}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
@@ -205,7 +208,7 @@
                                     </p:selectBooleanButton>
                                 </p:column>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Escalate On Delay" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['approvaldefinition.escalate_on_delay']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%" >
 
@@ -219,7 +222,7 @@
                             <p:row>
 
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Delay Time" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['approvaldefinition.delay_time']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%"  colspan="3">
                                     <p:spinner min="1" max="100" size="2" stepFactor="1" value="#{approvalDefinitionFormController.approvalDefinitionModel.delayTime}"/>

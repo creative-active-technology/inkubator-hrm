@@ -20,8 +20,8 @@
                         <p:graphicImage library="images" name="approval_defition.png" height="36" width="36" />
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Detil Approval Definitions" styleClass="header_big" />
-                                <p:outputLabel value="Data Approval Defitions dari Aplikasi" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['approvaldefinition.approval_definition_detail']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['approvaldefinition.approval_definition_header']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -32,13 +32,13 @@
                         <p:panelGrid style="width: 100%;margin-top: 20px;" styleClass="grid_border3">
                             <p:row>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Approval Name" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['approvaldefinition.approval_name']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:outputLabel  value="#{approvalDefinitionDetilController.selectedApprovalDefinition.name}" />
                                 </p:column>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important">
-                                    <p:outputLabel  value="Process Name" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['approvaldefinition.process_name']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:outputLabel  value="#{approvalDefinitionDetilController.selectedApprovalDefinition.processType}" />
@@ -47,13 +47,13 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Urutan Approval" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['approvaldefinition.sequence_approval']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:outputLabel  value="#{approvalDefinitionDetilController.selectedApprovalDefinition.sequence}" />
                                 </p:column>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Approver Type" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['approvaldefinition.approver_type']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%" >
                                     <p:outputLabel value="#{approvalDefinitionDetilController.selectedApprovalDefinition.approverType}" />
@@ -61,13 +61,13 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Minimum Approver" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['approvaldefinition.min_approve']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:outputLabel  value="#{approvalDefinitionDetilController.selectedApprovalDefinition.minApprover}" />
                                 </p:column>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Minimum Rejector" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['approvaldefinition.min_reject']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%" >
                                     <p:outputLabel value="#{approvalDefinitionDetilController.selectedApprovalDefinition.minRejector}" />
@@ -75,13 +75,13 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Approver Individual" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['approvaldefinition.approval_individual']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:outputLabel  value="#{approvalDefinitionDetilController.selectedApprovalDefinition.hrmUserByApproverIndividual.realName}" />
                                 </p:column>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Approver Position" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['approvaldefinition.approver_position']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%" >
                                     <p:outputLabel value="#{approvalDefinitionDetilController.selectedApprovalDefinition.jabatanByApproverPosition.name}" />
@@ -89,7 +89,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="On Behalf" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['approvaldefinition.on_behalf']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:outputLabel  value="#{approvalDefinitionDetilController.selectedApprovalDefinition.allowOnBehalf}" >
@@ -97,7 +97,7 @@
                                     </p:outputLabel>
                                 </p:column>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="On Behalf Type" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['approvaldefinition.on_behalf_type']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%" >
                                     <p:outputLabel value="#{approvalDefinitionDetilController.selectedApprovalDefinition.onBehalfType}" />
@@ -105,7 +105,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="On Behalf Individual" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['approvaldefinition.on_behalf_individual']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:outputLabel  value="#{approvalDefinitionDetilController.selectedApprovalDefinition.hrmUserByOnBehalfIndividual.realName}" >
@@ -113,7 +113,7 @@
                                     </p:outputLabel>
                                 </p:column>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="On Behalf Position" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['approvaldefinition.on_behalf_position']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%" >
                                     <p:outputLabel value="#{approvalDefinitionDetilController.selectedApprovalDefinition.jabatanByOnBehalfPosition.name}" />
@@ -121,7 +121,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Auto Approve On Delay" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['approvaldefinition.auto_approved_on_delay']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:outputLabel  value="#{approvalDefinitionDetilController.selectedApprovalDefinition.autoApproveOnDelay}" >
@@ -129,7 +129,7 @@
                                     </p:outputLabel>
                                 </p:column>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Escalate On Delay" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['approvaldefinition.escalate_on_delay']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%" >
                                     <p:outputLabel value="#{approvalDefinitionDetilController.selectedApprovalDefinition.escalateOnDelay}" >
@@ -139,7 +139,7 @@
                             </p:row>
                              <p:row>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Delay Time" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['approvaldefinition.delay_time']}" style="font-weight: bold"/>
                                 </p:column>
                                  <p:column style="width: 37%" colspan="3">
                                      <p:outputLabel value="#{approvalDefinitionDetilController.selectedApprovalDefinition.delayTime}" >

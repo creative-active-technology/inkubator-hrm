@@ -1,0 +1,194 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlUserFormId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
+                <h:form id="jobTitleFormId" >
+                    <div id="box_bg" style="margin: 10px">
+                        <!--<p:panel style="margin: 10px">-->
+                        <h:panelGrid style="margin-bottom: 5px" columns="2">
+                            <p:graphicImage library="images" name="jabatan.png" height="36" width="36" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="#{appmsg['loan.loan_form']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['loan.loan_header']}" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator/>
+
+
+
+                        <p:panelGrid style="width: 100%;margin-bottom: 20px;margin-top: 20px" styleClass="grid_border3" >
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['global.code']}"  for="code" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:inputText id="code" value="#{loanSchemaFormController.model.code}" onkeyup="this.value = this.value.toUpperCase();"
+                                             required="true" maxlength="6" styleClass="isitext_hrm" style="width:210px;" />
+                                    <p:message for="code"/>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['global.name']}"  for="name" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:inputText id="name" value="#{loanSchemaFormController.model.name}" 
+                                             required="true" maxlength="6" styleClass="isitext_hrm" style="width:210px;" />
+                                    <p:message for="name"/>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['jabatan.cost_center']}"  for="costCenterId" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectOneMenu id="costCenterId" value="#{loanSchemaFormController.model.costCenter}" style="width: 150px;margin-right: 3px" required="true">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{loanSchemaFormController.dropDownCostCenter}"/>
+                                    </p:selectOneMenu>
+                                    <p:message for="costCenterId"/>
+                                </p:column>
+                            </p:row>
+                            
+                                                        
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['loan.type_of_interest']}"  for="typeOfInterest" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectOneRadio id="typeOfInterest" styleClass="isitext_hrm" required="true" value="#{loanSchemaFormController.model.typeOfInterest}" label="#{appmsg['travelComponent.travelComponent_measurement']}">
+                                        <!--Cek HRM Constanta..-->
+                                        <f:selectItem itemLabel="#{appmsg['loan.type_of_interest_annuity']}" itemValue="0" />
+                                        <f:selectItem itemLabel="#{appmsg['loan.type_of_interest_flat']}" itemValue="1" />
+                                        <f:selectItem itemLabel="#{appmsg['loan.type_of_interest_floating']}" itemValue="2" />
+                                    </p:selectOneRadio> 
+                                    <p:message for="typeOfInterest"/>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['loan.max_period']}"  for="maxPeriod" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:spinner id="maxPeriod" value="#{loanSchemaFormController.model.maxPeriode}" min="0" max="5" required="true" size="2" 
+                                           validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
+                                        <f:validateLongRange minimum="1" maximum="5"/>
+                                    </p:spinner>     
+                                    <p:message for="maxPeriod"/>
+                                </p:column>
+                            </p:row>
+                            
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['reimbursment.basic_value']}"  for="basicValue" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectOneRadio id="basicValue" styleClass="isitext_hrm" required="true" value="#{loanSchemaFormController.model.basicValue}" label="#{appmsg['travelComponent.travelComponent_measurement']}">
+                                        <!--Cek HRM Constanta..-->
+                                        <f:selectItem itemLabel="#{appmsg['reimbursment.nominal']}" itemValue="0" />
+                                        <f:selectItem itemLabel="#{appmsg['reimbursment.salary']}" itemValue="1" />
+                                        <p:ajax update="maxNominal" process="@this" listener="#{loanSchemaFormController.doChangeMaxNominalOr()}"/>
+                                        <p:ajax update="maxPaymentOfSalary" process="@this" listener="#{loanSchemaFormController.doChangeMaxNominalOr()}"/>
+                                    </p:selectOneRadio>
+                                    <p:message for="basicValue"/>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['loan.max_nominal']}"  for="maxNominal" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <pe:inputNumber id="maxNominal" value="#{loanSchemaFormController.model.maxNominal}" 
+                                                    required="true" maxlength="6" styleClass="isitext_hrm" style="width:210px;" disabled="#{loanSchemaFormController.isMaxNominal}"/>
+                                    <p:message for="maxNominal"/>
+                                </p:column>
+                            </p:row>
+                            
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['loan.max_payment_of_salary']}"  for="maxPaymentOfSalary" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:spinner id="maxPaymentOfSalary" value="#{loanSchemaFormController.model.maxPaymentOfSalary}"  min="0" max="11" required="true" size="2" disabled="#{loanSchemaFormController.isMaxPayment}"
+                                           validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
+                                        <f:validateLongRange minimum="1" maximum="5"/>
+                                    </p:spinner>     
+                                    <p:message for="maxPaymentOfSalary"/>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['loan.penalty_of_non_complance']}"  for="penaltyOfNonComplance" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:spinner id="penaltyOfNonComplance" value="#{loanSchemaFormController.model.penaltyOfNonComplance}" stepFactor="0.10" min="0" max="20" required="true" size="2" 
+                                           validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
+                                    </p:spinner>     
+                                    <p:message for="penaltyOfNonComplance"/>
+                                </p:column>
+                            </p:row>
+                            
+                            
+                        </p:panelGrid>
+                        <p:focus context="jobTitleFormId" />
+                        <!--<p:separator style="margin-top: 20px;margin-bottom: 10px"/>-->
+                        <p:outputLabel value="#{appmsg['reimbursment.list_of_employee_type']}" styleClass="header_big" />
+                       <!--<p:outputLabel value="#{appmsg['user_view.header2']}" styleClass="header_small_no_bold" />-->
+                        <!--                                </h:panelGrid>
+                                                    </h:panelGroup>-->
+                        <!--</h:panelGrid>-->
+                        <p:separator/>
+                        <div align="center">
+                            <p:pickList value="#{loanSchemaFormController.dualListModel}" var="role" itemValue="#{role}" converter="employeeTypeConverter" id="picklistUserRoleId"
+                                        required="true"  style="margin-top: 15px;margin-bottom: 15px" label="#{appmsg['role_view.header1']}" styleClass="isitext_hrm"
+                                        itemLabel="#{role.name}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
+                                        removeLabel="#{appmsg['global.remove']}"/>
+                            <p:message for="picklistUserRoleId" />
+                        </div>  
+                        <!--</p:panel>-->
+
+                        <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
+                        <div style="margin-bottom: 5px">
+                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" action="#{loanSchemaFormController.doSaved()}"
+                                             styleClass="isitext_hrm" 
+                                             style="margin-right: 5px" label="#{appmsg['global.save']}" update="jobTitleFormId"
+                                             icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="jobTitleFormId" action="#{loanSchemaFormController.doReset()}"
+                                             icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px" >  
+                                <p:resetInput target="jobTitleFormId" />  
+                            </p:commandButton>
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}"  immediate="true" action="#{loanSchemaFormController.doBack()}"
+                                             styleClass="label_button"/>
+                        </div>
+                    </div>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

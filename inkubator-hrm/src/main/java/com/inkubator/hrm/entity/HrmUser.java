@@ -124,7 +124,7 @@ public class HrmUser implements java.io.Serializable {
         this.emailAddress = emailAddress;
     }
 
-    @Column(name = "password", length = 65535)
+    @Column(name = "password", length = 65535, columnDefinition="Text")
     public String getPassword() {
         return this.password;
     }
@@ -161,7 +161,7 @@ public class HrmUser implements java.io.Serializable {
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "emp_data_id")
+    @JoinColumn(name = "emp_data_id", unique=true)
     public EmpData getEmpData() {
 		return empData;
 	}

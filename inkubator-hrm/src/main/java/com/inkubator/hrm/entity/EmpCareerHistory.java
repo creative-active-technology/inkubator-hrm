@@ -194,7 +194,7 @@ public class EmpCareerHistory implements java.io.Serializable {
         this.status = status;
     }
 
-    @Column(name = "salary", length = 65535)
+    @Column(name = "salary", length = 65535, columnDefinition="Text")
     public String getSalary() {
         return this.salary;
     }

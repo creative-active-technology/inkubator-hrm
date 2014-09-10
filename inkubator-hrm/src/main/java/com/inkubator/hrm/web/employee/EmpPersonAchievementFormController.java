@@ -79,6 +79,7 @@ public class EmpPersonAchievementFormController extends BaseController {
         achievementModel.setDescription(entity.getDescription());
         achievementModel.setAchievementName(entity.getAchievementName());
         achievementModel.setDateAchievement(entity.getDateAchievement());
+        achievementModel.setEmpData(entity.getEmpData());
         return achievementModel;
     }
 
@@ -123,6 +124,16 @@ public class EmpPersonAchievementFormController extends BaseController {
 
         return null;
     }
+    
+    public List<EmpData> doAutoCompletEmployee(String param){
+		List<EmpData> empDatas = new ArrayList<EmpData>();
+		try {
+			empDatas = empDataService.getAllDataByNameOrNik(StringUtils.stripToEmpty(param));
+		} catch (Exception e) {
+			LOGGER.error("Error", e);
+		}
+		return empDatas;
+	}
 
     public List<String> completeAchievement(String query) {
         try {
@@ -170,11 +181,12 @@ public class EmpPersonAchievementFormController extends BaseController {
         if (model.getId() != null) {
             personAchievement.setId(model.getId());
         }
+        personAchievement.setEmpData(model.getEmpData());
         personAchievement.setAchievementName(model.getAchievementName());
         personAchievement.setDateAchievement(model.getDateAchievement());
         personAchievement.setDescription(model.getDescription());
-        EmpData selectedEmployee = empDataService.getEntityByNik(StringUtils.substringBefore(model.getNikWithFullName(), " - "));
-        personAchievement.setEmpData(new EmpData(selectedEmployee.getId()));
+//        EmpData selectedEmployee = empDataService.getEntityByNik(StringUtils.substringBefore(model.getNikWithFullName(), " - "));
+//        personAchievement.setEmpData(new EmpData(selectedEmployee.getId()));
         return personAchievement;
     }
 

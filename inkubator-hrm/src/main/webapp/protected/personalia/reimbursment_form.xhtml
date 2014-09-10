@@ -1,0 +1,206 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlUserFormId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
+                <h:form id="jobTitleFormId" >
+                    <div id="box_bg" style="margin: 10px">
+                        <!--<p:panel style="margin: 10px">-->
+                        <h:panelGrid style="margin-bottom: 5px" columns="2">
+                            <p:graphicImage library="images" name="jabatan.png" height="36" width="36" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="#{appmsg['reimbursment.reimmbursment_form']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['reimbursment.reimbursment_header']}" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator/>
+
+
+
+                        <p:panelGrid style="width: 100%;margin-bottom: 20px;margin-top: 20px" styleClass="grid_border3" >
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['global.code']}"  for="code" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:inputText id="code" value="#{reimbursmentSchemaFormController.model.code}" onkeyup="this.value = this.value.toUpperCase();"
+                                             required="true" maxlength="6" styleClass="isitext_hrm" style="width:210px;" />
+                                    <p:message for="code"/>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['global.name']}"  for="name" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:inputText id="name" value="#{reimbursmentSchemaFormController.model.name}" 
+                                             required="true" maxlength="6" styleClass="isitext_hrm" style="width:210px;" />
+                                    <p:message for="name"/>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['reimbursment.effective_date']}"  for="effectiveDate" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:spinner id="effectiveDate" value="#{reimbursmentSchemaFormController.model.effectiveDate}" min="0" max="12" required="true" size="2" 
+                                           validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
+                                        <f:validateLongRange minimum="1" maximum="12"/>
+                                    </p:spinner>
+                                    <p:message for="effectiveDate"/>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['reimbursment.measurement']}"  for="measurement" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectOneRadio id="measurement" styleClass="isitext_hrm" required="true" value="#{reimbursmentSchemaFormController.model.measurement}" label="#{appmsg['travelComponent.travelComponent_measurement']}">
+                                        <!--Cek HRM Constanta..-->
+                                        <f:selectItem itemLabel="#{appmsg['reimbursment.unit']}" itemValue="0" />
+                                        <f:selectItem itemLabel="#{appmsg['reimbursment.nominal']}" itemValue="1" />
+                                    </p:selectOneRadio> 
+                                    <p:message for="measurement"/>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['jabatan.cost_center']}"  for="costCenterId" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectOneMenu id="costCenterId" value="#{reimbursmentSchemaFormController.model.costCenter}" style="width: 150px;margin-right: 3px" required="true">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{reimbursmentSchemaFormController.dropDownCostCenter}"/>
+                                    </p:selectOneMenu>
+                                    <p:message for="costCenterId"/>
+                                </p:column>
+                            </p:row>
+                            
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['reimbursment.basic_value']}"  for="basicValue" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectOneRadio id="basicValue" styleClass="isitext_hrm" required="true" value="#{reimbursmentSchemaFormController.model.basicValue}" label="#{appmsg['travelComponent.travelComponent_measurement']}">
+                                        <!--Cek HRM Constanta..-->
+                                        <f:selectItem itemLabel="#{appmsg['reimbursment.nominal']}" itemValue="0" />
+                                        <f:selectItem itemLabel="#{appmsg['reimbursment.salary']}" itemValue="1" />
+                                        <p:ajax update="nominalUnit" process="@this" listener="#{reimbursmentSchemaFormController.doChangeRatioOrNominal()}"/>
+                                        <p:ajax update="ratioSalary" process="@this" listener="#{reimbursmentSchemaFormController.doChangeRatioOrNominal()}"/>
+                                    </p:selectOneRadio>
+                                    <p:message for="basicValue"/>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['reimbursment.nominal_unit']}"  for="nominalUnit" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <pe:inputNumber id="nominalUnit" value="#{reimbursmentSchemaFormController.model.nominalUnit}" 
+                                                    required="true" maxlength="6" styleClass="isitext_hrm" style="width:210px;" disabled="#{reimbursmentSchemaFormController.isNominalLimit}"/>
+                                    <p:message for="nominalUnit"/>
+                                </p:column>
+                            </p:row>
+                            
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['reimbursment.ratio_salary']}"  for="ratioSalary" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:spinner id="ratioSalary" value="#{reimbursmentSchemaFormController.model.ratioSalary}" min="0" max="11" required="true" size="2" disabled="#{reimbursmentSchemaFormController.isRatioSalary}"
+                                           validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
+                                        <f:validateLongRange minimum="1" maximum="5"/>
+                                    </p:spinner>     
+                                    <p:outputLabel value=" x #{appmsg['reimbursment.salary']}" styleClass="label_hrm"/>
+                                    <p:message for="ratioSalary"/>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['reimbursment.payroll_component']}"  for="payrollComponent" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectBooleanCheckbox id="payrollComponent" value="#{reimbursmentSchemaFormController.model.payrolComponent}" />
+                                    <p:outputLabel value=" #{appmsg['global.yes']}" styleClass="label_hrm" style="margin-bottom: 3px;"/>
+                                    <p:message for="payrollComponent"/>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['reimbursment.time_range']}"  for="timeRange" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectOneRadio id="timeRange" styleClass="isitext_hrm" required="true" value="#{reimbursmentSchemaFormController.model.timeRange}" label="#{appmsg['travelComponent.travelComponent_measurement']}">
+                                        <!--Cek HRM Constanta..-->
+                                        <f:selectItem itemLabel="#{appmsg['reimbursment.monthly']}" itemValue="0" />
+                                        <f:selectItem itemLabel="#{appmsg['reimbursment.yearly']}" itemValue="1" />
+                                        <f:selectItem itemLabel="#{appmsg['reimbursment.per_employee']}" itemValue="2" />
+                                    </p:selectOneRadio> 
+                                    <p:message for="timeRange"/>
+                                </p:column>
+                            </p:row>
+                            
+                        </p:panelGrid>
+                        <p:focus context="jobTitleFormId" />
+                        <!--<p:separator style="margin-top: 20px;margin-bottom: 10px"/>-->
+                        <p:outputLabel value="#{appmsg['reimbursment.list_of_employee_type']}" styleClass="header_big" />
+                       <!--<p:outputLabel value="#{appmsg['user_view.header2']}" styleClass="header_small_no_bold" />-->
+                        <!--                                </h:panelGrid>
+                                                    </h:panelGroup>-->
+                        <!--</h:panelGrid>-->
+                        <p:separator/>
+                        <div align="center">
+                            <p:pickList value="#{reimbursmentSchemaFormController.dualListModel}" var="role" itemValue="#{role}" converter="employeeTypeConverter" id="picklistUserRoleId"
+                                        required="true"  style="margin-top: 15px;margin-bottom: 15px" label="#{appmsg['role_view.header1']}" styleClass="isitext_hrm"
+                                        itemLabel="#{role.name}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
+                                        removeLabel="#{appmsg['global.remove']}"/>
+                            <p:message for="picklistUserRoleId" />
+                        </div>  
+                        <!--</p:panel>-->
+
+                        <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
+                        <div style="margin-bottom: 5px">
+                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" action="#{reimbursmentSchemaFormController.doSaved()}"
+                                             styleClass="isitext_hrm" 
+                                             style="margin-right: 5px" label="#{appmsg['global.save']}" update="jobTitleFormId"
+                                             icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="jobTitleFormId" action="#{reimbursmentSchemaFormController.doReset()}"
+                                             icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px" >  
+                                <p:resetInput target="jobTitleFormId" />  
+                            </p:commandButton>
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}"  immediate="true" action="#{reimbursmentSchemaFormController.doBack()}"
+                                             styleClass="label_button"/>
+                        </div>
+                    </div>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+
