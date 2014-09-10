@@ -6,12 +6,16 @@
 package com.inkubator.hrm.web;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
+
+import org.primefaces.context.RequestContext;
 
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.ApprovalActivity;
@@ -70,7 +74,7 @@ public class HomeApproalActivityController extends BaseController {
         this.pendingRequest = pendingRequest;
     }
 
-    public void setApprovalActivityService(ApprovalActivityService approvalActivityService) {
+	public void setApprovalActivityService(ApprovalActivityService approvalActivityService) {
         this.approvalActivityService = approvalActivityService;
     }
 
@@ -109,7 +113,20 @@ public class HomeApproalActivityController extends BaseController {
     	return redirect;
     }
 
-    public String doDetailRequestPending() {
-        return "/protected/approval/biodata_pending_request_detail.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
+    public void doDetailRequestPending() {
+    	
+        List<String> values = new ArrayList<>();
+        values.add(String.valueOf(selectedApprovalActivity.getActivityNumber()));
+        
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("activityNumber", values);
+        
+    	Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", true);
+        options.put("contentWidth", 1000);
+        options.put("contentHeight", 300);
+        RequestContext.getCurrentInstance().openDialog("approval_activity_pending_request_view", options, dataToSend);
     }
 }
