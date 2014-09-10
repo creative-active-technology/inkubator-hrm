@@ -87,7 +87,7 @@ public class BaseApprovalServiceImpl extends IServiceImpl {
 				appActivity.setActivityNumber(RandomNumberUtil.getRandomNumber(9));
 				appActivity.setNotificationSend(false);
 				appActivity.setRequestBy(requestByEmployee);
-				
+				appActivity.setRequestTime(new Date());
 			}
 		}
 		
@@ -298,6 +298,7 @@ public class BaseApprovalServiceImpl extends IServiceImpl {
         newEntity.setRejectCount(previousAppActv.getRejectCount());
         newEntity.setActivityNumber(previousAppActv.getActivityNumber());
         newEntity.setRequestBy(previousAppActv.getRequestBy());
+        newEntity.setRequestTime(previousAppActv.getRequestTime());
         //jika tidak ada update di json pendingDataUpdate maka gunakan pending data yg lama/previous activity
         String pendingData = StringUtils.isEmpty(pendingDataUpdate) ? previousAppActv.getPendingData() : pendingDataUpdate;
         newEntity.setPendingData(pendingData);
