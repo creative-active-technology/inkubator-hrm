@@ -72,22 +72,28 @@ public class BaseApprovalServiceImpl extends IServiceImpl {
 		ApprovalActivity appActivity = null;
 		List<ApprovalDefinition> listAppDef = approvalDefinitionDao.getAllDataByNameAndProcessType(processName, HRMConstant.APPROVAL_PROCESS, Order.asc("sequence"));
 		if(!listAppDef.isEmpty()){ //if not empty
-			ApprovalDefinition appDef = listAppDef.get(0);
-			String approverUserId = this.getApproverByAppDefinition(appDef, requestByEmployee);
 			
-			if(StringUtils.isNotEmpty(approverUserId)){				
-				appActivity = new ApprovalActivity();
-				appActivity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
-				appActivity.setApprovalDefinition(appDef);			
-				appActivity.setApprovedBy(approverUserId);
-				appActivity.setApprovalStatus(HRMConstant.APPROVAL_STATUS_WAITING);
-				appActivity.setSequence(1);
-				appActivity.setApprovalCount(0);
-				appActivity.setRejectCount(0);
-				appActivity.setActivityNumber(RandomNumberUtil.getRandomNumber(9));
-				appActivity.setNotificationSend(false);
-				appActivity.setRequestBy(requestByEmployee);
-				appActivity.setRequestTime(new Date());
+			/** Looping semua approvalDefinition berdasarkan urutan sequence (if any)
+			 *  Looping akan berhenti jika sudah ditemukan approvalActivity yang harus di proses */
+			for(ApprovalDefinition appDef: listAppDef){
+				String approverUserId = this.getApproverByAppDefinition(appDef, requestByEmployee);
+				
+				if(StringUtils.isNotEmpty(approverUserId)){				
+					appActivity = new ApprovalActivity();
+					appActivity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+					appActivity.setApprovalDefinition(appDef);			
+					appActivity.setApprovedBy(approverUserId);
+					appActivity.setApprovalStatus(HRMConstant.APPROVAL_STATUS_WAITING);
+					appActivity.setSequence(1);
+					appActivity.setApprovalCount(0);
+					appActivity.setRejectCount(0);
+					appActivity.setActivityNumber(RandomNumberUtil.getRandomNumber(9));
+					appActivity.setNotificationSend(false);
+					appActivity.setRequestBy(requestByEmployee);
+					appActivity.setRequestTime(new Date());
+					
+					break; //keluar dari looping
+				}
 			}
 		}
 		
@@ -291,11 +297,18 @@ public class BaseApprovalServiceImpl extends IServiceImpl {
 
         	/** proses no. 2*/
             List<ApprovalDefinition> listAppDef = approvalDefinitionDao.getAllDataByNameAndProcessTypeAndSequenceGreater(previousAppDef.getName(), previousAppDef.getProcessType(), previousAppDef.getSequence());
-            if (listAppDef.size() > 0) {
-                ApprovalDefinition appDef = listAppDef.get(0);
+            
+            /** Looping semua approvalDefinition berdasarkan urutan sequence (if any)
+			 *  Looping akan berhenti jika sudah ditemukan approvalActivity yang harus di proses */
+			for(ApprovalDefinition appDef: listAppDef){
                 String approverUserId = this.getApproverByAppDefinition(appDef, previousAppActivity.getRequestBy());
-                nextApproval = this.createNewApprovalActivity(approverUserId, pendingDataUpdate, appDef, previousAppActivity);
-                approvalActivityDao.save(nextApproval);
+                
+                if(StringUtils.isNotEmpty(approverUserId)){
+                	nextApproval = this.createNewApprovalActivity(approverUserId, pendingDataUpdate, appDef, previousAppActivity);
+                	approvalActivityDao.save(nextApproval);
+                	
+                	break; //keluar dari looping
+                }
             }
         }
         
