@@ -41,13 +41,19 @@
                             <p:column  style="width: 60%">
                                 <p:autoComplete id="employeeId" 
                                                 title="#{appmsg['personachievement.employee_name']}" 
-                                                value="#{personalDisciplineFormController.model.nikWithFullName}"
-                                                completeMethod="#{personalDisciplineFormController.completeEmployeeString}"
-                                                scrollHeight="100" 
-                                                required="true" styleClass="autocomplite"
-                                                requiredMessage="#{appmsg['personachievement.person_achievement_should_not_be_empty']}" 
-                                                 >
+                                                value="#{personalDisciplineFormController.model.empData}"
+                                                completeMethod="#{personalDisciplineFormController.doAutoCompletEmployee}"
+                                                scrollHeight="100"
+                                                required="true"
+                                                var="empData"
+                                                itemValue="#{empData}"
+                                                itemLabel="#{empData.nik} #{empData.bioData.firstName} #{empData.bioData.lastName}"
+                                                converter="#{empDataConverter}"
+                                                requiredMessage="#{appmsg['personachievement.person_achievement_should_not_be_empty']}"
+                                                styleClass="isitext_hrm" size="49" style="width:250px;">
+=======
                                 </p:autoComplete>
+                                
 
                             </p:column>
                         </p:row>
@@ -83,7 +89,7 @@
                                 <h:outputLabel for="startDateId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 67%" >
-                                <p:calendar  id="startDateId" pattern="dd MMMM yyyy" label="#{appmsg['workinggroup.working_group_start_date']}" value="#{personalDisciplineFormController.model.startDate}"
+                                <p:calendar  id="startDateId" size="49" pattern="dd MMMM yyyy" label="#{appmsg['workinggroup.working_group_start_date']}" value="#{personalDisciplineFormController.model.startDate}"
                                              required="true" navigator="true">
                                     <f:validator validatorId="dateBetweenValidator"/>
                                     <f:attribute name="endTime" value="#{expireDateId}"/>
@@ -105,7 +111,7 @@
                             </p:column>
                             <p:column style="width: 67%" >
                                 <p:calendar  id="expireDateId" binding="#{expireDateId}" pattern="dd MMMM yyyy" label="#{appmsg['personaldiscipline.expire_date']}" value="#{personalDisciplineFormController.model.expireDate}"
-                                             required="true" navigator="true">
+                                             required="true" size="49" navigator="true">
                                 </p:calendar>
                             </p:column>
                         </p:row>
@@ -124,7 +130,7 @@
                             </p:column>
                             <p:column style="width: 50%" >
                                 <p:inputTextarea id="description" rows="5" cols="37" counter="counter" maxlength="500" value="#{personalDisciplineFormController.model.description}" 
-                                                 style="width: 210px; height: 80px;" counterTemplate="#{appmsg['global.remaining']}"   autoResize="true" required="false"
+                                                 style="width: 309px; height: 80px;" counterTemplate="#{appmsg['global.remaining']}"   autoResize="true" required="false"
                                                  label="#{appmsg['role_view.role_description']}" title="#{appmsg['role_view.role_description']}" />
 
                             </p:column>

@@ -53,7 +53,7 @@
                                                 itemValue="#{empData}"
                                                 itemLabel="#{empData.nik} #{empData.bioData.firstName} #{empData.bioData.lastName}"
                                                 converter="#{empDataConverter}"
-                                                required="true" styleClass="isitext_hrm" style="width:290px;">
+                                                required="true" styleClass="isitext_hrm" size="46">
                                     	<p:ajax event="itemSelect" listener="#{businessTravelFormController.doResetTravelComponentList(flowRequestContext)}" />
                                     </p:autoComplete>
                               		<p:message for="employeeId"/>

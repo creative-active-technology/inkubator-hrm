@@ -20,6 +20,7 @@ public class BioProjectModel implements Serializable {
     private String name;
     private String description;
     private String position;
+    private String companyName;
 
     public Long getId() {
         return id;
@@ -87,5 +88,14 @@ public class BioProjectModel implements Serializable {
         this.position = position;
     }
 
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    
     
 }

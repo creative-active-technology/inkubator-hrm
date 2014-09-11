@@ -8,6 +8,7 @@ import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.ReimbursmentSchemaDao;
 import com.inkubator.hrm.entity.ReimbursmentSchema;
 import com.inkubator.hrm.web.search.ReimbursmentSchemaSearchParameter;
+import java.math.BigDecimal;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
@@ -68,8 +69,19 @@ public class ReimbursmentSchemaDaoImpl extends IDAOImpl<ReimbursmentSchema> impl
     }
     
     private void doSearchReimbursmentByParam(ReimbursmentSchemaSearchParameter searchParameter, Criteria criteria) {
+        BigDecimal bg = new BigDecimal("0");
+        Integer resNominalUnit = 0;
+        if(searchParameter.getNominalUnit()!= null){
+            resNominalUnit = searchParameter.getNominalUnit().compareTo(bg);
+        }
         if (searchParameter.getCode()!= null) {
         	criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.ANYWHERE));
+        }
+        if (searchParameter.getName()!= null) {
+        	criteria.add(Restrictions.like("name", searchParameter.getName(), MatchMode.ANYWHERE));
+        }
+        if (searchParameter.getNominalUnit()!= null && resNominalUnit != 0) {
+            criteria.add(Restrictions.eq("nominalUnit", searchParameter.getNominalUnit()));
         }
         criteria.add(Restrictions.isNotNull("id"));
     }

@@ -34,7 +34,7 @@
         <transition on="error" to="add_business_travel_component"/>
     </action-state >
 
-    <end-state id="end_detail" view="externalRedirect:contextRelative:/protected/personalia/business_travel_detail.htm?execution=s#{flowScope.businessTravelModel.businessTravelNo}"/>
+    <end-state id="end_detail" view="externalRedirect:contextRelative:/protected/personalia/business_travel_detail.htm?execution=e#{flowScope.businessTravelModel.businessTravelNo}"/>
     <end-state id="end" view="externalRedirect:contextRelative:/protected/personalia/business_travel_view.htm" />
     
 </flow>

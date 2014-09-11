@@ -126,6 +126,8 @@ public class ApprovalDefinitionFormController extends BaseController {
             onAutoApprove = Boolean.TRUE;
             approvalDefinitionModel.setAutoApproveOnDelay(onAutoApprove);
             approvalDefinitionModel.setEscalateOnDelay(!onAutoApprove);
+            approvalDefinitionModel.setMinApprover(1);
+            approvalDefinitionModel.setMinRejector(1);
         }
 
 //        onBehalfApproverTypeDepartment = Boolean.TRUE;

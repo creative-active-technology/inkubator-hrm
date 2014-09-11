@@ -59,6 +59,10 @@ public class ApprovalActivityViewController extends BaseController{
         }
     }
     
+    public String doDetail(){
+        return "/protected/approval/approval_activity_detail.htm?faces-redirect=true&execution=e" + selected.getId();
+    }
+    
     public void doSelectEntityWithAllRelation() {
         try {
             selected = this.service.getEntityByPkWithAllRelation(selected.getId());

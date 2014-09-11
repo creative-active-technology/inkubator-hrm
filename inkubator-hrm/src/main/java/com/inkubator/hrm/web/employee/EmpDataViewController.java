@@ -112,6 +112,10 @@ public class EmpDataViewController extends BaseController {
     public String doDetail() {
         return "/protected/employee/employee_placement_detail.htm?faces-redirect=true&execution=e" + selectedEmpData.getId();
     }
+    
+    public String doDetailRenumeration() {
+        return "/protected/payroll/basic_renumeration_detail.htm?faces-redirect=true&execution=e" + selectedEmpData.getId();
+    }
 
     public String doEdit() {
         return "/protected/employee/employee_palcement_form.htm?faces-redirect=true&execution=e" + selectedEmpData.getId();

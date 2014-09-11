@@ -87,7 +87,7 @@ public class BaseApprovalServiceImpl extends IServiceImpl {
 				appActivity.setActivityNumber(RandomNumberUtil.getRandomNumber(9));
 				appActivity.setNotificationSend(false);
 				appActivity.setRequestBy(requestByEmployee);
-				
+				appActivity.setRequestTime(new Date());
 			}
 		}
 		
@@ -250,28 +250,46 @@ public class BaseApprovalServiceImpl extends IServiceImpl {
         ApprovalActivity nextApproval = null;
         ApprovalDefinition previousAppDef = previousAppActivity.getApprovalDefinition();
 
+        
+        /** 
+         * dapatkan nilai approvalOrRejectCount dan minApproverOrRejector, berdasarkan approvalStatus -nya (approved OR reject) dari previousActivity  */
+        boolean isCheckingNextDefinition = true; // default true(check approval in next ApprovalDefinition)
+        int approvalOrRejectCount = 0;
+        int minApproverOrRejector = 0;
+        if(previousAppActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_APPROVED){
+        	approvalOrRejectCount = previousAppActivity.getApprovalCount();
+        	minApproverOrRejector = previousAppDef.getMinApprover();
+        } else if(previousAppActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_REJECTED) {
+        	approvalOrRejectCount = previousAppActivity.getRejectCount();
+        	minApproverOrRejector = previousAppDef.getMinRejector();
+        	/** khusus jika approvalStatus = Reject, maka tidak perlu di check approval di next ApprovalDefinition -nya */
+        	isCheckingNextDefinition = false;
+        }
+        
         /**
-         * cek apakah approver count sudah memenuhi dari minimal approver di approval definition 
+         * cek apakah approval/reject count sudah memenuhi dari minimal approver/rejecter di approval definition 
          * 1. jika belum memenuhi, maka lanjut ke checking atasannya untuk proses approval-nya 
-         * 2. jika sudah memenuhi, maka lanjut ke proses checking approval definition selanjutnya */
-        if (previousAppActivity.getApprovalCount() < previousAppDef.getMinApprover()) {
+         * 2. jika sudah memenuhi, maka lanjut ke proses checking approval definition selanjutnya,
+         * khusus jika approvalStatus = Reject, maka jika sudah memenuhi dia tidak perlu di cek next approval definitionnya, langsung dibypass */        
+        if (approvalOrRejectCount < minApproverOrRejector) {
 
-            //proses no. 1
+            /** proses no. 1*/
             HrmUser user = hrmUserDao.getByUserId(previousAppActivity.getApprovedBy());
             Jabatan jabatan = user.getEmpData().getJabatanByJabatanId();
             Jabatan parentJabatan = jabatan.getJabatan();
             /**
              * jika approver mempunyai atasan maka lanjut approval ke atasannya,
-             * jika tidak punya atasan langsung approve saja(dilewat proses checking)*/
+             * jika tidak punya atasan langsung check ke next approval definition-nya (proses no.2) */
             if (parentJabatan != null) {
                 String approverUserId = this.getApproverByJabatanId(parentJabatan.getId());
                 nextApproval = this.createNewApprovalActivity(approverUserId, pendingDataUpdate, previousAppDef, previousAppActivity);
                 approvalActivityDao.save(nextApproval);
+                isCheckingNextDefinition = false; //set false, agar tidak perlu di check approval di next ApprovalDefinition nya
             }
+        }        
+        if (isCheckingNextDefinition) {
 
-        } else {
-
-            //proses no. 2
+        	/** proses no. 2*/
             List<ApprovalDefinition> listAppDef = approvalDefinitionDao.getAllDataByNameAndProcessTypeAndSequenceGreater(previousAppDef.getName(), previousAppDef.getProcessType(), previousAppDef.getSequence());
             if (listAppDef.size() > 0) {
                 ApprovalDefinition appDef = listAppDef.get(0);
@@ -298,6 +316,7 @@ public class BaseApprovalServiceImpl extends IServiceImpl {
         newEntity.setRejectCount(previousAppActv.getRejectCount());
         newEntity.setActivityNumber(previousAppActv.getActivityNumber());
         newEntity.setRequestBy(previousAppActv.getRequestBy());
+        newEntity.setRequestTime(previousAppActv.getRequestTime());
         //jika tidak ada update di json pendingDataUpdate maka gunakan pending data yg lama/previous activity
         String pendingData = StringUtils.isEmpty(pendingDataUpdate) ? previousAppActv.getPendingData() : pendingDataUpdate;
         newEntity.setPendingData(pendingData);

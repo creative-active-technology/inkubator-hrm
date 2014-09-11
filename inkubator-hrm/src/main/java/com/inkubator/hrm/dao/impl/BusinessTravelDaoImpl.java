@@ -109,4 +109,15 @@ public class BusinessTravelDaoImpl extends IDAOImpl<BusinessTravel> implements B
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
+	@Override
+	public BusinessTravel getEntityByApprovalActivityNumberWithDetail(String approvalActivityNumber) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("approvalActivityNumber", approvalActivityNumber));
+		criteria.setFetchMode("empData", FetchMode.JOIN);
+		criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+		criteria.setFetchMode("travelZone", FetchMode.JOIN);
+		criteria.setFetchMode("travelType", FetchMode.JOIN);
+		return (BusinessTravel) criteria.uniqueResult();
+	}
+
 }
