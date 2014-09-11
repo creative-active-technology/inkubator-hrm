@@ -21,6 +21,7 @@
         <p:growl id="mainGrowl" showDetail="true" globalOnly="true" />
         <!-- input hidden disini untuk memaksa view ini memanggil homeController yg bertujuan untuk memaksa nge-set default language/locale -->
         <h:inputHidden value="#{homeController.bahasa}" />
+         <!--<p:growl id="growl" showDetail="true" globalOnly="true" />--> 
         <h:form>
             <p:idleMonitor timeout="1740000" onidle="infoSession.show()"/>
 
@@ -296,7 +297,7 @@
                                                 <p:menuitem value="#{appmsg['jabatandeskripsi.jabatandeskripsi']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['jabatandeskripsi.jabatandeskripsi']}" url="/protected/organisation/job_description_view.htm" icon="img-job-descriptions"/>
                                                 <p:menuitem value="#{appmsg['jabatanspesifikasi.jabatanspesifikasi']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['jabatanspesifikasi.jabatanspesifikasi']}" url="/protected/organisation/job_spesifikasi_view.htm" icon="img-job_spek"/>
                                             </p:submenu> 
-<!--                                            <p:submenu label="#{appmsg['menu.working_time_setting']}"  styleClass="menu_child" >
+                                            <p:submenu label="#{appmsg['menu.working_time_setting']}"  styleClass="menu_child" >
                                                 <p:menuitem value="#{appmsg['menu.work_period']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.work_period']}" url="/protected/working_time/periode_view.htm" /> 
                                                 <p:menuitem value="#{appmsg['menu.holiday']}" icon="img-holiday" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.holiday']}" url="/protected/working_time/holiday_view.htm" />
                                                   	
@@ -305,7 +306,7 @@
                                                 <p:menuitem value="#{appmsg['menu.workgroup']}" icon="img-group-working" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.workgroup']}" url="/protected/working_time/working_group_view.htm" />  
                                                 <p:menuitem value="#{appmsg['leave.leave']}" icon="img-permit" style="font-size: 12px !important;color: #003366" title="#{appmsg['leave.leave']}" url="/protected/working_time/leave_view.htm" />
                                                 <p:menuitem value="#{appmsg['leavescheme.leave_scheme']}" icon="img-leave-scheme" style="font-size: 12px !important;color: #003366" title="#{appmsg['leavescheme.leave_scheme']}" url="/protected/working_time/leave_scheme_view.htm" />
-                                            </p:submenu>-->
+                                            </p:submenu>
                                             <p:submenu label="Personalia"  styleClass="menu_child">
                                                 <p:submenu label="#{appmsg['personalia.dinas']}"  styleClass="menu_child" >
                                                     <p:menuitem value="#{appmsg['personalia.type']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['personalia.type']}" url="/protected/personalia/travel_type_view.htm" /> 
