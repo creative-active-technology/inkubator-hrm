@@ -39,7 +39,7 @@
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:inputText id="code" value="#{reimbursmentSchemaFormController.model.code}" onkeyup="this.value = this.value.toUpperCase();"
-                                             required="true" maxlength="6" styleClass="isitext_hrm" style="width:210px;" />
+                                             required="true" styleClass="isitext_hrm" style="width:210px;" />
                                     <p:message for="code"/>
                                 </p:column>
                             </p:row>
@@ -50,7 +50,7 @@
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:inputText id="name" value="#{reimbursmentSchemaFormController.model.name}" 
-                                             required="true" maxlength="6" styleClass="isitext_hrm" style="width:210px;" />
+                                             required="true" styleClass="isitext_hrm" style="width:210px;" />
                                     <p:message for="name"/>
                                 </p:column>
                             </p:row>
@@ -118,7 +118,7 @@
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <pe:inputNumber id="nominalUnit" value="#{reimbursmentSchemaFormController.model.nominalUnit}" 
-                                                    required="true" maxlength="6" styleClass="isitext_hrm" style="width:210px;" disabled="#{reimbursmentSchemaFormController.isNominalLimit}"/>
+                                                    required="true" styleClass="isitext_hrm" style="width:210px;" disabled="#{reimbursmentSchemaFormController.isNominalLimit}"/>
                                     <p:message for="nominalUnit"/>
                                 </p:column>
                             </p:row>
