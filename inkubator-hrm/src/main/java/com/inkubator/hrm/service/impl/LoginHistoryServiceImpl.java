@@ -255,7 +255,7 @@ public class LoginHistoryServiceImpl extends IServiceImpl implements LoginHistor
         model.setIsLogin(true);
         
         //FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_INFO, "Information Login", infoMessages);
-        pushContext.push(HRMConstant.NOTIFICATION_CHANEL_SOCKET, model);
+        pushContext.push(HRMConstant.NOTIFICATION_LOGIN_CHANEL_SOCKET, model);
     }
 
     @Override
@@ -280,7 +280,7 @@ public class LoginHistoryServiceImpl extends IServiceImpl implements LoginHistor
         model.setIsLogin(false);
         
         //FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_INFO, "Information Logout", infoMessages);
-        pushContext.push(HRMConstant.NOTIFICATION_CHANEL_SOCKET, model);
+        pushContext.push(HRMConstant.NOTIFICATION_LOGIN_CHANEL_SOCKET, model);
     }
 
 	@Override

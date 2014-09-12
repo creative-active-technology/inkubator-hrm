@@ -16,14 +16,16 @@
         <ui:insert name="jsInclude"/>
     </h:head>
     <h:body>
-        <p:socket onMessage="handleLogin" channel="/notificationsLogin" />
-        <p:growl widgetVar="loginNotification" showDetail="true" showSummary="true" life="2500" /> 
+    	<p:socket onMessage="handleApproval" channel="/notificationsApproval" />
+        <p:socket onMessage="handleLogin" channel="/notificationsLogin" />         
         <p:growl id="mainGrowl" showDetail="true" globalOnly="true" />
         <!-- input hidden disini untuk memaksa view ini memanggil homeController yg bertujuan untuk memaksa nge-set default language/locale -->
         <h:inputHidden value="#{homeController.bahasa}" />
         <h:form>
             <p:idleMonitor timeout="1740000" onidle="infoSession.show()"/>
-
+			<p:growl id="socketNotificationGrowlId" widgetVar="socketNotificationGrowl"  showDetail="true" showSummary="true" life="2500" />
+			<p:remoteCommand name="approvalRC" action="#{approvalRemoteCommand.showNotification}" update="socketNotificationGrowlId"/>
+			
             <p:dialog header="#{appmsg['master_layout.session_information']}" widgetVar="infoSession" modal="true" width="150"
                       id="infoSessionId"
                       appendTo="@(body)" resizable="false" closable="false">
@@ -441,6 +443,7 @@
             }
         </script>
         <h:outputScript library="js" name="login_socket.js"/>
+        <h:outputScript library="js" name="approval_notification_socket.js"/>
         <h:outputScript library="js" name="indonesia_locale.js" />
     </h:body>
 </html>
