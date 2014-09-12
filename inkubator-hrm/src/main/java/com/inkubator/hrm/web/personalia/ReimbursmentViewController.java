@@ -5,10 +5,11 @@
 package com.inkubator.hrm.web.personalia;
 
 import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.Termination;
-import com.inkubator.hrm.service.TerminationService;
-import com.inkubator.hrm.web.lazymodel.TerminationLazyDataModel;
-import com.inkubator.hrm.web.search.TerminationSearchParameter;
+import com.inkubator.hrm.entity.Reimbursment;
+import com.inkubator.hrm.entity.ReimbursmentSchema;
+import com.inkubator.hrm.service.ReimbursmentService;
+import com.inkubator.hrm.web.lazymodel.ReimbursmentLazyDataModel;
+import com.inkubator.hrm.web.search.ReimbursmentSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
@@ -32,20 +33,20 @@ import org.springframework.dao.DataIntegrityViolationException;
  *
  * @author Deni
  */
-@ManagedBean(name = "terminationViewController")
+@ManagedBean(name = "reimbursmentViewController")
 @ViewScoped
-public class TerminationViewController extends BaseController{
-    @ManagedProperty(value = "#{terminationService}")
-    private TerminationService service;
-    private TerminationSearchParameter searchParameter;
-    private LazyDataModel<Termination> lazy;
-    private Termination selected;
+public class ReimbursmentViewController extends BaseController{
+    @ManagedProperty(value = "#{reimbursmentService}")
+    private ReimbursmentService service;
+    private ReimbursmentSearchParameter searchParameter;
+    private LazyDataModel<Reimbursment> lazy;
+    private Reimbursment selected;
     
     @PostConstruct
     @Override
     public void initialization() {
         super.initialization();
-        searchParameter = new TerminationSearchParameter();
+        searchParameter = new ReimbursmentSearchParameter();
     }
     
     @PreDestroy
@@ -69,12 +70,16 @@ public class TerminationViewController extends BaseController{
         }
     }
     
-    public void doSelectEntityWithAllRelation() {
+    public void doSelectEntityWithDetail() {
         try {
-            selected = this.service.getEntityByPkWithAllRelation(selected.getId());
+            selected = this.service.getEntityByPkWithDetail(selected.getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
+    }
+    
+    public String doDetail(){
+        return "/protected/personalia/reimbursment_detail.htm?faces-redirect=true&execution=e" + selected.getId();
     }
     
     public void doDelete() {
@@ -94,15 +99,16 @@ public class TerminationViewController extends BaseController{
     
     public void doAdd() {
         showDialog(null);
+//        return "/protected/personalia/reimbursment_form.htm?faces-redirect=true";
     }
     
     public void doUpdate() {
         Map<String, List<String>> dataToSend = new HashMap<>();
         List<String> values = new ArrayList<>();
         values.add(String.valueOf(selected.getId()));
-        dataToSend.put("terminationId", values);
+        dataToSend.put("reimbursmentId", values);
         showDialog(dataToSend);
-
+//        return "/protected/personalia/reimbursment_form.htm?faces-redirect=true&execution=e" + selected.getId();
     }
     
     private void showDialog(Map<String, List<String>> params) {
@@ -110,9 +116,9 @@ public class TerminationViewController extends BaseController{
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", false);
-        options.put("contentWidth", 500);
-        options.put("contentHeight", 440);
-        RequestContext.getCurrentInstance().openDialog("termination_form", options, params);
+        options.put("contentWidth", 430);
+        options.put("contentHeight", 380);
+        RequestContext.getCurrentInstance().openDialog("reimbursment_form", options, params);
     }
     
     @Override
@@ -130,38 +136,38 @@ public class TerminationViewController extends BaseController{
         }
     }
 
-    public TerminationService getService() {
+    public ReimbursmentService getService() {
         return service;
     }
 
-    public void setService(TerminationService service) {
+    public void setService(ReimbursmentService service) {
         this.service = service;
     }
 
-    public TerminationSearchParameter getSearchParameter() {
+    public ReimbursmentSearchParameter getSearchParameter() {
         return searchParameter;
     }
 
-    public void setSearchParameter(TerminationSearchParameter searchParameter) {
+    public void setSearchParameter(ReimbursmentSearchParameter searchParameter) {
         this.searchParameter = searchParameter;
     }
 
-    public LazyDataModel<Termination> getLazy() {
+    public LazyDataModel<Reimbursment> getLazy() {
         if (lazy == null) {
-            lazy = new TerminationLazyDataModel(searchParameter, service);
+            lazy = new ReimbursmentLazyDataModel(searchParameter, service);
         }
         return lazy;
     }
 
-    public void setLazy(LazyDataModel<Termination> lazy) {
+    public void setLazy(LazyDataModel<Reimbursment> lazy) {
         this.lazy = lazy;
     }
 
-    public Termination getSelected() {
+    public Reimbursment getSelected() {
         return selected;
     }
 
-    public void setSelected(Termination selected) {
+    public void setSelected(Reimbursment selected) {
         this.selected = selected;
     }
      

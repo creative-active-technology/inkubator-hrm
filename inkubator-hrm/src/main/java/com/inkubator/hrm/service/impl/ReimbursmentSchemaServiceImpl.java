@@ -5,6 +5,7 @@
 package com.inkubator.hrm.service.impl;
 
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.CostCenterDao;
 import com.inkubator.hrm.dao.ReimbursmentSchemaDao;
 import com.inkubator.hrm.dao.ReimbursmentSchemaEmployeeTypeDao;
@@ -88,6 +89,10 @@ public class ReimbursmentSchemaServiceImpl extends IServiceImpl implements Reimb
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(ReimbursmentSchema entity) throws Exception {
+        long totalDuplicates = reimbursmentSchemaDao.getTotalByCode(entity.getCode());
+        if (totalDuplicates > 0) {
+            throw new BussinessException("costcenter.error_duplicate_cost_center_code");
+        }
         entity.setBasicValue(entity.getBasicValue());
         entity.setCode(entity.getCode());
         entity.setCostCenter(costCenterDao.getEntiyByPK(entity.getCostCenter().getId()));
@@ -106,6 +111,10 @@ public class ReimbursmentSchemaServiceImpl extends IServiceImpl implements Reimb
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(ReimbursmentSchema entity) throws Exception {
+        long totalDuplicates = reimbursmentSchemaDao.getTotalByCodeAndNotId(entity.getCode(), entity.getId());
+        if (totalDuplicates > 0) {
+            throw new BussinessException("costcenter.error_duplicate_cost_center_code");
+        }
         ReimbursmentSchema update = reimbursmentSchemaDao.getEntiyByPK(entity.getId());
         update.getReimbursmentSchemaEmployeeTypes().clear();
          if(entity.getCostCenter()!= null){
@@ -228,8 +237,9 @@ public class ReimbursmentSchemaServiceImpl extends IServiceImpl implements Reimb
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ,propagation = Propagation.SUPPORTS, timeout = 30)
     public List<ReimbursmentSchema> getAllData() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return reimbursmentSchemaDao.getAllData();
     }
 
     @Override

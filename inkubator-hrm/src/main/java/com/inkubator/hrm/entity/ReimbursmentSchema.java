@@ -52,6 +52,7 @@ public class ReimbursmentSchema implements java.io.Serializable{
     private Date updatedOn;
     private List<EmployeeType> employeeTypes = new ArrayList<>(0);
     private Set<ReimbursmentSchemaEmployeeType> reimbursmentSchemaEmployeeTypes = new HashSet<ReimbursmentSchemaEmployeeType>(0);
+    private Set<Reimbursment> reimbursments = new HashSet<Reimbursment>(0);
 
     public ReimbursmentSchema() {
     }
@@ -227,6 +228,16 @@ public class ReimbursmentSchema implements java.io.Serializable{
     public void setEmployeeTypes(List<EmployeeType> employeeTypes) {
         this.employeeTypes = employeeTypes;
     }
+    
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "reimbursmentSchema", orphanRemoval = true)
+    public Set<Reimbursment> getReimbursments() {
+        return reimbursments;
+    }
+
+    public void setReimbursments(Set<Reimbursment> reimbursments) {
+        this.reimbursments = reimbursments;
+    }
+    
     
     @Transient
     public String getMeasurementValueString(){

@@ -47,7 +47,7 @@
                                                 scrollHeight="100"
                                                 required="true" 
                                                 requiredMessage="#{appmsg['personachievement.person_achievement_should_not_be_empty']}" 
-                                                styleClass="isitext_hrm" transient="true" style="width:250px;" disabled="#{terminationFormController.isUpdate}">
+                                                styleClass="isitext_hrm" size="44" transient="true" style="width:250px;" disabled="#{terminationFormController.isUpdate}">
                                 </p:autoComplete>
 
                             </p:column>
@@ -66,7 +66,7 @@
                             </p:column>
                             <p:column style="width: 67%" >
                                 <p:inputText id="terminationLetter" value="#{terminationFormController.model.code}" onkeyup="this.value = this.value.toUpperCase();"
-                                             disabled="#{terminationFormController.isUpdate}" required="true" maxlength="6" styleClass="isitext_hrm" style="width:156px;" >
+                                             disabled="#{terminationFormController.isUpdate}" required="true" maxlength="6" styleClass="isitext_hrm" style="width:96%;" >
                                     <pe:keyFilter mask="num"></pe:keyFilter>
                                 </p:inputText>
                             </p:column>
@@ -85,7 +85,7 @@
                             </p:column>
                             <p:column style="width: 67%" >
                                 <p:calendar  id="effectiveDataId" pattern="dd MMMM yyyy" label="Tanggal Lahir" value="#{terminationFormController.model.effectiveDate}"
-                                             required="true" navigator="true">
+                                             required="true" navigator="true" size="44">
                                     <f:validator validatorId="birthDateValidator"  />
                                     <f:attribute name="validatorMessage" value="#{appmsg['global.birthDate_validator']}"/>
                                 </p:calendar>
@@ -125,7 +125,7 @@
                             </p:column>
                             <p:column style="width: 50%" >
                                 <p:inputTextarea id="description" rows="5" cols="37" counter="counter" maxlength="500" value="#{terminationFormController.model.description}" 
-                                                 style="width: 210px; height: 80px;" counterTemplate="#{appmsg['global.remaining']}"   autoResize="true" required="false"
+                                                 style="width: 96%; height: 80px;" counterTemplate="#{appmsg['global.remaining']}"   autoResize="true" required="false"
                                                  label="#{appmsg['role_view.role_description']}" title="#{appmsg['role_view.role_description']}" />
 
                             </p:column>

@@ -79,7 +79,7 @@ public class ReimbursmentSchemaViewController extends BaseController{
     }
     
     public String doDetail(){
-        return "/protected/personalia/reimbursment_detail.htm?faces-redirect=true&execution=e" + selected.getId();
+        return "/protected/personalia/reimbursment_schema_detail.htm?faces-redirect=true&execution=e" + selected.getId();
     }
     
     public void doDelete() {
@@ -99,11 +99,11 @@ public class ReimbursmentSchemaViewController extends BaseController{
     
     public String doAdd() {
 //        showDialog(null);
-        return "/protected/personalia/reimbursment_form.htm?faces-redirect=true";
+        return "/protected/personalia/reimbursment_schema_form.htm?faces-redirect=true";
     }
     
     public String doUpdate() {
-        return "/protected/personalia/reimbursment_form.htm?faces-redirect=true&execution=e" + selected.getId();
+        return "/protected/personalia/reimbursment_schema_form.htm?faces-redirect=true&execution=e" + selected.getId();
     }
     
     private void showDialog(Map<String, List<String>> params) {
@@ -113,7 +113,7 @@ public class ReimbursmentSchemaViewController extends BaseController{
         options.put("resizable", false);
         options.put("contentWidth", 500);
         options.put("contentHeight", 500);
-        RequestContext.getCurrentInstance().openDialog("reimbursment_form", options, params);
+        RequestContext.getCurrentInstance().openDialog("reimbursment_schema_form", options, params);
     }
     
     @Override
