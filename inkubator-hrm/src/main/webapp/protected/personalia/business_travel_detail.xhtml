@@ -111,13 +111,13 @@
 	                        </p:row>
 	                        <p:row rendered="#{businessTravelDetailController.isHaveApprovalActivity}">
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="Approved By" styleClass="label_hrm"/>
+	                                <p:outputLabel value="#{appmsg['approvalactivity.approved_by']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 30%">
 	                            	<p:outputLabel value="#{businessTravelDetailController.selectedApprovalActivity.approvedBy}"/>
 	                            </p:column>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important" rowspan="2">
-	                                <p:outputLabel value="Approval Comment" styleClass="label_hrm"/>
+	                                <p:outputLabel value="#{appmsg['approvalactivity.approval_comment']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 30%" rowspan="2">
 	                            	<p:outputLabel value="#{businessTravelDetailController.selectedApprovalActivity.approvalCommment}"/>
@@ -125,7 +125,7 @@
 	                        </p:row>
 	                        <p:row rendered="#{businessTravelDetailController.isHaveApprovalActivity}">
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="Approval Status" styleClass="label_hrm"/>
+	                                <p:outputLabel value="#{appmsg['approvalactivity.approval_status']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 30%">
 	                            	<p:outputLabel value="#{businessTravelDetailController.selectedApprovalActivity.approvalStatus}">
