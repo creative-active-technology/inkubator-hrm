@@ -85,7 +85,7 @@
     	<property name="ownerAdministrator" value="${email_param_owner_administrator}"/>
     </bean>-->
     <!--<bean id="riwayatAccessMessagesListener" class="com.inkubator.hrm.service.impl.RiwayatAccessMessagesListener" lazy-init="true"/>-->
-<!--    <bean id="notificationApprovalMessagesListener" class="com.inkubator.hrm.service.impl.NotificationApprovalMessagesListener" lazy-init="true">
+    <bean id="notificationApprovalMessagesListener" class="com.inkubator.hrm.service.impl.NotificationApprovalMessagesListener" lazy-init="true">
     	<property name="applicationUrl" value="${email_param_application_url}"/>
     	<property name="applicationName" value="${email_param_application_name}"/>
     	<property name="ownerEmail" value="${email_param_owner_email}"/>
@@ -104,5 +104,5 @@
     </jms:listener-container>
     <bean id="jsmTransaction" class="org.springframework.jms.connection.JmsTransactionManager">
         <property name="connectionFactory" ref="connectionFactoryComsume"/>
-    </bean>-->
+    </bean>
 </beans>
