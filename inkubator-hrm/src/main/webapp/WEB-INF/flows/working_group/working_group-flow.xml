@@ -38,6 +38,6 @@
         <transition on="yes" to="sukses_save"/>
         <transition on="no" to="add_jaddwal_shift"/>
     </action-state >	
-    <end-state id="sukses_save" view="externalRedirect:contextRelative:/protected/working_time/working_group_detail.htm?execution=s#{groupWorkingModel.code}"/>
+    <end-state id="sukses_save" view="externalRedirect:contextRelative:/protected/working_time/working_group_detail.htm?execution=sf#{groupWorkingModel.code}"/>
     <end-state id="end" view="externalRedirect:contextRelative:/protected/working_time/working_group_view.htm" />
 </flow>

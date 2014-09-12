@@ -6,14 +6,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Session;
+
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
 
-import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.inkubator.common.util.JsonConverter;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.HRMConstant;
@@ -28,6 +33,7 @@ import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.json.util.EntityExclusionStrategy;
 import com.inkubator.hrm.json.util.HibernateProxyIdOnlyTypeAdapter;
+import com.inkubator.hrm.web.model.ApprovalPushMessageModel;
 
 /**
  *
@@ -45,6 +51,10 @@ public class BaseApprovalServiceImpl extends IServiceImpl {
 	private HrmUserDao hrmUserDao;
 	@Autowired
 	protected JmsTemplate jmsTemplateApproval;
+	@Autowired
+	private JmsTemplate jmsTemplateApprovalGrowl;
+	@Autowired
+    private JsonConverter jsonConverter;
 	
 	/**
      * <p>Method untuk mengecek apakah di processName/module tersebut terdapat approval proses. 
@@ -72,22 +82,31 @@ public class BaseApprovalServiceImpl extends IServiceImpl {
 		ApprovalActivity appActivity = null;
 		List<ApprovalDefinition> listAppDef = approvalDefinitionDao.getAllDataByNameAndProcessType(processName, HRMConstant.APPROVAL_PROCESS, Order.asc("sequence"));
 		if(!listAppDef.isEmpty()){ //if not empty
-			ApprovalDefinition appDef = listAppDef.get(0);
-			String approverUserId = this.getApproverByAppDefinition(appDef, requestByEmployee);
 			
-			if(StringUtils.isNotEmpty(approverUserId)){				
-				appActivity = new ApprovalActivity();
-				appActivity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
-				appActivity.setApprovalDefinition(appDef);			
-				appActivity.setApprovedBy(approverUserId);
-				appActivity.setApprovalStatus(HRMConstant.APPROVAL_STATUS_WAITING);
-				appActivity.setSequence(1);
-				appActivity.setApprovalCount(0);
-				appActivity.setRejectCount(0);
-				appActivity.setActivityNumber(RandomNumberUtil.getRandomNumber(9));
-				appActivity.setNotificationSend(false);
-				appActivity.setRequestBy(requestByEmployee);
-				appActivity.setRequestTime(new Date());
+			/** Looping semua approvalDefinition berdasarkan urutan sequence (if any)
+			 *  Looping akan berhenti jika sudah ditemukan approvalActivity yang harus di proses */
+			for(ApprovalDefinition appDef: listAppDef){
+				String approverUserId = this.getApproverByAppDefinition(appDef, requestByEmployee);
+				
+				if(StringUtils.isNotEmpty(approverUserId)){				
+					appActivity = new ApprovalActivity();
+					appActivity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+					appActivity.setApprovalDefinition(appDef);			
+					appActivity.setApprovedBy(approverUserId);
+					appActivity.setApprovalStatus(HRMConstant.APPROVAL_STATUS_WAITING);
+					appActivity.setSequence(1);
+					appActivity.setApprovalCount(0);
+					appActivity.setRejectCount(0);
+					appActivity.setActivityNumber(RandomNumberUtil.getRandomNumber(9));
+					appActivity.setNotificationSend(false);
+					appActivity.setRequestBy(requestByEmployee);
+					appActivity.setRequestTime(new Date());
+					
+					//show growl notification for approverUserId
+		        	sendApprovalGrowlNotif(appActivity);
+		        	
+					break; //keluar dari looping
+				}
 			}
 		}
 		
@@ -192,6 +211,9 @@ public class BaseApprovalServiceImpl extends IServiceImpl {
         	// kirim approval activity yg new(next) untuk diproses kirim email
         	result.put("isEndOfApprovalProcess", "false");
         	result.put("approvalActivity", nextApproval); 
+        	
+        	//show growl notification for approverUserId
+        	sendApprovalGrowlNotif(nextApproval);
         }
         
         return result;
@@ -240,6 +262,9 @@ public class BaseApprovalServiceImpl extends IServiceImpl {
         	// kirim approval activity yg new(next) untuk diproses kirim email
         	result.put("isEndOfApprovalProcess", "false");
         	result.put("approvalActivity", nextApproval); 
+        	
+        	//show growl notification for approverUserId
+        	sendApprovalGrowlNotif(nextApproval);
         }
         
         return result;        
@@ -250,34 +275,59 @@ public class BaseApprovalServiceImpl extends IServiceImpl {
         ApprovalActivity nextApproval = null;
         ApprovalDefinition previousAppDef = previousAppActivity.getApprovalDefinition();
 
+        
+        /** 
+         * dapatkan nilai approvalOrRejectCount dan minApproverOrRejector, berdasarkan approvalStatus -nya (approved OR reject) dari previousActivity  */
+        boolean isCheckingNextDefinition = true; // default true(check approval in next ApprovalDefinition)
+        int approvalOrRejectCount = 0;
+        int minApproverOrRejector = 0;
+        if(previousAppActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_APPROVED){
+        	approvalOrRejectCount = previousAppActivity.getApprovalCount();
+        	minApproverOrRejector = previousAppDef.getMinApprover();
+        } else if(previousAppActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_REJECTED) {
+        	approvalOrRejectCount = previousAppActivity.getRejectCount();
+        	minApproverOrRejector = previousAppDef.getMinRejector();
+        	/** khusus jika approvalStatus = Reject, maka tidak perlu di check approval di next ApprovalDefinition -nya */
+        	isCheckingNextDefinition = false;
+        }
+        
         /**
-         * cek apakah approver count sudah memenuhi dari minimal approver di approval definition 
+         * cek apakah approval/reject count sudah memenuhi dari minimal approver/rejecter di approval definition 
          * 1. jika belum memenuhi, maka lanjut ke checking atasannya untuk proses approval-nya 
-         * 2. jika sudah memenuhi, maka lanjut ke proses checking approval definition selanjutnya */
-        if (previousAppActivity.getApprovalCount() < previousAppDef.getMinApprover()) {
+         * 2. jika sudah memenuhi, maka lanjut ke proses checking approval definition selanjutnya,
+         * khusus jika approvalStatus = Reject, maka jika sudah memenuhi dia tidak perlu di cek next approval definitionnya, langsung dibypass */        
+        if (approvalOrRejectCount < minApproverOrRejector) {
 
-            //proses no. 1
+            /** proses no. 1*/
             HrmUser user = hrmUserDao.getByUserId(previousAppActivity.getApprovedBy());
             Jabatan jabatan = user.getEmpData().getJabatanByJabatanId();
             Jabatan parentJabatan = jabatan.getJabatan();
             /**
              * jika approver mempunyai atasan maka lanjut approval ke atasannya,
-             * jika tidak punya atasan langsung approve saja(dilewat proses checking)*/
+             * jika tidak punya atasan langsung check ke next approval definition-nya (proses no.2) */
             if (parentJabatan != null) {
                 String approverUserId = this.getApproverByJabatanId(parentJabatan.getId());
                 nextApproval = this.createNewApprovalActivity(approverUserId, pendingDataUpdate, previousAppDef, previousAppActivity);
                 approvalActivityDao.save(nextApproval);
+                isCheckingNextDefinition = false; //set false, agar tidak perlu di check approval di next ApprovalDefinition nya
             }
+        }        
+        if (isCheckingNextDefinition) {
 
-        } else {
-
-            //proses no. 2
+        	/** proses no. 2*/
             List<ApprovalDefinition> listAppDef = approvalDefinitionDao.getAllDataByNameAndProcessTypeAndSequenceGreater(previousAppDef.getName(), previousAppDef.getProcessType(), previousAppDef.getSequence());
-            if (listAppDef.size() > 0) {
-                ApprovalDefinition appDef = listAppDef.get(0);
+            
+            /** Looping semua approvalDefinition berdasarkan urutan sequence (if any)
+			 *  Looping akan berhenti jika sudah ditemukan approvalActivity yang harus di proses */
+			for(ApprovalDefinition appDef: listAppDef){
                 String approverUserId = this.getApproverByAppDefinition(appDef, previousAppActivity.getRequestBy());
-                nextApproval = this.createNewApprovalActivity(approverUserId, pendingDataUpdate, appDef, previousAppActivity);
-                approvalActivityDao.save(nextApproval);
+                
+                if(StringUtils.isNotEmpty(approverUserId)){
+                	nextApproval = this.createNewApprovalActivity(approverUserId, pendingDataUpdate, appDef, previousAppActivity);
+                	approvalActivityDao.save(nextApproval);
+                	
+                	break; //keluar dari looping
+                }
             }
         }
         
@@ -360,5 +410,28 @@ public class BaseApprovalServiceImpl extends IServiceImpl {
 		gsonBuilder.setExclusionStrategies(new EntityExclusionStrategy());
 		return gsonBuilder;
 	}
+    
+    /** jika approvalStatus masih waiting, maka kirim notif dalam bentuk growl ke approverUserId 
+	 *  Untuk pengaturan messagenya, silahkan di lihat di ApprovalRemoteCommand.java */
+    private void sendApprovalGrowlNotif(ApprovalActivity appActivity){
+    	if(appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING){
+    		
+        	final ApprovalPushMessageModel model = new ApprovalPushMessageModel();
+        	model.setApprovalName(appActivity.getApprovalDefinition().getName());
+        	model.setApproverUserId(appActivity.getApprovedBy());
+        	model.setRequestUserId(appActivity.getRequestBy());
+        	model.setApproverFullName(hrmUserDao.getByUserId(appActivity.getApprovedBy()).getEmpData().getBioData().getFullName());
+        	model.setRequestFullName(hrmUserDao.getByUserId(appActivity.getRequestBy()).getEmpData().getBioData().getFullName());
+        	
+        	
+        	//send messaging, to trigger growl notif
+            jmsTemplateApprovalGrowl.send(new MessageCreator() {
+                @Override
+                public Message createMessage(Session session) throws JMSException {
+                    return session.createTextMessage(jsonConverter.getJson(model));
+                }
+            });
+    	}    	
+    }
 
 }

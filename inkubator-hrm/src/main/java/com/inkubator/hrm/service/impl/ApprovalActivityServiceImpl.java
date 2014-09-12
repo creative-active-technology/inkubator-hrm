@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.inkubator.common.util.RandomNumberUtil;
+import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.dao.ApprovalActivityDao;
 import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.service.ApprovalActivityService;
@@ -22,7 +23,7 @@ import com.inkubator.hrm.web.search.ApprovalActivitySearchParameter;
  */
 @Service(value = "approvalActivityService")
 @Lazy
-public class ApprovalActivityServiceImpl extends BaseApprovalServiceImpl implements ApprovalActivityService {
+public class ApprovalActivityServiceImpl extends IServiceImpl implements ApprovalActivityService {
 
     @Autowired
     private ApprovalActivityDao approvalActivityDao;
@@ -282,6 +283,24 @@ public class ApprovalActivityServiceImpl extends BaseApprovalServiceImpl impleme
 	public ApprovalActivity getEntityByPkWithDetail(Long id) throws Exception {
 		return this.approvalActivityDao.getEntityByPkWithDetail(id);
 		
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<ApprovalActivity> getAllDataByActivityNumberWithDetail(String activityNumber) throws Exception {
+		return this.approvalActivityDao.getAllDataByActivityNumberWithDetail(activityNumber, Order.asc("sequence"));
+		
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public ApprovalActivity getEntityByActivityNumberLastSequence(String activityNumber) {
+		List<ApprovalActivity> approvalActivities = this.approvalActivityDao.getAllDataByActivityNumberWithDetail(activityNumber, Order.desc("sequence"));
+		ApprovalActivity lastApprovalActivity = null;
+		if(!approvalActivities.isEmpty()){
+			lastApprovalActivity = approvalActivities.get(0);
+		}
+		return lastApprovalActivity;
 	}
 
 }

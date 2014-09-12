@@ -1,0 +1,148 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/dialog_layout.xhtml">
+            <ui:define name="windowTitle">
+
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlTaxComponentFormlId" globalOnly="true" showDetail="true"/>
+                <h:form id="formTaxComponentFormId">
+                    <h:panelGrid  columns="2">
+                        <p:graphicImage library="images" name="taxComponent.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['taxComponent.form_taxComponent']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['taxComponent.taxComponent_data_from_reference']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="1" style="margin-bottom: 5px;margin-left: 0px">
+                        <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                        <h:outputLabel value="#{appmsg['taxComponent.dialog_info']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+
+                    </h:panelGrid> 
+                    <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="nameId" value="#{appmsg['taxComponent.taxComponent_name']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="nameId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                                <p:focus for ="nameId">
+                                    <p:inputText id="nameId" title="#{appmsg['taxComponent.taxComponent_name']}" value="#{taxComponentFormController.taxComponentModel.name}" 
+                                                 required="true" requiredMessage="#{appmsg['taxComponent.taxComponent_name_should_not_be_empty']}" maxlength="60" styleClass="isitext_hrm" style="width:250px;" />
+                                </p:focus>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="nameId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="operatorId" value="#{appmsg['appraisalElement.appraisalElement_operator']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="operatorId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+
+                                <p:selectOneRadio id="operatorId" styleClass="isitext_hrm" required="true" value="#{appraisalElementFormController.appraisalElementModel.operator}" label="#{appmsg['appraisalElement.appraisalElement_operator']}">
+                                    <!--Cek HRM Constanta..-->
+                                    <f:selectItem itemLabel="#{appmsg['global.yes']}" itemValue="1" />
+                                    <f:selectItem itemLabel="#{appmsg['global.no']}" itemValue="0" />
+                                </p:selectOneRadio>
+
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="operatorId"/>
+                            </p:column>
+                        </p:row> 
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="leaderId" value="#{appmsg['appraisalElement.appraisalElement_leader']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="leaderId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+
+                                <p:selectOneRadio id="leaderId" styleClass="isitext_hrm" required="true" value="#{appraisalElementFormController.appraisalElementModel.leader}" label="#{appmsg['appraisalElement.appraisalElement_leader']}">
+                                    <!--Cek HRM Constanta..-->
+                                    <f:selectItem itemLabel="#{appmsg['global.yes']}" itemValue="1" />
+                                    <f:selectItem itemLabel="#{appmsg['global.no']}" itemValue="0" />
+                                </p:selectOneRadio>
+
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="leaderId"/>
+                            </p:column>
+                        </p:row>        
+                        
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="descriptionId" value="#{appmsg['global.description']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="descriptionId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                                <p:inputTextarea id="descriptionId" title="#{appmsg['global.description']}" value="#{taxComponentFormController.taxComponentModel.description}" 
+                                                 required="false" maxlength="500" counter="counter" counterTemplate="#{appmsg['global.remaining']}" styleClass="isitext_hrm" style="width:250px;" />
+
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%;" >
+                                <p:outputLabel  for="counter" styleClass="label_hrm" />
+                            </p:column>
+                            <p:column style="width: 1%;" >
+                                <p:outputLabel  for="counter" styleClass="label_hrm" />
+                            </p:column>
+                            <p:column style="width: 70%">
+                                <h:outputText id="counter" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="descriptionId"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="2" style="margin-bottom: -30px!important">
+                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formTaxComponentFormId,:growlTaxComponentFormlId"
+                                         action="#{taxComponentFormController.doSave()}" styleClass="isitext_hrm"
+                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
+                                         icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formTaxComponentFormId"
+                                         icon="ui-icon-refresh" styleClass="isitext_hrm" >  
+                            <p:resetInput target="formTaxComponentFormId" />  
+                        </p:commandButton>
+                    </h:panelGrid>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

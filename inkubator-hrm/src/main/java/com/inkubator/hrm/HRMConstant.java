@@ -15,7 +15,8 @@ public class HRMConstant {
     public static final String BAHASA_ACTIVE = "bahasa_active";
     public static final String LOGIN_DATE = "login_date";
     public static final String USER_LOGIN_ID = "user_login_id";
-    public static final String NOTIFICATION_CHANEL_SOCKET = "/notificationsLogin";
+    public static final String NOTIFICATION_LOGIN_CHANEL_SOCKET = "/notificationsLogin";
+    public static final String NOTIFICATION_APPROVAL_CHANEL_SOCKET = "/notificationsApproval";
     public static final String PASSWORD_CONFIG_CODE = "passconfigcode";
     public static final String APPROVAL_PROCESS_CREATE_USER_ID = "PEMBUATAN USER";
     public static final String APPROVAL_PROCESS_UPDATE_USER_ID = "UPDATE USER";
@@ -174,8 +175,23 @@ public class HRMConstant {
     public static final String EMP_ROTATION = "EMP_ROTATION";
     public static final String EMP_TERMINATION = "EMP_TERMINATION";
     /* END */
+    /* Constant for  Model Component */
+    public static final Integer BASIC_SALARY = 0;
+    public static final Integer CEIL = 1;
+    public static final Integer TAX_TOTAL = 2;
+    public static final Integer UPLOAD = 3;
+    public static final Integer LIMITED_TIME = 4;
+    public static final Integer FORMULA = 5;
+    /* END */
+
+    /* Constant for  Appraisal Element */
+    public static final Integer LEADER_YES = 1;
+    public static final Integer LEADER_NO = 0;
+    public static final Integer OPERATOR_YES = 1;
+    public static final Integer OPERATOR_NO = 0;
+    /* END */
     
-    /* Constant for LoanSchema */
+        /* Constant for LoanSchema */
     public static final Integer ANNUITY = 0;
     public static final Integer FLAT = 1;
     public static final Integer FLOATING = 2;
@@ -194,7 +210,5 @@ public class HRMConstant {
     public static final Integer TIME_RANGE_MONTHLY = 0;
     public static final Integer TIME_RANGE_YEARLY = 1;
     public static final Integer TIME_RANGE_PER_EMPLOYEE = 2;
-    
-    
     
 }

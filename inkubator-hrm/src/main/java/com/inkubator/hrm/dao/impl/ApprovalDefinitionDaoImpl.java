@@ -93,7 +93,7 @@ public class ApprovalDefinitionDaoImpl extends IDAOImpl<ApprovalDefinition> impl
     }
 
     @Override
-    public Long getTotalAprpovalExistWithSequenceOne(String approvalName) {
+    public Long getTotalApprovalExistWithSequenceOne(String approvalName) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("name", approvalName));
         criteria.add(Restrictions.eq("sequence", 1));
@@ -108,6 +108,19 @@ public class ApprovalDefinitionDaoImpl extends IDAOImpl<ApprovalDefinition> impl
         disjunction.add(Restrictions.eq("processType", HRMConstant.ON_REJECT_INFO));
         criteria.add(Restrictions.eq("name", approvalName));
         criteria.add(Restrictions.le("sequence", sequance));
+        criteria.add(disjunction);
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+    
+    @Override
+    public Long getTotalDataWithSequenceLowerAndNotId(String approvalName, int sequance, long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        Disjunction disjunction = Restrictions.disjunction();
+        disjunction.add(Restrictions.eq("processType", HRMConstant.ON_APPROVE_INFO));
+        disjunction.add(Restrictions.eq("processType", HRMConstant.ON_REJECT_INFO));
+        criteria.add(Restrictions.eq("name", approvalName));
+        criteria.add(Restrictions.le("sequence", sequance));
+        criteria.add(Restrictions.ne("id", id));
         criteria.add(disjunction);
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }

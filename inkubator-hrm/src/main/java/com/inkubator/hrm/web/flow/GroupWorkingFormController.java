@@ -290,6 +290,8 @@ public class GroupWorkingFormController implements Serializable {
         try {
             if (workingModel.getId() == null) {
                 wtGroupWorkingService.save(workingModel);
+                 MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
+                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
                 return "yes";
             } else {
                 wtGroupWorkingService.update(workingModel);

@@ -26,18 +26,17 @@
                         </h:panelGroup>
                     </h:panelGrid>
                     <p:separator />
-                    <p:growl id="growlGroupWorkingDetailId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
-                    <h:form id="groupWorkingDetailId" >
+
+                    <!--<p:growl id="growlGroupWorkingDetailId" showDetail="true" showSummary="true" />-->
+                    <h:form>
+                        <p:poll update=":mainGrowl" immediate="true"/>
                         <p:panelGrid style="width: 100%;margin-top: 20px;margin-bottom: 20px" styleClass="grid_border3">
                             <p:row>
                                 <p:column style="width: 17%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="#{appmsg['workinggroup.working_group_code_of_working_group']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 34%">
-                                    <p:inplace id="ajax" editor="true">
-                                        <p:inputText value="#{groupWorkingDetilController.selectedWtGroupWorking.code}" required="true" label="text"  onkeyup="this.value = this.value.toUpperCase();" />
-                                    </p:inplace>
-
+                                    <p:outputLabel  value="#{groupWorkingDetilController.selectedWtGroupWorking.code}"/>
                                 </p:column>
                                 <p:column style="width: 17%;background-color: #e1f0f0!important">
                                     <p:outputLabel  value="#{appmsg['workinggroup.working_group_name_of_working_group']}" style="font-weight: bold"/>

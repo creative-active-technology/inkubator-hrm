@@ -31,7 +31,7 @@ public class CityConverter implements Converter {
             return new City(id);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Marca no válida", ""));
+            throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Input tidak valid", ""));
         }
     }
 

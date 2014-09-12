@@ -16,14 +16,17 @@
         <ui:insert name="jsInclude"/>
     </h:head>
     <h:body>
-        <p:socket onMessage="handleLogin" channel="/notificationsLogin" />
-        <p:growl widgetVar="loginNotification" showDetail="true" showSummary="true" life="2500" /> 
+    	<p:socket onMessage="handleApproval" channel="/notificationsApproval" />
+        <p:socket onMessage="handleLogin" channel="/notificationsLogin" />         
         <p:growl id="mainGrowl" showDetail="true" globalOnly="true" />
         <!-- input hidden disini untuk memaksa view ini memanggil homeController yg bertujuan untuk memaksa nge-set default language/locale -->
         <h:inputHidden value="#{homeController.bahasa}" />
+         <!--<p:growl id="growl" showDetail="true" globalOnly="true" />--> 
         <h:form>
             <p:idleMonitor timeout="1740000" onidle="infoSession.show()"/>
-
+			<p:growl id="socketNotificationGrowlId" widgetVar="socketNotificationGrowl"  showDetail="true" showSummary="true" life="2500" />
+			<p:remoteCommand name="approvalRC" action="#{approvalRemoteCommand.showNotification}" update="socketNotificationGrowlId"/>
+			
             <p:dialog header="#{appmsg['master_layout.session_information']}" widgetVar="infoSession" modal="true" width="150"
                       id="infoSessionId"
                       appendTo="@(body)" resizable="false" closable="false">
@@ -214,8 +217,8 @@
                                     </h:outputLink>
                                 </h:panelGrid>
                                 <div class="isitext_hrm">
-<!--                                    <pe:tooltip for="pendingId" value="My Pending Task" showEffect="slideToggle" 
-                                                hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>-->
+                                    <!--                                    <pe:tooltip for="pendingId" value="My Pending Task" showEffect="slideToggle" 
+                                                                                    hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>-->
                                     <pe:tooltip for="helpId" value="Need Help? Click Me" showEffect="slideToggle"
                                                 hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/> 
                                     <pe:tooltip for="calculatorId" value="Need Calculation Click Me" showEffect="slideToggle"
@@ -297,16 +300,16 @@
                                                 <p:menuitem value="#{appmsg['jabatandeskripsi.jabatandeskripsi']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['jabatandeskripsi.jabatandeskripsi']}" url="/protected/organisation/job_description_view.htm" icon="img-job-descriptions"/>
                                                 <p:menuitem value="#{appmsg['jabatanspesifikasi.jabatanspesifikasi']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['jabatanspesifikasi.jabatanspesifikasi']}" url="/protected/organisation/job_spesifikasi_view.htm" icon="img-job_spek"/>
                                             </p:submenu> 
-<!--                                            <p:submenu label="#{appmsg['menu.working_time_setting']}"  styleClass="menu_child" >
+                                            <p:submenu label="#{appmsg['menu.working_time_setting']}"  styleClass="menu_child" >
                                                 <p:menuitem value="#{appmsg['menu.work_period']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.work_period']}" url="/protected/working_time/periode_view.htm" /> 
                                                 <p:menuitem value="#{appmsg['menu.holiday']}" icon="img-holiday" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.holiday']}" url="/protected/working_time/holiday_view.htm" />
-                                                  	
+                                                        
                                                 <p:menuitem value="#{appmsg['workinghour.working_hour']}" icon="img-working-hour" style="font-size: 12px !important;color: #003366" title="#{appmsg['workinghour.working_hour']}" url="/protected/working_time/working_hour_view.htm" />  
                                                 <p:menuitem value="#{appmsg['menu.overtime']}" icon="img-over-time" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.overtime']}" url="/protected/working_time/over_time_view.htm" /> 
                                                 <p:menuitem value="#{appmsg['menu.workgroup']}" icon="img-group-working" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.workgroup']}" url="/protected/working_time/working_group_view.htm" />  
                                                 <p:menuitem value="#{appmsg['leave.leave']}" icon="img-permit" style="font-size: 12px !important;color: #003366" title="#{appmsg['leave.leave']}" url="/protected/working_time/leave_view.htm" />
                                                 <p:menuitem value="#{appmsg['leavescheme.leave_scheme']}" icon="img-leave-scheme" style="font-size: 12px !important;color: #003366" title="#{appmsg['leavescheme.leave_scheme']}" url="/protected/working_time/leave_scheme_view.htm" />
-                                            </p:submenu>-->
+                                            </p:submenu>
                                             <p:submenu label="Personalia"  styleClass="menu_child">
                                                 <p:submenu label="#{appmsg['personalia.dinas']}"  styleClass="menu_child" >
                                                     <p:menuitem value="#{appmsg['personalia.type']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['personalia.type']}" url="/protected/personalia/travel_type_view.htm" /> 
@@ -322,8 +325,13 @@
                                                     <p:menuitem value="Reimbursment Schema" icon="img-periode" style="font-size: 12px !important;color: #003366" title="Reimbursment Schema" url="/protected/personalia/reimbursment_schema_view.htm" />
                                                     <p:menuitem value="Loan Schema" icon="img-periode" style="font-size: 12px !important;color: #003366" title="Loan Schema" url="/protected/personalia/loan_schema_view.htm" />
                                                 </p:submenu>
+
+                                            </p:submenu>
+                                            <p:submenu label="#{appmsg['menu.working_time']}"  styleClass="menu_child">
+                                                <p:menuitem value="#{appmsg['publicHoliday.publicHoliday']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['publicHoliday.publicHoliday']}" url="/protected/working_time/public_holiday_view.htm" /> 
                                             </p:submenu>
                                             <p:submenu label="Payroll"  styleClass="menu_child" >
+                                                <p:menuitem value="#{appmsg['benefitGroup.benefitGroup']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['benefitGroup.benefitGroup']}" url="/protected/payroll/benefit_group_view.htm" /> 
                                                 <p:menuitem value="#{appmsg['payroll.pay_salary_grade']}" icon="img-grade-level" style="font-size: 12px !important;color: #003366" title="#{appmsg['payroll.pay_salary_grade']}" url="/protected/payroll/pay_salary_grade_view.htm" /> 
                                                 <p:menuitem value="#{appmsg['payroll.pay_salary_grade_position']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['payroll.pay_salary_grade_position']}" url="/protected/payroll/pay_salary_grade_position_view.htm" /> 
                                                 <p:menuitem value="#{appmsg['payroll.pay_salary_jurnal']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['payroll.pay_salary_jurnal']}" url="/protected/payroll/pay_salary_jurnal_view.htm" /> 
@@ -344,6 +352,7 @@
                                         </p:submenu>
                                         <p:submenu label="#{appmsg['menu.working_time']}"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-task">
 
+                                            <p:menuitem value="#{appmsg['publicHolidayException.publicHolidayException']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['publicHolidayException.publicHolidayException']}" url="/protected/working_time/public_holiday_exception_view.htm" /> 
                                         </p:submenu>
                                         <p:submenu label="Payroll"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-payroll">
                                             <!--                                            <p:menuitem value="Price Simulator" icon="img-price-simulator" style="font-size: 12px !important;color: #003366" title="Make Price Simulation" url="/protected/price_simulator.htm" /> 
@@ -436,6 +445,7 @@
             }
         </script>
         <h:outputScript library="js" name="login_socket.js"/>
+        <h:outputScript library="js" name="approval_notification_socket.js"/>
         <h:outputScript library="js" name="indonesia_locale.js" />
     </h:body>
 </html>

@@ -30,11 +30,11 @@ public class ApprovalStatusConverter implements Converter {
         String messages = StringUtils.EMPTY;
         Integer data= (Integer) obj;
         if(Objects.equals(data, HRMConstant.APPROVAL_STATUS_APPROVED)){
-        	messages = resourceBundle.getString("approval_activity.approved");
+        	messages = resourceBundle.getString("approvalactivity.approved");
         } else if(Objects.equals(data, HRMConstant.APPROVAL_STATUS_REJECTED)){
-        	messages = resourceBundle.getString("approval_activity.reject");
+        	messages = resourceBundle.getString("approvalactivity.reject");
         } else if(Objects.equals(data, HRMConstant.APPROVAL_STATUS_WAITING)){
-        	messages = resourceBundle.getString("approval_activity.waiting");
+        	messages = resourceBundle.getString("approvalactivity.waiting");
         }
         return messages;
 

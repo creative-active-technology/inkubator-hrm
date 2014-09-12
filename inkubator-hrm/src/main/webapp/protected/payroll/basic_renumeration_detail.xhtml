@@ -1,0 +1,165 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:sec="http://www.springframework.org/security/tags">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg">
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="bio_data.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['placement.placement_detail']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['placement.placement_header']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator />
+                    <p:growl id="growlBioDetailFormId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
+                    <h:form id="formBioDetailFormId" >
+                        <p:panelGrid style="width: 100%;margin-bottom: 10px" styleClass="grid_no_border">
+                            <p:row>
+                                <p:column style="width: 100%;vertical-align: middle !important" >
+                                    <p:panelGrid style="width: 100%;margin-top: 10px;" styleClass="grid_border4">
+
+                                        <p:row>
+                                            <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                                <p:outputLabel  value="#{appmsg['global.name']}" style="font-weight: bold"/>
+                                            </p:column>
+                                            <p:column style="width: 80%">
+                                                <p:outputLabel  value="#{basicRenumerationDetailController.selectedEmpData.bioData.firstName} #{basicRenumerationDetailController.selectedEmpData.bioData.lastName}" />
+
+
+                                            </p:column>
+
+
+                                        </p:row>
+                                        <p:row>
+                                            <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                                <p:outputLabel  value="#{appmsg['placement.nik']}" style="font-weight: bold"/>
+                                            </p:column>
+                                            <p:column style="width: 80%">
+                                                <p:outputLabel  value=" #{basicRenumerationDetailController.selectedEmpData.nik}" />
+                                            </p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                                <p:outputLabel  value="#{appmsg['placement.join_data']}" style="font-weight: bold"/>
+                                            </p:column>
+                                            <p:column style="width: 80%">
+                                                <p:outputLabel  value="#{basicRenumerationDetailController.selectedEmpData.joinDate}" >
+                                                    <f:convertDateTime pattern="dd MMMM yyyy" />
+                                                </p:outputLabel>
+                                            </p:column>
+
+
+                                        </p:row>
+
+
+                                    </p:panelGrid>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                        <p:tabView id="tabView" dynamic="true"  cache="true" styleClass="tabview_hrm" style="margin-top: 15px;margin-bottom: 15px;margin-left: 5px;margin-right: 5px" scrollable="true" >
+                            <p:tab id="detailId" title="#{appmsg['benefitGroup.benefitGroup']}" >  
+                                <p:dataTable  id="tableBenefitGroupRateId" var="benefitGroupRateData"  value="#{basicRenumerationDetailController.listBenefit}" lazy="false" paginator="false"
+                                              style="margin-top: 10px;margin-bottom: 10px"
+                                              rowIndexVar="no">
+                                    <p:column style="text-align: center;width: 3%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['global.number']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value="#{no+1}." />
+                                    </p:column>
+                                    <p:column sortBy="benefitGroup"  style="text-align: center;width: 37%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['benefitGroup.benefitGroup_name']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{benefitGroupRateData.benefitGroup}"/>
+                                        <f:facet name="footer">  
+                                            <h:outputText value="Total"/>
+                                        </f:facet> 
+                                    </p:column>  
+                                    <p:column sortBy="nominal"  style="width: 40%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['benefitGroupRate.benefitGroupRate_nominal']}"/>
+                                        </f:facet>
+                                        <p:outputLabel  value="#{benefitGroupRateData.nominal}" rendered="#{sec:areAnyGranted('SUPERVISOR_FINANCE_ROLE') and benefitGroupRateData.benefitGroup == 'Basic Salary'}">
+                                            <f:converter converterId="salaryConverter" id="salaryId"/>
+                                        </p:outputLabel>
+                                        <p:outputLabel value="#.###.###" rendered="#{sec:areNotGranted('SUPERVISOR_FINANCE_ROLE') and benefitGroupRateData.benefitGroup == 'Basic Salary'}"/>
+                                        <h:outputText value="#{benefitGroupRateData.nominal}" rendered="#{benefitGroupRateData.benefitGroup != 'Basic Salary'}"/>
+                                        <f:facet name="footer">  
+                                            <p:outputLabel  value="#{basicRenumerationDetailController.total}" rendered="#{sec:areAnyGranted('SUPERVISOR_FINANCE_ROLE')}"/>
+                                            <p:outputLabel value="#.###.###" rendered="#{sec:areNotGranted('SUPERVISOR_FINANCE_ROLE')}"/>
+                                        </f:facet> 
+                                    </p:column>       
+
+                                </p:dataTable>
+                            </p:tab>  
+                            <p:tab id="spekJabatanId" title="Subsidi">  
+                                <p:dataTable  id="tableSubsidiId" var="subsidiData"  value="#{basicRenumerationDetailController.listSubsidi}" lazy="false" paginator="false"
+                                              style="margin-top: 10px;margin-bottom: 10px"
+                                              rowIndexVar="no">
+                                    <p:column style="text-align: center;width: 3%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['global.number']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value="#{no+1}." />
+                                    </p:column>
+                                    <p:column sortBy="subsidiName"  style="text-align: center;width: 37%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['benefitGroup.benefitGroup_name']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{subsidiData.subsidiName}"/>
+                                        <f:facet name="footer">  
+                                            <h:outputText value="Total"/>
+                                        </f:facet> 
+                                    </p:column>  
+                                    <p:column sortBy="nominal"  style="width: 40%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['benefitGroupRate.benefitGroupRate_nominal']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{subsidiData.nominal}"/>
+                                        <f:facet name="footer">  
+                                            <h:outputText value="#{basicRenumerationDetailController.subsidiTotal}"/>
+                                        </f:facet> 
+                                    </p:column>       
+
+                                </p:dataTable>
+
+
+                            </p:tab>  
+
+
+                        </p:tabView>
+                        <p:separator/>
+                        <h:panelGrid columns="1" style="margin-bottom: 5px;float: left">
+
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{basicRenumerationDetailController.doBack()}" styleClass="label_button"/>
+
+                        </h:panelGrid>
+                        <div style="clear: both"/>
+                    </h:form>
+                </div>
+
+
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

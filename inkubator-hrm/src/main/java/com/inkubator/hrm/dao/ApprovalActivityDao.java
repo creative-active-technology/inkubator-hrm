@@ -27,4 +27,6 @@ public interface ApprovalActivityDao extends IDAO<ApprovalActivity> {
     public List<ApprovalActivity> getPendingTask(String userName);
 
 	public ApprovalActivity getEntityByPkWithDetail(Long id);
+
+	public List<ApprovalActivity> getAllDataByActivityNumberWithDetail(String activityNumber, Order order);
 }

@@ -45,12 +45,16 @@ public class GroupWorkingDetilController extends BaseController {
         try {
             super.initialization();
             String id = FacesUtil.getRequestParameter("execution");
-            if (id.contains("s")) {
+            if (id.contains("sf")) {
                 System.out.println(" hehehe");
+
+                System.out.println(" hahahahahahh");
+                selectedWtGroupWorking = wtGroupWorkingService.getByCode(id.substring(2));
                 MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            } else {
+                selectedWtGroupWorking = wtGroupWorkingService.getByCode(id.substring(1));
             }
-            selectedWtGroupWorking = wtGroupWorkingService.getByCode(id.substring(1));
 
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
@@ -104,5 +108,20 @@ public class GroupWorkingDetilController extends BaseController {
         wtScheduleShiftService = null;
         selectedWtGroupWorking = null;
         wtScheduleShiftLazyDataModel = null;
+    }
+
+    public void doD() {
+        System.out.println(" hddfsjkgdsfkdsfj asdasssssssssssssssss");
+    }
+
+    private int number = 1;
+
+    public int getNumber() {
+        return number;
+    }
+
+    public void increment() {
+        System.out.println(" hsfsdjfdsjfhdsjfh");
+        number++;
     }
 }

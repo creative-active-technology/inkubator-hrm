@@ -1,18 +1,13 @@
 package com.inkubator.hrm.dao.impl;
 
-import com.inkubator.datacore.dao.impl.IDAOImpl;
-import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.dao.ApprovalActivityDao;
-import com.inkubator.hrm.entity.ApprovalActivity;
-import com.inkubator.hrm.web.search.ApprovalActivitySearchParameter;
 import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
@@ -21,6 +16,12 @@ import org.hibernate.criterion.Subqueries;
 import org.hibernate.sql.JoinType;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
+
+import com.inkubator.datacore.dao.impl.IDAOImpl;
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.dao.ApprovalActivityDao;
+import com.inkubator.hrm.entity.ApprovalActivity;
+import com.inkubator.hrm.web.search.ApprovalActivitySearchParameter;
 
 /**
  *
@@ -143,4 +144,13 @@ public class ApprovalActivityDaoImpl extends IDAOImpl<ApprovalActivity> implemen
         
         criteria.add(Restrictions.isNotNull("id"));
     }
+
+	@Override
+	public List<ApprovalActivity> getAllDataByActivityNumberWithDetail(String activityNumber, Order order) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("activityNumber", activityNumber));
+		criteria.setFetchMode("approvalDefinition", FetchMode.JOIN);
+		criteria.addOrder(order);
+		return criteria.list();
+	}
 }

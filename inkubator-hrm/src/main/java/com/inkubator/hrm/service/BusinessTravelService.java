@@ -26,4 +26,6 @@ public interface BusinessTravelService extends IService<BusinessTravel>,BaseAppr
 	public BusinessTravel getEntityByPkWithDetail(Long id) throws Exception;
 	
 	public BusinessTravel getEntityByBusinessTravelNoWithDetail(String businessTravelNo) throws Exception;
+
+	public BusinessTravel getEntityByApprovalActivityNumberWithDetail(String approvalActivityNumber);
 }
