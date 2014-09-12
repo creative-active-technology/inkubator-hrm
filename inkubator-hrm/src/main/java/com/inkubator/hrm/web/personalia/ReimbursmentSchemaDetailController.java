@@ -46,11 +46,11 @@ public class ReimbursmentSchemaDetailController extends BaseController{
     }
     
     public String doBack() {
-        return "/protected/personalia/reimbursment_view.htm?faces-redirect=true";
+        return "/protected/personalia/reimbursment_schema_view.htm?faces-redirect=true";
     }
     
     public String doEdit() {
-        return "/protected/personalia/reimbursment_form.htm?faces-redirect=true&execution=e" + selectedReimbursmentSchema.getId();
+        return "/protected/personalia/reimbursment_schema_form.htm?faces-redirect=true&execution=e" + selectedReimbursmentSchema.getId();
     }
     
     @PreDestroy
