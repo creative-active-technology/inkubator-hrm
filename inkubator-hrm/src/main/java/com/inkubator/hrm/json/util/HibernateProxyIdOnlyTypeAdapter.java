@@ -39,7 +39,7 @@ public class HibernateProxyIdOnlyTypeAdapter extends TypeAdapter<HibernateProxy>
             return;
         }
         // Get a filled instance of the original class
-        Object unproxiedValue = ((HibernateProxy) value).getHibernateLazyInitializer().getImplementation();
+        Object unproxiedValue = value.getHibernateLazyInitializer().getImplementation();
         
         out.beginObject();
         try {
