@@ -21,6 +21,7 @@
         <p:growl id="mainGrowl" showDetail="true" globalOnly="true" />
         <!-- input hidden disini untuk memaksa view ini memanggil homeController yg bertujuan untuk memaksa nge-set default language/locale -->
         <h:inputHidden value="#{homeController.bahasa}" />
+         <!--<p:growl id="growl" showDetail="true" globalOnly="true" />--> 
         <h:form>
             <p:idleMonitor timeout="1740000" onidle="infoSession.show()"/>
 			<p:growl id="socketNotificationGrowlId" widgetVar="socketNotificationGrowl"  showDetail="true" showSummary="true" life="2500" />
@@ -299,16 +300,17 @@
                                                 <p:menuitem value="#{appmsg['jabatandeskripsi.jabatandeskripsi']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['jabatandeskripsi.jabatandeskripsi']}" url="/protected/organisation/job_description_view.htm" icon="img-job-descriptions"/>
                                                 <p:menuitem value="#{appmsg['jabatanspesifikasi.jabatanspesifikasi']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['jabatanspesifikasi.jabatanspesifikasi']}" url="/protected/organisation/job_spesifikasi_view.htm" icon="img-job_spek"/>
                                             </p:submenu> 
-<!--                                            <p:submenu label="#{appmsg['menu.working_time_setting']}"  styleClass="menu_child" >
+                                            <p:submenu label="#{appmsg['menu.working_time_setting']}"  styleClass="menu_child" >
                                                 <p:menuitem value="#{appmsg['menu.work_period']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.work_period']}" url="/protected/working_time/periode_view.htm" /> 
-                                                <p:menuitem value="#{appmsg['menu.holiday']}" icon="img-holiday" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.holiday']}" url="/protected/working_time/holiday_view.htm" />
-                                                        
+                                                <p:menuitem value="#{appmsg['menu.holiday']}" icon="img-holiday" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.holiday']}" url="/protected/working_time/holiday_view.htm" />       
                                                 <p:menuitem value="#{appmsg['workinghour.working_hour']}" icon="img-working-hour" style="font-size: 12px !important;color: #003366" title="#{appmsg['workinghour.working_hour']}" url="/protected/working_time/working_hour_view.htm" />  
                                                 <p:menuitem value="#{appmsg['menu.overtime']}" icon="img-over-time" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.overtime']}" url="/protected/working_time/over_time_view.htm" /> 
                                                 <p:menuitem value="#{appmsg['menu.workgroup']}" icon="img-group-working" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.workgroup']}" url="/protected/working_time/working_group_view.htm" />  
                                                 <p:menuitem value="#{appmsg['leave.leave']}" icon="img-permit" style="font-size: 12px !important;color: #003366" title="#{appmsg['leave.leave']}" url="/protected/working_time/leave_view.htm" />
                                                 <p:menuitem value="#{appmsg['leavescheme.leave_scheme']}" icon="img-leave-scheme" style="font-size: 12px !important;color: #003366" title="#{appmsg['leavescheme.leave_scheme']}" url="/protected/working_time/leave_scheme_view.htm" />
-                                            </p:submenu>-->
+                                                <p:menuitem value="#{appmsg['publicHoliday.publicHoliday']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['publicHoliday.publicHoliday']}" url="/protected/working_time/public_holiday_view.htm" /> 
+                                            
+                                            </p:submenu>
                                             <p:submenu label="Personalia"  styleClass="menu_child">
                                                 <p:submenu label="#{appmsg['personalia.dinas']}"  styleClass="menu_child" >
                                                     <p:menuitem value="#{appmsg['personalia.type']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['personalia.type']}" url="/protected/personalia/travel_type_view.htm" /> 
@@ -320,13 +322,11 @@
                                                 <p:submenu label="Others"  styleClass="menu_child" >
                                                     <p:menuitem value="Admonition Type" icon="img-periode" style="font-size: 12px !important;color: #003366" title="Admonition Type" url="/protected/personalia/admonition_type_view.htm" /> 
                                                     <p:menuitem value="Termination Type" icon="img-periode" style="font-size: 12px !important;color: #003366" title="Termination Type" url="/protected/personalia/termination_type_view.htm" />
-                                                    <p:menuitem value="Reimbursment Schema" icon="img-periode" style="font-size: 12px !important;color: #003366" title="Reimbursment Schema" url="/protected/personalia/reimbursment_view.htm" />
+                                                    <p:menuitem value="Reimbursment" icon="img-periode" style="font-size: 12px !important;color: #003366" title="Reimbursment" url="/protected/personalia/reimbursment_view.htm" />
+                                                    <p:menuitem value="Reimbursment Schema" icon="img-periode" style="font-size: 12px !important;color: #003366" title="Reimbursment Schema" url="/protected/personalia/reimbursment_schema_view.htm" />
                                                     <p:menuitem value="Loan Schema" icon="img-periode" style="font-size: 12px !important;color: #003366" title="Loan Schema" url="/protected/personalia/loan_schema_view.htm" />
                                                 </p:submenu>
 
-                                            </p:submenu>
-                                            <p:submenu label="#{appmsg['menu.working_time']}"  styleClass="menu_child">
-                                                <p:menuitem value="#{appmsg['publicHoliday.publicHoliday']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['publicHoliday.publicHoliday']}" url="/protected/working_time/public_holiday_view.htm" /> 
                                             </p:submenu>
                                             <p:submenu label="Payroll"  styleClass="menu_child" >
                                                 <p:menuitem value="#{appmsg['benefitGroup.benefitGroup']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['benefitGroup.benefitGroup']}" url="/protected/payroll/benefit_group_view.htm" /> 

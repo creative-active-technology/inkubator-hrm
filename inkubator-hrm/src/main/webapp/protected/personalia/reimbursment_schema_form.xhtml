@@ -23,8 +23,8 @@
                             <p:graphicImage library="images" name="jabatan.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="#{appmsg['loan.loan_form']}" styleClass="header_big" />
-                                    <p:outputLabel value="#{appmsg['loan.loan_header']}" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['reimbursment.reimmbursment_form']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['reimbursment.reimbursment_header']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -38,7 +38,7 @@
                                     <p:outputLabel  value="#{appmsg['global.code']}"  for="code" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:inputText id="code" value="#{loanSchemaFormController.model.code}" onkeyup="this.value = this.value.toUpperCase();"
+                                    <p:inputText id="code" value="#{reimbursmentSchemaFormController.model.code}" onkeyup="this.value = this.value.toUpperCase();"
                                              required="true" styleClass="isitext_hrm" style="width:210px;" />
                                     <p:message for="code"/>
                                 </p:column>
@@ -49,9 +49,36 @@
                                     <p:outputLabel  value="#{appmsg['global.name']}"  for="name" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:inputText id="name" value="#{loanSchemaFormController.model.name}" 
+                                    <p:inputText id="name" value="#{reimbursmentSchemaFormController.model.name}" 
                                              required="true" styleClass="isitext_hrm" style="width:210px;" />
                                     <p:message for="name"/>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['reimbursment.effective_date']}"  for="effectiveDate" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:spinner id="effectiveDate" value="#{reimbursmentSchemaFormController.model.effectiveDate}" min="0" max="12" required="true" size="2" 
+                                           validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
+                                        <f:validateLongRange minimum="1" maximum="12"/>
+                                    </p:spinner>
+                                    <p:message for="effectiveDate"/>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['reimbursment.measurement']}"  for="measurement" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectOneRadio id="measurement" styleClass="isitext_hrm" required="true" value="#{reimbursmentSchemaFormController.model.measurement}" label="#{appmsg['travelComponent.travelComponent_measurement']}">
+                                        <!--Cek HRM Constanta..-->
+                                        <f:selectItem itemLabel="#{appmsg['reimbursment.unit']}" itemValue="0" />
+                                        <f:selectItem itemLabel="#{appmsg['reimbursment.nominal']}" itemValue="1" />
+                                    </p:selectOneRadio> 
+                                    <p:message for="measurement"/>
                                 </p:column>
                             </p:row>
                             
@@ -60,40 +87,11 @@
                                     <p:outputLabel  value="#{appmsg['jabatan.cost_center']}"  for="costCenterId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneMenu id="costCenterId" value="#{loanSchemaFormController.model.costCenter}" style="width: 150px;margin-right: 3px" required="true">
+                                    <p:selectOneMenu id="costCenterId" value="#{reimbursmentSchemaFormController.model.costCenter}" style="width: 150px;margin-right: 3px" required="true">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItems value="#{loanSchemaFormController.dropDownCostCenter}"/>
+                                        <f:selectItems value="#{reimbursmentSchemaFormController.dropDownCostCenter}"/>
                                     </p:selectOneMenu>
                                     <p:message for="costCenterId"/>
-                                </p:column>
-                            </p:row>
-                            
-                                                        
-                            <p:row>
-                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="#{appmsg['loan.type_of_interest']}"  for="typeOfInterest" styleClass="label_hrm" />
-                                </p:column>
-                                <p:column style="width: 80%">
-                                    <p:selectOneRadio id="typeOfInterest" styleClass="isitext_hrm" required="true" value="#{loanSchemaFormController.model.typeOfInterest}" label="#{appmsg['travelComponent.travelComponent_measurement']}">
-                                        <!--Cek HRM Constanta..-->
-                                        <f:selectItem itemLabel="#{appmsg['loan.type_of_interest_annuity']}" itemValue="0" />
-                                        <f:selectItem itemLabel="#{appmsg['loan.type_of_interest_flat']}" itemValue="1" />
-                                        <f:selectItem itemLabel="#{appmsg['loan.type_of_interest_floating']}" itemValue="2" />
-                                    </p:selectOneRadio> 
-                                    <p:message for="typeOfInterest"/>
-                                </p:column>
-                            </p:row>
-                            
-                            <p:row>
-                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="#{appmsg['loan.max_period']}"  for="maxPeriod" styleClass="label_hrm" />
-                                </p:column>
-                                <p:column style="width: 80%">
-                                    <p:spinner id="maxPeriod" value="#{loanSchemaFormController.model.maxPeriode}" min="0" max="5" required="true" size="2" 
-                                           validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
-                                        <f:validateLongRange minimum="1" maximum="5"/>
-                                    </p:spinner>     
-                                    <p:message for="maxPeriod"/>
                                 </p:column>
                             </p:row>
                             
@@ -103,12 +101,12 @@
                                     <p:outputLabel  value="#{appmsg['reimbursment.basic_value']}"  for="basicValue" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneRadio id="basicValue" styleClass="isitext_hrm" required="true" value="#{loanSchemaFormController.model.basicValue}" label="#{appmsg['travelComponent.travelComponent_measurement']}">
+                                    <p:selectOneRadio id="basicValue" styleClass="isitext_hrm" required="true" value="#{reimbursmentSchemaFormController.model.basicValue}" label="#{appmsg['travelComponent.travelComponent_measurement']}">
                                         <!--Cek HRM Constanta..-->
                                         <f:selectItem itemLabel="#{appmsg['reimbursment.nominal']}" itemValue="0" />
                                         <f:selectItem itemLabel="#{appmsg['reimbursment.salary']}" itemValue="1" />
-                                        <p:ajax update="maxNominal" process="@this" listener="#{loanSchemaFormController.doChangeMaxNominalOr()}"/>
-                                        <p:ajax update="maxPaymentOfSalary" process="@this" listener="#{loanSchemaFormController.doChangeMaxNominalOr()}"/>
+                                        <p:ajax update="nominalUnit" process="@this" listener="#{reimbursmentSchemaFormController.doChangeRatioOrNominal()}"/>
+                                        <p:ajax update="ratioSalary" process="@this" listener="#{reimbursmentSchemaFormController.doChangeRatioOrNominal()}"/>
                                     </p:selectOneRadio>
                                     <p:message for="basicValue"/>
                                 </p:column>
@@ -116,41 +114,55 @@
                             
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="#{appmsg['loan.max_nominal']}"  for="maxNominal" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['reimbursment.nominal_unit']}"  for="nominalUnit" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <pe:inputNumber id="maxNominal" value="#{loanSchemaFormController.model.maxNominal}" 
-                                                    required="true" styleClass="isitext_hrm" style="width:210px;" disabled="#{loanSchemaFormController.isMaxNominal}"/>
-                                    <p:message for="maxNominal"/>
+                                    <pe:inputNumber id="nominalUnit" value="#{reimbursmentSchemaFormController.model.nominalUnit}" 
+                                                    required="true" styleClass="isitext_hrm" style="width:210px;" disabled="#{reimbursmentSchemaFormController.isNominalLimit}"/>
+                                    <p:message for="nominalUnit"/>
                                 </p:column>
                             </p:row>
                             
                             
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="#{appmsg['loan.max_payment_of_salary']}"  for="maxPaymentOfSalary" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['reimbursment.ratio_salary']}"  for="ratioSalary" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:spinner id="maxPaymentOfSalary" value="#{loanSchemaFormController.model.maxPaymentOfSalary}"  min="0" max="11" required="true" size="2" disabled="#{loanSchemaFormController.isMaxPayment}"
+                                    <p:spinner id="ratioSalary" value="#{reimbursmentSchemaFormController.model.ratioSalary}" min="0" max="11" required="true" size="2" disabled="#{reimbursmentSchemaFormController.isRatioSalary}"
                                            validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
                                         <f:validateLongRange minimum="1" maximum="5"/>
                                     </p:spinner>     
-                                    <p:message for="maxPaymentOfSalary"/>
+                                    <p:outputLabel value=" x #{appmsg['reimbursment.salary']}" styleClass="label_hrm"/>
+                                    <p:message for="ratioSalary"/>
                                 </p:column>
                             </p:row>
                             
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="#{appmsg['loan.penalty_of_non_complance']}"  for="penaltyOfNonComplance" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['reimbursment.payroll_component']}"  for="payrollComponent" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:spinner id="penaltyOfNonComplance" value="#{loanSchemaFormController.model.penaltyOfNonComplance}" stepFactor="0.10" min="0" max="20" required="true" size="2" 
-                                           validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
-                                    </p:spinner>     
-                                    <p:message for="penaltyOfNonComplance"/>
+                                    <p:selectBooleanCheckbox id="payrollComponent" value="#{reimbursmentSchemaFormController.model.payrolComponent}" />
+                                    <p:outputLabel value=" #{appmsg['global.yes']}" styleClass="label_hrm" style="margin-bottom: 3px;"/>
+                                    <p:message for="payrollComponent"/>
                                 </p:column>
                             </p:row>
                             
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['reimbursment.time_range']}"  for="timeRange" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectOneRadio id="timeRange" styleClass="isitext_hrm" required="true" value="#{reimbursmentSchemaFormController.model.timeRange}" label="#{appmsg['travelComponent.travelComponent_measurement']}">
+                                        <!--Cek HRM Constanta..-->
+                                        <f:selectItem itemLabel="#{appmsg['reimbursment.monthly']}" itemValue="0" />
+                                        <f:selectItem itemLabel="#{appmsg['reimbursment.yearly']}" itemValue="1" />
+                                        <f:selectItem itemLabel="#{appmsg['reimbursment.per_employee']}" itemValue="2" />
+                                    </p:selectOneRadio> 
+                                    <p:message for="timeRange"/>
+                                </p:column>
+                            </p:row>
                             
                         </p:panelGrid>
                         <p:focus context="jobTitleFormId" />
@@ -162,7 +174,7 @@
                         <!--</h:panelGrid>-->
                         <p:separator/>
                         <div align="center">
-                            <p:pickList value="#{loanSchemaFormController.dualListModel}" var="role" itemValue="#{role}" converter="employeeTypeConverter" id="picklistUserRoleId"
+                            <p:pickList value="#{reimbursmentSchemaFormController.dualListModel}" var="role" itemValue="#{role}" converter="employeeTypeConverter" id="picklistUserRoleId"
                                         required="true"  style="margin-top: 15px;margin-bottom: 15px" label="#{appmsg['role_view.header1']}" styleClass="isitext_hrm"
                                         itemLabel="#{role.name}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
                                         removeLabel="#{appmsg['global.remove']}"/>
@@ -172,15 +184,15 @@
 
                         <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
                         <div style="margin-bottom: 5px">
-                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" action="#{loanSchemaFormController.doSaved()}"
+                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" action="#{reimbursmentSchemaFormController.doSaved()}"
                                              styleClass="isitext_hrm" 
                                              style="margin-right: 5px" label="#{appmsg['global.save']}" update="jobTitleFormId"
                                              icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
-                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="jobTitleFormId" action="#{loanSchemaFormController.doReset()}"
+                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="jobTitleFormId" action="#{reimbursmentSchemaFormController.doReset()}"
                                              icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px" >  
                                 <p:resetInput target="jobTitleFormId" />  
                             </p:commandButton>
-                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}"  immediate="true" action="#{loanSchemaFormController.doBack()}"
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}"  immediate="true" action="#{reimbursmentSchemaFormController.doBack()}"
                                              styleClass="label_button"/>
                         </div>
                     </div>

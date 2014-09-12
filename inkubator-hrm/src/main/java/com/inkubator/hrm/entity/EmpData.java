@@ -4,6 +4,7 @@ package com.inkubator.hrm.entity;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -62,7 +63,8 @@ public class EmpData implements java.io.Serializable {
     private String status;
     private String noSk;
     private Date rotasiDate;
-
+    private Set<Reimbursment> reimbursments = new HashSet<Reimbursment>(0);
+    
     public EmpData() {
     }
 
@@ -413,4 +415,14 @@ public class EmpData implements java.io.Serializable {
         this.rotasiDate = rotasiDate;
     }
 
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "empData", orphanRemoval = true)
+    public Set<Reimbursment> getReimbursments() {
+        return reimbursments;
+    }
+
+    public void setReimbursments(Set<Reimbursment> reimbursments) {
+        this.reimbursments = reimbursments;
+    }
+
+    
 }
