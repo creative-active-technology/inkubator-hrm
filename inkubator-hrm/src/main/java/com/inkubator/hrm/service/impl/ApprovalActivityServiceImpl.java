@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.inkubator.common.util.RandomNumberUtil;
+import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.dao.ApprovalActivityDao;
 import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.service.ApprovalActivityService;
@@ -22,7 +23,7 @@ import com.inkubator.hrm.web.search.ApprovalActivitySearchParameter;
  */
 @Service(value = "approvalActivityService")
 @Lazy
-public class ApprovalActivityServiceImpl extends BaseApprovalServiceImpl implements ApprovalActivityService {
+public class ApprovalActivityServiceImpl extends IServiceImpl implements ApprovalActivityService {
 
     @Autowired
     private ApprovalActivityDao approvalActivityDao;

@@ -134,7 +134,8 @@ public class PublicHolidayException implements java.io.Serializable {
         this.updatedOn = updatedOn;
     }
 
-    @Column(name = "description", length = 65535, columnDefinition = "Text")
+    
+    @Column(name="description", length=65535, columnDefinition = "Text")
     public String getDescription() {
         return this.description;
     }

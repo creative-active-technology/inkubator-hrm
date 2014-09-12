@@ -84,7 +84,7 @@ public class ApprovalDefinitionServiceImpl extends IServiceImpl implements Appro
         }
         
         if (entity.getSequence() > 1) {
-            long totalApprovalaNameWithSeq1 = this.approvalDefinitionDao.getTotalAprpovalExistWithSequenceOne(entity.getName());
+            long totalApprovalaNameWithSeq1 = this.approvalDefinitionDao.getTotalApprovalExistWithSequenceOne(entity.getName());
             if (totalApprovalaNameWithSeq1 < 1) {
                 throw new BussinessException("approval.error_first");
             }
@@ -126,16 +126,16 @@ public class ApprovalDefinitionServiceImpl extends IServiceImpl implements Appro
         }
         
         if (entity.getSequence() > 1) {
-            long totalApprovalaNameWithSeq1 = this.approvalDefinitionDao.getTotalAprpovalExistWithSequenceOne(entity.getName());
+            long totalApprovalaNameWithSeq1 = this.approvalDefinitionDao.getTotalApprovalExistWithSequenceOne(entity.getName());
             if (totalApprovalaNameWithSeq1 < 1) {
                 throw new BussinessException("approval.error_first");
             }
         }
         
         if (entity.getProcessType().equalsIgnoreCase(HRMConstant.APPROVAL_PROCESS)) {
-            long totalLower = this.approvalDefinitionDao.getTotalDataWithSequenceLower(entity.getName(), entity.getSequence());
+            long totalLower = this.approvalDefinitionDao.getTotalDataWithSequenceLowerAndNotId(entity.getName(), entity.getSequence(), entity.getId());
             if (totalLower > 0) {
-                throw new Exception("approval.error_process_less_than");
+                throw new BussinessException("approval.error_process_less_than");
             }
         }
         ApprovalDefinition ad = this.approvalDefinitionDao.getEntiyByPK(entity.getId());
