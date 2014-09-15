@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -46,8 +47,9 @@ public class Termination implements java.io.Serializable {
     }
     
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.AUTO, generator = "termination_seq_gen")
     @Column(name = "id", unique = true, nullable = false)
+    @SequenceGenerator(name = "termination_seq_gen", sequenceName = "TERMINATION_SEQ")
     public Long getId() {
         return id;
     }

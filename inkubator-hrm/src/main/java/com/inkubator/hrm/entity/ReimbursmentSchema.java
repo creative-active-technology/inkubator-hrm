@@ -20,6 +20,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -62,8 +63,9 @@ public class ReimbursmentSchema implements java.io.Serializable{
     }
     
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.AUTO, generator = "reimbursment_schema_seq_gen")
     @Column(name = "id", unique = true, nullable = false)
+    @SequenceGenerator(name = "reimbursment_schema_seq_gen", sequenceName = "REIMBURSMENT_SCHEMA_SEQ")
     public Long getId() {
         return id;
     }
