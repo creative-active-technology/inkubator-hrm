@@ -47,7 +47,7 @@ public class Termination implements java.io.Serializable {
     }
     
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.AUTO, generator = "termination_seq_gen")
     @Column(name = "id", unique = true, nullable = false)
     @SequenceGenerator(name = "termination_seq_gen", sequenceName = "TERMINATION_SEQ")
     public Long getId() {

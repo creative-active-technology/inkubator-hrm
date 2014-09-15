@@ -59,7 +59,7 @@ public class EmpPersonAchievement implements java.io.Serializable {
     }
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.AUTO, generator = "emp_person_achievement_seq_gen")
     @Column(name = "id", unique = true, nullable = false)
     @SequenceGenerator(name = "emp_person_achievement_seq_gen", sequenceName = "EMP_PERSON_ACHIEVEMENT_SEQ")
     public long getId() {

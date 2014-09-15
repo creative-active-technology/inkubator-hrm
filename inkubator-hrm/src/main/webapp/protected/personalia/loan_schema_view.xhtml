@@ -21,8 +21,8 @@
                             <p:graphicImage library="images" name="travel_component.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="#{appmsg['loan.loan']}" styleClass="header_big" />
-                                    <p:outputLabel value="#{appmsg['loan.loan_header']}" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['loanschema.loan']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['loanschema.loan_header']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -61,7 +61,7 @@
                                       id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="#{appmsg['loan.list_of_loan']}"/>
+                                <h:outputText value="#{appmsg['loanschema.list_of_loan']}"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
@@ -83,7 +83,7 @@
                             </p:column>
                             <p:column sortBy="nominalUnit" style="width: 36%">
                                 <f:facet name="header">
-                                    <h:outputText value="#{appmsg['loan.max_nominal']}"/>
+                                    <h:outputText value="#{appmsg['loanschema.max_nominal']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.maxNominal}" ><f:convertNumber pattern="###,###" type="currency"/></h:outputLabel>
                             </p:column>

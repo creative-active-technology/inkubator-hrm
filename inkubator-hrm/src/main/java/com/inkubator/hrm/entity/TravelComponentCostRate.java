@@ -48,7 +48,7 @@ public class TravelComponentCostRate implements java.io.Serializable {
     }
     
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.AUTO, generator = "travel_component_cost_rate_seq_gen")
     @Column(name = "id", unique = true, nullable = false)
     @SequenceGenerator(name = "travel_component_cost_rate_seq_gen", sequenceName = "TRAVEL_COMPONENT_COST_RATE_SEQ")
     public Long getId() {

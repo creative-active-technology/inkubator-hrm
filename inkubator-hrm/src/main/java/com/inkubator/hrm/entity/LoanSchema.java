@@ -62,7 +62,7 @@ public class LoanSchema implements java.io.Serializable {
     }
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO, generator = "business_travel_seq_gen")
+    @GeneratedValue(strategy=GenerationType.AUTO, generator = "loan_schema_seq_gen")
     @Column(name = "id", unique = true, nullable = false)
     @SequenceGenerator(name = "loan_schema_seq_gen", sequenceName = "LOAN_SCHEMA_SEQ")
     public Long getId() {

@@ -60,7 +60,7 @@ public class PersonalDiscipline implements java.io.Serializable{
     }
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.AUTO, generator = "personal_discipline_seq_gen")
     @Column(name = "id", unique = true, nullable = false)
     @SequenceGenerator(name = "personal_discipline_seq_gen", sequenceName = "PERSONAL_DISCIPLINE_SEQ")
     public Long getId() {

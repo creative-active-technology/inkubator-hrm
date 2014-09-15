@@ -44,7 +44,7 @@ public class ReimbursmentSchemaEmployeeType implements java.io.Serializable {
     }
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.AUTO, generator = "reimbursment_schema_employee_type_seq_gen")
     @Column(name = "id", unique = true, nullable = false)
     @SequenceGenerator(name = "reimbursment_schema_employee_type_seq_gen", sequenceName = "REIMBURSMENT_SCHEMA_EMPLOYEE_TYPE_SEQ")
     public Long getId() {
