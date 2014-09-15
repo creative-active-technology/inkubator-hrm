@@ -64,6 +64,7 @@ public class EmpData implements java.io.Serializable {
     private String noSk;
     private Date rotasiDate;
     private Set<Reimbursment> reimbursments = new HashSet<Reimbursment>(0);
+    private Set<Loan> loans = new HashSet<Loan>(0);
     
     public EmpData() {
     }
@@ -424,5 +425,15 @@ public class EmpData implements java.io.Serializable {
         this.reimbursments = reimbursments;
     }
 
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "empData", orphanRemoval = true)
+	public Set<Loan> getLoans() {
+		return loans;
+	}
+
+	public void setLoans(Set<Loan> loans) {
+		this.loans = loans;
+	}
+
+    
     
 }
