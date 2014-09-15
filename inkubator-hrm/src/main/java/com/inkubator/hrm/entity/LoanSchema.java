@@ -46,6 +46,7 @@ public class LoanSchema implements java.io.Serializable {
     private BigDecimal maxNominal;
     private Double maxPaymentOfSalary;
     private Double penaltyOfNonComplance;
+    private Double interestRate;
     private String createdBy;
     private Date createdOn;
     private String updatedBy;
@@ -166,7 +167,16 @@ public class LoanSchema implements java.io.Serializable {
         this.penaltyOfNonComplance = penaltyOfNonComplance;
     }
 
-    @Column(name = "created_by", length = 45)
+    @Column(name="interest_rate", nullable=false)
+    public Double getInterestRate() {
+		return interestRate;
+	}
+
+	public void setInterestRate(Double interestRate) {
+		this.interestRate = interestRate;
+	}
+
+	@Column(name = "created_by", length = 45)
     public String getCreatedBy() {
         return createdBy;
     }

@@ -37,7 +37,8 @@ public class Loan implements java.io.Serializable {
     private LoanSchema loanSchema;
     private Double nominalPrincipal;
     private Date loanDate;
-    private Date loanPaymentDate;    
+    private Date loanPaymentDate;
+    private Double interestRate;
     private String createdBy;
     private Date createdOn;
     private String updatedBy;
@@ -121,6 +122,15 @@ public class Loan implements java.io.Serializable {
 
 	public void setLoanPaymentDate(Date loanPaymentDate) {
 		this.loanPaymentDate = loanPaymentDate;
+	}
+
+	@Column(name="interest_rate", nullable=false)
+	public Double getInterestRate() {
+		return interestRate;
+	}
+
+	public void setInterestRate(Double interestRate) {
+		this.interestRate = interestRate;
 	}
 
 	@Column(name = "created_by", length = 45)

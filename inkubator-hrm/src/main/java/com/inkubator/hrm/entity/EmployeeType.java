@@ -28,6 +28,7 @@ public class EmployeeType implements java.io.Serializable {
     private String updatedBy;
     private Date updatedOn;
     private Set<ReimbursmentSchemaEmployeeType> reimbursmentSchemaEmployeeTypes = new HashSet<ReimbursmentSchemaEmployeeType>(0);
+    private Set<EmpData> empDatas = new HashSet<EmpData>(0);
 
     
     public EmployeeType() {
@@ -127,7 +128,16 @@ public class EmployeeType implements java.io.Serializable {
         this.reimbursmentSchemaEmployeeTypes = reimbursmentSchemaEmployeeTypes;
     }
 
-    @Override
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "employeeType")
+    public Set<EmpData> getEmpDatas() {
+		return empDatas;
+	}
+
+	public void setEmpDatas(Set<EmpData> empDatas) {
+		this.empDatas = empDatas;
+	}
+
+	@Override
     public int hashCode() {
         int hash = 7;
         hash = 37 * hash + Objects.hashCode(this.id);
