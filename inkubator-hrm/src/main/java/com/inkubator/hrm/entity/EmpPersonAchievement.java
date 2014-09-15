@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -58,8 +59,9 @@ public class EmpPersonAchievement implements java.io.Serializable {
     }
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.AUTO, generator = "emp_person_achievement_seq_gen")
     @Column(name = "id", unique = true, nullable = false)
+    @SequenceGenerator(name = "emp_person_achievement_seq_gen", sequenceName = "EMP_PERSON_ACHIEVEMENT_SEQ")
     public long getId() {
         return id;
     }

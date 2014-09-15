@@ -21,8 +21,8 @@
                         <p:graphicImage library="images" name="jabatan.png" height="36" width="36" />
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="#{appmsg['loan.loan_detail']}" styleClass="header_big" />
-                                <p:outputLabel value="#{appmsg['loan.loan_header']}" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['loanschema.loan_detail']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['loanschema.loan_header']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -55,7 +55,7 @@
                                     </p:outputLabel>
                                 </p:column>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important">
-                                    <p:outputLabel  value="#{appmsg['loan.max_nominal']}" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['loanschema.max_nominal']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:outputLabel  value="#{loanSchemaDetailController.selectedLoanSchema.maxNominal}" >
@@ -66,13 +66,13 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="#{appmsg['jabatan.cost_center_name']}" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['loanschema.cost_center_name']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:outputLabel  value="#{loanSchemaDetailController.selectedLoanSchema.costCenter.name}" />
                                 </p:column>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important">
-                                    <p:outputLabel  value="#{appmsg['loan.max_payment_of_salary']}" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['loanschema.max_payment_of_salary']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:outputLabel  value="#{loanSchemaDetailController.selectedLoanSchema.maxPaymentOfSalary}" />
@@ -82,13 +82,13 @@
 
                             <p:row>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="#{appmsg['loan.max_period']}" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['loanschema.max_period']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:outputLabel  value="#{loanSchemaDetailController.selectedLoanSchema.maxPeriode}" />
                                 </p:column>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important">
-                                    <p:outputLabel  value="#{appmsg['loan.penalty_of_non_complance']}" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['loanschema.penalty_of_non_complance']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:outputLabel  value="#{loanSchemaDetailController.selectedLoanSchema.penaltyOfNonComplance}" />
@@ -99,7 +99,7 @@
                             
                             <p:row>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="#{appmsg['loan.type_of_interest']}" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['loanschema.type_of_interest']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:outputLabel  value="#{loanSchemaDetailController.selectedLoanSchema.typeOfInterest}" >

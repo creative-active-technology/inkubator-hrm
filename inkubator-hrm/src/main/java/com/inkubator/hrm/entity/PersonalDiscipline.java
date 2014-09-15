@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -59,8 +60,9 @@ public class PersonalDiscipline implements java.io.Serializable{
     }
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.AUTO, generator = "personal_discipline_seq_gen")
     @Column(name = "id", unique = true, nullable = false)
+    @SequenceGenerator(name = "personal_discipline_seq_gen", sequenceName = "PERSONAL_DISCIPLINE_SEQ")
     public Long getId() {
         return id;
     }
