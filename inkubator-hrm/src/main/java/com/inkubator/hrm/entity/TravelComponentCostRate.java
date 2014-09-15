@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -49,6 +50,7 @@ public class TravelComponentCostRate implements java.io.Serializable {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name = "id", unique = true, nullable = false)
+    @SequenceGenerator(name = "travel_component_cost_rate_seq_gen", sequenceName = "TRAVEL_COMPONENT_COST_RATE_SEQ")
     public Long getId() {
         return this.id;
     }
