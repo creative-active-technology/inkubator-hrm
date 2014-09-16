@@ -87,6 +87,7 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         EmpData empData = empDataDao.getEntiyByPK(id);
         empData.getBioData().getFirstName();
         empData.getBioData().getLastName();
+        empData.getJabatanByJabatanId().getName();
         return empData;
     }
 

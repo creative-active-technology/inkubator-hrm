@@ -13,6 +13,10 @@ import com.inkubator.hrm.web.search.EmpDataSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
@@ -20,6 +24,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import org.hibernate.exception.ConstraintViolationException;
+import org.primefaces.context.RequestContext;
 import org.primefaces.model.LazyDataModel;
 import org.springframework.dao.DataIntegrityViolationException;
 
@@ -112,7 +117,7 @@ public class EmpDataViewController extends BaseController {
     public String doDetail() {
         return "/protected/employee/employee_placement_detail.htm?faces-redirect=true&execution=e" + selectedEmpData.getId();
     }
-    
+
     public String doDetailRenumeration() {
         return "/protected/payroll/basic_renumeration_detail.htm?faces-redirect=true&execution=e" + selectedEmpData.getId();
     }
@@ -126,13 +131,27 @@ public class EmpDataViewController extends BaseController {
         return "/protected/employee/employee_rotasi_form.htm?faces-redirect=true&execution=r" + selectedEmpData.getId();
     }
 
+    public void doEmployeeTimeSchedule() {
+        List<String> values = new ArrayList<>();
+        values.add(String.valueOf(selectedEmpData.getId()));
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("empId", values);
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 400);
+        options.put("contentHeight", 440);
+        RequestContext.getCurrentInstance().openDialog("employee_schedule_form", options, dataToSend);
+
+    }
+
     @PreDestroy
     public void cleanAndExit() {
         empDataSearchParameter = null;
-        empDataLazyDataModel=null;
-        empDataService=null;
-        selectedEmpData=null;
-        
+        empDataLazyDataModel = null;
+        empDataService = null;
+        selectedEmpData = null;
 
     }
 }

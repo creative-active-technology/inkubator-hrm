@@ -16,17 +16,17 @@
         <ui:insert name="jsInclude"/>
     </h:head>
     <h:body>
-    	<p:socket onMessage="handleApproval" channel="/notificationsApproval" />
+        <p:socket onMessage="handleApproval" channel="/notificationsApproval" />
         <p:socket onMessage="handleLogin" channel="/notificationsLogin" />         
         <p:growl id="mainGrowl" showDetail="true" globalOnly="true" />
         <!-- input hidden disini untuk memaksa view ini memanggil homeController yg bertujuan untuk memaksa nge-set default language/locale -->
         <h:inputHidden value="#{homeController.bahasa}" />
-         <!--<p:growl id="growl" showDetail="true" globalOnly="true" />--> 
+        <!--<p:growl id="growl" showDetail="true" globalOnly="true" />--> 
         <h:form>
             <p:idleMonitor timeout="1740000" onidle="infoSession.show()"/>
-			<p:growl id="socketNotificationGrowlId" widgetVar="socketNotificationGrowl"  showDetail="true" showSummary="true" life="2500" />
-			<p:remoteCommand name="approvalRC" action="#{approvalRemoteCommand.showNotification}" update="socketNotificationGrowlId"/>
-			
+            <p:growl id="socketNotificationGrowlId" widgetVar="socketNotificationGrowl"  showDetail="true" showSummary="true" life="2500" />
+            <p:remoteCommand name="approvalRC" action="#{approvalRemoteCommand.showNotification}" update="socketNotificationGrowlId"/>
+
             <p:dialog header="#{appmsg['master_layout.session_information']}" widgetVar="infoSession" modal="true" width="150"
                       id="infoSessionId"
                       appendTo="@(body)" resizable="false" closable="false">
@@ -260,7 +260,7 @@
                                         </p:submenu>
                                         <p:submenu label="Approval Matrix"  styleClass="menu" icon="img-approval-matrix">
                                             <p:menuitem value="Approval Definition"  style="color: #003366" title="Approval Definition" url="/protected/approval/approval_definition_view.htm"  icon="img-approval-definition"/> 
-                                            <p:menuitem value="Approval Activity"  style="color: #003366" title="#{appmsg['menu.role_view']}" url="/protected/account/role_view.htm" icon="img-approval-activity" />
+                                            <!--<p:menuitem value="Approval Activity"  style="color: #003366" title="#{appmsg['menu.role_view']}" url="/protected/account/role_view.htm" icon="img-approval-activity" />-->
                                             <p:menuitem value="Approval Activity History"  style="color: #003366" title="Approval Activity History" url="/protected/approval/approval_activity_view.htm" icon="img-approval-activity" />
 
                                         </p:submenu>
@@ -309,7 +309,7 @@
                                                 <p:menuitem value="#{appmsg['leave.leave']}" icon="img-permit" style="font-size: 12px !important;color: #003366" title="#{appmsg['leave.leave']}" url="/protected/working_time/leave_view.htm" />
                                                 <p:menuitem value="#{appmsg['leavescheme.leave_scheme']}" icon="img-leave-scheme" style="font-size: 12px !important;color: #003366" title="#{appmsg['leavescheme.leave_scheme']}" url="/protected/working_time/leave_scheme_view.htm" />
                                                 <p:menuitem value="#{appmsg['publicHoliday.publicHoliday']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['publicHoliday.publicHoliday']}" url="/protected/working_time/public_holiday_view.htm" /> 
-                                            
+
                                             </p:submenu>
                                             <p:submenu label="Personalia"  styleClass="menu_child">
                                                 <p:submenu label="#{appmsg['personalia.dinas']}"  styleClass="menu_child" >
@@ -349,7 +349,7 @@
                                             <p:menuitem value="#{appmsg['businesstravel.business_travel']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="Bio Data" url="/protected/personalia/business_travel_view.htm" />
                                         </p:submenu>
                                         <p:submenu label="#{appmsg['menu.working_time']}"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-task">
-
+                                            <p:menuitem value="Jadwal Kerja Karyawan" icon="img-task" style="font-size: 12px !important;color: #003366" title="#{appmsg['publicHolidayException.publicHolidayException']}" url="/protected/employee/employee_schedule_view.htm" /> 
                                             <p:menuitem value="#{appmsg['publicHolidayException.publicHolidayException']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['publicHolidayException.publicHolidayException']}" url="/protected/working_time/public_holiday_exception_view.htm" /> 
                                         </p:submenu>
                                         <p:submenu label="Payroll"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-payroll">
