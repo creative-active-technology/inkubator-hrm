@@ -35,8 +35,8 @@ public class EmpTimeScheduleFormController extends BaseController {
     @ManagedProperty(value = "#{wtGroupWorkingService}")
     private WtGroupWorkingService wtGroupWorkingService;
     private List<WtGroupWorking> dataToShow = new ArrayList<>();
-    private Map<String, Long> workingTime = new HashMap<>();
-    private long groupWorkingId;
+    private Map<String, String> workingTime = new HashMap<>();
+    private String groupWorkingCode;
 
     @PostConstruct
     @Override
@@ -49,8 +49,9 @@ public class EmpTimeScheduleFormController extends BaseController {
             dataToShow = wtGroupWorkingService.getAllData();
             System.out.println(dataToShow.size());
             for (WtGroupWorking dataToShow1 : dataToShow) {
-                workingTime.put(dataToShow1.getCode() + " - " + dataToShow1.getName(), dataToShow1.getId());
+                workingTime.put(dataToShow1.getCode() + " - " + dataToShow1.getName(), dataToShow1.getCode());
             }
+            groupWorkingCode="DEFAULT";
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -83,19 +84,13 @@ public class EmpTimeScheduleFormController extends BaseController {
         this.dataToShow = dataToShow;
     }
 
-    public long getGroupWorkingId() {
-        return groupWorkingId;
-    }
+  
 
-    public void setGroupWorkingId(long groupWorkingId) {
-        this.groupWorkingId = groupWorkingId;
-    }
-
-    public Map<String, Long> getWorkingTime() {
+    public Map<String, String> getWorkingTime() {
         return workingTime;
     }
 
-    public void setWorkingTime(Map<String, Long> workingTime) {
+    public void setWorkingTime(Map<String, String> workingTime) {
         this.workingTime = workingTime;
     }
 
@@ -103,5 +98,14 @@ public class EmpTimeScheduleFormController extends BaseController {
         this.wtGroupWorkingService = wtGroupWorkingService;
     }
 
+    public String getGroupWorkingCode() {
+        return groupWorkingCode;
+    }
+
+    public void setGroupWorkingCode(String groupWorkingCode) {
+        this.groupWorkingCode = groupWorkingCode;
+    }
+
+    
     
 }

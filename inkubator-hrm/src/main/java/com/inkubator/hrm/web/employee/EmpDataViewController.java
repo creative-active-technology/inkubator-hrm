@@ -141,7 +141,7 @@ public class EmpDataViewController extends BaseController {
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 400);
-        options.put("contentHeight", 440);
+        options.put("contentHeight", 270);
         RequestContext.getCurrentInstance().openDialog("employee_schedule_form", options, dataToSend);
 
     }
