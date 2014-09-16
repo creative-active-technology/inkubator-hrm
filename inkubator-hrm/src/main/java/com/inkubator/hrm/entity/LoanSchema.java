@@ -46,12 +46,14 @@ public class LoanSchema implements java.io.Serializable {
     private BigDecimal maxNominal;
     private Double maxPaymentOfSalary;
     private Double penaltyOfNonComplance;
+    private Double interestRate;
     private String createdBy;
     private Date createdOn;
     private String updatedBy;
     private Date updatedOn;
     private List<EmployeeType> employeeTypes = new ArrayList<>(0);
     private Set<LoanSchemaEmployeeType> loanSchemaEmployeeTypes = new HashSet<LoanSchemaEmployeeType>(0);
+    private Set<Loan> loans = new HashSet<Loan>(0);
     
 
     public LoanSchema() {
@@ -165,7 +167,16 @@ public class LoanSchema implements java.io.Serializable {
         this.penaltyOfNonComplance = penaltyOfNonComplance;
     }
 
-    @Column(name = "created_by", length = 45)
+    @Column(name="interest_rate", nullable=false)
+    public Double getInterestRate() {
+		return interestRate;
+	}
+
+	public void setInterestRate(Double interestRate) {
+		this.interestRate = interestRate;
+	}
+
+	@Column(name = "created_by", length = 45)
     public String getCreatedBy() {
         return createdBy;
     }
@@ -221,7 +232,16 @@ public class LoanSchema implements java.io.Serializable {
         this.loanSchemaEmployeeTypes = loanSchemaEmployeeTypes;
     }
     
-    @Transient
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "loanSchema")
+    public Set<Loan> getLoans() {
+		return loans;
+	}
+
+	public void setLoans(Set<Loan> loans) {
+		this.loans = loans;
+	}
+
+	@Transient
     public String getBasicValueString(){
         String data = "";
         if(basicValue == 0){
