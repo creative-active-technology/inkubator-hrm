@@ -29,4 +29,6 @@ public interface WtGroupWorkingDao extends IDAO<WtGroupWorking> {
 
     public void saveAndMerge(WtGroupWorking groupWorking);
 
+//    public List<WtGroupWorking> workingGroupIsAcive();
+
 }

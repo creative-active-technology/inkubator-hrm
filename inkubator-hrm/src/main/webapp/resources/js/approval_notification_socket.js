@@ -1,8 +1,1 @@
-
-function handleApproval(approvalPushMessageModel) {
-	approvalRC([{name:'approverUserId',value:approvalPushMessageModel.approverUserId}, 
-	            {name:'requestUserId',value:approvalPushMessageModel.requestUserId},
-	            {name:'approverFullName',value:approvalPushMessageModel.approverFullName}, 
-	            {name:'requestFullName',value:approvalPushMessageModel.requestFullName},
-	            {name:'approvalName',value:approvalPushMessageModel.approvalName}]);
-}
+function handleApproval(a){approvalRC([{name:"approverUserId",value:a.approverUserId},{name:"requestUserId",value:a.requestUserId},{name:"approverFullName",value:a.approverFullName},{name:"requestFullName",value:a.requestFullName},{name:"approvalName",value:a.approvalName}])};

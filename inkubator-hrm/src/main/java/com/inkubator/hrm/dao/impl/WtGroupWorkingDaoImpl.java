@@ -88,4 +88,12 @@ public class WtGroupWorkingDaoImpl extends IDAOImpl<WtGroupWorking> implements W
         getCurrentSession().flush();
     }
 
+//    @Override
+//    public List<WtGroupWorking> workingGroupIsAcive() {
+//        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+//        criteria.add(Restrictions.eq(null, this));
+//        
+//
+//    }
+
 }
