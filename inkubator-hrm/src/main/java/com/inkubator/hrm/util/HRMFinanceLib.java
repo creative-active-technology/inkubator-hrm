@@ -105,7 +105,7 @@ public final class HRMFinanceLib {
         return lp;
     }
 
-    public static LoanPayment getLoanPaymentPaymentEffectiveMode(LoanPayment loanPayment) {
+    public static LoanPayment getLoanPaymentEffectiveMode(LoanPayment loanPayment) {
         LoanPayment lp = new LoanPayment();
         lp.setBungaPertahun(loanPayment.getBungaPertahun());
         lp.setLamaPinjaman(loanPayment.getLamaPinjaman());

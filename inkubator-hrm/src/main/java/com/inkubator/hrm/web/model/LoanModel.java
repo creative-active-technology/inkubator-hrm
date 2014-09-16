@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.inkubator.common.CommonUtilConstant;
+import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.LoanPaymentDetail;
 
@@ -23,7 +25,9 @@ public class LoanModel implements Serializable {
 	private Integer maxTermin;
 	private Double interestRate;
 	private Date loanPaymentDate;
+	private Date maxLoanPaymentDate;
 	private Date loanDate;
+	private Integer typeOfInterest;
 	private List<LoanPaymentDetail> loanPaymentDetails;
 	
 	public LoanModel(){
@@ -94,6 +98,17 @@ public class LoanModel implements Serializable {
 	}
 	public void setMaxTermin(Integer maxTermin) {
 		this.maxTermin = maxTermin;
+	}
+	public Integer getTypeOfInterest() {
+		return typeOfInterest;
+	}
+	public void setTypeOfInterest(Integer typeOfInterest) {
+		this.typeOfInterest = typeOfInterest;
+	}
+	public Date getMaxLoanPaymentDate() {
+		return DateTimeUtil.getDateFrom(loanPaymentDate, termin-1, CommonUtilConstant.DATE_FORMAT_MONTH);
+	}
+	public void setMaxLoanPaymentDate(Date maxLoanPaymentDate) {
+		this.maxLoanPaymentDate = maxLoanPaymentDate;
 	}	
-	
 }

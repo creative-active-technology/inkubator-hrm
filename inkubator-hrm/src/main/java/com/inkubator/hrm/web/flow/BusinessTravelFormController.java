@@ -80,7 +80,6 @@ public class BusinessTravelFormController implements Serializable{
 	
 	public BusinessTravelModel setBusinessTravelComponents(RequestContext context){
 		BusinessTravelModel model = (BusinessTravelModel) context.getFlowScope().get("businessTravelModel");
-		Long id = context.getFlowScope().getLong("id");
 		
 		try {
 			/**

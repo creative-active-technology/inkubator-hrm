@@ -1,10 +1,8 @@
 package com.inkubator.hrm.web.flow;
 
 import java.io.Serializable;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +10,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.springframework.webflow.execution.RequestContext;
 
-import com.inkubator.common.CommonUtilConstant;
 import com.inkubator.common.util.AESUtil;
-import com.inkubator.common.util.NumberFormatter;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.Loan;
@@ -24,8 +20,10 @@ import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.LoanPaymentDetailService;
 import com.inkubator.hrm.service.LoanSchemaService;
 import com.inkubator.hrm.service.LoanService;
+import com.inkubator.hrm.util.HRMFinanceLib;
+import com.inkubator.hrm.util.JadwalPembayaran;
+import com.inkubator.hrm.util.LoanPayment;
 import com.inkubator.hrm.web.model.LoanModel;
-import com.inkubator.webcore.util.FacesUtil;
 
 /**
  *
@@ -68,29 +66,43 @@ public class LoanFormController implements Serializable{
 	
 	public LoanModel setLoanPaymentDetails(RequestContext context){
 		LoanModel model = (LoanModel) context.getFlowScope().get("loanModel");
-		Long id = context.getFlowScope().getLong("id");
 		
 		try {
 			/**
 			 * bind list of loan payment detail to model.list 
 			 * set hanya jika loan payment detail size == 0, artinya jika size > 0 maka value list nya sudah terdapat di flowSession tidak perlu getList lagi
-			 * */
-			List<LoanPaymentDetail> listLoanPaymentDetails = new ArrayList<LoanPaymentDetail>();
+			 * */			
 			if(model.getLoanPaymentDetails().size() == 0){
 				
-				/*//convert from TravelComponentCostRate to BusinessTravelComponent
-				List<TravelComponentCostRate> travelComponentCostRates = travelComponentCostRateService.getAllDataByEmpDataIdAndTravelZoneId(model.getEmpData().getId(), model.getTravelZoneId());
-				for(TravelComponentCostRate travelComponentCostRate : travelComponentCostRates){
-					BusinessTravelComponent businessTravelComponent = new BusinessTravelComponent();
-					businessTravelComponent.setTravelComponent(travelComponentCostRate.getTravelComponent());
-					businessTravelComponent.setCostCenter(travelComponentCostRate.getCostCenter());
-					businessTravelComponent.setQuantity(defaultQuantity);
-					businessTravelComponent.setEarnedPerQuantity(travelComponentCostRate.getDefaultRate());
-					businessTravelComponent.setDefaultRate(travelComponentCostRate.getDefaultRate());
-						
-					//add to list
-					listBusinessTravelComponent.add(businessTravelComponent);
-				}		*/			
+				//set parameter for calculating jadwalPembayaran
+				LoanPayment loanPayment = new LoanPayment();
+				loanPayment.setBungaPertahun(model.getInterestRate());
+				loanPayment.setLamaPinjaman(model.getTermin());
+				loanPayment.setPaymentPeriod(1);
+				loanPayment.setTanggalBayar(model.getLoanPaymentDate());
+				loanPayment.setTotalPinjaman(model.getNominalPrincipal());
+				
+				//calculate jadwalPembayaran
+				LoanSchema loanSchema = loanSchemaService.getEntiyByPK(model.getLoanSchemaId());
+				if(loanSchema.getTypeOfInterest() == HRMConstant.ANNUITY){
+					loanPayment = HRMFinanceLib.getLoanPaymentAnuitas(loanPayment);
+				} else if (loanSchema.getTypeOfInterest() == HRMConstant.FLAT){
+					loanPayment = HRMFinanceLib.getLoanPaymentFlateMode(loanPayment);
+				} else if (loanSchema.getTypeOfInterest() == HRMConstant.FLOATING){
+					loanPayment = HRMFinanceLib.getLoanPaymentEffectiveMode(loanPayment);
+				} 	
+				
+				//convert jadwalPembayaran to loanPaymentDetails
+				List<LoanPaymentDetail> listLoanPaymentDetails = new ArrayList<LoanPaymentDetail>();
+				for(JadwalPembayaran jadwalPembayaran : loanPayment.getJadwalPembayarans()){
+					LoanPaymentDetail lpDetail = new LoanPaymentDetail();
+					lpDetail.setPaymentDate(jadwalPembayaran.getTanggalPembayaran());
+					lpDetail.setTotalPayment(jadwalPembayaran.getAngsuran());
+					lpDetail.setInterest(jadwalPembayaran.getBunga());
+					lpDetail.setPrincipal(jadwalPembayaran.getPokok());
+					lpDetail.setRemainingPrincipal(jadwalPembayaran.getSisaUtang());
+					listLoanPaymentDetails.add(lpDetail);
+				}
 				model.setLoanPaymentDetails(listLoanPaymentDetails);
 			}
 		} catch (Exception ex) {
@@ -161,10 +173,24 @@ public class LoanFormController implements Serializable{
 			model.setMaxNominalPrincipal(this.getMaxNominalPrincipal(loanSchema, model.getEmpData()));
 			model.setMaxTermin(loanSchema.getMaxPeriode());
 			model.setInterestRate(loanSchema.getInterestRate());
+			model.getLoanPaymentDetails().clear();
+			model.setTypeOfInterest(loanSchema.getTypeOfInterest());
+			if(model.getNominalPrincipal() > model.getMaxNominalPrincipal()){
+				model.setNominalPrincipal(0.0);
+			}
+			if(model.getTermin() > model.getMaxTermin()){
+				model.setTermin(1);
+			}
 			context.getFlowScope().put("loanModel", model);
 		} catch (Exception e) {
 			LOGGER.error("Error", e);
 		}
+	}
+	
+	public void doResetLoanPaymentDetailForm(RequestContext context){
+		LoanModel model = (LoanModel) context.getFlowScope().get("loanModel");
+		model.getLoanPaymentDetails().clear();
+		context.getFlowScope().put("loanModel", model);
 	}
 	
 	private Double getMaxNominalPrincipal(LoanSchema loanSchema, EmpData empData){

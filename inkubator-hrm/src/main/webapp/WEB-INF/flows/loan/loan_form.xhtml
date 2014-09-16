@@ -68,7 +68,9 @@
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                            	<pe:inputNumber id="nominalPrincipalId" title="#{appmsg['loan.nominal_principal']}" value="#{loanModel.nominalPrincipal}" 
-	                                				decimalPlaces="2" required="true" maxValue="#{loanModel.maxNominalPrincipal}" styleClass="isitext_hrm" style="width:290px;"/>
+	                                				decimalPlaces="2" required="true" maxValue="#{loanModel.maxNominalPrincipal}" styleClass="isitext_hrm" style="width:290px;">
+	                                	<p:ajax listener="#{loanFormController.doResetLoanPaymentDetailForm(flowRequestContext)}"/>
+	                                </pe:inputNumber>
 	                                <p:outputLabel value="&nbsp;  (max: Rp. "/>				
 	                                <p:outputLabel id="maxNominalPrincipalId" value="#{loanModel.maxNominalPrincipal}">
 	                                	<f:convertNumber pattern="###,###" type="currency"/>
@@ -82,7 +84,9 @@
 	                                <p:outputLabel for="terminId" value="#{appmsg['loan.termin']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:spinner id="terminId" value="#{loanModel.termin}" size="4" min="1" max="#{loanModel.maxTermin}" styleClass="isitext_hrm" required="true"/>
+	                            	<p:spinner id="terminId" value="#{loanModel.termin}" size="4" min="1" max="#{loanModel.maxTermin}" styleClass="isitext_hrm" required="true">
+	                            		<p:ajax listener="#{loanFormController.doResetLoanPaymentDetailForm(flowRequestContext)}"/>
+	                            	</p:spinner>
 	                            	<p:outputLabel id="maxTerminId" value="&nbsp;  (max: #{loanModel.maxTermin})"/>	
 	                                <p:message for="terminId"/>
 	                            </p:column>
@@ -102,8 +106,9 @@
 	                                <p:outputLabel for="loanPaymentDateId" value="#{appmsg['loan.loan_payment_date']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                                <p:calendar id="loanPaymentDateId" required="true" pattern="dd-MMMM-yyyy" 
-                                            	value="#{loanModel.loanPaymentDate}"/>
+	                                <p:calendar id="loanPaymentDateId" required="true" pattern="dd-MMMM-yyyy" value="#{loanModel.loanPaymentDate}">
+	                                	<p:ajax listener="#{loanFormController.doResetLoanPaymentDetailForm(flowRequestContext)}"/>
+                                    </p:calendar>
 	                                <p:message for="loanPaymentDateId"/>
 	                            </p:column>
 	                        </p:row> 
