@@ -57,7 +57,7 @@
 	                                <p:selectOneMenu id="loanSchemaId" styleClass="isitext_hrm" required="true"  value="#{loanModel.loanSchemaId}" style="width:300px;">
 	                            		<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
 	                                    <f:selectItems value="#{loanSchemas}" var="loanSchema" itemValue="#{loanSchema.id}" itemLabel="#{loanSchema.name}"/>
-	                                    <p:ajax listener="#{loanFormController.onChangeLoanSchema(flowRequestContext)}" update="maxNominalPrincipalId,nominalPrincipalId,maxTerminId,terminId,interestRateId"/>
+	                                    <p:ajax listener="#{loanFormController.onChangeLoanSchema(flowRequestContext)}" update="maxNominalPrincipalId,maxTerminId,interestRateId"/>
 	                                </p:selectOneMenu>
 	                                <p:message for="loanSchemaId"/>
 	                            </p:column>
@@ -68,7 +68,7 @@
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                            	<pe:inputNumber id="nominalPrincipalId" title="#{appmsg['loan.nominal_principal']}" value="#{loanModel.nominalPrincipal}" 
-	                                				decimalPlaces="2" required="true" maxValue="#{loanModel.maxNominalPrincipal}" styleClass="isitext_hrm" style="width:290px;">
+	                                				decimalPlaces="0" required="true" styleClass="isitext_hrm" style="width:290px;">
 	                                	<p:ajax listener="#{loanFormController.doResetLoanPaymentDetailForm(flowRequestContext)}"/>
 	                                </pe:inputNumber>
 	                                <p:outputLabel value="&nbsp;  (max: Rp. "/>				
@@ -84,7 +84,7 @@
 	                                <p:outputLabel for="terminId" value="#{appmsg['loan.termin']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:spinner id="terminId" value="#{loanModel.termin}" size="4" min="1" max="#{loanModel.maxTermin}" styleClass="isitext_hrm" required="true">
+	                            	<p:spinner id="terminId" value="#{loanModel.termin}" size="4" min="1" styleClass="isitext_hrm" required="true">
 	                            		<p:ajax listener="#{loanFormController.doResetLoanPaymentDetailForm(flowRequestContext)}"/>
 	                            	</p:spinner>
 	                            	<p:outputLabel id="maxTerminId" value="&nbsp;  (max: #{loanModel.maxTermin})"/>	

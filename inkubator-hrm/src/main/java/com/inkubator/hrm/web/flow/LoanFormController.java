@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.faces.application.FacesMessage;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -24,6 +26,8 @@ import com.inkubator.hrm.util.HRMFinanceLib;
 import com.inkubator.hrm.util.JadwalPembayaran;
 import com.inkubator.hrm.util.LoanPayment;
 import com.inkubator.hrm.web.model.LoanModel;
+import com.inkubator.webcore.util.FacesUtil;
+import com.inkubator.webcore.util.MessagesResourceUtil;
 
 /**
  *
@@ -112,6 +116,20 @@ public class LoanFormController implements Serializable{
 		return model;
 	}
 	
+	public String doLoanFormVerification(RequestContext context){
+		String message = "success";
+		LoanModel model = (LoanModel) context.getFlowScope().get("loanModel");
+		if(model.getNominalPrincipal() > model.getMaxNominalPrincipal()){
+			MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "loan.error_nominal_principal", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+			message = "error";
+			
+		} else if(model.getTermin() > model.getMaxTermin()){
+			MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "loan.error_period", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+			message = "error";
+			
+		}		
+		return message;
+	}
 	public String doSave(RequestContext context) {
 		String message = "error";
 		
@@ -157,9 +175,7 @@ public class LoanFormController implements Serializable{
 			List<LoanSchema> loanSchemas = loanSchemaService.getAllDataByEmployeeTypeId(model.getEmpData().getEmployeeType().getId());
 			context.getFlowScope().put("loanSchemas", loanSchemas);
 			
-			model.setMaxNominalPrincipal(0.0);
-			model.setMaxTermin(0);
-			model.getLoanPaymentDetails().clear();
+			model.setLoanSchemaId(null);
 			context.getFlowScope().put("loanModel", model);
 		} catch (Exception e) {
 			LOGGER.error("Error", e);
@@ -174,13 +190,7 @@ public class LoanFormController implements Serializable{
 			model.setMaxTermin(loanSchema.getMaxPeriode());
 			model.setInterestRate(loanSchema.getInterestRate());
 			model.getLoanPaymentDetails().clear();
-			model.setTypeOfInterest(loanSchema.getTypeOfInterest());
-			if(model.getNominalPrincipal() > model.getMaxNominalPrincipal()){
-				model.setNominalPrincipal(0.0);
-			}
-			if(model.getTermin() > model.getMaxTermin()){
-				model.setTermin(1);
-			}
+			model.setTypeOfInterest(loanSchema.getTypeOfInterest());			
 			context.getFlowScope().put("loanModel", model);
 		} catch (Exception e) {
 			LOGGER.error("Error", e);

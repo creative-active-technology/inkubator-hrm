@@ -12,9 +12,7 @@
 	</on-start>
 
     <view-state id="add_loan" view="loan_form.xhtml">
-		<transition on="next" to="add_loan_payment_detail">
-			<evaluate expression="loanFormController.setLoanPaymentDetails(flowRequestContext)" result="flowScope.loanModel"/> 
-		</transition>
+		<transition on="next" to="loan_form_verification"/>
 		<transition on="end" to="end"/>
     </view-state>
     
@@ -24,6 +22,14 @@
     	<transition on="end" to="end"/>
     </view-state>
 
+	<action-state id="loan_form_verification">
+        <evaluate expression="loanFormController.doLoanFormVerification(flowRequestContext)"/>
+        <transition on="success" to="add_loan_payment_detail">
+        	<evaluate expression="loanFormController.setLoanPaymentDetails(flowRequestContext)" result="flowScope.loanModel"/>
+        </transition>
+        <transition on="error" to="add_loan"/>
+    </action-state >
+    
 	<action-state id="save_verification">
         <evaluate expression="loanFormController.doSave(flowRequestContext)"/>
         <transition on="success_need_approval" to="end"/>
