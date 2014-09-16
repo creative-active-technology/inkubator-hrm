@@ -91,4 +91,13 @@ public class LoanSchemaDaoImpl extends IDAOImpl<LoanSchema> implements LoanSchem
         }
         criteria.add(Restrictions.isNotNull("id"));
     }
+
+	@Override
+	public List<LoanSchema> getAllDataByEmployeeTypeId(Long employeeTypeId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());		
+		criteria.createAlias("loanSchemaEmployeeTypes", "loanSchemaEmployeeTypes");
+		criteria.createAlias("loanSchemaEmployeeTypes.employeeType", "employeeType");
+		criteria.add(Restrictions.eq("employeeType.id", employeeTypeId));
+		return criteria.list();
+	}
 }

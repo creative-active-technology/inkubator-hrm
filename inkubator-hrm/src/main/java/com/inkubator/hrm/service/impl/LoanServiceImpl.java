@@ -245,4 +245,10 @@ public class LoanServiceImpl extends IServiceImpl implements LoanService {
 		
 	}
 
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Loan getEntityByPkWithDetail(Long id) throws Exception {
+		return loanDao.getEntityByPkWithDetail(id);
+	}
+
 }
