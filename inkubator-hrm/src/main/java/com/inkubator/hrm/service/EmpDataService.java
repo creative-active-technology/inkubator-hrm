@@ -31,19 +31,21 @@ public interface EmpDataService extends IService<EmpData> {
     public EmpData getByEmpIdWithDetail(long id) throws Exception;
 
     public EmpData getByBioDataIdWithDepartment(long id) throws Exception;
-    
+
     public List<EmpData> getAllDataWithRelation() throws Exception;
 
-	public List<EmpData> getAllDataByNameOrNik(String param) throws Exception;
-	
-	public EmpData getByIdWithDetail(long id) throws Exception;
+    public List<EmpData> getAllDataByNameOrNik(String param) throws Exception;
+
+    public EmpData getByIdWithDetail(long id) throws Exception;
 
     public EmpData getEntityByNik(String nik) throws Exception;
 
     public void doSaveRotasi(EmpData empData) throws Exception;
-    
+
     public List<EmpData> getAllDataNotExistInUserByParam(String param, int firstResult, int maxResults, Order order) throws Exception;
-    
+
     public Long getTotalNotExistInUserByParam(String param) throws Exception;
+
+    public void savePenempatanJadwal(EmpData empData) throws Exception;
 
 }

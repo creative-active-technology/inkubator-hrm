@@ -25,6 +25,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import org.hibernate.exception.ConstraintViolationException;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.SelectEvent;
 import org.primefaces.model.LazyDataModel;
 import org.springframework.dao.DataIntegrityViolationException;
 
@@ -140,7 +141,7 @@ public class EmpDataViewController extends BaseController {
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", false);
-        options.put("contentWidth", 400);
+        options.put("contentWidth", 450);
         options.put("contentHeight", 270);
         RequestContext.getCurrentInstance().openDialog("employee_schedule_form", options, dataToSend);
 
@@ -153,5 +154,15 @@ public class EmpDataViewController extends BaseController {
         empDataService = null;
         selectedEmpData = null;
 
+    }
+
+    @Override
+    public void onDialogReturn(SelectEvent event) {
+        System.out.println(" hahahahah");
+        super.onDialogReturn(event);
+    }
+
+    public String doDetailShedule() {
+        return "/protected/employee/employee_shcedule_detail.htm?faces-redirect=true&execution=r" + selectedEmpData.getId();
     }
 }

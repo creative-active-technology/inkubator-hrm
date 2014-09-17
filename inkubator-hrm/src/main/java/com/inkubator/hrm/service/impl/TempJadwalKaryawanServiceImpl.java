@@ -14,6 +14,9 @@ import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -184,6 +187,12 @@ public class TempJadwalKaryawanServiceImpl extends IServiceImpl implements TempJ
     @Override
     public List<TempJadwalKaryawan> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS, isolation = Isolation.REPEATABLE_READ, timeout = 50)
+    public List<TempJadwalKaryawan> getAllByEmpIdWithDetail(long empId) throws Exception {
+        return this.tempJadwalKaryawanDao.getAllByEmpIdWithDetail(empId);
     }
 
 }

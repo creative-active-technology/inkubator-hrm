@@ -5,6 +5,7 @@
  */
 package com.inkubator.hrm.web.employee;
 
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.WtGroupWorking;
 import com.inkubator.hrm.service.EmpDataService;
@@ -20,6 +21,7 @@ import javax.annotation.PreDestroy;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -46,12 +48,17 @@ public class EmpTimeScheduleFormController extends BaseController {
             super.initialization();
             String empId = FacesUtil.getRequestParameter("empId");
             selectedEmpData = empDataService.getEntiyByPK(Long.parseLong(empId));
+            if (selectedEmpData.getWtGroupWorking() != null) {
+                groupWorkingCode = selectedEmpData.getWtGroupWorking().getCode();
+            } else {
+                groupWorkingCode = "DEFAULT";
+            }
             dataToShow = wtGroupWorkingService.getAllData();
             System.out.println(dataToShow.size());
             for (WtGroupWorking dataToShow1 : dataToShow) {
                 workingTime.put(dataToShow1.getCode() + " - " + dataToShow1.getName(), dataToShow1.getCode());
             }
-            groupWorkingCode="DEFAULT";
+
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -60,7 +67,9 @@ public class EmpTimeScheduleFormController extends BaseController {
 
     @PreDestroy
     public void cleanAndExit() {
-
+        empDataService = null;
+        selectedEmpData=null;
+        
     }
 
     public void setEmpDataService(EmpDataService empDataService) {
@@ -75,7 +84,6 @@ public class EmpTimeScheduleFormController extends BaseController {
         this.selectedEmpData = selectedEmpData;
     }
 
-  
     public List<WtGroupWorking> getDataToShow() {
         return dataToShow;
     }
@@ -83,8 +91,6 @@ public class EmpTimeScheduleFormController extends BaseController {
     public void setDataToShow(List<WtGroupWorking> dataToShow) {
         this.dataToShow = dataToShow;
     }
-
-  
 
     public Map<String, String> getWorkingTime() {
         return workingTime;
@@ -106,6 +112,16 @@ public class EmpTimeScheduleFormController extends BaseController {
         this.groupWorkingCode = groupWorkingCode;
     }
 
-    
-    
+    public void doSave() {
+        try {
+            selectedEmpData.setWtGroupWorking(new WtGroupWorking(groupWorkingCode));
+            empDataService.savePenempatanJadwal(selectedEmpData);
+            RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
+            cleanAndExit();
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
+        }
+
+    }
+
 }

@@ -90,25 +90,17 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{empViewData.bioData.firstName} #{empViewData.bioData.lastName}"/>
                             </p:column>
-                            <p:column sortBy="joinDate"  >
-                                <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['placement.join_data']}"/>
-                                </f:facet>
-                                <p:outputLabel value= "#{empViewData.joinDate}">
-                                    <f:convertDateTime pattern="dd MMMM yyyy" />
-                                </p:outputLabel>
-                            </p:column>
-                            <p:column sortBy="jabatanByJabatanId" style="text-align: center" >
-                                <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['placement.jabatan_code']}"/>
-                                </f:facet>
-                                <p:outputLabel value= "#{empViewData.jabatanByJabatanId.code}"/>
-                            </p:column>
                             <p:column sortBy="jabatanByJabatanId" >
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['placement.jabatan_name']}"/>
                                 </f:facet>
                                 <p:outputLabel value= "#{empViewData.jabatanByJabatanId.name}"/>
+                            </p:column>
+                            <p:column sortBy="wtGroupWorking" >
+                                <f:facet name="header">  
+                                    <h:outputText value="Kelompok Kerja"/>
+                                </f:facet>
+                                <p:outputLabel value= "#{empViewData.wtGroupWorking.name}"/>
                             </p:column>
 
                             <p:column headerText="#{appmsg['global.action']}" style="width: 200px;text-align: center" exportable="false">
@@ -116,11 +108,11 @@
                                 <p:commandButton  icon="ui-icon-calendar" title="Jadwal Kerja" label="Jadwal Kerja" value="Jadwal Kerja" style="font-size: 10px!important" 
                                                   action="#{empDataViewController.doEmployeeTimeSchedule()}" >
                                     <f:setPropertyActionListener value="#{empViewData}" target="#{empDataViewController.selectedEmpData}" />
-
+                                    <p:ajax event="dialogReturn" listener="#{empDataViewController.onDialogReturn}"  update="tableEmpDataId"/>
                                 </p:commandButton> 
                                 -
                                 <p:commandButton  icon="ui-icon-contact" title="Detail Jadwal" label="Detail Jadwal" value="Detail Jadwal" style="font-size: 10px!important" 
-                                                  action="#{empDataViewController.doRotasi()}" >
+                                                  action="#{empDataViewController.doDetailShedule()}"  disabled="#{empViewData.sheduleDisable}">
                                     <f:setPropertyActionListener value="#{empViewData}" target="#{empDataViewController.selectedEmpData}" />
 
                                 </p:commandButton> 

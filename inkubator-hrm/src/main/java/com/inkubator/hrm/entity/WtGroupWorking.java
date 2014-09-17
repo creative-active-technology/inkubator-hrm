@@ -227,4 +227,10 @@ public class WtGroupWorking implements java.io.Serializable {
         this.isActive = isActive;
     }
 
+    public WtGroupWorking(String code) {
+        this.code = code;
+    }
+    
+    
+
 }

@@ -73,4 +73,11 @@ public class AttendanceStatusDaoImpl extends IDAOImpl<AttendanceStatus> implemen
         criteria.add(Restrictions.ne("id", id));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
+
+    @Override
+    public AttendanceStatus getByCode(String code) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("code", code));
+        return (AttendanceStatus) criteria.uniqueResult();
+    }
 }

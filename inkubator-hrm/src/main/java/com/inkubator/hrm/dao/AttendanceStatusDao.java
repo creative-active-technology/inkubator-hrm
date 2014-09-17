@@ -24,4 +24,6 @@ public interface AttendanceStatusDao extends IDAO<AttendanceStatus> {
     public Long getTotalDuplicateByCode(String statusCode);
 
     public Long getTotalDuplicaByNameAndNotId(String statusCode, Long id);
+    
+    public AttendanceStatus getByCode(String code);
 }

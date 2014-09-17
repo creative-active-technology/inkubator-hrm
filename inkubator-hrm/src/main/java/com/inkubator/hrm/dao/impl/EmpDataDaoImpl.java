@@ -5,9 +5,14 @@
  */
 package com.inkubator.hrm.dao.impl;
 
+import com.inkubator.datacore.dao.impl.IDAOImpl;
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.dao.EmpDataDao;
+import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.HrmUser;
+import com.inkubator.hrm.web.search.EmpDataSearchParameter;
 import java.util.Date;
 import java.util.List;
-
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.DetachedCriteria;
@@ -21,13 +26,6 @@ import org.hibernate.criterion.Subqueries;
 import org.hibernate.sql.JoinType;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
-
-import com.inkubator.datacore.dao.impl.IDAOImpl;
-import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.dao.EmpDataDao;
-import com.inkubator.hrm.entity.EmpData;
-import com.inkubator.hrm.entity.HrmUser;
-import com.inkubator.hrm.web.search.EmpDataSearchParameter;
 
 /**
  *
@@ -95,6 +93,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.setFetchMode("golonganJabatan.pangkat", FetchMode.JOIN);
         criteria.setFetchMode("jabatanByJabatanId.department", FetchMode.JOIN);
         criteria.setFetchMode("jabatanByJabatanId.unitKerja", FetchMode.JOIN);
+        criteria.setFetchMode("wtGroupWorking", FetchMode.JOIN);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
         return criteria.list();
