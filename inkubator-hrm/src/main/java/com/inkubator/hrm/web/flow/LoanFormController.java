@@ -22,9 +22,6 @@ import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.LoanPaymentDetailService;
 import com.inkubator.hrm.service.LoanSchemaService;
 import com.inkubator.hrm.service.LoanService;
-import com.inkubator.hrm.util.HRMFinanceLib;
-import com.inkubator.hrm.util.JadwalPembayaran;
-import com.inkubator.hrm.util.LoanPayment;
 import com.inkubator.hrm.web.model.LoanModel;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
@@ -76,38 +73,10 @@ public class LoanFormController implements Serializable{
 			 * bind list of loan payment detail to model.list 
 			 * set hanya jika loan payment detail size == 0, artinya jika size > 0 maka value list nya sudah terdapat di flowSession tidak perlu getList lagi
 			 * */			
-			if(model.getLoanPaymentDetails().size() == 0){
-				
-				//set parameter for calculating jadwalPembayaran
-				LoanPayment loanPayment = new LoanPayment();
-				loanPayment.setBungaPertahun(model.getInterestRate());
-				loanPayment.setLamaPinjaman(model.getTermin());
-				loanPayment.setPaymentPeriod(1);
-				loanPayment.setTanggalBayar(model.getLoanPaymentDate());
-				loanPayment.setTotalPinjaman(model.getNominalPrincipal());
-				
-				//calculate jadwalPembayaran
-				LoanSchema loanSchema = loanSchemaService.getEntiyByPK(model.getLoanSchemaId());
-				if(loanSchema.getTypeOfInterest() == HRMConstant.ANNUITY){
-					loanPayment = HRMFinanceLib.getLoanPaymentAnuitas(loanPayment);
-				} else if (loanSchema.getTypeOfInterest() == HRMConstant.FLAT){
-					loanPayment = HRMFinanceLib.getLoanPaymentFlateMode(loanPayment);
-				} else if (loanSchema.getTypeOfInterest() == HRMConstant.FLOATING){
-					loanPayment = HRMFinanceLib.getLoanPaymentEffectiveMode(loanPayment);
-				} 	
-				
-				//convert jadwalPembayaran to loanPaymentDetails
-				List<LoanPaymentDetail> listLoanPaymentDetails = new ArrayList<LoanPaymentDetail>();
-				for(JadwalPembayaran jadwalPembayaran : loanPayment.getJadwalPembayarans()){
-					LoanPaymentDetail lpDetail = new LoanPaymentDetail();
-					lpDetail.setPaymentDate(jadwalPembayaran.getTanggalPembayaran());
-					lpDetail.setTotalPayment(jadwalPembayaran.getAngsuran());
-					lpDetail.setInterest(jadwalPembayaran.getBunga());
-					lpDetail.setPrincipal(jadwalPembayaran.getPokok());
-					lpDetail.setRemainingPrincipal(jadwalPembayaran.getSisaUtang());
-					listLoanPaymentDetails.add(lpDetail);
-				}
+			if(model.getLoanPaymentDetails().size() == 0){				
+				List<LoanPaymentDetail> listLoanPaymentDetails = loanService.getAllDataLoanPaymentDetails(model.getInterestRate(), model.getTermin(), model.getLoanPaymentDate(), model.getNominalPrincipal(), model.getLoanSchemaId());
 				model.setLoanPaymentDetails(listLoanPaymentDetails);
+				
 			}
 		} catch (Exception ex) {
 			LOGGER.error("Error", ex);
@@ -142,14 +111,17 @@ public class LoanFormController implements Serializable{
 		loan.setLoanPaymentDate(model.getLoanPaymentDate());
 		loan.setLoanDate(model.getLoanDate());
 		loan.setInterestRate(model.getInterestRate());
+		loan.setTermin(model.getTermin());
 		
 		try {
 			if(loan.getId() == null) {
-				//message = loanService.save(loan, model.getLoanPaymentDetails(), false);
+				message = loanService.save(loan, false);
+				
+				//tujuannya agar waktu redirect dari flow ke detail, sudah didapatkan id-nya
 				model.setId(loan.getId());
 				context.getFlowScope().put("loanModel", model);
 			} else {
-				//loanService.update(loan, model.getLoanPaymentDetails());
+				loanService.update(loan);
 				message = "success_without_approval";
 			}
 		} catch (Exception ex) {
@@ -244,12 +216,13 @@ public class LoanFormController implements Serializable{
 		model.setEmpData(loan.getEmpData());
 		model.setLoanSchemaId(loan.getLoanSchema().getId());
 		model.setNominalPrincipal(loan.getNominalPrincipal());
-		model.setTermin(listLoanPaymentDetail.size());
+		model.setTermin(loan.getTermin());
 		model.setLoanPaymentDate(loan.getLoanPaymentDate());
 		model.setLoanDate(loan.getLoanDate());		
 		model.setMaxNominalPrincipal(this.getMaxNominalPrincipal(loan.getLoanSchema(), model.getEmpData()));
 		model.setMaxTermin(loan.getLoanSchema().getMaxPeriode());
 		model.setInterestRate(loan.getLoanSchema().getInterestRate());
+		model.setTypeOfInterest(loan.getLoanSchema().getTypeOfInterest());
 		return model;
 	}
 }

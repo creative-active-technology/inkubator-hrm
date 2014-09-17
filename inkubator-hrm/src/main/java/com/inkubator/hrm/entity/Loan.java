@@ -22,7 +22,11 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.Version;
+
+import com.inkubator.common.CommonUtilConstant;
+import com.inkubator.common.util.DateTimeUtil;
 
 /**
  *
@@ -39,6 +43,8 @@ public class Loan implements java.io.Serializable {
     private Date loanDate;
     private Date loanPaymentDate;
     private Double interestRate;
+    private Integer termin;
+    private String approvalActivityNumber;
     private String createdBy;
     private Date createdOn;
     private String updatedBy;
@@ -133,6 +139,24 @@ public class Loan implements java.io.Serializable {
 		this.interestRate = interestRate;
 	}
 
+	@Column(name="termin", nullable=false)
+	public Integer getTermin() {
+		return termin;
+	}
+
+	public void setTermin(Integer termin) {
+		this.termin = termin;
+	}
+	
+	@Column(name="approval_activity_number", length=45, unique=true)
+    public String getApprovalActivityNumber() {
+		return approvalActivityNumber;
+	}
+
+	public void setApprovalActivityNumber(String approvalActivityNumber) {
+		this.approvalActivityNumber = approvalActivityNumber;
+	}
+
 	@Column(name = "created_by", length = 45)
     public String getCreatedBy() {
         return createdBy;
@@ -178,7 +202,12 @@ public class Loan implements java.io.Serializable {
 
 	public void setLoanPaymentDetails(Set<LoanPaymentDetail> loanPaymentDetails) {
 		this.loanPaymentDetails = loanPaymentDetails;
-	}   
+	} 
+	
+	@Transient
+	public Date getMaxLoanPaymentDate() {
+		return DateTimeUtil.getDateFrom(loanPaymentDate, termin-1, CommonUtilConstant.DATE_FORMAT_MONTH);
+	}
     
     
 }

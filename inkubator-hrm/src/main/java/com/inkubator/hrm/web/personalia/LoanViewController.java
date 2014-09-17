@@ -88,7 +88,7 @@ public class LoanViewController extends BaseController {
     }
 
     public String doDetail() {
-        return "/protected/personalia/loan.htm?faces-redirect=true&execution=e" + selectedLoan.getId();
+        return "/protected/personalia/loan_detail.htm?faces-redirect=true&execution=e" + selectedLoan.getId();
     }
 
     public void doSelectEntity() {

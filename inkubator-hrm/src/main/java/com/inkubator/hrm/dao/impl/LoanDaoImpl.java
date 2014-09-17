@@ -39,6 +39,7 @@ public class LoanDaoImpl extends IDAOImpl<Loan> implements LoanDao {
         doSearchByParam(parameter, criteria);
         criteria.setFetchMode("empData", FetchMode.JOIN);
         criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+        criteria.setFetchMode("loanSchema", FetchMode.JOIN);
         criteria.addOrder(orderable);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
@@ -71,6 +72,16 @@ public class LoanDaoImpl extends IDAOImpl<Loan> implements LoanDao {
 	public Loan getEntityByPkWithDetail(Long id) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
 		criteria.add(Restrictions.eq("id", id));
+		criteria.setFetchMode("empData", FetchMode.JOIN);
+		criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+		criteria.setFetchMode("loanSchema", FetchMode.JOIN);
+		return (Loan) criteria.uniqueResult();
+	}
+
+	@Override
+	public Loan getEntityByApprovalActivityNumberWithDetail(String approvalActivityNumber) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("approvalActivityNumber", approvalActivityNumber));
 		criteria.setFetchMode("empData", FetchMode.JOIN);
 		criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
 		criteria.setFetchMode("loanSchema", FetchMode.JOIN);
