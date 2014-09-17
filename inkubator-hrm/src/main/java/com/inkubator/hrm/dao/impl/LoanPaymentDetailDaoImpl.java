@@ -1,5 +1,9 @@
 package com.inkubator.hrm.dao.impl;
 
+import java.util.List;
+
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -19,5 +23,12 @@ public class LoanPaymentDetailDaoImpl extends IDAOImpl<LoanPaymentDetail> implem
 	public Class<LoanPaymentDetail> getEntityClass() {
 		return LoanPaymentDetail.class;
 		
+	}
+
+	@Override
+	public List<LoanPaymentDetail> getAllDataByLoanId(Long loanId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("loan.id", loanId));
+		return criteria.list();
 	}
 }

@@ -26,4 +26,6 @@ public interface LoanSchemaDao extends IDAO<LoanSchema>{
     public Long getByCode(String code);
     
     public void saveAndMerge(LoanSchema loanSchema);
+
+	public List<LoanSchema> getAllDataByEmployeeTypeId(Long employeeTypeId);
 }

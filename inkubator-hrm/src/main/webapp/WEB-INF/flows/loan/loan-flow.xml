@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+      	http://www.springframework.org/schema/webflow
+      	http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd"
+	start-state="add_loan">      	
+      	
+    <on-start>
+    	<set name="flowScope.id" value="requestParameters.id" type="java.lang.Long" />
+      	<evaluate expression="loanFormController.initLoanProcessFlow(flowRequestContext)"/>
+	</on-start>
+
+    <view-state id="add_loan" view="loan_form.xhtml">
+		<transition on="next" to="loan_form_verification"/>
+		<transition on="end" to="end"/>
+    </view-state>
+    
+    <view-state id="add_loan_payment_detail" view="loan_payment_detail_form.xhtml">    
+    	<transition on="back" to="add_loan"/>
+    	<transition on="save" to="save_verification"/>
+    	<transition on="end" to="end"/>
+    </view-state>
+
+	<action-state id="loan_form_verification">
+        <evaluate expression="loanFormController.doLoanFormVerification(flowRequestContext)"/>
+        <transition on="success" to="add_loan_payment_detail">
+        	<evaluate expression="loanFormController.setLoanPaymentDetails(flowRequestContext)" result="flowScope.loanModel"/>
+        </transition>
+        <transition on="error" to="add_loan"/>
+    </action-state >
+    
+	<action-state id="save_verification">
+        <evaluate expression="loanFormController.doSave(flowRequestContext)"/>
+        <transition on="success_need_approval" to="end"/>
+        <transition on="success_without_approval" to="end_detail"/>
+        <transition on="error" to="add_loan_payment_detail"/>
+    </action-state >
+
+    <end-state id="end_detail" view="externalRedirect:contextRelative:/protected/personalia/loan_detail.htm?execution=e#{flowScope.loanModel.id}"/>
+    <end-state id="end" view="externalRedirect:contextRelative:/protected/personalia/loan_view.htm" />
+    
+</flow>

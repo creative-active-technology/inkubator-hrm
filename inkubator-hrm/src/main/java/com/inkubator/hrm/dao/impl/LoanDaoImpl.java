@@ -66,4 +66,14 @@ public class LoanDaoImpl extends IDAOImpl<Loan> implements LoanDao {
         }
         criteria.add(Restrictions.isNotNull("id"));
     }
+
+	@Override
+	public Loan getEntityByPkWithDetail(Long id) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("id", id));
+		criteria.setFetchMode("empData", FetchMode.JOIN);
+		criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+		criteria.setFetchMode("loanSchema", FetchMode.JOIN);
+		return (Loan) criteria.uniqueResult();
+	}
 }

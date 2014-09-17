@@ -95,8 +95,9 @@ public class LoanSchemaServiceImpl extends IServiceImpl implements LoanSchemaSer
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ,propagation = Propagation.SUPPORTS, timeout = 30)
     public LoanSchema getEntiyByPK(Long id) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return loanSchemaDao.getEntiyByPK(id);
     }
 
     @Override
@@ -271,5 +272,11 @@ public class LoanSchemaServiceImpl extends IServiceImpl implements LoanSchemaSer
     public List<LoanSchema> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ,propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<LoanSchema> getAllDataByEmployeeTypeId(Long employeeTypeId) throws Exception {
+		return loanSchemaDao.getAllDataByEmployeeTypeId(employeeTypeId);
+	}
     
 }

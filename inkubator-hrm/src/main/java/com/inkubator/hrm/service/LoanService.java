@@ -18,4 +18,6 @@ public interface LoanService extends IService<Loan> {
 
 	public Long getTotalByParam(LoanSearchParameter parameter) throws Exception;
 
+	public Loan getEntityByPkWithDetail(Long id) throws Exception;
+
 }

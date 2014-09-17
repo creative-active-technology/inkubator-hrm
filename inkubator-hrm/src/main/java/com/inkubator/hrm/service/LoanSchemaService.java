@@ -23,4 +23,6 @@ public interface LoanSchemaService extends IService<LoanSchema>{
     
     public void saveAndNotification(LoanSchema loanSchema) throws Exception;
     
+    public List<LoanSchema> getAllDataByEmployeeTypeId(Long empDataId) throws Exception;
+    
 }
