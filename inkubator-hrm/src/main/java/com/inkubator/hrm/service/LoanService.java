@@ -26,7 +26,7 @@ public interface LoanService extends IService<Loan>,BaseApprovalService {
 
 	public void update(Loan entity) throws Exception;
 	
-	public List<LoanPaymentDetail> getAllDataLoanPaymentDetails(Double interestRate, Integer termin, Date loanPaymentDate, Double nominalPrincipal, Long loanSchemaId) throws Exception;
+	public List<LoanPaymentDetail> getAllDataLoanPaymentDetails(Double interestRate, Integer termin, Date loanPaymentDate, Double nominalPrincipal, Integer typeOfInterest) throws Exception;
 
 	public Loan getEntityByApprovalActivityNumberWithDetail(String approvalActivityNumber);
 

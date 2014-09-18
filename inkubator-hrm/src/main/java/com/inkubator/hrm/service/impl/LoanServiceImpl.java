@@ -1,14 +1,23 @@
 package com.inkubator.hrm.service.impl;
 
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Session;
+
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.criterion.Order;
+import org.primefaces.json.JSONException;
+import org.primefaces.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -36,6 +45,7 @@ import com.inkubator.hrm.util.JadwalPembayaran;
 import com.inkubator.hrm.util.LoanPayment;
 import com.inkubator.hrm.web.search.LoanSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+import com.inkubator.webcore.util.FacesUtil;
 
 /**
  *
@@ -94,6 +104,7 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
 		loan.setLoanDate(entity.getLoanDate());
 		loan.setLoanPaymentDate(entity.getLoanPaymentDate());
 		loan.setInterestRate(entity.getInterestRate());
+		loan.setTypeOfInterest(entity.getTypeOfInterest());
 		loan.setTermin(entity.getTermin());
 		loan.setUpdatedBy(UserInfoUtil.getUserName());
 		loan.setUpdatedOn(new Date());
@@ -104,7 +115,7 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
 		 * mekanismenya, clear list child-nya, lalu create ulang child-nya 
 		 */
 		List<LoanPaymentDetail> loanPaymentDetails = calculateLoanPaymentDetails(loan.getInterestRate(), loan.getTermin(), loan.getLoanPaymentDate(), 
-				loan.getNominalPrincipal(), loan.getLoanSchema().getId());
+				loan.getNominalPrincipal(), loan.getTypeOfInterest());
 		for(LoanPaymentDetail loanPaymentDetail:loanPaymentDetails){
 			loanPaymentDetail.setCreatedBy(UserInfoUtil.getUserName());
 			loanPaymentDetail.setCreatedOn(new Date());
@@ -323,7 +334,7 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
 		ApprovalActivity approvalActivity = isBypassApprovalChecking ? null : super.checkApprovalProcess(HRMConstant.LOAN, requestUser.getUserId());
 		if(approvalActivity == null){			
 			List<LoanPaymentDetail> loanPaymentDetails = calculateLoanPaymentDetails(entity.getInterestRate(), entity.getTermin(), 
-					entity.getLoanPaymentDate(), entity.getNominalPrincipal(), entity.getLoanSchema().getId());        	
+					entity.getLoanPaymentDate(), entity.getNominalPrincipal(), entity.getTypeOfInterest());        	
         	for(LoanPaymentDetail loanPaymentDetail:loanPaymentDetails){
     			loanPaymentDetail.setCreatedBy(UserInfoUtil.getUserName());
     			loanPaymentDetail.setCreatedOn(new Date());
@@ -350,12 +361,12 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<LoanPaymentDetail> getAllDataLoanPaymentDetails(Double interestRate, Integer termin, Date loanPaymentDate, Double nominalPrincipal, Long loanSchemaId) throws Exception {
-		return calculateLoanPaymentDetails(interestRate, termin, loanPaymentDate, nominalPrincipal, loanSchemaId);
+	public List<LoanPaymentDetail> getAllDataLoanPaymentDetails(Double interestRate, Integer termin, Date loanPaymentDate, Double nominalPrincipal, Integer typeOfInterest) throws Exception {
+		return calculateLoanPaymentDetails(interestRate, termin, loanPaymentDate, nominalPrincipal, typeOfInterest);
 		
 	}
 	
-	private List<LoanPaymentDetail> calculateLoanPaymentDetails(Double interestRate, Integer termin, Date loanPaymentDate, Double nominalPrincipal, Long loanSchemaId){
+	private List<LoanPaymentDetail> calculateLoanPaymentDetails(Double interestRate, Integer termin, Date loanPaymentDate, Double nominalPrincipal, Integer typeOfInterest){
 		//set parameter for calculating jadwalPembayaran
 		LoanPayment loanPayment = new LoanPayment();
 		loanPayment.setBungaPertahun(interestRate);
@@ -365,12 +376,11 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
 		loanPayment.setTotalPinjaman(nominalPrincipal);
 		
 		//calculate jadwalPembayaran
-		LoanSchema loanSchema = loanSchemaDao.getEntiyByPK(loanSchemaId);
-		if(loanSchema.getTypeOfInterest() == HRMConstant.ANNUITY){
+		if(typeOfInterest.equals(HRMConstant.ANNUITY)){
 			loanPayment = HRMFinanceLib.getLoanPaymentAnuitas(loanPayment);
-		} else if (loanSchema.getTypeOfInterest() == HRMConstant.FLAT){
+		} else if (typeOfInterest.equals(HRMConstant.FLAT)){
 			loanPayment = HRMFinanceLib.getLoanPaymentFlateMode(loanPayment);
-		} else if (loanSchema.getTypeOfInterest() == HRMConstant.FLOATING){
+		} else if (typeOfInterest.equals(HRMConstant.FLOATING)){
 			loanPayment = HRMFinanceLib.getLoanPaymentEffectiveMode(loanPayment);
 		} 	
 		
@@ -431,10 +441,10 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
 	
 	@Override
 	public void sendingEmailApprovalNotif(ApprovalActivity appActivity) throws Exception{
-		/*//initialization
+		//initialization
 		Gson gson = this.getGsonBuilder().create();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMMM-yyyy");
-		double totalAmount = 0;
+		DecimalFormat decimalFormat =  new DecimalFormat("###,###");
 		
 		//get all sendCC email address on status approve OR reject
 		List<String> ccEmailAddresses =  new ArrayList<String>();
@@ -443,24 +453,32 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
 		}
 		
 		//parsing object data to json, for email purpose
-		JsonObject businessTravelObj =  gson.fromJson(appActivity.getPendingData(), JsonObject.class);
-		List<BusinessTravelComponent> businessTravelComponents = gson.fromJson(businessTravelObj.get("businessTravelComponents"), new TypeToken<List<BusinessTravelComponent>>(){}.getType());		
-		for(BusinessTravelComponent btc:businessTravelComponents){
-			totalAmount = totalAmount + btc.getPayByAmount();
+		Loan loan =  gson.fromJson(appActivity.getPendingData(), Loan.class);
+		List<LoanPaymentDetail> loanPaymentDetails = calculateLoanPaymentDetails(loan.getInterestRate(), loan.getTermin(), loan.getLoanPaymentDate(), 
+				loan.getNominalPrincipal(), loan.getTypeOfInterest());
+		double nominalInstallment = 0.0;
+		double interestInstallment = 0.0;
+		double totalNominalInstallment = 0.0;
+		for(LoanPaymentDetail loanPaymentDetail:loanPaymentDetails){
+			//angsuran pertama
+			nominalInstallment = loanPaymentDetail.getPrincipal();
+			interestInstallment = loanPaymentDetail.getInterest();			
+			totalNominalInstallment = nominalInstallment + interestInstallment;
+			break;
 		}
-		BusinessTravel businessTravel = gson.fromJson(appActivity.getPendingData(), BusinessTravel.class);   	
+		
 		final JSONObject jsonObj = new JSONObject();
         try {        	
             jsonObj.put("approvalActivityId", appActivity.getId());
             jsonObj.put("ccEmailAddresses", ccEmailAddresses);
             jsonObj.put("locale", FacesUtil.getFacesContext().getViewRoot().getLocale());
-            jsonObj.put("businessTravelNo", businessTravel.getBusinessTravelNo());
-            jsonObj.put("proposeDate", dateFormat.format(businessTravel.getProposeDate()));
-            jsonObj.put("destination", businessTravel.getDestination());
-            jsonObj.put("start", dateFormat.format(businessTravel.getStartDate()));
-            jsonObj.put("end", dateFormat.format(businessTravel.getEndDate()));
-            jsonObj.put("description", businessTravel.getDescription());
-            jsonObj.put("totalAmount", new DecimalFormat("###,###").format(totalAmount));
+            jsonObj.put("proposeDate", dateFormat.format(loan.getCreatedOn()));
+            jsonObj.put("loanSchemaName", loan.getLoanSchema().getName());
+            jsonObj.put("nominalPrincipal", decimalFormat.format(loan.getNominalPrincipal()));
+            jsonObj.put("interestRate", loan.getInterestRate() + " %");
+            jsonObj.put("nominalInstallment", decimalFormat.format(nominalInstallment));
+            jsonObj.put("interestInstallment", decimalFormat.format(interestInstallment));
+            jsonObj.put("totalNominalInstallment", decimalFormat.format(totalNominalInstallment));
             
         } catch (JSONException e) {
             LOGGER.error("Error when create json Object ", e);
@@ -472,7 +490,7 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
             public Message createMessage(Session session) throws JMSException {
                 return session.createTextMessage(jsonObj.toString());
             }
-        });*/
+        });
 	}
 	
 	@Override

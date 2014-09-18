@@ -43,6 +43,7 @@ public class Loan implements java.io.Serializable {
     private Date loanDate;
     private Date loanPaymentDate;
     private Double interestRate;
+    private Integer typeOfInterest;
     private Integer termin;
     private String approvalActivityNumber;
     private String createdBy;
@@ -138,6 +139,15 @@ public class Loan implements java.io.Serializable {
 	public void setInterestRate(Double interestRate) {
 		this.interestRate = interestRate;
 	}
+	
+	@Column(name="type_of_interest", length = 1)
+    public Integer getTypeOfInterest() {
+        return typeOfInterest;
+    }
+	
+	public void setTypeOfInterest(Integer typeOfInterest) {
+        this.typeOfInterest = typeOfInterest;
+    }
 
 	@Column(name="termin", nullable=false)
 	public Integer getTermin() {

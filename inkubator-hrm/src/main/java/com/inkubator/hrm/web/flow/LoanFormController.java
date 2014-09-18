@@ -74,7 +74,7 @@ public class LoanFormController implements Serializable{
 			 * set hanya jika loan payment detail size == 0, artinya jika size > 0 maka value list nya sudah terdapat di flowSession tidak perlu getList lagi
 			 * */			
 			if(model.getLoanPaymentDetails().size() == 0){				
-				List<LoanPaymentDetail> listLoanPaymentDetails = loanService.getAllDataLoanPaymentDetails(model.getInterestRate(), model.getTermin(), model.getLoanPaymentDate(), model.getNominalPrincipal(), model.getLoanSchemaId());
+				List<LoanPaymentDetail> listLoanPaymentDetails = loanService.getAllDataLoanPaymentDetails(model.getInterestRate(), model.getTermin(), model.getLoanPaymentDate(), model.getNominalPrincipal(), model.getTypeOfInterest());
 				model.setLoanPaymentDetails(listLoanPaymentDetails);
 				
 			}
@@ -111,6 +111,7 @@ public class LoanFormController implements Serializable{
 		loan.setLoanPaymentDate(model.getLoanPaymentDate());
 		loan.setLoanDate(model.getLoanDate());
 		loan.setInterestRate(model.getInterestRate());
+		loan.setTypeOfInterest(model.getTypeOfInterest());
 		loan.setTermin(model.getTermin());
 		
 		try {
@@ -160,9 +161,9 @@ public class LoanFormController implements Serializable{
 			LoanSchema loanSchema = loanSchemaService.getEntiyByPK(model.getLoanSchemaId());			
 			model.setMaxNominalPrincipal(this.getMaxNominalPrincipal(loanSchema, model.getEmpData()));
 			model.setMaxTermin(loanSchema.getMaxPeriode());
-			model.setInterestRate(loanSchema.getInterestRate());
-			model.getLoanPaymentDetails().clear();
-			model.setTypeOfInterest(loanSchema.getTypeOfInterest());			
+			model.setInterestRate(loanSchema.getInterestRate());			
+			model.setTypeOfInterest(loanSchema.getTypeOfInterest());
+			model.getLoanPaymentDetails().clear(); //clear loan payment details
 			context.getFlowScope().put("loanModel", model);
 		} catch (Exception e) {
 			LOGGER.error("Error", e);
@@ -221,8 +222,8 @@ public class LoanFormController implements Serializable{
 		model.setLoanDate(loan.getLoanDate());		
 		model.setMaxNominalPrincipal(this.getMaxNominalPrincipal(loan.getLoanSchema(), model.getEmpData()));
 		model.setMaxTermin(loan.getLoanSchema().getMaxPeriode());
-		model.setInterestRate(loan.getLoanSchema().getInterestRate());
-		model.setTypeOfInterest(loan.getLoanSchema().getTypeOfInterest());
+		model.setInterestRate(loan.getInterestRate());
+		model.setTypeOfInterest(loan.getTypeOfInterest());
 		return model;
 	}
 }

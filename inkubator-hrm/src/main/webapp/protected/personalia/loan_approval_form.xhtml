@@ -34,13 +34,13 @@
 	                                <p:outputLabel value="#{appmsg['global.employee']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 30%">
-	                            	<p:outputLabel value="#{loanDetailController.selectedLoan.empData.nikWithFullName}"/>
+	                            	<p:outputLabel value="#{loanApprovalFormController.selectedLoan.empData.nikWithFullName}"/>
 	                            </p:column>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
 	                                <p:outputLabel value="#{appmsg['loanschema.loan']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 30%">
-	                            	<p:outputLabel value="#{loanDetailController.selectedLoan.loanSchema.name}"/>
+	                            	<p:outputLabel value="#{loanApprovalFormController.selectedLoan.loanSchema.name}"/>
 	                            </p:column>
 	                        </p:row>
 	                        <p:row>
@@ -48,7 +48,7 @@
 	                                <p:outputLabel value="#{appmsg['loan.total_value_of_financing']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 30%">
-	                            	<p:outputLabel value="#{loanDetailController.selectedLoan.nominalPrincipal}">
+	                            	<p:outputLabel value="#{loanApprovalFormController.selectedLoan.nominalPrincipal}">
 	                            		<f:convertNumber pattern="###,###" type="currency"/>
 	                            	</p:outputLabel>
 	                            </p:column>
@@ -56,12 +56,12 @@
 	                                <p:outputLabel value="#{appmsg['loan.period_time']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 30%">
-	                            	<p:outputLabel value="#{loanDetailController.selectedLoan.termin} #{appmsg['global.month']} ("/>
-	                            	<p:outputLabel value= "#{loanDetailController.selectedLoan.loanPaymentDate}">
+	                            	<p:outputLabel value="#{loanApprovalFormController.selectedLoan.termin} #{appmsg['global.month']} ("/>
+	                            	<p:outputLabel value= "#{loanApprovalFormController.selectedLoan.loanPaymentDate}">
 	                                	<f:convertDateTime pattern="dd MMM yyyy" />
 	                                </p:outputLabel>
 	                                <p:outputLabel value=" #{appmsg['global.to']} "/>
-	                                <p:outputLabel value= "#{loanDetailController.selectedLoan.maxLoanPaymentDate}">
+	                                <p:outputLabel value= "#{loanApprovalFormController.selectedLoan.maxLoanPaymentDate}">
 	                                	<f:convertDateTime pattern="dd MMM yyyy" />
 	                                </p:outputLabel>
 	                                <p:outputLabel value=")"/>
@@ -72,11 +72,11 @@
 	                                <p:outputLabel value="#{appmsg['loan.interest_rate']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 30%">
-	                            	<p:outputLabel value="#{loanDetailController.selectedLoan.interestRate}">
+	                            	<p:outputLabel value="#{loanApprovalFormController.selectedLoan.interestRate}">
 	                            		<f:convertNumber pattern="##,##" type="percent"/>
 	                            	</p:outputLabel>
 	                            	<p:outputLabel value=" % ("/>
-	                            	<p:outputLabel value="#{loanDetailController.selectedLoan.typeOfInterest}">
+	                            	<p:outputLabel value="#{loanApprovalFormController.selectedLoan.loanSchema.typeOfInterest}">
 	                            		<f:converter converterId="typeOfInterestConverter" />
 	                            	</p:outputLabel>
 	                            	<p:outputLabel value=") per #{appmsg['global.year']}"/>
@@ -85,38 +85,23 @@
 	                                <p:outputLabel value="#{appmsg['loan.payment_method']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 30%">
-	                            	<p:outputLabel value="#{loanDetailController.selectedLoan.typeOfInterest}">
+	                            	<p:outputLabel value="#{loanApprovalFormController.selectedLoan.loanSchema.typeOfInterest}">
 	                            		<f:converter converterId="paymentMethodConverter" />
 	                            	</p:outputLabel>
 	                            </p:column>
 	                        </p:row> 
-	                        <p:row rendered="#{loanDetailController.isHaveApprovalActivity}">
+	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['approvalactivity.approved_by']}" styleClass="label_hrm"/>
+	                                <p:outputLabel value="#{appmsg['global.comment']}" styleClass="label_hrm"/>
 	                            </p:column>
-	                            <p:column  style="width: 30%">
-	                            	<p:outputLabel value="#{loanDetailController.selectedApprovalActivity.approvedBy}"/>
-	                            </p:column>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important" rowspan="2">
-	                                <p:outputLabel value="#{appmsg['approvalactivity.approval_comment']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 30%" rowspan="2">
-	                            	<p:outputLabel value="#{loanDetailController.selectedApprovalActivity.approvalCommment}"/>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row rendered="#{loanDetailController.isHaveApprovalActivity}">
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['approvalactivity.approval_status']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 30%">
-	                            	<p:outputLabel value="#{loanDetailController.selectedApprovalActivity.approvalStatus}">
-	                            		<f:converter converterId="approvalStatusConverter" />
-	                            	</p:outputLabel>
+	                            <p:column  style="width: 80%" colspan="3">
+	                            	<p:inputTextarea title="#{appmsg['global.comment']}" value="#{loanApprovalFormController.comment}" 
+	                                    			 maxlength="1000" styleClass="isitext_hrm" style="width:290px;" />
 	                            </p:column>
 	                        </p:row>	                        	                              
 	                 	</p:panelGrid>
 	                 	
-	                 	<p:dataTable  id="tableLoanId" var="loanPaymentDetailData"  value="#{loanDetailController.loanPaymentDetails}" lazy="false" paginator="false" pageLinks="7"
+	                 	<p:dataTable  id="tableLoanId" var="loanPaymentDetailData"  value="#{loanApprovalFormController.loanPaymentDetails}" lazy="false" paginator="false" pageLinks="7"
 	                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
 	                                      rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
 	                                      rowIndexVar="no"> 
@@ -167,13 +152,13 @@
 	                                </h:outputLabel>
 	                            </p:column>
 	                    </p:dataTable>
-	                 	
-	                 		                    
-	                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+	                 	<p:separator style="margin-top: 30px;margin-bottom: 10px"/>
 	                    <div style="margin-bottom: 5px">
-	                    	<p:commandButton value="#{appmsg['global.edit']}" icon="ui-icon-zoomin" title="#{appmsg['global.edit']}" action="#{loanDetailController.doUpdate()}" immediate="true"
+	                    	<p:commandButton value="#{appmsg['approvalactivity.approved']}" icon="ui-icon-check" title="#{appmsg['approvalactivity.approved']}" action="#{loanApprovalFormController.doApproved()}"
                                 			 style="margin-right: 5px" styleClass="label_button"/>
-	                        <p:commandButton value="#{appmsg['global.close']}" icon="ui-icon-contact"  title="#{appmsg['global.close']}" action="#{loanDetailController.doBack()}" immediate="true"
+							<p:commandButton value="#{appmsg['approvalactivity.reject']}" icon="ui-icon-close" title="#{appmsg['approvalactivity.reject']}" action="#{loanApprovalFormController.doRejected()}"
+                                			 style="margin-right: 5px" styleClass="label_button"/>
+	                        <p:commandButton value="#{appmsg['global.close']}" icon="ui-icon-home"  title="#{appmsg['global.close']}" action="#{loanApprovalFormController.doBack()}" immediate="true"
 	                                      	 styleClass="label_button"/>
 	                    </div>
                     </div>
