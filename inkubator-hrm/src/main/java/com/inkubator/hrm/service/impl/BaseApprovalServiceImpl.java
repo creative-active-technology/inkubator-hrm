@@ -9,7 +9,9 @@ import java.util.Map;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
+import javax.jms.TextMessage;
 
+import org.apache.activemq.ScheduledMessage;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.BeanUtils;
@@ -428,7 +430,9 @@ public class BaseApprovalServiceImpl extends IServiceImpl {
             jmsTemplateApprovalGrowl.send(new MessageCreator() {
                 @Override
                 public Message createMessage(Session session) throws JMSException {
-                    return session.createTextMessage(jsonConverter.getJson(model));
+                	TextMessage message = session.createTextMessage(jsonConverter.getJson(model));
+                	message.setLongProperty(ScheduledMessage.AMQ_SCHEDULED_DELAY, 10000); //delay 10 second
+                    return message;
                 }
             });
     	}    	
