@@ -211,8 +211,10 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
 	}
 
 	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void delete(Loan entity) throws Exception {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+		Loan loan = loanDao.getEntiyByPK(entity.getId());
+		loanDao.delete(loan);
 
 	}
 
