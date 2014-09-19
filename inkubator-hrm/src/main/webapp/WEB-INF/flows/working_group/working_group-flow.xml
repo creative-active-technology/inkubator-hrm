@@ -12,9 +12,9 @@
     </on-start><!--
 -->    
     <view-state id="start" view="working_group_form.xhtml">
-        <transition on="next" to="add_jaddwal_shift" >
-            <evaluate expression="groupWorkingFormController.doCalculateDate(flowRequestContext)"/> 
-        </transition>  
+        <transition on="next" to="verifikasi_next" />
+        <!--            <evaluate expression="groupWorkingFormController.doCalculateDate(flowRequestContext)"/> 
+        </transition>  -->
         <transition on="close_back" to="end"/>
     </view-state>
     <view-state id="add_jaddwal_shift" view="schedule_shift_form.xhtml">
@@ -30,7 +30,11 @@
         
     </view-state>
     
-   
+    <action-state id="verifikasi_next">
+        <evaluate expression="groupWorkingFormController.doCalculateDate(flowRequestContext)"/> 
+        <transition on="yes" to="add_jaddwal_shift"/>
+        <transition on="no" to="start"/>
+    </action-state>
     
         
     <action-state id="verifikasi_save">

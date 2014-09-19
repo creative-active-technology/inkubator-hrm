@@ -30,6 +30,20 @@
                     <p:growl id="workingGroupFormGrowlId" globalOnly="true" showDetail="true" />
                     <h:form id="formWorkingGroupId">
                         <p:panelGrid style="width: 100%;margin-bottom: 20px;margin-top: 20px" styleClass="grid_border3" >
+
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Jenis Schedule"  for="dayTypeId" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectOneRadio id="dayTypeId" styleClass="isitext_hrm" required="true"  value="#{groupWorkingModel.kondisiSchedule}">
+                                        <!--Cek HRM Constanta..-->
+                                        <f:selectItem itemLabel="Normal Schedule" itemValue="0" id="select1"/>
+                                        <f:selectItem itemLabel="Non Normal Schedule" itemValue="1" id="select2" />
+                                    </p:selectOneRadio>
+                                    <p:message for="dayTypeId"/>
+                                </p:column>
+                            </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="Kode Kelompok Kerja"  for="kkId" styleClass="label_hrm" />
@@ -59,6 +73,7 @@
                                     <p:calendar id="tglMulaiId" pattern="dd MMMM yyyy" required="true" value="#{groupWorkingModel.beginTime}" label="Tanggal Mulai">
                                         <f:validator validatorId="dateBetweenValidator"  />
                                         <f:attribute name="endTime" value="#{tglSelesaiId}"/>
+                                        <!--<f:attribute name="jenis" value="#{groupWorkingModel.kondisiSchedule}"/>-->
                                         <f:attribute name="validatorMessage" value="#{appmsg['group_working_time.time_bengin_is_greater']}"/>
                                     </p:calendar>
                                     <p:message for="tglMulaiId"/>
@@ -134,8 +149,8 @@
                         <p:focus context="formWorkingGroupId" />
                         <p:separator style="margin-top: 20px;margin-bottom: 10px"/>
                         <div style="margin-bottom: 5px">
-                            <p:commandButton value="Lanjut" ajax="true" 
-                                             action="next" styleClass="isitext_hrm" update="formWorkingGroupId"
+                            <p:commandButton value="Lanjut" ajax="true" onclick="PrimeFaces.monitorDownload(start, stop)"
+                                             action="next" styleClass="isitext_hrm" update="formWorkingGroupId,:workingGroupFormGrowlId"
                                              style="margin-right: 5px" label="Lanjut"
                                              icon="ui-icon-arrow-1-e" title="Lanjut"/>
                             <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formWorkingGroupId"

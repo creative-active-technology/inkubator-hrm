@@ -558,6 +558,8 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         EmpData data = empDataDao.getEntiyByPK(empData.getId());
         Date now = new Date();
         WtGroupWorking groupWorking = this.wtGroupWorkingDao.getByCode(empData.getWtGroupWorking().getCode());
+        groupWorking.setIsActive(Boolean.TRUE);
+        wtGroupWorkingDao.update(groupWorking);
         data.setWtGroupWorking(groupWorking);
         empDataDao.update(data);
         List<WtScheduleShift> list = new ArrayList<>(groupWorking.getWtScheduleShifts());

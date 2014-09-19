@@ -52,8 +52,15 @@ public class WtScheduleShiftDaoImpl extends IDAOImpl<WtScheduleShift> implements
         if (workingGroupId != null) {
             criteria.createAlias("wtGroupWorking", "wg");
             criteria.add(Restrictions.eq("wg.id", workingGroupId));
-            
+
         }
+
+    }
+
+    @Override
+    public void saveAndMerge(WtScheduleShift scheduleShift) {
+        getCurrentSession().update(scheduleShift);
+        getCurrentSession().flush();
 
     }
 

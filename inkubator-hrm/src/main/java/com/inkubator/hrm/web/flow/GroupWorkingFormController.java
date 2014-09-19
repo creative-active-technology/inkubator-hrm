@@ -19,6 +19,7 @@ import com.inkubator.hrm.web.model.ScheduleShiftModel;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -97,10 +98,23 @@ public class GroupWorkingFormController implements Serializable {
         return groupWorkingModel;
     }
 
-    public void doCalculateDate(RequestContext context) {
+    public String doCalculateDate(RequestContext context) {
+        String kondisi = "yes";
         try {
 
             GroupWorkingModel groupWorkingModel = (GroupWorkingModel) context.getFlowScope().get("groupWorkingModel");
+            if (groupWorkingModel.getKondisiSchedule().equalsIgnoreCase("0")) {
+                Date endTime = DateTimeUtil.getDateFrom(groupWorkingModel.getEndTime(), 1, CommonUtilConstant.DATE_FORMAT_DAY);
+                String beginTimeDay = new SimpleDateFormat("EEEE").format(groupWorkingModel.getBeginTime());
+                String endTimeDay = new SimpleDateFormat("EEEE").format(endTime);
+                if (!beginTimeDay.equals(endTimeDay)) {
+                    kondisi = "no";
+                    MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "workinggroup.error_schedule", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+                } else {
+                    kondisi = "yes";
+                }
+            }
+
             if (groupWorkingModel.getId() == null) {
                 groupWorkingModel = onCreateCondition(groupWorkingModel);
             } else {
@@ -108,15 +122,19 @@ public class GroupWorkingFormController implements Serializable {
             }
 
             context.getFlashScope().put("groupWorkingModel", groupWorkingModel);
+
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
 
+        return kondisi;
     }
 
     private GroupWorkingModel onEditCondition(GroupWorkingModel workingModel) throws Exception {
         Date beginDate = workingModel.getBeginTime();
         Date endDate = workingModel.getEndTime();
+        System.out.println("Begin Date " + beginDate);
+        System.out.println("End Date " + endDate);
         List<ScheduleShiftModel> dataShiftModels = workingModel.getDataShiftModels();
         List<ScheduleShiftModel> dataToShow = new ArrayList<>();
         int jumlahTotalDay = DateTimeUtil.getTotalDay(beginDate, endDate);
@@ -214,7 +232,7 @@ public class GroupWorkingFormController implements Serializable {
     };
 
     public void doNeckTable(RequestContext context) {
-     
+
         GroupWorkingModel workingModel = (GroupWorkingModel) context.getFlowScope().get("groupWorkingModel");
         int page = workingModel.getPageNumber();
         List<ScheduleShiftModel> dataShiftModels = workingModel.getDataShiftModels();
@@ -224,7 +242,7 @@ public class GroupWorkingFormController implements Serializable {
         if (page < sisaBagi + 1) {
 
             workingModel.setPageNumber(page + 2);
-            
+
             if (workingModel.getPageNumber() != sisaBagi + 1) {
                 batas = workingModel.getPageNumber() * 7;
             } else {
@@ -234,15 +252,23 @@ public class GroupWorkingFormController implements Serializable {
             for (int i = (workingModel.getPageNumber() * 7) - 7; i < batas; i++) {
                 dataToShow.add(dataShiftModels.get(i));
             }
-            if (workingModel.getPageNumber() >= sisaBagi + 1) {
+            if (workingModel.getPageNumber() + 1 >= sisaBagi) {
                 workingModel.setIsDisable(Boolean.FALSE);
             }
+//            if (workingModel.getPageNumber() >= sisaBagi + 1) {
+//                workingModel.setIsDisable(Boolean.FALSE);
+//            }
+//             if (workingModel.getPageNumber() >= sisaBagi + 1) {
+//                workingModel.setIsDisable(Boolean.FALSE);
+//            }
+            System.out.println(" Nilai page " + workingModel.getPageNumber());
+            System.out.println("sisa bagi " + sisaBagi);
             workingModel.setDataToShow(dataToShow);
             context.getFlashScope().put("groupWorkingModel", workingModel);
 
         } else {
             workingModel.setPageNumber(page);
-
+            workingModel.setIsDisable(Boolean.FALSE);
         }
 
     }
@@ -250,13 +276,13 @@ public class GroupWorkingFormController implements Serializable {
     public void doBackTable(RequestContext requestContext) {
         GroupWorkingModel workingModel = (GroupWorkingModel) requestContext.getFlowScope().get("groupWorkingModel");
         int page = workingModel.getPageNumber();
-    
+        System.out.println(" nilai page " + page);
         if (page > 1) {
             workingModel.setPageNumber(page - 2);
             List<ScheduleShiftModel> dataShiftModels = workingModel.getDataShiftModels();
             int batas;
             double sisaBagi = dataShiftModels.size() / 7;
-          
+
             if (workingModel.getPageNumber() != sisaBagi + 1) {
                 batas = workingModel.getPageNumber() * 7;
             } else {
@@ -273,8 +299,9 @@ public class GroupWorkingFormController implements Serializable {
             workingModel.setDataToShow(dataToShow);
             requestContext.getFlashScope().put("groupWorkingModel", workingModel);
         } else {
+            System.out.println(" lari ke sinin");
             workingModel.setPageNumber(page);
-            workingModel.setIsDisable(Boolean.TRUE);
+            workingModel.setIsDisable(Boolean.FALSE);
         }
 
     }
@@ -290,7 +317,7 @@ public class GroupWorkingFormController implements Serializable {
         try {
             if (workingModel.getId() == null) {
                 wtGroupWorkingService.save(workingModel);
-                 MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
+                MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
                 return "yes";
             } else {

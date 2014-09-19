@@ -131,7 +131,7 @@
                                     <h:outputText value="Tanggal"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{dataShiftModel.tanggalKerja}">
-                                    <f:convertDateTime pattern="dd MMMM yyyy" />
+                                    <f:convertDateTime pattern="EEEE, dd MMMM yyyy" />
                                 </h:outputLabel>
                             </p:column>
 
@@ -154,7 +154,7 @@
                                     <h:outputText value="Tanggal"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{dataShiftModel.tanggalKerja2}">
-                                    <f:convertDateTime pattern="dd MMMM yyyy" />
+                                    <f:convertDateTime pattern="EEEE, dd MMMM yyyy" />
                                 </h:outputLabel>
                             </p:column>
 
@@ -187,7 +187,7 @@
                         </div>
                         <p:separator/>
                         <div style="margin-bottom: 5px">
-                            <p:commandButton value="Simpan" ajax="true" disabled="#{groupWorkingModel.isDisable}"
+                            <p:commandButton value="Simpan" ajax="true" disabled="#{groupWorkingModel.isDisable}" onclick="PrimeFaces.monitorDownload(start, stop)"
                                              action="save" styleClass="isitext_hrm" update="addDataShiftId,:errorDuplicateId" 
                                              style="margin-right: 5px" label="Lanjut" id="buttonSaveId"
                                              icon="ui-icon-disk" title="Lanjut"/>
