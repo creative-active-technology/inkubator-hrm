@@ -112,16 +112,12 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
 		loanDao.save(loan);
 		
 		/**
-		 * mekanismenya, clear list child-nya, lalu create ulang child-nya 
+		 * mekanismenya, clear list child-nya, lalu create ulang child-nya
+		 * using batch hibernate 
 		 */
 		List<LoanPaymentDetail> loanPaymentDetails = calculateLoanPaymentDetails(loan.getInterestRate(), loan.getTermin(), loan.getLoanPaymentDate(), 
 				loan.getNominalPrincipal(), loan.getTypeOfInterest());
-		for(LoanPaymentDetail loanPaymentDetail:loanPaymentDetails){
-			loanPaymentDetail.setCreatedBy(UserInfoUtil.getUserName());
-			loanPaymentDetail.setCreatedOn(new Date());
-			loanPaymentDetail.setLoan(loan);
-			loanPaymentDetailDao.save(loanPaymentDetail);
-		}
+		loanPaymentDetailDao.save(loanPaymentDetails, loan);
 	}
 
 	@Override
