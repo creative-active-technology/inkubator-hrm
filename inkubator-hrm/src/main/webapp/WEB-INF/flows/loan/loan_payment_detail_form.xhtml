@@ -84,7 +84,7 @@
 	                        </p:row>	                              
 	                 	</p:panelGrid>
 	                 	
-	                 	<p:dataTable  id="tableLoanId" var="loanPaymentDetailData"  value="#{loanModel.loanPaymentDetails}" lazy="false" paginator="false" pageLinks="7"
+	                 	<p:dataTable  id="tableLoanId" var="loanPaymentDetailData"  value="#{loanModel.loanPaymentDetails}" lazy="false" paginator="#{loanModel.isPaginator}" pageLinks="7"
 	                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
 	                                      rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
 	                                      rowIndexVar="no"> 

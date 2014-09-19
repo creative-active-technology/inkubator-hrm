@@ -120,6 +120,10 @@ public class LoanApprovalFormController extends BaseController {
 	public void setEmpDataService(EmpDataService empDataService) {
 		this.empDataService = empDataService;
 	}
+	
+	public Boolean getIsPaginator(){
+		return loanPaymentDetails.size() > 11;
+	}
 
 	public String doBack() {
         return "/protected/home.htm";

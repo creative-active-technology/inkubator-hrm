@@ -110,6 +110,8 @@ public class BusinessTravelModel implements Serializable {
 		this.businessTravelComponents = businessTravelComponents;
 	}
 	
-	
+	public Boolean getIsPaginator(){
+		return businessTravelComponents.size() > 11;
+	}
 	
 }

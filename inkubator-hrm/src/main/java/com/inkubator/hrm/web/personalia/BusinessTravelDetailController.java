@@ -134,6 +134,10 @@ public class BusinessTravelDetailController extends BaseController {
 		return selectedApprovalActivity != null;
 	}
 	
+	public Boolean getIsPaginator(){
+		return businessTravelComponents.size() > 11;
+	}
+	
 	public String doBack() {
         return "/protected/personalia/business_travel_view.htm?faces-redirect=true";
     }    
