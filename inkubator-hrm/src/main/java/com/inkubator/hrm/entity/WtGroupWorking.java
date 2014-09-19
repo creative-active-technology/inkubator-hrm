@@ -42,6 +42,7 @@ public class WtGroupWorking implements java.io.Serializable {
     private Date updatedOn;
     private Boolean isActive;
     private Set<WtScheduleShift> wtScheduleShifts = new HashSet<WtScheduleShift>(0);
+    private Integer typeSequeace;
 
     public WtGroupWorking() {
     }
@@ -230,7 +231,14 @@ public class WtGroupWorking implements java.io.Serializable {
     public WtGroupWorking(String code) {
         this.code = code;
     }
-    
-    
+
+    @Column(name = "type_sequeace")
+    public Integer getTypeSequeace() {
+        return typeSequeace;
+    }
+
+    public void setTypeSequeace(Integer typeSequeace) {
+        this.typeSequeace = typeSequeace;
+    }
 
 }

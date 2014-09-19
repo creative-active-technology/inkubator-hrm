@@ -22,4 +22,6 @@ public interface WtScheduleShiftDao extends IDAO<WtScheduleShift> {
     
     public void saveAndMerge(WtScheduleShift scheduleShift);
     
+    public void saveBatach(List<WtScheduleShift> dataToBacth);
+    
 }

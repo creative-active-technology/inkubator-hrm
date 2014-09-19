@@ -89,6 +89,7 @@ public class GroupWorkingFormController implements Serializable {
                 groupWorkingModel.setOvertimeBasedOnRequest(groupWorking.getOvertimeBasedOnRequest());
                 groupWorkingModel.setWorkingTimePerday(groupWorking.getWorkingTimePerday());
                 groupWorkingModel.setWorkingTimePerweek(groupWorking.getWorkingTimePerweek());
+                groupWorkingModel.setKondisiSchedule(groupWorking.getTypeSequeace());
 
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
@@ -103,7 +104,7 @@ public class GroupWorkingFormController implements Serializable {
         try {
 
             GroupWorkingModel groupWorkingModel = (GroupWorkingModel) context.getFlowScope().get("groupWorkingModel");
-            if (groupWorkingModel.getKondisiSchedule().equalsIgnoreCase("0")) {
+            if (groupWorkingModel.getKondisiSchedule()==0) {
                 Date endTime = DateTimeUtil.getDateFrom(groupWorkingModel.getEndTime(), 1, CommonUtilConstant.DATE_FORMAT_DAY);
                 String beginTimeDay = new SimpleDateFormat("EEEE").format(groupWorkingModel.getBeginTime());
                 String endTimeDay = new SimpleDateFormat("EEEE").format(endTime);

@@ -92,10 +92,10 @@
                                         <f:converter converterId="booleanMessageConverter"/>
                                     </h:outputFormat>
                                 </p:column>
-                                <p:column style="width: 17%;background-color: #e1f0f0!important" rowspan="2" >
+                                <p:column style="width: 17%;background-color: #e1f0f0!important"  >
                                     <p:outputLabel  value="#{appmsg['workinggroup.working_group_recurring']}" style="font-weight: bold"/>
                                 </p:column>
-                                <p:column style="width: 34%" rowspan="2">
+                                <p:column style="width: 34%">
                                     <h:outputLabel value="#{groupWorkingDetilController.selectedWtGroupWorking.isPeriodic}" >
                                         <f:converter converterId="booleanMessageConverter"/>
                                     </h:outputLabel>
@@ -109,6 +109,14 @@
                                     <h:outputLabel  value="#{groupWorkingDetilController.selectedWtGroupWorking.overtimeBasedOnRequest}" >
                                         <f:converter converterId="booleanMessageConverter"/>
                                     </h:outputLabel>
+                                </p:column>
+                                <p:column style="width: 17%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Jenis Perulangan" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 34%" >
+                                    <p:outputLabel value="#{groupWorkingDetilController.selectedWtGroupWorking.typeSequeace}" >
+                                        <f:converter converterId="jenisSequenceConverter" />
+                                    </p:outputLabel>
                                 </p:column>
                             </p:row>
                         </p:panelGrid>
