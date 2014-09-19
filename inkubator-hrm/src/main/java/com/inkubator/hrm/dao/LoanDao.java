@@ -19,4 +19,6 @@ public interface LoanDao extends IDAO<Loan> {
 	public Long getTotalByParam(LoanSearchParameter parameter);
 
 	public Loan getEntityByPkWithDetail(Long id);
+
+	public Loan getEntityByApprovalActivityNumberWithDetail(String approvalActivityNumber);
 }
