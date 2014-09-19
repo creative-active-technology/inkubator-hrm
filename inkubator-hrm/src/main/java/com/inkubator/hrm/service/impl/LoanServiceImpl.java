@@ -112,16 +112,12 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
 		loanDao.save(loan);
 		
 		/**
-		 * mekanismenya, clear list child-nya, lalu create ulang child-nya 
+		 * mekanismenya, clear list child-nya, lalu create ulang child-nya
+		 * using batch hibernate 
 		 */
 		List<LoanPaymentDetail> loanPaymentDetails = calculateLoanPaymentDetails(loan.getInterestRate(), loan.getTermin(), loan.getLoanPaymentDate(), 
 				loan.getNominalPrincipal(), loan.getTypeOfInterest());
-		for(LoanPaymentDetail loanPaymentDetail:loanPaymentDetails){
-			loanPaymentDetail.setCreatedBy(UserInfoUtil.getUserName());
-			loanPaymentDetail.setCreatedOn(new Date());
-			loanPaymentDetail.setLoan(loan);
-			loanPaymentDetailDao.save(loanPaymentDetail);
-		}
+		loanPaymentDetailDao.save(loanPaymentDetails, loan);
 	}
 
 	@Override
@@ -329,18 +325,22 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
 		LoanSchema loanSchema = loanSchemaDao.getEntiyByPK(entity.getLoanSchema().getId());
 		entity.setEmpData(empData);
 		entity.setLoanSchema(loanSchema);
-		entity.setCreatedBy(UserInfoUtil.getUserName());
-		entity.setCreatedOn(new Date());		
+		
+		String createdBy = StringUtils.isEmpty(entity.getCreatedBy()) ? UserInfoUtil.getUserName() : entity.getCreatedBy();
+		Date createdOn = entity.getCreatedOn() == null ? new Date() : entity.getCreatedOn();
+		entity.setCreatedBy(createdBy);
+		entity.setCreatedOn(createdOn);		
 		
 		HrmUser requestUser = hrmUserDao.getByEmpDataId(empData.getId());
 		ApprovalActivity approvalActivity = isBypassApprovalChecking ? null : super.checkApprovalProcess(HRMConstant.LOAN, requestUser.getUserId());
 		if(approvalActivity == null){			
 			List<LoanPaymentDetail> loanPaymentDetails = calculateLoanPaymentDetails(entity.getInterestRate(), entity.getTermin(), 
 					entity.getLoanPaymentDate(), entity.getNominalPrincipal(), entity.getTypeOfInterest());        	
-        	for(LoanPaymentDetail loanPaymentDetail:loanPaymentDetails){
-    			loanPaymentDetail.setCreatedBy(UserInfoUtil.getUserName());
-    			loanPaymentDetail.setCreatedOn(new Date());
-    			loanPaymentDetail.setLoan(entity);
+        	for(LoanPaymentDetail lpd:loanPaymentDetails){
+    			lpd.setLoan(entity);
+    			lpd.setCreatedBy(createdBy);
+    			lpd.setCreatedOn(createdOn);
+    			
     		}
         	entity.setLoanPaymentDetails(ImmutableSet.copyOf(loanPaymentDetails));
 			loanDao.save(entity);

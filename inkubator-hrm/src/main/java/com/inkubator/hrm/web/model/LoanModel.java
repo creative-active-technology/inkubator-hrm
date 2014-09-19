@@ -111,4 +111,7 @@ public class LoanModel implements Serializable {
 	public void setMaxLoanPaymentDate(Date maxLoanPaymentDate) {
 		this.maxLoanPaymentDate = maxLoanPaymentDate;
 	}	
+	public Boolean getIsPaginator(){
+		return loanPaymentDetails.size() > 11;
+	}
 }

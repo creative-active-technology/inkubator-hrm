@@ -128,6 +128,10 @@ public class BusinessTravelApprovalFormController extends BaseController {
 	public void setEmpDataService(EmpDataService empDataService) {
 		this.empDataService = empDataService;
 	}
+	
+	public Boolean getIsPaginator(){
+		return businessTravelComponents.size() > 11;
+	}
 
 	public String doBack() {
         return "/protected/home.htm";

@@ -75,6 +75,7 @@
                 <prop key="hibernate.order_inserts">true</prop>
                 <prop key="hibernate.order_updates">true</prop>
                 <prop key="hibernate.current_session_context_class">com.inkubator.datacore.util.TransactionAwareSessionContext</prop>
+
                 <!--                <prop key="hibernate.cache.use_query_cache">true</prop>
                 <prop key="hibernate.cache.use_second_level_cache">true</prop>
                 <prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop>

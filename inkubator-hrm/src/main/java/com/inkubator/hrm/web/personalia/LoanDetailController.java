@@ -120,6 +120,10 @@ public class LoanDetailController extends BaseController {
 		return selectedApprovalActivity != null;
 	}
 	
+	public Boolean getIsPaginator(){
+		return loanPaymentDetails.size() > 11;
+	}
+	
 	public String doBack() {
         return "/protected/personalia/loan_view.htm?faces-redirect=true";
     }    

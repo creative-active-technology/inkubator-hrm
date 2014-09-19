@@ -35,12 +35,16 @@ public class ApprovalRemoteCommand {
 	    String approvalName = params.get("approvalName");
 	    
 	    if(StringUtils.equals(approverUserId, UserInfoUtil.getUserName())) {
+	    	String infoMessages = StringUtils.EMPTY;
 		    switch (approvalName) {
 				case HRMConstant.BUSINESS_TRAVEL:				
-			        String infoMessages = messages.getString("businesstravel.submission_of_business_travel") + " " + requestFullName + " " + messages.getString("approval.need_approval_from") + " " + approverFullName;
+			        infoMessages = messages.getString("businesstravel.submission_of_business_travel") + " " + requestFullName + " " + messages.getString("approval.need_approval_from") + " " + approverFullName;
 					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Executed", infoMessages));
 					break;
-		
+				case HRMConstant.LOAN:				
+			        infoMessages = messages.getString("loan.submission_of_loan") + " " + requestFullName + " " + messages.getString("approval.need_approval_from") + " " + approverFullName;
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Executed", infoMessages));
+					break;
 				default:
 					break;
 			}
