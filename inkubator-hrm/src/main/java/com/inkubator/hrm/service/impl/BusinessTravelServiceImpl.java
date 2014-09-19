@@ -312,15 +312,19 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
 		TravelType travelType = travelTypeDao.getEntiyByPK(entity.getTravelType().getId());
 		entity.setEmpData(empData);
 		entity.setTravelType(travelType);
-		entity.setTravelZone(travelZone);		
-		entity.setCreatedBy(UserInfoUtil.getUserName());
-		entity.setCreatedOn(new Date());
+		entity.setTravelZone(travelZone);
+		
+		String createdBy = StringUtils.isEmpty(entity.getCreatedBy()) ? UserInfoUtil.getUserName() : entity.getCreatedBy();
+		Date createdOn = entity.getCreatedOn() == null ? new Date() : entity.getCreatedOn();
+		entity.setCreatedBy(createdBy);
+		entity.setCreatedOn(createdOn);
 		
 		Set<BusinessTravelComponent> businessTravelComponents =  new HashSet<BusinessTravelComponent>();
 		for(BusinessTravelComponent btc : btcList){
 			btc.setBusinessTravel(entity);
-			btc.setCreatedBy(UserInfoUtil.getUserName());
-			btc.setCreatedOn(new Date());
+			btc.setCreatedBy(createdBy);
+			btc.setCreatedOn(createdOn);
+			
 			businessTravelComponents.add(btc);
 		}
 		entity.setBusinessTravelComponents(businessTravelComponents);
