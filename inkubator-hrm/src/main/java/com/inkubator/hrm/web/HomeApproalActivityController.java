@@ -112,6 +112,9 @@ public class HomeApproalActivityController extends BaseController {
 				case HRMConstant.BUSINESS_TRAVEL:
 					redirect = "/protected/personalia/business_travel_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
 					break;
+                                case HRMConstant.REIMBURSEMENT:
+                                        redirect = "/protected/personalia/reimbursment_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
+                                        break;
 				default:
 					break;
 			}

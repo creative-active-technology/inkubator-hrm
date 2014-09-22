@@ -169,8 +169,9 @@ public class WtGroupWorkingServiceImpl extends IServiceImpl implements WtGroupWo
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<WtGroupWorking> getAllData() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return wtGroupWorkingDao.getAllData();
     }
 
     @Override

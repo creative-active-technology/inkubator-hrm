@@ -82,7 +82,7 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
              toSentCC.add(el.getAsString());
              }
              }*/
-            toSend.add("guntur@incubatechnology.com");
+            toSend.add("deni.arianto24@yahoo.com");
             vtm.setTo(toSend.toArray(new String[toSend.size()]));
             vtm.setCc(toSentCC.toArray(new String[toSentCC.size()]));
             vtm.setBcc(toSentBCC.toArray(new String[toSentBCC.size()]));
@@ -96,6 +96,7 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                 vtm.setSubject("Permohonan Perjalanan Dinas");
                 if (Objects.equals(appActivity.getApprovalStatus(), HRMConstant.APPROVAL_STATUS_WAITING)) {
                     //configure email parameter based on approval name
+                    System.out.println(appActivity.getApprovalDefinition().getName() + "===============");
                     switch (appActivity.getApprovalDefinition().getName()) {
                         case HRMConstant.BUSINESS_TRAVEL:
                             vtm.setTemplatePath("email_travel_waiting_approval.vm");
@@ -112,6 +113,16 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                             break;
 
                         case HRMConstant.REIMBURSEMENT:
+                            System.out.println("masuk reimbursmentttttttttttttttttttttttttttt");
+                            vtm.setTemplatePath("email_reimbursment_waiting_approval.vm");
+                            maptoSend.put("approverName", approverUser.getEmpData().getBioData().getFullName());
+                            maptoSend.put("requesterName", requesterUser.getEmpData().getBioData().getFullName());
+                            maptoSend.put("nik", requesterUser.getEmpData().getNik());
+                            maptoSend.put("reimbursment_schema", jsonObject.get("reimbursment_schema").getAsString());
+                            maptoSend.put("claim_date", jsonObject.get("claim_date").getAsString());
+                            maptoSend.put("proposeDate", jsonObject.get("proposeDate").getAsString());
+                            maptoSend.put("nominalOrUnit", jsonObject.get("nominalOrUnit").getAsString());
+                            maptoSend.put("reimbursmentNo", jsonObject.get("reimbursmentNo").getAsString());
                             break;
 
                         case HRMConstant.LOAN:
@@ -143,6 +154,19 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                             break;
 
                         case HRMConstant.REIMBURSEMENT:
+                            vtm.setTemplatePath("email_reimbursment_approved_or_rejected.vm");
+                            maptoSend.put("requesterName", requesterUser.getEmpData().getBioData().getFullName());
+                            maptoSend.put("nik", requesterUser.getEmpData().getNik());
+                            maptoSend.put("reimbursment_schema", jsonObject.get("reimbursment_schema").getAsString());
+                            maptoSend.put("claim_date", jsonObject.get("claim_date").getAsString());
+                            maptoSend.put("proposeDate", jsonObject.get("proposeDate").getAsString());
+                            maptoSend.put("nominalOrUnit", jsonObject.get("nominalOrUnit").getAsString());
+                            maptoSend.put("reimbursmentNo", jsonObject.get("reimbursmentNo").getAsString());
+                            if (appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_APPROVED) {
+                                maptoSend.put("statusDesc", "Permohonan Diterima");
+                            } else if (appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_REJECTED) {
+                                maptoSend.put("statusDesc", "Permohonan Ditolak");
+                            }
                             break;
 
                         case HRMConstant.LOAN:

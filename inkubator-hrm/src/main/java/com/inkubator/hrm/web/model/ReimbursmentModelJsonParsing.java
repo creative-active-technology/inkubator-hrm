@@ -5,7 +5,6 @@
 package com.inkubator.hrm.web.model;
 
 import com.inkubator.hrm.entity.EmpData;
-import com.inkubator.hrm.entity.ReimbursmentSchema;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -14,16 +13,16 @@ import java.util.Date;
  *
  * @author Deni
  */
-public class ReimbursmentModel implements Serializable{
+public class ReimbursmentModelJsonParsing implements Serializable{
     private Long id;
-    private Integer version;
-    private ReimbursmentSchema reimbursmentSchema;
     private Long reimbursmentSchemaId;
-    private EmpData empData;
+    private Long empDataId;
     private String code;
     private Date claimDate;
     private Integer quantity;
     private BigDecimal nominal;
+    private String createBy;
+    private Date createDate;
     private byte[] reimbursmentDocument;
     private String reimbursmentFileName;
 
@@ -35,36 +34,12 @@ public class ReimbursmentModel implements Serializable{
         this.id = id;
     }
 
-    public Integer getVersion() {
-        return version;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
-
-    public ReimbursmentSchema getReimbursmentSchema() {
-        return reimbursmentSchema;
-    }
-
-    public void setReimbursmentSchema(ReimbursmentSchema reimbursmentSchema) {
-        this.reimbursmentSchema = reimbursmentSchema;
-    }
-
     public Long getReimbursmentSchemaId() {
         return reimbursmentSchemaId;
     }
 
     public void setReimbursmentSchemaId(Long reimbursmentSchemaId) {
         this.reimbursmentSchemaId = reimbursmentSchemaId;
-    }
-
-    public EmpData getEmpData() {
-        return empData;
-    }
-
-    public void setEmpData(EmpData empData) {
-        this.empData = empData;
     }
 
     public String getCode() {
@@ -97,6 +72,30 @@ public class ReimbursmentModel implements Serializable{
 
     public void setNominal(BigDecimal nominal) {
         this.nominal = nominal;
+    }
+
+    public Long getEmpDataId() {
+        return empDataId;
+    }
+
+    public void setEmpDataId(Long empDataId) {
+        this.empDataId = empDataId;
+    }
+
+    public String getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
 
     public byte[] getReimbursmentDocument() {

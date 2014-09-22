@@ -211,4 +211,8 @@ public class HRMConstant {
     public static final Integer TIME_RANGE_YEARLY = 1;
     public static final Integer TIME_RANGE_PER_EMPLOYEE = 2;
     
+    public static final Integer BASIC_VALUE_NOMINAL = 0;
+    public static final Integer BASIC_VALUE_RATIO_SALARY = 1;
+    
+    
 }

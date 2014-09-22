@@ -95,14 +95,18 @@ public class ReimbursmentSchemaServiceImpl extends IServiceImpl implements Reimb
         }
         entity.setBasicValue(entity.getBasicValue());
         entity.setCode(entity.getCode());
-        entity.setCostCenter(costCenterDao.getEntiyByPK(entity.getCostCenter().getId()));
+        if(entity.getCostCenter() != null){
+            entity.setCostCenter(costCenterDao.getEntiyByPK(entity.getCostCenter().getId()));
+        }
         entity.setEffectiveDate(entity.getEffectiveDate());
         entity.setMeasurement(entity.getMeasurement());
         entity.setName(entity.getName());
         entity.setNominalUnit(entity.getNominalUnit());
         entity.setPayrollComponent(entity.getPayrollComponent());
+        entity.setQuantity(entity.getQuantity());
         entity.setRatioSalary(entity.getRatioSalary());
         entity.setTimeRange(entity.getTimeRange());
+        entity.setIsAttachDocument(entity.getIsAttachDocument());
         entity.setCreatedBy(UserInfoUtil.getUserName());
         entity.setCreatedOn(new Date());
         this.reimbursmentSchemaDao.save(entity);
@@ -126,10 +130,12 @@ public class ReimbursmentSchemaServiceImpl extends IServiceImpl implements Reimb
         update.setMeasurement(entity.getMeasurement());
         update.setBasicValue(entity.getBasicValue());
         update.setName(entity.getName());
+        update.setQuantity(entity.getQuantity());
         update.setNominalUnit(entity.getNominalUnit());
         update.setPayrollComponent(entity.getPayrollComponent());
         update.setRatioSalary(entity.getRatioSalary());
         update.setTimeRange(entity.getTimeRange());
+        update.setIsAttachDocument(entity.getIsAttachDocument());
         update.setUpdatedBy(UserInfoUtil.getUserName());
         update.setUpdatedOn(new Date());
         this.reimbursmentSchemaDao.saveAndMerge(update);
