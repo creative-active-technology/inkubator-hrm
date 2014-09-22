@@ -5,7 +5,9 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -52,5 +54,15 @@ public class LoanPaymentDetailDaoImpl extends IDAOImpl<LoanPaymentDetail> implem
 			}
 			i++;
 		}		
+	}
+
+	@Override
+	public Long getTotalUnpaidByEmpDataId(Long empDataId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("loan", "loan", JoinType.INNER_JOIN);
+		criteria.add(Restrictions.eq("loan.empData.id", empDataId));
+		criteria.add(Restrictions.isNull("paymentDate"));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+		
 	}
 }
