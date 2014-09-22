@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.inkubator.hrm.web.workingtime;
+package com.inkubator.hrm.web.personalia;
 
 import java.util.List;
 
@@ -23,8 +23,10 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.BusinessTravel;
 import com.inkubator.hrm.entity.BusinessTravelComponent;
+import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.service.ApprovalActivityService;
 import com.inkubator.hrm.service.BusinessTravelService;
+import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
@@ -46,6 +48,8 @@ public class BusinessTravelApprovalFormController extends BaseController {
     private BusinessTravelService businessTravelService;
     @ManagedProperty(value = "#{approvalActivityService}")
     private ApprovalActivityService approvalActivityService;
+    @ManagedProperty(value = "#{empDataService}")
+    private EmpDataService empDataService;
 
     @PostConstruct
     @Override
@@ -58,6 +62,8 @@ public class BusinessTravelApprovalFormController extends BaseController {
 			JsonObject jsonObject =  gson.fromJson(selectedApprovalActivity.getPendingData(), JsonObject.class);
 			businessTravelComponents = gson.fromJson(jsonObject.get("businessTravelComponents"), new TypeToken<List<BusinessTravelComponent>>(){}.getType());
 			selectedBusinessTravel = gson.fromJson(selectedApprovalActivity.getPendingData(), BusinessTravel.class);
+			EmpData empData = empDataService.getByIdWithDetail(selectedBusinessTravel.getEmpData().getId());
+			selectedBusinessTravel.setEmpData(empData);
             for(BusinessTravelComponent btc :businessTravelComponents){
             	totalAmount = totalAmount + btc.getPayByAmount();
             }
@@ -76,6 +82,7 @@ public class BusinessTravelApprovalFormController extends BaseController {
         totalAmount = null;
         approvalActivityService = null;
         comment = null;
+        empDataService = null;
     }   
 
 	public BusinessTravel getSelectedBusinessTravel() {
@@ -116,6 +123,14 @@ public class BusinessTravelApprovalFormController extends BaseController {
 
 	public void setComment(String comment) {
 		this.comment = comment;
+	}
+
+	public void setEmpDataService(EmpDataService empDataService) {
+		this.empDataService = empDataService;
+	}
+	
+	public Boolean getIsPaginator(){
+		return businessTravelComponents.size() > 11;
 	}
 
 	public String doBack() {

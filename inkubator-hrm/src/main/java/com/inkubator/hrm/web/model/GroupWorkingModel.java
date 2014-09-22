@@ -41,6 +41,7 @@ public class GroupWorkingModel implements Serializable {
     private Map<String, Long> mapData = new TreeMap<>();
     private int pageNumber;
     private Boolean isDisable;
+    private Integer kondisiSchedule;
 
     public Long getId() {
         return id;
@@ -205,4 +206,13 @@ public class GroupWorkingModel implements Serializable {
         this.overtimeBasedOnRequestAsString = overtimeBasedOnRequestAsString;
     }
 
+    public Integer getKondisiSchedule() {
+        return kondisiSchedule;
+    }
+
+    public void setKondisiSchedule(Integer kondisiSchedule) {
+        this.kondisiSchedule = kondisiSchedule;
+    }
+
+    
 }

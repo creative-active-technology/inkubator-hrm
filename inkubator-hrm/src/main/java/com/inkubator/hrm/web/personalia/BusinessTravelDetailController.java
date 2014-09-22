@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.inkubator.hrm.web.workingtime;
+package com.inkubator.hrm.web.personalia;
 
 import java.io.IOException;
 import java.util.List;
@@ -132,6 +132,10 @@ public class BusinessTravelDetailController extends BaseController {
 
 	public Boolean getIsHaveApprovalActivity(){
 		return selectedApprovalActivity != null;
+	}
+	
+	public Boolean getIsPaginator(){
+		return businessTravelComponents.size() > 11;
 	}
 	
 	public String doBack() {

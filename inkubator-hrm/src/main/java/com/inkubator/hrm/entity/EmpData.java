@@ -71,7 +71,8 @@ public class EmpData implements java.io.Serializable {
     private String noSk;
     private Date rotasiDate;
     private Set<Reimbursment> reimbursments = new HashSet<Reimbursment>(0);
-    
+    private Set<Loan> loans = new HashSet<Loan>(0);
+
     public EmpData() {
     }
 
@@ -374,18 +375,18 @@ public class EmpData implements java.io.Serializable {
 
     public void setEmpRotasis(Set<EmpRotasi> empRotasis) {
         this.empRotasis = empRotasis;
-    }    
+    }
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "empData")
     public Set<HrmUser> getHrmUsers() {
-		return hrmUsers;
-	}
+        return hrmUsers;
+    }
 
-	public void setHrmUsers(Set<HrmUser> hrmUsers) {
-		this.hrmUsers = hrmUsers;
-	}
+    public void setHrmUsers(Set<HrmUser> hrmUsers) {
+        this.hrmUsers = hrmUsers;
+    }
 
-	@Column(name = "status", length = 45)
+    @Column(name = "status", length = 45)
     public String getStatus() {
         return status;
     }
@@ -403,7 +404,7 @@ public class EmpData implements java.io.Serializable {
         this.noSk = noSk;
     }
 
-    @Column(name = "basic_salary", length = 65535, columnDefinition="Text")
+    @Column(name = "basic_salary", length = 65535, columnDefinition = "Text")
     public String getBasicSalary() {
         return this.basicSalary;
     }
@@ -440,5 +441,18 @@ public class EmpData implements java.io.Serializable {
         this.reimbursments = reimbursments;
     }
 
-    
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "empData", orphanRemoval = true)
+    public Set<Loan> getLoans() {
+        return loans;
+    }
+
+    public void setLoans(Set<Loan> loans) {
+        this.loans = loans;
+    }
+
+    @Transient
+    public boolean getSheduleDisable() {
+        return getWtGroupWorking() == null;
+    }
+
 }

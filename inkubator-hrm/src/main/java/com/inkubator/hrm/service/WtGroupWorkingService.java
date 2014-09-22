@@ -29,4 +29,6 @@ public interface WtGroupWorkingService extends IService<WtGroupWorking> {
     public WtGroupWorking getByCode(String code) throws Exception;
 
     public void update(GroupWorkingModel model) throws Exception;
+    
+    public List<WtGroupWorking>workingGroupIsAcive()throws Exception;
 }

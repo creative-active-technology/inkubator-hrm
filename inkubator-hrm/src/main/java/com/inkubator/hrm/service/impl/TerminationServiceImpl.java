@@ -8,6 +8,7 @@ import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.EmpDataDao;
+import com.inkubator.hrm.dao.LoanPaymentDetailDao;
 import com.inkubator.hrm.dao.TerminationDao;
 import com.inkubator.hrm.dao.TerminationTypeDao;
 import com.inkubator.hrm.entity.EmpData;
@@ -39,6 +40,8 @@ public class TerminationServiceImpl extends IServiceImpl implements TerminationS
     private TerminationTypeDao terminationTypeDao;
     @Autowired
     private EmpDataDao empDataDao;
+    @Autowired
+    private LoanPaymentDetailDao loanPaymentDetailDao;
     
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ,propagation = Propagation.SUPPORTS, timeout = 50)
@@ -82,6 +85,13 @@ public class TerminationServiceImpl extends IServiceImpl implements TerminationS
         if (totalDuplicates > 0) {
             throw new BussinessException("costcenter.error_duplicate_cost_center_code");
         }
+        
+        //check if the employee still have unpaid loan
+        long totalUnpaidLoan = loanPaymentDetailDao.getTotalUnpaidByEmpDataId(entity.getEmpData().getId());
+        if (totalUnpaidLoan > 0) {
+            throw new BussinessException("emp_data.error_cannot_do_termination");
+        }
+        
         entity.setCode(entity.getCode());
         entity.setDescription(entity.getDescription());
         entity.setEffectiveDate(entity.getEffectiveDate());

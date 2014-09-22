@@ -9,7 +9,9 @@ import java.util.Map;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
+import javax.jms.TextMessage;
 
+import org.apache.activemq.ScheduledMessage;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.BeanUtils;
@@ -323,7 +325,7 @@ public class BaseApprovalServiceImpl extends IServiceImpl {
                 String approverUserId = this.getApproverByAppDefinition(appDef, previousAppActivity.getRequestBy());
                 
                 if(StringUtils.isNotEmpty(approverUserId)){
-                	nextApproval = this.createNewApprovalActivity(approverUserId, pendingDataUpdate, appDef, previousAppActivity);
+                	nextApproval = this.createNewApprovalActivity(approverUserId, pendingDataUpdate, appDef, previousAppActivity, 0, 0);
                 	approvalActivityDao.save(nextApproval);
                 	
                 	break; //keluar dari looping
@@ -334,18 +336,26 @@ public class BaseApprovalServiceImpl extends IServiceImpl {
         return nextApproval;
 	}
 
-    private ApprovalActivity createNewApprovalActivity(String approverUserId, String pendingDataUpdate, ApprovalDefinition appDef, ApprovalActivity previousAppActv) {
+	private ApprovalActivity createNewApprovalActivity(String approverUserId, String pendingDataUpdate, ApprovalDefinition appDef, ApprovalActivity previousAppActv){
+		//copy value from previous approval activity
+		Integer approvalCount = previousAppActv.getApprovalCount();
+		Integer rejectCount = previousAppActv.getRejectCount();
+		
+		return this.createNewApprovalActivity(approverUserId, pendingDataUpdate, appDef, previousAppActv, approvalCount, rejectCount);
+	}
+			
+    private ApprovalActivity createNewApprovalActivity(String approverUserId, String pendingDataUpdate, ApprovalDefinition appDef, ApprovalActivity previousAppActv, Integer approvalCount, Integer rejectCount) {
         ApprovalActivity newEntity = new ApprovalActivity();
         newEntity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         newEntity.setApprovalDefinition(appDef);
         newEntity.setApprovedBy(approverUserId);
         newEntity.setApprovalStatus(HRMConstant.APPROVAL_STATUS_WAITING);
         newEntity.setNotificationSend(false);
+        newEntity.setApprovalCount(approvalCount);
+        newEntity.setRejectCount(rejectCount);
 
         //copy value from previous approval activity
-        newEntity.setSequence(previousAppActv.getSequence() + 1); //increment +1
-        newEntity.setApprovalCount(previousAppActv.getApprovalCount());
-        newEntity.setRejectCount(previousAppActv.getRejectCount());
+        newEntity.setSequence(previousAppActv.getSequence() + 1); //increment +1        
         newEntity.setActivityNumber(previousAppActv.getActivityNumber());
         newEntity.setRequestBy(previousAppActv.getRequestBy());
         newEntity.setRequestTime(previousAppActv.getRequestTime());
@@ -428,7 +438,9 @@ public class BaseApprovalServiceImpl extends IServiceImpl {
             jmsTemplateApprovalGrowl.send(new MessageCreator() {
                 @Override
                 public Message createMessage(Session session) throws JMSException {
-                    return session.createTextMessage(jsonConverter.getJson(model));
+                	TextMessage message = session.createTextMessage(jsonConverter.getJson(model));
+                	message.setLongProperty(ScheduledMessage.AMQ_SCHEDULED_DELAY, 10000); //delay 10 second
+                    return message;
                 }
             });
     	}    	

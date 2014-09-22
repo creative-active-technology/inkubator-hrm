@@ -12,25 +12,38 @@ import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.dao.ApprovalActivityDao;
+import com.inkubator.hrm.dao.AttendanceStatusDao;
 import com.inkubator.hrm.dao.BioDataDao;
 import com.inkubator.hrm.dao.DepartmentDao;
 import com.inkubator.hrm.dao.EmpCareerHistoryDao;
 import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.EmployeeTypeDao;
 import com.inkubator.hrm.dao.GolonganJabatanDao;
+import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.dao.JabatanDao;
 import com.inkubator.hrm.dao.PaySalaryGradeDao;
+import com.inkubator.hrm.dao.TempJadwalKaryawanDao;
 import com.inkubator.hrm.dao.WtGroupWorkingDao;
+import com.inkubator.hrm.dao.WtHolidayDao;
 import com.inkubator.hrm.entity.Department;
 import com.inkubator.hrm.entity.EmpCareerHistory;
 import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.entity.PaySalaryGrade;
+import com.inkubator.hrm.entity.TempJadwalKaryawan;
+import com.inkubator.hrm.entity.WtGroupWorking;
+import com.inkubator.hrm.entity.WtHoliday;
+import com.inkubator.hrm.entity.WtScheduleShift;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.util.MapUtil;
 import com.inkubator.hrm.util.StringsUtils;
 import com.inkubator.hrm.web.search.EmpDataSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -70,6 +83,16 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     private GolonganJabatanDao golonganJabatanDao;
     @Autowired
     private EmpCareerHistoryDao empCareerHistoryDao;
+    @Autowired
+    private WtHolidayDao wtHolidayDao;
+    @Autowired
+    private AttendanceStatusDao attendanceStatusDao;
+    @Autowired
+    private TempJadwalKaryawanDao tempJadwalKaryawanDao;
+    @Autowired
+    private ApprovalActivityDao approvalActivityDao;
+    @Autowired
+    private HrmUserDao hrmUserDao;
 
     @Override
     public EmpData getEntiyByPK(String id) throws Exception {
@@ -87,6 +110,11 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         EmpData empData = empDataDao.getEntiyByPK(id);
         empData.getBioData().getFirstName();
         empData.getBioData().getLastName();
+        empData.getJabatanByJabatanId().getName();
+        if (empData.getWtGroupWorking() != null) {
+            empData.getWtGroupWorking().getCode();
+        }
+
         return empData;
     }
 
@@ -139,7 +167,7 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(EmpData entity) throws Exception {
-        long totalDuplicates = empDataDao.getTotalByNIKandId(entity.getNik(), entity.getId());
+        long totalDuplicates = empDataDao.getTotalByNikandNotId(entity.getNik(), entity.getId());
 
         if (totalDuplicates > 0) {
             throw new BussinessException("emp_data.error_nik_duplicate");
@@ -456,10 +484,19 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void doSaveRotasi(EmpData entity) throws Exception {
-        long totalDuplicates = empDataDao.getTotalByNIKandId(entity.getNik(), entity.getId());
+        //check if nik employee is duplicate
+    	long totalDuplicates = empDataDao.getTotalByNikandNotId(entity.getNik(), entity.getId());
         if (totalDuplicates > 0) {
             throw new BussinessException("emp_data.error_nik_duplicate");
         }
+        
+        //check if the employee still have pending task approval
+        HrmUser user = hrmUserDao.getByEmpDataId(entity.getId());
+        long totalPendingTask = approvalActivityDao.getPendingTask(user.getUserId()).size();
+        if (totalPendingTask > 0) {
+            throw new BussinessException("emp_data.error_cannot_do_rotation");
+        }		
+        		
         EmpData empData = this.empDataDao.getEntiyByPK(entity.getId());
         empData.setBasicSalary(entity.getBasicSalary());
         empData.setBioData(bioDataDao.getEntiyByPK(entity.getBioData().getId()));
@@ -511,18 +548,70 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         empCareerHistoryDao.save(careerHistory);
     }
 
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<EmpData> getAllDataNotExistInUserByParam(String param, int firstResult, int maxResults, Order order) throws Exception {
-		return empDataDao.getAllDataNotExistInUserByParam(param, firstResult, maxResults, order);
-		
-	}
-	
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-	public Long getTotalNotExistInUserByParam(String param) throws Exception {
-		return empDataDao.getTotalNotExistInUserByParam(param);
-		
-	}
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<EmpData> getAllDataNotExistInUserByParam(String param, int firstResult, int maxResults, Order order) throws Exception {
+        return empDataDao.getAllDataNotExistInUserByParam(param, firstResult, maxResults, order);
 
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalNotExistInUserByParam(String param) throws Exception {
+        return empDataDao.getTotalNotExistInUserByParam(param);
+
+    }
+
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED)
+    public void savePenempatanJadwal(EmpData empData) throws Exception {
+        List<TempJadwalKaryawan> dataMustDelete = this.tempJadwalKaryawanDao.getAllByEmpId(empData.getId());
+        if (!dataMustDelete.isEmpty()) {
+            for (TempJadwalKaryawan dataMustDelete1 : dataMustDelete) {
+                tempJadwalKaryawanDao.delete(dataMustDelete1);
+            }
+        }
+        EmpData data = empDataDao.getEntiyByPK(empData.getId());
+        Date now = new Date();
+        WtGroupWorking groupWorking = this.wtGroupWorkingDao.getByCode(empData.getWtGroupWorking().getCode());
+        groupWorking.setIsActive(Boolean.TRUE);
+        wtGroupWorkingDao.update(groupWorking);
+        data.setWtGroupWorking(groupWorking);
+        empDataDao.update(data);
+        List<WtScheduleShift> list = new ArrayList<>(groupWorking.getWtScheduleShifts());
+        Collections.sort(list, shortByDate1);
+        Date startDate = groupWorking.getBeginTime();
+        Date endDate = groupWorking.getEndTime();
+        int numberOfDay = DateTimeUtil.getTotalDayDifference(startDate, endDate);
+        int totalDateDif = DateTimeUtil.getTotalDayDifference(startDate, now) + 1;
+        int num = numberOfDay + 1;
+        int hasilBagi = (totalDateDif) / (num);
+        Date beginScheduleDate = DateTimeUtil.getDateFrom(startDate, (hasilBagi * num), CommonUtilConstant.DATE_FORMAT_DAY);
+        int i = 0;
+        for (WtScheduleShift list1 : list) {
+            TempJadwalKaryawan jadwalKaryawan = new TempJadwalKaryawan();
+            jadwalKaryawan.setEmpData(empData);
+            jadwalKaryawan.setTanggalWaktuKerja(DateTimeUtil.getDateFrom(beginScheduleDate, i, CommonUtilConstant.DATE_FORMAT_DAY));
+            jadwalKaryawan.setWtWorkingHour(list1.getWtWorkingHour());
+            WtHoliday holiday = wtHolidayDao.getWtHolidayByDate(jadwalKaryawan.getTanggalWaktuKerja());
+            if (holiday != null || list1.getWtWorkingHour().getCode().equalsIgnoreCase("OFF")) {
+                jadwalKaryawan.setAttendanceStatus(attendanceStatusDao.getByCode("OFF"));
+            } else {
+                jadwalKaryawan.setAttendanceStatus(attendanceStatusDao.getByCode("HD1"));
+            }
+            jadwalKaryawan.setIsCollectiveLeave(Boolean.FALSE);
+            jadwalKaryawan.setCreatedBy(UserInfoUtil.getUserName());
+            jadwalKaryawan.setCreatedOn(new Date());
+            jadwalKaryawan.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
+            this.tempJadwalKaryawanDao.save(jadwalKaryawan);
+            i++;
+        }
+    }
+
+    private final Comparator<WtScheduleShift> shortByDate1 = new Comparator<WtScheduleShift>() {
+        @Override
+        public int compare(WtScheduleShift o1, WtScheduleShift o2) {
+            return o1.getScheduleDate().compareTo(o2.getScheduleDate());
+        }
+    };
 }

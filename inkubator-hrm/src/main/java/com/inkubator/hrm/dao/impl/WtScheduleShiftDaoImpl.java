@@ -52,9 +52,29 @@ public class WtScheduleShiftDaoImpl extends IDAOImpl<WtScheduleShift> implements
         if (workingGroupId != null) {
             criteria.createAlias("wtGroupWorking", "wg");
             criteria.add(Restrictions.eq("wg.id", workingGroupId));
-            
+
         }
 
+    }
+
+    @Override
+    public void saveAndMerge(WtScheduleShift scheduleShift) {
+        getCurrentSession().update(scheduleShift);
+        getCurrentSession().flush();
+
+    }
+
+    @Override
+    public void saveBatach(List<WtScheduleShift> dataToBacth) {
+        int counter = 0;
+        for (WtScheduleShift dataToBacth1 : dataToBacth) {
+            getCurrentSession().save(dataToBacth1);
+            counter++;
+            if (counter % 20 == 0) {
+                getCurrentSession().flush();
+                getCurrentSession().clear();
+            }
+        }
     }
 
 }

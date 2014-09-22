@@ -80,10 +80,17 @@ public class WtHolidayDaoImpl extends IDAOImpl<WtHoliday> implements WtHolidayDa
 
     @Override
     public List<WtHoliday> getBetweenDate(Date start, Date end) {
-         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-         criteria.add(Restrictions.between("holidayDate", start, end));
-         return criteria.list();
-    
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.between("holidayDate", start, end));
+        return criteria.list();
+
+    }
+
+    @Override
+    public WtHoliday getWtHolidayByDate(Date date) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("holidayDate", date));
+        return (WtHoliday) criteria.uniqueResult();
     }
 
 }
