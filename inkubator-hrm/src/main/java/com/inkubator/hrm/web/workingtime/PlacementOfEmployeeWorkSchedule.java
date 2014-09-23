@@ -10,6 +10,7 @@ import com.inkubator.hrm.entity.WtGroupWorking;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.GolonganJabatanService;
 import com.inkubator.hrm.service.WtGroupWorkingService;
+import com.inkubator.hrm.web.model.PlacementOfEmployeeWorkScheduleModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import java.util.ArrayList;
@@ -43,13 +44,15 @@ public class PlacementOfEmployeeWorkSchedule extends BaseController{
     private Map<String, Long> golonganJabatanDropDown = new HashMap<String, Long>();;
     private List<GolonganJabatan> golonganJabatanList = new ArrayList<>();
     private DualListModel<EmpData> dualListModel = new DualListModel<>();
-    
+    private PlacementOfEmployeeWorkScheduleModel model;
+    private List<EmpData> source = new ArrayList<EmpData>();
     @PostConstruct
     @Override
     public void initialization() {
      
         super.initialization();
         String param = FacesUtil.getRequestParameter("param");
+        model = new PlacementOfEmployeeWorkScheduleModel();
         try {
             workingGroupList = wtGroupWorkingService.getAllData();
             golonganJabatanList = golonganJabatanService.getAllWithDetail();
@@ -59,8 +62,8 @@ public class PlacementOfEmployeeWorkSchedule extends BaseController{
             for (GolonganJabatan golonganJabatan : golonganJabatanList) {
                 golonganJabatanDropDown.put(golonganJabatan.getCode()+ " - " +golonganJabatan.getPangkat().getPangkatName(), golonganJabatan.getId());
             }
-            List<EmpData> source = this.empDataService.getAllDataWithRelation();
-            dualListModel.setSource(source);
+            source = this.empDataService.getAllDataWithRelation();
+        
         } catch (Exception ex) {
             Logger.getLogger(PlacementOfEmployeeWorkSchedule.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -70,8 +73,12 @@ public class PlacementOfEmployeeWorkSchedule extends BaseController{
     @PreDestroy
     private void cleanAndExit() {
         wtGroupWorkingService = null;
+        golonganJabatanService = null;
         workingGroupDropDown = null;
+        empDataService = null;
         workingGroupList = null;
+        model = null;
+        dualListModel = null;
 
     }
     
@@ -139,6 +146,26 @@ public class PlacementOfEmployeeWorkSchedule extends BaseController{
         this.dualListModel = dualListModel;
     }
     
+    public void doSearchEmployee() throws Exception{
+        source = empDataService.getTotalBySearchEmployee(model.getWorkingGroupId(), model.getDepartmentLikeOrEqual(), model.getDepartmentName(), model.getEmployeeTypeLikeOrEqual(), model.getEmployeeTypeName(), model.getGender(), model.getGolonganJabatanId(), model.getSortBy(), model.getOrderBy());
+        dualListModel.setSource(source);
+    }
+
+    public PlacementOfEmployeeWorkScheduleModel getModel() {
+        return model;
+    }
+
+    public void setModel(PlacementOfEmployeeWorkScheduleModel model) {
+        this.model = model;
+    }
+
+    public List<EmpData> getSource() {
+        return source;
+    }
+
+    public void setSource(List<EmpData> source) {
+        this.source = source;
+    }
     
     
 }

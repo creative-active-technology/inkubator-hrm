@@ -54,4 +54,6 @@ public interface EmpDataDao extends IDAO<EmpData> {
 	
 	public List<EmpData> getAllDataByJabatanId(Long jabatanId, Order order);
 
+        public List<EmpData> getTotalBySearchEmployee(Long workingGroupId, Integer deptLikeOrEqual, String deptName, Integer empTypeLikeOrEqual, String empTypeName, Integer gender, Long golJabId, Integer sortBy, Integer orderBy);
+
 }
