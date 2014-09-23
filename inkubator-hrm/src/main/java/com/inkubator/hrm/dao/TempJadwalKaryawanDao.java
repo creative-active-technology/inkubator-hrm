@@ -18,6 +18,10 @@ public interface TempJadwalKaryawanDao extends IDAO<TempJadwalKaryawan> {
     public List<TempJadwalKaryawan> getAllByEmpId(long empId);
 
     public List<TempJadwalKaryawan> getAllByEmpIdWithDetail(long empId);
-    
-    public List<TempJadwalKaryawan>getByGroupKerjadId(long kerjaId);
+
+    public List<TempJadwalKaryawan> getByGroupKerjadId(long kerjaId);
+
+    public void deleteBacth(List<TempJadwalKaryawan> jadwalKaryawans);
+
+    public void saveBatch(List<TempJadwalKaryawan> jadwalKaryawans);
 }

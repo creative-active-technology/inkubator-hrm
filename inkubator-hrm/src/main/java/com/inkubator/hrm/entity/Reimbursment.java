@@ -5,6 +5,7 @@
 package com.inkubator.hrm.entity;
 
 import java.math.BigDecimal;
+import java.sql.Blob;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -36,6 +37,7 @@ public class Reimbursment implements java.io.Serializable{
     private Date claimDate;
     private Integer quantity;
     private BigDecimal nominal;
+    private byte[] reimbursmentDocument;
     private String createdBy;
     private Date createdOn;
     private String updatedBy;
@@ -163,6 +165,15 @@ public class Reimbursment implements java.io.Serializable{
 
     public void setUpdatedOn(Date updatedOn) {
         this.updatedOn = updatedOn;
+    }
+
+    @Column(name = "reimbursment_document",columnDefinition="blob")
+    public byte[] getReimbursmentDocument() {
+        return reimbursmentDocument;
+    }
+
+    public void setReimbursmentDocument(byte[] reimbursmentDocument) {
+        this.reimbursmentDocument = reimbursmentDocument;
     }
     
     

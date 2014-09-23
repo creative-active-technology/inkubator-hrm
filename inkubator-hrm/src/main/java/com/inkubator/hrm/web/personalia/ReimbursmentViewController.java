@@ -82,6 +82,14 @@ public class ReimbursmentViewController extends BaseController{
         return "/protected/personalia/reimbursment_detail.htm?faces-redirect=true&execution=e" + selected.getId();
     }
     
+    public String add(){
+        return "/protected/personalia/reimbursment_form.htm?faces-redirect=true";
+    }
+    
+    public String edit(){
+        return "/protected/personalia/reimbursment_form.htm?faces-redirect=true&execution=e" + selected.getId();
+    }
+    
     public void doDelete() {
         try {
             this.service.delete(selected);

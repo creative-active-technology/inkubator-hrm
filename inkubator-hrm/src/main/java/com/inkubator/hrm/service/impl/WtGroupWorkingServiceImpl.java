@@ -22,15 +22,19 @@ import com.inkubator.hrm.web.model.GroupWorkingModel;
 import com.inkubator.hrm.web.model.ScheduleShiftModel;
 import com.inkubator.hrm.web.search.WtGroupWorkingSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Session;
 import org.hibernate.criterion.Order;
+import org.primefaces.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -58,6 +62,8 @@ public class WtGroupWorkingServiceImpl extends IServiceImpl implements WtGroupWo
     private WtHolidayDao wtHolidayDao;
     @Autowired
     private AttendanceStatusDao attendanceStatusDao;
+    @Autowired
+    private JmsTemplate jmsTemplateJadwalKerja;
 
     @Override
     public WtGroupWorking getEntiyByPK(String id) throws Exception {
@@ -293,10 +299,6 @@ public class WtGroupWorkingServiceImpl extends IServiceImpl implements WtGroupWo
 
         groupWorking.setWtScheduleShifts(wtScheduleShifts);
         this.wtGroupWorkingDao.save(groupWorking);
-
-        for (WtScheduleShift wtScheduleShift : wtScheduleShifts) {
-
-        }
     }
 
     @Override
@@ -318,7 +320,7 @@ public class WtGroupWorkingServiceImpl extends IServiceImpl implements WtGroupWo
         if (totalDuplicates > 0) {
             throw new BussinessException("working_group.error_duplicate_code");
         }
-        WtGroupWorking groupWorking = this.wtGroupWorkingDao.getEntiyByPK(model.getId());
+        final WtGroupWorking groupWorking = this.wtGroupWorkingDao.getEntiyByPK(model.getId());
         groupWorking.getWtScheduleShifts().clear();
         groupWorking.setBeginTime(model.getBeginTime());
         groupWorking.setCode(model.getCode());
@@ -336,7 +338,7 @@ public class WtGroupWorkingServiceImpl extends IServiceImpl implements WtGroupWo
         this.wtGroupWorkingDao.saveAndMerge(groupWorking);
         List<ScheduleShiftModel> dataShiftModels = model.getDataShiftModels();
         System.out.println(" ukuran " + dataShiftModels.size());
-        List<WtScheduleShift> dataTosave = new ArrayList<>();
+//        List<WtScheduleShift> dataTosave = new ArrayList<>();
         int genap = 0;
         int loop = 0;
         for (ScheduleShiftModel scheduleShiftModel : dataShiftModels) {
@@ -350,7 +352,7 @@ public class WtGroupWorkingServiceImpl extends IServiceImpl implements WtGroupWo
                     shift1.setWtGroupWorking(groupWorking);
                     shift1.setWtWorkingHour(wtWorkingHourDao.getEntiyByPK(scheduleShiftModel.getJamKerjaId()));
                     wtScheduleShiftDao.save(shift1);
-                    dataTosave.add(shift1);
+//                    dataTosave.add(shift1);
                 }
 
                 if (scheduleShiftModel.getJamKerjaId2() != null && genap % 2 == 0) {
@@ -362,7 +364,7 @@ public class WtGroupWorkingServiceImpl extends IServiceImpl implements WtGroupWo
                     shift2.setWtGroupWorking(groupWorking);
                     shift2.setWtWorkingHour(wtWorkingHourDao.getEntiyByPK(scheduleShiftModel.getJamKerjaId2()));
                     wtScheduleShiftDao.save(shift2);
-                    dataTosave.add(shift2);
+//                    dataTosave.add(shift2);
 
                 }
 
@@ -372,101 +374,27 @@ public class WtGroupWorkingServiceImpl extends IServiceImpl implements WtGroupWo
                 genap++;
             }
         }
-//        wtScheduleShiftDao.saveBatach(dataTosave);
-//        Date now = new Date();
-//        Collections.sort(dataTosave, shortByDate1);
-//        List<TempJadwalKaryawan> data = this.tempJadwalKaryawanDao.getByGroupKerjadId(groupWorking.getId());
-//        System.out.println(data.size());
-//
-//        for (TempJadwalKaryawan data1 : data) {
-//            List<TempJadwalKaryawan> dataMustDelete = this.tempJadwalKaryawanDao.getAllByEmpId(data1.getEmpData().getId());
-//            if (!dataMustDelete.isEmpty()) {
-//                for (TempJadwalKaryawan dataMustDelete1 : dataMustDelete) {
-//                    tempJadwalKaryawanDao.delete(dataMustDelete1);
-//                }
-//            }
-//            Date startDate = groupWorking.getBeginTime();
-//            Date endDate = groupWorking.getEndTime();
-//            int numberOfDay = DateTimeUtil.getTotalDayDifference(startDate, endDate);
-//            int totalDateDif = DateTimeUtil.getTotalDayDifference(startDate, now) + 1;
-//            int num = numberOfDay + 1;
-//            int hasilBagi = (totalDateDif) / (num);
-//            Date beginScheduleDate = DateTimeUtil.getDateFrom(startDate, (hasilBagi * num), CommonUtilConstant.DATE_FORMAT_DAY);
-//            int i = 0;
-//            for (WtScheduleShift list1 : dataTosave) {
-//                TempJadwalKaryawan jadwalKaryawan = new TempJadwalKaryawan();
-//                jadwalKaryawan.setEmpData(data1.getEmpData());
-//                jadwalKaryawan.setTanggalWaktuKerja(DateTimeUtil.getDateFrom(beginScheduleDate, i, CommonUtilConstant.DATE_FORMAT_DAY));
-//                jadwalKaryawan.setWtWorkingHour(list1.getWtWorkingHour());
-//                WtHoliday holiday = wtHolidayDao.getWtHolidayByDate(jadwalKaryawan.getTanggalWaktuKerja());
-//                if (holiday != null || list1.getWtWorkingHour().getCode().equalsIgnoreCase("OFF")) {
-//                    jadwalKaryawan.setAttendanceStatus(attendanceStatusDao.getByCode("OFF"));
-//                } else {
-//                    jadwalKaryawan.setAttendanceStatus(attendanceStatusDao.getByCode("HD1"));
-//                }
-//                jadwalKaryawan.setIsCollectiveLeave(Boolean.FALSE);
-//                jadwalKaryawan.setCreatedBy(UserInfoUtil.getUserName());
-//                jadwalKaryawan.setCreatedOn(new Date());
-//                jadwalKaryawan.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
-//                this.tempJadwalKaryawanDao.save(jadwalKaryawan);
-//                System.out.println(" save jadwal karyawwn suskes");
-//                i++;
-//            }
-//        }
-
+        final JSONObject jsonObj = new JSONObject();
+        jsonObj.put("id", groupWorking.getId());
+        jsonObj.put("createdBy", UserInfoUtil.getUserName());
+         this.jmsTemplateJadwalKerja.send(new MessageCreator() {
+            @Override
+            public Message createMessage(Session session)
+                    throws JMSException {
+                return session.createTextMessage(jsonObj.toString());
+            }
+        });
     }
 
-//    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-//    private void savePenempatanJadwal(EmpData empData) {
-//        List<TempJadwalKaryawan> dataMustDelete = this.tempJadwalKaryawanDao.getAllByEmpId(empData.getId());
-//        if (!dataMustDelete.isEmpty()) {
-//            for (TempJadwalKaryawan dataMustDelete1 : dataMustDelete) {
-//                tempJadwalKaryawanDao.delete(dataMustDelete1);
-//            }
-//        }
-//        EmpData data = empDataDao.getEntiyByPK(empData.getId());
-//        Date now = new Date();
-//        WtGroupWorking groupWorking = this.wtGroupWorkingDao.getByCode(empData.getWtGroupWorking().getCode());
-//        data.setWtGroupWorking(groupWorking);
-//        empDataDao.update(data);
-//        List<WtScheduleShift> list = new ArrayList<>(groupWorking.getWtScheduleShifts());
-//        Collections.sort(list, shortByDate1);
-//        Date startDate = groupWorking.getBeginTime();
-//        Date endDate = groupWorking.getEndTime();
-//        int numberOfDay = DateTimeUtil.getTotalDayDifference(startDate, endDate);
-//        int totalDateDif = DateTimeUtil.getTotalDayDifference(startDate, now) + 1;
-//        int num = numberOfDay + 1;
-//        int hasilBagi = (totalDateDif) / (num);
-//        Date beginScheduleDate = DateTimeUtil.getDateFrom(startDate, (hasilBagi * num), CommonUtilConstant.DATE_FORMAT_DAY);
-//        int i = 0;
-//        for (WtScheduleShift list1 : list) {
-//            TempJadwalKaryawan jadwalKaryawan = new TempJadwalKaryawan();
-//            jadwalKaryawan.setEmpData(empData);
-//            jadwalKaryawan.setTanggalWaktuKerja(DateTimeUtil.getDateFrom(beginScheduleDate, i, CommonUtilConstant.DATE_FORMAT_DAY));
-//            jadwalKaryawan.setWtWorkingHour(list1.getWtWorkingHour());
-//            WtHoliday holiday = wtHolidayDao.getWtHolidayByDate(jadwalKaryawan.getTanggalWaktuKerja());
-//            if (holiday != null || list1.getWtWorkingHour().getCode().equalsIgnoreCase("OFF")) {
-//                jadwalKaryawan.setAttendanceStatus(attendanceStatusDao.getByCode("OFF"));
-//            } else {
-//                jadwalKaryawan.setAttendanceStatus(attendanceStatusDao.getByCode("HD1"));
-//            }
-//            jadwalKaryawan.setIsCollectiveLeave(Boolean.FALSE);
-//            jadwalKaryawan.setCreatedBy(UserInfoUtil.getUserName());
-//            jadwalKaryawan.setCreatedOn(new Date());
-//            jadwalKaryawan.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
-//            this.tempJadwalKaryawanDao.save(jadwalKaryawan);
-//            i++;
-//        }
-//    }
     @Override
     public List<WtGroupWorking> workingGroupIsAcive() throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-    private final Comparator<WtScheduleShift> shortByDate1 = new Comparator<WtScheduleShift>() {
-        @Override
-        public int compare(WtScheduleShift o1, WtScheduleShift o2) {
-            return o1.getScheduleDate().compareTo(o2.getScheduleDate());
-        }
-    };
+//
+//    private final Comparator<WtScheduleShift> shortByDate1 = new Comparator<WtScheduleShift>() {
+//        @Override
+//        public int compare(WtScheduleShift o1, WtScheduleShift o2) {
+//            return o1.getScheduleDate().compareTo(o2.getScheduleDate());
+//        }
+//    };
 }

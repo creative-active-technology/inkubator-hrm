@@ -1,0 +1,171 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlUserFormId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
+                <h:form id="jobTitleFormId" >
+                    <div id="box_bg" style="margin: 10px">
+                        <!--<p:panel style="margin: 10px">-->
+                        <h:panelGrid style="margin-bottom: 5px" columns="2">
+                            <p:graphicImage library="images" name="jabatan.png" height="36" width="36" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="Penempatan Jadwal Kerja Karyawan" styleClass="header_big" />
+                                    <p:outputLabel value="Penempatan Jadwal Kerja Karyawan dari Aplikasi" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator/>
+
+
+
+                        <p:panelGrid style="width: 100%;margin-bottom: 20px;margin-top: 20px" styleClass="grid_border3" >
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Kelompok Kerja"  for="code" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectOneMenu id="code" value="371631827" style="margin-right: 3px" >
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{placementOfEmployeeWorkScheduleFormController.workingGroupDropDown}"/>
+                                    </p:selectOneMenu>
+                                    <p:message for="code"/>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Department"  for="department" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <h:panelGrid columns="2" style="margin-left: -10px;">
+                                        <p:selectOneMenu id="department" value="371631827" style="width: 150px;margin-right: 3px" >
+                                            <f:selectItem itemLabel="#{appmsg['employeeworkschedule.equal']}" itemValue="0"/>
+                                            <f:selectItem itemLabel="#{appmsg['employeeworkschedule.like']}" itemValue="1"/>
+                                        </p:selectOneMenu>
+                                        <p:inputText id="departmentText" value="#{overTimeFormController.overTimeModel.code}" onkeyup="this.value = this.value.toUpperCase();"
+                                                 required="true" maxlength="6" styleClass="isitext_hrm" style="width:210px; margin-left: -10px;" />
+
+                                    
+                                    
+                                    </h:panelGrid>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Karyawan Type"  for="employeeType" styleClass="label_hrm" />
+                                </p:column>
+                                
+                                <p:column style="width: 80%">
+                                    <h:panelGrid columns="2" style="margin-left: -10px;">
+                                    <p:selectOneMenu id="employeeType" value="371631827" style="width: 150px;margin-right: 3px" >
+                                        <f:selectItem itemLabel="#{appmsg['employeeworkschedule.equal']}" itemValue="0"/>
+                                        <f:selectItem itemLabel="#{appmsg['employeeworkschedule.like']}" itemValue="1"/>
+                                    </p:selectOneMenu>
+                                    
+                                    <p:inputText id="employeeTypeText" value="#{overTimeFormController.overTimeModel.code}" onkeyup="this.value = this.value.toUpperCase();"
+                                             required="true" maxlength="6" styleClass="isitext_hrm" style="width:210px;margin-left: -10px;" />
+                                    
+                                    </h:panelGrid>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Gender"  for="gender" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectOneRadio id="gender" styleClass="isitext_hrm" required="false" value="#{bioDataFormController.bioDataModel.gender}" label="Gender">
+                                        <!--Cek HRM Constanta..-->
+                                        <f:selectItem itemLabel="#{appmsg['global_male']}" itemValue="1" />
+                                        <f:selectItem itemLabel="#{appmsg['global_female']}" itemValue="0" />
+                                    </p:selectOneRadio>
+                                    <p:message for="gender"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Golongan Jabatan"  for="golonganJabatan" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectOneMenu id="golonganJabatan" value="371631827" style="min-width: 300px;margin-right: 3px" >
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{placementOfEmployeeWorkScheduleFormController.golonganJabatanDropDown}"/>
+                                    </p:selectOneMenu>
+                                    <p:message for="golonganJabatan"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Sort By"  for="sortBy" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectOneMenu id="sortBy" styleClass="isitext_hrm" required="false" value="#{bioDataFormController.bioDataModel.gender}" label="Gender">
+                                        <f:selectItem itemLabel="NIK" itemValue="1" />
+                                        <f:selectItem itemLabel="Name" itemValue="0" />
+                                    </p:selectOneMenu>&nbsp;&nbsp;&nbsp;
+                                    <p:selectOneMenu id="orderBy" styleClass="isitext_hrm" required="false" value="#{bioDataFormController.bioDataModel.gender}" label="Gender">
+                                        <f:selectItem itemLabel="ASC" itemValue="1" />
+                                        <f:selectItem itemLabel="DSC" itemValue="0" />
+                                    </p:selectOneMenu>
+                                    <p:message for="sortBy"/>
+                                </p:column>
+                            </p:row>
+                            
+                            
+                            
+                        </p:panelGrid>
+                        <h:panelGrid style="margin-top:-10px; margin-bottom: 10px;margin-right: 5px;">
+                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" action="#{groupWorkingViewController.doSearch()}"  styleClass="label_button" icon="ui-icon-search"/>
+                                </h:panelGrid>
+                        <p:focus context="jobTitleFormId" />
+                        <!--<p:separator style="margin-top: 20px;margin-bottom: 10px"/>-->
+                        <p:outputLabel value="Employee Name" styleClass="header_big" />
+                       <!--<p:outputLabel value="#{appmsg['user_view.header2']}" styleClass="header_small_no_bold" />-->
+                        <!--                                </h:panelGrid>
+                                                    </h:panelGroup>-->
+                        <!--</h:panelGrid>-->
+                        <p:separator/>
+                        <div align="center">
+                            <p:pickList value="#{placementOfEmployeeWorkScheduleFormController.dualListModel}" var="role" itemValue="#{role}" converter="#{empDataConverter}" id="picklistUserRoleId"
+                                        required="true"  style="margin-top: 15px;margin-bottom: 15px" label="#{appmsg['role_view.header1']}" styleClass="isitext_hrm"
+                                        itemLabel="#{role.nik} - #{role.bioData.firstName} #{role.bioData.lastName}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
+                                        removeLabel="#{appmsg['global.remove']}"/>
+                            <p:message for="picklistUserRoleId" />
+                        </div>  
+                        <!--</p:panel>-->
+
+                        <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
+                        <div style="margin-bottom: 5px">
+                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" action="#{reimbursmentSchemaFormController.doSaved()}"
+                                             styleClass="isitext_hrm" 
+                                             style="margin-right: 5px" label="#{appmsg['global.save']}" update="jobTitleFormId"
+                                             icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="jobTitleFormId" action="#{reimbursmentSchemaFormController.doReset()}"
+                                             icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px" >  
+                                <p:resetInput target="jobTitleFormId" />  
+                            </p:commandButton>
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}"  immediate="true" action="#{reimbursmentSchemaFormController.doBack()}"
+                                             styleClass="label_button"/>
+                        </div>
+                    </div>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

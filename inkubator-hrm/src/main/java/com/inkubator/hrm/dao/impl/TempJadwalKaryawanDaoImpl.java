@@ -73,4 +73,32 @@ public class TempJadwalKaryawanDaoImpl extends IDAOImpl<TempJadwalKaryawan> impl
 
     }
 
+    @Override
+    public void deleteBacth(List<TempJadwalKaryawan> jadwalKaryawans) {
+        int counter = 0;
+        for (TempJadwalKaryawan jadwalKaryawan : jadwalKaryawans) {
+            getCurrentSession().delete(jadwalKaryawan);
+            System.out.println(" Deleting data karyawan");
+            counter++;
+            if (counter % 20 == 0) {
+                getCurrentSession().flush();
+                getCurrentSession().clear();
+            }
+        }
+    }
+
+    @Override
+    public void saveBatch(List<TempJadwalKaryawan> jadwalKaryawans) {
+
+        int counter = 0;
+        for (TempJadwalKaryawan jadwalKaryawan : jadwalKaryawans) {
+            getCurrentSession().save(jadwalKaryawan);
+            counter++;
+            if (counter % 20 == 0) {
+                getCurrentSession().flush();
+                getCurrentSession().clear();
+            }
+        }
+    }
+
 }
