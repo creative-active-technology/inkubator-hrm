@@ -16,7 +16,6 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.sql.JoinType;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -66,5 +65,16 @@ public class PasswordHistoryDaoImpl extends IDAOImpl<PasswordHistory> implements
         	criteria.add(Restrictions.like("phoneNumber", searchParameter.getPhoneNumber(), MatchMode.ANYWHERE));
         }
         criteria.add(Restrictions.isNotNull("id"));
+    }
+
+   
+    
+     @Override
+    public List<PasswordHistory> getByEmailNotification(Integer emailNotification) {
+
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("emailNotification", emailNotification));
+        return criteria.list();
+
     }
 }

@@ -27,8 +27,23 @@
     <task:scheduler id="myScheduler" pool-size="10"/>
     
     <bean id="scheduleService" class="com.inkubator.hrm.service.impl.ScheduleServiceImpl">
-          <property name="difWeekToDelete" value="${dif.number.week.to.delete}"/>
+        <property name="difWeekToDelete" value="${dif.number.week.to.delete}"/>
         
     </bean>
+    <bean id="checkPasswordHistoryEmailNotSendService" class="com.inkubator.hrm.service.impl.CheckPasswordHistoryEmailNotSendServiceImpl" lazy-init="false">
+        <property name="applicationUrl" value="${email_param_application_url}"/>
+        <property name="applicationName" value="${email_param_application_name}"/>
+        <property name="ownerEmail" value="${email_param_owner_email}"/>
+        <property name="ownerCompany" value="${email_param_owner_company}"/>
+        <property name="ownerAdministrator" value="${email_param_owner_administrator}"/>
+    </bean> 
+    
+       <bean id="approvalActivityNotSendService" class="com.inkubator.hrm.service.impl.ApprovalActivityNotSendServiceImpl" lazy-init="false">
+        <property name="applicationUrl" value="${email_param_application_url}"/>
+        <property name="applicationName" value="${email_param_application_name}"/>
+        <property name="ownerEmail" value="${email_param_owner_email}"/>
+        <property name="ownerCompany" value="${email_param_owner_company}"/>
+        <property name="ownerAdministrator" value="${email_param_owner_administrator}"/>
+    </bean>   
 
 </beans>

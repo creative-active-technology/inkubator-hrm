@@ -5,13 +5,14 @@
  */
 package com.inkubator.hrm.service;
 
+import com.inkubator.datacore.service.IService;
+import com.inkubator.hrm.entity.ApprovalActivity;
+
 /**
  *
  * @author Deni Husni FR
  */
-public interface ScheduleService {
+public interface ApprovalActivityNotSendService extends IService<ApprovalActivity> {
 
-    public void deleteRiwayatAkses() throws Exception;
-
-//    public void checkPasswordHistoryEmailNotSend() throws Exception;
+    public void sendNotificationApprovalNotSend() throws Exception;
 }

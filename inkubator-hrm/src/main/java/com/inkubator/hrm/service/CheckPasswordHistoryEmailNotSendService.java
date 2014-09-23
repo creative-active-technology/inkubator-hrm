@@ -5,13 +5,14 @@
  */
 package com.inkubator.hrm.service;
 
+import com.inkubator.datacore.service.IService;
+import com.inkubator.hrm.entity.PasswordHistory;
+
 /**
  *
  * @author Deni Husni FR
  */
-public interface ScheduleService {
+public interface CheckPasswordHistoryEmailNotSendService extends IService<PasswordHistory> {
 
-    public void deleteRiwayatAkses() throws Exception;
-
-//    public void checkPasswordHistoryEmailNotSend() throws Exception;
+    public void checkPasswordHistoryEmailNotSend() throws Exception;
 }

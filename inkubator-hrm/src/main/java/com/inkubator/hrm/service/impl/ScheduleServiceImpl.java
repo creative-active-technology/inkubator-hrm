@@ -41,4 +41,11 @@ public class ScheduleServiceImpl extends IServiceImpl implements ScheduleService
         this.difWeekToDelete = difWeekToDelete;
     }
 
+//    @Override
+//    @Scheduled(cron = "${cron.sendingmail.password.not.send}")
+//    @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+//    public void checkPasswordHistoryEmailNotSend() throws Exception {
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//    }
+
 }
