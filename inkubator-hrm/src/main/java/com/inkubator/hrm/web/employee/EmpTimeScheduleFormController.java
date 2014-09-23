@@ -69,6 +69,10 @@ public class EmpTimeScheduleFormController extends BaseController {
     public void cleanAndExit() {
         empDataService = null;
         selectedEmpData=null;
+        wtGroupWorkingService=null;
+        dataToShow=null;
+        workingTime=null;
+        groupWorkingCode=null;
         
     }
 

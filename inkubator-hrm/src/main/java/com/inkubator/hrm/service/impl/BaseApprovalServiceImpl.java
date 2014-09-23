@@ -1,24 +1,5 @@
 package com.inkubator.hrm.service.impl;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.Session;
-import javax.jms.TextMessage;
-
-import org.apache.activemq.ScheduledMessage;
-import org.apache.commons.lang3.StringUtils;
-import org.hibernate.criterion.Order;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jms.core.JmsTemplate;
-import org.springframework.jms.core.MessageCreator;
-
 import com.google.gson.GsonBuilder;
 import com.inkubator.common.util.JsonConverter;
 import com.inkubator.common.util.RandomNumberUtil;
@@ -36,6 +17,23 @@ import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.json.util.EntityExclusionStrategy;
 import com.inkubator.hrm.json.util.HibernateProxyIdOnlyTypeAdapter;
 import com.inkubator.hrm.web.model.ApprovalPushMessageModel;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Session;
+import javax.jms.TextMessage;
+import org.apache.activemq.ScheduledMessage;
+import org.apache.commons.lang3.StringUtils;
+import org.hibernate.criterion.Order;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
 
 /**
  *
@@ -283,10 +281,10 @@ public class BaseApprovalServiceImpl extends IServiceImpl {
         boolean isCheckingNextDefinition = true; // default true(check approval in next ApprovalDefinition)
         int approvalOrRejectCount = 0;
         int minApproverOrRejector = 0;
-        if(previousAppActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_APPROVED){
+        if(Objects.equals(previousAppActivity.getApprovalStatus(), HRMConstant.APPROVAL_STATUS_APPROVED)){
         	approvalOrRejectCount = previousAppActivity.getApprovalCount();
         	minApproverOrRejector = previousAppDef.getMinApprover();
-        } else if(previousAppActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_REJECTED) {
+        } else if(Objects.equals(previousAppActivity.getApprovalStatus(), HRMConstant.APPROVAL_STATUS_REJECTED)) {
         	approvalOrRejectCount = previousAppActivity.getRejectCount();
         	minApproverOrRejector = previousAppDef.getMinRejector();
         	/** khusus jika approvalStatus = Reject, maka tidak perlu di check approval di next ApprovalDefinition -nya */

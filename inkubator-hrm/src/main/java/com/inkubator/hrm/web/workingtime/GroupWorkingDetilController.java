@@ -46,9 +46,6 @@ public class GroupWorkingDetilController extends BaseController {
             super.initialization();
             String id = FacesUtil.getRequestParameter("execution");
             if (id.contains("sf")) {
-                System.out.println(" hehehe");
-
-                System.out.println(" hahahahahahh");
                 selectedWtGroupWorking = wtGroupWorkingService.getByCode(id.substring(2));
                 MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());

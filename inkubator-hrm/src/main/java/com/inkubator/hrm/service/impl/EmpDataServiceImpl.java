@@ -38,6 +38,7 @@ import com.inkubator.hrm.util.MapUtil;
 import com.inkubator.hrm.util.StringsUtils;
 import com.inkubator.hrm.web.search.EmpDataSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -45,6 +46,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -570,7 +572,15 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         int totalDateDif = DateTimeUtil.getTotalDayDifference(startDate, now) + 1;
         int num = numberOfDay + 1;
         int hasilBagi = (totalDateDif) / (num);
-        Date beginScheduleDate = DateTimeUtil.getDateFrom(startDate, (hasilBagi * num), CommonUtilConstant.DATE_FORMAT_DAY);
+        String dayBegin = new SimpleDateFormat("EEEE").format(endDate);
+        String dayNow = new SimpleDateFormat("EEEE").format(now);
+        Date beginScheduleDate;
+        if (dayBegin.endsWith(dayNow)&& Objects.equals(groupWorking.getTypeSequeace(), HRMConstant.NORMAL_SCHEDULE) ) {
+            beginScheduleDate = DateTimeUtil.getDateFrom(startDate, (hasilBagi * num) - num, CommonUtilConstant.DATE_FORMAT_DAY);
+        } else {
+            beginScheduleDate = DateTimeUtil.getDateFrom(startDate, (hasilBagi * num), CommonUtilConstant.DATE_FORMAT_DAY);
+        }
+
         int i = 0;
         for (WtScheduleShift list1 : list) {
             TempJadwalKaryawan jadwalKaryawan = new TempJadwalKaryawan();
