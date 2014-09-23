@@ -43,10 +43,12 @@ public class ReimbursmentSchema implements java.io.Serializable{
     private CostCenter costCenter;
     private Integer measurement;
     private Integer basicValue;
+    private Integer quantity;
     private BigDecimal nominalUnit;
     private Integer ratioSalary;
     private Integer timeRange;
     private Boolean payrollComponent;
+    private Boolean isAttachDocument;
     private String createdBy;
     private Date createdOn;
     private String updatedBy;
@@ -112,7 +114,7 @@ public class ReimbursmentSchema implements java.io.Serializable{
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cost_center_id", nullable = false)
+    @JoinColumn(name = "cost_center_id")
     public CostCenter getCostCenter() {
         return costCenter;
     }
@@ -156,7 +158,16 @@ public class ReimbursmentSchema implements java.io.Serializable{
     public void setRatioSalary(Integer ratioSalary) {
         this.ratioSalary = ratioSalary;
     }
+    
+    @Column(name="quantity")
+    public Integer getQuantity() {
+        return quantity;
+    }
 
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+    
     @Column(name="time_range", length = 1)
     public Integer getTimeRange() {
         return timeRange;
@@ -175,6 +186,15 @@ public class ReimbursmentSchema implements java.io.Serializable{
         this.payrollComponent = payrollComponent;
     }
 
+    @Column(name = "is_attach_document", length = 1)
+    public Boolean getIsAttachDocument() {
+        return isAttachDocument;
+    }
+
+    public void setIsAttachDocument(Boolean isAttachDocument) {
+        this.isAttachDocument = isAttachDocument;
+    }
+    
     @Column(name = "created_by", length = 45)
     public String getCreatedBy() {
         return createdBy;

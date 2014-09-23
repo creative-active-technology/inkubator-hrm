@@ -76,5 +76,16 @@ public class ReimburstmentDaoImpl extends IDAOImpl<Reimbursment> implements Reim
         
         criteria.add(Restrictions.isNotNull("id"));
     }
+
+    @Override
+    public List<Reimbursment> getAllDataWithEmpIdAndReimbursmentSchemaId(Long empId, Long reimbursmentSchemaId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("empData.id", empId));
+        criteria.add(Restrictions.eq("reimbursmentSchema.id", reimbursmentSchemaId));
+         criteria.setFetchMode("empData", FetchMode.JOIN);
+        criteria.setFetchMode("reimbursmentSchema", FetchMode.JOIN);
+        return criteria.list();
+    }
+    
     
 }

@@ -64,6 +64,7 @@
                                            validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
                                         <f:validateLongRange minimum="1" maximum="12"/>
                                     </p:spinner>
+                                    <p:outputLabel  value=" #{appmsg['reimbursment.month']}" />
                                     <p:message for="effectiveDate"/>
                                 </p:column>
                             </p:row>
@@ -77,8 +78,29 @@
                                         <!--Cek HRM Constanta..-->
                                         <f:selectItem itemLabel="#{appmsg['reimbursment.unit']}" itemValue="0" />
                                         <f:selectItem itemLabel="#{appmsg['reimbursment.nominal']}" itemValue="1" />
+                                        <p:ajax update="quantity" process="@this" listener="#{reimbursmentSchemaFormController.doChangeUnitOrNominal()}"/>
+                                        <p:ajax update="costCenterId" process="@this" listener="#{reimbursmentSchemaFormController.doChangeUnitOrNominal()}"/>
+                                        <p:ajax update="basicValue" process="@this" listener="#{reimbursmentSchemaFormController.doChangeUnitOrNominal()}"/>
+                                        <p:ajax update="payrollComponent" process="@this" listener="#{reimbursmentSchemaFormController.doChangeUnitOrNominal()}"/>
+                                        <p:ajax update="isAttachDocument" process="@this" listener="#{reimbursmentSchemaFormController.doChangeUnitOrNominal()}"/>
+                                        <p:ajax update="nominalUnit" process="@this" listener="#{reimbursmentSchemaFormController.doChangeUnitOrNominal()}"/>
+                                        <p:ajax update="ratioSalary" process="@this" listener="#{reimbursmentSchemaFormController.doChangeUnitOrNominal()}"/>
+                                    
                                     </p:selectOneRadio> 
                                     <p:message for="measurement"/>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['reimbursment.quantity']}"  for="quantity" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:spinner id="quantity" disabled="#{reimbursmentSchemaFormController.isUnit}" value="#{reimbursmentSchemaFormController.model.quantity}" required="true" size="2" 
+                                           validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
+                                    </p:spinner>
+                                    <p:outputLabel  value=" #{appmsg['reimbursment.unit']}" />
+                                    <p:message for="quantity"/>
                                 </p:column>
                             </p:row>
                             
@@ -87,7 +109,7 @@
                                     <p:outputLabel  value="#{appmsg['jabatan.cost_center']}"  for="costCenterId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneMenu id="costCenterId" value="#{reimbursmentSchemaFormController.model.costCenter}" style="width: 150px;margin-right: 3px" required="true">
+                                    <p:selectOneMenu id="costCenterId" disabled="#{reimbursmentSchemaFormController.isNominal}" value="#{reimbursmentSchemaFormController.model.costCenter}" style="width: 150px;margin-right: 3px" required="true">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{reimbursmentSchemaFormController.dropDownCostCenter}"/>
                                     </p:selectOneMenu>
@@ -101,7 +123,7 @@
                                     <p:outputLabel  value="#{appmsg['reimbursment.basic_value']}"  for="basicValue" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneRadio id="basicValue" styleClass="isitext_hrm" required="true" value="#{reimbursmentSchemaFormController.model.basicValue}" label="#{appmsg['travelComponent.travelComponent_measurement']}">
+                                    <p:selectOneRadio id="basicValue" disabled="#{reimbursmentSchemaFormController.isNominal}" styleClass="isitext_hrm" required="true" value="#{reimbursmentSchemaFormController.model.basicValue}" label="#{appmsg['travelComponent.travelComponent_measurement']}">
                                         <!--Cek HRM Constanta..-->
                                         <f:selectItem itemLabel="#{appmsg['reimbursment.nominal']}" itemValue="0" />
                                         <f:selectItem itemLabel="#{appmsg['reimbursment.salary']}" itemValue="1" />
@@ -143,9 +165,20 @@
                                     <p:outputLabel  value="#{appmsg['reimbursment.payroll_component']}"  for="payrollComponent" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectBooleanCheckbox id="payrollComponent" value="#{reimbursmentSchemaFormController.model.payrolComponent}" />
+                                    <p:selectBooleanCheckbox id="payrollComponent" disabled="#{reimbursmentSchemaFormController.isNominal}" value="#{reimbursmentSchemaFormController.model.payrolComponent}" />
                                     <p:outputLabel value=" #{appmsg['global.yes']}" styleClass="label_hrm" style="margin-bottom: 3px;"/>
                                     <p:message for="payrollComponent"/>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['reimbursment.is_attach_dokument']}"  for="isAttachDocument" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectBooleanCheckbox id="isAttachDocument" disabled="#{reimbursmentSchemaFormController.isNominal}" value="#{reimbursmentSchemaFormController.model.isAttachDocument}" />
+                                    <p:outputLabel value=" #{appmsg['global.yes']}" styleClass="label_hrm" style="margin-bottom: 3px;"/>
+                                    <p:message for="isAttachDocument"/>
                                 </p:column>
                             </p:row>
                             
@@ -163,6 +196,8 @@
                                     <p:message for="timeRange"/>
                                 </p:column>
                             </p:row>
+                            
+                            
                             
                         </p:panelGrid>
                         <p:focus context="jobTitleFormId" />

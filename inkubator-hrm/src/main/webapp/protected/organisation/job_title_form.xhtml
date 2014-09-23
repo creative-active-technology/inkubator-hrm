@@ -178,7 +178,7 @@
                         <div style="margin-bottom: 5px">
                             <p:commandButton value="#{appmsg['global.save']}" ajax="true" action="#{jabatanFormController.doSave()}"
                                              styleClass="isitext_hrm" 
-                                             style="margin-right: 5px" label="#{appmsg['global.save']}" update="jobTitleFormId"
+                                             style="margin-right: 5px" label="#{appmsg['global.save']}" update="jobTitleFormId,:growlUserFormId"
                                              icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
                             <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="jobTitleFormId" action="#{jabatanFormController.doReset()}"
                                              icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px" >  

@@ -12,6 +12,7 @@ import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.dao.ApprovalActivityDao;
 import com.inkubator.hrm.dao.AttendanceStatusDao;
 import com.inkubator.hrm.dao.BioDataDao;
 import com.inkubator.hrm.dao.DepartmentDao;
@@ -19,6 +20,7 @@ import com.inkubator.hrm.dao.EmpCareerHistoryDao;
 import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.EmployeeTypeDao;
 import com.inkubator.hrm.dao.GolonganJabatanDao;
+import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.dao.JabatanDao;
 import com.inkubator.hrm.dao.PaySalaryGradeDao;
 import com.inkubator.hrm.dao.TempJadwalKaryawanDao;
@@ -27,6 +29,7 @@ import com.inkubator.hrm.dao.WtHolidayDao;
 import com.inkubator.hrm.entity.Department;
 import com.inkubator.hrm.entity.EmpCareerHistory;
 import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.entity.PaySalaryGrade;
 import com.inkubator.hrm.entity.TempJadwalKaryawan;
@@ -88,6 +91,10 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     private AttendanceStatusDao attendanceStatusDao;
     @Autowired
     private TempJadwalKaryawanDao tempJadwalKaryawanDao;
+    @Autowired
+    private ApprovalActivityDao approvalActivityDao;
+    @Autowired
+    private HrmUserDao hrmUserDao;
 
     @Override
     public EmpData getEntiyByPK(String id) throws Exception {
@@ -162,7 +169,7 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(EmpData entity) throws Exception {
-        long totalDuplicates = empDataDao.getTotalByNIKandId(entity.getNik(), entity.getId());
+        long totalDuplicates = empDataDao.getTotalByNikandNotId(entity.getNik(), entity.getId());
 
         if (totalDuplicates > 0) {
             throw new BussinessException("emp_data.error_nik_duplicate");
@@ -479,10 +486,19 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void doSaveRotasi(EmpData entity) throws Exception {
-        long totalDuplicates = empDataDao.getTotalByNIKandId(entity.getNik(), entity.getId());
+        //check if nik employee is duplicate
+    	long totalDuplicates = empDataDao.getTotalByNikandNotId(entity.getNik(), entity.getId());
         if (totalDuplicates > 0) {
             throw new BussinessException("emp_data.error_nik_duplicate");
         }
+        
+        //check if the employee still have pending task approval
+        HrmUser user = hrmUserDao.getByEmpDataId(entity.getId());
+        long totalPendingTask = approvalActivityDao.getPendingTask(user.getUserId()).size();
+        if (totalPendingTask > 0) {
+            throw new BussinessException("emp_data.error_cannot_do_rotation");
+        }		
+        		
         EmpData empData = this.empDataDao.getEntiyByPK(entity.getId());
         empData.setBasicSalary(entity.getBasicSalary());
         empData.setBioData(bioDataDao.getEntiyByPK(entity.getBioData().getId()));

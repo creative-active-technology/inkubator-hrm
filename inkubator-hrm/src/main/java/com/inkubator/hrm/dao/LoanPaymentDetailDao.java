@@ -15,4 +15,6 @@ public interface LoanPaymentDetailDao extends IDAO<LoanPaymentDetail> {
 	public List<LoanPaymentDetail> getAllDataByLoanId(Long loanId);
 
 	public void save(List<LoanPaymentDetail> loanPaymentDetails, Loan loan);
+	
+	public Long getTotalUnpaidByEmpDataId(Long empDataId);
 }

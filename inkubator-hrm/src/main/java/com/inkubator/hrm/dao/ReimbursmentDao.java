@@ -24,4 +24,7 @@ public interface ReimbursmentDao extends IDAO<Reimbursment>{
     public Long getTotalByCodeAndNotId(String code, Long id);
     
     public Long getByCode(String code);
+    
+    public List<Reimbursment> getAllDataWithEmpIdAndReimbursmentSchemaId(Long empId, Long reimbursmentSchemaId);
+    
 }

@@ -4,60 +4,52 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:pe="http://primefaces.org/ui/extensions">
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
         <title>IGNORED</title>
     </h:head>
     <h:body>
-        <ui:composition template="/templates/dialog_layout.xhtml">
+        <ui:composition template="/templates/master_layout_full.xhtml">
             <ui:define name="windowTitle">
-
+                Home
             </ui:define>
             <ui:define name="center">
-                <p:growl id="growlId" globalOnly="true" showDetail="true"/>
-                <h:form id="formId">
-                    <h:panelGrid  columns="2">
-                        <p:graphicImage library="images" name="travel_component.png" height="36" width="36" />
-                        <h:panelGroup layout="block">
-                            <h:panelGrid>
-                                <p:outputLabel value="Formulir Reimbursment" styleClass="header_big" />
-                                <p:outputLabel value="Data Reimbursment from Application" styleClass="header_small_no_bold" />
-                            </h:panelGrid>
-                        </h:panelGroup>
-                    </h:panelGrid>
-                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
-                    <h:panelGrid columns="1" style="margin-bottom: 5px;margin-left: 0px">
-                        <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
-                    </h:panelGrid> 
-                    <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
-                        <p:row>
-                            <p:column style="width: 40%">
-                                <p:outputLabel for="code" value="#{appmsg['costcenter.code']}" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="code" value=":" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column  style="width: 50%">
-                                <p:inputText id="code" value="#{reimbursmentFormController.model.code}" onkeyup="this.value = this.value.toUpperCase();"
-                                             required="true" maxlength="6" styleClass="isitext_hrm" style="width:97%;" />
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:message for="code"/>
-                            </p:column>
-                        </p:row>
+                <p:growl id="growlUserFormId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
+                <h:form id="jobTitleFormId" >
+                    <div id="box_bg" style="margin: 10px">
+                        <!--<p:panel style="margin: 10px">-->
+                        <h:panelGrid style="margin-bottom: 5px" columns="2">
+                            <p:graphicImage library="images" name="jabatan.png" height="36" width="36" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="Formulir Reimbursment" styleClass="header_big" />
+                                    <p:outputLabel value="Data Reimbursment from Application" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator/>
 
-                        <p:row>
-                            <p:column style="width: 39%">
-                                <p:outputLabel for="employeeId" value="#{appmsg['personachievement.employee_name']}" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="employeeId" value=":" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column  style="width: 60%">
-                                <p:autoComplete id="employeeId" 
+
+
+                        <p:panelGrid style="width: 100%;margin-bottom: 20px;margin-top: 20px" styleClass="grid_border3" >
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="code" value="#{appmsg['costcenter.code']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:inputText id="code" value="#{reimbursmentFormController.model.code}" onkeyup="this.value = this.value.toUpperCase();"
+                                             required="true" maxlength="6" styleClass="isitext_hrm" style="width:257px;" />
+                                    <p:message for="code"/>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel for="employeeId" value="#{appmsg['personachievement.employee_name']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:autoComplete id="employeeId" 
                                                 title="#{appmsg['personachievement.employee_name']}" 
                                                 value="#{reimbursmentFormController.model.empData}"
                                                 completeMethod="#{reimbursmentFormController.doAutoCompletEmployee}"
@@ -70,102 +62,93 @@
                                                 requiredMessage="#{appmsg['personachievement.person_achievement_should_not_be_empty']}"
                                                 styleClass="isitext_hrm" size="40">
                                 </p:autoComplete>
-
-
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:message for="employeeId"/>
-                            </p:column>
-                        </p:row>
-
-                        <p:row>
-                            <p:column style="width: 40%">
-                                <p:outputLabel for="reimbursmentSchemaId" value="#{appmsg['jabatan.cost_center']}" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="reimbursmentSchemaId" value=":" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column  style="width: 50%">
-                                <p:selectOneMenu id="reimbursmentSchemaId" value="#{reimbursmentFormController.model.reimbursmentSchemaId}" style="width: 150px;margin-right: 3px" required="true">
-                                    <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                    <f:selectItems value="#{reimbursmentFormController.dropDownReimbursmentSchema}"/>
-                                </p:selectOneMenu>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:message for="reimbursmentSchemaId"/>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="width: 39%">
-                                <p:outputLabel for="claimDate" value="#{appmsg['personachievement.achievement_date']}" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="claimDate" value=":" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 67%" >
-                                <p:calendar  id="claimDate" size="40" pattern="dd MMMM yyyy" label="Tanggal Lahir" value="#{reimbursmentFormController.model.claimDate}"
+                                    <p:message for="employeeId"/>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel for="reimbursmentSchemaId" value="Reimbursment Schema" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectOneMenu id="reimbursmentSchemaId" value="#{reimbursmentFormController.model.reimbursmentSchemaId}" style="width: 150px;margin-right: 3px" required="true">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{reimbursmentFormController.dropDownReimbursmentSchema}"/>
+                                        <p:ajax update="quantity" process="@this" listener="#{reimbursmentFormController.doChangeQuantityOrNominal()}"/>
+                                        <p:ajax update="nominal" process="@this" listener="#{reimbursmentFormController.doChangeQuantityOrNominal()}"/>
+                                        <p:ajax update="uploadFoto" process="@this" listener="#{reimbursmentFormController.doChangeUploadForm()}"/>
+                                    </p:selectOneMenu>
+                                    <p:message for="reimbursmentSchemaId"/>
+                                </p:column>
+                            </p:row>
+                            
+                                                        
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel for="claimDate" value="#{appmsg['personachievement.achievement_date']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:calendar  id="claimDate" size="40" pattern="dd MMMM yyyy" label="Tanggal Lahir" value="#{reimbursmentFormController.model.claimDate}"
                                              required="true" navigator="true">
                                     <f:validator validatorId="birthDateValidator"  />
                                     <f:attribute name="validatorMessage" value="#{appmsg['global.birthDate_validator']}"/>
                                 </p:calendar>
-                            </p:column>
+                                    <p:message for="claimDate"/>
+                                </p:column>
+                            </p:row>
                             
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:message for="claimDate"/>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel for="quantity" value="Quantity" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <pe:inputNumber id="quantity" disabled="#{reimbursmentFormController.isQuantity}" value="#{reimbursmentFormController.model.quantity}" onkeyup="this.value = this.value.toUpperCase();"
+                                             required="true" maxlength="6" styleClass="isitext_hrm" style="width:257px;" />
+                                    <p:message for="quantity"/>
+                                </p:column>
+                            </p:row>
+                            
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Nominal"  for="nominal" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <pe:inputNumber id="nominal" disabled="#{reimbursmentFormController.isNominal}" value="#{reimbursmentFormController.model.nominal}" 
+                                                required="true" maxlength="6" styleClass="isitext_hrm" style="width:257px;"/>
+                                    <p:message for="nominal"/>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                <p:outputLabel for="uploadFoto" value="#{appmsg['bioeducation.ijazah']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 100%" colspan="5">
+                                <p:fileUpload required="false" sizeLimit="209715200" label="#{appmsg['global.choose_photo']}" fileUploadListener="#{reimbursmentFormController.handleFileUpload}" 
+                                           mode="advanced"  id="uploadFoto"  style="margin-top:10px;margin-bottom:10px;width: 100%;text-align: left!important"
+                                           dragDropSupport="true" disabled="#{reimbursmentFormController.isUpload}" multiple="false" update="fotoNameId" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/> 
+                                <p:outputLabel value="#{appmsg['global.file_name']}"/>
+                                <p:outputLabel value=":" style="margin-left: 5px;margin-right: 5px"/>
+                                <p:outputLabel value="#{reimbursmentFormController.fotoFileName}" id="fotoNameId"/>
                             </p:column>
                         </p:row>
-                        <p:row>
-                            <p:column style="width: 40%">
-                                <p:outputLabel for="quantity" value="Quantity" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="quantity" value=":" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column  style="width: 50%">
-                                <p:inputText id="quantity" value="#{reimbursmentFormController.model.quantity}" onkeyup="this.value = this.value.toUpperCase();"
-                                             required="true" maxlength="6" styleClass="isitext_hrm" style="width:97%;" />
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:message for="quantity"/>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="width: 20%;" >
-                                <p:outputLabel  value="Nominal"  for="nominal" styleClass="label_hrm" />
-                            </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="nominal" value=":" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 80%">
-                                <pe:inputNumber id="nominal" value="#{reimbursmentFormController.model.nominal}" 
-                                                required="true" maxlength="6" styleClass="isitext_hrm" style="width:97%;"/>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:message for="nominal"/>
-                            </p:column>
-                        </p:row>
-                    </p:panelGrid>
-                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
-                    <h:panelGrid columns="2" style="margin-bottom: -30px!important">
-                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formId,:growlId"
-                                         action="#{reimbursmentFormController.doSave()}" styleClass="isitext_hrm"
-                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
-                                         icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
-                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formId"
-                                         icon="ui-icon-refresh" styleClass="isitext_hrm" >  
-                            <p:resetInput target="formId" />  
-                        </p:commandButton>
-                    </h:panelGrid>
+                        </p:panelGrid>
+
+                        <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
+                        <div style="margin-bottom: 5px">
+                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" action="#{reimbursmentFormController.doSaved()}"
+                                             styleClass="isitext_hrm" 
+                                             style="margin-right: 5px" label="#{appmsg['global.save']}" update="jobTitleFormId, :growlUserFormId"
+                                             icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="jobTitleFormId" action="#{loanSchemaFormController.doReset()}"
+                                             icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px" >  
+                                <p:resetInput target="jobTitleFormId" />  
+                            </p:commandButton>
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}"  immediate="true" action="#{loanSchemaFormController.doBack()}"
+                                             styleClass="label_button"/>
+                        </div>
+                    </div>
                 </h:form>
             </ui:define>
 

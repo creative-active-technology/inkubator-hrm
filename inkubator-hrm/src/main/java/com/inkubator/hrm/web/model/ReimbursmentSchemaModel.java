@@ -24,6 +24,8 @@ public class ReimbursmentSchemaModel implements Serializable{
     private Integer timeRange;
     private Integer payrollComponent;
     private Boolean payrolComponent;
+    private Boolean isAttachDocument;
+    private Integer Quantity;
 
     public Long getId() {
         return id;
@@ -119,6 +121,22 @@ public class ReimbursmentSchemaModel implements Serializable{
 
     public void setPayrolComponent(Boolean payrolComponent) {
         this.payrolComponent = payrolComponent;
+    }
+
+    public Boolean getIsAttachDocument() {
+        return isAttachDocument;
+    }
+
+    public void setIsAttachDocument(Boolean isAttachDocument) {
+        this.isAttachDocument = isAttachDocument;
+    }
+
+    public Integer getQuantity() {
+        return Quantity;
+    }
+
+    public void setQuantity(Integer Quantity) {
+        this.Quantity = Quantity;
     }
     
     

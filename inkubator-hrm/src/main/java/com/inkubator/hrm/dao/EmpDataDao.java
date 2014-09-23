@@ -36,7 +36,7 @@ public interface EmpDataDao extends IDAO<EmpData> {
 
     public EmpData getByBioDataWithDepartment(long id);
 
-    public Long getTotalByNIKandId(String nik, Long id);
+    public Long getTotalByNikandNotId(String nik, Long id);
     
     public Long getTotalByNIK(String nik);
     

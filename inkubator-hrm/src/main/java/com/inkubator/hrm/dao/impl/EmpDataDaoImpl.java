@@ -159,7 +159,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     }
 
     @Override
-    public Long getTotalByNIKandId(String nik, Long id) {
+    public Long getTotalByNikandNotId(String nik, Long id) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("nik", nik));
         criteria.add(Restrictions.ne("id", id));

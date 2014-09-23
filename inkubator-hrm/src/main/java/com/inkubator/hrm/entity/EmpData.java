@@ -1,8 +1,15 @@
 package com.inkubator.hrm.entity;
 // Generated Aug 8, 2014 10:14:25 AM by Hibernate Tools 3.6.0
 
+import com.inkubator.common.CommonUtilConstant;
+import com.inkubator.common.util.AESUtil;
+import com.inkubator.common.util.NumberFormatter;
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.webcore.util.FacesUtil;
+import java.text.NumberFormat;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -406,6 +413,15 @@ public class EmpData implements java.io.Serializable {
         this.basicSalary = basicSalary;
     }
 
+    @Transient
+    public String getDecryptBasicSalary(){
+        String dataEncripted = basicSalary;
+        String dataDecripted = AESUtil.getAESDescription(dataEncripted, HRMConstant.KEYVALUE, HRMConstant.AES_ALGO);
+        NumberFormat nb = NumberFormatter.getNumberFormatStatic(CommonUtilConstant.NUMBER_FORMAT_NUMBER_TYPE, new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+        nb.format(Double.parseDouble(dataDecripted));
+        return nb.format(Double.parseDouble(dataDecripted));
+    }
+    
     @Temporal(TemporalType.DATE)
     @Column(name = "rotasi_date", length = 10)
     public Date getRotasiDate() {

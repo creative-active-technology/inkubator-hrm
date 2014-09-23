@@ -65,13 +65,13 @@
                             <f:facet name="header">  
                                 <h:outputText value="#{appmsg['leave.list_of_leave']}"/>
                             </f:facet> 
-                            <p:column style="text-align: center;width: 5%">
+                            <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.number']}"/>
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="code"  style="text-align: center;width: 20%">
+                            <p:column sortBy="code"  style="text-align: center;width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['leave.leave_code']}"/>
                                 </f:facet>
@@ -83,14 +83,14 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{leaveData.name}"/>
                             </p:column> 
-                            <p:column sortBy="dayType"  style="text-align: center;width: 20%">
+                            <p:column sortBy="dayType"  style="text-align: center;width: 35%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['leave.type_of_day']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{leaveData.dayTypeAsLabel}"/>
                             </p:column>   
                             
-                            <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 12%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                 				 style="font-size: 10px!important" action="#{leaveViewController.doDetail()}">                        
                                     <f:setPropertyActionListener value="#{leaveData}" target="#{leaveViewController.selectedLeave}" />

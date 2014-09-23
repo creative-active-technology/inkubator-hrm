@@ -58,6 +58,8 @@ public class ReimbursmentSchemaFormController extends BaseController{
     private DualListModel<EmployeeType> dualListModel = new DualListModel<>();
     private Boolean isNominalLimit;
     private Boolean isRatioSalary;
+    private Boolean isUnit;
+    private Boolean isNominal;
     
     @PostConstruct
     @Override
@@ -66,6 +68,10 @@ public class ReimbursmentSchemaFormController extends BaseController{
         try {
             model = new ReimbursmentSchemaModel();
             isUpdate = Boolean.FALSE;
+            isNominal = Boolean.TRUE;
+            isRatioSalary = Boolean.TRUE;
+            isUnit = Boolean.TRUE;
+            isNominalLimit = Boolean.TRUE;
 //            String reimbursmentId = FacesUtil.getRequestParameter("reimbursmentId");
             String reimbursmentId = FacesUtil.getRequestParameter("execution");
             if (StringUtils.isNotEmpty(reimbursmentId)) {
@@ -79,12 +85,24 @@ public class ReimbursmentSchemaFormController extends BaseController{
                     dualListModel = new DualListModel<>(sourceSpiRole, targetRole);
                     isUpdate = Boolean.TRUE;
                 }
-                if(reimbursmentSchema.getBasicValue() == 0){
-                    isNominalLimit = Boolean.FALSE;
+                if(reimbursmentSchema.getBasicValue()!= null){
+                    if(reimbursmentSchema.getBasicValue() == 0){
+                        isNominalLimit = Boolean.FALSE;
+                        isRatioSalary = Boolean.TRUE;
+                    }else{
+                        isNominalLimit = Boolean.TRUE;
+                        isRatioSalary = Boolean.FALSE;
+                    }
+                }
+                System.out.println(reimbursmentSchema.getMeasurement()+"--------------------"+HRMConstant.REIMBURSMENT_UNIT);
+                if(reimbursmentSchema.getMeasurement() == HRMConstant.REIMBURSMENT_UNIT){
+                    isUnit = Boolean.FALSE;
+                    isNominal = Boolean.TRUE;
+                    isNominalLimit = Boolean.TRUE;
                     isRatioSalary = Boolean.TRUE;
                 }else{
-                    isNominalLimit = Boolean.TRUE;
-                    isRatioSalary = Boolean.FALSE;
+                    isUnit = Boolean.TRUE;
+                    isNominal = Boolean.FALSE;
                 }
             }else{
                 List<EmployeeType> source = this.employeeTypeService.getAllData();
@@ -109,6 +127,8 @@ public class ReimbursmentSchemaFormController extends BaseController{
         dualListModel = null;
         isNominalLimit = null;
         isRatioSalary = null;
+        isUnit = null;
+        isNominal = null;
     }
     
     public void listDrowDown() throws Exception{
@@ -143,7 +163,9 @@ public class ReimbursmentSchemaFormController extends BaseController{
         reimbursmentSchemaModel.setName(entity.getName());
         reimbursmentSchemaModel.setMeasurement(entity.getMeasurement());
         reimbursmentSchemaModel.setNominalUnit(entity.getNominalUnit());
+        reimbursmentSchemaModel.setQuantity(entity.getQuantity());
         reimbursmentSchemaModel.setRatioSalary(entity.getRatioSalary());
+        reimbursmentSchemaModel.setIsAttachDocument(entity.getIsAttachDocument());
         reimbursmentSchemaModel.setPayrolComponent(entity.getPayrollComponent());
         reimbursmentSchemaModel.setTimeRange(entity.getTimeRange());
         return reimbursmentSchemaModel;
@@ -233,20 +255,45 @@ public class ReimbursmentSchemaFormController extends BaseController{
             reimbursmentSchema.setId(model.getId());
         }
         reimbursmentSchema.setCode(model.getCode());
-        reimbursmentSchema.setCostCenter(new CostCenter(model.getCostCenter()));
+        if(model.getCostCenter() != null){
+            reimbursmentSchema.setCostCenter(new CostCenter(model.getCostCenter()));
+        }
         reimbursmentSchema.setBasicValue(model.getBasicValue());
         reimbursmentSchema.setEffectiveDate(model.getEffectiveDate());
         reimbursmentSchema.setMeasurement(model.getMeasurement());
         reimbursmentSchema.setName(model.getName());
+        reimbursmentSchema.setQuantity(model.getQuantity());
         reimbursmentSchema.setNominalUnit(model.getNominalUnit());
         reimbursmentSchema.setPayrollComponent(model.getPayrolComponent());
         reimbursmentSchema.setRatioSalary(model.getRatioSalary());
+        reimbursmentSchema.setIsAttachDocument(model.getIsAttachDocument());
         reimbursmentSchema.setTimeRange(model.getTimeRange());
         return reimbursmentSchema;
     }
 
     public String doBack() {
         return "/protected/personalia/reimbursment_schema_view.htm?faces-redirect=true";
+    }
+    
+    public void doChangeUnitOrNominal(){
+        isNominalLimit = Boolean.TRUE;
+        isRatioSalary = Boolean.TRUE;
+        if(model.getMeasurement() == HRMConstant.REIMBURSMENT_UNIT){
+            isUnit = Boolean.FALSE;
+            isNominal = Boolean.TRUE;
+        }else{
+            isUnit = Boolean.TRUE;
+            isNominal = Boolean.FALSE;
+            if(model.getBasicValue() != null){
+                if(model.getBasicValue() == 0){
+                        isNominalLimit = Boolean.FALSE;
+                        isRatioSalary = Boolean.TRUE;
+                    }else{
+                        isNominalLimit = Boolean.TRUE;
+                        isRatioSalary = Boolean.FALSE;
+                    }
+            }
+        }
     }
     
     public ReimbursmentSchemaModel getModel() {
@@ -327,6 +374,22 @@ public class ReimbursmentSchemaFormController extends BaseController{
 
     public void setIsRatioSalary(Boolean isRatioSalary) {
         this.isRatioSalary = isRatioSalary;
+    }
+
+    public Boolean getIsUnit() {
+        return isUnit;
+    }
+
+    public void setIsUnit(Boolean isUnit) {
+        this.isUnit = isUnit;
+    }
+
+    public Boolean getIsNominal() {
+        return isNominal;
+    }
+
+    public void setIsNominal(Boolean isNominal) {
+        this.isNominal = isNominal;
     }
     
     
