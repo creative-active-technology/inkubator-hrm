@@ -614,4 +614,10 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
             return o1.getScheduleDate().compareTo(o2.getScheduleDate());
         }
     };
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public List<EmpData> getTotalBySearchEmployee(Long workingGroupId, Integer deptLikeOrEqual, String deptName, Integer empTypeLikeOrEqual, String empTypeName, Integer gender, Long golJabId, Integer sortBy, Integer orderBy) throws Exception {
+        return empDataDao.getTotalBySearchEmployee(workingGroupId, deptLikeOrEqual, deptName, empTypeLikeOrEqual, empTypeName, gender, golJabId, sortBy, orderBy);
+    }
 }

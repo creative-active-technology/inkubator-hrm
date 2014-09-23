@@ -257,4 +257,55 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 		
 		return criteria.list();
 	}
+
+    @Override
+    public List<EmpData> getTotalBySearchEmployee(Long workingGroupId, Integer deptLikeOrEqual, String deptName, Integer empTypeLikeOrEqual, String empTypeName, Integer gender, Long golJabId, Integer sortBy, Integer orderBy) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("wtGroupWorking", "wg", JoinType.LEFT_OUTER_JOIN);
+        criteria.createAlias("jabatanByJabatanId", "jabatan", JoinType.INNER_JOIN);
+        criteria.createAlias("jabatan.department", "dept", JoinType.INNER_JOIN);
+        criteria.createAlias("employeeType", "empType", JoinType.INNER_JOIN);
+        criteria.createAlias("bioData", "bio", JoinType.INNER_JOIN);
+        criteria.createAlias("golonganJabatan", "goljab", JoinType.INNER_JOIN);
+        //ambil yg working groupnya bukan yg dipilih, dan belum punya working group
+        Disjunction disjunction = Restrictions.disjunction();
+        disjunction.add(Restrictions.isNull("wtGroupWorking"));
+        disjunction.add(Restrictions.not(Restrictions.eq("wg.id", workingGroupId)));
+        criteria.add(disjunction);
+        //departermen equal or like
+        if(deptLikeOrEqual == HRMConstant.DEPARTMENT_EQUAL){
+            System.out.println("MASUK EQUAL");
+            criteria.add(Restrictions.eq("dept.departmentName", deptName));
+        }else{
+            System.out.println("MASUK LIKE");
+            criteria.add(Restrictions.like("dept.departmentName", deptName, MatchMode.ANYWHERE));
+        }
+        //employee type equal or like
+        if(empTypeLikeOrEqual == HRMConstant.EMPLOYEE_TYPE_EQUAL){
+            System.out.println("MASUK EQUAL");
+            criteria.add(Restrictions.eq("empType.name", empTypeName));
+        }else{
+            System.out.println("MASUK LIKE");
+            criteria.add(Restrictions.like("empType.name", empTypeName, MatchMode.ANYWHERE));
+        }
+        //gender
+        criteria.add(Restrictions.eq("bio.gender", gender));
+        //goljab
+        criteria.add(Restrictions.eq("goljab.id", golJabId));
+        //sort by nik
+        if(sortBy == HRMConstant.SORT_BY_NIK && orderBy == HRMConstant.ORDER_BY_ASC){
+            criteria.addOrder(Order.asc("nik"));
+        }else{
+            criteria.addOrder(Order.desc("nik"));
+        }
+        
+        //sort by name
+        if(sortBy == HRMConstant.SORT_BY_NAME && orderBy == HRMConstant.ORDER_BY_ASC){
+            criteria.addOrder(Order.asc("bio.firstName"));
+        }else{
+            criteria.addOrder(Order.desc("bio.firstName"));
+        }
+        
+        return criteria.list();
+    }
 }
