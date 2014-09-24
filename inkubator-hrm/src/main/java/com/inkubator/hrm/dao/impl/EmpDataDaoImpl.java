@@ -310,4 +310,12 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 
         return criteria.list();
     }
+
+    @Override
+    public List<EmpData> getAllDataWithEndTime(Date date) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("tempJadwalKaryawans", "tj");
+        criteria.add(Restrictions.eq("tj.endTime", date));
+        return criteria.list();
+    }
 }

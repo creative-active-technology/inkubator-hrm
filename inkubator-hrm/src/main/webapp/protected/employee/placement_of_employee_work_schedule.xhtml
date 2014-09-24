@@ -25,7 +25,7 @@
                     <div id="box_bg" style="margin: 10px">
                         <!--<p:panel style="margin: 10px">-->
                         <h:panelGrid style="margin-bottom: 5px" columns="2">
-                            <p:graphicImage library="images" name="jabatan.png" height="36" width="36" />
+                            <p:graphicImage library="images" name="task.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
                                     <p:outputLabel value="Penempatan Jadwal Kerja Karyawan" styleClass="header_big" />
@@ -37,7 +37,7 @@
 
 
 
-                        <p:panelGrid style="width: 100%;margin-bottom: 20px;margin-top: 20px" styleClass="grid_border3" >
+                        <p:panelGrid style="width: 100%;margin-bottom: 10px;margin-top: 20px" styleClass="grid_border3" >
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="Kelompok Kerja"  for="code" styleClass="label_hrm" />
@@ -50,7 +50,7 @@
                                     <p:message for="code"/>
                                 </p:column>
                             </p:row>
-                            
+
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="Department"  for="department" styleClass="label_hrm" />
@@ -63,10 +63,10 @@
                                             <f:selectItem itemLabel="#{appmsg['employeeworkschedule.like']}" itemValue="1"/>
                                         </p:selectOneMenu>
                                         <p:inputText id="departmentText" value="#{placementOfEmployeeWorkScheduleFormController.model.departmentName}"
-                                                 required="false" styleClass="isitext_hrm" style="width:210px; margin-left: -10px;" />
+                                                     required="false" styleClass="isitext_hrm" style="width:210px; margin-left: -10px;" />
 
-                                    
-                                    
+
+
                                     </h:panelGrid>
                                 </p:column>
                             </p:row>
@@ -74,18 +74,18 @@
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="Karyawan Type"  for="employeeType" styleClass="label_hrm" />
                                 </p:column>
-                                
+
                                 <p:column style="width: 80%">
                                     <h:panelGrid columns="2" style="margin-left: -10px;">
                                         <p:selectOneMenu id="employeeType" value="#{placementOfEmployeeWorkScheduleFormController.model.employeeTypeLikeOrEqual}" style="width: 150px;margin-right: 3px" >
-                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue="3"/>
-                                        <f:selectItem itemLabel="#{appmsg['employeeworkschedule.equal']}" itemValue="0"/>
-                                        <f:selectItem itemLabel="#{appmsg['employeeworkschedule.like']}" itemValue="1"/>
-                                    </p:selectOneMenu>
-                                    
+                                            <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue="3"/>
+                                            <f:selectItem itemLabel="#{appmsg['employeeworkschedule.equal']}" itemValue="0"/>
+                                            <f:selectItem itemLabel="#{appmsg['employeeworkschedule.like']}" itemValue="1"/>
+                                        </p:selectOneMenu>
+
                                         <p:inputText id="employeeTypeText" value="#{placementOfEmployeeWorkScheduleFormController.model.employeeTypeName}"
-                                             required="false" styleClass="isitext_hrm" style="width:210px;margin-left: -10px;" />
-                                    
+                                                     required="false" styleClass="isitext_hrm" style="width:210px;margin-left: -10px;" />
+
                                     </h:panelGrid>
                                 </p:column>
                             </p:row>
@@ -130,23 +130,32 @@
                                     <p:message for="sortBy"/>
                                 </p:column>
                             </p:row>
-                            
-                            
-                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:commandButton value="#{appmsg['global.search']}" ajax="true" action="#{placementOfEmployeeWorkScheduleFormController.doSearchEmployee()}"
+                                                     styleClass="isitext_hrm" 
+                                                     style="margin-right: 5px" label="#{appmsg['global.search']}" update="picklistUserRoleId"
+                                                     icon="ui-icon-search" title="#{appmsg['global.search']}">    
+                                    </p:commandButton>
+                                </p:column>
+                            </p:row>
+
+
                         </p:panelGrid>
-                        <p:commandButton value="#{appmsg['global.search']}" ajax="true" action="#{placementOfEmployeeWorkScheduleFormController.doSearchEmployee()}"
-                                             styleClass="isitext_hrm" 
-                                             style="margin-right: 5px" label="#{appmsg['global.search']}" update="picklistUserRoleId"
-                                             icon="ui-icon-disk" title="#{appmsg['global.search']}">    
-                        </p:commandButton>
+
                         <p:focus context="jobTitleFormId" />
                         <!--<p:separator style="margin-top: 20px;margin-bottom: 10px"/>-->
-                        <p:outputLabel value="Employee Name" styleClass="header_big" />
-                       <!--<p:outputLabel value="#{appmsg['user_view.header2']}" styleClass="header_small_no_bold" />-->
-                        <!--                                </h:panelGrid>
-                                                    </h:panelGroup>-->
-                        <!--</h:panelGrid>-->
-                        <p:separator/>
+                        <div style="margin-top: 10px">
+                            <p:outputLabel value="Daftar Employee" styleClass="header_big" />
+                           <!--<p:outputLabel value="#{appmsg['user_view.header2']}" styleClass="header_small_no_bold" />-->
+                            <!--                                </h:panelGrid>
+                                                        </h:panelGroup>-->
+                            <!--</h:panelGrid>-->
+                            <p:separator/>
+                        </div>
                         <div align="center">
                             <p:pickList value="#{placementOfEmployeeWorkScheduleFormController.dualListModel}" var="role" itemValue="#{role}" converter="#{empDataConverter}" id="picklistUserRoleId"
                                         required="false"  style="margin-top: 15px;margin-bottom: 15px;" label="#{appmsg['role_view.header1']}" styleClass="isitext_hrm"
@@ -157,18 +166,20 @@
                         <!--</p:panel>-->
 
                         <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
-<!--                        <div style="margin-bottom: 5px">
-                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" action="#{placementOfEmployeeWorkScheduleFormController.doSaved()}"
-                                             styleClass="isitext_hrm" 
-                                             style="margin-right: 5px" label="#{appmsg['global.save']}" update="jobTitleFormId"
-                                             icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
-                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="jobTitleFormId" action="#{reimbursmentSchemaFormController.doReset()}"
-                                             icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px" >  
-                                <p:resetInput target="jobTitleFormId" />  
+                        <div style="margin-bottom: 5px">
+                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" 
+                                             action="#{userFormController.doSave()}" styleClass="label_button"
+                                             style="margin-right: 5px" label="#{appmsg['global.save']}"
+                                             icon="ui-icon-disk"
+                                             id="buttonSave" title="#{appmsg['global.save']}"/>
+                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}"
+                                             process="@this" icon="ui-icon-refresh" id="cleareId"   styleClass="label_button"  style="margin-right: 5px">  
+                                <p:resetInput target="userFormId" />  
                             </p:commandButton>
-                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}"  immediate="true" action="#{reimbursmentSchemaFormController.doBack()}"
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{userFormController.doBack()}" immediate="true"
                                              styleClass="label_button"/>
-                        </div>-->
+                            <!--</p:panel>-->
+                        </div>
                     </div>
                 </h:form>
             </ui:define>
