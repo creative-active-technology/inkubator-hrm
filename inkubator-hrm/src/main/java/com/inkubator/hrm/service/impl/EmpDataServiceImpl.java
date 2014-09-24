@@ -5,6 +5,7 @@
  */
 package com.inkubator.hrm.service.impl;
 
+import ch.lambdaj.Lambda;
 import com.inkubator.common.CommonUtilConstant;
 import com.inkubator.common.util.AESUtil;
 import com.inkubator.common.util.DateTimeUtil;
@@ -50,10 +51,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Session;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -95,6 +101,8 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     private ApprovalActivityDao approvalActivityDao;
     @Autowired
     private HrmUserDao hrmUserDao;
+    @Autowired
+    private JmsTemplate jmsTemplateMassJadwalKerja;
 
     @Override
     public EmpData getEntiyByPK(String id) throws Exception {
@@ -487,18 +495,18 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void doSaveRotasi(EmpData entity) throws Exception {
         //check if nik employee is duplicate
-    	long totalDuplicates = empDataDao.getTotalByNikandNotId(entity.getNik(), entity.getId());
+        long totalDuplicates = empDataDao.getTotalByNikandNotId(entity.getNik(), entity.getId());
         if (totalDuplicates > 0) {
             throw new BussinessException("emp_data.error_nik_duplicate");
         }
-        
+
         //check if the employee still have pending task approval
         HrmUser user = hrmUserDao.getByEmpDataId(entity.getId());
         long totalPendingTask = approvalActivityDao.getPendingTask(user.getUserId()).size();
         if (totalPendingTask > 0) {
             throw new BussinessException("emp_data.error_cannot_do_rotation");
-        }		
-        		
+        }
+
         EmpData empData = this.empDataDao.getEntiyByPK(entity.getId());
         empData.setBasicSalary(entity.getBasicSalary());
         empData.setBioData(bioDataDao.getEntiyByPK(entity.getBioData().getId()));
@@ -565,7 +573,7 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     }
 
     @Override
-    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void savePenempatanJadwal(EmpData empData) throws Exception {
         List<TempJadwalKaryawan> dataMustDelete = this.tempJadwalKaryawanDao.getAllByEmpId(empData.getId());
         if (!dataMustDelete.isEmpty()) {
@@ -591,7 +599,7 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         String dayBegin = new SimpleDateFormat("EEEE").format(endDate);
         String dayNow = new SimpleDateFormat("EEEE").format(now);
         Date beginScheduleDate;
-        if (dayBegin.endsWith(dayNow)&& Objects.equals(groupWorking.getTypeSequeace(), HRMConstant.NORMAL_SCHEDULE) ) {
+        if (dayBegin.endsWith(dayNow) && Objects.equals(groupWorking.getTypeSequeace(), HRMConstant.NORMAL_SCHEDULE)) {
             beginScheduleDate = DateTimeUtil.getDateFrom(startDate, (hasilBagi * num) - num, CommonUtilConstant.DATE_FORMAT_DAY);
         } else {
             beginScheduleDate = DateTimeUtil.getDateFrom(startDate, (hasilBagi * num), CommonUtilConstant.DATE_FORMAT_DAY);
@@ -629,5 +637,25 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public List<EmpData> getTotalBySearchEmployee(Long workingGroupId, Integer deptLikeOrEqual, String deptName, Integer empTypeLikeOrEqual, String empTypeName, Integer gender, Long golJabId, Integer sortBy, Integer orderBy) throws Exception {
         return empDataDao.getTotalBySearchEmployee(workingGroupId, deptLikeOrEqual, deptName, empTypeLikeOrEqual, empTypeName, gender, golJabId, sortBy, orderBy);
+    }
+
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
+    public void saveMassPenempatanJadwal(List<EmpData> data, long groupWorkingId) throws Exception {
+        for (EmpData empData : data) {
+            empData.setWtGroupWorking(wtGroupWorkingDao.getEntiyByPK(groupWorkingId));
+            this.empDataDao.update(empData);
+        }
+        List<Long>listIdEmp=Lambda.extract(data, Lambda.on(EmpData.class).getId());
+        for (Long listIdEmp1 : listIdEmp) {
+            System.out.println(" nilai nya "+listIdEmp1);
+        }
+        this.jmsTemplateMassJadwalKerja.send(new MessageCreator() {
+            @Override
+            public Message createMessage(Session session)
+                    throws JMSException {
+                return session.createTextMessage("d");
+            }
+        });
     }
 }

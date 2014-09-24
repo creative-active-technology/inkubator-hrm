@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.inkubator.hrm.web.workingtime;
+package com.inkubator.hrm.web.employee;
 
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.GolonganJabatan;
@@ -32,24 +32,28 @@ import org.primefaces.model.DualListModel;
  */
 @ManagedBean(name = "placementOfEmployeeWorkScheduleFormController")
 @ViewScoped
-public class PlacementOfEmployeeWorkSchedule extends BaseController{
+public class PlacementOfEmployeeWorkSchedule extends BaseController {
+
     @ManagedProperty(value = "#{wtGroupWorkingService}")
     private WtGroupWorkingService wtGroupWorkingService;
     @ManagedProperty(value = "#{golonganJabatanService}")
     private GolonganJabatanService golonganJabatanService;
     @ManagedProperty(value = "#{empDataService}")
     private EmpDataService empDataService;
-    private Map<String, Long> workingGroupDropDown = new HashMap<String, Long>();;
+    private Map<String, Long> workingGroupDropDown = new HashMap<String, Long>();
+    ;
     private List<WtGroupWorking> workingGroupList = new ArrayList<>();
-    private Map<String, Long> golonganJabatanDropDown = new HashMap<String, Long>();;
+    private Map<String, Long> golonganJabatanDropDown = new HashMap<String, Long>();
+    ;
     private List<GolonganJabatan> golonganJabatanList = new ArrayList<>();
     private DualListModel<EmpData> dualListModel = new DualListModel<>();
     private PlacementOfEmployeeWorkScheduleModel model;
     private List<EmpData> source = new ArrayList<EmpData>();
+
     @PostConstruct
     @Override
     public void initialization() {
-     
+
         super.initialization();
         String param = FacesUtil.getRequestParameter("param");
         model = new PlacementOfEmployeeWorkScheduleModel();
@@ -60,10 +64,10 @@ public class PlacementOfEmployeeWorkSchedule extends BaseController{
                 workingGroupDropDown.put(wtGroupWorking.getName(), wtGroupWorking.getId());
             }
             for (GolonganJabatan golonganJabatan : golonganJabatanList) {
-                golonganJabatanDropDown.put(golonganJabatan.getCode()+ " - " +golonganJabatan.getPangkat().getPangkatName(), golonganJabatan.getId());
+                golonganJabatanDropDown.put(golonganJabatan.getCode() + " - " + golonganJabatan.getPangkat().getPangkatName(), golonganJabatan.getId());
             }
             source = this.empDataService.getAllDataWithRelation();
-        
+
         } catch (Exception ex) {
             Logger.getLogger(PlacementOfEmployeeWorkSchedule.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -81,7 +85,7 @@ public class PlacementOfEmployeeWorkSchedule extends BaseController{
         dualListModel = null;
 
     }
-    
+
     public WtGroupWorkingService getWtGroupWorkingService() {
         return wtGroupWorkingService;
     }
@@ -145,8 +149,8 @@ public class PlacementOfEmployeeWorkSchedule extends BaseController{
     public void setDualListModel(DualListModel<EmpData> dualListModel) {
         this.dualListModel = dualListModel;
     }
-    
-    public void doSearchEmployee() throws Exception{
+
+    public void doSearchEmployee() throws Exception {
         source = empDataService.getTotalBySearchEmployee(model.getWorkingGroupId(), model.getDepartmentLikeOrEqual(), model.getDepartmentName(), model.getEmployeeTypeLikeOrEqual(), model.getEmployeeTypeName(), model.getGender(), model.getGolonganJabatanId(), model.getSortBy(), model.getOrderBy());
         dualListModel.setSource(source);
     }
@@ -166,6 +170,16 @@ public class PlacementOfEmployeeWorkSchedule extends BaseController{
     public void setSource(List<EmpData> source) {
         this.source = source;
     }
-    
-    
+
+    public String doSave() {
+        try {
+            List<EmpData> dataToSave = dualListModel.getTarget();
+            empDataService.saveMassPenempatanJadwal(dataToSave, model.getWorkingGroupId());
+            return "/protected/employee/employee_schedule_view.htm?faces-redirect=true";
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
+        }
+        return null;
+    }
+
 }

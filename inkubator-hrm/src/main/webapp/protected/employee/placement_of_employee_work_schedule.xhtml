@@ -8,11 +8,6 @@
       xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
         <title>IGNORED</title>
-        <style>
-            .ui-picklist .ui-picklist-list{
-                width: 1000px!important;
-            }
-        </style>
     </h:head>
     <h:body>
         <ui:composition template="/templates/master_layout_full.xhtml">
@@ -135,7 +130,7 @@
 
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:commandButton value="#{appmsg['global.search']}" ajax="true" action="#{placementOfEmployeeWorkScheduleFormController.doSearchEmployee()}"
+                                    <p:commandButton value="#{appmsg['global.search']}" ajax="true" action="#{placementOfEmployeeWorkScheduleFormController.doSearchEmployee()}" 
                                                      styleClass="isitext_hrm" 
                                                      style="margin-right: 5px" label="#{appmsg['global.search']}" update="picklistUserRoleId"
                                                      icon="ui-icon-search" title="#{appmsg['global.search']}">    
@@ -168,7 +163,7 @@
                         <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
                         <div style="margin-bottom: 5px">
                             <p:commandButton value="#{appmsg['global.save']}" ajax="true" 
-                                             action="#{userFormController.doSave()}" styleClass="label_button"
+                                             action="#{placementOfEmployeeWorkScheduleFormController.doSave()}" styleClass="label_button" onclick="PrimeFaces.monitorDownload(start, stop)"
                                              style="margin-right: 5px" label="#{appmsg['global.save']}"
                                              icon="ui-icon-disk"
                                              id="buttonSave" title="#{appmsg['global.save']}"/>

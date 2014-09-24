@@ -49,4 +49,6 @@ public interface EmpDataService extends IService<EmpData> {
     public void savePenempatanJadwal(EmpData empData) throws Exception;
     
     public List<EmpData> getTotalBySearchEmployee(Long workingGroupId, Integer deptLikeOrEqual, String deptName, Integer empTypeLikeOrEqual, String empTypeName, Integer gender, Long golJabId, Integer sortBy, Integer orderBy) throws Exception;
+    
+    public void saveMassPenempatanJadwal(List<EmpData>data, long groupWorkingId)throws Exception;
 }
