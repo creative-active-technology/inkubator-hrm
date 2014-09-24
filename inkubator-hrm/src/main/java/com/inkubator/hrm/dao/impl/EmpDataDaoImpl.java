@@ -10,6 +10,7 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.HrmUser;
+import com.inkubator.hrm.web.model.PlacementOfEmployeeWorkScheduleModel;
 import com.inkubator.hrm.web.search.EmpDataSearchParameter;
 import java.util.Date;
 import java.util.List;
@@ -259,7 +260,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     }
 
     @Override
-    public List<EmpData> getTotalBySearchEmployee(Long workingGroupId, Integer deptLikeOrEqual, String deptName, Integer empTypeLikeOrEqual, String empTypeName, Integer gender, Long golJabId, Integer sortBy, Integer orderBy) {
+    public List<EmpData> getTotalBySearchEmployee(PlacementOfEmployeeWorkScheduleModel model) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.createAlias("wtGroupWorking", "wg", JoinType.LEFT_OUTER_JOIN);
         criteria.createAlias("jabatanByJabatanId", "jabatan", JoinType.INNER_JOIN);
@@ -268,46 +269,47 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.createAlias("bioData", "bio", JoinType.INNER_JOIN);
         criteria.createAlias("golonganJabatan", "goljab", JoinType.INNER_JOIN);
         //ambil yg working groupnya bukan yg dipilih, dan belum punya working group
-        Disjunction disjunction = Restrictions.disjunction();
-        disjunction.add(Restrictions.isNull("wtGroupWorking"));
-        disjunction.add(Restrictions.not(Restrictions.eq("wg.id", workingGroupId)));
-        criteria.add(disjunction);
+        if (model.getWorkingGroupId() != 0 || model.getWorkingGroupId() != null) {
+            Disjunction disjunction = Restrictions.disjunction();
+            disjunction.add(Restrictions.isNull("wtGroupWorking"));
+            disjunction.add(Restrictions.not(Restrictions.eq("wg.id", model.getWorkingGroupId())));
+            criteria.add(disjunction);
+        }
         //departermen equal or like
-        if (deptLikeOrEqual != 3) {
-            if (deptLikeOrEqual == HRMConstant.DEPARTMENT_EQUAL) {
-                criteria.add(Restrictions.eq("dept.departmentName", deptName));
+        if (model.getDepartmentLikeOrEqual() != 3) {
+            if (model.getDepartmentLikeOrEqual() == HRMConstant.DEPARTMENT_EQUAL) {
+                criteria.add(Restrictions.eq("dept.departmentName", model.getDepartmentName()));
             } else {
-                criteria.add(Restrictions.like("dept.departmentName", deptName, MatchMode.ANYWHERE));
+                criteria.add(Restrictions.like("dept.departmentName", model.getDepartmentName(), MatchMode.ANYWHERE));
             }
         }
         //employee type equal or like
-        if (empTypeLikeOrEqual != 3) {
-            if (empTypeLikeOrEqual == HRMConstant.EMPLOYEE_TYPE_EQUAL) {
-                criteria.add(Restrictions.eq("empType.name", empTypeName));
+        if (model.getEmployeeTypeLikeOrEqual() != 3) {
+            if (model.getEmployeeTypeLikeOrEqual() == HRMConstant.EMPLOYEE_TYPE_EQUAL) {
+                criteria.add(Restrictions.eq("empType.name", model.getEmployeeTypeName()));
             } else {
-                criteria.add(Restrictions.like("empType.name", empTypeName, MatchMode.ANYWHERE));
+                criteria.add(Restrictions.like("empType.name", model.getEmployeeTypeName(), MatchMode.ANYWHERE));
             }
         }
         //gender
-        criteria.add(Restrictions.eq("bio.gender", gender));
+        criteria.add(Restrictions.eq("bio.gender", model.getGender()));
         //goljab
-        if (golJabId != 0) {
-            criteria.add(Restrictions.eq("goljab.id", golJabId));
-        }
-        //sort by nik
-        if (sortBy == HRMConstant.SORT_BY_NIK && orderBy == HRMConstant.ORDER_BY_ASC) {
-            criteria.addOrder(Order.asc("nik"));
-        } else {
-            criteria.addOrder(Order.desc("nik"));
+        if (model.getGolonganJabatanId() != 0) {
+            criteria.add(Restrictions.eq("goljab.id", model.getGolonganJabatanId()));
         }
 
-        //sort by name
-        if (sortBy == HRMConstant.SORT_BY_NAME && orderBy == HRMConstant.ORDER_BY_ASC) {
-            criteria.addOrder(Order.asc("bio.firstName"));
+        String sortBy;
+        if (model.getSortBy() == HRMConstant.SORT_BY_NIK) {
+            sortBy = "nik";
         } else {
-            criteria.addOrder(Order.desc("bio.firstName"));
+            sortBy = "bio.firstName";
         }
 
+        if (model.getOrderBy() == HRMConstant.ORDER_BY_ASC) {
+            criteria.addOrder(Order.asc(sortBy));
+        } else {
+            criteria.addOrder(Order.desc(sortBy));
+        }
         return criteria.list();
     }
 
