@@ -15,22 +15,22 @@ import javax.faces.convert.ConverterException;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.inkubator.hrm.entity.EmpData;
-import com.inkubator.hrm.service.EmpDataService;
+import com.inkubator.hrm.entity.Jabatan;
+import com.inkubator.hrm.service.JabatanService;
 
 /**
  *
- * @author Deni
+ * @author rizkykojek
  */
-@ManagedBean(name = "empDataConverter")
+@ManagedBean(name = "jabatanConverter")
 @ApplicationScoped
-public class EmpDataConverter implements Converter {
+public class JabatanConverter implements Converter {
 
-	@ManagedProperty(value = "#{empDataService}")
-	private EmpDataService empDataService;
+	@ManagedProperty(value = "#{jabatanService}")
+    private JabatanService jabatanService;
 
-	public void setEmpDataService(EmpDataService empDataService) {
-		this.empDataService = empDataService;
+	public void setJabatanService(JabatanService jabatanService) {
+		this.jabatanService = jabatanService;
 	}
 
 	@Override
@@ -40,11 +40,11 @@ public class EmpDataConverter implements Converter {
         }
         try {
             Long id = Long.parseLong(value);
-            EmpData empData = empDataService.getByIdWithDetail(id);
-            return empData;
+            Jabatan jabatan = jabatanService.getEntiyByPK(id);
+            return jabatan;
         } catch (Exception e) {
             e.printStackTrace();
-            throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error when converting to EmpData using EmpDataConverter", ""));
+            throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error when converting to Jabatan using JabatanConverter", ""));
         }
     }
 
@@ -53,7 +53,7 @@ public class EmpDataConverter implements Converter {
         if (value == null || value.equals("")) {
             return null;
         }
-        return String.valueOf(((EmpData) value).getId());
+        return String.valueOf(((Jabatan) value).getId());
     }
     
 }

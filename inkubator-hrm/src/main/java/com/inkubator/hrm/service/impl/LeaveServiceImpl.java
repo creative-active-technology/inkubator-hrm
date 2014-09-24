@@ -2,18 +2,12 @@ package com.inkubator.hrm.service.impl;
 
 
 
-import com.inkubator.common.util.RandomNumberUtil;
-import com.inkubator.datacore.service.impl.IServiceImpl;
-import com.inkubator.exception.BussinessException;
-import com.inkubator.hrm.dao.AttendanceStatusDao;
-import com.inkubator.hrm.dao.LeaveDao;
-import com.inkubator.hrm.entity.AttendanceStatus;
-import com.inkubator.hrm.entity.Leave;
-import com.inkubator.hrm.service.LeaveService;
-import com.inkubator.hrm.web.search.LeaveSearchParameter;
-import com.inkubator.securitycore.util.UserInfoUtil;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -21,6 +15,24 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.inkubator.common.util.RandomNumberUtil;
+import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.dao.ApprovalDefinitionDao;
+import com.inkubator.hrm.dao.ApprovalDefinitionLeaveDao;
+import com.inkubator.hrm.dao.AttendanceStatusDao;
+import com.inkubator.hrm.dao.HrmUserDao;
+import com.inkubator.hrm.dao.JabatanDao;
+import com.inkubator.hrm.dao.LeaveDao;
+import com.inkubator.hrm.entity.ApprovalDefinition;
+import com.inkubator.hrm.entity.ApprovalDefinitionLeave;
+import com.inkubator.hrm.entity.ApprovalDefinitionLeaveId;
+import com.inkubator.hrm.entity.AttendanceStatus;
+import com.inkubator.hrm.entity.Leave;
+import com.inkubator.hrm.service.LeaveService;
+import com.inkubator.hrm.web.search.LeaveSearchParameter;
+import com.inkubator.securitycore.util.UserInfoUtil;
 
 /**
  *
@@ -34,6 +46,14 @@ public class LeaveServiceImpl extends IServiceImpl implements LeaveService {
 	private LeaveDao leaveDao;
 	@Autowired
 	private AttendanceStatusDao attendanceStatusDao;
+	@Autowired
+	private ApprovalDefinitionDao approvalDefinitionDao;
+	@Autowired
+	private HrmUserDao hrmUserDao;
+	@Autowired
+	private JabatanDao jabatanDao;
+	@Autowired
+	private ApprovalDefinitionLeaveDao approvalDefinitionLeaveDao;
 	
 	@Override
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -308,6 +328,169 @@ public class LeaveServiceImpl extends IServiceImpl implements LeaveService {
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
 	public Long getTotalByParam(LeaveSearchParameter parameter) throws Exception {
 		return leaveDao.getTotalByParam(parameter);
+	}
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void save(Leave entity, List<ApprovalDefinition> appDefs) throws Exception {
+		// check duplicate name
+		long totalDuplicates = leaveDao.getTotalByName(entity.getName());
+		if (totalDuplicates > 0) {
+			throw new BussinessException("leave.error_duplicate_name");
+		}
+		// check duplicate code
+		totalDuplicates = leaveDao.getTotalByCode(entity.getCode());
+		if (totalDuplicates > 0) {
+			throw new BussinessException("leave.error_duplicate_code");
+		}
+		
+		entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+		AttendanceStatus attendanceStatus = attendanceStatusDao.getEntiyByPK(entity.getAttendanceStatus().getId());
+		entity.setAttendanceStatus(attendanceStatus);
+		entity.setIsActive(true);
+		entity.setCreatedBy(UserInfoUtil.getUserName());
+		entity.setCreatedOn(new Date());
+		leaveDao.save(entity);
+		
+		//saving many to many relations
+		Set<ApprovalDefinitionLeave> appDefinitionLeaves = new HashSet<ApprovalDefinitionLeave>();
+		for(ApprovalDefinition appDef: appDefs){
+			//saving approvalDefinition
+			appDef.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+			appDef.setCreatedBy(UserInfoUtil.getUserName());
+			appDef.setCreatedOn(new Date());
+			approvalDefinitionDao.save(appDef);
+			
+			//set many to many objects
+			ApprovalDefinitionLeave approvalDefinitionLeave =  new ApprovalDefinitionLeave();
+			approvalDefinitionLeave.setId(new ApprovalDefinitionLeaveId(appDef.getId(), entity.getId()));
+			approvalDefinitionLeave.setApprovalDefinition(appDef);
+			approvalDefinitionLeave.setLeave(entity);
+			approvalDefinitionLeaveDao.save(approvalDefinitionLeave);			
+		}
+	}
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void update(Leave entity, List<ApprovalDefinition> listAppDefs) throws Exception {
+		// check duplicate name
+		long totalDuplicates = leaveDao.getTotalByNameAndNotId(entity.getName(),entity.getId());
+		if (totalDuplicates > 0) {
+			throw new BussinessException("leave.error_duplicate_name");
+		}
+		// check duplicate code
+		totalDuplicates = leaveDao.getTotalByCodeAndNotId(entity.getCode(),entity.getId());
+		if (totalDuplicates > 0) {
+			throw new BussinessException("leave.error_duplicate_code");
+		}
+		
+		Leave leave = leaveDao.getEntiyByPK(entity.getId());
+		leave.setCode(entity.getCode());
+		leave.setName(entity.getName());
+		leave.setDescription(entity.getDescription());	
+		leave.setDayType(entity.getDayType());
+	    leave.setCalculation(entity.getCalculation());
+	    AttendanceStatus attendanceStatus = attendanceStatusDao.getEntiyByPK(entity.getAttendanceStatus().getId());
+	    leave.setAttendanceStatus(attendanceStatus);
+	    leave.setPeriodBase(entity.getPeriodBase());
+	    leave.setAvailability(entity.getAvailability());
+	    leave.setAvailabilityAtSpecificDate(entity.getAvailabilityAtSpecificDate());
+	    leave.setIsTakingLeaveToNextYear(entity.getIsTakingLeaveToNextYear());
+	    leave.setMaxTakingLeaveToNextYear(entity.getMaxTakingLeaveToNextYear());
+	    leave.setBackwardPeriodLimit(entity.getBackwardPeriodLimit());
+	    leave.setIsAllowedMinus(entity.getIsAllowedMinus());
+	    leave.setMaxAllowedMinus(entity.getMaxAllowedMinus());
+	    leave.setEffectiveFrom(entity.getEffectiveFrom());
+	    leave.setSubmittedLimit(entity.getSubmittedLimit());
+	    leave.setApprovalLevel(entity.getApprovalLevel());
+	    leave.setIsQuotaReduction(entity.getIsQuotaReduction());
+	    leave.setEndOfPeriod(entity.getEndOfPeriod());
+	    leave.setEndOfPeriodMonth(entity.getEndOfPeriodMonth());
+	    leave.setIsOnlyOncePerEmployee(entity.getIsOnlyOncePerEmployee());
+	    leave.setUpdatedBy(UserInfoUtil.getUserName());
+	    leave.setUpdatedOn(new Date());
+	    leaveDao.update(leave);
+	    
+	    /** Proses UPDATE approval definition, berdasarkan relasi many to many leave dan approval defintion 
+	     *  REMOVE relasi-nya jika sudah tidak terdapat di list */
+	    boolean isRemoveRelation;
+	    Iterator<ApprovalDefinition> iterAppDefs;
+	    Iterator<ApprovalDefinitionLeave> iterAppDefLeaves = leave.getApprovalDefinitionLeaves().iterator();
+	    while(iterAppDefLeaves.hasNext()) {
+	    	isRemoveRelation = true;
+	    	ApprovalDefinitionLeave currentAppDefLeave = iterAppDefLeaves.next();
+	    	ApprovalDefinition currentAppDef = currentAppDefLeave.getApprovalDefinition();	    	
+	    	iterAppDefs = listAppDefs.iterator();
+	    	while(iterAppDefs.hasNext()) {
+	    		ApprovalDefinition appDef = iterAppDefs.next();
+	    		if(currentAppDef.getId() == appDef.getId()){
+	    			isRemoveRelation = false;	    			
+	    			this.updateApprovalDefinition(appDef);	 
+	    			iterAppDefs.remove();
+	    			break;
+	    		}
+	    	}
+	    	
+	    	if(isRemoveRelation){
+	    		approvalDefinitionLeaveDao.delete(currentAppDefLeave);
+	    	}
+	    }
+	    
+	    /** Proses ADD approval definition, hanya approval definition yang memang belum di create
+	     *  data yang akan di insert sudah di filter di proses sebelumnya */
+	    iterAppDefs = listAppDefs.iterator();
+	    while(iterAppDefs.hasNext()) {
+  			//saving approvalDefinition
+	    	ApprovalDefinition appDef = iterAppDefs.next();
+  			appDef.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+  			appDef.setCreatedBy(UserInfoUtil.getUserName());
+  			appDef.setCreatedOn(new Date());
+  			approvalDefinitionDao.save(appDef);
+  			
+  			//set many to many objects
+  			ApprovalDefinitionLeave approvalDefinitionLeave =  new ApprovalDefinitionLeave();
+  			approvalDefinitionLeave.setId(new ApprovalDefinitionLeaveId(appDef.getId(), leave.getId()));
+  			approvalDefinitionLeave.setApprovalDefinition(appDef);
+  			approvalDefinitionLeave.setLeave(leave);
+  			approvalDefinitionLeaveDao.save(approvalDefinitionLeave);
+  		}
+	}
+	
+	private void updateApprovalDefinition(ApprovalDefinition entity){
+		ApprovalDefinition ad = this.approvalDefinitionDao.getEntiyByPK(entity.getId());
+        ad.setAllowOnBehalf(entity.getAllowOnBehalf());
+        ad.setApproverType(entity.getApproverType());
+        ad.setAutoApproveOnDelay(entity.getAutoApproveOnDelay());
+        ad.setDelayTime(entity.getDelayTime());
+        ad.setEscalateOnDelay(entity.getEscalateOnDelay());
+        if (entity.getHrmUserByApproverIndividual() != null) {
+            ad.setHrmUserByApproverIndividual(hrmUserDao.getEntiyByPK(entity.getHrmUserByApproverIndividual().getId()));
+        }
+        if (entity.getHrmUserByOnBehalfIndividual() != null) {
+            ad.setHrmUserByOnBehalfIndividual(hrmUserDao.getEntiyByPK(entity.getHrmUserByOnBehalfIndividual().getId()));
+        }        
+        if (entity.getJabatanByApproverPosition() != null) {
+            ad.setJabatanByApproverPosition(jabatanDao.getEntiyByPK(entity.getJabatanByApproverPosition().getId()));
+        }
+        if (entity.getJabatanByOnBehalfPosition() != null) {
+            ad.setJabatanByOnBehalfPosition(jabatanDao.getEntiyByPK(entity.getJabatanByOnBehalfPosition().getId()));
+        }
+        ad.setMinApprover(entity.getMinApprover());
+        ad.setMinRejector(entity.getMinRejector());
+        ad.setName(entity.getName());
+        ad.setOnBehalfType(entity.getOnBehalfType());
+        ad.setProcessType(entity.getProcessType());
+        ad.setSequence(entity.getSequence());
+        ad.setSpecificName(entity.getSpecificName());
+        ad.setUpdatedBy(UserInfoUtil.getUserName());
+        ad.setUpdatedOn(new Date());
+        this.approvalDefinitionDao.update(ad);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public Leave getEntityByPkFetchApprovalDefinition(Long id) throws Exception {
+		return leaveDao.getEntityByPkFetchApprovalDefinition(id);
 	}
 
 }

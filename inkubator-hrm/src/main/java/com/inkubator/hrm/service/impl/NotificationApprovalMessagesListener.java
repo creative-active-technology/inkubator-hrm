@@ -108,8 +108,8 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                             maptoSend.put("businessTravelNo", jsonObject.get("businessTravelNo").getAsString());
                             maptoSend.put("proposeDate", jsonObject.get("proposeDate").getAsString());
                             maptoSend.put("destination", jsonObject.get("destination").getAsString());
-                            maptoSend.put("start", jsonObject.get("start").getAsString());
-                            maptoSend.put("end", jsonObject.get("end").getAsString());
+                            maptoSend.put("start", jsonObject.get("startDate").getAsString());
+                            maptoSend.put("end", jsonObject.get("endDate").getAsString());
                             maptoSend.put("description", jsonObject.get("description").getAsString());
                             maptoSend.put("totalAmount", jsonObject.get("totalAmount").getAsString());
                             break;
@@ -157,8 +157,8 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                             maptoSend.put("businessTravelNo", jsonObject.get("businessTravelNo").getAsString());
                             maptoSend.put("proposeDate", jsonObject.get("proposeDate").getAsString());
                             maptoSend.put("destination", jsonObject.get("destination").getAsString());
-                            maptoSend.put("start", jsonObject.get("start").getAsString());
-                            maptoSend.put("end", jsonObject.get("end").getAsString());
+                            maptoSend.put("start", jsonObject.get("startDate").getAsString());
+                            maptoSend.put("end", jsonObject.get("endDate").getAsString());
                             maptoSend.put("description", jsonObject.get("description").getAsString());
                             maptoSend.put("totalAmount", jsonObject.get("totalAmount").getAsString());
                             if (appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_APPROVED) {

@@ -15,22 +15,22 @@ import javax.faces.convert.ConverterException;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.inkubator.hrm.entity.EmpData;
-import com.inkubator.hrm.service.EmpDataService;
+import com.inkubator.hrm.entity.HrmUser;
+import com.inkubator.hrm.service.HrmUserService;
 
 /**
  *
- * @author Deni
+ * @author rizkykojek
  */
-@ManagedBean(name = "empDataConverter")
+@ManagedBean(name = "hrmUserConverter")
 @ApplicationScoped
-public class EmpDataConverter implements Converter {
+public class HrmUserConverter implements Converter {
 
-	@ManagedProperty(value = "#{empDataService}")
-	private EmpDataService empDataService;
+	@ManagedProperty(value = "#{hrmUserService}")
+    private HrmUserService hrmUserService;
 
-	public void setEmpDataService(EmpDataService empDataService) {
-		this.empDataService = empDataService;
+	public void setHrmUserService(HrmUserService hrmUserService) {
+		this.hrmUserService = hrmUserService;
 	}
 
 	@Override
@@ -40,11 +40,11 @@ public class EmpDataConverter implements Converter {
         }
         try {
             Long id = Long.parseLong(value);
-            EmpData empData = empDataService.getByIdWithDetail(id);
-            return empData;
+            HrmUser hrmUser = hrmUserService.getEntiyByPkWithDetail(id);
+            return hrmUser;
         } catch (Exception e) {
             e.printStackTrace();
-            throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error when converting to EmpData using EmpDataConverter", ""));
+            throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error when converting to HrmUser using HrmUserConverter", ""));
         }
     }
 
@@ -53,7 +53,7 @@ public class EmpDataConverter implements Converter {
         if (value == null || value.equals("")) {
             return null;
         }
-        return String.valueOf(((EmpData) value).getId());
+        return String.valueOf(((HrmUser) value).getId());
     }
     
 }

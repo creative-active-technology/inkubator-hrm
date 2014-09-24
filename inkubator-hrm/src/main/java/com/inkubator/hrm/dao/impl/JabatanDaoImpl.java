@@ -13,6 +13,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -173,5 +174,15 @@ public class JabatanDaoImpl extends IDAOImpl<Jabatan> implements JabatanDao {
         criteria.setMaxResults(7);
         return criteria.list();
     }
+
+	@Override
+	public List<Jabatan> getAllDataByCodeOrName(String param) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		Disjunction disjunction = Restrictions.disjunction();
+		disjunction.add(Restrictions.like("code", param, MatchMode.ANYWHERE));
+		disjunction.add(Restrictions.like("name", param, MatchMode.ANYWHERE));
+		criteria.add(disjunction);
+		return criteria.list();
+	}
 
 }

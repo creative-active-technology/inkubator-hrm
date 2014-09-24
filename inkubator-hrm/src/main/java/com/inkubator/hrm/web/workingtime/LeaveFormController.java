@@ -1,23 +1,38 @@
 package com.inkubator.hrm.web.workingtime;
 
-import com.inkubator.exception.BussinessException;
-import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.AttendanceStatus;
-import com.inkubator.hrm.entity.Leave;
-import com.inkubator.hrm.service.AttendanceStatusService;
-import com.inkubator.hrm.service.LeaveService;
-import com.inkubator.hrm.web.model.LeaveModel;
-import com.inkubator.webcore.controller.BaseController;
-import com.inkubator.webcore.util.FacesUtil;
-import com.inkubator.webcore.util.MessagesResourceUtil;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+
 import org.apache.commons.lang3.StringUtils;
+import org.primefaces.context.RequestContext;
+import org.primefaces.event.SelectEvent;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.entity.ApprovalDefinition;
+import com.inkubator.hrm.entity.ApprovalDefinitionLeave;
+import com.inkubator.hrm.entity.AttendanceStatus;
+import com.inkubator.hrm.entity.Leave;
+import com.inkubator.hrm.json.util.EntityExclusionStrategy;
+import com.inkubator.hrm.json.util.HibernateProxyIdOnlyTypeAdapter;
+import com.inkubator.hrm.service.AttendanceStatusService;
+import com.inkubator.hrm.service.LeaveService;
+import com.inkubator.hrm.web.model.LeaveModel;
+import com.inkubator.webcore.controller.BaseController;
+import com.inkubator.webcore.util.FacesUtil;
+import com.inkubator.webcore.util.MessagesResourceUtil;
 
 /**
  *
@@ -31,6 +46,9 @@ public class LeaveFormController extends BaseController {
     private Boolean isUpdate;
     private Boolean isRenderAvailabilityDate;
     private Boolean isRenderEndOfPeriodMonth;
+    private List<ApprovalDefinition> appDefs;
+    private ApprovalDefinition selectedAppDef;
+    private int indexOfAppDefs;
     @ManagedProperty(value = "#{leaveService}")
     private LeaveService leaveService;
     @ManagedProperty(value = "#{attendanceStatusService}")
@@ -45,15 +63,21 @@ public class LeaveFormController extends BaseController {
             isRenderAvailabilityDate = Boolean.FALSE;
             isRenderEndOfPeriodMonth = Boolean.FALSE;
 
+            appDefs = new ArrayList<ApprovalDefinition>(); 
             model = new LeaveModel();
             List<AttendanceStatus> attendanceStatusList = attendanceStatusService.getAllData();
             model.setAttendanceStatusList(attendanceStatusList);
 
             String param = FacesUtil.getRequestParameter("execution");
             if (StringUtils.isNotEmpty(param)) {
-                Leave leave = leaveService.getEntiyByPK(Long.parseLong(param.substring(1)));
+                Leave leave = leaveService.getEntityByPkFetchApprovalDefinition(Long.parseLong(param.substring(1)));
                 if (leave != null) {
                     getModelFromEntity(leave);
+                    Set<ApprovalDefinitionLeave> setAppDefLeaves = leave.getApprovalDefinitionLeaves();
+                    for(ApprovalDefinitionLeave appDefLeave : setAppDefLeaves){
+                    	appDefs.add(appDefLeave.getApprovalDefinition());
+                    }
+                    
                     isUpdate = Boolean.TRUE;
                     isRenderAvailabilityDate = StringUtils.equals(model.getAvailability(), HRMConstant.LEAVE_AVAILABILITY_INCREASES_SPECIFIC_DATE);
                     isRenderEndOfPeriodMonth = StringUtils.equals(model.getEndOfPeriod(), HRMConstant.LEAVE_END_OF_PERIOD_MONTH);
@@ -114,7 +138,23 @@ public class LeaveFormController extends BaseController {
         this.attendanceStatusService = attendanceStatusService;
     }
 
-    public void doReset() {
+    public List<ApprovalDefinition> getAppDefs() {
+		return appDefs;
+	}
+
+	public void setAppDefs(List<ApprovalDefinition> appDefs) {
+		this.appDefs = appDefs;
+	}
+
+	public ApprovalDefinition getSelectedAppDef() {
+		return selectedAppDef;
+	}
+
+	public void setSelectedAppDef(ApprovalDefinition selectedAppDef) {
+		this.selectedAppDef = selectedAppDef;
+	}
+
+	public void doReset() {
         if (isUpdate) {
             try {
                 Leave leave = leaveService.getEntiyByPK(model.getId());
@@ -137,12 +177,12 @@ public class LeaveFormController extends BaseController {
         Leave leave = getEntityFromViewModel(model);
         try {
             if (isUpdate) {
-                leaveService.update(leave);
+                leaveService.update(leave, appDefs);
                 MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 
             } else {
-                leaveService.save(leave);
+                leaveService.save(leave, appDefs);
                 MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             }
@@ -214,6 +254,58 @@ public class LeaveFormController extends BaseController {
     public String doBack() {
         return "/protected/working_time/leave_view.htm?faces-redirect=true";
     }
+    
+    public void doDeleteAppDef() {
+    	appDefs.remove(selectedAppDef);
+    }
+    
+    public void doAddAppDef() {
+    	Map<String, List<String>> dataToSend = new HashMap<>();
+        List<String> values = new ArrayList<>();
+        values.add(HRMConstant.LEAVE);
+        dataToSend.put("appDefName", values);
+    	this.showDialogAppDef(dataToSend);
+    }
+    
+    public void doEditAppDef() {
+    	indexOfAppDefs = appDefs.indexOf(selectedAppDef);    	
+    	Gson gson = this.getGsonBuilder().create();
+    	Map<String, List<String>> dataToSend = new HashMap<>();
+        List<String> values = new ArrayList<>();
+        values.add(gson.toJson(selectedAppDef));
+        dataToSend.put("jsonAppDef", values);
+        this.showDialogAppDef(dataToSend);
+    }
+    
+    private void showDialogAppDef(Map<String, List<String>> params) {
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 1100);
+        options.put("contentHeight", 400);
+        RequestContext.getCurrentInstance().openDialog("approval_definition_popup_form", options, params);
+    }
+    
+    public void onDialogReturnAddAppDef(SelectEvent event) {
+        ApprovalDefinition appDef = (ApprovalDefinition) event.getObject();
+        appDefs.add(appDef);
+    }
+    
+    public void onDialogReturnEditAppDef(SelectEvent event) {
+        ApprovalDefinition dataUpdated = (ApprovalDefinition) event.getObject();
+        appDefs.remove(indexOfAppDefs);
+		appDefs.add(indexOfAppDefs, dataUpdated);
+    }
+    
+    private GsonBuilder getGsonBuilder(){
+		GsonBuilder gsonBuilder = new GsonBuilder();
+    	gsonBuilder.serializeNulls();
+		gsonBuilder.setDateFormat("dd MMMM yyyy hh:mm");
+		gsonBuilder.registerTypeAdapterFactory(HibernateProxyIdOnlyTypeAdapter.FACTORY);
+		gsonBuilder.setExclusionStrategies(new EntityExclusionStrategy());
+		return gsonBuilder;
+	}
 
     public void onChangeAvailability() {
         isRenderAvailabilityDate = StringUtils.equals(model.getAvailability(), HRMConstant.LEAVE_AVAILABILITY_INCREASES_SPECIFIC_DATE);

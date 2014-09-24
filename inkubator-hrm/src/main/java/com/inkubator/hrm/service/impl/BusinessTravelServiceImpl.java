@@ -483,8 +483,8 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
             jsonObj.put("businessTravelNo", businessTravel.getBusinessTravelNo());
             jsonObj.put("proposeDate", dateFormat.format(businessTravel.getProposeDate()));
             jsonObj.put("destination", businessTravel.getDestination());
-            jsonObj.put("start", dateFormat.format(businessTravel.getStartDate()));
-            jsonObj.put("end", dateFormat.format(businessTravel.getEndDate()));
+            jsonObj.put("startDate", dateFormat.format(businessTravel.getStartDate()));
+            jsonObj.put("endDate", dateFormat.format(businessTravel.getEndDate()));
             jsonObj.put("description", businessTravel.getDescription());
             jsonObj.put("totalAmount", new DecimalFormat("###,###").format(totalAmount));
             
