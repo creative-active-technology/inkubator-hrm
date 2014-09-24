@@ -79,7 +79,7 @@ public class ReimbursmentViewController extends BaseController{
     }
     
     public String doDetail(){
-        return "/protected/personalia/reimbursment_detail.htm?faces-redirect=true&execution=e" + selected.getId();
+        return "/protected/personalia/reimbursment_detail.htm?faces-redirect=true&execution=e" + selected.getCode();
     }
     
     public String add(){

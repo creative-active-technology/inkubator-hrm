@@ -6,6 +6,7 @@ package com.inkubator.hrm.web.search;
 
 import com.inkubator.webcore.util.SearchParameter;
 import java.math.BigDecimal;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -26,6 +27,11 @@ public class ReimbursmentSearchParameter extends SearchParameter{
     }
 
     public String getCode() {
+        if (StringUtils.equalsIgnoreCase(getKeyParam(), "code")) {
+            code = getParameter();
+        } else {
+            code = null;
+        }
         return code;
     }
 

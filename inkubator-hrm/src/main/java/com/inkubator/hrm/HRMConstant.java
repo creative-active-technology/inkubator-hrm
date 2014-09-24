@@ -218,4 +218,16 @@ public class HRMConstant {
     public static final Integer NORMAL_SCHEDULE = 0;
     public static final Integer NON_NORMAL_SCHEDULE = 1;
 
+    /* Placement of Employee Work Schedule */
+    public static final Integer DEPARTMENT_EQUAL = 0;
+    public static final Integer DEPARTMENT_LIKE = 0;
+    
+    public static final Integer EMPLOYEE_TYPE_EQUAL = 0;
+    public static final Integer EMPLOYEE_TYPE_LIKE = 0;
+    
+    public static final Integer SORT_BY_NIK = 0;
+    public static final Integer SORT_BY_NAME = 1;
+    
+    public static final Integer ORDER_BY_ASC = 0;
+    public static final Integer ORDER_BY_DSC = 1;
 }

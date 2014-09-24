@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.inkubator.hrm.web.workingtime;
+package com.inkubator.hrm.web.employee;
 
 import com.inkubator.common.util.JsonConverter;
 import com.inkubator.hrm.HRMConstant;
@@ -129,6 +129,18 @@ public class ReimbursmentApprovalFormController extends BaseController{
         } catch (Exception e) {
             LOGGER.error("Error when approved process ", e);
         }
+    	return null;
+    }
+    
+    public String doRejected() {
+		try {
+			reimbursmentService.rejected(selectedApprovalActivity.getId(), comment);
+			MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.approval_info", "global.rejected_successfully",
+                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+			return "/protected/home.htm?faces-redirect=true";
+		} catch (Exception e) {
+			LOGGER.error("Error when rejected process ", e);
+		}
     	return null;
     }
 

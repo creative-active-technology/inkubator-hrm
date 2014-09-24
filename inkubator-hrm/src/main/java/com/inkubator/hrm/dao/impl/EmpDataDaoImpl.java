@@ -10,6 +10,7 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.HrmUser;
+import com.inkubator.hrm.web.model.PlacementOfEmployeeWorkScheduleModel;
 import com.inkubator.hrm.web.search.EmpDataSearchParameter;
 import java.util.Date;
 import java.util.List;
@@ -129,7 +130,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
             criteria.add(disjunction);
         }
         criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
-        
+
     }
 
     @Override
@@ -180,19 +181,19 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         return criteria.list();
     }
 
-	@Override
-	public List<EmpData> getAllDataByNameOrNik(String param) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
-		Disjunction disjunction = Restrictions.disjunction();
+    @Override
+    public List<EmpData> getAllDataByNameOrNik(String param) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
+        Disjunction disjunction = Restrictions.disjunction();
         disjunction.add(Restrictions.like("bioData.firstName", param, MatchMode.ANYWHERE));
         disjunction.add(Restrictions.like("bioData.lastName", param, MatchMode.ANYWHERE));
         disjunction.add(Restrictions.like("nik", param, MatchMode.ANYWHERE));
         criteria.add(disjunction);
         return criteria.list();
-	}
-	
-	@Override
+    }
+
+    @Override
     public EmpData getByIdWithDetail(long id) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("id", id));
@@ -200,8 +201,8 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.setFetchMode("golonganJabatan", FetchMode.JOIN);
         criteria.setFetchMode("golonganJabatan.pangkat", FetchMode.JOIN);
         return (EmpData) criteria.uniqueResult();
-	}
-    
+    }
+
     @Override
     public EmpData getEntityByNik(String nik) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
@@ -209,52 +210,114 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         return (EmpData) criteria.uniqueResult();
     }
 
-	@Override
-	public List<EmpData> getAllDataNotExistInUserByParam(String param, int firstResult, int maxResults, Order order) {
-		DetachedCriteria subQuery = DetachedCriteria.forClass(HrmUser.class, "user").setProjection(Projections.property("user.id"));
-		subQuery.add(Property.forName("employee.id").eqProperty("user.empData.id"));		
-		
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass(), "employee");
-		criteria.add(Subqueries.notExists(subQuery));
-		criteria = this.doSearchNotExistInUserByParam(param, criteria);
-        
-		criteria.setFirstResult(firstResult);
+    @Override
+    public List<EmpData> getAllDataNotExistInUserByParam(String param, int firstResult, int maxResults, Order order) {
+        DetachedCriteria subQuery = DetachedCriteria.forClass(HrmUser.class, "user").setProjection(Projections.property("user.id"));
+        subQuery.add(Property.forName("employee.id").eqProperty("user.empData.id"));
+
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass(), "employee");
+        criteria.add(Subqueries.notExists(subQuery));
+        criteria = this.doSearchNotExistInUserByParam(param, criteria);
+
+        criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
         criteria.addOrder(order);
-		
-		return criteria.list();
-	}
-	
-	@Override
-	public Long getTotalNotExistInUserByParam(String param) {
-		DetachedCriteria subQuery = DetachedCriteria.forClass(HrmUser.class, "user").setProjection(Projections.property("user.id"));
-		subQuery.add(Property.forName("employee.id").eqProperty("user.empData.id"));		
-		
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass(), "employee");
-		criteria.add(Subqueries.notExists(subQuery));
-		criteria = this.doSearchNotExistInUserByParam(param, criteria);
-		
-		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
-	}
-	
-	private Criteria doSearchNotExistInUserByParam(String param, Criteria criteria){
-		criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
-		if(param != null){
-			Disjunction disjunction = Restrictions.disjunction();
-	        disjunction.add(Restrictions.like("bioData.firstName", param, MatchMode.ANYWHERE));
-	        disjunction.add(Restrictions.like("bioData.lastName", param, MatchMode.ANYWHERE));
-	        disjunction.add(Restrictions.like("nik", param, MatchMode.ANYWHERE));
-	        criteria.add(disjunction);
-		}
-        return criteria;
-	}
 
-	@Override
-	public List<EmpData> getAllDataByJabatanId(Long jabatanId, Order order) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.add(Restrictions.eq("jabatanByJabatanId.id", jabatanId));
-		criteria.addOrder(order);
-		
-		return criteria.list();
-	}
+        return criteria.list();
+    }
+
+    @Override
+    public Long getTotalNotExistInUserByParam(String param) {
+        DetachedCriteria subQuery = DetachedCriteria.forClass(HrmUser.class, "user").setProjection(Projections.property("user.id"));
+        subQuery.add(Property.forName("employee.id").eqProperty("user.empData.id"));
+
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass(), "employee");
+        criteria.add(Subqueries.notExists(subQuery));
+        criteria = this.doSearchNotExistInUserByParam(param, criteria);
+
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+
+    private Criteria doSearchNotExistInUserByParam(String param, Criteria criteria) {
+        criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
+        if (param != null) {
+            Disjunction disjunction = Restrictions.disjunction();
+            disjunction.add(Restrictions.like("bioData.firstName", param, MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.like("bioData.lastName", param, MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.like("nik", param, MatchMode.ANYWHERE));
+            criteria.add(disjunction);
+        }
+        return criteria;
+    }
+
+    @Override
+    public List<EmpData> getAllDataByJabatanId(Long jabatanId, Order order) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("jabatanByJabatanId.id", jabatanId));
+        criteria.addOrder(order);
+
+        return criteria.list();
+    }
+
+    @Override
+    public List<EmpData> getTotalBySearchEmployee(PlacementOfEmployeeWorkScheduleModel model) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("wtGroupWorking", "wg", JoinType.LEFT_OUTER_JOIN);
+        criteria.createAlias("jabatanByJabatanId", "jabatan", JoinType.INNER_JOIN);
+        criteria.createAlias("jabatan.department", "dept", JoinType.INNER_JOIN);
+        criteria.createAlias("employeeType", "empType", JoinType.INNER_JOIN);
+        criteria.createAlias("bioData", "bio", JoinType.INNER_JOIN);
+        criteria.createAlias("golonganJabatan", "goljab", JoinType.INNER_JOIN);
+        //ambil yg working groupnya bukan yg dipilih, dan belum punya working group
+        if (model.getWorkingGroupId() != 0 || model.getWorkingGroupId() != null) {
+            Disjunction disjunction = Restrictions.disjunction();
+            disjunction.add(Restrictions.isNull("wtGroupWorking"));
+            disjunction.add(Restrictions.not(Restrictions.eq("wg.id", model.getWorkingGroupId())));
+            criteria.add(disjunction);
+        }
+        //departermen equal or like
+        if (model.getDepartmentLikeOrEqual() != 3) {
+            if (model.getDepartmentLikeOrEqual() == HRMConstant.DEPARTMENT_EQUAL) {
+                criteria.add(Restrictions.eq("dept.departmentName", model.getDepartmentName()));
+            } else {
+                criteria.add(Restrictions.like("dept.departmentName", model.getDepartmentName(), MatchMode.ANYWHERE));
+            }
+        }
+        //employee type equal or like
+        if (model.getEmployeeTypeLikeOrEqual() != 3) {
+            if (model.getEmployeeTypeLikeOrEqual() == HRMConstant.EMPLOYEE_TYPE_EQUAL) {
+                criteria.add(Restrictions.eq("empType.name", model.getEmployeeTypeName()));
+            } else {
+                criteria.add(Restrictions.like("empType.name", model.getEmployeeTypeName(), MatchMode.ANYWHERE));
+            }
+        }
+        //gender
+        criteria.add(Restrictions.eq("bio.gender", model.getGender()));
+        //goljab
+        if (model.getGolonganJabatanId() != 0) {
+            criteria.add(Restrictions.eq("goljab.id", model.getGolonganJabatanId()));
+        }
+
+        String sortBy;
+        if (model.getSortBy() == HRMConstant.SORT_BY_NIK) {
+            sortBy = "nik";
+        } else {
+            sortBy = "bio.firstName";
+        }
+
+        if (model.getOrderBy() == HRMConstant.ORDER_BY_ASC) {
+            criteria.addOrder(Order.asc(sortBy));
+        } else {
+            criteria.addOrder(Order.desc(sortBy));
+        }
+        return criteria.list();
+    }
+
+    @Override
+    public List<EmpData> getAllDataWithEndTime(Date date) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("tempJadwalKaryawans", "tj");
+        criteria.add(Restrictions.eq("tj.endTime", date));
+        return criteria.list();
+    }
 }
