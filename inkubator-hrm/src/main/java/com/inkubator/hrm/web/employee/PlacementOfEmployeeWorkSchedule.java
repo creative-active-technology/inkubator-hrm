@@ -151,7 +151,7 @@ public class PlacementOfEmployeeWorkSchedule extends BaseController {
     }
 
     public void doSearchEmployee() throws Exception {
-        source = empDataService.getTotalBySearchEmployee(model.getWorkingGroupId(), model.getDepartmentLikeOrEqual(), model.getDepartmentName(), model.getEmployeeTypeLikeOrEqual(), model.getEmployeeTypeName(), model.getGender(), model.getGolonganJabatanId(), model.getSortBy(), model.getOrderBy());
+        source = empDataService.getTotalBySearchEmployee(model);
         dualListModel.setSource(source);
     }
 
