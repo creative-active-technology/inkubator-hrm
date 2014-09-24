@@ -85,10 +85,6 @@ public class GroupWorkingViewController extends BaseController {
     public String doDetail() {
          return "/protected/working_time/working_group_detail.htm?faces-redirect=true&execution=e" + selectedWtGroupWorking.getCode();
     }
-
-    public String doPlacementOfEmployee() {
-         return "/protected/working_time/placement_of_employee_work_schedule.htm?faces-redirect=true";
-    }
     
     public void doDelete() {
         try {
