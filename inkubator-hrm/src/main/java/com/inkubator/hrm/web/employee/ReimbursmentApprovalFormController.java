@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.inkubator.hrm.web.workingtime;
+package com.inkubator.hrm.web.employee;
 
 import com.inkubator.common.util.JsonConverter;
 import com.inkubator.hrm.HRMConstant;
