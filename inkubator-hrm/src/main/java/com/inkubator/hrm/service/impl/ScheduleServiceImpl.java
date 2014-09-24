@@ -68,16 +68,11 @@ public class ScheduleServiceImpl extends IServiceImpl implements ScheduleService
         this.difWeekToDelete = difWeekToDelete;
     }
 
-//    @Override
-//    @Scheduled(cron = "${cron.sendingmail.password.not.send}")
-//    @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-//    public void checkPasswordHistoryEmailNotSend() throws Exception {
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//    }
     @Override
     @Scheduled(cron = "${cron.calculate.schedule.working}")
     @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void calculateScheduleWorking() throws Exception {
+          LOGGER.info("Begin Running Recalcualte Jadwal Kerja");
         Date now = new Date();
         Date lastDay = DateTimeUtil.getDateFrom(now, -1, CommonUtilConstant.DATE_FORMAT_DAY);
         String dayToInput = new SimpleDateFormat("dd-MM-yyyy").format(lastDay);
@@ -107,8 +102,6 @@ public class ScheduleServiceImpl extends IServiceImpl implements ScheduleService
                 beginScheduleDate = DateTimeUtil.getDateFrom(startDate, (hasilBagi * num), CommonUtilConstant.DATE_FORMAT_DAY);
             }
             List<WtScheduleShift> dataScheduleShift = new ArrayList<>(groupWorking.getWtScheduleShifts());
-
-//            List<EmpData> datas = new ArrayList<>(groupWorking.getEmpDatas());
             Collections.sort(dataScheduleShift, shortByDate1);
             int i = 0;
             for (WtScheduleShift wtScheduleShift : dataScheduleShift) {
@@ -127,12 +120,12 @@ public class ScheduleServiceImpl extends IServiceImpl implements ScheduleService
                 jadwalKaryawan.setCreatedOn(new Date());
                 jadwalKaryawan.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
                 dataToSave.add(jadwalKaryawan);
-//                    this.tempJadwalKaryawanDao.save(jadwalKaryawan);
                 i++;
             }
         }
         tempJadwalKaryawanDao.deleteBacth(dataToDelete);
         tempJadwalKaryawanDao.saveBatch(dataToSave);
+          LOGGER.info("Finish Running Kalkulasi Jadwal Kerja");
 
     }
 
