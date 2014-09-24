@@ -72,6 +72,7 @@ public class EmpData implements java.io.Serializable {
     private Date rotasiDate;
     private Set<Reimbursment> reimbursments = new HashSet<Reimbursment>(0);
     private Set<Loan> loans = new HashSet<Loan>(0);
+    private Set<TempJadwalKaryawan> tempJadwalKaryawans = new HashSet<TempJadwalKaryawan>(0);
 
     public EmpData() {
     }
@@ -414,14 +415,14 @@ public class EmpData implements java.io.Serializable {
     }
 
     @Transient
-    public String getDecryptBasicSalary(){
+    public String getDecryptBasicSalary() {
         String dataEncripted = basicSalary;
         String dataDecripted = AESUtil.getAESDescription(dataEncripted, HRMConstant.KEYVALUE, HRMConstant.AES_ALGO);
         NumberFormat nb = NumberFormatter.getNumberFormatStatic(CommonUtilConstant.NUMBER_FORMAT_NUMBER_TYPE, new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
         nb.format(Double.parseDouble(dataDecripted));
         return nb.format(Double.parseDouble(dataDecripted));
     }
-    
+
     @Temporal(TemporalType.DATE)
     @Column(name = "rotasi_date", length = 10)
     public Date getRotasiDate() {
@@ -453,6 +454,15 @@ public class EmpData implements java.io.Serializable {
     @Transient
     public boolean getSheduleDisable() {
         return getWtGroupWorking() == null;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "empData")
+    public Set<TempJadwalKaryawan> getTempJadwalKaryawans() {
+        return this.tempJadwalKaryawans;
+    }
+
+    public void setTempJadwalKaryawans(Set<TempJadwalKaryawan> tempJadwalKaryawans) {
+        this.tempJadwalKaryawans = tempJadwalKaryawans;
     }
 
 }

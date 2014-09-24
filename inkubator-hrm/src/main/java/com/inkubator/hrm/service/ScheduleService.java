@@ -13,5 +13,7 @@ public interface ScheduleService {
 
     public void deleteRiwayatAkses() throws Exception;
 
+    public void calculateScheduleWorking() throws Exception;
+
 //    public void checkPasswordHistoryEmailNotSend() throws Exception;
 }
