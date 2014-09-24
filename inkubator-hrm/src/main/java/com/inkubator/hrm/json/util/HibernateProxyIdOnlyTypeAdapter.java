@@ -39,15 +39,16 @@ public class HibernateProxyIdOnlyTypeAdapter extends TypeAdapter<HibernateProxy>
             return;
         }
         // Get a filled instance of the original class
-        Object unproxiedValue = value.getHibernateLazyInitializer().getImplementation();
+        //Object unproxiedValue = value.getHibernateLazyInitializer().getImplementation();        
         
-        out.beginObject();
         try {
-			out.name("id").value(BeanUtils.getProperty(unproxiedValue, "id"));
+        	out.beginObject();
+			out.name("id").value(BeanUtils.getProperty(value, "id"));
+			out.endObject();
 		} catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-			
-		}
-        out.endObject();
+			out.nullValue();
+            return;
+		}        
     }
 
 }

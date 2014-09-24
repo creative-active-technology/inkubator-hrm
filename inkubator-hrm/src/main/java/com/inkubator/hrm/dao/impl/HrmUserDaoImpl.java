@@ -18,6 +18,7 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -131,6 +132,19 @@ public class HrmUserDaoImpl extends IDAOImpl<HrmUser> implements HrmUserDao {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
 		criteria.add(Restrictions.eq("empData.id", empDataId));
 		return (HrmUser) criteria.uniqueResult();
+	}
+
+	@Override
+	public List<HrmUser> getAllDataByNameOrNik(String param) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+		criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
+		Disjunction disjunction = Restrictions.disjunction();
+        disjunction.add(Restrictions.like("bioData.firstName", param, MatchMode.ANYWHERE));
+        disjunction.add(Restrictions.like("bioData.lastName", param, MatchMode.ANYWHERE));
+        disjunction.add(Restrictions.like("empData.nik", param, MatchMode.ANYWHERE));
+        criteria.add(disjunction);
+        return criteria.list();
 	}
 
 }

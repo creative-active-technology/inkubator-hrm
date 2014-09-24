@@ -7,6 +7,9 @@ package com.inkubator.hrm.web.model;
 
 import java.io.Serializable;
 
+import com.inkubator.hrm.entity.HrmUser;
+import com.inkubator.hrm.entity.Jabatan;
+
 /**
  *
  * @author Deni Husni FR
@@ -14,15 +17,25 @@ import java.io.Serializable;
 public class ApprovalDefinitionModel implements Serializable {
 
     private Long id;
-    private Long hrmUserByOnBehalfIndividualId;
-    private String hrmUserByOnBehalfIndividualName;
-    private Long jabatanByApproverPositionId;
-    private String jabatanByApproverPositionName;
+    
+    private HrmUser hrmUserByApproverIndividual;
     private Long hrmUserByApproverIndividualId;
     private String hrmUserByApproverIndividualName;
+    
+    private HrmUser hrmUserByOnBehalfIndividual;
+    private Long hrmUserByOnBehalfIndividualId;
+    private String hrmUserByOnBehalfIndividualName;    
+    
+    private Jabatan jabatanByApproverPosition;
+    private Long jabatanByApproverPositionId;
+    private String jabatanByApproverPositionName;
+    
+    private Jabatan jabatanByOnBehalfPosition;
     private Long jabatanByOnBehalfPositionId;
     private String jabatanByOnBehalfPositionName;
+    
     private String name;
+    private String specificName;
     private Integer sequence = 1;
     private Integer minApprover;
     private Integer minRejector;
@@ -81,8 +94,16 @@ public class ApprovalDefinitionModel implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+    
+    public String getSpecificName() {
+		return specificName;
+	}
 
-    public Integer getSequence() {
+	public void setSpecificName(String specificName) {
+		this.specificName = specificName;
+	}
+
+	public Integer getSequence() {
         return sequence;
     }
 
@@ -198,6 +219,40 @@ public class ApprovalDefinitionModel implements Serializable {
     public void setDelayTime(Integer delayTime) {
         this.delayTime = delayTime;
     }
+
+	public HrmUser getHrmUserByApproverIndividual() {
+		return hrmUserByApproverIndividual;
+	}
+
+	public void setHrmUserByApproverIndividual(HrmUser hrmUserByApproverIndividual) {
+		this.hrmUserByApproverIndividual = hrmUserByApproverIndividual;
+	}
+
+	public HrmUser getHrmUserByOnBehalfIndividual() {
+		return hrmUserByOnBehalfIndividual;
+	}
+
+	public void setHrmUserByOnBehalfIndividual(HrmUser hrmUserByOnBehalfIndividual) {
+		this.hrmUserByOnBehalfIndividual = hrmUserByOnBehalfIndividual;
+	}
+
+	public Jabatan getJabatanByApproverPosition() {
+		return jabatanByApproverPosition;
+	}
+
+	public void setJabatanByApproverPosition(Jabatan jabatanByApproverPosition) {
+		this.jabatanByApproverPosition = jabatanByApproverPosition;
+	}
+
+	public Jabatan getJabatanByOnBehalfPosition() {
+		return jabatanByOnBehalfPosition;
+	}
+
+	public void setJabatanByOnBehalfPosition(Jabatan jabatanByOnBehalfPosition) {
+		this.jabatanByOnBehalfPosition = jabatanByOnBehalfPosition;
+	}
+    
+    
 
     
 }

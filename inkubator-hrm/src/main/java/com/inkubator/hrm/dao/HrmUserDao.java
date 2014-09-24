@@ -36,4 +36,6 @@ public interface HrmUserDao extends IDAO<HrmUser> {
     public List<HrmUser> getByName(String name);
     
     public HrmUser getByEmpDataId(long empDataId);
+
+	public List<HrmUser> getAllDataByNameOrNik(String param);
 }

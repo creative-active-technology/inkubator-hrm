@@ -101,7 +101,7 @@
                             </p:column> 
                         </p:dataTable>
                         <h:panelGrid columns="1">
-                    		<p:commandButton value="#{appmsg['global.add']} #{appmsg['hrm_menu.menu']}" title="#{appmsg['global.add']} #{appmsg['hrm_menu.menu']}" label="#{appmsg['global.add']} #{appmsg['hrm_menu.menu']}" styleClass="label_button" icon="ui-icon-search" 
+                    		<p:commandButton value="#{appmsg['global.add']} #{appmsg['hrm_menu.menu']}" title="#{appmsg['global.add']} #{appmsg['hrm_menu.menu']}" label="#{appmsg['global.add']} #{appmsg['hrm_menu.menu']}" styleClass="label_button" icon="ui-icon-document" 
                     						 actionListener="#{roleFormController.doShowMenuList()}" ajax="true" immediate="true">
                             	<p:ajax event="dialogReturn" listener="#{roleFormController.onDialogReturn}"  update="tableMenuId,:formRoleGrowl"/>
                            	</p:commandButton>

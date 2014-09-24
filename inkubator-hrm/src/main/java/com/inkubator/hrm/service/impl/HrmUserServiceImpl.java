@@ -455,4 +455,10 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
     public List<HrmUser> getByName(String name) throws Exception {
         return this.hrmUserDao.getByName(name);
     }
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<HrmUser> getAllDataByNameOrNik(String param) throws Exception {
+		return this.hrmUserDao.getAllDataByNameOrNik(param);	
+	}
 }

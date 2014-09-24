@@ -58,11 +58,13 @@ public class Leave implements Serializable {
     private String endOfPeriod;
     private Integer endOfPeriodMonth;
     private Boolean isOnlyOncePerEmployee;
+    private Boolean isActive;
     private String createdBy;
     private Date createdOn;
     private String updatedBy;
     private Date updatedOn;
     private Set<LeaveScheme> leaveSchemes = new HashSet<LeaveScheme>(0);
+    private Set<ApprovalDefinitionLeave> approvalDefinitionLeaves = new HashSet<ApprovalDefinitionLeave>(0);
     
     public Leave(){
     	
@@ -283,6 +285,15 @@ public class Leave implements Serializable {
 		this.isOnlyOncePerEmployee = isOnlyOncePerEmployee;
 	}
 
+	@Column(name = "is_active", nullable = false)
+	public Boolean getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
+	}
+
 	@Column(name = "created_by", length = 45)
     public String getCreatedBy() {
         return this.createdBy;
@@ -328,6 +339,15 @@ public class Leave implements Serializable {
 
 	public void setLeaveSchemes(Set<LeaveScheme> leaveSchemes) {
 		this.leaveSchemes = leaveSchemes;
+	}
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "leave")
+	public Set<ApprovalDefinitionLeave> getApprovalDefinitionLeaves() {
+		return approvalDefinitionLeaves;
+	}
+
+	public void setApprovalDefinitionLeaves(Set<ApprovalDefinitionLeave> approvalDefinitionLeaves) {
+		this.approvalDefinitionLeaves = approvalDefinitionLeaves;
 	}
 
 	@Transient

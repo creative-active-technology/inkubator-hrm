@@ -1,10 +1,7 @@
 package com.inkubator.hrm.dao.impl;
 
-import com.inkubator.datacore.dao.impl.IDAOImpl;
-import com.inkubator.hrm.dao.LeaveDao;
-import com.inkubator.hrm.entity.Leave;
-import com.inkubator.hrm.web.search.LeaveSearchParameter;
 import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
@@ -14,6 +11,11 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
+
+import com.inkubator.datacore.dao.impl.IDAOImpl;
+import com.inkubator.hrm.dao.LeaveDao;
+import com.inkubator.hrm.entity.Leave;
+import com.inkubator.hrm.web.search.LeaveSearchParameter;
 
 /**
  *
@@ -92,4 +94,13 @@ public class LeaveDaoImpl extends IDAOImpl<Leave> implements LeaveDao {
         criteria.add(Restrictions.eq("id", id));
         return (Leave) criteria.uniqueResult();
     }
+
+	@Override
+	public Leave getEntityByPkFetchApprovalDefinition(Long id) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.setFetchMode("approvalDefinitionLeaves", FetchMode.JOIN);
+        criteria.setFetchMode("approvalDefinitionLeaves.approvalDefinition", FetchMode.JOIN);
+        criteria.add(Restrictions.eq("id", id));
+        return (Leave) criteria.uniqueResult();
+	}
 }
