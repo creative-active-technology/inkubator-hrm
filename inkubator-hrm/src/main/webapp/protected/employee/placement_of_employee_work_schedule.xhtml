@@ -58,6 +58,7 @@
                                 <p:column style="width: 80%">
                                     <h:panelGrid columns="2" style="margin-left: -10px;">
                                         <p:selectOneMenu id="department" value="#{placementOfEmployeeWorkScheduleFormController.model.departmentLikeOrEqual}" style="width: 150px;margin-right: 3px" >
+                                            <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue="3"/>
                                             <f:selectItem itemLabel="#{appmsg['employeeworkschedule.equal']}" itemValue="0"/>
                                             <f:selectItem itemLabel="#{appmsg['employeeworkschedule.like']}" itemValue="1"/>
                                         </p:selectOneMenu>
@@ -77,6 +78,7 @@
                                 <p:column style="width: 80%">
                                     <h:panelGrid columns="2" style="margin-left: -10px;">
                                         <p:selectOneMenu id="employeeType" value="#{placementOfEmployeeWorkScheduleFormController.model.employeeTypeLikeOrEqual}" style="width: 150px;margin-right: 3px" >
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue="3"/>
                                         <f:selectItem itemLabel="#{appmsg['employeeworkschedule.equal']}" itemValue="0"/>
                                         <f:selectItem itemLabel="#{appmsg['employeeworkschedule.like']}" itemValue="1"/>
                                     </p:selectOneMenu>
@@ -106,7 +108,7 @@
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:selectOneMenu id="golonganJabatan" value="#{placementOfEmployeeWorkScheduleFormController.model.golonganJabatanId}" style="min-width: 300px;margin-right: 3px" >
-<!--                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>-->
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue="0"/>
                                         <f:selectItems value="#{placementOfEmployeeWorkScheduleFormController.golonganJabatanDropDown}"/>
                                     </p:selectOneMenu>
                                     <p:message for="golonganJabatan"/>

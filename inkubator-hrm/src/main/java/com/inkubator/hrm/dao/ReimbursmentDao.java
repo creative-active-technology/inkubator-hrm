@@ -27,4 +27,7 @@ public interface ReimbursmentDao extends IDAO<Reimbursment>{
     
     public List<Reimbursment> getAllDataWithEmpIdAndReimbursmentSchemaId(Long empId, Long reimbursmentSchemaId);
     
+    public Reimbursment getEntityByApprovalActivityNumberWithDetail(String approvalActivityNumber);
+    
+    public Reimbursment getEntityByReimbursmentNoWithDetail(String reimburmentNo);
 }

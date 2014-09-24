@@ -129,7 +129,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
             criteria.add(disjunction);
         }
         criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
-        
+
     }
 
     @Override
@@ -180,19 +180,19 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         return criteria.list();
     }
 
-	@Override
-	public List<EmpData> getAllDataByNameOrNik(String param) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
-		Disjunction disjunction = Restrictions.disjunction();
+    @Override
+    public List<EmpData> getAllDataByNameOrNik(String param) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
+        Disjunction disjunction = Restrictions.disjunction();
         disjunction.add(Restrictions.like("bioData.firstName", param, MatchMode.ANYWHERE));
         disjunction.add(Restrictions.like("bioData.lastName", param, MatchMode.ANYWHERE));
         disjunction.add(Restrictions.like("nik", param, MatchMode.ANYWHERE));
         criteria.add(disjunction);
         return criteria.list();
-	}
-	
-	@Override
+    }
+
+    @Override
     public EmpData getByIdWithDetail(long id) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("id", id));
@@ -200,8 +200,8 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.setFetchMode("golonganJabatan", FetchMode.JOIN);
         criteria.setFetchMode("golonganJabatan.pangkat", FetchMode.JOIN);
         return (EmpData) criteria.uniqueResult();
-	}
-    
+    }
+
     @Override
     public EmpData getEntityByNik(String nik) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
@@ -209,54 +209,54 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         return (EmpData) criteria.uniqueResult();
     }
 
-	@Override
-	public List<EmpData> getAllDataNotExistInUserByParam(String param, int firstResult, int maxResults, Order order) {
-		DetachedCriteria subQuery = DetachedCriteria.forClass(HrmUser.class, "user").setProjection(Projections.property("user.id"));
-		subQuery.add(Property.forName("employee.id").eqProperty("user.empData.id"));		
-		
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass(), "employee");
-		criteria.add(Subqueries.notExists(subQuery));
-		criteria = this.doSearchNotExistInUserByParam(param, criteria);
-        
-		criteria.setFirstResult(firstResult);
+    @Override
+    public List<EmpData> getAllDataNotExistInUserByParam(String param, int firstResult, int maxResults, Order order) {
+        DetachedCriteria subQuery = DetachedCriteria.forClass(HrmUser.class, "user").setProjection(Projections.property("user.id"));
+        subQuery.add(Property.forName("employee.id").eqProperty("user.empData.id"));
+
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass(), "employee");
+        criteria.add(Subqueries.notExists(subQuery));
+        criteria = this.doSearchNotExistInUserByParam(param, criteria);
+
+        criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
         criteria.addOrder(order);
-		
-		return criteria.list();
-	}
-	
-	@Override
-	public Long getTotalNotExistInUserByParam(String param) {
-		DetachedCriteria subQuery = DetachedCriteria.forClass(HrmUser.class, "user").setProjection(Projections.property("user.id"));
-		subQuery.add(Property.forName("employee.id").eqProperty("user.empData.id"));		
-		
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass(), "employee");
-		criteria.add(Subqueries.notExists(subQuery));
-		criteria = this.doSearchNotExistInUserByParam(param, criteria);
-		
-		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
-	}
-	
-	private Criteria doSearchNotExistInUserByParam(String param, Criteria criteria){
-		criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
-		if(param != null){
-			Disjunction disjunction = Restrictions.disjunction();
-	        disjunction.add(Restrictions.like("bioData.firstName", param, MatchMode.ANYWHERE));
-	        disjunction.add(Restrictions.like("bioData.lastName", param, MatchMode.ANYWHERE));
-	        disjunction.add(Restrictions.like("nik", param, MatchMode.ANYWHERE));
-	        criteria.add(disjunction);
-		}
-        return criteria;
-	}
 
-	@Override
-	public List<EmpData> getAllDataByJabatanId(Long jabatanId, Order order) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.add(Restrictions.eq("jabatanByJabatanId.id", jabatanId));
-		criteria.addOrder(order);
-		
-		return criteria.list();
-	}
+        return criteria.list();
+    }
+
+    @Override
+    public Long getTotalNotExistInUserByParam(String param) {
+        DetachedCriteria subQuery = DetachedCriteria.forClass(HrmUser.class, "user").setProjection(Projections.property("user.id"));
+        subQuery.add(Property.forName("employee.id").eqProperty("user.empData.id"));
+
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass(), "employee");
+        criteria.add(Subqueries.notExists(subQuery));
+        criteria = this.doSearchNotExistInUserByParam(param, criteria);
+
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+
+    private Criteria doSearchNotExistInUserByParam(String param, Criteria criteria) {
+        criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
+        if (param != null) {
+            Disjunction disjunction = Restrictions.disjunction();
+            disjunction.add(Restrictions.like("bioData.firstName", param, MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.like("bioData.lastName", param, MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.like("nik", param, MatchMode.ANYWHERE));
+            criteria.add(disjunction);
+        }
+        return criteria;
+    }
+
+    @Override
+    public List<EmpData> getAllDataByJabatanId(Long jabatanId, Order order) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("jabatanByJabatanId.id", jabatanId));
+        criteria.addOrder(order);
+
+        return criteria.list();
+    }
 
     @Override
     public List<EmpData> getTotalBySearchEmployee(Long workingGroupId, Integer deptLikeOrEqual, String deptName, Integer empTypeLikeOrEqual, String empTypeName, Integer gender, Long golJabId, Integer sortBy, Integer orderBy) {
@@ -273,39 +273,41 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         disjunction.add(Restrictions.not(Restrictions.eq("wg.id", workingGroupId)));
         criteria.add(disjunction);
         //departermen equal or like
-        if(deptLikeOrEqual == HRMConstant.DEPARTMENT_EQUAL){
-            System.out.println("MASUK EQUAL");
-            criteria.add(Restrictions.eq("dept.departmentName", deptName));
-        }else{
-            System.out.println("MASUK LIKE");
-            criteria.add(Restrictions.like("dept.departmentName", deptName, MatchMode.ANYWHERE));
+        if (deptLikeOrEqual != 3) {
+            if (deptLikeOrEqual == HRMConstant.DEPARTMENT_EQUAL) {
+                criteria.add(Restrictions.eq("dept.departmentName", deptName));
+            } else {
+                criteria.add(Restrictions.like("dept.departmentName", deptName, MatchMode.ANYWHERE));
+            }
         }
         //employee type equal or like
-        if(empTypeLikeOrEqual == HRMConstant.EMPLOYEE_TYPE_EQUAL){
-            System.out.println("MASUK EQUAL");
-            criteria.add(Restrictions.eq("empType.name", empTypeName));
-        }else{
-            System.out.println("MASUK LIKE");
-            criteria.add(Restrictions.like("empType.name", empTypeName, MatchMode.ANYWHERE));
+        if (empTypeLikeOrEqual != 3) {
+            if (empTypeLikeOrEqual == HRMConstant.EMPLOYEE_TYPE_EQUAL) {
+                criteria.add(Restrictions.eq("empType.name", empTypeName));
+            } else {
+                criteria.add(Restrictions.like("empType.name", empTypeName, MatchMode.ANYWHERE));
+            }
         }
         //gender
         criteria.add(Restrictions.eq("bio.gender", gender));
         //goljab
-        criteria.add(Restrictions.eq("goljab.id", golJabId));
+        if (golJabId != 0) {
+            criteria.add(Restrictions.eq("goljab.id", golJabId));
+        }
         //sort by nik
-        if(sortBy == HRMConstant.SORT_BY_NIK && orderBy == HRMConstant.ORDER_BY_ASC){
+        if (sortBy == HRMConstant.SORT_BY_NIK && orderBy == HRMConstant.ORDER_BY_ASC) {
             criteria.addOrder(Order.asc("nik"));
-        }else{
+        } else {
             criteria.addOrder(Order.desc("nik"));
         }
-        
+
         //sort by name
-        if(sortBy == HRMConstant.SORT_BY_NAME && orderBy == HRMConstant.ORDER_BY_ASC){
+        if (sortBy == HRMConstant.SORT_BY_NAME && orderBy == HRMConstant.ORDER_BY_ASC) {
             criteria.addOrder(Order.asc("bio.firstName"));
-        }else{
+        } else {
             criteria.addOrder(Order.desc("bio.firstName"));
         }
-        
+
         return criteria.list();
     }
 }

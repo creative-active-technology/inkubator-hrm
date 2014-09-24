@@ -82,6 +82,14 @@ public class ReimbursmentFormController extends BaseController {
                 if (reimbursmentId.substring(1) != null) {
                     model = getModelFromEntity(reimbursment);
                     isUpdate = Boolean.TRUE;
+                    ReimbursmentSchema reimbursmentSchema = reimbursmentSchemaService.getEntiyByPK(reimbursment.getReimbursmentSchema().getId());
+                    if(reimbursmentSchema.getMeasurement() == HRMConstant.REIMBURSMENT_UNIT){
+                        isQuantity = Boolean.FALSE;
+                        isNominal = Boolean.TRUE;
+                    }else{
+                        isQuantity = Boolean.TRUE;
+                        isNominal = Boolean.FALSE;
+                    }
                     if(reimbursment.getReimbursmentSchema().getIsAttachDocument() == Boolean.TRUE){
                         isUpload = Boolean.FALSE;
                     }else{
@@ -368,5 +376,12 @@ public class ReimbursmentFormController extends BaseController {
         this.isNominal = isNominal;
     }
     
+    public void doReset() {
+        cleanAndExit();
+    }
+    
+    public String doBack(){
+         return "/protected/personalia/reimbursment_view.htm?faces-redirect=true";
+    }
     
 }

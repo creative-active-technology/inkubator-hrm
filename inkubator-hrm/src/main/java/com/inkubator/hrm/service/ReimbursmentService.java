@@ -5,6 +5,7 @@
 package com.inkubator.hrm.service;
 
 import com.inkubator.datacore.service.IService;
+import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.Reimbursment;
 import com.inkubator.hrm.web.model.ReimbursmentModelJsonParsing;
 import com.inkubator.hrm.web.search.ReimbursmentSearchParameter;
@@ -27,5 +28,11 @@ public interface ReimbursmentService extends IService<Reimbursment>{
     
     public void approved(long approvalActivityId, ReimbursmentModelJsonParsing reimbursmentModelJsonParsing, String comment) throws Exception;
     
-    public void saveModelJson(ReimbursmentModelJsonParsing reimbursmentModelJsonParsing, boolean isBypassApprovalChecking) throws Exception;
+    public void saveModelJson(ReimbursmentModelJsonParsing reimbursmentModelJsonParsing, ApprovalActivity appActivity, boolean isBypassApprovalChecking) throws Exception;
+    
+    public void rejected(long approvalActivityId, String comment) throws Exception;
+    
+    public Reimbursment getEntityByApprovalActivityNumberWithDetail(String approvalActivityNumber) throws Exception;
+    
+    public Reimbursment getEntityByReimbursmentNoWithDetail(String reimbursmentNo) throws Exception;
 }

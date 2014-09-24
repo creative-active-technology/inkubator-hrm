@@ -15,7 +15,8 @@
 			Adapun barang yang dimaksud yaitu: <br /><br />
 			Nomor Pengajuan : ${reimbursmentNo}<br />
 			Tanggal pengajuan : ${claim_date}<br />
-			Nominal penggantian : ${nominalOrUnit}<br />			
+			Nominal penggantian : ${nominalOrUnit}<br />
+                        Status : <b>${statusDesc}</b><br />
             <br />
  			<br />
             Demikian pemberitahuan ini disampaikan, atas perhatian dan kerjasamanya disampaikan terima kasih.

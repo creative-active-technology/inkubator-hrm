@@ -82,9 +82,9 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
              toSentCC.add(el.getAsString());
              }
              }*/
-//            toSend.add("deni.arianto24@yahoo.com");
-            toSend.add("guntur@incubatechnology.com");
-            toSentCC.add("rizkykojek@gmail.com");
+            toSend.add("deni.arianto24@yahoo.com");
+//            toSend.add("guntur@incubatechnology.com");
+//            toSentCC.add("rizkykojek@gmail.com");
             vtm.setTo(toSend.toArray(new String[toSend.size()]));
             vtm.setCc(toSentCC.toArray(new String[toSentCC.size()]));
             vtm.setBcc(toSentBCC.toArray(new String[toSentBCC.size()]));
@@ -115,7 +115,7 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                             break;
 
                         case HRMConstant.REIMBURSEMENT:
-                            System.out.println("masuk reimbursmentttttttttttttttttttttttttttt");
+                            vtm.setSubject("Permohonan Pergantian Biaya");
                             vtm.setTemplatePath("email_reimbursment_waiting_approval.vm");
                             maptoSend.put("approverName", approverUser.getEmpData().getBioData().getFullName());
                             maptoSend.put("requesterName", requesterUser.getEmpData().getBioData().getFullName());
@@ -169,6 +169,7 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                             break;
 
                         case HRMConstant.REIMBURSEMENT:
+                             vtm.setSubject("Permohonan Pergantian Biaya");
                             vtm.setTemplatePath("email_reimbursment_approved_or_rejected.vm");
                             maptoSend.put("requesterName", requesterUser.getEmpData().getBioData().getFullName());
                             maptoSend.put("nik", requesterUser.getEmpData().getNik());

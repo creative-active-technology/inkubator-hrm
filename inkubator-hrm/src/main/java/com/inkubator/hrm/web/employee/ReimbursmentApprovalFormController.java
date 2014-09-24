@@ -131,6 +131,18 @@ public class ReimbursmentApprovalFormController extends BaseController{
         }
     	return null;
     }
+    
+    public String doRejected() {
+		try {
+			reimbursmentService.rejected(selectedApprovalActivity.getId(), comment);
+			MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.approval_info", "global.rejected_successfully",
+                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+			return "/protected/home.htm?faces-redirect=true";
+		} catch (Exception e) {
+			LOGGER.error("Error when rejected process ", e);
+		}
+    	return null;
+    }
 
     public ReimbursmentSchemaService getReimbursmentSchemaService() {
         return reimbursmentSchemaService;
