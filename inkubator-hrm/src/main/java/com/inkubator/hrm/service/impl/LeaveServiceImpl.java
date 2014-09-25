@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.hamcrest.Matchers;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -16,9 +17,12 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import ch.lambdaj.Lambda;
+
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.ApprovalDefinitionDao;
 import com.inkubator.hrm.dao.ApprovalDefinitionLeaveDao;
 import com.inkubator.hrm.dao.AttendanceStatusDao;
@@ -344,6 +348,9 @@ public class LeaveServiceImpl extends IServiceImpl implements LeaveService {
 			throw new BussinessException("leave.error_duplicate_code");
 		}
 		
+		//validasi approval definition
+		this.validateApprovalDefinition(appDefs);
+		
 		entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
 		AttendanceStatus attendanceStatus = attendanceStatusDao.getEntiyByPK(entity.getAttendanceStatus().getId());
 		entity.setAttendanceStatus(attendanceStatus);
@@ -383,6 +390,9 @@ public class LeaveServiceImpl extends IServiceImpl implements LeaveService {
 		if (totalDuplicates > 0) {
 			throw new BussinessException("leave.error_duplicate_code");
 		}
+		
+		//validasi approval definition
+		this.validateApprovalDefinition(listAppDefs);
 		
 		Leave leave = leaveDao.getEntiyByPK(entity.getId());
 		leave.setCode(entity.getCode());
@@ -485,6 +495,28 @@ public class LeaveServiceImpl extends IServiceImpl implements LeaveService {
         ad.setUpdatedBy(UserInfoUtil.getUserName());
         ad.setUpdatedOn(new Date());
         this.approvalDefinitionDao.update(ad);
+	}
+	
+	private void validateApprovalDefinition(List<ApprovalDefinition> appDefs) throws BussinessException{
+		//sorting by sequence, lalu sequence di cek harus dimulai dari 1
+		List<ApprovalDefinition> sortBySequence = Lambda.sort(appDefs, Lambda.on(ApprovalDefinition.class).getSequence());
+        if(!sortBySequence.isEmpty() && sortBySequence.get(0).getSequence()!=1){        	
+        	throw new BussinessException("approval.error_first");
+        }
+        
+        //cek sequence tidak boleh duplikat
+        List<Integer> sequences = Lambda.extract(sortBySequence, Lambda.on(ApprovalDefinition.class).getSequence());
+    	Set <Integer> uniques = new HashSet<Integer>(sequences);
+        if(sequences.size() != uniques.size()){        	
+        	throw new BussinessException("approval.error_unik");
+        }
+        
+        //cek kalo process type "ON_APPROVE_INFO" atau "ON_REJECT_INFO" tidak boleh lebih kecil sequence-nya dari APPROVAL_PROCESS
+        ApprovalDefinition max = Lambda.selectMax(Lambda.select(appDefs, Lambda.having(Lambda.on(ApprovalDefinition.class).getProcessType(), Matchers.equalToIgnoringCase(HRMConstant.APPROVAL_PROCESS))), Lambda.on(ApprovalDefinition.class).getSequence());
+        List<ApprovalDefinition> excludeApprovalProcess =  Lambda.select(appDefs, Lambda.having(Lambda.on(ApprovalDefinition.class).getProcessType(), Matchers.not(HRMConstant.APPROVAL_PROCESS)));
+        if(Lambda.selectFirst(excludeApprovalProcess, Lambda.having(Lambda.on(ApprovalDefinition.class).getSequence(), Matchers.lessThanOrEqualTo(max.getSequence()))) != null){
+        	throw new BussinessException("approval.error_process_less_than");
+        }
 	}
 
 	@Override
