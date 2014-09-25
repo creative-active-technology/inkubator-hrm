@@ -7,6 +7,8 @@ package com.inkubator.hrm.service;
 
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.web.employee.DistributionLeaveScheme;
+import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
 import com.inkubator.hrm.web.model.PlacementOfEmployeeWorkScheduleModel;
 import com.inkubator.hrm.web.search.EmpDataSearchParameter;
 import java.util.List;
@@ -55,5 +57,7 @@ public interface EmpDataService extends IService<EmpData> {
     public void saveMassPenempatanJadwal(List<EmpData> data, long groupWorkingId) throws Exception;
 
     public List<EmpData> getTotalBySearchEmployee(PlacementOfEmployeeWorkScheduleModel model) throws Exception;
+    
+    public List<EmpData> getTotalBySearchEmployeeLeave(DistributionLeaveSchemeModel model) throws Exception;
 
 }

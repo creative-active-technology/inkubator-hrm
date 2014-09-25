@@ -10,6 +10,7 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.HrmUser;
+import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
 import com.inkubator.hrm.web.model.PlacementOfEmployeeWorkScheduleModel;
 import com.inkubator.hrm.web.search.EmpDataSearchParameter;
 import java.util.Date;
@@ -318,6 +319,60 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.createAlias("tempJadwalKaryawans", "tj");
         criteria.add(Restrictions.eq("tj.endTime", date));
+        return criteria.list();
+    }
+
+    @Override
+    public List<EmpData> getTotalBySearchEmployeeLeave(DistributionLeaveSchemeModel model) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("wtGroupWorking", "wg", JoinType.LEFT_OUTER_JOIN);
+        criteria.createAlias("jabatanByJabatanId", "jabatan", JoinType.INNER_JOIN);
+        criteria.createAlias("jabatan.department", "dept", JoinType.INNER_JOIN);
+        criteria.createAlias("employeeType", "empType", JoinType.INNER_JOIN);
+        criteria.createAlias("bioData", "bio", JoinType.INNER_JOIN);
+        criteria.createAlias("golonganJabatan", "goljab", JoinType.INNER_JOIN);
+        //ambil yg working groupnya bukan yg dipilih, dan belum punya working group
+        if (model.getLeaveSchemeId()!= 0 || model.getLeaveSchemeId()!= null) {
+            Disjunction disjunction = Restrictions.disjunction();
+            disjunction.add(Restrictions.isNull("wtGroupWorking"));
+            disjunction.add(Restrictions.not(Restrictions.eq("wg.id", model.getLeaveSchemeId())));
+            criteria.add(disjunction);
+        }
+        //departermen equal or like
+        if (model.getDepartmentLikeOrEqual() != 3) {
+            if (model.getDepartmentLikeOrEqual() == HRMConstant.DEPARTMENT_EQUAL) {
+                criteria.add(Restrictions.eq("dept.departmentName", model.getDepartmentName()));
+            } else {
+                criteria.add(Restrictions.like("dept.departmentName", model.getDepartmentName(), MatchMode.ANYWHERE));
+            }
+        }
+        //employee type equal or like
+        if (model.getEmployeeTypeLikeOrEqual() != 3) {
+            if (model.getEmployeeTypeLikeOrEqual() == HRMConstant.EMPLOYEE_TYPE_EQUAL) {
+                criteria.add(Restrictions.eq("empType.name", model.getEmployeeTypeName()));
+            } else {
+                criteria.add(Restrictions.like("empType.name", model.getEmployeeTypeName(), MatchMode.ANYWHERE));
+            }
+        }
+        //gender
+        criteria.add(Restrictions.eq("bio.gender", model.getGender()));
+        //goljab
+        if (model.getGolonganJabatanId() != 0) {
+            criteria.add(Restrictions.eq("goljab.id", model.getGolonganJabatanId()));
+        }
+
+        String sortBy;
+        if (model.getSortBy() == HRMConstant.SORT_BY_NIK) {
+            sortBy = "nik";
+        } else {
+            sortBy = "bio.firstName";
+        }
+
+        if (model.getOrderBy() == HRMConstant.ORDER_BY_ASC) {
+            criteria.addOrder(Order.asc(sortBy));
+        } else {
+            criteria.addOrder(Order.desc(sortBy));
+        }
         return criteria.list();
     }
 }

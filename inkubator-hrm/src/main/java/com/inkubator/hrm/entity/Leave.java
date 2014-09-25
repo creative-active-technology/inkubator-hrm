@@ -65,6 +65,7 @@ public class Leave implements Serializable {
     private Date updatedOn;
     private Set<LeaveScheme> leaveSchemes = new HashSet<LeaveScheme>(0);
     private Set<ApprovalDefinitionLeave> approvalDefinitionLeaves = new HashSet<ApprovalDefinitionLeave>(0);
+     private Set<LeaveDistribution> leaveDistributions = new HashSet<>(0);
     
     public Leave(){
     	
@@ -414,4 +415,15 @@ public class Leave implements Serializable {
 		}
     	return endOfPeriodAsLabel;
     }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "leave")
+    public Set<LeaveDistribution> getLeaveDistributions() {
+        return leaveDistributions;
+    }
+
+    public void setLeaveDistributions(Set<LeaveDistribution> leaveDistributions) {
+        this.leaveDistributions = leaveDistributions;
+    }
+    
+    
 }
