@@ -49,7 +49,7 @@
                                     <p:outputLabel  value="Kode Kelompok Kerja"  for="kkId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:inputText value="#{groupWorkingModel.code}" styleClass="isitext_hrm" label="Kode Kelompok Kerja"
+                                    <p:inputText value="#{groupWorkingModel.code}" styleClass="isitext_hrm" label="Kode Kelompok Kerja" maxlength="15"
                                                  style="width: 290px" required="true" id="kkId" onkeyup="this.value = this.value.toUpperCase();" />
                                     <p:message for="kkId"/>
                                 </p:column>
@@ -149,7 +149,7 @@
                         <p:focus context="formWorkingGroupId" />
                         <p:separator style="margin-top: 20px;margin-bottom: 10px"/>
                         <div style="margin-bottom: 5px">
-                            <p:commandButton value="Lanjut" ajax="true" onclick="PrimeFaces.monitorDownload(start, stop)"
+                            <p:commandButton value="Lanjut" ajax="true" 
                                              action="next" styleClass="isitext_hrm" update="formWorkingGroupId,:workingGroupFormGrowlId"
                                              style="margin-right: 5px" label="Lanjut"
                                              icon="ui-icon-arrow-1-e" title="Lanjut"/>

@@ -104,8 +104,9 @@
         <property name="ownerCompany" value="${email_param_owner_company}"/>
         <property name="ownerAdministrator" value="${email_param_owner_administrator}"/>
     </bean>
-    <bean id="jadwalKerjaMessagesListener" class="com.inkubator.hrm.service.impl.JadwalKerjaUpdateMessagesListener" />
+    <bean id="jadwalKerjaMessagesListener" class="com.inkubator.hrm.service.impl.JadwalKerjaUpdateMessagesListener" lazy-init="true" />
     <bean id="notificationApprovalGrowlMessagesListener" class="com.inkubator.hrm.service.impl.NotificationApprovalGrowlMessagesListener" lazy-init="true"/>    
+    <bean id="jadwalKerjaMassMessagesListener" class="com.inkubator.hrm.service.impl.JadwalKerjaMassMessagesListener" lazy-init="true" />
     <jms:listener-container container-type="default" connection-factory="connectionFactoryComsume" acknowledge="transacted" 
                             transaction-manager="jsmTransaction"   >
         
@@ -114,8 +115,9 @@
         <jms:listener destination="notificationApproval" ref="notificationApprovalMessagesListener" method="onMessage"  />
         <jms:listener destination="notificationApprovalGrowl" ref="notificationApprovalGrowlMessagesListener" method="onMessage"  />
         <jms:listener destination="notificationJadwalKerja" ref="jadwalKerjaMessagesListener" method="onMessage"  />
-       
+        <jms:listener destination="notificationMassJadwalKerja" ref="jadwalKerjaMassMessagesListener" method="onMessage"  />
     </jms:listener-container>
+    
     <bean id="jsmTransaction" class="org.springframework.jms.connection.JmsTransactionManager">
         <property name="connectionFactory" ref="connectionFactoryComsume"/>
     </bean>

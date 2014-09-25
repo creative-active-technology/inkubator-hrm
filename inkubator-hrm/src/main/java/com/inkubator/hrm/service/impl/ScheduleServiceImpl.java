@@ -5,6 +5,7 @@
  */
 package com.inkubator.hrm.service.impl;
 
+import ch.lambdaj.Lambda;
 import com.inkubator.common.CommonUtilConstant;
 import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.common.util.RandomNumberUtil;
@@ -24,8 +25,6 @@ import com.inkubator.hrm.entity.WtScheduleShift;
 import com.inkubator.hrm.service.ScheduleService;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -87,7 +86,7 @@ public class ScheduleServiceImpl extends IServiceImpl implements ScheduleService
         for (EmpData empData : listEmpData) {
             dataToDelete.addAll(tempJadwalKaryawanDao.getAllByEmpId(empData.getId()));
             WtGroupWorking groupWorking = empData.getWtGroupWorking();
-            Date startDate = groupWorking.getBeginTime();
+            Date startDate = groupWorking.getBeginTime();//harus disini karena untuk emproyee yang berbeda
             Date endDate = groupWorking.getEndTime();
             int numberOfDay = DateTimeUtil.getTotalDayDifference(startDate, endDate);
             int totalDateDif = DateTimeUtil.getTotalDayDifference(startDate, now) + 1;
@@ -102,9 +101,10 @@ public class ScheduleServiceImpl extends IServiceImpl implements ScheduleService
                 beginScheduleDate = DateTimeUtil.getDateFrom(startDate, (hasilBagi * num), CommonUtilConstant.DATE_FORMAT_DAY);
             }
             List<WtScheduleShift> dataScheduleShift = new ArrayList<>(groupWorking.getWtScheduleShifts());
-            Collections.sort(dataScheduleShift, shortByDate1);
+//            Collections.sort(dataScheduleShift, shortByDate1);
+            List<WtScheduleShift> sortedDataScheduleShift = Lambda.sort(dataScheduleShift, Lambda.on(WtScheduleShift.class).getScheduleDate());
             int i = 0;
-            for (WtScheduleShift wtScheduleShift : dataScheduleShift) {
+            for (WtScheduleShift wtScheduleShift : sortedDataScheduleShift) {
                 TempJadwalKaryawan jadwalKaryawan = new TempJadwalKaryawan();
                 jadwalKaryawan.setEmpData(empData);
                 jadwalKaryawan.setTanggalWaktuKerja(DateTimeUtil.getDateFrom(beginScheduleDate, i, CommonUtilConstant.DATE_FORMAT_DAY));
@@ -129,10 +129,10 @@ public class ScheduleServiceImpl extends IServiceImpl implements ScheduleService
 
     }
 
-    private final Comparator<WtScheduleShift> shortByDate1 = new Comparator<WtScheduleShift>() {
-        @Override
-        public int compare(WtScheduleShift o1, WtScheduleShift o2) {
-            return o1.getScheduleDate().compareTo(o2.getScheduleDate());
-        }
-    };
+//    private final Comparator<WtScheduleShift> shortByDate1 = new Comparator<WtScheduleShift>() {
+//        @Override
+//        public int compare(WtScheduleShift o1, WtScheduleShift o2) {
+//            return o1.getScheduleDate().compareTo(o2.getScheduleDate());
+//        }
+//    };
 }

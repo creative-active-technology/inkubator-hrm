@@ -6,9 +6,11 @@
 package com.inkubator.hrm.service.impl;
 
 import ch.lambdaj.Lambda;
+import com.google.gson.JsonObject;
 import com.inkubator.common.CommonUtilConstant;
 import com.inkubator.common.util.AESUtil;
 import com.inkubator.common.util.DateTimeUtil;
+import com.inkubator.common.util.JsonConverter;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
@@ -104,6 +106,8 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     private HrmUserDao hrmUserDao;
     @Autowired
     private JmsTemplate jmsTemplateMassJadwalKerja;
+    @Autowired
+    private JsonConverter jsonConverter;
 
     @Override
     public EmpData getEntiyByPK(String id) throws Exception {
@@ -599,13 +603,14 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         int hasilBagi = (totalDateDif) / (num);
         String dayBegin = new SimpleDateFormat("EEEE").format(endDate);
         String dayNow = new SimpleDateFormat("EEEE").format(now);
+
         Date beginScheduleDate;
         if (dayBegin.endsWith(dayNow) && Objects.equals(groupWorking.getTypeSequeace(), HRMConstant.NORMAL_SCHEDULE)) {
             beginScheduleDate = DateTimeUtil.getDateFrom(startDate, (hasilBagi * num) - num, CommonUtilConstant.DATE_FORMAT_DAY);
         } else {
             beginScheduleDate = DateTimeUtil.getDateFrom(startDate, (hasilBagi * num), CommonUtilConstant.DATE_FORMAT_DAY);
         }
-
+      
         int i = 0;
         for (WtScheduleShift list1 : list) {
             TempJadwalKaryawan jadwalKaryawan = new TempJadwalKaryawan();
@@ -643,19 +648,24 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
     public void saveMassPenempatanJadwal(List<EmpData> data, long groupWorkingId) throws Exception {
+        WtGroupWorking groupWorking = wtGroupWorkingDao.getEntiyByPK(groupWorkingId);
+        groupWorking.setIsActive(Boolean.TRUE);
+        wtGroupWorkingDao.update(groupWorking);
         for (EmpData empData : data) {
             empData.setWtGroupWorking(wtGroupWorkingDao.getEntiyByPK(groupWorkingId));
             this.empDataDao.update(empData);
         }
-        List<Long>listIdEmp=Lambda.extract(data, Lambda.on(EmpData.class).getId());
-        for (Long listIdEmp1 : listIdEmp) {
-            System.out.println(" nilai nya "+listIdEmp1);
-        }
+
+        List<Long> listIdEmp = Lambda.extract(data, Lambda.on(EmpData.class).getId());
+        String dataToJson = jsonConverter.getJson(listIdEmp.toArray(new Long[listIdEmp.size()]));
+        final JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("listEmpId", dataToJson);
+        jsonObject.addProperty("groupWorkingId", groupWorkingId);
         this.jmsTemplateMassJadwalKerja.send(new MessageCreator() {
             @Override
             public Message createMessage(Session session)
                     throws JMSException {
-                return session.createTextMessage("d");
+                return session.createTextMessage(jsonObject.toString());
             }
         });
     }
