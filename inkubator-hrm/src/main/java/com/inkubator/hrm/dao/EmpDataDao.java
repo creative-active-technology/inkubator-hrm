@@ -7,6 +7,7 @@ package com.inkubator.hrm.dao;
 
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
 import com.inkubator.hrm.web.model.PlacementOfEmployeeWorkScheduleModel;
 import com.inkubator.hrm.web.search.EmpDataSearchParameter;
 import java.util.Date;
@@ -56,6 +57,8 @@ public interface EmpDataDao extends IDAO<EmpData> {
     public List<EmpData> getAllDataByJabatanId(Long jabatanId, Order order);
 
     public List<EmpData> getTotalBySearchEmployee(PlacementOfEmployeeWorkScheduleModel model);
+    
+    public List<EmpData> getTotalBySearchEmployeeLeave(DistributionLeaveSchemeModel model);
 
     public List<EmpData> getAllDataWithEndTime(Date date);
 }

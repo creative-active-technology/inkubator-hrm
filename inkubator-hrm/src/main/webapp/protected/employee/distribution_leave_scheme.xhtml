@@ -38,26 +38,37 @@
                                     <p:outputLabel  value="Kelompok Kerja"  for="code" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneMenu required="true" id="code" value="#{placementOfEmployeeWorkScheduleFormController.model.workingGroupId}" style="margin-right: 3px" >
+                                    <p:selectOneMenu required="true" id="code" value="#{distributionLeaveScheme.model.leaveSchemeId}" style="margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItems value="#{placementOfEmployeeWorkScheduleFormController.workingGroupDropDown}"/>
+                                        <f:selectItems value="#{distributionLeaveScheme.leaveSchemeDropDown}"/>
                                     </p:selectOneMenu>
                                     <p:message for="code"/>
                                 </p:column>
                             </p:row>
-
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Start Balance"  for="strtBalance" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:inputText id="strtBalance" value="#{distributionLeaveScheme.model.startBalance}"
+                                                     required="false" styleClass="isitext_hrm" style="width:50px;" />
+                                    <p:outputLabel  value=" Hari" />
+                                </p:column>
+                            </p:row>
+                            
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="Department"  for="department" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <h:panelGrid columns="2" style="margin-left: -10px;">
-                                        <p:selectOneMenu id="department" value="#{placementOfEmployeeWorkScheduleFormController.model.departmentLikeOrEqual}" style="width: 150px;margin-right: 3px" >
+                                        <p:selectOneMenu id="department" value="#{distributionLeaveScheme.model.departmentLikeOrEqual}" style="width: 150px;margin-right: 3px" >
                                             <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue="3"/>
                                             <f:selectItem itemLabel="#{appmsg['employeeworkschedule.equal']}" itemValue="0"/>
                                             <f:selectItem itemLabel="#{appmsg['employeeworkschedule.like']}" itemValue="1"/>
                                         </p:selectOneMenu>
-                                        <p:inputText id="departmentText" value="#{placementOfEmployeeWorkScheduleFormController.model.departmentName}"
+                                        <p:inputText id="departmentText" value="#{distributionLeaveScheme.model.departmentName}"
                                                      required="false" styleClass="isitext_hrm" style="width:210px; margin-left: -10px;" />
 
 
@@ -72,13 +83,13 @@
 
                                 <p:column style="width: 80%">
                                     <h:panelGrid columns="2" style="margin-left: -10px;">
-                                        <p:selectOneMenu id="employeeType" value="#{placementOfEmployeeWorkScheduleFormController.model.employeeTypeLikeOrEqual}" style="width: 150px;margin-right: 3px" >
+                                        <p:selectOneMenu id="employeeType" value="#{distributionLeaveScheme.model.employeeTypeLikeOrEqual}" style="width: 150px;margin-right: 3px" >
                                             <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue="3"/>
                                             <f:selectItem itemLabel="#{appmsg['employeeworkschedule.equal']}" itemValue="0"/>
                                             <f:selectItem itemLabel="#{appmsg['employeeworkschedule.like']}" itemValue="1"/>
                                         </p:selectOneMenu>
 
-                                        <p:inputText id="employeeTypeText" value="#{placementOfEmployeeWorkScheduleFormController.model.employeeTypeName}"
+                                        <p:inputText id="employeeTypeText" value="#{distributionLeaveScheme.model.employeeTypeName}"
                                                      required="false" styleClass="isitext_hrm" style="width:210px;margin-left: -10px;" />
 
                                     </h:panelGrid>
@@ -86,10 +97,10 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Gender"  for="gender" styleClass="label_hrm" />
+                                    <p:outputLabel value="Gender"  for="gender" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneRadio required="true" id="gender" styleClass="isitext_hrm" value="#{placementOfEmployeeWorkScheduleFormController.model.gender}" label="Gender">
+                                    <p:selectOneRadio id="gender" styleClass="isitext_hrm" required="true" value="#{distributionLeaveScheme.model.gender}" label="Gender">
                                         <!--Cek HRM Constanta..-->
                                         <f:selectItem itemLabel="#{appmsg['global_male']}" itemValue="1" />
                                         <f:selectItem itemLabel="#{appmsg['global_female']}" itemValue="0" />
@@ -102,9 +113,9 @@
                                     <p:outputLabel  value="Golongan Jabatan"  for="golonganJabatan" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneMenu id="golonganJabatan" value="#{placementOfEmployeeWorkScheduleFormController.model.golonganJabatanId}" style="min-width: 300px;margin-right: 3px" >
+                                    <p:selectOneMenu id="golonganJabatan" value="#{distributionLeaveScheme.model.golonganJabatanId}" style="min-width: 300px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue="0"/>
-                                        <f:selectItems value="#{placementOfEmployeeWorkScheduleFormController.golonganJabatanDropDown}"/>
+                                        <f:selectItems value="#{distributionLeaveScheme.golonganJabatanDropDown}"/>
                                     </p:selectOneMenu>
                                     <p:message for="golonganJabatan"/>
                                 </p:column>
@@ -114,11 +125,11 @@
                                     <p:outputLabel  value="Sort By"  for="sortBy" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneMenu id="sortBy" styleClass="isitext_hrm" required="false" value="#{placementOfEmployeeWorkScheduleFormController.model.sortBy}" label="Gender">
+                                    <p:selectOneMenu id="sortBy" styleClass="isitext_hrm" required="false" value="#{distributionLeaveScheme.model.sortBy}" label="Gender">
                                         <f:selectItem itemLabel="NIK" itemValue="0" />
                                         <f:selectItem itemLabel="Name" itemValue="1" />
                                     </p:selectOneMenu>&nbsp;&nbsp;&nbsp;
-                                    <p:selectOneMenu id="orderBy" styleClass="isitext_hrm" required="false" value="#{placementOfEmployeeWorkScheduleFormController.model.orderBy}" label="Gender">
+                                    <p:selectOneMenu id="orderBy" styleClass="isitext_hrm" required="false" value="#{distributionLeaveScheme.model.orderBy}" label="Gender">
                                         <f:selectItem itemLabel="ASC" itemValue="0" />
                                         <f:selectItem itemLabel="DSC" itemValue="1" />
                                     </p:selectOneMenu>
@@ -130,7 +141,7 @@
 
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:commandButton value="#{appmsg['global.search']}" ajax="true" action="#{placementOfEmployeeWorkScheduleFormController.doSearchEmployee()}" 
+                                    <p:commandButton value="#{appmsg['global.search']}" ajax="true" action="#{distributionLeaveScheme.doSearchEmployee()}" 
                                                      styleClass="isitext_hrm" 
                                                      style="margin-right: 5px" label="#{appmsg['global.search']}" update="picklistUserRoleId"
                                                      icon="ui-icon-search" title="#{appmsg['global.search']}">    

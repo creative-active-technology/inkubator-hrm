@@ -8,6 +8,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -45,6 +47,7 @@ public class WtWorkingHour implements java.io.Serializable {
     private Integer breakFinishLimitEnd;
     private Boolean isPenaltyBreakStartEarly;
     private Boolean isPenaltyBreakFinishLate;
+    private AttendanceStatus attendanceStatus;
     private String createdBy;
     private Date createdOn;
     private String updatedBy;
@@ -271,6 +274,16 @@ public class WtWorkingHour implements java.io.Serializable {
     public void setIsPenaltyBreakFinishLate(Boolean isPenaltyBreakFinishLate) {
         this.isPenaltyBreakFinishLate = isPenaltyBreakFinishLate;
     }
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "attendance_status_id", nullable = false)
+	public AttendanceStatus getAttendanceStatus() {
+		return attendanceStatus;
+	}
+
+	public void setAttendanceStatus(AttendanceStatus attendanceStatus) {
+		this.attendanceStatus = attendanceStatus;
+	}
 
     @Column(name = "created_by", length = 45)
     public String getCreatedBy() {

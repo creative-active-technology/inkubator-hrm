@@ -42,6 +42,8 @@ import com.inkubator.hrm.entity.WtScheduleShift;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.util.MapUtil;
 import com.inkubator.hrm.util.StringsUtils;
+import com.inkubator.hrm.web.employee.DistributionLeaveScheme;
+import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
 import com.inkubator.hrm.web.model.PlacementOfEmployeeWorkScheduleModel;
 import com.inkubator.hrm.web.search.EmpDataSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
@@ -668,5 +670,11 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
                 return session.createTextMessage(jsonObject.toString());
             }
         });
+    }
+    
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public List<EmpData> getTotalBySearchEmployeeLeave(DistributionLeaveSchemeModel model) throws Exception {
+        return empDataDao.getTotalBySearchEmployeeLeave(model);
     }
 }
