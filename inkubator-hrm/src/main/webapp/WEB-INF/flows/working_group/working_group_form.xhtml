@@ -36,11 +36,14 @@
                                     <p:outputLabel  value="Jenis Schedule"  for="dayTypeId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
+                                    <h:panelGrid columns="1">
                                     <p:selectOneRadio id="dayTypeId" styleClass="isitext_hrm" required="true"  value="#{groupWorkingModel.kondisiSchedule}">
                                         <!--Cek HRM Constanta..-->
                                         <f:selectItem itemLabel="Normal Schedule" itemValue="0" id="select1"/>
                                         <f:selectItem itemLabel="Non Normal Schedule" itemValue="1"  id="select2" />
                                     </p:selectOneRadio>
+                                        <p:outputLabel value="*) Normal Shcedule mengikuti aturan normal Hari Libur Nasional dan Non Normal Schedule tidak mengikuti aturan normal Hari Libur Nasional." style="font-size: 11px;color: #900"  />
+                                    </h:panelGrid>
                                     <p:message for="dayTypeId"/>
                                 </p:column>
                             </p:row>

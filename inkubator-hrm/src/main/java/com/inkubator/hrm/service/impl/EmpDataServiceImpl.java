@@ -55,7 +55,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
@@ -511,7 +510,13 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 
         //check if the employee still have pending task approval
         HrmUser user = hrmUserDao.getByEmpDataId(entity.getId());
-        long totalPendingTask = approvalActivityDao.getPendingTask(user.getUserId()).size();
+        long totalPendingTask = 0;
+        if (user != null) {
+            totalPendingTask = approvalActivityDao.getPendingTask(user.getUserId()).size();
+        } else {
+            throw new BussinessException("emp_data.error_donot_have_user");
+        }
+
         if (totalPendingTask > 0) {
             throw new BussinessException("emp_data.error_cannot_do_rotation");
         }
@@ -605,24 +610,22 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         int totalDateDif = DateTimeUtil.getTotalDayDifference(startDate, now) + 1;
         int num = numberOfDay + 1;
         int hasilBagi = (totalDateDif) / (num);
-        String dayBegin = new SimpleDateFormat("EEEE").format(endDate);
-        String dayNow = new SimpleDateFormat("EEEE").format(now);
-
+        Date tanggalAkhirJadwal = DateTimeUtil.getDateFrom(startDate, (hasilBagi * num)-1, CommonUtilConstant.DATE_FORMAT_DAY);
+//        String dayBegin = new SimpleDateFormat("EEEE").format(endDate);
+//        String dayNow = new SimpleDateFormat("EEEE").format(now);
         Date beginScheduleDate;
-        if (dayBegin.endsWith(dayNow) && Objects.equals(groupWorking.getTypeSequeace(), HRMConstant.NORMAL_SCHEDULE)) {
-            beginScheduleDate = DateTimeUtil.getDateFrom(startDate, (hasilBagi * num) - num, CommonUtilConstant.DATE_FORMAT_DAY);
-        } else {
+        if (new SimpleDateFormat("ddMMyyyy").format(tanggalAkhirJadwal).equals(new SimpleDateFormat("ddMMyyyy").format(new Date()))) {
+             beginScheduleDate = DateTimeUtil.getDateFrom(startDate, (hasilBagi * num) - num, CommonUtilConstant.DATE_FORMAT_DAY);
+        }else{
             beginScheduleDate = DateTimeUtil.getDateFrom(startDate, (hasilBagi * num), CommonUtilConstant.DATE_FORMAT_DAY);
         }
-
         int i = 0;
         for (WtScheduleShift list1 : list) {
             TempJadwalKaryawan jadwalKaryawan = new TempJadwalKaryawan();
             jadwalKaryawan.setEmpData(empData);
             jadwalKaryawan.setTanggalWaktuKerja(DateTimeUtil.getDateFrom(beginScheduleDate, i, CommonUtilConstant.DATE_FORMAT_DAY));
-
             WtHoliday holiday = wtHolidayDao.getWtHolidayByDate(jadwalKaryawan.getTanggalWaktuKerja());
-            if (holiday != null || groupWorking.getTypeSequeace().equals(HRMConstant.NORMAL_SCHEDULE)) {
+            if (holiday != null && groupWorking.getTypeSequeace().equals(HRMConstant.NORMAL_SCHEDULE)) {
                 jadwalKaryawan.setWtWorkingHour(wtWorkingHourDao.getByCode("OFF"));
             } else {
                 jadwalKaryawan.setWtWorkingHour(list1.getWtWorkingHour());

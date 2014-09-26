@@ -28,7 +28,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.TextMessage;
@@ -79,10 +78,11 @@ public class JadwalKerjaMassMessagesListener extends IServiceImpl implements Mes
             int totalDateDif = DateTimeUtil.getTotalDayDifference(startDate, now) + 1;
             int num = numberOfDay + 1;
             int hasilBagi = (totalDateDif) / (num);
-            String dayBegin = new SimpleDateFormat("EEEE").format(endDate);
-            String dayNow = new SimpleDateFormat("EEEE").format(now);
+            Date tanggalAkhirJadwal = DateTimeUtil.getDateFrom(startDate, (hasilBagi * num) - 1, CommonUtilConstant.DATE_FORMAT_DAY);
+//        String dayBegin = new SimpleDateFormat("EEEE").format(endDate);
+//        String dayNow = new SimpleDateFormat("EEEE").format(now);
             Date beginScheduleDate;
-            if (dayBegin.endsWith(dayNow) && Objects.equals(groupWorking.getTypeSequeace(), HRMConstant.NORMAL_SCHEDULE)) {
+            if (new SimpleDateFormat("ddMMyyyy").format(tanggalAkhirJadwal).equals(new SimpleDateFormat("ddMMyyyy").format(new Date()))) {
                 beginScheduleDate = DateTimeUtil.getDateFrom(startDate, (hasilBagi * num) - num, CommonUtilConstant.DATE_FORMAT_DAY);
             } else {
                 beginScheduleDate = DateTimeUtil.getDateFrom(startDate, (hasilBagi * num), CommonUtilConstant.DATE_FORMAT_DAY);
@@ -100,7 +100,7 @@ public class JadwalKerjaMassMessagesListener extends IServiceImpl implements Mes
                     jadwalKaryawan.setTanggalWaktuKerja(DateTimeUtil.getDateFrom(beginScheduleDate, i, CommonUtilConstant.DATE_FORMAT_DAY));
 //                    jadwalKaryawan.setWtWorkingHour(wtScheduleShift.getWtWorkingHour());
                     WtHoliday holiday = wtHolidayDao.getWtHolidayByDate(jadwalKaryawan.getTanggalWaktuKerja());
-                    if (holiday != null || groupWorking.getTypeSequeace().equals(HRMConstant.NORMAL_SCHEDULE)) {
+                    if (holiday != null && groupWorking.getTypeSequeace().equals(HRMConstant.NORMAL_SCHEDULE)) {
                         jadwalKaryawan.setWtWorkingHour(wtWorkingHourDao.getByCode("OFF"));
                     } else {
                         jadwalKaryawan.setWtWorkingHour(wtScheduleShift.getWtWorkingHour());
