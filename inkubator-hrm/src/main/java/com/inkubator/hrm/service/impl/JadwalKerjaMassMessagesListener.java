@@ -19,6 +19,7 @@ import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.TempJadwalKaryawanDao;
 import com.inkubator.hrm.dao.WtGroupWorkingDao;
 import com.inkubator.hrm.dao.WtHolidayDao;
+import com.inkubator.hrm.dao.WtWorkingHourDao;
 import com.inkubator.hrm.entity.TempJadwalKaryawan;
 import com.inkubator.hrm.entity.WtGroupWorking;
 import com.inkubator.hrm.entity.WtHoliday;
@@ -53,6 +54,8 @@ public class JadwalKerjaMassMessagesListener extends IServiceImpl implements Mes
     private AttendanceStatusDao attendanceStatusDao;
     @Autowired
     private EmpDataDao empDataDao;
+    @Autowired
+    private WtWorkingHourDao wtWorkingHourDao;
 
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW,
@@ -89,19 +92,25 @@ public class JadwalKerjaMassMessagesListener extends IServiceImpl implements Mes
                 dataToDelete.addAll(tempJadwalKaryawanDao.getAllByEmpId(id));
                 List<WtScheduleShift> dataScheduleShift = new ArrayList<>(groupWorking.getWtScheduleShifts());
 //                Collections.sort(dataScheduleShift, shortByDate1);
-                 List<WtScheduleShift> sortedDataScheduleShift = Lambda.sort(dataScheduleShift, Lambda.on(WtScheduleShift.class).getScheduleDate());
+                List<WtScheduleShift> sortedDataScheduleShift = Lambda.sort(dataScheduleShift, Lambda.on(WtScheduleShift.class).getScheduleDate());
                 int i = 0;
                 for (WtScheduleShift wtScheduleShift : sortedDataScheduleShift) {
                     TempJadwalKaryawan jadwalKaryawan = new TempJadwalKaryawan();
                     jadwalKaryawan.setEmpData(empDataDao.getEntiyByPK(id));
                     jadwalKaryawan.setTanggalWaktuKerja(DateTimeUtil.getDateFrom(beginScheduleDate, i, CommonUtilConstant.DATE_FORMAT_DAY));
-                    jadwalKaryawan.setWtWorkingHour(wtScheduleShift.getWtWorkingHour());
+//                    jadwalKaryawan.setWtWorkingHour(wtScheduleShift.getWtWorkingHour());
                     WtHoliday holiday = wtHolidayDao.getWtHolidayByDate(jadwalKaryawan.getTanggalWaktuKerja());
-                    if (holiday != null || wtScheduleShift.getWtWorkingHour().getCode().equalsIgnoreCase("OFF")) {
-                        jadwalKaryawan.setAttendanceStatus(attendanceStatusDao.getByCode("OFF"));
+                    if (holiday != null || groupWorking.getTypeSequeace().equals(HRMConstant.NORMAL_SCHEDULE)) {
+                        jadwalKaryawan.setWtWorkingHour(wtWorkingHourDao.getByCode("OFF"));
                     } else {
-                        jadwalKaryawan.setAttendanceStatus(attendanceStatusDao.getByCode("HD1"));
+                        jadwalKaryawan.setWtWorkingHour(wtScheduleShift.getWtWorkingHour());
                     }
+//                    WtHoliday holiday = wtHolidayDao.getWtHolidayByDate(jadwalKaryawan.getTanggalWaktuKerja());
+//                    if (holiday != null || wtScheduleShift.getWtWorkingHour().getCode().equalsIgnoreCase("OFF")) {
+//                        jadwalKaryawan.setAttendanceStatus(attendanceStatusDao.getByCode("OFF"));
+//                    } else {
+//                        jadwalKaryawan.setAttendanceStatus(attendanceStatusDao.getByCode("HD1"));
+//                    }
                     jadwalKaryawan.setIsCollectiveLeave(Boolean.FALSE);
                     jadwalKaryawan.setCreatedBy(HRMConstant.INKUBA_SYSTEM);
                     jadwalKaryawan.setCreatedOn(new Date());

@@ -29,6 +29,7 @@ import com.inkubator.hrm.dao.PaySalaryGradeDao;
 import com.inkubator.hrm.dao.TempJadwalKaryawanDao;
 import com.inkubator.hrm.dao.WtGroupWorkingDao;
 import com.inkubator.hrm.dao.WtHolidayDao;
+import com.inkubator.hrm.dao.WtWorkingHourDao;
 import com.inkubator.hrm.entity.Department;
 import com.inkubator.hrm.entity.EmpCareerHistory;
 import com.inkubator.hrm.entity.EmpData;
@@ -42,7 +43,6 @@ import com.inkubator.hrm.entity.WtScheduleShift;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.util.MapUtil;
 import com.inkubator.hrm.util.StringsUtils;
-import com.inkubator.hrm.web.employee.DistributionLeaveScheme;
 import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
 import com.inkubator.hrm.web.model.PlacementOfEmployeeWorkScheduleModel;
 import com.inkubator.hrm.web.search.EmpDataSearchParameter;
@@ -110,6 +110,8 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     private JmsTemplate jmsTemplateMassJadwalKerja;
     @Autowired
     private JsonConverter jsonConverter;
+    @Autowired
+    private WtWorkingHourDao wtWorkingHourDao;
 
     @Override
     public EmpData getEntiyByPK(String id) throws Exception {
@@ -612,18 +614,18 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         } else {
             beginScheduleDate = DateTimeUtil.getDateFrom(startDate, (hasilBagi * num), CommonUtilConstant.DATE_FORMAT_DAY);
         }
-      
+
         int i = 0;
         for (WtScheduleShift list1 : list) {
             TempJadwalKaryawan jadwalKaryawan = new TempJadwalKaryawan();
             jadwalKaryawan.setEmpData(empData);
             jadwalKaryawan.setTanggalWaktuKerja(DateTimeUtil.getDateFrom(beginScheduleDate, i, CommonUtilConstant.DATE_FORMAT_DAY));
-            jadwalKaryawan.setWtWorkingHour(list1.getWtWorkingHour());
+
             WtHoliday holiday = wtHolidayDao.getWtHolidayByDate(jadwalKaryawan.getTanggalWaktuKerja());
-            if (holiday != null || list1.getWtWorkingHour().getCode().equalsIgnoreCase("OFF")) {
-                jadwalKaryawan.setAttendanceStatus(attendanceStatusDao.getByCode("OFF"));
+            if (holiday != null || groupWorking.getTypeSequeace().equals(HRMConstant.NORMAL_SCHEDULE)) {
+                jadwalKaryawan.setWtWorkingHour(wtWorkingHourDao.getByCode("OFF"));
             } else {
-                jadwalKaryawan.setAttendanceStatus(attendanceStatusDao.getByCode("HD1"));
+                jadwalKaryawan.setWtWorkingHour(list1.getWtWorkingHour());
             }
             jadwalKaryawan.setIsCollectiveLeave(Boolean.FALSE);
             jadwalKaryawan.setCreatedBy(UserInfoUtil.getUserName());
@@ -671,7 +673,7 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
             }
         });
     }
-    
+
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public List<EmpData> getTotalBySearchEmployeeLeave(DistributionLeaveSchemeModel model) throws Exception {

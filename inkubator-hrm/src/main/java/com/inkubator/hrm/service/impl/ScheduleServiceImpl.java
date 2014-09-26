@@ -16,6 +16,7 @@ import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.RiwayatAksesDao;
 import com.inkubator.hrm.dao.TempJadwalKaryawanDao;
 import com.inkubator.hrm.dao.WtHolidayDao;
+import com.inkubator.hrm.dao.WtWorkingHourDao;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.RiwayatAkses;
 import com.inkubator.hrm.entity.TempJadwalKaryawan;
@@ -51,6 +52,8 @@ public class ScheduleServiceImpl extends IServiceImpl implements ScheduleService
     private WtHolidayDao wtHolidayDao;
     @Autowired
     private AttendanceStatusDao attendanceStatusDao;
+    @Autowired
+    private WtWorkingHourDao wtWorkingHourDao;
 
     @Scheduled(cron = "${cron.delete.riwayat.akses.history}")
     @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -71,7 +74,7 @@ public class ScheduleServiceImpl extends IServiceImpl implements ScheduleService
     @Scheduled(cron = "${cron.calculate.schedule.working}")
     @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void calculateScheduleWorking() throws Exception {
-          LOGGER.info("Begin Running Recalcualte Jadwal Kerja");
+        LOGGER.info("Begin Running Recalcualte Jadwal Kerja");
         Date now = new Date();
         Date lastDay = DateTimeUtil.getDateFrom(now, -1, CommonUtilConstant.DATE_FORMAT_DAY);
         String dayToInput = new SimpleDateFormat("dd-MM-yyyy").format(lastDay);
@@ -108,12 +111,18 @@ public class ScheduleServiceImpl extends IServiceImpl implements ScheduleService
                 TempJadwalKaryawan jadwalKaryawan = new TempJadwalKaryawan();
                 jadwalKaryawan.setEmpData(empData);
                 jadwalKaryawan.setTanggalWaktuKerja(DateTimeUtil.getDateFrom(beginScheduleDate, i, CommonUtilConstant.DATE_FORMAT_DAY));
-                jadwalKaryawan.setWtWorkingHour(wtScheduleShift.getWtWorkingHour());
+//                jadwalKaryawan.setWtWorkingHour(wtScheduleShift.getWtWorkingHour());
+//                WtHoliday holiday = wtHolidayDao.getWtHolidayByDate(jadwalKaryawan.getTanggalWaktuKerja());
+//                if (holiday != null || wtScheduleShift.getWtWorkingHour().getCode().equalsIgnoreCase("OFF")) {
+//                    jadwalKaryawan.setAttendanceStatus(attendanceStatusDao.getByCode("OFF"));
+//                } else {
+//                    jadwalKaryawan.setAttendanceStatus(attendanceStatusDao.getByCode("HD1"));
+//                }
                 WtHoliday holiday = wtHolidayDao.getWtHolidayByDate(jadwalKaryawan.getTanggalWaktuKerja());
-                if (holiday != null || wtScheduleShift.getWtWorkingHour().getCode().equalsIgnoreCase("OFF")) {
-                    jadwalKaryawan.setAttendanceStatus(attendanceStatusDao.getByCode("OFF"));
+                if (holiday != null || groupWorking.getTypeSequeace().equals(HRMConstant.NORMAL_SCHEDULE)) {
+                    jadwalKaryawan.setWtWorkingHour(wtWorkingHourDao.getByCode("OFF"));
                 } else {
-                    jadwalKaryawan.setAttendanceStatus(attendanceStatusDao.getByCode("HD1"));
+                    jadwalKaryawan.setWtWorkingHour(wtScheduleShift.getWtWorkingHour());
                 }
                 jadwalKaryawan.setIsCollectiveLeave(Boolean.FALSE);
                 jadwalKaryawan.setCreatedBy(HRMConstant.INKUBA_SYSTEM);
@@ -125,7 +134,7 @@ public class ScheduleServiceImpl extends IServiceImpl implements ScheduleService
         }
         tempJadwalKaryawanDao.deleteBacth(dataToDelete);
         tempJadwalKaryawanDao.saveBatch(dataToSave);
-          LOGGER.info("Finish Running Kalkulasi Jadwal Kerja");
+        LOGGER.info("Finish Running Kalkulasi Jadwal Kerja");
 
     }
 

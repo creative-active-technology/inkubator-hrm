@@ -15,6 +15,7 @@ import com.inkubator.hrm.dao.AttendanceStatusDao;
 import com.inkubator.hrm.dao.TempJadwalKaryawanDao;
 import com.inkubator.hrm.dao.WtGroupWorkingDao;
 import com.inkubator.hrm.dao.WtHolidayDao;
+import com.inkubator.hrm.dao.WtWorkingHourDao;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.TempJadwalKaryawan;
 import com.inkubator.hrm.entity.WtGroupWorking;
@@ -48,6 +49,8 @@ public class JadwalKerjaUpdateMessagesListener extends IServiceImpl implements M
     private WtHolidayDao wtHolidayDao;
     @Autowired
     private AttendanceStatusDao attendanceStatusDao;
+    @Autowired
+    private WtWorkingHourDao wtWorkingHourDao;
 
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW,
@@ -87,12 +90,12 @@ public class JadwalKerjaUpdateMessagesListener extends IServiceImpl implements M
                     TempJadwalKaryawan jadwalKaryawan = new TempJadwalKaryawan();
                     jadwalKaryawan.setEmpData(data1);
                     jadwalKaryawan.setTanggalWaktuKerja(DateTimeUtil.getDateFrom(beginScheduleDate, i, CommonUtilConstant.DATE_FORMAT_DAY));
-                    jadwalKaryawan.setWtWorkingHour(dataScheduleShift1.getWtWorkingHour());
+//                    jadwalKaryawan.setWtWorkingHour(dataScheduleShift1.getWtWorkingHour());
                     WtHoliday holiday = wtHolidayDao.getWtHolidayByDate(jadwalKaryawan.getTanggalWaktuKerja());
-                    if (holiday != null || dataScheduleShift1.getWtWorkingHour().getCode().equalsIgnoreCase("OFF")) {
-                        jadwalKaryawan.setAttendanceStatus(attendanceStatusDao.getByCode("OFF"));
+                    if (holiday != null || groupWorking.getTypeSequeace().equals(HRMConstant.NORMAL_SCHEDULE)) {
+                        jadwalKaryawan.setWtWorkingHour(wtWorkingHourDao.getByCode("OFF"));
                     } else {
-                        jadwalKaryawan.setAttendanceStatus(attendanceStatusDao.getByCode("HD1"));
+                        jadwalKaryawan.setWtWorkingHour(dataScheduleShift1.getWtWorkingHour());
                     }
                     jadwalKaryawan.setIsCollectiveLeave(Boolean.FALSE);
                     jadwalKaryawan.setCreatedBy(jSONObject.getString("createdBy"));
