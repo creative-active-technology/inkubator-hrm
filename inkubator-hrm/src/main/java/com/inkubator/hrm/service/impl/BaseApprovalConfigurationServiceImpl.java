@@ -84,15 +84,15 @@ public abstract class BaseApprovalConfigurationServiceImpl<T> extends IServiceIm
 		}		
 	}
 	
-	protected void updateApprovalConf(List<ApprovalDefinition> appDefs, Iterator<?> iterAppDefLeaves, T entity) throws Exception {
+	protected void updateApprovalConf(List<ApprovalDefinition> appDefs, Iterator<?> iterManyToMany, T entity) throws Exception {
 		/** Proses UPDATE approval definition, berdasarkan relasi many to many leave dan approval defintion 
 	     *  REMOVE relasi-nya jika sudah tidak terdapat di list */
 		boolean isRemoveRelation;
-	    while(iterAppDefLeaves.hasNext()) {
+	    while(iterManyToMany.hasNext()) {
 	    	isRemoveRelation = true;
 	    	
-	    	Object currentAppDefLeave = iterAppDefLeaves.next();
-	    	String currentAppDefId = BeanUtils.getProperty(currentAppDefLeave, "approvalDefinition.id");	    	
+	    	Object currentManyToMany = iterManyToMany.next();
+	    	String currentAppDefId = BeanUtils.getProperty(currentManyToMany, "approvalDefinition.id");	    	
 	    	Iterator<ApprovalDefinition> iterAppDefs = appDefs.iterator();
 	    	while(iterAppDefs.hasNext()) {
 	    		ApprovalDefinition appDef = iterAppDefs.next();
@@ -106,7 +106,7 @@ public abstract class BaseApprovalConfigurationServiceImpl<T> extends IServiceIm
 	    	}
 	    	
 	    	if(isRemoveRelation){
-	    		this.deleteManyToMany(currentAppDefLeave); //delete object ManyToMany that no longer available in current entity
+	    		this.deleteManyToMany(currentManyToMany); //delete object ManyToMany that no longer available in current entity
 	    	}
 	    }
 	    
