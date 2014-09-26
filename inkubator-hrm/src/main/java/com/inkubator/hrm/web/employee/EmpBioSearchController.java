@@ -40,7 +40,6 @@ public class EmpBioSearchController extends BaseController {
     public void doSearch() {
         try {
             biodataToShow= new ArrayList();
-            
             biodataToShow = bioDataService.getByName(biodataName);
         } catch (Exception ex) {
            LOGGER.error("Error", ex);

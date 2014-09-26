@@ -50,7 +50,7 @@ public class TempJadwalKaryawanDaoImpl extends IDAOImpl<TempJadwalKaryawan> impl
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.createAlias("empData", "e", JoinType.INNER_JOIN);
         criteria.add(Restrictions.eq("e.id", empId));
-        criteria.setFetchMode("attendanceStatus", FetchMode.JOIN);
+        criteria.setFetchMode("wtWorkingHour.attendanceStatus", FetchMode.JOIN);
         criteria.setFetchMode("wtWorkingHour", FetchMode.JOIN);
         criteria.addOrder(Order.asc("tanggalWaktuKerja"));
         return criteria.list();
