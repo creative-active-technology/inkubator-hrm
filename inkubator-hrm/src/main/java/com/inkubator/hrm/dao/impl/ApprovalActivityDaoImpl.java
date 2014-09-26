@@ -4,7 +4,10 @@ import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.ApprovalActivityDao;
 import com.inkubator.hrm.entity.ApprovalActivity;
+import com.inkubator.hrm.entity.ApprovalDefinition;
 import com.inkubator.hrm.web.search.ApprovalActivitySearchParameter;
+
+import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
@@ -158,4 +161,34 @@ public class ApprovalActivityDaoImpl extends IDAOImpl<ApprovalActivity> implemen
         criteria.add(Restrictions.eq("notificationSend", Boolean.FALSE));
         return criteria.list();
     }
+
+	@Override
+	public Boolean isStillHaveWaitingStatus(List<ApprovalDefinition> appDefs) {
+		//get approval definition ids
+		List<Long> ids = new ArrayList<Long>();
+		for(ApprovalDefinition appDef: appDefs){
+			if(appDef.getId() != null) {
+				ids.add(appDef.getId());
+			}
+		}
+		
+		boolean isStillHaveWaitingStatus = false;
+		if(!ids.isEmpty()) {
+			Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+			criteria.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING));		
+			criteria.add(Restrictions.in("approvalDefinition.id", ids));
+			isStillHaveWaitingStatus = criteria.list().size() > 0;
+		}
+		
+		return isStillHaveWaitingStatus;
+	}
+	
+	@Override
+	public Boolean isStillHaveWaitingStatus(Long appDefId) {		
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING));		
+		criteria.add(Restrictions.eq("approvalDefinition.id", appDefId));
+		return criteria.list().size() > 0;
+	}
 }
+ 

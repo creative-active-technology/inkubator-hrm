@@ -18,15 +18,13 @@ import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.ApprovalDefinition;
 import com.inkubator.hrm.entity.ApprovalDefinitionLeave;
 import com.inkubator.hrm.entity.AttendanceStatus;
 import com.inkubator.hrm.entity.Leave;
-import com.inkubator.hrm.json.util.EntityExclusionStrategy;
-import com.inkubator.hrm.json.util.HibernateProxyIdOnlyTypeAdapter;
+import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.AttendanceStatusService;
 import com.inkubator.hrm.service.LeaveService;
 import com.inkubator.hrm.web.model.LeaveModel;
@@ -254,58 +252,6 @@ public class LeaveFormController extends BaseController {
     public String doBack() {
         return "/protected/working_time/leave_view.htm?faces-redirect=true";
     }
-    
-    public void doDeleteAppDef() {
-    	appDefs.remove(selectedAppDef);
-    }
-    
-    public void doAddAppDef() {
-    	Map<String, List<String>> dataToSend = new HashMap<>();
-        List<String> values = new ArrayList<>();
-        values.add(HRMConstant.LEAVE);
-        dataToSend.put("appDefName", values);
-    	this.showDialogAppDef(dataToSend);
-    }
-    
-    public void doEditAppDef() {
-    	indexOfAppDefs = appDefs.indexOf(selectedAppDef);    	
-    	Gson gson = this.getGsonBuilder().create();
-    	Map<String, List<String>> dataToSend = new HashMap<>();
-        List<String> values = new ArrayList<>();
-        values.add(gson.toJson(selectedAppDef));
-        dataToSend.put("jsonAppDef", values);
-        this.showDialogAppDef(dataToSend);
-    }
-    
-    private void showDialogAppDef(Map<String, List<String>> params) {
-        Map<String, Object> options = new HashMap<>();
-        options.put("modal", true);
-        options.put("draggable", true);
-        options.put("resizable", false);
-        options.put("contentWidth", 1100);
-        options.put("contentHeight", 400);
-        RequestContext.getCurrentInstance().openDialog("approval_definition_popup_form", options, params);
-    }
-    
-    public void onDialogReturnAddAppDef(SelectEvent event) {
-        ApprovalDefinition appDef = (ApprovalDefinition) event.getObject();
-        appDefs.add(appDef);
-    }
-    
-    public void onDialogReturnEditAppDef(SelectEvent event) {
-        ApprovalDefinition dataUpdated = (ApprovalDefinition) event.getObject();
-        appDefs.remove(indexOfAppDefs);
-		appDefs.add(indexOfAppDefs, dataUpdated);
-    }
-    
-    private GsonBuilder getGsonBuilder(){
-		GsonBuilder gsonBuilder = new GsonBuilder();
-    	gsonBuilder.serializeNulls();
-		gsonBuilder.setDateFormat("dd MMMM yyyy hh:mm");
-		gsonBuilder.registerTypeAdapterFactory(HibernateProxyIdOnlyTypeAdapter.FACTORY);
-		gsonBuilder.setExclusionStrategies(new EntityExclusionStrategy());
-		return gsonBuilder;
-	}
 
     public void onChangeAvailability() {
         isRenderAvailabilityDate = StringUtils.equals(model.getAvailability(), HRMConstant.LEAVE_AVAILABILITY_INCREASES_SPECIFIC_DATE);
@@ -333,4 +279,49 @@ public class LeaveFormController extends BaseController {
             model.setMaxAllowedMinus(null);
         }
     }
+    
+    /** Start Approval Definition form */
+    public void doDeleteAppDef() {
+    	appDefs.remove(selectedAppDef);
+    }
+    
+    public void doAddAppDef() {
+    	Map<String, List<String>> dataToSend = new HashMap<>();
+        List<String> values = new ArrayList<>();
+        values.add(HRMConstant.LEAVE);
+        dataToSend.put("appDefName", values);
+    	this.showDialogAppDef(dataToSend);
+    }
+    
+    public void doEditAppDef() {
+    	indexOfAppDefs = appDefs.indexOf(selectedAppDef);    	
+    	Gson gson = JsonUtil.getGsonBuilder().create();
+    	Map<String, List<String>> dataToSend = new HashMap<>();
+        List<String> values = new ArrayList<>();
+        values.add(gson.toJson(selectedAppDef));
+        dataToSend.put("jsonAppDef", values);
+        this.showDialogAppDef(dataToSend);
+    }
+    
+    private void showDialogAppDef(Map<String, List<String>> params) {
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 1100);
+        options.put("contentHeight", 400);
+        RequestContext.getCurrentInstance().openDialog("approval_definition_popup_form", options, params);
+    }
+    
+    public void onDialogReturnAddAppDef(SelectEvent event) {
+        ApprovalDefinition appDef = (ApprovalDefinition) event.getObject();
+        appDefs.add(appDef);
+    }
+    
+    public void onDialogReturnEditAppDef(SelectEvent event) {
+        ApprovalDefinition dataUpdated = (ApprovalDefinition) event.getObject();
+        appDefs.remove(indexOfAppDefs);
+		appDefs.add(indexOfAppDefs, dataUpdated);
+    }    
+    /** End Approval Definition form */
 }
