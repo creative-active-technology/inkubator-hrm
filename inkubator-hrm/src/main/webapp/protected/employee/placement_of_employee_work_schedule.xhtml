@@ -16,7 +16,7 @@
             </ui:define>
             <ui:define name="center">
                 <p:growl id="growlUserFormId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
-                <h:form id="jobTitleFormId" >
+                <h:form id="scheduleFormId" >
                     <div id="box_bg" style="margin: 10px">
                         <!--<p:panel style="margin: 10px">-->
                         <h:panelGrid style="margin-bottom: 5px" columns="2">
@@ -131,8 +131,8 @@
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:commandButton value="#{appmsg['global.search']}" ajax="true" action="#{placementOfEmployeeWorkScheduleFormController.doSearchEmployee()}" 
-                                                     styleClass="isitext_hrm" 
-                                                     style="margin-right: 5px" label="#{appmsg['global.search']}" update="picklistUserRoleId"
+                                                     styleClass="isitext_hrm" update=":formSubmitId:picklistUserRoleId,scheduleFormId"
+                                                     style="margin-right: 5px" label="#{appmsg['global.search']}"
                                                      icon="ui-icon-search" title="#{appmsg['global.search']}">    
                                     </p:commandButton>
                                 </p:column>
@@ -141,8 +141,13 @@
 
                         </p:panelGrid>
 
-                        <p:focus context="jobTitleFormId" />
+                        <p:focus context="scheduleFormId" />
                         <!--<p:separator style="margin-top: 20px;margin-bottom: 10px"/>-->
+
+                    </div>
+                </h:form>
+                <h:form id="formSubmitId">
+                    <div id="box_bg" style="margin: 10px">
                         <div style="margin-top: 10px">
                             <p:outputLabel value="Daftar Employee" styleClass="header_big" />
                            <!--<p:outputLabel value="#{appmsg['user_view.header2']}" styleClass="header_small_no_bold" />-->
@@ -153,7 +158,7 @@
                         </div>
                         <div align="center">
                             <p:pickList value="#{placementOfEmployeeWorkScheduleFormController.dualListModel}" var="role" itemValue="#{role}" converter="#{empDataConverter}" id="picklistUserRoleId"
-                                        required="false"  style="margin-top: 15px;margin-bottom: 15px;" label="#{appmsg['role_view.header1']}" styleClass="isitext_hrm"
+                                        required="true"  style="margin-top: 15px;margin-bottom: 15px;" label="Daftar Employee" styleClass="isitext_hrm"
                                         itemLabel="#{role.nik} - #{role.bioData.firstName} #{role.bioData.lastName}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
                                         removeLabel="#{appmsg['global.remove']}"/>
                             <p:message for="picklistUserRoleId" />
@@ -162,14 +167,14 @@
 
                         <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
                         <div style="margin-bottom: 5px">
-                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" 
-                                             action="#{placementOfEmployeeWorkScheduleFormController.doSave()}" styleClass="label_button" onclick="PrimeFaces.monitorDownload(start, stop)"
+                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formSubmitId" onclick="statusDialog.show()" oncomplete="statusDialog.hide()"
+                                             action="#{placementOfEmployeeWorkScheduleFormController.doSave()}" styleClass="label_button" 
                                              style="margin-right: 5px" label="#{appmsg['global.save']}"
                                              icon="ui-icon-disk"
                                              id="buttonSave" title="#{appmsg['global.save']}"/>
-                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}"
+                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" update=":scheduleFormId,formSubmitId" action="#{placementOfEmployeeWorkScheduleFormController.doReset()}" immediate="true"
                                              process="@this" icon="ui-icon-refresh" id="cleareId"   styleClass="label_button"  style="margin-right: 5px">  
-                                <p:resetInput target="userFormId" />  
+                                <p:resetInput target=":scheduleFormId,formSubmitId" />  
                             </p:commandButton>
                             <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{userFormController.doBack()}" immediate="true"
                                              styleClass="label_button"/>

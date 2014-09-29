@@ -4,6 +4,7 @@
  */
 package com.inkubator.hrm.web.employee;
 
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.GolonganJabatan;
 import com.inkubator.hrm.entity.WtGroupWorking;
@@ -13,14 +14,14 @@ import com.inkubator.hrm.service.WtGroupWorkingService;
 import com.inkubator.hrm.web.model.PlacementOfEmployeeWorkScheduleModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
+import com.inkubator.webcore.util.MessagesResourceUtil;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -32,7 +33,7 @@ import org.primefaces.model.DualListModel;
  */
 @ManagedBean(name = "placementOfEmployeeWorkScheduleFormController")
 @ViewScoped
-public class PlacementOfEmployeeWorkSchedule extends BaseController {
+public class PlacementOfEmployeeWorkScheduleFormController extends BaseController {
 
     @ManagedProperty(value = "#{wtGroupWorkingService}")
     private WtGroupWorkingService wtGroupWorkingService;
@@ -53,7 +54,7 @@ public class PlacementOfEmployeeWorkSchedule extends BaseController {
     @PostConstruct
     @Override
     public void initialization() {
-
+        System.out.println(" eksekusus pertaama kaliiiii");
         super.initialization();
         String param = FacesUtil.getRequestParameter("param");
         model = new PlacementOfEmployeeWorkScheduleModel();
@@ -69,7 +70,7 @@ public class PlacementOfEmployeeWorkSchedule extends BaseController {
             source = this.empDataService.getAllDataWithRelation();
 
         } catch (Exception ex) {
-            Logger.getLogger(PlacementOfEmployeeWorkSchedule.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.error("Error", ex);
         }
 
     }
@@ -172,14 +173,27 @@ public class PlacementOfEmployeeWorkSchedule extends BaseController {
     }
 
     public String doSave() {
+
         try {
             List<EmpData> dataToSave = dualListModel.getTarget();
             empDataService.saveMassPenempatanJadwal(dataToSave, model.getWorkingGroupId());
+            MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
+                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             return "/protected/employee/employee_schedule_view.htm?faces-redirect=true";
+
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
         return null;
+    }
+
+    public void doReset() {
+        model.setWorkingGroupId(null);
+        model.setDepartmentLikeOrEqual(null);
+        model.setEmployeeTypeLikeOrEqual(null);
+        model.setGolonganJabatanId(Long.parseLong("0"));
+        model.setGender(null);
+        dualListModel = new DualListModel<>();
     }
 
 }

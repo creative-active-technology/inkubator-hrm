@@ -187,7 +187,7 @@
                         </div>
                         <p:separator/>
                         <div style="margin-bottom: 5px">
-                            <p:commandButton value="Simpan" ajax="true" disabled="#{groupWorkingModel.isDisable}" onclick="PrimeFaces.monitorDownload(start, stop)"
+                            <p:commandButton value="Simpan" ajax="true" disabled="#{groupWorkingModel.isDisable}" onclick="statusDialog.show()" oncomplete="statusDialog.hide()"
                                              action="save" styleClass="isitext_hrm" update="addDataShiftId,:errorDuplicateId" 
                                              style="margin-right: 5px" label="Lanjut" id="buttonSaveId"
                                              icon="ui-icon-disk" title="Lanjut"/>
