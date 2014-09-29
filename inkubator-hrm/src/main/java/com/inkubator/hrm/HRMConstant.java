@@ -229,4 +229,15 @@ public class HRMConstant {
     
     public static final Integer ORDER_BY_ASC = 0;
     public static final Integer ORDER_BY_DSC = 1;
+    
+    /* Permit Classification */
+    public static final Integer DAY_FULL = 1;
+    public static final Integer DAY_PART = 0;
+    
+    public static final Integer FROM_JANUARY = 1;
+    public static final Integer FROM_BEGIN_WORK = 0;
+    
+    public static final Integer AVAILIBILITY_FULL = 0;
+    public static final Integer AVALILIBILITY_PER_MONTH = 1;
+    public static final Integer AVALILIBILITY_PER_DATE = 2;
 }
