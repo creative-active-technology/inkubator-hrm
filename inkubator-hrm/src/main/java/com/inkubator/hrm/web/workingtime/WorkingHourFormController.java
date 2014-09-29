@@ -1,8 +1,12 @@
 package com.inkubator.hrm.web.workingtime;
 
+import java.util.List;
+
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.entity.AttendanceStatus;
 import com.inkubator.hrm.entity.WtWorkingHour;
+import com.inkubator.hrm.service.AttendanceStatusService;
 import com.inkubator.hrm.service.WtWorkingHourService;
 import com.inkubator.hrm.web.model.WorkingHourModel;
 import com.inkubator.webcore.controller.BaseController;
@@ -30,32 +34,39 @@ public class WorkingHourFormController extends BaseController {
     private Boolean isDisabledBreakConf;
     @ManagedProperty(value = "#{wtWorkingHourService}")
     private WtWorkingHourService workingHourService;
+    @ManagedProperty(value = "#{attendanceStatusService}")
+    private AttendanceStatusService attendanceStatusService;
 
     @PostConstruct
     @Override
     public void initialization() {
         super.initialization();
-        String param = FacesUtil.getRequestParameter("execution");
-        model = new WorkingHourModel();
-        isUpdate = Boolean.FALSE;
-        isDisabledBreakConf = Boolean.TRUE;
-        if (StringUtils.isNotEmpty(param)) {
-            try {
+        try {
+	        isUpdate = Boolean.FALSE;
+	        isDisabledBreakConf = Boolean.TRUE;
+	        
+	        model = new WorkingHourModel();
+	        List<AttendanceStatus> attendanceStatusList = attendanceStatusService.getAllData();
+	        model.setAttendanceStatusList(attendanceStatusList);
+	        
+	        String param = FacesUtil.getRequestParameter("execution");
+	        if (StringUtils.isNotEmpty(param)) {	            
                 WtWorkingHour workingHour = workingHourService.getEntiyByPK(Long.parseLong(param.substring(1)));
                 if (workingHour != null) {
                     getModelFromEntity(workingHour);
                     isUpdate = Boolean.TRUE;
                     isDisabledBreakConf = !workingHour.getIsManageBreakTime();
-                }
-            } catch (Exception e) {
-                LOGGER.error("Error", e);
-            }
+                }            
+	        }
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
         }
     }
 
     @PreDestroy
     public void cleanAndExit() {
         workingHourService = null;
+        attendanceStatusService = null;
         model = null;
         isUpdate = null;
         isDisabledBreakConf = null;
@@ -89,6 +100,10 @@ public class WorkingHourFormController extends BaseController {
         this.workingHourService = workingHourService;
     }
 	
+	public void setAttendanceStatusService(AttendanceStatusService attendanceStatusService) {
+		this.attendanceStatusService = attendanceStatusService;
+	}
+
 	public void doReset() {
     	if(isUpdate) {
     		try {
@@ -149,6 +164,7 @@ public class WorkingHourFormController extends BaseController {
         workingHour.setIsPenaltyGoHomeEarly(model.getIsPenaltyGoHomeEarly());
         workingHour.setIsPenaltyBreakStartEarly(model.getIsPenaltyBreakStartEarly());
         workingHour.setIsPenaltyBreakFinishLate(model.getIsPenaltyBreakFinishLate());
+        workingHour.setAttendanceStatus(new AttendanceStatus(model.getAttendanceStatusId()));
         workingHour.setIsManageBreakTime(model.getIsManageBreakTime());
         workingHour.setBreakHourBegin(model.getBreakHourBegin());
         workingHour.setBreakHourEnd(model.getBreakHourEnd());
@@ -178,6 +194,7 @@ public class WorkingHourFormController extends BaseController {
         model.setIsPenaltyGoHomeEarly(workingHour.getIsPenaltyGoHomeEarly());
         model.setIsPenaltyBreakStartEarly(workingHour.getIsPenaltyBreakStartEarly());
         model.setIsPenaltyBreakFinishLate(workingHour.getIsPenaltyBreakFinishLate());
+        model.setAttendanceStatusId(workingHour.getAttendanceStatus().getId());
         model.setIsManageBreakTime(workingHour.getIsManageBreakTime());
         model.setBreakHourBegin(workingHour.getBreakHourBegin());
         model.setBreakHourEnd(workingHour.getBreakHourEnd());

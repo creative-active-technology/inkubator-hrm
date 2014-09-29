@@ -2,6 +2,9 @@ package com.inkubator.hrm.web.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+
+import com.inkubator.hrm.entity.AttendanceStatus;
 
 /**
  *
@@ -22,6 +25,8 @@ public class WorkingHourModel implements Serializable {
     private Integer goHomeLimitEnd;
     private Boolean isPenaltyArriveLate;
     private Boolean isPenaltyGoHomeEarly;
+    private List<AttendanceStatus> attendanceStatusList;
+    private Long attendanceStatusId;
     private Boolean isManageBreakTime;
     private Date breakHourBegin;
     private Date breakHourEnd;
@@ -30,7 +35,7 @@ public class WorkingHourModel implements Serializable {
     private Integer breakFinishLimitBegin;
     private Integer breakFinishLimitEnd;
     private Boolean isPenaltyBreakStartEarly;
-    private Boolean isPenaltyBreakFinishLate;
+    private Boolean isPenaltyBreakFinishLate;    
 
     public WorkingHourModel() {
     }
@@ -210,5 +215,21 @@ public class WorkingHourModel implements Serializable {
     public void setIsPenaltyBreakFinishLate(Boolean isPenaltyBreakFinishLate) {
         this.isPenaltyBreakFinishLate = isPenaltyBreakFinishLate;
     }
+
+	public Long getAttendanceStatusId() {
+		return attendanceStatusId;
+	}
+
+	public void setAttendanceStatusId(Long attendanceStatusId) {
+		this.attendanceStatusId = attendanceStatusId;
+	}
+
+	public List<AttendanceStatus> getAttendanceStatusList() {
+		return attendanceStatusList;
+	}
+
+	public void setAttendanceStatusList(List<AttendanceStatus> attendanceStatusList) {
+		this.attendanceStatusList = attendanceStatusList;
+	}
 
 }
