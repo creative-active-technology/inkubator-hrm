@@ -29,11 +29,12 @@ public class LeaveModel {
     private Integer maxAllowedMinus;
     private Integer effectiveFrom;
     private Integer submittedLimit;
-    private Integer approvalLevel;
     private Boolean isQuotaReduction;
     private String endOfPeriod;
     private Integer endOfPeriodMonth;
+    private Integer quotaPerPeriod;
     private Boolean isOnlyOncePerEmployee;
+    private Boolean isActive;
     
 	public Long getId() {
 		return id;
@@ -143,12 +144,6 @@ public class LeaveModel {
 	public void setSubmittedLimit(Integer submittedLimit) {
 		this.submittedLimit = submittedLimit;
 	}
-	public Integer getApprovalLevel() {
-		return approvalLevel;
-	}
-	public void setApprovalLevel(Integer approvalLevel) {
-		this.approvalLevel = approvalLevel;
-	}
 	public Boolean getIsQuotaReduction() {
 		return isQuotaReduction;
 	}
@@ -167,11 +162,23 @@ public class LeaveModel {
 	public void setEndOfPeriodMonth(Integer endOfPeriodMonth) {
 		this.endOfPeriodMonth = endOfPeriodMonth;
 	}
+	public Integer getQuotaPerPeriod() {
+		return quotaPerPeriod;
+	}
+	public void setQuotaPerPeriod(Integer quotaPerPeriod) {
+		this.quotaPerPeriod = quotaPerPeriod;
+	}
 	public Boolean getIsOnlyOncePerEmployee() {
 		return isOnlyOncePerEmployee;
 	}
 	public void setIsOnlyOncePerEmployee(Boolean isOnlyOncePerEmployee) {
 		this.isOnlyOncePerEmployee = isOnlyOncePerEmployee;
+	}
+	public Boolean getIsActive() {
+		return isActive;
+	}
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
 	}
     
 }

@@ -229,11 +229,11 @@
                                     <p:spinner min="1" max="100" size="2" stepFactor="1" value="#{approvalDefinitionPopupFormController.approvalDefinitionModel.delayTime}"/>
                                 </p:column>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel for="specificNameId" value="Spesifik Persetujuan" style="font-weight: bold"/>
+                                    <p:outputLabel for="specificNameId" value="#{appmsg['approvaldefinition.specific_approval']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%">
-                                    <p:inputText id="specificNameId" title="Spesifik Persetujuan" value="#{approvalDefinitionPopupFormController.approvalDefinitionModel.specificName}" 
-                                    			 required="true" maxlength="30" styleClass="isitext_hrm" style="width:75%;" />
+                                    <p:inputText id="specificNameId" title="#{appmsg['approvaldefinition.specific_approval']}" value="#{approvalDefinitionPopupFormController.approvalDefinitionModel.specificName}" 
+                                    			 required="true" maxlength="30" readonly="true" styleClass="isitext_hrm" style="width:75%;" />
                                     <p:message for="specificNameId"/>
                                 </p:column>
                             </p:row>

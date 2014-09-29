@@ -17,6 +17,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 
+import ch.lambdaj.Lambda;
+
 import com.google.gson.Gson;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
@@ -63,6 +65,7 @@ public class LeaveFormController extends BaseController {
 
             appDefs = new ArrayList<ApprovalDefinition>(); 
             model = new LeaveModel();
+            model.setIsActive(Boolean.TRUE);
             List<AttendanceStatus> attendanceStatusList = attendanceStatusService.getAllData();
             model.setAttendanceStatusList(attendanceStatusList);
 
@@ -215,12 +218,12 @@ public class LeaveFormController extends BaseController {
         leave.setMaxAllowedMinus(model.getMaxAllowedMinus());
         leave.setEffectiveFrom(model.getEffectiveFrom());
         leave.setSubmittedLimit(model.getSubmittedLimit());
-        leave.setApprovalLevel(model.getApprovalLevel());
         leave.setIsQuotaReduction(model.getIsQuotaReduction());
         leave.setEndOfPeriod(model.getEndOfPeriod());
         leave.setEndOfPeriodMonth(model.getEndOfPeriodMonth());
         leave.setIsOnlyOncePerEmployee(model.getIsOnlyOncePerEmployee());
-
+        leave.setIsActive(model.getIsActive());
+        leave.setQuotaPerPeriod(model.getQuotaPerPeriod());
         return leave;
     }
 
@@ -242,11 +245,12 @@ public class LeaveFormController extends BaseController {
         model.setMaxAllowedMinus(leave.getMaxAllowedMinus());
         model.setEffectiveFrom(leave.getEffectiveFrom());
         model.setSubmittedLimit(leave.getSubmittedLimit());
-        model.setApprovalLevel(leave.getApprovalLevel());
         model.setIsQuotaReduction(leave.getIsQuotaReduction());
         model.setEndOfPeriod(leave.getEndOfPeriod());
         model.setEndOfPeriodMonth(leave.getEndOfPeriodMonth());
         model.setIsOnlyOncePerEmployee(leave.getIsOnlyOncePerEmployee());
+        model.setIsActive(leave.getIsActive());
+        model.setQuotaPerPeriod(leave.getQuotaPerPeriod());
     }
 
     public String doBack() {
@@ -280,6 +284,10 @@ public class LeaveFormController extends BaseController {
         }
     }
     
+    public void onChangeName(){
+    	Lambda.forEach(appDefs).setSpecificName(model.getName());
+    }
+    
     /** Start Approval Definition form */
     public void doDeleteAppDef() {
     	appDefs.remove(selectedAppDef);
@@ -287,15 +295,18 @@ public class LeaveFormController extends BaseController {
     
     public void doAddAppDef() {
     	Map<String, List<String>> dataToSend = new HashMap<>();
-        List<String> values = new ArrayList<>();
-        values.add(HRMConstant.LEAVE);
-        dataToSend.put("appDefName", values);
+        List<String> appDefName = new ArrayList<>();
+        appDefName.add(HRMConstant.LEAVE);
+        dataToSend.put("appDefName", appDefName);
+        List<String> specificName = new ArrayList<>();
+        specificName.add(model.getName());
+        dataToSend.put("specificName", specificName);
     	this.showDialogAppDef(dataToSend);
     }
     
     public void doEditAppDef() {
     	indexOfAppDefs = appDefs.indexOf(selectedAppDef);    	
-    	Gson gson = JsonUtil.getGsonBuilder().create();
+    	Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
     	Map<String, List<String>> dataToSend = new HashMap<>();
         List<String> values = new ArrayList<>();
         values.add(gson.toJson(selectedAppDef));

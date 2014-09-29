@@ -7,7 +7,7 @@ package com.inkubator.hrm.service;
 
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.EmpData;
-import com.inkubator.hrm.web.employee.DistributionLeaveScheme;
+import com.inkubator.hrm.web.employee.LeaveDistributionSchemeFormController;
 import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
 import com.inkubator.hrm.web.model.PlacementOfEmployeeWorkScheduleModel;
 import com.inkubator.hrm.web.search.EmpDataSearchParameter;
@@ -59,5 +59,5 @@ public interface EmpDataService extends IService<EmpData> {
     public List<EmpData> getTotalBySearchEmployee(PlacementOfEmployeeWorkScheduleModel model) throws Exception;
     
     public List<EmpData> getTotalBySearchEmployeeLeave(DistributionLeaveSchemeModel model) throws Exception;
-
+    
 }

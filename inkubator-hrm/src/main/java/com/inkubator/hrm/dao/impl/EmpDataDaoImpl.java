@@ -325,7 +325,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     @Override
     public List<EmpData> getTotalBySearchEmployeeLeave(DistributionLeaveSchemeModel model) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.createAlias("wtGroupWorking", "wg", JoinType.LEFT_OUTER_JOIN);
+        criteria.createAlias("leaveDistributions", "lv", JoinType.LEFT_OUTER_JOIN);
         criteria.createAlias("jabatanByJabatanId", "jabatan", JoinType.INNER_JOIN);
         criteria.createAlias("jabatan.department", "dept", JoinType.INNER_JOIN);
         criteria.createAlias("employeeType", "empType", JoinType.INNER_JOIN);
@@ -334,9 +334,13 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         //ambil yg working groupnya bukan yg dipilih, dan belum punya working group
         if (model.getLeaveSchemeId()!= 0 || model.getLeaveSchemeId()!= null) {
             Disjunction disjunction = Restrictions.disjunction();
-            disjunction.add(Restrictions.isNull("wtGroupWorking"));
-            disjunction.add(Restrictions.not(Restrictions.eq("wg.id", model.getLeaveSchemeId())));
+            disjunction.add(Restrictions.isNull("lv.empData"));
+            disjunction.add(Restrictions.not(Restrictions.eq("lv.leave.id", model.getLeaveSchemeId())));
             criteria.add(disjunction);
+        }
+        //balance
+        if (model.getStartBalance() != 0.0){
+            criteria.add(Restrictions.eq("lv.balance", model.getStartBalance()));
         }
         //departermen equal or like
         if (model.getDepartmentLikeOrEqual() != 3) {
@@ -375,4 +379,5 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         }
         return criteria.list();
     }
+
 }

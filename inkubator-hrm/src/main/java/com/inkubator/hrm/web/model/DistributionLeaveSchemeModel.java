@@ -20,7 +20,7 @@ public class DistributionLeaveSchemeModel implements Serializable{
     private Long golonganJabatanId;
     private Integer sortBy;
     private Integer orderBy;
-    private Integer startBalance;
+    private Double startBalance;
 
     public Long getLeaveSchemeId() {
         return leaveSchemeId;
@@ -94,11 +94,11 @@ public class DistributionLeaveSchemeModel implements Serializable{
         this.orderBy = orderBy;
     }
 
-    public Integer getStartBalance() {
+    public Double getStartBalance() {
         return startBalance;
     }
 
-    public void setStartBalance(Integer startBalance) {
+    public void setStartBalance(Double startBalance) {
         this.startBalance = startBalance;
     }
     

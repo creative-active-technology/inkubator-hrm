@@ -53,10 +53,10 @@ public class Leave implements Serializable {
     private Integer maxAllowedMinus;
     private Integer effectiveFrom;
     private Integer submittedLimit;
-    private Integer approvalLevel;
     private Boolean isQuotaReduction;
     private String endOfPeriod;
     private Integer endOfPeriodMonth;
+    private Integer quotaPerPeriod;
     private Boolean isOnlyOncePerEmployee;
     private Boolean isActive;
     private String createdBy;
@@ -241,15 +241,6 @@ public class Leave implements Serializable {
 		this.submittedLimit = submittedLimit;
 	}
 
-	@Column(name = "aproval_level", nullable = false, length = 2)
-	public Integer getApprovalLevel() {
-		return approvalLevel;
-	}
-
-	public void setApprovalLevel(Integer approvalLevel) {
-		this.approvalLevel = approvalLevel;
-	}
-
 	@Column(name = "is_quota_reduction", nullable = false)
 	public Boolean getIsQuotaReduction() {
 		return isQuotaReduction;
@@ -275,6 +266,15 @@ public class Leave implements Serializable {
 
 	public void setEndOfPeriodMonth(Integer endOfPeriodMonth) {
 		this.endOfPeriodMonth = endOfPeriodMonth;
+	}	
+
+	@Column(name = "quota_per_period", nullable=false, length = 2)
+	public Integer getQuotaPerPeriod() {
+		return quotaPerPeriod;
+	}
+
+	public void setQuotaPerPeriod(Integer quotaPerPeriod) {
+		this.quotaPerPeriod = quotaPerPeriod;
 	}
 
 	@Column(name = "is_only_once_per_employee", nullable = false)

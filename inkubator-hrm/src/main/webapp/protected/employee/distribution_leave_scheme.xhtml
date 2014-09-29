@@ -23,8 +23,8 @@
                             <p:graphicImage library="images" name="task.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="Penempatan Jadwal Kerja Karyawan" styleClass="header_big" />
-                                    <p:outputLabel value="Penempatan Jadwal Kerja Karyawan dari Aplikasi" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="Distribusi Cuti" styleClass="header_big" />
+                                    <p:outputLabel value="Distribusi Cuti dari Aplikasi" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -35,7 +35,7 @@
                         <p:panelGrid style="width: 100%;margin-bottom: 10px;margin-top: 20px" styleClass="grid_border3" >
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Kelompok Kerja"  for="code" styleClass="label_hrm" />
+                                    <p:outputLabel  value="Nama Cuti"  for="code" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:selectOneMenu required="true" id="code" value="#{distributionLeaveScheme.model.leaveSchemeId}" style="margin-right: 3px" >
@@ -54,6 +54,7 @@
                                     <p:inputText id="strtBalance" value="#{distributionLeaveScheme.model.startBalance}"
                                                      required="false" styleClass="isitext_hrm" style="width:50px;" />
                                     <p:outputLabel  value=" Hari" />
+                                    <p:message for="strtBalance"/>
                                 </p:column>
                             </p:row>
                             
@@ -143,7 +144,7 @@
                                 <p:column style="width: 80%">
                                     <p:commandButton value="#{appmsg['global.search']}" ajax="true" action="#{distributionLeaveScheme.doSearchEmployee()}" 
                                                      styleClass="isitext_hrm" 
-                                                     style="margin-right: 5px" label="#{appmsg['global.search']}" update="picklistUserRoleId"
+                                                     style="margin-right: 5px" label="#{appmsg['global.search']}" update="picklistUserRoleId, jobTitleFormId"
                                                      icon="ui-icon-search" title="#{appmsg['global.search']}">    
                                     </p:commandButton>
                                 </p:column>
@@ -163,7 +164,7 @@
                             <p:separator/>
                         </div>
                         <div align="center">
-                            <p:pickList value="#{placementOfEmployeeWorkScheduleFormController.dualListModel}" var="role" itemValue="#{role}" converter="#{empDataConverter}" id="picklistUserRoleId"
+                            <p:pickList value="#{distributionLeaveScheme.dualListModel}" var="role" itemValue="#{role}" converter="#{empDataConverter}" id="picklistUserRoleId"
                                         required="false"  style="margin-top: 15px;margin-bottom: 15px;" label="#{appmsg['role_view.header1']}" styleClass="isitext_hrm"
                                         itemLabel="#{role.nik} - #{role.bioData.firstName} #{role.bioData.lastName}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
                                         removeLabel="#{appmsg['global.remove']}"/>

@@ -59,7 +59,6 @@ public class ApprovalDefinitionPopupFormController extends BaseController {
     public void initialization() {
         super.initialization();
         approvalDefinitionModel = new ApprovalDefinitionModel();
-        String appDefName = FacesUtil.getRequestParameter("appDefName");
         String jsonAppDef = FacesUtil.getRequestParameter("jsonAppDef");
         if (StringUtils.isNotEmpty(jsonAppDef)) {
             try {
@@ -117,6 +116,9 @@ public class ApprovalDefinitionPopupFormController extends BaseController {
             }
 
         } else {
+            String appDefName = FacesUtil.getRequestParameter("appDefName");
+            String specificName = FacesUtil.getRequestParameter("specificName");
+            
             isEdit = Boolean.FALSE;
             onBehalf = Boolean.TRUE;
             onProcess = Boolean.TRUE;
@@ -130,6 +132,9 @@ public class ApprovalDefinitionPopupFormController extends BaseController {
             approvalDefinitionModel.setMinApprover(1);
             approvalDefinitionModel.setMinRejector(1);
             approvalDefinitionModel.setName(appDefName);
+            if(StringUtils.isNotEmpty(specificName)){
+            	approvalDefinitionModel.setSpecificName(specificName);
+            }
         }
     }
     
