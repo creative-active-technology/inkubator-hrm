@@ -32,7 +32,7 @@ import org.primefaces.model.DualListModel;
  */
 @ManagedBean(name = "placementOfEmployeeWorkScheduleFormController")
 @ViewScoped
-public class PlacementOfEmployeeWorkSchedule extends BaseController {
+public class PlacementOfEmployeeWorkScheduleFormController extends BaseController {
 
     @ManagedProperty(value = "#{wtGroupWorkingService}")
     private WtGroupWorkingService wtGroupWorkingService;
@@ -69,7 +69,7 @@ public class PlacementOfEmployeeWorkSchedule extends BaseController {
             source = this.empDataService.getAllDataWithRelation();
 
         } catch (Exception ex) {
-            Logger.getLogger(PlacementOfEmployeeWorkSchedule.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PlacementOfEmployeeWorkScheduleFormController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }

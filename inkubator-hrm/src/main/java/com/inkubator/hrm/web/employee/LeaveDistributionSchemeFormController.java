@@ -32,7 +32,7 @@ import org.primefaces.model.DualListModel;
  */
 @ManagedBean(name = "distributionLeaveScheme")
 @ViewScoped
-public class LeaveDistributionScheme extends BaseController{
+public class LeaveDistributionSchemeFormController extends BaseController{
     @ManagedProperty(value = "#{leaveSchemeService}")
     private LeaveSchemeService leaveSchemeService;
     @ManagedProperty(value = "#{leaveService}")
@@ -68,7 +68,7 @@ public class LeaveDistributionScheme extends BaseController{
             }
             source = this.empDataService.getAllDataWithRelation();
         } catch (Exception ex) {
-            java.util.logging.Logger.getLogger(LeaveDistributionScheme.class.getName()).log(Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LeaveDistributionSchemeFormController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

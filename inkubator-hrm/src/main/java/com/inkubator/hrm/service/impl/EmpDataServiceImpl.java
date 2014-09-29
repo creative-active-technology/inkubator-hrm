@@ -43,7 +43,7 @@ import com.inkubator.hrm.entity.WtScheduleShift;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.util.MapUtil;
 import com.inkubator.hrm.util.StringsUtils;
-import com.inkubator.hrm.web.employee.LeaveDistributionScheme;
+import com.inkubator.hrm.web.employee.LeaveDistributionSchemeFormController;
 import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
 import com.inkubator.hrm.web.model.PlacementOfEmployeeWorkScheduleModel;
 import com.inkubator.hrm.web.search.EmpDataSearchParameter;

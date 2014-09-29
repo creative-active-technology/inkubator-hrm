@@ -7,7 +7,7 @@ package com.inkubator.hrm.service;
 
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.EmpData;
-import com.inkubator.hrm.web.employee.LeaveDistributionScheme;
+import com.inkubator.hrm.web.employee.LeaveDistributionSchemeFormController;
 import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
 import com.inkubator.hrm.web.model.PlacementOfEmployeeWorkScheduleModel;
 import com.inkubator.hrm.web.search.EmpDataSearchParameter;
