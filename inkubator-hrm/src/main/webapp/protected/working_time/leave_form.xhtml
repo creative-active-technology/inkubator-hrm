@@ -6,7 +6,9 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:pe="http://primefaces.org/ui/extensions"
-      xmlns:c="http://java.sun.com/jsp/jstl/core">
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:o="http://omnifaces.org/ui"
+	  xmlns:of="http://omnifaces.org/functions">
     <h:head>
         <title>IGNORED</title>
     </h:head>
@@ -17,7 +19,7 @@
             </ui:define>
             <ui:define name="center">
                 <p:growl id="growlLeaveFormlId" globalOnly="true" showDetail="true"/>                
-                <h:form id="formLeaveFormId">
+                <o:form id="formLeaveFormId">
                 	<p:focus context="formLeaveFormId"/>
                 	<div id="box_bg" style="margin: 10px">
 	                    <h:panelGrid columns="2">
@@ -37,7 +39,7 @@
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                            	<p:inputText id="codeId" title="#{appmsg['leave.leave_code']}" value="#{leaveFormController.model.code}" 
-	                                    		 required="true" maxlength="45" styleClass="isitext_hrm" style="width:290px;" />
+	                                    		 required="true" maxlength="45" onkeyup="this.value = this.value.toUpperCase();" styleClass="isitext_hrm" style="width:290px;" />
 	                                <p:message for="codeId"/>
 	                            </p:column>
 	                        </p:row>   
@@ -47,7 +49,9 @@
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                            	<p:inputText id="nameId" title="#{appmsg['leave.leave_name']}" value="#{leaveFormController.model.name}" 
-	                                    		 required="true" maxlength="45" styleClass="isitext_hrm" style="width:290px;" />
+	                                    		 required="true" maxlength="45" styleClass="isitext_hrm" style="width:290px;">
+	                                	<p:ajax listener="#{leaveFormController.onChangeName()}" update="tableApprovalDevId" />
+	                                </p:inputText>
 	                                <p:message for="nameId"/>
 	                            </p:column>
 	                        </p:row>
@@ -101,6 +105,16 @@
 	                                    <f:selectItem itemLabel="T.M.B ke 0101" itemValue="2" />
 	                                </p:selectOneMenu>
 	                                <p:message for="periodBaseId"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="quotaPerPeriodId" value="#{appmsg['leave.quota_per_period']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                                <p:spinner id="quotaPerPeriodId" value="#{leaveFormController.model.quotaPerPeriod}" size="4" max="365" min="0" 
+	                                		   styleClass="isitext_hrm" required="true"/>                              
+	                                <p:message for="quotaPerPeriodId"/>	                                
 	                            </p:column>
 	                        </p:row>
 	                        <p:row>
@@ -198,16 +212,6 @@
 	                        </p:row>
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel for="approvalLevelId" value="#{appmsg['leave.approval_level']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                                <p:spinner id="approvalLevelId" value="#{leaveFormController.model.approvalLevel}" size="4" max="10" min="0" 
-	                                		   styleClass="isitext_hrm" required="true"/>	                               
-	                                <p:message for="approvalLevelId"/>	                                
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
 	                                <p:outputLabel for="isQuotaReductionId" value="#{appmsg['leave.leave_quota_reduction']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
@@ -217,7 +221,7 @@
 	                        </p:row>
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel for="endOfPeriodId" value="#{appmsg['leave.availability_of_leave']}" styleClass="label_hrm"/>
+	                                <p:outputLabel for="endOfPeriodId" value="#{appmsg['leave.end_of_period_leave']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                            	<h:panelGrid columns="2" style="margin-left:-10px" >
@@ -257,7 +261,16 @@
 	                                    			 maxlength="1000" styleClass="isitext_hrm" style="width:290px;" />
 	                                <p:message for="descId"/>
 	                            </p:column>
-	                        </p:row>                       
+	                        </p:row>  
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="isActiveId" value="#{appmsg['global.active_status']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+		                        	<p:selectBooleanButton id="isActiveId" value="#{leaveFormController.model.isActive}" onLabel="#{appmsg['global.active']}" offLabel="#{appmsg['global.inactive']}" onIcon="ui-icon-check" 
+	                                                       offIcon="ui-icon-close" styleClass="label_button"/>
+	                            </p:column>
+	                        </p:row>                     
 	                 	</p:panelGrid>	
 	                 	
 	                 	<p:outputLabel value="#{appmsg['approvaldefinition.list_of_approval_definition']}" styleClass="header_big"/>
@@ -276,6 +289,12 @@
                                     <h:outputText value="#{appmsg['approvaldefinition.approval_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{approvalDefinitionData.name}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['approvaldefinition.specific_approval']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{approvalDefinitionData.specificName}"/>
                             </p:column>
                             <p:column>
                                 <f:facet name="header">  
@@ -325,7 +344,9 @@
                         
 	                 	<h:panelGrid columns="1">
                     		<p:commandButton value="#{appmsg['global.add']} #{appmsg['approvaldefinition.approval_definition']}" title="#{appmsg['global.add']} #{appmsg['approvaldefinition.approval_definition']}" label="#{appmsg['global.add']} #{appmsg['approvaldefinition.approval_definition']}" styleClass="label_button" icon="ui-icon-document" 
-                    						 actionListener="#{leaveFormController.doAddAppDef()}" ajax="true" immediate="true">
+                    						 actionListener="#{leaveFormController.doAddAppDef()}">
+                    			<o:ignoreValidationFailed />
+                            	<f:ajax execute="@form" />
                             	<p:ajax event="dialogReturn" listener="#{leaveFormController.onDialogReturnAddAppDef}"  update="tableApprovalDevId"/>
                            	</p:commandButton>
                     	</h:panelGrid>	                 	
@@ -344,7 +365,7 @@
 	                                      	 styleClass="label_button"/>
 	                    </div>
                     </div>
-                </h:form>
+                </o:form>
             </ui:define>
         </ui:composition>
     </h:body>

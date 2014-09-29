@@ -8,7 +8,7 @@ import com.google.gson.GsonBuilder;
  */
 public class JsonUtil {
 
-	public static GsonBuilder getGsonBuilder(){
+	public static GsonBuilder getHibernateEntityGsonBuilder(){
 		GsonBuilder gsonBuilder = new GsonBuilder();
     	gsonBuilder.serializeNulls();
 		gsonBuilder.setDateFormat("dd MMMM yyyy hh:mm");

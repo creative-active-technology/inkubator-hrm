@@ -293,11 +293,12 @@ public class LeaveServiceImpl extends BaseApprovalConfigurationServiceImpl<Leave
 	    leave.setMaxAllowedMinus(l.getMaxAllowedMinus());
 	    leave.setEffectiveFrom(l.getEffectiveFrom());
 	    leave.setSubmittedLimit(l.getSubmittedLimit());
-	    leave.setApprovalLevel(l.getApprovalLevel());
 	    leave.setIsQuotaReduction(l.getIsQuotaReduction());
 	    leave.setEndOfPeriod(l.getEndOfPeriod());
 	    leave.setEndOfPeriodMonth(l.getEndOfPeriodMonth());
 	    leave.setIsOnlyOncePerEmployee(l.getIsOnlyOncePerEmployee());
+	    leave.setIsActive(l.getIsActive());
+	    leave.setQuotaPerPeriod(l.getQuotaPerPeriod());
 	    leave.setUpdatedBy(UserInfoUtil.getUserName());
 	    leave.setUpdatedOn(new Date());
 		leaveDao.update(leave);
@@ -385,11 +386,12 @@ public class LeaveServiceImpl extends BaseApprovalConfigurationServiceImpl<Leave
 	    leave.setMaxAllowedMinus(entity.getMaxAllowedMinus());
 	    leave.setEffectiveFrom(entity.getEffectiveFrom());
 	    leave.setSubmittedLimit(entity.getSubmittedLimit());
-	    leave.setApprovalLevel(entity.getApprovalLevel());
 	    leave.setIsQuotaReduction(entity.getIsQuotaReduction());
 	    leave.setEndOfPeriod(entity.getEndOfPeriod());
 	    leave.setEndOfPeriodMonth(entity.getEndOfPeriodMonth());
 	    leave.setIsOnlyOncePerEmployee(entity.getIsOnlyOncePerEmployee());
+	    leave.setIsActive(entity.getIsActive());
+	    leave.setQuotaPerPeriod(entity.getQuotaPerPeriod());
 	    leave.setUpdatedBy(UserInfoUtil.getUserName());
 	    leave.setUpdatedOn(new Date());
 	    leaveDao.update(leave);

@@ -64,9 +64,11 @@ public abstract class BaseApprovalConfigurationServiceImpl<T> extends IServiceIm
         
         /** cek kalo process type "ON_APPROVE_INFO" atau "ON_REJECT_INFO" tidak boleh lebih kecil sequence-nya dari APPROVAL_PROCESS */
         ApprovalDefinition max = Lambda.selectMax(Lambda.select(listAppDef, Lambda.having(Lambda.on(ApprovalDefinition.class).getProcessType(), Matchers.equalToIgnoringCase(HRMConstant.APPROVAL_PROCESS))), Lambda.on(ApprovalDefinition.class).getSequence());
-        List<ApprovalDefinition> excludeApprovalProcess =  Lambda.select(listAppDef, Lambda.having(Lambda.on(ApprovalDefinition.class).getProcessType(), Matchers.not(HRMConstant.APPROVAL_PROCESS)));
-        if(Lambda.selectFirst(excludeApprovalProcess, Lambda.having(Lambda.on(ApprovalDefinition.class).getSequence(), Matchers.lessThanOrEqualTo(max.getSequence()))) != null){
-        	throw new BussinessException("approval.error_process_less_than");
+        if(max != null) {
+	        List<ApprovalDefinition> excludeApprovalProcess =  Lambda.select(listAppDef, Lambda.having(Lambda.on(ApprovalDefinition.class).getProcessType(), Matchers.not(HRMConstant.APPROVAL_PROCESS)));
+	        if(Lambda.selectFirst(excludeApprovalProcess, Lambda.having(Lambda.on(ApprovalDefinition.class).getSequence(), Matchers.lessThanOrEqualTo(max.getSequence()))) != null){
+	        	throw new BussinessException("approval.error_process_less_than");
+	        }
         }
 	}
 	

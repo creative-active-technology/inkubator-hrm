@@ -79,6 +79,14 @@
 	                        </p:row>
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['leave.quota_per_period']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:outputLabel value="#{leaveDetailController.selectedLeave.quotaPerPeriod}"/>                         
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
 	                                <p:outputLabel value="#{appmsg['leave.availability_of_leave']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
@@ -140,14 +148,6 @@
 	                        </p:row>
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['leave.approval_level']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                                <p:outputLabel value="#{leaveDetailController.selectedLeave.approvalLevel}"/>	                                
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
 	                                <p:outputLabel value="#{appmsg['leave.leave_quota_reduction']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
@@ -158,7 +158,7 @@
 	                        </p:row>
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['leave.availability_of_leave']}" styleClass="label_hrm"/>
+	                                <p:outputLabel value="#{appmsg['leave.end_of_period_leave']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                            	<p:outputLabel value="#{leaveDetailController.selectedLeave.endOfPeriodAsLabel}"/>
@@ -181,7 +181,17 @@
 	                            <p:column  style="width: 80%">
 	                            	<p:outputLabel value="#{leaveDetailController.selectedLeave.description}"/>
 	                            </p:column>
-	                        </p:row>                       
+	                        </p:row> 
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                            	<p:outputLabel value="#{appmsg['global.active_status']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+		                        	<p:outputLabel value="#{leaveDetailController.selectedLeave.isActive}">
+	                            		<f:converter converterId="activeStatusMessageConverter"/>
+	                            	</p:outputLabel>
+	                            </p:column>
+	                        </p:row>                      
 	                 	</p:panelGrid>	                    
 	                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
 	                    <div style="margin-bottom: 5px">
