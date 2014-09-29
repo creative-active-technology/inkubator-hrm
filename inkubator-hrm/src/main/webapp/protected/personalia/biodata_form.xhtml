@@ -31,15 +31,15 @@
 
 
 
-                        <p:panelGrid style="width: 100%;margin-bottom: 20px;margin-top: 20px" styleClass="grid_border3" >
-                            <p:row>
+                        <p:panelGrid style="width: 100%;margin-bottom: 20px;margin-top: 20px" styleClass="grid_border3"  >
+                            <p:row id="panelName">
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="#{appmsg['biodata.front_name']}"  for="firstNameId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:inputText value="#{bioDataFormController.bioDataModel.firstName}" styleClass="isitext_hrm" label="Nama Depan"
                                                  style="width: 75%" required="true" id="firstNameId" />
-                                    <p:message for="firstNameId"/>
+                                    <p:message for="firstNameId" id="messages1"/>
                                 </p:column>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important">
                                     <p:outputLabel  value="#{appmsg['biodata.title']}" styleClass="label_hrm" for="titleId"/>
@@ -90,7 +90,7 @@
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{bioDataFormController.mapReligions}"  />
                                     </p:selectOneMenu>
-                                    <p:message for="religionId"/>
+                                    <p:message for="religionId" id="religionMessagesId"/>
                                 </p:column>
                             </p:row>
                             <p:row>
@@ -103,7 +103,7 @@
                                         <f:validator validatorId="birthDateValidator"  />
                                         <f:attribute name="validatorMessage" value="#{appmsg['global.birthDate_validator']}"/>
                                     </p:calendar>
-                                    <p:message for="tanggalLahirid"/>
+                                    <p:message for="tanggalLahirid" id="messages2"/>
                                 </p:column>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="#{appmsg['ras.ras']}" styleClass="label_hrm" for="rasId"/>
@@ -124,12 +124,12 @@
                                     <p:outputLabel  value="#{appmsg['global.gender']}" styleClass="label_hrm" for="genderId"/>
                                 </p:column>
                                 <p:column style="width: 37%" >
-                                    <p:selectOneRadio id="genderId" styleClass="isitext_hrm" required="false" value="#{bioDataFormController.bioDataModel.gender}" label="Gender">
+                                    <p:selectOneRadio id="genderId" styleClass="isitext_hrm" required="true" value="#{bioDataFormController.bioDataModel.gender}" label="Gender">
                                         <!--Cek HRM Constanta..-->
                                         <f:selectItem itemLabel="#{appmsg['global_male']}" itemValue="1" />
                                         <f:selectItem itemLabel="#{appmsg['global_female']}" itemValue="0" />
                                     </p:selectOneRadio>
-                                    <p:message for="genderId"/>
+                                    <p:message for="genderId" id="messages3"/>
                                 </p:column>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="#{appmsg['dialect.dialect']}" styleClass="label_hrm" for="dialekId"/>
@@ -155,7 +155,7 @@
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{bioDataFormController.mapMarital}"  />
                                     </p:selectOneMenu>
-                                    <p:message for="maritalId"/>
+                                    <p:message for="maritalId" id="messages4"/>
                                 </p:column>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important">
                                     <p:outputLabel  value="#{appmsg['biodata.citizen']}" styleClass="label_hrm" for="wargaNegaraId"/>
@@ -165,7 +165,7 @@
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{bioDataFormController.mapNationality}"  />
                                     </p:selectOneMenu>
-                                    <p:message for="wargaNegaraId"/>
+                                    <p:message for="wargaNegaraId" id="warganegarMessagesId"/>
                                 </p:column>
 
                             </p:row>
@@ -236,7 +236,7 @@
 
 
                         <!--</p:panel>-->
-                        <p:focus  context="bioDataFormId"/>
+
                         <p:outputLabel value="#{appmsg['global.upload_image']}" styleClass="header_big"/>
                         <p:separator/>
                         <div>
@@ -271,10 +271,10 @@
 
                         </div>
                         <p:separator/>
-                        <!--<p:panel style="margin: 10px">-->
+                       
                         <div style="margin-bottom: 5px">
-                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="bioDataFormId,:growlBidoDataFormId" 
-                                             action="#{bioDataFormController.doSave()}" styleClass="label_button"
+                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="firstNameId,tanggalLahirid,messages1,messages2,genderId,messages3,maritalId,messages4,religionId,religionMessagesId,wargaNegaraId,warganegarMessagesId,focusId" onclick="statusDialog.show()" oncomplete="statusDialog.hide()"
+                                             action="#{bioDataFormController.doSave()}" styleClass="label_button" 
                                              style="margin-right: 5px" label="#{appmsg['global.save']}"
                                              icon="ui-icon-disk"
                                              id="buttonSave" title="#{appmsg['global.save']}"/>
@@ -284,17 +284,12 @@
                             </p:commandButton>
                             <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{bioDataFormController.doBack()}" immediate="true"
                                              styleClass="label_button"/>
-                            <!--</p:panel>-->
+                          
                         </div>
 
                     </div>
-
-
-
+                    <p:focus  context="bioDataFormId" id="focusId"/>
                 </h:form>
-<!--                <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
-                    <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
-                </p:dialog>-->
             </ui:define>
 
         </ui:composition>
