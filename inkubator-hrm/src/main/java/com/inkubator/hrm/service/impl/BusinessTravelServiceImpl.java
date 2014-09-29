@@ -479,7 +479,7 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
         try {        	
             jsonObj.put("approvalActivityId", appActivity.getId());
             jsonObj.put("ccEmailAddresses", ccEmailAddresses);
-            jsonObj.put("locale", FacesUtil.getFacesContext().getViewRoot().getLocale());
+            jsonObj.put("locale", appActivity.getLocale());
             jsonObj.put("businessTravelNo", businessTravel.getBusinessTravelNo());
             jsonObj.put("proposeDate", dateFormat.format(businessTravel.getProposeDate()));
             jsonObj.put("destination", businessTravel.getDestination());

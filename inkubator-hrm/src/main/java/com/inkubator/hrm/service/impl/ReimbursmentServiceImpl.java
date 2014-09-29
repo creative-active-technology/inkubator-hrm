@@ -437,7 +437,7 @@ public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements 
         try {
             jsonObj.put("approvalActivityId", appActivity.getId());
             jsonObj.put("ccEmailAddresses", ccEmailAddresses);
-            jsonObj.put("locale", FacesUtil.getFacesContext().getViewRoot().getLocale());
+            jsonObj.put("locale", appActivity.getLocale());
             jsonObj.put("reimbursment_schema", reimbursmentSchema.getName());
             jsonObj.put("proposeDate", dateFormat.format(new Date()));
             jsonObj.put("claim_date", dateFormat.format(reimbursment.getClaimDate()));
