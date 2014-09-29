@@ -260,10 +260,6 @@
 	                        </p:row>                       
 	                 	</p:panelGrid>	
 	                 	
-	                 	
-	                 	
-	                 	
-	                 	
 	                 	<p:outputLabel value="#{appmsg['approvaldefinition.list_of_approval_definition']}" styleClass="header_big"/>
 	                    <p:separator/>
 	                 	
@@ -275,37 +271,37 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="name" >
+                            <p:column>
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['approvaldefinition.approval_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{approvalDefinitionData.name}"/>
                             </p:column>
-                            <p:column sortBy="sequence"  >
+                            <p:column>
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['approvaldefinition.process_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{approvalDefinitionData.processType}"/>
                             </p:column>
-                            <p:column sortBy="approverType">
+                            <p:column>
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['approvaldefinition.approver_type']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{approvalDefinitionData.approverType}"/>
                             </p:column>
-                            <p:column sortBy="sequence"  style="text-align: center">
+                            <p:column style="text-align: center">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['approvaldefinition.sequence_approval']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{approvalDefinitionData.sequence}"/>
                             </p:column>
-                            <p:column sortBy="minApprover" style="text-align: center">
+                            <p:column style="text-align: center">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['approvaldefinition.min_approve']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{approvalDefinitionData.minApprover}"/>
                             </p:column>
-                            <p:column sortBy="minRejector" style="text-align: center">
+                            <p:column style="text-align: center">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['approvaldefinition.min_reject']}"/>
                                 </f:facet>
@@ -332,14 +328,7 @@
                     						 actionListener="#{leaveFormController.doAddAppDef()}" ajax="true" immediate="true">
                             	<p:ajax event="dialogReturn" listener="#{leaveFormController.onDialogReturnAddAppDef}"  update="tableApprovalDevId"/>
                            	</p:commandButton>
-                    	</h:panelGrid>
-	                 	
-	                 	
-	                 	
-	                 	
-	                 	
-	                 	
-	                 	
+                    	</h:panelGrid>	                 	
 	                 	                    
 	                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
 	                    <div style="margin-bottom: 5px">

@@ -1,7 +1,10 @@
 package com.inkubator.hrm.dao.impl;
 
+import com.inkubator.datacore.dao.impl.IDAOImpl;
+import com.inkubator.hrm.dao.WtWorkingHourDao;
+import com.inkubator.hrm.entity.WtWorkingHour;
+import com.inkubator.hrm.web.search.WorkingHourSearchParameter;
 import java.util.List;
-
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.MatchMode;
@@ -11,11 +14,6 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
-import com.inkubator.datacore.dao.impl.IDAOImpl;
-import com.inkubator.hrm.dao.WtWorkingHourDao;
-import com.inkubator.hrm.entity.WtWorkingHour;
-import com.inkubator.hrm.web.search.WorkingHourSearchParameter;
-
 /**
  *
  * @author rizkykojek
@@ -23,13 +21,13 @@ import com.inkubator.hrm.web.search.WorkingHourSearchParameter;
 @Repository(value = "wtWorkingHourDao")
 @Lazy
 public class WtWorkingHourDaoImpl extends IDAOImpl<WtWorkingHour> implements WtWorkingHourDao {
-	
-	@Override
-	public Class<WtWorkingHour> getEntityClass() {
-		return WtWorkingHour.class;
-	}	
-	
-	@Override
+
+    @Override
+    public Class<WtWorkingHour> getEntityClass() {
+        return WtWorkingHour.class;
+    }
+
+    @Override
     public List<WtWorkingHour> getByParam(WorkingHourSearchParameter parameter, int firstResult, int maxResults, Order orderable) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchByParam(parameter, criteria);
@@ -70,7 +68,7 @@ public class WtWorkingHourDaoImpl extends IDAOImpl<WtWorkingHour> implements WtW
         criteria.add(Restrictions.ne("id", id));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
-    
+
     @Override
     public Long getTotalByCode(String code) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
@@ -84,5 +82,12 @@ public class WtWorkingHourDaoImpl extends IDAOImpl<WtWorkingHour> implements WtW
         criteria.add(Restrictions.eq("code", code));
         criteria.add(Restrictions.ne("id", id));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+
+    @Override
+    public WtWorkingHour getByCode(String code) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("code", code));
+        return (WtWorkingHour) criteria.uniqueResult();
     }
 }

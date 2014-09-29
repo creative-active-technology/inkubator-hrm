@@ -26,7 +26,7 @@ import javax.persistence.Version;
 )
 public class ApprovalDefinition implements java.io.Serializable {
 
-    private long id;
+    private Long id;
     private Integer version;
     private HrmUser hrmUserByOnBehalfIndividual;
     private Jabatan jabatanByApproverPosition;
@@ -83,11 +83,11 @@ public class ApprovalDefinition implements java.io.Serializable {
     @Id
 
     @Column(name = "id", unique = true, nullable = false)
-    public long getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -6,9 +6,11 @@
 package com.inkubator.hrm.service.impl;
 
 import ch.lambdaj.Lambda;
+import com.google.gson.JsonObject;
 import com.inkubator.common.CommonUtilConstant;
 import com.inkubator.common.util.AESUtil;
 import com.inkubator.common.util.DateTimeUtil;
+import com.inkubator.common.util.JsonConverter;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
@@ -27,6 +29,7 @@ import com.inkubator.hrm.dao.PaySalaryGradeDao;
 import com.inkubator.hrm.dao.TempJadwalKaryawanDao;
 import com.inkubator.hrm.dao.WtGroupWorkingDao;
 import com.inkubator.hrm.dao.WtHolidayDao;
+import com.inkubator.hrm.dao.WtWorkingHourDao;
 import com.inkubator.hrm.entity.Department;
 import com.inkubator.hrm.entity.EmpCareerHistory;
 import com.inkubator.hrm.entity.EmpData;
@@ -53,7 +56,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
@@ -106,6 +108,10 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     private HrmUserDao hrmUserDao;
     @Autowired
     private JmsTemplate jmsTemplateMassJadwalKerja;
+    @Autowired
+    private JsonConverter jsonConverter;
+    @Autowired
+    private WtWorkingHourDao wtWorkingHourDao;
 
     @Override
     public EmpData getEntiyByPK(String id) throws Exception {
@@ -505,7 +511,13 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 
         //check if the employee still have pending task approval
         HrmUser user = hrmUserDao.getByEmpDataId(entity.getId());
-        long totalPendingTask = approvalActivityDao.getPendingTask(user.getUserId()).size();
+        long totalPendingTask = 0;
+        if (user != null) {
+            totalPendingTask = approvalActivityDao.getPendingTask(user.getUserId()).size();
+        } else {
+            throw new BussinessException("emp_data.error_donot_have_user");
+        }
+
         if (totalPendingTask > 0) {
             throw new BussinessException("emp_data.error_cannot_do_rotation");
         }
@@ -599,26 +611,25 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         int totalDateDif = DateTimeUtil.getTotalDayDifference(startDate, now) + 1;
         int num = numberOfDay + 1;
         int hasilBagi = (totalDateDif) / (num);
-        String dayBegin = new SimpleDateFormat("EEEE").format(endDate);
-        String dayNow = new SimpleDateFormat("EEEE").format(now);
+        Date tanggalAkhirJadwal = DateTimeUtil.getDateFrom(startDate, (hasilBagi * num)-1, CommonUtilConstant.DATE_FORMAT_DAY);
+//        String dayBegin = new SimpleDateFormat("EEEE").format(endDate);
+//        String dayNow = new SimpleDateFormat("EEEE").format(now);
         Date beginScheduleDate;
-        if (dayBegin.endsWith(dayNow) && Objects.equals(groupWorking.getTypeSequeace(), HRMConstant.NORMAL_SCHEDULE)) {
-            beginScheduleDate = DateTimeUtil.getDateFrom(startDate, (hasilBagi * num) - num, CommonUtilConstant.DATE_FORMAT_DAY);
-        } else {
+        if (new SimpleDateFormat("ddMMyyyy").format(tanggalAkhirJadwal).equals(new SimpleDateFormat("ddMMyyyy").format(new Date()))) {
+             beginScheduleDate = DateTimeUtil.getDateFrom(startDate, (hasilBagi * num) - num, CommonUtilConstant.DATE_FORMAT_DAY);
+        }else{
             beginScheduleDate = DateTimeUtil.getDateFrom(startDate, (hasilBagi * num), CommonUtilConstant.DATE_FORMAT_DAY);
         }
-
         int i = 0;
         for (WtScheduleShift list1 : list) {
             TempJadwalKaryawan jadwalKaryawan = new TempJadwalKaryawan();
             jadwalKaryawan.setEmpData(empData);
             jadwalKaryawan.setTanggalWaktuKerja(DateTimeUtil.getDateFrom(beginScheduleDate, i, CommonUtilConstant.DATE_FORMAT_DAY));
-            jadwalKaryawan.setWtWorkingHour(list1.getWtWorkingHour());
             WtHoliday holiday = wtHolidayDao.getWtHolidayByDate(jadwalKaryawan.getTanggalWaktuKerja());
-            if (holiday != null || list1.getWtWorkingHour().getCode().equalsIgnoreCase("OFF")) {
-                jadwalKaryawan.setAttendanceStatus(attendanceStatusDao.getByCode("OFF"));
+            if (holiday != null && groupWorking.getTypeSequeace().equals(HRMConstant.NORMAL_SCHEDULE)) {
+                jadwalKaryawan.setWtWorkingHour(wtWorkingHourDao.getByCode("OFF"));
             } else {
-                jadwalKaryawan.setAttendanceStatus(attendanceStatusDao.getByCode("HD1"));
+                jadwalKaryawan.setWtWorkingHour(list1.getWtWorkingHour());
             }
             jadwalKaryawan.setIsCollectiveLeave(Boolean.FALSE);
             jadwalKaryawan.setCreatedBy(UserInfoUtil.getUserName());
@@ -645,19 +656,24 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
     public void saveMassPenempatanJadwal(List<EmpData> data, long groupWorkingId) throws Exception {
+        WtGroupWorking groupWorking = wtGroupWorkingDao.getEntiyByPK(groupWorkingId);
+        groupWorking.setIsActive(Boolean.TRUE);
+        wtGroupWorkingDao.update(groupWorking);
         for (EmpData empData : data) {
             empData.setWtGroupWorking(wtGroupWorkingDao.getEntiyByPK(groupWorkingId));
             this.empDataDao.update(empData);
         }
-        List<Long>listIdEmp=Lambda.extract(data, Lambda.on(EmpData.class).getId());
-        for (Long listIdEmp1 : listIdEmp) {
-            System.out.println(" nilai nya "+listIdEmp1);
-        }
+
+        List<Long> listIdEmp = Lambda.extract(data, Lambda.on(EmpData.class).getId());
+        String dataToJson = jsonConverter.getJson(listIdEmp.toArray(new Long[listIdEmp.size()]));
+        final JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("listEmpId", dataToJson);
+        jsonObject.addProperty("groupWorkingId", groupWorkingId);
         this.jmsTemplateMassJadwalKerja.send(new MessageCreator() {
             @Override
             public Message createMessage(Session session)
                     throws JMSException {
-                return session.createTextMessage("d");
+                return session.createTextMessage(jsonObject.toString());
             }
         });
     }

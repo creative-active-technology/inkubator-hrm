@@ -1,12 +1,10 @@
 package com.inkubator.hrm.dao;
 
-import java.util.List;
-
-import org.hibernate.criterion.Order;
-
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.WtWorkingHour;
 import com.inkubator.hrm.web.search.WorkingHourSearchParameter;
+import java.util.List;
+import org.hibernate.criterion.Order;
 
 /**
  *
@@ -25,6 +23,8 @@ public interface WtWorkingHourDao extends IDAO<WtWorkingHour> {
 	public Long getTotalByCode(String code);
 	
 	public Long getTotalByCodeAndNotId(String code, Long id);
+        
+        public WtWorkingHour getByCode(String code);
 	
 	
 }
