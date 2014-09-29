@@ -9,6 +9,7 @@ import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.TempJadwalKaryawanDao;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.TempJadwalKaryawan;
+import java.util.Date;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
@@ -18,6 +19,7 @@ import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Subqueries;
 import org.hibernate.sql.JoinType;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
@@ -48,7 +50,7 @@ public class TempJadwalKaryawanDaoImpl extends IDAOImpl<TempJadwalKaryawan> impl
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.createAlias("empData", "e", JoinType.INNER_JOIN);
         criteria.add(Restrictions.eq("e.id", empId));
-        criteria.setFetchMode("attendanceStatus", FetchMode.JOIN);
+        criteria.setFetchMode("wtWorkingHour.attendanceStatus", FetchMode.JOIN);
         criteria.setFetchMode("wtWorkingHour", FetchMode.JOIN);
         criteria.addOrder(Order.asc("tanggalWaktuKerja"));
         return criteria.list();
@@ -65,7 +67,6 @@ public class TempJadwalKaryawanDaoImpl extends IDAOImpl<TempJadwalKaryawan> impl
                 .createAlias("wtGroupWorking", "wt")
                 .add(Restrictions.eq("wt.id", kerjaId))
                 .setProjection(proList);
-
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.createAlias("empData", "em");
         criteria.add(Property.forName("em.id").in(kelompokData));
@@ -99,6 +100,21 @@ public class TempJadwalKaryawanDaoImpl extends IDAOImpl<TempJadwalKaryawan> impl
                 getCurrentSession().clear();
             }
         }
+    }
+
+    @Override
+    public List<TempJadwalKaryawan> getAllByMaxEndDate(Date date) {
+        ProjectionList proList = Projections.projectionList();
+        proList.add(Property.forName("tanggalWaktuKerja").max());
+        proList.add(Projections.groupProperty("empData"));
+        DetachedCriteria data = DetachedCriteria.forClass(getEntityClass())
+                .setProjection(proList);
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        String[] var = {"tanggalWaktuKerja", "empData"};
+        criteria.add(Subqueries.propertiesIn(var, data));
+        criteria.add(Restrictions.eq("tanggalWaktuKerja", date));
+        return criteria.list();
+
     }
 
 }

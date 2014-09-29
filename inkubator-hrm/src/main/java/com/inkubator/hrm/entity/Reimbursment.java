@@ -37,6 +37,7 @@ public class Reimbursment implements java.io.Serializable{
     private Date claimDate;
     private Integer quantity;
     private BigDecimal nominal;
+    private String approvalActivityNumber;
     private byte[] reimbursmentDocument;
     private String createdBy;
     private Date createdOn;
@@ -174,6 +175,15 @@ public class Reimbursment implements java.io.Serializable{
 
     public void setReimbursmentDocument(byte[] reimbursmentDocument) {
         this.reimbursmentDocument = reimbursmentDocument;
+    }
+
+    @Column(name="approval_activity_number", length=45, unique=true)
+    public String getApprovalActivityNumber() {
+        return approvalActivityNumber;
+    }
+
+    public void setApprovalActivityNumber(String approvalActivityNumber) {
+        this.approvalActivityNumber = approvalActivityNumber;
     }
     
     

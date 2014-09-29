@@ -124,6 +124,18 @@
 	                        </p:row> 
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="attendanceId" value="#{appmsg['leave.attendance']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:selectOneMenu id="attendanceId" styleClass="isitext_hrm" required="true"  value="#{workingHourFormController.model.attendanceStatusId}">
+	                            		<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+	                                    <f:selectItems value="#{workingHourFormController.model.attendanceStatusList}" var="attendanceStatus" itemValue="#{attendanceStatus.id}" itemLabel="#{attendanceStatus.statusKehadrian}"/>
+	                                </p:selectOneMenu>
+	                                <p:message for="attendanceId"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
 	                                <p:outputLabel for="isManageBreakTimeId" value="#{appmsg['workinghour.break_time']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">

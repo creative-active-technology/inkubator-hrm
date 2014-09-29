@@ -7,6 +7,8 @@ package com.inkubator.hrm.dao;
 
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
+import com.inkubator.hrm.web.model.PlacementOfEmployeeWorkScheduleModel;
 import com.inkubator.hrm.web.search.EmpDataSearchParameter;
 import java.util.Date;
 import java.util.List;
@@ -37,23 +39,26 @@ public interface EmpDataDao extends IDAO<EmpData> {
     public EmpData getByBioDataWithDepartment(long id);
 
     public Long getTotalByNikandNotId(String nik, Long id);
-    
+
     public Long getTotalByNIK(String nik);
-    
+
     public List<EmpData> getAllDataWithRelation();
-    
+
     public EmpData getEntityByNik(String nik);
 
-	public List<EmpData> getAllDataByNameOrNik(String param);
-	
-	public EmpData getByIdWithDetail(long id);
-	
-	public List<EmpData> getAllDataNotExistInUserByParam(String param, int firstResult, int maxResults, Order order);
-	
-	public Long getTotalNotExistInUserByParam(String param);
-	
-	public List<EmpData> getAllDataByJabatanId(Long jabatanId, Order order);
+    public List<EmpData> getAllDataByNameOrNik(String param);
 
-        public List<EmpData> getTotalBySearchEmployee(Long workingGroupId, Integer deptLikeOrEqual, String deptName, Integer empTypeLikeOrEqual, String empTypeName, Integer gender, Long golJabId, Integer sortBy, Integer orderBy);
+    public EmpData getByIdWithDetail(long id);
 
+    public List<EmpData> getAllDataNotExistInUserByParam(String param, int firstResult, int maxResults, Order order);
+
+    public Long getTotalNotExistInUserByParam(String param);
+
+    public List<EmpData> getAllDataByJabatanId(Long jabatanId, Order order);
+
+    public List<EmpData> getTotalBySearchEmployee(PlacementOfEmployeeWorkScheduleModel model);
+
+    public List<EmpData> getAllDataWithEndTime(Date date);
+    
+    public List<EmpData> getTotalBySearchEmployeeLeave(DistributionLeaveSchemeModel model);
 }

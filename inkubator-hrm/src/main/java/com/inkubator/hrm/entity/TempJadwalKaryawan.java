@@ -26,7 +26,7 @@ public class TempJadwalKaryawan  implements java.io.Serializable {
 
      private long id;
      private Integer version;
-     private AttendanceStatus attendanceStatus;
+//     private AttendanceStatus attendanceStatus;
      private EmpData empData;
      private WtWorkingHour wtWorkingHour;
      private Date tanggalWaktuKerja;
@@ -45,7 +45,7 @@ public class TempJadwalKaryawan  implements java.io.Serializable {
     }
     public TempJadwalKaryawan(long id, AttendanceStatus attendanceStatus, EmpData empData, WtWorkingHour wtWorkingHour, Date tanggalWaktuKerja, Boolean isCollectiveLeave, String createdBy, Date createdOn, String updatedBy, Date updatedOn) {
        this.id = id;
-       this.attendanceStatus = attendanceStatus;
+//       this.attendanceStatus = attendanceStatus;
        this.empData = empData;
        this.wtWorkingHour = wtWorkingHour;
        this.tanggalWaktuKerja = tanggalWaktuKerja;
@@ -78,15 +78,15 @@ public class TempJadwalKaryawan  implements java.io.Serializable {
         this.version = version;
     }
 
-@ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="attendace_status_id")
-    public AttendanceStatus getAttendanceStatus() {
-        return this.attendanceStatus;
-    }
-    
-    public void setAttendanceStatus(AttendanceStatus attendanceStatus) {
-        this.attendanceStatus = attendanceStatus;
-    }
+//@ManyToOne(fetch=FetchType.LAZY)
+//    @JoinColumn(name="attendace_status_id")
+//    public AttendanceStatus getAttendanceStatus() {
+//        return this.attendanceStatus;
+//    }
+//    
+//    public void setAttendanceStatus(AttendanceStatus attendanceStatus) {
+//        this.attendanceStatus = attendanceStatus;
+//    }
 
 @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="emp_id")

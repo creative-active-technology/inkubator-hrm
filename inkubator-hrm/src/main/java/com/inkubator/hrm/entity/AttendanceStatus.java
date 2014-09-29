@@ -41,6 +41,7 @@ public class AttendanceStatus  implements java.io.Serializable {
      private String updatedBy;
      private Date upatedOn;
      private Set<Leave> leaves = new HashSet<Leave>(0);
+     private Set<WtWorkingHour> wtWorkingHours = new HashSet<WtWorkingHour>(0);
 
     public AttendanceStatus() {
     }
@@ -208,6 +209,18 @@ public class AttendanceStatus  implements java.io.Serializable {
 	public void setLeaves(Set<Leave> leaves) {
 		this.leaves = leaves;
 	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "attendanceStatus")
+	public Set<WtWorkingHour> getWtWorkingHours() {
+		return wtWorkingHours;
+	}
+
+
+	public void setWtWorkingHours(Set<WtWorkingHour> wtWorkingHours) {
+		this.wtWorkingHours = wtWorkingHours;
+	}
+	
+	
 
 
 }

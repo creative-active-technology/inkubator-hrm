@@ -132,6 +132,10 @@ public class EmpDataViewController extends BaseController {
         return "/protected/employee/employee_rotasi_form.htm?faces-redirect=true&execution=r" + selectedEmpData.getId();
     }
 
+    public String doPlacementOfEmployee() {
+         return "/protected/employee/placement_of_employee_work_schedule.htm?faces-redirect=true";
+    }
+    
     public void doEmployeeTimeSchedule() {
         List<String> values = new ArrayList<>();
         values.add(String.valueOf(selectedEmpData.getId()));

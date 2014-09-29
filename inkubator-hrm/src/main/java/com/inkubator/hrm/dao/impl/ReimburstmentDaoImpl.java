@@ -24,7 +24,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository(value = "reimbursmentDao")
 @Lazy
-public class ReimburstmentDaoImpl extends IDAOImpl<Reimbursment> implements ReimbursmentDao{
+public class ReimburstmentDaoImpl extends IDAOImpl<Reimbursment> implements ReimbursmentDao {
 
     @Override
     public Class<Reimbursment> getEntityClass() {
@@ -67,13 +67,13 @@ public class ReimburstmentDaoImpl extends IDAOImpl<Reimbursment> implements Reim
         criteria.add(Restrictions.like("code", code, MatchMode.ANYWHERE));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
-    
+
     private void doSearchReimbursmentByParam(ReimbursmentSearchParameter searchParameter, Criteria criteria) {
 
-        if (searchParameter.getCode()!= null) {
-        	criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.ANYWHERE));
+        if (searchParameter.getCode() != null) {
+            criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.ANYWHERE));
         }
-        
+
         criteria.add(Restrictions.isNotNull("id"));
     }
 
@@ -82,10 +82,28 @@ public class ReimburstmentDaoImpl extends IDAOImpl<Reimbursment> implements Reim
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("empData.id", empId));
         criteria.add(Restrictions.eq("reimbursmentSchema.id", reimbursmentSchemaId));
-         criteria.setFetchMode("empData", FetchMode.JOIN);
+        criteria.setFetchMode("empData", FetchMode.JOIN);
         criteria.setFetchMode("reimbursmentSchema", FetchMode.JOIN);
         return criteria.list();
     }
-    
-    
+
+    @Override
+    public Reimbursment getEntityByApprovalActivityNumberWithDetail(String approvalActivityNumber) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("approvalActivityNumber", approvalActivityNumber));
+        criteria.setFetchMode("empData", FetchMode.JOIN);
+        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+        criteria.setFetchMode("reimbursmentSchema", FetchMode.JOIN);
+        return (Reimbursment) criteria.uniqueResult();
+    }
+
+    @Override
+    public Reimbursment getEntityByReimbursmentNoWithDetail(String reimburmentNo) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("code", reimburmentNo));
+        criteria.setFetchMode("empData", FetchMode.JOIN);
+        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+        criteria.setFetchMode("reimbursmentSchema", FetchMode.JOIN);
+        return (Reimbursment) criteria.uniqueResult();
+    }
 }

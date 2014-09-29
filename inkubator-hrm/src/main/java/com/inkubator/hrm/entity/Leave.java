@@ -53,16 +53,19 @@ public class Leave implements Serializable {
     private Integer maxAllowedMinus;
     private Integer effectiveFrom;
     private Integer submittedLimit;
-    private Integer approvalLevel;
     private Boolean isQuotaReduction;
     private String endOfPeriod;
     private Integer endOfPeriodMonth;
+    private Integer quotaPerPeriod;
     private Boolean isOnlyOncePerEmployee;
+    private Boolean isActive;
     private String createdBy;
     private Date createdOn;
     private String updatedBy;
     private Date updatedOn;
     private Set<LeaveScheme> leaveSchemes = new HashSet<LeaveScheme>(0);
+    private Set<ApprovalDefinitionLeave> approvalDefinitionLeaves = new HashSet<ApprovalDefinitionLeave>(0);
+     private Set<LeaveDistribution> leaveDistributions = new HashSet<>(0);
     
     public Leave(){
     	
@@ -238,15 +241,6 @@ public class Leave implements Serializable {
 		this.submittedLimit = submittedLimit;
 	}
 
-	@Column(name = "aproval_level", nullable = false, length = 2)
-	public Integer getApprovalLevel() {
-		return approvalLevel;
-	}
-
-	public void setApprovalLevel(Integer approvalLevel) {
-		this.approvalLevel = approvalLevel;
-	}
-
 	@Column(name = "is_quota_reduction", nullable = false)
 	public Boolean getIsQuotaReduction() {
 		return isQuotaReduction;
@@ -272,6 +266,15 @@ public class Leave implements Serializable {
 
 	public void setEndOfPeriodMonth(Integer endOfPeriodMonth) {
 		this.endOfPeriodMonth = endOfPeriodMonth;
+	}	
+
+	@Column(name = "quota_per_period", nullable=false, length = 2)
+	public Integer getQuotaPerPeriod() {
+		return quotaPerPeriod;
+	}
+
+	public void setQuotaPerPeriod(Integer quotaPerPeriod) {
+		this.quotaPerPeriod = quotaPerPeriod;
 	}
 
 	@Column(name = "is_only_once_per_employee", nullable = false)
@@ -281,6 +284,15 @@ public class Leave implements Serializable {
 
 	public void setIsOnlyOncePerEmployee(Boolean isOnlyOncePerEmployee) {
 		this.isOnlyOncePerEmployee = isOnlyOncePerEmployee;
+	}
+
+	@Column(name = "is_active", nullable = false)
+	public Boolean getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
 	}
 
 	@Column(name = "created_by", length = 45)
@@ -328,6 +340,15 @@ public class Leave implements Serializable {
 
 	public void setLeaveSchemes(Set<LeaveScheme> leaveSchemes) {
 		this.leaveSchemes = leaveSchemes;
+	}
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "leave")
+	public Set<ApprovalDefinitionLeave> getApprovalDefinitionLeaves() {
+		return approvalDefinitionLeaves;
+	}
+
+	public void setApprovalDefinitionLeaves(Set<ApprovalDefinitionLeave> approvalDefinitionLeaves) {
+		this.approvalDefinitionLeaves = approvalDefinitionLeaves;
 	}
 
 	@Transient
@@ -394,4 +415,15 @@ public class Leave implements Serializable {
 		}
     	return endOfPeriodAsLabel;
     }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "leave")
+    public Set<LeaveDistribution> getLeaveDistributions() {
+        return leaveDistributions;
+    }
+
+    public void setLeaveDistributions(Set<LeaveDistribution> leaveDistributions) {
+        this.leaveDistributions = leaveDistributions;
+    }
+    
+    
 }

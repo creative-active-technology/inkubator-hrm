@@ -61,8 +61,8 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service(value = "reimbursmentService")
 @Lazy
-public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements ReimbursmentService{
-    
+public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements ReimbursmentService {
+
     @Autowired
     private ReimbursmentDao reimbursmentDao;
     @Autowired
@@ -73,26 +73,25 @@ public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements 
     private HrmUserDao hrmUserDao;
     @Autowired
     private ApprovalActivityDao approvalActivityDao;
-    @Autowired 
+    @Autowired
     private ReimbursmentSchemaEmployeeTypeDao reimbursmentSchemaEmployeeTypeDao;
     @Autowired
     private FacesIO facesIO;
-    
-    
+
     @Override
-    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ,propagation = Propagation.SUPPORTS, timeout = 50)
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<Reimbursment> getAllDataWithDetail(ReimbursmentSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
         return reimbursmentDao.getAllDataWithDetail(searchParameter, firstResult, maxResults, order);
     }
 
     @Override
-    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ,propagation = Propagation.SUPPORTS, timeout = 30)
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
     public Long getTotalReimbursmentByParam(ReimbursmentSearchParameter searchParameter) throws Exception {
         return reimbursmentDao.getTotalReimburstByParam(searchParameter);
     }
 
     @Override
-    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ,propagation = Propagation.SUPPORTS, timeout = 30)
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
     public Reimbursment getEntityByPkWithDetail(Long id) throws Exception {
         return reimbursmentDao.getEntityByPkWithDetail(id);
     }
@@ -108,7 +107,7 @@ public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements 
     }
 
     @Override
-    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ,propagation = Propagation.SUPPORTS, timeout = 30)
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
     public Reimbursment getEntiyByPK(Long id) throws Exception {
         return reimbursmentDao.getEntiyByPK(id);
     }
@@ -298,82 +297,82 @@ public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements 
         }
         EmpData empData = empDataDao.getEntiyByPK(reimbursment.getEmpData().getId());
         ReimbursmentSchema reimbursmentSchema = reimbursmentSchemaDao.getEntiyByPK(reimbursment.getReimbursmentSchema().getId());
-        
+
         //validate if not employee term
         for (ReimbursmentSchemaEmployeeType reimbursmentSchemaEmployeeType : this.reimbursmentSchemaEmployeeTypeDao.getByUserId(reimbursmentSchema.getId())) {
-            if(empData.getEmployeeType().getName().equals(reimbursmentSchemaEmployeeType.getEmployeeType().getName())){
+            if (empData.getEmployeeType().getName().equals(reimbursmentSchemaEmployeeType.getEmployeeType().getName())) {
                 isNotEmployee += 1;
             }
         }
-        
-        if(isNotEmployee == 0){
+
+        if (isNotEmployee == 0) {
             throw new BussinessException("reimbursment.is_not_employee_type_term");
         }
-        
+
         //validate basic value
         System.out.println(empData.getDecryptBasicSalary());
         List<Reimbursment> totalNominalSalary = reimbursmentDao.getAllDataWithEmpIdAndReimbursmentSchemaId(empData.getId(), reimbursmentSchema.getId());
         //hitung jumlah rembesan yg sudah tersimpan didatabase
-        for(Reimbursment jmhSalary : totalNominalSalary){
-            if(jmhSalary.getNominal() != null){
+        for (Reimbursment jmhSalary : totalNominalSalary) {
+            if (jmhSalary.getNominal() != null) {
                 jmlNominalReimbursment = jmlNominalReimbursment.add(jmhSalary.getNominal());
             }
-            if(jmhSalary.getQuantity() != null){
+            if (jmhSalary.getQuantity() != null) {
                 jumlahQuantity = jumlahQuantity + jmhSalary.getQuantity();
             }
-            System.out.println(jmlNominalReimbursment+" &&&&&&&");
+            System.out.println(jmlNominalReimbursment + " &&&&&&&");
         }
         //hitung jumlah rembesan saat ini
-        if(reimbursment.getNominal() != null){
+        if (reimbursment.getNominal() != null) {
             jmlNominalReimbursment = jmlNominalReimbursment.add(reimbursment.getNominal());
         }
-        String decryptSalary = empData.getDecryptBasicSalary().replace(".","");
+        String decryptSalary = empData.getDecryptBasicSalary().replace(".", "");
         //replace "." dan convert ke decimal
         BigDecimal salary = new BigDecimal(decryptSalary);
-        if(reimbursmentSchema.getBasicValue() != null){
-            if(reimbursmentSchema.getBasicValue().equals(HRMConstant.BASIC_VALUE_NOMINAL)){            
+        if (reimbursmentSchema.getBasicValue() != null) {
+            if (reimbursmentSchema.getBasicValue().equals(HRMConstant.BASIC_VALUE_NOMINAL)) {
                 System.out.println("basic valuenya nominal" + jmlNominalReimbursment + " " + reimbursmentSchema.getNominalUnit());
                 //validasi nominal
                 result = jmlNominalReimbursment.compareTo(reimbursmentSchema.getNominalUnit());
-                if(result == 1){
+                if (result == 1) {
                     throw new BussinessException("reimbursment.nominal_unit_is_greater");
                 }
-            }else{
+            } else {
                 //bandingkan jumlah rembesment dengan gaji
                 BigDecimal ratioSalary = new BigDecimal(reimbursmentSchema.getRatioSalary());
                 result = jmlNominalReimbursment.compareTo(ratioSalary.multiply(salary));
-                if(result == 1){
+                if (result == 1) {
                     throw new BussinessException("reimbursment.reimbersment_is_greater_than_salary");
                 }
             }
         }
-        
+
         //validate quantity
-        if(reimbursment.getQuantity() != null){
+        if (reimbursment.getQuantity() != null) {
             jumlahQuantity = jumlahQuantity + reimbursment.getQuantity();
         }
-        if(reimbursmentSchema.getQuantity() != null){
-            if(jumlahQuantity > reimbursmentSchema.getQuantity()){
+        if (reimbursmentSchema.getQuantity() != null) {
+            if (jumlahQuantity > reimbursmentSchema.getQuantity()) {
                 throw new BussinessException("reimbursment.reimbersment_quantity_is_greater");
             }
         }
-        
+
         //validate tanggal mulai bekerja karyawan
-        System.out.println(DateTimeUtil.getTotalMonthDifference(reimbursment.getEmpData().getJoinDate(), new Date())+"=========================================");
+        System.out.println(DateTimeUtil.getTotalMonthDifference(reimbursment.getEmpData().getJoinDate(), new Date()) + "=========================================");
         Integer effectiveSince = Integer.valueOf(DateTimeUtil.getTotalMonthDifference(reimbursment.getEmpData().getJoinDate(), new Date()));
-        if(effectiveSince < reimbursmentSchema.getEffectiveDate()){
+        if (effectiveSince < reimbursmentSchema.getEffectiveDate()) {
             throw new BussinessException("reimbursment.reimbersment_effective_since_lower_than_effective_since_term");
         }
-        
+
         HrmUser requestUser = hrmUserDao.getByEmpDataId(empData.getId());
         ApprovalActivity approvalActivity = isBypassApprovalChecking ? null : super.checkApprovalProcess(HRMConstant.REIMBURSEMENT, requestUser.getUserId());
-        
-        if(approvalActivity == null){
+
+        if (approvalActivity == null) {
             reimbursment.setEmpData(empData);
             reimbursment.setReimbursmentSchema(reimbursmentSchema);
             reimbursment.setCreatedBy(UserInfoUtil.getUserName());
             reimbursment.setCreatedOn(new Date());
-            if(reimbursmentFile != null){
+            if (reimbursmentFile != null) {
                 InputStream inputStream = null;
                 byte[] buffer = null;
                 inputStream = reimbursmentFile.getInputstream();
@@ -382,9 +381,9 @@ public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements 
             }
             reimbursmentDao.save(reimbursment);
             message = "success_without_approvl";
-        }else{
+        } else {
             String uploadPath = null;
-            if(reimbursmentFile != null){
+            if (reimbursmentFile != null) {
                 uploadPath = getUploadPath(Long.parseLong(RandomNumberUtil.getRandomNumber(9)), reimbursmentFile);
                 facesIO.transferFile(reimbursmentFile);
                 File file = new File(facesIO.getPathUpload() + reimbursmentFile.getFileName());
@@ -407,48 +406,48 @@ public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements 
             //save to approval activity
             approvalActivity.setPendingData(json);
             approvalActivityDao.save(approvalActivity);
-            
+
             //sending email notification
             this.sendingEmailApprovalNotif(approvalActivity);
             message = "success_need_approval";
         }
         return message;
     }
-    
-        public void sendingEmailApprovalNotif(ApprovalActivity appActivity) throws Exception{
-                System.out.println("masuk send email approval");
-                //initialization
-		Gson gson = this.getGsonBuilder().create();
-		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMMM-yyyy");
-		double totalAmount = 0;
-		
-		//get all sendCC email address on status approve OR reject
-		List<String> ccEmailAddresses =  new ArrayList<String>();
-		if((appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_APPROVED)  || (appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_REJECTED)){
-			ccEmailAddresses = super.getCcEmailAddressesOnApproveOrReject(appActivity);
-		}
-		
-		//parsing object data to json, for email purpose
-		
+
+    public void sendingEmailApprovalNotif(ApprovalActivity appActivity) throws Exception {
+        System.out.println("masuk send email approval");
+        //initialization
+        Gson gson = this.getGsonBuilder().create();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMMM-yyyy");
+        double totalAmount = 0;
+
+        //get all sendCC email address on status approve OR reject
+        List<String> ccEmailAddresses = new ArrayList<String>();
+        if ((appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_APPROVED) || (appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_REJECTED)) {
+            ccEmailAddresses = super.getCcEmailAddressesOnApproveOrReject(appActivity);
+        }
+
+        //parsing object data to json, for email purpose
+
 //		Reimbursment reimbursment = gson.fromJson(appActivity.getPendingData(), Reimbursment.class);   	
-		ReimbursmentModelJsonParsing reimbursment = (ReimbursmentModelJsonParsing) JsonConverter.getClassFromJson(appActivity.getPendingData(), ReimbursmentModelJsonParsing.class, "dd-MM-yyyy");
-                ReimbursmentSchema reimbursmentSchema = reimbursmentSchemaDao.getEntiyByPK(reimbursment.getReimbursmentSchemaId());
-                System.out.println(reimbursment.getClaimDate());
-                final JSONObject jsonObj = new JSONObject();
-        try {        	
+        ReimbursmentModelJsonParsing reimbursment = (ReimbursmentModelJsonParsing) JsonConverter.getClassFromJson(appActivity.getPendingData(), ReimbursmentModelJsonParsing.class, "dd-MM-yyyy");
+        ReimbursmentSchema reimbursmentSchema = reimbursmentSchemaDao.getEntiyByPK(reimbursment.getReimbursmentSchemaId());
+        System.out.println(reimbursment.getClaimDate());
+        final JSONObject jsonObj = new JSONObject();
+        try {
             jsonObj.put("approvalActivityId", appActivity.getId());
             jsonObj.put("ccEmailAddresses", ccEmailAddresses);
-            jsonObj.put("locale", FacesUtil.getFacesContext().getViewRoot().getLocale());
+            jsonObj.put("locale", appActivity.getLocale());
             jsonObj.put("reimbursment_schema", reimbursmentSchema.getName());
             jsonObj.put("proposeDate", dateFormat.format(new Date()));
             jsonObj.put("claim_date", dateFormat.format(reimbursment.getClaimDate()));
-            if(reimbursment.getNominal() != null){
+            if (reimbursment.getNominal() != null) {
                 jsonObj.put("nominalOrUnit", new DecimalFormat("###,###").format(reimbursment.getNominal()));
-            }else{
-                jsonObj.put("nominalOrUnit", reimbursment.getQuantity()+" Unit");
+            } else {
+                jsonObj.put("nominalOrUnit", reimbursment.getQuantity() + " Unit");
             }
             jsonObj.put("reimbursmentNo", reimbursment.getCode());
-            
+
         } catch (JSONException e) {
             LOGGER.error("Error when create json Object ", e);
         }
@@ -460,8 +459,8 @@ public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements 
                 return session.createTextMessage(jsonObj.toString());
             }
         });
-	}
-        
+    }
+
     private String getUploadPath(Long id, UploadedFile documentFile) {
         String extension = StringUtils.substringAfterLast(documentFile.getFileName(), ".");
         String uploadPath = facesIO.getPathUpload() + "reimburstment_" + id + "." + extension;
@@ -470,25 +469,26 @@ public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements 
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void approved(long approvalActivityId, ReimbursmentModelJsonParsing reimbursmentModelJsonParsing, String comment) throws Exception{
-            Map<String, Object> result = super.approvedAndCheckNextApproval(approvalActivityId, null, comment);
-            System.out.println(result);
-            ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
-            if(StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")){
-                saveModelJson(reimbursmentModelJsonParsing, true);
-            }
-            sendingEmailApprovalNotif(appActivity);
+    public void approved(long approvalActivityId, ReimbursmentModelJsonParsing reimbursmentModelJsonParsing, String comment) throws Exception {
+        Map<String, Object> result = super.approvedAndCheckNextApproval(approvalActivityId, null, comment);
+        System.out.println(result);
+        ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
+        if (StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")) {
+
+            saveModelJson(reimbursmentModelJsonParsing, appActivity, true);
+        }
+        sendingEmailApprovalNotif(appActivity);
     }
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void saveModelJson(ReimbursmentModelJsonParsing reimbursmentModelJsonParsing, boolean isBypassApprovalChecking) throws Exception {
+    public void saveModelJson(ReimbursmentModelJsonParsing reimbursmentModelJsonParsing, ApprovalActivity appActivity, boolean isBypassApprovalChecking) throws Exception {
         // check duplicate business travel number
         long totalDuplicates = reimbursmentDao.getTotalByCode(reimbursmentModelJsonParsing.getCode());
         if (totalDuplicates > 0) {
             throw new BussinessException("businesstravel.error_duplicate_business_travel_no");
         }
-        
+
         EmpData empData = empDataDao.getByEmpIdWithDetail(reimbursmentModelJsonParsing.getEmpDataId());
         ReimbursmentSchema reimbursmentSchema = reimbursmentSchemaDao.getEntiyByPK(reimbursmentModelJsonParsing.getReimbursmentSchemaId());
         Reimbursment reimbursment = new Reimbursment();
@@ -497,24 +497,25 @@ public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements 
         reimbursment.setCreatedBy(reimbursmentModelJsonParsing.getCreateBy());
         reimbursment.setCreatedOn(reimbursmentModelJsonParsing.getCreateDate());
         reimbursment.setEmpData(empData);
-        if(reimbursmentModelJsonParsing.getNominal() != null){
+        reimbursment.setApprovalActivityNumber(appActivity.getActivityNumber());
+        if (reimbursmentModelJsonParsing.getNominal() != null) {
             reimbursment.setNominal(reimbursmentModelJsonParsing.getNominal());
         }
-        if(reimbursmentModelJsonParsing.getQuantity() != null){
+        if (reimbursmentModelJsonParsing.getQuantity() != null) {
             reimbursment.setQuantity(reimbursmentModelJsonParsing.getQuantity());
         }
         reimbursment.setReimbursmentSchema(reimbursmentSchema);
         this.reimbursmentDao.save(reimbursment);
-        
+
         HrmUser requestUser = hrmUserDao.getByEmpDataId(empData.getId());
         ApprovalActivity approvalActivity = isBypassApprovalChecking ? null : super.checkApprovalProcess(HRMConstant.BUSINESS_TRAVEL, requestUser.getUserId());
-        if(approvalActivity == null){
+        if (approvalActivity == null) {
             System.out.println("masuk approval activity null");
             reimbursment.setEmpData(empData);
             reimbursment.setReimbursmentSchema(reimbursmentSchema);
             reimbursment.setCreatedBy(UserInfoUtil.getUserName());
             reimbursment.setCreatedOn(new Date());
-            if(reimbursmentModelJsonParsing.getReimbursmentFileName() != null){
+            if (reimbursmentModelJsonParsing.getReimbursmentFileName() != null) {
                 InputStream inputStream = null;
                 byte[] buffer = null;
                 File reimbursmentFileDelete = new File(reimbursmentModelJsonParsing.getReimbursmentFileName());
@@ -524,17 +525,63 @@ public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements 
                 reimbursmentFileDelete.delete();
             }
             reimbursmentDao.save(reimbursment);
-        }else{
+        } else {
             System.out.println("masuk approval activity gk null");
             //convert reimbursmentModelJson ke json
             String json = JsonConverter.getJson(reimbursmentModelJsonParsing, "dd-MM-yyyy");
             //save to approval activity
             approvalActivity.setPendingData(json);
             approvalActivityDao.save(approvalActivity);
-            
+
             //sending email notification
             this.sendingEmailApprovalNotif(approvalActivity);
         }
 
+    }
+
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void rejected(long approvalActivityId, String comment) throws Exception {
+        Map<String, Object> result = super.rejectedAndCheckNextApproval(approvalActivityId, comment);
+        ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
+        if (StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")) {
+            /**
+             * kalau status akhir sudah di reject dan tidak ada next approval,
+             * berarti langsung insert ke database
+             */
+            ReimbursmentModelJsonParsing reimbursmentModelJsonParsing = (ReimbursmentModelJsonParsing) JsonConverter.getClassFromJson(appActivity.getPendingData(), ReimbursmentModelJsonParsing.class, "dd-MM-yyyy");
+            ReimbursmentSchema reimbursmentSchema = reimbursmentSchemaDao.getEntiyByPK(reimbursmentModelJsonParsing.getReimbursmentSchemaId());
+            Reimbursment reimbursment = new Reimbursment();
+            EmpData empData = empDataDao.getByEmpIdWithDetail(reimbursmentModelJsonParsing.getEmpDataId());
+            reimbursment.setClaimDate(reimbursmentModelJsonParsing.getClaimDate());
+            reimbursment.setCode(reimbursmentModelJsonParsing.getCode());
+            reimbursment.setCreatedBy(reimbursmentModelJsonParsing.getCreateBy());
+            reimbursment.setCreatedOn(reimbursmentModelJsonParsing.getCreateDate());
+            reimbursment.setEmpData(empData);
+            reimbursment.setApprovalActivityNumber(appActivity.getActivityNumber());
+            if (reimbursmentModelJsonParsing.getNominal() != null) {
+                reimbursment.setNominal(reimbursmentModelJsonParsing.getNominal());
+            }
+            if (reimbursmentModelJsonParsing.getQuantity() != null) {
+                reimbursment.setQuantity(reimbursmentModelJsonParsing.getQuantity());
+            }
+            reimbursment.setReimbursmentSchema(reimbursmentSchema);
+            this.reimbursmentDao.save(reimbursment);
+        }
+
+        //if there is no error, then sending the email notification
+        sendingEmailApprovalNotif(appActivity);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Reimbursment getEntityByApprovalActivityNumberWithDetail(String approvalActivityNumber) throws Exception {
+        return reimbursmentDao.getEntityByApprovalActivityNumberWithDetail(approvalActivityNumber);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Reimbursment getEntityByReimbursmentNoWithDetail(String reimbursmentNo) throws Exception {
+        return reimbursmentDao.getEntityByReimbursmentNoWithDetail(reimbursmentNo);
     }
 }

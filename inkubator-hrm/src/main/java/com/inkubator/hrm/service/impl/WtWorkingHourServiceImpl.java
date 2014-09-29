@@ -5,7 +5,9 @@ package com.inkubator.hrm.service.impl;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.dao.AttendanceStatusDao;
 import com.inkubator.hrm.dao.WtWorkingHourDao;
+import com.inkubator.hrm.entity.AttendanceStatus;
 import com.inkubator.hrm.entity.WtWorkingHour;
 import com.inkubator.hrm.service.WtWorkingHourService;
 import com.inkubator.hrm.web.search.WorkingHourSearchParameter;
@@ -30,6 +32,8 @@ public class WtWorkingHourServiceImpl extends IServiceImpl implements WtWorkingH
 
 	@Autowired
 	private WtWorkingHourDao wtWorkingHourDao;
+	@Autowired
+	private AttendanceStatusDao attendanceStatusDao;
 	
 	@Override
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -210,6 +214,8 @@ public class WtWorkingHourServiceImpl extends IServiceImpl implements WtWorkingH
 		}
 		
 		workingHour.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+		AttendanceStatus attendanceStatus = attendanceStatusDao.getEntiyByPK(workingHour.getAttendanceStatus().getId());
+		workingHour.setAttendanceStatus(attendanceStatus);
 		workingHour.setCreatedBy(UserInfoUtil.getUserName());
 		workingHour.setCreatedOn(new Date());
 		wtWorkingHourDao.save(workingHour);
@@ -266,6 +272,8 @@ public class WtWorkingHourServiceImpl extends IServiceImpl implements WtWorkingH
 		workingHour.setGoHomeLimitEnd(wt.getGoHomeLimitEnd());
 		workingHour.setIsPenaltyArriveLate(wt.getIsPenaltyArriveLate());
 		workingHour.setIsPenaltyGoHomeEarly(wt.getIsPenaltyGoHomeEarly());
+		AttendanceStatus attendanceStatus = attendanceStatusDao.getEntiyByPK(wt.getAttendanceStatus().getId());
+		workingHour.setAttendanceStatus(attendanceStatus);
 		workingHour.setIsManageBreakTime(wt.getIsManageBreakTime());
 		workingHour.setBreakHourBegin(wt.getBreakHourBegin());
 		workingHour.setBreakHourEnd(wt.getBreakHourEnd());
@@ -296,6 +304,13 @@ public class WtWorkingHourServiceImpl extends IServiceImpl implements WtWorkingH
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
 	public Long getTotalByParam(WorkingHourSearchParameter parameter) throws Exception {
 		return wtWorkingHourDao.getTotalByParam(parameter);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public WtWorkingHour getEntityByPkFetchAttendStatus(long id) {
+		return wtWorkingHourDao.getEntityByPkFetchAttendStatus(id);
+		
 	}
 
 }

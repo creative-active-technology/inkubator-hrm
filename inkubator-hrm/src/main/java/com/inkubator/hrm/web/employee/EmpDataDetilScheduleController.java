@@ -174,6 +174,9 @@ public class EmpDataDetilScheduleController extends BaseController {
     public void cleanAndExit() {
         empDataService=null;
         selectedEmpData=null;
+        tempJadwalKaryawanService=null;
+        dataToShow=null;
+        
 //        listJabatanSpesifikasi=null;
 //        jabatanDeskripsis=null;
 //        listCareerHistory=null;

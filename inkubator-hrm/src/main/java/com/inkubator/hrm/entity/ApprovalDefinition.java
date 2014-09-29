@@ -4,6 +4,8 @@ package com.inkubator.hrm.entity;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -24,7 +26,7 @@ import javax.persistence.Version;
 )
 public class ApprovalDefinition implements java.io.Serializable {
 
-    private long id;
+    private Long id;
     private Integer version;
     private HrmUser hrmUserByOnBehalfIndividual;
     private Jabatan jabatanByApproverPosition;
@@ -45,7 +47,9 @@ public class ApprovalDefinition implements java.io.Serializable {
     private Boolean autoApproveOnDelay;
     private Boolean escalateOnDelay;
     private Integer delayTime;
+    private String specificName;
     private Set<ApprovalActivity> approvalActivities = new HashSet<ApprovalActivity>(0);
+    private Set<ApprovalDefinitionLeave> approvalDefinitionLeaves = new HashSet<ApprovalDefinitionLeave>(0);
 
     public ApprovalDefinition() {
     }
@@ -54,7 +58,7 @@ public class ApprovalDefinition implements java.io.Serializable {
         this.id = id;
     }
 
-    public ApprovalDefinition(long id, HrmUser hrmUserByOnBehalfIndividual, Jabatan jabatanByApproverPosition, HrmUser hrmUserByApproverIndividual, Jabatan jabatanByOnBehalfPosition, String name, Integer sequence, Integer minApprover, Integer minRejector, String processType, String approverType, Boolean allowOnBehalf, String onBehalfType, String createdBy, Date createdOn, String updatedBy, Date updatedOn, Set<ApprovalActivity> approvalActivities) {
+    public ApprovalDefinition(long id, HrmUser hrmUserByOnBehalfIndividual, Jabatan jabatanByApproverPosition, HrmUser hrmUserByApproverIndividual, Jabatan jabatanByOnBehalfPosition, String name, Integer sequence, Integer minApprover, Integer minRejector, String processType, String approverType, Boolean allowOnBehalf, String onBehalfType, String createdBy, Date createdOn, String updatedBy, Date updatedOn, Set<ApprovalActivity> approvalActivities, Set<ApprovalDefinitionLeave> approvalDefinitionLeaves) {
         this.id = id;
         this.hrmUserByOnBehalfIndividual = hrmUserByOnBehalfIndividual;
         this.jabatanByApproverPosition = jabatanByApproverPosition;
@@ -73,16 +77,17 @@ public class ApprovalDefinition implements java.io.Serializable {
         this.updatedBy = updatedBy;
         this.updatedOn = updatedOn;
         this.approvalActivities = approvalActivities;
+        this.approvalDefinitionLeaves = approvalDefinitionLeaves;
     }
 
     @Id
 
     @Column(name = "id", unique = true, nullable = false)
-    public long getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -246,15 +251,6 @@ public class ApprovalDefinition implements java.io.Serializable {
         this.updatedOn = updatedOn;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "approvalDefinition")
-    public Set<ApprovalActivity> getApprovalActivities() {
-        return this.approvalActivities;
-    }
-
-    public void setApprovalActivities(Set<ApprovalActivity> approvalActivities) {
-        this.approvalActivities = approvalActivities;
-    }
-
     @Column(name = "auto_approve_on_delay")
     public Boolean getAutoApproveOnDelay() {
         return this.autoApproveOnDelay;
@@ -281,5 +277,32 @@ public class ApprovalDefinition implements java.io.Serializable {
     public void setDelayTime(Integer delayTime) {
         this.delayTime = delayTime;
     }
+    
+    @Column(name = "specific_name", length = 100)
+    public String getSpecificName() {
+		return specificName;
+	}
+
+	public void setSpecificName(String specificName) {
+		this.specificName = specificName;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "approvalDefinition")
+    public Set<ApprovalActivity> getApprovalActivities() {
+        return this.approvalActivities;
+    }
+
+    public void setApprovalActivities(Set<ApprovalActivity> approvalActivities) {
+        this.approvalActivities = approvalActivities;
+    }    
+    
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "approvalDefinition")
+    public Set<ApprovalDefinitionLeave> getApprovalDefinitionLeaves() {
+		return approvalDefinitionLeaves;
+	}
+
+	public void setApprovalDefinitionLeaves(Set<ApprovalDefinitionLeave> approvalDefinitionLeaves) {
+		this.approvalDefinitionLeaves = approvalDefinitionLeaves;
+	}
 
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -23,13 +24,13 @@ import com.inkubator.hrm.web.search.WorkingHourSearchParameter;
 @Repository(value = "wtWorkingHourDao")
 @Lazy
 public class WtWorkingHourDaoImpl extends IDAOImpl<WtWorkingHour> implements WtWorkingHourDao {
-	
-	@Override
-	public Class<WtWorkingHour> getEntityClass() {
-		return WtWorkingHour.class;
-	}	
-	
-	@Override
+
+    @Override
+    public Class<WtWorkingHour> getEntityClass() {
+        return WtWorkingHour.class;
+    }
+
+    @Override
     public List<WtWorkingHour> getByParam(WorkingHourSearchParameter parameter, int firstResult, int maxResults, Order orderable) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchByParam(parameter, criteria);
@@ -70,7 +71,7 @@ public class WtWorkingHourDaoImpl extends IDAOImpl<WtWorkingHour> implements WtW
         criteria.add(Restrictions.ne("id", id));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
-    
+
     @Override
     public Long getTotalByCode(String code) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
@@ -85,4 +86,19 @@ public class WtWorkingHourDaoImpl extends IDAOImpl<WtWorkingHour> implements WtW
         criteria.add(Restrictions.ne("id", id));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
+
+    @Override
+    public WtWorkingHour getByCode(String code) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("code", code));
+        return (WtWorkingHour) criteria.uniqueResult();
+    }
+
+	@Override
+	public WtWorkingHour getEntityByPkFetchAttendStatus(long id) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.setFetchMode("attendanceStatus", FetchMode.JOIN);
+        criteria.add(Restrictions.eq("id", id));
+        return (WtWorkingHour) criteria.uniqueResult();
+	}
 }

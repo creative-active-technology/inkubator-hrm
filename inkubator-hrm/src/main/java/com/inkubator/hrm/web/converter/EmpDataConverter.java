@@ -44,7 +44,7 @@ public class EmpDataConverter implements Converter {
             return empData;
         } catch (Exception e) {
             e.printStackTrace();
-            throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Marca no válida", ""));
+            throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error when converting to EmpData using EmpDataConverter", ""));
         }
     }
 

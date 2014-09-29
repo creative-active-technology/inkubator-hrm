@@ -50,13 +50,14 @@
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3">
+
+
                                     <p:commandButton value="Export to XLS" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
                                         <pe:exporter target="tableEmpDataIdExpand" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Employee_Placement"/>
                                     </p:commandButton>
-<!--                                    <p:commandButton value="#{appmsg['global.add']}" action="#{empDataViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" icon="ui-icon-document"
-                                                     styleClass="label_button" ajax="true" immediate="true">
+                                    <p:commandButton value="Add Employee Work Schedule" action="#{empDataViewController.doPlacementOfEmployee()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true"/>
 
-                                    </p:commandButton>-->
+                                    
                                     <p:commandButton value="#{appmsg['global.close']}"  styleClass="label_button" action="#{empDataViewController.doClose()}" title="#{appmsg['global.close']}" icon="ui-icon-home"
                                                      label="#{appmsg['global.close']}"/>
                                 </h:panelGrid>
