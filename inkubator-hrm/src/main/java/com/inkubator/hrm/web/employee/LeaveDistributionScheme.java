@@ -6,10 +6,11 @@ package com.inkubator.hrm.web.employee;
 
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.GolonganJabatan;
-import com.inkubator.hrm.entity.LeaveScheme;
+import com.inkubator.hrm.entity.Leave;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.GolonganJabatanService;
 import com.inkubator.hrm.service.LeaveSchemeService;
+import com.inkubator.hrm.service.LeaveService;
 import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
@@ -23,7 +24,6 @@ import javax.annotation.PreDestroy;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import org.apache.log4j.Logger;
 import org.primefaces.model.DualListModel;
 
 /**
@@ -32,15 +32,18 @@ import org.primefaces.model.DualListModel;
  */
 @ManagedBean(name = "distributionLeaveScheme")
 @ViewScoped
-public class DistributionLeaveScheme extends BaseController{
+public class LeaveDistributionScheme extends BaseController{
     @ManagedProperty(value = "#{leaveSchemeService}")
     private LeaveSchemeService leaveSchemeService;
-    @ManagedProperty(value = "#{golonganJabatanService}")
-    private GolonganJabatanService golonganJabatanService;
+    @ManagedProperty(value = "#{leaveService}")
+    private LeaveService leaveService;
     @ManagedProperty(value = "#{empDataService}")
     private EmpDataService empDataService;
+    @ManagedProperty(value = "#{golonganJabatanService}")
+    private GolonganJabatanService golonganJabatanService;
+    
     private Map<String, Long> leaveSchemeDropDown = new HashMap<String, Long>();
-    private List<LeaveScheme> leaveSchemeList = new ArrayList<>();
+    private List<Leave> leaveList = new ArrayList<>();
     private Map<String, Long> golonganJabatanDropDown = new HashMap<String, Long>();
     private List<GolonganJabatan> golonganJabatanList = new ArrayList<>();
     private DualListModel<EmpData> dualListModel = new DualListModel<>();
@@ -55,17 +58,17 @@ public class DistributionLeaveScheme extends BaseController{
         String param = FacesUtil.getRequestParameter("param");
         model = new DistributionLeaveSchemeModel();
         try {
-            leaveSchemeList = leaveSchemeService.getAllData();
+            leaveList = leaveService.getAllData();
             golonganJabatanList = golonganJabatanService.getAllWithDetail();
-            for (LeaveScheme leaveSchema : leaveSchemeList) {
-                leaveSchemeDropDown.put(leaveSchema.getName(), leaveSchema.getId());
+            for (Leave leave : leaveList) {
+                leaveSchemeDropDown.put(leave.getName(), leave.getId());
             }
             for (GolonganJabatan golonganJabatan : golonganJabatanList) {
                 golonganJabatanDropDown.put(golonganJabatan.getCode() + " - " + golonganJabatan.getPangkat().getPangkatName(), golonganJabatan.getId());
             }
             source = this.empDataService.getAllDataWithRelation();
         } catch (Exception ex) {
-            java.util.logging.Logger.getLogger(DistributionLeaveScheme.class.getName()).log(Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LeaveDistributionScheme.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -74,10 +77,10 @@ public class DistributionLeaveScheme extends BaseController{
         leaveSchemeService = null;
         golonganJabatanService = null;
         leaveSchemeDropDown = null;
-        empDataService = null;
-        leaveSchemeList = null;
+        leaveList = null;
         model = null;
         dualListModel = null;
+        leaveService = null;
 
     }
 
@@ -97,13 +100,6 @@ public class DistributionLeaveScheme extends BaseController{
         this.golonganJabatanService = golonganJabatanService;
     }
 
-    public EmpDataService getEmpDataService() {
-        return empDataService;
-    }
-
-    public void setEmpDataService(EmpDataService empDataService) {
-        this.empDataService = empDataService;
-    }
 
     public Map<String, Long> getLeaveSchemeDropDown() {
         return leaveSchemeDropDown;
@@ -113,12 +109,20 @@ public class DistributionLeaveScheme extends BaseController{
         this.leaveSchemeDropDown = leaveSchemeDropDown;
     }
 
-    public List<LeaveScheme> getLeaveSchemeList() {
-        return leaveSchemeList;
+    public LeaveService getLeaveService() {
+        return leaveService;
     }
 
-    public void setLeaveSchemeList(List<LeaveScheme> leaveSchemeList) {
-        this.leaveSchemeList = leaveSchemeList;
+    public void setLeaveService(LeaveService leaveService) {
+        this.leaveService = leaveService;
+    }
+
+    public List<Leave> getLeaveList() {
+        return leaveList;
+    }
+
+    public void setLeaveList(List<Leave> leaveList) {
+        this.leaveList = leaveList;
     }
 
     public Map<String, Long> getGolonganJabatanDropDown() {
@@ -137,6 +141,14 @@ public class DistributionLeaveScheme extends BaseController{
         this.golonganJabatanList = golonganJabatanList;
     }
 
+    public EmpDataService getEmpDataService() {
+        return empDataService;
+    }
+
+    public void setEmpDataService(EmpDataService empDataService) {
+        this.empDataService = empDataService;
+    }
+
     public DualListModel<EmpData> getDualListModel() {
         return dualListModel;
     }
@@ -145,20 +157,20 @@ public class DistributionLeaveScheme extends BaseController{
         this.dualListModel = dualListModel;
     }
 
-    public DistributionLeaveSchemeModel getModel() {
-        return model;
-    }
-
-    public void setModel(DistributionLeaveSchemeModel model) {
-        this.model = model;
-    }
-
     public List<EmpData> getSource() {
         return source;
     }
 
     public void setSource(List<EmpData> source) {
         this.source = source;
+    }
+
+    public DistributionLeaveSchemeModel getModel() {
+        return model;
+    }
+
+    public void setModel(DistributionLeaveSchemeModel model) {
+        this.model = model;
     }
     
     public void doSearchEmployee() throws Exception {

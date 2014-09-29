@@ -467,13 +467,15 @@ public class EmpData implements java.io.Serializable {
     }
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "empData")
-    public Set<LeaveDistribution> getHrmUserRoles() {
+    public Set<LeaveDistribution> getLeaveDistributions() {
         return leaveDistributions;
     }
 
-    public void setHrmUserRoles(Set<LeaveDistribution> leaveDistributions) {
+    public void setLeaveDistributions(Set<LeaveDistribution> leaveDistributions) {
         this.leaveDistributions = leaveDistributions;
     }
+
+
 
     
 }
