@@ -144,7 +144,7 @@
                                 <p:column style="width: 80%">
                                     <p:commandButton value="#{appmsg['global.search']}" ajax="true" action="#{distributionLeaveScheme.doSearchEmployee()}" 
                                                      styleClass="isitext_hrm" 
-                                                     style="margin-right: 5px" label="#{appmsg['global.search']}" update="picklistUserRoleId, jobTitleFormId"
+                                                     style="margin-right: 5px" label="#{appmsg['global.search']}" update=":formSubmitId:picklistUserRoleId, jobTitleFormId"
                                                      icon="ui-icon-search" title="#{appmsg['global.search']}">    
                                     </p:commandButton>
                                 </p:column>
@@ -154,13 +154,12 @@
                         </p:panelGrid>
 
                         <p:focus context="jobTitleFormId" />
-                        <!--<p:separator style="margin-top: 20px;margin-bottom: 10px"/>-->
+                    </div>
+                </h:form>
+                <h:form id="formSubmitId">
+                    <div id="box_bg" style="margin: 10px">
                         <div style="margin-top: 10px">
                             <p:outputLabel value="Daftar Employee" styleClass="header_big" />
-                           <!--<p:outputLabel value="#{appmsg['user_view.header2']}" styleClass="header_small_no_bold" />-->
-                            <!--                                </h:panelGrid>
-                                                        </h:panelGroup>-->
-                            <!--</h:panelGrid>-->
                             <p:separator/>
                         </div>
                         <div align="center">
@@ -169,8 +168,7 @@
                                         itemLabel="#{role.nik} - #{role.bioData.firstName} #{role.bioData.lastName}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
                                         removeLabel="#{appmsg['global.remove']}"/>
                             <p:message for="picklistUserRoleId" />
-                        </div>  
-                        <!--</p:panel>-->
+                        </div>
 
                         <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
                         <div style="margin-bottom: 5px">
