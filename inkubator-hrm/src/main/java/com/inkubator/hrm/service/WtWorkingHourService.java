@@ -18,4 +18,6 @@ public interface WtWorkingHourService extends IService<WtWorkingHour> {
 
 	public Long getTotalByParam(WorkingHourSearchParameter parameter) throws Exception;
 
+	public WtWorkingHour getEntityByPkFetchAttendStatus(long id);
+
 }
