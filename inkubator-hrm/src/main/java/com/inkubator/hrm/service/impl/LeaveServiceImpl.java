@@ -2,17 +2,6 @@ package com.inkubator.hrm.service.impl;
 
 
 
-import java.util.Date;
-import java.util.List;
-
-import org.hibernate.criterion.Order;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.ApprovalDefinitionDao;
@@ -27,6 +16,15 @@ import com.inkubator.hrm.entity.Leave;
 import com.inkubator.hrm.service.LeaveService;
 import com.inkubator.hrm.web.search.LeaveSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+import java.util.Date;
+import java.util.List;
+import org.hibernate.criterion.Order;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -59,8 +57,9 @@ public class LeaveServiceImpl extends BaseApprovalConfigurationServiceImpl<Leave
 	}
 
 	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
 	public List<Leave> getAllData(Boolean arg0) throws Exception {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+		return leaveDao.getAllData(arg0);
 
 	}
 

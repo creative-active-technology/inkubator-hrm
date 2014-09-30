@@ -4,16 +4,20 @@
  */
 package com.inkubator.hrm.web.employee;
 
+import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.GolonganJabatan;
 import com.inkubator.hrm.entity.Leave;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.GolonganJabatanService;
+import com.inkubator.hrm.service.LeaveDistributionService;
 import com.inkubator.hrm.service.LeaveSchemeService;
 import com.inkubator.hrm.service.LeaveService;
 import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
+import com.inkubator.webcore.util.MessagesResourceUtil;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +25,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -42,7 +47,9 @@ public class LeaveDistributionSchemeFormController extends BaseController {
     private EmpDataService empDataService;
     @ManagedProperty(value = "#{golonganJabatanService}")
     private GolonganJabatanService golonganJabatanService;
-
+    @ManagedProperty(value = "#{leaveDistributionService}")
+    private LeaveDistributionService leaveDistributionService;
+    private Leave selecedLeave;
     private Map<String, Long> leaveSchemeDropDown = new HashMap<String, Long>();
     private List<Leave> leaveList = new ArrayList<>();
     private Map<String, Long> golonganJabatanDropDown = new HashMap<String, Long>();
@@ -59,7 +66,7 @@ public class LeaveDistributionSchemeFormController extends BaseController {
         String param = FacesUtil.getRequestParameter("param");
         model = new DistributionLeaveSchemeModel();
         try {
-            leaveList = leaveService.getAllData();
+            leaveList = leaveService.getAllData(Boolean.TRUE);
             golonganJabatanList = golonganJabatanService.getAllWithDetail();
             for (Leave leave : leaveList) {
                 leaveSchemeDropDown.put(leave.getName(), leave.getId());
@@ -174,18 +181,23 @@ public class LeaveDistributionSchemeFormController extends BaseController {
     }
 
     public void doSearchEmployee() throws Exception {
+        selecedLeave=leaveService.getEntiyByPK(model.getLeaveSchemeId());
         source = empDataService.getTotalBySearchEmployeeLeave(model);
         dualListModel.setSource(source);
     }
 
     public String doSave() {
+
         try {
             List<EmpData> dataToSave = dualListModel.getTarget();
+            leaveDistributionService.saveMassPenempatanCuti(dataToSave, model.getLeaveSchemeId(), model.getStartBalance());
 //            empDataService.saveMassPenempatanJadwal(dataToSave, model.getWorkingGroupId());
-//            MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
-//                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
+                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 //            return "/protected/employee/employee_schedule_view.htm?faces-redirect=true";
-
+        } catch (BussinessException ex) { //data already exist(duplicate)
+//            LOGGER.error("Error", ex);
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -193,6 +205,7 @@ public class LeaveDistributionSchemeFormController extends BaseController {
     }
 
     public void doReset() {
+        selecedLeave=new Leave();
         model.setDepartmentLikeOrEqual(null);
         model.setLeaveSchemeId(null);
         model.setDepartmentLikeOrEqual(3);
@@ -200,4 +213,19 @@ public class LeaveDistributionSchemeFormController extends BaseController {
         model.setGolonganJabatanId(Long.parseLong("0"));
         dualListModel = new DualListModel<>();
     }
+
+    public void setLeaveDistributionService(LeaveDistributionService leaveDistributionService) {
+        this.leaveDistributionService = leaveDistributionService;
+    }
+
+    public Leave getSelecedLeave() {
+        return selecedLeave;
+    }
+
+    public void setSelecedLeave(Leave selecedLeave) {
+        this.selecedLeave = selecedLeave;
+    }
+    
+    
+
 }
