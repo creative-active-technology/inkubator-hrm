@@ -326,7 +326,8 @@ public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements 
         if (reimbursment.getNominal() != null) {
             jmlNominalReimbursment = jmlNominalReimbursment.add(reimbursment.getNominal());
         }
-        String decryptSalary = empData.getDecryptBasicSalary().replace(".", "");
+        String decryptSalary = empData.getDecryptBasicSalary();
+        System.out.println(decryptSalary+"============================================");
         //replace "." dan convert ke decimal
         BigDecimal salary = new BigDecimal(decryptSalary);
         if (reimbursmentSchema.getBasicValue() != null) {

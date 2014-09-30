@@ -51,7 +51,7 @@
                                     <p:outputLabel  value="Start Balance"  for="strtBalance" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:inputText id="strtBalance" value="#{distributionLeaveScheme.model.startBalance}"
+                                    <pe:inputNumber id="strtBalance" decimalPlaces="1" value="#{distributionLeaveScheme.model.startBalance}"
                                                      required="false" styleClass="isitext_hrm" style="width:50px;" />
                                     <p:outputLabel  value=" Hari" />
                                     <p:message for="strtBalance"/>
