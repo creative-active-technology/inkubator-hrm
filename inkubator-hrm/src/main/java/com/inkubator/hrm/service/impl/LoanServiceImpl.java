@@ -473,7 +473,7 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
         try {        	
             jsonObj.put("approvalActivityId", appActivity.getId());
             jsonObj.put("ccEmailAddresses", ccEmailAddresses);
-            jsonObj.put("locale", FacesUtil.getFacesContext().getViewRoot().getLocale());
+            jsonObj.put("locale", appActivity.getLocale());
             jsonObj.put("proposeDate", dateFormat.format(loan.getCreatedOn()));
             jsonObj.put("loanSchemaName", loan.getLoanSchema().getName());
             jsonObj.put("nominalPrincipal", decimalFormat.format(loan.getNominalPrincipal()));

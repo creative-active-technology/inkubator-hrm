@@ -1,5 +1,25 @@
 package com.inkubator.hrm.service.impl;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Session;
+import javax.jms.TextMessage;
+
+import org.apache.activemq.ScheduledMessage;
+import org.apache.commons.lang3.StringUtils;
+import org.hibernate.criterion.Order;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
+
 import com.google.gson.GsonBuilder;
 import com.inkubator.common.util.JsonConverter;
 import com.inkubator.common.util.RandomNumberUtil;
@@ -17,23 +37,7 @@ import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.json.util.EntityExclusionStrategy;
 import com.inkubator.hrm.json.util.HibernateProxyIdOnlyTypeAdapter;
 import com.inkubator.hrm.web.model.ApprovalPushMessageModel;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.Session;
-import javax.jms.TextMessage;
-import org.apache.activemq.ScheduledMessage;
-import org.apache.commons.lang3.StringUtils;
-import org.hibernate.criterion.Order;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jms.core.JmsTemplate;
-import org.springframework.jms.core.MessageCreator;
+import com.inkubator.webcore.util.FacesUtil;
 
 /**
  *
@@ -100,7 +104,8 @@ public class BaseApprovalServiceImpl extends IServiceImpl {
 					appActivity.setActivityNumber(RandomNumberUtil.getRandomNumber(9));
 					appActivity.setNotificationSend(false);
 					appActivity.setRequestBy(requestByEmployee);
-					appActivity.setRequestTime(new Date());
+					appActivity.setRequestTime(new Date());					
+					appActivity.setLocale(FacesUtil.getFacesContext().getViewRoot().getLocale().toString());
 					
 					//show growl notification for approverUserId
 		        	sendApprovalGrowlNotif(appActivity);
@@ -357,6 +362,7 @@ public class BaseApprovalServiceImpl extends IServiceImpl {
         newEntity.setActivityNumber(previousAppActv.getActivityNumber());
         newEntity.setRequestBy(previousAppActv.getRequestBy());
         newEntity.setRequestTime(previousAppActv.getRequestTime());
+        newEntity.setLocale(previousAppActv.getLocale());
         //jika tidak ada update di json pendingDataUpdate maka gunakan pending data yg lama/previous activity
         String pendingData = StringUtils.isEmpty(pendingDataUpdate) ? previousAppActv.getPendingData() : pendingDataUpdate;
         newEntity.setPendingData(pendingData);

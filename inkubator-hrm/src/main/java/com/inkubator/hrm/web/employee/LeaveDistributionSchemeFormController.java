@@ -30,7 +30,7 @@ import org.primefaces.model.DualListModel;
  *
  * @author Deni
  */
-@ManagedBean(name = "distributionLeaveScheme")
+@ManagedBean(name = "leaveDistributionSchemeFormController")
 @ViewScoped
 public class LeaveDistributionSchemeFormController extends BaseController{
     @ManagedProperty(value = "#{leaveSchemeService}")
@@ -176,5 +176,14 @@ public class LeaveDistributionSchemeFormController extends BaseController{
     public void doSearchEmployee() throws Exception {
         source = empDataService.getTotalBySearchEmployeeLeave(model);
         dualListModel.setSource(source);
+    }
+    
+    public void doSave(){
+        
+    }
+    
+    public void doReset(){
+        model.setDepartmentLikeOrEqual(null);
+        dualListModel=new DualListModel<>();
     }
 }
