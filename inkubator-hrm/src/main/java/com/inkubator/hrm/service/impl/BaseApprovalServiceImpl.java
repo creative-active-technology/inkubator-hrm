@@ -106,6 +106,7 @@ public class BaseApprovalServiceImpl extends IServiceImpl {
 					appActivity.setRequestBy(requestByEmployee);
 					appActivity.setRequestTime(new Date());					
 					appActivity.setLocale(FacesUtil.getFacesContext().getViewRoot().getLocale().toString());
+					appActivity.setCreatedTime(new Date());
 					
 					//show growl notification for approverUserId
 		        	sendApprovalGrowlNotif(appActivity);
@@ -180,6 +181,10 @@ public class BaseApprovalServiceImpl extends IServiceImpl {
      * @param comment String
      * @return Map<String, Object> Key value dari map tersebut "isEndOfApprovalProcess" berupa String dan "approvalActivity" berupa objek ApprovalActivity
      */
+	protected Map<String, Object> approvedAndCheckNextApproval(Long appActivityId, String comment) throws Exception {
+		return this.approvedAndCheckNextApproval(appActivityId, null, comment);
+	}
+	
 	protected Map<String, Object> approvedAndCheckNextApproval(Long appActivityId, String pendingDataUpdate, String comment) throws Exception {
 
         /* update APPROVED approval activity */
@@ -255,7 +260,7 @@ public class BaseApprovalServiceImpl extends IServiceImpl {
         
         
         /** checking process if there is any nextApproval for ApprovalActivity */
-        ApprovalActivity nextApproval = this.checkingNextApproval(approvalActivity, null);
+        ApprovalActivity nextApproval = this.checkingNextApproval(approvalActivity);
         HashMap<String, Object> result = new HashMap<String, Object>();         
         if (nextApproval == null) {
         	// jika nextApproval sama dengan null, berarti sudah tidak ada lagi proses approval, lanjut ke saving objek dari "pendingData" json 
@@ -275,7 +280,11 @@ public class BaseApprovalServiceImpl extends IServiceImpl {
         return result;        
     }
 	
-	private ApprovalActivity checkingNextApproval(ApprovalActivity previousAppActivity, String pendingDataUpdate){
+	protected ApprovalActivity checkingNextApproval(ApprovalActivity previousAppActivity){
+		return this.checkingNextApproval(previousAppActivity, null);
+	}
+	
+	protected ApprovalActivity checkingNextApproval(ApprovalActivity previousAppActivity, String pendingDataUpdate){
 		/** create new approval activity (if any)*/
         ApprovalActivity nextApproval = null;
         ApprovalDefinition previousAppDef = previousAppActivity.getApprovalDefinition();
@@ -356,6 +365,7 @@ public class BaseApprovalServiceImpl extends IServiceImpl {
         newEntity.setNotificationSend(false);
         newEntity.setApprovalCount(approvalCount);
         newEntity.setRejectCount(rejectCount);
+        newEntity.setCreatedTime(new Date());
 
         //copy value from previous approval activity
         newEntity.setSequence(previousAppActv.getSequence() + 1); //increment +1        
@@ -405,25 +415,6 @@ public class BaseApprovalServiceImpl extends IServiceImpl {
     	
     	return emailAdresses;
     }
-    
-    /**
-     * <p>Method untuk mendapatkan GsonBuilder, yang akan digunakan untuk parsing dari entity ke json (ataupun sebaliknya) 
-     * </p>
-     *
-     * <pre>
-     * Gson gson = getGsonBuilder().create();
-     * </pre>
-     *
-     * @return GsonBuilder GsonBuilder
-     */
-    protected GsonBuilder getGsonBuilder(){
-		GsonBuilder gsonBuilder = new GsonBuilder();
-    	gsonBuilder.serializeNulls();
-		gsonBuilder.setDateFormat("dd MMMM yyyy hh:mm");
-		gsonBuilder.registerTypeAdapterFactory(HibernateProxyIdOnlyTypeAdapter.FACTORY);
-		gsonBuilder.setExclusionStrategies(new EntityExclusionStrategy());
-		return gsonBuilder;
-	}
     
     /** jika approvalStatus masih waiting, maka kirim notif dalam bentuk growl ke approverUserId 
 	 *  Untuk pengaturan messagenya, silahkan di lihat di ApprovalRemoteCommand.java */

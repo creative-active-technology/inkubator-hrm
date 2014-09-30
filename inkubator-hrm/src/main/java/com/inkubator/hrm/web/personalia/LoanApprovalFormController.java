@@ -20,6 +20,7 @@ import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.Loan;
 import com.inkubator.hrm.entity.LoanPaymentDetail;
+import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.ApprovalActivityService;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.LoanService;
@@ -53,7 +54,7 @@ public class LoanApprovalFormController extends BaseController {
             super.initialization();
             String id = FacesUtil.getRequestParameter("execution");
             selectedApprovalActivity = approvalActivityService.getEntiyByPK(Long.parseLong(id.substring(1)));
-            Gson gson = loanService.getGsonBuilder().create();
+            Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
 			selectedLoan =  gson.fromJson(selectedApprovalActivity.getPendingData(), Loan.class);
 			EmpData empData = empDataService.getByIdWithDetail(selectedLoan.getEmpData().getId());
 			selectedLoan.setEmpData(empData);
