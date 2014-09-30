@@ -416,25 +416,6 @@ public class BaseApprovalServiceImpl extends IServiceImpl {
     	return emailAdresses;
     }
     
-    /**
-     * <p>Method untuk mendapatkan GsonBuilder, yang akan digunakan untuk parsing dari entity ke json (ataupun sebaliknya) 
-     * </p>
-     *
-     * <pre>
-     * Gson gson = getGsonBuilder().create();
-     * </pre>
-     *
-     * @return GsonBuilder GsonBuilder
-     */
-    protected GsonBuilder getGsonBuilder(){
-		GsonBuilder gsonBuilder = new GsonBuilder();
-    	gsonBuilder.serializeNulls();
-		gsonBuilder.setDateFormat("dd MMMM yyyy hh:mm");
-		gsonBuilder.registerTypeAdapterFactory(HibernateProxyIdOnlyTypeAdapter.FACTORY);
-		gsonBuilder.setExclusionStrategies(new EntityExclusionStrategy());
-		return gsonBuilder;
-	}
-    
     /** jika approvalStatus masih waiting, maka kirim notif dalam bentuk growl ke approverUserId 
 	 *  Untuk pengaturan messagenya, silahkan di lihat di ApprovalRemoteCommand.java */
     private void sendApprovalGrowlNotif(ApprovalActivity appActivity){

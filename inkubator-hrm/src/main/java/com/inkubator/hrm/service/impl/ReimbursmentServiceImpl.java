@@ -4,6 +4,35 @@
  */
 package com.inkubator.hrm.service.impl;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Session;
+
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.hibernate.criterion.Order;
+import org.primefaces.json.JSONException;
+import org.primefaces.json.JSONObject;
+import org.primefaces.model.UploadedFile;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.jms.core.MessageCreator;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.google.gson.Gson;
 import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.common.util.JsonConverter;
@@ -22,38 +51,12 @@ import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.Reimbursment;
 import com.inkubator.hrm.entity.ReimbursmentSchema;
 import com.inkubator.hrm.entity.ReimbursmentSchemaEmployeeType;
+import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.ReimbursmentService;
 import com.inkubator.hrm.web.model.ReimbursmentModelJsonParsing;
 import com.inkubator.hrm.web.search.ReimbursmentSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesIO;
-import com.inkubator.webcore.util.FacesUtil;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.Session;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.hibernate.criterion.Order;
-import org.primefaces.json.JSONException;
-import org.primefaces.json.JSONObject;
-import org.primefaces.model.UploadedFile;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.jms.core.MessageCreator;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -418,7 +421,7 @@ public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements 
     public void sendingEmailApprovalNotif(ApprovalActivity appActivity) throws Exception {
         System.out.println("masuk send email approval");
         //initialization
-        Gson gson = this.getGsonBuilder().create();
+        Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMMM-yyyy");
         double totalAmount = 0;
 

@@ -24,6 +24,7 @@ import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.BusinessTravel;
 import com.inkubator.hrm.entity.BusinessTravelComponent;
 import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.ApprovalActivityService;
 import com.inkubator.hrm.service.BusinessTravelService;
 import com.inkubator.hrm.service.EmpDataService;
@@ -58,7 +59,7 @@ public class BusinessTravelApprovalFormController extends BaseController {
             super.initialization();
             String id = FacesUtil.getRequestParameter("execution");
             selectedApprovalActivity = approvalActivityService.getEntiyByPK(Long.parseLong(id.substring(1)));
-            Gson gson = businessTravelService.getGsonBuilder().create();
+            Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
 			JsonObject jsonObject =  gson.fromJson(selectedApprovalActivity.getPendingData(), JsonObject.class);
 			businessTravelComponents = gson.fromJson(jsonObject.get("businessTravelComponents"), new TypeToken<List<BusinessTravelComponent>>(){}.getType());
 			selectedBusinessTravel = gson.fromJson(selectedApprovalActivity.getPendingData(), BusinessTravel.class);
@@ -139,7 +140,7 @@ public class BusinessTravelApprovalFormController extends BaseController {
 
 	public String doApproved() {
     	try {
-    		Gson gson = businessTravelService.getGsonBuilder().create();
+    		Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
     		JsonParser parser = new JsonParser();
     		JsonArray arrayComponents = new JsonArray();
     		JsonObject jsonObject =  gson.fromJson(selectedApprovalActivity.getPendingData(), JsonObject.class);

@@ -17,6 +17,7 @@ import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.BusinessTravelComponent;
 import com.inkubator.hrm.entity.HrmUser;
+import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.ApprovalActivityNotSendService;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -115,7 +116,7 @@ public class ApprovalActivityNotSendServiceImpl extends BaseApprovalServiceImpl 
                     switch (appActivity.getApprovalDefinition().getName()) {
                         case HRMConstant.BUSINESS_TRAVEL:
                             double totalAmount = 0;
-                            Gson gson = super.getGsonBuilder().create();
+                            Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
 //                            String pendingData = appActivity.getPendingData();
 
                             JsonObject businessTravelObj = gson.fromJson(appActivity.getPendingData(), JsonObject.class);
@@ -175,7 +176,7 @@ public class ApprovalActivityNotSendServiceImpl extends BaseApprovalServiceImpl 
                     switch (appActivity.getApprovalDefinition().getName()) {
                         case HRMConstant.BUSINESS_TRAVEL:
                             double totalAmount = 0;
-                            Gson gson = super.getGsonBuilder().create();
+                            Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
 //                            String pendingData = appActivity.getPendingData();
 
                             JsonObject businessTravelObj = gson.fromJson(appActivity.getPendingData(), JsonObject.class);
