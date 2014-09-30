@@ -25,7 +25,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.ApprovalActivityDao;
 import com.inkubator.hrm.dao.EmpDataDao;
@@ -39,13 +38,13 @@ import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.Loan;
 import com.inkubator.hrm.entity.LoanPaymentDetail;
 import com.inkubator.hrm.entity.LoanSchema;
+import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.LoanService;
 import com.inkubator.hrm.util.HRMFinanceLib;
 import com.inkubator.hrm.util.JadwalPembayaran;
 import com.inkubator.hrm.util.LoanPayment;
 import com.inkubator.hrm.web.search.LoanSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
-import com.inkubator.webcore.util.FacesUtil;
 
 /**
  *
@@ -348,7 +347,7 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
         	message = "success_without_approval";
         } else {
         	//parsing object to json and save to approval activity 
-        	Gson gson = super.getGsonBuilder().create();
+        	Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
     		approvalActivity.setPendingData( gson.toJson(entity));
     		approvalActivityDao.save(approvalActivity);
     		
@@ -409,7 +408,7 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
 		if(StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")){
 			/** kalau status akhir sudah di approved dan tidak ada next approval, 
 			 * berarti langsung insert ke database */
-			Gson gson = super.getGsonBuilder().create();
+			Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
 			String pendingData = appActivity.getPendingData();
 			Loan loan =  gson.fromJson(pendingData, Loan.class);
 			loan.setApprovalActivityNumber(appActivity.getActivityNumber());  //set approval activity number, for history approval purpose
@@ -429,7 +428,7 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
 		if(StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")){
 			/** kalau status akhir sudah di reject dan tidak ada next approval, 
 			 * berarti langsung insert ke database */
-			Gson gson = super.getGsonBuilder().create();
+			Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
 			String pendingData = appActivity.getPendingData();
 			Loan loan =  gson.fromJson(pendingData, Loan.class);
 			loan.setApprovalActivityNumber(appActivity.getActivityNumber());  //set approval activity number, for history approval purpose
@@ -444,7 +443,7 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
 	@Override
 	public void sendingEmailApprovalNotif(ApprovalActivity appActivity) throws Exception{
 		//initialization
-		Gson gson = this.getGsonBuilder().create();
+		Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMMM-yyyy");
 		DecimalFormat decimalFormat =  new DecimalFormat("###,###");
 		
@@ -493,11 +492,6 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
                 return session.createTextMessage(jsonObj.toString());
             }
         });
-	}
-	
-	@Override
-	public GsonBuilder getGsonBuilder(){
-		return super.getGsonBuilder();
 	}
 
 	@Override

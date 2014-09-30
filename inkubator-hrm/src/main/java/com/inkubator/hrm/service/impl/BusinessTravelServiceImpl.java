@@ -26,7 +26,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -47,10 +46,10 @@ import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.TravelType;
 import com.inkubator.hrm.entity.TravelZone;
+import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.BusinessTravelService;
 import com.inkubator.hrm.web.search.BusinessTravelSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
-import com.inkubator.webcore.util.FacesUtil;
 
 /**
  *
@@ -337,7 +336,7 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
         } else {
         	//parsing object to json
         	JsonParser parser = new JsonParser();
-    		Gson gson = super.getGsonBuilder().create();
+    		Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
     		JsonObject jsonObject = (JsonObject) parser.parse(gson.toJson(entity));    		
     		JsonArray arrayComponents = new JsonArray();
     		for(BusinessTravelComponent btc: businessTravelComponents){
@@ -417,7 +416,7 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
 		if(StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")){
 			/** kalau status akhir sudah di approved dan tidak ada next approval, 
 			 * berarti langsung insert ke database */
-			Gson gson = super.getGsonBuilder().create();
+			Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
 			String pendingData = appActivity.getPendingData();
 			JsonObject jsonObject =  gson.fromJson(pendingData, JsonObject.class);
 			
@@ -440,7 +439,7 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
 		if(StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")){
 			/** kalau status akhir sudah di reject dan tidak ada next approval, 
 			 * berarti langsung insert ke database */
-			Gson gson = super.getGsonBuilder().create();
+			Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
 			String pendingData = appActivity.getPendingData();
 			JsonObject jsonObject =  gson.fromJson(pendingData, JsonObject.class);
 			
@@ -458,7 +457,7 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
 	@Override
 	public void sendingEmailApprovalNotif(ApprovalActivity appActivity) throws Exception{
 		//initialization
-		Gson gson = this.getGsonBuilder().create();
+		Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMMM-yyyy");
 		double totalAmount = 0;
 		
@@ -499,11 +498,6 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
                 return session.createTextMessage(jsonObj.toString());
             }
         });
-	}
-	
-	@Override
-	public GsonBuilder getGsonBuilder(){
-		return super.getGsonBuilder();
 	}
 
 	@Override

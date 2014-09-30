@@ -23,4 +23,6 @@ public interface LeaveDistributionService extends IService<LeaveDistribution> {
 
     public void saveMassPenempatanCuti(List<EmpData> data, long leaveId, double starBalance) throws Exception;
 
+    public LeaveDistribution getEntityByParamWithDetail(Long empId) throws Exception;
+
 }
