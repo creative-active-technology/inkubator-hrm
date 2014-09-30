@@ -11,6 +11,7 @@ import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.GolonganJabatanService;
 import com.inkubator.hrm.service.LeaveSchemeService;
 import com.inkubator.hrm.service.LeaveService;
+import com.inkubator.hrm.util.MapUtil;
 import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
@@ -64,9 +65,13 @@ public class LeaveDistributionSchemeFormController extends BaseController {
             for (Leave leave : leaveList) {
                 leaveSchemeDropDown.put(leave.getName(), leave.getId());
             }
+            int i = 0;
             for (GolonganJabatan golonganJabatan : golonganJabatanList) {
                 golonganJabatanDropDown.put(golonganJabatan.getCode() + " - " + golonganJabatan.getPangkat().getPangkatName(), golonganJabatan.getId());
+                System.out.println(golonganJabatanList.get(i).getCode());
+                i++;
             }
+            MapUtil.sortByValue(golonganJabatanDropDown);
             source = this.empDataService.getAllDataWithRelation();
         } catch (Exception ex) {
             java.util.logging.Logger.getLogger(LeaveDistributionSchemeFormController.class.getName()).log(Level.SEVERE, null, ex);

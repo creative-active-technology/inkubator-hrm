@@ -13,6 +13,8 @@ import com.inkubator.hrm.entity.Leave;
 import com.inkubator.hrm.entity.LeaveDistribution;
 import com.inkubator.hrm.service.LeaveDistributionService;
 import com.inkubator.hrm.web.search.LeaveDistributionSearchParameter;
+import com.inkubator.securitycore.util.UserInfoUtil;
+import java.util.Date;
 import java.util.List;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,8 +72,15 @@ public class LeaveDistributionServiceImpl extends IServiceImpl implements LeaveD
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(LeaveDistribution entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        LeaveDistribution update = leaveDistributionDao.getEntiyByPK(entity.getId());
+        update.setEmpData(empDataDao.getEntiyByPK(entity.getEmpData().getId()));
+        update.setLeave(leaveDao.getEntiyByPK(entity.getLeave().getId()));
+        update.setBalance(entity.getBalance());
+        update.setUpdatedBy(UserInfoUtil.getUserName());
+        update.setUpdatedOn(new Date());
+        this.leaveDistributionDao.update(update);
     }
 
     @Override
@@ -140,8 +149,9 @@ public class LeaveDistributionServiceImpl extends IServiceImpl implements LeaveD
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void delete(LeaveDistribution entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.leaveDistributionDao.delete(entity);
     }
 
     @Override
