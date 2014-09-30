@@ -8,6 +8,8 @@ import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.LeaveDao;
 import com.inkubator.hrm.dao.LeaveDistributionDao;
+import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.Leave;
 import com.inkubator.hrm.entity.LeaveDistribution;
 import com.inkubator.hrm.service.LeaveDistributionService;
 import com.inkubator.hrm.web.search.LeaveDistributionSearchParameter;
@@ -26,15 +28,15 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service(value = "leaveDistributionService")
 @Lazy
-public class LeaveDistributionServiceImpl extends IServiceImpl implements LeaveDistributionService{
-    
+public class LeaveDistributionServiceImpl extends IServiceImpl implements LeaveDistributionService {
+
     @Autowired
     private LeaveDistributionDao leaveDistributionDao;
     @Autowired
     private EmpDataDao empDataDao;
     @Autowired
     private LeaveDao leaveDao;
-    
+
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<LeaveDistribution> getByParamWithDetail(LeaveDistributionSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
@@ -213,4 +215,13 @@ public class LeaveDistributionServiceImpl extends IServiceImpl implements LeaveD
         return leaveDistributionDao.getEntityByParamWithDetail(empId);
     }
     
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
+    public void saveMassPenempatanCuti(List<EmpData> data, long leaveId) throws Exception {
+       Leave leave=this.leaveDao.getEntiyByPK(leaveId);
+        for (EmpData empData : data) {
+            LeaveDistribution distribution=new LeaveDistribution();
+//            distribution.set
+        }
+       
+    }
 }

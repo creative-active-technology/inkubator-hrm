@@ -32,7 +32,8 @@ import org.primefaces.model.DualListModel;
  */
 @ManagedBean(name = "leaveDistributionSchemeFormController")
 @ViewScoped
-public class LeaveDistributionSchemeFormController extends BaseController{
+public class LeaveDistributionSchemeFormController extends BaseController {
+
     @ManagedProperty(value = "#{leaveSchemeService}")
     private LeaveSchemeService leaveSchemeService;
     @ManagedProperty(value = "#{leaveService}")
@@ -41,7 +42,7 @@ public class LeaveDistributionSchemeFormController extends BaseController{
     private EmpDataService empDataService;
     @ManagedProperty(value = "#{golonganJabatanService}")
     private GolonganJabatanService golonganJabatanService;
-    
+
     private Map<String, Long> leaveSchemeDropDown = new HashMap<String, Long>();
     private List<Leave> leaveList = new ArrayList<>();
     private Map<String, Long> golonganJabatanDropDown = new HashMap<String, Long>();
@@ -49,7 +50,7 @@ public class LeaveDistributionSchemeFormController extends BaseController{
     private DualListModel<EmpData> dualListModel = new DualListModel<>();
     private DistributionLeaveSchemeModel model;
     private List<EmpData> source = new ArrayList<EmpData>();
-    
+
     @PostConstruct
     @Override
     public void initialization() {
@@ -71,7 +72,7 @@ public class LeaveDistributionSchemeFormController extends BaseController{
             java.util.logging.Logger.getLogger(LeaveDistributionSchemeFormController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     @PreDestroy
     private void cleanAndExit() {
         leaveSchemeService = null;
@@ -99,7 +100,6 @@ public class LeaveDistributionSchemeFormController extends BaseController{
     public void setGolonganJabatanService(GolonganJabatanService golonganJabatanService) {
         this.golonganJabatanService = golonganJabatanService;
     }
-
 
     public Map<String, Long> getLeaveSchemeDropDown() {
         return leaveSchemeDropDown;
@@ -172,18 +172,32 @@ public class LeaveDistributionSchemeFormController extends BaseController{
     public void setModel(DistributionLeaveSchemeModel model) {
         this.model = model;
     }
-    
+
     public void doSearchEmployee() throws Exception {
         source = empDataService.getTotalBySearchEmployeeLeave(model);
         dualListModel.setSource(source);
     }
-    
-    public void doSave(){
-        
+
+    public String doSave() {
+        try {
+            List<EmpData> dataToSave = dualListModel.getTarget();
+//            empDataService.saveMassPenempatanJadwal(dataToSave, model.getWorkingGroupId());
+//            MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
+//                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+//            return "/protected/employee/employee_schedule_view.htm?faces-redirect=true";
+
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
+        }
+        return null;
     }
-    
-    public void doReset(){
+
+    public void doReset() {
         model.setDepartmentLikeOrEqual(null);
-        dualListModel=new DualListModel<>();
+        model.setLeaveSchemeId(null);
+        model.setDepartmentLikeOrEqual(3);
+        model.setEmployeeTypeLikeOrEqual(3);
+        model.setGolonganJabatanId(Long.parseLong("0"));
+        dualListModel = new DualListModel<>();
     }
 }

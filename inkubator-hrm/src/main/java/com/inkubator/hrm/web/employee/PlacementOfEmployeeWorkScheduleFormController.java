@@ -196,6 +196,8 @@ public class PlacementOfEmployeeWorkScheduleFormController extends BaseControlle
         dualListModel = new DualListModel<>();
     }
 
-    
-   
+    public String doBack() {
+        return "/protected/employee/employee_schedule_view.htm?faces-redirect=true";
+    }
+
 }
