@@ -271,4 +271,9 @@ public class LeaveDistributionServiceImpl extends IServiceImpl implements LeaveD
 
     }
 
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public LeaveDistribution getEntityByParamWithDetail(Long empId) throws Exception {
+        return leaveDistributionDao.getEntityByParamWithDetail(empId);
+    }
+
 }
