@@ -1,0 +1,70 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.inkubator.hrm.dao.impl;
+
+import com.inkubator.datacore.dao.impl.IDAOImpl;
+import com.inkubator.hrm.dao.LeaveDistributionDao;
+import com.inkubator.hrm.entity.LeaveDistribution;
+import com.inkubator.hrm.web.search.LeaveDistributionSearchParameter;
+import java.util.List;
+import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Repository;
+
+/**
+ *
+ * @author Deni
+ */
+@Repository(value = "leaveDistributionDao")
+@Lazy
+public class LeaveDistributionDaoImpl extends IDAOImpl<LeaveDistribution> implements LeaveDistributionDao{
+
+    @Override
+    public Class<LeaveDistribution> getEntityClass() {
+        return LeaveDistribution.class;
+    }
+
+    @Override
+    public List<LeaveDistribution> getByParamWithDetail(LeaveDistributionSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        doSearch(searchParameter, criteria);
+        criteria.setFetchMode("empData", FetchMode.JOIN);
+        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+        criteria.setFetchMode("leave", FetchMode.JOIN);
+        criteria.addOrder(order);
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResults);
+        return criteria.list();
+    }
+
+    @Override
+    public Long getTotalLeaveDistributionByParam(LeaveDistributionSearchParameter searchParameter) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        doSearch(searchParameter, criteria);
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+    
+    private void doSearch(LeaveDistributionSearchParameter searchParameter, Criteria criteria) {
+        if (searchParameter.getEmpData()!=null) {
+        	criteria.add(Restrictions.like("empData", searchParameter.getEmpData(), MatchMode.ANYWHERE));
+        } 
+        criteria.add(Restrictions.isNotNull("id"));
+    }
+
+    @Override
+    public LeaveDistribution getEntityByParamWithDetail(Long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("id", id));
+        criteria.setFetchMode("empData", FetchMode.JOIN);
+        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+        criteria.setFetchMode("leave", FetchMode.JOIN);
+        return (LeaveDistribution) criteria.uniqueResult();
+    }
+}
