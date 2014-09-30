@@ -179,8 +179,8 @@
                                     <p:outputLabel  value="Start Balance"  for="strtBalance" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:inputText id="strtBalance" value="#{leaveDistributionSchemeFormController.model.startBalance}"
-                                                 required="false" styleClass="isitext_hrm" style="width:50px;" />
+                                    <pe:inputNumber id="strtBalance" decimalPlaces="1" value="#{distributionLeaveScheme.model.startBalance}"
+                                                     styleClass="isitext_hrm" style="width:50px;" required="true" />
                                     <p:outputLabel  value=" Hari" />
                                     <p:message for="strtBalance"/>
                                 </p:column>
@@ -188,7 +188,7 @@
                         </p:panelGrid>
                         <div align="center">
                             <p:pickList value="#{leaveDistributionSchemeFormController.dualListModel}" var="role" itemValue="#{role}" converter="#{empDataConverter}" id="picklistUserRoleId"
-                                        required="false"  style="margin-top: 15px;margin-bottom: 15px;" label="#{appmsg['role_view.header1']}" styleClass="isitext_hrm"
+                                        required="true"  style="margin-top: 15px;margin-bottom: 15px;" label="Daftar Employee" styleClass="isitext_hrm"
                                         itemLabel="#{role.nik} - #{role.bioData.firstName} #{role.bioData.lastName}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
                                         removeLabel="#{appmsg['global.remove']}"/>
                             <p:message for="picklistUserRoleId" />
@@ -196,7 +196,7 @@
 
                         <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
                         <div style="margin-bottom: 5px">
-                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" 
+                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formSubmitId"
                                              action="#{leaveDistributionSchemeFormController.doSave()}" styleClass="label_button" 
                                              style="margin-right: 5px" label="#{appmsg['global.save']}"
                                              icon="ui-icon-disk"
