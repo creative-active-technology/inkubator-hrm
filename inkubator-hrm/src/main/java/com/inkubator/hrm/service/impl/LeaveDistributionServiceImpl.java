@@ -206,5 +206,11 @@ public class LeaveDistributionServiceImpl extends IServiceImpl implements LeaveD
     public List<LeaveDistribution> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public LeaveDistribution getEntityByParamWithDetail(Long empId) throws Exception {
+        return leaveDistributionDao.getEntityByParamWithDetail(empId);
+    }
     
 }

@@ -59,12 +59,12 @@ public class LeaveDistributionDaoImpl extends IDAOImpl<LeaveDistribution> implem
     }
 
     @Override
-    public LeaveDistribution getEntityByParamWithDetail(Long id) {
+    public LeaveDistribution getEntityByParamWithDetail(Long empId) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.eq("id", id));
         criteria.setFetchMode("empData", FetchMode.JOIN);
         criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
         criteria.setFetchMode("leave", FetchMode.JOIN);
+        criteria.add(Restrictions.eq("empData.id", empId));
         return (LeaveDistribution) criteria.uniqueResult();
     }
 }

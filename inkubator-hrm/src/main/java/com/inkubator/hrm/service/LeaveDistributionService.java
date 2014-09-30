@@ -19,4 +19,5 @@ public interface LeaveDistributionService extends IService<LeaveDistribution>{
 
     public Long getTotalLeaveDistributionByParam(LeaveDistributionSearchParameter searchParameter) throws Exception;
 
+    public LeaveDistribution getEntityByParamWithDetail(Long empId) throws Exception;
 }
