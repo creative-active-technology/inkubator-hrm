@@ -339,9 +339,9 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
             criteria.add(disjunction);
         }
         //balance
-        if (model.getStartBalance() != 0.0){
-            criteria.add(Restrictions.eq("lv.balance", model.getStartBalance()));
-        }
+//        if (model.getStartBalance() != 0.0){
+//            criteria.add(Restrictions.eq("lv.balance", model.getStartBalance()));
+//        }
         //departermen equal or like
         if (model.getDepartmentLikeOrEqual() != 3) {
             if (model.getDepartmentLikeOrEqual() == HRMConstant.DEPARTMENT_EQUAL) {
