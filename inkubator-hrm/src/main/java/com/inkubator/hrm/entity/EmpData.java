@@ -419,9 +419,7 @@ public class EmpData implements java.io.Serializable {
     public String getDecryptBasicSalary() {
         String dataEncripted = basicSalary;
         String dataDecripted = AESUtil.getAESDescription(dataEncripted, HRMConstant.KEYVALUE, HRMConstant.AES_ALGO);
-        NumberFormat nb = NumberFormatter.getNumberFormatStatic(CommonUtilConstant.NUMBER_FORMAT_NUMBER_TYPE, new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
-        nb.format(Double.parseDouble(dataDecripted));
-        return nb.format(Double.parseDouble(dataDecripted));
+        return dataDecripted;
     }
 
     @Temporal(TemporalType.DATE)

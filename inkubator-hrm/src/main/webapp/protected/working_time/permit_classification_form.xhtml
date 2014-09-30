@@ -1,0 +1,212 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlPermitClassificationFormlId" globalOnly="true" showDetail="true"/>                
+                <h:form id="formPermitClassificationFormId">
+                    <p:focus context="formPermitClassificationFormId"/>
+                    <div id="box_bg" style="margin: 10px">
+                        <h:panelGrid  columns="2">
+                            <p:graphicImage library="images" name="permitClassification.png" height="36" width="36" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="#{appmsg['permitClassification.permitClassification']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['permitClassification.permitClassification_data_from_working_time']}" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+                        <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px">
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="codeId" value="#{appmsg['permitClassification.permitClassification_code']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:inputText id="codeId" title="#{appmsg['permitClassification.permitClassification_code']}" value="#{permitClassificationFormController.permitClassificationModel.code}" 
+                                                 required="true" requiredMessage="#{appmsg['permitClassification.error_empty_code']}" maxlength="8" styleClass="isitext_hrm" style="width:290px;" />
+                                    <p:message for="codeId"/>
+                                </p:column>
+                            </p:row>   
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="nameId" value="#{appmsg['permitClassification.permitClassification_name']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:inputText id="nameId" title="#{appmsg['permitClassification.permitClassification_name']}" value="#{permitClassificationFormController.permitClassificationModel.name}" 
+                                                 required="true" requiredMessage="#{appmsg['permitClassification.error_empty_code']}" maxlength="60" styleClass="isitext_hrm" style="width:290px;" />
+                                    <p:message for="nameId"/>
+                                </p:column>
+                            </p:row>  
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="statusId" value="#{appmsg['permitClassification.permitClassification_status']}" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:selectBooleanCheckbox id="statusId" value="#{permitClassificationFormController.permitClassificationModel.status}" styleClass="label_button"/>
+
+                                </p:column>
+                            </p:row>  
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="calculationId" value="#{appmsg['permitClassification.permitClassification_calculation']}" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:selectOneRadio id="calculationId" styleClass="isitext_hrm" required="true" value="#{permitClassificationFormController.permitClassificationModel.calculation}" label="#{appmsg['permitClassification.permitClassification_calculation']}">
+                                        <!--Cek HRM Constanta..-->
+                                        <f:selectItem itemLabel="#{appmsg['permitClassification.permitClassification_day_full']}" itemValue="1" />
+                                        <f:selectItem itemLabel="#{appmsg['permitClassification.permitClassification_day_part']}" itemValue="0" />
+                                    </p:selectOneRadio>
+                                </p:column>
+                            </p:row>  
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="attendanceId" value="#{appmsg['permitClassification.permitClassification_attendance']}" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:selectOneMenu id="attendanceId" value="#{permitClassificationFormController.permitClassificationModel.attendanceStatusId}" style="width: 290px;margin-right: 3px" 
+                                                     required="true" requiredMessage="#{appmsg['permitClassification.error_empty_attendance']}">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{permitClassificationFormController.attendanceStatuss}"/>
+                                    </p:selectOneMenu>
+                                </p:column>
+                            </p:row>  
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="baseId" value="#{appmsg['permitClassification.permitClassification_base']}" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:selectOneMenu id="baseId" value="#{permitClassificationFormController.permitClassificationModel.basePeriod}" style="width: 150px;margin-right: 3px" 
+                                                     required="true" requiredMessage="#{appmsg['permitClassification.error_empty_base']}">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItem itemLabel="#{appmsg['permitClassification.permitClassification_from_january']}" itemValue="1" />
+                                        <f:selectItem itemLabel="#{appmsg['permitClassification.permitClassification_from_begin']}" itemValue="0" />
+                                    </p:selectOneMenu>
+                                </p:column>
+                            </p:row>  
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="availibilityId" value="#{appmsg['permitClassification.permitClassification_availibility']}" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:selectOneMenu id="availibilityId" value="#{permitClassificationFormController.permitClassificationModel.availibility}" style="width: 290px;margin-right: 3px" 
+                                                     required="true" requiredMessage="#{appmsg['permitClassification.error_empty_availibility']}" valueChangeListener="#{permitClassificationFormController.availibilityChanged}">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItem itemLabel="#{appmsg['permitClassification.permitClassification_avail_full']}" itemValue="0" />
+                                        <f:selectItem itemLabel="#{appmsg['permitClassification.permitClassification_avail_month']}" itemValue="1" />
+                                        <f:selectItem itemLabel="#{appmsg['permitClassification.permitClassification_avail_date']}" itemValue="2" />
+                                        <p:ajax update="dateId, quantityId" event="change" />
+                                    </p:selectOneMenu>
+                                </p:column>
+                            </p:row>  
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="dateId" value="#{appmsg['permitClassification.permitClassification_date']}" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:calendar id="dateId" value="#{permitClassificationFormController.permitClassificationModel.dateIncreased}" style="width: 290px;margin-right: 3px" 
+                                                required="true" requiredMessage="#{appmsg['permitClassification.error_empty_date']}" disabled="#{permitClassificationFormController.hidden}" />
+                                </p:column>
+                            </p:row> 
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="quantityId" value="#{appmsg['permitClassification.permitClassification_quantity']}" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:spinner id="quantityId" value="#{permitClassificationFormController.permitClassificationModel.quantity}" style="margin-right: 3px" 
+                                               required="true" requiredMessage="#{appmsg['permitClassification.error_empty_quantity']}" disabled="#{permitClassificationFormController.disabled}" min="#{permitClassificationFormController.minimum}" max="#{permitClassificationFormController.maximum}"/>
+                                </p:column>
+                            </p:row>  
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="limitId" value="#{appmsg['permitClassification.permitClassification_limit']}" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:spinner id="limitId" value="#{permitClassificationFormController.permitClassificationModel.limitByDay}" style="margin-right: 3px" 
+                                               required="true" requiredMessage="#{appmsg['permitClassification.error_empty_limit']}" min="1" max="10"/>
+                                    <p:outputLabel for="limitId" value="#{appmsg['permitClassification.day']}" />
+                                </p:column>
+                            </p:row>  
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="employeeId" value="#{appmsg['permitClassification.permitClassification_per_employee']}" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:selectBooleanCheckbox id="employeeId" value="#{permitClassificationFormController.permitClassificationModel.onePerEmployee}" styleClass="label_button"/>
+
+                                </p:column>
+                            </p:row>  
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="maxMonthId" value="#{appmsg['permitClassification.permitClassification_max_month']}" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:spinner id="maxMonthId" value="#{permitClassificationFormController.permitClassificationModel.maxPerMonth}" style="margin-right: 3px" 
+                                               required="true" requiredMessage="#{appmsg['permitClassification.error_empty_maxMonth']}" min="1" max="10"/>
+                                    <p:outputLabel for="maxMonthId" value="#{appmsg['permitClassification.day']}" />
+                                </p:column>
+                            </p:row> 
+                             <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="cutId" value="#{appmsg['permitClassification.permitClassification_cut']}" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:spinner id="cutId" value="#{permitClassificationFormController.permitClassificationModel.salaryCut}" style="margin-right: 3px" 
+                                               required="true" requiredMessage="#{appmsg['permitClassification.error_empty_cut']}" min="0.1" max="1" stepFactor="0.1"/>
+                                    <p:outputLabel for="cutId" value="#{appmsg['permitClassification.salary']}" />
+                                </p:column>
+                            </p:row> 
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="attachmentId" value="#{appmsg['permitClassification.permitClassification_attachment']}" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:selectBooleanCheckbox id="attachmentId" value="#{permitClassificationFormController.permitClassificationModel.attachmentRequired}" styleClass="label_button"/>
+
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="descId" value="#{appmsg['global.description']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:inputTextarea id="descId" title="#{appmsg['global.description']}" value="#{permitClassificationFormController.permitClassificationModel.description}" 
+                                                     maxlength="1000" styleClass="isitext_hrm" style="width:290px;" />
+                                    <p:message for="descId"/>
+                                </p:column>
+                            </p:row>    
+
+
+                        </p:panelGrid>	                    
+                        <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+                        <div style="margin-bottom: 5px">
+                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formPermitClassificationFormId,:growlPermitClassificationFormlId"
+                                             action="#{permitClassificationFormController.doSave()}" styleClass="isitext_hrm"
+                                             style="margin-right: 5px" label="#{appmsg['global.save']}"
+                                             icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formPermitClassificationFormId" action="#{permitClassificationFormController.doReset()}"
+                                             icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px">  
+                                <p:resetInput target="formPermitClassificationFormId" />  
+                            </p:commandButton>
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{permitClassificationFormController.doBack()}" immediate="true"
+                                             styleClass="label_button"/>
+                        </div>
+                    </div>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+
