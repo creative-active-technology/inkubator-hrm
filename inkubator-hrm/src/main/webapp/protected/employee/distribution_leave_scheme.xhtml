@@ -16,7 +16,7 @@
             </ui:define>
             <ui:define name="center">
                 <p:growl id="growlUserFormId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
-                <h:form id="jobTitleFormId" >
+                <h:form id="distribusiLeaveId" >
                     <div id="box_bg" style="margin: 10px">
                         <!--<p:panel style="margin: 10px">-->
                         <h:panelGrid style="margin-bottom: 5px" columns="2">
@@ -38,38 +38,38 @@
                                     <p:outputLabel  value="Nama Cuti"  for="code" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneMenu required="true" id="code" value="#{distributionLeaveScheme.model.leaveSchemeId}" style="margin-right: 3px" >
+                                    <p:selectOneMenu required="true" id="code" value="#{leaveDistributionSchemeFormController.model.leaveSchemeId}" style="margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItems value="#{distributionLeaveScheme.leaveSchemeDropDown}"/>
+                                        <f:selectItems value="#{leaveDistributionSchemeFormController.leaveSchemeDropDown}"/>
                                     </p:selectOneMenu>
                                     <p:message for="code"/>
                                 </p:column>
                             </p:row>
-                            
-                            <p:row>
-                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Start Balance"  for="strtBalance" styleClass="label_hrm" />
-                                </p:column>
-                                <p:column style="width: 80%">
-                                    <p:inputText id="strtBalance" value="#{distributionLeaveScheme.model.startBalance}"
-                                                     required="false" styleClass="isitext_hrm" style="width:50px;" />
-                                    <p:outputLabel  value=" Hari" />
-                                    <p:message for="strtBalance"/>
-                                </p:column>
-                            </p:row>
-                            
+
+                            <!--                            <p:row>
+                                                            <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                                                <p:outputLabel  value="Start Balance"  for="strtBalance" styleClass="label_hrm" />
+                                                            </p:column>
+                                                            <p:column style="width: 80%">
+                                                                <p:inputText id="strtBalance" value="#{leaveDistributionSchemeFormController.model.startBalance}"
+                                                                                 required="false" styleClass="isitext_hrm" style="width:50px;" />
+                                                                <p:outputLabel  value=" Hari" />
+                                                                <p:message for="strtBalance"/>
+                                                            </p:column>
+                                                        </p:row>-->
+
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="Department"  for="department" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <h:panelGrid columns="2" style="margin-left: -10px;">
-                                        <p:selectOneMenu id="department" value="#{distributionLeaveScheme.model.departmentLikeOrEqual}" style="width: 150px;margin-right: 3px" >
+                                        <p:selectOneMenu id="department" value="#{leaveDistributionSchemeFormController.model.departmentLikeOrEqual}" style="width: 150px;margin-right: 3px" >
                                             <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue="3"/>
                                             <f:selectItem itemLabel="#{appmsg['employeeworkschedule.equal']}" itemValue="0"/>
                                             <f:selectItem itemLabel="#{appmsg['employeeworkschedule.like']}" itemValue="1"/>
                                         </p:selectOneMenu>
-                                        <p:inputText id="departmentText" value="#{distributionLeaveScheme.model.departmentName}"
+                                        <p:inputText id="departmentText" value="#{leaveDistributionSchemeFormController.model.departmentName}"
                                                      required="false" styleClass="isitext_hrm" style="width:210px; margin-left: -10px;" />
 
 
@@ -84,13 +84,13 @@
 
                                 <p:column style="width: 80%">
                                     <h:panelGrid columns="2" style="margin-left: -10px;">
-                                        <p:selectOneMenu id="employeeType" value="#{distributionLeaveScheme.model.employeeTypeLikeOrEqual}" style="width: 150px;margin-right: 3px" >
+                                        <p:selectOneMenu id="employeeType" value="#{leaveDistributionSchemeFormController.model.employeeTypeLikeOrEqual}" style="width: 150px;margin-right: 3px" >
                                             <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue="3"/>
                                             <f:selectItem itemLabel="#{appmsg['employeeworkschedule.equal']}" itemValue="0"/>
                                             <f:selectItem itemLabel="#{appmsg['employeeworkschedule.like']}" itemValue="1"/>
                                         </p:selectOneMenu>
 
-                                        <p:inputText id="employeeTypeText" value="#{distributionLeaveScheme.model.employeeTypeName}"
+                                        <p:inputText id="employeeTypeText" value="#{leaveDistributionSchemeFormController.model.employeeTypeName}"
                                                      required="false" styleClass="isitext_hrm" style="width:210px;margin-left: -10px;" />
 
                                     </h:panelGrid>
@@ -101,7 +101,7 @@
                                     <p:outputLabel value="Gender"  for="gender" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneRadio id="gender" styleClass="isitext_hrm" required="true" value="#{distributionLeaveScheme.model.gender}" label="Gender">
+                                    <p:selectOneRadio id="gender" styleClass="isitext_hrm" required="true" value="#{leaveDistributionSchemeFormController.model.gender}" label="Gender">
                                         <!--Cek HRM Constanta..-->
                                         <f:selectItem itemLabel="#{appmsg['global_male']}" itemValue="1" />
                                         <f:selectItem itemLabel="#{appmsg['global_female']}" itemValue="0" />
@@ -114,9 +114,9 @@
                                     <p:outputLabel  value="Golongan Jabatan"  for="golonganJabatan" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneMenu id="golonganJabatan" value="#{distributionLeaveScheme.model.golonganJabatanId}" style="min-width: 300px;margin-right: 3px" >
+                                    <p:selectOneMenu id="golonganJabatan" value="#{leaveDistributionSchemeFormController.model.golonganJabatanId}" style="min-width: 300px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue="0"/>
-                                        <f:selectItems value="#{distributionLeaveScheme.golonganJabatanDropDown}"/>
+                                        <f:selectItems value="#{leaveDistributionSchemeFormController.golonganJabatanDropDown}"/>
                                     </p:selectOneMenu>
                                     <p:message for="golonganJabatan"/>
                                 </p:column>
@@ -126,11 +126,11 @@
                                     <p:outputLabel  value="Sort By"  for="sortBy" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneMenu id="sortBy" styleClass="isitext_hrm" required="false" value="#{distributionLeaveScheme.model.sortBy}" label="Gender">
+                                    <p:selectOneMenu id="sortBy" styleClass="isitext_hrm" required="false" value="#{leaveDistributionSchemeFormController.model.sortBy}" label="Gender">
                                         <f:selectItem itemLabel="NIK" itemValue="0" />
                                         <f:selectItem itemLabel="Name" itemValue="1" />
                                     </p:selectOneMenu>&nbsp;&nbsp;&nbsp;
-                                    <p:selectOneMenu id="orderBy" styleClass="isitext_hrm" required="false" value="#{distributionLeaveScheme.model.orderBy}" label="Gender">
+                                    <p:selectOneMenu id="orderBy" styleClass="isitext_hrm" required="false" value="#{leaveDistributionSchemeFormController.model.orderBy}" label="Gender">
                                         <f:selectItem itemLabel="ASC" itemValue="0" />
                                         <f:selectItem itemLabel="DSC" itemValue="1" />
                                     </p:selectOneMenu>
@@ -142,9 +142,9 @@
 
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:commandButton value="#{appmsg['global.search']}" ajax="true" action="#{distributionLeaveScheme.doSearchEmployee()}" 
+                                    <p:commandButton value="#{appmsg['global.search']}" ajax="true" action="#{leaveDistributionSchemeFormController.doSearchEmployee()}" 
                                                      styleClass="isitext_hrm" 
-                                                     style="margin-right: 5px" label="#{appmsg['global.search']}" update=":formSubmitId:picklistUserRoleId, jobTitleFormId"
+                                                     style="margin-right: 5px" label="#{appmsg['global.search']}" update=":formSubmitId, distribusiLeaveId"
                                                      icon="ui-icon-search" title="#{appmsg['global.search']}">    
                                     </p:commandButton>
                                 </p:column>
@@ -153,7 +153,7 @@
 
                         </p:panelGrid>
 
-                        <p:focus context="jobTitleFormId" />
+                        <p:focus context="distribusiLeaveId" />
                     </div>
                 </h:form>
                 <h:form id="formSubmitId">
@@ -162,9 +162,41 @@
                             <p:outputLabel value="Daftar Employee" styleClass="header_big" />
                             <p:separator/>
                         </div>
+                        <p:panelGrid style="width: 100%;margin-bottom: 10px;margin-top: 20px" styleClass="grid_border3" >
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Nama Cuti"  styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectOneMenu required="true" id="code" value="#{leaveDistributionSchemeFormController.model.leaveSchemeId}" style="margin-right: 3px" disabled="true">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue="" />
+                                        <f:selectItems value="#{leaveDistributionSchemeFormController.leaveSchemeDropDown}"/>
+                                    </p:selectOneMenu>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['leave.quota_per_period']}"  styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:outputLabel  value="#{leaveDistributionSchemeFormController.selecedLeave.quotaPerPeriod}"  styleClass="label_hrm" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Start Balance"  for="strtBalance" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <pe:inputNumber id="strtBalance" decimalPlaces="1" value="#{leaveDistributionSchemeFormController.model.startBalance}"
+                                                    styleClass="isitext_hrm" style="width:50px;" required="true" />
+                                    <p:outputLabel  value=" Hari" />
+                                    <p:message for="strtBalance"/>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
                         <div align="center">
-                            <p:pickList value="#{distributionLeaveScheme.dualListModel}" var="role" itemValue="#{role}" converter="#{empDataConverter}" id="picklistUserRoleId"
-                                        required="false"  style="margin-top: 15px;margin-bottom: 15px;" label="#{appmsg['role_view.header1']}" styleClass="isitext_hrm"
+                            <p:pickList value="#{leaveDistributionSchemeFormController.dualListModel}" var="role" itemValue="#{role}" converter="#{empDataConverter}" id="picklistUserRoleId"
+                                        required="true"  style="margin-top: 15px;margin-bottom: 15px;" label="Daftar Employee" styleClass="isitext_hrm"
                                         itemLabel="#{role.nik} - #{role.bioData.firstName} #{role.bioData.lastName}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
                                         removeLabel="#{appmsg['global.remove']}"/>
                             <p:message for="picklistUserRoleId" />
@@ -172,14 +204,14 @@
 
                         <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
                         <div style="margin-bottom: 5px">
-                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" 
-                                             action="#{placementOfEmployeeWorkScheduleFormController.doSave()}" styleClass="label_button" onclick="PrimeFaces.monitorDownload(start, stop)"
+                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formSubmitId,:growlUserFormId" 
+                                             action="#{leaveDistributionSchemeFormController.doSave()}" styleClass="label_button" 
                                              style="margin-right: 5px" label="#{appmsg['global.save']}"
                                              icon="ui-icon-disk"
                                              id="buttonSave" title="#{appmsg['global.save']}"/>
-                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}"
+                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" update="formSubmitId,:distribusiLeaveId" action="#{leaveDistributionSchemeFormController.doReset()}"
                                              process="@this" icon="ui-icon-refresh" id="cleareId"   styleClass="label_button"  style="margin-right: 5px">  
-                                <p:resetInput target="userFormId" />  
+                                <p:resetInput target="formSubmitId,:distribusiLeaveId" />  
                             </p:commandButton>
                             <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{userFormController.doBack()}" immediate="true"
                                              styleClass="label_button"/>

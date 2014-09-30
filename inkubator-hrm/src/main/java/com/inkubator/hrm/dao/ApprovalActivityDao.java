@@ -1,11 +1,13 @@
 package com.inkubator.hrm.dao;
 
+import java.util.List;
+
+import org.hibernate.criterion.Order;
+
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.ApprovalDefinition;
 import com.inkubator.hrm.web.search.ApprovalActivitySearchParameter;
-import java.util.List;
-import org.hibernate.criterion.Order;
 
 /**
  *
@@ -36,4 +38,6 @@ public interface ApprovalActivityDao extends IDAO<ApprovalActivity> {
     public Boolean isStillHaveWaitingStatus(List<ApprovalDefinition> appDefs);
     
     public Boolean isStillHaveWaitingStatus(Long appDefId);
+    
+    public List<ApprovalActivity> getAllDataWaitingStatusApproval();
 }

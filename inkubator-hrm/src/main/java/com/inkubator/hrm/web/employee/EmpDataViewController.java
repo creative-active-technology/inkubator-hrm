@@ -133,7 +133,7 @@ public class EmpDataViewController extends BaseController {
     }
 
     public String doPlacementOfEmployee() {
-         return "/protected/employee/placement_of_employee_work_schedule.htm?faces-redirect=true";
+         return "/protected/employee/work_schedule_form.htm?faces-redirect=true";
     }
     
     public void doEmployeeTimeSchedule() {

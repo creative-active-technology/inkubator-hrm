@@ -12,6 +12,7 @@ import java.io.Serializable;
  */
 public class DistributionLeaveSchemeModel implements Serializable{
     private Long leaveSchemeId;
+    private String leaveName;
     private Integer departmentLikeOrEqual;
     private String departmentName;
     private Integer employeeTypeLikeOrEqual;
@@ -100,6 +101,14 @@ public class DistributionLeaveSchemeModel implements Serializable{
 
     public void setStartBalance(Double startBalance) {
         this.startBalance = startBalance;
+    }
+
+    public String getLeaveName() {
+        return leaveName;
+    }
+
+    public void setLeaveName(String leaveName) {
+        this.leaveName = leaveName;
     }
     
     

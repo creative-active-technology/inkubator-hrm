@@ -38,6 +38,7 @@ public class ApprovalActivity implements java.io.Serializable {
     private Integer sequence;
     private Boolean notificationSend;
     private String locale;
+    private Date createdTime;
 
     public ApprovalActivity() {
     }
@@ -213,4 +214,14 @@ public class ApprovalActivity implements java.io.Serializable {
         this.locale = locale;
     }
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created_time", length = 19)
+	public Date getCreatedTime() {
+		return createdTime;
+	}
+
+	public void setCreatedTime(Date createdTime) {
+		this.createdTime = createdTime;
+	}
+    
 }

@@ -72,6 +72,7 @@ public class GolonganJabatanDaoImpl extends IDAOImpl<GolonganJabatan> implements
     public List<GolonganJabatan> getAllWithDetail() {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.setFetchMode("pangkat", FetchMode.JOIN);
+        criteria.addOrder(Order.asc("code"));
         return criteria.list();
     }
 
