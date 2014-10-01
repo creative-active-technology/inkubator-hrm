@@ -176,11 +176,19 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['leave.quota_per_period']}"  styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:outputLabel  value="#{leaveDistributionSchemeFormController.selecedLeave.quotaPerPeriod}"  styleClass="label_hrm" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="Start Balance"  for="strtBalance" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <pe:inputNumber id="strtBalance" decimalPlaces="1" value="#{distributionLeaveScheme.model.startBalance}"
-                                                     styleClass="isitext_hrm" style="width:50px;" required="true" />
+                                    <pe:inputNumber id="strtBalance" decimalPlaces="1" value="#{leaveDistributionSchemeFormController.model.startBalance}"
+                                                    styleClass="isitext_hrm" style="width:50px;" required="true" />
                                     <p:outputLabel  value=" Hari" />
                                     <p:message for="strtBalance"/>
                                 </p:column>
@@ -196,7 +204,7 @@
 
                         <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
                         <div style="margin-bottom: 5px">
-                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formSubmitId"
+                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formSubmitId,:growlUserFormId" 
                                              action="#{leaveDistributionSchemeFormController.doSave()}" styleClass="label_button" 
                                              style="margin-right: 5px" label="#{appmsg['global.save']}"
                                              icon="ui-icon-disk"

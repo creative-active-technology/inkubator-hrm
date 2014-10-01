@@ -4,7 +4,12 @@
  */
 package com.inkubator.hrm.service.impl;
 
+import com.inkubator.common.CommonUtilConstant;
+import com.inkubator.common.util.DateTimeUtil;
+import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.LeaveDao;
 import com.inkubator.hrm.dao.LeaveDistributionDao;
@@ -14,6 +19,8 @@ import com.inkubator.hrm.entity.LeaveDistribution;
 import com.inkubator.hrm.service.LeaveDistributionService;
 import com.inkubator.hrm.web.search.LeaveDistributionSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import org.hibernate.criterion.Order;
@@ -72,15 +79,8 @@ public class LeaveDistributionServiceImpl extends IServiceImpl implements LeaveD
     }
 
     @Override
-    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(LeaveDistribution entity) throws Exception {
-        LeaveDistribution update = leaveDistributionDao.getEntiyByPK(entity.getId());
-        update.setEmpData(empDataDao.getEntiyByPK(entity.getEmpData().getId()));
-        update.setLeave(leaveDao.getEntiyByPK(entity.getLeave().getId()));
-        update.setBalance(entity.getBalance());
-        update.setUpdatedBy(UserInfoUtil.getUserName());
-        update.setUpdatedOn(new Date());
-        this.leaveDistributionDao.update(update);
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -149,9 +149,8 @@ public class LeaveDistributionServiceImpl extends IServiceImpl implements LeaveD
     }
 
     @Override
-    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void delete(LeaveDistribution entity) throws Exception {
-        this.leaveDistributionDao.delete(entity);
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -220,18 +219,61 @@ public class LeaveDistributionServiceImpl extends IServiceImpl implements LeaveD
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
+    public void saveMassPenempatanCuti(List<EmpData> data, long leaveId, double startBalance) throws Exception {
+        Leave leave = this.leaveDao.getEntiyByPK(leaveId);
+        if (startBalance > leave.getQuotaPerPeriod()) {
+            throw new BussinessException("leave_start_balance.error");
+        }
+        Date dateNow = new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(dateNow);
+        int year = cal.get(Calendar.YEAR);
+        int yearToInput = year + 1;
+        String tanggal0101 = "01-01-" + yearToInput;
+        Date tanggalToInput0101 = new SimpleDateFormat("dd-MM-yyyy").parse(tanggal0101);
+        for (EmpData empData : data) {
+            Date starDateToInput = null;
+            Date endDateToInput = null;
+            LeaveDistribution distribution = new LeaveDistribution();
+            if (leave.getPeriodBase().equals(HRMConstant.LEAVE_PERIOD_BASE_TMB)) {
+                Date tmb = empData.getJoinDate();
+                Date starDate = DateTimeUtil.getDateFrom(tmb, 1, CommonUtilConstant.DATE_FORMAT_YEAR);
+                starDateToInput = DateTimeUtil.getDateFrom(starDate, leave.getEffectiveFrom(), CommonUtilConstant.DATE_FORMAT_DAY);
+                Date endDate = DateTimeUtil.getDateFrom(starDate, 1, CommonUtilConstant.DATE_FORMAT_YEAR);
+                endDateToInput = DateTimeUtil.getDateFrom(endDate, -1, CommonUtilConstant.DATE_FORMAT_DAY);
+            }
+
+            if (leave.getPeriodBase().equals(HRMConstant.LEAVE_PERIOD_BASE_0101)) {
+                starDateToInput = DateTimeUtil.getDateFrom(tanggalToInput0101, leave.getEffectiveFrom(), CommonUtilConstant.DATE_FORMAT_DAY);
+                Date endDate = DateTimeUtil.getDateFrom(tanggalToInput0101, 1, CommonUtilConstant.DATE_FORMAT_YEAR);
+                endDateToInput = DateTimeUtil.getDateFrom(endDate, -1, CommonUtilConstant.DATE_FORMAT_DAY);
+            }
+
+            if (leave.getPeriodBase().equals(HRMConstant.LEAVE_PERIOD_BASE_TMB_TO_0101)) {
+                Date starDate = DateTimeUtil.getDateFrom(tanggalToInput0101, -1, CommonUtilConstant.DATE_FORMAT_YEAR);
+                starDateToInput = DateTimeUtil.getDateFrom(starDate, leave.getEffectiveFrom(), CommonUtilConstant.DATE_FORMAT_DAY);
+                Date endDate = DateTimeUtil.getDateFrom(starDate, 1, CommonUtilConstant.DATE_FORMAT_YEAR);
+                endDateToInput = DateTimeUtil.getDateFrom(endDate, -1, CommonUtilConstant.DATE_FORMAT_DAY);
+            }
+
+            distribution.setBalance(startBalance);
+            distribution.setEmpData(empData);
+            distribution.setEndDate(endDateToInput);
+            distribution.setLeave(leave);
+            distribution.setStartDate(starDateToInput);
+            distribution.setCreatedBy(UserInfoUtil.getUserName());
+            distribution.setCreatedOn(new Date());
+            distribution.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+            leaveDistributionDao.save(distribution);
+//            distribution.set
+        }
+
+    }
+
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
     public LeaveDistribution getEntityByParamWithDetail(Long empId) throws Exception {
         return leaveDistributionDao.getEntityByParamWithDetail(empId);
     }
-    
-    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
-    public void saveMassPenempatanCuti(List<EmpData> data, long leaveId) throws Exception {
-       Leave leave=this.leaveDao.getEntiyByPK(leaveId);
-        for (EmpData empData : data) {
-            LeaveDistribution distribution=new LeaveDistribution();
-//            distribution.set
-        }
-       
-    }
+
 }

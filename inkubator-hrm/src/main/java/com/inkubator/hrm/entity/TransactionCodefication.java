@@ -107,7 +107,8 @@ public class TransactionCodefication implements java.io.Serializable {
         this.updatedOn = updatedOn;
     }
 
-    @Column(name = "code", unique = true, length = 8)
+    
+    @Column(name="code", unique=true, length=60)
     public String getCode() {
         return this.code;
     }
@@ -125,7 +126,8 @@ public class TransactionCodefication implements java.io.Serializable {
         this.name = name;
     }
 
-    @Column(name = "description", length = 65535, columnDefinition = "Text")
+    
+    @Column(name="description", length=65535, columnDefinition="Text")
     public String getDescription() {
         return this.description;
     }
