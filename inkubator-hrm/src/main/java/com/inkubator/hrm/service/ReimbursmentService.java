@@ -17,7 +17,7 @@ import org.primefaces.model.UploadedFile;
  *
  * @author Deni
  */
-public interface ReimbursmentService extends IService<Reimbursment>{
+public interface ReimbursmentService extends IService<Reimbursment>, BaseApprovalService{
     public List<Reimbursment> getAllDataWithDetail(ReimbursmentSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
     
     public Long getTotalReimbursmentByParam(ReimbursmentSearchParameter searchParameter) throws Exception;
@@ -26,11 +26,11 @@ public interface ReimbursmentService extends IService<Reimbursment>{
     
     public String save(Reimbursment reimbursment, UploadedFile reimbursmentFile, boolean isBypassApprovalChecking) throws Exception;
     
-    public void approved(long approvalActivityId, ReimbursmentModelJsonParsing reimbursmentModelJsonParsing, String comment) throws Exception;
+    /*public void approved(long approvalActivityId, ReimbursmentModelJsonParsing reimbursmentModelJsonParsing, String comment) throws Exception;
     
     public void saveModelJson(ReimbursmentModelJsonParsing reimbursmentModelJsonParsing, ApprovalActivity appActivity, boolean isBypassApprovalChecking) throws Exception;
     
-    public void rejected(long approvalActivityId, String comment) throws Exception;
+    public void rejected(long approvalActivityId, String comment) throws Exception;*/
     
     public Reimbursment getEntityByApprovalActivityNumberWithDetail(String approvalActivityNumber) throws Exception;
     
