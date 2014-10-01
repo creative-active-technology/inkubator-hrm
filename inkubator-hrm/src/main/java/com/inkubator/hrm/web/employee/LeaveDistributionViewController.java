@@ -36,7 +36,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 @ViewScoped
 public class LeaveDistributionViewController extends BaseController {
     @ManagedProperty(value = "#{leaveDistributionService}")
-    private LeaveDistributionService service;
+    private LeaveDistributionService leaveDistributionService;
     private LeaveDistributionSearchParameter searchParameter;
     private LazyDataModel<LeaveDistribution> lazy;
     private LeaveDistribution selected;
@@ -53,7 +53,7 @@ public class LeaveDistributionViewController extends BaseController {
     private void cleanAndExit() {
         searchParameter=null;
         lazy=null;
-        service=null;
+        leaveDistributionService=null;
         selected=null;
         
     }
@@ -64,7 +64,7 @@ public class LeaveDistributionViewController extends BaseController {
     
     public void doSelectEntity() {
         try {
-            selected = this.service.getEntityByParamWithDetail(selected.getEmpData().getId());
+            selected = this.leaveDistributionService.getEntityByParamWithDetail(selected.getEmpData().getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -72,7 +72,7 @@ public class LeaveDistributionViewController extends BaseController {
     
     public void doDelete() {
         try {
-            this.service.delete(selected);
+            this.leaveDistributionService.delete(selected);
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 
@@ -103,7 +103,7 @@ public class LeaveDistributionViewController extends BaseController {
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 400);
-        options.put("contentHeight", 250);
+        options.put("contentHeight", 300);
         RequestContext.getCurrentInstance().openDialog("distribution_leave_scheme_edit", options, params);
     }
     
@@ -116,19 +116,12 @@ public class LeaveDistributionViewController extends BaseController {
     
      public void onDelete() {
         try {
-            selected = this.service.getEntiyByPK(selected.getEmpData().getId());
+            selected = this.leaveDistributionService.getEntiyByPK(selected.getEmpData().getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
     }
 
-    public LeaveDistributionService getService() {
-        return service;
-    }
-
-    public void setService(LeaveDistributionService service) {
-        this.service = service;
-    }
 
     public LeaveDistributionSearchParameter getSearchParameter() {
         return searchParameter;
@@ -140,7 +133,7 @@ public class LeaveDistributionViewController extends BaseController {
 
     public LazyDataModel<LeaveDistribution> getLazy() {
         if (lazy == null) {
-            lazy = new LeaveDistributionLazyDataModel(searchParameter, service);
+            lazy = new LeaveDistributionLazyDataModel(searchParameter, leaveDistributionService);
         }
         return lazy;
     }
@@ -155,6 +148,10 @@ public class LeaveDistributionViewController extends BaseController {
 
     public void setSelected(LeaveDistribution selected) {
         this.selected = selected;
+    }
+
+    public void setLeaveDistributionService(LeaveDistributionService leaveDistributionService) {
+        this.leaveDistributionService = leaveDistributionService;
     }
      
      

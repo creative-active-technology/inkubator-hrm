@@ -441,6 +441,26 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
 	}
 	
 	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void diverted(long approvalActivityId) throws Exception {
+		Map<String, Object> result = super.divertedAndCheckNextApproval(approvalActivityId);
+		ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
+		if(StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")){
+			/** kalau status akhir sudah di approved dan tidak ada next approval, 
+			 * berarti langsung insert ke database */
+			Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+			String pendingData = appActivity.getPendingData();
+			Loan loan =  gson.fromJson(pendingData, Loan.class);
+			loan.setApprovalActivityNumber(appActivity.getActivityNumber());  //set approval activity number, for history approval purpose
+			
+			this.save(loan, true);
+		}
+		
+		//if there is no error, then sending the email notification
+		sendingEmailApprovalNotif(appActivity);
+	}
+	
+	@Override
 	public void sendingEmailApprovalNotif(ApprovalActivity appActivity) throws Exception{
 		//initialization
 		Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();

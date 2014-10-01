@@ -238,6 +238,7 @@ public class HRMConstant {
     
     public static final Integer FROM_JANUARY = 1;
     public static final Integer FROM_BEGIN_WORK = 0;
+    public static final Integer FROM_BEGIN_CONVERT = 2;
     
     public static final Integer AVAILIBILITY_FULL = 0;
     public static final Integer AVALILIBILITY_PER_MONTH = 1;

@@ -48,7 +48,7 @@
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.add']}" action="#{leaveDistributionViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true" />
                                     <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{maritalStatusController.doClose()}" icon="ui-icon-home" />
-                                    
+
                                 </h:panelGrid>
                             </p:toolbarGroup>
                         </p:toolbar>
@@ -66,17 +66,39 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="name" style="width: 30%">
+                            <p:column sortBy="name">
                                 <f:facet name="header">
                                     <h:outputText value="Nama Karyawan"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.empData.nikWithFullName}" />
                             </p:column>
-                            <p:column sortBy="name" style="width: 30%">
+                            <p:column sortBy="name" >
                                 <f:facet name="header">
                                     <h:outputText value="Nama Cuty"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.leave.name}" />
+                            </p:column>
+                            <p:column sortBy="startDate" >
+                                <f:facet name="header">
+                                    <h:outputText value="Start Date"/>
+                                </f:facet>
+                                <p:outputLabel value= "#{data.startDate}" >
+                                    <f:convertDateTime pattern="dd MMMM yyyy" />
+                                </p:outputLabel>
+                            </p:column>
+                            <p:column sortBy="endDate" >
+                                <f:facet name="header">
+                                    <h:outputText value="Start Date"/>
+                                </f:facet>
+                                <p:outputLabel value= "#{data.endDate}" >
+                                    <f:convertDateTime pattern="dd MMMM yyyy" />
+                                </p:outputLabel>
+                            </p:column>
+                            <p:column sortBy="balance" >
+                                <f:facet name="header">
+                                    <h:outputText value="Balance"/>
+                                </f:facet>
+                                <p:outputLabel value= "#{data.balance}" />
                             </p:column>
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
@@ -86,8 +108,8 @@
                                 </p:commandButton>
                                 - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
-                                				 style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                                                 action="#{leaveDistributionViewController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmDelete.show()">
+                                                 style="font-size: 10px!important" update=":panelDialogConfirmId" 
+                                                 action="#{leaveDistributionViewController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmDelete.show()">
                                     <f:setPropertyActionListener value="#{data}" target="#{leaveDistributionViewController.selected}" />
                                 </p:commandButton>
                                 -

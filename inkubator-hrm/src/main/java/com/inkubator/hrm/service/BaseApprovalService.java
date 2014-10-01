@@ -13,6 +13,8 @@ public interface BaseApprovalService {
 	
 	public void rejected(long approvalActivityId, String comment) throws Exception;
 	
+	public void diverted(long approvalActivityId) throws Exception;
+	
 	public void sendingEmailApprovalNotif(ApprovalActivity appActivity) throws Exception;
 	
 }

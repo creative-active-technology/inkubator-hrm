@@ -204,7 +204,7 @@
 
                         <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
                         <div style="margin-bottom: 5px">
-                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formSubmitId,:growlUserFormId" 
+                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formSubmitId,:growlUserFormId" onclick="statusDialog.show()" oncomplete="statusDialog.hide()"
                                              action="#{leaveDistributionSchemeFormController.doSave()}" styleClass="label_button" 
                                              style="margin-right: 5px" label="#{appmsg['global.save']}"
                                              icon="ui-icon-disk"
@@ -213,7 +213,7 @@
                                              process="@this" icon="ui-icon-refresh" id="cleareId"   styleClass="label_button"  style="margin-right: 5px">  
                                 <p:resetInput target="formSubmitId,:distribusiLeaveId" />  
                             </p:commandButton>
-                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{userFormController.doBack()}" immediate="true"
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{leaveDistributionSchemeFormController.doBack()}" immediate="true"
                                              styleClass="label_button"/>
                             <!--</p:panel>-->
                         </div>

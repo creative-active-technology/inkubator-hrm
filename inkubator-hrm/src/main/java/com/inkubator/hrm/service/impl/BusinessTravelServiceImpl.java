@@ -455,6 +455,29 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
 	}
 	
 	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void diverted(long approvalActivityId) throws Exception {
+		Map<String, Object> result = super.divertedAndCheckNextApproval(approvalActivityId);
+		ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
+		if(StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")){
+			/** kalau status akhir sudah di approved dan tidak ada next approval, 
+			 * berarti langsung insert ke database */
+			Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+			String pendingData = appActivity.getPendingData();
+			JsonObject jsonObject =  gson.fromJson(pendingData, JsonObject.class);
+			
+			List<BusinessTravelComponent> businessTravelComponents = gson.fromJson(jsonObject.get("businessTravelComponents"), new TypeToken<List<BusinessTravelComponent>>(){}.getType());
+			BusinessTravel businessTravel = gson.fromJson(pendingData, BusinessTravel.class);
+			businessTravel.setApprovalActivityNumber(appActivity.getActivityNumber());  //set approval activity number, for history approval purpose
+			
+			this.save(businessTravel, businessTravelComponents, true);
+		}
+		
+		//if there is no error, then sending the email notification
+		sendingEmailApprovalNotif(appActivity);
+	}
+	
+	@Override
 	public void sendingEmailApprovalNotif(ApprovalActivity appActivity) throws Exception{
 		//initialization
 		Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
