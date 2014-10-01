@@ -73,35 +73,37 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{data.requestBy}" />
                             </p:column>
-                            <p:column sortBy="approvalDefinition" style="width: 14%">
+                            <p:column sortBy="approvalDefinition.name" style="width: 14%">
                                 <f:facet name="header">
                                     <h:outputText value="Request Name"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.approvalDefinition.name}" />
                             </p:column>
-                            <p:column sortBy="approvalDefinition" style="width: 14%">
+                            <p:column sortBy="requestTime" style="width: 14%">
                                 <f:facet name="header">
                                     <h:outputText value="Request Time"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.requestTime}" />
                             </p:column>
-                            <p:column sortBy="approvalDefinition" style="width: 14%">
+                            <p:column sortBy="activityNumber" style="width: 14%">
                                 <f:facet name="header">
                                     <h:outputText value="Request Number"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.activityNumber}" />
                             </p:column>
-                            <p:column sortBy="approvalDefinition" style="width: 14%">
+                            <p:column sortBy="approvedBy" style="width: 14%">
                                 <f:facet name="header">
                                     <h:outputText value="Approved By"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.approvedBy}" />
                             </p:column>
-                            <p:column sortBy="approvalDefinition" style="width: 14%">
+                            <p:column style="width: 14%">
                                 <f:facet name="header">
                                     <h:outputText value="Approval Status"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.approvalStatus}" />
+                                <h:outputLabel value= "#{data.approvalStatus}">
+                                	<f:converter converterId="approvalStatusConverter"/>
+                                </h:outputLabel>
                             </p:column>
                             
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
