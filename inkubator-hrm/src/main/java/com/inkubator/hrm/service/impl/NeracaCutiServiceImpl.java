@@ -1,30 +1,58 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
+ * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
 package com.inkubator.hrm.service.impl;
 
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.hrm.dao.LeaveDistributionDao;
 import com.inkubator.hrm.dao.NeracaCutiDao;
 import com.inkubator.hrm.entity.NeracaCuti;
 import com.inkubator.hrm.service.NeracaCutiService;
+import com.inkubator.hrm.web.search.NeracaCutiSearchParameter;
 import java.util.List;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
+/**
+ *
+ * @author Deni
+ */
 /**
  *
  * @author Deni Husni FR
  */
 @Service(value = "neracaCutiService")
 @Lazy
-public class NeracaCutiServiceImpl extends IServiceImpl implements NeracaCutiService {
-
+public class NeracaCutiServiceImpl extends IServiceImpl implements NeracaCutiService{
+    
     @Autowired
     private NeracaCutiDao neracaCutiDao;
+    @Autowired
+    private LeaveDistributionDao leaveDistributionDao;
+    
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<NeracaCuti> getByParamWithDetail(NeracaCutiSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
+        return neracaCutiDao.getByParam(searchParameter, firstResult, maxResults, order);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalNeracaCutiByParam(NeracaCutiSearchParameter searchParameter) throws Exception {
+        return neracaCutiDao.getTotalNeracaCutiByParam(searchParameter);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public NeracaCuti getEntityByParamWithDetail(Long id) throws Exception {
+        return getEntityByParamWithDetail(id);
+    }
 
     @Override
     public NeracaCuti getEntiyByPK(String id) throws Exception {
@@ -37,8 +65,9 @@ public class NeracaCutiServiceImpl extends IServiceImpl implements NeracaCutiSer
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
     public NeracaCuti getEntiyByPK(Long id) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return neracaCutiDao.getEntiyByPK(id);
     }
 
     @Override
@@ -185,5 +214,8 @@ public class NeracaCutiServiceImpl extends IServiceImpl implements NeracaCutiSer
     public List<NeracaCuti> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+  
 
+
+    
 }

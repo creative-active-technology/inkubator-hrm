@@ -55,7 +55,7 @@ public class PermitClassificationFormController extends BaseController {
             List<AttendanceStatus> listAttendanceStatuss = attendanceStatusService.getAllData();
 
             for (AttendanceStatus attendanceStatus : listAttendanceStatuss) {
-                attendanceStatuss.put(attendanceStatus.getIsPresentAsLabel(), attendanceStatus.getId());
+                attendanceStatuss.put(attendanceStatus.getStatusKehadrian(), attendanceStatus.getId());
             }
 
             MapUtil.sortByValue(attendanceStatuss);
