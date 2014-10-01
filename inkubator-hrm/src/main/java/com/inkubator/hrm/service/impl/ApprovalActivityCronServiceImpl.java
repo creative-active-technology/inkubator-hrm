@@ -54,22 +54,30 @@ public class ApprovalActivityCronServiceImpl extends BaseApprovalServiceImpl imp
 		//do autoApproval process
 		for(ApprovalActivity approvalActivity : autoApprovals){
 			if(approvalActivity.getApprovalDefinition().getAutoApproveOnDelay()) {
+				//do Approved
 				switch (approvalActivity.getApprovalDefinition().getName()) {
 					case HRMConstant.BUSINESS_TRAVEL:
-						//businessTravelService.approved(approvalActivity.getId(), null, null);
+						businessTravelService.approved(approvalActivity.getId(), null, null);
 						break;
 					case HRMConstant.LOAN:
-						//loanService.approved(approvalActivity.getId(), null, null);
+						loanService.approved(approvalActivity.getId(), null, null);
 						break;
 					default:
 						break;
 				}
 			} else if(approvalActivity.getApprovalDefinition().getEscalateOnDelay()){
-				approvalActivity.setApprovalStatus(HRMConstant.APPROVAL_STATUS_DIVERTED);
-				
+				//do Diverted
+				switch (approvalActivity.getApprovalDefinition().getName()) {
+					case HRMConstant.BUSINESS_TRAVEL:
+						businessTravelService.diverted(approvalActivity.getId());
+						break;
+					case HRMConstant.LOAN:
+						loanService.diverted(approvalActivity.getId());
+						break;
+					default:
+						break;
+				}				
 			}			
-		}
-		
+		}		
 	}
-
 }
