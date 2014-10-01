@@ -7,11 +7,13 @@ package com.inkubator.hrm.dao;
 
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.NeracaCuti;
+import java.util.List;
 
 /**
  *
  * @author Deni Husni FR
  */
-public interface NeracaCutiDao extends IDAO<NeracaCuti>{
-    
+public interface NeracaCutiDao extends IDAO<NeracaCuti> {
+
+    public void saveBacth(List<NeracaCuti> data);
 }

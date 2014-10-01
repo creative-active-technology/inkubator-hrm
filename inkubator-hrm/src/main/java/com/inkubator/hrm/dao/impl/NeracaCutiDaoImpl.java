@@ -8,6 +8,7 @@ package com.inkubator.hrm.dao.impl;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.NeracaCutiDao;
 import com.inkubator.hrm.entity.NeracaCuti;
+import java.util.List;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -22,6 +23,19 @@ public class NeracaCutiDaoImpl extends IDAOImpl<NeracaCuti> implements NeracaCut
     @Override
     public Class<NeracaCuti> getEntityClass() {
         return NeracaCuti.class;
+    }
+
+    @Override
+    public void saveBacth(List<NeracaCuti> data) {
+       int counter = 0;
+        for (NeracaCuti neracaCuti : data) {
+            getCurrentSession().save(neracaCuti);
+            counter++;
+            if (counter % 20 == 0) {
+                getCurrentSession().flush();
+                getCurrentSession().clear();
+            }
+        }
     }
 
 }
