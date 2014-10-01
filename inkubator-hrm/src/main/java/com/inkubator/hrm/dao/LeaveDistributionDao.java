@@ -20,4 +20,6 @@ public interface LeaveDistributionDao extends IDAO<LeaveDistribution>{
     public Long getTotalLeaveDistributionByParam(LeaveDistributionSearchParameter searchParameter);
     
     public LeaveDistribution getEntityByParamWithDetail(Long empId);
+    
+    public List<LeaveDistribution> getAllDataByEmpIdWithDetail();
 }

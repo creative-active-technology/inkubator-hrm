@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -53,7 +54,7 @@ public class LeaveDistributionSchemeFormController extends BaseController {
     private Leave selecedLeave;
     private Map<String, Long> leaveSchemeDropDown = new HashMap<String, Long>();
     private List<Leave> leaveList = new ArrayList<>();
-    private Map<String, Long> golonganJabatanDropDown = new HashMap<String, Long>();
+    private Map<String, Long> golonganJabatanDropDown = new TreeMap<String, Long>();
     private List<GolonganJabatan> golonganJabatanList = new ArrayList<>();
     private DualListModel<EmpData> dualListModel = new DualListModel<>();
     private DistributionLeaveSchemeModel model;
