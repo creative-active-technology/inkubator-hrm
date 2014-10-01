@@ -55,8 +55,8 @@
                                     <p:outputLabel for="statusId" value="#{appmsg['permitClassification.permitClassification_status']}" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:selectBooleanCheckbox id="statusId" value="#{permitClassificationFormController.permitClassificationModel.status}" styleClass="label_button"/>
-
+                                    <p:selectBooleanButton id="statusId" value="#{permitClassificationFormController.permitClassificationModel.status}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
+                                                           offIcon="ui-icon-close" styleClass="label_button" />
                                 </p:column>
                             </p:row>  
                             <p:row>
@@ -93,6 +93,7 @@
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItem itemLabel="#{appmsg['permitClassification.permitClassification_from_january']}" itemValue="1" />
                                         <f:selectItem itemLabel="#{appmsg['permitClassification.permitClassification_from_begin']}" itemValue="0" />
+                                        <f:selectItem itemLabel="#{appmsg['permitClassification.permitClassification_from_convert']}" itemValue="2" />
                                     </p:selectOneMenu>
                                 </p:column>
                             </p:row>  
@@ -144,8 +145,8 @@
                                     <p:outputLabel for="employeeId" value="#{appmsg['permitClassification.permitClassification_per_employee']}" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:selectBooleanCheckbox id="employeeId" value="#{permitClassificationFormController.permitClassificationModel.onePerEmployee}" styleClass="label_button"/>
-
+                                    <p:selectBooleanButton id="employeeId" value="#{permitClassificationFormController.permitClassificationModel.onePerEmployee}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
+                                                           offIcon="ui-icon-close" styleClass="label_button" />
                                 </p:column>
                             </p:row>  
                             <p:row>
@@ -173,8 +174,9 @@
                                     <p:outputLabel for="attachmentId" value="#{appmsg['permitClassification.permitClassification_attachment']}" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:selectBooleanCheckbox id="attachmentId" value="#{permitClassificationFormController.permitClassificationModel.attachmentRequired}" styleClass="label_button"/>
-
+                                    <p:selectBooleanButton id="attachmentId" value="#{permitClassificationFormController.permitClassificationModel.attachmentRequired}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
+                                                           offIcon="ui-icon-close" styleClass="label_button" />
+                                
                                 </p:column>
                             </p:row>
                             <p:row>

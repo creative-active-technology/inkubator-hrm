@@ -24,7 +24,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository(value = "leaveDistributionDao")
 @Lazy
-public class LeaveDistributionDaoImpl extends IDAOImpl<LeaveDistribution> implements LeaveDistributionDao{
+public class LeaveDistributionDaoImpl extends IDAOImpl<LeaveDistribution> implements LeaveDistributionDao {
 
     @Override
     public Class<LeaveDistribution> getEntityClass() {
@@ -50,11 +50,11 @@ public class LeaveDistributionDaoImpl extends IDAOImpl<LeaveDistribution> implem
         doSearch(searchParameter, criteria);
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
-    
+
     private void doSearch(LeaveDistributionSearchParameter searchParameter, Criteria criteria) {
-        if (searchParameter.getEmpData()!=null) {
-        	criteria.add(Restrictions.like("empData", searchParameter.getEmpData(), MatchMode.ANYWHERE));
-        } 
+        if (searchParameter.getEmpData() != null) {
+            criteria.add(Restrictions.like("empData", searchParameter.getEmpData(), MatchMode.ANYWHERE));
+        }
         criteria.add(Restrictions.isNotNull("id"));
     }
 
@@ -75,5 +75,18 @@ public class LeaveDistributionDaoImpl extends IDAOImpl<LeaveDistribution> implem
         criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
         criteria.setFetchMode("leave", FetchMode.JOIN);
         return criteria.list();
+    }
+    
+    @Override
+    public void saveBatch(List<LeaveDistribution> data) {
+        int counter = 0;
+        for (LeaveDistribution distribution : data) {
+            getCurrentSession().save(distribution);
+            counter++;
+            if (counter % 20 == 0) {
+                getCurrentSession().flush();
+                getCurrentSession().clear();
+            }
+        }
     }
 }

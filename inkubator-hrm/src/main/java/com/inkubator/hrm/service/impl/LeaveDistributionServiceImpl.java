@@ -13,13 +13,16 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.LeaveDao;
 import com.inkubator.hrm.dao.LeaveDistributionDao;
+import com.inkubator.hrm.dao.NeracaCutiDao;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.Leave;
 import com.inkubator.hrm.entity.LeaveDistribution;
+import com.inkubator.hrm.entity.NeracaCuti;
 import com.inkubator.hrm.service.LeaveDistributionService;
 import com.inkubator.hrm.web.search.LeaveDistributionSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -45,6 +48,8 @@ public class LeaveDistributionServiceImpl extends IServiceImpl implements LeaveD
     private EmpDataDao empDataDao;
     @Autowired
     private LeaveDao leaveDao;
+    @Autowired
+    private NeracaCutiDao neracaCutiDao;
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
@@ -222,6 +227,8 @@ public class LeaveDistributionServiceImpl extends IServiceImpl implements LeaveD
     @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
     public void saveMassPenempatanCuti(List<EmpData> data, long leaveId, double startBalance) throws Exception {
         Leave leave = this.leaveDao.getEntiyByPK(leaveId);
+        List<LeaveDistribution> listDistribution = new ArrayList<>();
+        List<NeracaCuti> listNeracaCuti = new ArrayList<>();
         if (startBalance > leave.getQuotaPerPeriod()) {
             throw new BussinessException("leave_start_balance.error");
         }
@@ -265,13 +272,24 @@ public class LeaveDistributionServiceImpl extends IServiceImpl implements LeaveD
             distribution.setCreatedBy(UserInfoUtil.getUserName());
             distribution.setCreatedOn(new Date());
             distribution.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
-            leaveDistributionDao.save(distribution);
+            listDistribution.add(distribution);
+            NeracaCuti neracaCuti = new NeracaCuti();
+            neracaCuti.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+            neracaCuti.setDebet(startBalance);
+            neracaCuti.setLeaveDistribution(distribution);
+            neracaCuti.setCreatedBy(UserInfoUtil.getUserName());
+            neracaCuti.setCreatedOn(new Date());
+            listNeracaCuti.add(neracaCuti);
+//            leaveDistributionDao.save(distribution);
 //            distribution.set
         }
+        neracaCutiDao.saveBacth(listNeracaCuti);
+        leaveDistributionDao.saveBatch(listDistribution);
 
     }
 
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    @Override
     public LeaveDistribution getEntityByParamWithDetail(Long empId) throws Exception {
         return leaveDistributionDao.getEntityByParamWithDetail(empId);
     }

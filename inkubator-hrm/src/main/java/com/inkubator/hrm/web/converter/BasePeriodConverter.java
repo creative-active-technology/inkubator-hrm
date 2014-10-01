@@ -37,6 +37,11 @@ public class BasePeriodConverter implements Converter {
 
         }
         
+        if (data.equals(HRMConstant.FROM_BEGIN_CONVERT)) {
+            return messages.getString("permitClassification.permitClassification_from_converter");
+
+        }
+        
         
         
         return null;

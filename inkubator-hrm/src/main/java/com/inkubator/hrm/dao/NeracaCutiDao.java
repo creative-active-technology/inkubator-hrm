@@ -1,4 +1,5 @@
 /*
+<<<<<<< HEAD
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
@@ -14,10 +15,16 @@ import org.hibernate.criterion.Order;
  *
  * @author Deni
  */
+/**
+ *
+ * @author Deni Husni FR
+ */
 public interface NeracaCutiDao extends IDAO<NeracaCuti>{
     public List<NeracaCuti> getByParam(NeracaCutiSearchParameter searchParameter, int firstResult, int maxResults, Order order);
 
     public Long getTotalNeracaCutiByParam(NeracaCutiSearchParameter searchParameter);
     
     public NeracaCuti getEntityByPkWithDetail(Long id);
+
+    public void saveBacth(List<NeracaCuti> data);
 }

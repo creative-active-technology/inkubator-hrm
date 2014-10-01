@@ -23,6 +23,10 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author Deni
  */
+/**
+ *
+ * @author Deni Husni FR
+ */
 @Service(value = "neracaCutiService")
 @Lazy
 public class NeracaCutiServiceImpl extends IServiceImpl implements NeracaCutiService{
@@ -210,5 +214,8 @@ public class NeracaCutiServiceImpl extends IServiceImpl implements NeracaCutiSer
     public List<NeracaCuti> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+  
+
+
     
 }

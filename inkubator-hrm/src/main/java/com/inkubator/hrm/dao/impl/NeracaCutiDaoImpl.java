@@ -1,4 +1,5 @@
 /*
+<<<<<<< HEAD
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
@@ -22,6 +23,10 @@ import org.springframework.stereotype.Repository;
 /**
  *
  * @author Deni
+ */
+/**
+ *
+ * @author Deni Husni FR
  */
 @Repository(value = "neracaCutiDao")
 @Lazy
@@ -71,5 +76,18 @@ public class NeracaCutiDaoImpl extends IDAOImpl<NeracaCuti> implements NeracaCut
         	criteria.add(Restrictions.like("emp.firstName", searchParameter.getLeaveDistribution(), MatchMode.ANYWHERE));
         } 
         criteria.add(Restrictions.isNotNull("id"));
+    }
+
+    @Override
+    public void saveBacth(List<NeracaCuti> data) {
+       int counter = 0;
+        for (NeracaCuti neracaCuti : data) {
+            getCurrentSession().save(neracaCuti);
+            counter++;
+            if (counter % 20 == 0) {
+                getCurrentSession().flush();
+                getCurrentSession().clear();
+            }
+        }
     }
 }

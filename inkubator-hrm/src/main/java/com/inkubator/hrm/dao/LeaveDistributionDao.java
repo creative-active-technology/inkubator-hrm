@@ -14,12 +14,15 @@ import org.hibernate.criterion.Order;
  *
  * @author Deni
  */
-public interface LeaveDistributionDao extends IDAO<LeaveDistribution>{
+public interface LeaveDistributionDao extends IDAO<LeaveDistribution> {
+
     public List<LeaveDistribution> getByParamWithDetail(LeaveDistributionSearchParameter searchParameter, int firstResult, int maxResults, Order order);
 
     public Long getTotalLeaveDistributionByParam(LeaveDistributionSearchParameter searchParameter);
-    
+
     public LeaveDistribution getEntityByParamWithDetail(Long empId);
     
     public List<LeaveDistribution> getAllDataByEmpIdWithDetail();
+
+    public void saveBatch(List<LeaveDistribution> data);
 }
