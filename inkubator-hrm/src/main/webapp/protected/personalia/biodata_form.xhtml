@@ -182,8 +182,8 @@
                                     <p:outputLabel  value="#{appmsg['biodata.hp']}" styleClass="label_hrm" for="mobilePhoneId"/>
                                 </p:column>
                                 <p:column style="width: 37%">
-                                    <p:inputText value="#{bioDataFormController.bioDataModel.mobilePhone}" styleClass="isitext_hrm" style="width: 75%" label="No HP"
-                                                 required="false" id="mobilePhoneId"  />
+                                    <p:inputText value="#{bioDataFormController.bioDataModel.mobilePhone}" styleClass="isitext_hrm" style="width: 75%" label="No HP" required="true"
+                                               id="mobilePhoneId"  />
                                     <p:message for="mobilePhoneId"/>
                                 </p:column>
 
@@ -241,7 +241,7 @@
                         <p:separator/>
                         <div>
 
-                            <p:fileUpload required="true" sizeLimit="209715200" label="#{appmsg['global.choose_photo']}" fileUploadListener="#{bioDataFormController.handingFotoUpload}"
+                            <p:fileUpload required="false" sizeLimit="209715200" label="#{appmsg['global.choose_photo']}" fileUploadListener="#{bioDataFormController.handingFotoUpload}"
                                           mode="advanced"  id="uploadFoto"  style="margin-top:10px;margin-bottom:10px;width: 100%;text-align: left!important"
                                           dragDropSupport="true" multiple="false" update="fotoNameId"
                                           allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/> 
@@ -250,7 +250,7 @@
                             <p:outputLabel value="#{bioDataFormController.fotoFileName}" id="fotoNameId"/>
 
 
-                            <p:fileUpload required="true" sizeLimit="209715200" label="#{appmsg['global.choose_fingerprint']}" fileUploadListener="#{bioDataFormController.handingFingerUpload}"
+                            <p:fileUpload required="false" sizeLimit="209715200" label="#{appmsg['global.choose_fingerprint']}" fileUploadListener="#{bioDataFormController.handingFingerUpload}"
                                           mode="advanced"  id="uploadFinger"  style="margin-top:10px;margin-bottom:10px;width: 100%;text-align: left!important"
                                           dragDropSupport="true" multiple="false" update="fingerNameId"
                                           allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/> 
@@ -259,7 +259,7 @@
                             <p:outputLabel value="#{bioDataFormController.fingerFileName}" id="fingerNameId"/>
 
 
-                            <p:fileUpload required="true" sizeLimit="209715200" label="#{appmsg['global.choose_signature']}" fileUploadListener="#{bioDataFormController.handingSignatureUpload}"
+                            <p:fileUpload required="false" sizeLimit="209715200" label="#{appmsg['global.choose_signature']}" fileUploadListener="#{bioDataFormController.handingSignatureUpload}"
                                           mode="advanced"  id="uploadSignature"  style="margin-top:10px;margin-bottom:10px;width: 100%;text-align: left!important"
                                           dragDropSupport="true" multiple="false" update="signatureId"
                                           allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/> 
@@ -273,8 +273,7 @@
                         <p:separator/>
                        
                         <div style="margin-bottom: 5px">
-                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="firstNameId,tanggalLahirid,messages1,messages2,genderId,messages3,maritalId,messages4,
-                                             religionId,religionMessagesId,wargaNegaraId,warganegarMessagesId,focusId" onclick="statusDialog.show()" oncomplete="statusDialog.hide()"
+                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="bioDataFormId" 
                                              action="#{bioDataFormController.doSave()}" styleClass="label_button" 
                                              style="margin-right: 5px" label="#{appmsg['global.save']}"
                                              icon="ui-icon-disk"
