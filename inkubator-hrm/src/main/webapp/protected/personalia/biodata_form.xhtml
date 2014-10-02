@@ -58,7 +58,7 @@
                                 <p:column style="width: 37%">
                                     <p:inputText value="#{bioDataFormController.bioDataModel.lastName}" styleClass="isitext_hrm" style="width: 75%" label="Nama Belakang"
                                                  required="false" id="lastNameId" />
-                                    <p:message for="lastNameId"/>
+                                    <p:message for="lastNameId" id="message5"/>
                                 </p:column>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="#{appmsg['biodata.nickname']}" styleClass="label_hrm" for="nickNameId"/>
@@ -273,6 +273,7 @@
                         <p:separator/>
                        
                         <div style="margin-bottom: 5px">
+
                             <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="bioDataFormId" 
                                              action="#{bioDataFormController.doSave()}" styleClass="label_button" 
                                              style="margin-right: 5px" label="#{appmsg['global.save']}"

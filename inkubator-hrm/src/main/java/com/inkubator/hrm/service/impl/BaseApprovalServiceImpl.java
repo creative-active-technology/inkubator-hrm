@@ -20,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
 
-import com.google.gson.GsonBuilder;
 import com.inkubator.common.util.JsonConverter;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
@@ -34,8 +33,6 @@ import com.inkubator.hrm.entity.ApprovalDefinition;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.Jabatan;
-import com.inkubator.hrm.json.util.EntityExclusionStrategy;
-import com.inkubator.hrm.json.util.HibernateProxyIdOnlyTypeAdapter;
 import com.inkubator.hrm.web.model.ApprovalPushMessageModel;
 import com.inkubator.webcore.util.FacesUtil;
 
@@ -280,11 +277,67 @@ public class BaseApprovalServiceImpl extends IServiceImpl {
         return result;        
     }
 	
-	protected ApprovalActivity checkingNextApproval(ApprovalActivity previousAppActivity){
+	/**
+     * <p>Method untuk meng-diverted suatu activity, yand dieksekusi dari scheduler. Method ini sekaligus sekaligus akan mengecek apakah terdapat nextApproval nya. 
+     * Return-nya berupa Map<String, Object>, nanti di cek jika "isEndOfApprovalProcess" == "false", maka artinya terdapat nextApproval.
+     * Tapi jika "isEndOfApprovalProcess" == "true", maka berarti sudah tidak terdapat nextApproval, 
+     * sehingga bisa langsung melakukan proses parsing dari json ke entity dan melakukan saving objek entity tersebut
+     * </p>
+     *
+     * <pre>
+     * Map<String, Object> result = divertedAndCheckNextApproval(approvalActivityId);
+     * if(StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")){
+     *    lakukan proses parsing json ke entity dan saving entity objek
+     * }
+     * </pre>
+     *
+     * @param appActivityId  Approval Activity id
+     * @return Map<String, Object> Key value dari map tersebut "isEndOfApprovalProcess" berupa String dan "approvalActivity" berupa objek ApprovalActivity
+     */
+	protected Map<String, Object> divertedAndCheckNextApproval(Long appActivityId) throws Exception {
+
+        /* update DIVERTED approval activity */
+        ApprovalActivity approvalActivity = approvalActivityDao.getEntiyByPK(appActivityId);
+        approvalActivity.setApprovalStatus(HRMConstant.APPROVAL_STATUS_DIVERTED);
+        approvalActivity.setApprovalTime(new Date());
+        approvalActivityDao.update(approvalActivity);
+        
+
+        /** checking process if there is any nextApproval for ApprovalActivity */
+        ApprovalActivity nextApproval = this.checkingNextApproval(approvalActivity);
+        HashMap<String, Object> result = new HashMap<String, Object>();        
+        if (nextApproval == null) {        	
+        	//added approval activity, set statusnya jadi approve
+        	ApprovalActivity lastAppActivity = new ApprovalActivity();
+        	BeanUtils.copyProperties(approvalActivity, lastAppActivity, new String[]{"id","approvalStatus","sequence"});
+        	lastAppActivity.setApprovalStatus(HRMConstant.APPROVAL_STATUS_APPROVED); //set status approved
+        	lastAppActivity.setSequence(approvalActivity.getSequence()+1); //increment +1
+        	lastAppActivity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));        	
+        	approvalActivityDao.save(lastAppActivity);
+        	
+        	
+        	// jika nextApproval sama dengan null, berarti sudah tidak ada lagi proses approval, lanjut ke saving objek dari "pendingData" json
+        	// kirim approval activity yg current untuk diproses saving
+        	result.put("isEndOfApprovalProcess", "true");
+        	result.put("approvalActivity", lastAppActivity);
+        } else {
+            // jika nextApproval tidak sama dengan null, maka lanjut ke proses kirim email ke approver
+        	// kirim approval activity yg new(next) untuk diproses kirim email
+        	result.put("isEndOfApprovalProcess", "false");
+        	result.put("approvalActivity", nextApproval); 
+        	
+        	//show growl notification for approverUserId
+        	sendApprovalGrowlNotif(nextApproval);
+        }
+        
+        return result;
+    }
+	
+	private ApprovalActivity checkingNextApproval(ApprovalActivity previousAppActivity) throws Exception{
 		return this.checkingNextApproval(previousAppActivity, null);
 	}
 	
-	protected ApprovalActivity checkingNextApproval(ApprovalActivity previousAppActivity, String pendingDataUpdate){
+	private ApprovalActivity checkingNextApproval(ApprovalActivity previousAppActivity, String pendingDataUpdate) throws Exception{
 		/** create new approval activity (if any)*/
         ApprovalActivity nextApproval = null;
         ApprovalDefinition previousAppDef = previousAppActivity.getApprovalDefinition();
@@ -303,6 +356,11 @@ public class BaseApprovalServiceImpl extends IServiceImpl {
         	minApproverOrRejector = previousAppDef.getMinRejector();
         	/** khusus jika approvalStatus = Reject, maka tidak perlu di check approval di next ApprovalDefinition -nya */
         	isCheckingNextDefinition = false;
+        } else if(Objects.equals(previousAppActivity.getApprovalStatus(), HRMConstant.APPROVAL_STATUS_DIVERTED)){
+        	approvalOrRejectCount = previousAppActivity.getApprovalCount();
+        	minApproverOrRejector = previousAppDef.getMinApprover();
+        } else if(Objects.equals(previousAppActivity.getApprovalStatus(), HRMConstant.APPROVAL_STATUS_WAITING)){
+        	throw new Exception("Cannot process checkingNextApproval when approval status is still WAITING");
         }
         
         /**

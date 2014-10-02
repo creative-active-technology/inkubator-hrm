@@ -7,6 +7,7 @@ package com.inkubator.hrm.service.impl;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -19,11 +20,14 @@ import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
 
+import org.apache.commons.fileupload.disk.DiskFileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.criterion.Order;
 import org.primefaces.json.JSONException;
 import org.primefaces.json.JSONObject;
+import org.primefaces.model.DefaultUploadedFile;
 import org.primefaces.model.UploadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -34,8 +38,10 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.inkubator.common.util.DateTimeUtil;
-import com.inkubator.common.util.JsonConverter;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
@@ -53,7 +59,6 @@ import com.inkubator.hrm.entity.ReimbursmentSchema;
 import com.inkubator.hrm.entity.ReimbursmentSchemaEmployeeType;
 import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.ReimbursmentService;
-import com.inkubator.hrm.web.model.ReimbursmentModelJsonParsing;
 import com.inkubator.hrm.web.search.ReimbursmentSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesIO;
@@ -393,7 +398,7 @@ public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements 
                 File file = new File(facesIO.getPathUpload() + reimbursmentFile.getFileName());
                 file.renameTo(new File(uploadPath));
             }
-            ReimbursmentModelJsonParsing reimbursmentModelJsonParsing = new ReimbursmentModelJsonParsing();
+            /*ReimbursmentModelJsonParsing reimbursmentModelJsonParsing = new ReimbursmentModelJsonParsing();
             //isi data reimbursment model untuk diparsing ke json
             reimbursmentModelJsonParsing.setCode(reimbursment.getCode());
             reimbursmentModelJsonParsing.setClaimDate(reimbursment.getClaimDate());
@@ -404,11 +409,15 @@ public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements 
             reimbursmentModelJsonParsing.setCreateBy(UserInfoUtil.getUserName());
             reimbursmentModelJsonParsing.setReimbursmentDocument(reimbursment.getReimbursmentDocument());
             reimbursmentModelJsonParsing.setCreateDate(new Date());
-            reimbursmentModelJsonParsing.setReimbursmentFileName(uploadPath);
+            reimbursmentModelJsonParsing.setReimbursmentFileName(uploadPath);*/
             //convert reimbursmentModelJson ke json
-            String json = JsonConverter.getJson(reimbursmentModelJsonParsing, "dd-MM-yyyy");
+            //String json = JsonConverter.getJson(reimbursmentModelJsonParsing, "dd-MM-yyyy");
+            JsonParser parser = new JsonParser();
+    		Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+    		JsonObject jsonObject = (JsonObject) parser.parse(gson.toJson(reimbursment));
+    		jsonObject.addProperty("reimbursmentFileName", uploadPath);
             //save to approval activity
-            approvalActivity.setPendingData(json);
+            approvalActivity.setPendingData(gson.toJson(jsonObject));
             approvalActivityDao.save(approvalActivity);
 
             //sending email notification
@@ -434,9 +443,11 @@ public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements 
         //parsing object data to json, for email purpose
 
 //		Reimbursment reimbursment = gson.fromJson(appActivity.getPendingData(), Reimbursment.class);   	
-        ReimbursmentModelJsonParsing reimbursment = (ReimbursmentModelJsonParsing) JsonConverter.getClassFromJson(appActivity.getPendingData(), ReimbursmentModelJsonParsing.class, "dd-MM-yyyy");
+        /*ReimbursmentModelJsonParsing reimbursment = (ReimbursmentModelJsonParsing) JsonConverter.getClassFromJson(appActivity.getPendingData(), ReimbursmentModelJsonParsing.class, "dd-MM-yyyy");
         ReimbursmentSchema reimbursmentSchema = reimbursmentSchemaDao.getEntiyByPK(reimbursment.getReimbursmentSchemaId());
-        System.out.println(reimbursment.getClaimDate());
+        System.out.println(reimbursment.getClaimDate());*/
+        Reimbursment reimbursment = gson.fromJson(appActivity.getPendingData(), Reimbursment.class);
+        ReimbursmentSchema reimbursmentSchema = reimbursmentSchemaDao.getEntiyByPK(reimbursment.getReimbursmentSchema().getId());
         final JSONObject jsonObj = new JSONObject();
         try {
             jsonObj.put("approvalActivityId", appActivity.getId());
@@ -473,34 +484,59 @@ public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements 
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void approved(long approvalActivityId, ReimbursmentModelJsonParsing reimbursmentModelJsonParsing, String comment) throws Exception {
+    public void approved(long approvalActivityId, String pendingDataUpdate, String comment) throws Exception {
         Map<String, Object> result = super.approvedAndCheckNextApproval(approvalActivityId, null, comment);
-        System.out.println(result);
         ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
         if (StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")) {
-
-            saveModelJson(reimbursmentModelJsonParsing, appActivity, true);
+        	
+        	//parsing from json to entity
+        	Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+			String pendingData = appActivity.getPendingData();
+			Reimbursment reimbursment = gson.fromJson(pendingData, Reimbursment.class);
+			reimbursment.setApprovalActivityNumber(appActivity.getActivityNumber()); //set approval activity number, for history approval purpose 
+			
+			//convert to UploadedFile before saving
+			UploadedFile uploadedFile = null;
+			JsonElement elReimbursment = gson.fromJson(pendingData, JsonObject.class).get("reimbursmentFileName");
+			if(!elReimbursment.isJsonNull()){
+				String reimbursmentFilePath = elReimbursment.getAsString();
+				File file = new File(reimbursmentFilePath);
+				DiskFileItem fileItem = (DiskFileItem) new DiskFileItemFactory().createItem("fileData", "text/plain", true, file.getName());
+		        InputStream input =  new FileInputStream(file);
+		        OutputStream os = fileItem.getOutputStream();
+		        int ret = input.read();
+		        while ( ret != -1 )
+		        {
+		            os.write(ret);
+		            ret = input.read();
+		        }
+		        os.flush();
+	            
+		        uploadedFile = new DefaultUploadedFile(fileItem);
+			}
+            
+            this.save(reimbursment, uploadedFile, true);
+			//saveModelJson(reimbursment, , appActivity, true);
         }
         sendingEmailApprovalNotif(appActivity);
     }
 
-    @Override
-    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void saveModelJson(ReimbursmentModelJsonParsing reimbursmentModelJsonParsing, ApprovalActivity appActivity, boolean isBypassApprovalChecking) throws Exception {
+    
+    /*private void saveModelJson(Reimbursment reimbursment, String fileName, ApprovalActivity appActivity, boolean isBypassApprovalChecking) throws Exception {
         // check duplicate business travel number
-        long totalDuplicates = reimbursmentDao.getTotalByCode(reimbursmentModelJsonParsing.getCode());
+        long totalDuplicates = reimbursmentDao.getTotalByCode(reimbursment.getCode());
         if (totalDuplicates > 0) {
             throw new BussinessException("businesstravel.error_duplicate_business_travel_no");
         }
 
-        EmpData empData = empDataDao.getByEmpIdWithDetail(reimbursmentModelJsonParsing.getEmpDataId());
-        ReimbursmentSchema reimbursmentSchema = reimbursmentSchemaDao.getEntiyByPK(reimbursmentModelJsonParsing.getReimbursmentSchemaId());
+        EmpData empData = empDataDao.getByEmpIdWithDetail(reimbursment.getEmpData().getId());
+        ReimbursmentSchema reimbursmentSchema = reimbursmentSchemaDao.getEntiyByPK(reimbursment.getReimbursmentSchema().getId());
         Reimbursment reimbursment = new Reimbursment();
         reimbursment.setClaimDate(reimbursmentModelJsonParsing.getClaimDate());
         reimbursment.setCode(reimbursmentModelJsonParsing.getCode());
         reimbursment.setCreatedBy(reimbursmentModelJsonParsing.getCreateBy());
         reimbursment.setCreatedOn(reimbursmentModelJsonParsing.getCreateDate());
-        reimbursment.setEmpData(empData);
+        
         reimbursment.setApprovalActivityNumber(appActivity.getActivityNumber());
         if (reimbursmentModelJsonParsing.getNominal() != null) {
             reimbursment.setNominal(reimbursmentModelJsonParsing.getNominal());
@@ -508,6 +544,7 @@ public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements 
         if (reimbursmentModelJsonParsing.getQuantity() != null) {
             reimbursment.setQuantity(reimbursmentModelJsonParsing.getQuantity());
         }
+        reimbursment.setEmpData(empData);
         reimbursment.setReimbursmentSchema(reimbursmentSchema);
         this.reimbursmentDao.save(reimbursment);
 
@@ -519,11 +556,11 @@ public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements 
             reimbursment.setReimbursmentSchema(reimbursmentSchema);
             reimbursment.setCreatedBy(UserInfoUtil.getUserName());
             reimbursment.setCreatedOn(new Date());
-            if (reimbursmentModelJsonParsing.getReimbursmentFileName() != null) {
+            if (StringUtils.isNotEmpty(fileName)) {
                 InputStream inputStream = null;
                 byte[] buffer = null;
-                File reimbursmentFileDelete = new File(reimbursmentModelJsonParsing.getReimbursmentFileName());
-                inputStream = new FileInputStream(reimbursmentModelJsonParsing.getReimbursmentFileName());
+                File reimbursmentFileDelete = new File(fileName);
+                inputStream = new FileInputStream(fileName);
                 buffer = IOUtils.toByteArray(inputStream);
                 reimbursment.setReimbursmentDocument(buffer);
                 reimbursmentFileDelete.delete();
@@ -541,7 +578,7 @@ public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements 
             this.sendingEmailApprovalNotif(approvalActivity);
         }
 
-    }
+    }*/
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -553,7 +590,7 @@ public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements 
              * kalau status akhir sudah di reject dan tidak ada next approval,
              * berarti langsung insert ke database
              */
-            ReimbursmentModelJsonParsing reimbursmentModelJsonParsing = (ReimbursmentModelJsonParsing) JsonConverter.getClassFromJson(appActivity.getPendingData(), ReimbursmentModelJsonParsing.class, "dd-MM-yyyy");
+            /*ReimbursmentModelJsonParsing reimbursmentModelJsonParsing = (ReimbursmentModelJsonParsing) JsonConverter.getClassFromJson(appActivity.getPendingData(), ReimbursmentModelJsonParsing.class, "dd-MM-yyyy");
             ReimbursmentSchema reimbursmentSchema = reimbursmentSchemaDao.getEntiyByPK(reimbursmentModelJsonParsing.getReimbursmentSchemaId());
             Reimbursment reimbursment = new Reimbursment();
             EmpData empData = empDataDao.getByEmpIdWithDetail(reimbursmentModelJsonParsing.getEmpDataId());
@@ -569,8 +606,35 @@ public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements 
             if (reimbursmentModelJsonParsing.getQuantity() != null) {
                 reimbursment.setQuantity(reimbursmentModelJsonParsing.getQuantity());
             }
-            reimbursment.setReimbursmentSchema(reimbursmentSchema);
-            this.reimbursmentDao.save(reimbursment);
+            reimbursment.setReimbursmentSchema(reimbursmentSchema);*/
+        	
+        	
+        	//parsing from json to entity
+        	Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+			String pendingData = appActivity.getPendingData();
+			Reimbursment reimbursment = gson.fromJson(pendingData, Reimbursment.class);
+			reimbursment.setApprovalActivityNumber(appActivity.getActivityNumber()); //set approval activity number, for history approval purpose 
+			
+			//convert to UploadedFile before saving
+			UploadedFile uploadedFile = null;
+			JsonElement elReimbursment = gson.fromJson(pendingData, JsonObject.class).get("reimbursmentFileName");
+			if(!elReimbursment.isJsonNull()){
+				String reimbursmentFilePath = elReimbursment.getAsString();
+				File file = new File(reimbursmentFilePath);
+				DiskFileItem fileItem = (DiskFileItem) new DiskFileItemFactory().createItem("fileData", "text/plain", true, file.getName());
+		        InputStream input =  new FileInputStream(file);
+		        OutputStream os = fileItem.getOutputStream();
+		        int ret = input.read();
+		        while ( ret != -1 )
+		        {
+		            os.write(ret);
+		            ret = input.read();
+		        }
+		        os.flush();
+	            
+		        uploadedFile = new DefaultUploadedFile(fileItem);
+			}
+			this.save(reimbursment, uploadedFile, true);
         }
 
         //if there is no error, then sending the email notification
@@ -588,4 +652,42 @@ public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements 
     public Reimbursment getEntityByReimbursmentNoWithDetail(String reimbursmentNo) throws Exception {
         return reimbursmentDao.getEntityByReimbursmentNoWithDetail(reimbursmentNo);
     }
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void diverted(long approvalActivityId) throws Exception {
+		Map<String, Object> result = super.divertedAndCheckNextApproval(approvalActivityId);
+		ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
+		if(StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")){
+			//parsing from json to entity
+        	Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+			String pendingData = appActivity.getPendingData();
+			Reimbursment reimbursment = gson.fromJson(pendingData, Reimbursment.class);
+			reimbursment.setApprovalActivityNumber(appActivity.getActivityNumber()); //set approval activity number, for history approval purpose 
+			
+			//convert to UploadedFile before saving
+			UploadedFile uploadedFile = null;
+			JsonElement elReimbursment = gson.fromJson(pendingData, JsonObject.class).get("reimbursmentFileName");
+			if(!elReimbursment.isJsonNull()){
+				String reimbursmentFilePath = elReimbursment.getAsString();
+				File file = new File(reimbursmentFilePath);
+				DiskFileItem fileItem = (DiskFileItem) new DiskFileItemFactory().createItem("fileData", "text/plain", true, file.getName());
+		        InputStream input =  new FileInputStream(file);
+		        OutputStream os = fileItem.getOutputStream();
+		        int ret = input.read();
+		        while ( ret != -1 )
+		        {
+		            os.write(ret);
+		            ret = input.read();
+		        }
+		        os.flush();
+	            
+		        uploadedFile = new DefaultUploadedFile(fileItem);
+			}
+			this.save(reimbursment, uploadedFile, true);
+		}
+		
+		//if there is no error, then sending the email notification
+		sendingEmailApprovalNotif(appActivity);
+	}
 }

@@ -69,6 +69,15 @@ public class LeaveDistributionDaoImpl extends IDAOImpl<LeaveDistribution> implem
     }
 
     @Override
+    public List<LeaveDistribution> getAllDataByEmpIdWithDetail() {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.setFetchMode("empData", FetchMode.JOIN);
+        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+        criteria.setFetchMode("leave", FetchMode.JOIN);
+        return criteria.list();
+    }
+    
+    @Override
     public void saveBatch(List<LeaveDistribution> data) {
         int counter = 0;
         for (LeaveDistribution distribution : data) {
