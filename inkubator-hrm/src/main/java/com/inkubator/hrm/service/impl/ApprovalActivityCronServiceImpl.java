@@ -62,6 +62,9 @@ public class ApprovalActivityCronServiceImpl extends BaseApprovalServiceImpl imp
 					case HRMConstant.LOAN:
 						loanService.approved(approvalActivity.getId(), null, null);
 						break;
+					case HRMConstant.REIMBURSEMENT:
+						reimbursmentService.approved(approvalActivity.getId(), null, null);
+						break;
 					default:
 						break;
 				}
@@ -73,6 +76,9 @@ public class ApprovalActivityCronServiceImpl extends BaseApprovalServiceImpl imp
 						break;
 					case HRMConstant.LOAN:
 						loanService.diverted(approvalActivity.getId());
+						break;
+					case HRMConstant.REIMBURSEMENT:
+						reimbursmentService.diverted(approvalActivity.getId());
 						break;
 					default:
 						break;
