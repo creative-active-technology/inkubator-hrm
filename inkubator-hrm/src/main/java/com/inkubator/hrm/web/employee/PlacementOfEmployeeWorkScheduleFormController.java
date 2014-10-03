@@ -11,6 +11,7 @@ import com.inkubator.hrm.entity.WtGroupWorking;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.GolonganJabatanService;
 import com.inkubator.hrm.service.WtGroupWorkingService;
+import com.inkubator.hrm.util.MapUtil;
 import com.inkubator.hrm.web.model.PlacementOfEmployeeWorkScheduleModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
@@ -42,10 +44,10 @@ public class PlacementOfEmployeeWorkScheduleFormController extends BaseControlle
     @ManagedProperty(value = "#{empDataService}")
     private EmpDataService empDataService;
     private Map<String, Long> workingGroupDropDown = new HashMap<String, Long>();
-    ;
+    
     private List<WtGroupWorking> workingGroupList = new ArrayList<>();
-    private Map<String, Long> golonganJabatanDropDown = new HashMap<String, Long>();
-    ;
+    private Map<String, Long> golonganJabatanDropDown = new TreeMap<String, Long>();
+    
     private List<GolonganJabatan> golonganJabatanList = new ArrayList<>();
     private DualListModel<EmpData> dualListModel = new DualListModel<>();
     private PlacementOfEmployeeWorkScheduleModel model;
@@ -68,7 +70,7 @@ public class PlacementOfEmployeeWorkScheduleFormController extends BaseControlle
                 golonganJabatanDropDown.put(golonganJabatan.getCode() + " - " + golonganJabatan.getPangkat().getPangkatName(), golonganJabatan.getId());
             }
             source = this.empDataService.getAllDataWithRelation();
-
+            MapUtil.sortByValue(workingGroupDropDown);
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }

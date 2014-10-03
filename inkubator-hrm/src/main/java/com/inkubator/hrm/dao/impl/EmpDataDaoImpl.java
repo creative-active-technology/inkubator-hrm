@@ -17,7 +17,6 @@ import java.util.Date;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
-import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
@@ -329,22 +328,15 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.createAlias("leaveDistributions", "lv", JoinType.LEFT_OUTER_JOIN);
         criteria.createAlias("jabatanByJabatanId", "jabatan", JoinType.INNER_JOIN);
         criteria.createAlias("jabatan.department", "dept", JoinType.INNER_JOIN);
-        criteria.createAlias("employeeType", "empType", JoinType.LEFT_OUTER_JOIN);
+        criteria.createAlias("employeeType", "empType", JoinType.INNER_JOIN);
         criteria.createAlias("bioData", "bio", JoinType.INNER_JOIN);
         criteria.createAlias("golonganJabatan", "goljab", JoinType.INNER_JOIN);
         //ambil yg working groupnya bukan yg dipilih, dan belum punya working group
         if (model.getLeaveSchemeId()!= 0 || model.getLeaveSchemeId()!= null) {
-//            Disjunction disjunction = Restrictions.disjunction();
-//            disjunction.add(Restrictions.isNull("lv.empData"));
-//            disjunction.add(Restrictions.not(Restrictions.eq("lv.leave.id", model.getLeaveSchemeId())));
-//            criteria.add(disjunction);
-            
-            Criterion andCondition = Restrictions.conjunction()
-            .add(Restrictions.not(Restrictions.eq("lv.leave.id", model.getLeaveSchemeId())));
-
-            Criterion completeCondition = Restrictions.disjunction().add(andCondition).add(Restrictions.isNull("lv.empData"));
-            criteria.add(completeCondition).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-
+            Disjunction disjunction = Restrictions.disjunction();
+            disjunction.add(Restrictions.isNull("lv.empData"));
+            disjunction.add(Restrictions.not(Restrictions.eq("lv.leave.id", model.getLeaveSchemeId())));
+            criteria.add(disjunction);
         }
         //balance
 //        if (model.getStartBalance() != 0.0){

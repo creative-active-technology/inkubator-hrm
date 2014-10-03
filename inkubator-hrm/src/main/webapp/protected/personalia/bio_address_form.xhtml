@@ -81,7 +81,7 @@
                                 <h:outputLabel for="countryId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 36%">
-                            	<p:selectOneMenu id="countryId" filter="true" styleClass="isitext_hrm" value="#{bioAddressFormController.model.countryId}" style="width:245px;">
+                                <p:selectOneMenu id="countryId" required="true" filter="true" styleClass="isitext_hrm" value="#{bioAddressFormController.model.countryId}" style="width:245px;">
 	                            	<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
 	                                <f:selectItems value="#{bioAddressFormController.countries}" var="country" itemValue="#{country.id}" itemLabel="#{country.countryName}"/>
 	                                <p:ajax listener="#{bioAddressFormController.onChangeCountries()}" update="provinceId,cityId"/>
@@ -115,7 +115,7 @@
                                 <h:outputLabel for="provinceId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 36%">
-                            	<p:selectOneMenu id="provinceId" filter="true" styleClass="isitext_hrm" value="#{bioAddressFormController.model.provinceId}" style="width:245px;">
+                                <p:selectOneMenu id="provinceId" required="true" filter="true" styleClass="isitext_hrm" value="#{bioAddressFormController.model.provinceId}" style="width:245px;">
 	                            	<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
 	                                <f:selectItems value="#{bioAddressFormController.provinces}" var="province" itemValue="#{province.id}" itemLabel="#{province.provinceName}"/>
 	                                <p:ajax listener="#{bioAddressFormController.onChangeProvinces()}" update="cityId"/>
@@ -149,7 +149,7 @@
                                 <h:outputLabel for="cityId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 36%">
-                            	<p:selectOneMenu id="cityId" filter="true" styleClass="isitext_hrm" value="#{bioAddressFormController.model.cityId}" style="width:245px;">
+                                <p:selectOneMenu id="cityId" required="true" filter="true" styleClass="isitext_hrm" value="#{bioAddressFormController.model.cityId}" style="width:245px;">
 	                            	<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
 	                                <f:selectItems value="#{bioAddressFormController.cities}" var="city" itemValue="#{city.id}" itemLabel="#{city.cityName}"/>
 	                            </p:selectOneMenu>
