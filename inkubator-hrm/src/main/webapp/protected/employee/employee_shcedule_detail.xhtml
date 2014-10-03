@@ -21,8 +21,8 @@
                         <p:graphicImage library="images" name="status_attendance.png" height="36" width="36" />
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Detil Jadwal Kerja" styleClass="header_big" />
-                                <p:outputLabel value="Data Jadwal Kerja Karyawan" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['employeeschedule.detail_work_schedule']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['employeeschedule.employee_work_schedule_header']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -140,17 +140,17 @@
                         </p:panelGrid>
                         <p:dataTable value="#{empDataDetilScheduleController.dataToShow}" var="empDatas" rowIndexVar="no" style="margin-top: 20px;margin-bottom: 15px">
                             <f:facet name="header">  
-                                <h:outputText value="Jadwal Kerja" style="text-align: left" styleClass="label_hrm"/> 
+                                <h:outputText value="#{appmsg['employeeschedule.work_schedule']}" style="text-align: left" styleClass="label_hrm"/> 
                             </f:facet>
                             <p:column style="text-align: center;width: 25px;max-width: 25px">
                                 <f:facet name="header">  
-                                    <h:outputText value="No." />
+                                    <h:outputText value="#{appmsg['global.number']}" />
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
                             <p:column > 
                                 <f:facet name="header">  
-                                    <h:outputText value="Tanggal Kehadiran" />
+                                    <h:outputText value="#{appmsg['workschedule.date_attedance']}" />
                                 </f:facet>
                                 <p:outputLabel value="#{empDatas.tanggalWaktuKerja}" >
                                     <f:convertDateTime pattern="EEEE, dd MMMM yyyy" />
@@ -158,19 +158,19 @@
                             </p:column> 
                             <p:column > 
                                 <f:facet name="header">  
-                                    <h:outputText value="Status Kehadiran" />
+                                    <h:outputText value="#{appmsg['workschedule.status_attedance']}" />
                                 </f:facet>
                                 <h:outputLabel value=" #{empDatas.wtWorkingHour.attendanceStatus.statusKehadrian}" />
                             </p:column>
                             <p:column > 
                                 <f:facet name="header">  
-                                    <h:outputText value="Nama Shift" />
+                                    <h:outputText value="#{appmsg['workschedule.shift_name']}" />
                                 </f:facet>
                                 <h:outputLabel value=" #{empDatas.wtWorkingHour.name}" />
                             </p:column>
                             <p:column style="text-align: center"> 
                                 <f:facet name="header">  
-                                    <h:outputText value="Jam Operasional" />
+                                    <h:outputText value="#{appmsg['workschedule.operating_hours']}" />
                                 </f:facet>
                                 <p:outputLabel value=" #{empDatas.wtWorkingHour.workingHourBegin}" >
                                     <f:convertDateTime pattern="hh:mm:ss" />
@@ -183,7 +183,7 @@
                             
                             <p:column style="text-align: center"> 
                                 <f:facet name="header">  
-                                    <h:outputText value="Waktu Istirahat" />
+                                    <h:outputText value="#{appmsg['workschedule.break_hours']}" />
                                 </f:facet>
                                  <p:outputLabel value=" #{empDatas.wtWorkingHour.breakHourBegin}" >
                                     <f:convertDateTime pattern="hh:mm" />

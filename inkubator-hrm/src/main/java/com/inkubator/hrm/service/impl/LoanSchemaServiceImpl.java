@@ -124,6 +124,8 @@ public class LoanSchemaServiceImpl extends IServiceImpl implements LoanSchemaSer
         update.setMaxPaymentOfSalary(entity.getMaxPaymentOfSalary());
         update.setMaxPeriode(entity.getMaxPeriode());
         update.setName(entity.getName());
+        update.setInterestRate(entity.getInterestRate());
+        update.setMinPayment(entity.getMaxNominal());
         update.setPenaltyOfNonComplance(entity.getPenaltyOfNonComplance());
         update.setTypeOfInterest(entity.getTypeOfInterest());
         update.setUpdatedBy(UserInfoUtil.getUserName());

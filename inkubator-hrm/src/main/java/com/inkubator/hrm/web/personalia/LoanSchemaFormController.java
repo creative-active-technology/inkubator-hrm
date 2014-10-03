@@ -139,6 +139,8 @@ public class LoanSchemaFormController extends BaseController{
         loanSchemaModel.setBasicValue(entity.getBasicValue());
         loanSchemaModel.setMaxNominal(entity.getMaxNominal());
         loanSchemaModel.setName(entity.getName());
+        loanSchemaModel.setMinPaymment(entity.getMinPayment());
+        loanSchemaModel.setInterestRate(entity.getInterestRate());
         loanSchemaModel.setMaxPaymentOfSalary(entity.getMaxPaymentOfSalary());
         loanSchemaModel.setMaxPeriode(entity.getMaxPeriode());
         loanSchemaModel.setPenaltyOfNonComplance(entity.getPenaltyOfNonComplance());
@@ -238,6 +240,8 @@ public class LoanSchemaFormController extends BaseController{
         loanSchema.setMaxPeriode(model.getMaxPeriode());
         loanSchema.setPenaltyOfNonComplance(model.getPenaltyOfNonComplance());
         loanSchema.setTypeOfInterest(model.getTypeOfInterest());
+        loanSchema.setInterestRate(model.getInterestRate());
+        loanSchema.setMinPayment(model.getMinPaymment());
         return loanSchema;
     }
     

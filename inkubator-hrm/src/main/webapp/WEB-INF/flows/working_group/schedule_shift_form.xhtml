@@ -23,8 +23,8 @@
                             <p:graphicImage library="images" name="/working_hour.png" height="36" width="36"  cache="true"/>
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="Form Jadwak Shift" styleClass="header_big" />
-                                    <p:outputLabel value="Jadwal Shift dari Waktu Kerja" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['workinggroup.shift_form']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['workinggroup.shift_header']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -34,16 +34,16 @@
                         <p:panelGrid style="width: 100%;margin-top: 20px;margin-bottom: 5px" styleClass="grid_border3">
                             <p:row>
                                 <p:column style="width: 17%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Kode Kelompok Kerja" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['workinggroup.working_group_code_of_working_group']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 34%">
                                     <p:inplace id="ajax" editor="true">
                                         <p:inputText value="#{groupWorkingModel.code}" required="true" label="text"  onkeyup="this.value = this.value.toUpperCase();" />
                                     </p:inplace>
-                                    <p:outputLabel value="Clik To Edit"  style="font-style: italic;margin-left: 10px;font-size: 11px!important"/>
+                                    <p:outputLabel value="#{appmsg['global.click_to_edit']}"  style="font-style: italic;margin-left: 10px;font-size: 11px!important"/>
                                 </p:column>
                                 <p:column style="width: 17%;background-color: #e1f0f0!important">
-                                    <p:outputLabel  value="Nama Kelompok Kerja" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['workinggroup.working_group_name_of_working_group']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 34%">
 
@@ -53,7 +53,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 17%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Tanggal Mulai" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['workinggroup.working_group_start_date']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 34%">
                                     <p:outputLabel  value="#{groupWorkingModel.beginTime}" >
@@ -61,7 +61,7 @@
                                     </p:outputLabel>
                                 </p:column>
                                 <p:column style="width: 17%;background-color: #e1f0f0!important">
-                                    <p:outputLabel  value="Tanggal Selesai" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['workinggroup.working_group_end_date']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 34%">
                                     <p:outputLabel  value="#{groupWorkingModel.endTime}" >
@@ -72,14 +72,14 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 17%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Jam Kerja Per Hari" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['workinggroup.working_group_working_time_per_hour']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 34%">
                                     <p:outputLabel  value="#{groupWorkingModel.workingTimePerday}" />
                                     <h:outputLabel value="#{appmsg['global.hour']}" style="margin-left: 5px"/>
                                 </p:column>
                                 <p:column style="width: 17%;background-color: #e1f0f0!important">
-                                    <p:outputLabel  value="Jam Kerja Per Minggu" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['workinggroup.working_group_working_time_per_week']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 34%">
                                     <p:outputLabel  value="#{groupWorkingModel.workingTimePerweek}" />
@@ -89,13 +89,13 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 17%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Lembur Berdasarkan Pekerja" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['workinggroup.working_group_working_overtime_by_workers']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 34%">
                                     <h:outputFormat  value="#{groupWorkingModel.overtimeBasedOnAttendanceAsString}" />
                                 </p:column>
                                 <p:column style="width: 17%;background-color: #e1f0f0!important" rowspan="2" >
-                                    <p:outputLabel  value="Berulang" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['workinggroup.working_group_recurring']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 34%" rowspan="2">
                                     <h:outputLabel value="#{groupWorkingModel.isPeriodicAsString}" />
@@ -103,7 +103,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 17%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Lembur Berdasarkan Permintaan" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['workinggroup.working_group_working_overtime_by_request']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 34%" >
                                     <h:outputLabel  value="#{groupWorkingModel.overtimeBasedOnRequestAsString}" />
@@ -111,10 +111,10 @@
                             </p:row>
                         </p:panelGrid>
                         <div style="margin-bottom: 20px;margin-left: 5px">
-                            <p:outputLabel value="*)Lakukan perubahan code jika terjadi duplicate, tidak usah kembali ke halman sebelumnya" style="font-size: 10px"/>
+                            <p:outputLabel value="#{appmsg['workinggroup.note2']}" style="font-size: 10px"/>
                         </div>
 
-                        <p:outputLabel value="Penambahan Jadwal Shift" styleClass="header_big" />
+                        <p:outputLabel value="#{appmsg['workinggroup.add_shift_schedule']}" styleClass="header_big" />
                         <p:separator/>
 
                         <p:dataTable  var="dataShiftModel"  value="#{groupWorkingModel.dataToShow}" 
@@ -122,13 +122,13 @@
                                       rowIndexVar="no">
                             <p:column style="text-align: center;max-width: 25px" >
                                 <f:facet name="header">  
-                                    <h:outputText value="No." />
+                                    <h:outputText value="#{appmsg['global.number']}" />
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
                             <p:column style="text-align: center" >
                                 <f:facet name="header">  
-                                    <h:outputText value="Tanggal"/>
+                                    <h:outputText value="#{appmsg['global.date']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{dataShiftModel.tanggalKerja}">
                                     <f:convertDateTime pattern="EEEE, dd MMMM yyyy" />
@@ -137,13 +137,13 @@
 
                             <p:column  >
                                 <f:facet name="header">  
-                                    <h:outputText value="Jadwal Shift"/>
+                                    <h:outputText value="#{appmsg['global.schedule_shift']}"/>
                                 </f:facet>
                                 <p:selectOneMenu id="pilihanBahasa" styleClass="isitext_hrm" rendered="#{dataShiftModel.isRenderCombo}" required="true"
                                                  value="#{dataShiftModel.jamKerjaId}" filter="true" filterMatchMode="startsWith"
-                                                 label="Jadwal Shift"
+                                                 label="#{appmsg['global.schedule_shift']}"
                                                  style="font-family: Calibri!important;text-align: left" >
-                                    <f:selectItem itemLabel="Silahkan Pilih" itemValue=""/>
+                                    <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                     <f:selectItems value="#{groupWorkingModel.mapData}"/>
 
                                 </p:selectOneMenu>
@@ -151,7 +151,7 @@
                             </p:column>
                             <p:column style="text-align: center" >
                                 <f:facet name="header">  
-                                    <h:outputText value="Tanggal"/>
+                                    <h:outputText value="#{appmsg['global.date']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{dataShiftModel.tanggalKerja2}">
                                     <f:convertDateTime pattern="EEEE, dd MMMM yyyy" />
@@ -161,7 +161,7 @@
 
                             <p:column  >
                                 <f:facet name="header">  
-                                    <h:outputText value="Jadwal Shift"/>
+                                    <h:outputText value="#{appmsg['global.schedule_shift']}"/>
                                 </f:facet>
                                 <p:selectOneMenu id="pilihanBahasad" styleClass="isitext_hrm" rendered="#{dataShiftModel.isRenderCombo2}" value="#{dataShiftModel.jamKerjaId2}"
                                                  label="#{appmsg['loginform.choose_language']}" required="true"
@@ -181,13 +181,13 @@
                                                 </p:blockUI>-->
                         <div align="center">
                             <h:panelGrid columns="2">
-                                <p:commandButton value="Previous" icon="ui-icon-arrow-1-w" action="back_table" update="addDataShiftId" id="nextId" ajax="true"/>
-                                <p:commandButton value="Next" icon="ui-icon-arrow-1-e" action="next_table" update="addDataShiftId" id="backId" ajax="true"/>
+                                <p:commandButton value="#{appmsg['global.previous']}" icon="ui-icon-arrow-1-w" action="back_table" update="addDataShiftId" id="nextId" ajax="true"/>
+                                <p:commandButton value="#{appmsg['global.next']}" icon="ui-icon-arrow-1-e" action="next_table" update="addDataShiftId" id="backId" ajax="true"/>
                             </h:panelGrid>
                         </div>
                         <p:separator/>
                         <div style="margin-bottom: 5px">
-                            <p:commandButton value="Simpan" ajax="true" disabled="#{groupWorkingModel.isDisable}" onclick="statusDialog.show()" oncomplete="statusDialog.hide()"
+                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" disabled="#{groupWorkingModel.isDisable}" onclick="statusDialog.show()" oncomplete="statusDialog.hide()"
                                              action="save" styleClass="isitext_hrm" update="addDataShiftId,:errorDuplicateId" 
                                              style="margin-right: 5px" label="Lanjut" id="buttonSaveId"
                                              icon="ui-icon-disk" title="Lanjut"/>
@@ -198,11 +198,11 @@
 
                     </h:form>
                     <p:dialog id="backDialogId" appendTo="@(body)" draggable="true" modal="true" resizable="false" hideEffect="clip" showEffect="clip"  onShow="statusDialog.hide()"
-                              header="Konfirmasi" widgetVar="backConfirmation" dynamic="true">
+                              header="#{appmsg['global.header_confirmation']}" widgetVar="backConfirmation" dynamic="true">
                         <h:form id="backFormId">
                             <div align="center">
-                                <p><h:outputLabel value="Apakah Anda yakin akan kembali ke halaman sebelumnya?" style="color: #cc0000!important" styleClass="label_hrm"/> </p>
-                                <p><h:outputLabel value="Perhatian!!! Jadwal Shift yang telah Anda pilih atau tentukan akan terreset kembali." style="color: #cc0000!important" styleClass="label_hrm"/> </p>   
+                                <p><h:outputLabel value="#{appmsg['global.confirmation1']}" style="color: #cc0000!important" styleClass="label_hrm"/> </p>
+                                <p><h:outputLabel value="#{appmsg['global.confirmation2']}" style="color: #cc0000!important" styleClass="label_hrm"/> </p>   
                                 <p:separator/>
                                 <p:commandButton id="confirm" value="Yes" oncomplete="confirmationSave.hide()" title="Yes" action="back"
                                                  style="margin-right:5px" />  

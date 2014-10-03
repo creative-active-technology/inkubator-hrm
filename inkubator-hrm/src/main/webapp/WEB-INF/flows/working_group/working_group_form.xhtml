@@ -21,8 +21,8 @@
                         <p:graphicImage library="images" name="group_working.png" height="36" width="36"  cache="true"/>
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Form Kelompok Kerja" styleClass="header_big" />
-                                <p:outputLabel value="Daftar Kelompok Kerja dari Waktu Kerja" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['workinggroup.form']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['workinggroup.data_working_group']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -33,33 +33,33 @@
 
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Jenis Schedule"  for="dayTypeId" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['workinggroup.schedule_type']}"  for="dayTypeId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <h:panelGrid columns="1">
                                     <p:selectOneRadio id="dayTypeId" styleClass="isitext_hrm" required="true"  value="#{groupWorkingModel.kondisiSchedule}">
                                         <!--Cek HRM Constanta..-->
-                                        <f:selectItem itemLabel="Normal Schedule" itemValue="0" id="select1"/>
-                                        <f:selectItem itemLabel="Non Normal Schedule" itemValue="1"  id="select2" />
+                                        <f:selectItem itemLabel="#{appmsg['workinggroup.schedule_normal']}" itemValue="0" id="select1"/>
+                                        <f:selectItem itemLabel="#{appmsg['workinggroup.non_normal_schedule']}" itemValue="1"  id="select2" />
                                     </p:selectOneRadio>
-                                        <p:outputLabel value="*) Normal Shcedule mengikuti aturan normal Hari Libur Nasional dan Non Normal Schedule tidak mengikuti aturan normal Hari Libur Nasional." style="font-size: 11px;color: #900"  />
+                                        <p:outputLabel value="#{appmsg['workinggroup.note']}" style="font-size: 11px;color: #900"  />
                                     </h:panelGrid>
                                     <p:message for="dayTypeId"/>
                                 </p:column>
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Kode Kelompok Kerja"  for="kkId" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['workinggroup.working_group_code_of_working_group']}"  for="kkId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:inputText value="#{groupWorkingModel.code}" styleClass="isitext_hrm" label="Kode Kelompok Kerja" maxlength="15"
+                                    <p:inputText value="#{groupWorkingModel.code}" styleClass="isitext_hrm" label="#{appmsg['workinggroup.working_group_code_of_working_group']}" maxlength="15"
                                                  style="width: 290px" required="true" id="kkId" onkeyup="this.value = this.value.toUpperCase();" />
                                     <p:message for="kkId"/>
                                 </p:column>
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Nama Kelompok Kerja"  for="nameKKid" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['workinggroup.working_group_name_of_working_group']}"  for="nameKKid" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:inputText value="#{groupWorkingModel.name}" styleClass="isitext_hrm" label="Nama Kelompok Kerja"
@@ -70,10 +70,10 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Tanggal Mulai"  for="tglMulaiId" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['workinggroup.working_group_start_date']}"  for="tglMulaiId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:calendar id="tglMulaiId" pattern="dd MMMM yyyy" required="true" value="#{groupWorkingModel.beginTime}" label="Tanggal Mulai">
+                                    <p:calendar id="tglMulaiId" pattern="dd MMMM yyyy" required="true" value="#{groupWorkingModel.beginTime}" label="#{appmsg['workinggroup.working_group_start_date']}">
                                         <f:validator validatorId="dateBetweenValidator"  />
                                         <f:attribute name="endTime" value="#{tglSelesaiId}"/>
                                         <!--<f:attribute name="jenis" value="#{groupWorkingModel.kondisiSchedule}"/>-->
@@ -85,17 +85,17 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Tanggal Selesai"  for="tglSelesaiId" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['workinggroup.working_group_end_date']}"  for="tglSelesaiId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:calendar id="tglSelesaiId" binding="#{tglSelesaiId}" pattern="dd MMMM yyyy" required="true" value="#{groupWorkingModel.endTime}" label="Tanggal Selesai"/>
+                                    <p:calendar id="tglSelesaiId" binding="#{tglSelesaiId}" pattern="dd MMMM yyyy" required="true" value="#{groupWorkingModel.endTime}" label="#{appmsg['workinggroup.working_group_end_date']}"/>
                                     <p:message for="tglSelesaiId"/>
                                 </p:column>
 
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Berulang"  for="periodicId" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['workinggroup.working_group_recurring']}"  for="periodicId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:selectBooleanButton  onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" required="true"
@@ -106,10 +106,10 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Jam Kerja Per Hari"  for="perDayWorkId" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['workinggroup.working_group_working_time_per_hour']}"  for="perDayWorkId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <pe:inputNumber decimalPlaces="1" id="perDayWorkId" style="text-align: right;width: 60px" required="true" label="Jam Kerja Per Hari"
+                                    <pe:inputNumber decimalPlaces="1" id="perDayWorkId" style="text-align: right;width: 60px" required="true" label="#{appmsg['workinggroup.working_group_working_time_per_hour']}"
                                                     value="#{groupWorkingModel.workingTimePerday}"
                                                     styleClass="isitext_hrm" maxValue="24"/>
                                     <p:message for="perDayWorkId"/>
@@ -118,33 +118,33 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Jam Kerja Per Minggu"  for="perWeekWorkId" styleClass="label_hrm"/>
+                                    <p:outputLabel  value="#{appmsg['workinggroup.working_group_working_time_per_week']}"  for="perWeekWorkId" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <pe:inputNumber decimalPlaces="1" id="perWeekWorkId" style="text-align: right;width: 60px" value="#{groupWorkingModel.workingTimePerweek}"
-                                                    styleClass="isitext_hrm" maxValue="100" label="Jam Kerja Per Minggu" required="true"/>
+                                                    styleClass="isitext_hrm" maxValue="100" label="#{appmsg['workinggroup.working_group_working_time_per_week']}" required="true"/>
                                     <p:message for="perWeekWorkId"/>
                                 </p:column>
                             </p:row>
 
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Lembur Berdasarkan Pekerja"  for="attendaceOTid" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['workinggroup.working_group_working_overtime_by_workers']}"  for="attendaceOTid" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:selectBooleanButton  onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" required="true" value="#{groupWorkingModel.overtimeBasedOnAttendance}"
-                                                            offIcon="ui-icon-close"  id="attendaceOTid" styleClass="label_button" label="Lembur Berdasarkan Pekerja" />
+                                                            offIcon="ui-icon-close"  id="attendaceOTid" styleClass="label_button" label="#{appmsg['workinggroup.working_group_working_overtime_by_workers']}" />
                                     <p:message for="attendaceOTid"/>
                                 </p:column>
 
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Lembur Berdasarkan Permintaan"  for="requestOTid" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['workinggroup.working_group_working_overtime_by_request']}"  for="requestOTid" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:selectBooleanButton  onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" required="true" value="#{groupWorkingModel.overtimeBasedOnRequest}"
-                                                            offIcon="ui-icon-close"  id="requestOTid" styleClass="label_button" label="Lembur Berdasarkan Permintaan" />
+                                                            offIcon="ui-icon-close"  id="requestOTid" styleClass="label_button" label="#{appmsg['workinggroup.working_group_working_overtime_by_request']}" />
                                     <p:message for="requestOTid"/>
                                 </p:column>
                             </p:row>

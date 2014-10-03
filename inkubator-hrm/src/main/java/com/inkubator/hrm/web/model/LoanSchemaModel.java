@@ -20,6 +20,8 @@ public class LoanSchemaModel implements Serializable{
     private Integer maxPeriode;
     private Integer basicValue;
     private BigDecimal maxNominal;
+    private BigDecimal minPaymment;
+    private Double interestRate;;
     private Double maxPaymentOfSalary;
     private Double penaltyOfNonComplance;
 
@@ -102,6 +104,20 @@ public class LoanSchemaModel implements Serializable{
     public void setPenaltyOfNonComplance(Double penaltyOfNonComplance) {
         this.penaltyOfNonComplance = penaltyOfNonComplance;
     }
-    
-    
+
+    public BigDecimal getMinPaymment() {
+        return minPaymment;
+    }
+
+    public void setMinPaymment(BigDecimal minPaymment) {
+        this.minPaymment = minPaymment;
+    }
+
+    public Double getInterestRate() {
+        return interestRate;
+    }
+
+    public void setInterestRate(Double interestRate) {
+        this.interestRate = interestRate;
+    }
 }
