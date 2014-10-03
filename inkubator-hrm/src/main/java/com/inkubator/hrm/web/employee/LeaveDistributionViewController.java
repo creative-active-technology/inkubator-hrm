@@ -64,7 +64,7 @@ public class LeaveDistributionViewController extends BaseController {
     
     public void doSelectEntity() {
         try {
-            selected = this.leaveDistributionService.getEntityByParamWithDetail(selected.getEmpData().getId());
+            selected = this.leaveDistributionService.getEntityByParamWithDetail(selected.getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -92,7 +92,7 @@ public class LeaveDistributionViewController extends BaseController {
     public void doUpdate() {
         Map<String, List<String>> dataToSend = new HashMap<>();
         List<String> values = new ArrayList<>();
-        values.add(String.valueOf(selected.getEmpData().getId()));
+        values.add(String.valueOf(selected.getId()));
         dataToSend.put("empDataId", values);
         showDialog(dataToSend);
     }
@@ -116,7 +116,7 @@ public class LeaveDistributionViewController extends BaseController {
     
      public void onDelete() {
         try {
-            selected = this.leaveDistributionService.getEntiyByPK(selected.getEmpData().getId());
+            selected = this.leaveDistributionService.getEntityByParamWithDetail(selected.getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
