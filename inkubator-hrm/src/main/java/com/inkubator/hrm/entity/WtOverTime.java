@@ -3,10 +3,14 @@ package com.inkubator.hrm.entity;
 
 import com.inkubator.hrm.HRMConstant;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -38,6 +42,7 @@ public class WtOverTime implements java.io.Serializable {
     private Date createdOn;
     private String updatedBy;
     private Date updatedOn;
+    private Set<OverTimeDistribution> overTimeDistributions = new HashSet<OverTimeDistribution>(0);
 
     public WtOverTime() {
     }
@@ -102,7 +107,7 @@ public class WtOverTime implements java.io.Serializable {
         this.name = name;
     }
 
-    @Column(name = "description", length = 65535, columnDefinition="Text")
+    @Column(name = "description", length = 65535, columnDefinition = "Text")
     public String getDescription() {
         return this.description;
     }
@@ -229,4 +234,12 @@ public class WtOverTime implements java.io.Serializable {
         return null;
     }
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "wtOverTime")
+    public Set<OverTimeDistribution> getOverTimeDistributions() {
+        return this.overTimeDistributions;
+    }
+
+    public void setOverTimeDistributions(Set<OverTimeDistribution> overTimeDistributions) {
+        this.overTimeDistributions = overTimeDistributions;
+    }
 }
