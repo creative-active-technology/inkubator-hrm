@@ -19,11 +19,11 @@
                 <h:form id="formBusinessTravelDetailId">
                 	<div id="box_bg" style="margin: 10px">
 	                    <h:panelGrid  columns="2">
-	                        <p:graphicImage library="images" name="bio_data.png" height="36" width="36" />
+	                        <p:graphicImage library="images" name="reimbursement.png" height="36" width="36" />
 	                        <h:panelGroup layout="block">
 	                            <h:panelGrid>
-	                                <p:outputLabel value="Reimbursment Detail" styleClass="header_big" />
-	                                <p:outputLabel value="Reimbursment Detail from Application" styleClass="header_small_no_bold" />
+	                                <p:outputLabel value="#{appmsg['reimbursment.reimbursment_detail']}" styleClass="header_big" />
+	                                <p:outputLabel value="#{appmsg['reimbursment.reimbursment_header']}" styleClass="header_small_no_bold" />
 	                            </h:panelGrid>
 	                        </h:panelGroup>
 	                    </h:panelGrid>
@@ -31,7 +31,7 @@
 	                    <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px">
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="Reimbursment No" styleClass="label_hrm"/>
+	                                <p:outputLabel value="#{appmsg['reimbursment.reimbursment_no']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 30%">
                                         <p:outputLabel value="#{reimbursmentDetailController.selectedReimbursment.code}"/>
@@ -45,13 +45,13 @@
 	                        </p:row>
                                 <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="Quantity" styleClass="label_hrm"/>
+	                                <p:outputLabel value="#{appmsg['businesstravel.quantity']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 30%">
                                         <p:outputLabel value="#{reimbursmentDetailController.selectedReimbursment.quantity}"/>
 	                            </p:column>
                                     <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="Reimbursment Schema" styleClass="label_hrm"/>
+	                                <p:outputLabel value="#{appmsg['reimbursementschema.reimbursement_schema']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 30%">
                                         <p:outputLabel value="#{reimbursmentDetailController.selectedReimbursment.reimbursmentSchema.name}"/>
@@ -59,14 +59,14 @@
 	                        </p:row>
                                 <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="Nominal" styleClass="label_hrm"/>
+	                                <p:outputLabel value="#{appmsg['reimbursment.nominal']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 30%">
                                         <p:outputLabel value="#{reimbursmentDetailController.selectedReimbursment.nominal}"/>
 	                            </p:column>
                                     
                                     <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="Claim Date" styleClass="label_hrm"/>
+	                                <p:outputLabel value="#{appmsg['reimbursement.claim_date']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 30%">
                                         <p:outputLabel value="#{reimbursmentDetailController.selectedReimbursment.claimDate}">

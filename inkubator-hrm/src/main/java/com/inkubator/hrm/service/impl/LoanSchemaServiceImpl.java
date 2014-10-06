@@ -73,7 +73,7 @@ public class LoanSchemaServiceImpl extends IServiceImpl implements LoanSchemaSer
     public void saveAndNotification(LoanSchema loanSchema) throws Exception {
         long totalDuplicates = loanSchemaDao.getTotalByCode(loanSchema.getCode());
         if (totalDuplicates > 0) {
-            throw new BussinessException("costcenter.error_duplicate_cost_center_code");
+            throw new BussinessException("loanschema.error_duplicate_loan_schema_code");
         }
         if(loanSchema.getCostCenter()!= null){
     		CostCenter costCenter = costCenterDao.getEntiyByPK(loanSchema.getCostCenter().getId());
@@ -110,7 +110,7 @@ public class LoanSchemaServiceImpl extends IServiceImpl implements LoanSchemaSer
     public void update(LoanSchema entity) throws Exception {
         long totalDuplicates = loanSchemaDao.getTotalByCodeAndNotId(entity.getCode(), entity.getId());
         if (totalDuplicates > 0) {
-            throw new BussinessException("costcenter.error_duplicate_cost_center_code");
+            throw new BussinessException("loanschema.error_duplicate_loan_schema_code");
         }
         LoanSchema update = this.loanSchemaDao.getEntiyByPK(entity.getId());
         update.getLoanSchemaEmployeeTypes().clear();
@@ -125,7 +125,7 @@ public class LoanSchemaServiceImpl extends IServiceImpl implements LoanSchemaSer
         update.setMaxPeriode(entity.getMaxPeriode());
         update.setName(entity.getName());
         update.setInterestRate(entity.getInterestRate());
-        update.setMinPayment(entity.getMaxNominal());
+        update.setMinPayment(entity.getMinPayment());
         update.setPenaltyOfNonComplance(entity.getPenaltyOfNonComplance());
         update.setTypeOfInterest(entity.getTypeOfInterest());
         update.setUpdatedBy(UserInfoUtil.getUserName());
