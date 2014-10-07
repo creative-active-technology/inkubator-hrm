@@ -11,10 +11,12 @@ import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
+import com.inkubator.hrm.web.model.DistributionOvetTimeModel;
 import com.inkubator.hrm.web.model.PlacementOfEmployeeWorkScheduleModel;
 import com.inkubator.hrm.web.search.EmpDataSearchParameter;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.DetachedCriteria;
@@ -278,7 +280,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         }
         //departermen equal or like
         if (model.getDepartmentLikeOrEqual() != 3) {
-            if (model.getDepartmentLikeOrEqual() == HRMConstant.DEPARTMENT_EQUAL) {
+            if (Objects.equals(model.getDepartmentLikeOrEqual(), HRMConstant.DEPARTMENT_EQUAL)) {
                 criteria.add(Restrictions.eq("dept.departmentName", model.getDepartmentName()));
             } else {
                 criteria.add(Restrictions.like("dept.departmentName", model.getDepartmentName(), MatchMode.ANYWHERE));
@@ -286,7 +288,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         }
         //employee type equal or like
         if (model.getEmployeeTypeLikeOrEqual() != 3) {
-            if (model.getEmployeeTypeLikeOrEqual() == HRMConstant.EMPLOYEE_TYPE_EQUAL) {
+            if (Objects.equals(model.getEmployeeTypeLikeOrEqual(), HRMConstant.EMPLOYEE_TYPE_EQUAL)) {
                 criteria.add(Restrictions.eq("empType.name", model.getEmployeeTypeName()));
             } else {
                 criteria.add(Restrictions.like("empType.name", model.getEmployeeTypeName(), MatchMode.ANYWHERE));
@@ -300,13 +302,13 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         }
 
         String sortBy;
-        if (model.getSortBy() == HRMConstant.SORT_BY_NIK) {
+        if (Objects.equals(model.getSortBy(), HRMConstant.SORT_BY_NIK)) {
             sortBy = "nik";
         } else {
             sortBy = "bio.firstName";
         }
 
-        if (model.getOrderBy() == HRMConstant.ORDER_BY_ASC) {
+        if (Objects.equals(model.getOrderBy(), HRMConstant.ORDER_BY_ASC)) {
             criteria.addOrder(Order.asc(sortBy));
         } else {
             criteria.addOrder(Order.desc(sortBy));
@@ -323,7 +325,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     }
 
     @Override
-    public List<EmpData> getTotalBySearchEmployeeLeave(DistributionLeaveSchemeModel model) {
+    public List<EmpData> getEmployeeBySearchEmployeeLeave(DistributionLeaveSchemeModel model) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.createAlias("leaveDistributions", "lv", JoinType.LEFT_OUTER_JOIN);
         criteria.createAlias("jabatanByJabatanId", "jabatan", JoinType.INNER_JOIN);
@@ -344,15 +346,15 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 //        }
         //departermen equal or like
         if (model.getDepartmentLikeOrEqual() != 3) {
-            if (model.getDepartmentLikeOrEqual() == HRMConstant.DEPARTMENT_EQUAL) {
+            if (Objects.equals(model.getDepartmentLikeOrEqual(), HRMConstant.DEPARTMENT_EQUAL)) {
                 criteria.add(Restrictions.eq("dept.departmentName", model.getDepartmentName()));
             } else {
                 criteria.add(Restrictions.like("dept.departmentName", model.getDepartmentName(), MatchMode.ANYWHERE));
             }
         }
-        //employee type equal or like
+        //employee type equal or likeS
         if (model.getEmployeeTypeLikeOrEqual() != 3) {
-            if (model.getEmployeeTypeLikeOrEqual() == HRMConstant.EMPLOYEE_TYPE_EQUAL) {
+            if (Objects.equals(model.getEmployeeTypeLikeOrEqual(), HRMConstant.EMPLOYEE_TYPE_EQUAL)) {
                 criteria.add(Restrictions.eq("empType.name", model.getEmployeeTypeName()));
             } else {
                 criteria.add(Restrictions.like("empType.name", model.getEmployeeTypeName(), MatchMode.ANYWHERE));
@@ -366,18 +368,31 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         }
 
         String sortBy;
-        if (model.getSortBy() == HRMConstant.SORT_BY_NIK) {
+        if (Objects.equals(model.getSortBy(), HRMConstant.SORT_BY_NIK)) {
             sortBy = "nik";
         } else {
             sortBy = "bio.firstName";
         }
 
-        if (model.getOrderBy() == HRMConstant.ORDER_BY_ASC) {
+        if (Objects.equals(model.getOrderBy(), HRMConstant.ORDER_BY_ASC)) {
             criteria.addOrder(Order.asc(sortBy));
         } else {
             criteria.addOrder(Order.desc(sortBy));
         }
         return criteria.list();
+    }
+
+    @Override
+    public List<EmpData> getEmployeeByOtSearchParameter(DistributionOvetTimeModel model) {
+       Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("leaveDistributions", "lv", JoinType.LEFT_OUTER_JOIN);
+        criteria.createAlias("jabatanByJabatanId", "jabatan", JoinType.INNER_JOIN);
+        criteria.createAlias("jabatan.department", "dept", JoinType.INNER_JOIN);
+        criteria.createAlias("employeeType", "empType", JoinType.INNER_JOIN);
+        criteria.createAlias("bioData", "bio", JoinType.INNER_JOIN);
+        criteria.createAlias("golonganJabatan", "goljab", JoinType.INNER_JOIN);
+        
+        return null;
     }
 
 }

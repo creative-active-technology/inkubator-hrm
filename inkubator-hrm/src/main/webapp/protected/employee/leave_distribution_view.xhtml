@@ -66,15 +66,15 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="name">
+                            <p:column sortBy="empData">
                                 <f:facet name="header">
                                     <h:outputText value="Nama Karyawan"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.empData.nikWithFullName}" />
                             </p:column>
-                            <p:column sortBy="name" >
+                            <p:column sortBy="leave" >
                                 <f:facet name="header">
-                                    <h:outputText value="Nama Cuty"/>
+                                    <h:outputText value="Nama Cuti"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.leave.name}" />
                             </p:column>
@@ -88,7 +88,7 @@
                             </p:column>
                             <p:column sortBy="endDate" >
                                 <f:facet name="header">
-                                    <h:outputText value="Start Date"/>
+                                    <h:outputText value="End Date"/>
                                 </f:facet>
                                 <p:outputLabel value= "#{data.endDate}" >
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
@@ -121,7 +121,7 @@
                             </p:column> 
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>
-                                <p:outputLabel value="#{maritalStatusController.lazy.rowCount}"/>
+                                <p:outputLabel value="#{leaveDistributionViewController.lazy.rowCount}"/>
                                 <p:outputLabel value="Data" style="margin-left: 3px"/>
                             </f:facet>  
                         </p:dataTable>

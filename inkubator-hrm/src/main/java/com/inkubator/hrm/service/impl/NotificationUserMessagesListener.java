@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.TextMessage;
@@ -106,13 +107,17 @@ public class NotificationUserMessagesListener extends IServiceImpl implements Me
                 maptoSend.put("ownerCompany", ownerCompany);
                 maptoSend.put("applicationUrl", applicationUrl);
                 maptoSend.put("applicationName", applicationName);
-                velocityTemplateSender.sendMail(vtm, maptoSend);
+                try {
+                    velocityTemplateSender.sendMail(vtm, maptoSend);
+                } catch (Exception ex) {
+                    LOGGER.error("Error", ex);
+                }
                 passwordHistory.setEmailNotification(1);
                 passwordHistory.setPassword(HashingUtils.getHashSHA256(passwordHistory.getPassword()));
                 this.passwordHistoryDao.update(passwordHistory);
                 System.out.println(" suksesss");
             }
-        } catch (Exception ex) {
+        } catch (JMSException ex) {
             LOGGER.error("Error", ex);
         }
     }

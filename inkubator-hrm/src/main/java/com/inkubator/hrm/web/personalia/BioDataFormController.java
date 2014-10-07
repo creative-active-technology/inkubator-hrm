@@ -259,7 +259,6 @@ public class BioDataFormController extends BaseController {
     }
 
     public String doSave() {
-
         try {
             BioData bioData = getEntityFromView(bioDataModel);
             if (isEdit) {

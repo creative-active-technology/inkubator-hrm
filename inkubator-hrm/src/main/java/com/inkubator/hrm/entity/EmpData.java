@@ -1,15 +1,10 @@
 package com.inkubator.hrm.entity;
 // Generated Aug 8, 2014 10:14:25 AM by Hibernate Tools 3.6.0
 
-import com.inkubator.common.CommonUtilConstant;
 import com.inkubator.common.util.AESUtil;
-import com.inkubator.common.util.NumberFormatter;
 import com.inkubator.hrm.HRMConstant;
-import com.inkubator.webcore.util.FacesUtil;
-import java.text.NumberFormat;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Locale;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -74,6 +69,7 @@ public class EmpData implements java.io.Serializable {
     private Set<Loan> loans = new HashSet<Loan>(0);
     private Set<TempJadwalKaryawan> tempJadwalKaryawans = new HashSet<TempJadwalKaryawan>(0);
     private Set<LeaveDistribution> leaveDistributions = new HashSet<>(0);
+    private Set<OverTimeDistribution> overTimeDistributions = new HashSet<OverTimeDistribution>(0);
 
     public EmpData() {
     }
@@ -473,7 +469,13 @@ public class EmpData implements java.io.Serializable {
         this.leaveDistributions = leaveDistributions;
     }
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "empData")
+    public Set<OverTimeDistribution> getOverTimeDistributions() {
+        return this.overTimeDistributions;
+    }
 
+    public void setOverTimeDistributions(Set<OverTimeDistribution> overTimeDistributions) {
+        this.overTimeDistributions = overTimeDistributions;
+    }
 
-    
 }
