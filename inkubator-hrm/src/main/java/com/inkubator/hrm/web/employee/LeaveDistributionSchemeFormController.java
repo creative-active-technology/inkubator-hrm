@@ -200,7 +200,7 @@ public class LeaveDistributionSchemeFormController extends BaseController {
 //            empDataService.saveMassPenempatanJadwal(dataToSave, model.getWorkingGroupId());
             MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-            return "/protected/employee/leave_distribution_view.htmfaces-redirect=true";
+            return "/protected/employee/leave_distribution_view.htm?faces-redirect=true";
         } catch (BussinessException ex) { //data already exist(duplicate)
 //            LOGGER.error("Error", ex);
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());

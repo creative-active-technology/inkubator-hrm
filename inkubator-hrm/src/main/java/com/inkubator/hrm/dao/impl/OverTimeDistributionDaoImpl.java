@@ -8,6 +8,7 @@ package com.inkubator.hrm.dao.impl;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.OverTimeDistributionDao;
 import com.inkubator.hrm.entity.OverTimeDistribution;
+import java.util.List;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -22,6 +23,19 @@ public class OverTimeDistributionDaoImpl extends IDAOImpl<OverTimeDistribution> 
     @Override
     public Class<OverTimeDistribution> getEntityClass() {
         return OverTimeDistribution.class;
+    }
+
+    @Override
+    public void saveBatch(List<OverTimeDistribution> data) {
+         int counter = 0;
+        for (OverTimeDistribution overTimeDistribution : data) {
+            getCurrentSession().save(overTimeDistribution);
+            counter++;
+            if (counter % 20 == 0) {
+                getCurrentSession().flush();
+                getCurrentSession().clear();
+            }
+        }
     }
     
 }

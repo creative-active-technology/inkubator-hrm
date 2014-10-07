@@ -7,11 +7,12 @@ package com.inkubator.hrm.dao;
 
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.OverTimeDistribution;
+import java.util.List;
 
 /**
  *
  * @author Deni Husni FR
  */
 public interface OverTimeDistributionDao extends IDAO<OverTimeDistribution>{
-    
+    public void saveBatch(List<OverTimeDistribution> data);
 }

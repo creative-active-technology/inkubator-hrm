@@ -6,12 +6,16 @@
 package com.inkubator.hrm.service;
 
 import com.inkubator.datacore.service.IService;
+import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.OverTimeDistribution;
+import java.util.List;
 
 /**
  *
  * @author Deni Husni FR
  */
-public interface OverTimeDistributionService extends IService<OverTimeDistribution>{
-    
+public interface OverTimeDistributionService extends IService<OverTimeDistribution> {
+
+    public void savePenempatanOt(List<EmpData> data, long id) throws Exception;
+
 }
