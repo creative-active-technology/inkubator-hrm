@@ -47,7 +47,7 @@ public class LoanPaymentDetailDaoImpl extends IDAOImpl<LoanPaymentDetail> implem
 			loanPaymentDetail.setCreatedOn(new Date());
 			loanPaymentDetail.setLoan(loan);
 			session.save(loanPaymentDetail);
-			if(i % 100 == 0){
+			if(i % 20 == 0){
 				//flush a batch of inserts and release memory:
 		        session.flush();
 		        session.clear();

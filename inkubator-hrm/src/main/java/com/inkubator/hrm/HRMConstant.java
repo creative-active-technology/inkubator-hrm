@@ -11,6 +11,7 @@ package com.inkubator.hrm;
  */
 public class HRMConstant {
 
+	public static final String SYSTEM_ADMIN = "SYSTEM_ADMIN";
     public static final String SPRING_SECURITY_CHECK = "j_spring_security_check";
     public static final String BAHASA_ACTIVE = "bahasa_active";
     public static final String LOGIN_DATE = "login_date";

@@ -25,4 +25,6 @@ public interface LeaveDistributionDao extends IDAO<LeaveDistribution> {
     public List<LeaveDistribution> getAllDataByEmpIdWithDetail();
 
     public void saveBatch(List<LeaveDistribution> data);
+
+	public List<LeaveDistribution> getAllDataByLeaveIdAndIsActiveEmployee(Long leaveId);
 }
