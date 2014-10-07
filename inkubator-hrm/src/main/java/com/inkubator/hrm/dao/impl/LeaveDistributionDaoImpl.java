@@ -66,7 +66,7 @@ public class LeaveDistributionDaoImpl extends IDAOImpl<LeaveDistribution> implem
         criteria.setFetchMode("empData", FetchMode.JOIN);
         criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
         criteria.setFetchMode("leave", FetchMode.JOIN);
-        criteria.add(Restrictions.eq("empData.id", empId));
+        criteria.add(Restrictions.eq("id", empId));
         return (LeaveDistribution) criteria.uniqueResult();
     }
 

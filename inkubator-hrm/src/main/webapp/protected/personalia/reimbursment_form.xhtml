@@ -20,11 +20,11 @@
                     <div id="box_bg" style="margin: 10px">
                         <!--<p:panel style="margin: 10px">-->
                         <h:panelGrid style="margin-bottom: 5px" columns="2">
-                            <p:graphicImage library="images" name="jabatan.png" height="36" width="36" />
+                            <p:graphicImage library="images" name="reimbursement.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="Formulir Reimbursment" styleClass="header_big" />
-                                    <p:outputLabel value="Data Reimbursment from Application" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['reimbursement.reimbursement_form']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['reimbursment.reimbursment_header']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -68,7 +68,7 @@
                             
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel for="reimbursmentSchemaId" value="Reimbursment Schema" styleClass="label_hrm"/>
+                                    <p:outputLabel for="reimbursmentSchemaId" value="#{appmsg['reimbursementschema.reimbursement_schema']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:selectOneMenu id="reimbursmentSchemaId" value="#{reimbursmentFormController.model.reimbursmentSchemaId}" style="width: 150px;margin-right: 3px" required="true">
@@ -85,7 +85,7 @@
                                                         
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel for="claimDate" value="#{appmsg['personachievement.achievement_date']}" styleClass="label_hrm"/>
+                                    <p:outputLabel for="claimDate" value="#{appmsg['reimbursement.claim_date']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:calendar  id="claimDate" size="40" pattern="dd MMMM yyyy" label="Tanggal Lahir" value="#{reimbursmentFormController.model.claimDate}"
@@ -99,7 +99,7 @@
                             
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel for="quantity" value="Quantity" styleClass="label_hrm"/>
+                                    <p:outputLabel for="quantity" value="#{appmsg['businesstravel.quantity']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <pe:inputNumber id="quantity" disabled="#{reimbursmentFormController.isQuantity}" value="#{reimbursmentFormController.model.quantity}" onkeyup="this.value = this.value.toUpperCase();"
@@ -111,7 +111,7 @@
                             
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Nominal"  for="nominal" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['reimbursment.nominal']}"  for="nominal" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <pe:inputNumber id="nominal" disabled="#{reimbursmentFormController.isNominal}" value="#{reimbursmentFormController.model.nominal}" 

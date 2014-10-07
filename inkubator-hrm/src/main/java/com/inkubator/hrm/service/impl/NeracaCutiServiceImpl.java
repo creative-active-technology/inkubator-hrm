@@ -51,7 +51,7 @@ public class NeracaCutiServiceImpl extends IServiceImpl implements NeracaCutiSer
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
     public NeracaCuti getEntityByParamWithDetail(Long id) throws Exception {
-        return getEntityByParamWithDetail(id);
+        return neracaCutiDao.getEntityByPkWithDetail(id);
     }
 
     @Override

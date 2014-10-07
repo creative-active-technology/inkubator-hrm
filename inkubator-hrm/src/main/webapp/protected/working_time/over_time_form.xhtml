@@ -5,246 +5,251 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:o="http://omnifaces.org/ui"
       xmlns:pe="http://primefaces.org/ui/extensions">
     <h:head>
         <title>IGNORED</title>
     </h:head>
     <h:body>
-        <ui:composition template="/templates/dialog_layout.xhtml">
+        <ui:composition template="/templates/master_layout_full.xhtml">
             <ui:define name="windowTitle">
 
             </ui:define>
             <ui:define name="center">
                 <p:growl id="growlReligionFormlId" globalOnly="true" showDetail="true"/>
-                <h:form id="formOverTimeId">
-                    <h:panelGrid  columns="2">
-                        <p:graphicImage library="images" name="overtime.png" height="36" width="36"  cache="true"/>
-                        <h:panelGroup layout="block">
-                            <h:panelGrid>
-                                <p:outputLabel value="#{appmsg['overtime.overtime_form']}" styleClass="header_big" />
-                                <p:outputLabel value="#{appmsg['overtime.data_of_overtime_from_working_time']}" styleClass="header_small_no_bold" />
-                            </h:panelGrid>
-                        </h:panelGroup>
-                    </h:panelGrid>
-                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
-                    <h:panelGrid columns="1" style="margin-bottom: 5px;margin-left: 0px">
-                        <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
-                        <h:outputLabel value="#{appmsg['overtime.dialog_overtime_info']}" styleClass="label_hrm" style="font-weight: normal!important"/>
-                    </h:panelGrid> 
-                    <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
-                        <p:row>
-                            <p:column style="width: 40%">
-                                <p:outputLabel for="code" value="#{appmsg['overtime.overtime_code']}" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="code" value=":" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column  style="width: 50%">
-                                <p:inputText id="code" value="#{overTimeFormController.overTimeModel.code}" onkeyup="this.value = this.value.toUpperCase();"
-                                             required="true" maxlength="6" styleClass="isitext_hrm" style="width:210px;" />
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:message for="code"/>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="width: 40%">
-                                <p:outputLabel for="name" value="#{appmsg['overtime.overtime_name']}" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="name" value=":" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column  style="width: 50%">
-                                <p:inputText id="name"  value="#{overTimeFormController.overTimeModel.name}"
-                                             required="true"  maxlength="45" styleClass="isitext_hrm" style="width:210px;" />
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:message for="name"/>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="width: 40%">
-                                <p:outputLabel for="description" value="#{appmsg['role_view.role_description']}" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="description" value=":"  styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 50%" >
-                                <p:inputTextarea id="description" rows="5" cols="37" counter="counter" maxlength="500" value="#{overTimeFormController.overTimeModel.description}"
-                                                 style="width: 210px; height: 50px;" counterTemplate="#{appmsg['global.remaining']}" autoResize="true" styleClass="isitext_hrm" 
-                                                 label="#{appmsg['role_view.role_description']}" title="#{appmsg['role_view.role_description']}" />
+                <o:form id="formOverTimeId">
+                    <p:focus context="formOverTimeId"/>
+                    <div id="box_bg" style="margin: 10px">
+                        <h:panelGrid  columns="2">
+                            <p:graphicImage library="images" name="overtime.png" height="36" width="36"  cache="true"/>
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="#{appmsg['overtime.overtime_form']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['overtime.data_of_overtime_from_working_time']}" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+                        <h:panelGrid columns="1" style="margin-bottom: 5px;margin-left: 0px">
+                            <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                            <h:outputLabel value="#{appmsg['overtime.dialog_overtime_info']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                        </h:panelGrid> 
+                        <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px;margin-bottom:20px;">
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important;">
+                                    <p:outputLabel for="code" value="#{appmsg['overtime.overtime_code']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 50%">
+                                    <p:inputText id="code" value="#{overTimeFormController.overTimeModel.code}" onkeyup="this.value = this.value.toUpperCase();"
+                                                 required="true" maxlength="6" styleClass="isitext_hrm" style="width:210px;" />
+                                    <p:message for="code"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important;">
+                                    <p:outputLabel for="name" value="#{appmsg['overtime.overtime_name']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 50%">
+                                    <p:inputText id="name"  value="#{overTimeFormController.overTimeModel.name}"
+                                                 required="true"  maxlength="45" styleClass="isitext_hrm" style="width:210px;" >
+                                                 <p:ajax listener="#{overTimeFormController.onChangeName()}" update="tableApprovalDevId" />
+                                    </p:inputText>
+                                    <p:message for="name"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important;">
+                                    <p:outputLabel for="description" value="#{appmsg['role_view.role_description']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column style="width: 50%" >
+                                    <p:inputTextarea id="description" rows="5" cols="37"  maxlength="500" value="#{overTimeFormController.overTimeModel.description}"
+                                                     style="width: 210px; height: 50px;" counterTemplate="#{appmsg['global.remaining']}" autoResize="true" styleClass="isitext_hrm" 
+                                                     label="#{appmsg['role_view.role_description']}" title="#{appmsg['role_view.role_description']}" />
+                                    <p:outputLabel for="description" value="" styleClass="label_hrm"/>
+                                </p:column>
+                            </p:row>
 
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="width: 40%">
-                                <p:outputLabel for="description" value="" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="description" value=""  styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 50%" >
-                                <h:outputText id="counter" styleClass="label_hrm" style="font-weight: normal!important"/>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="width: 40%">
-                                <p:outputLabel for="rounding" value="#{appmsg['overtime.overtime_fullfilment']}" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="rounding" value=":" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column  style="width: 50%">
-                                <p:spinner id="rounding" value="#{overTimeFormController.overTimeModel.otRounding}" size="2"
-                                           min="0" max="10" stepFactor="1"/>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important;">
+                                    <p:outputLabel for="rounding" value="#{appmsg['overtime.overtime_fullfilment']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 50%">
+                                    <p:spinner id="rounding" value="#{overTimeFormController.overTimeModel.otRounding}" size="2"
+                                               min="0" max="10" stepFactor="1"/>
+                                    <p:message for="rounding"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important;">
+                                    <p:outputLabel for="kalkulasi" value="#{appmsg['overtime.calculation_of_overtime']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 50%">
+                                    <p:selectOneRadio id="kalkulasi" styleClass="isitext_hrm" required="true"  value="#{overTimeFormController.overTimeModel.overTimeCalculation}">
+                                        <!--Cek HRM Constanta..-->
+                                        <f:selectItem itemLabel="#{appmsg['overtime.combined']}" itemValue="1" />
+                                        <f:selectItem itemLabel="#{appmsg['overtime.separated']}" itemValue="0" />
+                                    </p:selectOneRadio>
+                                    <p:message for="kalkulasi"/>
+                                </p:column>
+                            </p:row>
 
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:message for="rounding"/>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="width: 40%">
-                                <p:outputLabel for="kalkulasi" value="#{appmsg['overtime.calculation_of_overtime']}" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="kalkulasi" value=":" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column  style="width: 50%">
-                                <p:selectOneRadio id="kalkulasi" styleClass="isitext_hrm" required="true"  value="#{overTimeFormController.overTimeModel.overTimeCalculation}">
-                                    <!--Cek HRM Constanta..-->
-                                    <f:selectItem itemLabel="#{appmsg['overtime.combined']}" itemValue="1" />
-                                    <f:selectItem itemLabel="#{appmsg['overtime.separated']}" itemValue="0" />
-                                </p:selectOneRadio>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:message for="kalkulasi"/>
-                            </p:column>
-                        </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important;">
+                                    <p:outputLabel for="minimum" value="#{appmsg['overtime.minimum_time']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 50%">
+                                    <pe:timePicker  id="minimum" locale="in" value="#{overTimeFormController.overTimeModel.minimumTime}"
+                                                    label="Spinner time picker" styleClass="isitext_hrm" required="true" >
+                                        <f:validator validatorId="timeBetweenValidator"  />
+                                        <f:attribute name="endTime" value="#{maksimum}"/>
+                                        <f:attribute name="validatorMessage" value="#{appmsg['over_time.minimum_time_is_geater']}"/>
+                                    </pe:timePicker>  
+                                    <p:outputLabel value="#{appmsg['global.hour']}" styleClass="label_hrm" style="margin-left: 7px;font-weight: normal!important"/>
+                                    <p:message for="minimum"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important;">
+                                    <p:outputLabel for="maksimum" value="#{appmsg['overtime.maximum_time']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 50%">
+                                    <pe:timePicker id="maksimum" value="#{overTimeFormController.overTimeModel.maximumTime}" binding="#{maksimum}"
+                                                   label="Spinner time picker"  styleClass="isitext_hrm"  required="true" />  
+                                    <p:outputLabel value="#{appmsg['global.hour']}" styleClass="label_hrm" style="margin-left: 7px;font-weight: normal!important"/>
+                                    <p:message for="maksimum"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important;">
+                                    <p:outputLabel for="faktorMulai" value="#{appmsg['overtime.start_time']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 50%">
+                                    <pe:timePicker id="faktorMulai" value="#{overTimeFormController.overTimeModel.startTimeFactor}" required="true"
+                                                   label="Spinner time picker" styleClass="isitext_hrm" >
+                                        <f:validator validatorId="timeBetweenValidator"  />
+                                        <f:attribute name="endTime" value="#{faktorAkhir}"/>
+                                        <f:attribute name="validatorMessage" value="#{appmsg['over_time.time_bengin_is_greater']}"/>
+                                    </pe:timePicker>  
+                                    <p:message for="faktorMulai"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important;">
+                                    <p:outputLabel for="faktorAkhir" value="#{appmsg['overtime.end_time']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 50%">
+                                    <pe:timePicker id="faktorAkhir" value="#{overTimeFormController.overTimeModel.finishTimeFactor}" required="true"
+                                                   label="Spinner time picker" styleClass="isitext_hrm" binding="#{faktorAkhir}" />  
+                                    <p:message for="faktorAkhir"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important;">
+                                    <p:outputLabel for="valuePrice" value="#{appmsg['overtime.value_overtime']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 50%">
+                                    <pe:inputNumber value="#{overTimeFormController.overTimeModel.valuePrice}" required="true"
+                                                    id="valuePrice" styleClass="isitext_hrm"  style="width: 210px;text-align: right" decimalPlaces="2" />
+                                    <p:message for="valuePrice"/>
+                                </p:column>
+                            </p:row>
 
-                        <p:row>
-                            <p:column style="width: 40%">
-                                <p:outputLabel for="minimum" value="#{appmsg['overtime.minimum_time']}" styleClass="label_hrm"/>
+                        </p:panelGrid>
+                        <p:focus context="formOverTimeId" />
+
+                        <p:outputLabel value="#{appmsg['approvaldefinition.list_of_approval_definition']}" styleClass="header_big"/>
+                        <p:separator/>
+
+                        <p:dataTable  var="approvalDefinitionData"  value="#{overTimeFormController.appDefs}" lazy="true" paginator="false" 
+                                      id="tableApprovalDevId" style="margin-top: 10px;margin-bottom: 10px" rowIndexVar="no">
+                            <p:column style="text-align: center;width: 25px">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"  />
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="minimum" value=":" styleClass="label_hrm"/>
+                            <p:column>
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['approvaldefinition.approval_name']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{approvalDefinitionData.name}"/>
                             </p:column>
-                            <p:column  style="width: 50%">
-                                <pe:timePicker  id="minimum" locale="in" value="#{overTimeFormController.overTimeModel.minimumTime}"
-                                                label="Spinner time picker" styleClass="isitext_hrm" required="true" >
-                                    <f:validator validatorId="timeBetweenValidator"  />
-                                    <f:attribute name="endTime" value="#{maksimum}"/>
-                                    <f:attribute name="validatorMessage" value="#{appmsg['over_time.minimum_time_is_geater']}"/>
-                                </pe:timePicker>  
-                                <p:outputLabel value="#{appmsg['global.hour']}" styleClass="label_hrm" style="margin-left: 7px;font-weight: normal!important"/>
+                            <p:column>
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['approvaldefinition.specific_approval']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{approvalDefinitionData.specificName}"/>
                             </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:message for="minimum"/>
+                            <p:column>
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['approvaldefinition.process_name']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{approvalDefinitionData.processType}"/>
                             </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="width: 40%">
-                                <p:outputLabel for="maksimum" value="#{appmsg['overtime.maximum_time']}" styleClass="label_hrm"/>
+                            <p:column>
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['approvaldefinition.approver_type']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{approvalDefinitionData.approverType}"/>
                             </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="maksimum" value=":" styleClass="label_hrm"/>
+                            <p:column style="text-align: center">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['approvaldefinition.sequence_approval']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{approvalDefinitionData.sequence}"/>
                             </p:column>
-                            <p:column  style="width: 50%">
-                                <pe:timePicker id="maksimum" value="#{overTimeFormController.overTimeModel.maximumTime}" binding="#{maksimum}"
-                                               label="Spinner time picker"  styleClass="isitext_hrm"  required="true" />  
-                                <p:outputLabel value="#{appmsg['global.hour']}" styleClass="label_hrm" style="margin-left: 7px;font-weight: normal!important"/>
+                            <p:column style="text-align: center">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['approvaldefinition.min_approve']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{approvalDefinitionData.minApprover}"/>
                             </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:message for="maksimum"/>
+                            <p:column style="text-align: center">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['approvaldefinition.min_reject']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{approvalDefinitionData.minRejector}"/>
                             </p:column>
-                        </p:row>
+
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">                                
+                                <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+                                                 style="font-size: 10px!important" update="tableApprovalDevId" 
+                                                 action="#{overTimeFormController.doDeleteAppDef()}" ajax="true" immediate="true" onclick="statusDialog.show()" oncomplete="statusDialog.hide()">
+                                    <f:setPropertyActionListener value="#{approvalDefinitionData}" target="#{overTimeFormController.selectedAppDef}" />
+                                </p:commandButton> 
+                                -
+                                <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
+                                                 action="#{overTimeFormController.doEditAppDef()}" >
+                                    <f:setPropertyActionListener value="#{approvalDefinitionData}" target="#{overTimeFormController.selectedAppDef}" />
+                                    <p:ajax event="dialogReturn" listener="#{overTimeFormController.onDialogReturnEditAppDef}"  update="tableApprovalDevId"/>
+                                </p:commandButton>
+                            </p:column> 
+                        </p:dataTable>
+
+                        <h:panelGrid columns="1">
+                            <p:commandButton value="#{appmsg['global.add']} #{appmsg['approvaldefinition.approval_definition']}" title="#{appmsg['global.add']} #{appmsg['approvaldefinition.approval_definition']}" label="#{appmsg['global.add']} #{appmsg['approvaldefinition.approval_definition']}" styleClass="label_button" icon="ui-icon-document" 
+                                             actionListener="#{overTimeFormController.doAddAppDef()}">
+                                <o:ignoreValidationFailed />
+                                <f:ajax execute="@form" />
+                                <p:ajax event="dialogReturn" listener="#{overTimeFormController.onDialogReturnAddAppDef}"  update="tableApprovalDevId"/>
+                            </p:commandButton>
+                        </h:panelGrid>
 
 
+                        <p:separator style="margin-top: 20px;margin-bottom: 10px"/>
+                        <div style="margin-bottom: 5px">
 
-                        <p:row>
-                            <p:column style="width: 40%">
-                                <p:outputLabel for="faktorMulai" value="#{appmsg['overtime.start_time']}" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="faktorMulai" value=":" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column  style="width: 50%">
-                                <pe:timePicker id="faktorMulai" value="#{overTimeFormController.overTimeModel.startTimeFactor}" required="true"
-                                               label="Spinner time picker" styleClass="isitext_hrm" >
-                                    <f:validator validatorId="timeBetweenValidator"  />
-                                    <f:attribute name="endTime" value="#{faktorAkhir}"/>
-                                    <f:attribute name="validatorMessage" value="#{appmsg['over_time.time_bengin_is_greater']}"/>
-                                </pe:timePicker>  
-
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:message for="faktorMulai"/>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="width: 40%">
-                                <p:outputLabel for="faktorAkhir" value="#{appmsg['overtime.end_time']}" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="faktorAkhir" value=":" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column  style="width: 50%">
-                                <pe:timePicker id="faktorAkhir" value="#{overTimeFormController.overTimeModel.finishTimeFactor}" required="true"
-                                               label="Spinner time picker" styleClass="isitext_hrm" binding="#{faktorAkhir}" />  
-
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:message for="faktorAkhir"/>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="width: 40%">
-                                <p:outputLabel for="valuePrice" value="#{appmsg['overtime.value_overtime']}" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="valuePrice" value=":" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column  style="width: 50%">
-                                <pe:inputNumber value="#{overTimeFormController.overTimeModel.valuePrice}" required="true"
-                                                id="valuePrice" styleClass="isitext_hrm"  style="width: 210px;text-align: right" decimalPlaces="2" />
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:message for="valuePrice"/>
-                            </p:column>
-                        </p:row>
-
-                    </p:panelGrid>
-                    <p:focus context="formOverTimeId" />
-                    <p:separator style="margin-top: 20px;margin-bottom: 10px"/>
-                    <h:panelGrid columns="2" style="margin-bottom: -30px!important">
-                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formOverTimeId,:growlReligionFormlId"
-                                         action="#{overTimeFormController.doSave()}" styleClass="isitext_hrm"
-                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
-                                         icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
-                        <p:commandButton value="#{appmsg['global.clear']}" title="#{appmsg['global.clear']}" process="@this" update="formOverTimeId" 
-                                         icon="ui-icon-refresh" styleClass="isitext_hrm" >  
-                            <p:resetInput target="formOverTimeId" />  
-                        </p:commandButton>
-                    </h:panelGrid>
-                </h:form>
+                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formOverTimeId,:growlReligionFormlId"
+                                             action="#{overTimeFormController.doSave()}" styleClass="isitext_hrm"
+                                             style="margin-right: 5px" label="#{appmsg['global.save']}"
+                                             icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                            <p:commandButton value="#{appmsg['global.clear']}" title="#{appmsg['global.clear']}" process="@this" update="formOverTimeId" 
+                                             icon="ui-icon-refresh" styleClass="isitext_hrm" >  
+                                <p:resetInput target="formOverTimeId" />  
+                            </p:commandButton>
+                        </div>
+                    </div>
+                </o:form>
             </ui:define>
 
         </ui:composition>

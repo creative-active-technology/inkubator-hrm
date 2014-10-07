@@ -83,7 +83,7 @@ public class TerminationServiceImpl extends IServiceImpl implements TerminationS
         // check duplicate name
         long totalDuplicates = terminationDao.getTotalByCode(entity.getCode());
         if (totalDuplicates > 0) {
-            throw new BussinessException("costcenter.error_duplicate_cost_center_code");
+            throw new BussinessException("termination.error_duplicate_termination_code");
         }
         
         //check if the employee still have unpaid loan
@@ -113,7 +113,7 @@ public class TerminationServiceImpl extends IServiceImpl implements TerminationS
         // check duplicate code
         long totalDuplicates = terminationDao.getTotalByCodeAndNotId(entity.getCode(), entity.getId());
         if (totalDuplicates > 0) {
-            throw new BussinessException("termination.error_duplicate_effective_date");
+            throw new BussinessException("termination.error_duplicate_termination_code");
         }
         Termination update = terminationDao.getEntiyByPK(entity.getId());
         update.setCode(entity.getCode());

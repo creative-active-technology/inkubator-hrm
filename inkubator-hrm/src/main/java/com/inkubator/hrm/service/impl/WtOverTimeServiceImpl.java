@@ -8,7 +8,13 @@ package com.inkubator.hrm.service.impl;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.dao.ApprovalDefinitionDao;
+import com.inkubator.hrm.dao.ApprovalDefinitionLeaveDao;
+import com.inkubator.hrm.dao.ApprovalDefinitionOTDao;
 import com.inkubator.hrm.dao.WtOverTimeDao;
+import com.inkubator.hrm.entity.ApprovalDefinition;
+import com.inkubator.hrm.entity.ApprovalDefinitionOT;
+import com.inkubator.hrm.entity.ApprovalDefinitionOTId;
 import com.inkubator.hrm.entity.WtOverTime;
 import com.inkubator.hrm.service.WtOverTimeService;
 import com.inkubator.hrm.web.search.WtOverTimeSearchParameter;
@@ -29,10 +35,14 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service(value = "wtOverTimeService")
 @Lazy
-public class WtOverTimeServiceImpl extends IServiceImpl implements WtOverTimeService {
+public class WtOverTimeServiceImpl extends BaseApprovalConfigurationServiceImpl<WtOverTime> implements WtOverTimeService {
     
     @Autowired
     private WtOverTimeDao wtOverTimeDao;
+    @Autowired
+    private ApprovalDefinitionDao approvalDefinitionDao;
+    @Autowired
+    private ApprovalDefinitionOTDao approvalDefinitionOTDao;
     
     @Override
     public WtOverTime getEntiyByPK(String id) throws Exception {
@@ -186,8 +196,9 @@ public class WtOverTimeServiceImpl extends IServiceImpl implements WtOverTimeSer
     }
     
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<WtOverTime> getAllData() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+     return wtOverTimeDao.getAllData();
     }
     
     @Override
@@ -235,6 +246,38 @@ public class WtOverTimeServiceImpl extends IServiceImpl implements WtOverTimeSer
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public Long getTotalWtOverTimeByParam(WtOverTimeSearchParameter searchParameter) throws Exception {
         return this.wtOverTimeDao.getTotalWtOverTimeByParam(searchParameter);
+    }
+
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void save(WtOverTime entity, List<ApprovalDefinition> appDefs) throws Exception {
+        long totalDuplicates = wtOverTimeDao.getTotalDuplicateByCode(entity.getCode());
+        if (totalDuplicates > 0) {
+            throw new BussinessException("over_time.error_code_duplicate");
+        }
+        /** validasi approval definition conf */
+        super.validateApprovalConf(appDefs);
+        
+        entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+        entity.setCreatedBy(UserInfoUtil.getUserName());
+        entity.setCreatedOn(new Date());
+        wtOverTimeDao.save(entity);
+        /** saving approval definition conf manyToMany */
+        super.saveApprovalConf(appDefs, entity);
+    }
+
+    @Override
+    protected void saveManyToMany(ApprovalDefinition appDef, WtOverTime entity) {
+        ApprovalDefinitionOT approvalDefinitionOT =  new ApprovalDefinitionOT();
+        approvalDefinitionOT.setId(new ApprovalDefinitionOTId(appDef.getId(), entity.getId()));
+        approvalDefinitionOT.setApprovalDefinition(appDef);
+        approvalDefinitionOT.setWtOverTime(entity);
+        approvalDefinitionOTDao.save(approvalDefinitionOT);
+    }
+
+    @Override
+    protected void deleteManyToMany(Object entity) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

@@ -148,7 +148,7 @@
                                     <p:outputLabel  value="#{appmsg['placement.join_data']}"  for="joinDate" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:calendar  id="joinDate" pattern="dd MMMM yyyy" value="#{empDataFormController.empDataModel.joinDate}" required="true"/>
+                                    <p:calendar  id="joinDate" pattern="dd MMMM yyyy" value="#{empDataFormController.empDataModel.joinDate}" required="true" readonly="true"/>
                                     <p:message for="joinDate"/>
                                 </p:column>
 
@@ -158,7 +158,7 @@
                                     <p:outputLabel  value="#{appmsg['placement.rotation_date']}"  for="rotasiDate" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:calendar  id="rotasiDate" pattern="dd MMMM yyyy" value="#{empDataFormController.empDataModel.rotasiDate}" required="false"/>
+                                    <p:calendar  id="rotasiDate" pattern="dd MMMM yyyy" value="#{empDataFormController.empDataModel.rotasiDate}" required="false" readonly="true"/>
                                     <p:message for="rotasiDate"/>
                                 </p:column>
 

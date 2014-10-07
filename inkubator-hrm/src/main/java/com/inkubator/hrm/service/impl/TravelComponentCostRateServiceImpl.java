@@ -88,7 +88,7 @@ public class TravelComponentCostRateServiceImpl extends IServiceImpl implements 
         // check duplicate name
         long totalDuplicates = travelComponentCostRateDao.getTotalByCode(entity.getCode());
         if (totalDuplicates > 0) {
-            throw new BussinessException("costcenter.error_duplicate_cost_center_code");
+            throw new BussinessException("travelcomponentcostrate.error_duplicate_travel_component_cost_rate");
         }
         entity.setCostCenter(costCenterDao.getEntiyByPK(entity.getCostCenter().getId()));
         entity.setGolonganJabatan(golonganJabatanDao.getEntiyByPK(entity.getGolonganJabatan().getId()));
@@ -106,7 +106,7 @@ public class TravelComponentCostRateServiceImpl extends IServiceImpl implements 
         // check duplicate name
         long totalDuplicates = travelComponentCostRateDao.getTotalByCodeAndNotId(entity.getCode(), entity.getId());
         if (totalDuplicates > 0) {
-            throw new BussinessException("costcenter.error_duplicate_cost_center_code");
+            throw new BussinessException("travelcomponentcostrate.error_duplicate_travel_component_cost_rate");
         }
         TravelComponentCostRate update = travelComponentCostRateDao.getEntiyByPK(entity.getId());
         update.setCode(entity.getCode());

@@ -21,8 +21,8 @@
                         <p:graphicImage library="images" name="task.png" height="36" width="36" />
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Jadwal Kerja Karyawan" styleClass="header_big" />
-                                <p:outputLabel value="Data Jadwal Kerja Karyawan dari Waktu Kerja" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['employeeschedule.employee_work_schedule']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['employeeschedule.employee_work_schedule_header']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -55,7 +55,7 @@
                                     <p:commandButton value="Export to XLS" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
                                         <pe:exporter target="tableEmpDataIdExpand" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Employee_Placement"/>
                                     </p:commandButton>
-                                    <p:commandButton value="Add Employee Work Schedule" action="#{empDataViewController.doPlacementOfEmployee()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true"/>
+                                    <p:commandButton value="#{appmsg['workschedule.work_schedule_synchronously']}" action="#{empDataViewController.doPlacementOfEmployee()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true"/>
 
                                     
                                     <p:commandButton value="#{appmsg['global.close']}"  styleClass="label_button" action="#{empDataViewController.doClose()}" title="#{appmsg['global.close']}" icon="ui-icon-home"
@@ -71,48 +71,48 @@
                                       id="tableEmpDataId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="#{appmsg['employeerotation.list_employee_rotation']}" styleClass="label_hrm"/>
+                                <h:outputText value="#{appmsg['employeerotation.list_employee_work_schedule']}" styleClass="label_hrm"/>
                             </f:facet> 
-                            <p:column style="text-align: center;width: 25px">
+                            <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.number']}"  />
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="nik" >
+                            <p:column sortBy="nik" style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['placement.nik']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{empViewData.nik}"/>
                             </p:column>
-                            <p:column sortBy="bioData">
+                            <p:column sortBy="bioData" style="width: 13%"> 
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{empViewData.bioData.firstName} #{empViewData.bioData.lastName}"/>
                             </p:column>
-                            <p:column sortBy="jabatanByJabatanId" >
+                            <p:column sortBy="jabatanByJabatanId" style="width: 23%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['placement.jabatan_name']}"/>
                                 </f:facet>
                                 <p:outputLabel value= "#{empViewData.jabatanByJabatanId.name}"/>
                             </p:column>
-                            <p:column sortBy="wtGroupWorking" >
+                            <p:column sortBy="wtGroupWorking" style="width: 8%">
                                 <f:facet name="header">  
-                                    <h:outputText value="Kelompok Kerja"/>
+                                    <h:outputText value="#{appmsg['menu.workgroup']}"/>
                                 </f:facet>
                                 <p:outputLabel value= "#{empViewData.wtGroupWorking.name}"/>
                             </p:column>
 
-                            <p:column headerText="#{appmsg['global.action']}" style="width: 200px;text-align: center" exportable="false">
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 15%;text-align: center" exportable="false">
 
-                                <p:commandButton  icon="ui-icon-calendar" title="Jadwal Kerja" label="Jadwal Kerja" value="Jadwal Kerja" style="font-size: 10px!important" 
+                                <p:commandButton  icon="ui-icon-calendar" title="#{appmsg['employeeschedule.work_schedule']}" label="#{appmsg['employeeschedule.work_schedule']}" value="#{appmsg['employeeschedule.work_schedule']}" style="font-size: 10px!important" 
                                                   action="#{empDataViewController.doEmployeeTimeSchedule()}" >
                                     <f:setPropertyActionListener value="#{empViewData}" target="#{empDataViewController.selectedEmpData}" />
                                     <p:ajax event="dialogReturn" listener="#{empDataViewController.onDialogReturn}"  update="tableEmpDataId"/>
                                 </p:commandButton> 
                                 -
-                                <p:commandButton  icon="ui-icon-contact" title="Detail Jadwal" label="Detail Jadwal" value="Detail Jadwal" style="font-size: 10px!important" 
+                                <p:commandButton  icon="ui-icon-contact" title="#{appmsg['employeeschedule.detail_schedule']}" label="#{appmsg['employeeschedule.detail_schedule']}" value="#{appmsg['employeeschedule.detail_schedule']}" style="font-size: 10px!important" 
                                                   action="#{empDataViewController.doDetailShedule()}"  disabled="#{empViewData.sheduleDisable}">
                                     <f:setPropertyActionListener value="#{empViewData}" target="#{empDataViewController.selectedEmpData}" />
 

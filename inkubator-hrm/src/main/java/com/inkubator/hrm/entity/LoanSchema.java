@@ -44,6 +44,7 @@ public class LoanSchema implements java.io.Serializable {
     private Integer maxPeriode;
     private Integer basicValue;
     private BigDecimal maxNominal;
+    private BigDecimal minPayment;
     private Double maxPaymentOfSalary;
     private Double penaltyOfNonComplance;
     private Double interestRate;
@@ -149,6 +150,15 @@ public class LoanSchema implements java.io.Serializable {
         this.maxNominal = maxNominal;
     }
 
+    @Column(name = "min_payment", precision = 10, scale = 0)
+    public BigDecimal getMinPayment() {
+        return minPayment;
+    }
+
+    public void setMinPayment(BigDecimal minPayment) {
+        this.minPayment = minPayment;
+    }
+    
     @Column(name="max_payment_of_salary", length = 20)
     public Double getMaxPaymentOfSalary() {
         return maxPaymentOfSalary;

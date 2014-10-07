@@ -335,7 +335,7 @@
                                     <f:setPropertyActionListener value="#{approvalDefinitionData}" target="#{leaveFormController.selectedAppDef}" />
                                 </p:commandButton> 
                                 -
-                                <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
+                                <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" immediate="true" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
                                                  action="#{leaveFormController.doEditAppDef()}" >
                                     <f:setPropertyActionListener value="#{approvalDefinitionData}" target="#{leaveFormController.selectedAppDef}" />
                                     <p:ajax event="dialogReturn" listener="#{leaveFormController.onDialogReturnEditAppDef}"  update="tableApprovalDevId"/>

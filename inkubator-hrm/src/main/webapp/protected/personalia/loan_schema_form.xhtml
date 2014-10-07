@@ -135,7 +135,19 @@
                                            validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
                                         <f:validateLongRange minimum="1" maximum="5"/>
                                     </p:spinner>     
+                                    <p:outputLabel  value=" x #{appmsg['reimbursment.salary']}" />
                                     <p:message for="maxPaymentOfSalary"/>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['loanschema.interest_rate']}"  for="interestRate" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <pe:inputNumber id="interestRate" value="#{loanSchemaFormController.model.interestRate}" 
+                                                    required="true" styleClass="isitext_hrm" style="width:210px;" />
+                                    <p:message for="interestRate"/>
                                 </p:column>
                             </p:row>
                             
@@ -151,6 +163,17 @@
                                 </p:column>
                             </p:row>
                             
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['loanschema.min_payment']}"  for="minPayment" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <pe:inputNumber id="minPayment" value="#{loanSchemaFormController.model.minPaymment}" style="width:210px;" required="true" 
+                                           validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
+                                    </pe:inputNumber>     
+                                    <p:message for="minPayment"/>
+                                </p:column>
+                            </p:row>
                             
                         </p:panelGrid>
                         <p:focus context="jobTitleFormId" />

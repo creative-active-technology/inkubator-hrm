@@ -77,7 +77,7 @@ public class CurrencyServiceImpl extends IServiceImpl implements CurrencyService
         // check duplicate name
         long totalDuplicates = currencyDao.getByCurrencyCode(entity.getCode());
         if (totalDuplicates > 0) {
-            throw new BussinessException("costcenter.error_duplicate_cost_center_code");
+            throw new BussinessException("currency.error_duplicate_currency_code");
         }
         entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         entity.setCode(entity.getCode());
@@ -94,7 +94,7 @@ public class CurrencyServiceImpl extends IServiceImpl implements CurrencyService
     public void update(Currency entity) throws Exception {
         long totalDuplicates = currencyDao.getTotalByCodeAndNotId(entity.getCode(), entity.getId());
         if (totalDuplicates > 0) {
-            throw new BussinessException("costcenter.error_duplicate_cost_center_code");
+            throw new BussinessException("currency.error_duplicate_currency_code");
         }
         Currency update = this.currencyDao.getEntiyByPK(entity.getId());
         update.setCode(entity.getCode());

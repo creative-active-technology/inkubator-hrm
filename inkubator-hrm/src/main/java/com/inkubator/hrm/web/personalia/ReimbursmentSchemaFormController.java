@@ -296,6 +296,10 @@ public class ReimbursmentSchemaFormController extends BaseController{
         }
     }
     
+    public void doReset() {
+        cleanAndExit();
+    }
+    
     public ReimbursmentSchemaModel getModel() {
         return model;
     }

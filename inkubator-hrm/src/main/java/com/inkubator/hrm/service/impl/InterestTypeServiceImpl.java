@@ -71,7 +71,7 @@ public class InterestTypeServiceImpl  extends IServiceImpl implements InterestTy
         // check duplicate name
         long totalDuplicates = interestTypeDao.getByInterestTypeName(entity.getName());
         if (totalDuplicates > 0) {
-            throw new BussinessException("costcenter.error_duplicate_cost_center_code");
+            throw new BussinessException("interesttype.error_duplicate_interest_type_code");
         }
         entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         entity.setName(entity.getName());
@@ -86,7 +86,7 @@ public class InterestTypeServiceImpl  extends IServiceImpl implements InterestTy
     public void update(InterestType entity) throws Exception {
         long totalDuplicates = interestTypeDao.getTotalByNameAndNotId(entity.getName(), entity.getId());
         if (totalDuplicates > 0) {
-            throw new BussinessException("costcenter.error_duplicate_cost_center_code");
+            throw new BussinessException("interesttype.error_duplicate_interest_type_code");
         }
         InterestType update = this.interestTypeDao.getEntiyByPK(entity.getId());
         update.setName(entity.getName());

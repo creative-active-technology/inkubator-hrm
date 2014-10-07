@@ -109,14 +109,8 @@ public class OverTimeViewController extends BaseController {
         }
     }
 
-    public void doAdd() {
-        Map<String, Object> options = new HashMap<>();
-        options.put("modal", true);
-        options.put("draggable", true);
-        options.put("resizable", false);
-        options.put("contentWidth", 400);
-        options.put("contentHeight", 555);
-        RequestContext.getCurrentInstance().openDialog("over_time_form", options, null);
+    public String doAdd() {
+        return "/protected/working_time/over_time_form.htm?faces-redirect=true";
     }
 
     public void doEdit() {
