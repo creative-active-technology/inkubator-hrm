@@ -11,6 +11,7 @@ import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
+import com.inkubator.hrm.web.model.DistributionOvetTimeModel;
 import com.inkubator.hrm.web.model.PlacementOfEmployeeWorkScheduleModel;
 import com.inkubator.hrm.web.search.EmpDataSearchParameter;
 import java.util.Date;
@@ -324,7 +325,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     }
 
     @Override
-    public List<EmpData> getTotalBySearchEmployeeLeave(DistributionLeaveSchemeModel model) {
+    public List<EmpData> getEmployeeBySearchEmployeeLeave(DistributionLeaveSchemeModel model) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.createAlias("leaveDistributions", "lv", JoinType.LEFT_OUTER_JOIN);
         criteria.createAlias("jabatanByJabatanId", "jabatan", JoinType.INNER_JOIN);
@@ -379,6 +380,19 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
             criteria.addOrder(Order.desc(sortBy));
         }
         return criteria.list();
+    }
+
+    @Override
+    public List<EmpData> getEmployeeByOtSearchParameter(DistributionOvetTimeModel model) {
+       Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("leaveDistributions", "lv", JoinType.LEFT_OUTER_JOIN);
+        criteria.createAlias("jabatanByJabatanId", "jabatan", JoinType.INNER_JOIN);
+        criteria.createAlias("jabatan.department", "dept", JoinType.INNER_JOIN);
+        criteria.createAlias("employeeType", "empType", JoinType.INNER_JOIN);
+        criteria.createAlias("bioData", "bio", JoinType.INNER_JOIN);
+        criteria.createAlias("golonganJabatan", "goljab", JoinType.INNER_JOIN);
+        
+        return null;
     }
 
 }

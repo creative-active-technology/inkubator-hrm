@@ -43,8 +43,8 @@ import com.inkubator.hrm.entity.WtScheduleShift;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.util.MapUtil;
 import com.inkubator.hrm.util.StringsUtils;
-import com.inkubator.hrm.web.employee.LeaveDistributionSchemeFormController;
 import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
+import com.inkubator.hrm.web.model.DistributionOvetTimeModel;
 import com.inkubator.hrm.web.model.PlacementOfEmployeeWorkScheduleModel;
 import com.inkubator.hrm.web.search.EmpDataSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
@@ -611,13 +611,13 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         int totalDateDif = DateTimeUtil.getTotalDayDifference(startDate, now) + 1;
         int num = numberOfDay + 1;
         int hasilBagi = (totalDateDif) / (num);
-        Date tanggalAkhirJadwal = DateTimeUtil.getDateFrom(startDate, (hasilBagi * num)-1, CommonUtilConstant.DATE_FORMAT_DAY);
+        Date tanggalAkhirJadwal = DateTimeUtil.getDateFrom(startDate, (hasilBagi * num) - 1, CommonUtilConstant.DATE_FORMAT_DAY);
 //        String dayBegin = new SimpleDateFormat("EEEE").format(endDate);
 //        String dayNow = new SimpleDateFormat("EEEE").format(now);
         Date beginScheduleDate;
         if (new SimpleDateFormat("ddMMyyyy").format(tanggalAkhirJadwal).equals(new SimpleDateFormat("ddMMyyyy").format(new Date()))) {
-             beginScheduleDate = DateTimeUtil.getDateFrom(startDate, (hasilBagi * num) - num, CommonUtilConstant.DATE_FORMAT_DAY);
-        }else{
+            beginScheduleDate = DateTimeUtil.getDateFrom(startDate, (hasilBagi * num) - num, CommonUtilConstant.DATE_FORMAT_DAY);
+        } else {
             beginScheduleDate = DateTimeUtil.getDateFrom(startDate, (hasilBagi * num), CommonUtilConstant.DATE_FORMAT_DAY);
         }
         int i = 0;
@@ -680,8 +680,14 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<EmpData> getTotalBySearchEmployeeLeave(DistributionLeaveSchemeModel model) throws Exception {
-        return empDataDao.getTotalBySearchEmployeeLeave(model);
+    public List<EmpData> getEmployeelBySearchEmployeeLeave(DistributionLeaveSchemeModel model) throws Exception {
+        return empDataDao.getEmployeeBySearchEmployeeLeave(model);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<EmpData> getEmployeeByOtSearchParameter(DistributionOvetTimeModel model) throws Exception {
+       return empDataDao.getEmployeeByOtSearchParameter(model);
     }
 
 }

@@ -188,7 +188,7 @@ public class LeaveDistributionSchemeFormController extends BaseController {
 
     public void doSearchEmployee() throws Exception {
         selecedLeave=leaveService.getEntiyByPK(model.getLeaveSchemeId());
-        source = empDataService.getTotalBySearchEmployeeLeave(model);
+        source = empDataService.getEmployeelBySearchEmployeeLeave(model);
         dualListModel.setSource(source);
     }
 

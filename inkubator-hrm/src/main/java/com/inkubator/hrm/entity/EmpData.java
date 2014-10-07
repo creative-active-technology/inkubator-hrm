@@ -69,6 +69,7 @@ public class EmpData implements java.io.Serializable {
     private Set<Loan> loans = new HashSet<Loan>(0);
     private Set<TempJadwalKaryawan> tempJadwalKaryawans = new HashSet<TempJadwalKaryawan>(0);
     private Set<LeaveDistribution> leaveDistributions = new HashSet<>(0);
+    private Set<OverTimeDistribution> overTimeDistributions = new HashSet<OverTimeDistribution>(0);
 
     public EmpData() {
     }
@@ -468,7 +469,13 @@ public class EmpData implements java.io.Serializable {
         this.leaveDistributions = leaveDistributions;
     }
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "empData")
+    public Set<OverTimeDistribution> getOverTimeDistributions() {
+        return this.overTimeDistributions;
+    }
 
+    public void setOverTimeDistributions(Set<OverTimeDistribution> overTimeDistributions) {
+        this.overTimeDistributions = overTimeDistributions;
+    }
 
-    
 }
