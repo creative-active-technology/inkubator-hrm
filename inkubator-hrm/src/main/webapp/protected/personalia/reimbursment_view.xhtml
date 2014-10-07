@@ -18,11 +18,11 @@
                 <div id="box_bg" style="margin: 10px">
                     <h:form id="formId">
                         <h:panelGrid style="margin-bottom: 5px" columns="2">
-                            <p:graphicImage library="images" name="travel_component.png" height="36" width="36" />
+                            <p:graphicImage library="images" name="reimbursement.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="Reimbursment" styleClass="header_big" />
-                                    <p:outputLabel value="Data Reimbursment from Aplication" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['reimbursment.reimbursment']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['reimbursment.reimbursment_header']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -61,7 +61,7 @@
                                       id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="List of Reimbursment"/>
+                                <h:outputText value="#{appmsg['reimbursement.list_of_reimbursment']}"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
@@ -77,13 +77,13 @@
                             </p:column>
                             <p:column sortBy="empData" style="width: 27%">
                                 <f:facet name="header">
-                                    <h:outputText value="Nama Karyawan"/>
+                                    <h:outputText value="#{appmsg['personachievement.employee_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.empData.nik} - #{data.empData.bioData.firstName} #{data.empData.bioData.lastName}" />
                             </p:column>
                             <p:column sortBy="claimDate" style="width: 18%">
                                 <f:facet name="header">
-                                    <h:outputText value="Claim Date"/>
+                                    <h:outputText value="#{appmsg['reimbursement.claim_date']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.claimDate}" >
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
@@ -97,7 +97,7 @@
                             </p:column>
                             <p:column sortBy="quantity" style="width: 10%">
                                 <f:facet name="header">
-                                    <h:outputText value="Quantity"/>
+                                    <h:outputText value="#{appmsg['businesstravel.quantity']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.quantity}" ></h:outputLabel>
                             </p:column>

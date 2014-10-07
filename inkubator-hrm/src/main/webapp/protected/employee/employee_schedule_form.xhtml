@@ -21,8 +21,8 @@
                         <p:graphicImage library="images" name="status_attendance.png" height="36" width="36"  cache="true"/>
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Form Penempatan Jadwal Kerja Karyawan" styleClass="header_big" />
-                                <p:outputLabel value="Data Penempatan Jadwal Kerja" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['employeeschedule.form']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['employeeschedule.employee_work_schedule_header']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -34,7 +34,7 @@
                     <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
                         <p:row>
                             <p:column style="width: 30%">
-                                <p:outputLabel for="nik" value="NIK" styleClass="label_hrm"/>
+                                <p:outputLabel for="nik" value="#{appmsg['workschedule.nik']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="nik" value=":" styleClass="label_hrm"/>
@@ -46,7 +46,7 @@
 
                         <p:row>
                             <p:column style="width: 30%">
-                                <p:outputLabel for="namaId" value="Nama" styleClass="label_hrm"/>
+                                <p:outputLabel for="namaId" value="#{appmsg['global.name']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="namaId" value=":" styleClass="label_hrm"/>
@@ -58,7 +58,7 @@
 
                         <p:row>
                             <p:column style="width: 30%">
-                                <p:outputLabel for="jabatan" value="Jabatan" styleClass="label_hrm"/>
+                                <p:outputLabel for="jabatan" value="#{appmsg['jabatan.jabatan']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="jabatan" value=":"  styleClass="label_hrm"/>
@@ -71,7 +71,7 @@
 
                         <p:row>
                             <p:column style="width: 30%">
-                                <p:outputLabel for="kelompokKerjaId" value="Kelompok Kerja" styleClass="label_hrm"/>
+                                <p:outputLabel for="kelompokKerjaId" value="#{appmsg['menu.workgroup']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="kelompokKerjaId" value=":" styleClass="label_hrm"/>

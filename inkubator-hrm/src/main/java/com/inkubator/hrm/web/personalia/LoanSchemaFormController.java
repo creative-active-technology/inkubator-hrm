@@ -63,6 +63,8 @@ public class LoanSchemaFormController extends BaseController{
     public void initialization() {
         super.initialization();
         try {
+            isMaxNominal = Boolean.TRUE;
+            isMaxPayment = Boolean.TRUE;
             model = new LoanSchemaModel();
             isUpdate = Boolean.FALSE;
             String loanId = FacesUtil.getRequestParameter("execution");
@@ -139,6 +141,8 @@ public class LoanSchemaFormController extends BaseController{
         loanSchemaModel.setBasicValue(entity.getBasicValue());
         loanSchemaModel.setMaxNominal(entity.getMaxNominal());
         loanSchemaModel.setName(entity.getName());
+        loanSchemaModel.setMinPaymment(entity.getMinPayment());
+        loanSchemaModel.setInterestRate(entity.getInterestRate());
         loanSchemaModel.setMaxPaymentOfSalary(entity.getMaxPaymentOfSalary());
         loanSchemaModel.setMaxPeriode(entity.getMaxPeriode());
         loanSchemaModel.setPenaltyOfNonComplance(entity.getPenaltyOfNonComplance());
@@ -232,12 +236,19 @@ public class LoanSchemaFormController extends BaseController{
         loanSchema.setCode(model.getCode());
         loanSchema.setName(model.getName());
         loanSchema.setCostCenter(new CostCenter(model.getCostCenter()));
+        if(model.getBasicValue() == HRMConstant.BASIC_VALUE_NOMINAL){
+            loanSchema.setMaxNominal(model.getMaxNominal());
+            loanSchema.setMaxPaymentOfSalary(null);
+        }else{
+            loanSchema.setMaxNominal(null);
+            loanSchema.setMaxPaymentOfSalary(model.getMaxPaymentOfSalary());
+        }
         loanSchema.setBasicValue(model.getBasicValue());
-        loanSchema.setMaxNominal(model.getMaxNominal());
-        loanSchema.setMaxPaymentOfSalary(model.getMaxPaymentOfSalary());
         loanSchema.setMaxPeriode(model.getMaxPeriode());
         loanSchema.setPenaltyOfNonComplance(model.getPenaltyOfNonComplance());
         loanSchema.setTypeOfInterest(model.getTypeOfInterest());
+        loanSchema.setInterestRate(model.getInterestRate());
+        loanSchema.setMinPayment(model.getMinPaymment());
         return loanSchema;
     }
     

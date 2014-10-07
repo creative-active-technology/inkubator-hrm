@@ -125,7 +125,7 @@ public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements 
     public void save(Reimbursment entity) throws Exception {
         long totalDuplicates = reimbursmentDao.getTotalByCode(entity.getCode());
         if (totalDuplicates > 0) {
-            throw new BussinessException("costcenter.error_duplicate_cost_center_code");
+            throw new BussinessException("reimbursement.error_duplicate_reimbursement_code");
         }
         entity.setEmpData(empDataDao.getEntiyByPK(entity.getEmpData().getId()));
         entity.setReimbursmentSchema(reimbursmentSchemaDao.getEntiyByPK(entity.getReimbursmentSchema().getId()));
@@ -139,7 +139,7 @@ public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements 
     public void update(Reimbursment entity) throws Exception {
         long totalDuplicates = reimbursmentDao.getTotalByCodeAndNotId(entity.getCode(), entity.getId());
         if (totalDuplicates > 0) {
-            throw new BussinessException("costcenter.error_duplicate_cost_center_code");
+            throw new BussinessException("reimbursement.error_duplicate_reimbursement_code");
         }
         Reimbursment update = reimbursmentDao.getEntiyByPK(entity.getId());
         update.setCode(entity.getCode());
@@ -301,7 +301,7 @@ public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements 
         //cek duplicat kode
         long totalDuplicates = reimbursmentDao.getTotalByCode(reimbursment.getCode());
         if (totalDuplicates > 0) {
-            throw new BussinessException("costcenter.error_duplicate_cost_center_code");
+            throw new BussinessException("reimbursement.error_duplicate_reimbursement_code");
         }
         EmpData empData = empDataDao.getEntiyByPK(reimbursment.getEmpData().getId());
         ReimbursmentSchema reimbursmentSchema = reimbursmentSchemaDao.getEntiyByPK(reimbursment.getReimbursmentSchema().getId());

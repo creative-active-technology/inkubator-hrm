@@ -91,7 +91,7 @@ public class ReimbursmentSchemaServiceImpl extends IServiceImpl implements Reimb
     public void save(ReimbursmentSchema entity) throws Exception {
         long totalDuplicates = reimbursmentSchemaDao.getTotalByCode(entity.getCode());
         if (totalDuplicates > 0) {
-            throw new BussinessException("costcenter.error_duplicate_cost_center_code");
+            throw new BussinessException("reimbursementschema.error_duplicate_reimbursement_schema_code");
         }
         entity.setBasicValue(entity.getBasicValue());
         entity.setCode(entity.getCode());
@@ -117,7 +117,7 @@ public class ReimbursmentSchemaServiceImpl extends IServiceImpl implements Reimb
     public void update(ReimbursmentSchema entity) throws Exception {
         long totalDuplicates = reimbursmentSchemaDao.getTotalByCodeAndNotId(entity.getCode(), entity.getId());
         if (totalDuplicates > 0) {
-            throw new BussinessException("costcenter.error_duplicate_cost_center_code");
+            throw new BussinessException("reimbursementschema.error_duplicate_reimbursement_schema_code");
         }
         ReimbursmentSchema update = reimbursmentSchemaDao.getEntiyByPK(entity.getId());
         update.getReimbursmentSchemaEmployeeTypes().clear();
