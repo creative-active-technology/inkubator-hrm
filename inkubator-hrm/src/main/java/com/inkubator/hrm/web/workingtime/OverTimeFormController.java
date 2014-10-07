@@ -10,6 +10,8 @@ import com.google.gson.Gson;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.ApprovalDefinition;
+import com.inkubator.hrm.entity.ApprovalDefinitionLeave;
+import com.inkubator.hrm.entity.ApprovalDefinitionOT;
 import com.inkubator.hrm.entity.WtOverTime;
 import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.WtOverTimeService;
@@ -21,6 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
@@ -63,14 +66,15 @@ public class OverTimeFormController extends BaseController {
     @Override
     public void initialization() {
         super.initialization();
-        String param = FacesUtil.getRequestParameter("param");
+//        String param = FacesUtil.getRequestParameter("param");
+        String param = FacesUtil.getRequestParameter("execution");
         overTimeModel = new OverTimeModel();
         try {
             appDefs = new ArrayList<ApprovalDefinition>(); 
             if (param != null) {
 
                 isEdit = Boolean.TRUE;
-                WtOverTime wtOverTime = wtOverTimeService.getEntiyByPK(Long.parseLong(param));
+                WtOverTime wtOverTime = wtOverTimeService.getEntityByPkFetchApprovalDefinition(Long.parseLong(param.substring(1)));
                 overTimeModel.setId(wtOverTime.getId());
                 overTimeModel.setCode(wtOverTime.getCode());
                 overTimeModel.setDescription(wtOverTime.getDescription());
@@ -82,7 +86,10 @@ public class OverTimeFormController extends BaseController {
                 overTimeModel.setOverTimeCalculation(wtOverTime.getOverTimeCalculation());
                 overTimeModel.setStartTimeFactor(wtOverTime.getStartTimeFactor());
                 overTimeModel.setValuePrice(wtOverTime.getValuePrice());
-
+                Set<ApprovalDefinitionOT> approvalDefinitionOTs = wtOverTime.getApprovalDefinitionOTs();
+                    for(ApprovalDefinitionOT appDefOverTime : approvalDefinitionOTs){
+                    	appDefs.add(appDefOverTime.getApprovalDefinition());
+                    }
             } else {
                 isEdit = Boolean.FALSE;
             }
@@ -95,16 +102,16 @@ public class OverTimeFormController extends BaseController {
         WtOverTime wtOverTime = getEntityFromViewModel(overTimeModel);
         try {
             if (isEdit) {
-//                wtOverTimeService.update(wtOverTime, appDefs);
-//                MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
-//                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+                wtOverTimeService.update(wtOverTime, appDefs);
+                MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
+                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 
             } else {
                 wtOverTimeService.save(wtOverTime, appDefs);
                 MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             }
-            return "/protected/working_time/leave_detail.htm?faces-redirect=true&execution=e" + wtOverTime.getId();
+            return "/protected/working_time/over_time_detail.htm?faces-redirect=true&execution=e" + wtOverTime.getId();
         } catch (BussinessException ex) { //data already exist(duplicate)
             LOGGER.error("Error", ex);
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());

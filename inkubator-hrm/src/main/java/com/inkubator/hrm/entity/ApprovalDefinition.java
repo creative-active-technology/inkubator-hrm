@@ -49,7 +49,7 @@ public class ApprovalDefinition implements java.io.Serializable {
     private String specificName;
     private Set<ApprovalActivity> approvalActivities = new HashSet<ApprovalActivity>(0);
     private Set<ApprovalDefinitionLeave> approvalDefinitionLeaves = new HashSet<ApprovalDefinitionLeave>(0);
-    private Set<ApprovalDefinitionOT> approvalDefinitionOTs = new HashSet<ApprovalDefinitionOT>(0);
+    private Set<ApprovalDefinitionOT> approvalDefinitionOverTimes = new HashSet<ApprovalDefinitionOT>(0);
 
     public ApprovalDefinition() {
     }
@@ -78,7 +78,7 @@ public class ApprovalDefinition implements java.io.Serializable {
         this.updatedOn = updatedOn;
         this.approvalActivities = approvalActivities;
         this.approvalDefinitionLeaves = approvalDefinitionLeaves;
-        this.approvalDefinitionOTs = approvalDefinitionOTs;
+        this.approvalDefinitionOverTimes = approvalDefinitionOTs;
     }
 
     @Id
@@ -305,12 +305,12 @@ public class ApprovalDefinition implements java.io.Serializable {
         this.approvalDefinitionLeaves = approvalDefinitionLeaves;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "approvalDefinition")
-    public Set<ApprovalDefinitionOT> getApprovalDefinitionOTs() {
-        return approvalDefinitionOTs;
+    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="approvalDefinition")
+    public Set<ApprovalDefinitionOT> getApprovalDefinitionOverTimes() {
+        return this.approvalDefinitionOverTimes;
     }
-
-    public void setApprovalDefinitionOTs(Set<ApprovalDefinitionOT> approvalDefinitionOTs) {
-        this.approvalDefinitionOTs = approvalDefinitionOTs;
+    
+    public void setApprovalDefinitionOverTimes(Set<ApprovalDefinitionOT> approvalDefinitionOverTimes) {
+        this.approvalDefinitionOverTimes = approvalDefinitionOverTimes;
     }
 }

@@ -86,12 +86,8 @@ public class OverTimeViewController extends BaseController {
         wtOverTimesLazyDataModel = null;
     }
 
-    public void doDetail() {
-        try {
-            selectedWtOverTime = wtOverTimeService.getEntiyByPK(selectedWtOverTime.getId());
-        } catch (Exception ex) {
-            LOGGER.error("Error", ex);
-        }
+    public String doDetail() {
+        return "/protected/working_time/over_time_detail.htm?faces-redirect=true&execution=e" + selectedWtOverTime.getId();
     }
 
     public void doDelete() {
@@ -113,6 +109,10 @@ public class OverTimeViewController extends BaseController {
         return "/protected/working_time/over_time_form.htm?faces-redirect=true";
     }
 
+    public String doUpdate() {
+        return "/protected/working_time/over_time_form.htm?faces-redirect=true&execution=e" + selectedWtOverTime.getId();
+    }
+    
     public void doEdit() {
         Map<String, Object> options = new HashMap<>();
         options.put("modal", true);
