@@ -7,10 +7,12 @@ package com.inkubator.hrm.dao.impl;
 
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.WtOverTimeDao;
+import com.inkubator.hrm.entity.Leave;
 import com.inkubator.hrm.entity.WtOverTime;
 import com.inkubator.hrm.web.search.WtOverTimeSearchParameter;
 import java.util.List;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -79,5 +81,14 @@ public class WtOverTimeDaoImpl extends IDAOImpl<WtOverTime> implements WtOverTim
         criteria.add(Restrictions.eq("code", code));
         criteria.add(Restrictions.ne("id", id));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+
+    @Override
+    public WtOverTime getEntityByPkFetchApprovalDefinition(Long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.setFetchMode("approvalDefinitionOTs", FetchMode.JOIN);
+        criteria.setFetchMode("approvalDefinitionOTs.approvalDefinition", FetchMode.JOIN);
+        criteria.add(Restrictions.eq("id", id));
+        return (WtOverTime) criteria.uniqueResult();
     }
 }

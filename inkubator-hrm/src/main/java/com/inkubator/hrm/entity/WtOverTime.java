@@ -42,6 +42,7 @@ public class WtOverTime implements java.io.Serializable {
     private Date createdOn;
     private String updatedBy;
     private Date updatedOn;
+    private Set<ApprovalDefinitionOT> approvalDefinitionOTs = new HashSet<ApprovalDefinitionOT>(0);
     private Set<OverTimeDistribution> overTimeDistributions = new HashSet<OverTimeDistribution>(0);
 
     public WtOverTime() {
@@ -51,7 +52,7 @@ public class WtOverTime implements java.io.Serializable {
         this.id = id;
     }
 
-    public WtOverTime(long id, String code, String name, String description, Date minimumTime, Date maximumTime, Integer overTimeCalculation, Integer otRounding, Date startTimeFactor, Date finishTimeFactor, Double valuePrice, String createdBy, Date createdOn, String updatedBy, Date updatedOn) {
+    public WtOverTime(long id, String code, String name, String description, Date minimumTime, Date maximumTime, Integer overTimeCalculation, Integer otRounding, Date startTimeFactor, Date finishTimeFactor, Double valuePrice, String createdBy, Date createdOn, String updatedBy, Date updatedOn, Set<ApprovalDefinitionOT> approvalDefinitionOTs) {
         this.id = id;
         this.code = code;
         this.name = name;
@@ -67,6 +68,7 @@ public class WtOverTime implements java.io.Serializable {
         this.createdOn = createdOn;
         this.updatedBy = updatedBy;
         this.updatedOn = updatedOn;
+        this.approvalDefinitionOTs = approvalDefinitionOTs;
     }
 
     @Id
@@ -221,6 +223,15 @@ public class WtOverTime implements java.io.Serializable {
         this.updatedOn = updatedOn;
     }
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "wtOverTime")
+    public Set<ApprovalDefinitionOT> getApprovalDefinitionOTs() {
+        return approvalDefinitionOTs;
+    }
+    
+    public void setApprovalDefinitionOTs(Set<ApprovalDefinitionOT> approvalDefinitionOTs) {
+        this.approvalDefinitionOTs = approvalDefinitionOTs;
+    }
+    
     @Transient
     public String getOTCalculationAsString() {
         if (Objects.equals(getOverTimeCalculation(), HRMConstant.OT_SEPARATED)) {
