@@ -6,14 +6,20 @@
 package com.inkubator.hrm.service.impl;
 
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.OverTimeDistributionDao;
+import com.inkubator.hrm.dao.WtOverTimeDao;
 import com.inkubator.hrm.entity.OverTimeDistribution;
 import com.inkubator.hrm.service.OverTimeDistributionService;
+import com.inkubator.hrm.web.search.OverTimeDistributionSearchParameter;
 import java.util.List;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -25,6 +31,10 @@ public class OverTimeDistributionServiceImpl extends IServiceImpl implements Ove
 
     @Autowired
     private OverTimeDistributionDao overTimeDistributionDao;
+    @Autowired
+    private EmpDataDao empDataDao;
+    @Autowired
+    private WtOverTimeDao wtOverTimeDao;
 
     @Override
     public OverTimeDistribution getEntiyByPK(String id) throws Exception {
@@ -184,6 +194,30 @@ public class OverTimeDistributionServiceImpl extends IServiceImpl implements Ove
     @Override
     public List<OverTimeDistribution> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<OverTimeDistribution> getByParamWithDetail(OverTimeDistributionSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
+        return overTimeDistributionDao.getByParamWithDetail(searchParameter, firstResult, maxResults, order);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalOverTimeDistributionByParam(OverTimeDistributionSearchParameter searchParameter) throws Exception {
+        return overTimeDistributionDao.getTotalOverTimeDistributionByParam(searchParameter);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public OverTimeDistribution getEntityByParamWithDetail(Long id) throws Exception {
+        return overTimeDistributionDao.getEntityByParamWithDetail(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public List<OverTimeDistribution> getAllDataByIdWithDetail() throws Exception {
+        return overTimeDistributionDao.getAllDataByIdWithDetail();
     }
 
 }
