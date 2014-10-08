@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -38,56 +39,70 @@ public class LeaveCronServiceImpl implements LeaveCronService {
     @Scheduled(cron = "${cron.process.of.adding.leave.balance}")
     @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
 	public void processAddingOfLeaveBalance() throws Exception {
-		/** tanggal sekarang dikurangi satu, karena pengecekan itu di tanggal end of leave*/
-		Date current = DateUtils.addDays(new Date(), -1);
+		
+		Date current = new Date();
+		int currentYear =  DateUtils.toCalendar(current).get(Calendar.YEAR);
+		
+		/** tanggal sekarang(current) dikurangi satu, karena pengecekan scheduler itu di tanggal endOfLeave 
+		 *  ex: tanggal endOfLeave 15-01-2014, dan sistem running scheduler setiap jam 02.00, 
+		 *  maka ketika tanggal di sistem 16-01-2014 02:00, barulah diexecute penambahan cuti-nya  */
+		Date oneDayBeforeCurrent = DateUtils.addDays(current, -1); 
+		int oneDayBeforeCurrentMonth = DateUtils.toCalendar(oneDayBeforeCurrent).get(Calendar.MONTH);
+		int oneDayBeforeCurrentYear = DateUtils.toCalendar(oneDayBeforeCurrent).get(Calendar.YEAR);
+		
 		
 		/** Dapatkan semua data cuti yang statusnya aktif dan tidak berlaku untuk satu kali */
 		List<Leave> leaves = leaveDao.getAllDataByIsActiveAndIsOnlyOncePerEmployee(true, false);
 		for(Leave leave : leaves){
 			/** Ambil dari Leave entity*/
-			int quota = leave.getQuotaPerPeriod();
+			Integer quotaPerYear = leave.getQuotaPerPeriod();
 			String availability = leave.getAvailability();
 			Boolean isTakingToNextYear = leave.getIsTakingLeaveToNextYear();
-			int maxTakingToNextYear = leave.getMaxTakingLeaveToNextYear();
+			Integer maxTakingToNextYear = leave.getMaxTakingLeaveToNextYear();
 			
 			/** Dapatkan semua data leaveDistribution berdasarkan yang aktif employee */
 			List<LeaveDistribution> leaveDistributions = leaveDistributionDao.getAllDataByLeaveIdAndIsActiveEmployee(leave.getId());
 			for(LeaveDistribution leaveDistribution : leaveDistributions ){
 				 Date endLeave = leaveDistribution.getEndDate();				 
 				 
-				 if (availability == HRMConstant.LEAVE_AVAILABILITY_FULL){
-					if(DateUtils.isSameDay(current, endLeave)){
+				 if (StringUtils.equals(availability, HRMConstant.LEAVE_AVAILABILITY_FULL)){
+					 
+					/** proses debet dan kredit neraca jika tanggal dari endDate periode tahun cuti sama dengan currentDate */
+					if(DateUtils.isSameDay(oneDayBeforeCurrent, endLeave)){
 						double balance = leaveDistribution.getBalance();
-						balance = this.balanceTakingToNextYear(balance, isTakingToNextYear, maxTakingToNextYear, leaveDistribution);
+						balance = this.getBalanceAllowedTakingToNextYear(balance, isTakingToNextYear, maxTakingToNextYear, leaveDistribution);
 								
-						double debet = quota;
+						double debet = quotaPerYear;
 						this.debetNeracaCuti(debet, leaveDistribution);
 							
 						balance = balance + debet;							
 						this.saveLeaveDistribution(balance, leaveDistribution);
 					}
 					
-				} else  if (availability == HRMConstant.LEAVE_AVAILABILITY_INCREASES_MONTH){
-					int quotaPerMonth = quota / 12;						
+				} else  if (StringUtils.equals(availability, HRMConstant.LEAVE_AVAILABILITY_INCREASES_MONTH)){
+					int quotaPerMonth = quotaPerYear / 12;	//quota per bulan					
 						
-					Calendar currentCalendar = Calendar.getInstance();
-					currentCalendar.setTime(current);			
-					int currentMonth = currentCalendar.get(Calendar.MONTH);		
-						
-					Date monthsBeforeTheEndOfPeriod = DateUtils.addMonths(endLeave, -1);
-					if(currentMonth == DateUtils.toCalendar(monthsBeforeTheEndOfPeriod).get(Calendar.MONTH)){
-						int restQuota = quota % 12;
+					/** jika di bulan terakhir, maka quotaPerMonth ditambah sisa dari quotaPerYear dibagi 12 bulan 
+					 * ex: quotaPerTahun 15, endDate(10 Oktober 2014 ), maka jika currentDate 11 September maka cuti yg ditambah 1+3=4 hari, selain bulan itu  */
+					Date monthsBeforeTheEndOfYearPeriod = DateUtils.addMonths(endLeave, -1);
+					if(oneDayBeforeCurrentMonth == DateUtils.toCalendar(monthsBeforeTheEndOfYearPeriod).get(Calendar.MONTH)){
+						int restQuota = quotaPerYear % 12;
 						quotaPerMonth = quotaPerMonth + restQuota;
 					}
-						
-					Calendar endLeaveCalendar = DateUtils.toCalendar(endLeave);
-					boolean isProceedTakingBalanceToNextYear = currentMonth == endLeaveCalendar.get(Calendar.MONTH);
-						
-					endLeaveCalendar.add(Calendar.MONTH, currentMonth);		
-					if(DateUtils.isSameDay(currentCalendar, endLeaveCalendar)){
+					
+					/** jika sudah masuk bulan terakhir dari satu tahun Periode, maka di cek balance yang akan dibawa ke tahun depan */
+					boolean isProceedTakingBalanceToNextYear = ( oneDayBeforeCurrentMonth == DateUtils.toCalendar(endLeave).get(Calendar.MONTH) );
+					
+					/** set bulan endDate ke bulan dan tahun yang current */
+					endLeave = DateUtils.setMonths(endLeave, oneDayBeforeCurrentMonth);
+					endLeave = DateUtils.setYears(endLeave, oneDayBeforeCurrentYear);
+					
+					/** proses debet dan kredit neraca jika tanggal dari endDate cuti per-bulan sama dengan tanggal dari currentDate 
+					 * ex: jika endLeave 20-10-2014, maka setiap tangal 20 harus di execute, itulah kenapa tahun&bulan endLeave di set ke tahun&bulan yg current*/
+					if(DateUtils.isSameDay(oneDayBeforeCurrent, endLeave)){
 						double balance = leaveDistribution.getBalance();
 						if(isProceedTakingBalanceToNextYear){
-							balance = this.balanceTakingToNextYear(balance, isTakingToNextYear, maxTakingToNextYear, leaveDistribution);
+							balance = this.getBalanceAllowedTakingToNextYear(balance, isTakingToNextYear, maxTakingToNextYear, leaveDistribution);
 						}
 							
 						double debet = quotaPerMonth;
@@ -97,29 +112,54 @@ public class LeaveCronServiceImpl implements LeaveCronService {
 						this.saveLeaveDistribution(balance, leaveDistribution);
 					} 		
 					
-				} else  if (availability == HRMConstant.LEAVE_AVAILABILITY_INCREASES_MONTH){
-					if(DateUtils.isSameDay(current, endLeave)){
+				} else  if (StringUtils.equals(availability, HRMConstant.LEAVE_AVAILABILITY_INCREASES_SPECIFIC_DATE)){
+					if(DateUtils.isSameDay(oneDayBeforeCurrent, endLeave)){
 						double balance = leaveDistribution.getBalance();
-						balance = this.balanceTakingToNextYear(balance, isTakingToNextYear, maxTakingToNextYear, leaveDistribution);
+						balance = this.getBalanceAllowedTakingToNextYear(balance, isTakingToNextYear, maxTakingToNextYear, leaveDistribution);
+						this.saveLeaveDistribution(balance, leaveDistribution);
 					}
 					
-					Calendar currentCalendar = Calendar.getInstance();
-					currentCalendar.setTime(current);
-					Calendar availabilityAtSpecificDate = DateUtils.toCalendar(leave.getAvailabilityAtSpecificDate());
+					/** proses debet dan kredit neraca jika tanggal spesifik dari penambahan cuti sama dengan tanggal currentDate 
+					 * ex: 7 Oktober, maka jika 7-10-2014 atau 7-10-2018 harus diexecute, itulah kenapa tahun availabilityAtSpecificDate di set ke tahun current */
+					Date availabilityAtSpecificDate = DateUtils.setYears(leave.getAvailabilityAtSpecificDate(), currentYear);
+					if(DateUtils.isSameDay(current, availabilityAtSpecificDate)){
+						double debet = quotaPerYear;
+						this.debetNeracaCuti(debet, leaveDistribution);
+							
+						double balance = leaveDistribution.getBalance() + debet;					
+						this.saveLeaveDistribution(balance, leaveDistribution);
+					}
 				}
 			}
 		}
 		
 		
-		/** Update start dan end date di leaveDistribution, jika current date equal dengan end date */
-		
+		/** Update start dan end date di leaveDistribution, jika endLEave date equal or less than dengan current */
+		List<LeaveDistribution> leaveDistributions = leaveDistributionDao.getAllDataByEndDateLessThan(current);		
+		for(LeaveDistribution leaveDistribution : leaveDistributions){
+			//set year endDate menjadi sama dengan current, lalu di cek lagi jika masih lebih kecil dari current tambahkan setahun
+			//kenapa dibuat logic seperti di atas, untuk mengatasi end date(20 Februari 2010) sedangkan current(31 Maret 2014)
+			Date endDate = DateUtils.setYears(leaveDistribution.getEndDate(), currentYear);
+			if(current.after(endDate)){
+				endDate = DateUtils.addYears(endDate, 1);
+			}
+			
+			//logic-nya adalah start date ditambah sehari dari endDate, lalu kurangi setahun
+			Date startDate = DateUtils.addDays(endDate, 1);
+			startDate = DateUtils.addYears(startDate, -1);
+			
+			leaveDistribution.setStartDate(startDate);
+			leaveDistribution.setEndDate(endDate);
+			leaveDistributionDao.update(leaveDistribution);
+		}
 		
 		
 	}
 	
-	private double balanceTakingToNextYear(double balance, boolean isTakingToNextYear, int maxTakingToNextYear, LeaveDistribution leaveDistribution){
-		
+	private double getBalanceAllowedTakingToNextYear(Double balance, Boolean isTakingToNextYear, Integer maxTakingToNextYear, LeaveDistribution leaveDistribution){
+		/** Check berapa balance cuti yang diperbolehkan dibawa ke tahun depan */
 		if(isTakingToNextYear){
+			/** jika balance lebih kecil daripada max yang boleh dibawa ke tahun depan, maka lakukan operasi credit ke neraca cuti */ 
 			if(balance > maxTakingToNextYear){
 				double credit = balance - maxTakingToNextYear;									
 				this.creditNeracaCuti(credit, leaveDistribution);
@@ -127,9 +167,10 @@ public class LeaveCronServiceImpl implements LeaveCronService {
 				balance = balance - credit;
 			}
 		} else {
+			/** set balance ke 0(zero), lakukan operasi credit ke neraca cuti */
 			double credit = balance;
 			this.creditNeracaCuti(credit, leaveDistribution);
-			balance = 0;
+			balance = 0.0;
 		}
 		
 		return balance;

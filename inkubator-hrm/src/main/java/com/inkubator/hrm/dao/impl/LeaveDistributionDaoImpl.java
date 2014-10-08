@@ -9,6 +9,8 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.LeaveDistributionDao;
 import com.inkubator.hrm.entity.LeaveDistribution;
 import com.inkubator.hrm.web.search.LeaveDistributionSearchParameter;
+
+import java.util.Date;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
@@ -101,6 +103,13 @@ public class LeaveDistributionDaoImpl extends IDAOImpl<LeaveDistribution> implem
         disjunction.add(Restrictions.eq("empData.status", HRMConstant.EMP_PLACEMENT));
         disjunction.add(Restrictions.eq("empData.status", HRMConstant.EMP_ROTATION));
         criteria.add(disjunction);
+		return criteria.list();
+	}
+
+	@Override
+	public List<LeaveDistribution> getAllDataByEndDateLessThan(Date date) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.lt("endDate", date));
 		return criteria.list();
 	}
 }
