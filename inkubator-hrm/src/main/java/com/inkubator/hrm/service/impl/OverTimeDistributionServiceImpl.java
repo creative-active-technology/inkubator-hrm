@@ -60,10 +60,25 @@ public class OverTimeDistributionServiceImpl extends IServiceImpl implements Ove
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(OverTimeDistribution entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //delete existing overtime distribution
+        OverTimeDistribution update = overTimeDistributionDao.getById(entity.getId());
+        this.overTimeDistributionDao.delete(update);
+        //save new data overtime distribution
+        OverTimeDistribution newData = new OverTimeDistribution();
+        newData.setId(new OverTimeDistributionId(entity.getWtOverTime().getId(), entity.getEmpData().getId()));
+        newData.setEmpData(empDataDao.getEntiyByPK(entity.getEmpData().getId()));
+        newData.setWtOverTime(wtOverTimeDao.getEntiyByPK(entity.getWtOverTime().getId()));
+        this.overTimeDistributionDao.save(newData);
     }
 
+    
+    
+    protected void deleteManyToMany(Object entity) {
+        overTimeDistributionDao.delete((OverTimeDistribution) entity);
+    }
+    
     @Override
     public void saveOrUpdate(OverTimeDistribution enntity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -130,8 +145,9 @@ public class OverTimeDistributionServiceImpl extends IServiceImpl implements Ove
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void delete(OverTimeDistribution entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.overTimeDistributionDao.delete(entity);
     }
 
     @Override

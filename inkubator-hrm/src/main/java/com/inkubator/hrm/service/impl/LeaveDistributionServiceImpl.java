@@ -84,9 +84,15 @@ public class LeaveDistributionServiceImpl extends IServiceImpl implements LeaveD
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(LeaveDistribution entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        LeaveDistribution update = leaveDistributionDao.getEntiyByPK(entity.getId());
+        update.setEmpData(empDataDao.getEntiyByPK(entity.getEmpData().getId()));
+        update.setBalance(entity.getBalance());
+        update.setLeave(leaveDao.getEntiyByPK(entity.getLeave().getId()));
+        leaveDistributionDao.update(update);
     }
+    
 
     @Override
     public void saveOrUpdate(LeaveDistribution enntity) throws Exception {

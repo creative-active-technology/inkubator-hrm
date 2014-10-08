@@ -93,7 +93,7 @@
                                 </p:commandButton>
                                 -
                                 <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" ajax="true"
-                                                  action="#{leaveDistributionViewController.doUpdate()}" >
+                                                  action="#{overTimeDistributionViewController.doUpdate()}" >
                                     <f:setPropertyActionListener value="#{data}" target="#{overTimeDistributionViewController.selected}" />
                                     <p:ajax event="dialogReturn" listener="#{overTimeDistributionViewController.onDialogReturn}"  update="tableId, :formId:growlId"/>
                                 </p:commandButton> 
@@ -139,35 +139,26 @@
                         <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmDelete.hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
-                <p:dialog widgetVar="detail" header="Detil Leave Distribution" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
+                <p:dialog widgetVar="detail" header="Detil Distribusi Lembur" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
                           showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)" dynamic="true">
                     <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
 
                         <p:row>
                             <p:column style="color: #003366"><p:outputLabel value="Employee Name" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{leaveDistributionViewController.selected.empData.nikWithFullName}"/> </p:column>
+                            <p:column><p:outputLabel value="#{overTimeDistributionViewController.selected.empData.nikWithFullName}"/> </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Leave" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{leaveDistributionViewController.selected.leave.name}"/> </p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="Lembur" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{overTimeDistributionViewController.selected.wtOverTime.name}"/> </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Balance" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{leaveDistributionViewController.selected.balance}"/> </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Start Date" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{leaveDistributionViewController.selected.startDate}">
-                                    <f:convertDateTime pattern="dd MMMM yyyy" /></p:outputLabel></p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="End Date" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{leaveDistributionViewController.selected.endDate}"><f:convertDateTime pattern="dd MMMM yyyy" /></p:outputLabel> </p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="Deskripsi" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{overTimeDistributionViewController.selected.description}"/> </p:column>
                         </p:row>
 
                         <f:facet name="footer">
                             <p:row>
-                                <p:column colspan="2"><p:outputLabel value="#{appmsg['maritalstatus.marital_status_footer']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
+                                <p:column colspan="2"><p:outputLabel value="Distribusi Lembur" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
                             </p:row>
                         </f:facet>
                     </p:panelGrid>

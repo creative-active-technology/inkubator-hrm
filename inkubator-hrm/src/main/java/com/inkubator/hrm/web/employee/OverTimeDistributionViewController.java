@@ -91,7 +91,7 @@ public class OverTimeDistributionViewController extends BaseController{
     public void doUpdate() {
         Map<String, List<String>> dataToSend = new HashMap<>();
         List<String> values = new ArrayList<>();
-        values.add(String.valueOf(selected.getId()));
+        values.add(String.valueOf(selected.getEmpData().getId()));
         dataToSend.put("empDataId", values);
         showDialog(dataToSend);
     }

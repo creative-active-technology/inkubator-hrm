@@ -7,6 +7,7 @@ package com.inkubator.hrm.dao;
 
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.OverTimeDistribution;
+import com.inkubator.hrm.entity.OverTimeDistributionId;
 import com.inkubator.hrm.web.search.OverTimeDistributionSearchParameter;
 import java.util.List;
 import org.hibernate.criterion.Order;
@@ -26,4 +27,6 @@ public interface OverTimeDistributionDao extends IDAO<OverTimeDistribution>{
     public List<OverTimeDistribution> getAllDataByIdWithDetail();
     
     public void saveBatch(List<OverTimeDistribution> data);
+    
+    public OverTimeDistribution getById(OverTimeDistributionId object);
 }
