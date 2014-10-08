@@ -103,4 +103,12 @@ public class LeaveDaoImpl extends IDAOImpl<Leave> implements LeaveDao {
         criteria.add(Restrictions.eq("id", id));
         return (Leave) criteria.uniqueResult();
 	}
+
+	@Override
+	public List<Leave> getAllDataByIsActiveAndIsOnlyOncePerEmployee(boolean isActive, boolean isOnlyOncePerEmployee) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("isActive", isActive));
+		criteria.add(Restrictions.eq("isOnlyOncePerEmployee", isOnlyOncePerEmployee));
+		return criteria.list();
+	}
 }

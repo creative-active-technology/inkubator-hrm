@@ -5,12 +5,16 @@
 package com.inkubator.hrm.dao.impl;
 
 import com.inkubator.datacore.dao.impl.IDAOImpl;
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.LeaveDistributionDao;
 import com.inkubator.hrm.entity.LeaveDistribution;
 import com.inkubator.hrm.web.search.LeaveDistributionSearchParameter;
+
+import java.util.Date;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -89,4 +93,23 @@ public class LeaveDistributionDaoImpl extends IDAOImpl<LeaveDistribution> implem
             }
         }
     }
+
+	@Override
+	public List<LeaveDistribution> getAllDataByLeaveIdAndIsActiveEmployee(Long leaveId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("leave.id", leaveId));
+		criteria.createAlias("empData", "empData");
+		Disjunction disjunction = Restrictions.disjunction();
+        disjunction.add(Restrictions.eq("empData.status", HRMConstant.EMP_PLACEMENT));
+        disjunction.add(Restrictions.eq("empData.status", HRMConstant.EMP_ROTATION));
+        criteria.add(disjunction);
+		return criteria.list();
+	}
+
+	@Override
+	public List<LeaveDistribution> getAllDataByEndDateLessThan(Date date) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.lt("endDate", date));
+		return criteria.list();
+	}
 }

@@ -30,4 +30,6 @@ public interface LeaveDao extends IDAO<Leave> {
 
 	public Leave getEntityByPkFetchApprovalDefinition(Long id);
 	
+	public List<Leave> getAllDataByIsActiveAndIsOnlyOncePerEmployee(boolean isActive, boolean isOnlyOncePerEmployee);
+	
 }
