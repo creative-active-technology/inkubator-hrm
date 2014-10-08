@@ -451,4 +451,15 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         return criteria.list();
     }
 
+    @Override
+    public List<EmpData> getEmpDataByListId(List<Long> data) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.in("id", data));
+        criteria.setFetchMode("jabatanByJabatanGajiId", FetchMode.JOIN);
+        criteria.setFetchMode("bioData", FetchMode.JOIN);
+        criteria.setFetchMode("jabatanByJabatanGajiId.department", FetchMode.JOIN);
+          criteria.setFetchMode("jabatanByJabatanGajiId.unitKerja", FetchMode.JOIN);
+        return criteria.list();
+    }
+
 }

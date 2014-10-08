@@ -77,4 +77,12 @@ public class WtScheduleShiftDaoImpl extends IDAOImpl<WtScheduleShift> implements
         }
     }
 
+    @Override
+    public List<WtScheduleShift> getAllByWorkingGroupId(long workingGroupId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("wtGroupWorking", "wg");
+        criteria.add(Restrictions.eq("wg.id", workingGroupId));
+        return criteria.list();
+    }
+
 }

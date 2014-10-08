@@ -233,7 +233,7 @@ public class LeaveDistributionSchemeFormController extends BaseController {
     }
     
     public String doBack(){
-        return "/protected/employee/leave_distribution_view.htmfaces-redirect=true";
+        return "/protected/employee/leave_distribution_view.htm?faces-redirect=true";
     }
 
 }

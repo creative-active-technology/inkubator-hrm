@@ -5,15 +5,24 @@
  */
 package com.inkubator.hrm.web.personalia;
 
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.inkubator.common.CommonUtilConstant;
+import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.ApprovalActivity;
+import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.WtGroupWorking;
 import com.inkubator.hrm.service.ApprovalActivityService;
+import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.WtGroupWorkingService;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,10 +53,15 @@ public class ScheduleApprovalFormController extends BaseController {
     private ApprovalActivityService approvalActivityService;
     @ManagedProperty(value = "#{wtGroupWorkingService}")
     private WtGroupWorkingService wtGroupWorkingService;
-//    @ManagedProperty(value = "#{empDataService}")
-//    private EmpDataService empDataService;
-
+    @ManagedProperty(value = "#{empDataService}")
+    private EmpDataService empDataService;
+    private Date beginScheduleDate;
+    private Date endScheduleDate;
+    private List<EmpData> dataToshow = new ArrayList<>();
     private WtGroupWorking selectedWtGroupWorking;
+    private List<EmpData> dataToSave = new ArrayList<>();
+    private String komentar;
+    
 
     @PostConstruct
     @Override
@@ -58,7 +72,29 @@ public class ScheduleApprovalFormController extends BaseController {
             selectedApprovalActivity = approvalActivityService.getEntiyByPK(Long.parseLong(id.substring(1)));
             JSONObject jSONObject = new JSONObject(selectedApprovalActivity.getPendingData());
             long workingGroupId = Long.parseLong(jSONObject.getString("groupWorkingId"));
-            selectedWtGroupWorking = selectedWtGroupWorking = wtGroupWorkingService.getEntiyByPK(workingGroupId);
+            String listEmp = jSONObject.getString("listEmpId");
+            TypeToken<List<Long>> token = new TypeToken<List<Long>>() {
+            };
+            Gson gson = new GsonBuilder().create();
+            List<Long> dataEmpId = gson.fromJson(listEmp, token.getType());
+            dataToshow = empDataService.getEmpDataByListId(dataEmpId);
+            System.out.println(" Jumalh employenya " + dataToshow.size());
+            Date createDate = new SimpleDateFormat("dd-MM-yyyy").parse(jSONObject.getString("createDate"));
+            selectedWtGroupWorking = wtGroupWorkingService.getEntiyByPK(workingGroupId);
+            Date startDate = selectedWtGroupWorking.getBeginTime();
+            Date endDate = selectedWtGroupWorking.getEndTime();
+            int numberOfDay = DateTimeUtil.getTotalDayDifference(startDate, endDate);
+            int totalDateDif = DateTimeUtil.getTotalDayDifference(startDate, createDate) + 1;
+            int num = numberOfDay + 1;
+            int hasilBagi = (totalDateDif) / (num);
+            Date tanggalAkhirJadwal = DateTimeUtil.getDateFrom(startDate, (hasilBagi * num) - 1, CommonUtilConstant.DATE_FORMAT_DAY);
+            if (new SimpleDateFormat("ddMMyyyy").format(tanggalAkhirJadwal).equals(new SimpleDateFormat("ddMMyyyy").format(new Date()))) {
+                beginScheduleDate = DateTimeUtil.getDateFrom(startDate, (hasilBagi * num) - num, CommonUtilConstant.DATE_FORMAT_DAY);
+            } else {
+                beginScheduleDate = DateTimeUtil.getDateFrom(startDate, (hasilBagi * num), CommonUtilConstant.DATE_FORMAT_DAY);
+            }
+            endScheduleDate = DateTimeUtil.getDateFrom(beginScheduleDate, numberOfDay, CommonUtilConstant.DATE_FORMAT_DAY);
+
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
 
@@ -116,16 +152,17 @@ public class ScheduleApprovalFormController extends BaseController {
 //		this.comment = comment;
 //	}
 //
-//	public void setEmpDataService(EmpDataService empDataService) {
-//		this.empDataService = empDataService;
-//	}
+
+    public void setEmpDataService(EmpDataService empDataService) {
+        this.empDataService = empDataService;
+    }
 //	
 //	public Boolean getIsPaginator(){
 //		return loanPaymentDetails.size() > 11;
 //	}
 
     public String doBack() {
-        return "/protected/home.htm";
+        return "home";
     }
 
     public String doApproved() {
@@ -166,7 +203,7 @@ public class ScheduleApprovalFormController extends BaseController {
 
     public void doDetail() {
         List<String> values = new ArrayList<>();
-        values.add(String.valueOf(selectedWtGroupWorking.getId()));
+        values.add(String.valueOf(selectedApprovalActivity.getId()));
         Map<String, List<String>> dataToSend = new HashMap<>();
         dataToSend.put("id", values);
         Map<String, Object> options = new HashMap<>();
@@ -178,4 +215,48 @@ public class ScheduleApprovalFormController extends BaseController {
         RequestContext.getCurrentInstance().openDialog("schedule_shift_detail", options, dataToSend);
 
     }
+
+    public Date getBeginScheduleDate() {
+        return beginScheduleDate;
+    }
+
+    public void setBeginScheduleDate(Date beginScheduleDate) {
+        this.beginScheduleDate = beginScheduleDate;
+    }
+
+    public Date getEndScheduleDate() {
+        return endScheduleDate;
+    }
+
+    public void setEndScheduleDate(Date endScheduleDate) {
+        this.endScheduleDate = endScheduleDate;
+    }
+
+    public List<EmpData> getDataToshow() {
+        return dataToshow;
+    }
+
+    public void setDataToshow(List<EmpData> dataToshow) {
+        this.dataToshow = dataToshow;
+    }
+
+    public List<EmpData> getDataToSave() {
+        return dataToSave;
+    }
+
+    public void setDataToSave(List<EmpData> dataToSave) {
+        this.dataToSave = dataToSave;
+    }
+
+    public String getKomentar() {
+        return komentar;
+    }
+
+    public void setKomentar(String komentar) {
+        this.komentar = komentar;
+    }
+
+   
+
+    
 }

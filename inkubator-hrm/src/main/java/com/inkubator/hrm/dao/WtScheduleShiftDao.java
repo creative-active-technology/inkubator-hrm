@@ -19,9 +19,11 @@ public interface WtScheduleShiftDao extends IDAO<WtScheduleShift> {
     public List<WtScheduleShift> getByParam(Long workingGroupId, int firstResult, int maxResults, Order order);
 
     public Long getTotalWtScheduleShiftByParam(Long workingGroupId);
-    
+
     public void saveAndMerge(WtScheduleShift scheduleShift);
-    
+
     public void saveBatach(List<WtScheduleShift> dataToBacth);
-    
+
+    public List<WtScheduleShift> getAllByWorkingGroupId(long workingGroupId);
+
 }

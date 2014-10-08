@@ -5,12 +5,32 @@
  */
 package com.inkubator.hrm.service.impl;
 
+import com.inkubator.common.CommonUtilConstant;
+import com.inkubator.common.util.DateTimeUtil;
+import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.dao.ApprovalActivityDao;
+import com.inkubator.hrm.dao.WtGroupWorkingDao;
+import com.inkubator.hrm.dao.WtHolidayDao;
 import com.inkubator.hrm.dao.WtScheduleShiftDao;
+import com.inkubator.hrm.dao.WtWorkingHourDao;
+import com.inkubator.hrm.entity.ApprovalActivity;
+import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.TempJadwalKaryawan;
+import com.inkubator.hrm.entity.WtGroupWorking;
+import com.inkubator.hrm.entity.WtHoliday;
 import com.inkubator.hrm.entity.WtScheduleShift;
 import com.inkubator.hrm.service.WtScheduleShiftService;
+import com.inkubator.securitycore.util.UserInfoUtil;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import org.hibernate.criterion.Order;
+import org.primefaces.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -28,6 +48,14 @@ public class WtScheduleShiftServiceImpl extends IServiceImpl implements WtSchedu
 
     @Autowired
     private WtScheduleShiftDao wtScheduleShiftDao;
+    @Autowired
+    private ApprovalActivityDao approvalActivityDao;
+    @Autowired
+    private WtGroupWorkingDao wtGroupWorkingDao;
+    @Autowired
+    private WtHolidayDao wtHolidayDao;
+    @Autowired
+    private WtWorkingHourDao wtWorkingHourDao;
 
     @Override
     public WtScheduleShift getEntiyByPK(String id) throws Exception {
@@ -200,5 +228,65 @@ public class WtScheduleShiftServiceImpl extends IServiceImpl implements WtSchedu
     public Long getTotalWtScheduleShiftByParam(Long workingGroupId) throws Exception {
         return this.wtScheduleShiftDao.getTotalWtScheduleShiftByParam(workingGroupId);
     }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<WtScheduleShift> getAllByWorkingGroupId(long workingGroupId) throws Exception {
+        return wtScheduleShiftDao.getAllByWorkingGroupId(workingGroupId);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<TempJadwalKaryawan> getAllScheduleForView(long approvalActivityId) throws Exception {
+        List<TempJadwalKaryawan> dataToShow = new ArrayList<>();
+        ApprovalActivity selectedApprovalActivity = approvalActivityDao.getEntiyByPK(approvalActivityId);
+        JSONObject jSONObject = new JSONObject(selectedApprovalActivity.getPendingData());
+        long workingGroupId = Long.parseLong(jSONObject.getString("groupWorkingId"));
+        Date createDate = new SimpleDateFormat("dd-MM-yyyy").parse(jSONObject.getString("createDate"));
+        WtGroupWorking selectedWtGroupWorking = wtGroupWorkingDao.getEntiyByPK(workingGroupId);
+        Date startDate = selectedWtGroupWorking.getBeginTime();
+        Date endDate = selectedWtGroupWorking.getEndTime();
+        int numberOfDay = DateTimeUtil.getTotalDayDifference(startDate, endDate);
+        int totalDateDif = DateTimeUtil.getTotalDayDifference(startDate, createDate) + 1;
+        int num = numberOfDay + 1;
+        int hasilBagi = (totalDateDif) / (num);
+        Date beginScheduleDate;
+        Date tanggalAkhirJadwal = DateTimeUtil.getDateFrom(startDate, (hasilBagi * num) - 1, CommonUtilConstant.DATE_FORMAT_DAY);
+        if (new SimpleDateFormat("ddMMyyyy").format(tanggalAkhirJadwal).equals(new SimpleDateFormat("ddMMyyyy").format(new Date()))) {
+            beginScheduleDate = DateTimeUtil.getDateFrom(startDate, (hasilBagi * num) - num, CommonUtilConstant.DATE_FORMAT_DAY);
+        } else {
+            beginScheduleDate = DateTimeUtil.getDateFrom(startDate, (hasilBagi * num), CommonUtilConstant.DATE_FORMAT_DAY);
+        }
+        int i = 0;
+        List<WtScheduleShift> list = new ArrayList<>(selectedWtGroupWorking.getWtScheduleShifts());
+        Collections.sort(list, shortByDate1);
+        for (WtScheduleShift list1 : list) {
+            TempJadwalKaryawan jadwalKaryawan = new TempJadwalKaryawan();
+            jadwalKaryawan.setEmpData(new EmpData());
+            jadwalKaryawan.setTanggalWaktuKerja(DateTimeUtil.getDateFrom(beginScheduleDate, i, CommonUtilConstant.DATE_FORMAT_DAY));
+            WtHoliday holiday = wtHolidayDao.getWtHolidayByDate(jadwalKaryawan.getTanggalWaktuKerja());
+            if (holiday != null && selectedWtGroupWorking.getTypeSequeace().equals(HRMConstant.NORMAL_SCHEDULE)) {
+                jadwalKaryawan.setWtWorkingHour(wtWorkingHourDao.getByCode("OFF"));
+            } else {
+                jadwalKaryawan.setWtWorkingHour(list1.getWtWorkingHour());
+            }
+            jadwalKaryawan.setIsCollectiveLeave(Boolean.FALSE);
+            jadwalKaryawan.setCreatedBy(UserInfoUtil.getUserName());
+            jadwalKaryawan.setCreatedOn(new Date());
+            jadwalKaryawan.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
+            jadwalKaryawan.getWtWorkingHour();
+             jadwalKaryawan.getWtWorkingHour().getAttendanceStatus().getStatusKehadrian();
+            dataToShow.add(jadwalKaryawan);
+            i++;
+        }
+        return dataToShow;
+    }
+
+    private final Comparator<WtScheduleShift> shortByDate1 = new Comparator<WtScheduleShift>() {
+        @Override
+        public int compare(WtScheduleShift o1, WtScheduleShift o2) {
+            return o1.getScheduleDate().compareTo(o2.getScheduleDate());
+        }
+    };
 
 }

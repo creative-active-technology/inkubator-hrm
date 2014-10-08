@@ -5,15 +5,6 @@
  */
 package com.inkubator.hrm.web.personalia;
 
-import java.util.List;
-
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
-
 import com.google.gson.Gson;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.ApprovalActivity;
@@ -27,6 +18,13 @@ import com.inkubator.hrm.service.LoanService;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+import java.util.List;
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
 
 /**
  *
@@ -127,7 +125,7 @@ public class LoanApprovalFormController extends BaseController {
 	}
 
 	public String doBack() {
-        return "/protected/home.htm";
+        return "home";
     }
 
 	public String doApproved() {

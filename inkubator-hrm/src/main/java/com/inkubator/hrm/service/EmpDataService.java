@@ -61,5 +61,7 @@ public interface EmpDataService extends IService<EmpData> {
     public List<EmpData> getEmployeelBySearchEmployeeLeave(DistributionLeaveSchemeModel model) throws Exception;
 
     public List<EmpData> getEmployeeByOtSearchParameter(DistributionOvetTimeModel model) throws Exception;
+    
+    public List<EmpData>getEmpDataByListId(List<Long> data)throws Exception;
 
 }

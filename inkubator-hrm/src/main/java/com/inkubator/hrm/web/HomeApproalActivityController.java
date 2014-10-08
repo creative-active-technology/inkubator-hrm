@@ -107,7 +107,7 @@ public class HomeApproalActivityController extends BaseController {
     }
 
     public String doApprove() {
-        String redirect = "/protected/home.htm";
+        String redirect = "home";
 
         try {
             selectedApprovalActivity = approvalActivityService.getEntityByPkWithDetail(selectedApprovalActivity.getId());

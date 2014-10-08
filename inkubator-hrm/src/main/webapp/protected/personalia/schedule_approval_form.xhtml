@@ -106,12 +106,12 @@
                                         <p:outputLabel  value="Siklus Kerja" style="font-weight: bold"/>
                                     </p:column>
                                     <p:column style="width: 34%">
-                                        <p:outputLabel  value="#{scheduleApprovalFormController.selectedWtGroupWorking.beginTime}" >
-                                            <f:convertDateTime pattern="EEEE" />
+                                        <p:outputLabel  value="#{scheduleApprovalFormController.beginScheduleDate}" >
+                                            <f:convertDateTime pattern="EEEE,dd MMMM yyyy" />
                                         </p:outputLabel>
-                                        -
-                                        <p:outputLabel  value="#{scheduleApprovalFormController.selectedWtGroupWorking.endTime}" >
-                                            <f:convertDateTime pattern="EEEE" />
+                                        <p:outputLabel value="-" style="margin-left: 5px;margin-right: 5px"/>
+                                        <p:outputLabel  value="#{scheduleApprovalFormController.endScheduleDate}" >
+                                            <f:convertDateTime pattern="EEEE, dd MMMM yyyy" />
                                         </p:outputLabel>
                                     </p:column>
                                     <p:column style="width: 17%;background-color: #e1f0f0!important">
@@ -126,142 +126,54 @@
                                     </p:column>
 
                                 </p:row>
+                                <p:row>
+                                    <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                        <p:outputLabel value="#{appmsg['global.comment']}" styleClass="label_hrm"/>
+                                    </p:column>
+                                    <p:column  style="width: 80%" colspan="3">
+                                        <p:inputTextarea title="#{appmsg['global.comment']}" value="#{scheduleApprovalFormController.komentar}" 
+                                                         maxlength="1000" styleClass="isitext_hrm" style="width:99%;" />
+                                    </p:column>
+                                </p:row>	
                             </p:panelGrid>
+                            <p:dataTable id="radioDT" var="emp" value="#{scheduleApprovalFormController.dataToshow}" selection="#{scheduleApprovalFormController.dataToSave}" rowKey="#{emp.id}">
+                                <f:facet name="header">
+                                    Daftar Karyawan
+                                </f:facet>
+                                <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+                                <p:column headerText="NIK">
+                                    <p:outputLabel value="#{emp.nik}" />
+                                </p:column>
+                                <p:column headerText="Nama">
+                                    <p:outputLabel value="#{emp.bioData.firstName} #{emp.bioData.lastName}" />
+                                </p:column>
+                                <p:column headerText="Tangaal Bergabung">
+                                    <p:outputLabel value="#{emp.joinDate}" >
+                                        <f:convertDateTime pattern="dd MMMM yyyy" />
+                                    </p:outputLabel>
+                                </p:column>
 
+
+                                <p:column headerText="Jabatan">
+                                    <p:outputLabel value="#{emp.jabatanByJabatanId.name}" />
+                                </p:column>
+                                <p:column headerText="Departement">
+                                    <p:outputLabel value="#{emp.jabatanByJabatanId.department.departmentName}" />
+                                </p:column>
+                                <p:column headerText="Unit Kerja">
+                                    <p:outputLabel value="#{emp.jabatanByJabatanId.unitKerja.name}" />
+                                </p:column>
+
+                            </p:dataTable>
+                            <div style="margin-bottom: 5px;margin-top: 10px">
+                                <p:commandButton value="#{appmsg['approvalactivity.approved']}" icon="ui-icon-check" title="#{appmsg['approvalactivity.approved']}" action="#{scheduleApprovalFormController.doApproved()}"
+                                                 style="margin-right: 5px" styleClass="label_button"/>
+                                <p:commandButton value="#{appmsg['approvalactivity.reject']}" icon="ui-icon-close" title="#{appmsg['approvalactivity.reject']}" action="#{scheduleApprovalFormController.doRejected()}"
+                                                 style="margin-right: 5px" styleClass="label_button"/>
+                                <p:commandButton value="#{appmsg['global.close']}" icon="ui-icon-home"  title="#{appmsg['global.close']}" action="#{scheduleApprovalFormController.doBack()}" immediate="true"
+                                                 styleClass="label_button"/>
+                            </div>
                         </h:form>
-                        <!--	                    <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px">
-                                                        <p:row>
-                                                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                                                <p:outputLabel value="#{appmsg['global.employee']}" styleClass="label_hrm"/>
-                                                            </p:column>
-                                                            <p:column  style="width: 30%">
-                                                                <p:outputLabel value="#{loanApprovalFormController.selectedLoan.empData.nikWithFullName}"/>
-                                                            </p:column>
-                                                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                                                <p:outputLabel value="#{appmsg['loanschema.loan']}" styleClass="label_hrm"/>
-                                                            </p:column>
-                                                            <p:column  style="width: 30%">
-                                                                <p:outputLabel value="#{loanApprovalFormController.selectedLoan.loanSchema.name}"/>
-                                                            </p:column>
-                                                        </p:row>
-                                                        <p:row>
-                                                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                                                <p:outputLabel value="#{appmsg['loan.total_value_of_financing']}" styleClass="label_hrm"/>
-                                                            </p:column>
-                                                            <p:column  style="width: 30%">
-                                                                <p:outputLabel value="#{loanApprovalFormController.selectedLoan.nominalPrincipal}">
-                                                                        <f:convertNumber pattern="###,###" type="currency"/>
-                                                                </p:outputLabel>
-                                                            </p:column>
-                                                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                                                <p:outputLabel value="#{appmsg['loan.period_time']}" styleClass="label_hrm"/>
-                                                            </p:column>
-                                                            <p:column  style="width: 30%">
-                                                                <p:outputLabel value="#{loanApprovalFormController.selectedLoan.termin} #{appmsg['global.month']} ("/>
-                                                                <p:outputLabel value= "#{loanApprovalFormController.selectedLoan.loanPaymentDate}">
-                                                                        <f:convertDateTime pattern="dd MMM yyyy" />
-                                                                </p:outputLabel>
-                                                                <p:outputLabel value=" #{appmsg['global.to']} "/>
-                                                                <p:outputLabel value= "#{loanApprovalFormController.selectedLoan.maxLoanPaymentDate}">
-                                                                        <f:convertDateTime pattern="dd MMM yyyy" />
-                                                                </p:outputLabel>
-                                                                <p:outputLabel value=")"/>
-                                                            </p:column>
-                                                        </p:row>
-                                                        <p:row>
-                                                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                                                <p:outputLabel value="#{appmsg['loan.interest_rate']}" styleClass="label_hrm"/>
-                                                            </p:column>
-                                                            <p:column  style="width: 30%">
-                                                                <p:outputLabel value="#{loanApprovalFormController.selectedLoan.interestRate}">
-                                                                        <f:convertNumber pattern="##,##" type="percent"/>
-                                                                </p:outputLabel>
-                                                                <p:outputLabel value=" % ("/>
-                                                                <p:outputLabel value="#{loanApprovalFormController.selectedLoan.loanSchema.typeOfInterest}">
-                                                                        <f:converter converterId="typeOfInterestConverter" />
-                                                                </p:outputLabel>
-                                                                <p:outputLabel value=") per #{appmsg['global.year']}"/>
-                                                            </p:column>
-                                                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                                                <p:outputLabel value="#{appmsg['loan.payment_method']}" styleClass="label_hrm"/>
-                                                            </p:column>
-                                                            <p:column  style="width: 30%">
-                                                                <p:outputLabel value="#{loanApprovalFormController.selectedLoan.loanSchema.typeOfInterest}">
-                                                                        <f:converter converterId="paymentMethodConverter" />
-                                                                </p:outputLabel>
-                                                            </p:column>
-                                                        </p:row> 
-                                                        <p:row>
-                                                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                                                <p:outputLabel value="#{appmsg['global.comment']}" styleClass="label_hrm"/>
-                                                            </p:column>
-                                                            <p:column  style="width: 80%" colspan="3">
-                                                                <p:inputTextarea title="#{appmsg['global.comment']}" value="#{loanApprovalFormController.comment}" 
-                                                                                         maxlength="1000" styleClass="isitext_hrm" style="width:290px;" />
-                                                            </p:column>
-                                                        </p:row>	                        	                              
-                                                        </p:panelGrid>
-                                                        
-                                                        <p:dataTable  id="tableLoanId" var="loanPaymentDetailData"  value="#{loanApprovalFormController.loanPaymentDetails}" lazy="false" paginator="#{loanApprovalFormController.isPaginator}" pageLinks="7"
-                                                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
-                                                                      rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
-                                                                      rowIndexVar="no"> 
-                                                            <p:column style="text-align: center;width: 5%">
-                                                                <f:facet name="header">  
-                                                                    <h:outputText value="#{appmsg['global.number']}"/>
-                                                                </f:facet>
-                                                                <h:outputLabel value="#{no+1}." />
-                                                            </p:column>  
-                                                            <p:column style="text-align: center;width: 20%">
-                                                                <f:facet name="header">  
-                                                                    <h:outputText value="#{appmsg['loan.due_date']}"/>
-                                                                </f:facet>
-                                                                <h:outputLabel value= "#{loanPaymentDetailData.dueDate}">
-                                                                        <f:convertDateTime pattern="dd-MMMM-yyyy" />
-                                                                </h:outputLabel>
-                                                            </p:column>
-                                                            <p:column style="text-align: center;width: 10%">
-                                                                <f:facet name="header">  
-                                                                    <h:outputText value="#{appmsg['loan.installment']}"/>
-                                                                </f:facet>
-                                                                <h:outputLabel value= "#{loanPaymentDetailData.totalPayment}">
-                                                                        <f:convertNumber pattern="###,###" type="currency"/>
-                                                                </h:outputLabel>
-                                                            </p:column>
-                                                            <p:column style="text-align: center;width: 10%">
-                                                                <f:facet name="header">  
-                                                                    <h:outputText value="#{appmsg['loan.interest']}"/>
-                                                                </f:facet>
-                                                                <h:outputLabel value= "#{loanPaymentDetailData.interest}">
-                                                                        <f:convertNumber pattern="###,###" type="currency"/>
-                                                                </h:outputLabel>
-                                                            </p:column>
-                                                            <p:column style="text-align: center;width: 10%">
-                                                                <f:facet name="header">  
-                                                                    <h:outputText value="#{appmsg['loan.principal']}"/>
-                                                                </f:facet>
-                                                                <h:outputLabel value= "#{loanPaymentDetailData.principal}">
-                                                                        <f:convertNumber pattern="###,###" type="currency"/>
-                                                                </h:outputLabel>
-                                                            </p:column>
-                                                            <p:column style="text-align: center;width: 10%">
-                                                                <f:facet name="header">  
-                                                                    <h:outputText value="#{appmsg['loan.remaining_principal_loan']}"/>
-                                                                </f:facet>
-                                                                <h:outputLabel value= "#{loanPaymentDetailData.remainingPrincipal}">
-                                                                        <f:convertNumber pattern="###,###" type="currency"/>
-                                                                </h:outputLabel>
-                                                            </p:column>
-                                                    </p:dataTable>
-                                                        <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
-                                                    <div style="margin-bottom: 5px">
-                                                        <p:commandButton value="#{appmsg['approvalactivity.approved']}" icon="ui-icon-check" title="#{appmsg['approvalactivity.approved']}" action="#{loanApprovalFormController.doApproved()}"
-                                                                                 style="margin-right: 5px" styleClass="label_button"/>
-                                                                                <p:commandButton value="#{appmsg['approvalactivity.reject']}" icon="ui-icon-close" title="#{appmsg['approvalactivity.reject']}" action="#{loanApprovalFormController.doRejected()}"
-                                                                                 style="margin-right: 5px" styleClass="label_button"/>
-                                                        <p:commandButton value="#{appmsg['global.close']}" icon="ui-icon-home"  title="#{appmsg['global.close']}" action="#{loanApprovalFormController.doBack()}" immediate="true"
-                                                                         styleClass="label_button"/>
-                                                    </div>-->
                     </div>
                 </h:form>
             </ui:define>

@@ -669,6 +669,8 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         final JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("listEmpId", dataToJson);
         jsonObject.addProperty("groupWorkingId", groupWorkingId);
+        SimpleDateFormat dateFormat=new SimpleDateFormat("dd-MM-yyyy"); 
+        jsonObject.addProperty("createDate", dateFormat.format(new Date()));
         System.out.println(" json nya "+jsonObject.toString());
         this.jmsTemplateMassJadwalKerja.send(new MessageCreator() {
             @Override
@@ -689,6 +691,12 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<EmpData> getEmployeeByOtSearchParameter(DistributionOvetTimeModel model) throws Exception {
        return empDataDao.getEmployeeByOtSearchParameter(model);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<EmpData> getEmpDataByListId(List<Long> data) throws Exception {
+       return this.empDataDao.getEmpDataByListId(data);
     }
 
 }
