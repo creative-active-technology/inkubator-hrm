@@ -10,7 +10,7 @@ import com.inkubator.hrm.entity.OverTimeDistribution;
 import com.inkubator.hrm.web.search.OverTimeDistributionSearchParameter;
 import java.util.List;
 import org.hibernate.criterion.Order;
-
+import java.util.List;
 /**
  *
  * @author Deni Husni FR
@@ -24,4 +24,6 @@ public interface OverTimeDistributionDao extends IDAO<OverTimeDistribution>{
     public OverTimeDistribution getEntityByParamWithDetail(Long id);
     
     public List<OverTimeDistribution> getAllDataByIdWithDetail();
+    
+    public void saveBatch(List<OverTimeDistribution> data);
 }

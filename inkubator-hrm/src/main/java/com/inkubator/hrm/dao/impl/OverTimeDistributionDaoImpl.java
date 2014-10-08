@@ -16,6 +16,7 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import java.util.List;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -76,6 +77,18 @@ public class OverTimeDistributionDaoImpl extends IDAOImpl<OverTimeDistribution> 
             criteria.add(Restrictions.like("empData", searchParameter.getEmpData(), MatchMode.ANYWHERE));
         }
         criteria.add(Restrictions.isNotNull("id"));
+    }
+    
+    public void saveBatch(List<OverTimeDistribution> data) {
+         int counter = 0;
+        for (OverTimeDistribution overTimeDistribution : data) {
+            getCurrentSession().save(overTimeDistribution);
+            counter++;
+            if (counter % 20 == 0) {
+                getCurrentSession().flush();
+                getCurrentSession().clear();
+            }
+        }
     }
     
 }

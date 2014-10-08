@@ -129,7 +129,7 @@
                         <p:column style="width: 95%" colspan="3">
                             <p:tabView id="tabView1" dynamic="true" cache="true" styleClass="tabview_hrm" > 
                                 <p:tab id="tab31" title="Request History">  
-                                    <p:dataTable value="#{homeApproalActivityController.requestHistory}"  rowIndexVar="no" var="approval" styleClass="grid_border_table" style="margin-bottom: 5px" >
+                                    <p:dataTable value="#{homeApproalActivityController.requestHistory}"  rowIndexVar="no" var="approval" styleClass="grid_border_table" style="margin-bottom: 5px" id="tablePendingId" >
                                         <p:column style="text-align: center;width: 10px">
                                             <f:facet name="header">  
                                                 <h:outputText value="No." />
@@ -229,13 +229,14 @@
                                             <f:facet name="header" >  
                                                 <h:outputText value="Aksi" />
                                             </f:facet>
-                                            <p:commandLink action="#{homeApproalActivityController.doApprove()}"
-                                                           title="Detail Request" ajax="true">  
-                                                <h:outputText value="Detail"/>
+                                            <p:commandLink action="#{homeApproalActivityController.doApprove()}" id="approveId"
+                                                           title="Persetujuan" ajax="true" >  
+                                                <h:outputText value="Persetujuan" />
                                                 <f:setPropertyActionListener value="#{approval}" target="#{homeApproalActivityController.selectedApprovalActivity}" />   
                                             </p:commandLink>
                                         </p:column>
                                     </p:dataTable>
+
                                 </p:tab>  
 
                                 <p:tab id="tab21" title="Pending Request">  
@@ -298,8 +299,6 @@
                             </p:tabView>
                         </p:column>
                     </p:row>                  
-
-
                     <p:row>
                         <p:column style="width: 25%" >
                             <p:panel  style="margin-left: 10px;margin-right: 0px;margin-top: 10px;height: 100%"> 
@@ -599,6 +598,7 @@
                         </p:column>
                     </p:row>
                 </p:panelGrid>
+
                 <pe:tooltip for="userAccountId" value="Click to Create User" showEffect="slideToggle"
                             hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>
                 <pe:tooltip for="jadwalKerjaId" value="Click to Create Jadwal Kerja" showEffect="slideToggle"

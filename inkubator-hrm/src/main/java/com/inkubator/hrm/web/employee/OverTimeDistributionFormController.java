@@ -4,12 +4,14 @@
  */
 package com.inkubator.hrm.web.employee;
 
+import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.GolonganJabatan;
 import com.inkubator.hrm.entity.WtOverTime;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.GolonganJabatanService;
+import com.inkubator.hrm.service.OverTimeDistributionService;
 import com.inkubator.hrm.service.WtOverTimeService;
 import com.inkubator.hrm.util.MapUtil;
 import com.inkubator.hrm.web.model.DistributionOvetTimeModel;
@@ -40,26 +42,18 @@ public class OverTimeDistributionFormController extends BaseController {
     @ManagedProperty(value = "#{wtOverTimeService}")
     private WtOverTimeService wtOverTimeService;
     private List<WtOverTime> listWtOverTime = new ArrayList<>();
-//    @ManagedProperty(value = "#{leaveSchemeService}")
-//    private LeaveSchemeService leaveSchemeService;
-//    @ManagedProperty(value = "#{leaveService}")
-//    private LeaveService leaveService;
     @ManagedProperty(value = "#{empDataService}")
     private EmpDataService empDataService;
-    @ManagedProperty(value = "#{golonganJabatanService}")
+    @ManagedProperty(value = "#{overTimeDistributionService}")
+    private OverTimeDistributionService overTimeDistributionService;
+     @ManagedProperty(value = "#{golonganJabatanService}")
     private GolonganJabatanService golonganJabatanService;
-    private Map<String, Long> otListDown = new HashMap<String, Long>();
-//    @ManagedProperty(value = "#{leaveDistributionService}")
-//    private LeaveDistributionService leaveDistributionService;
-//    private Leave selecedLeave;
-//    private Map<String, Long> leaveSchemeDropDown = new HashMap<String, Long>();
-//    private List<Leave> leaveList = new ArrayList<>();
-    private Map<String, Long> golonganJabatanDropDown = new TreeMap<String, Long>();
+    private Map<String, Long> otListDown = new HashMap<>();
+    private Map<String, Long> golonganJabatanDropDown = new TreeMap<>();
     private List<GolonganJabatan> golonganJabatanList = new ArrayList<>();
     private DualListModel<EmpData> dualListModel = new DualListModel<>();
-//    private DistributionLeaveSchemeModel model;
     private DistributionOvetTimeModel ovetTimeModel;
-    private List<EmpData> source = new ArrayList<EmpData>();
+    private List<EmpData> source = new ArrayList<>();
 
     @PostConstruct
     @Override
@@ -70,6 +64,7 @@ public class OverTimeDistributionFormController extends BaseController {
         ovetTimeModel = new DistributionOvetTimeModel();
         try {
             listWtOverTime = wtOverTimeService.getAllData();
+
             for (WtOverTime wtOverTime : listWtOverTime) {
                 otListDown.put(wtOverTime.getName(), wtOverTime.getId());
             }
@@ -187,16 +182,22 @@ public class OverTimeDistributionFormController extends BaseController {
         this.ovetTimeModel = ovetTimeModel;
     }
 
-    public void doSearchEmployee() throws Exception {
-//        selecedLeave=leaveService.getEntiyByPK(model.getLeaveSchemeId());
-        source = empDataService.getEmployeeByOtSearchParameter(ovetTimeModel);
-        dualListModel.setSource(source);
+    public void doSearchEmployee() {
+        try {
+            //        selecedLeave=leaveService.getEntiyByPK(model.getLeaveSchemeId());
+            source = empDataService.getEmployeeByOtSearchParameter(ovetTimeModel);
+            System.out.println(" Ukurtan eployee " + source.size());
+            dualListModel.setSource(source);
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
+        }
     }
 
     public String doSave() {
 
-//        try {
-        List<EmpData> dataToSave = dualListModel.getTarget();
+        try {
+            List<EmpData> dataToSave = dualListModel.getTarget();
+            overTimeDistributionService.savePenempatanOt(dataToSave, ovetTimeModel.getOverTimeId());
 //            leaveDistributionService.saveMassPenempatanCuti(dataToSave, model.getLeaveSchemeId(), model.getStartBalance());
 //            empDataService.saveMassPenempatanJadwal(dataToSave, model.getWorkingGroupId());
         MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
@@ -206,9 +207,13 @@ public class OverTimeDistributionFormController extends BaseController {
 ////            LOGGER.error("Error", ex);
 //            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 //        } catch (Exception ex) {
+        } catch (BussinessException ex) { //data already exist(duplicate)
 //            LOGGER.error("Error", ex);
-//        }
-//        return null;
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
+        }
+        return null;
     }
 
     public void doReset() {
@@ -233,7 +238,7 @@ public class OverTimeDistributionFormController extends BaseController {
 //        this.selecedLeave = selecedLeave;
 //    }
     public String doBack() {
-        return "/protected/employee/leave_distribution_view.htmfaces-redirect=true";
+        return "/protected/employee/leave_distribution_view.htm?faces-redirect=true";
     }
 
     public List<WtOverTime> getListWtOverTime() {
@@ -254,6 +259,10 @@ public class OverTimeDistributionFormController extends BaseController {
 
     public void setOtListDown(Map<String, Long> otListDown) {
         this.otListDown = otListDown;
+    }
+
+    public void setOverTimeDistributionService(OverTimeDistributionService overTimeDistributionService) {
+        this.overTimeDistributionService = overTimeDistributionService;
     }
 
 }

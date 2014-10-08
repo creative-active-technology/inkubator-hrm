@@ -11,6 +11,7 @@ package com.inkubator.hrm;
  */
 public class HRMConstant {
 
+	public static final String SYSTEM_ADMIN = "SYSTEM_ADMIN";
     public static final String SPRING_SECURITY_CHECK = "j_spring_security_check";
     public static final String BAHASA_ACTIVE = "bahasa_active";
     public static final String LOGIN_DATE = "login_date";
@@ -170,6 +171,7 @@ public class HRMConstant {
     public static final Integer APPROVAL_STATUS_APPROVED = 1;
     public static final Integer APPROVAL_STATUS_REJECTED = 2;
     public static final Integer APPROVAL_STATUS_DIVERTED = 3;
+    public static final String SHIFT_SCHEDULE = "SHIFT_SCHEDULE";
     /* END */
 
 
@@ -223,24 +225,24 @@ public class HRMConstant {
     /* Placement of Employee Work Schedule */
     public static final Integer DEPARTMENT_EQUAL = 0;
     public static final Integer DEPARTMENT_LIKE = 0;
-    
+
     public static final Integer EMPLOYEE_TYPE_EQUAL = 0;
     public static final Integer EMPLOYEE_TYPE_LIKE = 0;
-    
+
     public static final Integer SORT_BY_NIK = 0;
     public static final Integer SORT_BY_NAME = 1;
-    
+
     public static final Integer ORDER_BY_ASC = 0;
     public static final Integer ORDER_BY_DSC = 1;
-    
+
     /* Permit Classification */
     public static final Integer DAY_FULL = 1;
     public static final Integer DAY_PART = 0;
-    
+
     public static final Integer FROM_JANUARY = 1;
     public static final Integer FROM_BEGIN_WORK = 0;
     public static final Integer FROM_BEGIN_CONVERT = 2;
-    
+
     public static final Integer AVAILIBILITY_FULL = 0;
     public static final Integer AVALILIBILITY_PER_MONTH = 1;
     public static final Integer AVALILIBILITY_PER_DATE = 2;

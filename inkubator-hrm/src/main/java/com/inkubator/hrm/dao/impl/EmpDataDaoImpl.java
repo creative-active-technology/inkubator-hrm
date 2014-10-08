@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Objects;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
@@ -334,7 +335,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.createAlias("bioData", "bio", JoinType.INNER_JOIN);
         criteria.createAlias("golonganJabatan", "goljab", JoinType.INNER_JOIN);
         //ambil yg working groupnya bukan yg dipilih, dan belum punya working group
-        if (model.getLeaveSchemeId()!= 0 || model.getLeaveSchemeId()!= null) {
+        if (model.getLeaveSchemeId() != 0 || model.getLeaveSchemeId() != null) {
             Disjunction disjunction = Restrictions.disjunction();
             disjunction.add(Restrictions.isNull("lv.empData"));
             disjunction.add(Restrictions.not(Restrictions.eq("lv.leave.id", model.getLeaveSchemeId())));
@@ -384,20 +385,29 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 
     @Override
     public List<EmpData> getEmployeeByOtSearchParameter(DistributionOvetTimeModel model) {
-       Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.createAlias("overTimeDistributions", "lv", JoinType.LEFT_OUTER_JOIN);
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("overTimeDistributions", "ot", JoinType.LEFT_OUTER_JOIN);
+        criteria.createAlias("ot.wtOverTime", "wt", JoinType.LEFT_OUTER_JOIN);
         criteria.createAlias("jabatanByJabatanId", "jabatan", JoinType.INNER_JOIN);
         criteria.createAlias("jabatan.department", "dept", JoinType.INNER_JOIN);
         criteria.createAlias("employeeType", "empType", JoinType.INNER_JOIN);
         criteria.createAlias("bioData", "bio", JoinType.INNER_JOIN);
-        criteria.createAlias("golonganJabatan", "goljab", JoinType.INNER_JOIN);
-        
-        //ambil yg working groupnya bukan yg dipilih, dan belum punya working group
-        if (model.getOverTimeId()!= 0 || model.getOverTimeId() != null) {
-            Disjunction disjunction = Restrictions.disjunction();
-            disjunction.add(Restrictions.isNull("lv.empData"));
-            disjunction.add(Restrictions.not(Restrictions.eq("lv.wtOverTime.id", model.getOverTimeId())));
-            criteria.add(disjunction);
+//        criteria.createAlias("golonganJabatan", "goljab", JoinType.INNER_JOIN);
+        if (model.getOverTimeId() != 0 || model.getOverTimeId() != null) {
+            System.out.println(" nilai id " + model.getOverTimeId());
+            Criterion andCondition = Restrictions.conjunction()
+                    .add(Restrictions.isNotNull("ot.empData"))
+                    .add(Restrictions.not(Restrictions.eq("wt.id", model.getOverTimeId())));
+
+//                   criteria.add(Restrictions.isNull("ot.empData"));
+            Criterion completeCondition
+                    = Restrictions.disjunction().add(andCondition)
+                    .add(Restrictions.isNull("ot.empData"));
+
+//            Disjunction conjunction = Restrictions.conjunction();
+//            disjunction.add(Restrictions.isNotNull("ot.empData"));
+//            disjunction.add(Restrictions.not(Restrictions.eq("ot.wtOverTime.id", model.getOverTimeId())));
+            criteria.add(completeCondition);
         }
         //balance
 //        if (model.getStartBalance() != 0.0){

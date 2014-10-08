@@ -669,6 +669,7 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         final JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("listEmpId", dataToJson);
         jsonObject.addProperty("groupWorkingId", groupWorkingId);
+        System.out.println(" json nya "+jsonObject.toString());
         this.jmsTemplateMassJadwalKerja.send(new MessageCreator() {
             @Override
             public Message createMessage(Session session)
