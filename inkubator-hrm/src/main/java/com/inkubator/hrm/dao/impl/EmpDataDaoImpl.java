@@ -385,14 +385,60 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     @Override
     public List<EmpData> getEmployeeByOtSearchParameter(DistributionOvetTimeModel model) {
        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.createAlias("leaveDistributions", "lv", JoinType.LEFT_OUTER_JOIN);
+        criteria.createAlias("overTimeDistributions", "lv", JoinType.LEFT_OUTER_JOIN);
         criteria.createAlias("jabatanByJabatanId", "jabatan", JoinType.INNER_JOIN);
         criteria.createAlias("jabatan.department", "dept", JoinType.INNER_JOIN);
         criteria.createAlias("employeeType", "empType", JoinType.INNER_JOIN);
         criteria.createAlias("bioData", "bio", JoinType.INNER_JOIN);
         criteria.createAlias("golonganJabatan", "goljab", JoinType.INNER_JOIN);
         
-        return null;
+        //ambil yg working groupnya bukan yg dipilih, dan belum punya working group
+        if (model.getOverTimeId()!= 0 || model.getOverTimeId() != null) {
+            Disjunction disjunction = Restrictions.disjunction();
+            disjunction.add(Restrictions.isNull("lv.empData"));
+            disjunction.add(Restrictions.not(Restrictions.eq("lv.wtOverTime.id", model.getOverTimeId())));
+            criteria.add(disjunction);
+        }
+        //balance
+//        if (model.getStartBalance() != 0.0){
+//            criteria.add(Restrictions.eq("lv.balance", model.getStartBalance()));
+//        }
+        //departermen equal or like
+        if (model.getDepartmentLikeOrEqual() != 3) {
+            if (Objects.equals(model.getDepartmentLikeOrEqual(), HRMConstant.DEPARTMENT_EQUAL)) {
+                criteria.add(Restrictions.eq("dept.departmentName", model.getDepartmentName()));
+            } else {
+                criteria.add(Restrictions.like("dept.departmentName", model.getDepartmentName(), MatchMode.ANYWHERE));
+            }
+        }
+        //employee type equal or likeS
+        if (model.getEmployeeTypeLikeOrEqual() != 3) {
+            if (Objects.equals(model.getEmployeeTypeLikeOrEqual(), HRMConstant.EMPLOYEE_TYPE_EQUAL)) {
+                criteria.add(Restrictions.eq("empType.name", model.getEmployeeTypeName()));
+            } else {
+                criteria.add(Restrictions.like("empType.name", model.getEmployeeTypeName(), MatchMode.ANYWHERE));
+            }
+        }
+        //gender
+        criteria.add(Restrictions.eq("bio.gender", model.getGender()));
+        //goljab
+        if (model.getGolonganJabatanId() != 0) {
+            criteria.add(Restrictions.eq("goljab.id", model.getGolonganJabatanId()));
+        }
+
+        String sortBy;
+        if (Objects.equals(model.getSortBy(), HRMConstant.SORT_BY_NIK)) {
+            sortBy = "nik";
+        } else {
+            sortBy = "bio.firstName";
+        }
+
+        if (Objects.equals(model.getOrderBy(), HRMConstant.ORDER_BY_ASC)) {
+            criteria.addOrder(Order.asc(sortBy));
+        } else {
+            criteria.addOrder(Order.desc(sortBy));
+        }
+        return criteria.list();
     }
 
 }
