@@ -6,12 +6,14 @@
 package com.inkubator.hrm.service.impl;
 
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.OverTimeDistributionDao;
 import com.inkubator.hrm.dao.WtOverTimeDao;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.OverTimeDistribution;
 import com.inkubator.hrm.entity.OverTimeDistributionId;
 import com.inkubator.hrm.service.OverTimeDistributionService;
+import com.inkubator.hrm.web.search.OverTimeDistributionSearchParameter;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.criterion.Order;
@@ -32,6 +34,8 @@ public class OverTimeDistributionServiceImpl extends IServiceImpl implements Ove
 
     @Autowired
     private OverTimeDistributionDao overTimeDistributionDao;
+    @Autowired
+    private EmpDataDao empDataDao;
     @Autowired
     private WtOverTimeDao wtOverTimeDao;
 
@@ -56,10 +60,25 @@ public class OverTimeDistributionServiceImpl extends IServiceImpl implements Ove
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(OverTimeDistribution entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //delete existing overtime distribution
+        OverTimeDistribution update = overTimeDistributionDao.getById(entity.getId());
+        this.overTimeDistributionDao.delete(update);
+        //save new data overtime distribution
+        OverTimeDistribution newData = new OverTimeDistribution();
+        newData.setId(new OverTimeDistributionId(entity.getWtOverTime().getId(), entity.getEmpData().getId()));
+        newData.setEmpData(empDataDao.getEntiyByPK(entity.getEmpData().getId()));
+        newData.setWtOverTime(wtOverTimeDao.getEntiyByPK(entity.getWtOverTime().getId()));
+        this.overTimeDistributionDao.save(newData);
     }
 
+    
+    
+    protected void deleteManyToMany(Object entity) {
+        overTimeDistributionDao.delete((OverTimeDistribution) entity);
+    }
+    
     @Override
     public void saveOrUpdate(OverTimeDistribution enntity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -126,8 +145,9 @@ public class OverTimeDistributionServiceImpl extends IServiceImpl implements Ove
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void delete(OverTimeDistribution entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.overTimeDistributionDao.delete(entity);
     }
 
     @Override
@@ -196,6 +216,29 @@ public class OverTimeDistributionServiceImpl extends IServiceImpl implements Ove
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<OverTimeDistribution> getByParamWithDetail(OverTimeDistributionSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
+        return overTimeDistributionDao.getByParamWithDetail(searchParameter, firstResult, maxResults, order);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalOverTimeDistributionByParam(OverTimeDistributionSearchParameter searchParameter) throws Exception {
+        return overTimeDistributionDao.getTotalOverTimeDistributionByParam(searchParameter);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public OverTimeDistribution getEntityByParamWithDetail(Long id) throws Exception {
+        return overTimeDistributionDao.getEntityByParamWithDetail(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public List<OverTimeDistribution> getAllDataByIdWithDetail() throws Exception {
+        return overTimeDistributionDao.getAllDataByIdWithDetail();
+    }
+    
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRES_NEW, timeout = 50)
     public void savePenempatanOt(List<EmpData> data, long id) throws Exception {
         List<OverTimeDistribution> dataToSave=new ArrayList<>();
