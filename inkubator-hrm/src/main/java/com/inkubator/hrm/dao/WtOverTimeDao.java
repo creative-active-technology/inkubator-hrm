@@ -6,6 +6,7 @@
 package com.inkubator.hrm.dao;
 
 import com.inkubator.datacore.dao.IDAO;
+import com.inkubator.hrm.entity.Leave;
 import com.inkubator.hrm.entity.WtOverTime;
 import com.inkubator.hrm.web.search.WtOverTimeSearchParameter;
 import java.util.List;
@@ -24,4 +25,6 @@ public interface WtOverTimeDao extends IDAO<WtOverTime> {
     public Long getTotalDuplicateByCode(String code);
 
     public Long getTotalDuplicaByCodeAndNotId(String code, Long id);
+    
+    public WtOverTime getEntityByPkFetchApprovalDefinition(Long id);
 }

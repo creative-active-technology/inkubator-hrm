@@ -7,6 +7,7 @@ package com.inkubator.hrm.service;
 
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.ApprovalDefinition;
+import com.inkubator.hrm.entity.Leave;
 import com.inkubator.hrm.entity.WtOverTime;
 import com.inkubator.hrm.web.search.WtOverTimeSearchParameter;
 import java.util.List;
@@ -23,4 +24,8 @@ public interface WtOverTimeService extends IService<WtOverTime> {
     public Long getTotalWtOverTimeByParam(WtOverTimeSearchParameter searchParameter) throws Exception;
     
     public void save(WtOverTime entity, List<ApprovalDefinition> appDefs) throws Exception;
+    
+    public void update(WtOverTime entity, List<ApprovalDefinition> appDefs) throws Exception;
+    
+    public WtOverTime getEntityByPkFetchApprovalDefinition(Long id) throws Exception;
 }

@@ -13,8 +13,10 @@ import com.inkubator.hrm.dao.ApprovalDefinitionLeaveDao;
 import com.inkubator.hrm.dao.ApprovalDefinitionOTDao;
 import com.inkubator.hrm.dao.WtOverTimeDao;
 import com.inkubator.hrm.entity.ApprovalDefinition;
+import com.inkubator.hrm.entity.ApprovalDefinitionLeave;
 import com.inkubator.hrm.entity.ApprovalDefinitionOT;
 import com.inkubator.hrm.entity.ApprovalDefinitionOTId;
+import com.inkubator.hrm.entity.Leave;
 import com.inkubator.hrm.entity.WtOverTime;
 import com.inkubator.hrm.service.WtOverTimeService;
 import com.inkubator.hrm.web.search.WtOverTimeSearchParameter;
@@ -267,6 +269,33 @@ public class WtOverTimeServiceImpl extends BaseApprovalConfigurationServiceImpl<
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void update(WtOverTime entity, List<ApprovalDefinition> appDefs) throws Exception {
+        long totalDuplicates = wtOverTimeDao.getTotalDuplicaByCodeAndNotId(entity.getCode(), entity.getId());
+        if (totalDuplicates > 0) {
+            throw new BussinessException("over_time.error_code_duplicate");
+        }
+        
+        WtOverTime overTime=this.wtOverTimeDao.getEntiyByPK(entity.getId());
+        overTime.setCode(entity.getCode());
+        overTime.setDescription(entity.getDescription());
+        overTime.setFinishTimeFactor(entity.getFinishTimeFactor());
+        overTime.setMaximumTime(entity.getMaximumTime());
+        overTime.setMinimumTime(entity.getMinimumTime());
+        overTime.setName(entity.getName());
+        overTime.setOtRounding(entity.getOtRounding());
+        overTime.setOverTimeCalculation(entity.getOverTimeCalculation());
+        overTime.setStartTimeFactor(entity.getStartTimeFactor());
+        overTime.setValuePrice(entity.getValuePrice());
+        overTime.setUpdatedBy(UserInfoUtil.getUserName());
+        overTime.setUpdatedOn(new Date());
+        wtOverTimeDao.update(overTime);
+        
+        /** updating approval definition conf manyToMany */
+        super.updateApprovalConf(appDefs, overTime.getApprovalDefinitionOTs().iterator(), overTime);
+    }
+    
+    @Override
     protected void saveManyToMany(ApprovalDefinition appDef, WtOverTime entity) {
         ApprovalDefinitionOT approvalDefinitionOT =  new ApprovalDefinitionOT();
         approvalDefinitionOT.setId(new ApprovalDefinitionOTId(appDef.getId(), entity.getId()));
@@ -277,7 +306,15 @@ public class WtOverTimeServiceImpl extends BaseApprovalConfigurationServiceImpl<
 
     @Override
     protected void deleteManyToMany(Object entity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        approvalDefinitionOTDao.delete((ApprovalDefinitionOT) entity);
     }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public WtOverTime getEntityByPkFetchApprovalDefinition(Long id) throws Exception {
+        return wtOverTimeDao.getEntityByPkFetchApprovalDefinition(id);
+    }
+
+    
     
 }
