@@ -1,0 +1,109 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/dialog_layout.xhtml">
+            <ui:define name="windowTitle">
+
+            </ui:define>
+            <ui:define name="center">
+                <p:dataTable  var="workingGroupData"  value="#{scheduleDetilApprovalController.wtScheduleShiftLazyDataModel}" lazy="true" paginator="true" pageLinks="7" 
+                              paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                              id="tableJamKerjaId" rows="7" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                              rowIndexVar="no">
+                    <f:facet name="header">  
+                        <h:outputText value="#{appmsg['workinghour.list_of_working_hour']}" styleClass="label_hrm"/>
+                    </f:facet> 
+                    <p:column style="text-align: center;width: 25px">
+                        <f:facet name="header">  
+                            <h:outputText value="No." />
+                        </f:facet>
+                        <h:outputLabel value="#{no+1}." />
+                    </p:column>
+                    <p:column sortBy="wtWorkingHour" style="width: 100px" >
+                        <f:facet name="header">  
+                            <h:outputText value="#{appmsg['workinghour.working_hour_name']}"/>
+                        </f:facet>
+                        <h:outputLabel value= "#{workingGroupData.wtWorkingHour.name}"/>
+                    </p:column>
+                    <p:column sortBy="scheduleDate" style="width: 100px" >
+                        <f:facet name="header">  
+                            <h:outputText value="#{appmsg['workinghour.working_hour_date_of_employment']}"/>
+                        </f:facet>
+                        <h:outputLabel value= "#{workingGroupData.scheduleDate}">
+                            <f:convertDateTime pattern="EEEE, dd MMMM yyyy" />
+                        </h:outputLabel>
+                    </p:column>
+                    <p:column sortBy="wtWorkingHour" style="text-align: center;width: 10%">
+                        <f:facet name="header">  
+                            <h:outputText value="#{appmsg['workinghour.working_hour']}"/>
+                        </f:facet>
+                        <h:outputLabel value= "#{workingGroupData.wtWorkingHour.workingHourBegin}">
+                            <f:convertDateTime pattern="HH.mm" />
+                        </h:outputLabel>
+                        <h:outputLabel value= "&nbsp;-&nbsp;"/>
+                        <h:outputLabel value= "#{workingGroupData.wtWorkingHour.workingHourEnd}">
+                            <f:convertDateTime pattern="HH.mm" />
+                        </h:outputLabel>
+                    </p:column> 
+                    <p:column style="text-align: center;width: 10%" sortBy="wtWorkingHour">
+                        <f:facet name="header">  
+                            <h:outputText value="#{appmsg['workinghour.arrival_time_limit']}"/>
+                        </f:facet>
+                        <h:outputLabel value= "#{workingGroupData.wtWorkingHour.arriveLimitBegin}/#{workingGroupData.wtWorkingHour.arriveLimitEnd}"/>
+                        <p:outputLabel value="#{appmsg['global.minute']}"  style="margin-left: 5px"/>
+                    </p:column>
+                    <p:column style="text-align: center;width: 10%" sortBy="wtWorkingHour">
+                        <f:facet name="header">  
+                            <h:outputText value="#{appmsg['workinghour.go_home_time_limit']}"/>
+                        </f:facet>
+                        <h:outputLabel value= "#{workingGroupData.wtWorkingHour.goHomeLimitBegin}/#{workingGroupData.wtWorkingHour.goHomeLimitEnd}"/>
+                        <p:outputLabel value="#{appmsg['global.minute']}"  style="margin-left: 5px"/>
+                    </p:column>
+                    <p:column style="text-align: center;width: 10%" sortBy="wtWorkingHour">
+                        <f:facet name="header">  
+                            <h:outputText value="#{appmsg['workinghour.break_hour']}"/>
+                        </f:facet>
+                        <h:outputLabel value= "#{workingGroupData.wtWorkingHour.breakHourBegin}" rendered="#{workingGroupData.wtWorkingHour.isManageBreakTime}">
+                            <f:convertDateTime pattern="HH.mm" />
+                        </h:outputLabel>
+                        <h:outputLabel value= "&nbsp;-&nbsp;" rendered="#{workingGroupData.wtWorkingHour.isManageBreakTime}"/>
+                        <h:outputLabel value= "#{workingGroupData.wtWorkingHour.breakHourEnd}" rendered="#{workingGroupData.wtWorkingHour.isManageBreakTime}">
+                            <f:convertDateTime pattern="HH.mm" />
+                        </h:outputLabel>
+                    </p:column> 
+                    <p:column style="text-align: center;width: 10%" sortBy="wtWorkingHour">
+                        <f:facet name="header">  
+                            <h:outputText value="#{appmsg['workinghour.limit_start']}"/>
+                        </f:facet>
+                        <h:outputLabel value= "#{workingGroupData.wtWorkingHour.breakStartLimitBegin}/#{workingGroupData.wtWorkingHour.breakStartLimitEnd}" rendered="#{workingGroupData.wtWorkingHour.isManageBreakTime}"/>
+                        <p:outputLabel value="#{appmsg['global.minute']}"  style="margin-left: 5px" rendered="#{workingGroupData.wtWorkingHour.isManageBreakTime}"/>
+                    </p:column>
+                    <p:column style="text-align: center;width: 10%" sortBy="wtWorkingHour">
+                        <f:facet name="header">  
+                            <h:outputText value="#{appmsg['workinghour.limit_finish']}"/>
+                        </f:facet>
+                        <h:outputLabel value= "#{workingGroupData.wtWorkingHour.breakFinishLimitBegin}/#{workingGroupData.wtWorkingHour.breakFinishLimitEnd}" rendered="#{workingGroupData.wtWorkingHour.isManageBreakTime}"/>
+                        <p:outputLabel value="#{appmsg['global.minute']}"  style="margin-left: 5px" rendered="#{workingGroupData.wtWorkingHour.isManageBreakTime}"/>
+                    </p:column>  
+                    <f:facet name="footer">
+                        <p:outputLabel value="#{appmsg['global.total_data']} : "/>
+                        <p:outputLabel value="#{scheduleDetilApprovalController.wtScheduleShiftLazyDataModel.rowCount}"/>
+                        <p:outputLabel value="Data" style="margin-left: 3px"/>
+                    </f:facet>  
+                </p:dataTable>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+
