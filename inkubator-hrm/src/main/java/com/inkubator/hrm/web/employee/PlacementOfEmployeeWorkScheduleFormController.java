@@ -56,7 +56,6 @@ public class PlacementOfEmployeeWorkScheduleFormController extends BaseControlle
     @PostConstruct
     @Override
     public void initialization() {
-        System.out.println(" eksekusus pertaama kaliiiii");
         super.initialization();
         String param = FacesUtil.getRequestParameter("param");
         model = new PlacementOfEmployeeWorkScheduleModel();

@@ -43,14 +43,14 @@
     
     <bean class="org.springframework.orm.hibernate4.LocalSessionFactoryBean" id="sessionFactory" lazy-init="true">
         <property name="dataSource"  ref="dataSourceJBoss"/>
-        <property name="packagesToScan" value="com.csl.idm.entity"/>
+        <property name="packagesToScan" value="com.inkubator.hrm.entity"/>
         <property name="hibernateProperties">
             <props>
                 <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
                 <prop key="hibernate.hbm2ddl.auto">update</prop>
                 <prop key="hibernate.show_sql">false</prop>
                 <prop key="hibernate.format_sql">false</prop>
-                <prop key="hibernate.current_session_context_class">com.csl.data.core.util.TransactionAwareSessionContext</prop>
+                <prop key="hibernate.current_session_context_class">com.inkubator.datacore.util.TransactionAwareSessionContext</prop>
                 <!--<prop key="hibernate.current_session_context_class">jta</prop>-->
                 <prop key="hibernate.transaction.manager_lookup_class">org.hibernate.transaction.JBossTransactionManagerLookup</prop>
                 <prop key="hibernate.transaction.factory_class">org.hibernate.transaction.JTATransactionFactory</prop>
