@@ -6,8 +6,10 @@ import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.AttendanceStatusDao;
+import com.inkubator.hrm.dao.WtOverTimeDao;
 import com.inkubator.hrm.dao.WtWorkingHourDao;
 import com.inkubator.hrm.entity.AttendanceStatus;
+import com.inkubator.hrm.entity.WtOverTime;
 import com.inkubator.hrm.entity.WtWorkingHour;
 import com.inkubator.hrm.service.WtWorkingHourService;
 import com.inkubator.hrm.web.search.WorkingHourSearchParameter;
@@ -34,6 +36,8 @@ public class WtWorkingHourServiceImpl extends IServiceImpl implements WtWorkingH
 	private WtWorkingHourDao wtWorkingHourDao;
 	@Autowired
 	private AttendanceStatusDao attendanceStatusDao;
+	@Autowired
+	private WtOverTimeDao wtOverTimeDao;
 	
 	@Override
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -213,9 +217,14 @@ public class WtWorkingHourServiceImpl extends IServiceImpl implements WtWorkingH
 			throw new BussinessException("workinghour.error_duplicate_code");
 		}
 		
-		workingHour.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
 		AttendanceStatus attendanceStatus = attendanceStatusDao.getEntiyByPK(workingHour.getAttendanceStatus().getId());
+		WtOverTime wtOverTime = (workingHour.getWtOverTime() != null) ? wtOverTimeDao.getEntiyByPK(workingHour.getWtOverTime().getId()) : null;
+		WtWorkingHour exchangeWorkingHour = (workingHour.getExchangeWorkingHour() != null) ? wtWorkingHourDao.getEntiyByPK(workingHour.getExchangeWorkingHour().getId()) : null;
+		
+		workingHour.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
 		workingHour.setAttendanceStatus(attendanceStatus);
+		workingHour.setWtOverTime(wtOverTime);
+		workingHour.setExchangeWorkingHour(exchangeWorkingHour);
 		workingHour.setCreatedBy(UserInfoUtil.getUserName());
 		workingHour.setCreatedOn(new Date());
 		wtWorkingHourDao.save(workingHour);
@@ -259,6 +268,10 @@ public class WtWorkingHourServiceImpl extends IServiceImpl implements WtWorkingH
 			throw new BussinessException("workinghour.error_duplicate_code");
 		}
 		
+		AttendanceStatus attendanceStatus = attendanceStatusDao.getEntiyByPK(wt.getAttendanceStatus().getId());
+		WtOverTime wtOverTime = (wt.getWtOverTime() != null) ? wtOverTimeDao.getEntiyByPK(wt.getWtOverTime().getId()) : null;
+		WtWorkingHour exchangeWorkingHour = (wt.getExchangeWorkingHour() != null) ? wtWorkingHourDao.getEntiyByPK(wt.getExchangeWorkingHour().getId()) : null;
+		
 		WtWorkingHour workingHour = wtWorkingHourDao.getEntiyByPK(wt.getId());
 		workingHour.setCode(wt.getCode());
 		workingHour.setName(wt.getName());
@@ -271,8 +284,7 @@ public class WtWorkingHourServiceImpl extends IServiceImpl implements WtWorkingH
 		workingHour.setGoHomeLimitBegin(wt.getGoHomeLimitBegin());
 		workingHour.setGoHomeLimitEnd(wt.getGoHomeLimitEnd());
 		workingHour.setIsPenaltyArriveLate(wt.getIsPenaltyArriveLate());
-		workingHour.setIsPenaltyGoHomeEarly(wt.getIsPenaltyGoHomeEarly());
-		AttendanceStatus attendanceStatus = attendanceStatusDao.getEntiyByPK(wt.getAttendanceStatus().getId());
+		workingHour.setIsPenaltyGoHomeEarly(wt.getIsPenaltyGoHomeEarly());		
 		workingHour.setAttendanceStatus(attendanceStatus);
 		workingHour.setIsManageBreakTime(wt.getIsManageBreakTime());
 		workingHour.setBreakHourBegin(wt.getBreakHourBegin());
@@ -282,7 +294,12 @@ public class WtWorkingHourServiceImpl extends IServiceImpl implements WtWorkingH
 		workingHour.setBreakFinishLimitBegin(wt.getBreakFinishLimitBegin());
 		workingHour.setBreakFinishLimitEnd(wt.getBreakFinishLimitEnd());
 		workingHour.setIsPenaltyBreakStartEarly(wt.getIsPenaltyBreakStartEarly());
-		workingHour.setIsPenaltyBreakFinishLate(wt.getIsPenaltyBreakFinishLate());		
+		workingHour.setIsPenaltyBreakFinishLate(wt.getIsPenaltyBreakFinishLate());	
+		workingHour.setIsManageOvertime(wt.getIsManageOvertime());
+		workingHour.setStartOvertime(wt.getStartOvertime());
+		workingHour.setEndOvertime(wt.getEndOvertime());
+		workingHour.setWtOverTime(wtOverTime);
+		workingHour.setExchangeWorkingHour(exchangeWorkingHour);
 		workingHour.setUpdatedBy(UserInfoUtil.getUserName());
 		workingHour.setUpdatedOn(new Date());
 		wtWorkingHourDao.update(workingHour);
@@ -308,9 +325,14 @@ public class WtWorkingHourServiceImpl extends IServiceImpl implements WtWorkingH
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-	public WtWorkingHour getEntityByPkFetchAttendStatus(long id) {
-		return wtWorkingHourDao.getEntityByPkFetchAttendStatus(id);
-		
+	public WtWorkingHour getEntityByPkWithDetail(long id) {
+		return wtWorkingHourDao.getEntityByPkWithDetail(id);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<WtWorkingHour> getAllDataExceptId(long id) {
+		return wtWorkingHourDao.getAllDataExceptId(id);
 	}
 
 }

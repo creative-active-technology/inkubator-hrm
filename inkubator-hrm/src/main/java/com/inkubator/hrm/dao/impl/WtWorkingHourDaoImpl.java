@@ -95,10 +95,19 @@ public class WtWorkingHourDaoImpl extends IDAOImpl<WtWorkingHour> implements WtW
     }
 
 	@Override
-	public WtWorkingHour getEntityByPkFetchAttendStatus(long id) {
+	public WtWorkingHour getEntityByPkWithDetail(long id) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.setFetchMode("attendanceStatus", FetchMode.JOIN);
+        criteria.setFetchMode("wtOverTime", FetchMode.JOIN);
+        criteria.setFetchMode("exchangeWorkingHour", FetchMode.JOIN);
         criteria.add(Restrictions.eq("id", id));
         return (WtWorkingHour) criteria.uniqueResult();
+	}
+
+	@Override
+	public List<WtWorkingHour> getAllDataExceptId(long id) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.ne("id", id));
+		return criteria.list();
 	}
 }

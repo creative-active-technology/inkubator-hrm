@@ -26,7 +26,9 @@ public interface WtWorkingHourDao extends IDAO<WtWorkingHour> {
         
     public WtWorkingHour getByCode(String code);
 
-	public WtWorkingHour getEntityByPkFetchAttendStatus(long id);
+	public WtWorkingHour getEntityByPkWithDetail(long id);
+
+	public List<WtWorkingHour> getAllDataExceptId(long id);
 	
 	
 }
