@@ -35,7 +35,8 @@ import com.inkubator.webcore.util.MessagesResourceUtil;
  */
 @ManagedBean(name = "reimbursmentApprovalFormController")
 @ViewScoped
-public class ReimbursmentApprovalFormController extends BaseController{
+public class ReimbursmentApprovalFormController extends BaseController {
+
     private Reimbursment reimbursment;
     private String comment;
     String reimbursmentFileName;
@@ -48,15 +49,17 @@ public class ReimbursmentApprovalFormController extends BaseController{
     @ManagedProperty(value = "#{reimbursmentService}")
     private ReimbursmentService reimbursmentService;
     /*@ManagedProperty(value = "#{reimbursmentSchemaService}")
-    private ReimbursmentSchemaService reimbursmentSchemaService;*/
+     private ReimbursmentSchemaService reimbursmentSchemaService;*/
     @ManagedProperty(value = "#{empDataService}")
     private EmpDataService empDataService;
-    
+    private Boolean isDownload;
+
     @PostConstruct
     @Override
     public void initialization() {
         try {
             super.initialization();
+            isDownload = Boolean.TRUE;
             String id = FacesUtil.getRequestParameter("execution");
             selectedApprovalActivity = approvalActivityService.getEntiyByPK(Long.parseLong(id.substring(1)));
             Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
@@ -64,20 +67,24 @@ public class ReimbursmentApprovalFormController extends BaseController{
             JsonObject jsonObject = gson.fromJson(selectedApprovalActivity.getPendingData(), JsonObject.class);
             JsonElement elReimbursmentFile = jsonObject.get("reimbursmentFileName");
             reimbursmentFileName = elReimbursmentFile.isJsonNull() ? StringUtils.EMPTY : elReimbursmentFile.getAsString();
+            if (reimbursmentFileName.equals(StringUtils.EMPTY)) {
+                System.out.println("masukk===");
+                isDownload = Boolean.FALSE;
+            }
             EmpData empData = empDataService.getByIdWithDetail(reimbursment.getEmpData().getId());
             reimbursment.setEmpData(empData);
             /*reimbursmentModelJsonParsing = (ReimbursmentModelJsonParsing) JsonConverter.getClassFromJson(selectedApprovalActivity.getPendingData(), ReimbursmentModelJsonParsing.class, "dd-MM-yyyy");
-            reimbursmentSchema = reimbursmentSchemaService.getEntiyByPK(reimbursmentModelJsonParsing.getReimbursmentSchemaId());
-            empData = empDataService.getByEmpIdWithDetail(reimbursmentModelJsonParsing.getEmpDataId());*/
+             reimbursmentSchema = reimbursmentSchemaService.getEntiyByPK(reimbursmentModelJsonParsing.getReimbursmentSchemaId());
+             empData = empDataService.getByEmpIdWithDetail(reimbursmentModelJsonParsing.getEmpDataId());*/
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
 
         }
     }
-    
+
     @PreDestroy
     public void cleanAndExit() {
-    	reimbursment = null;
+        reimbursment = null;
         selectedApprovalActivity = null;
         reimbursmentService = null;
         approvalActivityService = null;
@@ -86,19 +93,20 @@ public class ReimbursmentApprovalFormController extends BaseController{
         empDataService = null;
         //reimbursmentModelJsonParsing = null;
         //reimbursmentSchemaService = null;
-        reimbursmentFileName=null;
-        
-    } 
+        reimbursmentFileName = null;
+        isDownload = null;
+
+    }
 
     public Reimbursment getReimbursment() {
-		return reimbursment;
-	}
+        return reimbursment;
+    }
 
-	public void setReimbursment(Reimbursment reimbursment) {
-		this.reimbursment = reimbursment;
-	}
+    public void setReimbursment(Reimbursment reimbursment) {
+        this.reimbursment = reimbursment;
+    }
 
-	public String getComment() {
+    public String getComment() {
         return comment;
     }
 
@@ -107,14 +115,14 @@ public class ReimbursmentApprovalFormController extends BaseController{
     }
 
     public String getReimbursmentFileName() {
-		return reimbursmentFileName;
-	}
+        return reimbursmentFileName;
+    }
 
-	public void setReimbursmentFileName(String reimbursmentFileName) {
-		this.reimbursmentFileName = reimbursmentFileName;
-	}
+    public void setReimbursmentFileName(String reimbursmentFileName) {
+        this.reimbursmentFileName = reimbursmentFileName;
+    }
 
-	public ApprovalActivity getSelectedApprovalActivity() {
+    public ApprovalActivity getSelectedApprovalActivity() {
         return selectedApprovalActivity;
     }
 
@@ -137,13 +145,21 @@ public class ReimbursmentApprovalFormController extends BaseController{
     public void setReimbursmentService(ReimbursmentService reimbursmentService) {
         this.reimbursmentService = reimbursmentService;
     }
+
+    public Boolean getIsDownload() {
+        return isDownload;
+    }
+
+    public void setIsDownload(Boolean isDownload) {
+        this.isDownload = isDownload;
+    }
     
     public String doApproved() {
-    	try {
+        try {
             /*reimbursmentModelJsonParsing = (ReimbursmentModelJsonParsing) JsonConverter.getClassFromJson(selectedApprovalActivity.getPendingData(), ReimbursmentModelJsonParsing.class, "dd-MM-yyyy");
-            reimbursmentSchema = reimbursmentSchemaService.getEntiyByPK(reimbursmentModelJsonParsing.getReimbursmentSchemaId());
-            empData = empDataService.getByEmpIdWithDetail(reimbursmentModelJsonParsing.getEmpDataId());*/
-            
+             reimbursmentSchema = reimbursmentSchemaService.getEntiyByPK(reimbursmentModelJsonParsing.getReimbursmentSchemaId());
+             empData = empDataService.getByEmpIdWithDetail(reimbursmentModelJsonParsing.getEmpDataId());*/
+
             reimbursmentService.approved(selectedApprovalActivity.getId(), null, comment);
             MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.approval_info", "global.approved_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
@@ -151,53 +167,52 @@ public class ReimbursmentApprovalFormController extends BaseController{
         } catch (Exception e) {
             LOGGER.error("Error when approved process ", e);
         }
-    	return null;
+        return null;
     }
-    
+
     public String doRejected() {
-		try {
-			reimbursmentService.rejected(selectedApprovalActivity.getId(), comment);
-			MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.approval_info", "global.rejected_successfully",
+        try {
+            reimbursmentService.rejected(selectedApprovalActivity.getId(), comment);
+            MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.approval_info", "global.rejected_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-			return "/protected/home.htm?faces-redirect=true";
-		} catch (Exception e) {
-			LOGGER.error("Error when rejected process ", e);
-		}
-    	return null;
+            return "/protected/home.htm?faces-redirect=true";
+        } catch (Exception e) {
+            LOGGER.error("Error when rejected process ", e);
+        }
+        return null;
     }
 
     /*public ReimbursmentSchemaService getReimbursmentSchemaService() {
-        return reimbursmentSchemaService;
-    }
+     return reimbursmentSchemaService;
+     }
 
-    public void setReimbursmentSchemaService(ReimbursmentSchemaService reimbursmentSchemaService) {
-        this.reimbursmentSchemaService = reimbursmentSchemaService;
-    }*/
+     public void setReimbursmentSchemaService(ReimbursmentSchemaService reimbursmentSchemaService) {
+     this.reimbursmentSchemaService = reimbursmentSchemaService;
+     }*/
 
     /*public ReimbursmentModelJsonParsing getReimbursmentModelJsonParsing() {
-        return reimbursmentModelJsonParsing;
-    }
+     return reimbursmentModelJsonParsing;
+     }
 
-    public void setReimbursmentModelJsonParsing(ReimbursmentModelJsonParsing reimbursmentModelJsonParsing) {
-        this.reimbursmentModelJsonParsing = reimbursmentModelJsonParsing;
-    }
+     public void setReimbursmentModelJsonParsing(ReimbursmentModelJsonParsing reimbursmentModelJsonParsing) {
+     this.reimbursmentModelJsonParsing = reimbursmentModelJsonParsing;
+     }
 
-    public ReimbursmentSchema getReimbursmentSchema() {
-        return reimbursmentSchema;
-    }
+     public ReimbursmentSchema getReimbursmentSchema() {
+     return reimbursmentSchema;
+     }
 
-    public void setReimbursmentSchema(ReimbursmentSchema reimbursmentSchema) {
-        this.reimbursmentSchema = reimbursmentSchema;
-    }
+     public void setReimbursmentSchema(ReimbursmentSchema reimbursmentSchema) {
+     this.reimbursmentSchema = reimbursmentSchema;
+     }
 
-    public EmpData getEmpData() {
-        return empData;
-    }
+     public EmpData getEmpData() {
+     return empData;
+     }
 
-    public void setEmpData(EmpData empData) {
-        this.empData = empData;
-    }*/
-
+     public void setEmpData(EmpData empData) {
+     this.empData = empData;
+     }*/
     public EmpDataService getEmpDataService() {
         return empDataService;
     }
@@ -205,6 +220,4 @@ public class ReimbursmentApprovalFormController extends BaseController{
     public void setEmpDataService(EmpDataService empDataService) {
         this.empDataService = empDataService;
     }
-    
-    
 }

@@ -39,8 +39,6 @@ public class ImageBioDataStreamerController extends BaseController {
     @ManagedProperty(value = "#{bioDocumentService}")
     private BioDocumentService bioDocumentService;
     private StreamedContent ijazahFile;
-    
-    
 
     public void setBioDataService(BioDataService bioDataService) {
         this.bioDataService = bioDataService;
@@ -49,12 +47,12 @@ public class ImageBioDataStreamerController extends BaseController {
     public void setEducationHistoryService(BioEducationHistoryService educationHistoryService) {
         this.educationHistoryService = educationHistoryService;
     }
-    
-    public void setBioDocumentService(BioDocumentService bioDocumentService) {
-		this.bioDocumentService = bioDocumentService;
-	}
 
-	public void setFacesIO(FacesIO facesIO) {
+    public void setBioDocumentService(BioDocumentService bioDocumentService) {
+        this.bioDocumentService = bioDocumentService;
+    }
+
+    public void setFacesIO(FacesIO facesIO) {
         this.facesIO = facesIO;
     }
 
@@ -68,9 +66,9 @@ public class ImageBioDataStreamerController extends BaseController {
             InputStream is = null;
             try {
                 String url = bioDataService.getEntiyByPK(Long.parseLong(bioId)).getPathFoto();
-              
-                if(url==null|| url.isEmpty()){
-                    url=facesIO.getPathUpload()+"no_image.png";
+
+                if (url == null || url.isEmpty()) {
+                    url = facesIO.getPathUpload() + "no_image.png";
                 }
                 is = facesIO.getInputStreamFromURL(url);
 
@@ -84,7 +82,7 @@ public class ImageBioDataStreamerController extends BaseController {
         }
 
     }
-    
+
     public StreamedContent getIjazahFile() throws IOException {
 
         FacesContext context = FacesUtil.getFacesContext();
@@ -107,7 +105,7 @@ public class ImageBioDataStreamerController extends BaseController {
         }
 
     }
-    
+
     public StreamedContent getFingerImage() throws IOException {
 
         FacesContext context = FacesUtil.getFacesContext();
@@ -118,8 +116,8 @@ public class ImageBioDataStreamerController extends BaseController {
             InputStream is = null;
             try {
                 String url = bioDataService.getEntiyByPK(Long.parseLong(bioId)).getPathFinger();
-                 if(url==null|| url.isEmpty()){
-                    url=facesIO.getPathUpload()+"no_image.png";
+                if (url == null || url.isEmpty()) {
+                    url = facesIO.getPathUpload() + "no_image.png";
                 }
                 is = facesIO.getInputStreamFromURL(url);
 
@@ -133,7 +131,7 @@ public class ImageBioDataStreamerController extends BaseController {
         }
 
     }
-    
+
     public StreamedContent getSignaturImage() throws IOException {
 
         FacesContext context = FacesUtil.getFacesContext();
@@ -144,8 +142,8 @@ public class ImageBioDataStreamerController extends BaseController {
             InputStream is = null;
             try {
                 String url = bioDataService.getEntiyByPK(Long.parseLong(bioId)).getPathSignature();
-                  if(url==null|| url.isEmpty()){
-                    url=facesIO.getPathUpload()+"no_image.png";
+                if (url == null || url.isEmpty()) {
+                    url = facesIO.getPathUpload() + "no_image.png";
                 }
                 is = facesIO.getInputStreamFromURL(url);
 
@@ -159,7 +157,7 @@ public class ImageBioDataStreamerController extends BaseController {
         }
 
     }
-    
+
     public StreamedContent getDocumentFile() throws IOException {
         FacesContext context = FacesUtil.getFacesContext();
         String id = context.getExternalContext().getRequestParameterMap().get("id");
@@ -168,19 +166,45 @@ public class ImageBioDataStreamerController extends BaseController {
         } else {
             InputStream is = null;
             try {
-            	BioDocument bioDocument = bioDocumentService.getEntiyByPK(Long.parseLong(id));
+                BioDocument bioDocument = bioDocumentService.getEntiyByPK(Long.parseLong(id));
                 String path = bioDocument.getUploadPath();
-                  if(StringUtils.isEmpty(path)){
-                    path=facesIO.getPathUpload()+"no_image.png";
+                if (StringUtils.isEmpty(path)) {
+                    path = facesIO.getPathUpload() + "no_image.png";
                 }
                 is = facesIO.getInputStreamFromURL(path);
-                
+
                 return new DefaultStreamedContent(is, null, StringUtils.substringAfterLast(path, "/"));
-                
+
             } catch (Exception ex) {
                 LOGGER.error(ex, ex);
                 return new DefaultStreamedContent();
             }
         }
+    }
+
+    public StreamedContent getReimbusementFile() throws IOException {
+
+        FacesContext context = FacesUtil.getFacesContext();
+        String id = context.getExternalContext().getRequestParameterMap().get("fileName");
+        System.out.println(id+"======");
+        if (context.getRenderResponse() || id == null) {
+            return new DefaultStreamedContent();
+        } else {
+            InputStream is = null;
+            try {
+                String path = id;
+                if (StringUtils.isEmpty(path)) {
+                    path = facesIO.getPathUpload() + "no_image.png";
+                }
+                is = facesIO.getInputStreamFromURL(path);
+
+                return new DefaultStreamedContent(is, null, StringUtils.substringAfterLast(path, "/"));
+
+            } catch (Exception ex) {
+                LOGGER.error(ex, ex);
+                return new DefaultStreamedContent();
+            }
+        }
+
     }
 }
