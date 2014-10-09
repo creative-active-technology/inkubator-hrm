@@ -46,7 +46,7 @@ public class OverTimeDistributionFormController extends BaseController {
     private EmpDataService empDataService;
     @ManagedProperty(value = "#{overTimeDistributionService}")
     private OverTimeDistributionService overTimeDistributionService;
-     @ManagedProperty(value = "#{golonganJabatanService}")
+    @ManagedProperty(value = "#{golonganJabatanService}")
     private GolonganJabatanService golonganJabatanService;
     private Map<String, Long> otListDown = new HashMap<>();
     private Map<String, Long> golonganJabatanDropDown = new TreeMap<>();
@@ -87,13 +87,16 @@ public class OverTimeDistributionFormController extends BaseController {
 
     @PreDestroy
     private void cleanAndExit() {
-//        leaveSchemeService = null;
+        wtOverTimeService = null;
+        listWtOverTime = null;
+        empDataService = null;
         golonganJabatanService = null;
-//        leaveSchemeDropDown = null;
-//        leaveList = null;
-        ovetTimeModel = null;
+        otListDown = null;
+        golonganJabatanDropDown = null;
+        golonganJabatanList = null;
         dualListModel = null;
-//        leaveService = null;
+        ovetTimeModel = null;
+        source = null;
 
     }
 
@@ -198,11 +201,9 @@ public class OverTimeDistributionFormController extends BaseController {
         try {
             List<EmpData> dataToSave = dualListModel.getTarget();
             overTimeDistributionService.savePenempatanOt(dataToSave, ovetTimeModel.getOverTimeId());
-//            leaveDistributionService.saveMassPenempatanCuti(dataToSave, model.getLeaveSchemeId(), model.getStartBalance());
-//            empDataService.saveMassPenempatanJadwal(dataToSave, model.getWorkingGroupId());
             MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-            return "/protected/employee/leave_distribution_view.htmfaces-redirect=true";
+            return "/protected/employee/over_time_distribution_view.htm?faces-redirect=true";
         } catch (BussinessException ex) { //data already exist(duplicate)
 //            LOGGER.error("Error", ex);
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
