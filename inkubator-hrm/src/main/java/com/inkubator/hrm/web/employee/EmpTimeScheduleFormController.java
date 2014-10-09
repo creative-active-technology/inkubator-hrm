@@ -9,6 +9,7 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.WtGroupWorking;
 import com.inkubator.hrm.service.EmpDataService;
+import com.inkubator.hrm.service.TempJadwalKaryawanService;
 import com.inkubator.hrm.service.WtGroupWorkingService;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
@@ -39,6 +40,8 @@ public class EmpTimeScheduleFormController extends BaseController {
     private List<WtGroupWorking> dataToShow = new ArrayList<>();
     private Map<String, String> workingTime = new HashMap<>();
     private String groupWorkingCode;
+    @ManagedProperty(value = "#{tempJadwalKaryawanService}")
+    private TempJadwalKaryawanService tempJadwalKaryawanService;
 
     @PostConstruct
     @Override
@@ -73,7 +76,7 @@ public class EmpTimeScheduleFormController extends BaseController {
         dataToShow=null;
         workingTime=null;
         groupWorkingCode=null;
-        
+        tempJadwalKaryawanService=null;
     }
 
     public void setEmpDataService(EmpDataService empDataService) {
@@ -114,12 +117,16 @@ public class EmpTimeScheduleFormController extends BaseController {
 
     public void setGroupWorkingCode(String groupWorkingCode) {
         this.groupWorkingCode = groupWorkingCode;
-    }
+    }    
 
-    public void doSave() {
+    public void setTempJadwalKaryawanService(TempJadwalKaryawanService tempJadwalKaryawanService) {
+		this.tempJadwalKaryawanService = tempJadwalKaryawanService;
+	}
+
+	public void doSave() {
         try {
             selectedEmpData.setWtGroupWorking(new WtGroupWorking(groupWorkingCode));
-            empDataService.savePenempatanJadwal(selectedEmpData);
+            tempJadwalKaryawanService.savePenempatanJadwal(selectedEmpData);
             RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
             cleanAndExit();
         } catch (Exception ex) {

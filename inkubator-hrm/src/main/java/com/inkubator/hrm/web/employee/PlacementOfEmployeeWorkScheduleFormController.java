@@ -10,6 +10,7 @@ import com.inkubator.hrm.entity.GolonganJabatan;
 import com.inkubator.hrm.entity.WtGroupWorking;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.GolonganJabatanService;
+import com.inkubator.hrm.service.TempJadwalKaryawanService;
 import com.inkubator.hrm.service.WtGroupWorkingService;
 import com.inkubator.hrm.util.MapUtil;
 import com.inkubator.hrm.web.model.PlacementOfEmployeeWorkScheduleModel;
@@ -43,6 +44,8 @@ public class PlacementOfEmployeeWorkScheduleFormController extends BaseControlle
     private GolonganJabatanService golonganJabatanService;
     @ManagedProperty(value = "#{empDataService}")
     private EmpDataService empDataService;
+    @ManagedProperty(value = "#{tempJadwalKaryawanService}")
+    private TempJadwalKaryawanService tempJadwalKaryawanService;
     private Map<String, Long> workingGroupDropDown = new HashMap<String, Long>();
     
     private List<WtGroupWorking> workingGroupList = new ArrayList<>();
@@ -86,7 +89,7 @@ public class PlacementOfEmployeeWorkScheduleFormController extends BaseControlle
         workingGroupList = null;
         model = null;
         dualListModel = null;
-
+        tempJadwalKaryawanService = null;
     }
 
     public WtGroupWorkingService getWtGroupWorkingService() {
@@ -174,11 +177,15 @@ public class PlacementOfEmployeeWorkScheduleFormController extends BaseControlle
         this.source = source;
     }
 
-    public String doSave() {
+    public void setTempJadwalKaryawanService(TempJadwalKaryawanService tempJadwalKaryawanService) {
+		this.tempJadwalKaryawanService = tempJadwalKaryawanService;
+	}
+
+	public String doSave() {
 
         try {
             List<EmpData> dataToSave = dualListModel.getTarget();
-            empDataService.saveMassPenempatanJadwal(dataToSave, model.getWorkingGroupId());
+            tempJadwalKaryawanService.saveMassPenempatanJadwal(dataToSave, model.getWorkingGroupId());
             MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             return "/protected/employee/employee_schedule_view.htm?faces-redirect=true";
