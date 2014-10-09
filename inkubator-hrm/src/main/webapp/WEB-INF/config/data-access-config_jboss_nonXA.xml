@@ -18,65 +18,54 @@
        http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
 
     <!--Scan service dan Dao--> 
-    <context:component-scan base-package="com.csl.idm.service.impl" />
-    <context:component-scan base-package="com.csl.idm.dao.impl" />
-    <context:component-scan base-package="com.csl.idm.web.listener" />
+    <context:component-scan base-package="com.inkubator.hrm.dao.impl" />
+    <context:component-scan base-package="com.inkubator.hrm.service.impl"/>
     <!--Activasi Anotasi dan Transaksi Management-->
-    <tx:annotation-driven/>
-    <cache:annotation-driven />
-     <jee:jndi-lookup id="dataSourceJBoss" jndi-name="java:jboss/MySQLNonXA" 
+    <aop:aspectj-autoproxy/>
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+    <tx:jta-transaction-manager id="transactionManager"/>
+    
+    <bean class="org.springframework.orm.hibernate4.HibernateTransactionManager" id="transactionManager" lazy-init="true">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <!--Data Soruve ke Sumber database dari Jboss lewat JNDI-->
+    <jee:jndi-lookup id="dataSourceJBoss" jndi-name="java:jboss/MySQLNonXA" 
                      expected-type="javax.sql.DataSource"/>
-<!--    <bean id="c3p0DataSourceAbstract" class="com.mchange.v2.c3p0.ComboPooledDataSource" abstract="true" destroy-method="close">
-        <property name="acquireIncrement" value="5"/>
-        <property name="acquireRetryAttempts" value="3"/>
-        <property name="acquireRetryDelay" value="4500"/>
-        <property name="maxPoolSize" value="100"/>
-        <property name="minPoolSize" value="10"/>
-        <property name="maxStatements" value="50"/>
-        <property name="maxIdleTime" value="3600" />
-        <property name="autoCommitOnClose" value="false" />
-        <property name="initialPoolSize" value="5" />
-        <property name="maxConnectionAge" value="7200" />
-        <property name="maxIdleTimeExcessConnections" value="600" />
-        <property name="preferredTestQuery" value="select 1 from DUAL" />
-        <property name="idleConnectionTestPeriod" value="180" />
-        <property name="testConnectionOnCheckin" value="true" />
-        <property name="testConnectionOnCheckout" value="false" />
-    </bean>-->
-<!--    <bean id="c3p0DataSource-1" parent="c3p0DataSourceAbstract" lazy-init="true">
-        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
-        <property name="jdbcUrl" value="${jdbc1.url}"/>
-        <property name="user" value="${jdbc1.userName}"/>
-        <property name="password" value="${jdbc1.password}"/>
-    </bean>-->
+    
+    <!-- Enables the caching on annotated class, the context is in service, the implementation using ehcache  -->
+    <cache:annotation-driven />
+    <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager"
+          p:cacheManager-ref="ehcache"/>
+    <bean id="ehcache" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"
+          p:configLocation="classpath:spring/spring_ehcache.xml" 
+          p:shared="true"/>
+    
     
     <bean class="org.springframework.orm.hibernate4.LocalSessionFactoryBean" id="sessionFactory" lazy-init="true">
         <property name="dataSource"  ref="dataSourceJBoss"/>
-        <property name="packagesToScan" value="com.csl.idm.entity"/>
+        <property name="packagesToScan" value="com.inkubator.hrm.entity"/>
         <property name="hibernateProperties">
             <props>
                 <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
                 <prop key="hibernate.hbm2ddl.auto">update</prop>
                 <prop key="hibernate.show_sql">false</prop>
-                <prop key="hibernate.format_sql">true</prop>
-                <prop key="hibernate.current_session_context_class">com.csl.data.core.util.TransactionAwareSessionContext</prop>
-                <prop key="hibernate.cache.use_query_cache">true</prop>
+                <prop key="hibernate.format_sql">false</prop>
+                <prop key="hibernate.jdbc.batch_size">20</prop>
+                <prop key="hibernate.order_inserts">true</prop>
+                <prop key="hibernate.order_updates">true</prop>
+                <prop key="hibernate.current_session_context_class">com.inkubator.datacore.util.TransactionAwareSessionContext</prop>
+
+                <!--                <prop key="hibernate.cache.use_query_cache">true</prop>
                 <prop key="hibernate.cache.use_second_level_cache">true</prop>
                 <prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop>
                 <prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</prop>
-                <prop key="hibernate.cache.provider_configuration_file_resource_path">hibernate_ehcache.xml</prop>
+                <prop key="hibernate.cache.provider_configuration_file_resource_path">ehcache.xml</prop>
                 <prop key="hibernate.generate_statistics">true</prop>
-                <prop key="org.hibernate.envers.audit_table_suffix">_audit</prop>
+                <prop key="org.hibernate.envers.audit_table_suffix">_audit</prop>-->
+                <!--                <prop key="jta.UserTransaction">java:/jboss/UserTransaction</prop> buka ini jika menggunakan hibernate 3-->
             </props>
         </property>
     </bean>
-    <bean class="org.springframework.orm.hibernate4.HibernateTransactionManager" id="transactionManager" lazy-init="true">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager"
-          p:cacheManager-ref='ehcache'/>
-    <bean id="ehcache" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"
-          p:configLocation="classpath:spring_ehcache.xml" 
-          p:shared="true"/>
-
+    <!--<bean id="persistenceExceptionTranslationPostProcessor" class="com.sample.flow.jsf.util.PersistenceExceptionTranslationPostProcessorSerial"/>-->
+    <bean class="com.inkubator.datacore.util.ServiceLog" />
 </beans>
