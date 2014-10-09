@@ -48,11 +48,17 @@ public class WtWorkingHour implements java.io.Serializable {
     private Boolean isPenaltyBreakStartEarly;
     private Boolean isPenaltyBreakFinishLate;
     private AttendanceStatus attendanceStatus;
+    private Boolean isManageOvertime;
+    private Date startOvertime;
+    private Date endOvertime;
+    private WtOverTime wtOverTime;
+    private WtWorkingHour exchangeWorkingHour;
     private String createdBy;
     private Date createdOn;
     private String updatedBy;
     private Date updatedOn;
     private Set<WtScheduleShift> wtScheduleShifts = new HashSet<WtScheduleShift>(0);
+    private Set<WtWorkingHour> exchangeWorkingHours = new HashSet<WtWorkingHour>(0);
 
     public WtWorkingHour() {
     }
@@ -284,8 +290,57 @@ public class WtWorkingHour implements java.io.Serializable {
 	public void setAttendanceStatus(AttendanceStatus attendanceStatus) {
 		this.attendanceStatus = attendanceStatus;
 	}
+		
+	@Column(name = "is_manage_overtime", nullable = false)
+    public Boolean getIsManageOvertime() {
+		return isManageOvertime;
+	}
 
-    @Column(name = "created_by", length = 45)
+	public void setIsManageOvertime(Boolean isManageOvertime) {
+		this.isManageOvertime = isManageOvertime;
+	}
+
+	@Temporal(TemporalType.TIME)
+    @Column(name = "start_overtime", length = 10)
+	public Date getStartOvertime() {
+		return startOvertime;
+	}
+
+	public void setStartOvertime(Date startOvertime) {
+		this.startOvertime = startOvertime;
+	}
+	
+	@Temporal(TemporalType.TIME)
+    @Column(name = "end_overtime", length = 10)
+	public Date getEndOvertime() {
+		return endOvertime;
+	}
+
+	public void setEndOvertime(Date endOvertime) {
+		this.endOvertime = endOvertime;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "wt_over_time_id")
+	public WtOverTime getWtOverTime() {
+		return wtOverTime;
+	}
+
+	public void setWtOverTime(WtOverTime wtOverTime) {
+		this.wtOverTime = wtOverTime;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "exchange_working_hour_id")
+	public WtWorkingHour getExchangeWorkingHour() {
+		return exchangeWorkingHour;
+	}
+
+	public void setExchangeWorkingHour(WtWorkingHour exchangeWorkingHour) {
+		this.exchangeWorkingHour = exchangeWorkingHour;
+	}
+
+	@Column(name = "created_by", length = 45)
     public String getCreatedBy() {
         return this.createdBy;
     }
@@ -331,5 +386,16 @@ public class WtWorkingHour implements java.io.Serializable {
     public void setWtScheduleShifts(Set<WtScheduleShift> wtScheduleShifts) {
         this.wtScheduleShifts = wtScheduleShifts;
     }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "exchangeWorkingHour")
+	public Set<WtWorkingHour> getExchangeWorkingHours() {
+		return exchangeWorkingHours;
+	}
+
+	public void setExchangeWorkingHours(Set<WtWorkingHour> exchangeWorkingHours) {
+		this.exchangeWorkingHours = exchangeWorkingHours;
+	}
+    
+    
 
 }

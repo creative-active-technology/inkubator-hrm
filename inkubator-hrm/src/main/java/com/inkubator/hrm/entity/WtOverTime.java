@@ -44,6 +44,7 @@ public class WtOverTime implements java.io.Serializable {
     private Date updatedOn;
     private Set<ApprovalDefinitionOT> approvalDefinitionOTs = new HashSet<ApprovalDefinitionOT>(0);
     private Set<OverTimeDistribution> overTimeDistributions = new HashSet<OverTimeDistribution>(0);
+    private Set<WtWorkingHour> wtWorkingHours = new HashSet<WtWorkingHour>(0);
 
     public WtOverTime() {
     }
@@ -253,4 +254,15 @@ public class WtOverTime implements java.io.Serializable {
     public void setOverTimeDistributions(Set<OverTimeDistribution> overTimeDistributions) {
         this.overTimeDistributions = overTimeDistributions;
     }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "wtOverTime")
+	public Set<WtWorkingHour> getWtWorkingHours() {
+		return wtWorkingHours;
+	}
+
+	public void setWtWorkingHours(Set<WtWorkingHour> wtWorkingHours) {
+		this.wtWorkingHours = wtWorkingHours;
+	}
+    
+    
 }

@@ -2,9 +2,6 @@ package com.inkubator.hrm.web.model;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
-
-import com.inkubator.hrm.entity.AttendanceStatus;
 
 /**
  *
@@ -25,7 +22,6 @@ public class WorkingHourModel implements Serializable {
     private Integer goHomeLimitEnd;
     private Boolean isPenaltyArriveLate;
     private Boolean isPenaltyGoHomeEarly;
-    private List<AttendanceStatus> attendanceStatusList;
     private Long attendanceStatusId;
     private Boolean isManageBreakTime;
     private Date breakHourBegin;
@@ -35,7 +31,12 @@ public class WorkingHourModel implements Serializable {
     private Integer breakFinishLimitBegin;
     private Integer breakFinishLimitEnd;
     private Boolean isPenaltyBreakStartEarly;
-    private Boolean isPenaltyBreakFinishLate;    
+    private Boolean isPenaltyBreakFinishLate; 
+    private Boolean isManageOvertime;
+    private Date startOvertime;
+    private Date endOvertime;
+    private Long overTimeId;
+    private Long exchangeWorkingHourId;
 
     public WorkingHourModel() {
     }
@@ -224,12 +225,44 @@ public class WorkingHourModel implements Serializable {
 		this.attendanceStatusId = attendanceStatusId;
 	}
 
-	public List<AttendanceStatus> getAttendanceStatusList() {
-		return attendanceStatusList;
+	public Boolean getIsManageOvertime() {
+		return isManageOvertime;
 	}
 
-	public void setAttendanceStatusList(List<AttendanceStatus> attendanceStatusList) {
-		this.attendanceStatusList = attendanceStatusList;
+	public void setIsManageOvertime(Boolean isManageOvertime) {
+		this.isManageOvertime = isManageOvertime;
+	}
+
+	public Date getStartOvertime() {
+		return startOvertime;
+	}
+
+	public void setStartOvertime(Date startOvertime) {
+		this.startOvertime = startOvertime;
+	}
+
+	public Date getEndOvertime() {
+		return endOvertime;
+	}
+
+	public void setEndOvertime(Date endOvertime) {
+		this.endOvertime = endOvertime;
+	}
+
+	public Long getOverTimeId() {
+		return overTimeId;
+	}
+
+	public void setOverTimeId(Long overTimeId) {
+		this.overTimeId = overTimeId;
+	}
+
+	public Long getExchangeWorkingHourId() {
+		return exchangeWorkingHourId;
+	}
+
+	public void setExchangeWorkingHourId(Long exchangeWorkingHourId) {
+		this.exchangeWorkingHourId = exchangeWorkingHourId;
 	}
 
 }

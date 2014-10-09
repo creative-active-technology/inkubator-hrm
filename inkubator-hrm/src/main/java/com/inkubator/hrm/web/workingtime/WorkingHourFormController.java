@@ -2,24 +2,28 @@ package com.inkubator.hrm.web.workingtime;
 
 import java.util.List;
 
-import com.inkubator.exception.BussinessException;
-import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.AttendanceStatus;
-import com.inkubator.hrm.entity.WtWorkingHour;
-import com.inkubator.hrm.service.AttendanceStatusService;
-import com.inkubator.hrm.service.WtWorkingHourService;
-import com.inkubator.hrm.web.model.WorkingHourModel;
-import com.inkubator.webcore.controller.BaseController;
-import com.inkubator.webcore.util.FacesUtil;
-import com.inkubator.webcore.util.MessagesResourceUtil;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
+
+import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.entity.AttendanceStatus;
+import com.inkubator.hrm.entity.WtOverTime;
+import com.inkubator.hrm.entity.WtWorkingHour;
+import com.inkubator.hrm.service.AttendanceStatusService;
+import com.inkubator.hrm.service.WtOverTimeService;
+import com.inkubator.hrm.service.WtWorkingHourService;
+import com.inkubator.hrm.web.model.WorkingHourModel;
+import com.inkubator.webcore.controller.BaseController;
+import com.inkubator.webcore.util.FacesUtil;
+import com.inkubator.webcore.util.MessagesResourceUtil;
 
 /**
  *
@@ -32,30 +36,40 @@ public class WorkingHourFormController extends BaseController {
     private WorkingHourModel model;
     private Boolean isUpdate;
     private Boolean isDisabledBreakConf;
+    private Boolean isDisabledOvertimeConf;
+    private List<AttendanceStatus> attendanceStatusList;
+    private List<WtOverTime> overTimeList;
+    private List<WtWorkingHour> exchangeWorkingHourList;
     @ManagedProperty(value = "#{wtWorkingHourService}")
     private WtWorkingHourService workingHourService;
     @ManagedProperty(value = "#{attendanceStatusService}")
     private AttendanceStatusService attendanceStatusService;
+    @ManagedProperty(value = "#{wtOverTimeService}")
+    private WtOverTimeService overTimeService;
 
     @PostConstruct
     @Override
     public void initialization() {
         super.initialization();
         try {
+        	String param = FacesUtil.getRequestParameter("execution");
+        	
 	        isUpdate = Boolean.FALSE;
 	        isDisabledBreakConf = Boolean.TRUE;
+	        isDisabledOvertimeConf = Boolean.TRUE;
 	        
 	        model = new WorkingHourModel();
-	        List<AttendanceStatus> attendanceStatusList = attendanceStatusService.getAllData();
-	        model.setAttendanceStatusList(attendanceStatusList);
+	        attendanceStatusList = attendanceStatusService.getAllData();
+	        overTimeList = overTimeService.getAllData();
+	        exchangeWorkingHourList = StringUtils.isEmpty(param) ? workingHourService.getAllData() : workingHourService.getAllDataExceptId(Long.parseLong(param.substring(1)));
 	        
-	        String param = FacesUtil.getRequestParameter("execution");
 	        if (StringUtils.isNotEmpty(param)) {	            
                 WtWorkingHour workingHour = workingHourService.getEntiyByPK(Long.parseLong(param.substring(1)));
                 if (workingHour != null) {
                     getModelFromEntity(workingHour);
                     isUpdate = Boolean.TRUE;
                     isDisabledBreakConf = !workingHour.getIsManageBreakTime();
+                    isDisabledOvertimeConf = !workingHour.getIsManageOvertime();
                 }            
 	        }
         } catch (Exception e) {
@@ -70,6 +84,11 @@ public class WorkingHourFormController extends BaseController {
         model = null;
         isUpdate = null;
         isDisabledBreakConf = null;
+        isDisabledOvertimeConf = null;
+        attendanceStatusList = null;
+        overTimeList = null;
+        exchangeWorkingHourList = null;
+        overTimeService = null;
     }
 
     public WorkingHourModel getModel() {
@@ -96,12 +115,48 @@ public class WorkingHourFormController extends BaseController {
         this.isDisabledBreakConf = isDisabledBreakConf;
     }
 
-    public void setWorkingHourService(WtWorkingHourService workingHourService) {
+    public Boolean getIsDisabledOvertimeConf() {
+		return isDisabledOvertimeConf;
+	}
+
+	public void setIsDisabledOvertimeConf(Boolean isDisabledOvertimeConf) {
+		this.isDisabledOvertimeConf = isDisabledOvertimeConf;
+	}
+
+	public void setWorkingHourService(WtWorkingHourService workingHourService) {
         this.workingHourService = workingHourService;
     }
 	
 	public void setAttendanceStatusService(AttendanceStatusService attendanceStatusService) {
 		this.attendanceStatusService = attendanceStatusService;
+	}
+
+	public List<AttendanceStatus> getAttendanceStatusList() {
+		return attendanceStatusList;
+	}
+
+	public void setAttendanceStatusList(List<AttendanceStatus> attendanceStatusList) {
+		this.attendanceStatusList = attendanceStatusList;
+	}
+
+	public List<WtOverTime> getOverTimeList() {
+		return overTimeList;
+	}
+
+	public void setOverTimeList(List<WtOverTime> overTimeList) {
+		this.overTimeList = overTimeList;
+	}
+
+	public List<WtWorkingHour> getExchangeWorkingHourList() {
+		return exchangeWorkingHourList;
+	}
+
+	public void setExchangeWorkingHourList(List<WtWorkingHour> exchangeWorkingHourList) {
+		this.exchangeWorkingHourList = exchangeWorkingHourList;
+	}
+
+	public void setOverTimeService(WtOverTimeService overTimeService) {
+		this.overTimeService = overTimeService;
 	}
 
 	public void doReset() {
@@ -111,6 +166,7 @@ public class WorkingHourFormController extends BaseController {
     			if (workingHour != null) {
                     getModelFromEntity(workingHour);
                     isDisabledBreakConf = BooleanUtils.isNotTrue(model.getIsManageBreakTime());
+                    isDisabledOvertimeConf = BooleanUtils.isNotTrue(model.getIsManageOvertime());
     			}
     		} catch (Exception ex) {
     			LOGGER.error("Error", ex);
@@ -119,6 +175,7 @@ public class WorkingHourFormController extends BaseController {
     		model = new WorkingHourModel();
     		//default is true
     		isDisabledBreakConf = Boolean.TRUE;
+    		isDisabledOvertimeConf = Boolean.TRUE;
     	}    	
     }
 
@@ -174,7 +231,12 @@ public class WorkingHourFormController extends BaseController {
         workingHour.setBreakFinishLimitEnd(model.getBreakFinishLimitEnd());
         workingHour.setIsPenaltyBreakStartEarly(model.getIsPenaltyBreakStartEarly());
         workingHour.setIsPenaltyBreakFinishLate(model.getIsPenaltyBreakFinishLate());
-
+        workingHour.setIsManageOvertime(model.getIsManageOvertime());
+		workingHour.setStartOvertime(model.getStartOvertime());
+		workingHour.setEndOvertime(model.getEndOvertime());
+		workingHour.setWtOverTime(model.getOverTimeId() != null ? new WtOverTime(model.getOverTimeId()) : null);
+		workingHour.setExchangeWorkingHour(model.getExchangeWorkingHourId() != null ? new WtWorkingHour(model.getExchangeWorkingHourId()) : null);
+		
         return workingHour;
     }
 
@@ -204,6 +266,15 @@ public class WorkingHourFormController extends BaseController {
         model.setBreakFinishLimitEnd(workingHour.getBreakFinishLimitEnd());
         model.setIsPenaltyBreakStartEarly(workingHour.getIsPenaltyBreakStartEarly());
         model.setIsPenaltyBreakFinishLate(workingHour.getIsPenaltyBreakFinishLate());
+        model.setIsManageOvertime(workingHour.getIsManageOvertime());
+        model.setStartOvertime(workingHour.getStartOvertime());
+        model.setEndOvertime(workingHour.getEndOvertime());
+        if(workingHour.getWtOverTime() != null) {
+        	model.setOverTimeId(workingHour.getWtOverTime().getId());
+        }
+        if(workingHour.getExchangeWorkingHour() != null){
+        	model.setExchangeWorkingHourId(workingHour.getExchangeWorkingHour().getId());
+        }
     }
 
     public String doBack() {
@@ -221,6 +292,15 @@ public class WorkingHourFormController extends BaseController {
             model.setBreakFinishLimitEnd(null);
             model.setIsPenaltyBreakStartEarly(Boolean.FALSE);
             model.setIsPenaltyBreakFinishLate(Boolean.FALSE);
+        }
+    }
+    
+    public void onChangeManageOvertime() {
+        isDisabledOvertimeConf = BooleanUtils.isNotTrue(model.getIsManageOvertime());
+        if (isDisabledOvertimeConf) {
+        	model.setStartOvertime(null);
+        	model.setEndOvertime(null);
+        	model.setOverTimeId(null);
         }
     }
 }
