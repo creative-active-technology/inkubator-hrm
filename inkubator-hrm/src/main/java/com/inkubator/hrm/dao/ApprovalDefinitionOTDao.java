@@ -6,8 +6,7 @@ package com.inkubator.hrm.dao;
 
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.ApprovalDefinitionOT;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Repository;
+import java.util.List;
 
 /**
  *
@@ -15,5 +14,5 @@ import org.springframework.stereotype.Repository;
  */
 
 public interface ApprovalDefinitionOTDao extends IDAO<ApprovalDefinitionOT> {
-
+    public List<ApprovalDefinitionOT> getByOverTimeId(Long id);
 }

@@ -86,7 +86,9 @@
                                     <p:outputLabel  value="#{appmsg['reimbursment.nominal_unit']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%">
-                                    <p:outputLabel  value="#{reimbursmentSchemaDetailController.selectedReimbursmentSchema.nominalUnit}" />
+                                    <p:outputLabel  value="#{reimbursmentSchemaDetailController.selectedReimbursmentSchema.nominalUnit}" >
+                                        <f:convertNumber pattern="###,###" type="currency"/>
+                                    </p:outputLabel>
                                 </p:column>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important">
                                     <p:outputLabel  value="#{appmsg['reimbursment.ratio_salary']}" style="font-weight: bold"/>
