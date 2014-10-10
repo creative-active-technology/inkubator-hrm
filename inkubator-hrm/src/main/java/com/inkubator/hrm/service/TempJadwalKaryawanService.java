@@ -6,6 +6,7 @@
 package com.inkubator.hrm.service;
 
 import com.inkubator.datacore.service.IService;
+import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.TempJadwalKaryawan;
 import java.util.List;
 
@@ -16,4 +17,8 @@ import java.util.List;
 public interface TempJadwalKaryawanService extends IService<TempJadwalKaryawan> {
 
     public List<TempJadwalKaryawan> getAllByEmpIdWithDetail(long empId) throws Exception;
+    
+    public void savePenempatanJadwal(EmpData empData) throws Exception;
+    
+    public void saveMassPenempatanJadwal(List<EmpData> data, long groupWorkingId) throws Exception;
 }

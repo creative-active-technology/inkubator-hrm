@@ -17,7 +17,7 @@
             <ui:define name="center">
                 <div id="box_bg">
                     <h:panelGrid style="margin-bottom: 5px" columns="2">
-                        <p:graphicImage library="images" name="bio_data.png" height="36" width="36" />
+                        <p:graphicImage library="images" name="biodata.png" height="36" width="36" />
                         <h:panelGroup layout="block">
                             <h:panelGrid>
                                 <p:outputLabel value="#{appmsg['biodata.detail_of_biodata']}" styleClass="header_big" />
@@ -1279,10 +1279,6 @@
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="Ijazah" styleClass="label_hrm"/></p:column>
                             <p:column style="width:70%;" rendered="#{bioDataDetilController.selectedBioEducationHistoryViewController.isDownload}">
-                                <!--                                <p:dialog modal="true" widgetVar="statusDialog" header="Status" draggable="false" closable="false" resizable="false">
-                                                                    <p:graphicImage library="images" name="loading.gif" />
-                                                                    <p:graphicImage library="images" name="bio_data.png" height="36" width="36" />
-                                                                </p:dialog>-->
                                 <h:form>
                                     <p:commandButton value="Download" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
                                         <p:fileDownload value="#{imageBioDataStreamerController.ijazahFile}" />

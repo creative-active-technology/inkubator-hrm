@@ -235,7 +235,7 @@ public class OverTimeDistributionFormController extends BaseController {
 //        this.selecedLeave = selecedLeave;
 //    }
     public String doBack() {
-        return "/protected/employee/leave_distribution_view.htm?faces-redirect=true";
+        return "/protected/employee/over_time_distribution_view.htm?faces-redirect=true";
     }
 
     public List<WtOverTime> getListWtOverTime() {
