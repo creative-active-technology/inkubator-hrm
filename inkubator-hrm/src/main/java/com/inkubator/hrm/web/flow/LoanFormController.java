@@ -182,7 +182,7 @@ public class LoanFormController implements Serializable{
 		if(loanSchema.getBasicValue() == HRMConstant.NOMINAL){
 			maxNominalPrincipal = loanSchema.getMaxNominal().doubleValue();
 		} else if(loanSchema.getBasicValue() == HRMConstant.SALARY){
-			String salaryDecripted = AESUtil.getAESDescription(empData.getBasicSalary(), HRMConstant.KEYVALUE, HRMConstant.AES_ALGO);
+			String salaryDecripted = empData.getBasicSalaryDecrypted();
 			maxNominalPrincipal = Double.parseDouble(salaryDecripted);
 		}
 		

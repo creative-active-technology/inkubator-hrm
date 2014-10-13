@@ -318,7 +318,7 @@ public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements 
         }
 
         //validate basic value
-        System.out.println(empData.getDecryptBasicSalary());
+        System.out.println(empData.getBasicSalaryDecrypted());
         List<Reimbursment> totalNominalSalary = reimbursmentDao.getAllDataWithEmpIdAndReimbursmentSchemaId(empData.getId(), reimbursmentSchema.getId());
         //hitung jumlah rembesan yg sudah tersimpan didatabase
         for (Reimbursment jmhSalary : totalNominalSalary) {
@@ -334,7 +334,7 @@ public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements 
         if (reimbursment.getNominal() != null) {
             jmlNominalReimbursment = jmlNominalReimbursment.add(reimbursment.getNominal());
         }
-        String decryptSalary = empData.getDecryptBasicSalary();
+        String decryptSalary = empData.getBasicSalaryDecrypted();
         System.out.println(decryptSalary+"============================================");
         //replace "." dan convert ke decimal
         BigDecimal salary = new BigDecimal(decryptSalary);

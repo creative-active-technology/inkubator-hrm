@@ -108,7 +108,7 @@ public class EmpDataFormController extends BaseController {
             if (empId != null) {
                 isEdit = Boolean.TRUE;
                 EmpData empData = empDataService.getByEmpIdWithDetail(Long.parseLong(empId.substring(1)));
-                String basicSalaryDecript = AESUtil.getAESDescription(empData.getBasicSalary(), HRMConstant.KEYVALUE, HRMConstant.AES_ALGO);
+                String basicSalaryDecript = empData.getBasicSalaryDecrypted();
                 empDataModel.setBasicSalary(new BigDecimal(basicSalaryDecript));
                 empDataModel.setBioDataId(empData.getBioData().getId());
                 empDataModel.setBioDataName(empData.getBioData().getFirstName() + " " + empData.getBioData().getLastName());

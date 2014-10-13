@@ -130,7 +130,7 @@ public class BasicRenumerationDetailController extends BaseController {
         for (BenefitGroupRate b : listBenefitGroupRate) {
             totalDouble += b.getNominal().intValue();
         }
-        String dataDecripted = AESUtil.getAESDescription(selectedEmpData.getBasicSalary(), HRMConstant.KEYVALUE, HRMConstant.AES_ALGO);
+        String dataDecripted = selectedEmpData.getBasicSalaryDecrypted();
         totalDouble += Integer.parseInt(dataDecripted);
         total = String.valueOf(totalDouble);
         return String.valueOf(f.format(Integer.parseInt(total)));
