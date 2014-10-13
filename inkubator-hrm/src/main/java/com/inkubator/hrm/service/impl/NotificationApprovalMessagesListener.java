@@ -110,6 +110,7 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                             maptoSend.put("end", jsonObject.get("endDate").getAsString());
                             maptoSend.put("description", jsonObject.get("description").getAsString());
                             maptoSend.put("totalAmount", jsonObject.get("totalAmount").getAsString());
+                            maptoSend.put("deadline", jsonObject.get("deadline").getAsString());
                             break;
 
                         case HRMConstant.REIMBURSEMENT:
@@ -123,6 +124,7 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                             maptoSend.put("proposeDate", jsonObject.get("proposeDate").getAsString());
                             maptoSend.put("nominalOrUnit", jsonObject.get("nominalOrUnit").getAsString());
                             maptoSend.put("reimbursmentNo", jsonObject.get("reimbursmentNo").getAsString());
+                            maptoSend.put("deadline", jsonObject.get("deadline").getAsString());
                             break;
 
                         case HRMConstant.LOAN:

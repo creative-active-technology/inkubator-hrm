@@ -18,7 +18,7 @@
                         Nominal penggantian : ${nominalOrUnit}<br />
 			<br />
             Adapun informasi lebih lanjut dapat di lihat pada:  <a href="${applicationUrl}" target="_blank">${applicationUrl}</a><br/><br/>
-            Harapan kami agar saudara(i) dapat menindaklanjuti permohonan ini, dan apabila tidak ada respon persetujuan hingga tanggal {H+3}, maka dianggap menyetujui permohonan yang bersangkutan.
+            Harapan kami agar saudara(i) dapat menindaklanjuti permohonan ini, dan apabila tidak ada respon persetujuan hingga tanggal ${deadline}, maka dianggap menyetujui permohonan yang bersangkutan.
             <br />
  			<br />
             Demikian pemberitahuan ini disampaikan, atas perhatian dan kerjasamanya disampaikan terima kasih.
