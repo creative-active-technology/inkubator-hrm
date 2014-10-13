@@ -63,6 +63,7 @@ public class ScheduleApprovalFormController extends BaseController {
     private WtGroupWorking selectedWtGroupWorking;
     private List<EmpData> dataToSave = new ArrayList<>();
     private String comment;
+    private Boolean isWaitingApproval;
 
     @PostConstruct
     @Override
@@ -71,6 +72,8 @@ public class ScheduleApprovalFormController extends BaseController {
             super.initialization();
             String id = FacesUtil.getRequestParameter("execution");
             selectedApprovalActivity = approvalActivityService.getEntiyByPK(Long.parseLong(id.substring(1)));
+            isWaitingApproval = selectedApprovalActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING;
+            
             JSONObject jSONObject = new JSONObject(selectedApprovalActivity.getPendingData());
             long workingGroupId = Long.parseLong(jSONObject.getString("groupWorkingId"));
             String listEmp = jSONObject.getString("listEmpId");
@@ -115,6 +118,7 @@ public class ScheduleApprovalFormController extends BaseController {
         selectedWtGroupWorking = null;
         dataToSave = null;
         comment = null;
+        isWaitingApproval= null;
     }
 
     public ApprovalActivity getSelectedApprovalActivity() {
@@ -192,7 +196,15 @@ public class ScheduleApprovalFormController extends BaseController {
         this.selectedWtGroupWorking = selectedWtGroupWorking;
     }
     
-    public String doBack() {
+    public Boolean getIsWaitingApproval() {
+		return isWaitingApproval;
+	}
+
+	public void setIsWaitingApproval(Boolean isWaitingApproval) {
+		this.isWaitingApproval = isWaitingApproval;
+	}
+
+	public String doBack() {
         return "home";
     }
 

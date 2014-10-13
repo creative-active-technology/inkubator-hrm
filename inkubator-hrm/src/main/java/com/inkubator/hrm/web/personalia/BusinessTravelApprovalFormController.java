@@ -42,6 +42,7 @@ public class BusinessTravelApprovalFormController extends BaseController {
     private BusinessTravel selectedBusinessTravel;
     private List<BusinessTravelComponent> businessTravelComponents;
     private String comment;
+    private Boolean isWaitingApproval;
     private ApprovalActivity selectedApprovalActivity;
     @ManagedProperty(value = "#{businessTravelService}")
     private BusinessTravelService businessTravelService;
@@ -57,6 +58,8 @@ public class BusinessTravelApprovalFormController extends BaseController {
             super.initialization();
             String id = FacesUtil.getRequestParameter("execution");
             selectedApprovalActivity = approvalActivityService.getEntiyByPK(Long.parseLong(id.substring(1)));
+            isWaitingApproval = selectedApprovalActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING;
+            
             Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
 			JsonObject jsonObject =  gson.fromJson(selectedApprovalActivity.getPendingData(), JsonObject.class);
 			businessTravelComponents = gson.fromJson(jsonObject.get("businessTravelComponents"), new TypeToken<List<BusinessTravelComponent>>(){}.getType());
@@ -82,6 +85,7 @@ public class BusinessTravelApprovalFormController extends BaseController {
         approvalActivityService = null;
         comment = null;
         empDataService = null;
+        isWaitingApproval= null;
     }   
 
 	public BusinessTravel getSelectedBusinessTravel() {
@@ -122,6 +126,14 @@ public class BusinessTravelApprovalFormController extends BaseController {
 
 	public void setComment(String comment) {
 		this.comment = comment;
+	}
+
+	public Boolean getIsWaitingApproval() {
+		return isWaitingApproval;
+	}
+
+	public void setIsWaitingApproval(Boolean isWaitingApproval) {
+		this.isWaitingApproval = isWaitingApproval;
 	}
 
 	public void setEmpDataService(EmpDataService empDataService) {

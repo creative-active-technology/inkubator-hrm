@@ -39,6 +39,7 @@ public class ReimbursmentApprovalFormController extends BaseController {
 
     private Reimbursment reimbursment;
     private String comment;
+    private Boolean isWaitingApproval;
     String reimbursmentFileName;
     //private ReimbursmentModelJsonParsing reimbursmentModelJsonParsing;
     //private ReimbursmentSchema reimbursmentSchema;
@@ -62,6 +63,8 @@ public class ReimbursmentApprovalFormController extends BaseController {
             isDownload = Boolean.TRUE;
             String id = FacesUtil.getRequestParameter("execution");
             selectedApprovalActivity = approvalActivityService.getEntiyByPK(Long.parseLong(id.substring(1)));
+            isWaitingApproval = selectedApprovalActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING;
+            
             Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
             reimbursment = gson.fromJson(selectedApprovalActivity.getPendingData(), Reimbursment.class);
             JsonObject jsonObject = gson.fromJson(selectedApprovalActivity.getPendingData(), JsonObject.class);
@@ -95,7 +98,7 @@ public class ReimbursmentApprovalFormController extends BaseController {
         //reimbursmentSchemaService = null;
         reimbursmentFileName = null;
         isDownload = null;
-
+        isWaitingApproval = null;
     }
 
     public Reimbursment getReimbursment() {
@@ -114,7 +117,15 @@ public class ReimbursmentApprovalFormController extends BaseController {
         this.comment = comment;
     }
 
-    public String getReimbursmentFileName() {
+    public Boolean getIsWaitingApproval() {
+		return isWaitingApproval;
+	}
+
+	public void setIsWaitingApproval(Boolean isWaitingApproval) {
+		this.isWaitingApproval = isWaitingApproval;
+	}
+
+	public String getReimbursmentFileName() {
         return reimbursmentFileName;
     }
 
