@@ -328,7 +328,6 @@ public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements 
             if (jmhSalary.getQuantity() != null) {
                 jumlahQuantity = jumlahQuantity + jmhSalary.getQuantity();
             }
-            System.out.println(jmlNominalReimbursment + " &&&&&&&");
         }
         //hitung jumlah rembesan saat ini
         if (reimbursment.getNominal() != null) {
@@ -340,7 +339,6 @@ public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements 
         BigDecimal salary = new BigDecimal(decryptSalary);
         if (reimbursmentSchema.getBasicValue() != null) {
             if (reimbursmentSchema.getBasicValue().equals(HRMConstant.BASIC_VALUE_NOMINAL)) {
-                System.out.println("basic valuenya nominal" + jmlNominalReimbursment + " " + reimbursmentSchema.getNominalUnit());
                 //validasi nominal
                 result = jmlNominalReimbursment.compareTo(reimbursmentSchema.getNominalUnit());
                 if (result == 1) {
@@ -367,7 +365,6 @@ public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements 
         }
 
         //validate tanggal mulai bekerja karyawan
-        System.out.println(DateTimeUtil.getTotalMonthDifference(reimbursment.getEmpData().getJoinDate(), new Date()) + "=========================================");
         Integer effectiveSince = Integer.valueOf(DateTimeUtil.getTotalMonthDifference(reimbursment.getEmpData().getJoinDate(), new Date()));
         if (effectiveSince < reimbursmentSchema.getEffectiveDate()) {
             throw new BussinessException("reimbursment.reimbersment_effective_since_lower_than_effective_since_term");
@@ -399,23 +396,23 @@ public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements 
                 file.renameTo(new File(uploadPath));
             }
             /*ReimbursmentModelJsonParsing reimbursmentModelJsonParsing = new ReimbursmentModelJsonParsing();
-            //isi data reimbursment model untuk diparsing ke json
-            reimbursmentModelJsonParsing.setCode(reimbursment.getCode());
-            reimbursmentModelJsonParsing.setClaimDate(reimbursment.getClaimDate());
-            reimbursmentModelJsonParsing.setQuantity(reimbursment.getQuantity());
-            reimbursmentModelJsonParsing.setNominal(reimbursment.getNominal());
-            reimbursmentModelJsonParsing.setReimbursmentSchemaId(reimbursmentSchema.getId());
-            reimbursmentModelJsonParsing.setEmpDataId(empData.getId());
-            reimbursmentModelJsonParsing.setCreateBy(UserInfoUtil.getUserName());
-            reimbursmentModelJsonParsing.setReimbursmentDocument(reimbursment.getReimbursmentDocument());
-            reimbursmentModelJsonParsing.setCreateDate(new Date());
-            reimbursmentModelJsonParsing.setReimbursmentFileName(uploadPath);*/
+             //isi data reimbursment model untuk diparsing ke json
+             reimbursmentModelJsonParsing.setCode(reimbursment.getCode());
+             reimbursmentModelJsonParsing.setClaimDate(reimbursment.getClaimDate());
+             reimbursmentModelJsonParsing.setQuantity(reimbursment.getQuantity());
+             reimbursmentModelJsonParsing.setNominal(reimbursment.getNominal());
+             reimbursmentModelJsonParsing.setReimbursmentSchemaId(reimbursmentSchema.getId());
+             reimbursmentModelJsonParsing.setEmpDataId(empData.getId());
+             reimbursmentModelJsonParsing.setCreateBy(UserInfoUtil.getUserName());
+             reimbursmentModelJsonParsing.setReimbursmentDocument(reimbursment.getReimbursmentDocument());
+             reimbursmentModelJsonParsing.setCreateDate(new Date());
+             reimbursmentModelJsonParsing.setReimbursmentFileName(uploadPath);*/
             //convert reimbursmentModelJson ke json
             //String json = JsonConverter.getJson(reimbursmentModelJsonParsing, "dd-MM-yyyy");
             JsonParser parser = new JsonParser();
-    		Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
-    		JsonObject jsonObject = (JsonObject) parser.parse(gson.toJson(reimbursment));
-    		jsonObject.addProperty("reimbursmentFileName", uploadPath);
+            Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+            JsonObject jsonObject = (JsonObject) parser.parse(gson.toJson(reimbursment));
+            jsonObject.addProperty("reimbursmentFileName", uploadPath);
             //save to approval activity
             approvalActivity.setPendingData(gson.toJson(jsonObject));
             approvalActivityDao.save(approvalActivity);
@@ -444,8 +441,8 @@ public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements 
 
 //		Reimbursment reimbursment = gson.fromJson(appActivity.getPendingData(), Reimbursment.class);   	
         /*ReimbursmentModelJsonParsing reimbursment = (ReimbursmentModelJsonParsing) JsonConverter.getClassFromJson(appActivity.getPendingData(), ReimbursmentModelJsonParsing.class, "dd-MM-yyyy");
-        ReimbursmentSchema reimbursmentSchema = reimbursmentSchemaDao.getEntiyByPK(reimbursment.getReimbursmentSchemaId());
-        System.out.println(reimbursment.getClaimDate());*/
+         ReimbursmentSchema reimbursmentSchema = reimbursmentSchemaDao.getEntiyByPK(reimbursment.getReimbursmentSchemaId());
+         System.out.println(reimbursment.getClaimDate());*/
         Reimbursment reimbursment = gson.fromJson(appActivity.getPendingData(), Reimbursment.class);
         ReimbursmentSchema reimbursmentSchema = reimbursmentSchemaDao.getEntiyByPK(reimbursment.getReimbursmentSchema().getId());
         final JSONObject jsonObj = new JSONObject();
@@ -488,98 +485,95 @@ public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements 
         Map<String, Object> result = super.approvedAndCheckNextApproval(approvalActivityId, null, comment);
         ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
         if (StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")) {
-        	
-        	//parsing from json to entity
-        	Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
-			String pendingData = appActivity.getPendingData();
-			Reimbursment reimbursment = gson.fromJson(pendingData, Reimbursment.class);
-			reimbursment.setApprovalActivityNumber(appActivity.getActivityNumber()); //set approval activity number, for history approval purpose 
-			
-			//convert to UploadedFile before saving
-			UploadedFile uploadedFile = null;
-			JsonElement elReimbursment = gson.fromJson(pendingData, JsonObject.class).get("reimbursmentFileName");
-			if(!elReimbursment.isJsonNull()){
-				String reimbursmentFilePath = elReimbursment.getAsString();
-				File file = new File(reimbursmentFilePath);
-				DiskFileItem fileItem = (DiskFileItem) new DiskFileItemFactory().createItem("fileData", "text/plain", true, file.getName());
-		        InputStream input =  new FileInputStream(file);
-		        OutputStream os = fileItem.getOutputStream();
-		        int ret = input.read();
-		        while ( ret != -1 )
-		        {
-		            os.write(ret);
-		            ret = input.read();
-		        }
-		        os.flush();
-	            
-		        uploadedFile = new DefaultUploadedFile(fileItem);
-			}
-            
+
+            //parsing from json to entity
+            Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+            String pendingData = appActivity.getPendingData();
+            Reimbursment reimbursment = gson.fromJson(pendingData, Reimbursment.class);
+            reimbursment.setApprovalActivityNumber(appActivity.getActivityNumber()); //set approval activity number, for history approval purpose 
+
+            //convert to UploadedFile before saving
+            UploadedFile uploadedFile = null;
+            JsonElement elReimbursment = gson.fromJson(pendingData, JsonObject.class).get("reimbursmentFileName");
+            if (!elReimbursment.isJsonNull()) {
+                String reimbursmentFilePath = elReimbursment.getAsString();
+                File file = new File(reimbursmentFilePath);
+                DiskFileItem fileItem = (DiskFileItem) new DiskFileItemFactory().createItem("fileData", "text/plain", true, file.getName());
+                InputStream input = new FileInputStream(file);
+                OutputStream os = fileItem.getOutputStream();
+                int ret = input.read();
+                while (ret != -1) {
+                    os.write(ret);
+                    ret = input.read();
+                }
+                os.flush();
+
+                uploadedFile = new DefaultUploadedFile(fileItem);
+            }
+
             this.save(reimbursment, uploadedFile, true);
-			//saveModelJson(reimbursment, , appActivity, true);
+            //saveModelJson(reimbursment, , appActivity, true);
         }
         sendingEmailApprovalNotif(appActivity);
     }
 
-    
     /*private void saveModelJson(Reimbursment reimbursment, String fileName, ApprovalActivity appActivity, boolean isBypassApprovalChecking) throws Exception {
-        // check duplicate business travel number
-        long totalDuplicates = reimbursmentDao.getTotalByCode(reimbursment.getCode());
-        if (totalDuplicates > 0) {
-            throw new BussinessException("businesstravel.error_duplicate_business_travel_no");
-        }
+     // check duplicate business travel number
+     long totalDuplicates = reimbursmentDao.getTotalByCode(reimbursment.getCode());
+     if (totalDuplicates > 0) {
+     throw new BussinessException("businesstravel.error_duplicate_business_travel_no");
+     }
 
-        EmpData empData = empDataDao.getByEmpIdWithDetail(reimbursment.getEmpData().getId());
-        ReimbursmentSchema reimbursmentSchema = reimbursmentSchemaDao.getEntiyByPK(reimbursment.getReimbursmentSchema().getId());
-        Reimbursment reimbursment = new Reimbursment();
-        reimbursment.setClaimDate(reimbursmentModelJsonParsing.getClaimDate());
-        reimbursment.setCode(reimbursmentModelJsonParsing.getCode());
-        reimbursment.setCreatedBy(reimbursmentModelJsonParsing.getCreateBy());
-        reimbursment.setCreatedOn(reimbursmentModelJsonParsing.getCreateDate());
+     EmpData empData = empDataDao.getByEmpIdWithDetail(reimbursment.getEmpData().getId());
+     ReimbursmentSchema reimbursmentSchema = reimbursmentSchemaDao.getEntiyByPK(reimbursment.getReimbursmentSchema().getId());
+     Reimbursment reimbursment = new Reimbursment();
+     reimbursment.setClaimDate(reimbursmentModelJsonParsing.getClaimDate());
+     reimbursment.setCode(reimbursmentModelJsonParsing.getCode());
+     reimbursment.setCreatedBy(reimbursmentModelJsonParsing.getCreateBy());
+     reimbursment.setCreatedOn(reimbursmentModelJsonParsing.getCreateDate());
         
-        reimbursment.setApprovalActivityNumber(appActivity.getActivityNumber());
-        if (reimbursmentModelJsonParsing.getNominal() != null) {
-            reimbursment.setNominal(reimbursmentModelJsonParsing.getNominal());
-        }
-        if (reimbursmentModelJsonParsing.getQuantity() != null) {
-            reimbursment.setQuantity(reimbursmentModelJsonParsing.getQuantity());
-        }
-        reimbursment.setEmpData(empData);
-        reimbursment.setReimbursmentSchema(reimbursmentSchema);
-        this.reimbursmentDao.save(reimbursment);
+     reimbursment.setApprovalActivityNumber(appActivity.getActivityNumber());
+     if (reimbursmentModelJsonParsing.getNominal() != null) {
+     reimbursment.setNominal(reimbursmentModelJsonParsing.getNominal());
+     }
+     if (reimbursmentModelJsonParsing.getQuantity() != null) {
+     reimbursment.setQuantity(reimbursmentModelJsonParsing.getQuantity());
+     }
+     reimbursment.setEmpData(empData);
+     reimbursment.setReimbursmentSchema(reimbursmentSchema);
+     this.reimbursmentDao.save(reimbursment);
 
-        HrmUser requestUser = hrmUserDao.getByEmpDataId(empData.getId());
-        ApprovalActivity approvalActivity = isBypassApprovalChecking ? null : super.checkApprovalProcess(HRMConstant.BUSINESS_TRAVEL, requestUser.getUserId());
-        if (approvalActivity == null) {
-            System.out.println("masuk approval activity null");
-            reimbursment.setEmpData(empData);
-            reimbursment.setReimbursmentSchema(reimbursmentSchema);
-            reimbursment.setCreatedBy(UserInfoUtil.getUserName());
-            reimbursment.setCreatedOn(new Date());
-            if (StringUtils.isNotEmpty(fileName)) {
-                InputStream inputStream = null;
-                byte[] buffer = null;
-                File reimbursmentFileDelete = new File(fileName);
-                inputStream = new FileInputStream(fileName);
-                buffer = IOUtils.toByteArray(inputStream);
-                reimbursment.setReimbursmentDocument(buffer);
-                reimbursmentFileDelete.delete();
-            }
-            reimbursmentDao.save(reimbursment);
-        } else {
-            System.out.println("masuk approval activity gk null");
-            //convert reimbursmentModelJson ke json
-            String json = JsonConverter.getJson(reimbursmentModelJsonParsing, "dd-MM-yyyy");
-            //save to approval activity
-            approvalActivity.setPendingData(json);
-            approvalActivityDao.save(approvalActivity);
+     HrmUser requestUser = hrmUserDao.getByEmpDataId(empData.getId());
+     ApprovalActivity approvalActivity = isBypassApprovalChecking ? null : super.checkApprovalProcess(HRMConstant.BUSINESS_TRAVEL, requestUser.getUserId());
+     if (approvalActivity == null) {
+     System.out.println("masuk approval activity null");
+     reimbursment.setEmpData(empData);
+     reimbursment.setReimbursmentSchema(reimbursmentSchema);
+     reimbursment.setCreatedBy(UserInfoUtil.getUserName());
+     reimbursment.setCreatedOn(new Date());
+     if (StringUtils.isNotEmpty(fileName)) {
+     InputStream inputStream = null;
+     byte[] buffer = null;
+     File reimbursmentFileDelete = new File(fileName);
+     inputStream = new FileInputStream(fileName);
+     buffer = IOUtils.toByteArray(inputStream);
+     reimbursment.setReimbursmentDocument(buffer);
+     reimbursmentFileDelete.delete();
+     }
+     reimbursmentDao.save(reimbursment);
+     } else {
+     System.out.println("masuk approval activity gk null");
+     //convert reimbursmentModelJson ke json
+     String json = JsonConverter.getJson(reimbursmentModelJsonParsing, "dd-MM-yyyy");
+     //save to approval activity
+     approvalActivity.setPendingData(json);
+     approvalActivityDao.save(approvalActivity);
 
-            //sending email notification
-            this.sendingEmailApprovalNotif(approvalActivity);
-        }
+     //sending email notification
+     this.sendingEmailApprovalNotif(approvalActivity);
+     }
 
-    }*/
-
+     }*/
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void rejected(long approvalActivityId, String comment) throws Exception {
@@ -591,50 +585,47 @@ public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements 
              * berarti langsung insert ke database
              */
             /*ReimbursmentModelJsonParsing reimbursmentModelJsonParsing = (ReimbursmentModelJsonParsing) JsonConverter.getClassFromJson(appActivity.getPendingData(), ReimbursmentModelJsonParsing.class, "dd-MM-yyyy");
-            ReimbursmentSchema reimbursmentSchema = reimbursmentSchemaDao.getEntiyByPK(reimbursmentModelJsonParsing.getReimbursmentSchemaId());
-            Reimbursment reimbursment = new Reimbursment();
-            EmpData empData = empDataDao.getByEmpIdWithDetail(reimbursmentModelJsonParsing.getEmpDataId());
-            reimbursment.setClaimDate(reimbursmentModelJsonParsing.getClaimDate());
-            reimbursment.setCode(reimbursmentModelJsonParsing.getCode());
-            reimbursment.setCreatedBy(reimbursmentModelJsonParsing.getCreateBy());
-            reimbursment.setCreatedOn(reimbursmentModelJsonParsing.getCreateDate());
-            reimbursment.setEmpData(empData);
-            reimbursment.setApprovalActivityNumber(appActivity.getActivityNumber());
-            if (reimbursmentModelJsonParsing.getNominal() != null) {
-                reimbursment.setNominal(reimbursmentModelJsonParsing.getNominal());
+             ReimbursmentSchema reimbursmentSchema = reimbursmentSchemaDao.getEntiyByPK(reimbursmentModelJsonParsing.getReimbursmentSchemaId());
+             Reimbursment reimbursment = new Reimbursment();
+             EmpData empData = empDataDao.getByEmpIdWithDetail(reimbursmentModelJsonParsing.getEmpDataId());
+             reimbursment.setClaimDate(reimbursmentModelJsonParsing.getClaimDate());
+             reimbursment.setCode(reimbursmentModelJsonParsing.getCode());
+             reimbursment.setCreatedBy(reimbursmentModelJsonParsing.getCreateBy());
+             reimbursment.setCreatedOn(reimbursmentModelJsonParsing.getCreateDate());
+             reimbursment.setEmpData(empData);
+             reimbursment.setApprovalActivityNumber(appActivity.getActivityNumber());
+             if (reimbursmentModelJsonParsing.getNominal() != null) {
+             reimbursment.setNominal(reimbursmentModelJsonParsing.getNominal());
+             }
+             if (reimbursmentModelJsonParsing.getQuantity() != null) {
+             reimbursment.setQuantity(reimbursmentModelJsonParsing.getQuantity());
+             }
+             reimbursment.setReimbursmentSchema(reimbursmentSchema);*/
+            //parsing from json to entity
+            Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+            String pendingData = appActivity.getPendingData();
+            Reimbursment reimbursment = gson.fromJson(pendingData, Reimbursment.class);
+            reimbursment.setApprovalActivityNumber(appActivity.getActivityNumber()); //set approval activity number, for history approval purpose 
+
+            //convert to UploadedFile before saving
+            UploadedFile uploadedFile = null;
+            JsonElement elReimbursment = gson.fromJson(pendingData, JsonObject.class).get("reimbursmentFileName");
+            if (!elReimbursment.isJsonNull()) {
+                String reimbursmentFilePath = elReimbursment.getAsString();
+                File file = new File(reimbursmentFilePath);
+                DiskFileItem fileItem = (DiskFileItem) new DiskFileItemFactory().createItem("fileData", "text/plain", true, file.getName());
+                InputStream input = new FileInputStream(file);
+                OutputStream os = fileItem.getOutputStream();
+                int ret = input.read();
+                while (ret != -1) {
+                    os.write(ret);
+                    ret = input.read();
+                }
+                os.flush();
+
+                uploadedFile = new DefaultUploadedFile(fileItem);
             }
-            if (reimbursmentModelJsonParsing.getQuantity() != null) {
-                reimbursment.setQuantity(reimbursmentModelJsonParsing.getQuantity());
-            }
-            reimbursment.setReimbursmentSchema(reimbursmentSchema);*/
-        	
-        	
-        	//parsing from json to entity
-        	Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
-			String pendingData = appActivity.getPendingData();
-			Reimbursment reimbursment = gson.fromJson(pendingData, Reimbursment.class);
-			reimbursment.setApprovalActivityNumber(appActivity.getActivityNumber()); //set approval activity number, for history approval purpose 
-			
-			//convert to UploadedFile before saving
-			UploadedFile uploadedFile = null;
-			JsonElement elReimbursment = gson.fromJson(pendingData, JsonObject.class).get("reimbursmentFileName");
-			if(!elReimbursment.isJsonNull()){
-				String reimbursmentFilePath = elReimbursment.getAsString();
-				File file = new File(reimbursmentFilePath);
-				DiskFileItem fileItem = (DiskFileItem) new DiskFileItemFactory().createItem("fileData", "text/plain", true, file.getName());
-		        InputStream input =  new FileInputStream(file);
-		        OutputStream os = fileItem.getOutputStream();
-		        int ret = input.read();
-		        while ( ret != -1 )
-		        {
-		            os.write(ret);
-		            ret = input.read();
-		        }
-		        os.flush();
-	            
-		        uploadedFile = new DefaultUploadedFile(fileItem);
-			}
-			this.save(reimbursment, uploadedFile, true);
+            this.save(reimbursment, uploadedFile, true);
         }
 
         //if there is no error, then sending the email notification
@@ -653,41 +644,40 @@ public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements 
         return reimbursmentDao.getEntityByReimbursmentNoWithDetail(reimbursmentNo);
     }
 
-	@Override
-	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void diverted(long approvalActivityId) throws Exception {
-		Map<String, Object> result = super.divertedAndCheckNextApproval(approvalActivityId);
-		ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
-		if(StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")){
-			//parsing from json to entity
-        	Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
-			String pendingData = appActivity.getPendingData();
-			Reimbursment reimbursment = gson.fromJson(pendingData, Reimbursment.class);
-			reimbursment.setApprovalActivityNumber(appActivity.getActivityNumber()); //set approval activity number, for history approval purpose 
-			
-			//convert to UploadedFile before saving
-			UploadedFile uploadedFile = null;
-			JsonElement elReimbursment = gson.fromJson(pendingData, JsonObject.class).get("reimbursmentFileName");
-			if(!elReimbursment.isJsonNull()){
-				String reimbursmentFilePath = elReimbursment.getAsString();
-				File file = new File(reimbursmentFilePath);
-				DiskFileItem fileItem = (DiskFileItem) new DiskFileItemFactory().createItem("fileData", "text/plain", true, file.getName());
-		        InputStream input =  new FileInputStream(file);
-		        OutputStream os = fileItem.getOutputStream();
-		        int ret = input.read();
-		        while ( ret != -1 )
-		        {
-		            os.write(ret);
-		            ret = input.read();
-		        }
-		        os.flush();
-	            
-		        uploadedFile = new DefaultUploadedFile(fileItem);
-			}
-			this.save(reimbursment, uploadedFile, true);
-		}
-		
-		//if there is no error, then sending the email notification
-		sendingEmailApprovalNotif(appActivity);
-	}
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void diverted(long approvalActivityId) throws Exception {
+        Map<String, Object> result = super.divertedAndCheckNextApproval(approvalActivityId);
+        ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
+        if (StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")) {
+            //parsing from json to entity
+            Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+            String pendingData = appActivity.getPendingData();
+            Reimbursment reimbursment = gson.fromJson(pendingData, Reimbursment.class);
+            reimbursment.setApprovalActivityNumber(appActivity.getActivityNumber()); //set approval activity number, for history approval purpose 
+
+            //convert to UploadedFile before saving
+            UploadedFile uploadedFile = null;
+            JsonElement elReimbursment = gson.fromJson(pendingData, JsonObject.class).get("reimbursmentFileName");
+            if (!elReimbursment.isJsonNull()) {
+                String reimbursmentFilePath = elReimbursment.getAsString();
+                File file = new File(reimbursmentFilePath);
+                DiskFileItem fileItem = (DiskFileItem) new DiskFileItemFactory().createItem("fileData", "text/plain", true, file.getName());
+                InputStream input = new FileInputStream(file);
+                OutputStream os = fileItem.getOutputStream();
+                int ret = input.read();
+                while (ret != -1) {
+                    os.write(ret);
+                    ret = input.read();
+                }
+                os.flush();
+
+                uploadedFile = new DefaultUploadedFile(fileItem);
+            }
+            this.save(reimbursment, uploadedFile, true);
+        }
+
+        //if there is no error, then sending the email notification
+        sendingEmailApprovalNotif(appActivity);
+    }
 }
