@@ -18,6 +18,7 @@ import com.inkubator.hrm.service.ApprovalActivityCronService;
 import com.inkubator.hrm.service.BusinessTravelService;
 import com.inkubator.hrm.service.LoanService;
 import com.inkubator.hrm.service.ReimbursmentService;
+import com.inkubator.hrm.service.TempJadwalKaryawanService;
 
 /**
  *
@@ -33,6 +34,8 @@ public class ApprovalActivityCronServiceImpl extends BaseApprovalServiceImpl imp
 	private BusinessTravelService businessTravelService;
 	@Autowired
 	private ReimbursmentService reimbursmentService;
+	@Autowired
+	private TempJadwalKaryawanService tempJadwalKaryawanService;
 	
 	
 	@Override
@@ -65,6 +68,9 @@ public class ApprovalActivityCronServiceImpl extends BaseApprovalServiceImpl imp
 					case HRMConstant.REIMBURSEMENT:
 						reimbursmentService.approved(approvalActivity.getId(), null, null);
 						break;
+					case HRMConstant.SHIFT_SCHEDULE:
+						tempJadwalKaryawanService.approved(approvalActivity.getId(), null, null);
+						break;
 					default:
 						break;
 				}
@@ -79,6 +85,9 @@ public class ApprovalActivityCronServiceImpl extends BaseApprovalServiceImpl imp
 						break;
 					case HRMConstant.REIMBURSEMENT:
 						reimbursmentService.diverted(approvalActivity.getId());
+						break;
+					case HRMConstant.SHIFT_SCHEDULE:
+						tempJadwalKaryawanService.diverted(approvalActivity.getId());
 						break;
 					default:
 						break;

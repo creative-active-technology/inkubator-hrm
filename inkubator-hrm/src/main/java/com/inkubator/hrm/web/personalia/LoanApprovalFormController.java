@@ -37,6 +37,7 @@ public class LoanApprovalFormController extends BaseController {
     private Loan selectedLoan;
     private List<LoanPaymentDetail> loanPaymentDetails;
     private String comment;
+    private Boolean isWaitingApproval;
     private ApprovalActivity selectedApprovalActivity;
     @ManagedProperty(value = "#{loanService}")
     private LoanService loanService;
@@ -52,6 +53,8 @@ public class LoanApprovalFormController extends BaseController {
             super.initialization();
             String id = FacesUtil.getRequestParameter("execution");
             selectedApprovalActivity = approvalActivityService.getEntiyByPK(Long.parseLong(id.substring(1)));
+            isWaitingApproval = selectedApprovalActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING;
+            
             Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
 			selectedLoan =  gson.fromJson(selectedApprovalActivity.getPendingData(), Loan.class);
 			EmpData empData = empDataService.getByIdWithDetail(selectedLoan.getEmpData().getId());
@@ -72,6 +75,7 @@ public class LoanApprovalFormController extends BaseController {
         approvalActivityService = null;
         comment = null;
         empDataService = null;
+        isWaitingApproval = null;
     }   
     
 	public Loan getSelectedLoan() {
@@ -122,6 +126,14 @@ public class LoanApprovalFormController extends BaseController {
 	
 	public Boolean getIsPaginator(){
 		return loanPaymentDetails.size() > 11;
+	}
+
+	public Boolean getIsWaitingApproval() {
+		return isWaitingApproval;
+	}
+
+	public void setIsWaitingApproval(Boolean isWaitingApproval) {
+		this.isWaitingApproval = isWaitingApproval;
 	}
 
 	public String doBack() {

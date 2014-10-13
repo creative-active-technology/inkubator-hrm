@@ -412,7 +412,7 @@ public class EmpData implements java.io.Serializable {
     }
 
     @Transient
-    public String getDecryptBasicSalary() {
+    public String getBasicSalaryDecrypted() {
         String dataEncripted = basicSalary;
         String dataDecripted = AESUtil.getAESDescription(dataEncripted, HRMConstant.KEYVALUE, HRMConstant.AES_ALGO);
         return dataDecripted;

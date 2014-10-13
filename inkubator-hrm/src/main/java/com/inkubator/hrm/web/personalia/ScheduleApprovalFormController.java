@@ -5,17 +5,22 @@
  */
 package com.inkubator.hrm.web.personalia;
 
+import ch.lambdaj.Lambda;
+
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.inkubator.common.CommonUtilConstant;
 import com.inkubator.common.util.DateTimeUtil;
+import com.inkubator.common.util.JsonConverter;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.WtGroupWorking;
 import com.inkubator.hrm.service.ApprovalActivityService;
 import com.inkubator.hrm.service.EmpDataService;
+import com.inkubator.hrm.service.TempJadwalKaryawanService;
 import com.inkubator.hrm.service.WtGroupWorkingService;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
@@ -43,12 +48,9 @@ import org.primefaces.json.JSONObject;
 @ViewScoped
 public class ScheduleApprovalFormController extends BaseController {
 
-//    private Loan selectedLoan;
-//    private List<LoanPaymentDetail> loanPaymentDetails;
-//    private String comment;
     private ApprovalActivity selectedApprovalActivity;
-//    @ManagedProperty(value = "#{loanService}")
-//    private LoanService loanService;
+    @ManagedProperty(value = "#{tempJadwalKaryawanService}")
+    private TempJadwalKaryawanService tempJadwalKaryawanService;
     @ManagedProperty(value = "#{approvalActivityService}")
     private ApprovalActivityService approvalActivityService;
     @ManagedProperty(value = "#{wtGroupWorkingService}")
@@ -60,8 +62,8 @@ public class ScheduleApprovalFormController extends BaseController {
     private List<EmpData> dataToshow = new ArrayList<>();
     private WtGroupWorking selectedWtGroupWorking;
     private List<EmpData> dataToSave = new ArrayList<>();
-    private String komentar;
-    
+    private String comment;
+    private Boolean isWaitingApproval;
 
     @PostConstruct
     @Override
@@ -70,6 +72,8 @@ public class ScheduleApprovalFormController extends BaseController {
             super.initialization();
             String id = FacesUtil.getRequestParameter("execution");
             selectedApprovalActivity = approvalActivityService.getEntiyByPK(Long.parseLong(id.substring(1)));
+            isWaitingApproval = selectedApprovalActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING;
+            
             JSONObject jSONObject = new JSONObject(selectedApprovalActivity.getPendingData());
             long workingGroupId = Long.parseLong(jSONObject.getString("groupWorkingId"));
             String listEmp = jSONObject.getString("listEmpId");
@@ -103,30 +107,20 @@ public class ScheduleApprovalFormController extends BaseController {
 
     @PreDestroy
     public void cleanAndExit() {
-//    	selectedLoan =null;
-//    	loanPaymentDetails = null;
-//    	loanService = null;
         selectedApprovalActivity = null;
         approvalActivityService = null;
-//        comment = null;
-//        empDataService = null;
+        tempJadwalKaryawanService = null;
+        wtGroupWorkingService = null;
+        empDataService = null;
+        beginScheduleDate = null;
+        endScheduleDate = null;
+        dataToshow = null;
+        selectedWtGroupWorking = null;
+        dataToSave = null;
+        comment = null;
+        isWaitingApproval= null;
     }
 
-//	public Loan getSelectedLoan() {
-//		return selectedLoan;
-//	}
-//
-//	public void setSelectedLoan(Loan selectedLoan) {
-//		this.selectedLoan = selectedLoan;
-//	}
-//
-//	public List<LoanPaymentDetail> getLoanPaymentDetails() {
-//		return loanPaymentDetails;
-//	}
-//
-//	public void setLoanPaymentDetails(List<LoanPaymentDetail> loanPaymentDetails) {
-//		this.loanPaymentDetails = loanPaymentDetails;
-//	}
     public ApprovalActivity getSelectedApprovalActivity() {
         return selectedApprovalActivity;
     }
@@ -136,87 +130,29 @@ public class ScheduleApprovalFormController extends BaseController {
         this.selectedApprovalActivity = selectedApprovalActivity;
     }
 
-//	public void setLoanService(LoanService loanService) {
-//		this.loanService = loanService;
-//	}
     public void setApprovalActivityService(
             ApprovalActivityService approvalActivityService) {
         this.approvalActivityService = approvalActivityService;
     }
-//
-//	public String getComment() {
-//		return comment;
-//	}
-//
-//	public void setComment(String comment) {
-//		this.comment = comment;
-//	}
-//
 
-    public void setEmpDataService(EmpDataService empDataService) {
+    public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+	public void setTempJadwalKaryawanService(
+			TempJadwalKaryawanService tempJadwalKaryawanService) {
+		this.tempJadwalKaryawanService = tempJadwalKaryawanService;
+	}
+
+	public void setEmpDataService(EmpDataService empDataService) {
         this.empDataService = empDataService;
     }
-//	
-//	public Boolean getIsPaginator(){
-//		return loanPaymentDetails.size() > 11;
-//	}
-
-    public String doBack() {
-        return "home";
-    }
-
-    public String doApproved() {
-        try {
-//    		loanService.approved(selectedApprovalActivity.getId(), null, comment);
-            MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.approval_info", "global.approved_successfully",
-                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-            return "/protected/home.htm?faces-redirect=true";
-        } catch (Exception e) {
-            LOGGER.error("Error when approved process ", e);
-        }
-        return null;
-    }
-
-    public String doRejected() {
-        try {
-//			loanService.rejected(selectedApprovalActivity.getId(), comment);
-            MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.approval_info", "global.rejected_successfully",
-                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-            return "/protected/home.htm?faces-redirect=true";
-        } catch (Exception e) {
-            LOGGER.error("Error when rejected process ", e);
-        }
-        return null;
-    }
-
-    public void setWtGroupWorkingService(WtGroupWorkingService wtGroupWorkingService) {
-        this.wtGroupWorkingService = wtGroupWorkingService;
-    }
-
-    public WtGroupWorking getSelectedWtGroupWorking() {
-        return selectedWtGroupWorking;
-    }
-
-    public void setSelectedWtGroupWorking(WtGroupWorking selectedWtGroupWorking) {
-        this.selectedWtGroupWorking = selectedWtGroupWorking;
-    }
-
-    public void doDetail() {
-        List<String> values = new ArrayList<>();
-        values.add(String.valueOf(selectedApprovalActivity.getId()));
-        Map<String, List<String>> dataToSend = new HashMap<>();
-        dataToSend.put("id", values);
-        Map<String, Object> options = new HashMap<>();
-        options.put("modal", false);
-        options.put("draggable", true);
-        options.put("resizable", false);
-        options.put("contentWidth", 800);
-        options.put("contentHeight", 500);
-        RequestContext.getCurrentInstance().openDialog("schedule_shift_detail", options, dataToSend);
-
-    }
-
-    public Date getBeginScheduleDate() {
+	
+	public Date getBeginScheduleDate() {
         return beginScheduleDate;
     }
 
@@ -247,16 +183,74 @@ public class ScheduleApprovalFormController extends BaseController {
     public void setDataToSave(List<EmpData> dataToSave) {
         this.dataToSave = dataToSave;
     }
-
-    public String getKomentar() {
-        return komentar;
+    
+    public void setWtGroupWorkingService(WtGroupWorkingService wtGroupWorkingService) {
+        this.wtGroupWorkingService = wtGroupWorkingService;
     }
 
-    public void setKomentar(String komentar) {
-        this.komentar = komentar;
+    public WtGroupWorking getSelectedWtGroupWorking() {
+        return selectedWtGroupWorking;
     }
 
-   
+    public void setSelectedWtGroupWorking(WtGroupWorking selectedWtGroupWorking) {
+        this.selectedWtGroupWorking = selectedWtGroupWorking;
+    }
+    
+    public Boolean getIsWaitingApproval() {
+		return isWaitingApproval;
+	}
 
+	public void setIsWaitingApproval(Boolean isWaitingApproval) {
+		this.isWaitingApproval = isWaitingApproval;
+	}
+
+	public String doBack() {
+        return "home";
+    }
+
+    public String doApproved() {
+        try {        	
+    		List<Long> listEmpId = Lambda.extract(dataToSave, Lambda.on(EmpData.class).getId());
+    		String dataToJson = JsonConverter.getJson(listEmpId.toArray(new Long[listEmpId.size()]),"dd-MMMM-yyyy");
+        	
+    		JsonObject jsonObject = (JsonObject) JsonConverter.getClassFromJson(selectedApprovalActivity.getPendingData(), JsonObject.class, "dd-MMMM-yyyy");
+    		jsonObject.addProperty("listEmpId", dataToJson);
+    		
+    		tempJadwalKaryawanService.approved(selectedApprovalActivity.getId(), jsonObject.toString(), comment);
+            MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.approval_info", "global.approved_successfully",
+                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            return "/protected/home.htm?faces-redirect=true";
+        } catch (Exception e) {
+            LOGGER.error("Error when approved process ", e);
+        }
+        return null;
+    }
+
+    public String doRejected() {
+        try {
+			tempJadwalKaryawanService.rejected(selectedApprovalActivity.getId(), comment);
+            MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.approval_info", "global.rejected_successfully",
+                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            return "/protected/home.htm?faces-redirect=true";
+        } catch (Exception e) {
+            LOGGER.error("Error when rejected process ", e);
+        }
+        return null;
+    }
+
+    public void doDetail() {
+        List<String> values = new ArrayList<>();
+        values.add(String.valueOf(selectedApprovalActivity.getId()));
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("id", values);
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", false);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 800);
+        options.put("contentHeight", 500);
+        RequestContext.getCurrentInstance().openDialog("schedule_shift_detail", options, dataToSend);
+
+    }
     
 }

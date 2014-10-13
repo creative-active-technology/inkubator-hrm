@@ -83,21 +83,19 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
              }
              }*/
 //            toSend.add("deni.arianto24@yahoo.com");
-            toSend.add("guntur@incubatechnology.com");
-//            toSentCC.add("rizkykojek@gmail.com");
+//            toSend.add("guntur@incubatechnology.com");
+            toSentCC.add("rizkykojek@gmail.com");
             vtm.setTo(toSend.toArray(new String[toSend.size()]));
             vtm.setCc(toSentCC.toArray(new String[toSentCC.size()]));
             vtm.setBcc(toSentBCC.toArray(new String[toSentBCC.size()]));
 
             Map maptoSend = new HashMap();
             if (StringUtils.equals(locale, "en")) {
-                vtm.setSubject("Permohonan Perjalanan Dinas");
                 //not yet implemented
 
             } else {
                 if (Objects.equals(appActivity.getApprovalStatus(), HRMConstant.APPROVAL_STATUS_WAITING)) {
                     //configure email parameter based on approval name
-                    System.out.println(appActivity.getApprovalDefinition().getName() + "===============");
                     switch (appActivity.getApprovalDefinition().getName()) {
                         case HRMConstant.BUSINESS_TRAVEL:
                             vtm.setSubject("Permohonan Perjalanan Dinas");
@@ -142,6 +140,16 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                             maptoSend.put("totalNominalInstallment", jsonObject.get("totalNominalInstallment").getAsString());
                             break;
 
+                        case HRMConstant.SHIFT_SCHEDULE:
+                            vtm.setSubject("Permohonan Perubahan Jadwal Kerja Karyawan");
+                        	vtm.setTemplatePath("email_shift_schedule_waiting_approval.vm");
+                        	maptoSend.put("approverName", approverUser.getEmpData().getBioData().getFullName());
+                            maptoSend.put("requesterName", requesterUser.getEmpData().getBioData().getFullName());
+                            maptoSend.put("nik", requesterUser.getEmpData().getNik());
+                            maptoSend.put("jabatan", requesterUser.getEmpData().getJabatanByJabatanId().getName());
+                            maptoSend.put("proposeDate", jsonObject.get("proposeDate").getAsString());
+                            break;
+                            
                         default:
                             break;
                     }
@@ -161,11 +169,7 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                             maptoSend.put("end", jsonObject.get("endDate").getAsString());
                             maptoSend.put("description", jsonObject.get("description").getAsString());
                             maptoSend.put("totalAmount", jsonObject.get("totalAmount").getAsString());
-                            if (appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_APPROVED) {
-                                maptoSend.put("statusDesc", "Permohonan Diterima");
-                            } else if (appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_REJECTED) {
-                                maptoSend.put("statusDesc", "Permohonan Ditolak");
-                            }
+                            maptoSend.put("statusDesc", getStatusDesc(appActivity.getApprovalStatus(), locale));
                             break;
 
                         case HRMConstant.REIMBURSEMENT:
@@ -178,11 +182,7 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                             maptoSend.put("proposeDate", jsonObject.get("proposeDate").getAsString());
                             maptoSend.put("nominalOrUnit", jsonObject.get("nominalOrUnit").getAsString());
                             maptoSend.put("reimbursmentNo", jsonObject.get("reimbursmentNo").getAsString());
-                            if (appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_APPROVED) {
-                                maptoSend.put("statusDesc", "Permohonan Diterima");
-                            } else if (appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_REJECTED) {
-                                maptoSend.put("statusDesc", "Permohonan Ditolak");
-                            }
+                            maptoSend.put("statusDesc", getStatusDesc(appActivity.getApprovalStatus(), locale));
                             break;
 
                         case HRMConstant.LOAN:
@@ -197,12 +197,17 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                             maptoSend.put("nominalInstallment", jsonObject.get("nominalInstallment").getAsString());
                             maptoSend.put("interestInstallment", jsonObject.get("interestInstallment").getAsString());
                             maptoSend.put("totalNominalInstallment", jsonObject.get("totalNominalInstallment").getAsString());
-                            if (appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_APPROVED) {
-                                maptoSend.put("statusDesc", "Permohonan Diterima");
-                            } else if (appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_REJECTED) {
-                                maptoSend.put("statusDesc", "Permohonan Ditolak");
-                            }
+                            maptoSend.put("statusDesc", getStatusDesc(appActivity.getApprovalStatus(), locale));
                             break;
+                            
+                        case HRMConstant.SHIFT_SCHEDULE:
+                        	vtm.setSubject("Permohonan Perubahan Jadwal Kerja Karyawan");
+                        	vtm.setTemplatePath("email_shift_schedule_approved_or_rejected_approval.vm");
+                            maptoSend.put("requesterName", requesterUser.getEmpData().getBioData().getFullName());
+                            maptoSend.put("nik", requesterUser.getEmpData().getNik());
+                            maptoSend.put("proposeDate", jsonObject.get("proposeDate").getAsString());
+                            maptoSend.put("statusDesc", getStatusDesc(appActivity.getApprovalStatus(), locale));
+                            break;   
 
                         default:
                             break;
@@ -264,6 +269,26 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
 
     public void setOwnerAdministrator(String ownerAdministrator) {
         this.ownerAdministrator = ownerAdministrator;
+    }
+    
+    private String getStatusDesc(Integer approvalStatus, String locale){
+    	String statusDesc = StringUtils.EMPTY;
+    	
+    	if(StringUtils.equals(locale, "en")){
+    		if (approvalStatus == HRMConstant.APPROVAL_STATUS_APPROVED) {
+                statusDesc = "Request is approved";
+            } else if (approvalStatus == HRMConstant.APPROVAL_STATUS_REJECTED) {
+            	statusDesc = "Request is rejected";
+            }
+    	} else { 
+    		if (approvalStatus == HRMConstant.APPROVAL_STATUS_APPROVED) {
+                statusDesc = "Permohonan Disetujui";
+            } else if (approvalStatus == HRMConstant.APPROVAL_STATUS_REJECTED) {
+            	statusDesc = "Permohonan Ditolak";
+            }
+    	}
+    	
+    	return statusDesc;
     }
 
 }
