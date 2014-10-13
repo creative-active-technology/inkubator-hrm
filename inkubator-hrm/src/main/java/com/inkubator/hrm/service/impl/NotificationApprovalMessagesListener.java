@@ -83,7 +83,7 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
              }
              }*/
 //            toSend.add("deni.arianto24@yahoo.com");
-//            toSend.add("guntur@incubatechnology.com");
+            toSend.add("guntur@incubatechnology.com");
             toSentCC.add("rizkykojek@gmail.com");
             vtm.setTo(toSend.toArray(new String[toSend.size()]));
             vtm.setCc(toSentCC.toArray(new String[toSentCC.size()]));
