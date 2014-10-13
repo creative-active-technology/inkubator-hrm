@@ -12,6 +12,8 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.springframework.webflow.execution.RequestContext;
 
+import ch.lambdaj.Lambda;
+
 import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
@@ -115,6 +117,23 @@ public class BusinessTravelFormController implements Serializable{
 		}
 		
 		return model;
+	}
+	
+	public void doCalculateQuantity(RequestContext context){
+		BusinessTravelModel model = (BusinessTravelModel) context.getFlowScope().get("businessTravelModel");
+		if(model.getBusinessTravelComponents().size() > 0){
+			try {
+				//get default quantity based on range start and end date
+				int defaultQuantity = DateTimeUtil.getTotalDay(model.getStart(), model.getEnd());
+				
+				List<BusinessTravelComponent> businessTravelComponents = model.getBusinessTravelComponents();
+				Lambda.forEach(businessTravelComponents).setQuantity(defaultQuantity);
+				model.setBusinessTravelComponents(businessTravelComponents);
+				context.getFlowScope().put("businessTravelModel", model);
+			} catch (Exception ex) {
+				LOGGER.error("Error", ex);
+			}
+		}
 	}
 	
 	public String doSave(RequestContext context) {

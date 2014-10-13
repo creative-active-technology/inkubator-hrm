@@ -109,7 +109,9 @@
 	                                <p:outputLabel for="startId" value="#{appmsg['businesstravel.start']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                                <p:calendar id="startId" required="true" pattern="dd-MMMM-yyyy" value="#{businessTravelModel.start}"/>
+	                                <p:calendar id="startId" required="true" pattern="dd-MMMM-yyyy" value="#{businessTravelModel.start}" >
+	                                	<p:ajax event="dateSelect" listener="#{businessTravelFormController.doCalculateQuantity(flowRequestContext)}"/>
+	                                </p:calendar>
 	                                <p:message for="startId"/>
 	                            </p:column>
 	                        </p:row>
@@ -118,7 +120,9 @@
 	                                <p:outputLabel for="endId" value="#{appmsg['businesstravel.end']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                                <p:calendar id="endId" required="true" pattern="dd-MMMM-yyyy" value="#{businessTravelModel.end}"/>
+	                                <p:calendar id="endId" required="true" pattern="dd-MMMM-yyyy" value="#{businessTravelModel.end}">
+	                                	<p:ajax event="dateSelect" listener="#{businessTravelFormController.doCalculateQuantity(flowRequestContext)}"/>
+	                                </p:calendar>
 	                                <p:message for="endId"/>
 	                            </p:column>
 	                        </p:row> 
