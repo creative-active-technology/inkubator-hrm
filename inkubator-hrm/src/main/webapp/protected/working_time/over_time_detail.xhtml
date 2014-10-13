@@ -13,113 +13,166 @@
     <h:body>
         <ui:composition template="/templates/master_layout_full.xhtml">
             <ui:define name="windowTitle">
-				Home
+                Home
             </ui:define>
             <ui:define name="center">               
                 <h:form id="formLeaveDetailId">
-                	<div id="box_bg" style="margin: 10px">
-	                    <h:panelGrid columns="2">
-	                        <p:graphicImage library="images" name="overtime.png" height="36" width="36" />
-	                        <h:panelGroup layout="block">
-	                            <h:panelGrid>
-	                                <p:outputLabel value="#{appmsg['overtime.detail_overtime']}" styleClass="header_big" />
-	                                <p:outputLabel value="#{appmsg['overtime.data_of_overtime_from_worktime']}" styleClass="header_small_no_bold" />
-	                            </h:panelGrid>
-	                        </h:panelGroup>
-	                    </h:panelGrid>
-	                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
-	                    <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px">
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['overtime.overtime_code']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-                                        <p:outputLabel value="#{overTimeDetailController.selectedWtOverTime.code}"/>
-	                            </p:column>
-	                        </p:row>   
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['overtime.overtime_name']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{overTimeDetailController.selectedWtOverTime.name}"/>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{overTimeDetailController.selectedWtOverTime.description}"/>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['overtime.overtime_minimum']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{overTimeDetailController.selectedWtOverTime.minimumTime} #{appmsg['global.satuan_jam']}"/>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['overtime.overtime_maximum']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{overTimeDetailController.selectedWtOverTime.maximumTime} #{appmsg['global.satuan_jam']}"/>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['overtime.start_time']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{overTimeDetailController.selectedWtOverTime.startTimeFactor}"/>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['overtime.end_time']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{overTimeDetailController.selectedWtOverTime.finishTimeFactor}"/>                         
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['overtime.overtime_fullfilment']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{overTimeDetailController.selectedWtOverTime.otRounding}"/>
-	                            </p:column>
-	                        </p:row>  
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['overtime.calculation_of_overtime']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                                <p:outputLabel value="#{overTimeDetailController.selectedWtOverTime.OTCalculationAsString}">
-	                            	</p:outputLabel>                             
-	                            </p:column>
-	                        </p:row>
-	                        
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['overtime.value_overtime']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                                <p:outputLabel value="#{overTimeDetailController.selectedWtOverTime.valuePrice}"/>  	                                
-	                            </p:column>
-	                        </p:row>
-	                                              
-	                 	</p:panelGrid>	                    
-	                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
-	                    <div style="margin-bottom: 5px">
-	                    	<p:commandButton value="#{appmsg['global.edit']}" icon="ui-icon-zoomin" title="#{appmsg['global.edit']}" action="#{overTimeDetailController.doUpdate()}" immediate="true"
-                                			 style="margin-right: 5px" styleClass="label_button"/>
-	                        <p:commandButton value="#{appmsg['global.back']}" icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{overTimeDetailController.doBack()}" immediate="true"
-	                                      	 styleClass="label_button"/>
-	                    </div>
+                    <div id="box_bg" style="margin: 10px">
+                        <h:panelGrid columns="2">
+                            <p:graphicImage library="images" name="overtime.png" height="36" width="36" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="#{appmsg['overtime.detail_overtime']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['overtime.data_of_overtime_from_worktime']}" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+                        <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px">
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['overtime.overtime_code']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{overTimeDetailController.selectedWtOverTime.code}"/>
+                                </p:column>
+                            </p:row>   
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['overtime.overtime_name']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{overTimeDetailController.selectedWtOverTime.name}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{overTimeDetailController.selectedWtOverTime.description}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['overtime.overtime_minimum']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{overTimeDetailController.selectedWtOverTime.minimumTime} #{appmsg['global.satuan_jam']}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['overtime.overtime_maximum']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{overTimeDetailController.selectedWtOverTime.maximumTime} #{appmsg['global.satuan_jam']}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['overtime.start_time']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{overTimeDetailController.selectedWtOverTime.startTimeFactor}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['overtime.end_time']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{overTimeDetailController.selectedWtOverTime.finishTimeFactor}"/>                         
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['overtime.overtime_fullfilment']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{overTimeDetailController.selectedWtOverTime.otRounding}"/>
+                                </p:column>
+                            </p:row>  
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['overtime.calculation_of_overtime']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{overTimeDetailController.selectedWtOverTime.OTCalculationAsString}">
+                                    </p:outputLabel>                             
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['overtime.value_overtime']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{overTimeDetailController.selectedWtOverTime.valuePrice}"/>  	                                
+                                </p:column>
+                            </p:row>
+
+                        </p:panelGrid>	                    
+                        <p:separator/>
+
+                        <p:dataTable  var="approvalDefinitionData"  value="#{overTimeDetailController.selectedApprovalDefinitionOT}" lazy="true" paginator="false" 
+                                      id="tableApprovalDevId" style="margin-top: 10px;margin-bottom: 10px" rowIndexVar="no">
+                            <p:column style="text-align: center;width: 25px">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"  />
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['approvaldefinition.approval_name']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{approvalDefinitionData.approvalDefinition.name}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['approvaldefinition.specific_approval']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{approvalDefinitionData.approvalDefinition.specificName}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['approvaldefinition.process_name']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{approvalDefinitionData.approvalDefinition.processType}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['approvaldefinition.approver_type']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{approvalDefinitionData.approvalDefinition.approverType}"/>
+                            </p:column>
+                            <p:column style="text-align: center">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['approvaldefinition.sequence_approval']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{approvalDefinitionData.approvalDefinition.sequence}"/>
+                            </p:column>
+                            <p:column style="text-align: center">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['approvaldefinition.min_approve']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{approvalDefinitionData.approvalDefinition.minApprover}"/>
+                            </p:column>
+                            <p:column style="text-align: center">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['approvaldefinition.min_reject']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{approvalDefinitionData.approvalDefinition.minRejector}"/>
+                            </p:column>
+                        </p:dataTable>
+                        <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+                        <div style="margin-bottom: 5px">
+                            <p:commandButton value="#{appmsg['global.edit']}" icon="ui-icon-zoomin" title="#{appmsg['global.edit']}" action="#{overTimeDetailController.doUpdate()}" immediate="true"
+                                             style="margin-right: 5px" styleClass="label_button"/>
+                            <p:commandButton value="#{appmsg['global.back']}" icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{overTimeDetailController.doBack()}" immediate="true"
+                                             styleClass="label_button"/>
+                        </div>
                     </div>
                 </h:form>
             </ui:define>

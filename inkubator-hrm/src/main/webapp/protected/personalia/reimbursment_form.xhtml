@@ -130,7 +130,7 @@
                                            dragDropSupport="true" disabled="#{reimbursmentFormController.isUpload}" multiple="false" update="fotoNameId" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/> 
                                 <p:outputLabel value="#{appmsg['global.file_name']}"/>
                                 <p:outputLabel value=":" style="margin-left: 5px;margin-right: 5px"/>
-                                <p:outputLabel value="#{reimbursmentFormController.fotoFileName}" id="fotoNameId"/>
+                                <p:outputLabel value="#{reimbursmentFormController.model.reimbursmentFileName}" id="fotoNameId"/>
                             </p:column>
                         </p:row>
                         </p:panelGrid>

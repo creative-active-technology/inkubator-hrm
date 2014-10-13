@@ -10,6 +10,9 @@ import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.dao.RiwayatAksesDao;
 import com.inkubator.hrm.entity.RiwayatAkses;
 import com.inkubator.hrm.service.RiwayatAksesService;
+import com.inkubator.hrm.web.model.RiwayatAksesModel;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.jms.JMSException;
 import javax.jms.Message;
@@ -212,12 +215,35 @@ public class RiwayatAksesServiceImpl extends IServiceImpl implements RiwayatAkse
         });
     }
 
- 
-
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<RiwayatAkses> getDataByUserId(String userID, int firstResult, int maxResults, Order order) throws Exception {
-       return this.riwayatAksesDao.getDataByUserId(userID, firstResult, maxResults, order);
+        return this.riwayatAksesDao.getDataByUserId(userID, firstResult, maxResults, order);
     }
 
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<RiwayatAksesModel> getDataByUserIdWithModel(String userID, int firstResult, int maxResults, Order order) throws Exception {
+        List<RiwayatAkses> listRiwayatAkses = this.riwayatAksesDao.getDataByUserId(userID, firstResult, maxResults, order);
+        RiwayatAksesModel modelView;
+        List<RiwayatAksesModel> listRiwayatAksesView = new ArrayList<RiwayatAksesModel>();
+        if (listRiwayatAkses.isEmpty()) {
+            for (int a = 0; a < 4; a++) {
+                modelView = new RiwayatAksesModel();
+                modelView.setDateAkses(new Date());
+                modelView.setName("Home");
+                listRiwayatAksesView.add(modelView);
+            }
+            
+        }else{
+            for (RiwayatAkses riwayatAkses : listRiwayatAkses) {
+                modelView = new RiwayatAksesModel();
+                modelView.setName(riwayatAkses.getName());
+                modelView.setDateAkses(riwayatAkses.getDateAccess());
+                listRiwayatAksesView.add(modelView);
+            }
+        }
+        
+        return listRiwayatAksesView;
+    }
 }
