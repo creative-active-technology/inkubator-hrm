@@ -65,7 +65,8 @@ public class Leave implements Serializable {
     private Date updatedOn;
     private Set<LeaveScheme> leaveSchemes = new HashSet<LeaveScheme>(0);
     private Set<ApprovalDefinitionLeave> approvalDefinitionLeaves = new HashSet<ApprovalDefinitionLeave>(0);
-     private Set<LeaveDistribution> leaveDistributions = new HashSet<>(0);
+    private Set<LeaveDistribution> leaveDistributions = new HashSet<>(0);
+    private Set<LeaveImplementation> leaveImplementations = new HashSet<LeaveImplementation>(0);
     
     public Leave(){
     	
@@ -351,6 +352,25 @@ public class Leave implements Serializable {
 		this.approvalDefinitionLeaves = approvalDefinitionLeaves;
 	}
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "leave")
+    public Set<LeaveDistribution> getLeaveDistributions() {
+        return leaveDistributions;
+    }
+
+    public void setLeaveDistributions(Set<LeaveDistribution> leaveDistributions) {
+        this.leaveDistributions = leaveDistributions;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "leave")
+	public Set<LeaveImplementation> getLeaveImplementations() {
+		return leaveImplementations;
+	}
+
+	public void setLeaveImplementations(
+			Set<LeaveImplementation> leaveImplementations) {
+		this.leaveImplementations = leaveImplementations;
+	}
+    
 	@Transient
     public String getDayTypeAsLabel(){
 		String dayTypeAsLabel = StringUtils.EMPTY;
@@ -414,15 +434,6 @@ public class Leave implements Serializable {
 			endOfPeriodAsLabel = messages.getString("leave.rest_of_leave");
 		}
     	return endOfPeriodAsLabel;
-    }
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "leave")
-    public Set<LeaveDistribution> getLeaveDistributions() {
-        return leaveDistributions;
-    }
-
-    public void setLeaveDistributions(Set<LeaveDistribution> leaveDistributions) {
-        this.leaveDistributions = leaveDistributions;
     }
     
     
