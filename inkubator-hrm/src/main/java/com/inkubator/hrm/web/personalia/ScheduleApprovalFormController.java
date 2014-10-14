@@ -6,7 +6,6 @@
 package com.inkubator.hrm.web.personalia;
 
 import ch.lambdaj.Lambda;
-
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -73,7 +72,7 @@ public class ScheduleApprovalFormController extends BaseController {
             String id = FacesUtil.getRequestParameter("execution");
             selectedApprovalActivity = approvalActivityService.getEntiyByPK(Long.parseLong(id.substring(1)));
             isWaitingApproval = selectedApprovalActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING;
-            
+
             JSONObject jSONObject = new JSONObject(selectedApprovalActivity.getPendingData());
             long workingGroupId = Long.parseLong(jSONObject.getString("groupWorkingId"));
             String listEmp = jSONObject.getString("listEmpId");
@@ -118,7 +117,7 @@ public class ScheduleApprovalFormController extends BaseController {
         selectedWtGroupWorking = null;
         dataToSave = null;
         comment = null;
-        isWaitingApproval= null;
+        isWaitingApproval = null;
     }
 
     public ApprovalActivity getSelectedApprovalActivity() {
@@ -136,23 +135,23 @@ public class ScheduleApprovalFormController extends BaseController {
     }
 
     public String getComment() {
-		return comment;
-	}
+        return comment;
+    }
 
-	public void setComment(String comment) {
-		this.comment = comment;
-	}
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
 
-	public void setTempJadwalKaryawanService(
-			TempJadwalKaryawanService tempJadwalKaryawanService) {
-		this.tempJadwalKaryawanService = tempJadwalKaryawanService;
-	}
+    public void setTempJadwalKaryawanService(
+            TempJadwalKaryawanService tempJadwalKaryawanService) {
+        this.tempJadwalKaryawanService = tempJadwalKaryawanService;
+    }
 
-	public void setEmpDataService(EmpDataService empDataService) {
+    public void setEmpDataService(EmpDataService empDataService) {
         this.empDataService = empDataService;
     }
-	
-	public Date getBeginScheduleDate() {
+
+    public Date getBeginScheduleDate() {
         return beginScheduleDate;
     }
 
@@ -183,7 +182,7 @@ public class ScheduleApprovalFormController extends BaseController {
     public void setDataToSave(List<EmpData> dataToSave) {
         this.dataToSave = dataToSave;
     }
-    
+
     public void setWtGroupWorkingService(WtGroupWorkingService wtGroupWorkingService) {
         this.wtGroupWorkingService = wtGroupWorkingService;
     }
@@ -195,28 +194,28 @@ public class ScheduleApprovalFormController extends BaseController {
     public void setSelectedWtGroupWorking(WtGroupWorking selectedWtGroupWorking) {
         this.selectedWtGroupWorking = selectedWtGroupWorking;
     }
-    
+
     public Boolean getIsWaitingApproval() {
-		return isWaitingApproval;
-	}
+        return isWaitingApproval;
+    }
 
-	public void setIsWaitingApproval(Boolean isWaitingApproval) {
-		this.isWaitingApproval = isWaitingApproval;
-	}
+    public void setIsWaitingApproval(Boolean isWaitingApproval) {
+        this.isWaitingApproval = isWaitingApproval;
+    }
 
-	public String doBack() {
-        return "home";
+    public String doBack() {
+        return "/protected/home.htm?faces-redirect=true";
     }
 
     public String doApproved() {
-        try {        	
-    		List<Long> listEmpId = Lambda.extract(dataToSave, Lambda.on(EmpData.class).getId());
-    		String dataToJson = JsonConverter.getJson(listEmpId.toArray(new Long[listEmpId.size()]),"dd-MMMM-yyyy");
-        	
-    		JsonObject jsonObject = (JsonObject) JsonConverter.getClassFromJson(selectedApprovalActivity.getPendingData(), JsonObject.class, "dd-MMMM-yyyy");
-    		jsonObject.addProperty("listEmpId", dataToJson);
-    		
-    		tempJadwalKaryawanService.approved(selectedApprovalActivity.getId(), jsonObject.toString(), comment);
+        try {
+            List<Long> listEmpId = Lambda.extract(dataToSave, Lambda.on(EmpData.class).getId());
+            String dataToJson = JsonConverter.getJson(listEmpId.toArray(new Long[listEmpId.size()]), "dd-MMMM-yyyy");
+
+            JsonObject jsonObject = (JsonObject) JsonConverter.getClassFromJson(selectedApprovalActivity.getPendingData(), JsonObject.class, "dd-MMMM-yyyy");
+            jsonObject.addProperty("listEmpId", dataToJson);
+
+            tempJadwalKaryawanService.approved(selectedApprovalActivity.getId(), jsonObject.toString(), comment);
             MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.approval_info", "global.approved_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             return "/protected/home.htm?faces-redirect=true";
@@ -228,7 +227,7 @@ public class ScheduleApprovalFormController extends BaseController {
 
     public String doRejected() {
         try {
-			tempJadwalKaryawanService.rejected(selectedApprovalActivity.getId(), comment);
+            tempJadwalKaryawanService.rejected(selectedApprovalActivity.getId(), comment);
             MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.approval_info", "global.rejected_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             return "/protected/home.htm?faces-redirect=true";
@@ -252,5 +251,5 @@ public class ScheduleApprovalFormController extends BaseController {
         RequestContext.getCurrentInstance().openDialog("schedule_shift_detail", options, dataToSend);
 
     }
-    
+
 }

@@ -54,12 +54,12 @@ public class LoanApprovalFormController extends BaseController {
             String id = FacesUtil.getRequestParameter("execution");
             selectedApprovalActivity = approvalActivityService.getEntiyByPK(Long.parseLong(id.substring(1)));
             isWaitingApproval = selectedApprovalActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING;
-            
+
             Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
-			selectedLoan =  gson.fromJson(selectedApprovalActivity.getPendingData(), Loan.class);
-			EmpData empData = empDataService.getByIdWithDetail(selectedLoan.getEmpData().getId());
-			selectedLoan.setEmpData(empData);
-			loanPaymentDetails = loanService.getAllDataLoanPaymentDetails(selectedLoan.getInterestRate(), selectedLoan.getTermin(), selectedLoan.getLoanPaymentDate(), selectedLoan.getNominalPrincipal(), selectedLoan.getTypeOfInterest());
+            selectedLoan = gson.fromJson(selectedApprovalActivity.getPendingData(), Loan.class);
+            EmpData empData = empDataService.getByIdWithDetail(selectedLoan.getEmpData().getId());
+            selectedLoan.setEmpData(empData);
+            loanPaymentDetails = loanService.getAllDataLoanPaymentDetails(selectedLoan.getInterestRate(), selectedLoan.getTermin(), selectedLoan.getLoanPaymentDate(), selectedLoan.getNominalPrincipal(), selectedLoan.getTypeOfInterest());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
 
@@ -68,100 +68,100 @@ public class LoanApprovalFormController extends BaseController {
 
     @PreDestroy
     public void cleanAndExit() {
-    	selectedLoan =null;
-    	loanPaymentDetails = null;
-    	loanService = null;
+        selectedLoan = null;
+        loanPaymentDetails = null;
+        loanService = null;
         selectedApprovalActivity = null;
         approvalActivityService = null;
         comment = null;
         empDataService = null;
         isWaitingApproval = null;
-    }   
-    
-	public Loan getSelectedLoan() {
-		return selectedLoan;
-	}
-
-	public void setSelectedLoan(Loan selectedLoan) {
-		this.selectedLoan = selectedLoan;
-	}
-
-	public List<LoanPaymentDetail> getLoanPaymentDetails() {
-		return loanPaymentDetails;
-	}
-
-	public void setLoanPaymentDetails(List<LoanPaymentDetail> loanPaymentDetails) {
-		this.loanPaymentDetails = loanPaymentDetails;
-	}
-
-	public ApprovalActivity getSelectedApprovalActivity() {
-		return selectedApprovalActivity;
-	}
-
-	public void setSelectedApprovalActivity(
-			ApprovalActivity selectedApprovalActivity) {
-		this.selectedApprovalActivity = selectedApprovalActivity;
-	}
-
-	public void setLoanService(LoanService loanService) {
-		this.loanService = loanService;
-	}
-
-	public void setApprovalActivityService(
-			ApprovalActivityService approvalActivityService) {
-		this.approvalActivityService = approvalActivityService;
-	}
-
-	public String getComment() {
-		return comment;
-	}
-
-	public void setComment(String comment) {
-		this.comment = comment;
-	}
-
-	public void setEmpDataService(EmpDataService empDataService) {
-		this.empDataService = empDataService;
-	}
-	
-	public Boolean getIsPaginator(){
-		return loanPaymentDetails.size() > 11;
-	}
-
-	public Boolean getIsWaitingApproval() {
-		return isWaitingApproval;
-	}
-
-	public void setIsWaitingApproval(Boolean isWaitingApproval) {
-		this.isWaitingApproval = isWaitingApproval;
-	}
-
-	public String doBack() {
-        return "home";
     }
 
-	public String doApproved() {
-    	try {
-    		loanService.approved(selectedApprovalActivity.getId(), null, comment);
-			MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.approval_info", "global.approved_successfully",
-                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-			return "/protected/home.htm?faces-redirect=true";
-		} catch (Exception e) {
-			LOGGER.error("Error when approved process ", e);
-		}
-    	return null;
+    public Loan getSelectedLoan() {
+        return selectedLoan;
     }
-	
-	public String doRejected() {
-		try {
-			loanService.rejected(selectedApprovalActivity.getId(), comment);
-			MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.approval_info", "global.rejected_successfully",
+
+    public void setSelectedLoan(Loan selectedLoan) {
+        this.selectedLoan = selectedLoan;
+    }
+
+    public List<LoanPaymentDetail> getLoanPaymentDetails() {
+        return loanPaymentDetails;
+    }
+
+    public void setLoanPaymentDetails(List<LoanPaymentDetail> loanPaymentDetails) {
+        this.loanPaymentDetails = loanPaymentDetails;
+    }
+
+    public ApprovalActivity getSelectedApprovalActivity() {
+        return selectedApprovalActivity;
+    }
+
+    public void setSelectedApprovalActivity(
+            ApprovalActivity selectedApprovalActivity) {
+        this.selectedApprovalActivity = selectedApprovalActivity;
+    }
+
+    public void setLoanService(LoanService loanService) {
+        this.loanService = loanService;
+    }
+
+    public void setApprovalActivityService(
+            ApprovalActivityService approvalActivityService) {
+        this.approvalActivityService = approvalActivityService;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public void setEmpDataService(EmpDataService empDataService) {
+        this.empDataService = empDataService;
+    }
+
+    public Boolean getIsPaginator() {
+        return loanPaymentDetails.size() > 11;
+    }
+
+    public Boolean getIsWaitingApproval() {
+        return isWaitingApproval;
+    }
+
+    public void setIsWaitingApproval(Boolean isWaitingApproval) {
+        this.isWaitingApproval = isWaitingApproval;
+    }
+
+    public String doBack() {
+        return "/protected/home.htm?faces-redirect=true";
+    }
+
+    public String doApproved() {
+        try {
+            loanService.approved(selectedApprovalActivity.getId(), null, comment);
+            MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.approval_info", "global.approved_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-			return "/protected/home.htm?faces-redirect=true";
-		} catch (Exception e) {
-			LOGGER.error("Error when rejected process ", e);
-		}
-    	return null;
+            return "/protected/home.htm?faces-redirect=true";
+        } catch (Exception e) {
+            LOGGER.error("Error when approved process ", e);
+        }
+        return null;
+    }
+
+    public String doRejected() {
+        try {
+            loanService.rejected(selectedApprovalActivity.getId(), comment);
+            MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.approval_info", "global.rejected_successfully",
+                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            return "/protected/home.htm?faces-redirect=true";
+        } catch (Exception e) {
+            LOGGER.error("Error when rejected process ", e);
+        }
+        return null;
     }
 
 }

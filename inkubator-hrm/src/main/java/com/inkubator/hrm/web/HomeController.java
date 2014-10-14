@@ -5,18 +5,16 @@
  */
 package com.inkubator.hrm.web;
 
-import java.util.Date;
-
-import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
-
 import com.inkubator.hrm.entity.RiwayatAkses;
 import com.inkubator.hrm.service.RiwayatAksesService;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
+import java.util.Date;
+import javax.annotation.PostConstruct;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.RequestScoped;
 
 /**
  *
@@ -38,6 +36,7 @@ public class HomeController extends BaseController {
          * saving process of User Access History
          */
         StringBuffer urlPath = FacesUtil.getRequest().getRequestURL();
+        System.out.println(" ini nilai url nya "+urlPath);
         RiwayatAkses akses = new RiwayatAkses();
         akses.setDateAccess(new Date());
         akses.setPathUrl(urlPath.toString());

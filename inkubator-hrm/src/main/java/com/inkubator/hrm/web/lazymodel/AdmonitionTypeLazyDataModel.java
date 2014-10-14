@@ -1,26 +1,24 @@
 package com.inkubator.hrm.web.lazymodel;
 
+import com.inkubator.hrm.entity.AdmonitionType;
+import com.inkubator.hrm.service.AdmonitionTypeService;
+import com.inkubator.hrm.web.search.AdmonitionTypeSearchParameter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.Order;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
-import com.inkubator.hrm.entity.AdmonitionType;
-import com.inkubator.hrm.service.AdmonitionTypeService;
-import com.inkubator.hrm.web.search.AdmonitionTypeSearchParameter;
-
 /**
-*
-* @author Taufik Hidayat
-*/
+ *
+ * @author Taufik Hidayat
+ */
 public class AdmonitionTypeLazyDataModel extends LazyDataModel<AdmonitionType> implements Serializable {
 
-	private static final Logger LOGGER = Logger.getLogger(AdmonitionTypeLazyDataModel.class);
+    private static final Logger LOGGER = Logger.getLogger(AdmonitionTypeLazyDataModel.class);
     private final AdmonitionTypeSearchParameter admonitionTypeSearchParameter;
     private final AdmonitionTypeService admonitionTypeService;
     private List<AdmonitionType> admonitionTypes = new ArrayList<>();
@@ -31,29 +29,30 @@ public class AdmonitionTypeLazyDataModel extends LazyDataModel<AdmonitionType> i
         this.admonitionTypeService = admonitionTypeService;
     }
 
+ 
     @Override
     public List<AdmonitionType> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
-          LOGGER.info("Step Load Lazy data Model");
+        LOGGER.info("Step Load Lazy data Model");
 
         if (sortField != null) {
             if (sortOrder == SortOrder.ASCENDING) {
                 try {
-                	admonitionTypes = admonitionTypeService.getByParam(admonitionTypeSearchParameter, first, pageSize, Order.asc(sortField));
+                    admonitionTypes = admonitionTypeService.getByParam(admonitionTypeSearchParameter, first, pageSize, Order.asc(sortField));
                     total = Integer.parseInt(String.valueOf(admonitionTypeService.getTotalByParam(admonitionTypeSearchParameter)));
                 } catch (Exception ex) {
                     LOGGER.error("Error", ex);
                 }
             } else {
                 try {
-                	admonitionTypes = admonitionTypeService.getByParam(admonitionTypeSearchParameter, first, pageSize, Order.desc(sortField));
-                	total = Integer.parseInt(String.valueOf(admonitionTypeService.getTotalByParam(admonitionTypeSearchParameter)));
+                    admonitionTypes = admonitionTypeService.getByParam(admonitionTypeSearchParameter, first, pageSize, Order.desc(sortField));
+                    total = Integer.parseInt(String.valueOf(admonitionTypeService.getTotalByParam(admonitionTypeSearchParameter)));
                 } catch (Exception ex) {
                     LOGGER.error("Error", ex);
                 }
             }
         } else {
             try {
-            	admonitionTypes = admonitionTypeService.getByParam(admonitionTypeSearchParameter, first, pageSize, Order.asc("name"));
+                admonitionTypes = admonitionTypeService.getByParam(admonitionTypeSearchParameter, first, pageSize, Order.asc("name"));
                 total = Integer.parseInt(String.valueOf(admonitionTypeService.getTotalByParam(admonitionTypeSearchParameter)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);

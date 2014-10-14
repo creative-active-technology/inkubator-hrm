@@ -42,15 +42,13 @@ public class RiwayatAccessMessagesListener extends IServiceImpl implements Messa
             riwayatAccess.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(14)));
             String b = StringUtils.reverse(riwayatAccess.getPathUrl());
             String c = StringUtils.substringBefore(b, "/");
-            String d;
-            if (StringUtils.containsAny(c, "htm")) {
+            String d = StringUtils.reverse(c);
+            riwayatAccess.setName(d);
+            if (StringUtils.containsOnly(c, "htm")) {
                 d = StringUtils.substringAfter(c, ".");
                 riwayatAccess.setName(StringUtils.reverse(d));
-
-            } else {
-                d = StringUtils.reverse(c);
-                riwayatAccess.setName(d);
             }
+
             riwayatAksesDao.save(riwayatAccess);
         } catch (JMSException | NumberFormatException ex) {
             LOGGER.error("Error", ex);
