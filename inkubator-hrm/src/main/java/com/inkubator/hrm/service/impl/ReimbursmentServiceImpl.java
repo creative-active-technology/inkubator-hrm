@@ -23,6 +23,7 @@ import javax.jms.Session;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.criterion.Order;
 import org.primefaces.json.JSONException;
@@ -459,6 +460,8 @@ public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements 
                 jsonObj.put("nominalOrUnit", reimbursment.getQuantity() + " Unit");
             }
             jsonObj.put("reimbursmentNo", reimbursment.getCode());
+            Date deadline = DateUtils.addDays(appActivity.getCreatedTime(), appActivity.getApprovalDefinition().getDelayTime());  
+            jsonObj.put("deadline", dateFormat.format(deadline));
 
         } catch (JSONException e) {
             LOGGER.error("Error when create json Object ", e);

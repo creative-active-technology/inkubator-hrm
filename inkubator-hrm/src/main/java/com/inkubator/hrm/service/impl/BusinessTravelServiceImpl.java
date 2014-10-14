@@ -14,6 +14,7 @@ import javax.jms.Message;
 import javax.jms.Session;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.hibernate.criterion.Order;
 import org.primefaces.json.JSONException;
 import org.primefaces.json.JSONObject;
@@ -509,6 +510,8 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
             jsonObj.put("endDate", dateFormat.format(businessTravel.getEndDate()));
             jsonObj.put("description", businessTravel.getDescription());
             jsonObj.put("totalAmount", new DecimalFormat("###,###").format(totalAmount));
+            Date deadline = DateUtils.addDays(appActivity.getCreatedTime(), appActivity.getApprovalDefinition().getDelayTime());  
+            jsonObj.put("deadline", dateFormat.format(deadline));
             
         } catch (JSONException e) {
             LOGGER.error("Error when create json Object ", e);

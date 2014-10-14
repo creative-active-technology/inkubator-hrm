@@ -113,9 +113,10 @@
                             <p:commandButton value="#{appmsg['approvalactivity.approved']}" icon="ui-icon-check" title="#{appmsg['approvalactivity.approved']}" action="#{reimbursmentApprovalFormController.doApproved()}"
                                              style="margin-right: 5px" styleClass="label_button" rendered="#{reimbursmentApprovalFormController.isWaitingApproval}"/>
                             <p:commandButton value="#{appmsg['approvalactivity.reject']}" icon="ui-icon-close" title="#{appmsg['approvalactivity.reject']}" action="#{reimbursmentApprovalFormController.doRejected()}"
+                                             style="margin-right: 5px" styleClass="label_button"/>
+                            <p:commandButton value="#{appmsg['global.close']}" icon="ui-icon-home"  title="#{appmsg['global.close']}" action="#{reimbursmentApprovalFormController.doClose()}" immediate="true"
                                              style="margin-right: 5px" styleClass="label_button" rendered="#{reimbursmentApprovalFormController.isWaitingApproval}"/>
-                            <p:commandButton value="#{appmsg['global.close']}" icon="ui-icon-home"  title="#{appmsg['global.close']}" action="#{reimbursmentApprovalFormController.doBack()}" immediate="true"
-                                             styleClass="label_button"/>
+
                         </div>
                     </div>
                 </h:form>
