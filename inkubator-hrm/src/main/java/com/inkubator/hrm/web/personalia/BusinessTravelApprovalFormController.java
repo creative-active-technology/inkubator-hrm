@@ -38,7 +38,7 @@ import javax.faces.bean.ViewScoped;
 @ViewScoped
 public class BusinessTravelApprovalFormController extends BaseController {
 
-	private Double totalAmount = 0.0;
+    private Double totalAmount = 0.0;
     private BusinessTravel selectedBusinessTravel;
     private List<BusinessTravelComponent> businessTravelComponents;
     private String comment;
@@ -59,15 +59,16 @@ public class BusinessTravelApprovalFormController extends BaseController {
             String id = FacesUtil.getRequestParameter("execution");
             selectedApprovalActivity = approvalActivityService.getEntiyByPK(Long.parseLong(id.substring(1)));
             isWaitingApproval = selectedApprovalActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING;
-            
+
             Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
-			JsonObject jsonObject =  gson.fromJson(selectedApprovalActivity.getPendingData(), JsonObject.class);
-			businessTravelComponents = gson.fromJson(jsonObject.get("businessTravelComponents"), new TypeToken<List<BusinessTravelComponent>>(){}.getType());
-			selectedBusinessTravel = gson.fromJson(selectedApprovalActivity.getPendingData(), BusinessTravel.class);
-			EmpData empData = empDataService.getByIdWithDetail(selectedBusinessTravel.getEmpData().getId());
-			selectedBusinessTravel.setEmpData(empData);
-            for(BusinessTravelComponent btc :businessTravelComponents){
-            	totalAmount = totalAmount + btc.getPayByAmount();
+            JsonObject jsonObject = gson.fromJson(selectedApprovalActivity.getPendingData(), JsonObject.class);
+            businessTravelComponents = gson.fromJson(jsonObject.get("businessTravelComponents"), new TypeToken<List<BusinessTravelComponent>>() {
+            }.getType());
+            selectedBusinessTravel = gson.fromJson(selectedApprovalActivity.getPendingData(), BusinessTravel.class);
+            EmpData empData = empDataService.getByIdWithDetail(selectedBusinessTravel.getEmpData().getId());
+            selectedBusinessTravel.setEmpData(empData);
+            for (BusinessTravelComponent btc : businessTravelComponents) {
+                totalAmount = totalAmount + btc.getPayByAmount();
             }
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
@@ -77,7 +78,7 @@ public class BusinessTravelApprovalFormController extends BaseController {
 
     @PreDestroy
     public void cleanAndExit() {
-    	businessTravelComponents =null;
+        businessTravelComponents = null;
         selectedBusinessTravel = null;
         businessTravelService = null;
         selectedApprovalActivity = null;
@@ -85,108 +86,108 @@ public class BusinessTravelApprovalFormController extends BaseController {
         approvalActivityService = null;
         comment = null;
         empDataService = null;
-        isWaitingApproval= null;
-    }   
+        isWaitingApproval = null;
+    }
 
-	public BusinessTravel getSelectedBusinessTravel() {
-		return selectedBusinessTravel;
-	}
+    public BusinessTravel getSelectedBusinessTravel() {
+        return selectedBusinessTravel;
+    }
 
-	public void setSelectedBusinessTravel(BusinessTravel selectedBusinessTravel) {
-		this.selectedBusinessTravel = selectedBusinessTravel;
-	}
+    public void setSelectedBusinessTravel(BusinessTravel selectedBusinessTravel) {
+        this.selectedBusinessTravel = selectedBusinessTravel;
+    }
 
-	public void setBusinessTravelService(BusinessTravelService businessTravelService) {
-		this.businessTravelService = businessTravelService;
-	}
+    public void setBusinessTravelService(BusinessTravelService businessTravelService) {
+        this.businessTravelService = businessTravelService;
+    }
 
-	public List<BusinessTravelComponent> getBusinessTravelComponents() {
-		return businessTravelComponents;
-	}
+    public List<BusinessTravelComponent> getBusinessTravelComponents() {
+        return businessTravelComponents;
+    }
 
-	public void setBusinessTravelComponents(List<BusinessTravelComponent> businessTravelComponents) {
-		this.businessTravelComponents = businessTravelComponents;
-	}
+    public void setBusinessTravelComponents(List<BusinessTravelComponent> businessTravelComponents) {
+        this.businessTravelComponents = businessTravelComponents;
+    }
 
     public Double getTotalAmount() {
-		return totalAmount;
-	}
-
-	public void setTotalAmount(Double totalAmount) {
-		this.totalAmount = totalAmount;
-	}
-	
-	public void setApprovalActivityService(ApprovalActivityService approvalActivityService) {
-		this.approvalActivityService = approvalActivityService;
-	}
-
-	public String getComment() {
-		return comment;
-	}
-
-	public void setComment(String comment) {
-		this.comment = comment;
-	}
-
-	public Boolean getIsWaitingApproval() {
-		return isWaitingApproval;
-	}
-
-	public void setIsWaitingApproval(Boolean isWaitingApproval) {
-		this.isWaitingApproval = isWaitingApproval;
-	}
-
-	public void setEmpDataService(EmpDataService empDataService) {
-		this.empDataService = empDataService;
-	}
-	
-	public Boolean getIsPaginator(){
-		return businessTravelComponents.size() > 11;
-	}
-
-	public String doBack() {
-        return "home";
+        return totalAmount;
     }
 
-	public String doApproved() {
-    	try {
-    		Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
-    		JsonParser parser = new JsonParser();
-    		JsonArray arrayComponents = new JsonArray();
-    		JsonObject jsonObject =  gson.fromJson(selectedApprovalActivity.getPendingData(), JsonObject.class);
-    		for(BusinessTravelComponent btc: businessTravelComponents){
-    			JsonObject component = (JsonObject) parser.parse(gson.toJson(btc));
-    			arrayComponents.add(component);
-    		}
-    		jsonObject.add("businessTravelComponents", arrayComponents);
-    		
-			businessTravelService.approved(selectedApprovalActivity.getId(), gson.toJson(jsonObject), comment);
-			MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.approval_info", "global.approved_successfully",
+    public void setTotalAmount(Double totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+    public void setApprovalActivityService(ApprovalActivityService approvalActivityService) {
+        this.approvalActivityService = approvalActivityService;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public Boolean getIsWaitingApproval() {
+        return isWaitingApproval;
+    }
+
+    public void setIsWaitingApproval(Boolean isWaitingApproval) {
+        this.isWaitingApproval = isWaitingApproval;
+    }
+
+    public void setEmpDataService(EmpDataService empDataService) {
+        this.empDataService = empDataService;
+    }
+
+    public Boolean getIsPaginator() {
+        return businessTravelComponents.size() > 11;
+    }
+
+    public String doBack() {
+        return "/protected/home.htm?faces-redirect=true";
+    }
+
+    public String doApproved() {
+        try {
+            Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+            JsonParser parser = new JsonParser();
+            JsonArray arrayComponents = new JsonArray();
+            JsonObject jsonObject = gson.fromJson(selectedApprovalActivity.getPendingData(), JsonObject.class);
+            for (BusinessTravelComponent btc : businessTravelComponents) {
+                JsonObject component = (JsonObject) parser.parse(gson.toJson(btc));
+                arrayComponents.add(component);
+            }
+            jsonObject.add("businessTravelComponents", arrayComponents);
+
+            businessTravelService.approved(selectedApprovalActivity.getId(), gson.toJson(jsonObject), comment);
+            MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.approval_info", "global.approved_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-			return "/protected/home.htm?faces-redirect=true";
-		} catch (Exception e) {
-			LOGGER.error("Error when approved process ", e);
-		}
-    	return null;
+            return "/protected/home.htm?faces-redirect=true";
+        } catch (Exception e) {
+            LOGGER.error("Error when approved process ", e);
+        }
+        return null;
     }
-	
-	public String doRejected() {
-		try {
-			businessTravelService.rejected(selectedApprovalActivity.getId(), comment);
-			MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.approval_info", "global.rejected_successfully",
+
+    public String doRejected() {
+        try {
+            businessTravelService.rejected(selectedApprovalActivity.getId(), comment);
+            MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.approval_info", "global.rejected_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-			return "/protected/home.htm?faces-redirect=true";
-		} catch (Exception e) {
-			LOGGER.error("Error when rejected process ", e);
-		}
-    	return null;
+            return "/protected/home.htm?faces-redirect=true";
+        } catch (Exception e) {
+            LOGGER.error("Error when rejected process ", e);
+        }
+        return null;
     }
-	
-	public void doAdjustPayByAmount(){
-		totalAmount = 0.0;
-		for(BusinessTravelComponent btc: businessTravelComponents){
-			totalAmount = totalAmount + btc.getPayByAmount();
-		}
-	}
+
+    public void doAdjustPayByAmount() {
+        totalAmount = 0.0;
+        for (BusinessTravelComponent btc : businessTravelComponents) {
+            totalAmount = totalAmount + btc.getPayByAmount();
+        }
+    }
 
 }
