@@ -65,25 +65,25 @@
                             <f:facet name="header">  
                                 <h:outputText value="#{appmsg['loan.list_of_loan']}"/>
                             </f:facet> 
-                            <p:column style="text-align: center;width: 5%">
+                            <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.number']}"/>
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>   
-                            <p:column sortBy="empData.nik"  style="text-align: center;width: 20%">
+                            <p:column sortBy="empData.nik"  style="width: 27%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.employee']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{loanData.empData.nik} #{loanData.empData.bioData.fullName}"/>
                             </p:column> 
-                            <p:column sortBy="loanSchema.name"  style="text-align: center;width: 20%">
+                            <p:column sortBy="loanSchema.name"  style="width: 20%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['loanschema.loan']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{loanData.loanSchema.name}"/>
                             </p:column>  
-                            <p:column sortBy="nominalPrincipal"  style="text-align: center;width: 20%">
+                            <p:column sortBy="nominalPrincipal"  style="width: 20%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['loan.nominal_principal']}"/>
                                 </f:facet>
@@ -91,7 +91,7 @@
                                 	<f:convertNumber pattern="###,###" type="currency"/>
                                 </h:outputLabel>
                             </p:column> 
-                            <p:column sortBy="loanDate"  style="text-align: center;width: 20%">
+                            <p:column sortBy="loanDate"  style="width: 20%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['loan.loan_date']}"/>
                                 </f:facet>
@@ -100,7 +100,7 @@
                                 </h:outputLabel>
                             </p:column>
                             
-                            <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                 				 style="font-size: 10px!important" action="#{loanViewController.doDetail()}">                        
                                     <f:setPropertyActionListener value="#{loanData}" target="#{loanViewController.selectedLoan}" />
