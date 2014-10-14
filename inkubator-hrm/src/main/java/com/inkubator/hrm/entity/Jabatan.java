@@ -53,6 +53,10 @@ public class Jabatan implements java.io.Serializable {
     private List<KlasifikasiKerja> kerjaJabatans = new ArrayList<KlasifikasiKerja>();
     private Set<EmpRotasi> empRotasisForNewFunctionId = new HashSet<EmpRotasi>(0);
     private Set<EmpRotasi> empRotasisForOldFunctionId = new HashSet<EmpRotasi>(0);
+    private Set<JabatanFakulty> jabatanFakulties = new HashSet<JabatanFakulty>(0);
+    private Set<JabatanProfesi> jabatanProfesis = new HashSet<JabatanProfesi>(0);
+    private Set<JabatanMajor> jabatanMajors = new HashSet<JabatanMajor>(0);
+    private Set<JabatanEdukasi> jabatanEdukasis = new HashSet<JabatanEdukasi>(0);
 
     public Jabatan() {
     }
@@ -170,7 +174,7 @@ public class Jabatan implements java.io.Serializable {
         this.name = name;
     }
 
-    @Column(name = "tujuan_jabatan", length = 65535, columnDefinition="Text")
+    @Column(name = "tujuan_jabatan", length = 65535, columnDefinition = "Text")
     public String getTujuanJabatan() {
         return this.tujuanJabatan;
     }
@@ -298,6 +302,42 @@ public class Jabatan implements java.io.Serializable {
 
     public void setEmpRotasisForOldFunctionId(Set<EmpRotasi> empRotasisForOldFunctionId) {
         this.empRotasisForOldFunctionId = empRotasisForOldFunctionId;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "jabatan")
+    public Set<JabatanFakulty> getJabatanFakulties() {
+        return this.jabatanFakulties;
+    }
+
+    public void setJabatanFakulties(Set<JabatanFakulty> jabatanFakulties) {
+        this.jabatanFakulties = jabatanFakulties;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "jabatan")
+    public Set<JabatanProfesi> getJabatanProfesis() {
+        return this.jabatanProfesis;
+    }
+
+    public void setJabatanProfesis(Set<JabatanProfesi> jabatanProfesis) {
+        this.jabatanProfesis = jabatanProfesis;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "jabatan")
+    public Set<JabatanMajor> getJabatanMajors() {
+        return this.jabatanMajors;
+    }
+
+    public void setJabatanMajors(Set<JabatanMajor> jabatanMajors) {
+        this.jabatanMajors = jabatanMajors;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "jabatan")
+    public Set<JabatanEdukasi> getJabatanEdukasis() {
+        return this.jabatanEdukasis;
+    }
+
+    public void setJabatanEdukasis(Set<JabatanEdukasi> jabatanEdukasis) {
+        this.jabatanEdukasis = jabatanEdukasis;
     }
 
 }
