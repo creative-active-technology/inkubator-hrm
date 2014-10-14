@@ -97,6 +97,9 @@ public class HomeApproalActivityController extends BaseController {
                 case HRMConstant.REIMBURSEMENT:
                     redirect = "/protected/personalia/reimbursment_detail.htm?faces-redirect=true&execution=a" + selectedApprovalActivity.getActivityNumber();
                     break;
+                case HRMConstant.SHIFT_SCHEDULE:
+                    redirect = "/protected/personalia/schedule_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
+                    break;
                 default:
                     break;
             }

@@ -1,9 +1,6 @@
 package com.inkubator.hrm.web.model;
 
 import java.util.Date;
-import java.util.List;
-
-import com.inkubator.hrm.entity.AttendanceStatus;
 
 /**
  *
@@ -17,7 +14,6 @@ public class LeaveModel {
     private String description;
     private String dayType;
     private String calculation;
-    private List<AttendanceStatus> attendanceStatusList;
     private Long attendanceStatusId;
     private String periodBase;
     private String availability;
@@ -72,12 +68,6 @@ public class LeaveModel {
 	public void setCalculation(String calculation) {
 		this.calculation = calculation;
 	}	
-	public List<AttendanceStatus> getAttendanceStatusList() {
-		return attendanceStatusList;
-	}
-	public void setAttendanceStatusList(List<AttendanceStatus> attendanceStatusList) {
-		this.attendanceStatusList = attendanceStatusList;
-	}
 	public Long getAttendanceStatusId() {
 		return attendanceStatusId;
 	}

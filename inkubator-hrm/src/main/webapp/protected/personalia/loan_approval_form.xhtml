@@ -90,7 +90,7 @@
 	                            	</p:outputLabel>
 	                            </p:column>
 	                        </p:row> 
-	                        <p:row>
+	                        <p:row rendered="#{loanApprovalFormController.isWaitingApproval}">
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
 	                                <p:outputLabel value="#{appmsg['global.comment']}" styleClass="label_hrm"/>
 	                            </p:column>
@@ -155,9 +155,9 @@
 	                 	<p:separator style="margin-top: 30px;margin-bottom: 10px"/>
 	                    <div style="margin-bottom: 5px">
 	                    	<p:commandButton value="#{appmsg['approvalactivity.approved']}" icon="ui-icon-check" title="#{appmsg['approvalactivity.approved']}" action="#{loanApprovalFormController.doApproved()}"
-                                			 style="margin-right: 5px" styleClass="label_button"/>
+                                			 style="margin-right: 5px" styleClass="label_button" rendered="#{loanApprovalFormController.isWaitingApproval}"/>
 							<p:commandButton value="#{appmsg['approvalactivity.reject']}" icon="ui-icon-close" title="#{appmsg['approvalactivity.reject']}" action="#{loanApprovalFormController.doRejected()}"
-                                			 style="margin-right: 5px" styleClass="label_button"/>
+                                			 style="margin-right: 5px" styleClass="label_button" rendered="#{loanApprovalFormController.isWaitingApproval}"/>
 	                        <p:commandButton value="#{appmsg['global.close']}" icon="ui-icon-home"  title="#{appmsg['global.close']}" action="#{loanApprovalFormController.doBack()}" immediate="true"
 	                                      	 styleClass="label_button"/>
 	                    </div>

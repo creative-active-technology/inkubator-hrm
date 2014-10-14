@@ -49,6 +49,10 @@ public class ApprovalRemoteCommand {
                     infoMessages = messages.getString("reimbursment.submission_of_reimbursment") + " " + requestFullName + " " + messages.getString("approval.need_approval_from") + " " + approverFullName;
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Executed", infoMessages));
                     break;
+                case HRMConstant.SHIFT_SCHEDULE:
+                    infoMessages = messages.getString("workschedule.submission_of_employee_working_schedule") + " " + requestFullName + " " + messages.getString("approval.need_approval_from") + " " + approverFullName;
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Executed", infoMessages));
+                    break;
                 default:
                     break;
             }

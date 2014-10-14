@@ -89,9 +89,9 @@
                                     <p:outputLabel  value="#{appmsg['loanschema.max_period']}"  for="maxPeriod" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:spinner id="maxPeriod" value="#{loanSchemaFormController.model.maxPeriode}" min="0" max="5" required="true" size="2" 
+                                    <p:spinner id="maxPeriod" value="#{loanSchemaFormController.model.maxPeriode}" min="0" max="120" required="true" size="2" 
                                            validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
-                                        <f:validateLongRange minimum="1" maximum="60"/>
+                                        <f:validateLongRange minimum="1" maximum="120"/>
                                     </p:spinner>     
                                     <p:message for="maxPeriod"/>
                                 </p:column>
@@ -131,9 +131,9 @@
                                     <p:outputLabel  value="#{appmsg['loanschema.max_payment_of_salary']}"  for="maxPaymentOfSalary" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:spinner id="maxPaymentOfSalary" value="#{loanSchemaFormController.model.maxPaymentOfSalary}"  min="0" max="11" required="true" size="2" disabled="#{loanSchemaFormController.isMaxPayment}"
+                                    <p:spinner id="maxPaymentOfSalary" value="#{loanSchemaFormController.model.maxPaymentOfSalary}"  min="0" max="25" required="true" size="2" disabled="#{loanSchemaFormController.isMaxPayment}"
                                            validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
-                                        <f:validateLongRange minimum="1" maximum="5"/>
+                                        <f:validateLongRange minimum="1" maximum="25"/>
                                     </p:spinner>     
                                     <p:outputLabel  value=" x #{appmsg['reimbursment.salary']}" />
                                     <p:message for="maxPaymentOfSalary"/>

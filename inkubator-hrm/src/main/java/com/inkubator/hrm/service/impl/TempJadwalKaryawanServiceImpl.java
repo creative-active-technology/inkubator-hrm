@@ -5,40 +5,22 @@
  */
 package com.inkubator.hrm.service.impl;
 
-import ch.lambdaj.Lambda;
-
-import com.google.gson.JsonObject;
-import com.inkubator.common.CommonUtilConstant;
-import com.inkubator.common.util.DateTimeUtil;
-import com.inkubator.common.util.JsonConverter;
-import com.inkubator.common.util.RandomNumberUtil;
-import com.inkubator.datacore.service.impl.IServiceImpl;
-import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.dao.EmpDataDao;
-import com.inkubator.hrm.dao.TempJadwalKaryawanDao;
-import com.inkubator.hrm.dao.WtGroupWorkingDao;
-import com.inkubator.hrm.dao.WtHolidayDao;
-import com.inkubator.hrm.dao.WtWorkingHourDao;
-import com.inkubator.hrm.entity.EmpData;
-import com.inkubator.hrm.entity.TempJadwalKaryawan;
-import com.inkubator.hrm.entity.WtGroupWorking;
-import com.inkubator.hrm.entity.WtHoliday;
-import com.inkubator.hrm.entity.WtScheduleShift;
-import com.inkubator.hrm.service.TempJadwalKaryawanService;
-import com.inkubator.securitycore.util.UserInfoUtil;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.criterion.Order;
+import org.primefaces.json.JSONException;
+import org.primefaces.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.jms.core.JmsTemplate;
@@ -48,13 +30,41 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import ch.lambdaj.Lambda;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
+import com.inkubator.common.CommonUtilConstant;
+import com.inkubator.common.util.DateTimeUtil;
+import com.inkubator.common.util.JsonConverter;
+import com.inkubator.common.util.RandomNumberUtil;
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.dao.ApprovalActivityDao;
+import com.inkubator.hrm.dao.EmpDataDao;
+import com.inkubator.hrm.dao.HrmUserDao;
+import com.inkubator.hrm.dao.TempJadwalKaryawanDao;
+import com.inkubator.hrm.dao.WtGroupWorkingDao;
+import com.inkubator.hrm.dao.WtHolidayDao;
+import com.inkubator.hrm.dao.WtWorkingHourDao;
+import com.inkubator.hrm.entity.ApprovalActivity;
+import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.HrmUser;
+import com.inkubator.hrm.entity.TempJadwalKaryawan;
+import com.inkubator.hrm.entity.WtGroupWorking;
+import com.inkubator.hrm.entity.WtHoliday;
+import com.inkubator.hrm.entity.WtScheduleShift;
+import com.inkubator.hrm.service.TempJadwalKaryawanService;
+import com.inkubator.securitycore.util.UserInfoUtil;
+
 /**
  *
  * @author Deni Husni FR
  */
 @Service(value = "tempJadwalKaryawanService")
 @Lazy
-public class TempJadwalKaryawanServiceImpl extends IServiceImpl implements TempJadwalKaryawanService {
+public class TempJadwalKaryawanServiceImpl extends BaseApprovalServiceImpl implements TempJadwalKaryawanService {
 
     @Autowired
     private TempJadwalKaryawanDao tempJadwalKaryawanDao;
@@ -70,6 +80,10 @@ public class TempJadwalKaryawanServiceImpl extends IServiceImpl implements TempJ
     private JmsTemplate jmsTemplateMassJadwalKerja;
     @Autowired
     private JsonConverter jsonConverter;
+    @Autowired
+    private HrmUserDao hrmUserDao;
+    @Autowired
+    private ApprovalActivityDao approvalActivityDao;
 
     @Override
     public TempJadwalKaryawan getEntiyByPK(String id) throws Exception {
@@ -291,24 +305,59 @@ public class TempJadwalKaryawanServiceImpl extends IServiceImpl implements TempJ
     }
     
     @Override
-    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
-    public void saveMassPenempatanJadwal(List<EmpData> data, long groupWorkingId) throws Exception {
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public String saveMassPenempatanJadwal(List<EmpData> data, long groupWorkingId) throws Exception {    	
+    	String message = "error";
+    	
+    	List<Long> listIdEmp = Lambda.extract(data, Lambda.on(EmpData.class).getId());    	
+    	HrmUser requestUser = hrmUserDao.getByUserId(UserInfoUtil.getUserName());	
+		ApprovalActivity approvalActivity = super.checkApprovalProcess(HRMConstant.SHIFT_SCHEDULE, requestUser.getUserId());
+		if(approvalActivity == null){
+			this.saveMassPenempatanJadwal(listIdEmp, groupWorkingId, new Date(), UserInfoUtil.getUserName());
+			message = "success_without_approval";
+			
+		} else {
+			SimpleDateFormat dateFormat=new SimpleDateFormat("dd-MM-yyyy hh:mm");
+			String dataToJson = jsonConverter.getJson(listIdEmp.toArray(new Long[listIdEmp.size()]));
+			JsonObject jsonObject = new JsonObject();
+	        jsonObject.addProperty("listEmpId", dataToJson);
+	        jsonObject.addProperty("groupWorkingId", groupWorkingId);         
+	        jsonObject.addProperty("createDate", dateFormat.format(new Date()));
+	        jsonObject.addProperty("createBy", UserInfoUtil.getUserName());
+	        
+	        approvalActivity.setPendingData(jsonObject.toString());
+    		approvalActivityDao.save(approvalActivity);
+    		
+    		message = "success_need_approval";
+    		
+    		//sending email notification
+    		this.sendingEmailApprovalNotif(approvalActivity);
+		}
+		
+		return message;
+    }
+    
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void saveMassPenempatanJadwal(List<Long> data, long groupWorkingId, Date createdOn, String createdBy) throws Exception {
         WtGroupWorking groupWorking = wtGroupWorkingDao.getEntiyByPK(groupWorkingId);
         groupWorking.setIsActive(Boolean.TRUE);
         wtGroupWorkingDao.update(groupWorking);
-        for (EmpData empData : data) {
+        
+        for (Long empDataId : data) {
+        	EmpData empData = empDataDao.getEntiyByPK(empDataId);
             empData.setWtGroupWorking(wtGroupWorkingDao.getEntiyByPK(groupWorkingId));
             this.empDataDao.update(empData);
         }
-
-        List<Long> listIdEmp = Lambda.extract(data, Lambda.on(EmpData.class).getId());
-        String dataToJson = jsonConverter.getJson(listIdEmp.toArray(new Long[listIdEmp.size()]));
+        
+        SimpleDateFormat dateFormat=new SimpleDateFormat("dd-MM-yyyy hh:mm");
+        String dataToJson = jsonConverter.getJson(data.toArray(new Long[data.size()]));
         final JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("listEmpId", dataToJson);
-        jsonObject.addProperty("groupWorkingId", groupWorkingId);
-        SimpleDateFormat dateFormat=new SimpleDateFormat("dd-MM-yyyy"); 
-        jsonObject.addProperty("createDate", dateFormat.format(new Date()));
-        System.out.println(" json nya "+jsonObject.toString());
+        jsonObject.addProperty("groupWorkingId", groupWorkingId);         
+        jsonObject.addProperty("createDate", dateFormat.format(createdOn));
+        jsonObject.addProperty("createBy", createdBy);
+        
         this.jmsTemplateMassJadwalKerja.send(new MessageCreator() {
             @Override
             public Message createMessage(Session session)
@@ -324,5 +373,89 @@ public class TempJadwalKaryawanServiceImpl extends IServiceImpl implements TempJ
             return o1.getScheduleDate().compareTo(o2.getScheduleDate());
         }
     };
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void approved(long approvalActivityId, String pendingDataUpdate, String comment) throws Exception {
+		Map<String, Object> result = super.approvedAndCheckNextApproval(approvalActivityId, pendingDataUpdate, comment);
+		ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
+		if(StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")){
+			/** kalau status akhir sudah di approved dan tidak ada next approval, 
+			 * berarti langsung insert ke database */
+			String pendingData = appActivity.getPendingData();
+			JsonObject jsonObject = (JsonObject) jsonConverter.getClassFromJson(pendingData, JsonObject.class);
+			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm");
+			Date createdOn = dateFormat.parse(jsonObject.get("createDate").getAsString());
+			Gson gson = new GsonBuilder().create();
+			List<Long> listEmpId = new GsonBuilder().create().fromJson(jsonObject.get("listEmpId").getAsString(), new TypeToken<List<Long>>(){}.getType());
+			this.saveMassPenempatanJadwal(listEmpId , jsonObject.get("groupWorkingId").getAsLong(), createdOn, jsonObject.get("createBy").getAsString());			
+		}
+		
+		//if there is no error, then sending the email notification
+		sendingEmailApprovalNotif(appActivity);
+	}
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void rejected(long approvalActivityId, String comment) throws Exception {
+		Map<String, Object> result = super.rejectedAndCheckNextApproval(approvalActivityId, comment);
+		ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
+		
+		//if there is no error, then sending the email notification
+		sendingEmailApprovalNotif(appActivity);
+	}
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void diverted(long approvalActivityId) throws Exception {
+		Map<String, Object> result = super.divertedAndCheckNextApproval(approvalActivityId);
+		ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
+		if(StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")){
+			/** kalau status akhir sudah di approved dan tidak ada next approval, 
+			 * berarti langsung insert ke database */
+			String pendingData = appActivity.getPendingData();
+			JsonObject jsonObject = (JsonObject) jsonConverter.getClassFromJson(pendingData, JsonObject.class);
+			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm");
+			Date createdOn = dateFormat.parse(jsonObject.get("createDate").getAsString());
+			List<Long> listEmpId = new GsonBuilder().create().fromJson(jsonObject.get("listEmpId").getAsString(), new TypeToken<List<Long>>(){}.getType());
+			this.saveMassPenempatanJadwal(listEmpId , jsonObject.get("groupWorkingId").getAsLong(), createdOn, jsonObject.get("createBy").getAsString());			
+		}
+		
+		//if there is no error, then sending the email notification
+		sendingEmailApprovalNotif(appActivity);
+	}
+
+	@Override
+	public void sendingEmailApprovalNotif(ApprovalActivity appActivity) throws Exception {
+		//initialization
+		SimpleDateFormat jsonDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm");
+		JsonObject jsonObject = (JsonObject) jsonConverter.getClassFromJson(appActivity.getPendingData(), JsonObject.class);
+        Date createdOn = jsonDateFormat.parse(jsonObject.get("createDate").getAsString());
+		
+		//get all sendCC email address on status approve OR reject
+		List<String> ccEmailAddresses =  new ArrayList<String>();
+		if((appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_APPROVED)  || (appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_REJECTED)){
+			ccEmailAddresses = super.getCcEmailAddressesOnApproveOrReject(appActivity);
+		}
+		
+		final JSONObject jsonObj = new JSONObject();
+        try {        	
+            jsonObj.put("approvalActivityId", appActivity.getId());
+            jsonObj.put("ccEmailAddresses", ccEmailAddresses);
+            jsonObj.put("locale", appActivity.getLocale());
+            jsonObj.put("proposeDate", new SimpleDateFormat("dd-MMMM-yyyy").format(createdOn));
+            
+        } catch (JSONException e) {
+            LOGGER.error("Error when create json Object ", e);
+        }
+
+        //send messaging, to trigger sending email
+        super.jmsTemplateApproval.send(new MessageCreator() {
+            @Override
+            public Message createMessage(Session session) throws JMSException {
+                return session.createTextMessage(jsonObj.toString());
+            }
+        });
+	}
 
 }

@@ -65,17 +65,20 @@ public class JadwalKerjaMassMessagesListener extends IServiceImpl implements Mes
             JSONObject jSONObject = new JSONObject(textMessage.getText());
             long workingGroupId = Long.parseLong(jSONObject.getString("groupWorkingId"));
             String listEmp = jSONObject.getString("listEmpId");
+            Date createOn =  new SimpleDateFormat("dd-MM-yyyy hh:mm").parse(jSONObject.getString("createDate"));
+            String createBy = jSONObject.getString("createBy");
+            
             Gson gson = new GsonBuilder().create();
             List<TempJadwalKaryawan> dataToDelete = new ArrayList<>();
             TypeToken<List<Long>> token = new TypeToken<List<Long>>() {
             };
             List<Long> dataEmpId = gson.fromJson(listEmp, token.getType());
-            Date now = new Date();
+            //Date now = new Date();
             WtGroupWorking groupWorking = wtGroupWorkingDao.getEntiyByPK(workingGroupId);
             Date startDate = groupWorking.getBeginTime();//tidak ditempatkan di dalam loop karena untuk groupworking yang sama
             Date endDate = groupWorking.getEndTime();
             int numberOfDay = DateTimeUtil.getTotalDayDifference(startDate, endDate);
-            int totalDateDif = DateTimeUtil.getTotalDayDifference(startDate, now) + 1;
+            int totalDateDif = DateTimeUtil.getTotalDayDifference(startDate, createOn) + 1;
             int num = numberOfDay + 1;
             int hasilBagi = (totalDateDif) / (num);
             Date tanggalAkhirJadwal = DateTimeUtil.getDateFrom(startDate, (hasilBagi * num) - 1, CommonUtilConstant.DATE_FORMAT_DAY);
@@ -112,8 +115,8 @@ public class JadwalKerjaMassMessagesListener extends IServiceImpl implements Mes
 //                        jadwalKaryawan.setAttendanceStatus(attendanceStatusDao.getByCode("HD1"));
 //                    }
                     jadwalKaryawan.setIsCollectiveLeave(Boolean.FALSE);
-                    jadwalKaryawan.setCreatedBy(HRMConstant.INKUBA_SYSTEM);
-                    jadwalKaryawan.setCreatedOn(new Date());
+                    jadwalKaryawan.setCreatedBy(createBy);
+                    jadwalKaryawan.setCreatedOn(createOn);
                     jadwalKaryawan.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
                     dataToSave.add(jadwalKaryawan);
                     i++;

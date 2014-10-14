@@ -9,6 +9,7 @@ import com.inkubator.hrm.entity.LoginHistory;
 import com.inkubator.hrm.entity.RiwayatAkses;
 import com.inkubator.hrm.service.LoginHistoryService;
 import com.inkubator.hrm.service.RiwayatAksesService;
+import com.inkubator.hrm.web.model.RiwayatAksesModel;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.controller.BaseController;
 import java.util.List;
@@ -27,11 +28,12 @@ import org.hibernate.criterion.Order;
 @RequestScoped
 public class HomeHistoryController extends BaseController {
 
-	@ManagedProperty(value = "#{loginHistoryService}")
-	private LoginHistoryService loginHistoryService;
+    @ManagedProperty(value = "#{loginHistoryService}")
+    private LoginHistoryService loginHistoryService;
     @ManagedProperty(value = "#{riwayatAksesService}")
     private RiwayatAksesService riwayatAksesService;
     private List<RiwayatAkses> dataRiwayatAkses;
+    private List<RiwayatAksesModel> dataRiwayatAksesModel;
     private List<LoginHistory> loginHistories;
 
     public void setRiwayatAksesService(RiwayatAksesService riwayatAksesService) {
@@ -42,20 +44,21 @@ public class HomeHistoryController extends BaseController {
     @Override
     public void initialization() {
         try {
-            dataRiwayatAkses = riwayatAksesService.getDataByUserId(UserInfoUtil.getUserName(), 0, 4, Order.desc("dateAccess"));
+            dataRiwayatAksesModel = riwayatAksesService.getDataByUserIdWithModel(UserInfoUtil.getUserName(), 0, 4, Order.desc("dateAccess"));
             loginHistories = loginHistoryService.getByParam(0, 4, Order.desc("loginDate"));
         } catch (Exception ex) {
-           LOGGER.error("Error", ex);
+            LOGGER.error("Error", ex);
         }
     }
 
     @PreDestroy
-    public void cleanAndExit(){
-        dataRiwayatAkses=null;
-        riwayatAksesService=null;
+    public void cleanAndExit() {
+        dataRiwayatAkses = null;
+        riwayatAksesService = null;
         loginHistoryService = null;
         loginHistories = null;
-        
+        dataRiwayatAksesModel = null;
+
     }
 
     public List<RiwayatAkses> getDataRiwayatAkses() {
@@ -64,18 +67,25 @@ public class HomeHistoryController extends BaseController {
 
     public void setDataRiwayatAkses(List<RiwayatAkses> dataRiwayatAkses) {
         this.dataRiwayatAkses = dataRiwayatAkses;
-    }    
-    
+    }
+
     public List<LoginHistory> getLoginHistories() {
-		return loginHistories;
-	}
+        return loginHistories;
+    }
 
-	public void setLoginHistories(List<LoginHistory> loginHistories) {
-		this.loginHistories = loginHistories;
-	}
+    public void setLoginHistories(List<LoginHistory> loginHistories) {
+        this.loginHistories = loginHistories;
+    }
 
-	public void setLoginHistoryService(LoginHistoryService loginHistoryService) {
-		this.loginHistoryService = loginHistoryService;
-	}
-    
+    public void setLoginHistoryService(LoginHistoryService loginHistoryService) {
+        this.loginHistoryService = loginHistoryService;
+    }
+
+    public List<RiwayatAksesModel> getDataRiwayatAksesModel() {
+        return dataRiwayatAksesModel;
+    }
+
+    public void setDataRiwayatAksesModel(List<RiwayatAksesModel> dataRiwayatAksesModel) {
+        this.dataRiwayatAksesModel = dataRiwayatAksesModel;
+    }
 }

@@ -21,8 +21,8 @@
                             <p:graphicImage library="images" name="marital_status.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="Neraca Cuti" styleClass="header_big" />
-                                    <p:outputLabel value="Neraca Cuti from Employee" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['leavebalance.leavebalance']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['leavebalance.leavebalance_header']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -58,7 +58,7 @@
                                       id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="Daftar Leave Distribution"/>
+                                <h:outputText value="#{appmsg['leavebalance.list_of_leavebalance']}"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
@@ -68,25 +68,25 @@
                             </p:column>
                             <p:column sortBy="name" style="width: 30%">
                                 <f:facet name="header">
-                                    <h:outputText value="Nama Karyawan"/>
+                                    <h:outputText value="#{appmsg['personachievement.employee_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.leaveDistribution.empData.nikWithFullName}" />
                             </p:column>
                             <p:column sortBy="name" style="width: 30%">
                                 <f:facet name="header">
-                                    <h:outputText value="Jenis Cuti"/>
+                                    <h:outputText value="#{appmsg['leavebalance.leave_type']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.leaveDistribution.leave.name}" />
                             </p:column>
                             <p:column sortBy="name" style="width: 10%">
                                 <f:facet name="header">
-                                    <h:outputText value="Debet"/>
+                                    <h:outputText value="#{appmsg['leavebalance.debet']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.debet}" />
                             </p:column>
                             <p:column sortBy="name" style="width: 10%">
                                 <f:facet name="header">
-                                    <h:outputText value="Kredit"/>
+                                    <h:outputText value="#{appmsg['leavebalance.kredit']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.kredit}" />
                             </p:column>
@@ -115,24 +115,24 @@
                     <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
                 </p:dialog>
                 
-                <p:dialog widgetVar="detail" header="Detil Neraca Cuti" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
+                <p:dialog widgetVar="detail" header="#{appmsg['leavebalance.detail_of_leavebalance']}" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
                           showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)" dynamic="true">
                     <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
 
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Employee Name" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['personachievement.employee_name']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{neracaCutiViewController.selected.leaveDistribution.empData.nikWithFullName}"/> </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Leave" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['leavebalance.leave_type']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{neracaCutiViewController.selected.leaveDistribution.leave.name}"/> </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Debet" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['leavebalance.debet']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{neracaCutiViewController.selected.debet}"/> </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Kredit" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['leavebalance.kredit']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{neracaCutiViewController.selected.kredit}">
                                 </p:outputLabel>
                             </p:column>
@@ -140,7 +140,7 @@
 
                         <f:facet name="footer">
                             <p:row>
-                                <p:column colspan="2"><p:outputLabel value="Neraca Cuti from Employee" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
+                                <p:column colspan="2"><p:outputLabel value="#{appmsg['leavebalance.leavebalance_header']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
                             </p:row>
                         </f:facet>
                     </p:panelGrid>

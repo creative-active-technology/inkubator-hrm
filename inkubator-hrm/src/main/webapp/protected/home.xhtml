@@ -335,7 +335,7 @@
                                     <p:outputLabel value="Pada Setiap Departement (Update Data Per Week)" styleClass="header_small_no_bold" />
                                     <p:outputLabel value="Available in version 2.0" styleClass="header_big" style="position:relative;color:red;right:-400px !important;font-style:italic"/>
                                 </h:panelGrid>
-                                <p:barChart id="basic" value="#{homeController.persentasiKehadiranPerWeek}" legendPosition="ne"  stacked="false" seriesColors="66cc00,629de1,003366,990000,cccc00,6600cc"   animate="false"
+                                <p:barChart id="basic" value="#{homeDashboardController.persentasiKehadiranPerWeek}" legendPosition="ne"  stacked="false" seriesColors="66cc00,629de1,003366,990000,cccc00,6600cc"   animate="false"
                                             showDatatip="true"  legendCols="6" max="150" min="0"
                                             style="height:180px;font-size: 11px"/> 
 
@@ -351,14 +351,14 @@
                                     <p:outputLabel value="#{appmsg['accesshistory.list_access_history']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                                 <p:panelGrid  styleClass="grid_border" style="width: 98%;margin-left: 5px;margin-right: 10px;margin-top: 0px;margin-bottom: 10px;color: #036;height: 161px">
-                                    <c:forEach var="riwayatAkses" items="#{homeHistoryController.dataRiwayatAkses}">
+                                    <c:forEach var="riwayatAkses" items="#{homeHistoryController.dataRiwayatAksesModel}">
                                         <p:row>
                                             <p:column style="width: 40%;text-align: center"  >
-                                                <p:outputLabel value="#{riwayatAkses.dateAccess}" styleClass="isitext_hrm">
+                                                <p:outputLabel value="#{riwayatAkses.dateAkses}" styleClass="isitext_hrm">
                                                     <f:convertDateTime pattern="dd-MMM-yyyy" />
                                                 </p:outputLabel>
                                                 <br/>
-                                                <p:outputLabel value="#{riwayatAkses.dateAccess}" styleClass="isitext_hrm">
+                                                <p:outputLabel value="#{riwayatAkses.dateAkses}" styleClass="isitext_hrm">
                                                     <f:convertDateTime pattern="HH:mm aa" />
                                                 </p:outputLabel>
                                             </p:column>
@@ -467,13 +467,13 @@
                                     <p:outputLabel value="Distribusi Karyawan" styleClass="header_big" />
                                     <h:panelGrid columns="2" style="margin-left:-6px;">
                                         <p:outputLabel value="Updated :" styleClass="header_small_no_bold" />
-                                        <p:outputLabel value="#{homeController.lastUpdateEmpDistByAge}" style="margin-left:-8px;" styleClass="header_small_no_bold">
+                                        <p:outputLabel value="#{homeDashboardController.lastUpdateEmpDistByAge}" style="margin-left:-8px;" styleClass="header_small_no_bold">
                                             <f:convertDateTime pattern="dd-MMM-yyyy hh:mm"/>
                                         </p:outputLabel>
                                     </h:panelGrid>
                                 </h:panelGrid>
 
-                                <p:pieChart id="custo2" value="#{homeController.pieModel}" legendPosition="e" fill="false" showDataLabels="true" seriesColors="66cc00,629de1,003366,990000,cccc00,6600cc"
+                                <p:pieChart id="custo2" value="#{homeDashboardController.pieModel}" legendPosition="e" fill="false" showDataLabels="true" seriesColors="66cc00,629de1,003366,990000,cccc00,6600cc"
                                             style="height:180px;font-size: 11px" sliceMargin="4" diameter="120" />  
                             </p:panel>
                         </p:column>
@@ -486,7 +486,7 @@
                                     <p:outputLabel value="Minggu Ke 3 Juni 2014 (Data Update per Hari)" styleClass="header_small_no_bold" />
                                     <p:outputLabel value="Available in version 2.0" styleClass="header_big" style="position:relative;color:red;right:-155px !important;font-style:italic"/>
                                 </h:panelGrid>
-                                <p:barChart id="basic1" value="#{homeController.presensiModel}" legendPosition="se"  stacked="true" seriesColors="66cc00,629de1,003366,990000,cccc00,6600cc,d500d5,ff2a55"   animate="false" 
+                                <p:barChart id="basic1" value="#{homeDashboardController.presensiModel}" legendPosition="se"  stacked="true" seriesColors="66cc00,629de1,003366,990000,cccc00,6600cc,d500d5,ff2a55"   animate="false" 
                                             showDatatip="true" orientation="horizontal" max="300" 
                                             style="height:180px;font-size: 11px"/> 
 
@@ -499,7 +499,7 @@
                                     <p:outputLabel value="Distribusi Karyawan" styleClass="header_big" />
                                     <h:panelGrid columns="2" style="margin-left:-6px;">
                                         <p:outputLabel value="Updated :" styleClass="header_small_no_bold" />
-                                        <p:outputLabel value="#{homeController.lastUpdateEmpDistByGender}" style="margin-left:-8px;" styleClass="header_small_no_bold">
+                                        <p:outputLabel value="#{homeDashboardController.lastUpdateEmpDistByGender}" style="margin-left:-8px;" styleClass="header_small_no_bold">
                                             <f:convertDateTime pattern="dd-MMM-yyyy hh:mm"/>
                                         </p:outputLabel>
                                     </h:panelGrid>
@@ -516,10 +516,10 @@
                                         </p:row>
                                         <p:row>
                                             <p:column style="width: 50%;text-align: center">
-                                                <p:outputLabel value="#{homeController.totalMale}" style="font-size: 30px !important;font-weight: bold;color: #069;font-family: Digital-7 !important" />
+                                                <p:outputLabel value="#{homeDashboardController.totalMale}" style="font-size: 30px !important;font-weight: bold;color: #069;font-family: Digital-7 !important" />
                                             </p:column>
                                             <p:column style="width: 50%; text-align: center">
-                                                <p:outputLabel value="#{homeController.totalFemale}" style="font-size: 30px !important;font-weight: bold; color: #069;font-family: Digital-7  !important" />
+                                                <p:outputLabel value="#{homeDashboardController.totalFemale}" style="font-size: 30px !important;font-weight: bold; color: #069;font-family: Digital-7  !important" />
                                             </p:column>
                                         </p:row>
 
@@ -573,12 +573,12 @@
                                     <p:outputLabel value="Distribusi Karyawan"  styleClass="header_big" />
                                     <h:panelGrid columns="2" style="margin-left:-6px;">
                                         <p:outputLabel value="Updated :" styleClass="header_small_no_bold" />
-                                        <p:outputLabel value="#{homeController.lastUpdateEmpDistByDepartment}" style="margin-left:-8px;" styleClass="header_small_no_bold">
+                                        <p:outputLabel value="#{homeDashboardController.lastUpdateEmpDistByDepartment}" style="margin-left:-8px;" styleClass="header_small_no_bold">
                                             <f:convertDateTime pattern="dd-MMM-yyyy hh:mm"/>
                                         </p:outputLabel>
                                     </h:panelGrid>
                                 </h:panelGrid>
-                                <p:barChart id="basic11" value="#{homeController.distribusiKaryawanPerDepartment}" legendPosition="ne"  stacked="false" seriesColors="66cc00,629de1,003366,990000,cccc00,6600cc,006666"   animate="false"
+                                <p:barChart id="basic11" value="#{homeDashboardController.distribusiKaryawanPerDepartment}" legendPosition="ne"  stacked="false" seriesColors="66cc00,629de1,003366,990000,cccc00,6600cc,006666"   animate="false"
                                             showDatatip="true"  legendCols="8" 
                                             style="height:180px;font-size: 11px"/> 
 

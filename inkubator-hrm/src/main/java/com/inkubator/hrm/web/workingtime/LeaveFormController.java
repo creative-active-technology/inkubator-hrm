@@ -46,6 +46,7 @@ public class LeaveFormController extends BaseController {
     private Boolean isUpdate;
     private Boolean isRenderAvailabilityDate;
     private Boolean isRenderEndOfPeriodMonth;
+    private List<AttendanceStatus> attendanceStatusList;
     private List<ApprovalDefinition> appDefs;
     private ApprovalDefinition selectedAppDef;
     private int indexOfAppDefs;
@@ -66,8 +67,7 @@ public class LeaveFormController extends BaseController {
             appDefs = new ArrayList<ApprovalDefinition>(); 
             model = new LeaveModel();
             model.setIsActive(Boolean.TRUE);
-            List<AttendanceStatus> attendanceStatusList = attendanceStatusService.getAllData();
-            model.setAttendanceStatusList(attendanceStatusList);
+            attendanceStatusList = attendanceStatusService.getAllData();
 
             String param = FacesUtil.getRequestParameter("execution");
             if (StringUtils.isNotEmpty(param)) {
@@ -97,6 +97,7 @@ public class LeaveFormController extends BaseController {
         isRenderAvailabilityDate = null;
         isRenderEndOfPeriodMonth = null;
         attendanceStatusService = null;
+        attendanceStatusList = null;
     }
 
     public LeaveModel getModel() {
@@ -153,6 +154,14 @@ public class LeaveFormController extends BaseController {
 
 	public void setSelectedAppDef(ApprovalDefinition selectedAppDef) {
 		this.selectedAppDef = selectedAppDef;
+	}
+
+	public List<AttendanceStatus> getAttendanceStatusList() {
+		return attendanceStatusList;
+	}
+
+	public void setAttendanceStatusList(List<AttendanceStatus> attendanceStatusList) {
+		this.attendanceStatusList = attendanceStatusList;
 	}
 
 	public void doReset() {

@@ -5,22 +5,15 @@
     </head>
     <body>
         <div style="font-family:Trebuchet MS;margin-bottom: 20px;font-weight: bold;color: black;padding: 3px 3px 3px 10px;background-image: linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -o-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -moz-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -webkit-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -ms-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -webkit-gradient(linear,left bottom,left topcolor-stop(0.68, rgb(114,185,215)));">
-            PERMOHONAN PERJALANAN DINAS ${nik} NOMOR ${businessTravelNo}</div>
+            PENGAJUAN PERUBAHAN JADWAL KERJA KARYAWAN OLEH ${nik}</div>
         <div style="padding-left: 10px;font-family: Verdana">
             Yth ${approverName},
             <br />
             <br />
             <br />
-            Pada tanggal ${proposeDate}, karyawan ${nik}/${requesterName} mengajukan permohonan untuk perjalanan dinas.<br /><br />
-			Adapun dinas yang dimaksud yaitu: <br /><br />
-			Nomor perjalanan dinas : ${businessTravelNo}<br />
-			Tempat tujuan : ${destination}<br />
-			Tanggal perjalanan : ${start} s.d ${end}<br />
-			Total biaya : ${totalAmount}<br />
-			Deskripsi : ${description}<br />
+            Pada tanggal ${proposeDate}, karyawan ${nik}/${requesterName} (${jabatan}) mengajukan perubahan jadwal kerja karyawan.<br /><br />			
 			<br />
-            Adapun informasi lebih lanjut dapat di lihat pada:  <a href="${applicationUrl}" target="_blank">${applicationUrl}</a><br/><br/>
-            Harapan kami agar saudara(i) dapat menindaklanjuti permohonan ini, dan apabila tidak ada respon persetujuan hingga tanggal ${deadline}, maka dianggap menyetujui permohonan yang bersangkutan.
+            Adapun informasi lebih lanjut dapat di lihat pada:  <a href="${applicationUrl}" target="_blank">${applicationUrl}</a>
             <br />
  			<br />
             Demikian pemberitahuan ini disampaikan, atas perhatian dan kerjasamanya disampaikan terima kasih.
