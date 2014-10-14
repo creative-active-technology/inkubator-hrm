@@ -2,9 +2,6 @@ package com.inkubator.hrm.entity;
 // Generated Oct 7, 2014 2:27:51 PM by Hibernate Tools 3.2.1.GA
 
 
-import com.inkubator.hrm.entity.ApprovalDefinition;
-import com.inkubator.hrm.entity.ApprovalDefinitionOTId;
-import com.inkubator.hrm.entity.WtOverTime;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
