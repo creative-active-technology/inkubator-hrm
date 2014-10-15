@@ -48,7 +48,7 @@
         <p:dialog widgetVar="calendarDialog" modal="true" resizable="false"  onShow="statusDialog.hide();"
                   appendTo="@(body)" header="Kalender" dynamic="true" width="500" closeOnEscape="true" >
             <h:form id="caledarFormId">
-                <p:schedule value="#{calendarController.lazyScheduleModel}" timeZone="GMT+7"
+                <p:schedule value="#{calendarController.lazyScheduleModel}"
                             style="font-size: 14px !important;margin-top: 10px!important; margin-bottom: 10px!important"/>
             </h:form>   
         </p:dialog>
