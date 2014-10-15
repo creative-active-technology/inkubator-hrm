@@ -70,6 +70,8 @@ public class EmpData implements java.io.Serializable {
     private Set<TempJadwalKaryawan> tempJadwalKaryawans = new HashSet<TempJadwalKaryawan>(0);
     private Set<LeaveDistribution> leaveDistributions = new HashSet<>(0);
     private Set<OverTimeDistribution> overTimeDistributions = new HashSet<OverTimeDistribution>(0);
+    private Set<LeaveImplementation> leaveImplementations = new HashSet<LeaveImplementation>(0);
+    private Set<LeaveImplementation> temporaryActings = new HashSet<LeaveImplementation>(0);
 
     public EmpData() {
     }
@@ -477,5 +479,25 @@ public class EmpData implements java.io.Serializable {
     public void setOverTimeDistributions(Set<OverTimeDistribution> overTimeDistributions) {
         this.overTimeDistributions = overTimeDistributions;
     }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "empData")
+	public Set<LeaveImplementation> getLeaveImplementations() {
+		return leaveImplementations;
+	}
+
+	public void setLeaveImplementations(Set<LeaveImplementation> leaveImplementations) {
+		this.leaveImplementations = leaveImplementations;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "temporaryActing")
+	public Set<LeaveImplementation> getTemporaryActings() {
+		return temporaryActings;
+	}
+
+	public void setTemporaryActings(Set<LeaveImplementation> temporaryActings) {
+		this.temporaryActings = temporaryActings;
+	}
+    
+    
 
 }
