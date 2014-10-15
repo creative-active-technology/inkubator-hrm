@@ -73,12 +73,35 @@ public class LeaveImplementationDaoImpl extends IDAOImpl<LeaveImplementation> im
     }
 	
 	@Override
-	public Loan getEntityByPkWithDetail(Long id) {
+	public LeaveImplementation getEntityByPkWithDetail(Long id) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
 		criteria.add(Restrictions.eq("id", id));
 		criteria.setFetchMode("empData", FetchMode.JOIN);
 		criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
 		criteria.setFetchMode("leave", FetchMode.JOIN);
-		return (Loan) criteria.uniqueResult();
+		return (LeaveImplementation) criteria.uniqueResult();
+	}
+
+	@Override
+	public List<LeaveImplementation> getAllDataByEmpDataId(Long empDataId, Order orderable) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("empData.id", empDataId));
+		criteria.addOrder(orderable);
+		return criteria.list();
+	}
+
+	@Override
+	public long getTotalByNumberFilling(String numberFilling) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("numberFilling", numberFilling));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
+
+	@Override
+	public long getTotalByNumberFillingAndNotId(String numberFilling, Long id) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("numberFilling", numberFilling));
+        criteria.add(Restrictions.ne("id", id));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
 	}
 }

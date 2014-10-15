@@ -6,7 +6,6 @@ import org.hibernate.criterion.Order;
 
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.LeaveImplementation;
-import com.inkubator.hrm.entity.Loan;
 import com.inkubator.hrm.web.search.LeaveImplementationSearchParameter;
 
 /**
@@ -19,5 +18,12 @@ public interface LeaveImplementationDao extends IDAO<LeaveImplementation> {
 
 	public Long getTotalByParam(LeaveImplementationSearchParameter parameter);
 	
-	public Loan getEntityByPkWithDetail(Long id);
+	public LeaveImplementation getEntityByPkWithDetail(Long id);
+	
+	public List<LeaveImplementation> getAllDataByEmpDataId(Long empDataId, Order order);
+
+	public long getTotalByNumberFilling(String numberFilling);
+
+	public long getTotalByNumberFillingAndNotId(String numberFilling, Long id);
+	
 }

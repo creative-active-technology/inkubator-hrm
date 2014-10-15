@@ -112,4 +112,20 @@ public class LeaveDistributionDaoImpl extends IDAOImpl<LeaveDistribution> implem
 		criteria.add(Restrictions.lt("endDate", date));
 		return criteria.list();
 	}
+
+	@Override
+	public List<LeaveDistribution> getAllDataByEmpIdFetchLeave(Long empDataId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("empData.id", empDataId));
+        criteria.setFetchMode("leave", FetchMode.JOIN);
+        return criteria.list();
+	}
+
+	@Override
+	public LeaveDistribution getEntityByLeaveIdAndEmpDataId(Long leaveId, Long empDataId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("empData.id", empDataId));
+		criteria.add(Restrictions.eq("leave.id", leaveId));
+		return (LeaveDistribution) criteria.uniqueResult();
+	}
 }
