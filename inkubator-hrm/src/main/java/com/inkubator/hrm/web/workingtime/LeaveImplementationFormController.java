@@ -1,6 +1,7 @@
 package com.inkubator.hrm.web.workingtime;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -57,7 +58,7 @@ public class LeaveImplementationFormController extends BaseController {
 
             String param = FacesUtil.getRequestParameter("execution");
             if (StringUtils.isNotEmpty(param)) {
-                LeaveImplementation leaveImplementation = leaveImplementationService.getEntiyByPK(Long.parseLong(param.substring(1)));
+                LeaveImplementation leaveImplementation = leaveImplementationService.getEntityByPkWithDetail(Long.parseLong(param.substring(1)));
                 if (leaveImplementation != null) {
                     getModelFromEntity(leaveImplementation);
                     List<LeaveDistribution> leaveDistributions = leaveDistributionService.getAllDataByEmpIdFetchLeave(leaveImplementation.getEmpData().getId());
@@ -226,7 +227,8 @@ public class LeaveImplementationFormController extends BaseController {
     		LeaveDistribution leaveDistribution = leaveDistributionService.getEntityByLeaveIdAndEmpDataId(model.getLeaveId(), model.getEmpData().getId());
     		LeaveImplementation latestByFillingDate = leaveImplementationService.getLatestEntityByEmpDataId(model.getEmpData().getId());
     		model.setRemainingLeave(leaveDistribution.getBalance());
-    		model.setLatestLeaveDate(latestByFillingDate.getEndDate());
+    		Date latestLeaveDate = latestByFillingDate != null ? latestByFillingDate.getEndDate() : null;
+    		model.setLatestLeaveDate(latestLeaveDate);
     	} catch (Exception e) {
 	    	LOGGER.error("Error", e);
 		}
