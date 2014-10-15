@@ -48,7 +48,7 @@
         <p:dialog widgetVar="calendarDialog" modal="true" resizable="false"  onShow="statusDialog.hide();"
                   appendTo="@(body)" header="Kalender" dynamic="true" width="500" closeOnEscape="true" >
             <h:form id="caledarFormId">
-                <p:schedule value="#{calendarController.lazyScheduleModel}" timeZone="GMT+7"
+                <p:schedule value="#{calendarController.lazyScheduleModel}"
                             style="font-size: 14px !important;margin-top: 10px!important; margin-bottom: 10px!important"/>
             </h:form>   
         </p:dialog>
@@ -358,6 +358,7 @@
                                             <p:menuitem value="#{appmsg['publicHolidayException.publicHolidayException']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['publicHolidayException.publicHolidayException']}" url="/protected/working_time/public_holiday_exception_view.htm" />
                                             <p:menuitem value="Distribusi Lembur" icon="img-periode" style="font-size: 12px !important;color: #003366" title="Distribusi Lembur" url="/protected/employee/over_time_distribution_view.htm" />
                                             <p:menuitem value="Neraca Lembur" icon="img-periode" style="font-size: 12px !important;color: #003366" title="Neraca Lembur" url="/protected/employee/neraca_cuti_view.htm" />
+                                            <p:menuitem value="#{appmsg['leaveimplementation.leave_implementation']}" icon="img-task" style="font-size: 12px !important;color: #003366" title="#{appmsg['leaveimplementation.leave_implementation']}" url="/protected/working_time/leave_implementation_view.htm" />
                                         </p:submenu>
                                         <p:submenu label="Payroll"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-payroll">
                                             <!--                                            <p:menuitem value="Price Simulator" icon="img-price-simulator" style="font-size: 12px !important;color: #003366" title="Make Price Simulation" url="/protected/price_simulator.htm" /> 

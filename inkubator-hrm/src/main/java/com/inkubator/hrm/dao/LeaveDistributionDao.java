@@ -31,4 +31,8 @@ public interface LeaveDistributionDao extends IDAO<LeaveDistribution> {
 	public List<LeaveDistribution> getAllDataByLeaveIdAndIsActiveEmployee(Long leaveId);
 	
 	public List<LeaveDistribution> getAllDataByEndDateLessThan(Date date);
+
+	public List<LeaveDistribution> getAllDataByEmpIdFetchLeave(Long empDataId);
+
+	public LeaveDistribution getEntityByLeaveIdAndEmpDataId(Long leaveId, Long empDataId);
 }
