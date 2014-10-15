@@ -4,9 +4,12 @@ import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.FacultyDao;
+import com.inkubator.hrm.dao.JabatanFakultyDao;
 import com.inkubator.hrm.entity.Faculty;
+import com.inkubator.hrm.entity.JabatanFakulty;
 import com.inkubator.hrm.service.FacultyService;
 import com.inkubator.securitycore.util.UserInfoUtil;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.hibernate.criterion.Order;
@@ -27,6 +30,8 @@ public class FacultyServiceImpl extends IServiceImpl implements FacultyService {
 
     @Autowired
     private FacultyDao facultyDao;
+    @Autowired
+    private JabatanFakultyDao jabatanFakultyDao;
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -263,6 +268,19 @@ public class FacultyServiceImpl extends IServiceImpl implements FacultyService {
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
     public Long getTotalFacultyByParam(String parameter) throws Exception {
         return this.facultyDao.getTotalFacultyByParam(parameter);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Faculty getEntityByPkWithDetail(Long id) throws Exception {
+        Faculty faculty = new Faculty();
+        List<Faculty> listFaculties = new ArrayList<>();
+        for (JabatanFakulty jabatanFakulty : this.jabatanFakultyDao.getAllDataByJabatanId(id)) {
+            listFaculties.add(jabatanFakulty.getFaculty());
+        }
+     
+        faculty.setListFaculties(listFaculties);
+        return faculty;
     }
 
 }

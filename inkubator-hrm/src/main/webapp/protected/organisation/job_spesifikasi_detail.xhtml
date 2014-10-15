@@ -102,22 +102,22 @@
                                         <p:outputLabel  value="Education Level" style="font-weight: bold"/>
                                     </p:column>
                                     <p:column style="text-align: center;">
-                                        <p:pickList value="#{jabatanDetailController.dualListModel}" var="role" itemValue="#{role}" converter="#{educationLevelConverter}" id="picklistUserRoleId"
+                                        <p:pickList value="#{jabatanSpesifikasiDetailController.dualListModel}" var="role" itemValue="#{role}" converter="#{educationLevelConverter}" id="educationLevelId"
                                                     required="false"  style="margin-top: 15px;margin-bottom: 15px;" label="Daftar Education Level" styleClass="isitext_hrm"
                                                     itemLabel="#{role.name}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
                                                     removeLabel="#{appmsg['global.remove']}"/>
-                                        <p:message for="picklistUserRoleId" />
+                                        <p:message for="educationLevelId" />
                                     </p:column>
                                 </div>
                             </p:row>
-                            
+
                             <p:row>
                                 <div align="center">
                                     <p:column style="width: 13%;background-color: #e1f0f0!important" >
                                         <p:outputLabel  value="Jenis Profesi" style="font-weight: bold"/>
                                     </p:column>
                                     <p:column style="text-align: center;">
-                                        <p:pickList value="#{jabatanDetailController.occupationDualListModel}" var="role" itemValue="#{role}" converter="#{occupationTypeConverter}" id="picklistOccupation"
+                                        <p:pickList value="#{jabatanSpesifikasiDetailController.occupationDualListModel}" var="role" itemValue="#{role}" converter="#{occupationTypeConverter}" id="picklistOccupation"
                                                     required="false"  style="margin-top: 15px;margin-bottom: 15px;" label="Daftar Education Level" styleClass="isitext_hrm"
                                                     itemLabel="#{role.occupationTypeName}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
                                                     removeLabel="#{appmsg['global.remove']}"/>
@@ -125,14 +125,14 @@
                                     </p:column>
                                 </div>
                             </p:row>
-                            
+
                             <p:row>
                                 <div align="center">
                                     <p:column style="width: 13%;background-color: #e1f0f0!important" >
                                         <p:outputLabel  value="Bidang" style="font-weight: bold"/>
                                     </p:column>
                                     <p:column style="text-align: center;">
-                                        <p:pickList value="#{jabatanDetailController.majorDualListModel}" var="role" itemValue="#{role}" converter="#{majorConverter}" id="picklistMajor"
+                                        <p:pickList value="#{jabatanSpesifikasiDetailController.majorDualListModel}" var="role" itemValue="#{role}" converter="#{majorConverter}" id="picklistMajor"
                                                     required="false"  style="margin-top: 15px;margin-bottom: 15px;" label="Daftar Education Level" styleClass="isitext_hrm"
                                                     itemLabel="#{role.majorName}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
                                                     removeLabel="#{appmsg['global.remove']}"/>
@@ -140,14 +140,14 @@
                                     </p:column>
                                 </div>
                             </p:row>
-                            
+
                             <p:row>
                                 <div align="center">
                                     <p:column style="width: 13%;background-color: #e1f0f0!important" >
                                         <p:outputLabel  value="Faculty" style="font-weight: bold"/>
                                     </p:column>
                                     <p:column style="text-align: center;">
-                                        <p:pickList value="#{jabatanDetailController.facultyDualListModel}" var="role" itemValue="#{role}" converter="#{facultyConverter}" id="picklistFaculty"
+                                        <p:pickList value="#{jabatanSpesifikasiDetailController.facultyDualListModel}" var="role" itemValue="#{role}" converter="#{facultyConverter}" id="picklistFaculty"
                                                     required="false"  style="margin-top: 15px;margin-bottom: 15px;" label="Daftar Education Level" styleClass="isitext_hrm"
                                                     itemLabel="#{role.facultyName}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
                                                     removeLabel="#{appmsg['global.remove']}"/>
@@ -157,9 +157,12 @@
                             </p:row>
                             
                             
-                                
+                            
                         </p:panelGrid>
-                        
+                        <p:commandButton value="Simpan" actionListener="#{jabatanSpesifikasiDetailController.doSave()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true" update=":userViewGrowlId">
+                                <!--<p:ajax event="dialogReturn" listener="#{jabatanSpesifikasiDetailController.onDialogReturn}" update="tableJobSpekId, :userViewGrowlId"/>-->
+                        </p:commandButton>
+
 
                         <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
 
@@ -230,27 +233,27 @@
                 <p:dialog widgetVar="dialogConfirmJobSpec" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <h:form id="deleteDialogJobDeskripsiId">
-                    <div align="center">
                         <div align="center">
-                            <h:panelGrid columns="2" style="text-align: justify">
-                                <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
-                                <h:panelGroup>
-                                    <h:panelGrid style="text-align: center">
-                                        <p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
-                                    </h:panelGrid>
-                                </h:panelGroup>
+                            <div align="center">
+                                <h:panelGrid columns="2" style="text-align: justify">
+                                    <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
+                                    <h:panelGroup>
+                                        <h:panelGrid style="text-align: center">
+                                            <p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
+                                        </h:panelGrid>
+                                    </h:panelGroup>
+                                </h:panelGrid>
+                            </div>
+                            <h:panelGrid id="panelDialogConfirmId"  columns="3">
+                                <p:outputLabel value="#{appmsg['costcenter.name']}"  style="font-weight: bold"/>
+                                <p:outputLabel value=":"  style="font-weight: bold"/>
+                                <p:outputLabel value="#{jabatanSpesifikasiDetailController.selectedJobSpec.optionAbility}" styleClass="label_hrm"/>
                             </h:panelGrid>
+                            <p:separator/>
+                            <p:commandButton value="#{appmsg['global.yes']}" action="#{jabatanSpesifikasiDetailController.doDelete()}" update=":jobTitleViewId:tableJobSpekId,:userViewGrowlId"
+                                             oncomplete="dialogConfirmJobSpec.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                            <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmJobSpec.hide()" icon="ui-icon-close" />                     	
                         </div>
-                        <h:panelGrid id="panelDialogConfirmId"  columns="3">
-                            <p:outputLabel value="#{appmsg['costcenter.name']}"  style="font-weight: bold"/>
-                            <p:outputLabel value=":"  style="font-weight: bold"/>
-                            <p:outputLabel value="#{jabatanSpesifikasiDetailController.selectedJobSpec.optionAbility}" styleClass="label_hrm"/>
-                        </h:panelGrid>
-                        <p:separator/>
-                        <p:commandButton value="#{appmsg['global.yes']}" action="#{jabatanSpesifikasiDetailController.doDelete()}" update=":jobTitleViewId:tableJobSpekId,:userViewGrowlId"
-                                         oncomplete="dialogConfirmJobSpec.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmJobSpec.hide()" icon="ui-icon-close" />                     	
-                    </div>
                     </h:form>
                 </p:dialog>
                 <p:dialog widgetVar="detailJobSpek" header="#{appmsg['jobspek.detail_jobspek']}" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"

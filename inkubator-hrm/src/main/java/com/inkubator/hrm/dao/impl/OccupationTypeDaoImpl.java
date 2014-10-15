@@ -6,6 +6,7 @@ import com.inkubator.hrm.entity.OccupationType;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -64,5 +65,6 @@ public class OccupationTypeDaoImpl extends IDAOImpl<OccupationType> implements O
         criteria.add(Restrictions.ne("id", id));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
+
 
 }

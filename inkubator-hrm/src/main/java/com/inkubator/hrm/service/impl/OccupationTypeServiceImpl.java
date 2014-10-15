@@ -3,10 +3,13 @@ package com.inkubator.hrm.service.impl;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.dao.JabatanOccupationDao;
 import com.inkubator.hrm.dao.OccupationTypeDao;
+import com.inkubator.hrm.entity.JabatanProfesi;
 import com.inkubator.hrm.entity.OccupationType;
 import com.inkubator.hrm.service.OccupationTypeService;
 import com.inkubator.securitycore.util.UserInfoUtil;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.hibernate.criterion.Order;
@@ -27,6 +30,8 @@ public class OccupationTypeServiceImpl extends IServiceImpl implements Occupatio
 
     @Autowired
     private OccupationTypeDao occupationTypeDao;
+    @Autowired
+    private JabatanOccupationDao jabatanOccupationDao;
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -264,5 +269,19 @@ public class OccupationTypeServiceImpl extends IServiceImpl implements Occupatio
     public Long getTotalOccupationTypeByParam(String parameter) throws Exception {
         return this.occupationTypeDao.getTotalOccupationTypeByParam(parameter);
     }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public OccupationType getEntityByPkWithDetail(Long id) throws Exception {
+        OccupationType occupationType = new OccupationType();
+        List<OccupationType> occupationTypes = new ArrayList<>();
+        for (JabatanProfesi jabatanOccupation : this.jabatanOccupationDao.getAllDataByJabatanId(id)) {
+            occupationTypes.add(jabatanOccupation.getOccupationType());
+        }
+     
+        occupationType.setListOccupationTypes(occupationTypes);
+        return occupationType;
+    }
+
 
 }

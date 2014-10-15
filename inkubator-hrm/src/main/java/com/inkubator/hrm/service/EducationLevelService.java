@@ -16,5 +16,7 @@ public interface EducationLevelService extends IService<EducationLevel> {
 	public List<EducationLevel> getByParam(String parameter, int firstResult, int maxResults, Order orderable) throws Exception;
 
 	public Long getTotalByParam(String parameter) throws Exception;
+        
+        public EducationLevel getEntityByPkWithDetail(Long id) throws Exception;
 
 }

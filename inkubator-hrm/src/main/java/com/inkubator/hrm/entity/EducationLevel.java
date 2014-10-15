@@ -1,9 +1,13 @@
 package com.inkubator.hrm.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,6 +16,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 
 @Entity
@@ -28,6 +33,8 @@ public class EducationLevel implements Serializable {
     private Date updatedOn;
     private Set<BioEducationHistory> educationHistorys = new HashSet<BioEducationHistory>(0);
     private Set<BioFamilyRelationship> bioFamilyRelationships = new HashSet<BioFamilyRelationship>(0);
+    private Set<JabatanEdukasi> jabatanEdukasis = new HashSet<JabatanEdukasi>(0);
+    private List<EducationLevel> listEducationLevels = new ArrayList<>(0);
 
     public EducationLevel() {
 
@@ -135,6 +142,79 @@ public class EducationLevel implements Serializable {
     public void setBioFamilyRelationships(Set<BioFamilyRelationship> bioFamilyRelationships) {
         this.bioFamilyRelationships = bioFamilyRelationships;
     }
+
+    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="educationLevel")
+    public Set<JabatanEdukasi> getJabatanEdukasis() {
+        return jabatanEdukasis;
+    }
+
+    public void setJabatanEdukasis(Set<JabatanEdukasi> jabatanEdukasis) {
+        this.jabatanEdukasis = jabatanEdukasis;
+    }
+
+    @Transient
+    public List<EducationLevel> getListEducationLevels() {
+        return listEducationLevels;
+    }
+
+    public void setListEducationLevels(List<EducationLevel> listEducationLevels) {
+        this.listEducationLevels = listEducationLevels;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 53 * hash + Objects.hashCode(this.id);
+        hash = 53 * hash + Objects.hashCode(this.version);
+        hash = 53 * hash + Objects.hashCode(this.name);
+        hash = 53 * hash + Objects.hashCode(this.level);
+        hash = 53 * hash + Objects.hashCode(this.createdBy);
+        hash = 53 * hash + Objects.hashCode(this.updatedBy);
+        hash = 53 * hash + Objects.hashCode(this.createdOn);
+        hash = 53 * hash + Objects.hashCode(this.updatedOn);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final EducationLevel other = (EducationLevel) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        if (!Objects.equals(this.version, other.version)) {
+            return false;
+        }
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        if (!Objects.equals(this.level, other.level)) {
+            return false;
+        }
+        if (!Objects.equals(this.createdBy, other.createdBy)) {
+            return false;
+        }
+        if (!Objects.equals(this.updatedBy, other.updatedBy)) {
+            return false;
+        }
+        if (!Objects.equals(this.createdOn, other.createdOn)) {
+            return false;
+        }
+        if (!Objects.equals(this.updatedOn, other.updatedOn)) {
+            return false;
+        }
+        return true;
+    }
+
+    
+    
+    
+
     
     
 

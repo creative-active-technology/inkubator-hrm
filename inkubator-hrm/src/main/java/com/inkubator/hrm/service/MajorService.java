@@ -17,4 +17,5 @@ public interface MajorService extends IService<Major> {
 
 	public Long getTotalMajorByParam(String parameter) throws Exception;
 
+        public Major getEntityByPkWithDetail(Long id) throws Exception;
 }

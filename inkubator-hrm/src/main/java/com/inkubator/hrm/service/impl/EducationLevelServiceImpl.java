@@ -15,9 +15,12 @@ import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.EducationLevelDao;
+import com.inkubator.hrm.dao.JabatanEdukasiDao;
 import com.inkubator.hrm.entity.EducationLevel;
+import com.inkubator.hrm.entity.JabatanEdukasi;
 import com.inkubator.hrm.service.EducationLevelService;
 import com.inkubator.securitycore.util.UserInfoUtil;
+import java.util.ArrayList;
 
 /**
 *
@@ -29,6 +32,8 @@ public class EducationLevelServiceImpl extends IServiceImpl implements Education
 
 	@Autowired
 	private EducationLevelDao educationLevelDao;
+        @Autowired
+        private JabatanEdukasiDao jabatanEdukasiDao;
 	
 	@Override
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -266,5 +271,18 @@ public class EducationLevelServiceImpl extends IServiceImpl implements Education
 	public Long getTotalByParam(String parameter) throws Exception {
 		return this.educationLevelDao.getTotalByParam(parameter);
 	}
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public EducationLevel getEntityByPkWithDetail(Long id) throws Exception {
+        EducationLevel educationLevel = new EducationLevel();
+        List<EducationLevel> educationLevels = new ArrayList<>();
+        for (JabatanEdukasi jabatanEdukasi : this.jabatanEdukasiDao.getAllDataByJabatanId(id)) {
+            educationLevels.add(jabatanEdukasi.getEducationLevel());
+        }
+     
+        educationLevel.setListEducationLevels(educationLevels);
+        return educationLevel;
+    }
 
 }

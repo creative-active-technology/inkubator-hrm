@@ -26,6 +26,7 @@ public class JabatanEdukasi  implements java.io.Serializable {
      private EducationLevel educationLevel;
      private Jabatan jabatan;
      private String descripstion;
+     
 
     public JabatanEdukasi() {
     }
@@ -78,7 +79,7 @@ public class JabatanEdukasi  implements java.io.Serializable {
     }
 
     
-    @Column(name="descripstion", length=65535)
+    @Column(name="descripstion", length=65535, columnDefinition="Text")
     public String getDescripstion() {
         return this.descripstion;
     }
@@ -88,7 +89,7 @@ public class JabatanEdukasi  implements java.io.Serializable {
     }
 
 
-
+    
 
 }
 

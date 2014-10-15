@@ -3,10 +3,13 @@ package com.inkubator.hrm.service.impl;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.dao.JabatanMajorDao;
 import com.inkubator.hrm.dao.MajorDao;
+import com.inkubator.hrm.entity.JabatanMajor;
 import com.inkubator.hrm.entity.Major;
 import com.inkubator.hrm.service.MajorService;
 import com.inkubator.securitycore.util.UserInfoUtil;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.hibernate.criterion.Order;
@@ -27,6 +30,8 @@ public class MajorServiceImpl extends IServiceImpl implements MajorService {
 
     @Autowired
     private MajorDao majorDao;
+    @Autowired
+    private JabatanMajorDao jabatanMajorDao;
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -263,6 +268,19 @@ public class MajorServiceImpl extends IServiceImpl implements MajorService {
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
     public Long getTotalMajorByParam(String parameter) throws Exception {
         return this.majorDao.getTotalMajorByParam(parameter);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Major getEntityByPkWithDetail(Long id) throws Exception {
+        Major major = new Major();
+        List<Major> listMajors = new ArrayList<>();
+        for (JabatanMajor jabatanMajor : this.jabatanMajorDao.getAllDataByJabatanId(id)) {
+            listMajors.add(jabatanMajor.getMajor());
+        }
+     
+        major.setListMajors(listMajors);
+        return major;
     }
 
 }
