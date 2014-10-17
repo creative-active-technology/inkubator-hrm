@@ -17,7 +17,6 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.PasswordHistoryDao;
 import com.inkubator.hrm.entity.PasswordHistory;
 import com.inkubator.hrm.service.CheckPasswordHistoryEmailNotSendService;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -48,12 +47,12 @@ public class CheckPasswordHistoryEmailNotSendServiceImpl extends IServiceImpl im
     
     @Override
     @Scheduled(cron = "${cron.sendingmail.password.not.send}")
-    @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRES_NEW, rollbackFor = UnknownHostException.class)
+    @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
     public void checkPasswordHistoryEmailNotSend() throws Exception {
         List<PasswordHistory> passwordHistories = passwordHistoryDao.getByEmailNotification(HRMConstant.EMAIL_NOTIFICATION_NOT_YET_SEND);
         LOGGER.info("--------------- TOTAL sending email which will be processed : " + passwordHistories.size());
         for (PasswordHistory passwordHistory : passwordHistories) {
-            try {
+//            try {
                 //decrypt the password before sending email
                 String passwordDecrypted = AESUtil.getAESDescription(passwordHistory.getPassword(), HRMConstant.KEYVALUE, HRMConstant.AES_ALGO);
 //                passwordHistory.setPassword(passwordDecrypted);
@@ -121,9 +120,9 @@ public class CheckPasswordHistoryEmailNotSendServiceImpl extends IServiceImpl im
                 passwordHistory.setPassword(HashingUtils.getHashSHA256(passwordDecrypted));
                 passwordHistoryDao.update(passwordHistory); // update emailNotification and password
 
-            } catch (Exception e) {
-                LOGGER.error("Error", e);
-            }
+//            } catch (Exception e) {
+//                LOGGER.error("Error", e);
+//            }
         }
     }
     
