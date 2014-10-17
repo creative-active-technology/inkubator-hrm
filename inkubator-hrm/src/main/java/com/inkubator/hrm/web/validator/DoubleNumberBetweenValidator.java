@@ -22,14 +22,14 @@ public class DoubleNumberBetweenValidator implements Validator {
         // Obtain the component and submitted value of the end number component.
         UIInput endTimeComponent = (UIInput) component.getAttributes().get("endNumberDouble");
         String data = (String) endTimeComponent.getSubmittedValue();
-
-        Double endNumber = Double.parseDouble(data);
+        
         // Check if they both are filled in.
         if (beginNumber == null || data == null) {
             return; // Let required="true" do its job.
         }
 
         // Check if begin time is bigger/equal with end time
+        Double endNumber = Double.parseDouble(data);
         if (beginNumber >= endNumber) {
             String validatorMessage = (String) component.getAttributes().get("validatorMessage");
             throw new ValidatorException(new FacesMessage(validatorMessage));
