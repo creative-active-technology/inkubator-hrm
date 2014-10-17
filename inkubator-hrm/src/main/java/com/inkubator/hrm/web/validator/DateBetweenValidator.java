@@ -31,7 +31,7 @@ public class DateBetweenValidator implements Validator {
         Date endTime = null;
         try {
             endTime = parser.parse((String) endTimeComponent.getSubmittedValue());
-        } catch (ParseException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

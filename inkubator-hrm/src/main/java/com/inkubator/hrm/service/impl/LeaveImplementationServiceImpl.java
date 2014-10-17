@@ -12,16 +12,23 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.LeaveDao;
+import com.inkubator.hrm.dao.LeaveDistributionDao;
 import com.inkubator.hrm.dao.LeaveImplementationDao;
+import com.inkubator.hrm.dao.NeracaCutiDao;
 import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.Leave;
+import com.inkubator.hrm.entity.LeaveDistribution;
 import com.inkubator.hrm.entity.LeaveImplementation;
+import com.inkubator.hrm.entity.NeracaCuti;
 import com.inkubator.hrm.service.LeaveImplementationService;
+import com.inkubator.hrm.service.WtScheduleShiftService;
 import com.inkubator.hrm.web.search.LeaveImplementationSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 
@@ -39,6 +46,12 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
 	private LeaveDao leaveDao;
 	@Autowired
 	private EmpDataDao empDataDao;
+	@Autowired
+	private WtScheduleShiftService wtScheduleShiftService;
+	@Autowired
+	private LeaveDistributionDao leaveDistributionDao;
+	@Autowired
+	private NeracaCutiDao neracaCutiDao;
 	
 	@Override
 	public LeaveImplementation getEntiyByPK(String id) throws Exception {
@@ -71,7 +84,20 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
 		EmpData empData = empDataDao.getEntiyByPK(entity.getEmpData().getId());
 		Leave leave = leaveDao.getEntiyByPK(entity.getLeave().getId());
 		EmpData temporaryActing = entity.getTemporaryActing() != null ? empDataDao.getEntiyByPK(entity.getTemporaryActing().getId()) : null;
+		LeaveDistribution leaveDistribution = leaveDistributionDao.getEntityByLeaveIdAndEmpDataId(leave.getId(), empData.getId());
 		
+		// check submitted leave tidak boleh lebih besar dari batasPengajuan di leaveDefinition
+		long differenceDaysOfFilling = DateTimeUtil.getTotalDayDifference (new Date(), entity.getStartDate());
+		if(differenceDaysOfFilling > leave.getSubmittedLimit()){
+			throw new BussinessException("leaveimplementation.error_submitted_limit");
+		}
+				
+		// check actualLeave yg diambil, tidak boleh lebih besar dari balanceCuti yg tersedia
+		Double actualLeave = this.getTotalActualLeave(empData.getId(), leave.getId(), entity.getStartDate(), entity.getEndDate());		
+		if(actualLeave > leaveDistribution.getBalance()){
+    		throw new BussinessException("leaveimplementation.error_leave_balance is insufficient");
+    	}
+				
 		entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
 		entity.setEmpData(empData);
 		entity.setLeave(leave);
@@ -83,13 +109,18 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
 		entity.setCreatedOn(createdOn);
 		
 		leaveImplementationDao.save(entity);
+		
+		if(leave.getIsQuotaReduction()){
+			this.creditLeaveBalance(leaveDistribution, actualLeave);
+		}
 	}
 
 	@Override
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void update(LeaveImplementation entity) throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 		// check duplicate number filling
-		long totalDuplicates = leaveImplementationDao.getTotalByNumberFillingAndNotId(entity.getNumberFilling(), entity.getId());
+		/*long totalDuplicates = leaveImplementationDao.getTotalByNumberFillingAndNotId(entity.getNumberFilling(), entity.getId());
 		if (totalDuplicates > 0) {
 			throw new BussinessException("leaveimplementation.error_duplicate_filling_number");
 		}		
@@ -114,7 +145,24 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
 		leaveImplementation.setUpdatedBy(UserInfoUtil.getUserName());
 		leaveImplementation.setUpdatedOn(new Date());
 		
-		leaveImplementationDao.update(leaveImplementation);
+		leaveImplementationDao.update(leaveImplementation);*/
+	}
+	
+	private void creditLeaveBalance(LeaveDistribution leaveDistribution, double actualLeave){					
+		double balance = leaveDistribution.getBalance() - actualLeave;
+		leaveDistribution.setBalance(balance);
+		leaveDistribution.setUpdatedOn(new Date());
+		leaveDistribution.setUpdatedBy(UserInfoUtil.getUserName());
+		leaveDistributionDao.update(leaveDistribution);
+		
+		NeracaCuti neracaCuti = new NeracaCuti();
+		neracaCuti.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+		neracaCuti.setLeaveDistribution(leaveDistribution);
+		neracaCuti.setKredit(actualLeave);				
+		neracaCuti.setCreatedBy(UserInfoUtil.getUserName());
+		neracaCuti.setCreatedOn(new Date());
+		neracaCutiDao.save(neracaCuti);
+		
 	}
 
 	@Override
@@ -361,4 +409,18 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
 		return latest;
 	}
 
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Double getTotalActualLeave(Long empDataId, Long leaveId, Date startDate, Date endDate) throws Exception {
+		EmpData empData = empDataDao.getEntiyByPK(empDataId);
+		Leave leave = leaveDao.getEntiyByPK(leaveId);
+		double actualLeave = 0.0;
+		if(leave.getDayType() == HRMConstant.LEAVE_DAY_TYPE_WORKING){			
+			actualLeave = wtScheduleShiftService.getTotalWorkingDaysBetween(empData.getId(), startDate, endDate);
+		} else {
+			actualLeave = DateTimeUtil.getTotalDay(startDate, endDate);
+		}
+		
+		return actualLeave;
+	}
 }

@@ -78,6 +78,8 @@ public class LeaveImplementationDaoImpl extends IDAOImpl<LeaveImplementation> im
 		criteria.add(Restrictions.eq("id", id));
 		criteria.setFetchMode("empData", FetchMode.JOIN);
 		criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+		criteria.setFetchMode("temporaryActing", FetchMode.JOIN);
+		criteria.setFetchMode("temporaryActing.bioData", FetchMode.JOIN);
 		criteria.setFetchMode("leave", FetchMode.JOIN);
 		return (LeaveImplementation) criteria.uniqueResult();
 	}
