@@ -110,8 +110,7 @@ public class LeaveImplementationFormController extends BaseController {
 		this.leaveImplementationService = leaveImplementationService;
 	}
 
-	public void setLeaveDistributionService(
-			LeaveDistributionService leaveDistributionService) {
+	public void setLeaveDistributionService(LeaveDistributionService leaveDistributionService) {
 		this.leaveDistributionService = leaveDistributionService;
 	}
 
@@ -195,6 +194,8 @@ public class LeaveImplementationFormController extends BaseController {
         model.setMaterialJobsAbandoned(leaveImplementation.getMaterialJobsAbandoned());
         model.setTemporaryActing(leaveImplementation.getTemporaryActing());
         model.setDescription(leaveImplementation.getDescription());
+        double actualLeave = leaveImplementationService.getTotalActualLeave(leaveImplementation.getEmpData().getId(), leaveImplementation.getLeave().getId(), leaveImplementation.getStartDate(), leaveImplementation.getEndDate());
+        model.setActualLeaveTaken(actualLeave);
     }
 
     public String doBack() {
@@ -217,6 +218,10 @@ public class LeaveImplementationFormController extends BaseController {
 	    	//filter list hanya untuk leave yang isActive = true
 	    	leaveDistributions = Lambda.select(leaveDistributions, Lambda.having(Lambda.on(LeaveDistribution.class).getLeave().getIsActive(), Matchers.equalTo(true)));
 	        leaves = Lambda.extract(leaveDistributions, Lambda.on(LeaveDistribution.class).getLeave());
+	        model.setLeaveId(null);
+	        
+	        //cek juga actual leave taken-nya
+	        this.onChangeStartOrEndDate();
 	    } catch (Exception e) {
 	    	LOGGER.error("Error", e);
 		}
@@ -229,6 +234,20 @@ public class LeaveImplementationFormController extends BaseController {
     		model.setRemainingLeave(leaveDistribution.getBalance());
     		Date latestLeaveDate = latestByFillingDate != null ? latestByFillingDate.getEndDate() : null;
     		model.setLatestLeaveDate(latestLeaveDate);
+    		
+    		//cek juga actual leave taken-nya
+	        this.onChangeStartOrEndDate();
+    	} catch (Exception e) {
+	    	LOGGER.error("Error", e);
+		}
+    }
+    
+    public void onChangeStartOrEndDate(){
+    	try {
+	    	if(model.getStartDate() != null && model.getEndDate() != null && model.getEmpData()!= null && model.getLeaveId() != null){
+	    		double actualLeave = leaveImplementationService.getTotalActualLeave(model.getEmpData().getId(), model.getLeaveId(), model.getStartDate(), model.getEndDate());
+	    		model.setActualLeaveTaken(actualLeave);
+	    	}
     	} catch (Exception e) {
 	    	LOGGER.error("Error", e);
 		}

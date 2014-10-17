@@ -26,6 +26,7 @@ public class LeaveImplementationModel {
 	private String materialJobsAbandoned;
 	private EmpData temporaryActing;
 	private String description;
+	private Double actualLeaveTaken;
 	
 	public Long getId() {
 		return id;
@@ -112,6 +113,10 @@ public class LeaveImplementationModel {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
-	
+	public Double getActualLeaveTaken() {
+		return actualLeaveTaken;
+	}
+	public void setActualLeaveTaken(Double actualLeaveTaken) {
+		this.actualLeaveTaken = actualLeaveTaken;
+	}
 }

@@ -126,11 +126,6 @@
                                 				 action="#{leaveImplementationViewController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmLeaveImplementation.show()">
                                     <f:setPropertyActionListener value="#{leaveImplementationData}" target="#{leaveImplementationViewController.selectedLeaveImplementation}" />
                                 </p:commandButton>
-                                -
-                                <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
-                                                 action="#{leaveImplementationViewController.doUpdate()}" >
-                                    <f:setPropertyActionListener value="#{leaveImplementationData}" target="#{leaveImplementationViewController.selectedLeaveImplementation}" />
-                                </p:commandButton>
                             </p:column>                        
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>

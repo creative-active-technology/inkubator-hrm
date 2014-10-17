@@ -56,7 +56,7 @@
                                                 itemLabel="#{empData.nik} #{empData.bioData.firstName} #{empData.bioData.lastName}"
                                                 converter="#{empDataConverter}"
                                                 required="true" styleClass="isitext_hrm" size="45">
-                                    	<p:ajax event="itemSelect" listener="#{leaveImplementationFormController.onChangeEmployee}" update="leaveId"/>
+                                    	<p:ajax event="itemSelect" listener="#{leaveImplementationFormController.onChangeEmployee}" update="leaveId,totalWorkingDaysId"/>
                                     </p:autoComplete>
 	                                <p:message for="employeeId"/>
 	                            </p:column>
@@ -80,7 +80,7 @@
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                            	<p:inputText id="latestLeaveDateId" title="#{appmsg['leaveimplementation.latest_leave_date']}" value="#{leaveImplementationFormController.model.latestLeaveDate}" 
-	                                    		 required="true" styleClass="isitext_hrm" style="width:138px;" readonly="true">
+	                                    		 styleClass="isitext_hrm" style="width:138px;" readonly="true">
 	                                	<f:convertDateTime pattern="dd MMMM yyyy" />
 	                                </p:inputText>
 	                                <p:message for="latestLeaveDateId"/>
@@ -92,7 +92,7 @@
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                            	<p:inputText id="remainingLeaveId" title="#{appmsg['leaveimplementation.remaining_balance_of_leave']}" value="#{leaveImplementationFormController.model.remainingLeave}" 
-	                                    		 required="true" styleClass="isitext_hrm" style="width:138px;" readonly="true"/>
+	                                    		 styleClass="isitext_hrm" style="width:80px;" readonly="true"/>
 	                                <p:message for="remainingLeaveId"/>
 	                            </p:column>
 	                        </p:row>
@@ -102,9 +102,10 @@
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                            	<p:calendar id="startDateId" required="true" pattern="dd MMMM yyyy" value="#{leaveImplementationFormController.model.startDate}">
+	                            		<p:ajax event="dateSelect" listener="#{leaveImplementationFormController.onChangeStartOrEndDate()}" update="totalWorkingDaysId"/>
 	                            		<f:validator validatorId="dateBetweenValidator"  />
 	                                    <f:attribute name="endTime" value="#{endDateId}"/>
-	                                    <f:attribute name="validatorMessage" value="#{appmsg['publicHoliday.publicHoliday_dateValidator']}"/>
+	                                    <f:attribute name="validatorMessage" value="#{appmsg['publicHoliday.publicHoliday_dateValidator']}"/>	                                    
 	                            	</p:calendar>
 	                                <p:message for="startDateId"/>
 	                            </p:column>
@@ -114,8 +115,20 @@
 	                                <p:outputLabel for="endDateId" value="#{appmsg['global.end_date']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:calendar id="endDateId" binding="#{endDateId}" required="true" pattern="dd MMMM yyyy" value="#{leaveImplementationFormController.model.endDate}"/>
+	                            	<p:calendar id="endDateId" binding="#{endDateId}" required="true" pattern="dd MMMM yyyy" value="#{leaveImplementationFormController.model.endDate}">
+	                            		<p:ajax event="dateSelect" listener="#{leaveImplementationFormController.onChangeStartOrEndDate()}" update="totalWorkingDaysId"/>
+	                            	</p:calendar>
 	                                <p:message for="endDateId"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="totalWorkingDaysId" value="#{appmsg['leaveimplementation.total_working_days']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:inputText id="totalWorkingDaysId" title="#{appmsg['leaveimplementation.total_working_days']}" value="#{leaveImplementationFormController.model.actualLeaveTaken}" 
+	                                    		 required="true" styleClass="isitext_hrm" style="width:80px;" readonly="true"/>
+	                                <p:message for="totalWorkingDaysId"/>
 	                            </p:column>
 	                        </p:row>
 	                        <p:row>
