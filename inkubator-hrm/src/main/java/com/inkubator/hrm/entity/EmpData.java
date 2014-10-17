@@ -72,6 +72,7 @@ public class EmpData implements java.io.Serializable {
     private Set<OverTimeDistribution> overTimeDistributions = new HashSet<OverTimeDistribution>(0);
     private Set<LeaveImplementation> leaveImplementations = new HashSet<LeaveImplementation>(0);
     private Set<LeaveImplementation> temporaryActings = new HashSet<LeaveImplementation>(0);
+    private Set<ImplementationOfOverTime> implementationOfOvertimes = new HashSet<ImplementationOfOverTime>(0);
 
     public EmpData() {
     }
@@ -498,6 +499,14 @@ public class EmpData implements java.io.Serializable {
 		this.temporaryActings = temporaryActings;
 	}
     
+        @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="empData")
+    public Set<ImplementationOfOverTime> getImplementationOfOvertimes() {
+        return this.implementationOfOvertimes;
+    }
+    
+    public void setImplementationOfOvertimes(Set<ImplementationOfOverTime> implementationOfOvertimes) {
+        this.implementationOfOvertimes = implementationOfOvertimes;
+    }
     
 
 }
