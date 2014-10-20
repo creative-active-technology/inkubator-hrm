@@ -89,33 +89,33 @@
     </bean> 
     
 
-<!--    <bean id="notificationUserMessagesListener" class="com.inkubator.hrm.service.impl.NotificationUserMessagesListener" lazy-init="true">
+    <bean id="notificationUserMessagesListener" class="com.inkubator.hrm.service.impl.NotificationUserMessagesListener" lazy-init="true">
         <property name="applicationUrl" value="${email_param_application_url}"/>
         <property name="applicationName" value="${email_param_application_name}"/>
         <property name="ownerEmail" value="${email_param_owner_email}"/>
         <property name="ownerCompany" value="${email_param_owner_company}"/>
         <property name="ownerAdministrator" value="${email_param_owner_administrator}"/>
-    </bean>-->
-    <!--<bean id="riwayatAccessMessagesListener" class="com.inkubator.hrm.service.impl.RiwayatAccessMessagesListener" lazy-init="true"/>-->
-<!--    <bean id="notificationApprovalMessagesListener" class="com.inkubator.hrm.service.impl.NotificationApprovalMessagesListener" lazy-init="true">
+    </bean>
+    <bean id="riwayatAccessMessagesListener" class="com.inkubator.hrm.service.impl.RiwayatAccessMessagesListener" lazy-init="true"/>
+    <bean id="notificationApprovalMessagesListener" class="com.inkubator.hrm.service.impl.NotificationApprovalMessagesListener" lazy-init="true">
         <property name="applicationUrl" value="${email_param_application_url}"/>
         <property name="applicationName" value="${email_param_application_name}"/>
         <property name="ownerEmail" value="${email_param_owner_email}"/>
         <property name="ownerCompany" value="${email_param_owner_company}"/>
         <property name="ownerAdministrator" value="${email_param_owner_administrator}"/>
-    </bean>-->
-    <!--<bean id="jadwalKerjaMessagesListener" class="com.inkubator.hrm.service.impl.JadwalKerjaUpdateMessagesListener" lazy-init="true" />-->
+    </bean>
+    <bean id="jadwalKerjaMessagesListener" class="com.inkubator.hrm.service.impl.JadwalKerjaUpdateMessagesListener" lazy-init="true" />
     <bean id="notificationApprovalGrowlMessagesListener" class="com.inkubator.hrm.service.impl.NotificationApprovalGrowlMessagesListener" lazy-init="true"/>    
-    <!--<bean id="jadwalKerjaMassMessagesListener" class="com.inkubator.hrm.service.impl.JadwalKerjaMassMessagesListener" lazy-init="true" />-->
+    <bean id="jadwalKerjaMassMessagesListener" class="com.inkubator.hrm.service.impl.JadwalKerjaMassMessagesListener" lazy-init="true" />
     <jms:listener-container container-type="default" connection-factory="connectionFactoryComsume" acknowledge="transacted" 
                             transaction-manager="jsmTransaction"   >
         
-<!--        <jms:listener destination="notificationUserHrm" ref="notificationUserMessagesListener" method="onMessage"  /> 
+        <jms:listener destination="notificationUserHrm" ref="notificationUserMessagesListener" method="onMessage"  /> 
         <jms:listener destination="notificationUserAccess" ref="riwayatAccessMessagesListener" method="onMessage"  />
-        <jms:listener destination="notificationApproval" ref="notificationApprovalMessagesListener" method="onMessage"  />-->
+        <jms:listener destination="notificationApproval" ref="notificationApprovalMessagesListener" method="onMessage"  />
         <jms:listener destination="notificationApprovalGrowl" ref="notificationApprovalGrowlMessagesListener" method="onMessage"  />
-<!--        <jms:listener destination="notificationJadwalKerja" ref="jadwalKerjaMessagesListener" method="onMessage"  />
-        <jms:listener destination="notificationMassJadwalKerja" ref="jadwalKerjaMassMessagesListener" method="onMessage"  />-->
+        <jms:listener destination="notificationJadwalKerja" ref="jadwalKerjaMessagesListener" method="onMessage"  />
+        <jms:listener destination="notificationMassJadwalKerja" ref="jadwalKerjaMassMessagesListener" method="onMessage"  />
     </jms:listener-container>
     
     <bean id="jsmTransaction" class="org.springframework.jms.connection.JmsTransactionManager">

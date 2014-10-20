@@ -1,16 +1,5 @@
 package com.inkubator.hrm.service.impl;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import org.apache.commons.lang.time.DateUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.ApprovalActivityDao;
 import com.inkubator.hrm.entity.ApprovalActivity;
@@ -19,12 +8,21 @@ import com.inkubator.hrm.service.BusinessTravelService;
 import com.inkubator.hrm.service.LoanService;
 import com.inkubator.hrm.service.ReimbursmentService;
 import com.inkubator.hrm.service.TempJadwalKaryawanService;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import org.apache.commons.lang.time.DateUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author rizkykojek
  */
-public class ApprovalActivityCronServiceImpl extends BaseApprovalServiceImpl implements ApprovalActivityCronService {
+public class ApprovalActivityCronServiceImpl implements ApprovalActivityCronService {
 
 	@Autowired
 	private ApprovalActivityDao approvalActivityDao;

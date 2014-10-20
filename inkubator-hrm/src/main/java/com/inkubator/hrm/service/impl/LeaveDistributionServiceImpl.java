@@ -92,7 +92,6 @@ public class LeaveDistributionServiceImpl extends IServiceImpl implements LeaveD
         update.setLeave(leaveDao.getEntiyByPK(entity.getLeave().getId()));
         leaveDistributionDao.update(update);
     }
-    
 
     @Override
     public void saveOrUpdate(LeaveDistribution enntity) throws Exception {
@@ -289,8 +288,8 @@ public class LeaveDistributionServiceImpl extends IServiceImpl implements LeaveD
 //            leaveDistributionDao.save(distribution);
 //            distribution.set
         }
-        neracaCutiDao.saveBacth(listNeracaCuti);
         leaveDistributionDao.saveBatch(listDistribution);
+        neracaCutiDao.saveBacth(listNeracaCuti);
 
     }
 
@@ -306,17 +305,17 @@ public class LeaveDistributionServiceImpl extends IServiceImpl implements LeaveD
         return leaveDistributionDao.getAllDataByEmpIdWithDetail();
     }
 
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<LeaveDistribution> getAllDataByEmpIdFetchLeave(Long empDataId) throws Exception {
-		return leaveDistributionDao.getAllDataByEmpIdFetchLeave(empDataId);		
-	}
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<LeaveDistribution> getAllDataByEmpIdFetchLeave(Long empDataId) throws Exception {
+        return leaveDistributionDao.getAllDataByEmpIdFetchLeave(empDataId);
+    }
 
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-	public LeaveDistribution getEntityByLeaveIdAndEmpDataId(Long leaveId, Long empDataId) throws Exception {
-		return leaveDistributionDao.getEntityByLeaveIdAndEmpDataId(leaveId, empDataId);
-		
-	}
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public LeaveDistribution getEntityByLeaveIdAndEmpDataId(Long leaveId, Long empDataId) throws Exception {
+        return leaveDistributionDao.getEntityByLeaveIdAndEmpDataId(leaveId, empDataId);
+
+    }
 
 }
