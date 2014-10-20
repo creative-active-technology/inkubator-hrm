@@ -21,8 +21,8 @@
                             <p:graphicImage library="images" name="marital_status.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="Over Time Distribution" styleClass="header_big" />
-                                    <p:outputLabel value="Over Time Distribution from Employee" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['overtimedistribution.overtime_distribution']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['overtimedistribution.overtime_distribution_header']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -58,7 +58,7 @@
                                       id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="Daftar Over Time"/>
+                                <h:outputText value="#{appmsg['overtimedistribution.overtime_distribution_list']}"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
@@ -68,13 +68,13 @@
                             </p:column>
                             <p:column sortBy="empData">
                                 <f:facet name="header">
-                                    <h:outputText value="Nama Karyawan"/>
+                                    <h:outputText value="#{appmsg['personachievement.employee_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.empData.nikWithFullName}" />
                             </p:column>
                             <p:column sortBy="wtOverTime" >
                                 <f:facet name="header">
-                                    <h:outputText value="Nama Lembur"/>
+                                    <h:outputText value="#{appmsg['overtimedistribution.overtime_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.wtOverTime.name}" />
                             </p:column>
@@ -129,7 +129,7 @@
                             </h:panelGrid>
                         </div>
                         <h:panelGrid id="panelDialogConfirmId"  columns="3">
-                            <p:outputLabel value="#{appmsg['maritalstatus.name']}"  style="font-weight: bold"/>
+                            <p:outputLabel value="#{appmsg['personachievement.employee_name']}"  style="font-weight: bold"/>
                             <p:outputLabel value=":"  style="font-weight: bold"/>
                             <p:outputLabel value="#{overTimeDistributionViewController.selected.empData.nikWithFullName}" styleClass="label_hrm"/>
                         </h:panelGrid>
@@ -144,21 +144,21 @@
                     <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
 
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Employee Name" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['personachievement.employee_name']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{overTimeDistributionViewController.selected.empData.nikWithFullName}"/> </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Lembur" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['overtimedistribution.overtime_name']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{overTimeDistributionViewController.selected.wtOverTime.name}"/> </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Deskripsi" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{overTimeDistributionViewController.selected.description}"/> </p:column>
                         </p:row>
 
                         <f:facet name="footer">
                             <p:row>
-                                <p:column colspan="2"><p:outputLabel value="Distribusi Lembur" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
+                                <p:column colspan="2"><p:outputLabel value="#{appmsg['overtimedistribution.overtime_distribution']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
                             </p:row>
                         </f:facet>
                     </p:panelGrid>

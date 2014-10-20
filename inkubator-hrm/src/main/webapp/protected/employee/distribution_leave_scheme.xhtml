@@ -23,8 +23,8 @@
                             <p:graphicImage library="images" name="task.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="Distribusi Cuti" styleClass="header_big" />
-                                    <p:outputLabel value="Distribusi Cuti dari Aplikasi" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['leavedistribution.leave_distribution']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['leavedistribution.leave_distribution_header']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -35,7 +35,7 @@
                         <p:panelGrid style="width: 100%;margin-bottom: 10px;margin-top: 20px" styleClass="grid_border3" >
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Nama Cuti"  for="code" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['leavedistribution.leave_name']}"  for="code" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:selectOneMenu required="true" id="code" value="#{leaveDistributionSchemeFormController.model.leaveSchemeId}" style="margin-right: 3px" >
@@ -60,7 +60,7 @@
 
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Department"  for="department" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['department.department']}"  for="department" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <h:panelGrid columns="2" style="margin-left: -10px;">
@@ -79,7 +79,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Karyawan Type"  for="employeeType" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['employeetype.employee_type']}"  for="employeeType" styleClass="label_hrm" />
                                 </p:column>
 
                                 <p:column style="width: 80%">
@@ -98,7 +98,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel value="Gender"  for="gender" styleClass="label_hrm" />
+                                    <p:outputLabel value="#{appmsg['global.gender']}"  for="gender" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:selectOneRadio id="gender" styleClass="isitext_hrm" required="true" value="#{leaveDistributionSchemeFormController.model.gender}" label="Gender">
@@ -111,7 +111,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Golongan Jabatan"  for="golonganJabatan" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['benefitGroupRate.benefitGroupRate_golongan']}"  for="golonganJabatan" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:selectOneMenu id="golonganJabatan" value="#{leaveDistributionSchemeFormController.model.golonganJabatanId}" style="min-width: 300px;margin-right: 3px" >
@@ -123,16 +123,16 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Sort By"  for="sortBy" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['leavedistribution.sort_by']}"  for="sortBy" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:selectOneMenu id="sortBy" styleClass="isitext_hrm" required="false" value="#{leaveDistributionSchemeFormController.model.sortBy}" label="Gender">
-                                        <f:selectItem itemLabel="NIK" itemValue="0" />
-                                        <f:selectItem itemLabel="Name" itemValue="1" />
+                                        <f:selectItem itemLabel="#{appmsg['global.nik']}" itemValue="0" />
+                                        <f:selectItem itemLabel="#{appmsg['global.name']}" itemValue="1" />
                                     </p:selectOneMenu>&nbsp;&nbsp;&nbsp;
                                     <p:selectOneMenu id="orderBy" styleClass="isitext_hrm" required="false" value="#{leaveDistributionSchemeFormController.model.orderBy}" label="Gender">
-                                        <f:selectItem itemLabel="ASC" itemValue="0" />
-                                        <f:selectItem itemLabel="DSC" itemValue="1" />
+                                        <f:selectItem itemLabel="A-Z" itemValue="0" />
+                                        <f:selectItem itemLabel="Z-A" itemValue="1" />
                                     </p:selectOneMenu>
                                     <p:message for="sortBy"/>
                                 </p:column>
@@ -159,13 +159,13 @@
                 <h:form id="formSubmitId">
                     <div id="box_bg" style="margin: 10px">
                         <div style="margin-top: 10px">
-                            <p:outputLabel value="Daftar Employee" styleClass="header_big" />
+                            <p:outputLabel value="#{appmsg['employee.list_of_employee']}" styleClass="header_big" />
                             <p:separator/>
                         </div>
                         <p:panelGrid style="width: 100%;margin-bottom: 10px;margin-top: 20px" styleClass="grid_border3" >
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Nama Cuti"  styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['leavedistribution.leave_name']}"  styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:selectOneMenu required="true" id="code" value="#{leaveDistributionSchemeFormController.model.leaveSchemeId}" style="margin-right: 3px" disabled="true">
@@ -184,7 +184,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Start Balance"  for="strtBalance" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['leavedistribution.start_saldo']}"  for="strtBalance" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <pe:inputNumber id="strtBalance" decimalPlaces="1" value="#{leaveDistributionSchemeFormController.model.startBalance}"

@@ -23,8 +23,8 @@
                             <p:graphicImage library="images" name="task.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="Penempatan Jadwal Kerja Karyawan" styleClass="header_big" />
-                                    <p:outputLabel value="Penempatan Jadwal Kerja Karyawan dari Aplikasi" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['workschedule.workschedule']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['workschedule.workschedule_header']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -35,7 +35,7 @@
                         <p:panelGrid style="width: 100%;margin-bottom: 10px;margin-top: 20px" styleClass="grid_border3" >
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Kelompok Kerja"  for="code" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['menu.workgroup']}" for="code" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:selectOneMenu required="true" id="code" value="#{placementOfEmployeeWorkScheduleFormController.model.workingGroupId}" style="margin-right: 3px" >
@@ -48,7 +48,7 @@
 
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Department"  for="department" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['department.department']}"  for="department" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <h:panelGrid columns="2" style="margin-left: -10px;">
@@ -67,7 +67,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Karyawan Type"  for="employeeType" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['employeetype.employee_type']}"  for="employeeType" styleClass="label_hrm" />
                                 </p:column>
 
                                 <p:column style="width: 80%">
@@ -86,7 +86,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Gender"  for="gender" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['global.gender']}"  for="gender" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:selectOneRadio required="true" id="gender" styleClass="isitext_hrm" value="#{placementOfEmployeeWorkScheduleFormController.model.gender}" label="Gender">
@@ -99,7 +99,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Golongan Jabatan"  for="golonganJabatan" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['benefitGroupRate.benefitGroupRate_golongan']}"  for="golonganJabatan" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:selectOneMenu id="golonganJabatan" value="#{placementOfEmployeeWorkScheduleFormController.model.golonganJabatanId}" style="min-width: 300px;margin-right: 3px" >
@@ -111,16 +111,16 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Sort By"  for="sortBy" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['leavedistribution.sort_by']}"  for="sortBy" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:selectOneMenu id="sortBy" styleClass="isitext_hrm" required="false" value="#{placementOfEmployeeWorkScheduleFormController.model.sortBy}" label="Gender">
-                                        <f:selectItem itemLabel="NIK" itemValue="0" />
-                                        <f:selectItem itemLabel="Name" itemValue="1" />
+                                        <f:selectItem itemLabel="#{appmsg['global.nik']}" itemValue="0" />
+                                        <f:selectItem itemLabel="#{appmsg['global.name']}" itemValue="1" />
                                     </p:selectOneMenu>&nbsp;&nbsp;&nbsp;
                                     <p:selectOneMenu id="orderBy" styleClass="isitext_hrm" required="false" value="#{placementOfEmployeeWorkScheduleFormController.model.orderBy}" label="Gender">
-                                        <f:selectItem itemLabel="ASC" itemValue="0" />
-                                        <f:selectItem itemLabel="DSC" itemValue="1" />
+                                        <f:selectItem itemLabel="A-Z" itemValue="0" />
+                                        <f:selectItem itemLabel="Z-A" itemValue="1" />
                                     </p:selectOneMenu>
                                     <p:message for="sortBy"/>
                                 </p:column>
@@ -149,7 +149,7 @@
                 <h:form id="formSubmitId">
                     <div id="box_bg" style="margin: 10px">
                         <div style="margin-top: 10px">
-                            <p:outputLabel value="Daftar Employee" styleClass="header_big" />
+                            <p:outputLabel value="#{appmsg['employee.list_of_employee']}" styleClass="header_big" />
                            <!--<p:outputLabel value="#{appmsg['user_view.header2']}" styleClass="header_small_no_bold" />-->
                             <!--                                </h:panelGrid>
                                                         </h:panelGroup>-->
@@ -158,7 +158,7 @@
                         </div>
                         <div align="center">
                             <p:pickList value="#{placementOfEmployeeWorkScheduleFormController.dualListModel}" var="role" itemValue="#{role}" converter="#{empDataConverter}" id="picklistUserRoleId"
-                                        required="true"  style="margin-top: 15px;margin-bottom: 15px;" label="Daftar Employee" styleClass="isitext_hrm"
+                                        required="true"  style="margin-top: 15px;margin-bottom: 15px;" label="#{appmsg['employee.list_of_employee']}" styleClass="isitext_hrm"
                                         itemLabel="#{role.nik} - #{role.bioData.firstName} #{role.bioData.lastName}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
                                         removeLabel="#{appmsg['global.remove']}"/>
                             <p:message for="picklistUserRoleId" />
