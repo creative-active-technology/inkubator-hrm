@@ -81,5 +81,4 @@ public class JabatanEdukasi implements java.io.Serializable {
     public void setDescripstion(String descripstion) {
         this.descripstion = descripstion;
     }
-
 }

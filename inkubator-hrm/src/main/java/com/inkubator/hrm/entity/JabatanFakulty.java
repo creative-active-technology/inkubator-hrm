@@ -77,8 +77,7 @@ public class JabatanFakulty  implements java.io.Serializable {
         this.jabatan = jabatan;
     }
 
-    
-        @Column(name="description", length=65535, columnDefinition="Text")
+    @Column(name="description", length=65535, columnDefinition="Text")
     public String getDescription() {
         return this.description;
     }

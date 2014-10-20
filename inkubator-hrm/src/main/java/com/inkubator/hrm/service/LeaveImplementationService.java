@@ -6,7 +6,6 @@ import org.hibernate.criterion.Order;
 
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.LeaveImplementation;
-import com.inkubator.hrm.entity.Loan;
 import com.inkubator.hrm.web.search.LeaveImplementationSearchParameter;
 
 /**
@@ -19,6 +18,8 @@ public interface LeaveImplementationService extends IService<LeaveImplementation
 
 	public Long getTotalByParam(LeaveImplementationSearchParameter parameter) throws Exception;
 
-	public Loan getEntityByPkWithDetail(Long id) throws Exception;
+	public LeaveImplementation getEntityByPkWithDetail(Long id) throws Exception;
+	
+	public LeaveImplementation getLatestEntityByEmpDataId(Long empDataId) throws Exception;
 
 }

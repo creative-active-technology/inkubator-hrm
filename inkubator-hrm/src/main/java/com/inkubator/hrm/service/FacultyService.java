@@ -17,4 +17,5 @@ public interface FacultyService extends IService<Faculty> {
 
 	public Long getTotalFacultyByParam(String parameter) throws Exception;
 
+        public Faculty getEntityByPkWithDetail(Long id) throws Exception;
 }

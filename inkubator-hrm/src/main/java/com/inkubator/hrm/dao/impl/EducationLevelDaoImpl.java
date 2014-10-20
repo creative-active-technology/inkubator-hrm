@@ -6,6 +6,7 @@ import com.inkubator.hrm.entity.EducationLevel;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -79,5 +80,7 @@ public class EducationLevelDaoImpl extends IDAOImpl<EducationLevel> implements E
         criteria.add(Restrictions.eq("level", level));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
+
+   
 
 }

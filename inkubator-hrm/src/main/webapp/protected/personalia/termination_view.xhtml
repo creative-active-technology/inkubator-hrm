@@ -76,7 +76,7 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{data.empData.nikWithFullName}" />
                             </p:column>
-                            <p:column sortBy="effectiveDate" style="width: 10%">
+                            <p:column sortBy="effectiveDate" style="width: 20%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['terminate.effective_date']}"/>
                                 </f:facet>
@@ -84,13 +84,13 @@
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="terminationType" style="width: 15%">
+                            <p:column sortBy="terminationType" style="width: 20%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['terminate.termination_type']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.terminationType.name}" />
                             </p:column>
-                            <p:column sortBy="code" style="width: 22%">
+                            <p:column sortBy="code" style="width: 17%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['terminate.code_termination']}"/>
                                 </f:facet>

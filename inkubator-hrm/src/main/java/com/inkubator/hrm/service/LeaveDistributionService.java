@@ -26,4 +26,8 @@ public interface LeaveDistributionService extends IService<LeaveDistribution> {
     public LeaveDistribution getEntityByParamWithDetail(Long empId) throws Exception;
 
     public List<LeaveDistribution> getAllDataByEmpIdWithDetail() throws Exception;
+    
+    public List<LeaveDistribution> getAllDataByEmpIdFetchLeave(Long empDataId) throws Exception;
+    
+    public LeaveDistribution getEntityByLeaveIdAndEmpDataId(Long leaveId, Long empDataId) throws Exception;
 }

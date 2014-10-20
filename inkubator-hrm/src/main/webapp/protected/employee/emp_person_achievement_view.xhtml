@@ -69,13 +69,13 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="empData" style="width: 40%">
+                            <p:column sortBy="empData" style="width: 35%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['personachievement.employee_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.empData.nik} - #{data.empData.bioData.firstName} #{data.empData.bioData.lastName}" />
                             </p:column>
-                            <p:column sortBy="dateAchievement" style="width: 15%">
+                            <p:column sortBy="dateAchievement" style="width: 17%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['personachievement.achievement_date']}"/>
                                 </f:facet>
@@ -83,7 +83,7 @@
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="achievementName" style="width: 32%">
+                            <p:column sortBy="achievementName" style="width: 35%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['personachievement.achievement']}"/>
                                 </f:facet>

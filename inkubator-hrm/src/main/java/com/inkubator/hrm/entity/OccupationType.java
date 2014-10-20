@@ -2,13 +2,17 @@ package com.inkubator.hrm.entity;
 // Generated Jun 18, 2014 6:21:53 AM by Hibernate Tools 3.6.0
 
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 
@@ -31,6 +35,7 @@ public class OccupationType  implements java.io.Serializable {
      private Date updatedOn;
      private String occupationTypeName;
      private String description;
+     private List<OccupationType> listOccupationTypes = new ArrayList<>(0);
 
     public OccupationType() {
     }
@@ -131,7 +136,66 @@ public class OccupationType  implements java.io.Serializable {
         this.description = description;
     }
 
+    @Transient
+    public List<OccupationType> getListOccupationTypes() {
+        return listOccupationTypes;
+    }
 
+    public void setListOccupationTypes(List<OccupationType> listOccupationTypes) {
+        this.listOccupationTypes = listOccupationTypes;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 79 * hash + (int) (this.id ^ (this.id >>> 32));
+        hash = 79 * hash + Objects.hashCode(this.version);
+        hash = 79 * hash + Objects.hashCode(this.createdBy);
+        hash = 79 * hash + Objects.hashCode(this.createdOn);
+        hash = 79 * hash + Objects.hashCode(this.updatedBy);
+        hash = 79 * hash + Objects.hashCode(this.updatedOn);
+        hash = 79 * hash + Objects.hashCode(this.occupationTypeName);
+        hash = 79 * hash + Objects.hashCode(this.description);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final OccupationType other = (OccupationType) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        if (!Objects.equals(this.version, other.version)) {
+            return false;
+        }
+        if (!Objects.equals(this.createdBy, other.createdBy)) {
+            return false;
+        }
+        if (!Objects.equals(this.createdOn, other.createdOn)) {
+            return false;
+        }
+        if (!Objects.equals(this.updatedBy, other.updatedBy)) {
+            return false;
+        }
+        if (!Objects.equals(this.updatedOn, other.updatedOn)) {
+            return false;
+        }
+        if (!Objects.equals(this.occupationTypeName, other.occupationTypeName)) {
+            return false;
+        }
+        if (!Objects.equals(this.description, other.description)) {
+            return false;
+        }
+        return true;
+    }
+
+    
 
 
 }

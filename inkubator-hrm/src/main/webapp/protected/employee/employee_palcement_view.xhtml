@@ -72,25 +72,25 @@
                             <f:facet name="header">  
                                 <h:outputText value="#{appmsg['placement.placement_header']}" styleClass="label_hrm"/>
                             </f:facet> 
-                            <p:column style="text-align: center;width: 25px">
+                            <p:column style="text-align: center;width: 3%;">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.number']}"  />
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="nik" >
+                            <p:column sortBy="nik" style="width: 13%;">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['placement.nik']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{empViewData.nik}"/>
                             </p:column>
-                            <p:column sortBy="bioData">
+                            <p:column sortBy="bioData" style="width: 25%;">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{empViewData.bioData.firstName} #{empViewData.bioData.lastName}"/>
                             </p:column>
-                            <p:column sortBy="joinDate"  >
+                            <p:column sortBy="joinDate" style="width: 12%;" >
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['placement.join_data']}"/>
                                 </f:facet>
@@ -98,20 +98,20 @@
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
                                 </p:outputLabel>
                             </p:column>
-                            <p:column sortBy="jabatanByJabatanId" style="text-align: center" >
+                            <p:column sortBy="jabatanByJabatanId" style="width: 12%" >
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['placement.jabatan_code']}"/>
                                 </f:facet>
                                 <p:outputLabel value= "#{empViewData.jabatanByJabatanId.code}"/>
                             </p:column>
-                            <p:column sortBy="jabatanByJabatanId" >
+                            <p:column sortBy="jabatanByJabatanId" style="width: 25%;">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['placement.jabatan_name']}"/>
                                 </f:facet>
                                 <p:outputLabel value= "#{empViewData.jabatanByJabatanId.name}"/>
                             </p:column>
 
-                            <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton  icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
                                                   action="#{empDataViewController.doDetail()}" style="font-size: 10px!important" >                        
                                     <f:setPropertyActionListener value="#{empViewData}" target="#{empDataViewController.selectedEmpData}" />

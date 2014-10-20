@@ -76,9 +76,8 @@ public class JabatanProfesi  implements java.io.Serializable {
     public void setOccupationType(OccupationType occupationType) {
         this.occupationType = occupationType;
     }
-
     
-        @Column(name="description", length=65535, columnDefinition="Text")
+    @Column(name="description", length=65535, columnDefinition="Text")
     public String getDescription() {
         return this.description;
     }

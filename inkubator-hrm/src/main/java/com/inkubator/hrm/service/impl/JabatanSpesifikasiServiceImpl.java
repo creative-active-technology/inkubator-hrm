@@ -6,10 +6,31 @@ package com.inkubator.hrm.service.impl;
 
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.hrm.dao.EducationLevelDao;
+import com.inkubator.hrm.dao.FacultyDao;
 import com.inkubator.hrm.dao.JabatanDao;
+import com.inkubator.hrm.dao.JabatanEdukasiDao;
+import com.inkubator.hrm.dao.JabatanFakultyDao;
+import com.inkubator.hrm.dao.JabatanMajorDao;
+import com.inkubator.hrm.dao.JabatanOccupationDao;
 import com.inkubator.hrm.dao.JabatanSpesifikasiDao;
+import com.inkubator.hrm.dao.MajorDao;
+import com.inkubator.hrm.dao.OccupationTypeDao;
 import com.inkubator.hrm.dao.SpecificationAbilityDao;
+import com.inkubator.hrm.entity.EducationLevel;
+import com.inkubator.hrm.entity.Faculty;
+import com.inkubator.hrm.entity.Jabatan;
+import com.inkubator.hrm.entity.JabatanEdukasi;
+import com.inkubator.hrm.entity.JabatanEdukasiId;
+import com.inkubator.hrm.entity.JabatanFakulty;
+import com.inkubator.hrm.entity.JabatanFakultyId;
+import com.inkubator.hrm.entity.JabatanMajor;
+import com.inkubator.hrm.entity.JabatanMajorId;
+import com.inkubator.hrm.entity.JabatanProfesi;
+import com.inkubator.hrm.entity.JabatanProfesiId;
 import com.inkubator.hrm.entity.JabatanSpesifikasi;
+import com.inkubator.hrm.entity.Major;
+import com.inkubator.hrm.entity.OccupationType;
 import com.inkubator.hrm.service.JabatanSpesifikasiService;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import java.util.Date;
@@ -36,6 +57,22 @@ public class JabatanSpesifikasiServiceImpl extends IServiceImpl implements Jabat
     private JabatanDao jabatanDao;
     @Autowired
     private SpecificationAbilityDao specAbilityDao;
+    @Autowired
+    private JabatanEdukasiDao jabatanEdukasiDao;
+    @Autowired
+    private JabatanMajorDao jabatanMajorDao;
+    @Autowired
+    private JabatanFakultyDao jabatanFacultyDao;
+    @Autowired
+    private JabatanOccupationDao jabatanOccupationDao;
+    @Autowired
+    private EducationLevelDao educationLevelDao;
+    @Autowired
+    private MajorDao majorDao;
+    @Autowired
+    private FacultyDao facultyDao;
+    @Autowired
+    private OccupationTypeDao occupationTypeDao;
 
     @Override
     public JabatanSpesifikasi getEntiyByPK(String id) throws Exception {
@@ -65,6 +102,51 @@ public class JabatanSpesifikasiServiceImpl extends IServiceImpl implements Jabat
         this.jabatanSpesifikasiDao.save(entity);
     }
 
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void save(Long id, List<EducationLevel> educationLevels, List<Major> majorLevel, List<Faculty> faculties, List<OccupationType> occupation) throws Exception {
+        //education level
+        for(EducationLevel educationLevel : educationLevels){
+            JabatanEdukasi jabatanEdukasi = new JabatanEdukasi();
+            jabatanEdukasi.setId(new JabatanEdukasiId(id, educationLevel.getId()));
+            jabatanEdukasi.setEducationLevel(educationLevelDao.getEntiyByPK(educationLevel.getId()));
+            jabatanEdukasi.setJabatan(jabatanDao.getEntiyByPK(id));
+            this.jabatanEdukasiDao.save(jabatanEdukasi);
+        }
+        //major
+        for(Major major : majorLevel){
+            JabatanMajor jabatanMajor = new JabatanMajor();
+            jabatanMajor.setId(new JabatanMajorId(id, major.getId()));
+            jabatanMajor.setMajor(majorDao.getEntiyByPK(major.getId()));
+            jabatanMajor.setJabatan(jabatanDao.getEntiyByPK(id));
+            this.jabatanMajorDao.save(jabatanMajor);
+        }
+        //faculty
+        for(Faculty faculty : faculties){
+            JabatanFakulty jabatanFakulty = new JabatanFakulty();
+            jabatanFakulty.setId(new JabatanFakultyId(id, faculty.getId()));
+            jabatanFakulty.setFaculty(facultyDao.getEntiyByPK(faculty.getId()));
+            jabatanFakulty.setJabatan(jabatanDao.getEntiyByPK(id));
+            this.jabatanFacultyDao.save(jabatanFakulty);
+        }
+        
+        //occupation
+        for(OccupationType occupationType : occupation){
+            JabatanProfesi jabatanOccupation = new JabatanProfesi();
+            jabatanOccupation.setId(new JabatanProfesiId(id, occupationType.getId()));
+            jabatanOccupation.setOccupationType(occupationTypeDao.getEntiyByPK(occupationType.getId()));
+            jabatanOccupation.setJabatan(jabatanDao.getEntiyByPK(id));
+            this.jabatanOccupationDao.save(jabatanOccupation);
+        }
+    }
+    
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void update(Long id, List<EducationLevel> educationLevels, List<Major> majorLevel, List<Faculty> faculty, List<OccupationType> occupation) throws Exception {
+        jabatanEdukasiDao.deleteAllDataByJabatanId(id);
+        this.save(id, educationLevels, majorLevel, faculty, occupation);
+    }
+    
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(JabatanSpesifikasi entity) throws Exception {
@@ -225,6 +307,10 @@ public class JabatanSpesifikasiServiceImpl extends IServiceImpl implements Jabat
     public List<JabatanSpesifikasi> getAllDataByJabatanId(Long jabatanId) throws Exception {
         return jabatanSpesifikasiDao.getAllDataByJabatanId(jabatanId);
     }
+
+    
+
+    
 
 
 }

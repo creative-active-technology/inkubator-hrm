@@ -16,5 +16,6 @@ public interface OccupationTypeService extends IService<OccupationType> {
 	public List<OccupationType> getByParam(String parameter, int firstResult, int maxResults, Order orderable) throws Exception;
 
 	public Long getTotalOccupationTypeByParam(String parameter) throws Exception;
-
+        
+        public OccupationType getEntityByPkWithDetail(Long id) throws Exception;
 }
