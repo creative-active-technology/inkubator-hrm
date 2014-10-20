@@ -11,7 +11,7 @@ package com.inkubator.hrm;
  */
 public class HRMConstant {
 
-	public static final String SYSTEM_ADMIN = "SYSTEM_ADMIN";
+    public static final String SYSTEM_ADMIN = "SYSTEM_ADMIN";
     public static final String SPRING_SECURITY_CHECK = "j_spring_security_check";
     public static final String BAHASA_ACTIVE = "bahasa_active";
     public static final String LOGIN_DATE = "login_date";
@@ -246,4 +246,29 @@ public class HRMConstant {
     public static final Integer AVAILIBILITY_FULL = 0;
     public static final Integer AVALILIBILITY_PER_MONTH = 1;
     public static final Integer AVALILIBILITY_PER_DATE = 2;
+
+    /*Mecine Finger */
+    public static final Integer METHOD_UPLOAD_MACINE = 0;
+    public static final Integer METHOD_SERVICE_MACINE = 1;
+    public static final Integer METHOD_QUERY_MACINE = 2;
+
+    public static final Integer UPLOAD_EXCEL_TYPE = 0;
+    public static final Integer UPLOAD_CSV_TYPE = 1;
+
+    public static final Integer FILE_EXTENSION_XLS = 0;
+    public static final Integer FILE_EXTENSION_XLSX = 1;
+    public static final Integer FILE_EXTENSION_CSV = 2;
+
+    public static final Integer SERVICE_DATA_JSON = 0;
+    public static final Integer SERVICE_DATA_XML = 1;
+    public static final Integer FILE_EXTENSION_OTHER = 2;
+
+    public static final Integer MATCH_BASE_NIK = 0;
+    public static final Integer MATCH_BASE_NAME = 1;
+
+    public static final Integer PROTOCOL_FTP = 0;
+    public static final Integer PROTOCOL_HTTP = 1;
+    public static final Integer PROTOCOL_XMPP = 2;
+    public static final Integer PROTOCOL_OTHER = 3;
+
 }
