@@ -5,6 +5,7 @@
 package com.inkubator.hrm.web.search;
 
 import com.inkubator.webcore.util.SearchParameter;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -19,6 +20,11 @@ public class LeaveDistributionSearchParameter extends SearchParameter{
     private Double credit;
 
     public String getEmpData() {
+        if (StringUtils.equalsIgnoreCase(getKeyParam(), "empData")) {
+            empData = getParameter();
+        } else {
+            empData = null;
+        }
         return empData;
     }
 
@@ -27,6 +33,11 @@ public class LeaveDistributionSearchParameter extends SearchParameter{
     }
 
     public String getLeave() {
+        if (StringUtils.equalsIgnoreCase(getKeyParam(), "leaveName")) {
+            leave = getParameter();
+        } else {
+            leave = null;
+        }
         return leave;
     }
 

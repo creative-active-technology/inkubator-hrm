@@ -12,6 +12,7 @@ import com.inkubator.hrm.web.search.LeaveDistributionSearchParameter;
 
 import java.util.Date;
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.Disjunction;
@@ -19,6 +20,7 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -56,8 +58,14 @@ public class LeaveDistributionDaoImpl extends IDAOImpl<LeaveDistribution> implem
     }
 
     private void doSearch(LeaveDistributionSearchParameter searchParameter, Criteria criteria) {
-        if (searchParameter.getEmpData() != null) {
-            criteria.add(Restrictions.like("empData", searchParameter.getEmpData(), MatchMode.ANYWHERE));
+        if (StringUtils.isNotEmpty(searchParameter.getEmpData())) {
+            criteria.createAlias("empData", "ed", JoinType.INNER_JOIN);
+            criteria.createAlias("ed.bioData", "bio", JoinType.INNER_JOIN);
+            criteria.add(Restrictions.like("bio.firstName", searchParameter.getEmpData(), MatchMode.ANYWHERE));
+        }
+        if (StringUtils.isNotEmpty(searchParameter.getLeave())) {
+            criteria.createAlias("leave", "l", JoinType.INNER_JOIN);
+            criteria.add(Restrictions.like("l.name", searchParameter.getLeave(), MatchMode.ANYWHERE));
         }
         criteria.add(Restrictions.isNotNull("id"));
     }

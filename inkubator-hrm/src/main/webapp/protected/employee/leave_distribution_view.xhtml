@@ -21,8 +21,8 @@
                             <p:graphicImage library="images" name="marital_status.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="Leave Distribution" styleClass="header_big" />
-                                    <p:outputLabel value="Leave Distribution from Employee" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['leavedistribution.leave_distribution']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['leavedistribution.leave_distribution_header']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -33,12 +33,13 @@
                                 <h:panelGrid columns="5">
                                     <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm" />
                                     <p:outputLabel value=":" />
-                                    <p:selectOneMenu value="#{maritalStatusController.search.keyParam}" style="width: 150px;margin-right: 3px" >
+                                    <p:selectOneMenu value="#{leaveDistributionViewController.searchParameter.keyParam}" style="width: 150px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemLabel="#{appmsg['maritalstatus.name']}" itemValue="name"/>
+                                        <f:selectItem itemLabel="#{appmsg['global.name']}" itemValue="empData"/>
+                                        <f:selectItem itemLabel="#{appmsg['leave.name']}" itemValue="leaveName"/>
                                     </p:selectOneMenu>
-                                    <p:inputText id="searchId" value="#{maritalStatusController.search.parameter}" style="width: 250px" styleClass="label_button"/>
-                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{maritalStatusController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
+                                    <p:inputText id="searchId" value="#{leaveDistributionViewController.searchParameter.parameter}" style="width: 250px" styleClass="label_button"/>
+                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{leaveDistributionViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
@@ -58,7 +59,7 @@
                                       id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="Daftar Leave Distribution"/>
+                                <h:outputText value="#{appmsg['leavedistribution.leave_distribution_list']}"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
@@ -68,19 +69,19 @@
                             </p:column>
                             <p:column sortBy="empData">
                                 <f:facet name="header">
-                                    <h:outputText value="Nama Karyawan"/>
+                                    <h:outputText value="#{appmsg['personachievement.employee_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.empData.nikWithFullName}" />
                             </p:column>
                             <p:column sortBy="leave" >
                                 <f:facet name="header">
-                                    <h:outputText value="Nama Cuti"/>
+                                    <h:outputText value="#{appmsg['leavedistribution.leave_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.leave.name}" />
                             </p:column>
                             <p:column sortBy="startDate" >
                                 <f:facet name="header">
-                                    <h:outputText value="Start Date"/>
+                                    <h:outputText value="#{appmsg['global.start_date']}"/>
                                 </f:facet>
                                 <p:outputLabel value= "#{data.startDate}" >
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
@@ -88,7 +89,7 @@
                             </p:column>
                             <p:column sortBy="endDate" >
                                 <f:facet name="header">
-                                    <h:outputText value="End Date"/>
+                                    <h:outputText value="#{appmsg['global.end_date']}"/>
                                 </f:facet>
                                 <p:outputLabel value= "#{data.endDate}" >
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
@@ -96,7 +97,7 @@
                             </p:column>
                             <p:column sortBy="balance" >
                                 <f:facet name="header">
-                                    <h:outputText value="Balance"/>
+                                    <h:outputText value="#{appmsg['costcenter.balance']}"/>
                                 </f:facet>
                                 <p:outputLabel value= "#{data.balance}" />
                             </p:column>
@@ -150,7 +151,7 @@
                             </h:panelGrid>
                         </div>
                         <h:panelGrid id="panelDialogConfirmId"  columns="3">
-                            <p:outputLabel value="#{appmsg['maritalstatus.name']}"  style="font-weight: bold"/>
+                            <p:outputLabel value="#{appmsg['personachievement.employee_name']}"  style="font-weight: bold"/>
                             <p:outputLabel value=":"  style="font-weight: bold"/>
                             <p:outputLabel value="#{leaveDistributionViewController.selected.empData.nikWithFullName}" styleClass="label_hrm"/>
                         </h:panelGrid>
@@ -165,30 +166,30 @@
                     <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
 
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Employee Name" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['personachievement.employee_name']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{leaveDistributionViewController.selected.empData.nikWithFullName}"/> </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Leave" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['leavedistribution.leave_name']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{leaveDistributionViewController.selected.leave.name}"/> </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Balance" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['costcenter.balance']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{leaveDistributionViewController.selected.balance}"/> </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Start Date" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['global.start_date']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{leaveDistributionViewController.selected.startDate}">
                                     <f:convertDateTime pattern="dd MMMM yyyy" /></p:outputLabel></p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="End Date" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['global.end_date']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{leaveDistributionViewController.selected.endDate}"><f:convertDateTime pattern="dd MMMM yyyy" /></p:outputLabel> </p:column>
                         </p:row>
 
                         <f:facet name="footer">
                             <p:row>
-                                <p:column colspan="2"><p:outputLabel value="#{appmsg['maritalstatus.marital_status_footer']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
+                                <p:column colspan="2"><p:outputLabel value="#{appmsg['leavedistribution.leave_distribution_header']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
                             </p:row>
                         </f:facet>
                     </p:panelGrid>
