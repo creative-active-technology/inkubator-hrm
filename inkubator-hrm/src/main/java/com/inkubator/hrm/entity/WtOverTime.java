@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -45,6 +46,7 @@ public class WtOverTime implements java.io.Serializable {
     private Set<ApprovalDefinitionOT> approvalDefinitionOTs = new HashSet<ApprovalDefinitionOT>(0);
     private Set<OverTimeDistribution> overTimeDistributions = new HashSet<OverTimeDistribution>(0);
     private Set<WtWorkingHour> wtWorkingHours = new HashSet<WtWorkingHour>(0);
+    private Set<ImplementationOfOverTime> implementationOfOvertimes = new HashSet<ImplementationOfOverTime>(0);
 
     public WtOverTime() {
     }
@@ -264,5 +266,12 @@ public class WtOverTime implements java.io.Serializable {
 		this.wtWorkingHours = wtWorkingHours;
 	}
     
+    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="wtOverTime")
+    public Set<ImplementationOfOverTime> getImplementationOfOvertimes() {
+        return this.implementationOfOvertimes;
+    }
     
+    public void setImplementationOfOvertimes(Set<ImplementationOfOverTime> implementationOfOvertimes) {
+        this.implementationOfOvertimes = implementationOfOvertimes;
+    }
 }

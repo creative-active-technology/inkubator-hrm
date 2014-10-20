@@ -8,6 +8,8 @@ package com.inkubator.hrm.service;
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.TempJadwalKaryawan;
 import com.inkubator.hrm.entity.WtScheduleShift;
+
+import java.util.Date;
 import java.util.List;
 import org.hibernate.criterion.Order;
 
@@ -23,5 +25,10 @@ public interface WtScheduleShiftService extends IService<WtScheduleShift> {
     
     public List<WtScheduleShift>getAllByWorkingGroupId(long workingGroupId)throws Exception;
             
-    public List<TempJadwalKaryawan>getAllScheduleForView(long approvalActivityId)throws Exception;
+    public List<TempJadwalKaryawan> getAllScheduleForView(long approvalActivityId)throws Exception;
+    
+    public List<TempJadwalKaryawan> getAllScheduleForView(Long workingGroupId, Date createDate)throws Exception;
+    
+    public Double getTotalWorkingDaysBetween(Long empDataId, Date startDate, Date endDate) throws Exception;
+    
 }

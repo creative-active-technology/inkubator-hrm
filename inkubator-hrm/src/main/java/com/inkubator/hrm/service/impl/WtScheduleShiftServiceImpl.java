@@ -5,12 +5,15 @@
  */
 package com.inkubator.hrm.service.impl;
 
+import ch.lambdaj.Lambda;
+
 import com.inkubator.common.CommonUtilConstant;
 import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.ApprovalActivityDao;
+import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.WtGroupWorkingDao;
 import com.inkubator.hrm.dao.WtHolidayDao;
 import com.inkubator.hrm.dao.WtScheduleShiftDao;
@@ -29,6 +32,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
+import org.hamcrest.Matchers;
 import org.hibernate.criterion.Order;
 import org.primefaces.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +63,8 @@ public class WtScheduleShiftServiceImpl extends IServiceImpl implements WtSchedu
     private WtHolidayDao wtHolidayDao;
     @Autowired
     private WtWorkingHourDao wtWorkingHourDao;
+    @Autowired
+    private EmpDataDao empDataDao;
 
     @Override
     public WtScheduleShift getEntiyByPK(String id) throws Exception {
@@ -238,12 +247,20 @@ public class WtScheduleShiftServiceImpl extends IServiceImpl implements WtSchedu
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<TempJadwalKaryawan> getAllScheduleForView(long approvalActivityId) throws Exception {
-        List<TempJadwalKaryawan> dataToShow = new ArrayList<>();
+        
         ApprovalActivity selectedApprovalActivity = approvalActivityDao.getEntiyByPK(approvalActivityId);
         JSONObject jSONObject = new JSONObject(selectedApprovalActivity.getPendingData());
         long workingGroupId = Long.parseLong(jSONObject.getString("groupWorkingId"));
         Date createDate = new SimpleDateFormat("dd-MM-yyyy").parse(jSONObject.getString("createDate"));
-        WtGroupWorking selectedWtGroupWorking = wtGroupWorkingDao.getEntiyByPK(workingGroupId);
+        
+        return this.getAllScheduleForView(workingGroupId, createDate);
+    }
+    
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<TempJadwalKaryawan> getAllScheduleForView(Long workingGroupId, Date createDate) throws Exception {
+    	List<TempJadwalKaryawan> dataToShow = new ArrayList<>();
+    	WtGroupWorking selectedWtGroupWorking = wtGroupWorkingDao.getEntiyByPK(workingGroupId);
         Date startDate = selectedWtGroupWorking.getBeginTime();
         Date endDate = selectedWtGroupWorking.getEndTime();
         int numberOfDay = DateTimeUtil.getTotalDayDifference(startDate, endDate);
@@ -288,5 +305,30 @@ public class WtScheduleShiftServiceImpl extends IServiceImpl implements WtSchedu
             return o1.getScheduleDate().compareTo(o2.getScheduleDate());
         }
     };
+    
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public Double getTotalWorkingDaysBetween(Long empDataId, Date startDate, Date endDate) throws Exception {
+		EmpData empData = empDataDao.getEntiyByPK(empDataId);
+		double totalWorkingDays = 0;
+		List<TempJadwalKaryawan> tempJadwalKaryawans = new ArrayList<TempJadwalKaryawan>();
+		
+		//loop date-nya, check jadwal berdasarkan kelompok kerja		
+		for(Date loop = startDate; loop.before(endDate) || DateUtils.isSameDay(loop, endDate); loop = DateUtils.addDays(loop, 1)){
+			TempJadwalKaryawan jadwal = Lambda.selectFirst(tempJadwalKaryawans, Lambda.having(Lambda.on(TempJadwalKaryawan.class).getTanggalWaktuKerja().getTime(), Matchers.equalTo(loop.getTime())));
+			if(jadwal == null){
+				//jika tidak terdapat jadwal kerja di date tersebut, maka generate jadwal kerja temporary-nya, lalu check kembali jadwal kerja-nya
+				List<TempJadwalKaryawan> jadwalKaryawans = this.getAllScheduleForView(empData.getWtGroupWorking().getId(), loop);
+				tempJadwalKaryawans.addAll(jadwalKaryawans);
+				jadwal = Lambda.selectFirst(tempJadwalKaryawans, Lambda.having(Lambda.on(TempJadwalKaryawan.class).getTanggalWaktuKerja().getTime(), Matchers.equalTo(loop.getTime())));
+			}
+			
+			//selain "OFF"(hari libur) berarti termasuk jam kerja
+			if(!StringUtils.equals(jadwal.getWtWorkingHour().getCode(),"OFF")){
+				totalWorkingDays = totalWorkingDays + 1;
+			}			
+		}
+		return totalWorkingDays;
+	}
 
 }

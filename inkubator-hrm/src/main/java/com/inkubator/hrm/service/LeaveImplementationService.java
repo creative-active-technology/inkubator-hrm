@@ -1,5 +1,6 @@
 package com.inkubator.hrm.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
@@ -22,4 +23,5 @@ public interface LeaveImplementationService extends IService<LeaveImplementation
 	
 	public LeaveImplementation getLatestEntityByEmpDataId(Long empDataId) throws Exception;
 
+	public Double getTotalActualLeave(Long empDataId, Long leaveId, Date startDate, Date endDate) throws Exception;
 }
