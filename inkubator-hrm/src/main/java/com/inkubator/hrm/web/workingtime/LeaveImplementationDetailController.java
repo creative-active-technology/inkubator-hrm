@@ -11,7 +11,11 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import org.apache.commons.lang.StringUtils;
+
+import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.LeaveImplementation;
+import com.inkubator.hrm.service.ApprovalActivityService;
 import com.inkubator.hrm.service.LeaveImplementationService;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
@@ -25,16 +29,28 @@ import com.inkubator.webcore.util.FacesUtil;
 public class LeaveImplementationDetailController extends BaseController {
 
     private LeaveImplementation selectedLeaveImplementation;
+    private ApprovalActivity selectedApprovalActivity;
     @ManagedProperty(value = "#{leaveImplementationService}")
     private LeaveImplementationService leaveImplementationService;
+    @ManagedProperty(value = "#{approvalActivityService}")
+    private ApprovalActivityService approvalActivityService;
 
     @PostConstruct
     @Override
     public void initialization() {
         try {
             super.initialization();
-            String id = FacesUtil.getRequestParameter("execution");
-            selectedLeaveImplementation = leaveImplementationService.getEntityByPkWithDetail(Long.parseLong(id.substring(1)));
+            String execution = FacesUtil.getRequestParameter("execution");
+            String param = execution.substring(0, 1);
+            if(StringUtils.equals(param, "e")){
+            	/* parameter (id) ini datangnya dari leave implementation View */
+            	selectedLeaveImplementation = leaveImplementationService.getEntityByPkWithDetail(Long.parseLong(execution.substring(1)));
+            } else {
+            	/* parameter (activityNumber) ini datangnya dari home approval request history View */
+            	selectedLeaveImplementation = leaveImplementationService.getEntityByApprovalActivityNumberWithDetail(execution.substring(1));
+            }
+            
+            selectedApprovalActivity = approvalActivityService.getEntityByActivityNumberLastSequence(selectedLeaveImplementation.getApprovalActivityNumber());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
 
@@ -45,6 +61,8 @@ public class LeaveImplementationDetailController extends BaseController {
     public void cleanAndExit() {
     	selectedLeaveImplementation = null;
         leaveImplementationService = null;
+        selectedApprovalActivity = null;
+        approvalActivityService = null;
     }    
     
 	public LeaveImplementation getSelectedLeaveImplementation() {
@@ -59,11 +77,27 @@ public class LeaveImplementationDetailController extends BaseController {
 		this.leaveImplementationService = leaveImplementationService;
 	}
 
+	public ApprovalActivity getSelectedApprovalActivity() {
+		return selectedApprovalActivity;
+	}
+
+	public void setSelectedApprovalActivity(ApprovalActivity selectedApprovalActivity) {
+		this.selectedApprovalActivity = selectedApprovalActivity;
+	}
+
+	public void setApprovalActivityService(ApprovalActivityService approvalActivityService) {
+		this.approvalActivityService = approvalActivityService;
+	}
+
 	public String doBack() {
         return "/protected/working_time/leave_implementation_view.htm?faces-redirect=true";
     }
 
     public String doUpdate() {
         return "/protected/working_time/leave_implementation_form.htm?faces-redirect=true&execution=e" + selectedLeaveImplementation.getId();
-    }  
+    }
+    
+    public Boolean getIsHaveApprovalActivity(){
+		return selectedApprovalActivity != null;
+	}
 }

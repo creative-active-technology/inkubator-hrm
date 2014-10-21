@@ -17,7 +17,6 @@ import org.springframework.stereotype.Repository;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.LeaveImplementationDao;
 import com.inkubator.hrm.entity.LeaveImplementation;
-import com.inkubator.hrm.entity.Loan;
 import com.inkubator.hrm.web.search.LeaveImplementationSearchParameter;
 
 /**
@@ -105,5 +104,17 @@ public class LeaveImplementationDaoImpl extends IDAOImpl<LeaveImplementation> im
         criteria.add(Restrictions.eq("numberFilling", numberFilling));
         criteria.add(Restrictions.ne("id", id));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
+
+	@Override
+	public LeaveImplementation getEntityByApprovalActivityNumberWithDetail(String activityNumber) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("approvalActivityNumber", activityNumber));
+		criteria.setFetchMode("empData", FetchMode.JOIN);
+		criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+		criteria.setFetchMode("temporaryActing", FetchMode.JOIN);
+		criteria.setFetchMode("temporaryActing.bioData", FetchMode.JOIN);
+		criteria.setFetchMode("leave", FetchMode.JOIN);
+		return (LeaveImplementation) criteria.uniqueResult();
 	}
 }

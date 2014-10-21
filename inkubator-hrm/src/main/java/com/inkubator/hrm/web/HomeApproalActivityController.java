@@ -100,6 +100,9 @@ public class HomeApproalActivityController extends BaseController {
                 case HRMConstant.SHIFT_SCHEDULE:
                     redirect = "/protected/personalia/schedule_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
                     break;
+                case HRMConstant.LEAVE:
+                    redirect = "/protected/working_time/leave_implementation_detail.htm?faces-redirect=true&execution=a" + selectedApprovalActivity.getActivityNumber();
+                    break;
                 default:
                     break;
             }
@@ -126,6 +129,9 @@ public class HomeApproalActivityController extends BaseController {
                     break;
                 case HRMConstant.SHIFT_SCHEDULE:
                     redirect = "/protected/personalia/schedule_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
+                    break;
+                case HRMConstant.LEAVE:
+                    redirect = "/protected/working_time/leave_implementation_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
                     break;
                 default:
                     break;

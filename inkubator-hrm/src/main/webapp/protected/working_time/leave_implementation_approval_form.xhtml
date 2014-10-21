@@ -16,7 +16,7 @@
 				Home
             </ui:define>
             <ui:define name="center">               
-                <h:form id="formLeaveImplementationDetailId">
+                <h:form id="formLeaveImplementationApprovalFormId">
                 	<div id="box_bg" style="margin: 10px">
 	                    <h:panelGrid columns="2">
 	                        <p:graphicImage library="images" name="task_ico.png" height="36" width="36" />
@@ -34,7 +34,7 @@
 	                                <p:outputLabel value="#{appmsg['leaveimplementation.filling_number']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{leaveImplementationDetailController.selectedLeaveImplementation.numberFilling}"/>
+	                            	<p:outputLabel value="#{leaveImplementationApprovalFormController.selectedLeaveImplementation.numberFilling}"/>
 	                            </p:column>
 	                        </p:row>
 	                        <p:row>
@@ -42,7 +42,7 @@
 	                                <p:outputLabel value="#{appmsg['global.employee']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{leaveImplementationDetailController.selectedLeaveImplementation.empData.nikWithFullName}"/>
+	                            	<p:outputLabel value="#{leaveImplementationApprovalFormController.selectedLeaveImplementation.empData.nikWithFullName}"/>
 	                            </p:column>
 	                        </p:row>
 	                        <p:row>
@@ -50,7 +50,7 @@
 	                                <p:outputLabel value="#{appmsg['global.start_date']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{leaveImplementationDetailController.selectedLeaveImplementation.startDate}">
+	                            	<p:outputLabel value="#{leaveImplementationApprovalFormController.selectedLeaveImplementation.startDate}">
 	                            		<f:convertDateTime pattern="dd MMMM yyyy" />
 	                            	</p:outputLabel>
 	                            </p:column>
@@ -60,7 +60,7 @@
 	                                <p:outputLabel value="#{appmsg['global.end_date']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{leaveImplementationDetailController.selectedLeaveImplementation.endDate}">
+	                            	<p:outputLabel value="#{leaveImplementationApprovalFormController.selectedLeaveImplementation.endDate}">
 	                            		<f:convertDateTime pattern="dd MMMM yyyy" />
 	                            	</p:outputLabel>
 	                            </p:column>
@@ -70,7 +70,7 @@
 	                                <p:outputLabel value="#{appmsg['leaveimplementation.filling_date']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{leaveImplementationDetailController.selectedLeaveImplementation.fillingDate}">
+	                            	<p:outputLabel value="#{leaveImplementationApprovalFormController.selectedLeaveImplementation.fillingDate}">
 	                            		<f:convertDateTime pattern="dd MMMM yyyy" />
 	                            	</p:outputLabel>
 	                            </p:column>
@@ -80,7 +80,7 @@
 	                                <p:outputLabel value="#{appmsg['global.address']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{leaveImplementationDetailController.selectedLeaveImplementation.address}"/>
+	                            	<p:outputLabel value="#{leaveImplementationApprovalFormController.selectedLeaveImplementation.address}"/>
 	                            </p:column>
 	                        </p:row>
 	                        <p:row>
@@ -88,7 +88,7 @@
 	                                <p:outputLabel value="#{appmsg['global.phone_number']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{leaveImplementationDetailController.selectedLeaveImplementation.mobilePhone}"/>
+	                            	<p:outputLabel value="#{leaveImplementationApprovalFormController.selectedLeaveImplementation.mobilePhone}"/>
 	                            </p:column>
 	                        </p:row>
 	                        <p:row>
@@ -96,7 +96,7 @@
 	                                <p:outputLabel value="#{appmsg['leaveimplementation.material_jobs_abandoned']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{leaveImplementationDetailController.selectedLeaveImplementation.materialJobsAbandoned}"/>
+	                            	<p:outputLabel value="#{leaveImplementationApprovalFormController.selectedLeaveImplementation.materialJobsAbandoned}"/>
 	                            </p:column>
 	                        </p:row>
 	                        <p:row>
@@ -104,7 +104,7 @@
 	                                <p:outputLabel value="#{appmsg['leaveimplementation.temporary_acting']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{leaveImplementationDetailController.selectedLeaveImplementation.temporaryActing.nikWithFullName}"/>
+	                            	<p:outputLabel value="#{leaveImplementationApprovalFormController.selectedLeaveImplementation.temporaryActing.nikWithFullName}"/>
 	                            </p:column>
 	                        </p:row>
 	                        <p:row>
@@ -112,40 +112,27 @@
 	                                <p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{leaveImplementationDetailController.selectedLeaveImplementation.description}"/>
+	                            	<p:outputLabel value="#{leaveImplementationApprovalFormController.selectedLeaveImplementation.description}"/>
 	                            </p:column>
 	                        </p:row>
-	                        <p:row rendered="#{leaveImplementationDetailController.isHaveApprovalActivity}">
+	                        <p:row rendered="#{leaveImplementationApprovalFormController.isWaitingApproval}">
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['approvalactivity.approved_by']}" styleClass="label_hrm"/>
+	                                <p:outputLabel value="#{appmsg['global.comment']}" styleClass="label_hrm"/>
 	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{leaveImplementationDetailController.selectedApprovalActivity.approvedBy}"/>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row rendered="#{leaveImplementationDetailController.isHaveApprovalActivity}">
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['approvalactivity.approval_status']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 30%">
-	                            	<p:outputLabel value="#{leaveImplementationDetailController.selectedApprovalActivity.approvalStatus}">
-	                            		<f:converter converterId="approvalStatusConverter" />
-	                            	</p:outputLabel>
+	                            <p:column  style="width: 80%" colspan="3">
+	                            	<p:inputTextarea title="#{appmsg['global.comment']}" value="#{leaveImplementationApprovalFormController.comment}" 
+	                                    			 maxlength="1000" styleClass="isitext_hrm" style="width:290px;" />
 	                            </p:column>
 	                        </p:row>
-	                        <p:row rendered="#{leaveImplementationDetailController.isHaveApprovalActivity}">
-	                        	<p:column style="width: 20%;background-color: #e1f0f0!important" rowspan="2">
-	                                <p:outputLabel value="#{appmsg['approvalactivity.approval_comment']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 30%" rowspan="2">
-	                            	<p:outputLabel value="#{leaveImplementationDetailController.selectedApprovalActivity.approvalCommment}"/>
-	                            </p:column>
-	                      	</p:row>
 	                 	</p:panelGrid>                            
                             
 	                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
 	                    <div style="margin-bottom: 5px">
-	                        <p:commandButton value="#{appmsg['global.back']}" icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{leaveImplementationDetailController.doBack()}" immediate="true"
+	                        <p:commandButton value="#{appmsg['approvalactivity.approved']}" icon="ui-icon-check" title="#{appmsg['approvalactivity.approved']}" action="#{leaveImplementationApprovalFormController.doApproved()}"
+                                			 style="margin-right: 5px" styleClass="label_button" rendered="#{leaveImplementationApprovalFormController.isWaitingApproval}"/>
+							<p:commandButton value="#{appmsg['approvalactivity.reject']}" icon="ui-icon-close" title="#{appmsg['approvalactivity.reject']}" action="#{leaveImplementationApprovalFormController.doRejected()}"
+                                			 style="margin-right: 5px" styleClass="label_button" rendered="#{leaveImplementationApprovalFormController.isWaitingApproval}"/>
+	                        <p:commandButton value="#{appmsg['global.close']}" icon="ui-icon-home"  title="#{appmsg['global.close']}" action="#{leaveImplementationApprovalFormController.doBack()}" immediate="true"
 	                                      	 styleClass="label_button"/>
 	                    </div>
                     </div>
