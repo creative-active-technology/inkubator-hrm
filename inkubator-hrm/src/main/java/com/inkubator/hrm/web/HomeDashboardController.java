@@ -5,25 +5,22 @@
  */
 package com.inkubator.hrm.web;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
-
-import org.apache.commons.lang3.StringUtils;
-import org.primefaces.model.chart.CartesianChartModel;
-import org.primefaces.model.chart.ChartSeries;
-import org.primefaces.model.chart.PieChartModel;
-
 import com.inkubator.hrm.service.DepartmentService;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.web.model.LoginHistoryModel;
 import com.inkubator.webcore.controller.BaseController;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import javax.annotation.PostConstruct;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.RequestScoped;
+import org.apache.commons.lang3.StringUtils;
+import org.primefaces.model.chart.CartesianChartModel;
+import org.primefaces.model.chart.ChartSeries;
+import org.primefaces.model.chart.PieChartModel;
 
 /**
  *
@@ -65,7 +62,6 @@ public class HomeDashboardController extends BaseController {
             totalFemale = employeesByGender.get("male");
             totalMale = employeesByGender.get("female");
             lastUpdateEmpDistByGender = new Date(employeesByGender.get("lastUpdate"));
-            System.out.println(" hahahhahahahahah");
             /**
              * calculate employee distribution based on DEPARTMENT
              */

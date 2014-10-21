@@ -36,7 +36,6 @@ public class HomeController extends BaseController {
          * saving process of User Access History
          */
         StringBuffer urlPath = FacesUtil.getRequest().getRequestURL();
-        System.out.println(" ini nilai url nya "+urlPath);
         RiwayatAkses akses = new RiwayatAkses();
         akses.setDateAccess(new Date());
         akses.setPathUrl(urlPath.toString());
