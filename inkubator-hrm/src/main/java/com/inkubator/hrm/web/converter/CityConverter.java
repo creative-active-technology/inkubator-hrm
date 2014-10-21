@@ -8,6 +8,8 @@ package com.inkubator.hrm.web.converter;
 import com.inkubator.hrm.entity.City;
 import com.inkubator.hrm.service.CityService;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ApplicationScoped;
+import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -20,7 +22,8 @@ import org.apache.commons.lang3.StringUtils;
  *
  * @author Taufik Hidayat
  */
-@FacesConverter("cityConverter")
+@ManagedBean(name = "cityConverter")
+@ApplicationScoped
 public class CityConverter implements Converter {
 
     @ManagedProperty(value = "#{cityService}")
