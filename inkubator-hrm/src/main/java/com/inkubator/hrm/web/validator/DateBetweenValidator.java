@@ -42,8 +42,8 @@ public class DateBetweenValidator implements Validator {
 
         // Check if begin time is bigger/equal with end time
         if (beginTime.after(endTime) || beginTime.equals(endTime)) {
-            String validatorMessage = (String) component.getAttributes().get("validatorMessage");
-            throw new ValidatorException(new FacesMessage(validatorMessage));
+            String validatorMessage = (String) component.getAttributes().get("dateBetweenValidatorMessage");
+            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "", validatorMessage));
         }
     }
 

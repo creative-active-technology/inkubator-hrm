@@ -86,7 +86,7 @@
                                             required="true" requiredMessage="#{appmsg['bioIdCard.bioIdCard_issued_should_not_be_empty']}" navigator="true">
                                     <f:validator validatorId="dateBetweenValidator"  />
                                     <f:attribute name="endTime" value="#{validId}"/>
-                                    <f:attribute name="validatorMessage" value="#{appmsg['bioIdCard.bioIdCard_dateValidator']}"/>
+                                    <f:attribute name="dateBetweenValidatorMessage" value="#{appmsg['bioIdCard.bioIdCard_dateValidator']}"/>
                                 </p:calendar>
 
                             </p:column>
