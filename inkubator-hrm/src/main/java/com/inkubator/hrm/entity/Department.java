@@ -32,6 +32,7 @@ public class Department implements java.io.Serializable {
     private String updatedBy;
     private Date updatedOn;
     private Set<Jabatan> jabatans = new HashSet<Jabatan>(0);
+    private Set<DepartementUploadCapture> departementUploadCaptures = new HashSet<DepartementUploadCapture>(0);
 
     public Department() {
     }
@@ -134,6 +135,15 @@ public class Department implements java.io.Serializable {
 
     public void setJabatans(Set<Jabatan> jabatans) {
         this.jabatans = jabatans;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "department")
+    public Set<DepartementUploadCapture> getDepartementUploadCaptures() {
+        return this.departementUploadCaptures;
+    }
+
+    public void setDepartementUploadCaptures(Set<DepartementUploadCapture> departementUploadCaptures) {
+        this.departementUploadCaptures = departementUploadCaptures;
     }
 
 }
