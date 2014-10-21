@@ -20,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
 
+import ch.lambdaj.Lambda;
+
 import com.inkubator.common.util.JsonConverter;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
@@ -80,8 +82,15 @@ public class BaseApprovalServiceImpl extends IServiceImpl {
      */
 	protected ApprovalActivity checkApprovalProcess(String processName, String requestByEmployee) throws Exception {
 		
+		List<ApprovalDefinition> listAppDef = approvalDefinitionDao.getAllDataByNameAndProcessType(processName, HRMConstant.APPROVAL_PROCESS, Order.asc("sequence"));		
+		return this.checkApprovalProcess(listAppDef, requestByEmployee);
+	}
+	
+	protected ApprovalActivity checkApprovalProcess(List<ApprovalDefinition> listAppDef, String requestByEmployee) throws Exception {
+		//sorting by sequence ASC
+		listAppDef = Lambda.sort(listAppDef, Lambda.on(ApprovalDefinition.class).getSequence());
+		
 		ApprovalActivity appActivity = null;
-		List<ApprovalDefinition> listAppDef = approvalDefinitionDao.getAllDataByNameAndProcessType(processName, HRMConstant.APPROVAL_PROCESS, Order.asc("sequence"));
 		if(!listAppDef.isEmpty()){ //if not empty
 			
 			/** Looping semua approvalDefinition berdasarkan urutan sequence (if any)
@@ -387,7 +396,14 @@ public class BaseApprovalServiceImpl extends IServiceImpl {
         if (isCheckingNextDefinition) {
 
         	/** proses no. 2*/
-            List<ApprovalDefinition> listAppDef = approvalDefinitionDao.getAllDataByNameAndProcessTypeAndSequenceGreater(previousAppDef.getName(), previousAppDef.getProcessType(), previousAppDef.getSequence());
+        	List<ApprovalDefinition> listAppDef = new ArrayList<ApprovalDefinition>();
+            if(StringUtils.isNotEmpty(previousAppDef.getSpecificName())){
+            	//ini untuk approval process yang  many to many, ex: leave, overtime
+            	listAppDef = approvalDefinitionDao.getAllDataByNameAndProcessTypeAndSpecificNameAndSequenceGreater(previousAppDef.getName(), previousAppDef.getProcessType(), previousAppDef.getSpecificName(), previousAppDef.getSequence());
+            } else {
+            	//ini untuk approval process yang single, ex: businesstravel, loan, reimbursment
+            	listAppDef = approvalDefinitionDao.getAllDataByNameAndProcessTypeAndSequenceGreater(previousAppDef.getName(), previousAppDef.getProcessType(), previousAppDef.getSequence());
+            }
             
             /** Looping semua approvalDefinition berdasarkan urutan sequence (if any)
 			 *  Looping akan berhenti jika sudah ditemukan approvalActivity yang harus di proses */
@@ -456,11 +472,22 @@ public class BaseApprovalServiceImpl extends IServiceImpl {
     	
     	//get list appDefinitions by process type (only on_approve OR on_reject)
     	Integer approvalStatus = appActivity.getApprovalStatus();
-    	if(approvalStatus == HRMConstant.APPROVAL_STATUS_APPROVED){
-    		appDefinitions = approvalDefinitionDao.getAllDataByNameAndProcessType(appActivity.getApprovalDefinition().getName(), HRMConstant.ON_APPROVE_INFO, Order.asc("sequence"));    		
-    	} else if(approvalStatus == HRMConstant.APPROVAL_STATUS_REJECTED){
-    		appDefinitions = approvalDefinitionDao.getAllDataByNameAndProcessType(appActivity.getApprovalDefinition().getName(), HRMConstant.ON_REJECT_INFO, Order.asc("sequence"));    		
+    	if(StringUtils.isNotEmpty(appActivity.getApprovalDefinition().getSpecificName())){
+        	//ini untuk approval process yang  many to many, ex: leave, overtime
+    		if(approvalStatus == HRMConstant.APPROVAL_STATUS_APPROVED){
+        		appDefinitions = approvalDefinitionDao.getAllDataByNameAndProcessTypeAndSpecificName(appActivity.getApprovalDefinition().getName(), HRMConstant.ON_APPROVE_INFO, appActivity.getApprovalDefinition().getSpecificName(), Order.asc("sequence"));    		
+        	} else if(approvalStatus == HRMConstant.APPROVAL_STATUS_REJECTED){
+        		appDefinitions = approvalDefinitionDao.getAllDataByNameAndProcessTypeAndSpecificName(appActivity.getApprovalDefinition().getName(), HRMConstant.ON_REJECT_INFO, appActivity.getApprovalDefinition().getSpecificName(), Order.asc("sequence"));    		
+        	}
+    	} else {
+    		//ini untuk approval process yang single, ex: businesstravel, loan, reimbursment
+    		if(approvalStatus == HRMConstant.APPROVAL_STATUS_APPROVED){
+        		appDefinitions = approvalDefinitionDao.getAllDataByNameAndProcessType(appActivity.getApprovalDefinition().getName(), HRMConstant.ON_APPROVE_INFO, Order.asc("sequence"));    		
+        	} else if(approvalStatus == HRMConstant.APPROVAL_STATUS_REJECTED){
+        		appDefinitions = approvalDefinitionDao.getAllDataByNameAndProcessType(appActivity.getApprovalDefinition().getName(), HRMConstant.ON_REJECT_INFO, Order.asc("sequence"));    		
+        	}
     	}
+    	
     	
     	//get all email address 
     	for(ApprovalDefinition appDefinition:appDefinitions){

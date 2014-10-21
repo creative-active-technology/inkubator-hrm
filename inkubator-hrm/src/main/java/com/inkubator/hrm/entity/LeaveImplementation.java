@@ -34,6 +34,7 @@ public class LeaveImplementation implements java.io.Serializable {
     private String materialJobsAbandoned;
     private EmpData temporaryActing;
     private String description;
+    private String approvalActivityNumber;
     private String createdBy;
     private Date createdOn;
     private String updatedBy;
@@ -172,6 +173,15 @@ public class LeaveImplementation implements java.io.Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	@Column(name="approval_activity_number", length=45, unique=true)
+    public String getApprovalActivityNumber() {
+		return approvalActivityNumber;
+	}
+
+	public void setApprovalActivityNumber(String approvalActivityNumber) {
+		this.approvalActivityNumber = approvalActivityNumber;
 	}
 
 	@Column(name = "created_by", length = 45)

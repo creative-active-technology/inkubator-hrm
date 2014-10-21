@@ -47,6 +47,7 @@ public class ApprovalDefinition implements java.io.Serializable {
     private Boolean escalateOnDelay;
     private Integer delayTime;
     private String specificName;
+    private boolean isNoLongerInUse;
     private Set<ApprovalActivity> approvalActivities = new HashSet<ApprovalActivity>(0);
     private Set<ApprovalDefinitionLeave> approvalDefinitionLeaves = new HashSet<ApprovalDefinitionLeave>(0);
     private Set<ApprovalDefinitionOT> approvalDefinitionOverTimes = new HashSet<ApprovalDefinitionOT>(0);
@@ -287,7 +288,16 @@ public class ApprovalDefinition implements java.io.Serializable {
         this.specificName = specificName;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "approvalDefinition")
+    @Column(name = "is_no_longer_in_use")
+    public boolean getIsNoLongerInUse() {
+		return isNoLongerInUse;
+	}
+
+	public void setIsNoLongerInUse(boolean isNoLongerInUse) {
+		this.isNoLongerInUse = isNoLongerInUse;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "approvalDefinition")
     public Set<ApprovalActivity> getApprovalActivities() {
         return this.approvalActivities;
     }
