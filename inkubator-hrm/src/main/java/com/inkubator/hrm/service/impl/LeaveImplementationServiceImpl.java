@@ -1,13 +1,23 @@
 package com.inkubator.hrm.service.impl;
 
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Session;
+
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.criterion.Order;
+import org.primefaces.json.JSONException;
+import org.primefaces.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -35,6 +45,8 @@ import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.Leave;
 import com.inkubator.hrm.entity.LeaveDistribution;
 import com.inkubator.hrm.entity.LeaveImplementation;
+import com.inkubator.hrm.entity.Loan;
+import com.inkubator.hrm.entity.LoanPaymentDetail;
 import com.inkubator.hrm.entity.NeracaCuti;
 import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.LeaveImplementationService;
@@ -425,8 +437,42 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
 
 	@Override
 	public void sendingEmailApprovalNotif(ApprovalActivity appActivity) throws Exception {
-		//throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+		//initialization
+		Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMMM-yyyy");
+		
+		//get all sendCC email address on status approve OR reject
+		List<String> ccEmailAddresses =  new ArrayList<String>();
+		if((appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_APPROVED)  || (appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_REJECTED)){
+			ccEmailAddresses = super.getCcEmailAddressesOnApproveOrReject(appActivity);
+		}
+		
+		//parsing object data to json, for email purpose
+		LeaveImplementation leaveImplementation =  gson.fromJson(appActivity.getPendingData(), LeaveImplementation.class);		
+		
+		final JSONObject jsonObj = new JSONObject();
+        try {        	
+            jsonObj.put("approvalActivityId", appActivity.getId());
+            jsonObj.put("ccEmailAddresses", ccEmailAddresses);
+            jsonObj.put("locale", appActivity.getLocale());
+            jsonObj.put("proposeDate", dateFormat.format(leaveImplementation.getCreatedOn()));
+            jsonObj.put("leaveName", leaveImplementation.getLeave().getName());
+            jsonObj.put("startDate", dateFormat.format(leaveImplementation.getStartDate()));
+            jsonObj.put("endDate", dateFormat.format(leaveImplementation.getEndDate()));
+            jsonObj.put("fillingDate", dateFormat.format(leaveImplementation.getFillingDate()));
+            jsonObj.put("materialJobsAbandoned", leaveImplementation.getMaterialJobsAbandoned());
+            
+        } catch (JSONException e) {
+            LOGGER.error("Error when create json Object ", e);
+        }
 
+        //send messaging, to trigger sending email
+        super.jmsTemplateApproval.send(new MessageCreator() {
+            @Override
+            public Message createMessage(Session session) throws JMSException {
+                return session.createTextMessage(jsonObj.toString());
+            }
+        });		
 	}
 
 	@Override
