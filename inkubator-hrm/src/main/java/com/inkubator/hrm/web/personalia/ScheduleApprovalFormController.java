@@ -13,6 +13,7 @@ import com.google.gson.JsonObject;
 import com.inkubator.common.CommonUtilConstant;
 import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.common.util.JsonConverter;
+import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.EmpData;
@@ -21,6 +22,7 @@ import com.inkubator.hrm.service.ApprovalActivityService;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.TempJadwalKaryawanService;
 import com.inkubator.hrm.service.WtGroupWorkingService;
+import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
@@ -36,6 +38,8 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+
+import org.apache.commons.lang3.StringUtils;
 import org.primefaces.context.RequestContext;
 import org.primefaces.json.JSONObject;
 
@@ -63,6 +67,8 @@ public class ScheduleApprovalFormController extends BaseController {
     private List<EmpData> dataToSave = new ArrayList<>();
     private String comment;
     private Boolean isWaitingApproval;
+    private Boolean isApprover;
+    private Boolean isRequester;
 
     @PostConstruct
     @Override
@@ -72,6 +78,8 @@ public class ScheduleApprovalFormController extends BaseController {
             String id = FacesUtil.getRequestParameter("execution");
             selectedApprovalActivity = approvalActivityService.getEntiyByPK(Long.parseLong(id.substring(1)));
             isWaitingApproval = selectedApprovalActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING;
+            isApprover = StringUtils.equals(UserInfoUtil.getUserName(), selectedApprovalActivity.getApprovedBy());
+            isRequester = StringUtils.equals(UserInfoUtil.getUserName(), selectedApprovalActivity.getRequestBy());
 
             JSONObject jSONObject = new JSONObject(selectedApprovalActivity.getPendingData());
             long workingGroupId = Long.parseLong(jSONObject.getString("groupWorkingId"));
@@ -118,6 +126,8 @@ public class ScheduleApprovalFormController extends BaseController {
         dataToSave = null;
         comment = null;
         isWaitingApproval = null;
+        isApprover = null;
+        isRequester = null;
     }
 
     public ApprovalActivity getSelectedApprovalActivity() {
@@ -202,6 +212,22 @@ public class ScheduleApprovalFormController extends BaseController {
     public void setIsWaitingApproval(Boolean isWaitingApproval) {
         this.isWaitingApproval = isWaitingApproval;
     }
+    
+    public Boolean getIsApprover() {
+		return isApprover;
+	}
+
+	public void setIsApprover(Boolean isApprover) {
+		this.isApprover = isApprover;
+	}
+
+	public Boolean getIsRequester() {
+		return isRequester;
+	}
+
+	public void setIsRequester(Boolean isRequester) {
+		this.isRequester = isRequester;
+	}
 
     public String doBack() {
         return "/protected/home.htm?faces-redirect=true";
@@ -231,6 +257,20 @@ public class ScheduleApprovalFormController extends BaseController {
             MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.approval_info", "global.rejected_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             return "/protected/home.htm?faces-redirect=true";
+        } catch (Exception e) {
+            LOGGER.error("Error when rejected process ", e);
+        }
+        return null;
+    }
+    
+    public String doCancelled() {
+        try {
+        	tempJadwalKaryawanService.cancelled(selectedApprovalActivity.getId(), comment);
+            MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.approval_info", "global.cancelled_successfully",
+                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            return "/protected/home.htm?faces-redirect=true";
+        } catch (BussinessException ex) {            
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception e) {
             LOGGER.error("Error when rejected process ", e);
         }

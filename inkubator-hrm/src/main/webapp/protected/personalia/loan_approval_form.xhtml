@@ -15,8 +15,9 @@
             <ui:define name="windowTitle">
 				Home
             </ui:define>
-            <ui:define name="center">              
-                <h:form id="formLoanDetailId">
+            <ui:define name="center">     
+            	<p:growl id="growlLoanApprovalFormId" globalOnly="true" showDetail="true"/>         
+                <h:form id="formLoanApprovalFormId">
                 	<div id="box_bg" style="margin: 10px">
 	                    <h:panelGrid  columns="2">
 	                        <p:graphicImage library="images" name="bio_data.png" height="36" width="36" />
@@ -155,9 +156,11 @@
 	                 	<p:separator style="margin-top: 30px;margin-bottom: 10px"/>
 	                    <div style="margin-bottom: 5px">
 	                    	<p:commandButton value="#{appmsg['approvalactivity.approved']}" icon="ui-icon-check" title="#{appmsg['approvalactivity.approved']}" action="#{loanApprovalFormController.doApproved()}"
-                                			 style="margin-right: 5px" styleClass="label_button" rendered="#{loanApprovalFormController.isWaitingApproval}"/>
+                                			 style="margin-right: 5px" styleClass="label_button" rendered="#{loanApprovalFormController.isApprover}" update=":growlLoanApprovalFormId"/>
 							<p:commandButton value="#{appmsg['approvalactivity.reject']}" icon="ui-icon-close" title="#{appmsg['approvalactivity.reject']}" action="#{loanApprovalFormController.doRejected()}"
-                                			 style="margin-right: 5px" styleClass="label_button" rendered="#{loanApprovalFormController.isWaitingApproval}"/>
+                                			 style="margin-right: 5px" styleClass="label_button" rendered="#{loanApprovalFormController.isApprover}" update=":growlLoanApprovalFormId"/>
+	                        <p:commandButton value="#{appmsg['approvalactivity.cancelled']}" icon="ui-icon-close" title="#{appmsg['approvalactivity.cancelled']}" action="#{loanApprovalFormController.doCancelled()}"
+                                			 style="margin-right: 5px" styleClass="label_button" rendered="#{loanApprovalFormController.isRequester}" update=":growlLoanApprovalFormId"/>
 	                        <p:commandButton value="#{appmsg['global.close']}" icon="ui-icon-home"  title="#{appmsg['global.close']}" action="#{loanApprovalFormController.doBack()}" immediate="true"
 	                                      	 styleClass="label_button"/>
 	                    </div>

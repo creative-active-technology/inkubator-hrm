@@ -19,12 +19,16 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import ch.lambdaj.Lambda;
 
 import com.inkubator.common.util.JsonConverter;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.ApprovalActivityDao;
 import com.inkubator.hrm.dao.ApprovalDefinitionDao;
@@ -42,7 +46,7 @@ import com.inkubator.webcore.util.FacesUtil;
  *
  * @author rizkykojek
  */
-public class BaseApprovalServiceImpl extends IServiceImpl {
+public abstract class BaseApprovalServiceImpl extends IServiceImpl {
 	
 	@Autowired
     private ApprovalActivityDao approvalActivityDao;
@@ -58,6 +62,8 @@ public class BaseApprovalServiceImpl extends IServiceImpl {
 	private JmsTemplate jmsTemplateApprovalGrowl;
 	@Autowired
     private JsonConverter jsonConverter;
+	
+	protected abstract void sendingEmailApprovalNotif(ApprovalActivity appActivity) throws Exception;
 	
 	/**
      * <p>Method untuk mengecek apakah di processName/module tersebut terdapat approval proses. 
@@ -524,6 +530,22 @@ public class BaseApprovalServiceImpl extends IServiceImpl {
                 }
             });
     	}    	
+    }
+    
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void cancelled(long approvalActivityId, String comment) throws Exception {
+    	ApprovalActivity appActivity = approvalActivityDao.getEntiyByPK(approvalActivityId);
+    	//check only approval status which is waiting that can be cancelled
+    	if(appActivity.getApprovalStatus() != HRMConstant.APPROVAL_STATUS_WAITING){
+    		throw new BussinessException("approval.error_cancelled");
+    	}
+    	
+    	appActivity.setApprovalStatus(HRMConstant.APPROVAL_STATUS_CANCELLED);
+    	appActivity.setApprovalCommment(comment);
+    	approvalActivityDao.update(appActivity);
+    	
+    	//send email cancellation
+    	this.sendingEmailApprovalNotif(appActivity);
     }
 
 }

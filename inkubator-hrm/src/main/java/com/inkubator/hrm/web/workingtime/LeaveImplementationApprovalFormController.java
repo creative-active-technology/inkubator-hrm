@@ -12,7 +12,10 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.google.gson.Gson;
+import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.EmpData;
@@ -21,6 +24,7 @@ import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.ApprovalActivityService;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.LeaveImplementationService;
+import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
@@ -36,6 +40,8 @@ public class LeaveImplementationApprovalFormController extends BaseController {
     private LeaveImplementation selectedLeaveImplementation;
     private String comment;
     private Boolean isWaitingApproval;
+    private Boolean isApprover;
+    private Boolean isRequester;
     private ApprovalActivity selectedApprovalActivity;
     @ManagedProperty(value = "#{leaveImplementationService}")
     private LeaveImplementationService leaveImplementationService;
@@ -52,6 +58,8 @@ public class LeaveImplementationApprovalFormController extends BaseController {
             String id = FacesUtil.getRequestParameter("execution");
             selectedApprovalActivity = approvalActivityService.getEntiyByPK(Long.parseLong(id.substring(1)));
             isWaitingApproval = selectedApprovalActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING;
+            isApprover = StringUtils.equals(UserInfoUtil.getUserName(), selectedApprovalActivity.getApprovedBy());
+            isRequester = StringUtils.equals(UserInfoUtil.getUserName(), selectedApprovalActivity.getRequestBy());
 
             Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
             selectedLeaveImplementation = gson.fromJson(selectedApprovalActivity.getPendingData(), LeaveImplementation.class);
@@ -72,6 +80,8 @@ public class LeaveImplementationApprovalFormController extends BaseController {
         comment = null;
         empDataService = null;
         isWaitingApproval = null;
+        isApprover = null;
+        isRequester = null;
     }
 
     public LeaveImplementation getSelectedLeaveImplementation() {
@@ -121,6 +131,22 @@ public class LeaveImplementationApprovalFormController extends BaseController {
     public void setIsWaitingApproval(Boolean isWaitingApproval) {
         this.isWaitingApproval = isWaitingApproval;
     }
+    
+	public Boolean getIsApprover() {
+		return isApprover;
+	}
+
+	public void setIsApprover(Boolean isApprover) {
+		this.isApprover = isApprover;
+	}
+
+	public Boolean getIsRequester() {
+		return isRequester;
+	}
+
+	public void setIsRequester(Boolean isRequester) {
+		this.isRequester = isRequester;
+	}
 
     public String doBack() {
         return "/protected/home.htm?faces-redirect=true";
@@ -144,6 +170,20 @@ public class LeaveImplementationApprovalFormController extends BaseController {
             MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.approval_info", "global.rejected_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             return "/protected/home.htm?faces-redirect=true";
+        } catch (Exception e) {
+            LOGGER.error("Error when rejected process ", e);
+        }
+        return null;
+    }
+    
+    public String doCancelled() {
+        try {
+        	leaveImplementationService.cancelled(selectedApprovalActivity.getId(), comment);
+            MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.approval_info", "global.cancelled_successfully",
+                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            return "/protected/home.htm?faces-redirect=true";
+        } catch (BussinessException ex) {            
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception e) {
             LOGGER.error("Error when rejected process ", e);
         }

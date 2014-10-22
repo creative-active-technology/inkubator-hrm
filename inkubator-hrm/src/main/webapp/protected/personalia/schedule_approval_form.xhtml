@@ -15,8 +15,9 @@
             <ui:define name="windowTitle">
                 Home
             </ui:define>
-            <ui:define name="center">              
-                <h:form id="formLoanDetailId">
+            <ui:define name="center">   
+            	<p:growl id="growlScheduleApprovalFormId" globalOnly="true" showDetail="true"/>           
+                <h:form id="formScheduleApprovalFormId">
                     <div id="box_bg" style="margin: 10px">
                         <h:panelGrid  columns="2">
                             <p:graphicImage library="images" name="task.png" height="36" width="36" />
@@ -167,9 +168,11 @@
                             </p:dataTable>
                             <div style="margin-bottom: 5px;margin-top: 15px">
                                 <p:commandButton value="#{appmsg['approvalactivity.approved']}" icon="ui-icon-check" title="#{appmsg['approvalactivity.approved']}" action="#{scheduleApprovalFormController.doApproved()}"
-                                                 style="margin-right: 5px" styleClass="label_button" rendered="#{scheduleApprovalFormController.isWaitingApproval}"/>
+                                                 style="margin-right: 5px" styleClass="label_button" rendered="#{scheduleApprovalFormController.isApprover}" update=":growlScheduleApprovalFormId"/>
                                 <p:commandButton value="#{appmsg['approvalactivity.reject']}" icon="ui-icon-close" title="#{appmsg['approvalactivity.reject']}" action="#{scheduleApprovalFormController.doRejected()}"
-                                                 style="margin-right: 5px" styleClass="label_button" rendered="#{scheduleApprovalFormController.isWaitingApproval}"/>
+                                                 style="margin-right: 5px" styleClass="label_button" rendered="#{scheduleApprovalFormController.isApprover}" update=":growlScheduleApprovalFormId"/>
+                                <p:commandButton value="#{appmsg['approvalactivity.cancelled']}" icon="ui-icon-close" title="#{appmsg['approvalactivity.cancelled']}" action="#{scheduleApprovalFormController.doCancelled()}"
+                                			 	 style="margin-right: 5px" styleClass="label_button" rendered="#{scheduleApprovalFormController.isRequester}" update=":growlScheduleApprovalFormId"/>
                                 <p:commandButton value="#{appmsg['global.close']}" icon="ui-icon-home"  title="#{appmsg['global.close']}" action="#{scheduleApprovalFormController.doBack()}" immediate="true"
                                                  styleClass="label_button"/>
                             </div>
