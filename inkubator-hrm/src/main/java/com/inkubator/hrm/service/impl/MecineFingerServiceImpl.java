@@ -7,6 +7,7 @@ package com.inkubator.hrm.service.impl;
 
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.MecineFingerDao;
 import com.inkubator.hrm.entity.MecineFinger;
 import com.inkubator.hrm.service.MecineFingerService;
@@ -52,6 +53,11 @@ public class MecineFingerServiceImpl extends IServiceImpl implements MecineFinge
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(MecineFinger entity) throws Exception {
+        // check duplicate name
+        long totalDuplicates = mecineFingerDao.getByCode(entity.getCode());
+        if (totalDuplicates > 0) {
+            throw new BussinessException("mecinefinger.error_duplicate_mecinefinger_code");
+        }
         entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         entity.setName(entity.getName());
         entity.setMecineMethode(entity.getMecineMethode());
@@ -63,8 +69,15 @@ public class MecineFingerServiceImpl extends IServiceImpl implements MecineFinge
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(MecineFinger entity) throws Exception {
+        // check duplicate name
+        long totalDuplicates = mecineFingerDao.getTotalByCodeAndNotId(entity.getCode(), entity.getId());
+        if (totalDuplicates > 0) {
+            throw new BussinessException("mecinefinger.error_duplicate_mecinefinger_code");
+        }
         MecineFinger update = mecineFingerDao.getEntiyByPK(entity.getId());
         update.setName(entity.getName());
+        update.setCode(entity.getCode());
+        update.setDescription(entity.getDescription());
         update.setMecineMethode(entity.getMecineMethode());
         update.setUpdatedBy(UserInfoUtil.getUserName());
         update.setUpdatedOn(new Date());
