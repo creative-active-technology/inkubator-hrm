@@ -198,6 +198,8 @@ public class ReimbursmentApprovalFormController extends BaseController {
             MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.approval_info", "global.approved_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             return "/protected/home.htm?faces-redirect=true";
+        } catch (BussinessException ex) {            
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception e) {
             LOGGER.error("Error when approved process ", e);
         }
@@ -210,6 +212,8 @@ public class ReimbursmentApprovalFormController extends BaseController {
             MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.approval_info", "global.rejected_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             return "/protected/home.htm?faces-redirect=true";
+        } catch (BussinessException ex) {            
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception e) {
             LOGGER.error("Error when rejected process ", e);
         }

@@ -198,9 +198,14 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
 	}
 	
 	protected Map<String, Object> approvedAndCheckNextApproval(Long appActivityId, String pendingDataUpdate, String comment) throws Exception {
-
-        /* update APPROVED approval activity */
-        ApprovalActivity approvalActivity = approvalActivityDao.getEntiyByPK(appActivityId);
+		ApprovalActivity approvalActivity = approvalActivityDao.getEntiyByPK(appActivityId);
+		
+		//check only approval status which is waiting that can be process
+    	if(approvalActivity.getApprovalStatus() != HRMConstant.APPROVAL_STATUS_WAITING){
+    		throw new BussinessException("approval.error_status_already_changed");
+    	}
+    	
+        /* update APPROVED approval activity */        
         approvalActivity.setApprovalStatus(HRMConstant.APPROVAL_STATUS_APPROVED);
         approvalActivity.setApprovalCommment(comment);
         int approvedCount = approvalActivity.getApprovalCount() + 1; //increment +1
@@ -261,8 +266,14 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
      */
 	protected Map<String, Object> rejectedAndCheckNextApproval(Long appActivityId, String comment) throws Exception {
 
+		ApprovalActivity approvalActivity = approvalActivityDao.getEntiyByPK(appActivityId);
+		
+		//check only approval status which is waiting that can be process
+    	if(approvalActivity.getApprovalStatus() != HRMConstant.APPROVAL_STATUS_WAITING){
+    		throw new BussinessException("approval.error_status_already_changed");
+    	}
+    	
         /* update REJECTED approval activity */
-        ApprovalActivity approvalActivity = approvalActivityDao.getEntiyByPK(appActivityId);
         approvalActivity.setApprovalStatus(HRMConstant.APPROVAL_STATUS_REJECTED);
         approvalActivity.setApprovalCommment(comment);
         int rejectedCount = approvalActivity.getRejectCount() + 1; //increment +1
@@ -310,9 +321,15 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
      * @return Map<String, Object> Key value dari map tersebut "isEndOfApprovalProcess" berupa String dan "approvalActivity" berupa objek ApprovalActivity
      */
 	protected Map<String, Object> divertedAndCheckNextApproval(Long appActivityId) throws Exception {
-
+		
+		ApprovalActivity approvalActivity = approvalActivityDao.getEntiyByPK(appActivityId);
+		
+		//check only approval status which is waiting that can be process
+    	if(approvalActivity.getApprovalStatus() != HRMConstant.APPROVAL_STATUS_WAITING){
+    		throw new BussinessException("approval.error_status_already_changed");
+    	}
+    	
         /* update DIVERTED approval activity */
-        ApprovalActivity approvalActivity = approvalActivityDao.getEntiyByPK(appActivityId);
         approvalActivity.setApprovalStatus(HRMConstant.APPROVAL_STATUS_DIVERTED);
         approvalActivity.setApprovalTime(new Date());
         approvalActivityDao.update(approvalActivity);
@@ -535,9 +552,9 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void cancelled(long approvalActivityId, String comment) throws Exception {
     	ApprovalActivity appActivity = approvalActivityDao.getEntiyByPK(approvalActivityId);
-    	//check only approval status which is waiting that can be cancelled
+    	//check only approval status which is waiting that can be process
     	if(appActivity.getApprovalStatus() != HRMConstant.APPROVAL_STATUS_WAITING){
-    		throw new BussinessException("approval.error_cancelled");
+    		throw new BussinessException("approval.error_status_already_changed");
     	}
     	
     	appActivity.setApprovalStatus(HRMConstant.APPROVAL_STATUS_CANCELLED);
