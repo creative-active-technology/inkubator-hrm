@@ -1,11 +1,9 @@
 package com.inkubator.hrm.web.validator;
 
-import com.inkubator.hrm.HRMConstant;
-import com.inkubator.webcore.util.FacesUtil;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
@@ -13,6 +11,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.FacesValidator;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
+
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.webcore.util.FacesUtil;
 
 /**
  *
@@ -40,8 +41,8 @@ public class DateBetweenValidator implements Validator {
             return; // Let required="true" do its job.
         }
 
-        // Check if begin time is bigger/equal with end time
-        if (beginTime.after(endTime) || beginTime.equals(endTime)) {
+        // Check if begin time is bigger than end time
+        if (beginTime.after(endTime)) {
             String validatorMessage = (String) component.getAttributes().get("dateBetweenValidatorMessage");
             throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "", validatorMessage));
         }
