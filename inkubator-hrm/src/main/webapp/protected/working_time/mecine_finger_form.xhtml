@@ -18,7 +18,7 @@
                 <p:growl id="growlId" globalOnly="true" showDetail="true"/>
                 <h:form id="formId">
                     <h:panelGrid  columns="2">
-                        <p:graphicImage library="images" name="marital_status.png" height="36" width="36"  cache="true"/>
+                        <p:graphicImage library="images" name="finger_print.png" height="36" width="36"  cache="true"/>
                         <h:panelGroup layout="block">
                             <h:panelGrid>
                                 <p:outputLabel value="Mechine Finger" styleClass="header_big" />
@@ -32,6 +32,24 @@
                         <h:outputLabel value="#{appmsg['maritalstatus.dialog_marital_status_info']}" styleClass="label_hrm" style="font-weight: normal!important"/>
                     </h:panelGrid> 
                     <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
+                        
+                        <p:row>
+                            <p:column style="width: 40%">
+                                <p:outputLabel for="code" value="Machine Code" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="code" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                            <p:inputText id="code" value="#{machineFingerFormController.model.code}" onkeyup="this.value = this.value.toUpperCase();"
+                                             required="true" maxlength="6" styleClass="isitext_hrm" style="width:210px;" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="code"/>
+                            </p:column>
+                        </p:row>
                         
                         <p:row>
                             <p:column style="width: 40%">
@@ -73,6 +91,35 @@
                             </p:column>
                         </p:row>
                         
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="descriptionId" value="#{appmsg['global.description']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="descriptionId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                                <p:inputTextarea id="descriptionId" title="#{appmsg['global.description']}" value="#{machineFingerFormController.model.description}" 
+                                                 required="false" maxlength="500" counter="counter" counterTemplate="#{appmsg['global.remaining']}" styleClass="isitext_hrm" style="width:250px;" />
+
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%;" >
+                                <p:outputLabel  for="counter" styleClass="label_hrm" />
+                            </p:column>
+                            <p:column style="width: 1%;" >
+                                <p:outputLabel  for="counter" styleClass="label_hrm" />
+                            </p:column>
+                            <p:column style="width: 70%">
+                                <h:outputText id="counter" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="descriptionId"/>
+                            </p:column>
+                        </p:row>
 
                     </p:panelGrid>
                     <p:focus context="formId" />

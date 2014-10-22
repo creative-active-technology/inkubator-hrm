@@ -103,7 +103,7 @@ public class MecineFingerViewController extends BaseController {
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 400);
-        options.put("contentHeight", 440);
+        options.put("contentHeight", 380);
         RequestContext.getCurrentInstance().openDialog("mecine_finger_form", options, null);
     }
 
@@ -113,7 +113,7 @@ public class MecineFingerViewController extends BaseController {
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 400);
-        options.put("contentHeight", 440);
+        options.put("contentHeight", 380);
         Map<String, List<String>> dataToSend = new HashMap<>();
         List<String> dataIsi = new ArrayList<>();
         dataIsi.add(String.valueOf(seleced.getId()));

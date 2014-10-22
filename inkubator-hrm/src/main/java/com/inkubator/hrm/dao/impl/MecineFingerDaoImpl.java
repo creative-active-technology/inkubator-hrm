@@ -63,4 +63,11 @@ public class MecineFingerDaoImpl extends IDAOImpl<MecineFinger> implements Mecin
         }
         criteria.add(Restrictions.isNotNull("id"));
     }
+
+    @Override
+    public Long getByCode(String code) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.like("code", code, MatchMode.ANYWHERE));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
 }
