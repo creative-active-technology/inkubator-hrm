@@ -35,6 +35,8 @@ public interface ApprovalActivityDao extends IDAO<ApprovalActivity> {
 
     public List<ApprovalActivity> getDataNotSendEmailYet();
     
+    public Boolean isStillHaveWaitingStatus(List<ApprovalDefinition> appDefs, String requestBy);
+    
     public Boolean isStillHaveWaitingStatus(List<ApprovalDefinition> appDefs);
     
     public Boolean isStillHaveWaitingStatus(Long appDefId);
