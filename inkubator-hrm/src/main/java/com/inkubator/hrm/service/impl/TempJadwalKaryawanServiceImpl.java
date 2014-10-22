@@ -458,4 +458,10 @@ public class TempJadwalKaryawanServiceImpl extends BaseApprovalServiceImpl imple
         });
 	}
 
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public TempJadwalKaryawan getByEmpId(Long id) throws Exception {
+        return tempJadwalKaryawanDao.getByEmpId(id);
+    }
+
 }

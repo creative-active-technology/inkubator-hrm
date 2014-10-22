@@ -117,4 +117,21 @@ public class TempJadwalKaryawanDaoImpl extends IDAOImpl<TempJadwalKaryawan> impl
 
     }
 
+    @Override
+    public TempJadwalKaryawan getByEmpId(Long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("id", id));
+        criteria.setFetchMode("empData", FetchMode.JOIN);
+        criteria.setFetchMode("empData.jabatanByJabatanId", FetchMode.JOIN);
+        criteria.setFetchMode("empData.jabatanByJabatanId.departement", FetchMode.JOIN);
+        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+        criteria.setFetchMode("empData.employeeType", FetchMode.JOIN);
+        criteria.setFetchMode("empData.paySalaryGrade", FetchMode.JOIN);
+        criteria.setFetchMode("empData.jabatanByJabatanId.jabatanDeskripsis", FetchMode.JOIN);
+        criteria.setFetchMode("empData.jabatanByJabatanId.jabatanSpesifikasis", FetchMode.JOIN);
+        criteria.setFetchMode("empData.jabatanByJabatanId.jabatanSpesifikasis.specificationAbility", FetchMode.JOIN);
+        criteria.setFetchMode("empData.wtGroupWorking", FetchMode.JOIN);
+        return (TempJadwalKaryawan) criteria.uniqueResult();
+    }
+
 }

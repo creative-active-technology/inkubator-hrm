@@ -89,6 +89,8 @@
                                                 converter="#{empDataConverter}"
                                                 requiredMessage="#{appmsg['personachievement.person_achievement_should_not_be_empty']}"
                                                 styleClass="isitext_hrm" size="40">
+                                        <!--<p:ajax update="startTime" process="@this" listener="#{implementationOfOverTimeFormController.doValidateStartAndEndTime()}"/>-->
+                                        <p:ajax event="itemSelect" listener="#{implementationOfOverTimeFormController.doValidateStartAndEndTime}" update="startTime"/>
                                     </p:autoComplete>
                                     
                                 </p:column>

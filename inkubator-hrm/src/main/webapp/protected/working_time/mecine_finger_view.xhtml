@@ -69,6 +69,12 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
+                            <p:column sortBy="code" style="width: 43%">
+                                <f:facet name="header">
+                                    <h:outputText value="Finger Code"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.code}" />
+                            </p:column>
                             <p:column sortBy="name" style="width: 43%">
                                 <f:facet name="header">
                                     <h:outputText value="Finger Name"/>

@@ -8,9 +8,11 @@ import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.ImplementationOfOverTime;
+import com.inkubator.hrm.entity.TempJadwalKaryawan;
 import com.inkubator.hrm.entity.WtOverTime;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.ImplementationOfOverTimeService;
+import com.inkubator.hrm.service.TempJadwalKaryawanService;
 import com.inkubator.hrm.service.WtOverTimeService;
 import com.inkubator.hrm.util.MapUtil;
 import com.inkubator.hrm.web.model.ImplementationOfOverTimeModel;
@@ -43,6 +45,8 @@ public class ImplementationOfOverTimeFormController extends BaseController {
     private EmpDataService empDataService;
     @ManagedProperty(value = "#{implementationOfOverTimeService}")
     private ImplementationOfOverTimeService implementationOfOverTimeService;
+    @ManagedProperty(value = "#{tempJadwalKaryawanService}")
+    private TempJadwalKaryawanService tempJadwalKaryawanService;
     private Boolean isUpdate;
     private Map<String, Long> wtOverTimeDropDown = new TreeMap<String, Long>();
     private List<WtOverTime> listWtOverTime = new ArrayList<>();
@@ -78,6 +82,7 @@ public class ImplementationOfOverTimeFormController extends BaseController {
         wtOverTimeService = null;
         model = null;
         empDataService = null;
+        tempJadwalKaryawanService = null;
     }
     
     public void listDrowDown() throws Exception {
@@ -148,6 +153,11 @@ public class ImplementationOfOverTimeFormController extends BaseController {
         }
     }
     
+    public void doValidateStartAndEndTime() throws Exception{
+        TempJadwalKaryawan jadwalKaryawan = tempJadwalKaryawanService.getByEmpId(model.getEmpData().getId());
+        System.out.println(jadwalKaryawan.getWtWorkingHour().getIsManageOvertime()+"----------");
+    }
+    
     public WtOverTimeService getWtOverTimeService() {
         return wtOverTimeService;
     }
@@ -202,6 +212,14 @@ public class ImplementationOfOverTimeFormController extends BaseController {
 
     public void setEmpDataService(EmpDataService empDataService) {
         this.empDataService = empDataService;
+    }
+
+    public TempJadwalKaryawanService getTempJadwalKaryawanService() {
+        return tempJadwalKaryawanService;
+    }
+
+    public void setTempJadwalKaryawanService(TempJadwalKaryawanService tempJadwalKaryawanService) {
+        this.tempJadwalKaryawanService = tempJadwalKaryawanService;
     }
     
     

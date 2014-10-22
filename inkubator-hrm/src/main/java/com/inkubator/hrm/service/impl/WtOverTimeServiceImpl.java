@@ -276,6 +276,9 @@ public class WtOverTimeServiceImpl extends BaseApprovalConfigurationServiceImpl<
             throw new BussinessException("over_time.error_code_duplicate");
         }
         
+        /** validasi approval definition conf */
+        super.validateApprovalConf(appDefs);	
+                
         WtOverTime overTime=this.wtOverTimeDao.getEntiyByPK(entity.getId());
         overTime.setCode(entity.getCode());
         overTime.setDescription(entity.getDescription());

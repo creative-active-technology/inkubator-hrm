@@ -25,4 +25,6 @@ public interface TempJadwalKaryawanService extends IService<TempJadwalKaryawan>,
     public void saveMassPenempatanJadwal(List<Long> data, long groupWorkingId, Date createdOn, String createdBy) throws Exception;
     
     public String saveMassPenempatanJadwal(List<EmpData> data, long groupWorkingId) throws Exception;
+    
+    public TempJadwalKaryawan getByEmpId(Long id) throws Exception;
 }

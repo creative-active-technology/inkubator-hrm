@@ -21,8 +21,8 @@
                             <p:graphicImage library="images" name="marital_status.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="Leave Distribution" styleClass="header_big" />
-                                    <p:outputLabel value="Leave Distribution from Employee" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="Over Time Implementation" styleClass="header_big" />
+                                    <p:outputLabel value="Over Time Implementation from Employee" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -33,11 +33,11 @@
                                 <h:panelGrid columns="5">
                                     <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm" />
                                     <p:outputLabel value=":" />
-                                    <p:selectOneMenu value="#{implementationOfOverTimeViewController.search.keyParam}" style="width: 150px;margin-right: 3px" >
+                                    <p:selectOneMenu value="#{implementationOfOverTimeViewController.searchParameter.keyParam}" style="width: 150px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItem itemLabel="#{appmsg['maritalstatus.name']}" itemValue="name"/>
                                     </p:selectOneMenu>
-                                    <p:inputText id="searchId" value="#{implementationOfOverTimeViewController.search.parameter}" style="width: 250px" styleClass="label_button"/>
+                                    <p:inputText id="searchId" value="#{implementationOfOverTimeViewController.searchParameter.parameter}" style="width: 250px" styleClass="label_button"/>
                                     <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{implementationOfOverTimeViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
@@ -60,7 +60,7 @@
                                       id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="Daftar Leave Distribution"/>
+                                <h:outputText value="Daftar Over Time Implementation"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  

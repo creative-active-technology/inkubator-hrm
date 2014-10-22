@@ -259,4 +259,10 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
     public void sendingEmailApprovalNotif(ApprovalActivity appActivity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public String save(ImplementationOfOverTime entity, boolean isBypassApprovalChecking) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
