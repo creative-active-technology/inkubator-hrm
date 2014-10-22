@@ -85,6 +85,7 @@ public class HomeApproalActivityController extends BaseController {
 
     public String doDetailRequestHistory() {
         String redirect = "";
+        
         try {
             selectedApprovalActivity = approvalActivityService.getEntityByPkWithDetail(selectedApprovalActivity.getId());
             switch (selectedApprovalActivity.getApprovalDefinition().getName()) {
@@ -109,6 +110,7 @@ public class HomeApproalActivityController extends BaseController {
         } catch (Exception e) {
             LOGGER.error("Error", e);
         }
+        
         return redirect;
     }
 

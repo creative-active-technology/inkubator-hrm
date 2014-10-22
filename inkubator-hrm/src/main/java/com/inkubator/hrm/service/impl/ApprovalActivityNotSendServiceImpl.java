@@ -37,7 +37,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author Deni Husni FR
  */
-public class ApprovalActivityNotSendServiceImpl extends BaseApprovalServiceImpl implements ApprovalActivityNotSendService {
+public class ApprovalActivityNotSendServiceImpl implements ApprovalActivityNotSendService {
 
     private String applicationUrl;
     private String applicationName;

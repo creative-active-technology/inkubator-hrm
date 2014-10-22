@@ -1,6 +1,5 @@
 package com.inkubator.hrm.service.impl;
 
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -45,8 +44,6 @@ import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.Leave;
 import com.inkubator.hrm.entity.LeaveDistribution;
 import com.inkubator.hrm.entity.LeaveImplementation;
-import com.inkubator.hrm.entity.Loan;
-import com.inkubator.hrm.entity.LoanPaymentDetail;
 import com.inkubator.hrm.entity.NeracaCuti;
 import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.LeaveImplementationService;
@@ -562,7 +559,13 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
 		entity.setCreatedOn(createdOn);
 		
 		HrmUser requestUser = hrmUserDao.getByEmpDataId(empData.getId());
-		List<ApprovalDefinition> appDefs = Lambda.extract(leave.getApprovalDefinitionLeaves(), Lambda.on(ApprovalDefinitionLeave.class).getApprovalDefinition());
+		List<ApprovalDefinition> appDefs = Lambda.extract(leave.getApprovalDefinitionLeaves(), Lambda.on(ApprovalDefinitionLeave.class).getApprovalDefinition());		
+		
+		// check jika ada cuti yang masih diproses approval, hanya boleh mengajukan cuti jika tidak ada approval yang pending
+		if(approvalActivityDao.isStillHaveWaitingStatus(appDefs, requestUser.getUserId())){
+			throw new BussinessException("leaveimplementation.error_still_have_waiting_status");
+		}
+		
 		ApprovalActivity approvalActivity = isBypassApprovalChecking ? null : super.checkApprovalProcess(appDefs, requestUser.getUserId());
 		if(approvalActivity == null){
 			leaveImplementationDao.save(entity);			

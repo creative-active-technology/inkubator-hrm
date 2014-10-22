@@ -16,8 +16,8 @@
                 Home
             </ui:define>
             <ui:define name="center">
-                <p:growl id="growlBusinessTravelApprovalFormlId" globalOnly="true" showDetail="true"/>              
-                <h:form id="formBusinessTravelApprovalFormId">
+                <p:growl id="growlReimnursmentApprovalFormlId" globalOnly="true" showDetail="true"/>              
+                <h:form id="formReimnursmentApprovalFormlId">
                     <div id="box_bg" style="margin: 10px">
                         <h:panelGrid  columns="2">
                             <p:graphicImage library="images" name="bio_data.png" height="36" width="36" />
@@ -110,10 +110,14 @@
 
                         <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
                         <div style="margin-bottom: 5px">
-                            <p:commandButton value="#{appmsg['approvalactivity.approved']}" icon="ui-icon-check" title="#{appmsg['approvalactivity.approved']}" action="#{reimbursmentApprovalFormController.doApproved()}"
-                                             style="margin-right: 5px" styleClass="label_button" rendered="#{reimbursmentApprovalFormController.isWaitingApproval}"/>
-                            <p:commandButton value="#{appmsg['approvalactivity.reject']}" icon="ui-icon-close" title="#{appmsg['approvalactivity.reject']}" action="#{reimbursmentApprovalFormController.doRejected()}"
-                                             style="margin-right: 5px" styleClass="label_button"/>
+                        	<h:panelGroup rendered="#{reimbursmentApprovalFormController.isWaitingApproval}">
+	                            <p:commandButton value="#{appmsg['approvalactivity.approved']}" icon="ui-icon-check" title="#{appmsg['approvalactivity.approved']}" action="#{reimbursmentApprovalFormController.doApproved()}"
+	                                             style="margin-right: 5px" styleClass="label_button" rendered="#{reimbursmentApprovalFormController.isApprover}" update=":growlReimnursmentApprovalFormlId"/>
+	                            <p:commandButton value="#{appmsg['approvalactivity.reject']}" icon="ui-icon-close" title="#{appmsg['approvalactivity.reject']}" action="#{reimbursmentApprovalFormController.doRejected()}"
+	                                             style="margin-right: 5px" styleClass="label_button" rendered="#{reimbursmentApprovalFormController.isApprover}" update=":growlReimnursmentApprovalFormlId"/>
+	                            <p:commandButton value="#{appmsg['approvalactivity.cancelled']}" icon="ui-icon-close" title="#{appmsg['approvalactivity.cancelled']}" action="#{reimbursmentApprovalFormController.doCancelled()}"
+	                                			 style="margin-right: 5px" styleClass="label_button" rendered="#{reimbursmentApprovalFormController.isRequester}" update=":growlReimnursmentApprovalFormlId"/>
+                            </h:panelGroup>
                             <p:commandButton value="#{appmsg['global.close']}" icon="ui-icon-home"  title="#{appmsg['global.close']}" action="#{reimbursmentApprovalFormController.doClose()}" immediate="true"
                                              style="margin-right: 5px" styleClass="label_button" rendered="#{reimbursmentApprovalFormController.isWaitingApproval}"/>
 

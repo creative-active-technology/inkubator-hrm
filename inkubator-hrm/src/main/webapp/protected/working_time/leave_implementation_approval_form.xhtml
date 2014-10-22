@@ -15,7 +15,8 @@
             <ui:define name="windowTitle">
 				Home
             </ui:define>
-            <ui:define name="center">               
+            <ui:define name="center">
+            	<p:growl id="growlLeaveImplementationApprovalFormId" globalOnly="true" showDetail="true"/>               
                 <h:form id="formLeaveImplementationApprovalFormId">
                 	<div id="box_bg" style="margin: 10px">
 	                    <h:panelGrid columns="2">
@@ -128,10 +129,14 @@
                             
 	                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
 	                    <div style="margin-bottom: 5px">
-	                        <p:commandButton value="#{appmsg['approvalactivity.approved']}" icon="ui-icon-check" title="#{appmsg['approvalactivity.approved']}" action="#{leaveImplementationApprovalFormController.doApproved()}"
-                                			 style="margin-right: 5px" styleClass="label_button" rendered="#{leaveImplementationApprovalFormController.isWaitingApproval}"/>
-							<p:commandButton value="#{appmsg['approvalactivity.reject']}" icon="ui-icon-close" title="#{appmsg['approvalactivity.reject']}" action="#{leaveImplementationApprovalFormController.doRejected()}"
-                                			 style="margin-right: 5px" styleClass="label_button" rendered="#{leaveImplementationApprovalFormController.isWaitingApproval}"/>
+	                    	<h:panelGroup rendered="#{leaveImplementationApprovalFormController.isWaitingApproval}">
+		                        <p:commandButton value="#{appmsg['approvalactivity.approved']}" icon="ui-icon-check" title="#{appmsg['approvalactivity.approved']}" action="#{leaveImplementationApprovalFormController.doApproved()}"
+	                                			 style="margin-right: 5px" styleClass="label_button" rendered="#{leaveImplementationApprovalFormController.isApprover}" update=":growlLeaveImplementationApprovalFormId"/>
+								<p:commandButton value="#{appmsg['approvalactivity.reject']}" icon="ui-icon-close" title="#{appmsg['approvalactivity.reject']}" action="#{leaveImplementationApprovalFormController.doRejected()}"
+	                                			 style="margin-right: 5px" styleClass="label_button" rendered="#{leaveImplementationApprovalFormController.isApprover}" update=":growlLeaveImplementationApprovalFormId"/>
+	                            <p:commandButton value="#{appmsg['approvalactivity.cancelled']}" icon="ui-icon-close" title="#{appmsg['approvalactivity.cancelled']}" action="#{leaveImplementationApprovalFormController.doCancelled()}"
+	                                			 style="margin-right: 5px" styleClass="label_button" rendered="#{leaveImplementationApprovalFormController.isRequester}" update=":growlLeaveImplementationApprovalFormId"/>
+	                        </h:panelGroup>
 	                        <p:commandButton value="#{appmsg['global.close']}" icon="ui-icon-home"  title="#{appmsg['global.close']}" action="#{leaveImplementationApprovalFormController.doBack()}" immediate="true"
 	                                      	 styleClass="label_button"/>
 	                    </div>

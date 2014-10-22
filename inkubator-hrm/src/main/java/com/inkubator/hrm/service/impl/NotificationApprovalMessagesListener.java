@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.inkubator.common.notification.model.VelocityTempalteModel;
 import com.inkubator.common.notification.service.VelocityTemplateSender;
@@ -73,16 +74,19 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
 
             vtm.setFrom(ownerEmail);
             /*if(appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING) {
-             //kirim email ke approver nya jika status waiting
-             toSend.add(approverUser.getEmailAddress()); 
-             } else {
-             //kirim email ke requester nya jika statusnya sudah di approved/rejected. Dan cc email (if any)
-             toSend.add(requesterUser.getEmailAddress()); 
-             for(JsonElement el:jsonObject.get("ccEmailAddresses").getAsJsonArray()){
-             toSentCC.add(el.getAsString());
-             }
-             }*/
-//            toSend.add("deni.arianto24@yahoo.com");
+            	//kirim email ke approver nya jika status waiting
+	            toSend.add(approverUser.getEmailAddress()); 
+            } else if(appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_CANCELLED){
+            	//kirim email ke approver nya jika status cancelled. Dan cc email ke requester
+	            toSend.add(approverUser.getEmailAddress());
+	            toSentCC.add(requesterUser.getEmailAddress());
+            } else if((appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_APPROVED) && appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_REJECTED) {
+	            //kirim email ke requester nya jika statusnya sudah di approved/rejected. Dan cc email (if any)
+	            toSend.add(requesterUser.getEmailAddress()); 
+	            for(JsonElement el:jsonObject.get("ccEmailAddresses").getAsJsonArray()){
+	            	toSentCC.add(el.getAsString());
+	            }
+            }*/
             toSend.add("guntur@incubatechnology.com");
             toSentCC.add("rizkykojek@gmail.com");
             vtm.setTo(toSend.toArray(new String[toSend.size()]));
@@ -169,6 +173,7 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                         default:
                             break;
                     }
+                    
                 } else if ((appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_APPROVED)
                         || (appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_REJECTED)) {
                     //configure email parameter based on approval name	
@@ -242,7 +247,85 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                         default:
                             break;
                     }
-                }
+                    
+                } else if ((appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_CANCELLED)) {
+                    //configure email parameter based on approval name	
+                    switch (appActivity.getApprovalDefinition().getName()) {
+                        case HRMConstant.BUSINESS_TRAVEL:
+                        	vtm.setSubject("Permohonan Perjalanan Dinas");
+                            vtm.setTemplatePath("email_travel_cancelled_approval.vm");
+                            maptoSend.put("approverName", approverUser.getEmpData().getBioData().getFullName());
+                            maptoSend.put("requesterName", requesterUser.getEmpData().getBioData().getFullName());
+                            maptoSend.put("nik", requesterUser.getEmpData().getNik());
+                            maptoSend.put("businessTravelNo", jsonObject.get("businessTravelNo").getAsString());
+                            maptoSend.put("proposeDate", jsonObject.get("proposeDate").getAsString());
+                            maptoSend.put("destination", jsonObject.get("destination").getAsString());
+                            maptoSend.put("start", jsonObject.get("startDate").getAsString());
+                            maptoSend.put("end", jsonObject.get("endDate").getAsString());
+                            maptoSend.put("description", jsonObject.get("description").getAsString());
+                            maptoSend.put("totalAmount", jsonObject.get("totalAmount").getAsString());
+                            maptoSend.put("statusDesc", getStatusDesc(appActivity.getApprovalStatus(), locale));
+                            break;
+
+                        case HRMConstant.REIMBURSEMENT:
+                             vtm.setSubject("Permohonan Pergantian Biaya");
+                            vtm.setTemplatePath("email_reimbursment_cancelled.vm");
+                            maptoSend.put("approverName", approverUser.getEmpData().getBioData().getFullName());
+                            maptoSend.put("requesterName", requesterUser.getEmpData().getBioData().getFullName());
+                            maptoSend.put("nik", requesterUser.getEmpData().getNik());
+                            maptoSend.put("reimbursment_schema", jsonObject.get("reimbursment_schema").getAsString());
+                            maptoSend.put("claim_date", jsonObject.get("claim_date").getAsString());
+                            maptoSend.put("proposeDate", jsonObject.get("proposeDate").getAsString());
+                            maptoSend.put("nominalOrUnit", jsonObject.get("nominalOrUnit").getAsString());
+                            maptoSend.put("reimbursmentNo", jsonObject.get("reimbursmentNo").getAsString());
+                            maptoSend.put("statusDesc", getStatusDesc(appActivity.getApprovalStatus(), locale));
+                            break;
+
+                        case HRMConstant.LOAN:
+                        	vtm.setSubject("Permohonan Pinjaman Lunak");
+                        	vtm.setTemplatePath("email_loan_cancelled_approval.vm");
+                        	maptoSend.put("approverName", approverUser.getEmpData().getBioData().getFullName());
+                            maptoSend.put("requesterName", requesterUser.getEmpData().getBioData().getFullName());
+                            maptoSend.put("nik", requesterUser.getEmpData().getNik());
+                            maptoSend.put("proposeDate", jsonObject.get("proposeDate").getAsString());
+                            maptoSend.put("loanSchemaName", jsonObject.get("loanSchemaName").getAsString());
+                            maptoSend.put("nominalPrincipal", jsonObject.get("nominalPrincipal").getAsString());
+                            maptoSend.put("interestRate", jsonObject.get("interestRate").getAsString());
+                            maptoSend.put("nominalInstallment", jsonObject.get("nominalInstallment").getAsString());
+                            maptoSend.put("interestInstallment", jsonObject.get("interestInstallment").getAsString());
+                            maptoSend.put("totalNominalInstallment", jsonObject.get("totalNominalInstallment").getAsString());
+                            maptoSend.put("statusDesc", getStatusDesc(appActivity.getApprovalStatus(), locale));
+                            break;
+                            
+                        case HRMConstant.SHIFT_SCHEDULE:
+                        	vtm.setSubject("Permohonan Perubahan Jadwal Kerja Karyawan");
+                        	vtm.setTemplatePath("email_shift_schedule_cancelled_approval.vm");
+                        	maptoSend.put("approverName", approverUser.getEmpData().getBioData().getFullName());
+                            maptoSend.put("requesterName", requesterUser.getEmpData().getBioData().getFullName());
+                            maptoSend.put("nik", requesterUser.getEmpData().getNik());
+                            maptoSend.put("proposeDate", jsonObject.get("proposeDate").getAsString());
+                            maptoSend.put("statusDesc", getStatusDesc(appActivity.getApprovalStatus(), locale));
+                            break;   
+                        
+                        case HRMConstant.LEAVE:
+                        	vtm.setSubject("Permohonan Cuti");
+                        	vtm.setTemplatePath("email_leave_cancelled_approval.vm");
+                        	maptoSend.put("approverName", approverUser.getEmpData().getBioData().getFullName());
+                            maptoSend.put("requesterName", requesterUser.getEmpData().getBioData().getFullName());
+                            maptoSend.put("nik", requesterUser.getEmpData().getNik());
+                            maptoSend.put("proposeDate", jsonObject.get("proposeDate").getAsString());
+                            maptoSend.put("leaveName", jsonObject.get("leaveName").getAsString());
+                            maptoSend.put("startDate", jsonObject.get("startDate").getAsString());
+                            maptoSend.put("endDate", jsonObject.get("endDate").getAsString());
+                            maptoSend.put("fillingDate", jsonObject.get("fillingDate").getAsString());
+                            maptoSend.put("materialJobsAbandoned", jsonObject.get("materialJobsAbandoned").getAsString());
+                            maptoSend.put("statusDesc", getStatusDesc(appActivity.getApprovalStatus(), locale));
+                            break;
+
+                        default:
+                            break;
+                    }
+                } 
 
                 maptoSend.put("ownerAdministrator", ownerAdministrator);
                 maptoSend.put("ownerCompany", ownerCompany);
@@ -309,12 +392,16 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                 statusDesc = "Request is approved";
             } else if (approvalStatus == HRMConstant.APPROVAL_STATUS_REJECTED) {
             	statusDesc = "Request is rejected";
+            } else if (approvalStatus == HRMConstant.APPROVAL_STATUS_CANCELLED) {
+            	statusDesc = "Request is cancelled";
             }
     	} else { 
     		if (approvalStatus == HRMConstant.APPROVAL_STATUS_APPROVED) {
                 statusDesc = "Permohonan Disetujui";
             } else if (approvalStatus == HRMConstant.APPROVAL_STATUS_REJECTED) {
             	statusDesc = "Permohonan Ditolak";
+            } else if (approvalStatus == HRMConstant.APPROVAL_STATUS_CANCELLED) {
+            	statusDesc = "Permohonan Dibatalkan";
             }
     	}
     	
