@@ -25,5 +25,7 @@ public interface LeaveImplementationDao extends IDAO<LeaveImplementation> {
 	public long getTotalByNumberFilling(String numberFilling);
 
 	public long getTotalByNumberFillingAndNotId(String numberFilling, Long id);
+
+	public LeaveImplementation getEntityByApprovalActivityNumberWithDetail(String activityNumber);
 	
 }

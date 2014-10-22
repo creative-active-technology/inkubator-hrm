@@ -105,7 +105,8 @@
 	                            		<p:ajax event="dateSelect" listener="#{leaveImplementationFormController.onChangeStartOrEndDate()}" update="totalWorkingDaysId"/>
 	                            		<f:validator validatorId="dateBetweenValidator"  />
 	                                    <f:attribute name="endTime" value="#{endDateId}"/>
-	                                    <f:attribute name="validatorMessage" value="#{appmsg['publicHoliday.publicHoliday_dateValidator']}"/>	                                    
+	                                    <f:attribute name="dateBetweenValidatorMessage" value="#{appmsg['publicHoliday.publicHoliday_dateValidator']}"/>
+	                                    <f:validator validatorId="backDateValidator"  />	                                    
 	                            	</p:calendar>
 	                                <p:message for="startDateId"/>
 	                            </p:column>
@@ -116,6 +117,7 @@
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                            	<p:calendar id="endDateId" binding="#{endDateId}" required="true" pattern="dd MMMM yyyy" value="#{leaveImplementationFormController.model.endDate}">
+	                            		<f:validator validatorId="backDateValidator"  />
 	                            		<p:ajax event="dateSelect" listener="#{leaveImplementationFormController.onChangeStartOrEndDate()}" update="totalWorkingDaysId"/>
 	                            	</p:calendar>
 	                                <p:message for="endDateId"/>

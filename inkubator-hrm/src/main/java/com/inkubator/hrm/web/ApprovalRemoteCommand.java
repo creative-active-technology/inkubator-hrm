@@ -14,7 +14,6 @@ import org.apache.commons.lang.StringUtils;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesUtil;
-import com.inkubator.webcore.util.MessagesResourceUtil;
 
 /**
  *
@@ -51,6 +50,10 @@ public class ApprovalRemoteCommand {
                     break;
                 case HRMConstant.SHIFT_SCHEDULE:
                     infoMessages = messages.getString("workschedule.submission_of_employee_working_schedule") + " " + requestFullName + " " + messages.getString("approval.need_approval_from") + " " + approverFullName;
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Executed", infoMessages));
+                    break;
+                case HRMConstant.LEAVE:
+                    infoMessages = messages.getString("leaveimplementation.submission_of_leave") + " " + requestFullName + " " + messages.getString("approval.need_approval_from") + " " + approverFullName;
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Executed", infoMessages));
                     break;
                 default:

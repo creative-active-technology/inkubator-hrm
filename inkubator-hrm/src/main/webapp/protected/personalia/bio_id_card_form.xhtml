@@ -86,7 +86,7 @@
                                             required="true" requiredMessage="#{appmsg['bioIdCard.bioIdCard_issued_should_not_be_empty']}" navigator="true">
                                     <f:validator validatorId="dateBetweenValidator"  />
                                     <f:attribute name="endTime" value="#{validId}"/>
-                                    <f:attribute name="validatorMessage" value="#{appmsg['bioIdCard.bioIdCard_dateValidator']}"/>
+                                    <f:attribute name="dateBetweenValidatorMessage" value="#{appmsg['bioIdCard.bioIdCard_dateValidator']}"/>
                                 </p:calendar>
 
                             </p:column>
@@ -111,7 +111,7 @@
                                                 maxResults="8"
                                                 itemValue="#{city}"
                                                 itemLabel="#{city.cityName}"
-                                                converter="cityConverter"
+                                                converter="#{cityConverter}"
                                                 required="true" requiredMessage="#{appmsg['bioIdCard.bioIdCard_place_should_not_be_empty']}" styleClass="isitext_hrm" style="width:250px;"></p:autoComplete>
 
 
@@ -131,7 +131,7 @@
                             </p:column>
                             <p:column  style="width: 70%">
 
-                                <p:calendar id="validId" locale="en" pattern="dd MMMM yyyy" binding="#{validId}" value="#{bioIdCardFormController.bioIdCardModel.validDate}" style="width: 150px;margin-right: 3px" 
+                                <p:calendar id="validId" pattern="dd MMMM yyyy" binding="#{validId}" value="#{bioIdCardFormController.bioIdCardModel.validDate}" style="width: 150px;margin-right: 3px" 
                                             required="true" requiredMessage="#{appmsg['bioIdCard.bioIdCard_valid_should_not_be_empty']}" navigator="true" />
                             </p:column>
                         </p:row>

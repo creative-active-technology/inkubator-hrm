@@ -34,8 +34,8 @@ public class DateBetweenValidatorWorkGroup implements Validator {
         System.out.println(" nili kondisi " + kondisi);
         try {
             endTime = parser.parse((String) endTimeComponent.getSubmittedValue());
-        } catch (ParseException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            
         }
 
         // Check if they both are filled in.

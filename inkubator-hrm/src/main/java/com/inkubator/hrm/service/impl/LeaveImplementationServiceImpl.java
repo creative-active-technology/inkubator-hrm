@@ -1,32 +1,54 @@
 package com.inkubator.hrm.service.impl;
 
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Session;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.criterion.Order;
+import org.primefaces.json.JSONException;
+import org.primefaces.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import ch.lambdaj.Lambda;
+
+import com.google.gson.Gson;
 import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.dao.ApprovalActivityDao;
 import com.inkubator.hrm.dao.EmpDataDao;
+import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.dao.LeaveDao;
 import com.inkubator.hrm.dao.LeaveDistributionDao;
 import com.inkubator.hrm.dao.LeaveImplementationDao;
 import com.inkubator.hrm.dao.NeracaCutiDao;
 import com.inkubator.hrm.entity.ApprovalActivity;
+import com.inkubator.hrm.entity.ApprovalDefinition;
+import com.inkubator.hrm.entity.ApprovalDefinitionLeave;
 import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.Leave;
 import com.inkubator.hrm.entity.LeaveDistribution;
 import com.inkubator.hrm.entity.LeaveImplementation;
+import com.inkubator.hrm.entity.Loan;
+import com.inkubator.hrm.entity.LoanPaymentDetail;
 import com.inkubator.hrm.entity.NeracaCuti;
+import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.LeaveImplementationService;
 import com.inkubator.hrm.service.WtScheduleShiftService;
 import com.inkubator.hrm.web.search.LeaveImplementationSearchParameter;
@@ -52,6 +74,10 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
 	private LeaveDistributionDao leaveDistributionDao;
 	@Autowired
 	private NeracaCutiDao neracaCutiDao;
+	@Autowired
+	private HrmUserDao hrmUserDao;
+	@Autowired
+	private ApprovalActivityDao approvalActivityDao;
 	
 	@Override
 	public LeaveImplementation getEntiyByPK(String id) throws Exception {
@@ -350,30 +376,103 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
 	}
 
 	@Override
-	public void approved(long approvalActivityId, String pendingDataUpdate,
-			String comment) throws Exception {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
-
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void approved(long approvalActivityId, String pendingDataUpdate, String comment) throws Exception {
+		Map<String, Object> result = super.approvedAndCheckNextApproval(approvalActivityId, pendingDataUpdate, comment);
+		ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
+		if(StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")){
+			/** kalau status akhir sudah di approved dan tidak ada next approval, 
+			 * berarti langsung insert ke database */
+			Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+			String pendingData = appActivity.getPendingData();
+			LeaveImplementation leaveImplementation =  gson.fromJson(pendingData, LeaveImplementation.class);
+			leaveImplementation.setApprovalActivityNumber(appActivity.getActivityNumber());  //set approval activity number, for history approval purpose
+			
+			this.save(leaveImplementation, true);
+		}
+		
+		//if there is no error, then sending the email notification
+		sendingEmailApprovalNotif(appActivity);
 	}
 
 	@Override
-	public void rejected(long approvalActivityId, String comment)
-			throws Exception {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
-
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void rejected(long approvalActivityId, String comment) throws Exception {
+		Map<String, Object> result = super.rejectedAndCheckNextApproval(approvalActivityId, comment);
+		ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
+		if(StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")){
+			/** kalau status akhir sudah di approved dan tidak ada next approval, 
+			 * berarti langsung insert ke database */
+			Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+			String pendingData = appActivity.getPendingData();
+			LeaveImplementation leaveImplementation =  gson.fromJson(pendingData, LeaveImplementation.class);
+			leaveImplementation.setApprovalActivityNumber(appActivity.getActivityNumber());  //set approval activity number, for history approval purpose
+			
+			this.save(leaveImplementation, true);
+		}
+		
+		//if there is no error, then sending the email notification
+		sendingEmailApprovalNotif(appActivity);
 	}
 
 	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void diverted(long approvalActivityId) throws Exception {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
-
+		Map<String, Object> result = super.divertedAndCheckNextApproval(approvalActivityId);
+		ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
+		if(StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")){
+			/** kalau status akhir sudah di approved dan tidak ada next approval, 
+			 * berarti langsung insert ke database */
+			Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+			String pendingData = appActivity.getPendingData();
+			LeaveImplementation leaveImplementation =  gson.fromJson(pendingData, LeaveImplementation.class);
+			leaveImplementation.setApprovalActivityNumber(appActivity.getActivityNumber());  //set approval activity number, for history approval purpose
+			
+			this.save(leaveImplementation, true);
+		}
+		
+		//if there is no error, then sending the email notification
+		sendingEmailApprovalNotif(appActivity);
 	}
 
 	@Override
-	public void sendingEmailApprovalNotif(ApprovalActivity appActivity)
-			throws Exception {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+	public void sendingEmailApprovalNotif(ApprovalActivity appActivity) throws Exception {
+		//initialization
+		Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMMM-yyyy");
+		
+		//get all sendCC email address on status approve OR reject
+		List<String> ccEmailAddresses =  new ArrayList<String>();
+		if((appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_APPROVED)  || (appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_REJECTED)){
+			ccEmailAddresses = super.getCcEmailAddressesOnApproveOrReject(appActivity);
+		}
+		
+		//parsing object data to json, for email purpose
+		LeaveImplementation leaveImplementation =  gson.fromJson(appActivity.getPendingData(), LeaveImplementation.class);		
+		
+		final JSONObject jsonObj = new JSONObject();
+        try {        	
+            jsonObj.put("approvalActivityId", appActivity.getId());
+            jsonObj.put("ccEmailAddresses", ccEmailAddresses);
+            jsonObj.put("locale", appActivity.getLocale());
+            jsonObj.put("proposeDate", dateFormat.format(leaveImplementation.getCreatedOn()));
+            jsonObj.put("leaveName", leaveImplementation.getLeave().getName());
+            jsonObj.put("startDate", dateFormat.format(leaveImplementation.getStartDate()));
+            jsonObj.put("endDate", dateFormat.format(leaveImplementation.getEndDate()));
+            jsonObj.put("fillingDate", dateFormat.format(leaveImplementation.getFillingDate()));
+            jsonObj.put("materialJobsAbandoned", leaveImplementation.getMaterialJobsAbandoned());
+            
+        } catch (JSONException e) {
+            LOGGER.error("Error when create json Object ", e);
+        }
 
+        //send messaging, to trigger sending email
+        super.jmsTemplateApproval.send(new MessageCreator() {
+            @Override
+            public Message createMessage(Session session) throws JMSException {
+                return session.createTextMessage(jsonObj.toString());
+            }
+        });		
 	}
 
 	@Override
@@ -422,5 +521,75 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
 		}
 		
 		return actualLeave;
+	}
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public String save(LeaveImplementation entity, boolean isBypassApprovalChecking) throws Exception {
+		String message = "error";
+		
+		// check duplicate number filling
+		long totalDuplicates = leaveImplementationDao.getTotalByNumberFilling(entity.getNumberFilling());
+		if (totalDuplicates > 0) {
+			throw new BussinessException("leaveimplementation.error_duplicate_filling_number");
+		}		
+		
+		EmpData empData = empDataDao.getEntiyByPK(entity.getEmpData().getId());
+		Leave leave = leaveDao.getEntiyByPK(entity.getLeave().getId());
+		EmpData temporaryActing = entity.getTemporaryActing() != null ? empDataDao.getEntiyByPK(entity.getTemporaryActing().getId()) : null;
+		LeaveDistribution leaveDistribution = leaveDistributionDao.getEntityByLeaveIdAndEmpDataId(leave.getId(), empData.getId());
+		
+		// check submitted leave tidak boleh lebih besar dari batasPengajuan di leaveDefinition
+		long differenceDaysOfFilling = DateTimeUtil.getTotalDayDifference (new Date(), entity.getStartDate());
+		if(differenceDaysOfFilling > leave.getSubmittedLimit()){
+			throw new BussinessException("leaveimplementation.error_submitted_limit");
+		}
+				
+		// check actualLeave yg diambil, tidak boleh lebih besar dari balanceCuti yg tersedia
+		Double actualLeave = this.getTotalActualLeave(empData.getId(), leave.getId(), entity.getStartDate(), entity.getEndDate());		
+		if(actualLeave > leaveDistribution.getBalance()){
+    		throw new BussinessException("leaveimplementation.error_leave_balance is insufficient");
+    	}
+				
+		entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+		entity.setEmpData(empData);
+		entity.setLeave(leave);
+		entity.setTemporaryActing(temporaryActing);
+		
+		String createdBy = StringUtils.isEmpty(entity.getCreatedBy()) ? UserInfoUtil.getUserName() : entity.getCreatedBy();
+		Date createdOn = entity.getCreatedOn() == null ? new Date() : entity.getCreatedOn();
+		entity.setCreatedBy(createdBy);
+		entity.setCreatedOn(createdOn);
+		
+		HrmUser requestUser = hrmUserDao.getByEmpDataId(empData.getId());
+		List<ApprovalDefinition> appDefs = Lambda.extract(leave.getApprovalDefinitionLeaves(), Lambda.on(ApprovalDefinitionLeave.class).getApprovalDefinition());
+		ApprovalActivity approvalActivity = isBypassApprovalChecking ? null : super.checkApprovalProcess(appDefs, requestUser.getUserId());
+		if(approvalActivity == null){
+			leaveImplementationDao.save(entity);			
+			if(leave.getIsQuotaReduction()){
+				this.creditLeaveBalance(leaveDistribution, actualLeave);
+			}
+			
+			message = "success_without_approval";
+		} else {
+			//parsing object to json and save to approval activity 
+        	Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+    		approvalActivity.setPendingData( gson.toJson(entity));
+    		approvalActivityDao.save(approvalActivity);
+    		
+    		message = "success_need_approval";
+    		
+    		//sending email notification
+    		this.sendingEmailApprovalNotif(approvalActivity);
+		}
+		
+		return message;
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public LeaveImplementation getEntityByApprovalActivityNumberWithDetail(String activityNumber) throws Exception {
+		return leaveImplementationDao.getEntityByApprovalActivityNumberWithDetail(activityNumber);
+		
 	}
 }

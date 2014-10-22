@@ -61,7 +61,7 @@
                                             required="true" requiredMessage="#{appmsg['publicHoliday.publicHoliday_start_should_not_be_empty']}" navigator="true">
                                     <f:validator validatorId="dateBetweenValidator"  />
                                     <f:attribute name="endTime" value="#{endId}"/>
-                                    <f:attribute name="validatorMessage" value="#{appmsg['publicHoliday.publicHoliday_dateValidator']}"/>
+                                    <f:attribute name="dateBetweenValidatorMessage" value="#{appmsg['publicHoliday.publicHoliday_dateValidator']}"/>
                                 </p:calendar>
 
                             </p:column>

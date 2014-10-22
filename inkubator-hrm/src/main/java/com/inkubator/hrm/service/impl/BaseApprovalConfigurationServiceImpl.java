@@ -94,11 +94,11 @@ public abstract class BaseApprovalConfigurationServiceImpl<T> extends IServiceIm
 	    	isRemoveRelation = true;
 	    	
 	    	Object currentManyToMany = iterManyToMany.next();
-	    	String currentAppDefId = BeanUtils.getProperty(currentManyToMany, "approvalDefinition.id");	    	
+	    	Long currentAppDefId = Long.parseLong(BeanUtils.getProperty(currentManyToMany, "approvalDefinition.id"));	    	
 	    	Iterator<ApprovalDefinition> iterAppDefs = appDefs.iterator();
 	    	while(iterAppDefs.hasNext()) {
 	    		ApprovalDefinition appDef = iterAppDefs.next();
-	    		if(Long.parseLong(currentAppDefId) == appDef.getId()){	    				    			
+	    		if(currentAppDefId == appDef.getId()){	    				    			
 	    			//update approval definition
 	    			this.updateApprovalDefinition(appDef);	 
 	    			iterAppDefs.remove(); //remove object from list that will being ADD in the process below	    			
@@ -108,7 +108,20 @@ public abstract class BaseApprovalConfigurationServiceImpl<T> extends IServiceIm
 	    	}
 	    	
 	    	if(isRemoveRelation){
-	    		this.deleteManyToMany(currentManyToMany); //delete object ManyToMany that no longer available in current entity
+	    		//delete object ManyToMany that no longer available in current entity
+	    		this.deleteManyToMany(currentManyToMany); 	    		
+	    		
+	    		//delete approval definition that no longer available in current entity 
+	    		ApprovalDefinition appDef = approvalDefinitionDao.getEntiyByPK(currentAppDefId);
+	    		try { 
+	    			//delete permanently if has not been used in any approval activity process
+	    			this.approvalDefinitionDao.delete(appDef);
+	    		} catch (Exception ex) {
+	    			//since this appDef already use in approval activity process, then update appDef to noLongerInUse. 
+	    			//It still maintain in database but no longer in use anymore
+	    			appDef.setIsNoLongerInUse(true);
+		    		this.approvalDefinitionDao.update(appDef);
+	            }	    		
 	    	}
 	    }
 	    

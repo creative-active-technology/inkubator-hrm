@@ -1,22 +1,25 @@
 package com.inkubator.hrm.service.impl;
 
-import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.dao.ApprovalActivityDao;
-import com.inkubator.hrm.entity.ApprovalActivity;
-import com.inkubator.hrm.service.ApprovalActivityCronService;
-import com.inkubator.hrm.service.BusinessTravelService;
-import com.inkubator.hrm.service.LoanService;
-import com.inkubator.hrm.service.ReimbursmentService;
-import com.inkubator.hrm.service.TempJadwalKaryawanService;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.dao.ApprovalActivityDao;
+import com.inkubator.hrm.entity.ApprovalActivity;
+import com.inkubator.hrm.service.ApprovalActivityCronService;
+import com.inkubator.hrm.service.BusinessTravelService;
+import com.inkubator.hrm.service.LeaveImplementationService;
+import com.inkubator.hrm.service.LoanService;
+import com.inkubator.hrm.service.ReimbursmentService;
+import com.inkubator.hrm.service.TempJadwalKaryawanService;
 
 /**
  *
@@ -34,6 +37,8 @@ public class ApprovalActivityCronServiceImpl implements ApprovalActivityCronServ
 	private ReimbursmentService reimbursmentService;
 	@Autowired
 	private TempJadwalKaryawanService tempJadwalKaryawanService;
+	@Autowired
+	private LeaveImplementationService leaveImplementationService;
 	
 	
 	@Override
@@ -69,6 +74,9 @@ public class ApprovalActivityCronServiceImpl implements ApprovalActivityCronServ
 					case HRMConstant.SHIFT_SCHEDULE:
 						tempJadwalKaryawanService.approved(approvalActivity.getId(), null, null);
 						break;
+					case HRMConstant.LEAVE:
+						leaveImplementationService.approved(approvalActivity.getId(), null, null);
+						break;
 					default:
 						break;
 				}
@@ -86,6 +94,9 @@ public class ApprovalActivityCronServiceImpl implements ApprovalActivityCronServ
 						break;
 					case HRMConstant.SHIFT_SCHEDULE:
 						tempJadwalKaryawanService.diverted(approvalActivity.getId());
+						break;
+					case HRMConstant.LEAVE:
+						leaveImplementationService.diverted(approvalActivity.getId());
 						break;
 					default:
 						break;

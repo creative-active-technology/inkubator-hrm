@@ -135,18 +135,30 @@ public class LeaveImplementationFormController extends BaseController {
 
     public String doSave() {
         LeaveImplementation leaveImplementation = getEntityFromViewModel(model);
+        
         try {
+        	String path = "";
+        	
             if (isUpdate) {
                 leaveImplementationService.update(leaveImplementation);
+                path = "/protected/working_time/leave_implementation_detail.htm?faces-redirect=true&execution=e" + leaveImplementation.getId();
                 MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 
             } else {
-            	leaveImplementationService.save(leaveImplementation);
-                MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
-                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            	String message = leaveImplementationService.save(leaveImplementation, false);
+            	if(StringUtils.equals(message, "success_need_approval")){
+            		path = "/protected/working_time/leave_implementation_view.htm?faces-redirect=true";
+            		MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully_and_requires_approval",
+            				FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            	} else {
+            		path = "/protected/working_time/leave_implementation_detail.htm?faces-redirect=true&execution=e" + leaveImplementation.getId();
+            		MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
+            				FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            	}
             }
-            return "/protected/working_time/leave_implementation_detail.htm?faces-redirect=true&execution=e" + leaveImplementation.getId();
+            
+            return path;
         } catch (BussinessException ex) { //data already exist(duplicate)
             LOGGER.error("Error", ex);
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());

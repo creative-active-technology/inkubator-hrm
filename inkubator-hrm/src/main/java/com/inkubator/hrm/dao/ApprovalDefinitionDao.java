@@ -30,8 +30,12 @@ public interface ApprovalDefinitionDao extends IDAO<ApprovalDefinition> {
     public Long getTotalDataWithSequenceLowerAndNotId(String approvalName, int sequance, long id);
 
     public List<ApprovalDefinition> getAllDataByNameAndProcessType(String name, String processType, Order order);
+    
+    public List<ApprovalDefinition> getAllDataByNameAndProcessTypeAndSpecificName(String name, String processType, String specificName, Order order);
 
     public List<ApprovalDefinition> getAllDataByNameAndProcessTypeAndSequenceGreater(String name, String processType, int sequence);
+    
+    public List<ApprovalDefinition> getAllDataByNameAndProcessTypeAndSpecificNameAndSequenceGreater(String name, String processType, String specificName, int sequence);
 
     public Long getTotalSameAprrovalProsesExistAndNotId(String approvalName, String procesName, int sequance, long id);
 }

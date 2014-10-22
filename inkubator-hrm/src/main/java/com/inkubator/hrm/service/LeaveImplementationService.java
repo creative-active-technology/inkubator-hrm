@@ -21,7 +21,12 @@ public interface LeaveImplementationService extends IService<LeaveImplementation
 
 	public LeaveImplementation getEntityByPkWithDetail(Long id) throws Exception;
 	
+	public LeaveImplementation getEntityByApprovalActivityNumberWithDetail(String activityNumber) throws Exception;
+	
 	public LeaveImplementation getLatestEntityByEmpDataId(Long empDataId) throws Exception;
 
 	public Double getTotalActualLeave(Long empDataId, Long leaveId, Date startDate, Date endDate) throws Exception;
+	
+	public String save(LeaveImplementation entity, boolean isBypassApprovalChecking) throws Exception;
+	
 }
