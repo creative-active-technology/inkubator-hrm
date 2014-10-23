@@ -5,19 +5,29 @@
  */
 package com.inkubator.hrm.web.workingtime;
 
+import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.entity.DepartementUploadCapture;
+import com.inkubator.hrm.entity.DepartementUploadCaptureId;
 import com.inkubator.hrm.entity.Department;
 import com.inkubator.hrm.entity.MacineFingerUpload;
+import com.inkubator.hrm.entity.MecineFinger;
 import com.inkubator.hrm.service.DepartmentService;
+import com.inkubator.hrm.service.MecineFingerService;
 import com.inkubator.hrm.web.model.FingerUploadModel;
 import com.inkubator.hrm.web.model.SparasiUploadModel;
 import com.inkubator.webcore.controller.BaseController;
+import com.inkubator.webcore.util.FacesUtil;
+import com.inkubator.webcore.util.MessagesResourceUtil;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -36,21 +46,62 @@ public class FingerUploadFormController extends BaseController {
     private DualListModel<Department> dualListModel = new DualListModel<>();
     @ManagedProperty(value = "#{departmentService}")
     private DepartmentService departmentService;
+    @ManagedProperty(value = "#{mecineFingerService}")
+    private MecineFingerService mecineFingerService;
     private MacineFingerUpload selectdMacineFingerUpload;
     private SparasiUploadModel sparasiUploadModel;
+    private MecineFinger mecineFinger;
 
     @PostConstruct
     @Override
     public void initialization() {
         try {
             super.initialization();
+            String param = FacesUtil.getRequestParameter("execution");
+            mecineFinger = mecineFingerService.getMecineFingerAndDetaiUploadByFK(Long.parseLong(param.substring(1)));
+            List<Department> dataSoucreData = departmentService.getAllData();
+            List<Department> target = mecineFinger.getDepartments();
+            dataSoucreData.removeAll(target);
+//            for (Department target1 : target) {
+//               dataSoucreData.remove(target1);
+//            }
+          
+            dualListModel.setSource(dataSoucreData);
+            dualListModel.setTarget(target);
+            System.out.println("nilai param " + param);
             fingerUploadModel = new FingerUploadModel();
+            fingerUploadModel.setDescription(mecineFinger.getDescription());
+//            System.out.println(mecineFinger.getMacineFingerUploads().size());
+//            if (!mecineFinger.getMacineFingerUploads().isEmpty()) {
+//                List<MacineFingerUpload> dataMesinFingerUpload = new ArrayList(mecineFinger.getDepartementUploadCaptures());
+//                fingerUploadModel.setDataToSave(dataMesinFingerUpload);
+//            }
+
+            if (mecineFinger.getBaseOnField() != null) {
+                fingerUploadModel.setFieldNumber(mecineFinger.getBaseOnField());
+            }
+
+            if (mecineFinger.getFileExtension() != null) {
+                fingerUploadModel.setExtensionType(mecineFinger.getFileExtension());
+            }
+
+            fingerUploadModel.setId(mecineFinger.getId());
+            if (mecineFinger.getInOutStatus() != null) {
+                fingerUploadModel.setItialInOut(mecineFinger.getInOutStatus());
+            }
+
+            if (mecineFinger.getMecineMethode().equals(HRMConstant.METHOD_UPLOAD_MACINE)) {
+                fingerUploadModel.setMecineMethode(mecineFinger.getMecineMethode());
+            }
+            if (mecineFinger.getFileType() != null) {
+                fingerUploadModel.setUploadType(mecineFinger.getFileType());
+            }
+            fingerUploadModel.setName(mecineFinger.getName());
             fileExtension.put(".xls", 0);
             fileExtension.put(".xlsx", 1);
             fileExtension.put(".csv", 2);
-            List<Department> dataSoucre = departmentService.getAllData();
-            dualListModel.setSource(dataSoucre);
-            fingerUploadModel.setDataToSave(getInitialData());
+
+//            fingerUploadModel.setDataToSave(getInitialData());
         } catch (Exception ex) {
             LOGGER.error("Errot", ex);
         }
@@ -104,18 +155,22 @@ public class FingerUploadFormController extends BaseController {
     private List<MacineFingerUpload> getInitialData() {
         List<MacineFingerUpload> data = new ArrayList<>();
         MacineFingerUpload fingerUpload = new MacineFingerUpload();
+//        fingerUpload.setMecineFinger(mecineFinger);
+        fingerUpload.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         fingerUpload.setFieldNo(1);
         fingerUpload.setFieldType("Character");
         fingerUpload.setFieldLabel("Nama");
         fingerUpload.setFieldLen(5);
         data.add(fingerUpload);
         MacineFingerUpload fi = new MacineFingerUpload();
+//        fi.setMecineFinger(mecineFinger);
         fi.setFieldNo(2);
         fi.setFieldType("Id");
         fi.setFieldLabel("NIK");
         fi.setFieldLen(3);
         data.add(fi);
         MacineFingerUpload fis = new MacineFingerUpload();
+//        fis.setMecineFinger(mecineFinger);
         fis.setFieldNo(3);
         fis.setFieldType("Time");
         fis.setFieldLabel("Swap Time");
@@ -127,8 +182,8 @@ public class FingerUploadFormController extends BaseController {
     public void doAddData() {
         System.out.println(" ini di ekseskkeuk");
         sparasiUploadModel = new SparasiUploadModel();
-        int jumlahData=fingerUploadModel.getDataToSave().size();
-        sparasiUploadModel.setFieldNumber(jumlahData+1);
+        int jumlahData = fingerUploadModel.getDataToSave().size();
+        sparasiUploadModel.setFieldNumber(jumlahData + 1);
     }
 
     public void doEditData() {
@@ -173,5 +228,30 @@ public class FingerUploadFormController extends BaseController {
         List<MacineFingerUpload> dataToShow = fingerUploadModel.getDataToSave();
         dataToShow.add(fingerUpload);
         fingerUploadModel.setDataToSave(dataToShow);
+    }
+
+    public void setMecineFingerService(MecineFingerService mecineFingerService) {
+        this.mecineFingerService = mecineFingerService;
+    }
+
+    public void doSave() {
+        try {
+            fingerUploadModel.setDataDeptToSave(dualListModel.getTarget());
+            Set<DepartementUploadCapture> dataToSave = new HashSet<>();
+            List<Department> data = dualListModel.getTarget();
+            for (Department department : data) {
+                DepartementUploadCapture capture = new DepartementUploadCapture();
+                capture.setDepartment(department);
+                capture.setMecineFinger(mecineFinger);
+                capture.setId(new DepartementUploadCaptureId(mecineFinger.getId(), department.getId()));
+                dataToSave.add(capture);
+            }
+            System.out.println(" hehehheeh");
+            mecineFingerService.saveByModel(fingerUploadModel, dataToSave);
+            MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
+                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
+        }
     }
 }

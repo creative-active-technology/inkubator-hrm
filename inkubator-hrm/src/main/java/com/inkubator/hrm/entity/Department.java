@@ -3,6 +3,7 @@ package com.inkubator.hrm.entity;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,6 +23,7 @@ import javax.persistence.Version;
 @Table(name = "department", catalog = "hrm", uniqueConstraints = @UniqueConstraint(columnNames = "department_code")
 )
 public class Department implements java.io.Serializable {
+    private static final long serialVersionUID = 5004048901073633038L;
 
     private long id;
     private Integer version;
@@ -31,8 +33,8 @@ public class Department implements java.io.Serializable {
     private Date createdOn;
     private String updatedBy;
     private Date updatedOn;
-    private Set<Jabatan> jabatans = new HashSet<Jabatan>(0);
-    private Set<DepartementUploadCapture> departementUploadCaptures = new HashSet<DepartementUploadCapture>(0);
+    private Set<Jabatan> jabatans = new HashSet<>(0);
+    private Set<DepartementUploadCapture> departementUploadCaptures = new HashSet<>(0);
 
     public Department() {
     }
@@ -144,6 +146,63 @@ public class Department implements java.io.Serializable {
 
     public void setDepartementUploadCaptures(Set<DepartementUploadCapture> departementUploadCaptures) {
         this.departementUploadCaptures = departementUploadCaptures;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 19 * hash + (int) (this.id ^ (this.id >>> 32));
+        hash = 19 * hash + Objects.hashCode(this.version);
+        hash = 19 * hash + Objects.hashCode(this.departmentCode);
+        hash = 19 * hash + Objects.hashCode(this.departmentName);
+        hash = 19 * hash + Objects.hashCode(this.createdBy);
+        hash = 19 * hash + Objects.hashCode(this.createdOn);
+        hash = 19 * hash + Objects.hashCode(this.updatedBy);
+        hash = 19 * hash + Objects.hashCode(this.updatedOn);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() instanceof Object) {
+        } else {
+            return false;
+        }
+        final Department other = (Department) obj;
+        if (this.id != other.getId()) {
+            return false;
+        }
+        if (!Objects.equals(this.version, other.getVersion())) {
+            return false;
+        }
+        if (!Objects.equals(this.departmentCode, other.getDepartmentCode())) {
+            return false;
+        }
+        if (!Objects.equals(this.departmentName, other.getDepartmentName())) {
+            return false;
+        }
+        if (!Objects.equals(this.createdBy, other.getCreatedBy())) {
+            return false;
+        }
+        if (!Objects.equals(this.createdOn, other.getCreatedOn())) {
+            return false;
+        }
+        if (!Objects.equals(this.updatedBy, other.getUpdatedBy())) {
+            return false;
+        }
+        if (!Objects.equals(this.updatedOn, other.getUpdatedOn())) {
+            return false;
+        }
+        return true;
+    }
+
+//    }
+    @Override
+    public String toString() {
+        return "Department{" + "id=" + id + ", version=" + version + ", departmentCode=" + departmentCode + ", departmentName=" + departmentName + ", createdBy=" + createdBy + ", createdOn=" + createdOn + ", updatedBy=" + updatedBy + ", updatedOn=" + updatedOn + '}';
     }
 
 }

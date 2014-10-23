@@ -5,25 +5,6 @@
  */
 package com.inkubator.hrm.web.account;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
-
-import org.apache.commons.lang3.StringUtils;
-import org.primefaces.context.RequestContext;
-import org.primefaces.event.SelectEvent;
-import org.primefaces.model.DualListModel;
-
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.EmpData;
@@ -39,6 +20,22 @@ import com.inkubator.hrm.web.model.UserModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+import org.apache.commons.lang3.StringUtils;
+import org.primefaces.context.RequestContext;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.model.DualListModel;
 
 /**
  *
@@ -71,8 +68,8 @@ public class UserFormController extends BaseController {
                 userModel = getUserModelFromEntity(selectedHrmUser);
                 List<HrmRole> sourceSpiRole = this.hrmRoleService.getAllData();
                 List<HrmRole> targetRole = selectedHrmUser.getRoles();
-                sourceSpiRole.removeAll(targetRole);
-                
+                boolean a=sourceSpiRole.removeAll(targetRole);
+                System.out.println(" iiniin mni "+a);
                 dualListModel = new DualListModel<>(sourceSpiRole, targetRole);
             } else {
                 List<HrmRole> sourceSpiRole = this.hrmRoleService.getAllData();

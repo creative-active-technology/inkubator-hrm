@@ -1,17 +1,6 @@
 package com.inkubator.hrm.service.impl;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
-import org.apache.commons.beanutils.BeanUtils;
-import org.hamcrest.Matchers;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import ch.lambdaj.Lambda;
-
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
@@ -22,6 +11,14 @@ import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.dao.JabatanDao;
 import com.inkubator.hrm.entity.ApprovalDefinition;
 import com.inkubator.securitycore.util.UserInfoUtil;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import org.apache.commons.beanutils.BeanUtils;
+import org.hamcrest.Matchers;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
@@ -119,7 +116,7 @@ public abstract class BaseApprovalConfigurationServiceImpl<T> extends IServiceIm
 	    		} catch (Exception ex) {
 	    			//since this appDef already use in approval activity process, then update appDef to noLongerInUse. 
 	    			//It still maintain in database but no longer in use anymore
-	    			appDef.setIsNoLongerInUse(true);
+	    			appDef.setIsNoLongerInUse(Boolean.TRUE);
 		    		this.approvalDefinitionDao.update(appDef);
 	            }	    		
 	    	}

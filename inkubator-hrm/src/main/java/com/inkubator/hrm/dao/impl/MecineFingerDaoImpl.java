@@ -11,6 +11,7 @@ import com.inkubator.hrm.entity.MecineFinger;
 import com.inkubator.hrm.web.search.MecineFingerSearchParameter;
 import java.util.List;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -63,4 +64,20 @@ public class MecineFingerDaoImpl extends IDAOImpl<MecineFinger> implements Mecin
         }
         criteria.add(Restrictions.isNotNull("id"));
     }
+
+    @Override
+    public MecineFinger getMecineFingerAndDetaiUploadByFK(long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("id", id));
+        criteria.setFetchMode("macineFingerUploads", FetchMode.JOIN);
+        criteria.setFetchMode("departementUploadCaptures", FetchMode.JOIN);
+        return (MecineFinger) criteria.uniqueResult();
+    }
+
+    @Override
+    public void saveAndMerge(MecineFinger finger) {
+        getCurrentSession().update(finger);
+        getCurrentSession().flush();
+    }
+
 }

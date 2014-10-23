@@ -6,13 +6,9 @@
 package com.inkubator.hrm.web.workingtime;
 
 import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.AttendanceStatus;
 import com.inkubator.hrm.entity.MecineFinger;
-import com.inkubator.hrm.service.AttendanceStatusService;
 import com.inkubator.hrm.service.MecineFingerService;
-import com.inkubator.hrm.web.lazymodel.AttendanceStatusLazyDataModel;
 import com.inkubator.hrm.web.lazymodel.MecineFingerLazyDataModel;
-import com.inkubator.hrm.web.search.AttendanceStatusSearchParamater;
 import com.inkubator.hrm.web.search.MecineFingerSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
@@ -21,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
@@ -87,14 +84,14 @@ public class MecineFingerViewController extends BaseController {
 
     public String doConfigure(){
         String page = StringUtils.EMPTY;
-        if(seleced.getMecineMethode() == HRMConstant.METHOD_UPLOAD_MACINE){
+        if(Objects.equals(seleced.getMecineMethode(), HRMConstant.METHOD_UPLOAD_MACINE)){
             page = "upload";
-        }else if(seleced.getMecineMethode() == HRMConstant.METHOD_SERVICE_MACINE){
+        }else if(Objects.equals(seleced.getMecineMethode(), HRMConstant.METHOD_SERVICE_MACINE)){
             page = "service";
-        }else if(seleced.getMecineMethode() == HRMConstant.METHOD_QUERY_MACINE){
+        }else if(Objects.equals(seleced.getMecineMethode(), HRMConstant.METHOD_QUERY_MACINE)){
             page = "query";
         }
-        return "/protected/working_time/mecine_finger_" + page + ".htm?faces-redirect=true&execution=e" + seleced.getId();
+        return "/protected/working_time/mecine_finger_"+ page +".htm?faces-redirect=true&execution=e" + seleced.getId();
     }
     
     public void doAdd() {
