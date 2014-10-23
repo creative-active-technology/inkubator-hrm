@@ -173,10 +173,14 @@
 	                    </p:dataTable>
 	                	<p:separator style="margin-top: 30px;margin-bottom: 10px"/>
 	                    <div style="margin-bottom: 5px">
-	                    	<p:commandButton value="#{appmsg['approvalactivity.approved']}" icon="ui-icon-check" title="#{appmsg['approvalactivity.approved']}" action="#{businessTravelApprovalFormController.doApproved()}"
-                                			 style="margin-right: 5px" styleClass="label_button" rendered="#{businessTravelApprovalFormController.isWaitingApproval}"/>
-							<p:commandButton value="#{appmsg['approvalactivity.reject']}" icon="ui-icon-close" title="#{appmsg['approvalactivity.reject']}" action="#{businessTravelApprovalFormController.doRejected()}"
-                                			 style="margin-right: 5px" styleClass="label_button" rendered="#{businessTravelApprovalFormController.isWaitingApproval}"/>
+	                    	<h:panelGroup rendered="#{businessTravelApprovalFormController.isWaitingApproval}">
+		                    	<p:commandButton value="#{appmsg['approvalactivity.approved']}" icon="ui-icon-check" title="#{appmsg['approvalactivity.approved']}" action="#{businessTravelApprovalFormController.doApproved()}"
+	                                			 style="margin-right: 5px" styleClass="label_button" rendered="#{businessTravelApprovalFormController.isApprover}" update=":growlBusinessTravelApprovalFormlId"/>
+								<p:commandButton value="#{appmsg['approvalactivity.reject']}" icon="ui-icon-close" title="#{appmsg['approvalactivity.reject']}" action="#{businessTravelApprovalFormController.doRejected()}"
+	                                			 style="margin-right: 5px" styleClass="label_button" rendered="#{businessTravelApprovalFormController.isApprover}" update=":growlBusinessTravelApprovalFormlId"/>
+	                            <p:commandButton value="#{appmsg['approvalactivity.cancelled']}" icon="ui-icon-close" title="#{appmsg['approvalactivity.cancelled']}" action="#{businessTravelApprovalFormController.doCancelled()}"
+	                                			 style="margin-right: 5px" styleClass="label_button" rendered="#{businessTravelApprovalFormController.isRequester}" update=":growlBusinessTravelApprovalFormlId"/>
+	                        </h:panelGroup>
 	                        <p:commandButton value="#{appmsg['global.close']}" icon="ui-icon-home"  title="#{appmsg['global.close']}" action="#{businessTravelApprovalFormController.doBack()}" immediate="true"
 	                                      	 styleClass="label_button"/>
 	                    </div>

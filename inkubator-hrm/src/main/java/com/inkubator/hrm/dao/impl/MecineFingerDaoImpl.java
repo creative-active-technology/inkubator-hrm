@@ -80,4 +80,10 @@ public class MecineFingerDaoImpl extends IDAOImpl<MecineFinger> implements Mecin
         getCurrentSession().flush();
     }
 
+    public Long getByCode(String code) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.like("code", code, MatchMode.ANYWHERE));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+
 }

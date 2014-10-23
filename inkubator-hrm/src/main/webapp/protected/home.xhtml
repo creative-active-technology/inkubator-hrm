@@ -175,7 +175,7 @@
                                                 <h:outputText value="Aksi" />
                                             </f:facet>
                                             <p:commandLink action="#{homeApproalActivityController.doDetailRequestHistory()}"
-                                                           title="Detail Request" ajax="true">  
+                                                           title="Detail Request" ajax="true" rendered="#{approval.approvalStatus != 4}">  
                                                 <h:outputText value="Detail"/>
                                                 <f:setPropertyActionListener value="#{approval}" target="#{homeApproalActivityController.selectedApprovalActivity}" />   
                                             </p:commandLink>
@@ -288,6 +288,12 @@
                                             <p:commandLink action="#{homeApproalActivityController.doDetailRequestPending()}"
                                                            title="Detail Request" ajax="true">  
                                                 <h:outputText value="Detail"/>
+                                                <f:setPropertyActionListener value="#{approval}" target="#{homeApproalActivityController.selectedApprovalActivity}" />   
+                                            </p:commandLink>
+                                            -
+                                            <p:commandLink action="#{homeApproalActivityController.doApprove()}"
+                                                           title="Cancel Request" ajax="true">  
+                                                <h:outputText value="Cancel"/>
                                                 <f:setPropertyActionListener value="#{approval}" target="#{homeApproalActivityController.selectedApprovalActivity}" />   
                                             </p:commandLink>
                                         </p:column>

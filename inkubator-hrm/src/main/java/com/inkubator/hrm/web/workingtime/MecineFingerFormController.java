@@ -68,6 +68,8 @@ public class MecineFingerFormController extends BaseController{
         mecineFingerModel.setId(entity.getId());
         mecineFingerModel.setMecineMethode(entity.getMecineMethode());
         mecineFingerModel.setName(entity.getName());
+        mecineFingerModel.setCode(entity.getCode());
+        mecineFingerModel.setDescription(entity.getDescription());
         return mecineFingerModel;
     }
     
@@ -78,6 +80,8 @@ public class MecineFingerFormController extends BaseController{
         }
         mecineFinger.setMecineMethode(mecineFingerModel.getMecineMethode());
         mecineFinger.setName(mecineFingerModel.getName());
+        mecineFinger.setCode(mecineFingerModel.getCode());
+        mecineFinger.setDescription(mecineFingerModel.getDescription());
         return mecineFinger;
     }
     

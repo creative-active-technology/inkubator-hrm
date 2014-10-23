@@ -22,6 +22,10 @@ public interface MecineFingerDao extends IDAO<MecineFinger> {
     public Long getTotalByParam(MecineFingerSearchParameter parameter);
 
     public MecineFinger getMecineFingerAndDetaiUploadByFK(long id);
-    
+
     public void saveAndMerge(MecineFinger finger);
+
+    public Long getByCode(String code);
+
+    public Long getTotalByCodeAndNotId(String name, Long id);
 }

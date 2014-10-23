@@ -1,6 +1,5 @@
 package com.inkubator.hrm.service;
 
-import com.inkubator.hrm.entity.ApprovalActivity;
 
 
 /**
@@ -15,6 +14,6 @@ public interface BaseApprovalService {
 	
 	public void diverted(long approvalActivityId) throws Exception;
 	
-	public void sendingEmailApprovalNotif(ApprovalActivity appActivity) throws Exception;
+	public void cancelled(long approvalActivityId, String comment) throws Exception;
 	
 }

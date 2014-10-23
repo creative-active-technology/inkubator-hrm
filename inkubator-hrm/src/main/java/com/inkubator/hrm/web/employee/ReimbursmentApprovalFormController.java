@@ -16,6 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.EmpData;
@@ -23,8 +24,8 @@ import com.inkubator.hrm.entity.Reimbursment;
 import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.ApprovalActivityService;
 import com.inkubator.hrm.service.EmpDataService;
-import com.inkubator.hrm.service.ReimbursmentSchemaService;
 import com.inkubator.hrm.service.ReimbursmentService;
+import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
@@ -40,6 +41,8 @@ public class ReimbursmentApprovalFormController extends BaseController {
     private Reimbursment reimbursment;
     private String comment;
     private Boolean isWaitingApproval;
+    private Boolean isApprover;
+    private Boolean isRequester;
     String reimbursmentFileName;
     //private ReimbursmentModelJsonParsing reimbursmentModelJsonParsing;
     //private ReimbursmentSchema reimbursmentSchema;
@@ -64,6 +67,8 @@ public class ReimbursmentApprovalFormController extends BaseController {
             String id = FacesUtil.getRequestParameter("execution");
             selectedApprovalActivity = approvalActivityService.getEntiyByPK(Long.parseLong(id.substring(1)));
             isWaitingApproval = selectedApprovalActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING;
+            isApprover = StringUtils.equals(UserInfoUtil.getUserName(), selectedApprovalActivity.getApprovedBy());
+            isRequester = StringUtils.equals(UserInfoUtil.getUserName(), selectedApprovalActivity.getRequestBy());
             
             Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
             reimbursment = gson.fromJson(selectedApprovalActivity.getPendingData(), Reimbursment.class);
@@ -99,6 +104,8 @@ public class ReimbursmentApprovalFormController extends BaseController {
         reimbursmentFileName = null;
         isDownload = null;
         isWaitingApproval = null;
+        isApprover = null;
+        isRequester = null;
     }
 
     public Reimbursment getReimbursment() {
@@ -123,6 +130,22 @@ public class ReimbursmentApprovalFormController extends BaseController {
 
 	public void setIsWaitingApproval(Boolean isWaitingApproval) {
 		this.isWaitingApproval = isWaitingApproval;
+	}
+	
+	public Boolean getIsApprover() {
+		return isApprover;
+	}
+
+	public void setIsApprover(Boolean isApprover) {
+		this.isApprover = isApprover;
+	}
+
+	public Boolean getIsRequester() {
+		return isRequester;
+	}
+
+	public void setIsRequester(Boolean isRequester) {
+		this.isRequester = isRequester;
 	}
 
 	public String getReimbursmentFileName() {
@@ -175,6 +198,8 @@ public class ReimbursmentApprovalFormController extends BaseController {
             MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.approval_info", "global.approved_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             return "/protected/home.htm?faces-redirect=true";
+        } catch (BussinessException ex) {            
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception e) {
             LOGGER.error("Error when approved process ", e);
         }
@@ -187,6 +212,22 @@ public class ReimbursmentApprovalFormController extends BaseController {
             MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.approval_info", "global.rejected_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             return "/protected/home.htm?faces-redirect=true";
+        } catch (BussinessException ex) {            
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (Exception e) {
+            LOGGER.error("Error when rejected process ", e);
+        }
+        return null;
+    }
+    
+    public String doCancelled() {
+        try {
+        	reimbursmentService.cancelled(selectedApprovalActivity.getId(), comment);
+            MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.approval_info", "global.cancelled_successfully",
+                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            return "/protected/home.htm?faces-redirect=true";
+        } catch (BussinessException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception e) {
             LOGGER.error("Error when rejected process ", e);
         }
