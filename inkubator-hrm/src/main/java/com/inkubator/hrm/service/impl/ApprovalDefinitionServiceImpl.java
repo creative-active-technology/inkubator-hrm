@@ -163,6 +163,7 @@ public class ApprovalDefinitionServiceImpl extends IServiceImpl implements Appro
         ad.setOnBehalfType(entity.getOnBehalfType());
         ad.setProcessType(entity.getProcessType());
         ad.setSequence(entity.getSequence());
+        ad.setSmsNotification(entity.getSmsNotification());
         ad.setUpdatedBy(UserInfoUtil.getUserName());
         ad.setUpdatedOn(new Date());
         this.approvalDefinitionDao.update(ad);

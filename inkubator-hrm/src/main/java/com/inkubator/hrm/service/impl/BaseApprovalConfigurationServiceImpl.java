@@ -152,6 +152,7 @@ public abstract class BaseApprovalConfigurationServiceImpl<T> extends IServiceIm
         ad.setOnBehalfType(entity.getOnBehalfType());
         ad.setProcessType(entity.getProcessType());
         ad.setSequence(entity.getSequence());
+        ad.setSmsNotification(entity.getSmsNotification());
         ad.setSpecificName(entity.getSpecificName());
         ad.setUpdatedBy(UserInfoUtil.getUserName());
         ad.setUpdatedOn(new Date());

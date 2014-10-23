@@ -75,6 +75,7 @@ public class ApprovalDefinitionPopupFormController extends BaseController {
                 approvalDefinitionModel.setName(ad.getName());
                 approvalDefinitionModel.setProcessType(ad.getProcessType());
                 approvalDefinitionModel.setSequence(ad.getSequence());
+                approvalDefinitionModel.setSmsNotification(ad.getSmsNotification());
                 approvalDefinitionModel.setSpecificName(ad.getSpecificName());
 
                 onBehalf = !ad.getAllowOnBehalf();
@@ -132,6 +133,7 @@ public class ApprovalDefinitionPopupFormController extends BaseController {
             approvalDefinitionModel.setMinApprover(1);
             approvalDefinitionModel.setMinRejector(1);
             approvalDefinitionModel.setName(appDefName);
+            approvalDefinitionModel.setSmsNotification(Boolean.FALSE);
             if(StringUtils.isNotEmpty(specificName)){
             	approvalDefinitionModel.setSpecificName(specificName);
             }
@@ -342,6 +344,7 @@ public class ApprovalDefinitionPopupFormController extends BaseController {
         approvalDefinition.setAutoApproveOnDelay(approvalDefinitionModel.getAutoApproveOnDelay());
         approvalDefinition.setEscalateOnDelay(approvalDefinitionModel.getEscalateOnDelay());
         approvalDefinition.setDelayTime(approvalDefinitionModel.getDelayTime());
+        approvalDefinition.setSmsNotification(approvalDefinitionModel.getSmsNotification());
         approvalDefinition.setSpecificName(approvalDefinitionModel.getSpecificName());
         return approvalDefinition;
     }
