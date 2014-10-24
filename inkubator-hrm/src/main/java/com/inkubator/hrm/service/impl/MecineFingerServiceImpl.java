@@ -7,15 +7,18 @@ package com.inkubator.hrm.service.impl;
 
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.DepartementUploadCaptureDao;
 import com.inkubator.hrm.dao.MacineFingerUploadDao;
-import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.MecineFingerDao;
 import com.inkubator.hrm.entity.DepartementUploadCapture;
 import com.inkubator.hrm.entity.Department;
+import com.inkubator.hrm.entity.MacineFingerUpload;
 import com.inkubator.hrm.entity.MecineFinger;
 import com.inkubator.hrm.service.MecineFingerService;
 import com.inkubator.hrm.web.model.FingerUploadModel;
+import com.inkubator.hrm.web.model.MecineFingerQueryModel;
+import com.inkubator.hrm.web.model.MecineFingerServiceModel;
 import com.inkubator.hrm.web.search.MecineFingerSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import java.util.ArrayList;
@@ -259,7 +262,7 @@ public class MecineFingerServiceImpl extends IServiceImpl implements MecineFinge
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void saveByModel(FingerUploadModel fingerUploadModel, Set<DepartementUploadCapture> dataToSave) throws Exception {
         MecineFinger mecineFinger = this.mecineFingerDao.getEntiyByPK(fingerUploadModel.getId());
-//        mecineFinger.getMacineFingerUploads().clear();
+        mecineFinger.getMacineFingerUploads().clear();
         mecineFinger.getDepartementUploadCaptures().clear();
         mecineFinger.setFileType(fingerUploadModel.getUploadType());
         mecineFinger.setFileExtension(fingerUploadModel.getExtensionType());
@@ -269,11 +272,49 @@ public class MecineFingerServiceImpl extends IServiceImpl implements MecineFinge
         mecineFinger.setUpdatedOn(new Date());
         mecineFingerDao.saveAndMerge(mecineFinger);
 
-//        List<Department> dataToSave = fingerUploadModel.getDataDeptToSave();
+        List<MacineFingerUpload> dataMecineToFingerUpload = fingerUploadModel.getDataToSave();
+        for (MacineFingerUpload macineFingerUpload : dataMecineToFingerUpload) {
+            macineFingerUpload.setMecineFinger(mecineFinger);
+            macineFingerUpload.setCreatedBy(UserInfoUtil.getUserName());
+            macineFingerUpload.setCreatedOn(new Date());
+            macineFingerUploadDao.save(macineFingerUpload);
+
+        }
         for (DepartementUploadCapture capture : dataToSave) {
             capture.setMecineFinger(mecineFinger);
             departementUploadCaptureDao.save(capture);
         }
 
+    }
+
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void saveMesineService(MecineFingerServiceModel serviceModel) throws Exception {
+        MecineFinger mecineFinger = this.mecineFingerDao.getEntiyByPK(serviceModel.getId());
+        mecineFinger.setServiceHost(serviceModel.getHostIp());
+        mecineFinger.setServiceType(serviceModel.getServiceData());
+        mecineFinger.setServiceOpenProtocol(serviceModel.getProtocolData());
+        mecineFinger.setServiceOpenProtocolPassword(serviceModel.getOpenProtocolPassword());
+        mecineFinger.setMatchBase(serviceModel.getEmployeeBaseId());
+        mecineFinger.setUpdatedBy(UserInfoUtil.getUserName());
+        mecineFinger.setUpdatedOn(new Date());
+        mecineFingerDao.update(mecineFinger);
+
+    }
+
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void saveMesineQuery(MecineFingerQueryModel serviceModel) throws Exception {
+        MecineFinger mecineFinger = this.mecineFingerDao.getEntiyByPK(serviceModel.getId());
+        mecineFinger.setDbHost(serviceModel.getDbHost());
+        mecineFinger.setDbPass(serviceModel.getDbPassword());
+        mecineFinger.setDbSwapBase(serviceModel.getSwapTimeFieldName());
+        mecineFinger.setDbType(serviceModel.getDbType());
+        mecineFinger.setDbUser(serviceModel.getDbUserName());
+        mecineFinger.setQuery(serviceModel.getDbQuery());
+        mecineFinger.setMatchBase(serviceModel.getEmployeeIdFieldName());
+         mecineFinger.setUpdatedBy(UserInfoUtil.getUserName());
+        mecineFinger.setUpdatedOn(new Date());
+        mecineFingerDao.update(mecineFinger);
     }
 }

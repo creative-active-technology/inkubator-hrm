@@ -34,15 +34,15 @@
                     <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
                         
                         <p:row>
-                            <p:column style="width: 40%">
-                                <p:outputLabel for="code" value="Machine Code" styleClass="label_hrm"/>
+                            <p:column style="width: 30%">
+                                <p:outputLabel for="code" value="Code" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="code" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 50%">
+                            <p:column  style="width: 70%">
                             <p:inputText id="code" value="#{machineFingerFormController.model.code}" onkeyup="this.value = this.value.toUpperCase();"
-                                             required="true" maxlength="6" styleClass="isitext_hrm" style="width:210px;" />
+                                             required="true" maxlength="6" styleClass="isitext_hrm" style="width:250px;" />
                             </p:column>
                         </p:row>
                         <p:row>
@@ -52,15 +52,15 @@
                         </p:row>
                         
                         <p:row>
-                            <p:column style="width: 40%">
-                                <p:outputLabel for="machineName" value="Machine Name" styleClass="label_hrm"/>
+                            <p:column style="width: 30%">
+                                <p:outputLabel for="machineName" value="Name" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="machineName" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 50%">
+                            <p:column  style="width: 70%">
                                 <p:inputText id="machineName"  value="#{machineFingerFormController.model.name}"
-                                             required="true"  maxlength="45" styleClass="isitext_hrm" style="width:210px;" />
+                                             required="true"  maxlength="45" styleClass="isitext_hrm" style="width:250px;" />
                             </p:column>
                         </p:row>
                         <p:row>
@@ -70,14 +70,14 @@
                         </p:row>
                         
                         <p:row>
-                            <p:column style="width: 40%">
+                            <p:column style="width: 30%">
                                 <p:outputLabel for="machineMethod" value="Methode" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="machineMethod" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 50%">
-                                <p:selectOneMenu id="machineMethod" value="#{machineFingerFormController.model.mecineMethode}" style="width: 150px;margin-right: 3px" disabled="#{costCenterFormController.isParentDisabled}" >
+                            <p:column  style="width: 70%">
+                                <p:selectOneMenu id="machineMethod" value="#{machineFingerFormController.model.mecineMethode}" style="width: 255px;margin-right: 3px" disabled="#{costCenterFormController.isParentDisabled}" >
                                     <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                     <f:selectItem itemLabel="#{appmsg['mecinefinger.upload']}" itemValue="0"/>
                                     <f:selectItem itemLabel="#{appmsg['mecinefinger.service']}" itemValue="1"/>
@@ -92,7 +92,7 @@
                         </p:row>
                         
                         <p:row>
-                            <p:column style="width: 29%">
+                            <p:column style="width: 30%">
                                 <p:outputLabel for="descriptionId" value="#{appmsg['global.description']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
@@ -105,7 +105,7 @@
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width: 29%;" >
+                            <p:column style="width: 30%;" >
                                 <p:outputLabel  for="counter" styleClass="label_hrm" />
                             </p:column>
                             <p:column style="width: 1%;" >

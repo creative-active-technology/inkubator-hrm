@@ -271,5 +271,8 @@ public class HRMConstant {
     public static final Integer PROTOCOL_HTTP = 1;
     public static final Integer PROTOCOL_XMPP = 2;
     public static final Integer PROTOCOL_OTHER = 3;
+    
+    public static final String SERVICE_NIK="NIK";
+    public static final String INDEX_MECINE="IDX";
 
 }

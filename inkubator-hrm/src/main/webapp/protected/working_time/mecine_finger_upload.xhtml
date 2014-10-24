@@ -138,10 +138,10 @@
                                     <f:setPropertyActionListener value="#{sparasiData}" target="#{fingerUploadFormController.selectdMacineFingerUpload}" />
                                 </p:commandButton> 
                                 -
-                                <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" immediate="true" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
-                                                 action="#{fingerUploadFormController.doEditData()}" >
-                                    <f:setPropertyActionListener value="#{sparasiData}" target="#{leaveFormController.selectedAppDef}" />
-                                    <p:ajax event="dialogReturn" listener="#{fingerUploadFormController.onDialogReturnEditAppDef}"  update="tableSparasiId"/>
+                                <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" immediate="false" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
+                                                 action="#{fingerUploadFormController.doEditData()}"  onclick="statusDialog.show()" oncomplete="confirmDialogAdd.show()" update=":forAddId" >
+                                    <f:setPropertyActionListener value="#{sparasiData}" target="#{fingerUploadFormController.selectdMacineFingerUpload}" />
+                                   
                                 </p:commandButton>
                             </p:column> 
                         </p:dataTable>
@@ -220,7 +220,7 @@
                                 </p:column>
                                 <p:column  style="width: 70%">
                                     <p:focus for ="fieldId">
-                                        <p:spinner value="#{fingerUploadFormController.sparasiUploadModel.fieldNumber}" size="4" min="1" styleClass="isitext_hrm" required="true" id="fieldId" readonly="true" />
+                                        <p:spinner value="#{fingerUploadFormController.sparasiUploadModel.fieldNumber}" size="4" min="1" styleClass="isitext_hrm" required="true" id="fieldId"  />
                                     </p:focus>
                                 </p:column>
                             </p:row>

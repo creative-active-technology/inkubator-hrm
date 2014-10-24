@@ -1,0 +1,134 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlUserFormId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
+                <h:form id="fingerQueryForm" >
+                    <div id="box_bg" style="margin: 10px">
+                        <!--<p:panel style="margin: 10px">-->
+                        <h:panelGrid style="margin-bottom: 5px" columns="2">
+                            <p:graphicImage library="images" name="finger_print.png" height="36" width="36" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="Mecine Finger Query" styleClass="header_big" />
+                                    <p:outputLabel value="Mecine Finger Query from Working Time" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator/>
+
+
+
+                        <p:panelGrid style="width: 100%;margin-bottom: 20px;margin-top: 20px" styleClass="grid_border3" >
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="host" value="DB Host" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:inputMask id="host" value="#{fingerQueryFormController.mecineFingerQueryModel.dbHost}"  mask="999.999.999.999" required="true" maxlength="6" styleClass="isitext_hrm" style="width:250px;" />
+                                    <p:message for="host"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel for="dbtype" value="Jenis Data Base" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectOneMenu id="dbtype" value="#{fingerQueryFormController.mecineFingerQueryModel.dbType}" style="width: 250px;margin-right: 3px" required="true">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{fingerQueryFormController.dbTypes}" />
+                                    </p:selectOneMenu>
+                                    <p:message for="dbtype"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="name" value="User Name" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:inputText id="name" value="#{fingerQueryFormController.mecineFingerQueryModel.dbUserName}"  required="true" maxlength="25" styleClass="isitext_hrm" style="width:250px;" />
+                                    <p:message for="name"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="password" value="Password" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:inputText id="password" value="#{fingerQueryFormController.mecineFingerQueryModel.dbPassword}"  required="true" maxlength="25" styleClass="isitext_hrm" style="width:250px;" />
+                                    <p:message for="password"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="query" value="Query" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:inputTextarea  rows="5" cols="37" maxlength="500" id="query" value="#{fingerQueryFormController.mecineFingerQueryModel.dbQuery}" required="true"
+                                                      style="width: 250px; height: 60px;" counterTemplate="#{appmsg['global.remaining']}" autoResize="true" 
+                                                      label="#{appmsg['role_view.role_description']}" title="#{appmsg['role_view.role_description']}" />
+                                    <p:message for="query"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel for="type" value="Employee Base On Field" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectOneMenu id="type" value="#{fingerQueryFormController.mecineFingerQueryModel.employeeIdFieldName}" style="width: 150px;margin-right: 3px" required="true">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItem itemLabel="NIK" itemValue="NIK"/>
+                                        <f:selectItem itemLabel="Name" itemValue="Name"/>
+
+                                    </p:selectOneMenu>
+                                    <p:message for="type"/>
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel for="swapTime" value="Swap Time Base On Field" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:inputText id="swapTime" value="#{fingerQueryFormController.mecineFingerQueryModel.swapTimeFieldName}"  required="true" maxlength="25" styleClass="isitext_hrm" style="width:250px;" />
+                                 <p:message for="swapTime"/>
+                                </p:column>
+                            
+                            </p:row>
+                        </p:panelGrid>
+
+                        <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
+                        <div style="margin-bottom: 5px">
+                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" action="#{fingerQueryFormController.doSave()}"
+                                             styleClass="isitext_hrm" 
+                                             style="margin-right: 5px" label="#{appmsg['global.save']}" update="fingerQueryForm, :growlUserFormId"
+                                             icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="fingerQueryForm"
+                                             icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px" >  
+                                <p:resetInput target="fingerQueryForm" />  
+                            </p:commandButton>
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}"  immediate="true" action="#{fingerQueryFormController.doBack()}"
+                                             styleClass="label_button"/>
+                        </div>
+                    </div>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+
