@@ -214,21 +214,34 @@
                                     <p:outputLabel  value="#{appmsg['approvaldefinition.escalate_on_delay']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%" >
-
                                     <p:selectBooleanButton value="#{approvalDefinitionFormController.approvalDefinitionModel.escalateOnDelay}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
                                                            offIcon="ui-icon-close"  id="escalateOnDelay" styleClass="label_button" >
                                         <p:ajax listener="#{approvalDefinitionFormController.escalateOnDelay()}" immediate="true" update="approveOnDelay,escalateOnDelay"/>
                                     </p:selectBooleanButton>
-
                                 </p:column>
                             </p:row>
                             <p:row>
-
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="#{appmsg['approvaldefinition.delay_time']}" style="font-weight: bold"/>
                                 </p:column>
-                                <p:column style="width: 37%"  colspan="3">
+                                <p:column style="width: 37%">
                                     <p:spinner min="1" max="100" size="2" stepFactor="1" value="#{approvalDefinitionFormController.approvalDefinitionModel.delayTime}"/>
+                                </p:column>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['approvaldefinition.sms_notification']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%" >
+                                    <p:selectBooleanButton value="#{approvalDefinitionFormController.approvalDefinitionModel.smsNotification}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
+                                                           offIcon="ui-icon-close"  id="smsNotification" styleClass="label_button"/>
+                                </p:column>
+                            </p:row>
+                            <p:row rendered="#{not empty approvalDefinitionFormController.approvalDefinitionModel.specificName}">
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['approvaldefinition.specific_approval']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%" colspan="3">
+                                	<p:inputText id="nameId" title="#{appmsg['approvaldefinition.specific_approval']}" value="#{approvalDefinitionFormController.approvalDefinitionModel.specificName}" 
+                                    			 readonly="true" styleClass="isitext_hrm" style="width: 30%;" />
                                 </p:column>
                             </p:row>
                         </p:panelGrid>

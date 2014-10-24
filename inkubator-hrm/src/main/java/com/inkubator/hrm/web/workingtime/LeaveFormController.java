@@ -294,7 +294,9 @@ public class LeaveFormController extends BaseController {
     }
     
     public void onChangeName(){
-    	Lambda.forEach(appDefs).setSpecificName(model.getName());
+    	if(!appDefs.isEmpty()) {
+    		Lambda.forEach(appDefs).setSpecificName(model.getName());
+    	}
     }
     
     /** Start Approval Definition form */

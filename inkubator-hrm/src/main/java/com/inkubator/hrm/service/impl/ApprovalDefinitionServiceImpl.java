@@ -9,6 +9,7 @@ import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.dao.ApprovalActivityDao;
 import com.inkubator.hrm.dao.ApprovalDefinitionDao;
 import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.dao.JabatanDao;
@@ -40,6 +41,8 @@ public class ApprovalDefinitionServiceImpl extends IServiceImpl implements Appro
     private HrmUserDao hrmUserDao;
     @Autowired
     private JabatanDao jabatanDao;
+    @Autowired
+    private ApprovalActivityDao approvalActivityDao;
     
     @Override
     public ApprovalDefinition getEntiyByPK(String id) {
@@ -120,7 +123,13 @@ public class ApprovalDefinitionServiceImpl extends IServiceImpl implements Appro
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(ApprovalDefinition entity) throws Exception {
-        long totalExist = this.approvalDefinitionDao.getTotalSameAprrovalProsesExistAndNotId(entity.getName(), entity.getProcessType(), entity.getSequence(), entity.getId());
+        
+    	/** cek apakah masih terdapat approval activity yang pending */
+		if(approvalActivityDao.isStillHaveWaitingStatus(entity.getId())){
+			throw new BussinessException("approval.error_still_have_waiting_status");
+		}
+    	
+    	long totalExist = this.approvalDefinitionDao.getTotalSameAprrovalProsesExistAndNotId(entity.getName(), entity.getProcessType(), entity.getSequence(), entity.getId());
         if (totalExist > 0) {
             throw new BussinessException("approval.error_unik");
         }
@@ -163,6 +172,7 @@ public class ApprovalDefinitionServiceImpl extends IServiceImpl implements Appro
         ad.setOnBehalfType(entity.getOnBehalfType());
         ad.setProcessType(entity.getProcessType());
         ad.setSequence(entity.getSequence());
+        ad.setSmsNotification(entity.getSmsNotification());
         ad.setUpdatedBy(UserInfoUtil.getUserName());
         ad.setUpdatedOn(new Date());
         this.approvalDefinitionDao.update(ad);

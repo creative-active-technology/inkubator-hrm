@@ -46,6 +46,7 @@ public class ApprovalDefinitionModel implements Serializable {
     private Boolean autoApproveOnDelay;
     private Boolean escalateOnDelay;
     private Integer delayTime=1;
+    private Boolean smsNotification;
 
     public Long getId() {
         return id;
@@ -251,8 +252,13 @@ public class ApprovalDefinitionModel implements Serializable {
 	public void setJabatanByOnBehalfPosition(Jabatan jabatanByOnBehalfPosition) {
 		this.jabatanByOnBehalfPosition = jabatanByOnBehalfPosition;
 	}
-    
-    
 
+	public Boolean getSmsNotification() {
+		return smsNotification;
+	}
+
+	public void setSmsNotification(Boolean smsNotification) {
+		this.smsNotification = smsNotification;
+	}
     
 }

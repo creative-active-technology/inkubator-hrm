@@ -11,6 +11,7 @@ import javax.jms.Message;
 import javax.jms.Session;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.hibernate.criterion.Order;
 import org.primefaces.json.JSONException;
 import org.primefaces.json.JSONObject;
@@ -35,6 +36,7 @@ import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.dao.LeaveDao;
 import com.inkubator.hrm.dao.LeaveDistributionDao;
 import com.inkubator.hrm.dao.LeaveImplementationDao;
+import com.inkubator.hrm.dao.LeaveImplementationDateDao;
 import com.inkubator.hrm.dao.NeracaCutiDao;
 import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.ApprovalDefinition;
@@ -44,6 +46,7 @@ import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.Leave;
 import com.inkubator.hrm.entity.LeaveDistribution;
 import com.inkubator.hrm.entity.LeaveImplementation;
+import com.inkubator.hrm.entity.LeaveImplementationDate;
 import com.inkubator.hrm.entity.NeracaCuti;
 import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.LeaveImplementationService;
@@ -75,6 +78,8 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
 	private HrmUserDao hrmUserDao;
 	@Autowired
 	private ApprovalActivityDao approvalActivityDao;
+	@Autowired
+	private LeaveImplementationDateDao leaveImplementationDateDao;
 	
 	@Override
 	public LeaveImplementation getEntiyByPK(String id) throws Exception {
@@ -98,7 +103,8 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
 	@Override
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void save(LeaveImplementation entity) throws Exception {
-		// check duplicate number filling
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+		/*// check duplicate number filling
 		long totalDuplicates = leaveImplementationDao.getTotalByNumberFilling(entity.getNumberFilling());
 		if (totalDuplicates > 0) {
 			throw new BussinessException("leaveimplementation.error_duplicate_filling_number");
@@ -135,7 +141,7 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
 		
 		if(leave.getIsQuotaReduction()){
 			this.creditLeaveBalance(leaveDistribution, actualLeave);
-		}
+		}*/
 	}
 
 	@Override
@@ -169,23 +175,6 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
 		leaveImplementation.setUpdatedOn(new Date());
 		
 		leaveImplementationDao.update(leaveImplementation);*/
-	}
-	
-	private void creditLeaveBalance(LeaveDistribution leaveDistribution, double actualLeave){					
-		double balance = leaveDistribution.getBalance() - actualLeave;
-		leaveDistribution.setBalance(balance);
-		leaveDistribution.setUpdatedOn(new Date());
-		leaveDistribution.setUpdatedBy(UserInfoUtil.getUserName());
-		leaveDistributionDao.update(leaveDistribution);
-		
-		NeracaCuti neracaCuti = new NeracaCuti();
-		neracaCuti.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
-		neracaCuti.setLeaveDistribution(leaveDistribution);
-		neracaCuti.setKredit(actualLeave);				
-		neracaCuti.setCreatedBy(UserInfoUtil.getUserName());
-		neracaCuti.setCreatedOn(new Date());
-		neracaCutiDao.save(neracaCuti);
-		
 	}
 
 	@Override
@@ -281,7 +270,7 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
 	@Override
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void delete(LeaveImplementation entity) throws Exception {
-		leaveImplementationDao.delete(entity);
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
@@ -508,16 +497,26 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
 	public Double getTotalActualLeave(Long empDataId, Long leaveId, Date startDate, Date endDate) throws Exception {
+		List<Date> actualLeaves = this.getAllActualLeave(empDataId, leaveId, startDate, endDate);
+		return (double) actualLeaves.size();
+	}
+	
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public List<Date> getAllActualLeave(Long empDataId, Long leaveId, Date startDate, Date endDate) throws Exception {
 		EmpData empData = empDataDao.getEntiyByPK(empDataId);
 		Leave leave = leaveDao.getEntiyByPK(leaveId);
-		double actualLeave = 0.0;
+		List<Date> actualLeaves = new ArrayList<Date>();
+		
 		if(leave.getDayType() == HRMConstant.LEAVE_DAY_TYPE_WORKING){			
-			actualLeave = wtScheduleShiftService.getTotalWorkingDaysBetween(empData.getId(), startDate, endDate);
+			actualLeaves = wtScheduleShiftService.getAllWorkingDaysBetween(empData.getId(), startDate, endDate);
 		} else {
-			actualLeave = DateTimeUtil.getTotalDay(startDate, endDate);
+			for(int i=1; i <= DateTimeUtil.getTotalDay(startDate, endDate); i++) {
+				actualLeaves.add(DateUtils.addDays(startDate, i));
+			}
 		}
 		
-		return actualLeave;
+		return actualLeaves;
 	}
 
 	@Override
@@ -543,8 +542,9 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
 		}
 				
 		// check actualLeave yg diambil, tidak boleh lebih besar dari balanceCuti yg tersedia
-		Double actualLeave = this.getTotalActualLeave(empData.getId(), leave.getId(), entity.getStartDate(), entity.getEndDate());		
-		if(actualLeave > leaveDistribution.getBalance()){
+		List<Date> actualLeaves = this.getAllActualLeave(empData.getId(), leave.getId(), entity.getStartDate(), entity.getEndDate());
+		int totalActualLeaves = actualLeaves.size();
+		if(totalActualLeaves > leaveDistribution.getBalance()){
     		throw new BussinessException("leaveimplementation.error_leave_balance is insufficient");
     	}
 				
@@ -568,9 +568,13 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
 		
 		ApprovalActivity approvalActivity = isBypassApprovalChecking ? null : super.checkApprovalProcess(appDefs, requestUser.getUserId());
 		if(approvalActivity == null){
-			leaveImplementationDao.save(entity);			
+			//save entity dan detail-nya
+			leaveImplementationDao.save(entity);
+			this.saveLeaveImplementationDate(entity, actualLeaves);
+			
+			//cek di definisi cuti, jika isQuotaReduction is true, maka neraca cuti berkurang
 			if(leave.getIsQuotaReduction()){
-				this.creditLeaveBalance(leaveDistribution, actualLeave);
+				this.creditLeaveBalance(leaveDistribution, totalActualLeaves);
 			}
 			
 			message = "success_without_approval";
@@ -587,6 +591,33 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
 		}
 		
 		return message;
+	}
+	
+	private void creditLeaveBalance(LeaveDistribution leaveDistribution, double actualLeave){					
+		double balance = leaveDistribution.getBalance() - actualLeave;
+		leaveDistribution.setBalance(balance);
+		leaveDistribution.setUpdatedOn(new Date());
+		leaveDistribution.setUpdatedBy(UserInfoUtil.getUserName());
+		leaveDistributionDao.update(leaveDistribution);
+		
+		NeracaCuti neracaCuti = new NeracaCuti();
+		neracaCuti.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+		neracaCuti.setLeaveDistribution(leaveDistribution);
+		neracaCuti.setKredit(actualLeave);				
+		neracaCuti.setCreatedBy(UserInfoUtil.getUserName());
+		neracaCuti.setCreatedOn(new Date());
+		neracaCutiDao.save(neracaCuti);
+		
+	}
+	
+	private void saveLeaveImplementationDate(LeaveImplementation leaveImplementation, List<Date> actualLeaves){
+		for(Date actualLeave : actualLeaves){
+			LeaveImplementationDate entity = new LeaveImplementationDate();
+			entity.setLeaveImplementation(leaveImplementation);
+			entity.setActualDate(actualLeave);
+			entity.setIsCancelled(Boolean.FALSE);
+			leaveImplementationDateDao.save(entity);
+		}
 	}
 
 	@Override

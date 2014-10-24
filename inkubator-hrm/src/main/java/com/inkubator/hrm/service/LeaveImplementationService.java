@@ -27,6 +27,8 @@ public interface LeaveImplementationService extends IService<LeaveImplementation
 
 	public Double getTotalActualLeave(Long empDataId, Long leaveId, Date startDate, Date endDate) throws Exception;
 	
+	public List<Date> getAllActualLeave(Long empDataId, Long leaveId, Date startDate, Date endDate) throws Exception;
+	
 	public String save(LeaveImplementation entity, boolean isBypassApprovalChecking) throws Exception;
 	
 }
