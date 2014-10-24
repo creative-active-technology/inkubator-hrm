@@ -8,13 +8,23 @@ package com.inkubator.hrm.service.impl;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.dao.DepartementUploadCaptureDao;
+import com.inkubator.hrm.dao.MacineFingerUploadDao;
 import com.inkubator.hrm.dao.MecineFingerDao;
+import com.inkubator.hrm.entity.DepartementUploadCapture;
+import com.inkubator.hrm.entity.Department;
+import com.inkubator.hrm.entity.MacineFingerUpload;
 import com.inkubator.hrm.entity.MecineFinger;
 import com.inkubator.hrm.service.MecineFingerService;
+import com.inkubator.hrm.web.model.FingerUploadModel;
+import com.inkubator.hrm.web.model.MecineFingerQueryModel;
+import com.inkubator.hrm.web.model.MecineFingerServiceModel;
 import com.inkubator.hrm.web.search.MecineFingerSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -33,6 +43,10 @@ public class MecineFingerServiceImpl extends IServiceImpl implements MecineFinge
 
     @Autowired
     private MecineFingerDao mecineFingerDao;
+    @Autowired
+    private DepartementUploadCaptureDao departementUploadCaptureDao;
+    @Autowired
+    private MacineFingerUploadDao macineFingerUploadDao;
 
     @Override
     public MecineFinger getEntiyByPK(String id) throws Exception {
@@ -232,4 +246,75 @@ public class MecineFingerServiceImpl extends IServiceImpl implements MecineFinge
         return mecineFingerDao.getTotalByParam(parameter);
     }
 
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public MecineFinger getMecineFingerAndDetaiUploadByFK(long id) throws Exception {
+        MecineFinger mecineFinger = this.mecineFingerDao.getMecineFingerAndDetaiUploadByFK(id);
+        List<Department> data = new ArrayList<>();
+        for (DepartementUploadCapture departementUploadCapture : departementUploadCaptureDao.getByMecineFingerId(id)) {
+            data.add(departementUploadCapture.getDepartment());
+        }
+        mecineFinger.setDepartments(data);
+        return mecineFinger;
+    }
+
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void saveByModel(FingerUploadModel fingerUploadModel, Set<DepartementUploadCapture> dataToSave) throws Exception {
+        MecineFinger mecineFinger = this.mecineFingerDao.getEntiyByPK(fingerUploadModel.getId());
+        mecineFinger.getMacineFingerUploads().clear();
+        mecineFinger.getDepartementUploadCaptures().clear();
+        mecineFinger.setFileType(fingerUploadModel.getUploadType());
+        mecineFinger.setFileExtension(fingerUploadModel.getExtensionType());
+        mecineFinger.setInOutStatus(fingerUploadModel.getItialInOut());
+        mecineFinger.setBaseOnField(fingerUploadModel.getFieldNumber());
+        mecineFinger.setUpdatedBy(UserInfoUtil.getUserName());
+        mecineFinger.setUpdatedOn(new Date());
+        mecineFingerDao.saveAndMerge(mecineFinger);
+
+        List<MacineFingerUpload> dataMecineToFingerUpload = fingerUploadModel.getDataToSave();
+        for (MacineFingerUpload macineFingerUpload : dataMecineToFingerUpload) {
+            macineFingerUpload.setMecineFinger(mecineFinger);
+            macineFingerUpload.setCreatedBy(UserInfoUtil.getUserName());
+            macineFingerUpload.setCreatedOn(new Date());
+            macineFingerUploadDao.save(macineFingerUpload);
+
+        }
+        for (DepartementUploadCapture capture : dataToSave) {
+            capture.setMecineFinger(mecineFinger);
+            departementUploadCaptureDao.save(capture);
+        }
+
+    }
+
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void saveMesineService(MecineFingerServiceModel serviceModel) throws Exception {
+        MecineFinger mecineFinger = this.mecineFingerDao.getEntiyByPK(serviceModel.getId());
+        mecineFinger.setServiceHost(serviceModel.getHostIp());
+        mecineFinger.setServiceType(serviceModel.getServiceData());
+        mecineFinger.setServiceOpenProtocol(serviceModel.getProtocolData());
+        mecineFinger.setServiceOpenProtocolPassword(serviceModel.getOpenProtocolPassword());
+        mecineFinger.setMatchBase(serviceModel.getEmployeeBaseId());
+        mecineFinger.setUpdatedBy(UserInfoUtil.getUserName());
+        mecineFinger.setUpdatedOn(new Date());
+        mecineFingerDao.update(mecineFinger);
+
+    }
+
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void saveMesineQuery(MecineFingerQueryModel serviceModel) throws Exception {
+        MecineFinger mecineFinger = this.mecineFingerDao.getEntiyByPK(serviceModel.getId());
+        mecineFinger.setDbHost(serviceModel.getDbHost());
+        mecineFinger.setDbPass(serviceModel.getDbPassword());
+        mecineFinger.setDbSwapBase(serviceModel.getSwapTimeFieldName());
+        mecineFinger.setDbType(serviceModel.getDbType());
+        mecineFinger.setDbUser(serviceModel.getDbUserName());
+        mecineFinger.setQuery(serviceModel.getDbQuery());
+        mecineFinger.setMatchBase(serviceModel.getEmployeeIdFieldName());
+         mecineFinger.setUpdatedBy(UserInfoUtil.getUserName());
+        mecineFinger.setUpdatedOn(new Date());
+        mecineFingerDao.update(mecineFinger);
+    }
 }

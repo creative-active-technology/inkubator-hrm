@@ -120,12 +120,16 @@
                                 				 style="font-size: 10px!important" action="#{leaveImplementationViewController.doDetail()}">                        
                                     <f:setPropertyActionListener value="#{leaveImplementationData}" target="#{leaveImplementationViewController.selectedLeaveImplementation}" />
                                 </p:commandButton>
-                                - 
-                                <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+                                -
+                                <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.cancel']}" label="#{appmsg['global.cancel']}"  
+                                				 style="font-size: 10px!important" action="#{leaveImplementationViewController.doCancellation()}">
+                                    <f:setPropertyActionListener value="#{leaveImplementationData}" target="#{leaveImplementationViewController.selectedLeaveImplementation}" />
+                                </p:commandButton> 
+                                <!-- <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                 				 style="font-size: 10px!important" update=":panelDialogConfirmId" 
                                 				 action="#{leaveImplementationViewController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmLeaveImplementation.show()">
                                     <f:setPropertyActionListener value="#{leaveImplementationData}" target="#{leaveImplementationViewController.selectedLeaveImplementation}" />
-                                </p:commandButton>
+                                </p:commandButton> -->
                             </p:column>                        
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>

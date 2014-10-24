@@ -308,9 +308,9 @@ public class WtScheduleShiftServiceImpl extends IServiceImpl implements WtSchedu
     
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public Double getTotalWorkingDaysBetween(Long empDataId, Date startDate, Date endDate) throws Exception {
+    public List<Date> getAllWorkingDaysBetween(Long empDataId, Date startDate, Date endDate) throws Exception {
 		EmpData empData = empDataDao.getEntiyByPK(empDataId);
-		double totalWorkingDays = 0;
+		List<Date> workingDays = new ArrayList<Date>();
 		List<TempJadwalKaryawan> tempJadwalKaryawans = new ArrayList<TempJadwalKaryawan>();
 		
 		//loop date-nya, check jadwal berdasarkan kelompok kerja		
@@ -325,10 +325,10 @@ public class WtScheduleShiftServiceImpl extends IServiceImpl implements WtSchedu
 			
 			//selain "OFF"(hari libur) berarti termasuk jam kerja
 			if(!StringUtils.equals(jadwal.getWtWorkingHour().getCode(),"OFF")){
-				totalWorkingDays = totalWorkingDays + 1;
+				workingDays.add(jadwal.getTanggalWaktuKerja());
 			}			
 		}
-		return totalWorkingDays;
+		return workingDays;
 	}
 
 }

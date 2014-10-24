@@ -4,7 +4,6 @@ package com.inkubator.hrm.entity;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -47,7 +46,8 @@ public class ApprovalDefinition implements java.io.Serializable {
     private Boolean escalateOnDelay;
     private Integer delayTime;
     private String specificName;
-    private boolean isNoLongerInUse;
+    private Boolean isNoLongerInUse;
+    private Boolean smsNotification;
     private Set<ApprovalActivity> approvalActivities = new HashSet<ApprovalActivity>(0);
     private Set<ApprovalDefinitionLeave> approvalDefinitionLeaves = new HashSet<ApprovalDefinitionLeave>(0);
     private Set<ApprovalDefinitionOT> approvalDefinitionOverTimes = new HashSet<ApprovalDefinitionOT>(0);
@@ -289,15 +289,15 @@ public class ApprovalDefinition implements java.io.Serializable {
     }
 
     @Column(name = "is_no_longer_in_use")
-    public boolean getIsNoLongerInUse() {
-		return isNoLongerInUse;
-	}
+    public Boolean getIsNoLongerInUse() {
+        return isNoLongerInUse;
+    }
 
-	public void setIsNoLongerInUse(boolean isNoLongerInUse) {
-		this.isNoLongerInUse = isNoLongerInUse;
-	}
+    public void setIsNoLongerInUse(Boolean isNoLongerInUse) {
+        this.isNoLongerInUse = isNoLongerInUse;
+    }
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "approvalDefinition")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "approvalDefinition")
     public Set<ApprovalActivity> getApprovalActivities() {
         return this.approvalActivities;
     }
@@ -315,12 +315,22 @@ public class ApprovalDefinition implements java.io.Serializable {
         this.approvalDefinitionLeaves = approvalDefinitionLeaves;
     }
 
-    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="approvalDefinition")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "approvalDefinition")
     public Set<ApprovalDefinitionOT> getApprovalDefinitionOverTimes() {
         return this.approvalDefinitionOverTimes;
     }
-    
+
     public void setApprovalDefinitionOverTimes(Set<ApprovalDefinitionOT> approvalDefinitionOverTimes) {
         this.approvalDefinitionOverTimes = approvalDefinitionOverTimes;
     }
+
+    @Column(name = "sms_notification")
+    public Boolean getSmsNotification() {
+        return smsNotification;
+    }
+
+    public void setSmsNotification(Boolean smsNotification) {
+        this.smsNotification = smsNotification;
+    }
+
 }

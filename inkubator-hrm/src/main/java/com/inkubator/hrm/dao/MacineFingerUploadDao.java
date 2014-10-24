@@ -6,14 +6,12 @@
 package com.inkubator.hrm.dao;
 
 import com.inkubator.datacore.dao.IDAO;
-import com.inkubator.hrm.entity.DepartementUploadCapture;
-import java.util.List;
+import com.inkubator.hrm.entity.MacineFingerUpload;
 
 /**
  *
  * @author Deni Husni FR
  */
-public interface DepartementUploadCaptureDao extends IDAO<DepartementUploadCapture> {
-
-    public List<DepartementUploadCapture> getByMecineFingerId(long id);
+public interface MacineFingerUploadDao extends IDAO<MacineFingerUpload>{
+    
 }

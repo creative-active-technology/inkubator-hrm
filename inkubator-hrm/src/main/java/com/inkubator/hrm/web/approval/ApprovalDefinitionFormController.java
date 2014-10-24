@@ -63,6 +63,8 @@ public class ApprovalDefinitionFormController extends BaseController {
                 approvalDefinitionModel.setAutoApproveOnDelay(ad.getAutoApproveOnDelay());
                 approvalDefinitionModel.setDelayTime(ad.getDelayTime());
                 approvalDefinitionModel.setEscalateOnDelay(ad.getEscalateOnDelay());
+                approvalDefinitionModel.setSmsNotification(ad.getSmsNotification());
+                approvalDefinitionModel.setSpecificName(ad.getSpecificName());
 
                 if (ad.getApproverType().equalsIgnoreCase(HRMConstant.APPROVAL_TYPE_INDIVIDUAL)) {
                     approvalDefinitionModel.setHrmUserByApproverIndividualId(ad.getHrmUserByApproverIndividual().getId());
@@ -128,6 +130,7 @@ public class ApprovalDefinitionFormController extends BaseController {
             approvalDefinitionModel.setEscalateOnDelay(!onAutoApprove);
             approvalDefinitionModel.setMinApprover(1);
             approvalDefinitionModel.setMinRejector(1);
+            approvalDefinitionModel.setSmsNotification(Boolean.FALSE);
         }
 
 //        onBehalfApproverTypeDepartment = Boolean.TRUE;
@@ -317,6 +320,8 @@ public class ApprovalDefinitionFormController extends BaseController {
         approvalDefinition.setAutoApproveOnDelay(approvalDefinitionModel.getAutoApproveOnDelay());
         approvalDefinition.setEscalateOnDelay(approvalDefinitionModel.getEscalateOnDelay());
         approvalDefinition.setDelayTime(approvalDefinitionModel.getDelayTime());
+        approvalDefinition.setSmsNotification(approvalDefinitionModel.getSmsNotification());
+        approvalDefinition.setSpecificName(approvalDefinitionModel.getSpecificName());
         return approvalDefinition;
     }
 
