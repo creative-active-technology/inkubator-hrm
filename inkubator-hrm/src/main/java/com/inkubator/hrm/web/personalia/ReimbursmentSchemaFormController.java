@@ -255,19 +255,37 @@ public class ReimbursmentSchemaFormController extends BaseController{
             reimbursmentSchema.setId(model.getId());
         }
         reimbursmentSchema.setCode(model.getCode());
-        if(model.getCostCenter() != null){
-            reimbursmentSchema.setCostCenter(new CostCenter(model.getCostCenter()));
-        }
-        reimbursmentSchema.setBasicValue(model.getBasicValue());
-        reimbursmentSchema.setEffectiveDate(model.getEffectiveDate());
-        reimbursmentSchema.setMeasurement(model.getMeasurement());
         reimbursmentSchema.setName(model.getName());
-        reimbursmentSchema.setQuantity(model.getQuantity());
-        reimbursmentSchema.setNominalUnit(model.getNominalUnit());
-        reimbursmentSchema.setPayrollComponent(model.getPayrolComponent());
-        reimbursmentSchema.setRatioSalary(model.getRatioSalary());
-        reimbursmentSchema.setIsAttachDocument(model.getIsAttachDocument());
+        reimbursmentSchema.setEffectiveDate(model.getEffectiveDate());
         reimbursmentSchema.setTimeRange(model.getTimeRange());
+        ///////
+        
+        
+        //kalo measurement unit enable quantity
+        reimbursmentSchema.setMeasurement(model.getMeasurement());
+        if(model.getMeasurement() == HRMConstant.REIMBURSMENT_UNIT){
+            reimbursmentSchema.setQuantity(model.getQuantity());
+            reimbursmentSchema.setNominalUnit(null);
+            reimbursmentSchema.setRatioSalary(null);
+            reimbursmentSchema.setPayrollComponent(null);
+            reimbursmentSchema.setIsAttachDocument(null);
+            reimbursmentSchema.setCostCenter(null);
+        }else{
+            reimbursmentSchema.setQuantity(null);
+            if(model.getCostCenter() != null){
+                reimbursmentSchema.setCostCenter(new CostCenter(model.getCostCenter()));
+            }
+            reimbursmentSchema.setBasicValue(model.getBasicValue());
+            reimbursmentSchema.setPayrollComponent(model.getPayrolComponent());
+            reimbursmentSchema.setIsAttachDocument(model.getIsAttachDocument());
+            if(model.getBasicValue() == HRMConstant.BASIC_VALUE_NOMINAL){
+                reimbursmentSchema.setNominalUnit(model.getNominalUnit());
+                reimbursmentSchema.setRatioSalary(null);
+            }else{
+                reimbursmentSchema.setNominalUnit(null);
+                reimbursmentSchema.setRatioSalary(model.getRatioSalary());
+            }
+        }
         return reimbursmentSchema;
     }
 

@@ -15,9 +15,7 @@ public class LeaveDistributionSearchParameter extends SearchParameter{
 
     private String empData;
     private String leave;
-    private Double balance;
-    private Double saldo;
-    private Double credit;
+    private String nik;
 
     public String getEmpData() {
         if (StringUtils.equalsIgnoreCase(getKeyParam(), "empData")) {
@@ -45,29 +43,20 @@ public class LeaveDistributionSearchParameter extends SearchParameter{
         this.leave = leave;
     }
 
-    public Double getBalance() {
-        return balance;
+    public String getNik() {
+        if (StringUtils.equalsIgnoreCase(getKeyParam(), "nik")) {
+            nik = getParameter();
+        } else {
+            nik = null;
+        }
+        return nik;
     }
 
-    public void setBalance(Double balance) {
-        this.balance = balance;
+    public void setNik(String nik) {
+        this.nik = nik;
     }
 
-    public Double getSaldo() {
-        return saldo;
-    }
-
-    public void setSaldo(Double saldo) {
-        this.saldo = saldo;
-    }
-
-    public Double getCredit() {
-        return credit;
-    }
-
-    public void setCredit(Double credit) {
-        this.credit = credit;
-    }
+    
     
     
 }

@@ -289,7 +289,9 @@ public class ReimbursmentSchemaServiceImpl extends IServiceImpl implements Reimb
         if(reimbursmentSchema.getCostCenter()!= null){
     		CostCenter costCenter = costCenterDao.getEntiyByPK(reimbursmentSchema.getCostCenter().getId());
     		reimbursmentSchema.setCostCenter(costCenter);
-    	}
+    	}else{
+            reimbursmentSchema.setCostCenter(null);
+        }
         reimbursmentSchema.setCreatedBy(UserInfoUtil.getUserName());
         reimbursmentSchema.setCreatedOn(new Date());
         this.reimbursmentSchemaDao.save(reimbursmentSchema);

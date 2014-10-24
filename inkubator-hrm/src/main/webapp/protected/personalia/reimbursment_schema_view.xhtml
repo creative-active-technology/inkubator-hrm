@@ -46,7 +46,7 @@
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3" >
                                     <p:commandButton value="Export to XLS" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
-                                        <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Travel_Component_Cost_Rate"/>
+                                        <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Reimbursment_Schema"/>
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.add']}" action="#{reimbursmentSchemaViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
                                         <!--<p:ajax event="dialogReturn" listener="#{reimbursmentSchemaViewController.onDialogReturn}"  update="tableId, growlId"/>-->
@@ -76,17 +76,23 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{data.code}" />
                             </p:column>
-                            <p:column sortBy="name" style="width: 36%">
+                            <p:column sortBy="name" style="width: 25%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.name}" />
                             </p:column>
-                            <p:column sortBy="nominalUnit" style="width: 36%">
+                            <p:column sortBy="nominalUnit" style="width: 22%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['reimbursment.nominal_unit']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.nominalUnit}" ><f:convertNumber pattern="###,###" type="currency"/></h:outputLabel>
+                            </p:column>
+                            <p:column sortBy="ratioSalary" style="width: 23%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['reimbursment.ratio_salary']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.ratioSalary}" ><f:convertNumber pattern="###,###" type="currency"/></h:outputLabel>
                             </p:column>
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 

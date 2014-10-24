@@ -459,9 +459,9 @@ public class TempJadwalKaryawanServiceImpl extends BaseApprovalServiceImpl imple
 	}
 
     @Override
-    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public TempJadwalKaryawan getByEmpId(Long id) throws Exception {
-        return tempJadwalKaryawanDao.getByEmpId(id);
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ,propagation = Propagation.SUPPORTS, timeout = 30)
+    public TempJadwalKaryawan getByEmpId(Long id, Date implementationDate) throws Exception {
+        return tempJadwalKaryawanDao.getByEmpId(id, implementationDate);
     }
 
 }

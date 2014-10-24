@@ -117,7 +117,7 @@
                                 <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" ajax="true"
                                                   action="#{costCenterController.doEdit()}" >
                                     <f:setPropertyActionListener value="#{costCenterData}" target="#{costCenterController.selectedCostCenter}" />
-                                    <p:ajax event="dialogReturn" listener="#{costCenterController.onDialogReturn}"  update="tableCostCenterId"/>
+                                    <p:ajax event="dialogReturn" listener="#{costCenterController.onDialogReturn}"  update="tableCostCenterId, :formCostCenterId:growlCostCenterId"/>
                                 </p:commandButton> 
                             </p:column> 
                             <f:facet name="footer">
