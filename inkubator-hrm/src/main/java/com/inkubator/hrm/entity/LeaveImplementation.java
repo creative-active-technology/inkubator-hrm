@@ -1,6 +1,8 @@
 package com.inkubator.hrm.entity;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -39,6 +42,7 @@ public class LeaveImplementation implements java.io.Serializable {
     private Date createdOn;
     private String updatedBy;
     private Date updatedOn;
+    private Set<LeaveImplementationDate> leaveImplementationDates = new HashSet<LeaveImplementationDate>(0);
 
     public LeaveImplementation() {
     	
@@ -221,4 +225,15 @@ public class LeaveImplementation implements java.io.Serializable {
     public void setUpdatedOn(Date updatedOn) {
         this.updatedOn = updatedOn;
     }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "leaveImplementation")
+    public Set<LeaveImplementationDate> getLeaveImplementationDates() {
+		return leaveImplementationDates;
+	}
+
+	public void setLeaveImplementationDates(
+			Set<LeaveImplementationDate> leaveImplementationDates) {
+		this.leaveImplementationDates = leaveImplementationDates;
+	}
+	
 }

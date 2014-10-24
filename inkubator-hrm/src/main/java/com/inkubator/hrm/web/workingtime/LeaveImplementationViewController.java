@@ -112,6 +112,10 @@ public class LeaveImplementationViewController extends BaseController {
             LOGGER.error("Error when doDelete Leave", ex);
         }
     }
+    
+    public String doCancellation() {
+    	return "/protected/working_time/leave_implementation_cancel.htm?faces-redirect=true";
+    }
 
     public String doAdd() {
         return "/protected/working_time/leave_implementation_form.htm?faces-redirect=true";

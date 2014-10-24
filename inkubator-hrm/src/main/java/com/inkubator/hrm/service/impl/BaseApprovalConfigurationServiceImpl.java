@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.hamcrest.Matchers;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -95,7 +96,7 @@ public abstract class BaseApprovalConfigurationServiceImpl<T> extends IServiceIm
 	    	Iterator<ApprovalDefinition> iterAppDefs = appDefs.iterator();
 	    	while(iterAppDefs.hasNext()) {
 	    		ApprovalDefinition appDef = iterAppDefs.next();
-	    		if(currentAppDefId == appDef.getId()){	    				    			
+	    		if(ObjectUtils.equals(currentAppDefId, appDef.getId())){	    				    			
 	    			//update approval definition
 	    			this.updateApprovalDefinition(appDef);	 
 	    			iterAppDefs.remove(); //remove object from list that will being ADD in the process below	    			
@@ -110,15 +111,15 @@ public abstract class BaseApprovalConfigurationServiceImpl<T> extends IServiceIm
 	    		
 	    		//delete approval definition that no longer available in current entity 
 	    		ApprovalDefinition appDef = approvalDefinitionDao.getEntiyByPK(currentAppDefId);
-	    		try { 
+	    		if(appDef.getApprovalActivities().isEmpty()){
 	    			//delete permanently if has not been used in any approval activity process
 	    			this.approvalDefinitionDao.delete(appDef);
-	    		} catch (Exception ex) {
+	    		} else {
 	    			//since this appDef already use in approval activity process, then update appDef to noLongerInUse. 
 	    			//It still maintain in database but no longer in use anymore
 	    			appDef.setIsNoLongerInUse(Boolean.TRUE);
 		    		this.approvalDefinitionDao.update(appDef);
-	            }	    		
+	    		}	    		
 	    	}
 	    }
 	    

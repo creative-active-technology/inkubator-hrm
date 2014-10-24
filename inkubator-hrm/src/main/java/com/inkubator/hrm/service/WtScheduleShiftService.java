@@ -29,6 +29,6 @@ public interface WtScheduleShiftService extends IService<WtScheduleShift> {
     
     public List<TempJadwalKaryawan> getAllScheduleForView(Long workingGroupId, Date createDate)throws Exception;
     
-    public Double getTotalWorkingDaysBetween(Long empDataId, Date startDate, Date endDate) throws Exception;
+    public List<Date> getAllWorkingDaysBetween(Long empDataId, Date startDate, Date endDate) throws Exception;
     
 }
