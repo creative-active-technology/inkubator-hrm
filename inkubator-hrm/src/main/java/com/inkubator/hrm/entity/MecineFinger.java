@@ -52,7 +52,7 @@ public class MecineFinger implements java.io.Serializable {
     private String updatedBy;
     private Date updatedOn;
     private String query;
-//    private Set<MacineFingerUpload> macineFingerUploads = new HashSet<MacineFingerUpload>(0);
+    private Set<MacineFingerUpload> macineFingerUploads = new HashSet<MacineFingerUpload>(0);
     private Set<DepartementUploadCapture> departementUploadCaptures = new HashSet<DepartementUploadCapture>(0);
     private List<Department> departments = new ArrayList<>(0);
 
@@ -313,15 +313,16 @@ public class MecineFinger implements java.io.Serializable {
     }
 
 //    @OneToMany(fetch = FetchType.LAZY, mappedBy = "mecineFinger")
-//    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "mecineFinger", orphanRemoval = true)
-//    public Set<MacineFingerUpload> getMacineFingerUploads() {
-//        return this.macineFingerUploads;
-//    }
-//
-//    public void setMacineFingerUploads(Set<MacineFingerUpload> macineFingerUploads) {
-//        this.macineFingerUploads = macineFingerUploads;
-//    }
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "mecineFinger", orphanRemoval = true)
+    public Set<MacineFingerUpload> getMacineFingerUploads() {
+        return this.macineFingerUploads;
+    }
+
+    public void setMacineFingerUploads(Set<MacineFingerUpload> macineFingerUploads) {
+        this.macineFingerUploads = macineFingerUploads;
+    }
 //    @OneToMany(fetch = FetchType.LAZY, mappedBy = "mecineFinger")
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "mecineFinger", orphanRemoval = true)
     public Set<DepartementUploadCapture> getDepartementUploadCaptures() {
         return this.departementUploadCaptures;
@@ -340,7 +341,6 @@ public class MecineFinger implements java.io.Serializable {
         this.baseOnField = baseOnField;
     }
 
-    
     @Transient
     public List<Department> getDepartments() {
         return departments;

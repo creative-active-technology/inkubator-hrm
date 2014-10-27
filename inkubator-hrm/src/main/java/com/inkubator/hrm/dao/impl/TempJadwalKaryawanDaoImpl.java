@@ -117,4 +117,14 @@ public class TempJadwalKaryawanDaoImpl extends IDAOImpl<TempJadwalKaryawan> impl
 
     }
 
+    @Override
+    public TempJadwalKaryawan getByEmpId(Long id, Date implementationDate) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("empData.id", id));
+        criteria.add(Restrictions.eq("tanggalWaktuKerja", implementationDate));
+        criteria.setFetchMode("wtWorkingHour", FetchMode.JOIN);
+        return (TempJadwalKaryawan) criteria.uniqueResult();
+    }
+
 }

@@ -20,4 +20,6 @@ public interface ImplementationOfOverTimeService extends IService<Implementation
     public Long getTotalImplementationOfOverTimeByParam(ImplementationOfOvertimeSearchParameter searchParameter) throws Exception;
     
     public ImplementationOfOverTime getEntityByPkWithDetail(Long id) throws Exception;
+    
+    public String save(ImplementationOfOverTime entity, boolean isBypassApprovalChecking) throws Exception;
 }

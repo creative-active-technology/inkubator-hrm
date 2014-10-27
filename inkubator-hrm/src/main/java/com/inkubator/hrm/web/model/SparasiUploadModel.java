@@ -14,6 +14,7 @@ public class SparasiUploadModel implements Serializable {
     private String fieldName;
     private String description;
     private Integer lenght=1;
+    private Boolean isEdit;
 
     public long getId() {
         return id;
@@ -63,5 +64,14 @@ public class SparasiUploadModel implements Serializable {
         this.lenght = lenght;
     }
 
+    public Boolean getIsEdit() {
+        return isEdit;
+    }
+
+    public void setIsEdit(Boolean isEdit) {
+        this.isEdit = isEdit;
+    }
+
   
+    
 }

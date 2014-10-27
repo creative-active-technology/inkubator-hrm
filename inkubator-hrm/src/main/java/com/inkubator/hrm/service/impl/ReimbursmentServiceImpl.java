@@ -377,6 +377,10 @@ public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements 
         if (approvalActivity == null) {
             reimbursment.setEmpData(empData);
             reimbursment.setReimbursmentSchema(reimbursmentSchema);
+            
+            String createdBy = org.apache.commons.lang.StringUtils.isEmpty(reimbursment.getCreatedBy()) ? UserInfoUtil.getUserName() : reimbursment.getCreatedBy();
+            Date createdOn = reimbursment.getCreatedOn() == null ? new Date() : reimbursment.getCreatedOn();
+            
             reimbursment.setCreatedBy(UserInfoUtil.getUserName());
             reimbursment.setCreatedOn(new Date());
             if (reimbursmentFile != null) {
@@ -452,7 +456,7 @@ public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements 
             jsonObj.put("ccEmailAddresses", ccEmailAddresses);
             jsonObj.put("locale", appActivity.getLocale());
             jsonObj.put("reimbursment_schema", reimbursmentSchema.getName());
-            jsonObj.put("proposeDate", dateFormat.format(new Date()));
+            jsonObj.put("proposeDate", dateFormat.format(reimbursment.getCreatedOn()));
             jsonObj.put("claim_date", dateFormat.format(reimbursment.getClaimDate()));
             if (reimbursment.getNominal() != null) {
                 jsonObj.put("nominalOrUnit", new DecimalFormat("###,###").format(reimbursment.getNominal()));

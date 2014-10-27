@@ -5,6 +5,7 @@
 package com.inkubator.hrm.web.search;
 
 import com.inkubator.webcore.util.SearchParameter;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -12,33 +13,50 @@ import com.inkubator.webcore.util.SearchParameter;
  */
 public class NeracaCutiSearchParameter extends SearchParameter{
 
-    private String leaveDistribution;
-    private Double debet;
-    private Double kredit;
+    private String empData;
+    private String leave;
+    private String nik;
 
-    public String getLeaveDistribution() {
-        return leaveDistribution;
+    public String getEmpData() {
+        if (StringUtils.equalsIgnoreCase(getKeyParam(), "empData")) {
+            empData = getParameter();
+        } else {
+            empData = null;
+        }
+        return empData;
     }
 
-    public void setLeaveDistribution(String leaveDistribution) {
-        this.leaveDistribution = leaveDistribution;
+    public void setEmpData(String empData) {
+        this.empData = empData;
     }
 
-    public Double getDebet() {
-        return debet;
+    public String getLeave() {
+        if (StringUtils.equalsIgnoreCase(getKeyParam(), "leaveName")) {
+            leave = getParameter();
+        } else {
+            leave = null;
+        }
+        return leave;
     }
 
-    public void setDebet(Double debet) {
-        this.debet = debet;
+    public void setLeave(String leave) {
+        this.leave = leave;
     }
 
-    public Double getKredit() {
-        return kredit;
+    public String getNik() {
+        if (StringUtils.equalsIgnoreCase(getKeyParam(), "nik")) {
+            nik = getParameter();
+        } else {
+            nik = null;
+        }
+        return nik;
     }
 
-    public void setKredit(Double kredit) {
-        this.kredit = kredit;
+    public void setNik(String nik) {
+        this.nik = nik;
     }
+
+    
     
     
 }

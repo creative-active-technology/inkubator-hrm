@@ -19,6 +19,11 @@ public class ReimbursmentSearchParameter extends SearchParameter{
     private BigDecimal nominal;
 
     public String getEmpData() {
+        if (StringUtils.equalsIgnoreCase(getKeyParam(), "empData")) {
+            empData = getParameter();
+        } else {
+            empData = null;
+        }
         return empData;
     }
 

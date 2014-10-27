@@ -98,6 +98,10 @@ public class OverTimeFormController extends BaseController {
         }
     }
 
+    public String doBack() {
+        return "/protected/working_time/over_time_view.htm?faces-redirect=true";
+    }
+    
     public String doSave() {
         WtOverTime wtOverTime = getEntityFromViewModel(overTimeModel);
         try {

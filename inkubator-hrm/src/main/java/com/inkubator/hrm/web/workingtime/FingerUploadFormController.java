@@ -5,6 +5,7 @@
  */
 package com.inkubator.hrm.web.workingtime;
 
+import ch.lambdaj.Lambda;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.DepartementUploadCapture;
@@ -62,20 +63,18 @@ public class FingerUploadFormController extends BaseController {
             List<Department> dataSoucreData = departmentService.getAllData();
             List<Department> target = mecineFinger.getDepartments();
             dataSoucreData.removeAll(target);
-//            for (Department target1 : target) {
-//               dataSoucreData.remove(target1);
-//            }
-          
             dualListModel.setSource(dataSoucreData);
             dualListModel.setTarget(target);
-            System.out.println("nilai param " + param);
             fingerUploadModel = new FingerUploadModel();
             fingerUploadModel.setDescription(mecineFinger.getDescription());
 //            System.out.println(mecineFinger.getMacineFingerUploads().size());
-//            if (!mecineFinger.getMacineFingerUploads().isEmpty()) {
-//                List<MacineFingerUpload> dataMesinFingerUpload = new ArrayList(mecineFinger.getDepartementUploadCaptures());
-//                fingerUploadModel.setDataToSave(dataMesinFingerUpload);
-//            }
+            if (!mecineFinger.getMacineFingerUploads().isEmpty()) {
+                List<MacineFingerUpload> dataMesinFingerUpload = new ArrayList(mecineFinger.getMacineFingerUploads());
+                List<MacineFingerUpload> sortBySequence = Lambda.sort(dataMesinFingerUpload, Lambda.on(MacineFingerUpload.class).getFieldNo());
+                fingerUploadModel.setDataToSave(sortBySequence);
+            } else {
+                fingerUploadModel.setDataToSave(getInitialData());
+            }
 
             if (mecineFinger.getBaseOnField() != null) {
                 fingerUploadModel.setFieldNumber(mecineFinger.getBaseOnField());
@@ -101,7 +100,6 @@ public class FingerUploadFormController extends BaseController {
             fileExtension.put(".xlsx", 1);
             fileExtension.put(".csv", 2);
 
-//            fingerUploadModel.setDataToSave(getInitialData());
         } catch (Exception ex) {
             LOGGER.error("Errot", ex);
         }
@@ -163,6 +161,7 @@ public class FingerUploadFormController extends BaseController {
         fingerUpload.setFieldLen(5);
         data.add(fingerUpload);
         MacineFingerUpload fi = new MacineFingerUpload();
+        fi.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
 //        fi.setMecineFinger(mecineFinger);
         fi.setFieldNo(2);
         fi.setFieldType("Id");
@@ -171,6 +170,7 @@ public class FingerUploadFormController extends BaseController {
         data.add(fi);
         MacineFingerUpload fis = new MacineFingerUpload();
 //        fis.setMecineFinger(mecineFinger);
+        fis.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         fis.setFieldNo(3);
         fis.setFieldType("Time");
         fis.setFieldLabel("Swap Time");
@@ -187,6 +187,15 @@ public class FingerUploadFormController extends BaseController {
     }
 
     public void doEditData() {
+        System.out.println(" nilia " + selectdMacineFingerUpload);
+        sparasiUploadModel = new SparasiUploadModel();
+        sparasiUploadModel.setDescription(selectdMacineFingerUpload.getDescription());
+        sparasiUploadModel.setFieldName(selectdMacineFingerUpload.getFieldLabel());
+        sparasiUploadModel.setFieldNumber(selectdMacineFingerUpload.getFieldNo());
+        sparasiUploadModel.setFieldType(selectdMacineFingerUpload.getFieldType());
+        sparasiUploadModel.setId(selectdMacineFingerUpload.getId());
+        sparasiUploadModel.setLenght(selectdMacineFingerUpload.getFieldLen());
+        sparasiUploadModel.setIsEdit(Boolean.TRUE);
 
     }
 
@@ -220,12 +229,14 @@ public class FingerUploadFormController extends BaseController {
     public void doSaveMecineFingerUplaod() {
 
         MacineFingerUpload fingerUpload = new MacineFingerUpload();
+        fingerUpload.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         fingerUpload.setDescription(sparasiUploadModel.getDescription());
         fingerUpload.setFieldLabel(sparasiUploadModel.getFieldName());
         fingerUpload.setFieldLen(sparasiUploadModel.getLenght());
         fingerUpload.setFieldNo(sparasiUploadModel.getFieldNumber());
         fingerUpload.setFieldType(sparasiUploadModel.getFieldType());
         List<MacineFingerUpload> dataToShow = fingerUploadModel.getDataToSave();
+        dataToShow.remove(selectdMacineFingerUpload);
         dataToShow.add(fingerUpload);
         fingerUploadModel.setDataToSave(dataToShow);
     }
@@ -234,7 +245,7 @@ public class FingerUploadFormController extends BaseController {
         this.mecineFingerService = mecineFingerService;
     }
 
-    public void doSave() {
+    public String doSave() {
         try {
             fingerUploadModel.setDataDeptToSave(dualListModel.getTarget());
             Set<DepartementUploadCapture> dataToSave = new HashSet<>();
@@ -242,7 +253,7 @@ public class FingerUploadFormController extends BaseController {
             for (Department department : data) {
                 DepartementUploadCapture capture = new DepartementUploadCapture();
                 capture.setDepartment(department);
-                capture.setMecineFinger(mecineFinger);
+//                capture.setMecineFinger(mecineFinger);
                 capture.setId(new DepartementUploadCaptureId(mecineFinger.getId(), department.getId()));
                 dataToSave.add(capture);
             }
@@ -250,8 +261,15 @@ public class FingerUploadFormController extends BaseController {
             mecineFingerService.saveByModel(fingerUploadModel, dataToSave);
             MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            return "/protected/working_time/mecine_finger_view.htm?faces-redirect=true";
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
+
+        return null;
+    }
+
+    public String doBack() {
+        return "/protected/working_time/mecine_finger_view.htm?faces-redirect=true";
     }
 }

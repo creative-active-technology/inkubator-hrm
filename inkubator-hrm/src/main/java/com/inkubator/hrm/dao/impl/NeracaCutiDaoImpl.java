@@ -10,8 +10,10 @@ import com.inkubator.hrm.dao.NeracaCutiDao;
 import com.inkubator.hrm.entity.NeracaCuti;
 import com.inkubator.hrm.web.search.NeracaCutiSearchParameter;
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -69,12 +71,24 @@ public class NeracaCutiDaoImpl extends IDAOImpl<NeracaCuti> implements NeracaCut
         return (NeracaCuti) criteria.uniqueResult();
     }
     
-        private void doSearch(NeracaCutiSearchParameter searchParameter, Criteria criteria) {
-        if (searchParameter.getLeaveDistribution()!=null) {
-                        criteria.createAlias("leaveDistribution", "ld", JoinType.INNER_JOIN);
-                        criteria.createAlias("ld.empData", "emp", JoinType.INNER_JOIN);
-        	criteria.add(Restrictions.like("emp.firstName", searchParameter.getLeaveDistribution(), MatchMode.ANYWHERE));
-        } 
+    private void doSearch(NeracaCutiSearchParameter searchParameter, Criteria criteria) {
+        criteria.createAlias("leaveDistribution", "ld", JoinType.INNER_JOIN);
+        if (searchParameter.getEmpData()!= null) {
+            criteria.createAlias("ld.empData", "ed", JoinType.INNER_JOIN);
+            criteria.createAlias("ed.bioData", "bio", JoinType.INNER_JOIN);
+            Disjunction disjunction = Restrictions.disjunction();
+            disjunction.add(Restrictions.like("bio.firstName", searchParameter.getEmpData(), MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.like("bio.lastName", searchParameter.getEmpData(), MatchMode.ANYWHERE));
+            criteria.add(disjunction);
+        }
+        if (StringUtils.isNotEmpty(searchParameter.getLeave())) {
+            criteria.createAlias("ld.leave", "l", JoinType.INNER_JOIN);
+            criteria.add(Restrictions.like("l.name", searchParameter.getLeave(), MatchMode.ANYWHERE));
+        }
+        if (searchParameter.getNik()!= null) {
+            criteria.createAlias("ld.empData", "ed", JoinType.INNER_JOIN);
+            criteria.add(Restrictions.like("ed.nik", searchParameter.getNik(), MatchMode.ANYWHERE));
+        }
         criteria.add(Restrictions.isNotNull("id"));
     }
 

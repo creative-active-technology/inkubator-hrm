@@ -87,8 +87,9 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
 	            	toSentCC.add(el.getAsString());
 	            }
             }*/
-            toSend.add("guntur@incubatechnology.com");
-            toSentCC.add("rizkykojek@gmail.com");
+//            toSend.add("guntur@incubatechnology.com");
+            toSend.add("deni.arianto24@yahoo.com");
+//            toSentCC.add("rizkykojek@gmail.com");
             vtm.setTo(toSend.toArray(new String[toSend.size()]));
             vtm.setCc(toSentCC.toArray(new String[toSentCC.size()]));
             vtm.setBcc(toSentBCC.toArray(new String[toSentBCC.size()]));
@@ -168,6 +169,19 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                             maptoSend.put("endDate", jsonObject.get("endDate").getAsString());
                             maptoSend.put("fillingDate", jsonObject.get("fillingDate").getAsString());
                             maptoSend.put("materialJobsAbandoned", jsonObject.get("materialJobsAbandoned").getAsString());
+                            break;
+                        case HRMConstant.OVERTIME:
+                            vtm.setSubject("Permohonan Lembur");
+                        	vtm.setTemplatePath("email_over_time_waiting_approval.vm");
+//                        	maptoSend.put("approverName", approverUser.getEmpData().getBioData().getFullName());
+//                            maptoSend.put("requesterName", requesterUser.getEmpData().getBioData().getFullName());
+//                            maptoSend.put("nik", requesterUser.getEmpData().getNik());
+//                            maptoSend.put("proposeDate", jsonObject.get("proposeDate").getAsString());
+//                            maptoSend.put("leaveName", jsonObject.get("leaveName").getAsString());
+//                            maptoSend.put("startDate", jsonObject.get("startDate").getAsString());
+//                            maptoSend.put("endDate", jsonObject.get("endDate").getAsString());
+//                            maptoSend.put("fillingDate", jsonObject.get("fillingDate").getAsString());
+//                            maptoSend.put("materialJobsAbandoned", jsonObject.get("materialJobsAbandoned").getAsString());
                             break;
                             
                         default:
