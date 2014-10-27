@@ -12,6 +12,7 @@ import javax.jms.Session;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
+import org.hamcrest.Matchers;
 import org.hibernate.criterion.Order;
 import org.primefaces.json.JSONException;
 import org.primefaces.json.JSONObject;
@@ -610,6 +611,23 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
 		
 	}
 	
+	private void debetLeaveBalance(LeaveDistribution leaveDistribution, double actualLeave){					
+		double balance = leaveDistribution.getBalance() + actualLeave;
+		leaveDistribution.setBalance(balance);
+		leaveDistribution.setUpdatedOn(new Date());
+		leaveDistribution.setUpdatedBy(UserInfoUtil.getUserName());
+		leaveDistributionDao.update(leaveDistribution);
+		
+		NeracaCuti neracaCuti = new NeracaCuti();
+		neracaCuti.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+		neracaCuti.setLeaveDistribution(leaveDistribution);
+		neracaCuti.setDebet(actualLeave);				
+		neracaCuti.setCreatedBy(UserInfoUtil.getUserName());
+		neracaCuti.setCreatedOn(new Date());
+		neracaCutiDao.save(neracaCuti);
+		
+	}
+	
 	private void saveLeaveImplementationDate(LeaveImplementation leaveImplementation, List<Date> actualLeaves){
 		for(Date actualLeave : actualLeaves){
 			LeaveImplementationDate entity = new LeaveImplementationDate();
@@ -625,5 +643,42 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
 	public LeaveImplementation getEntityByApprovalActivityNumberWithDetail(String activityNumber) throws Exception {
 		return leaveImplementationDao.getEntityByApprovalActivityNumberWithDetail(activityNumber);
 		
+	}
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void cancelLeaveDate(Long leaveImplementationId, List<LeaveImplementationDate> cancellationEntities) throws Exception {
+		double total = 0.0;
+		LeaveImplementation leaveImplementation = leaveImplementationDao.getEntiyByPK(leaveImplementationId);
+		LeaveDistribution leaveDistribution = leaveDistributionDao.getEntityByLeaveIdAndEmpDataId(leaveImplementation.getLeave().getId(), leaveImplementation.getEmpData().getId());
+		List<LeaveImplementationDate> allList = new ArrayList<LeaveImplementationDate>();
+		allList.addAll(leaveImplementation.getLeaveImplementationDates());
+		
+		for(LeaveImplementationDate entity : allList){
+			if(Lambda.selectUnique(cancellationEntities, Lambda.having(Lambda.on(LeaveImplementationDate.class).getId(), Matchers.not(entity.getId()))) != null){
+				if(!entity.getIsCancelled()){
+					total = total + 1;
+					entity.setIsCancelled(Boolean.TRUE);
+					entity.setUpdatedBy(UserInfoUtil.getUserName());
+					entity.setUpdatedOn(new Date());
+					leaveImplementationDateDao.update(entity);
+				}
+			} else {
+				if(entity.getIsCancelled()){
+					total = total - 1;
+					entity.setIsCancelled(Boolean.FALSE);
+					entity.setUpdatedBy(UserInfoUtil.getUserName());
+					entity.setUpdatedOn(new Date());
+					leaveImplementationDateDao.update(entity);
+				}
+			}
+		}
+		
+		if(total > 0){
+			this.debetLeaveBalance(leaveDistribution, total);
+		} else if(total < 0){
+			total = total * (-1);
+			this.creditLeaveBalance(leaveDistribution, total);
+		}
 	}
 }
