@@ -122,7 +122,7 @@ public class ImplementationOfOverTimeViewController extends BaseController{
             options.put("resizable", false);
             options.put("contentWidth", 430);
             options.put("contentHeight", 380);
-            RequestContext.getCurrentInstance().openDialog("implementation_ot_form", options, params);
+            RequestContext.getCurrentInstance().openDialog("overtime_implementation_form", options, params);
         }
     //    @Override
     //    public void onDialogReturn(SelectEvent event) {

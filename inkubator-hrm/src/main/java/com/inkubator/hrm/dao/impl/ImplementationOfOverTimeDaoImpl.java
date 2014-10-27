@@ -76,5 +76,15 @@ public class ImplementationOfOverTimeDaoImpl extends IDAOImpl<ImplementationOfOv
 
         criteria.add(Restrictions.isNotNull("id"));
     }
+
+    @Override
+    public ImplementationOfOverTime getEntityByApprovalActivityNumberWithDetail(String activityNumber) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("approvalActivityNumber", activityNumber));
+        criteria.setFetchMode("empData", FetchMode.JOIN);
+        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+        criteria.setFetchMode("wtOverTime", FetchMode.JOIN);
+        return (ImplementationOfOverTime) criteria.uniqueResult();
+    }
     
 }

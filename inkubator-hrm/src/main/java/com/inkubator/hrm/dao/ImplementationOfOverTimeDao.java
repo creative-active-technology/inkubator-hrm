@@ -24,4 +24,6 @@ public interface ImplementationOfOverTimeDao extends IDAO<ImplementationOfOverTi
     public Long getTotalByCodeAndNotId(String code, Long id);
     
     public Long getByCode(String code);
+    
+    public ImplementationOfOverTime getEntityByApprovalActivityNumberWithDetail(String activityNumber);
 }
