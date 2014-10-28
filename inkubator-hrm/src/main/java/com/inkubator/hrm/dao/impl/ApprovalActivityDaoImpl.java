@@ -155,6 +155,13 @@ public class ApprovalActivityDaoImpl extends IDAOImpl<ApprovalActivity> implemen
         criteria.addOrder(order);
         return criteria.list();
     }
+    
+    public List<ApprovalActivity> getAllDataByPreviousActivityNumber(String previousActivityNumber, Order order) {
+    	Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("previousActivityNumber", previousActivityNumber));
+        criteria.addOrder(order);
+        return criteria.list();
+    }
 
     @Override
     public List<ApprovalActivity> getDataNotSendEmailYet() {

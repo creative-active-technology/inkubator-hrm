@@ -723,8 +723,9 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
 	    		jsonObj.addProperty("cancellationDescription", cancellationDescription);
 	    		jsonObj.addProperty("isCancellationProcess", Boolean.TRUE);
 	    		
-	    		//save approval activity
+	    		//save approval activity with previous activiy number, for approval historical purpose
 	    		approvalActivity.setPendingData(gson.toJson(jsonObj));
+	    		approvalActivity.setPreviousActivityNumber(leaveImplementation.getApprovalActivityNumber());
 	    		approvalActivityDao.save(approvalActivity);
 	    		
 	    		//update approval activity number, for history approval purpose

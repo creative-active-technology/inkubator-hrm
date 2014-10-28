@@ -32,6 +32,8 @@ public interface ApprovalActivityDao extends IDAO<ApprovalActivity> {
     public ApprovalActivity getEntityByPkWithDetail(Long id);
 
     public List<ApprovalActivity> getAllDataByActivityNumberWithDetail(String activityNumber, Order order);
+    
+    public List<ApprovalActivity> getAllDataByPreviousActivityNumber(String previousActivityNumber, Order order);
 
     public List<ApprovalActivity> getDataNotSendEmailYet();
     

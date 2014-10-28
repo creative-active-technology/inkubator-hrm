@@ -16,9 +16,13 @@ import javax.faces.bean.ViewScoped;
 
 import org.apache.commons.lang.StringUtils;
 
+import ch.lambdaj.Lambda;
+
+import com.google.gson.Gson;
 import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.LeaveImplementation;
 import com.inkubator.hrm.entity.LeaveImplementationDate;
+import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.ApprovalActivityService;
 import com.inkubator.hrm.service.LeaveImplementationService;
 import com.inkubator.webcore.controller.BaseController;
@@ -51,13 +55,24 @@ public class LeaveImplementationDetailController extends BaseController {
             if(StringUtils.equals(param, "e")){
             	/* parameter (id) ini datangnya dari leave implementation View */
             	selectedLeaveImplementation = leaveImplementationService.getEntityByPkWithDetail(Long.parseLong(execution.substring(1)));
-            	listLeaveImplDate.addAll(selectedLeaveImplementation.getLeaveImplementationDates());
+            	listLeaveImplDate.addAll(selectedLeaveImplementation.getLeaveImplementationDates());            	
             } else {
             	/* parameter (activityNumber) ini datangnya dari home approval request history View */
-            	selectedLeaveImplementation = leaveImplementationService.getEntityByApprovalActivityNumberWithDetail(execution.substring(1));
+            	String activityNumber = execution.substring(1);
+            	selectedLeaveImplementation = leaveImplementationService.getEntityByApprovalActivityNumberWithDetail(activityNumber);
+            	
+            	//jika null, maka ambil entity id dari activity number parent-nya
+            	if(selectedLeaveImplementation == null){ 
+            		ApprovalActivity prev = approvalActivityService.getEntityByPreviousActivityNumberLastSequence(activityNumber);
+            		Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+            		LeaveImplementation temp = gson.fromJson(prev.getPendingData(), LeaveImplementation.class);
+            		selectedLeaveImplementation = leaveImplementationService.getEntityByPkWithDetail(temp.getId());
+            	}
             	listLeaveImplDate.addAll(selectedLeaveImplementation.getLeaveImplementationDates());
             }
             
+            //sort by actual date
+            listLeaveImplDate = Lambda.sort(listLeaveImplDate, Lambda.on(LeaveImplementationDate.class).getActualDate());
             selectedApprovalActivity = approvalActivityService.getEntityByActivityNumberLastSequence(selectedLeaveImplementation.getApprovalActivityNumber());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);

@@ -31,4 +31,6 @@ public interface ApprovalActivityService extends IService<ApprovalActivity> {
     public List<ApprovalActivity> getAllDataByActivityNumberWithDetail(String activityNumber)  throws Exception;
 
 	public ApprovalActivity getEntityByActivityNumberLastSequence(String activityNumber);
+	
+	public ApprovalActivity getEntityByPreviousActivityNumberLastSequence(String previousActivityNumber);
 }
