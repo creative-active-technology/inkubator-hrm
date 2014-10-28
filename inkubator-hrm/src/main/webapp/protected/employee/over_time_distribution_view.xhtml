@@ -35,7 +35,9 @@
                                     <p:outputLabel value=":" />
                                     <p:selectOneMenu value="#{overTimeDistributionViewController.searchParameter.keyParam}" style="width: 150px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemLabel="#{appmsg['maritalstatus.name']}" itemValue="name"/>
+                                        <f:selectItem itemLabel="#{appmsg['global.nik']}" itemValue="nik"/>
+                                        <f:selectItem itemLabel="#{appmsg['global.name']}" itemValue="empData"/>
+                                        <f:selectItem itemLabel="#{appmsg['overtimedistribution.overtime_name']}" itemValue="overTime"/>
                                     </p:selectOneMenu>
                                     <p:inputText id="searchId" value="#{overTimeDistributionViewController.searchParameter.parameter}" style="width: 250px" styleClass="label_button"/>
                                     <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{overTimeDistributionViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
@@ -68,9 +70,15 @@
                             </p:column>
                             <p:column sortBy="empData">
                                 <f:facet name="header">
+                                    <h:outputText value="#{appmsg['global.nik']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.empData.nik}" />
+                            </p:column>
+                            <p:column sortBy="empData">
+                                <f:facet name="header">
                                     <h:outputText value="#{appmsg['personachievement.employee_name']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.empData.nikWithFullName}" />
+                                <h:outputLabel value= "#{data.empData.bioData.firstName} #{data.empData.bioData.lastName}" />
                             </p:column>
                             <p:column sortBy="wtOverTime" >
                                 <f:facet name="header">

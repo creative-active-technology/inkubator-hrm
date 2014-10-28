@@ -8,9 +8,11 @@ import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.ImplementationOfOverTime;
+import com.inkubator.hrm.entity.TempJadwalKaryawan;
 import com.inkubator.hrm.entity.WtOverTime;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.ImplementationOfOverTimeService;
+import com.inkubator.hrm.service.TempJadwalKaryawanService;
 import com.inkubator.hrm.service.WtOverTimeService;
 import com.inkubator.hrm.util.MapUtil;
 import com.inkubator.hrm.web.model.ImplementationOfOverTimeModel;
@@ -18,6 +20,7 @@ import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -29,6 +32,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import org.apache.commons.lang3.StringUtils;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.SelectEvent;
 
 /**
  *
@@ -43,10 +47,16 @@ public class ImplementationOfOverTimeFormController extends BaseController {
     private EmpDataService empDataService;
     @ManagedProperty(value = "#{implementationOfOverTimeService}")
     private ImplementationOfOverTimeService implementationOfOverTimeService;
+    @ManagedProperty(value = "#{tempJadwalKaryawanService}")
+    private TempJadwalKaryawanService tempJadwalKaryawanService;
     private Boolean isUpdate;
     private Map<String, Long> wtOverTimeDropDown = new TreeMap<String, Long>();
     private List<WtOverTime> listWtOverTime = new ArrayList<>();
     private ImplementationOfOverTimeModel model;
+    private Long empId;
+    private Date startTime;
+    private Date endTime;
+    private Boolean isDisableStartAndEndOverTime;
     
     @PostConstruct
     @Override
@@ -54,6 +64,7 @@ public class ImplementationOfOverTimeFormController extends BaseController {
         super.initialization();
         try{
             String implementOfOTId = FacesUtil.getRequestParameter("implementOfOTId");
+            isDisableStartAndEndOverTime = Boolean.FALSE;
             model = new ImplementationOfOverTimeModel();
             isUpdate = Boolean.FALSE;
             if (StringUtils.isNotEmpty(implementOfOTId)) {
@@ -78,6 +89,11 @@ public class ImplementationOfOverTimeFormController extends BaseController {
         wtOverTimeService = null;
         model = null;
         empDataService = null;
+        tempJadwalKaryawanService = null;
+        isDisableStartAndEndOverTime = null;
+        empId = null;
+        startTime = null;
+        endTime = null;
     }
     
     public void listDrowDown() throws Exception {
@@ -148,6 +164,85 @@ public class ImplementationOfOverTimeFormController extends BaseController {
         }
     }
     
+    public void doSaved() {
+        ImplementationOfOverTime implementationOfOT = getEntityFromViewModel(model);
+        
+        try {
+        	String path = "";
+        	
+            if (isUpdate) {
+                implementationOfOverTimeService.update(implementationOfOT);
+                RequestContext.getCurrentInstance().closeDialog(HRMConstant.UPDATE_CONDITION);
+            } else {
+            	String message = implementationOfOverTimeService.save(implementationOfOT, false);
+            	if(StringUtils.equals(message, "success_need_approval")){
+            		RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
+                        System.out.println("need approval");
+            	} else {
+                        System.out.println("no need approval");
+            		RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
+            	}
+            }
+            
+        } catch (BussinessException ex) { //data already exist(duplicate)
+            LOGGER.error("Error", ex);
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
+        }
+    }
+    
+    public void dateChange() throws Exception{
+        TempJadwalKaryawan jadwalKaryawan = tempJadwalKaryawanService.getByEmpId(empId, model.getImplementationDate());
+            if(jadwalKaryawan.getWtWorkingHour().getIsManageOvertime()){
+                model.setStartTime(jadwalKaryawan.getWtWorkingHour().getStartOvertime());
+                model.setEndTime(jadwalKaryawan.getWtWorkingHour().getEndOvertime());
+                isDisableStartAndEndOverTime = Boolean.TRUE;
+            }else{
+                isDisableStartAndEndOverTime = Boolean.FALSE;
+                System.out.println("input sendiri");
+            }
+        
+    }
+    
+    public void pickStartTime(){
+        System.out.println(model.getStartTime()+"--------------");
+        startTime = model.getStartTime();
+    }
+    
+    public void pickEndTime(){
+        System.out.println(startTime+"=========");
+        endTime = model.getEndTime();
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+    
+    public void doSelectEmployee(){
+        empId = model.getEmpData().getId();
+    }
+
+    public Long getEmpId() {
+        return empId;
+    }
+
+    public void setEmpId(Long empId) {
+        this.empId = empId;
+    }
+
+    public Boolean getIsDisableStartAndEndOverTime() {
+        return isDisableStartAndEndOverTime;
+    }
+
+    public void setIsDisableStartAndEndOverTime(Boolean isDisableStartAndEndOverTime) {
+        this.isDisableStartAndEndOverTime = isDisableStartAndEndOverTime;
+    }
+    
     public WtOverTimeService getWtOverTimeService() {
         return wtOverTimeService;
     }
@@ -202,6 +297,22 @@ public class ImplementationOfOverTimeFormController extends BaseController {
 
     public void setEmpDataService(EmpDataService empDataService) {
         this.empDataService = empDataService;
+    }
+
+    public TempJadwalKaryawanService getTempJadwalKaryawanService() {
+        return tempJadwalKaryawanService;
+    }
+
+    public void setTempJadwalKaryawanService(TempJadwalKaryawanService tempJadwalKaryawanService) {
+        this.tempJadwalKaryawanService = tempJadwalKaryawanService;
+    }
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
     }
     
     

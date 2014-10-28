@@ -49,7 +49,7 @@
                                         <pe:exporter target="tableUnitKerjaId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Unit_Kerja"/>
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.add']}" actionListener="#{unitKerjaController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
-                                        <p:ajax event="dialogReturn" listener="#{unitKerjaController.onDialogReturn}"  update="tableUnitKerjaId"/>
+                                        <p:ajax event="dialogReturn" listener="#{unitKerjaController.onDialogReturn}"  update="tableUnitKerjaId, growlUnitKerjaId"/>
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{unitKerjaController.doClose()}" icon="ui-icon-home" />
                                     
@@ -110,7 +110,7 @@
                                 <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" ajax="true"
                                                   action="#{unitKerjaController.doEdit()}" >
                                     <f:setPropertyActionListener value="#{unitKerjaData}" target="#{unitKerjaController.selectedUnitKerja}" />
-                                    <p:ajax event="dialogReturn" listener="#{unitKerjaController.onDialogReturn}"  update="tableUnitKerjaId"/>
+                                    <p:ajax event="dialogReturn" listener="#{unitKerjaController.onDialogReturn}"  update="tableUnitKerjaId, :formUnitKerjatId:growlUnitKerjaId"/>
                                 </p:commandButton> 
                             </p:column> 
                             <f:facet name="footer">

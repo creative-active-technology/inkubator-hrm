@@ -11,10 +11,12 @@ import com.inkubator.hrm.web.search.ReimbursmentSearchParameter;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -73,7 +75,15 @@ public class ReimburstmentDaoImpl extends IDAOImpl<Reimbursment> implements Reim
         if (searchParameter.getCode() != null) {
             criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.ANYWHERE));
         }
-
+        if (searchParameter.getEmpData()!= null) {
+            criteria.createAlias("empData", "ed", JoinType.INNER_JOIN);
+            criteria.createAlias("ed.bioData", "bio", JoinType.INNER_JOIN);
+            Disjunction disjunction = Restrictions.disjunction();
+            disjunction.add(Restrictions.like("ed.nik", searchParameter.getEmpData(), MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.like("bio.firstName", searchParameter.getEmpData(), MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.like("bio.lastName", searchParameter.getEmpData(), MatchMode.ANYWHERE));
+            criteria.add(disjunction);
+        }
         criteria.add(Restrictions.isNotNull("id"));
     }
 

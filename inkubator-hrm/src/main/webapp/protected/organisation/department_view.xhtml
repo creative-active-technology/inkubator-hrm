@@ -48,7 +48,7 @@
                                         <pe:exporter target="tableDepartmentId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Department"/>
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.add']}" actionListener="#{departmentController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
-                                        <p:ajax event="dialogReturn" listener="#{departmentController.onDialogReturn}"  update="tableDepartmentId"/>
+                                        <p:ajax event="dialogReturn" listener="#{departmentController.onDialogReturn}"  update="tableDepartmentId, growlDepartmentId"/>
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{departmentController.doClose()}" icon="ui-icon-home" />
                                     
@@ -97,7 +97,7 @@
                                 <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" ajax="true"
                                                   action="#{departmentController.doEdit()}" >
                                     <f:setPropertyActionListener value="#{departmentData}" target="#{departmentController.selectedDepartment}" />
-                                    <p:ajax event="dialogReturn" listener="#{overTimeViewController.onDialogReturn}"  update="tableDepartmentId"/>
+                                    <p:ajax event="dialogReturn" listener="#{overTimeViewController.onDialogReturn}"  update="tableDepartmentId, :formDepartmentId:growlDepartmentId"/>
                                 </p:commandButton> 
                             </p:column> 
                             <f:facet name="footer">

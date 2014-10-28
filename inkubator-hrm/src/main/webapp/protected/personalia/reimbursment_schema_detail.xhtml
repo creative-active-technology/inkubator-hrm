@@ -27,8 +27,8 @@
                         </h:panelGroup>
                     </h:panelGrid>
                     <p:separator/>
-                    <p:growl id="userViewGrowlId" globalOnly="true" showDetail="true" />
-                    <h:form id="jobTitleViewId">
+                    <p:growl id="growlId" globalOnly="true" showDetail="true" />
+                    <h:form id="formId">
                         <p:panelGrid style="width: 100%;margin-top: 20px;margin-bottom: 15px" styleClass="grid_border3">
                             <p:row>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
@@ -63,7 +63,7 @@
                                 </p:column>
 
                             </p:row>
-                            <p:row>
+                            <p:row rendered="#{!reimbursmentSchemaDetailController.isMeasurementUnitOrNominal}">
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="#{appmsg['jabatan.cost_center_name']}" style="font-weight: bold"/>
                                 </p:column>
@@ -81,7 +81,7 @@
 
                             </p:row>
 
-                            <p:row>
+                            <p:row rendered="#{!reimbursmentSchemaDetailController.isMeasurementUnitOrNominal}">
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="#{appmsg['reimbursment.nominal_unit']}" style="font-weight: bold"/>
                                 </p:column>
@@ -95,21 +95,35 @@
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:outputLabel  value="#{reimbursmentSchemaDetailController.selectedReimbursmentSchema.ratioSalary}" />
-                                    <p:outputLabel  value=" x #{appmsg['reimbursment.salary']}" />
+                                    <p:outputLabel rendered="#{reimbursmentSchemaDetailController.isDisableRatio}" value=" x #{appmsg['reimbursment.salary']}" />
                                 </p:column>
 
                             </p:row>
                             
                             <p:row>
-                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                <!-- ### -->
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" rendered="#{reimbursmentSchemaDetailController.isMeasurementUnitOrNominal}">
+                                    <p:outputLabel  value="#{appmsg['reimbursment.quantity']}" style="font-weight: bold"/>
+                                    
+                                </p:column>
+                                <p:column style="width: 37%" rendered="#{reimbursmentSchemaDetailController.isMeasurementUnitOrNominal}">
+                                    <p:outputLabel  value="#{reimbursmentSchemaDetailController.selectedReimbursmentSchema.quantity}" >
+                                    </p:outputLabel>
+                                    <p:outputLabel  value=" #{appmsg['reimbursment.unit']}" >
+                                    </p:outputLabel>
+                                </p:column>
+                                
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" rendered="#{!reimbursmentSchemaDetailController.isMeasurementUnitOrNominal}">
                                     <p:outputLabel  value="#{appmsg['reimbursment.payroll_component']}" style="font-weight: bold"/>
                                     
                                 </p:column>
-                                <p:column style="width: 37%">
+                                <p:column style="width: 37%" rendered="#{!reimbursmentSchemaDetailController.isMeasurementUnitOrNominal}">
                                     <p:outputLabel  value="#{reimbursmentSchemaDetailController.selectedReimbursmentSchema.payrollComponent}" >
                                         <f:converter converterId="payrollComponentConverter"/>
                                     </p:outputLabel>
                                 </p:column>
+                                
+                                <!-- ### -->
                                 <p:column style="width: 13%;background-color: #e1f0f0!important">
                                     <p:outputLabel  value="#{appmsg['reimbursment.time_range']}" style="font-weight: bold"/>
                                 </p:column>

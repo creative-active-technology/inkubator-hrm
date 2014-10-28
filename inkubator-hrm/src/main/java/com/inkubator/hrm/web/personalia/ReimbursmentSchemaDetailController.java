@@ -4,6 +4,7 @@
  */
 package com.inkubator.hrm.web.personalia;
 
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.ReimbursmentSchema;
 import com.inkubator.hrm.entity.ReimbursmentSchemaEmployeeType;
 import com.inkubator.hrm.service.ReimbursmentSchemaService;
@@ -29,14 +30,26 @@ public class ReimbursmentSchemaDetailController extends BaseController{
     private ReimbursmentSchemaService reimbursmentSchemaService;
     private List<ReimbursmentSchema> listReimbursmentSchema;
     private List<ReimbursmentSchemaEmployeeType> listReimbursmentSchemaEmployeeType;
-    
+    private Boolean isDisableRatio;
+    private Boolean isMeasurementUnitOrNominal;
     @PostConstruct
     @Override
     public void initialization() {
         try {
+            
             super.initialization();
+            isMeasurementUnitOrNominal = Boolean.FALSE;
+            isDisableRatio = Boolean.TRUE;
             String reimbursmentId = FacesUtil.getRequestParameter("execution");
             selectedReimbursmentSchema = reimbursmentSchemaService.getEntityByPkWithAllRelation(Long.parseLong(reimbursmentId.substring(1)));
+            
+            if(selectedReimbursmentSchema.getMeasurement() == HRMConstant.REIMBURSMENT_UNIT ){
+                isMeasurementUnitOrNominal = Boolean.TRUE;
+            }else{
+                if(selectedReimbursmentSchema.getBasicValue() == HRMConstant.BASIC_VALUE_NOMINAL){
+                    isDisableRatio = Boolean.FALSE;
+                }
+            }
             listReimbursmentSchemaEmployeeType = new ArrayList<>(selectedReimbursmentSchema.getReimbursmentSchemaEmployeeTypes());
             
         } catch (Exception ex) {
@@ -55,6 +68,8 @@ public class ReimbursmentSchemaDetailController extends BaseController{
     
     @PreDestroy
     public void cleanAndExit() {
+        isMeasurementUnitOrNominal = null;
+        isDisableRatio = null;
         selectedReimbursmentSchema = null;
         reimbursmentSchemaService = null;
         listReimbursmentSchema = null;
@@ -91,6 +106,22 @@ public class ReimbursmentSchemaDetailController extends BaseController{
 
     public void setListReimbursmentSchemaEmployeeType(List<ReimbursmentSchemaEmployeeType> listReimbursmentSchemaEmployeeType) {
         this.listReimbursmentSchemaEmployeeType = listReimbursmentSchemaEmployeeType;
+    }
+
+    public Boolean getIsDisableRatio() {
+        return isDisableRatio;
+    }
+
+    public void setIsDisableRatio(Boolean isDisableRatio) {
+        this.isDisableRatio = isDisableRatio;
+    }
+
+    public Boolean getIsMeasurementUnitOrNominal() {
+        return isMeasurementUnitOrNominal;
+    }
+
+    public void setIsMeasurementUnitOrNominal(Boolean isMeasurementUnitOrNominal) {
+        this.isMeasurementUnitOrNominal = isMeasurementUnitOrNominal;
     }
     
     

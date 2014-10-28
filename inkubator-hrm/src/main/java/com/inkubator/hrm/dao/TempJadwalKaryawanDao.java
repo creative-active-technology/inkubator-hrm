@@ -27,4 +27,6 @@ public interface TempJadwalKaryawanDao extends IDAO<TempJadwalKaryawan> {
     public void saveBatch(List<TempJadwalKaryawan> jadwalKaryawans);
     
     public List<TempJadwalKaryawan>getAllByMaxEndDate(Date date);
+    
+    public TempJadwalKaryawan getByEmpId(Long id, Date implementationDate);
 }

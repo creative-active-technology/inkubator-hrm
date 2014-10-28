@@ -15,8 +15,8 @@
                 Home
             </ui:define>
             <ui:define name="center">
-                <p:growl id="growlUserFormId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
-                <h:form id="jobTitleFormId" >
+                <p:growl id="growlId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
+                <h:form id="formId" >
                     <div id="box_bg" style="margin: 10px">
                         <!--<p:panel style="margin: 10px">-->
                         <h:panelGrid style="margin-bottom: 5px" columns="2">
@@ -78,13 +78,14 @@
                                         <!--Cek HRM Constanta..-->
                                         <f:selectItem itemLabel="#{appmsg['reimbursment.unit']}" itemValue="0" />
                                         <f:selectItem itemLabel="#{appmsg['reimbursment.nominal']}" itemValue="1" />
-                                        <p:ajax update="quantity" process="@this" listener="#{reimbursmentSchemaFormController.doChangeUnitOrNominal()}"/>
+<!--                                        <p:ajax update="quantity" process="@this" listener="#{reimbursmentSchemaFormController.doChangeUnitOrNominal()}"/>
                                         <p:ajax update="costCenterId" process="@this" listener="#{reimbursmentSchemaFormController.doChangeUnitOrNominal()}"/>
                                         <p:ajax update="basicValue" process="@this" listener="#{reimbursmentSchemaFormController.doChangeUnitOrNominal()}"/>
                                         <p:ajax update="payrollComponent" process="@this" listener="#{reimbursmentSchemaFormController.doChangeUnitOrNominal()}"/>
                                         <p:ajax update="isAttachDocument" process="@this" listener="#{reimbursmentSchemaFormController.doChangeUnitOrNominal()}"/>
                                         <p:ajax update="nominalUnit" process="@this" listener="#{reimbursmentSchemaFormController.doChangeUnitOrNominal()}"/>
-                                        <p:ajax update="ratioSalary" process="@this" listener="#{reimbursmentSchemaFormController.doChangeUnitOrNominal()}"/>
+                                        <p:ajax update="ratioSalary" process="@this" listener="#{reimbursmentSchemaFormController.doChangeUnitOrNominal()}"/>-->
+                                        <p:ajax update="quantity,ratioSalary,nominalUnit,isAttachDocument,payrollComponent,basicValue,costCenterId,ratioSalary" process="@this" listener="#{reimbursmentSchemaFormController.doChangeUnitOrNominal()}"/>
                                     
                                     </p:selectOneRadio> 
                                     <p:message for="measurement"/>
@@ -152,7 +153,7 @@
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:spinner id="ratioSalary" value="#{reimbursmentSchemaFormController.model.ratioSalary}" min="0" max="11" required="true" size="2" disabled="#{reimbursmentSchemaFormController.isRatioSalary}"
-                                           validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
+                                           validatorMessage="#{appmsg['reimbursmentschema.must_greater_than_zero_and_not_bigger_than_']}">
                                         <f:validateLongRange minimum="1" maximum="5"/>
                                     </p:spinner>     
                                     <p:outputLabel value=" x #{appmsg['reimbursment.salary']}" styleClass="label_hrm"/>
@@ -200,7 +201,7 @@
                             
                             
                         </p:panelGrid>
-                        <p:focus context="jobTitleFormId" />
+                        <p:focus context="formId" />
                         <!--<p:separator style="margin-top: 20px;margin-bottom: 10px"/>-->
                         <p:outputLabel value="#{appmsg['reimbursment.list_of_employee_type']}" styleClass="header_big" />
                        <!--<p:outputLabel value="#{appmsg['user_view.header2']}" styleClass="header_small_no_bold" />-->
@@ -221,11 +222,11 @@
                         <div style="margin-bottom: 5px">
                             <p:commandButton value="#{appmsg['global.save']}" ajax="true" action="#{reimbursmentSchemaFormController.doSaved()}"
                                              styleClass="isitext_hrm" 
-                                             style="margin-right: 5px" label="#{appmsg['global.save']}" update="jobTitleFormId"
+                                             style="margin-right: 5px" label="#{appmsg['global.save']}" update="formId"
                                              icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
-                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="jobTitleFormId" action="#{reimbursmentSchemaFormController.doReset()}"
+                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formId" action="#{reimbursmentSchemaFormController.doReset()}"
                                              icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px" >  
-                                <p:resetInput target="jobTitleFormId" />  
+                                <p:resetInput target="formId" />  
                             </p:commandButton>
                             <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}"  immediate="true" action="#{reimbursmentSchemaFormController.doBack()}"
                                              styleClass="label_button"/>

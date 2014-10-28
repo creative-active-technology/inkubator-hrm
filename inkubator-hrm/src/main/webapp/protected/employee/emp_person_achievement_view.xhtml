@@ -36,7 +36,7 @@
                                     <p:selectOneMenu value="#{empPersonAchievementViewController.search.keyParam}" style="width: 150px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItem itemLabel="#{appmsg['personachievement.achievement']}" itemValue="achievementName"/>
-                                        <f:selectItem itemLabel="#{appmsg['personachievement.employee_name']}" itemValue="name"/>
+                                        <f:selectItem itemLabel="#{appmsg['personachievement.employee_name']}" itemValue="empData"/>
                                     </p:selectOneMenu>
                                     <p:inputText id="searchId" value="#{empPersonAchievementViewController.search.parameter}" style="width: 250px" styleClass="label_button"/>
                                     <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{empPersonAchievementViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>

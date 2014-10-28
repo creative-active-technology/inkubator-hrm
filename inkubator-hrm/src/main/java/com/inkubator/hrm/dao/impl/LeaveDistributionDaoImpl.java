@@ -61,11 +61,18 @@ public class LeaveDistributionDaoImpl extends IDAOImpl<LeaveDistribution> implem
         if (StringUtils.isNotEmpty(searchParameter.getEmpData())) {
             criteria.createAlias("empData", "ed", JoinType.INNER_JOIN);
             criteria.createAlias("ed.bioData", "bio", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("bio.firstName", searchParameter.getEmpData(), MatchMode.ANYWHERE));
+            Disjunction disjunction = Restrictions.disjunction();
+            disjunction.add(Restrictions.like("bio.firstName", searchParameter.getEmpData(), MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.like("bio.lastName", searchParameter.getEmpData(), MatchMode.ANYWHERE));
+            criteria.add(disjunction);
         }
         if (StringUtils.isNotEmpty(searchParameter.getLeave())) {
             criteria.createAlias("leave", "l", JoinType.INNER_JOIN);
             criteria.add(Restrictions.like("l.name", searchParameter.getLeave(), MatchMode.ANYWHERE));
+        }
+        if (searchParameter.getNik()!= null) {
+            criteria.createAlias("empData", "ed", JoinType.INNER_JOIN);
+            criteria.add(Restrictions.like("ed.nik", searchParameter.getNik(), MatchMode.ANYWHERE));
         }
         criteria.add(Restrictions.isNotNull("id"));
     }

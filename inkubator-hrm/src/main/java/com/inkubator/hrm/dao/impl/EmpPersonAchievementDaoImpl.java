@@ -12,6 +12,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -68,7 +69,10 @@ public class EmpPersonAchievementDaoImpl extends IDAOImpl<EmpPersonAchievement> 
         if (StringUtils.isNotEmpty(searchParameter.getEmpData())) {
             criteria.createAlias("empData", "ed", JoinType.INNER_JOIN);
             criteria.createAlias("ed.bioData", "bd", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("bd.firstName", searchParameter.getEmpData(), MatchMode.ANYWHERE));
+            Disjunction disjunction = Restrictions.disjunction();
+            disjunction.add(Restrictions.like("bd.firstName", searchParameter.getEmpData(), MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.like("bd.lastName", searchParameter.getEmpData(), MatchMode.ANYWHERE));
+            criteria.add(disjunction);
         }
         criteria.add(Restrictions.isNotNull("id"));
     }

@@ -18,6 +18,9 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
+import org.hibernate.criterion.Disjunction;
+import org.hibernate.sql.JoinType;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -74,8 +77,21 @@ public class OverTimeDistributionDaoImpl extends IDAOImpl<OverTimeDistribution> 
     }
     
     private void doSearch(OverTimeDistributionSearchParameter searchParameter, Criteria criteria) {
-        if (searchParameter.getEmpData() != null) {
-            criteria.add(Restrictions.like("empData", searchParameter.getEmpData(), MatchMode.ANYWHERE));
+        if (searchParameter.getEmpData()!= null) {
+            criteria.createAlias("empData", "ed", JoinType.INNER_JOIN);
+            criteria.createAlias("ed.bioData", "bio", JoinType.INNER_JOIN);
+            Disjunction disjunction = Restrictions.disjunction();
+            disjunction.add(Restrictions.like("bio.firstName", searchParameter.getEmpData(), MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.like("bio.lastName", searchParameter.getEmpData(), MatchMode.ANYWHERE));
+            criteria.add(disjunction);
+        }
+        if (searchParameter.getNik()!= null) {
+            criteria.createAlias("empData", "ed", JoinType.INNER_JOIN);
+            criteria.add(Restrictions.like("ed.nik", searchParameter.getNik(), MatchMode.ANYWHERE));
+        }
+        if (StringUtils.isNotEmpty(searchParameter.getWtOverTime())) {
+            criteria.createAlias("wtOverTime", "ot", JoinType.INNER_JOIN);
+            criteria.add(Restrictions.like("ot.name", searchParameter.getWtOverTime(), MatchMode.ANYWHERE));
         }
         criteria.add(Restrictions.isNotNull("id"));
     }

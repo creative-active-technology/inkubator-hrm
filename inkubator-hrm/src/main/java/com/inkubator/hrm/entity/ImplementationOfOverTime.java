@@ -40,6 +40,7 @@ public class ImplementationOfOverTime implements java.io.Serializable {
      private Date implementationDate;
      private Date startTime;
      private Date endTime;
+     private String approvalActivityNumber;
      private String createdBy;
      private Date createdOn;
      private String updatedBy;
@@ -181,5 +182,15 @@ public class ImplementationOfOverTime implements java.io.Serializable {
     public void setUpdatedOn(Date updatedOn) {
         this.updatedOn = updatedOn;
     }
+
+    @Column(name="approval_activity_number", length=45, unique=true)
+    public String getApprovalActivityNumber() {
+        return approvalActivityNumber;
+    }
+
+    public void setApprovalActivityNumber(String approvalActivityNumber) {
+        this.approvalActivityNumber = approvalActivityNumber;
+    }
+    
     
 }
