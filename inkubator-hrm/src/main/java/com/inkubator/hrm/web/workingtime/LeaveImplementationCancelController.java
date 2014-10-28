@@ -44,6 +44,7 @@ public class LeaveImplementationCancelController extends BaseController {
     private LeaveImplementation selectedLeaveImplementation;
     private ApprovalActivity selectedApprovalActivity;
     private String descriptionCancellation;
+    private Boolean isAllowCancel;
     private DualListModel<LeaveImplementationDate> leaveDatesDualModel;
     @ManagedProperty(value = "#{leaveImplementationService}")
     private LeaveImplementationService leaveImplementationService;
@@ -73,6 +74,11 @@ public class LeaveImplementationCancelController extends BaseController {
             leaveDatesCancel = Lambda.sort(leaveDatesCancel, Lambda.on(LeaveImplementationDate.class).getActualDate());
             leaveDatesDualModel = new DualListModel<LeaveImplementationDate>(leaveDatesActual, leaveDatesCancel);
             
+            isAllowCancel = Boolean.TRUE;
+        	if(selectedApprovalActivity != null && 
+        			(ObjectUtils.notEqual(selectedApprovalActivity.getApprovalStatus(), HRMConstant.APPROVAL_STATUS_APPROVED) || approvalActivityService.isStillHaveWaitingStatus(selectedApprovalActivity.getActivityNumber()))){
+        		isAllowCancel = Boolean.FALSE;
+        	}
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
 
@@ -86,6 +92,7 @@ public class LeaveImplementationCancelController extends BaseController {
         selectedApprovalActivity = null;
         approvalActivityService = null;
         descriptionCancellation = null;
+        isAllowCancel = null;
     }    
     
 	public LeaveImplementation getSelectedLeaveImplementation() {
@@ -129,6 +136,14 @@ public class LeaveImplementationCancelController extends BaseController {
 		this.descriptionCancellation = descriptionCancellation;
 	}
 
+	public Boolean getIsAllowCancel() {
+		return isAllowCancel;
+	}
+
+	public void setIsAllowCancel(Boolean isAllowCancel) {
+		this.isAllowCancel = isAllowCancel;
+	}
+
 	public String doBack() {
         return "/protected/working_time/leave_implementation_view.htm?faces-redirect=true";
     }
@@ -156,12 +171,4 @@ public class LeaveImplementationCancelController extends BaseController {
     public Boolean getIsHaveApprovalActivity(){
 		return selectedApprovalActivity != null;
 	}
-    
-    public Boolean getIsAllowCancel(){
-    	Boolean isAllowCancel = Boolean.TRUE;
-    	if(selectedApprovalActivity != null && ObjectUtils.notEqual(selectedApprovalActivity.getApprovalStatus(), HRMConstant.APPROVAL_STATUS_APPROVED)){
-    		isAllowCancel = Boolean.FALSE;
-    	}
-    	return isAllowCancel;
-    }
 }

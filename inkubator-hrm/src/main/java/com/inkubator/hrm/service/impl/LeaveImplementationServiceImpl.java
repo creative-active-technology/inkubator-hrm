@@ -408,7 +408,7 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
 			Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
 			String pendingData = appActivity.getPendingData();
 			JsonObject jsonObject =  gson.fromJson(pendingData, JsonObject.class);
-			if(BooleanUtils.isNotTrue(jsonObject.get("isCancellationProcess").getAsBoolean())) {
+			if(jsonObject.get("isCancellationProcess") == null) {
 				LeaveImplementation leaveImplementation =  gson.fromJson(pendingData, LeaveImplementation.class);
 				leaveImplementation.setApprovalActivityNumber(appActivity.getActivityNumber());  //set approval activity number, for history approval purpose			
 				this.save(leaveImplementation, true);
@@ -723,13 +723,10 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
 	    		jsonObj.addProperty("cancellationDescription", cancellationDescription);
 	    		jsonObj.addProperty("isCancellationProcess", Boolean.TRUE);
 	    		
-	    		//save approval activity
+	    		//save approval activity with previous activiy number, for approval historical purpose
 	    		approvalActivity.setPendingData(gson.toJson(jsonObj));
+	    		approvalActivity.setPreviousActivityNumber(leaveImplementation.getApprovalActivityNumber());
 	    		approvalActivityDao.save(approvalActivity);
-	    		
-	    		//update approval activity number, for history approval purpose
-				leaveImplementation.setApprovalActivityNumber(approvalActivity.getActivityNumber());  
-				leaveImplementationDao.update(leaveImplementation);
 				
 	    		message = "success_need_approval";
 	    		

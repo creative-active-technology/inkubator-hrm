@@ -14,7 +14,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
-import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.primefaces.model.DualListModel;
 
@@ -79,8 +78,10 @@ public class LeaveImplementationApprovalFormController extends BaseController {
             if(isCancellationProcess) {
             	List<LeaveImplementationDate> cancellationDates = gson.fromJson(jsonObject.get("cancellationDates"), new TypeToken<List<LeaveImplementationDate>>(){}.getType());
             	List<LeaveImplementationDate> actualDates = gson.fromJson(jsonObject.get("actualDates"), new TypeToken<List<LeaveImplementationDate>>(){}.getType());
-            	cancellationDates = Lambda.sort(cancellationDates, Lambda.on(LeaveImplementationDate.class).getActualDate());
+            	//sort by actual date
+            	cancellationDates = Lambda.sort(cancellationDates, Lambda.on(LeaveImplementationDate.class).getActualDate());            	
             	actualDates = Lambda.sort(actualDates, Lambda.on(LeaveImplementationDate.class).getActualDate());
+            	
             	leaveDatesDualModel = new DualListModel<LeaveImplementationDate>(actualDates, cancellationDates);
             	cancellationDescription = jsonObject.get("cancellationDescription").getAsString();
             }

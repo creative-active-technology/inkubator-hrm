@@ -134,6 +134,14 @@
 	                            	</p:outputLabel>
 	                            </p:column>
 	                        </p:row>
+	                        <p:row rendered="#{leaveImplementationCancelController.isHaveApprovalActivity}">
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['approvalactivity.approval_comment']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 30%">
+	                            	<p:outputLabel value="#{leaveImplementationCancelController.selectedApprovalActivity.approvalCommment}"/>
+	                            </p:column>
+	                        </p:row>
 	                        <p:row rendered="#{leaveImplementationCancelController.isAllowCancel}">
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
 	                                <p:outputLabel for="cancelDatesId" value="#{appmsg['leaveimplementation.cancelled_leave_date']}" styleClass="label_hrm"/>
@@ -154,6 +162,14 @@
 	                            	<p:inputTextarea id="descriptionId" title="#{appmsg['leaveimplementation.description_of_cancelled_leave']}" value="#{leaveImplementationCancelController.descriptionCancellation}" 
 	                                    			 required="true" maxlength="1000" styleClass="isitext_hrm" style="width:290px;" />  
 	                                <p:message for="descriptionId"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row rendered="#{not leaveImplementationCancelController.isAllowCancel}">
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['approvalactivity.cancellation_status']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 30%">
+	                            	<p:outputLabel value="#{appmsg['approval.error_still_have_waiting_status']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                        </p:row>
 	                 	</p:panelGrid>                            
