@@ -5,6 +5,8 @@
  */
 package com.inkubator.hrm.web.workingtime;
 
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
@@ -12,14 +14,19 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.primefaces.model.DualListModel;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.LeaveImplementation;
+import com.inkubator.hrm.entity.LeaveImplementationDate;
 import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.ApprovalActivityService;
 import com.inkubator.hrm.service.EmpDataService;
@@ -42,6 +49,9 @@ public class LeaveImplementationApprovalFormController extends BaseController {
     private Boolean isWaitingApproval;
     private Boolean isApprover;
     private Boolean isRequester;
+    private Boolean isCancellationProcess;
+    private String cancellationDescription;
+    private DualListModel<LeaveImplementationDate> leaveDatesDualModel;
     private ApprovalActivity selectedApprovalActivity;
     @ManagedProperty(value = "#{leaveImplementationService}")
     private LeaveImplementationService leaveImplementationService;
@@ -60,8 +70,16 @@ public class LeaveImplementationApprovalFormController extends BaseController {
             isWaitingApproval = selectedApprovalActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING;
             isApprover = StringUtils.equals(UserInfoUtil.getUserName(), selectedApprovalActivity.getApprovedBy());
             isRequester = StringUtils.equals(UserInfoUtil.getUserName(), selectedApprovalActivity.getRequestBy());
-
+            
             Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+            JsonObject jsonObject =  gson.fromJson(selectedApprovalActivity.getPendingData(), JsonObject.class);
+            isCancellationProcess = BooleanUtils.isTrue(jsonObject.get("isCancellationProcess").getAsBoolean());
+            if(isCancellationProcess) {
+            	List<LeaveImplementationDate> cancellationDates = gson.fromJson(jsonObject.get("cancellationDates"), new TypeToken<List<LeaveImplementationDate>>(){}.getType());
+            	List<LeaveImplementationDate> actualDates = gson.fromJson(jsonObject.get("actualDates"), new TypeToken<List<LeaveImplementationDate>>(){}.getType());
+            	leaveDatesDualModel = new DualListModel<LeaveImplementationDate>(actualDates, cancellationDates);
+            	cancellationDescription = jsonObject.get("cancellationDescription").getAsString();
+            }
             selectedLeaveImplementation = gson.fromJson(selectedApprovalActivity.getPendingData(), LeaveImplementation.class);
             EmpData empData = empDataService.getByIdWithDetail(selectedLeaveImplementation.getEmpData().getId());
             selectedLeaveImplementation.setEmpData(empData);            
@@ -82,6 +100,9 @@ public class LeaveImplementationApprovalFormController extends BaseController {
         isWaitingApproval = null;
         isApprover = null;
         isRequester = null;
+        isCancellationProcess = null;
+        leaveDatesDualModel = null;
+        cancellationDescription = null;
     }
 
     public LeaveImplementation getSelectedLeaveImplementation() {
@@ -148,7 +169,32 @@ public class LeaveImplementationApprovalFormController extends BaseController {
 		this.isRequester = isRequester;
 	}
 
-    public String doBack() {
+	public Boolean getIsCancellationProcess() {
+		return isCancellationProcess;
+	}
+
+	public void setIsCancellationProcess(Boolean isCancellationProcess) {
+		this.isCancellationProcess = isCancellationProcess;
+	}
+
+	public DualListModel<LeaveImplementationDate> getLeaveDatesDualModel() {
+		return leaveDatesDualModel;
+	}
+
+	public void setLeaveDatesDualModel(
+			DualListModel<LeaveImplementationDate> leaveDatesDualModel) {
+		this.leaveDatesDualModel = leaveDatesDualModel;
+	}
+
+	public String getCancellationDescription() {
+		return cancellationDescription;
+	}
+
+	public void setCancellationDescription(String cancellationDescription) {
+		this.cancellationDescription = cancellationDescription;
+	}
+
+	public String doBack() {
         return "/protected/home.htm?faces-redirect=true";
     }
 

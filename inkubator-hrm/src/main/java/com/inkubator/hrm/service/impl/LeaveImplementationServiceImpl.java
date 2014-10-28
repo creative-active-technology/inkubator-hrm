@@ -11,6 +11,7 @@ import javax.jms.Message;
 import javax.jms.Session;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.hamcrest.Matchers;
 import org.hibernate.criterion.Order;
@@ -27,6 +28,10 @@ import org.springframework.transaction.annotation.Transactional;
 import ch.lambdaj.Lambda;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.exception.BussinessException;
@@ -372,10 +377,20 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
 			 * berarti langsung insert ke database */
 			Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
 			String pendingData = appActivity.getPendingData();
-			LeaveImplementation leaveImplementation =  gson.fromJson(pendingData, LeaveImplementation.class);
-			leaveImplementation.setApprovalActivityNumber(appActivity.getActivityNumber());  //set approval activity number, for history approval purpose
+			JsonObject jsonObject =  gson.fromJson(pendingData, JsonObject.class);
 			
-			this.save(leaveImplementation, true);
+			if(BooleanUtils.isTrue(jsonObject.get("isCancellationProcess").getAsBoolean())) {
+				Long leaveImplementationId = jsonObject.get("id").getAsLong();			
+				List<LeaveImplementationDate> cancellationDates = gson.fromJson(jsonObject.get("cancellationDates"), new TypeToken<List<LeaveImplementationDate>>(){}.getType());
+				List<LeaveImplementationDate> actualDates = gson.fromJson(jsonObject.get("actualDates"), new TypeToken<List<LeaveImplementationDate>>(){}.getType());
+				String cancellationDescription = jsonObject.get("cancellationDescription").getAsString();
+				this.cancellationProcess(leaveImplementationId, actualDates, cancellationDates, cancellationDescription);
+				
+			} else {
+				LeaveImplementation leaveImplementation =  gson.fromJson(pendingData, LeaveImplementation.class);
+				leaveImplementation.setApprovalActivityNumber(appActivity.getActivityNumber());  //set approval activity number, for history approval purpose			
+				this.save(leaveImplementation, true);
+			}
 		}
 		
 		//if there is no error, then sending the email notification
@@ -388,14 +403,16 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
 		Map<String, Object> result = super.rejectedAndCheckNextApproval(approvalActivityId, comment);
 		ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
 		if(StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")){
-			/** kalau status akhir sudah di approved dan tidak ada next approval, 
-			 * berarti langsung insert ke database */
+			/** kalau status akhir sudah di reject dan tidak ada next approval, 
+			 * kalau bukan cancellation berarti langsung insert ke database */
 			Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
 			String pendingData = appActivity.getPendingData();
-			LeaveImplementation leaveImplementation =  gson.fromJson(pendingData, LeaveImplementation.class);
-			leaveImplementation.setApprovalActivityNumber(appActivity.getActivityNumber());  //set approval activity number, for history approval purpose
-			
-			this.save(leaveImplementation, true);
+			JsonObject jsonObject =  gson.fromJson(pendingData, JsonObject.class);
+			if(BooleanUtils.isNotTrue(jsonObject.get("isCancellationProcess").getAsBoolean())) {
+				LeaveImplementation leaveImplementation =  gson.fromJson(pendingData, LeaveImplementation.class);
+				leaveImplementation.setApprovalActivityNumber(appActivity.getActivityNumber());  //set approval activity number, for history approval purpose			
+				this.save(leaveImplementation, true);
+			}
 		}
 		
 		//if there is no error, then sending the email notification
@@ -412,10 +429,20 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
 			 * berarti langsung insert ke database */
 			Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
 			String pendingData = appActivity.getPendingData();
-			LeaveImplementation leaveImplementation =  gson.fromJson(pendingData, LeaveImplementation.class);
-			leaveImplementation.setApprovalActivityNumber(appActivity.getActivityNumber());  //set approval activity number, for history approval purpose
+			JsonObject jsonObject =  gson.fromJson(pendingData, JsonObject.class);
 			
-			this.save(leaveImplementation, true);
+			if(BooleanUtils.isTrue(jsonObject.get("isCancellationProcess").getAsBoolean())) {
+				Long leaveImplementationId = jsonObject.get("id").getAsLong();
+				List<LeaveImplementationDate> cancellationDates = gson.fromJson(jsonObject.get("cancellationDates"), new TypeToken<List<LeaveImplementationDate>>(){}.getType());
+				List<LeaveImplementationDate> actualDates = gson.fromJson(jsonObject.get("actualDates"), new TypeToken<List<LeaveImplementationDate>>(){}.getType());
+				String cancellationDescription = jsonObject.get("cancellationDescription").getAsString();
+				this.cancellationProcess(leaveImplementationId, actualDates, cancellationDates, cancellationDescription);
+				
+			} else {
+				LeaveImplementation leaveImplementation =  gson.fromJson(pendingData, LeaveImplementation.class);
+				leaveImplementation.setApprovalActivityNumber(appActivity.getActivityNumber());  //set approval activity number, for history approval purpose			
+				this.save(leaveImplementation, true);
+			}
 		}
 		
 		//if there is no error, then sending the email notification
@@ -435,7 +462,21 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
 		}
 		
 		//parsing object data to json, for email purpose
-		LeaveImplementation leaveImplementation =  gson.fromJson(appActivity.getPendingData(), LeaveImplementation.class);		
+		LeaveImplementation leaveImplementation =  gson.fromJson(appActivity.getPendingData(), LeaveImplementation.class);
+		Leave leave = leaveDao.getEntiyByPK(leaveImplementation.getLeave().getId());
+		String cancellationDate = StringUtils.EMPTY;
+		JsonObject jsonObject =  gson.fromJson(appActivity.getPendingData(), JsonObject.class);
+		if(BooleanUtils.isTrue(jsonObject.get("isCancellationProcess").getAsBoolean())) {
+			List<LeaveImplementationDate> cancellations = gson.fromJson(jsonObject.get("cancellationDates"), new TypeToken<List<LeaveImplementationDate>>(){}.getType());
+			StringBuffer sb = new StringBuffer();
+			for(LeaveImplementationDate li : cancellations){
+				if(sb.length() != 0){
+					sb.append(", ");
+				}
+				sb.append(dateFormat.format(li.getActualDate()));
+			}
+			cancellationDate = sb.toString();
+		}
 		
 		final JSONObject jsonObj = new JSONObject();
         try {        	
@@ -443,11 +484,12 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
             jsonObj.put("ccEmailAddresses", ccEmailAddresses);
             jsonObj.put("locale", appActivity.getLocale());
             jsonObj.put("proposeDate", dateFormat.format(leaveImplementation.getCreatedOn()));
-            jsonObj.put("leaveName", leaveImplementation.getLeave().getName());
+            jsonObj.put("leaveName", leave.getName());
             jsonObj.put("startDate", dateFormat.format(leaveImplementation.getStartDate()));
             jsonObj.put("endDate", dateFormat.format(leaveImplementation.getEndDate()));
             jsonObj.put("fillingDate", dateFormat.format(leaveImplementation.getFillingDate()));
             jsonObj.put("materialJobsAbandoned", leaveImplementation.getMaterialJobsAbandoned());
+            jsonObj.put("cancellationDate", cancellationDate);
             
         } catch (JSONException e) {
             LOGGER.error("Error when create json Object ", e);
@@ -546,7 +588,7 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
 		List<Date> actualLeaves = this.getAllActualLeave(empData.getId(), leave.getId(), entity.getStartDate(), entity.getEndDate());
 		int totalActualLeaves = actualLeaves.size();
 		if(totalActualLeaves > leaveDistribution.getBalance()){
-    		throw new BussinessException("leaveimplementation.error_leave_balance is insufficient");
+    		throw new BussinessException("leaveimplementation.error_leave_balance_is_insufficient");
     	}
 				
 		entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
@@ -572,17 +614,13 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
 			//save entity dan detail-nya
 			leaveImplementationDao.save(entity);
 			this.saveLeaveImplementationDate(entity, actualLeaves);
-			
-			//cek di definisi cuti, jika isQuotaReduction is true, maka neraca cuti berkurang
-			if(leave.getIsQuotaReduction()){
-				this.creditLeaveBalance(leaveDistribution, totalActualLeaves);
-			}
+			this.creditLeaveBalance(leave, leaveDistribution, totalActualLeaves);
 			
 			message = "success_without_approval";
 		} else {
 			//parsing object to json and save to approval activity 
         	Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
-    		approvalActivity.setPendingData( gson.toJson(entity));
+    		approvalActivity.setPendingData(gson.toJson(entity));
     		approvalActivityDao.save(approvalActivity);
     		
     		message = "success_need_approval";
@@ -594,38 +632,42 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
 		return message;
 	}
 	
-	private void creditLeaveBalance(LeaveDistribution leaveDistribution, double actualLeave){					
-		double balance = leaveDistribution.getBalance() - actualLeave;
-		leaveDistribution.setBalance(balance);
-		leaveDistribution.setUpdatedOn(new Date());
-		leaveDistribution.setUpdatedBy(UserInfoUtil.getUserName());
-		leaveDistributionDao.update(leaveDistribution);
-		
-		NeracaCuti neracaCuti = new NeracaCuti();
-		neracaCuti.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
-		neracaCuti.setLeaveDistribution(leaveDistribution);
-		neracaCuti.setKredit(actualLeave);				
-		neracaCuti.setCreatedBy(UserInfoUtil.getUserName());
-		neracaCuti.setCreatedOn(new Date());
-		neracaCutiDao.save(neracaCuti);
-		
+	private void creditLeaveBalance(Leave leave, LeaveDistribution leaveDistribution, double actualLeave){					
+		//cek di definisi cuti, jika isQuotaReduction is true, maka neraca cuti berkurang
+		if(leave.getIsQuotaReduction()){
+			double balance = leaveDistribution.getBalance() - actualLeave;
+			leaveDistribution.setBalance(balance);
+			leaveDistribution.setUpdatedOn(new Date());
+			leaveDistribution.setUpdatedBy(UserInfoUtil.getUserName());
+			leaveDistributionDao.update(leaveDistribution);
+			
+			NeracaCuti neracaCuti = new NeracaCuti();
+			neracaCuti.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+			neracaCuti.setLeaveDistribution(leaveDistribution);
+			neracaCuti.setKredit(actualLeave);				
+			neracaCuti.setCreatedBy(UserInfoUtil.getUserName());
+			neracaCuti.setCreatedOn(new Date());
+			neracaCutiDao.save(neracaCuti);
+		}		
 	}
 	
-	private void debetLeaveBalance(LeaveDistribution leaveDistribution, double actualLeave){					
-		double balance = leaveDistribution.getBalance() + actualLeave;
-		leaveDistribution.setBalance(balance);
-		leaveDistribution.setUpdatedOn(new Date());
-		leaveDistribution.setUpdatedBy(UserInfoUtil.getUserName());
-		leaveDistributionDao.update(leaveDistribution);
-		
-		NeracaCuti neracaCuti = new NeracaCuti();
-		neracaCuti.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
-		neracaCuti.setLeaveDistribution(leaveDistribution);
-		neracaCuti.setDebet(actualLeave);				
-		neracaCuti.setCreatedBy(UserInfoUtil.getUserName());
-		neracaCuti.setCreatedOn(new Date());
-		neracaCutiDao.save(neracaCuti);
-		
+	private void debetLeaveBalance(Leave leave, LeaveDistribution leaveDistribution, double actualLeave){					
+		//cek di definisi cuti, jika isQuotaReduction is true, maka neraca cuti bertambah
+		if(leave.getIsQuotaReduction()){
+			double balance = leaveDistribution.getBalance() + actualLeave;
+			leaveDistribution.setBalance(balance);
+			leaveDistribution.setUpdatedOn(new Date());
+			leaveDistribution.setUpdatedBy(UserInfoUtil.getUserName());
+			leaveDistributionDao.update(leaveDistribution);
+			
+			NeracaCuti neracaCuti = new NeracaCuti();
+			neracaCuti.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+			neracaCuti.setLeaveDistribution(leaveDistribution);
+			neracaCuti.setDebet(actualLeave);				
+			neracaCuti.setCreatedBy(UserInfoUtil.getUserName());
+			neracaCuti.setCreatedOn(new Date());
+			neracaCutiDao.save(neracaCuti);
+		}		
 	}
 	
 	private void saveLeaveImplementationDate(LeaveImplementation leaveImplementation, List<Date> actualLeaves){
@@ -647,38 +689,94 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
 
 	@Override
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void cancelLeaveDate(Long leaveImplementationId, List<LeaveImplementationDate> cancellationEntities) throws Exception {
-		double total = 0.0;
-		LeaveImplementation leaveImplementation = leaveImplementationDao.getEntiyByPK(leaveImplementationId);
-		LeaveDistribution leaveDistribution = leaveDistributionDao.getEntityByLeaveIdAndEmpDataId(leaveImplementation.getLeave().getId(), leaveImplementation.getEmpData().getId());
-		List<LeaveImplementationDate> allList = new ArrayList<LeaveImplementationDate>();
-		allList.addAll(leaveImplementation.getLeaveImplementationDates());
+	public String cancellation(Long leaveImplementationId, List<LeaveImplementationDate> actualLeaves, List<LeaveImplementationDate> cancellationLeaves, String cancellationDescription) throws Exception {
+		String message = "success_without_approval";	
+		Date now = new Date();
 		
-		for(LeaveImplementationDate entity : allList){
-			if(Lambda.selectUnique(cancellationEntities, Lambda.having(Lambda.on(LeaveImplementationDate.class).getId(), Matchers.not(entity.getId()))) != null){
-				if(!entity.getIsCancelled()){
-					total = total + 1;
-					entity.setIsCancelled(Boolean.TRUE);
-					entity.setUpdatedBy(UserInfoUtil.getUserName());
-					entity.setUpdatedOn(new Date());
-					leaveImplementationDateDao.update(entity);
-				}
+		/** jika tanggal pembatalan telah melewati tanggal pelaksanaan, maka memerlukan approval/persetujuan process*/
+		Boolean isNeedApprovalChecking =  Lambda.selectFirst(cancellationLeaves, Lambda.having(Lambda.on(LeaveImplementationDate.class).getActualDate().getTime(), Matchers.lessThan(now.getTime()))) != null;
+		LeaveImplementation leaveImplementation = leaveImplementationDao.getEntiyByPK(leaveImplementationId);
+		
+		if(isNeedApprovalChecking){
+			//check approval process
+			HrmUser requestUser = hrmUserDao.getByEmpDataId(leaveImplementation.getEmpData().getId());
+			ApprovalActivity approvalActivity = super.checkApprovalProcess(HRMConstant.LEAVE_CANCELLATION, requestUser.getUserId());
+			if(approvalActivity == null){
+				this.cancellationProcess(leaveImplementationId, actualLeaves, cancellationLeaves, cancellationDescription);
+				
 			} else {
-				if(entity.getIsCancelled()){
-					total = total - 1;
-					entity.setIsCancelled(Boolean.FALSE);
-					entity.setUpdatedBy(UserInfoUtil.getUserName());
-					entity.setUpdatedOn(new Date());
-					leaveImplementationDateDao.update(entity);
-				}
+				//parsing object to json and save to approval activity 
+				JsonParser parser = new JsonParser();
+	        	Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+	        	JsonObject jsonObj = (JsonObject) parser.parse(gson.toJson(leaveImplementation));
+	        	JsonArray cancellations = new JsonArray();
+	    		for(LeaveImplementationDate ld: cancellationLeaves){
+	    			JsonObject component = (JsonObject) parser.parse(gson.toJson(ld));
+	    			cancellations.add(component);
+	    		}
+	    		JsonArray actuals = new JsonArray();
+	    		for(LeaveImplementationDate ld: actualLeaves){
+	    			JsonObject component = (JsonObject) parser.parse(gson.toJson(ld));
+	    			actuals.add(component);
+	    		}
+	    		jsonObj.add("cancellationDates", cancellations);
+	    		jsonObj.add("actualDates", actuals);
+	    		jsonObj.addProperty("cancellationDescription", cancellationDescription);
+	    		jsonObj.addProperty("isCancellationProcess", Boolean.TRUE);
+	    		
+	    		//save approval activity
+	    		approvalActivity.setPendingData(gson.toJson(jsonObj));
+	    		approvalActivityDao.save(approvalActivity);
+	    		
+	    		//update approval activity number, for history approval purpose
+				leaveImplementation.setApprovalActivityNumber(approvalActivity.getActivityNumber());  
+				leaveImplementationDao.update(leaveImplementation);
+				
+	    		message = "success_need_approval";
+	    		
+	    		//sending email notification
+	    		this.sendingEmailApprovalNotif(approvalActivity);
+			}
+		} else {
+			this.cancellationProcess(leaveImplementationId, actualLeaves, cancellationLeaves, cancellationDescription);
+		}
+		
+		return message;
+	}
+	
+	private void cancellationProcess(Long leaveImplementationId, List<LeaveImplementationDate> actualLeaves, List<LeaveImplementationDate> cancellationLeaves, String cancellationDescription) throws Exception {			
+		double total = 0.0;
+		
+		for(LeaveImplementationDate entity :actualLeaves){
+			if(entity.getIsCancelled()){
+				total = total - 1;
+				entity = leaveImplementationDateDao.getEntiyByPK(entity.getId());				
+				entity.setIsCancelled(Boolean.FALSE);
+				entity.setDescription(cancellationDescription);
+				entity.setUpdatedBy(UserInfoUtil.getUserName());
+				entity.setUpdatedOn(new Date());
+				leaveImplementationDateDao.update(entity);
+			}
+		}		
+		for(LeaveImplementationDate entity :cancellationLeaves){
+			if(!entity.getIsCancelled()){
+				total = total + 1;
+				entity = leaveImplementationDateDao.getEntiyByPK(entity.getId());
+				entity.setIsCancelled(Boolean.TRUE);
+				entity.setDescription(cancellationDescription);
+				entity.setUpdatedBy(UserInfoUtil.getUserName());
+				entity.setUpdatedOn(new Date());
+				leaveImplementationDateDao.update(entity);
 			}
 		}
 		
+		LeaveImplementation leaveImplementation = leaveImplementationDao.getEntiyByPK(leaveImplementationId);
+		LeaveDistribution leaveDistribution = leaveDistributionDao.getEntityByLeaveIdAndEmpDataId(leaveImplementation.getLeave().getId(), leaveImplementation.getEmpData().getId());
 		if(total > 0){
-			this.debetLeaveBalance(leaveDistribution, total);
+			this.debetLeaveBalance(leaveImplementation.getLeave(), leaveDistribution, total);
 		} else if(total < 0){
 			total = total * (-1);
-			this.creditLeaveBalance(leaveDistribution, total);
+			this.creditLeaveBalance(leaveImplementation.getLeave(), leaveDistribution, total);
 		}
 	}
 }

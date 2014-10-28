@@ -116,6 +116,26 @@
 	                            	<p:outputLabel value="#{leaveImplementationApprovalFormController.selectedLeaveImplementation.description}"/>
 	                            </p:column>
 	                        </p:row>
+	                        <p:row rendered="#{leaveImplementationApprovalFormController.isCancellationProcess}">
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['leaveimplementation.cancelled_leave_date']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 30%">
+	                            	<p:pickList converter="leaveImplementationDateConverter" value="#{leaveImplementationApprovalFormController.leaveDatesDualModel}" 
+	                            		var="leaveImplementationDate" itemLabel="#{leaveImplementationDate.actualDate}" itemValue="#{leaveImplementationDate}" itemDisabled="true" >
+	                            		<f:facet name="sourceCaption"><p:outputLabel value="#{appmsg['leaveimplementation.actual_leave_date']}" styleClass="label_hrm"/></f:facet>
+        								<f:facet name="targetCaption"><p:outputLabel value="#{appmsg['leaveimplementation.cancel_leave_date']}" styleClass="label_hrm"/></f:facet>
+	                            	</p:pickList>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row rendered="#{leaveImplementationApprovalFormController.isCancellationProcess}">
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['leaveimplementation.description_of_cancelled_leave']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 30%">
+	                            	<p:outputLabel value="#{leaveImplementationApprovalFormController.cancellationDescription}"/>
+	                            </p:column>
+	                        </p:row>
 	                        <p:row rendered="#{leaveImplementationApprovalFormController.isWaitingApproval}">
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
 	                                <p:outputLabel value="#{appmsg['global.comment']}" styleClass="label_hrm"/>
@@ -125,7 +145,7 @@
 	                                    			 maxlength="1000" styleClass="isitext_hrm" style="width:290px;" />
 	                            </p:column>
 	                        </p:row>
-	                 	</p:panelGrid>                            
+	                 	</p:panelGrid>  
                             
 	                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
 	                    <div style="margin-bottom: 5px">

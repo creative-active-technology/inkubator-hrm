@@ -17,6 +17,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.primefaces.model.DualListModel;
 
 import com.inkubator.exception.BussinessException;
@@ -130,9 +131,14 @@ public class LeaveImplementationCancelController extends BaseController {
 	
 	public String doCancellation(){		
 		try {
-			leaveImplementationService.cancelLeaveDate(selectedLeaveImplementation.getId(), leaveDatesDualModel.getTarget());
-			MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
-                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+			String message = leaveImplementationService.cancellation(selectedLeaveImplementation.getId(), leaveDatesDualModel.getSource(), leaveDatesDualModel.getTarget(), descriptionCancellation);
+			if(StringUtils.equals(message, "success_need_approval")){
+        		MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully_and_requires_approval",
+        				FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        	} else {
+        		MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
+        				FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        	}
 			return "/protected/working_time/leave_implementation_view.htm?faces-redirect=true";
 		} catch (BussinessException ex) { 
             LOGGER.error("Error", ex);

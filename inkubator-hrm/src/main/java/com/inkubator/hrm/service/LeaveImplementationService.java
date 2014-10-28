@@ -32,6 +32,6 @@ public interface LeaveImplementationService extends IService<LeaveImplementation
 	
 	public String save(LeaveImplementation entity, boolean isBypassApprovalChecking) throws Exception;
 	
-	public void cancelLeaveDate(Long leaveImplementationId, List<LeaveImplementationDate> cancellationEntities) throws Exception;
+	public String cancellation(Long leaveImplementationId, List<LeaveImplementationDate> actualLeaves, List<LeaveImplementationDate> cancellationLeaves, String cancellationDescription) throws Exception;
 	
 }

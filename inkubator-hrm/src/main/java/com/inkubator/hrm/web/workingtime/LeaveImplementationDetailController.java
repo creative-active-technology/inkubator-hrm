@@ -5,6 +5,9 @@
  */
 package com.inkubator.hrm.web.workingtime;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.bean.ManagedBean;
@@ -15,6 +18,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.LeaveImplementation;
+import com.inkubator.hrm.entity.LeaveImplementationDate;
 import com.inkubator.hrm.service.ApprovalActivityService;
 import com.inkubator.hrm.service.LeaveImplementationService;
 import com.inkubator.webcore.controller.BaseController;
@@ -29,6 +33,7 @@ import com.inkubator.webcore.util.FacesUtil;
 public class LeaveImplementationDetailController extends BaseController {
 
     private LeaveImplementation selectedLeaveImplementation;
+    private List<LeaveImplementationDate> listLeaveImplDate;
     private ApprovalActivity selectedApprovalActivity;
     @ManagedProperty(value = "#{leaveImplementationService}")
     private LeaveImplementationService leaveImplementationService;
@@ -40,14 +45,17 @@ public class LeaveImplementationDetailController extends BaseController {
     public void initialization() {
         try {
             super.initialization();
+            listLeaveImplDate = new ArrayList<LeaveImplementationDate>();
             String execution = FacesUtil.getRequestParameter("execution");
             String param = execution.substring(0, 1);
             if(StringUtils.equals(param, "e")){
             	/* parameter (id) ini datangnya dari leave implementation View */
             	selectedLeaveImplementation = leaveImplementationService.getEntityByPkWithDetail(Long.parseLong(execution.substring(1)));
+            	listLeaveImplDate.addAll(selectedLeaveImplementation.getLeaveImplementationDates());
             } else {
             	/* parameter (activityNumber) ini datangnya dari home approval request history View */
             	selectedLeaveImplementation = leaveImplementationService.getEntityByApprovalActivityNumberWithDetail(execution.substring(1));
+            	listLeaveImplDate.addAll(selectedLeaveImplementation.getLeaveImplementationDates());
             }
             
             selectedApprovalActivity = approvalActivityService.getEntityByActivityNumberLastSequence(selectedLeaveImplementation.getApprovalActivityNumber());
@@ -63,6 +71,7 @@ public class LeaveImplementationDetailController extends BaseController {
         leaveImplementationService = null;
         selectedApprovalActivity = null;
         approvalActivityService = null;
+        listLeaveImplDate = null;
     }    
     
 	public LeaveImplementation getSelectedLeaveImplementation() {
@@ -87,6 +96,14 @@ public class LeaveImplementationDetailController extends BaseController {
 
 	public void setApprovalActivityService(ApprovalActivityService approvalActivityService) {
 		this.approvalActivityService = approvalActivityService;
+	}	
+
+	public List<LeaveImplementationDate> getListLeaveImplDate() {
+		return listLeaveImplDate;
+	}
+
+	public void setListLeaveImplDate(List<LeaveImplementationDate> listLeaveImplDate) {
+		this.listLeaveImplDate = listLeaveImplDate;
 	}
 
 	public String doBack() {

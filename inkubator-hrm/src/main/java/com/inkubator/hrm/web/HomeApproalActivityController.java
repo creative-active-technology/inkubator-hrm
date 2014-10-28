@@ -104,6 +104,9 @@ public class HomeApproalActivityController extends BaseController {
                 case HRMConstant.LEAVE:
                     redirect = "/protected/working_time/leave_implementation_detail.htm?faces-redirect=true&execution=a" + selectedApprovalActivity.getActivityNumber();
                     break;
+                case HRMConstant.LEAVE_CANCELLATION:
+                    redirect = "/protected/working_time/leave_implementation_detail.htm?faces-redirect=true&execution=a" + selectedApprovalActivity.getActivityNumber();
+                    break;
                 case HRMConstant.OVERTIME:
                     redirect = "/protected/employee/overtime_implementation_detail.htm?faces-redirect=true&execution=a" + selectedApprovalActivity.getActivityNumber();
                     break;
@@ -136,6 +139,9 @@ public class HomeApproalActivityController extends BaseController {
                     redirect = "/protected/personalia/schedule_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
                     break;
                 case HRMConstant.LEAVE:
+                    redirect = "/protected/working_time/leave_implementation_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
+                    break;
+                case HRMConstant.LEAVE_CANCELLATION:
                     redirect = "/protected/working_time/leave_implementation_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
                     break;
                 case HRMConstant.OVERTIME:
