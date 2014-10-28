@@ -194,13 +194,22 @@ public class ImplementationOfOverTimeFormController extends BaseController {
     
     public void dateChange() throws Exception{
         TempJadwalKaryawan jadwalKaryawan = tempJadwalKaryawanService.getByEmpId(empId, model.getImplementationDate());
-            if(jadwalKaryawan.getWtWorkingHour().getIsManageOvertime()){
-                model.setStartTime(jadwalKaryawan.getWtWorkingHour().getStartOvertime());
-                model.setEndTime(jadwalKaryawan.getWtWorkingHour().getEndOvertime());
-                isDisableStartAndEndOverTime = Boolean.TRUE;
+            System.out.println(jadwalKaryawan);
+            if(jadwalKaryawan != null){
+                if(jadwalKaryawan.getWtWorkingHour().getIsManageOvertime()){
+                    model.setWtOverTimeId(jadwalKaryawan.getWtWorkingHour().getWtOverTime().getId());
+                    model.setStartTime(jadwalKaryawan.getWtWorkingHour().getStartOvertime());
+                    model.setEndTime(jadwalKaryawan.getWtWorkingHour().getEndOvertime());
+                    isDisableStartAndEndOverTime = Boolean.TRUE;
+                }else{
+                    isDisableStartAndEndOverTime = Boolean.FALSE;
+                    System.out.println("input sendiri");
+                }
             }else{
                 isDisableStartAndEndOverTime = Boolean.FALSE;
-                System.out.println("input sendiri");
+                model.setStartTime(null);
+                model.setEndTime(null);
+                model.setWtOverTimeId(null);
             }
         
     }

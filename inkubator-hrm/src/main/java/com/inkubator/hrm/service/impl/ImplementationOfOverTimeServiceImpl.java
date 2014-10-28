@@ -348,6 +348,7 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
         Gson gson = JsonUtil.getHibernateEntityGsonBuilder().registerTypeAdapter(Date.class, new DateJsonDeserializer()).create();
         
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMMM-yyyy");
+        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm:ss a");
         
         //get all sendCC email address on status approve OR reject
         List<String> ccEmailAddresses =  new ArrayList<String>();
@@ -371,17 +372,17 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
         final JSONObject jsonObj = new JSONObject();
         
 //        System.out.println(jsonObject.getAsString());
-        
+        System.out.println(implementationOfOverTime.getOverTimeName()+"wkwkwkkwk");
         try {        
             System.out.println("asup email approval");
             jsonObj.put("approvalActivityId", appActivity.getId());
             jsonObj.put("ccEmailAddresses", ccEmailAddresses);
             jsonObj.put("locale", appActivity.getLocale());
             jsonObj.put("proposeDate", dateFormat.format(implementationOfOverTime.getCreatedOn()));
-            jsonObj.put("overTimeName", implementationOfOverTime.getWtOverTime().getName());
-            jsonObj.put("startTime", implementationOfOverTime.getStartTime());
-            jsonObj.put("endTime", implementationOfOverTime.getEndTime());
-            jsonObj.put("implementationDate", dateFormat.format(implementationOfOverTime.getImplementationDate()));
+            jsonObj.put("overTimeName", implementationOfOverTime.getOverTimeName());
+            jsonObj.put("startTime", timeFormat.format(implementationOfOverTime.getStartTime()));
+            jsonObj.put("endTime", timeFormat.format(implementationOfOverTime.getEndTime()));
+            jsonObj.put("overTimeDate", dateFormat.format(implementationOfOverTime.getImplementationDate()));
             jsonObj.put("implementationNumber", implementationOfOverTime.getCode());
             jsonObj.put("empName", implementationOfOverTime.getEmpData().getBioData().getFirstName() + " " + implementationOfOverTime.getEmpData().getBioData().getLastName());
         } catch (JSONException e) {
@@ -422,8 +423,9 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
         }
         
         EmpData empData = empDataDao.getEntiyByPK(entity.getEmpData().getId());
-        WtOverTime wtOverTime = wtOverTimeDao.getEntiyByPK(entity.getWtOverTime().getId());
+        WtOverTime wtOverTime = wtOverTimeDao.getEntityByPkWithDetail(entity.getWtOverTime().getId());
         System.out.println(wtOverTime.getName() + "hahaha");
+        String overTimeName = wtOverTime.getName();
         entity.setEmpData(empData);
         entity.setWtOverTime(wtOverTime);
         entity.setCode(entity.getCode());
@@ -432,7 +434,7 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
         entity.setEndTime(entity.getEndTime());
         entity.setCreatedBy(UserInfoUtil.getUserName());
         entity.setCreatedOn(new Date());
-        
+        entity.setOverTimeName(overTimeName);
         HrmUser requestUser = hrmUserDao.getByEmpDataId(empData.getId());
         List<ApprovalDefinition> appDefs = Lambda.extract(wtOverTime.getApprovalDefinitionOTs(), Lambda.on(ApprovalDefinitionOT.class).getApprovalDefinition());
         
@@ -448,7 +450,7 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
         } else {
             System.out.println("belum masuk");
         //parsing object to json and save to approval activity 
-        Gson gson = JsonUtil.getHibernateEntityGsonBuilder().registerTypeAdapter(Date.class, new DateJsonDeserializer()).create();
+        Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
         approvalActivity.setPendingData( gson.toJson(entity));
         approvalActivityDao.save(approvalActivity);
 

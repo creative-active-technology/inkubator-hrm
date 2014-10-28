@@ -27,4 +27,6 @@ public interface WtOverTimeDao extends IDAO<WtOverTime> {
     public Long getTotalDuplicaByCodeAndNotId(String code, Long id);
     
     public WtOverTime getEntityByPkFetchApprovalDefinition(Long id);
+    
+    public WtOverTime getEntityByPkWithDetail(Long id);
 }
