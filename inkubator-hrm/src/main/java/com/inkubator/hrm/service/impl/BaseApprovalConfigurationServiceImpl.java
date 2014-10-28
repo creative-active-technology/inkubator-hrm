@@ -75,6 +75,7 @@ public abstract class BaseApprovalConfigurationServiceImpl<T> extends IServiceIm
 		for(ApprovalDefinition appDef: appDefs){
 			//saving approvalDefinition
 			appDef.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+			appDef.setIsNoLongerInUse(Boolean.FALSE);
 			appDef.setCreatedBy(UserInfoUtil.getUserName());
 			appDef.setCreatedOn(new Date());
 			approvalDefinitionDao.save(appDef);

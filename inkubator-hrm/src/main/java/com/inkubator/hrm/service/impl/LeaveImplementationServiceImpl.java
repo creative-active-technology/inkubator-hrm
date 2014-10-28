@@ -379,7 +379,7 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
 			String pendingData = appActivity.getPendingData();
 			JsonObject jsonObject =  gson.fromJson(pendingData, JsonObject.class);
 			
-			if(BooleanUtils.isTrue(jsonObject.get("isCancellationProcess").getAsBoolean())) {
+			if(jsonObject.get("isCancellationProcess") != null) {
 				Long leaveImplementationId = jsonObject.get("id").getAsLong();			
 				List<LeaveImplementationDate> cancellationDates = gson.fromJson(jsonObject.get("cancellationDates"), new TypeToken<List<LeaveImplementationDate>>(){}.getType());
 				List<LeaveImplementationDate> actualDates = gson.fromJson(jsonObject.get("actualDates"), new TypeToken<List<LeaveImplementationDate>>(){}.getType());
@@ -431,7 +431,7 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
 			String pendingData = appActivity.getPendingData();
 			JsonObject jsonObject =  gson.fromJson(pendingData, JsonObject.class);
 			
-			if(BooleanUtils.isTrue(jsonObject.get("isCancellationProcess").getAsBoolean())) {
+			if(jsonObject.get("isCancellationProcess") != null) {
 				Long leaveImplementationId = jsonObject.get("id").getAsLong();
 				List<LeaveImplementationDate> cancellationDates = gson.fromJson(jsonObject.get("cancellationDates"), new TypeToken<List<LeaveImplementationDate>>(){}.getType());
 				List<LeaveImplementationDate> actualDates = gson.fromJson(jsonObject.get("actualDates"), new TypeToken<List<LeaveImplementationDate>>(){}.getType());
@@ -466,7 +466,7 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
 		Leave leave = leaveDao.getEntiyByPK(leaveImplementation.getLeave().getId());
 		String cancellationDate = StringUtils.EMPTY;
 		JsonObject jsonObject =  gson.fromJson(appActivity.getPendingData(), JsonObject.class);
-		if(BooleanUtils.isTrue(jsonObject.get("isCancellationProcess").getAsBoolean())) {
+		if(jsonObject.get("isCancellationProcess") != null) {
 			List<LeaveImplementationDate> cancellations = gson.fromJson(jsonObject.get("cancellationDates"), new TypeToken<List<LeaveImplementationDate>>(){}.getType());
 			StringBuffer sb = new StringBuffer();
 			for(LeaveImplementationDate li : cancellations){
@@ -590,8 +590,7 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
 		if(totalActualLeaves > leaveDistribution.getBalance()){
     		throw new BussinessException("leaveimplementation.error_leave_balance_is_insufficient");
     	}
-				
-		entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+						
 		entity.setEmpData(empData);
 		entity.setLeave(leave);
 		entity.setTemporaryActing(temporaryActing);
