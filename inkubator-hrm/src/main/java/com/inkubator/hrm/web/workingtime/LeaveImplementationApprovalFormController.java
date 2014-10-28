@@ -18,6 +18,8 @@ import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.primefaces.model.DualListModel;
 
+import ch.lambdaj.Lambda;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
@@ -73,10 +75,12 @@ public class LeaveImplementationApprovalFormController extends BaseController {
             
             Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
             JsonObject jsonObject =  gson.fromJson(selectedApprovalActivity.getPendingData(), JsonObject.class);
-            isCancellationProcess = BooleanUtils.isTrue(jsonObject.get("isCancellationProcess").getAsBoolean());
+            isCancellationProcess = jsonObject.get("isCancellationProcess") != null;
             if(isCancellationProcess) {
             	List<LeaveImplementationDate> cancellationDates = gson.fromJson(jsonObject.get("cancellationDates"), new TypeToken<List<LeaveImplementationDate>>(){}.getType());
             	List<LeaveImplementationDate> actualDates = gson.fromJson(jsonObject.get("actualDates"), new TypeToken<List<LeaveImplementationDate>>(){}.getType());
+            	cancellationDates = Lambda.sort(cancellationDates, Lambda.on(LeaveImplementationDate.class).getActualDate());
+            	actualDates = Lambda.sort(actualDates, Lambda.on(LeaveImplementationDate.class).getActualDate());
             	leaveDatesDualModel = new DualListModel<LeaveImplementationDate>(actualDates, cancellationDates);
             	cancellationDescription = jsonObject.get("cancellationDescription").getAsString();
             }

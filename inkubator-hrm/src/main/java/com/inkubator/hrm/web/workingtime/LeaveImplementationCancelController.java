@@ -20,6 +20,8 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.primefaces.model.DualListModel;
 
+import ch.lambdaj.Lambda;
+
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.ApprovalActivity;
@@ -67,6 +69,8 @@ public class LeaveImplementationCancelController extends BaseController {
             		leaveDatesActual.add(leaveDate);
             	}
             }            
+            leaveDatesActual = Lambda.sort(leaveDatesActual, Lambda.on(LeaveImplementationDate.class).getActualDate());
+            leaveDatesCancel = Lambda.sort(leaveDatesCancel, Lambda.on(LeaveImplementationDate.class).getActualDate());
             leaveDatesDualModel = new DualListModel<LeaveImplementationDate>(leaveDatesActual, leaveDatesCancel);
             
         } catch (Exception ex) {
