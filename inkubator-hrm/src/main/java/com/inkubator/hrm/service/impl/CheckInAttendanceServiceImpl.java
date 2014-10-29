@@ -69,7 +69,7 @@ public class CheckInAttendanceServiceImpl extends IServiceImpl implements CheckI
         this.checkInAttendanceDao.save(entity);
         ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
         String waktuCheckIn=new SimpleDateFormat("EEEE, dd-MMMM-yyyy hh:mm:ss").format(entity.getCheckInTime());
-        String infoMessages = entity.getEmpData().getBioData().getFullName() + " " + messages.getString("ceckinout.checkin_success_socket") + " : " +waktuCheckIn+" ---Status :"+entity.getNote()+"---";
+        String infoMessages = entity.getEmpData().getBioData().getFullName() + " " + messages.getString("ceckinout.checkin_success_socket") + " : " +waktuCheckIn+"=== Status :"+entity.getNote()+" ===";
         FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_INFO, "Information Login", infoMessages);
         PushContext pushContext = PushContextFactory.getDefault().getPushContext();
         pushContext.push(HRMConstant.CHECK_IN_OUT_CHANEL_SOCKET, facesMessage);
