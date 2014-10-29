@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
@@ -155,6 +156,13 @@ public class ApprovalActivityDaoImpl extends IDAOImpl<ApprovalActivity> implemen
         criteria.addOrder(order);
         return criteria.list();
     }
+    
+    public List<ApprovalActivity> getAllDataByPreviousActivityNumber(String previousActivityNumber, Order order) {
+    	Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("previousActivityNumber", previousActivityNumber));
+        criteria.addOrder(order);
+        return criteria.list();
+    }
 
     @Override
     public List<ApprovalActivity> getDataNotSendEmailYet() {
@@ -211,6 +219,17 @@ public class ApprovalActivityDaoImpl extends IDAOImpl<ApprovalActivity> implemen
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
 		criteria.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING));		
 		criteria.add(Restrictions.eq("approvalDefinition.id", appDefId));
+		return criteria.list().size() > 0;
+	}
+	
+	@Override
+	public Boolean isStillHaveWaitingStatus(String activityNumber) {		
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING));
+		Disjunction disjunction = Restrictions.disjunction();
+        disjunction.add(Restrictions.eq("activityNumber", activityNumber));
+        disjunction.add(Restrictions.eq("previousActivityNumber", activityNumber));
+		criteria.add(disjunction);
 		return criteria.list().size() > 0;
 	}
 

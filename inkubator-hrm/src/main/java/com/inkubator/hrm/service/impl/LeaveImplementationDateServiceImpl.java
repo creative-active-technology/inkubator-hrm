@@ -3,9 +3,14 @@ package com.inkubator.hrm.service.impl;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.inkubator.hrm.dao.LeaveImplementationDateDao;
 import com.inkubator.hrm.entity.LeaveImplementationDate;
 import com.inkubator.hrm.service.LeaveImplementationDateService;
 
@@ -17,6 +22,9 @@ import com.inkubator.hrm.service.LeaveImplementationDateService;
 @Lazy
 public class LeaveImplementationDateServiceImpl implements LeaveImplementationDateService {
 
+	@Autowired
+	private LeaveImplementationDateDao leaveImplementationDateDao;
+	
 	@Override
 	public LeaveImplementationDate getEntiyByPK(String id) throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
@@ -30,8 +38,9 @@ public class LeaveImplementationDateServiceImpl implements LeaveImplementationDa
 	}
 
 	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
 	public LeaveImplementationDate getEntiyByPK(Long id) throws Exception {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+		return leaveImplementationDateDao.getEntiyByPK(id);
 
 	}
 
