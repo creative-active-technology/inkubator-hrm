@@ -1,5 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
+/* To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
@@ -12,6 +11,7 @@ import com.inkubator.hrm.dao.CheckInAttendanceDao;
 import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.entity.CheckInAttendance;
 import com.inkubator.hrm.service.CheckInAttendanceService;
+import com.inkubator.hrm.web.search.CheckInAttendanceSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesUtil;
 import java.text.SimpleDateFormat;
@@ -214,6 +214,18 @@ public class CheckInAttendanceServiceImpl extends IServiceImpl implements CheckI
     @Override
     public List<CheckInAttendance> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<CheckInAttendance> getByParamWithDetail(CheckInAttendanceSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
+        return checkInAttendanceDao.getByParamWithDetail(searchParameter, firstResult, maxResults, order);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Long getTotalCheckInAttendanceByParam(CheckInAttendanceSearchParameter searchParameter) throws Exception {
+        return checkInAttendanceDao.getTotalCheckInAttendanceByParam(searchParameter);
     }
 
 }

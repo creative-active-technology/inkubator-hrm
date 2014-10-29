@@ -51,7 +51,7 @@ public class IpPermitDaoImpl extends IDAOImpl<IpPermit> implements IpPermitDao {
     @Override
     public Long getByIpPermitLocation(String location) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.like("location", location, MatchMode.ANYWHERE));
+        criteria.add(Restrictions.like("lokasi", location, MatchMode.ANYWHERE));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
