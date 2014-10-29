@@ -53,7 +53,6 @@ public class LeaveImplementationDetailController extends BaseController {
             if(StringUtils.equals(param, "e")){
             	/* parameter (id) ini datangnya dari leave implementation View */
             	selectedLeaveImplementation = leaveImplementationService.getEntityByPkWithDetail(Long.parseLong(execution.substring(1)));
-            	            	
             } else {
             	/* parameter (activityNumber) ini datangnya dari home approval request history View */
             	selectedLeaveImplementation = leaveImplementationService.getEntityByApprovalActivityNumberWithDetail(execution.substring(1));            	
