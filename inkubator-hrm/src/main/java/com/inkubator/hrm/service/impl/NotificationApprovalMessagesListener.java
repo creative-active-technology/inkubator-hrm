@@ -195,7 +195,7 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                             maptoSend.put("overTimeName", jsonObject.get("overTimeName").getAsString());
                             maptoSend.put("startTime", jsonObject.get("startTime").getAsString());
                             maptoSend.put("endTime", jsonObject.get("endTime").getAsString());
-                            maptoSend.put("implementationDate", jsonObject.get("implementationDate").getAsString());
+                            maptoSend.put("overTimeDate", jsonObject.get("overTimeDate").getAsString());
                             maptoSend.put("implementationNumber", jsonObject.get("implementationNumber").getAsString());
                             break;
                             
@@ -291,15 +291,16 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                         case HRMConstant.OVERTIME:
                         	vtm.setSubject("Permohonan Lembur");
                         	vtm.setTemplatePath("email_overtime_approved_or_rejected_approval.vm");
-//                            maptoSend.put("requesterName", requesterUser.getEmpData().getBioData().getFullName());
-//                            maptoSend.put("nik", requesterUser.getEmpData().getNik());
-//                            maptoSend.put("proposeDate", jsonObject.get("proposeDate").getAsString());
-//                            maptoSend.put("leaveName", jsonObject.get("leaveName").getAsString());
-//                            maptoSend.put("startDate", jsonObject.get("startDate").getAsString());
-//                            maptoSend.put("endDate", jsonObject.get("endDate").getAsString());
-//                            maptoSend.put("fillingDate", jsonObject.get("fillingDate").getAsString());
-//                            maptoSend.put("materialJobsAbandoned", jsonObject.get("materialJobsAbandoned").getAsString());
-//                            maptoSend.put("statusDesc", getStatusDesc(appActivity.getApprovalStatus(), locale));
+                            maptoSend.put("approverName", approverUser.getEmpData().getBioData().getFullName());
+                            maptoSend.put("requesterName", requesterUser.getEmpData().getBioData().getFullName());
+                            maptoSend.put("nik", requesterUser.getEmpData().getNik());
+                            maptoSend.put("proposeDate", jsonObject.get("proposeDate").getAsString());
+                            maptoSend.put("overTimeName", jsonObject.get("overTimeName").getAsString());
+                            maptoSend.put("startTime", jsonObject.get("startTime").getAsString());
+                            maptoSend.put("endTime", jsonObject.get("endTime").getAsString());
+                            maptoSend.put("overTimeDate", jsonObject.get("overTimeDate").getAsString());
+                            maptoSend.put("implementationNumber", jsonObject.get("implementationNumber").getAsString());
+                            maptoSend.put("statusDesc", getStatusDesc(appActivity.getApprovalStatus(), locale));
                             break;
 
                         default:
@@ -382,16 +383,16 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                         case HRMConstant.OVERTIME:
                         	vtm.setSubject("Permohonan Lembur");
                         	vtm.setTemplatePath("email_overtime_cancelled_approval.vm");
-//                        	maptoSend.put("approverName", approverUser.getEmpData().getBioData().getFullName());
-//                            maptoSend.put("requesterName", requesterUser.getEmpData().getBioData().getFullName());
-//                            maptoSend.put("nik", requesterUser.getEmpData().getNik());
-//                            maptoSend.put("proposeDate", jsonObject.get("proposeDate").getAsString());
-//                            maptoSend.put("leaveName", jsonObject.get("leaveName").getAsString());
-//                            maptoSend.put("startDate", jsonObject.get("startDate").getAsString());
-//                            maptoSend.put("endDate", jsonObject.get("endDate").getAsString());
-//                            maptoSend.put("fillingDate", jsonObject.get("fillingDate").getAsString());
-//                            maptoSend.put("materialJobsAbandoned", jsonObject.get("materialJobsAbandoned").getAsString());
-//                            maptoSend.put("statusDesc", getStatusDesc(appActivity.getApprovalStatus(), locale));
+                            maptoSend.put("approverName", approverUser.getEmpData().getBioData().getFullName());
+                            maptoSend.put("requesterName", requesterUser.getEmpData().getBioData().getFullName());
+                            maptoSend.put("nik", requesterUser.getEmpData().getNik());
+                            maptoSend.put("proposeDate", jsonObject.get("proposeDate").getAsString());
+                            maptoSend.put("overTimeName", jsonObject.get("overTimeName").getAsString());
+                            maptoSend.put("startTime", jsonObject.get("startTime").getAsString());
+                            maptoSend.put("endTime", jsonObject.get("endTime").getAsString());
+                            maptoSend.put("overTimeDate", jsonObject.get("overTimeDate").getAsString());
+                            maptoSend.put("implementationNumber", jsonObject.get("implementationNumber").getAsString());
+                            maptoSend.put("statusDesc", getStatusDesc(appActivity.getApprovalStatus(), locale));
                             break;
 
                         default:

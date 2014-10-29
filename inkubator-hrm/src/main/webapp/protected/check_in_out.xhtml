@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlMenuFormlId" globalOnly="true" showDetail="true"/>                
+                <h:form id="formMenuFormId">
+                    <p:focus context="formMenuFormId"/>
+                    <div id="box_bg" style="margin: 10px">
+                        <h:panelGrid  columns="2">
+                            <p:graphicImage library="images" name="loginlogout.png" height="36" width="36" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="Check In/Out" styleClass="header_big" />
+                                    <p:outputLabel value="Attendance Check In/ Out Form" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+                        <div align="center">
+                        
+                            <!--<p:outputLabel value="#{checkInCheckOutController.employeeName}" style="font-size: 35px"/>-->  
+                            <h:panelGrid columns="3" style="margin-top: 20px" cellspacing="3" cellpadding="3">
+                                <p:outputLabel value="Nama" style="font-size: 18px;font-weight: bold"/> 
+                                <p:outputLabel value=":" style="font-size: 18px;font-weight: bold"/> 
+                                <p:outputLabel value="#{checkInCheckOutController.checkInOutModel.userName}" style="font-size: 18px;font-weight: bold"/> 
+
+                                <p:outputLabel value="Jadwal" style="font-size: 15px;font-weight: bold"/> 
+                                <p:outputLabel value=":" style="font-size: 15px;font-weight: bold"/> 
+                                <p:outputLabel value="#{checkInCheckOutController.checkInOutModel.jadwalKerja}" style="font-size: 15px">
+                                    <f:convertDateTime pattern="EEEE, dd MMMM yyyy" />
+                                </p:outputLabel> 
+                                <p:outputLabel value="Jam Kerja" style="font-size: 15px;font-weight: bold"/> 
+                                <p:outputLabel value=":" style="font-size: 15px;font-weight: bold"/> 
+                                <p:outputLabel value="#{checkInCheckOutController.checkInOutModel.beginHour} - #{checkInCheckOutController.checkInOutModel.endHour}" style="font-size: 15px"/> 
+                                <p:outputLabel value="Waktu Istirahat" style="font-size: 15px;font-weight: bold"/> 
+                                <p:outputLabel value=":" style="font-size: 15px;font-weight: bold"/> 
+                                <p:outputLabel value="#{checkInCheckOutController.checkInOutModel.breakTime}" style="font-size: 15px"/> 
+                                <p:outputLabel value="Waktu Check In" style="font-size: 15px;font-weight: bold"/> 
+                                <p:outputLabel value=":" style="font-size: 15px;font-weight: bold"/> 
+                                <p:clock pattern="HH:mm:ss a" mode="server" />
+                                <p:outputLabel/>
+                                <p:outputLabel/>
+                                <p:outputLabel/>
+
+                                <p:outputLabel/>
+                                <p:outputLabel/>
+                                <p:commandButton value="Check In" style="font-size: 15px" icon="ui-icon-check" action="#{checkInCheckOutController.doChechInOut()}"/>
+                            </h:panelGrid>
+                            <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+
+                        </div>
+                        <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{checkInCheckOutController.doClose()}" styleClass="label_button"/>
+
+
+                    </div>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

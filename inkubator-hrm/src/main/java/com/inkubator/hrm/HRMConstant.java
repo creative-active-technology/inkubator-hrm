@@ -18,6 +18,7 @@ public class HRMConstant {
     public static final String USER_LOGIN_ID = "user_login_id";
     public static final String NOTIFICATION_LOGIN_CHANEL_SOCKET = "/notificationsLogin";
     public static final String NOTIFICATION_APPROVAL_CHANEL_SOCKET = "/notificationsApproval";
+    public static final String CHECK_IN_OUT_CHANEL_SOCKET="/checkInChekOut";
     public static final String PASSWORD_CONFIG_CODE = "passconfigcode";
     public static final String APPROVAL_PROCESS_CREATE_USER_ID = "PEMBUATAN USER";
     public static final String APPROVAL_PROCESS_UPDATE_USER_ID = "UPDATE USER";
@@ -275,5 +276,11 @@ public class HRMConstant {
     
     public static final String SERVICE_NIK="NIK";
     public static final String INDEX_MECINE="IDX";
+
+    public static final Integer CHECK_IN = 0;
+    public static final Integer CHECK_OUT = 1;
+    public static final String CHECK_IN_EARLY = "EARLY_COME";
+    public static final String CHECK_IN_ON_TIME = "ON TIME";
+    public static final String CHECK_IN_LATE = "LATE";
 
 }
