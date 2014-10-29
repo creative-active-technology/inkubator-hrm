@@ -220,9 +220,19 @@ public class HospitalFormController extends BaseController {
     public ResourceBundle getMessages() {
         return messages;
     }
+
+    public Boolean getDisabledProvince() {
+        return disabledProvince;
+    }
+
+    public Boolean getDisabledCity() {
+        return disabledCity;
+    }
     
     
 
+    
+    
     private Hospital getEntityFromViewModel(HospitalModel hospitalModel) {
         Hospital hospital = new Hospital();
         if (hospitalModel.getId() != null) {

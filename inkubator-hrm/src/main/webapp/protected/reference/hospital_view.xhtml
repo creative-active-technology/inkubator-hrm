@@ -88,7 +88,7 @@
                             </p:column>
                             <p:column sortBy="phone"  style="width: 10%; ">
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['hospital.phone']}" style=""/>
+                                    <h:outputText value="#{appmsg['hospital.hospital_phone']}" style=""/>
                                 </f:facet>
                                 <h:outputLabel value= "#{hospitalData.phone}"/>
                             </p:column>
@@ -178,7 +178,7 @@
                             <p:column style="width:70%;"><p:outputLabel value="#{hospitalViewController.selectedHospital.name}" styleClass="label_hrm"/></p:column>
                         </p:row>  
                         <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['hospital.phone']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['hospital.hospital_phone']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:70%;"><p:outputLabel value="#{hospitalViewController.selectedHospital.phone}" styleClass="label_hrm"/></p:column>
                         </p:row> 
                         <p:row>

@@ -25,5 +25,4 @@ public interface IpPermitService extends IService<IpPermit> {
 
     public Long getByIpPermitLocation(String location) throws Exception;
     
-    public List<IpPermit> getByIpHeader(int ipHeader) throws Exception;
 }
