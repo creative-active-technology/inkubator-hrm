@@ -275,5 +275,11 @@ public class HRMConstant {
     
     public static final String SERVICE_NIK="NIK";
     public static final String INDEX_MECINE="IDX";
+    
+    public static final Integer CHECK_IN = 0;
+    public static final Integer CHECK_OUT = 1;
+    public static final String CHECK_IN_EARLY = "EARLY_COME";
+    public static final String CHECK_IN_ON_TIME = "ON TIME";
+    public static final String CHECK_IN_LATE = "LATE";
 
 }

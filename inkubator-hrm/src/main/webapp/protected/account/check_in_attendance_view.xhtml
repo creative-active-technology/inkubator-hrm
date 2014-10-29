@@ -1,0 +1,134 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg" style="margin: 10px">
+                    <!--<p:panel style="margin: 10px" >-->
+                    <h:form id="formId">
+                        <h:panelGrid style="margin-bottom: 5px" columns="2">
+                            <p:graphicImage library="images" name="login_history_1.png" height="36" width="36" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="Check In Attendance" styleClass="header_big" />
+                                    <p:outputLabel value="Check In Attendance from Account" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator/>
+
+                        <p:toolbar  style="margin-top: 10px">
+                            <p:toolbarGroup align="left">
+                                <h:panelGrid columns="5">
+                                    <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm" />
+                                    <p:outputLabel value=":" />
+                                    <p:selectOneMenu value="#{loginHistoryController.loginHistorySearchParameter.keyParam}" style="width: 150px;margin-right: 3px" >
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItem itemLabel="#{appmsg['global.user_id']}" itemValue="userId"/>
+                                        <f:selectItem itemLabel="#{appmsg['loginhistory.ip_address']}" itemValue="ipAddress"/>
+                                    </p:selectOneMenu>
+                                    <p:inputText id="searchId" value="#{loginHistoryController.loginHistorySearchParameter.parameter}" style="width: 250px" styleClass="label_button"/>
+                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{loginHistoryController.doSearch()}" update="tableLoginHistoryId"  styleClass="label_button" icon="ui-icon-search"/>
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                            <p:toolbarGroup align="right">
+                                <h:panelGrid columns="2">
+                                    <p:commandButton value="Export to XLS" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
+                                        <pe:exporter target="tableLoginHistoryId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Login_History"/>
+                                    </p:commandButton>
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{loginHistoryController.doClose()}" icon="ui-icon-home" />
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                        </p:toolbar>
+                        <p:focus for="searchId" />
+
+                        <p:dataTable  var="data"  value="#{checkInAttendanceViewController.lazy}" lazy="true" paginator="true" pageLinks="7"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      id="tableLoginHistoryId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="List Check In Attendance"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 5%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column sortBy="empData"  style="width: 20%">
+                                <f:facet name="header">  
+                                    <h:outputText value="Employee Name"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.empData.nikWithFullName}"/>
+                            </p:column>
+                            <p:column sortBy="empData"  style="width: 20%">
+                                <f:facet name="header">  
+                                    <h:outputText value="Check Date"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.checkDate}">
+                                    <f:convertDateTime pattern="dd MMMM yyyy" />
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column sortBy="empData"  style="width: 15%">
+                                <f:facet name="header">  
+                                    <h:outputText value="Check In"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.checkInTime}"/>
+                            </p:column>
+                            <p:column sortBy="empData"  style="width: 15%">
+                                <f:facet name="header">  
+                                    <h:outputText value="Check Out"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.checkOutTime}"/>
+                            </p:column>
+                            <p:column sortBy="empData"  style="width: 15%">
+                                <f:facet name="header">  
+                                    <h:outputText value="Ip Address"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.ipAddress}"/>
+                            </p:column>
+                            <p:column sortBy="empData"  style="width: 25%">
+                                <f:facet name="header">  
+                                    <h:outputText value="Status"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.status}">
+                                    <f:converter converterId="checkInAttendanceConverter"/>
+                                </h:outputLabel>
+                            </p:column>
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : "/>
+                                <p:outputLabel value="#{loginHistoryController.lazyDataLoginHistory.rowCount}"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px"/>
+                            </f:facet>  
+                        </p:dataTable>
+                        <p:blockUI block="formId" trigger="tableLoginHistoryId,btnSearchId" >
+                            <h:panelGrid columns="2" styleClass="grid_no_border">
+                                <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
+                                <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
+                            </h:panelGrid>
+                        </p:blockUI>
+                    </h:form>
+                    <!--</p:panel>-->
+                </div>
+<!--                 <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
+                    <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
+                </p:dialog>-->
+            </ui:define>
+        </ui:composition>
+
+    </h:body>
+</html>
+
