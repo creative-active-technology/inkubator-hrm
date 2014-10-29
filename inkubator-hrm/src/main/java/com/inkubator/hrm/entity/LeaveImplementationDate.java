@@ -1,5 +1,6 @@
 package com.inkubator.hrm.entity;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -14,6 +15,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 
 @Entity
@@ -137,4 +139,10 @@ public class LeaveImplementationDate implements java.io.Serializable {
     public void setUpdatedOn(Date updatedOn) {
         this.updatedOn = updatedOn;
     }
+    
+    @Transient
+    public String getActualDateAsLabel(){
+    	return new SimpleDateFormat("dd MMMM yyyy").format(actualDate);
+    }    
+    
 }

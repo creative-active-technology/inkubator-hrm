@@ -29,28 +29,9 @@
                     <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
                     <h:panelGrid columns="1" style="margin-bottom: 5px;margin-left: 0px">
                         <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
-                        <h:outputLabel value="#{appmsg['costcenter.dialog_cost_center_info']}" styleClass="label_hrm" style="font-weight: normal!important"/>
                     </h:panelGrid> 
                     <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
-                        <p:row>
-                            <p:column style="width: 40%">
-                                <p:outputLabel for="overtimeName" value="Nama Lembur" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="overtimeName" value=":" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column  style="width: 50%">
-                                <p:selectOneMenu id="overtimeName" value="#{implementationOfOverTimeFormController.model.wtOverTimeId}" style="width: 150px;margin-right: 3px" >
-                                    <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                    <f:selectItems value="#{implementationOfOverTimeFormController.wtOverTimeDropDown}"/>
-                                </p:selectOneMenu>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:message for="overtimeName"/>
-                            </p:column>
-                        </p:row>
+                        
                         
                         <p:row>
                             <p:column style="width: 40%">
@@ -61,7 +42,7 @@
                             </p:column>
                             <p:column  style="width: 50%">
                                 <p:inputText id="implementationNumber"  value="#{implementationOfOverTimeFormController.model.implementationNumber}"
-                                             required="true" styleClass="isitext_hrm" style="width:210px;" />
+                                             required="true" styleClass="isitext_hrm" style="width:256px;" />
                             </p:column>
                         </p:row>
                         <p:row>
@@ -113,13 +94,33 @@
                                          required="true" navigator="true">
 <!--                                    <f:validator validatorId="birthDateValidator"  />
                                     <f:attribute name="validatorMessage" value="#{appmsg['global.birthDate_validator']}"/>-->
-                                    <p:ajax event="dateSelect" listener="#{implementationOfOverTimeFormController.dateChange}" update="startTime, endTime"/>
+                                    <p:ajax event="dateSelect" listener="#{implementationOfOverTimeFormController.dateChange}" update="startTime, endTime, overtimeName"/>
                                 </p:calendar>
                             </p:column>
                         </p:row>
                         <p:row>
                             <p:column colspan="3">
                                 <p:message for="implementationDate"/>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="width: 40%">
+                                <p:outputLabel for="overtimeName" value="Nama Lembur" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="overtimeName" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                                <p:selectOneMenu id="overtimeName" disabled="#{implementationOfOverTimeFormController.isDisableStartAndEndOverTime}" value="#{implementationOfOverTimeFormController.model.wtOverTimeId}" style="width: 150px;margin-right: 3px" >
+                                    <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                    <f:selectItems value="#{implementationOfOverTimeFormController.wtOverTimeDropDown}"/>
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="overtimeName"/>
                             </p:column>
                         </p:row>
                         

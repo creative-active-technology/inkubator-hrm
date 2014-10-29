@@ -141,7 +141,41 @@
 	                            	<p:outputLabel value="#{leaveImplementationDetailController.selectedApprovalActivity.approvalCommment}"/>
 	                            </p:column>
 	                      	</p:row>
-	                 	</p:panelGrid>                            
+	                 	</p:panelGrid>    
+	                 	
+	                 	<p:dataTable  id="tableLeaveImplementationDateId" var="leaveImplementationDateData"  value="#{leaveImplementationDetailController.listLeaveImplDate}" lazy="false" paginator="false" pageLinks="7"
+	                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+	                                      rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+	                                      rowIndexVar="no"> 
+	                            <p:column style="text-align: center;width: 5%">
+	                                <f:facet name="header">  
+	                                    <h:outputText value="#{appmsg['global.number']}"/>
+	                                </f:facet>
+	                                <h:outputLabel value="#{no+1}." />
+	                            </p:column>  
+	                            <p:column style="text-align: center;width: 20%">
+	                                <f:facet name="header">  
+	                                    <h:outputText value="#{appmsg['leaveimplementation.leave_date']}"/>
+	                                </f:facet>
+	                                <h:outputLabel value= "#{leaveImplementationDateData.actualDate}">
+	                                	<f:convertDateTime pattern="dd-MMMM-yyyy" />
+	                                </h:outputLabel>
+	                            </p:column>
+	                            <p:column style="text-align: center;width: 20%">
+	                                <f:facet name="header">  
+	                                    <h:outputText value="#{appmsg['leaveimplementation.status_cancel']}"/>
+	                                </f:facet>
+	                                <h:outputLabel value= "#{leaveImplementationDateData.isCancelled}">
+	                                	<f:converter converterId="booleanMessageConverter" />
+	                                </h:outputLabel>
+	                            </p:column>
+	                            <p:column style="text-align: center;width: 20%">
+	                                <f:facet name="header">  
+	                                    <h:outputText value="#{appmsg['leaveimplementation.description_of_cancelled_leave']}"/>
+	                                </f:facet>
+	                                <h:outputLabel value= "#{leaveImplementationDateData.description}"/>
+	                            </p:column>
+	                    </p:dataTable>                        
                             
 	                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
 	                    <div style="margin-bottom: 5px">
