@@ -8,6 +8,9 @@ package com.inkubator.hrm.dao.impl;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.IpPermitDao;
 import com.inkubator.hrm.entity.IpPermit;
+import java.util.List;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -22,6 +25,13 @@ public class IpPermitDaoImpl extends IDAOImpl<IpPermit> implements IpPermitDao {
     @Override
     public Class<IpPermit> getEntityClass() {
         return IpPermit.class;
+    }
+
+    @Override
+    public List<IpPermit> getByIpHeader(int ipHeader) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("fromAddress1", ipHeader));
+        return criteria.list();
     }
 
 }

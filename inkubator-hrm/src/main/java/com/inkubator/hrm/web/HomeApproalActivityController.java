@@ -38,6 +38,7 @@ public class HomeApproalActivityController extends BaseController {
     @PostConstruct
     @Override
     public void initialization() {
+         super.initialization();
         try {
             requestHistory = this.approvalActivityService.getRequestHistory(UserInfoUtil.getUserName());
             pendingRequest = this.approvalActivityService.getPendingRequest(UserInfoUtil.getUserName());

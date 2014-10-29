@@ -5,17 +5,21 @@
  */
 package com.inkubator.hrm.web;
 
-import com.inkubator.common.util.DateFormatter;
-import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.entity.CheckInAttendance;
+import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.HrmUser;
+import com.inkubator.hrm.entity.TempJadwalKaryawan;
+import com.inkubator.hrm.service.CheckInAttendanceService;
 import com.inkubator.hrm.service.HrmUserService;
+import com.inkubator.hrm.service.TempJadwalKaryawanService;
+import com.inkubator.hrm.util.HrmUserInfoUtil;
+import com.inkubator.hrm.web.model.CheckInOutModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
-import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
@@ -23,11 +27,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.ExternalContext;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -37,116 +36,137 @@ import org.primefaces.context.RequestContext;
 @RequestScoped
 public class CheckInCheckOutController extends BaseController {
 
-    private String userId;
-    private String password;
-    private String emailAddress;
-    private String selectedLanguage;
-    @ManagedProperty(value = "#{dateFormatter}")
-    private DateFormatter dateFormatter;
+    private String employeeName;
+    private Long empId;
     @ManagedProperty(value = "#{hrmUserService}")
-    private HrmUserService userService;
-    
+    private HrmUserService hrmUserService;
+    @ManagedProperty(value = "#{tempJadwalKaryawanService}")
+    private TempJadwalKaryawanService tempJadwalKaryawanService;
+    @ManagedProperty(value = "#{checkInAttendanceService}")
+    private CheckInAttendanceService checkInAttendanceService;
+    private CheckInOutModel checkInOutModel;
+    private Boolean isCheckIn;
+
     @PostConstruct
     @Override
     public void initialization() {
-        if (FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE) == null) {
-            selectedLanguage = "in";
-            FacesUtil.setSessionAttribute(HRMConstant.BAHASA_ACTIVE, selectedLanguage);
-        } else {
-            selectedLanguage = (String) FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE);
+        try {
+            checkInOutModel = new CheckInOutModel();
+            Boolean isValid = HrmUserInfoUtil.isValidRemoteAddress();
+            HrmUser hrmUser = hrmUserService.getUserWithDetail(HrmUserInfoUtil.getUserName());
+            if (hrmUser.getEmpData() == null) {
+                ExternalContext context = FacesUtil.getExternalContext();
+                context.redirect(context.getRequestContextPath() + "/protected/home.htm");
+            } else {
+                String stringDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+                Date date = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(stringDate + " 00:00:00");
+                TempJadwalKaryawan jadwalKaryawan = tempJadwalKaryawanService.getByEmpId(hrmUser.getEmpData().getId(), date);
+
+                if (isValid) {
+//                FacesUtil.getResponse().sendRedirect(FacesUtil.getRequest().getContextPath() + "/protected/check_in_out.htm");
+                } else {
+                    MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
+                            FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+                    ExternalContext context = FacesUtil.getExternalContext();
+                    context.redirect(context.getRequestContextPath() + "/protected/home.htm");
+                }
+                checkInOutModel.setEmpId(hrmUser.getEmpData().getId());
+                checkInOutModel.setUserName(hrmUser.getRealName());
+                checkInOutModel.setJadwalKerja(jadwalKaryawan.getTanggalWaktuKerja());
+                checkInOutModel.setBeginHour(jadwalKaryawan.getWtWorkingHour().getWorkingHourBegin());
+                checkInOutModel.setEndHour(jadwalKaryawan.getWtWorkingHour().getWorkingHourEnd());
+                checkInOutModel.setBreakTime(jadwalKaryawan.getWtWorkingHour().getBreakHourBegin() + " - " + jadwalKaryawan.getWtWorkingHour().getBreakHourEnd());
+
+            }
+
+            super.initialization();
+        } catch (Exception ex) {
+            LOGGER.error("error", ex);
         }
-        FacesUtil.getFacesContext().getViewRoot().setLocale(new Locale(selectedLanguage));
+
     }
-    
+
     @PreDestroy
     public void cleanAndExit() {
-        userId = null;
-        password = null;
-        emailAddress = null;
-        selectedLanguage = null;
-        dateFormatter = null;
-        userService = null;
+
     }
 
-    public String getUserId() {
-        return userId;
+    public void setHrmUserService(HrmUserService hrmUserService) {
+        this.hrmUserService = hrmUserService;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public String getEmployeeName() {
+        return employeeName;
     }
 
-    public String getPassword() {
-        return password;
+    public void setEmployeeName(String employeeName) {
+        this.employeeName = employeeName;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public Long getEmpId() {
+        return empId;
     }
 
-    public String getEmailAddress() {
-		return emailAddress;
-	}
-
-	public void setEmailAddress(String emailAddress) {
-		this.emailAddress = emailAddress;
-	}
-
-	public String getSelectedLanguage() {
-		return selectedLanguage;
-	}
-
-	public void setSelectedLanguage(String selectedLanguage) {
-		this.selectedLanguage = selectedLanguage;
-	}
-
-    public void setDateFormatter(DateFormatter dateFormatter) {
-        this.dateFormatter = dateFormatter;
+    public void setEmpId(Long empId) {
+        this.empId = empId;
     }
 
-    public void setUserService(HrmUserService userService) {
-		this.userService = userService;
-	}
-
-	public void doChageLanguange() {
-        FacesUtil.setSessionAttribute(HRMConstant.BAHASA_ACTIVE, selectedLanguage);
-        String bahasa1 = (String) FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE);
-        FacesUtil.getFacesContext().getViewRoot().setLocale(new Locale(bahasa1));
+    public void setTempJadwalKaryawanService(TempJadwalKaryawanService tempJadwalKaryawanService) {
+        this.tempJadwalKaryawanService = tempJadwalKaryawanService;
     }
 
-    public String doLogin() {
-        ExternalContext context = FacesUtil.getExternalContext();
-        RequestDispatcher dispatcher = ((ServletRequest) context.getRequest())
-                .getRequestDispatcher("/" + HRMConstant.SPRING_SECURITY_CHECK);
+    public CheckInOutModel getCheckInOutModel() {
+        return checkInOutModel;
+    }
+
+    public void setCheckInOutModel(CheckInOutModel checkInOutModel) {
+        this.checkInOutModel = checkInOutModel;
+    }
+
+    public String doChechInOut() {
         try {
-            dispatcher.forward((ServletRequest) context.getRequest(), (ServletResponse) context.getResponse());
-        } catch (ServletException | IOException ex) {
-            LOGGER.error("Error", ex);
-        }
-        FacesUtil.setSessionAttribute(HRMConstant.LOGIN_DATE, dateFormatter.getDateFullAsStringsWithActiveLocale(new Date(),
-                new Locale(selectedLanguage)));
-       
-        FacesUtil.getFacesContext().responseComplete();
-        return null;
-    }
-    
-    public void doResetPassword() {
-        RequestContext context = FacesUtil.getRequestContext();
-        Boolean emailIsExist = Boolean.FALSE;
-        try {
-            HrmUser user = userService.getByEmailAddress(emailAddress);
-            if (user == null) {
-                MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.error", "error.email_not_registered",
-                            FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());               
-            } else {
-                user.setPassword("Inkuba" + RandomNumberUtil.getRandomNumber(7));
-                userService.resetPassword(user);
-                emailIsExist = Boolean.TRUE;
+            CheckInAttendance attendance = new CheckInAttendance();
+            attendance.setCheckDate(new Date());
+            attendance.setCheckInTime(new Date());
+            String stringDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+            // harus sperti ini membading kan 2 jam... yg berbeda
+            Date date = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(stringDate + " " + checkInOutModel.getBeginHour());
+           
+            if (date.after(new Date())) {
+
+                attendance.setNote(HRMConstant.CHECK_IN_EARLY);
+
             }
-            
+            if (date.before(new Date())) {
+                attendance.setNote(HRMConstant.CHECK_IN_LATE);
+            }
+
+            if (date.equals(new Date())) {
+                attendance.setNote(HRMConstant.CHECK_IN_ON_TIME);
+            }
+            attendance.setEmpData(new EmpData(checkInOutModel.getEmpId()));
+            attendance.setIpAddress(HrmUserInfoUtil.getRequestRemoteAddrByJSF());
+            attendance.setStatus(HRMConstant.CHECK_IN);
+            checkInAttendanceService.save(attendance);
+//            MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "ceckinout.checkin_success",
+//                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            return "/protected/home.htm?faces-redirect=true";
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
-        context.addCallbackParam("emailIsExist", emailIsExist);
+        return null;
     }
+
+    public void setCheckInAttendanceService(CheckInAttendanceService checkInAttendanceService) {
+        this.checkInAttendanceService = checkInAttendanceService;
+    }
+
+    public Boolean getIsCheckIn() {
+        return isCheckIn;
+    }
+
+    public void setIsCheckIn(Boolean isCheckIn) {
+        this.isCheckIn = isCheckIn;
+    }
+
 }

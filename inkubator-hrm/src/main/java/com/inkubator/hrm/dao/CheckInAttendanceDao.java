@@ -6,13 +6,12 @@
 package com.inkubator.hrm.dao;
 
 import com.inkubator.datacore.dao.IDAO;
-import com.inkubator.hrm.entity.IpPermit;
-import java.util.List;
+import com.inkubator.hrm.entity.CheckInAttendance;
 
 /**
  *
  * @author Deni Husni FR
  */
-public interface IpPermitDao extends IDAO<IpPermit>{
-    public List<IpPermit> getByIpHeader(int ipHeader);
+public interface CheckInAttendanceDao extends IDAO<CheckInAttendance>{
+    
 }

@@ -6,13 +6,12 @@
 package com.inkubator.hrm.service;
 
 import com.inkubator.datacore.service.IService;
-import com.inkubator.hrm.entity.IpPermit;
-import java.util.List;
+import com.inkubator.hrm.entity.CheckInAttendance;
 
 /**
  *
  * @author Deni Husni FR
  */
-public interface IpPermitService extends IService<IpPermit>{
-    public List<IpPermit>getByIpHeader(int ipHeader)throws Exception;
+public interface CheckInAttendanceService  extends IService<CheckInAttendance>{
+    
 }

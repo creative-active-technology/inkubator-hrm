@@ -5,33 +5,7 @@
  */
 package com.inkubator.hrm.service.impl;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.Session;
-
-import org.apache.commons.lang.StringUtils;
-import org.hibernate.criterion.Order;
-import org.primefaces.json.JSONException;
-import org.primefaces.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.jms.core.JmsTemplate;
-import org.springframework.jms.core.MessageCreator;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 import ch.lambdaj.Lambda;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -57,6 +31,28 @@ import com.inkubator.hrm.entity.WtHoliday;
 import com.inkubator.hrm.entity.WtScheduleShift;
 import com.inkubator.hrm.service.TempJadwalKaryawanService;
 import com.inkubator.securitycore.util.UserInfoUtil;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Session;
+import org.apache.commons.lang.StringUtils;
+import org.hibernate.criterion.Order;
+import org.primefaces.json.JSONException;
+import org.primefaces.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -459,7 +455,7 @@ public class TempJadwalKaryawanServiceImpl extends BaseApprovalServiceImpl imple
 	}
 
     @Override
-    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ,propagation = Propagation.SUPPORTS, timeout = 30)
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED,propagation = Propagation.SUPPORTS, timeout = 30)
     public TempJadwalKaryawan getByEmpId(Long id, Date implementationDate) throws Exception {
         return tempJadwalKaryawanDao.getByEmpId(id, implementationDate);
     }

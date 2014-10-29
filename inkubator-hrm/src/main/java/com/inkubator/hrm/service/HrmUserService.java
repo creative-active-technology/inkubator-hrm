@@ -5,13 +5,11 @@
  */
 package com.inkubator.hrm.service;
 
-import java.util.List;
-
-import org.hibernate.criterion.Order;
-
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.web.search.HrmUserSearchParameter;
+import java.util.List;
+import org.hibernate.criterion.Order;
 
 /**
  *
@@ -30,16 +28,18 @@ public interface HrmUserService extends IService<HrmUser> {
     public HrmUser getByEmailAddress(String emailAddress) throws Exception;
 
     public void saveAndNotification(HrmUser hrmUser) throws Exception;
-    
+
     public HrmUser getByUserIdOrEmail(String param) throws Exception;
-    
+
     public void updateUserInfo(HrmUser user) throws Exception;
-    
+
     public void resetPassword(HrmUser user) throws Exception;
-    
+
     public void updatePassword(Long id, String newPassword) throws Exception;
-    
-    public List<HrmUser>getByName(String name)throws Exception;
-    
+
+    public List<HrmUser> getByName(String name) throws Exception;
+
     public List<HrmUser> getAllDataByNameOrNik(String param) throws Exception;
+
+    public HrmUser getUserWithDetail(String userName) throws Exception;
 }
