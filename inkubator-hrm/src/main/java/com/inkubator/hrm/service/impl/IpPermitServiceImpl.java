@@ -5,15 +5,23 @@
  */
 package com.inkubator.hrm.service.impl;
 
+import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.IpPermitDao;
 import com.inkubator.hrm.entity.IpPermit;
 import com.inkubator.hrm.service.IpPermitService;
+import com.inkubator.hrm.web.search.IpPermitSearchParameter;
+import com.inkubator.securitycore.util.UserInfoUtil;
+import java.util.Date;
 import java.util.List;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -37,18 +45,59 @@ public class IpPermitServiceImpl extends IServiceImpl implements IpPermitService
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public IpPermit getEntiyByPK(Long id) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return ipPermitDao.getEntiyByPK(id);
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(IpPermit entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(entity.getFromAddress1() == entity.getFromAddress2() && entity.getUntilAddress1() == entity.getUntilAddress2()){
+            throw new BussinessException("ippermit.ip_permit_is_same_value");
+        }
+        List<IpPermit> listIpPermit = ipPermitDao.getAllData();
+        for (IpPermit ipPermit : listIpPermit) {
+            if(entity.getFromAddress1().equals(ipPermit.getFromAddress1()) && entity.getUntilAddress1() <= ipPermit.getUntilAddress1()){
+                throw new BussinessException("ippermit.range_api_adress_sudah_ada");
+            }
+            
+            if(entity.getFromAddress2().equals(ipPermit.getFromAddress2()) && entity.getUntilAddress2() <= ipPermit.getUntilAddress2()){
+                throw new BussinessException("ippermit.range_api_adress_sudah_ada");
+            }
+        }
+        entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+        entity.setCreatedBy(UserInfoUtil.getUserName());
+        entity.setCreatedOn(new Date());
+        this.ipPermitDao.save(entity);
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(IpPermit entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(entity.getFromAddress1() == entity.getFromAddress2() && entity.getUntilAddress1() == entity.getUntilAddress2()){
+            throw new BussinessException("ippermit.ip_permit_is_same_value");
+        }
+//        List<IpPermit> listIpPermit = ipPermitDao.getAllData();
+//        for (IpPermit ipPermit : listIpPermit) {
+//            if(entity.getFromAddress1().equals(ipPermit.getFromAddress1()) && entity.getUntilAddress1() <= ipPermit.getUntilAddress1()){
+//                throw new BussinessException("ippermit.range_api_adress_sudah_ada");
+//            }
+//            
+//            if(entity.getFromAddress2().equals(ipPermit.getFromAddress2()) && entity.getUntilAddress2() <= ipPermit.getUntilAddress2()){
+//                throw new BussinessException("ippermit.range_api_adress_sudah_ada");
+//            }
+//        }
+        
+        IpPermit update = ipPermitDao.getEntiyByPK(entity.getId());
+        update.setFromAddress1(entity.getFromAddress1());
+        update.setFromAddress2(entity.getFromAddress2());
+        update.setUntilAddress1(entity.getUntilAddress1());
+        update.setUntilAddress2(entity.getUntilAddress2());
+        update.setLokasi(entity.getLokasi());
+        update.setUpdatedBy(UserInfoUtil.getUserName());
+        update.setUpdatedOn(new Date());
+        ipPermitDao.update(update);
     }
 
     @Override
@@ -117,8 +166,9 @@ public class IpPermitServiceImpl extends IServiceImpl implements IpPermitService
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void delete(IpPermit entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.ipPermitDao.delete(entity);
     }
 
     @Override
@@ -147,8 +197,9 @@ public class IpPermitServiceImpl extends IServiceImpl implements IpPermitService
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<IpPermit> getAllData() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return ipPermitDao.getAllData();
     }
 
     @Override
@@ -183,6 +234,23 @@ public class IpPermitServiceImpl extends IServiceImpl implements IpPermitService
 
     @Override
     public List<IpPermit> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<IpPermit> getByParam(IpPermitSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
+        return ipPermitDao.getByParam(searchParameter, firstResult, maxResults, order);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalIpPermitByParam(IpPermitSearchParameter searchParameter) throws Exception {
+        return ipPermitDao.getTotalIpPermitByParam(searchParameter);
+    }
+
+    @Override
+    public Long getByIpPermitLocation(String location) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
