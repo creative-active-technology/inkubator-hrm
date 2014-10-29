@@ -147,7 +147,7 @@
 	                                <p:outputLabel for="cancelDatesId" value="#{appmsg['leaveimplementation.cancelled_leave_date']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 30%">
-	                            	<p:pickList id="cancelDatesId" converter="leaveImplementationDateConverter" value="#{leaveImplementationCancelController.leaveDatesDualModel}" required="true" var="leaveImplementationDate" itemLabel="#{leaveImplementationDate.actualDate}" itemValue="#{leaveImplementationDate}">
+	                            	<p:pickList id="cancelDatesId" converter="leaveImplementationDateConverter" value="#{leaveImplementationCancelController.leaveDatesDualModel}" required="true" var="leaveImplementationDate" itemLabel="#{leaveImplementationDate.actualDateAsLabel}" itemValue="#{leaveImplementationDate}">
 	                            		<f:facet name="sourceCaption"><p:outputLabel value="#{appmsg['leaveimplementation.actual_leave_date']}" styleClass="label_hrm"/></f:facet>
         								<f:facet name="targetCaption"><p:outputLabel value="#{appmsg['leaveimplementation.cancel_leave_date']}" styleClass="label_hrm"/></f:facet>
 	                            	</p:pickList>

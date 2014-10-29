@@ -122,7 +122,7 @@
 	                            </p:column>
 	                            <p:column  style="width: 30%">
 	                            	<p:pickList converter="leaveImplementationDateConverter" value="#{leaveImplementationApprovalFormController.leaveDatesDualModel}" 
-	                            		var="leaveImplementationDate" itemLabel="#{leaveImplementationDate.actualDate}" itemValue="#{leaveImplementationDate}" itemDisabled="true" >
+	                            		var="leaveImplementationDate" itemLabel="#{leaveImplementationDate.actualDateAsLabel}" itemValue="#{leaveImplementationDate}" itemDisabled="true" >
 	                            		<f:facet name="sourceCaption"><p:outputLabel value="#{appmsg['leaveimplementation.actual_leave_date']}" styleClass="label_hrm"/></f:facet>
         								<f:facet name="targetCaption"><p:outputLabel value="#{appmsg['leaveimplementation.cancel_leave_date']}" styleClass="label_hrm"/></f:facet>
 	                            	</p:pickList>
