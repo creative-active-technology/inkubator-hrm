@@ -21,4 +21,5 @@ public interface IpPermitDao extends IDAO<IpPermit>{
     public Long getTotalIpPermitByParam(IpPermitSearchParameter searchParameter);
 
     public Long getByIpPermitLocation(String location);
+    public List<IpPermit> getByIpHeader(int ipHeader);
 }

@@ -1,4 +1,5 @@
 /*
+<<<<<<< HEAD
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
@@ -22,7 +23,7 @@ import org.springframework.stereotype.Repository;
 
 /**
  *
- * @author Deni
+ * @author Deni Husni FR
  */
 @Repository(value = "checkInAttendanceDao")
 @Lazy
@@ -60,4 +61,5 @@ public class CheckInAttendanceDaoImpl extends IDAOImpl<CheckInAttendance> implem
 
         criteria.add(Restrictions.isNotNull("id"));
     }
+
 }

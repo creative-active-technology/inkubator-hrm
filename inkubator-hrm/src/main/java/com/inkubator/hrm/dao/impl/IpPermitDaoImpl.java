@@ -60,6 +60,10 @@ public class IpPermitDaoImpl extends IDAOImpl<IpPermit> implements IpPermitDao {
         	criteria.add(Restrictions.like("lokasi", searchParameter.getLokasi(), MatchMode.ANYWHERE));
         } 
         criteria.add(Restrictions.isNotNull("id"));
+    public List<IpPermit> getByIpHeader(int ipHeader) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("fromAddress1", ipHeader));
+        return criteria.list();
     }
 
 }

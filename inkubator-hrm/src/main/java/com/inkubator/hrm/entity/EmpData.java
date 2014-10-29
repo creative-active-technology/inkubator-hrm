@@ -73,6 +73,7 @@ public class EmpData implements java.io.Serializable {
     private Set<LeaveImplementation> leaveImplementations = new HashSet<LeaveImplementation>(0);
     private Set<LeaveImplementation> temporaryActings = new HashSet<LeaveImplementation>(0);
     private Set<ImplementationOfOverTime> implementationOfOvertimes = new HashSet<ImplementationOfOverTime>(0);
+    private Set<CheckInAttendance> checkInAttendances = new HashSet<CheckInAttendance>(0);
 
     public EmpData() {
     }
@@ -482,31 +483,39 @@ public class EmpData implements java.io.Serializable {
     }
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "empData")
-	public Set<LeaveImplementation> getLeaveImplementations() {
-		return leaveImplementations;
-	}
+    public Set<LeaveImplementation> getLeaveImplementations() {
+        return leaveImplementations;
+    }
 
-	public void setLeaveImplementations(Set<LeaveImplementation> leaveImplementations) {
-		this.leaveImplementations = leaveImplementations;
-	}
+    public void setLeaveImplementations(Set<LeaveImplementation> leaveImplementations) {
+        this.leaveImplementations = leaveImplementations;
+    }
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "temporaryActing")
-	public Set<LeaveImplementation> getTemporaryActings() {
-		return temporaryActings;
-	}
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "temporaryActing")
+    public Set<LeaveImplementation> getTemporaryActings() {
+        return temporaryActings;
+    }
 
-	public void setTemporaryActings(Set<LeaveImplementation> temporaryActings) {
-		this.temporaryActings = temporaryActings;
-	}
-    
-        @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="empData")
+    public void setTemporaryActings(Set<LeaveImplementation> temporaryActings) {
+        this.temporaryActings = temporaryActings;
+    }
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "empData")
     public Set<ImplementationOfOverTime> getImplementationOfOvertimes() {
         return this.implementationOfOvertimes;
     }
-    
+
     public void setImplementationOfOvertimes(Set<ImplementationOfOverTime> implementationOfOvertimes) {
         this.implementationOfOvertimes = implementationOfOvertimes;
     }
-    
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "empData")
+    public Set<CheckInAttendance> getCheckInAttendances() {
+        return this.checkInAttendances;
+    }
+
+    public void setCheckInAttendances(Set<CheckInAttendance> checkInAttendances) {
+        this.checkInAttendances = checkInAttendances;
+    }
 
 }

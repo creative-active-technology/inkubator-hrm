@@ -252,6 +252,8 @@ public class IpPermitServiceImpl extends IServiceImpl implements IpPermitService
     @Override
     public Long getByIpPermitLocation(String location) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<IpPermit> getByIpHeader(int ipHeader) throws Exception {
+       return this.ipPermitDao.getByIpHeader(ipHeader);
     }
 
 }

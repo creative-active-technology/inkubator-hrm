@@ -1,4 +1,5 @@
 /*
+<<<<<<< HEAD
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
@@ -12,7 +13,7 @@ import org.hibernate.criterion.Order;
 
 /**
  *
- * @author Deni
+ * @author Deni Husni FR
  */
 public interface CheckInAttendanceDao extends IDAO<CheckInAttendance> {
 	
