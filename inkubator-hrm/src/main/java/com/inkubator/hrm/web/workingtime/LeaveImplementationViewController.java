@@ -114,7 +114,7 @@ public class LeaveImplementationViewController extends BaseController {
     }
     
     public String doCancellation() {
-    	return "/protected/working_time/leave_implementation_cancel.htm?faces-redirect=true";
+    	return "/protected/working_time/leave_implementation_cancel.htm?faces-redirect=true&execution=e" + selectedLeaveImplementation.getId();
     }
 
     public String doAdd() {

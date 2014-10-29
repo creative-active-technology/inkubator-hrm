@@ -56,6 +56,10 @@ public class ApprovalRemoteCommand {
                     infoMessages = messages.getString("leaveimplementation.submission_of_leave") + " " + requestFullName + " " + messages.getString("approval.need_approval_from") + " " + approverFullName;
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Executed", infoMessages));
                     break;
+                case HRMConstant.LEAVE_CANCELLATION:
+                    infoMessages = messages.getString("leaveimplementation.cancellation_of_leave") + " " + requestFullName + " " + messages.getString("approval.need_approval_from") + " " + approverFullName;
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Executed", infoMessages));
+                    break;
                 case HRMConstant.OVERTIME:
                     infoMessages = messages.getString("overtimeimplementation.submission_of_overtime") + " " + requestFullName + " " + messages.getString("approval.need_approval_from") + " " + approverFullName;
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Executed", infoMessages));

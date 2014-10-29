@@ -5,7 +5,6 @@ import com.inkubator.hrm.dao.BankDao;
 import com.inkubator.hrm.entity.Bank;
 import com.inkubator.hrm.web.search.BankSearchParameter;
 import java.util.List;
-import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;

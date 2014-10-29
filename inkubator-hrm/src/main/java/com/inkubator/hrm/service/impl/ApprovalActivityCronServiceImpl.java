@@ -77,6 +77,9 @@ public class ApprovalActivityCronServiceImpl implements ApprovalActivityCronServ
 					case HRMConstant.LEAVE:
 						leaveImplementationService.approved(approvalActivity.getId(), null, null);
 						break;
+					case HRMConstant.LEAVE_CANCELLATION:
+						leaveImplementationService.approved(approvalActivity.getId(), null, null);
+						break;
 					default:
 						break;
 				}
@@ -96,6 +99,9 @@ public class ApprovalActivityCronServiceImpl implements ApprovalActivityCronServ
 						tempJadwalKaryawanService.diverted(approvalActivity.getId());
 						break;
 					case HRMConstant.LEAVE:
+						leaveImplementationService.diverted(approvalActivity.getId());
+						break;
+					case HRMConstant.LEAVE_CANCELLATION:
 						leaveImplementationService.diverted(approvalActivity.getId());
 						break;
 					default:

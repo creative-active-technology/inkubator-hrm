@@ -302,5 +302,23 @@ public class ApprovalActivityServiceImpl extends IServiceImpl implements Approva
 		}
 		return lastApprovalActivity;
 	}
+	
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public ApprovalActivity getEntityByPreviousActivityNumberLastSequence(String previousActivityNumber) {
+		List<ApprovalActivity> approvalActivities = this.approvalActivityDao.getAllDataByPreviousActivityNumber(previousActivityNumber, Order.desc("sequence"));
+		ApprovalActivity lastApprovalActivity = null;
+		if(!approvalActivities.isEmpty()){
+			lastApprovalActivity = approvalActivities.get(0);
+		}
+		return lastApprovalActivity;
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public Boolean isStillHaveWaitingStatus(String activityNumber) {
+		return this.approvalActivityDao.isStillHaveWaitingStatus(activityNumber);
+		
+	}
 
 }

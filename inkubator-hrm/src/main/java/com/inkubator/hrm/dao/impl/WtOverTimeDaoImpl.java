@@ -91,4 +91,11 @@ public class WtOverTimeDaoImpl extends IDAOImpl<WtOverTime> implements WtOverTim
         criteria.add(Restrictions.eq("id", id));
         return (WtOverTime) criteria.uniqueResult();
     }
+
+    @Override
+    public WtOverTime getEntityByPkWithDetail(Long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("id", id));
+        return (WtOverTime) criteria.uniqueResult();
+    }
 }

@@ -90,10 +90,10 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
     public void update(HrmUser entity) throws Exception {
         HrmUser hrmUser = this.hrmUserDao.getEntiyByPK(entity.getId());
         hrmUser.getHrmUserRoles().clear();
-        if(entity.getEmpData() != null){
-    		EmpData empData = empDataDao.getEntiyByPK(entity.getEmpData().getId());
-    		hrmUser.setEmpData(empData);
-    	}
+        if (entity.getEmpData() != null) {
+            EmpData empData = empDataDao.getEntiyByPK(entity.getEmpData().getId());
+            hrmUser.setEmpData(empData);
+        }
         hrmUser.setEmailAddress(entity.getEmailAddress());
         hrmUser.setIsActive(entity.getIsActive());
         hrmUser.setIsExpired(entity.getIsExpired());
@@ -268,7 +268,7 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
         for (HrmUserRole hrmRole : this.hrmUserRoleDao.getByUserId(id)) {
             hrmRoles.add(hrmRole.getHrmRole());
         }
-     
+
         hrmUser.setRoles(hrmRoles);
         return hrmUser;
     }
@@ -288,10 +288,10 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void saveAndNotification(HrmUser hrmUser) throws Exception {
-    	if(hrmUser.getEmpData() != null){
-    		EmpData empData = empDataDao.getEntiyByPK(hrmUser.getEmpData().getId());
-    		hrmUser.setEmpData(empData);
-    	}    	
+        if (hrmUser.getEmpData() != null) {
+            EmpData empData = empDataDao.getEntiyByPK(hrmUser.getEmpData().getId());
+            hrmUser.setEmpData(empData);
+        }
         final PasswordHistory passwordHistory = new PasswordHistory();
         passwordHistory.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
         passwordHistory.setPassword(AESUtil.getAESEncription(hrmUser.getPassword(), HRMConstant.KEYVALUE, HRMConstant.AES_ALGO));
@@ -311,15 +311,15 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
         passwordHistory.setCreatedOn(new Date());
         List<String> dataRole = new ArrayList<>();
         List<HrmRole> hrmRoles = new ArrayList<>();
-    
+
         for (HrmUserRole hrmUserRole : hrmUserRoleDao.getByUserId(hrmUser.getId())) {
             hrmRoles.add(hrmUserRole.getHrmRole());
         }
-      
+
         for (HrmRole hrmRole : hrmRoles) {
             dataRole.add(hrmRole.getRoleName());
         }
-        
+
         passwordHistory.setListRole(jsonConverter.getJson(dataRole.toArray(new String[dataRole.size()])));
 
         this.passwordHistoryDao.save(passwordHistory);
@@ -338,17 +338,17 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
     public HrmUser getByUserIdOrEmail(String param) throws Exception {
         return this.hrmUserDao.getByUserIdOrEmail(param);
     }
-    
+
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void resetPassword(HrmUser u) throws Exception {
-    	
+
         HrmUser user = this.hrmUserDao.getEntiyByPK(u.getId());
         user.setPassword(HashingUtils.getHashSHA256(u.getPassword()));
         user.setUpdatedBy(HRMConstant.INKUBA_SYSTEM);
         user.setUpdatedOn(new Date());
         this.hrmUserDao.update(user);
-        
+
         final PasswordHistory passwordHistory = new PasswordHistory();
         passwordHistory.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         passwordHistory.setCreatedBy(HRMConstant.INKUBA_SYSTEM);
@@ -368,7 +368,7 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
         }
         passwordHistory.setListRole(jsonConverter.getJson(roleNames.toArray(new String[roleNames.size()])));
         this.passwordHistoryDao.save(passwordHistory);
-        
+
         //send messaging, for processing sending email
         this.jmsTemplate.send(new MessageCreator() {
             @Override
@@ -378,7 +378,7 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
             }
         });
     }
-    
+
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void updatePassword(Long id, String newPassword) throws Exception {
@@ -416,7 +416,7 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
         }
         passwordHistory.setListRole(jsonConverter.getJson(dataRole.toArray(new String[dataRole.size()])));
         passwordHistoryDao.save(passwordHistory);
-        
+
         //send messaging, for processing sending email
         this.jmsTemplate.send(new MessageCreator() {
             @Override
@@ -431,12 +431,12 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void updateUserInfo(HrmUser u) throws Exception {
-		// check duplicate email
-		long totalDuplicates = hrmUserDao.getTotalByEmailAndNotUserId(u.getEmailAddress(), u.getUserId());
-		if (totalDuplicates > 0) {
-			throw new BussinessException("master_layout.error_duplicate_email");
-		}
-    			
+        // check duplicate email
+        long totalDuplicates = hrmUserDao.getTotalByEmailAndNotUserId(u.getEmailAddress(), u.getUserId());
+        if (totalDuplicates > 0) {
+            throw new BussinessException("master_layout.error_duplicate_email");
+        }
+
         String userBy = UserInfoUtil.getUserName();
         Date now = new Date();
 
@@ -456,9 +456,17 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
         return this.hrmUserDao.getByName(name);
     }
 
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<HrmUser> getAllDataByNameOrNik(String param) throws Exception {
-		return this.hrmUserDao.getAllDataByNameOrNik(param);	
-	}
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<HrmUser> getAllDataByNameOrNik(String param) throws Exception {
+        return this.hrmUserDao.getAllDataByNameOrNik(param);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public HrmUser getUserWithDetail(String userName) throws Exception {
+        HrmUser hrmUser = this.hrmUserDao.getByUserId(userName);
+        hrmUser.getEmpData().getId();
+        return hrmUser;
+    }
 }

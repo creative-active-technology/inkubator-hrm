@@ -114,7 +114,7 @@ public class ReimbursmentSchema implements java.io.Serializable{
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cost_center_id")
+    @JoinColumn(name = "cost_center_id", nullable = true)
     public CostCenter getCostCenter() {
         return costCenter;
     }

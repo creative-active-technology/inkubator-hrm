@@ -45,6 +45,7 @@ public class ImplementationOfOverTime implements java.io.Serializable {
      private Date createdOn;
      private String updatedBy;
      private Date updatedOn;
+     private String overTimeName;
 
     public ImplementationOfOverTime() {
     }
@@ -190,6 +191,14 @@ public class ImplementationOfOverTime implements java.io.Serializable {
 
     public void setApprovalActivityNumber(String approvalActivityNumber) {
         this.approvalActivityNumber = approvalActivityNumber;
+    }
+
+    public String getOverTimeName() {
+        return overTimeName;
+    }
+
+    public void setOverTimeName(String overTimeName) {
+        this.overTimeName = overTimeName;
     }
     
     

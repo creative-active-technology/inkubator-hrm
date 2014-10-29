@@ -5,18 +5,16 @@
  */
 package com.inkubator.hrm.web;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
-
 import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.service.ApprovalActivityService;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.PostConstruct;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.RequestScoped;
 
 /**
  *
@@ -33,6 +31,7 @@ public class HomeApprovalPendingReqViewController extends BaseController {
     @PostConstruct
     @Override
     public void initialization() {
+         super.initialization();
         try {
         	String activityNumber = FacesUtil.getRequestParameter("activityNumber");
         	pendingRequest = this.approvalActivityService.getAllDataByActivityNumberWithDetail(activityNumber);

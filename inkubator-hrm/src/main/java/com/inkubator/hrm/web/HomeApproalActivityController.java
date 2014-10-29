@@ -5,20 +5,24 @@
  */
 package com.inkubator.hrm.web;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.PostConstruct;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.RequestScoped;
+
+import org.apache.commons.lang3.ObjectUtils;
+import org.primefaces.context.RequestContext;
+
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.service.ApprovalActivityService;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.controller.BaseController;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
-import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -38,6 +42,7 @@ public class HomeApproalActivityController extends BaseController {
     @PostConstruct
     @Override
     public void initialization() {
+         super.initialization();
         try {
             requestHistory = this.approvalActivityService.getRequestHistory(UserInfoUtil.getUserName());
             pendingRequest = this.approvalActivityService.getPendingRequest(UserInfoUtil.getUserName());
@@ -102,7 +107,14 @@ public class HomeApproalActivityController extends BaseController {
                     redirect = "/protected/personalia/schedule_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
                     break;
                 case HRMConstant.LEAVE:
-                    redirect = "/protected/working_time/leave_implementation_detail.htm?faces-redirect=true&execution=a" + selectedApprovalActivity.getActivityNumber();
+                	if(ObjectUtils.equals(HRMConstant.APPROVAL_STATUS_REJECTED, selectedApprovalActivity.getApprovalStatus())){
+                		redirect = "/protected/working_time/leave_implementation_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
+                	} else {
+                		redirect = "/protected/working_time/leave_implementation_detail.htm?faces-redirect=true&execution=a" + selectedApprovalActivity.getActivityNumber();
+                	}                    
+                    break;
+                case HRMConstant.LEAVE_CANCELLATION:
+                	redirect = "/protected/working_time/leave_implementation_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
                     break;
                 case HRMConstant.OVERTIME:
                     redirect = "/protected/employee/overtime_implementation_detail.htm?faces-redirect=true&execution=a" + selectedApprovalActivity.getActivityNumber();
@@ -136,6 +148,9 @@ public class HomeApproalActivityController extends BaseController {
                     redirect = "/protected/personalia/schedule_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
                     break;
                 case HRMConstant.LEAVE:
+                    redirect = "/protected/working_time/leave_implementation_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
+                    break;
+                case HRMConstant.LEAVE_CANCELLATION:
                     redirect = "/protected/working_time/leave_implementation_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
                     break;
                 case HRMConstant.OVERTIME:
