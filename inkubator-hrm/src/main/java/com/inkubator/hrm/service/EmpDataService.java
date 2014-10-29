@@ -11,6 +11,8 @@ import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
 import com.inkubator.hrm.web.model.DistributionOvetTimeModel;
 import com.inkubator.hrm.web.model.PlacementOfEmployeeWorkScheduleModel;
 import com.inkubator.hrm.web.search.EmpDataSearchParameter;
+import com.inkubator.hrm.web.search.ReportEmpWorkingGroupParameter;
+
 import java.util.List;
 import java.util.Map;
 import org.hibernate.criterion.Order;
@@ -60,5 +62,9 @@ public interface EmpDataService extends IService<EmpData> {
     public List<EmpData> getEmployeeByOtSearchParameter(DistributionOvetTimeModel model) throws Exception;
     
     public List<EmpData>getEmpDataByListId(List<Long> data)throws Exception;
+    
+    public List<EmpData> getAllDataReportEmpWorkingGroupByParam(ReportEmpWorkingGroupParameter param, int firstResult, int maxResults, Order orderable);
+    
+    public Long getTotalReportEmpWorkingGroupByParam(ReportEmpWorkingGroupParameter param);
 
 }
