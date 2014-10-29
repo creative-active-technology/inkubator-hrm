@@ -219,13 +219,13 @@ public class CheckInAttendanceServiceImpl extends IServiceImpl implements CheckI
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
 	public List<CheckInAttendance> getByParamWithDetail(CheckInAttendanceSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return checkInAttendanceDao.getByParamWithDetail(searchParameter, firstResult, maxResults, order);
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
 	public Long getTotalCheckInAttendanceByParam(CheckInAttendanceSearchParameter searchParameter) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return checkInAttendanceDao.getTotalCheckInAttendanceByParam(searchParameter);
     }
 
 }
