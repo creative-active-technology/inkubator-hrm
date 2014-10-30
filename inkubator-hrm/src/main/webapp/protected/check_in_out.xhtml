@@ -31,8 +31,8 @@
                         </h:panelGrid>
                         <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
                         <div align="center">
-                        
-                            <!--<p:outputLabel value="#{checkInCheckOutController.employeeName}" style="font-size: 35px"/>-->  
+
+    <!--<p:outputLabel value="#{checkInCheckOutController.employeeName}" style="font-size: 35px"/>-->  
                             <h:panelGrid columns="3" style="margin-top: 20px" cellspacing="3" cellpadding="3">
                                 <p:outputLabel value="Nama" style="font-size: 18px;font-weight: bold"/> 
                                 <p:outputLabel value=":" style="font-size: 18px;font-weight: bold"/> 
@@ -51,6 +51,12 @@
                                 <p:outputLabel value="#{checkInCheckOutController.checkInOutModel.breakTime}" style="font-size: 15px"/> 
                                 <p:outputLabel value="Waktu Check In" style="font-size: 15px;font-weight: bold"/> 
                                 <p:outputLabel value=":" style="font-size: 15px;font-weight: bold"/> 
+                                <p:outputLabel value="#{checkInCheckOutController.checkInOutModel.timeCheckIn}" style="font-size: 15px"/> 
+                                <p:outputLabel value="Waktu Check Out" style="font-size: 15px;font-weight: bold"/> 
+                                <p:outputLabel value=":" style="font-size: 15px;font-weight: bold"/> 
+                                <p:outputLabel value="#{checkInCheckOutController.checkInOutModel.timeCheckOut}" style="font-size: 15px"/> 
+                                <p:outputLabel value="Waktu Sekarang" style="font-size: 15px;font-weight: bold"/> 
+                                <p:outputLabel value=":" style="font-size: 15px;font-weight: bold"/> 
                                 <p:clock pattern="HH:mm:ss a" mode="server" />
                                 <p:outputLabel/>
                                 <p:outputLabel/>
@@ -58,7 +64,7 @@
 
                                 <p:outputLabel/>
                                 <p:outputLabel/>
-                                <p:commandButton value="Check In" style="font-size: 15px" icon="ui-icon-check" action="#{checkInCheckOutController.doChechInOut()}"/>
+                                <p:commandButton value="#{checkInCheckOutController.labelButton}" style="font-size: 15px" icon="ui-icon-check" action="#{checkInCheckOutController.doChechInOut()}"/>
                             </h:panelGrid>
                             <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
 
