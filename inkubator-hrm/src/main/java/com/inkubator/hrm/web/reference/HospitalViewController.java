@@ -1,10 +1,10 @@
-package com.inkubator.hrm.web.payroll;
+package com.inkubator.hrm.web.reference;
 
 import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.ModelComponent;
-import com.inkubator.hrm.service.ModelComponentService;
-import com.inkubator.hrm.web.lazymodel.ModelComponentLazyDataModel;
-import com.inkubator.hrm.web.search.ModelComponentSearchParameter;
+import com.inkubator.hrm.entity.Hospital;
+import com.inkubator.hrm.service.HospitalService;
+import com.inkubator.hrm.web.lazymodel.HospitalLazyDataModel;
+import com.inkubator.hrm.web.search.HospitalSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
@@ -28,71 +28,71 @@ import org.springframework.dao.DataIntegrityViolationException;
  *
  * @author Taufik Hidayat
  */
-@ManagedBean(name = "modelComponentViewController")
+@ManagedBean(name = "hospitalViewController")
 @ViewScoped
-public class ModelComponentViewController extends BaseController {
+public class HospitalViewController extends BaseController {
 
-    private ModelComponentSearchParameter searchParameter;
-    private LazyDataModel<ModelComponent> lazyDataModelComponent;
-    private ModelComponent selectedModelComponent;
-    @ManagedProperty(value = "#{modelComponentService}")
-    private ModelComponentService modelComponentService;
+    private HospitalSearchParameter searchParameter;
+    private LazyDataModel<Hospital> lazyDataHospital;
+    private Hospital selectedHospital;
+    @ManagedProperty(value = "#{hospitalService}")
+    private HospitalService hospitalService;
 
     @PostConstruct
     @Override
     public void initialization() {
         super.initialization();
-        searchParameter = new ModelComponentSearchParameter();
+        searchParameter = new HospitalSearchParameter();
     }
 
     @PreDestroy
     public void cleanAndExit() {
-        modelComponentService = null;
+        hospitalService = null;
         searchParameter = null;
-        lazyDataModelComponent = null;
-        selectedModelComponent = null;
+        lazyDataHospital = null;
+        selectedHospital = null;
     }
 
-    public void setModelComponentService(ModelComponentService modelComponentService) {
-        this.modelComponentService = modelComponentService;
+    public void setHospitalService(HospitalService hospitalService) {
+        this.hospitalService = hospitalService;
     }
 
-    public ModelComponentSearchParameter getSearchParameter() {
+    public HospitalSearchParameter getSearchParameter() {
         return searchParameter;
     }
 
-    public void setSearchParameter(ModelComponentSearchParameter searchParameter) {
+    public void setSearchParameter(HospitalSearchParameter searchParameter) {
         this.searchParameter = searchParameter;
     }
 
     
 
-    public LazyDataModel<ModelComponent> getLazyDataModelComponent() {
-        if (lazyDataModelComponent == null) {
-            lazyDataModelComponent = new ModelComponentLazyDataModel(searchParameter, modelComponentService);
+    public LazyDataModel<Hospital> getLazyDataHospital() {
+        if (lazyDataHospital == null) {
+            lazyDataHospital = new HospitalLazyDataModel(searchParameter, hospitalService);
         }
-        return lazyDataModelComponent;
+        return lazyDataHospital;
     }
 
-    public void setLazyDataModelComponent(LazyDataModel<ModelComponent> lazyDataModelComponent) {
-        this.lazyDataModelComponent = lazyDataModelComponent;
+    public void setLazyDataHospital(LazyDataModel<Hospital> lazyDataHospital) {
+        this.lazyDataHospital = lazyDataHospital;
     }
 
-    public ModelComponent getSelectedModelComponent() {
-        return selectedModelComponent;
+    public Hospital getSelectedHospital() {
+        return selectedHospital;
     }
 
-    public void setSelectedModelComponent(ModelComponent selectedModelComponent) {
-        this.selectedModelComponent = selectedModelComponent;
+    public void setSelectedHospital(Hospital selectedHospital) {
+        this.selectedHospital = selectedHospital;
     }
 
     public void doSearch() {
-        lazyDataModelComponent = null;
+        lazyDataHospital = null;
     }
 
     public void doDetail() {
         try {
-            selectedModelComponent = this.modelComponentService.getEntityByPKWithDetail(selectedModelComponent.getId());
+            selectedHospital = this.hospitalService.getEntiyByPK(selectedHospital.getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -100,14 +100,14 @@ public class ModelComponentViewController extends BaseController {
 
     public void doDelete() {
         try {
-            modelComponentService.delete(selectedModelComponent);
+            hospitalService.delete(selectedHospital);
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 
         } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-            LOGGER.error("Error when doDelete modelComponent ", ex);
+            LOGGER.error("Error when doDelete hospital ", ex);
         } catch (Exception ex) {
-            LOGGER.error("Error when doDelete modelComponent", ex);
+            LOGGER.error("Error when doDelete hospital", ex);
         }
     }
 
@@ -118,7 +118,7 @@ public class ModelComponentViewController extends BaseController {
     public void doUpdate() {
         Map<String, List<String>> dataToSend = new HashMap<>();
         List<String> values = new ArrayList<>();
-        values.add(String.valueOf(selectedModelComponent.getId()));
+        values.add(String.valueOf(selectedHospital.getId()));
         dataToSend.put("param", values);
         showDialog(dataToSend);
     }
@@ -128,9 +128,9 @@ public class ModelComponentViewController extends BaseController {
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", false);
-        options.put("contentWidth", 500);
-        options.put("contentHeight", 500);
-        RequestContext.getCurrentInstance().openDialog("model_component_form", options, params);
+        options.put("contentWidth", 450);
+        options.put("contentHeight", 550);
+        RequestContext.getCurrentInstance().openDialog("hospital_form", options, params);
     }
 
     @Override

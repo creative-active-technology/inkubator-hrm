@@ -20,6 +20,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.event.ValueChangeEvent;
 import org.apache.commons.lang3.StringUtils;
 import org.primefaces.context.RequestContext;
 
@@ -38,6 +39,7 @@ public class ModelComponentFormController extends BaseController {
     @ManagedProperty(value = "#{benefitGroupService}")
     private BenefitGroupService benefitGroupService;
     private Map<String, Long> benefits = new TreeMap<>();
+    private Boolean disabledBenefit;
 
     @PostConstruct
     @Override
@@ -47,6 +49,7 @@ public class ModelComponentFormController extends BaseController {
             String param = FacesUtil.getRequestParameter("param");
             modelComponentModel = new ModelComponentModel();
             isUpdate = Boolean.FALSE;
+            disabledBenefit = Boolean.TRUE;
 
             List<BenefitGroup> listBenefit = benefitGroupService.getAllData();
 
@@ -64,7 +67,11 @@ public class ModelComponentFormController extends BaseController {
                     modelComponentModel.setName(modelComponent.getName());
                     modelComponentModel.setDescription(modelComponent.getDescription());
                     modelComponentModel.setSpesific(modelComponent.getSpesific());
-                    modelComponentModel.setBenefitGroupId(modelComponent.getBenefitGroup().getId());
+                    if (modelComponent.getSpesific().equals(HRMConstant.LINK_SCHEMA)) {
+                        modelComponentModel.setBenefitGroupId(modelComponent.getBenefitGroup().getId());
+                        disabledBenefit = Boolean.FALSE;
+                    }
+
                     isUpdate = Boolean.TRUE;
                 }
 
@@ -79,6 +86,14 @@ public class ModelComponentFormController extends BaseController {
         modelComponentService = null;
 //        modelComponentModel = null;
         isUpdate = null;
+    }
+
+    public void setDisabledBenefit(Boolean disabledBenefit) {
+        this.disabledBenefit = disabledBenefit;
+    }
+
+    public Boolean getDisabledBenefit() {
+        return disabledBenefit;
     }
 
     public ModelComponentModel getModelComponentModel() {
@@ -112,8 +127,6 @@ public class ModelComponentFormController extends BaseController {
     public void setBenefitGroupService(BenefitGroupService benefitGroupService) {
         this.benefitGroupService = benefitGroupService;
     }
-    
-    
 
     public void doSave() {
         ModelComponent modelComponent = getEntityFromViewModel(modelComponentModel);
@@ -143,7 +156,21 @@ public class ModelComponentFormController extends BaseController {
         modelComponent.setName(modelComponentModel.getName());
         modelComponent.setSpesific(modelComponentModel.getSpesific());
         modelComponent.setDescription(modelComponentModel.getDescription());
-        modelComponent.setBenefitGroup(new BenefitGroup(modelComponentModel.getBenefitGroupId()));
+        if (modelComponent.getSpesific().equals(HRMConstant.LINK_SCHEMA)) {
+            modelComponent.setBenefitGroup(new BenefitGroup(modelComponentModel.getBenefitGroupId()));
+        }
         return modelComponent;
+    }
+
+    public void specificChanged(ValueChangeEvent event) {
+
+        System.out.println("Specific Id  " + String.valueOf(event.getNewValue()));
+
+        if (String.valueOf(event.getNewValue()).equals(String.valueOf(HRMConstant.LINK_SCHEMA))) {
+            disabledBenefit = Boolean.FALSE;
+        } else {
+            disabledBenefit = Boolean.TRUE;
+        }
+
     }
 }
