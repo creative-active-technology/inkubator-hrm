@@ -21,6 +21,7 @@
                         <h:panelGroup layout="block">
                             <h:panelGrid>
                                 <p:outputLabel value="#{appmsg['report.employee_working_group_reporting']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['report.employee_data_based_working_group']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -113,7 +114,7 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{empData.jabatanByJabatanId.name}"/>
                             </p:column>  
-                            <p:column sortBy="jabatanByJabatanId.department.departmentName"  style="text-align: center;width: 10%">
+                            <p:column sortBy="department.departmentName"  style="text-align: center;width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['department.department']}"/>
                                 </f:facet>
