@@ -420,7 +420,7 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
 
         	/** proses no. 2*/
         	List<ApprovalDefinition> listAppDef = new ArrayList<ApprovalDefinition>();
-            if(StringUtils.isNotEmpty(previousAppDef.getSpecificName())){
+            if(previousAppDef.getIsHaveManyToManyRelations()){
             	//ini untuk approval process yang  many to many, ex: leave, overtime
             	listAppDef = approvalDefinitionDao.getAllDataByNameAndProcessTypeAndSpecificNameAndSequenceGreater(previousAppDef.getName(), previousAppDef.getProcessType(), previousAppDef.getSpecificName(), previousAppDef.getSequence());
             } else {

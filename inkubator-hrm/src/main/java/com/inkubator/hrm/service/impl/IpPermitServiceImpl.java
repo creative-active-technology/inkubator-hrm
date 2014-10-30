@@ -70,8 +70,10 @@ public class IpPermitServiceImpl extends IServiceImpl implements IpPermitService
         List<IpPermit> listIpPermit = ipPermitDao.getAllData();
         for (IpPermit ipPermit : listIpPermit) {
             if(entity.getFromAddress1().equals(ipPermit.getFromAddress1()) && entity.getUntilAddress1() > ipPermit.getUntilAddress1()){
+
                 throw new BussinessException("ippermit.range_api_adress_sudah_ada");
             }else if(entity.getFromAddress2().equals(ipPermit.getFromAddress2()) && entity.getUntilAddress2() < ipPermit.getUntilAddress2()){
+
                 throw new BussinessException("ippermit.range_api_adress_sudah_ada");
             }
         }
@@ -267,13 +269,16 @@ public class IpPermitServiceImpl extends IServiceImpl implements IpPermitService
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public Long getByIpPermitLocation(String location) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.ipPermitDao.getByIpPermitLocation(location);
     }
-    
+
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+
     public List<IpPermit> getByIpHeader(int ipHeader) throws Exception {
-       return this.ipPermitDao.getByIpHeader(ipHeader);
+        return this.ipPermitDao.getByIpHeader(ipHeader);
     }
 
 }

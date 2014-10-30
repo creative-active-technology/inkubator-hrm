@@ -14,9 +14,13 @@ import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
 import com.inkubator.hrm.web.model.DistributionOvetTimeModel;
 import com.inkubator.hrm.web.model.PlacementOfEmployeeWorkScheduleModel;
 import com.inkubator.hrm.web.search.EmpDataSearchParameter;
+import com.inkubator.hrm.web.search.ReportEmpWorkingGroupParameter;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.Criterion;
@@ -461,5 +465,43 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
           criteria.setFetchMode("jabatanByJabatanGajiId.unitKerja", FetchMode.JOIN);
         return criteria.list();
     }
+
+	@Override
+	public List<EmpData> getAllDataReportEmpWorkingGroupByParam(ReportEmpWorkingGroupParameter param, int firstResult, int maxResults, Order orderable) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
+		criteria.createAlias("wtGroupWorking", "wtGroupWorking", JoinType.INNER_JOIN);
+		criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
+		criteria.createAlias("jabatanByJabatanId.department", "department", JoinType.INNER_JOIN);
+		doSearchReportEmpWorkingGroupByParam(param, criteria);
+        criteria.addOrder(orderable);
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResults);
+		return criteria.list();
+	}
+
+	@Override
+	public Long getTotalReportEmpWorkingGroupByParam(ReportEmpWorkingGroupParameter param) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
+		doSearchReportEmpWorkingGroupByParam(param, criteria);
+		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
+	
+	private Criteria doSearchReportEmpWorkingGroupByParam(ReportEmpWorkingGroupParameter param, Criteria criteria) {
+		if(param.getDepartmentId() != null && param.getDepartmentId() != 0){
+			criteria.add(Restrictions.eq("jabatanByJabatanId.department.id", param.getDepartmentId()));
+		}
+		
+		if(StringUtils.isNotEmpty(param.getNikStart())){
+			criteria.add(Restrictions.ge("nik", param.getNikStart()));
+		}
+		
+		if(StringUtils.isNotEmpty(param.getNikEnd())){
+			criteria.add(Restrictions.le("nik", param.getNikEnd()));
+		}
+		
+		return criteria;
+	}
 
 }

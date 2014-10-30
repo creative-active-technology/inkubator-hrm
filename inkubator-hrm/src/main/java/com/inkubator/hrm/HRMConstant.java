@@ -190,6 +190,7 @@ public class HRMConstant {
     public static final Integer UPLOAD = 3;
     public static final Integer LIMITED_TIME = 4;
     public static final Integer FORMULA = 5;
+    public static final Integer LINK_SCHEMA = 6;
     /* END */
 
     /* Constant for  Appraisal Element */

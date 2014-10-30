@@ -3,13 +3,12 @@ package com.inkubator.hrm.service.impl;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
-import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.dao.BenefitGroupDao;
-import com.inkubator.hrm.dao.ModelComponentDao;
-import com.inkubator.hrm.entity.BenefitGroup;
-import com.inkubator.hrm.entity.ModelComponent;
-import com.inkubator.hrm.service.ModelComponentService;
-import com.inkubator.hrm.web.search.ModelComponentSearchParameter;
+import com.inkubator.hrm.dao.CityDao;
+import com.inkubator.hrm.dao.HospitalDao;
+import com.inkubator.hrm.entity.City;
+import com.inkubator.hrm.entity.Hospital;
+import com.inkubator.hrm.service.HospitalService;
+import com.inkubator.hrm.web.search.HospitalSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import java.util.Date;
 import java.util.List;
@@ -25,152 +24,152 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author Taufik Hidayat
  */
-@Service(value = "modelComponentService")
+@Service(value = "hospitalService")
 @Lazy
-public class ModelComponentServiceImpl extends IServiceImpl implements ModelComponentService {
+public class HospitalServiceImpl extends IServiceImpl implements HospitalService {
 
     @Autowired
-    private ModelComponentDao modelComponentDao;
+    private HospitalDao hospitalDao;
     @Autowired
-    private BenefitGroupDao benefitGroupDao;
+    private CityDao cityDao;
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void delete(ModelComponent modelComponent) throws Exception {
-        modelComponentDao.delete(modelComponent);
+    public void delete(Hospital hospital) throws Exception {
+        hospitalDao.delete(hospital);
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<ModelComponent> getAllData() throws Exception {
-        return this.modelComponentDao.getAllData();
+    public List<Hospital> getAllData() throws Exception {
+        return this.hospitalDao.getAllData();
     }
 
     @Override
-    public List<ModelComponent> getAllData(Boolean arg0) throws Exception {
+    public List<Hospital> getAllData(Boolean arg0) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
     }
 
     @Override
-    public List<ModelComponent> getAllData(Integer arg0) throws Exception {
+    public List<Hospital> getAllData(Integer arg0) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
     }
 
     @Override
-    public List<ModelComponent> getAllData(Byte arg0) throws Exception {
+    public List<Hospital> getAllData(Byte arg0) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
     }
 
     @Override
-    public List<ModelComponent> getAllDataPageAble(int arg0, int arg1, Order arg2)
+    public List<Hospital> getAllDataPageAble(int arg0, int arg1, Order arg2)
             throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
     }
 
     @Override
-    public List<ModelComponent> getAllDataPageAbleIsActive(int arg0, int arg1,
+    public List<Hospital> getAllDataPageAbleIsActive(int arg0, int arg1,
             Order arg2, Boolean arg3) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
     }
 
     @Override
-    public List<ModelComponent> getAllDataPageAbleIsActive(int arg0, int arg1,
+    public List<Hospital> getAllDataPageAbleIsActive(int arg0, int arg1,
             Order arg2, Integer arg3) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
     }
 
     @Override
-    public List<ModelComponent> getAllDataPageAbleIsActive(int arg0, int arg1,
+    public List<Hospital> getAllDataPageAbleIsActive(int arg0, int arg1,
             Order arg2, Byte arg3) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
     }
 
     @Override
-    public ModelComponent getEntityByPkIsActive(String arg0, Integer arg1)
+    public Hospital getEntityByPkIsActive(String arg0, Integer arg1)
             throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
     }
 
     @Override
-    public ModelComponent getEntityByPkIsActive(String arg0, Byte arg1)
+    public Hospital getEntityByPkIsActive(String arg0, Byte arg1)
             throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
     }
 
     @Override
-    public ModelComponent getEntityByPkIsActive(String arg0, Boolean arg1)
+    public Hospital getEntityByPkIsActive(String arg0, Boolean arg1)
             throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
     }
 
     @Override
-    public ModelComponent getEntityByPkIsActive(Integer arg0, Integer arg1)
+    public Hospital getEntityByPkIsActive(Integer arg0, Integer arg1)
             throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
     }
 
     @Override
-    public ModelComponent getEntityByPkIsActive(Integer arg0, Byte arg1)
+    public Hospital getEntityByPkIsActive(Integer arg0, Byte arg1)
             throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
     }
 
     @Override
-    public ModelComponent getEntityByPkIsActive(Integer arg0, Boolean arg1)
+    public Hospital getEntityByPkIsActive(Integer arg0, Boolean arg1)
             throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
     }
 
     @Override
-    public ModelComponent getEntityByPkIsActive(Long arg0, Integer arg1)
+    public Hospital getEntityByPkIsActive(Long arg0, Integer arg1)
             throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
     }
 
     @Override
-    public ModelComponent getEntityByPkIsActive(Long arg0, Byte arg1)
+    public Hospital getEntityByPkIsActive(Long arg0, Byte arg1)
             throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
     }
 
     @Override
-    public ModelComponent getEntityByPkIsActive(Long arg0, Boolean arg1)
+    public Hospital getEntityByPkIsActive(Long arg0, Boolean arg1)
             throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
     }
 
     @Override
-    public ModelComponent getEntiyByPK(String arg0) throws Exception {
+    public Hospital getEntiyByPK(String arg0) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
     }
 
     @Override
-    public ModelComponent getEntiyByPK(Integer arg0) throws Exception {
+    public Hospital getEntiyByPK(Integer arg0) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-    public ModelComponent getEntiyByPK(Long id) throws Exception {
-        return modelComponentDao.getEntiyByPK(id);
+    public Hospital getEntiyByPK(Long id) throws Exception {
+        return hospitalDao.getEntiyByPK(id);
     }
 
     @Override
@@ -199,108 +198,100 @@ public class ModelComponentServiceImpl extends IServiceImpl implements ModelComp
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void save(ModelComponent modelComponent) throws Exception {
-        // check duplicate code
-        long totalDuplicates = modelComponentDao.getTotalByCode(modelComponent.getCode());
-        if (totalDuplicates > 0) {
-            throw new BussinessException("modelComponent.error_duplicate_modelComponent_code");
-        }
-
+    public void save(Hospital hospital) throws Exception {
         // check duplicate name
-        long totalDuplicateName = modelComponentDao.getTotalByName(modelComponent.getName());
-        if (totalDuplicateName > 0) {
-            throw new BussinessException("modelComponent.error_duplicate_modelComponent_name");
+        long totalDuplicates = hospitalDao.getTotalByCode(hospital.getCode());
+        if (totalDuplicates > 0) {
+            throw new BussinessException("hospital.error_duplicate_hospital_code");
+        }
+        
+        // check duplicate phone
+        long totalDuplicatesPhone = hospitalDao.getTotalByPhone(hospital.getPhone());
+        if (totalDuplicatesPhone > 0) {
+            throw new BussinessException("hospital.error_duplicate_hospital_phone");
         }
 
-        if (modelComponent.getSpesific().equals(HRMConstant.LINK_SCHEMA)) {
-            BenefitGroup benefitGroup = benefitGroupDao.getEntiyByPK(modelComponent.getBenefitGroup().getId());
-            modelComponent.setBenefitGroup(benefitGroup);
-        }
-        modelComponent.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
-
-        modelComponent.setCreatedBy(UserInfoUtil.getUserName());
-        modelComponent.setCreatedOn(new Date());
-        modelComponentDao.save(modelComponent);
+        hospital.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+        City city = cityDao.getEntiyByPK(hospital.getCity().getId());
+        hospital.setCity(city);
+        hospital.setCreatedBy(UserInfoUtil.getUserName());
+        hospital.setCreatedOn(new Date());
+        hospitalDao.save(hospital);
     }
 
     @Override
-    public ModelComponent saveData(ModelComponent arg0) throws Exception {
+    public Hospital saveData(Hospital arg0) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
     }
 
     @Override
-    public void saveOrUpdate(ModelComponent arg0) throws Exception {
+    public void saveOrUpdate(Hospital arg0) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
     }
 
     @Override
-    public ModelComponent saveOrUpdateData(ModelComponent arg0) throws Exception {
+    public Hospital saveOrUpdateData(Hospital arg0) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
     }
 
     @Override
-    public void softDelete(ModelComponent arg0) throws Exception {
+    public void softDelete(Hospital arg0) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
     }
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void update(ModelComponent b) throws Exception {
-        // check duplicate code
-        long totalDuplicates = modelComponentDao.getTotalByCodeAndNotId(b.getCode(), b.getId());
-        if (totalDuplicates > 0) {
-            throw new BussinessException("modelComponent.error_duplicate_modelComponent_code");
-        }
-
+    public void update(Hospital b) throws Exception {
         // check duplicate name
-        long totalDuplicateName = modelComponentDao.getTotalByNameAndNotId(b.getName(), b.getId());
-        if (totalDuplicateName > 0) {
-            throw new BussinessException("modelComponent.error_duplicate_modelComponent_name");
-        }
-
-        ModelComponent modelComponent = modelComponentDao.getEntiyByPK(b.getId());
-        if (modelComponent.getSpesific().equals(HRMConstant.LINK_SCHEMA)) {
-            BenefitGroup benefitGroup = benefitGroupDao.getEntiyByPK(b.getBenefitGroup().getId());
-            modelComponent.setBenefitGroup(benefitGroup);
-        }else{
-            modelComponent.setBenefitGroup(null);
+        long totalDuplicates = hospitalDao.getTotalByCodeAndNotId(b.getCode(), b.getId());
+        if (totalDuplicates > 0) {
+            throw new BussinessException("hospital.error_duplicate_hospital_code");
         }
         
-        modelComponent.setCode(b.getCode());
-        modelComponent.setName(b.getName());
-        modelComponent.setDescription(b.getDescription());
-        modelComponent.setSpesific(b.getSpesific());
-        modelComponent.setUpdatedBy(UserInfoUtil.getUserName());
-        modelComponent.setUpdatedOn(new Date());
-        modelComponentDao.update(modelComponent);
+        // check duplicate phone
+        long totalDuplicatesPhone = hospitalDao.getTotalByPhoneAndNotId(b.getPhone(), b.getId());
+        if (totalDuplicatesPhone > 0) {
+            throw new BussinessException("hospital.error_duplicate_hospital_phone");
+        }
+
+        Hospital hospital = hospitalDao.getEntiyByPK(b.getId());
+        City city = cityDao.getEntiyByPK(b.getCity().getId());
+        hospital.setCode(b.getCode());
+        hospital.setName(b.getName());
+        hospital.setPhone(b.getPhone());
+        hospital.setAddress(b.getAddress());
+        hospital.setCity(city);
+        hospital.setUpdatedBy(UserInfoUtil.getUserName());
+        hospital.setUpdatedOn(new Date());
+        hospitalDao.update(hospital);
     }
 
     @Override
-    public ModelComponent updateData(ModelComponent arg0) throws Exception {
+    public Hospital updateData(Hospital arg0) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<ModelComponent> getByParam(ModelComponentSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception {
-        return this.modelComponentDao.getByParam(parameter, firstResult, maxResults, orderable);
+    public List<Hospital> getByParam(HospitalSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception {
+        return this.hospitalDao.getByParam(parameter, firstResult, maxResults, orderable);
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getTotalByParam(ModelComponentSearchParameter parameter) throws Exception {
-        return this.modelComponentDao.getTotalModelComponentByParam(parameter);
+    public Long getTotalByParam(HospitalSearchParameter parameter) throws Exception {
+        return this.hospitalDao.getTotalHospitalByParam(parameter);
     }
-
+    
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-    public ModelComponent getEntityByPKWithDetail(Long id) throws Exception {
-        return modelComponentDao.getEntityByPKWithDetail(id);
+    public Hospital getEntityByPKWithDetail(Long id) throws Exception {
+        return hospitalDao.getEntityByPKWithDetail(id);
     }
 
 }

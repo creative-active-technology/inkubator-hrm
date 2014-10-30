@@ -54,20 +54,19 @@ public class IpPermitDaoImpl extends IDAOImpl<IpPermit> implements IpPermitDao {
         criteria.add(Restrictions.like("lokasi", location, MatchMode.ANYWHERE));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
-    
+
     private void doSearchMaritalStatusByParam(IpPermitSearchParameter searchParameter, Criteria criteria) {
-        if (searchParameter.getLokasi()!=null) {
-        	criteria.add(Restrictions.like("lokasi", searchParameter.getLokasi(), MatchMode.ANYWHERE));
-        } 
+        if (searchParameter.getLokasi() != null) {
+            criteria.add(Restrictions.like("lokasi", searchParameter.getLokasi(), MatchMode.ANYWHERE));
+        }
         criteria.add(Restrictions.isNotNull("id"));
     }
+
     @Override
     public List<IpPermit> getByIpHeader(int ipHeader) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("fromAddress1", ipHeader));
         return criteria.list();
     }
-    
+
 }
-
-

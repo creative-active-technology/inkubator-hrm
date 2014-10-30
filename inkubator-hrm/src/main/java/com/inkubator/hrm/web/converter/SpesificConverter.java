@@ -25,7 +25,7 @@ public class SpesificConverter implements Converter {
     public String getAsString(FacesContext facesContext, UIComponent uiComponent, Object obj) {
 
         ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
-     
+
         Integer data = (Integer) obj;
         if (data.equals(HRMConstant.BASIC_SALARY)) {
             return messages.getString("modelComponent.modelComponent_basic");
@@ -36,27 +36,32 @@ public class SpesificConverter implements Converter {
             return messages.getString("modelComponent.modelComponent_ceil");
 
         }
-        
+
         if (data.equals(HRMConstant.TAX_TOTAL)) {
             return messages.getString("modelComponent.modelComponent_tax");
 
         }
-        
+
         if (data.equals(HRMConstant.UPLOAD)) {
             return messages.getString("modelComponent.modelComponent_upload");
 
         }
-        
+
         if (data.equals(HRMConstant.LIMITED_TIME)) {
             return messages.getString("modelComponent.modelComponent_limited");
 
         }
-        
-         if (data.equals(HRMConstant.FORMULA)) {
+
+        if (data.equals(HRMConstant.FORMULA)) {
             return messages.getString("modelComponent.modelComponent_formula");
 
         }
-        
+
+        if (data.equals(HRMConstant.LINK_SCHEMA)) {
+            return messages.getString("modelComponent.modelComponent_link");
+
+        }
+
         return null;
 
     }

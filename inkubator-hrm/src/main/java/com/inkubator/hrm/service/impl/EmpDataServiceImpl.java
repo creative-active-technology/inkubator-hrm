@@ -51,6 +51,7 @@ import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
 import com.inkubator.hrm.web.model.DistributionOvetTimeModel;
 import com.inkubator.hrm.web.model.PlacementOfEmployeeWorkScheduleModel;
 import com.inkubator.hrm.web.search.EmpDataSearchParameter;
+import com.inkubator.hrm.web.search.ReportEmpWorkingGroupParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 
 /**
@@ -583,5 +584,19 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     public List<EmpData> getEmpDataByListId(List<Long> data) throws Exception {
        return this.empDataDao.getEmpDataByListId(data);
     }
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<EmpData> getAllDataReportEmpWorkingGroupByParam(ReportEmpWorkingGroupParameter param, int firstResult, int maxResults, Order orderable) {
+		return this.empDataDao.getAllDataReportEmpWorkingGroupByParam(param, firstResult, maxResults, orderable);
+		
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Long getTotalReportEmpWorkingGroupByParam(ReportEmpWorkingGroupParameter param) {
+		return this.empDataDao.getTotalReportEmpWorkingGroupByParam(param);
+		
+	}
 
 }
