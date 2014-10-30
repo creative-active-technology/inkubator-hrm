@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 
 /**
@@ -159,4 +160,31 @@ public class IpPermit implements java.io.Serializable {
         this.updatedOn = updatedOn;
     }
 
+    @Transient
+    public Boolean isNineDigit(){
+        char[] fromAddress = String.valueOf(fromAddress1).toCharArray();
+        int fromAddressLength = fromAddress.length;
+        if(fromAddressLength == 9){
+            return true;
+        }
+        return false;
+    }
+    @Transient
+    public Boolean isSixDigit(){
+        char[] fromAddress = String.valueOf(fromAddress1).toCharArray();
+        int fromAddressLength = fromAddress.length;
+        if(fromAddressLength == 6){
+            return true;
+        }
+        return false;
+    }
+    @Transient
+    public Boolean isThreeDigit(){
+        char[] fromAddress = String.valueOf(fromAddress1).toCharArray();
+        int fromAddressLength = fromAddress.length;
+        if(fromAddressLength == 3){
+            return true;
+        }
+        return false;
+    }
 }

@@ -53,16 +53,25 @@ public class IpPermitServiceImpl extends IServiceImpl implements IpPermitService
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(IpPermit entity) throws Exception {
-        if(entity.getFromAddress1() == entity.getFromAddress2() && entity.getUntilAddress1() == entity.getUntilAddress2()){
+        //validate if ipAddress lebih besar dari 255.255.255
+        if(entity.getFromAddress1() > 255255255){
+            throw new BussinessException("ippermit.ip_address_is_bigger_255255255");
+        }
+        //validate if ipAddress dari sama dengan ipAddress sampai
+        if(entity.getUntilAddress1().equals(entity.getUntilAddress2())){
             throw new BussinessException("ippermit.ip_permit_is_same_value");
         }
+        
+        //validate if ipAddress dari lebih besar dari ipAddress sampai
+        if(entity.getUntilAddress1() > entity.getUntilAddress2()){
+            throw new BussinessException("ippermit.ip_permit_is_smaller");
+        }
+        
         List<IpPermit> listIpPermit = ipPermitDao.getAllData();
         for (IpPermit ipPermit : listIpPermit) {
-            if(entity.getFromAddress1().equals(ipPermit.getFromAddress1()) && entity.getUntilAddress1() <= ipPermit.getUntilAddress1()){
+            if(entity.getFromAddress1().equals(ipPermit.getFromAddress1()) && entity.getUntilAddress1() > ipPermit.getUntilAddress1()){
                 throw new BussinessException("ippermit.range_api_adress_sudah_ada");
-            }
-            
-            if(entity.getFromAddress2().equals(ipPermit.getFromAddress2()) && entity.getUntilAddress2() <= ipPermit.getUntilAddress2()){
+            }else if(entity.getFromAddress2().equals(ipPermit.getFromAddress2()) && entity.getUntilAddress2() < ipPermit.getUntilAddress2()){
                 throw new BussinessException("ippermit.range_api_adress_sudah_ada");
             }
         }
@@ -75,20 +84,28 @@ public class IpPermitServiceImpl extends IServiceImpl implements IpPermitService
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(IpPermit entity) throws Exception {
-        if(entity.getFromAddress1() == entity.getFromAddress2() && entity.getUntilAddress1() == entity.getUntilAddress2()){
+        //validate if ipAddress lebih besar dari 255.255.255
+        if(entity.getFromAddress1() > 255255255){
+            throw new BussinessException("ippermit.ip_address_is_bigger_255255255");
+        }
+        //validate if ipAddress dari sama dengan ipAddress sampai
+        if(entity.getUntilAddress1().equals(entity.getUntilAddress2())){
             throw new BussinessException("ippermit.ip_permit_is_same_value");
         }
+        
+        //validate if ipAddress dari lebih besar dari ipAddress sampai
+        if(entity.getUntilAddress1() > entity.getUntilAddress2()){
+            throw new BussinessException("ippermit.ip_permit_is_smaller");
+        }
+        
 //        List<IpPermit> listIpPermit = ipPermitDao.getAllData();
 //        for (IpPermit ipPermit : listIpPermit) {
-//            if(entity.getFromAddress1().equals(ipPermit.getFromAddress1()) && entity.getUntilAddress1() <= ipPermit.getUntilAddress1()){
+//            if(entity.getFromAddress1().equals(ipPermit.getFromAddress1()) && entity.getUntilAddress1() > ipPermit.getUntilAddress1()){
 //                throw new BussinessException("ippermit.range_api_adress_sudah_ada");
-//            }
-//            
-//            if(entity.getFromAddress2().equals(ipPermit.getFromAddress2()) && entity.getUntilAddress2() <= ipPermit.getUntilAddress2()){
+//            }else if(entity.getFromAddress2().equals(ipPermit.getFromAddress2()) && entity.getUntilAddress2() < ipPermit.getUntilAddress2()){
 //                throw new BussinessException("ippermit.range_api_adress_sudah_ada");
 //            }
 //        }
-        
         IpPermit update = ipPermitDao.getEntiyByPK(entity.getId());
         update.setFromAddress1(entity.getFromAddress1());
         update.setFromAddress2(entity.getFromAddress2());
