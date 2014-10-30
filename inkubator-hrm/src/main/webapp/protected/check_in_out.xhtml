@@ -64,7 +64,8 @@
 
                                 <p:outputLabel/>
                                 <p:outputLabel/>
-                                <p:commandButton value="#{checkInCheckOutController.labelButton}" style="font-size: 15px" icon="ui-icon-check" action="#{checkInCheckOutController.doChechInOut()}"/>
+                                <p:commandButton value="#{checkInCheckOutController.labelButton}" style="font-size: 15px" icon="ui-icon-check" update=":growlMenuFormlId"
+                                                 action="#{checkInCheckOutController.doChechInOut()}"/>
                             </h:panelGrid>
                             <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
 

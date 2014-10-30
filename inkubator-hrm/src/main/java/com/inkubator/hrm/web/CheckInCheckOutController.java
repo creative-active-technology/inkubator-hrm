@@ -5,6 +5,8 @@
  */
 package com.inkubator.hrm.web;
 
+import com.inkubator.common.CommonUtilConstant;
+import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.CheckInAttendance;
 import com.inkubator.hrm.entity.EmpData;
@@ -17,10 +19,12 @@ import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.web.model.CheckInOutModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
+import com.inkubator.webcore.util.MessagesResourceUtil;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
@@ -45,6 +49,7 @@ public class CheckInCheckOutController extends BaseController {
     private CheckInOutModel checkInOutModel;
     private Boolean isCheckIn;
     private String labelButton;
+    private int bufferCheckOut;
 
     @PostConstruct
     @Override
@@ -73,15 +78,18 @@ public class CheckInCheckOutController extends BaseController {
                         labelButton = "Check In";
                         isCheckIn = Boolean.FALSE;
                     } else {
+                        checkInOutModel.setId(attendance.getId());
                         checkInOutModel.setEmpId(attendance.getEmpData().getId());
                         checkInOutModel.setUserName(hrmUser.getRealName());
                         checkInOutModel.setJadwalKerja(attendance.getCheckDate());
                         checkInOutModel.setTimeCheckIn(attendance.getCheckInTime());
+                        checkInOutModel.setTimeCheckOut(attendance.getCheckOutTime());
                         checkInOutModel.setBeginHour(jadwalKaryawan.getWtWorkingHour().getWorkingHourBegin());
                         checkInOutModel.setEndHour(jadwalKaryawan.getWtWorkingHour().getWorkingHourEnd());
                         checkInOutModel.setBreakTime(jadwalKaryawan.getWtWorkingHour().getBreakHourBegin() + " - " + jadwalKaryawan.getWtWorkingHour().getBreakHourEnd());
                         isCheckIn = Boolean.TRUE;
                         labelButton = "Check Out";
+                        bufferCheckOut = jadwalKaryawan.getWtWorkingHour().getGoHomeLimitBegin();
                     }
 
 //                FacesUtil.getResponse().sendRedirect(FacesUtil.getRequest().getContextPath() + "/protected/check_in_out.htm");
@@ -141,31 +149,52 @@ public class CheckInCheckOutController extends BaseController {
     public String doChechInOut() {
         try {
             CheckInAttendance attendance = new CheckInAttendance();
-            attendance.setCheckDate(new Date());
-            attendance.setCheckInTime(new Date());
             String stringDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
             // harus sperti ini membading kan 2 jam... yg berbeda
             Date date = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(stringDate + " " + checkInOutModel.getBeginHour());
+            if (!isCheckIn) {
 
-            if (date.after(new Date())) {
+                attendance.setCheckDate(new Date());
+                attendance.setCheckInTime(new Date());
 
-                attendance.setNote(HRMConstant.CHECK_IN_EARLY);
+                if (date.after(new Date())) {
+
+                    attendance.setNote(HRMConstant.CHECK_IN_EARLY);
+
+                }
+                if (date.before(new Date())) {
+                    attendance.setNote(HRMConstant.CHECK_IN_LATE);
+                }
+
+                if (date.equals(new Date())) {
+                    attendance.setNote(HRMConstant.CHECK_IN_ON_TIME);
+                }
+                attendance.setEmpData(new EmpData(checkInOutModel.getEmpId()));
+                attendance.setIpAddress(HrmUserInfoUtil.getRequestRemoteAddrByJSF());
+                attendance.setStatus(HRMConstant.CHECK_IN);
+                checkInAttendanceService.save(attendance);
+                MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "ceckinout.checkin_success",
+                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+                return "/protected/home.htm?faces-redirect=true";
+            } else {
+                Date date1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(stringDate + " " + checkInOutModel.getEndHour());
+                Date canGoHome = DateTimeUtil.getDateFrom(date1, bufferCheckOut, CommonUtilConstant.DATE_FORMAT_MINUTES);
+                if (canGoHome.after(new Date())) {
+                    MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.error", "ceckinout.checkin_error_out",
+                            FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+                    System.out.println(" ini terjadi");
+                } else {
+                    attendance.setId(checkInOutModel.getId());
+                    attendance.setCheckOutTime(new Date());
+                    checkInAttendanceService.update(attendance);
+                    MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "ceckinout.checkout_success",
+                            FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+                    return "/protected/home.htm?faces-redirect=true";
+                }
 
             }
-            if (date.before(new Date())) {
-                attendance.setNote(HRMConstant.CHECK_IN_LATE);
-            }
 
-            if (date.equals(new Date())) {
-                attendance.setNote(HRMConstant.CHECK_IN_ON_TIME);
-            }
-            attendance.setEmpData(new EmpData(checkInOutModel.getEmpId()));
-            attendance.setIpAddress(HrmUserInfoUtil.getRequestRemoteAddrByJSF());
-            attendance.setStatus(HRMConstant.CHECK_IN);
-            checkInAttendanceService.save(attendance);
-//            MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "ceckinout.checkin_success",
-//                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-            return "/protected/home.htm?faces-redirect=true";
+//           
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -191,7 +220,5 @@ public class CheckInCheckOutController extends BaseController {
     public void setLabelButton(String labelButton) {
         this.labelButton = labelButton;
     }
-    
-    
 
 }

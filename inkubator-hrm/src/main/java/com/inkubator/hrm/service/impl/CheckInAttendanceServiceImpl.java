@@ -77,8 +77,19 @@ public class CheckInAttendanceServiceImpl extends IServiceImpl implements CheckI
     }
 
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
     public void update(CheckInAttendance entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        CheckInAttendance attendance = checkInAttendanceDao.getEntiyByPK(entity.getId());
+        attendance.setUpdatedBy(UserInfoUtil.getUserName());
+        attendance.setUpdatedOn(new Date());
+        attendance.setCheckOutTime(entity.getCheckOutTime());
+        checkInAttendanceDao.update(attendance);
+        ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+        String waktuCheckOut = new SimpleDateFormat("EEEE, dd-MMMM-yyyy hh:mm:ss").format(attendance.getCheckOutTime());
+        String infoMessages = attendance.getEmpData().getBioData().getFullName() + " " + messages.getString("ceckinout.checkout_success_socket") + " : " + waktuCheckOut + "=== Status :" + attendance.getNote() + " ===";
+        FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_INFO, "Information Check In/Out", infoMessages);
+        PushContext pushContext = PushContextFactory.getDefault().getPushContext();
+        pushContext.push(HRMConstant.CHECK_IN_OUT_CHANEL_SOCKET, facesMessage);
     }
 
     @Override
