@@ -5,6 +5,7 @@
  */
 package com.inkubator.hrm.service.impl;
 
+import com.inkubator.common.notification.model.SMSSend;
 import com.inkubator.common.util.AESUtil;
 import com.inkubator.common.util.HashingUtils;
 import com.inkubator.common.util.JsonConverter;
@@ -15,11 +16,13 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.dao.HrmUserRoleDao;
+import com.inkubator.hrm.dao.PasswordComplexityDao;
 import com.inkubator.hrm.dao.PasswordHistoryDao;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.HrmRole;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.HrmUserRole;
+import com.inkubator.hrm.entity.PasswordComplexity;
 import com.inkubator.hrm.entity.PasswordHistory;
 import com.inkubator.hrm.service.HrmUserService;
 import com.inkubator.hrm.web.search.HrmUserSearchParameter;
@@ -62,6 +65,10 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
     private PasswordHistoryDao passwordHistoryDao;
     @Autowired
     private EmpDataDao empDataDao;
+    @Autowired
+    private JmsTemplate jmsTemplateSMS;
+    @Autowired
+    private PasswordComplexityDao passwordComplexityDao;
 
     @Override
     public HrmUser getEntiyByPK(String id) throws Exception {
@@ -342,13 +349,12 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void resetPassword(HrmUser u) throws Exception {
-
+        System.out.println(" Step 1");
         HrmUser user = this.hrmUserDao.getEntiyByPK(u.getId());
         user.setPassword(HashingUtils.getHashSHA256(u.getPassword()));
         user.setUpdatedBy(HRMConstant.INKUBA_SYSTEM);
         user.setUpdatedOn(new Date());
         this.hrmUserDao.update(user);
-
         final PasswordHistory passwordHistory = new PasswordHistory();
         passwordHistory.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         passwordHistory.setCreatedBy(HRMConstant.INKUBA_SYSTEM);
@@ -377,6 +383,23 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
                 return session.createTextMessage(jsonConverter.getJson(passwordHistory));
             }
         });
+        PasswordComplexity complexity = passwordComplexityDao.getByCode(HRMConstant.PASSWORD_CONFIG_CODE);
+        if (complexity.getSmsNotification()) {
+            final SMSSend mSSend = new SMSSend();
+//        String decriptPass=AESUtil.getAESDescription(u.getPassword(), HRMConstant.KEYVALUE, HRMConstant.AES_ALGO);
+            mSSend.setFrom(HRMConstant.SYSTEM_ADMIN);
+            mSSend.setDestination(user.getPhoneNumber());
+            mSSend.setContent("Dear " + passwordHistory.getRealName() + " your password in OPTIMA HR has been reset with :" + u.getPassword());
+            System.out.println("step 2");
+            // Send notificatin SMS
+            this.jmsTemplateSMS.send(new MessageCreator() {
+                @Override
+                public Message createMessage(Session session)
+                        throws JMSException {
+                    return session.createTextMessage(jsonConverter.getJson(mSSend));
+                }
+            });
+        }
     }
 
     @Override

@@ -7,7 +7,7 @@
     <version>2.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
-    <name>OPTIMA-HR-ESS</name>
+    <name>OPTIMA-HR</name>
 
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
@@ -21,11 +21,11 @@
             <artifactId>lambdaj</artifactId>
             <version>2.3.3</version>
         </dependency>
-<!--        <dependency>
+        <dependency>
             <groupId>com.inkubator</groupId>
             <artifactId>batch-core</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>-->
+            <version>1.0.0.RELEASE</version>
+        </dependency>
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
@@ -61,7 +61,7 @@
         <dependency> 
             <groupId>com.inkubator</groupId>
             <artifactId>common-notification</artifactId>
-            <version>1.0.0.RELEASE</version>
+            <version>1.0.1.RELEASE</version>
             <exclusions>
                 <!--Exclude Commons Logging in favor of SLF4j--> 
                 <exclusion>
@@ -103,7 +103,7 @@
         <dependency>
             <groupId>com.inkubator</groupId>
             <artifactId>messaging-core</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0.0.RELEASE</version>
         </dependency>
         <!-- <dependency> 
             <groupId>metro.ui</groupId>
