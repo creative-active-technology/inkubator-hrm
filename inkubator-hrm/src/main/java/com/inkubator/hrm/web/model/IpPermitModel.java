@@ -12,8 +12,12 @@ import java.io.Serializable;
  */
 public class IpPermitModel implements Serializable {
     private Long id;
-    private String fromAddress1;
-    private String fromAddress2;
+    private Integer fromAddress11;
+    private Integer fromAddress12;
+    private Integer fromAddress13;
+    private Integer fromAddress21;
+    private Integer fromAddress22;
+    private Integer fromAddress23;
     private Integer untilAddress1;
     private Integer untilAddress2;
     private String lokasi;
@@ -26,20 +30,52 @@ public class IpPermitModel implements Serializable {
         this.id = id;
     }
 
-    public String getFromAddress1() {
-        return fromAddress1;
+    public Integer getFromAddress11() {
+        return fromAddress11;
     }
 
-    public void setFromAddress1(String fromAddress1) {
-        this.fromAddress1 = fromAddress1;
+    public void setFromAddress11(Integer fromAddress11) {
+        this.fromAddress11 = fromAddress11;
     }
 
-    public String getFromAddress2() {
-        return fromAddress2;
+    public Integer getFromAddress12() {
+        return fromAddress12;
     }
 
-    public void setFromAddress2(String fromAddress2) {
-        this.fromAddress2 = fromAddress2;
+    public void setFromAddress12(Integer fromAddress12) {
+        this.fromAddress12 = fromAddress12;
+    }
+
+    public Integer getFromAddress13() {
+        return fromAddress13;
+    }
+
+    public void setFromAddress13(Integer fromAddress13) {
+        this.fromAddress13 = fromAddress13;
+    }
+
+    public Integer getFromAddress21() {
+        return fromAddress21;
+    }
+
+    public void setFromAddress21(Integer fromAddress21) {
+        this.fromAddress21 = fromAddress21;
+    }
+
+    public Integer getFromAddress22() {
+        return fromAddress22;
+    }
+
+    public void setFromAddress22(Integer fromAddress22) {
+        this.fromAddress22 = fromAddress22;
+    }
+
+    public Integer getFromAddress23() {
+        return fromAddress23;
+    }
+
+    public void setFromAddress23(Integer fromAddress23) {
+        this.fromAddress23 = fromAddress23;
     }
 
     public Integer getUntilAddress1() {

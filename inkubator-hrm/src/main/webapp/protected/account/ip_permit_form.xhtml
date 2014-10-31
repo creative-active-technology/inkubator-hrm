@@ -33,13 +33,13 @@
                     <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
                         
                         <p:row>
-                            <p:column style="width: 30%">
+                            <p:column style="width: 24%">
                                 <p:outputLabel for="location" value="Lokasi" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="location" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 69%">
+                            <p:column  style="width: 75%">
                                 <p:inputText id="location"  value="#{ipPermitFormController.model.lokasi}"
                                              required="true"  maxlength="45" styleClass="isitext_hrm" style="width:240px;" />
                             </p:column>
@@ -51,26 +51,50 @@
                         </p:row>
                         
                         <p:row>
-                            <p:column style="width: 30%">
-                                <p:outputLabel for="fromAddress" value="Ip Address" styleClass="label_hrm"/>
+                            <p:column style="width: 24%">
+                                <p:outputLabel for="fromAddress1" value="Dari Ip Address" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
-                                <h:outputLabel for="fromAddress" value=":" styleClass="label_hrm"/>
+                                <h:outputLabel for="fromAddress1" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 69%">
-                                <p:inputMask id="fromAddress" value="#{ipPermitFormController.model.fromAddress1}"  mask="999.999.999" required="true" maxlength="6" styleClass="isitext_hrm" style="width:100px;" >
-                                    <f:validator validatorId="ipPermitValidator"  />
-                                    <f:attribute name="untilAdress1" value="#{untilAddress1}"/>
-                                    <f:attribute name="untilAdress2" value="#{untilAddress2}"/>
-                                    <f:attribute name="validatorMessage" value="#{appmsg['global.DateIn_validator']}"/>
-                                </p:inputMask> - 
-                                <pe:inputNumber id="untilAddress1" binding="#{untilAddress1}" value="#{ipPermitFormController.model.untilAddress1}" title="untilAddress1" style="width:50px;" decimalPlaces="0"/>
-                                - <pe:inputNumber id="untilAddress2" binding="#{untilAddress2}" value="#{ipPermitFormController.model.untilAddress2}" title="untilAddress2" style="width:50px;" decimalPlaces="0"/>
+                            <p:column  style="width: 75%">
+                                <pe:inputNumber minValue="1" maxValue="255" id="fromAddress1" value="#{ipPermitFormController.model.fromAddress11}"  title="fromAddress1" style="width:50px;" decimalPlaces="0">
+                                    <p:ajax process="@this" listener="#{ipPermitFormController.doChangeIpUntil()}" update="fromAddress5, fromAddress6, fromAddress7, fromAddress8"/>
+                                </pe:inputNumber>.
+                                <pe:inputNumber maxValue="255" maxlength="3" id="fromAddress2" value="#{ipPermitFormController.model.fromAddress12}" title="fromAddress2" style="width:50px;" decimalPlaces="0">
+                                    <p:ajax process="@this" listener="#{ipPermitFormController.doChangeIpUntil()}" update="fromAddress5, fromAddress6, fromAddress7, fromAddress8"/>
+                                </pe:inputNumber>.
+                                <pe:inputNumber maxValue="255" id="fromAddress3" value="#{ipPermitFormController.model.fromAddress13}" title="fromAddress3" style="width:50px;" decimalPlaces="0">
+                                    <p:ajax process="@this" listener="#{ipPermitFormController.doChangeIpUntil()}" update="fromAddress5, fromAddress6, fromAddress7, fromAddress8"/>
+                                </pe:inputNumber>.
+                                <pe:inputNumber maxValue="255" id="fromAddress4" value="#{ipPermitFormController.model.untilAddress1}" title="fromAddress4" style="width:50px;" decimalPlaces="0">
+                                    <p:ajax process="@this" listener="#{ipPermitFormController.doChangeIpUntil()}" update="fromAddress5, fromAddress6, fromAddress7, fromAddress8"/>
+                                </pe:inputNumber>
                             </p:column>
                         </p:row>
                         <p:row>
                             <p:column colspan="3">
-                                <p:message for="fromAddress"/>
+                                <p:message for="fromAddress1"/>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="width: 24%">
+                                <p:outputLabel for="fromAddress5" value="Sampai Ip Address" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="fromAddress5" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 75%">
+                                <pe:inputNumber disabled="true" id="fromAddress5" value="#{ipPermitFormController.model.fromAddress21}" title="fromAddress1" style="width:50px;" decimalPlaces="0"/>.
+                                <pe:inputNumber disabled="true" id="fromAddress6" value="#{ipPermitFormController.model.fromAddress22}" title="fromAddress2" style="width:50px;" decimalPlaces="0"/>.
+                                <pe:inputNumber disabled="true" id="fromAddress7" value="#{ipPermitFormController.model.fromAddress23}" title="fromAddress3" style="width:50px;" decimalPlaces="0"/>.
+                                <pe:inputNumber id="fromAddress8" value="#{ipPermitFormController.model.untilAddress2}" title="fromAddress4" style="width:50px;" decimalPlaces="0"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="fromAddress5"/>
                             </p:column>
                         </p:row>
                         

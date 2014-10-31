@@ -85,13 +85,42 @@ public class IpPermitFormController extends BaseController{
     
     private IpPermitModel getModelFromEntity(IpPermit entity) {
         IpPermitModel model = new IpPermitModel();
+        
+        char[] fromAddress = String.valueOf(entity.getFromAddress1()).toCharArray();
+        int fromAddressSize = fromAddress.length;
+        String from11 = "";
+        String from12 = "";
+        String from13 = "";
+        if(fromAddressSize == 9){
+            from11 = fromAddress[0]+""+fromAddress[1]+""+fromAddress[2];
+            from12 = fromAddress[3]+""+fromAddress[4]+""+fromAddress[5];
+            from13 = fromAddress[6]+""+fromAddress[7]+""+fromAddress[8];
+        }else if(fromAddressSize == 6){
+            from11 = fromAddress[0]+""+fromAddress[1];
+            from12 = fromAddress[2]+""+fromAddress[3];
+            from13 = fromAddress[4]+""+fromAddress[5];
+        }else if(fromAddressSize == 3){
+            from11 = fromAddress[0]+"";
+            from12 = fromAddress[1]+"";
+            from13 = fromAddress[2]+"";
+        }
         model.setId(entity.getId());
-        model.setFromAddress1(String.valueOf(entity.getFromAddress1()));
-        model.setFromAddress2(String.valueOf(entity.getFromAddress2()));
+        model.setFromAddress11(Integer.valueOf(from11));
+        model.setFromAddress12(Integer.valueOf(from12));
+        model.setFromAddress13(Integer.valueOf(from13));
+        model.setFromAddress21(Integer.valueOf(from11));
+        model.setFromAddress22(Integer.valueOf(from12));
+        model.setFromAddress23(Integer.valueOf(from13));
         model.setUntilAddress1(entity.getUntilAddress1());
         model.setUntilAddress2(entity.getUntilAddress2());
         model.setLokasi(entity.getLokasi());
         return model;
+    }
+    
+    public void doChangeIpUntil(){
+        model.setFromAddress21(model.getFromAddress11());
+        model.setFromAddress22(model.getFromAddress12());
+        model.setFromAddress23(model.getFromAddress13());
     }
     
     private IpPermit getEntityFromViewModel(IpPermitModel model) {
@@ -99,10 +128,9 @@ public class IpPermitFormController extends BaseController{
         if (model.getId() != null) {
             ipPermit.setId(model.getId());
         }
-        Integer fromAddress1 = Integer.valueOf(StringUtils.replace(model.getFromAddress1(), ".", ""));
-        System.out.println(fromAddress1);
-        ipPermit.setFromAddress1(fromAddress1);
-        ipPermit.setFromAddress2(fromAddress1);
+        String fromAddress1 = String.valueOf(model.getFromAddress11()+""+model.getFromAddress12()+""+model.getFromAddress13());
+        ipPermit.setFromAddress1(Integer.valueOf(fromAddress1));
+        ipPermit.setFromAddress2(Integer.valueOf(fromAddress1));
         ipPermit.setUntilAddress1(model.getUntilAddress1());
         ipPermit.setUntilAddress2(model.getUntilAddress2());
         ipPermit.setLokasi(model.getLokasi());

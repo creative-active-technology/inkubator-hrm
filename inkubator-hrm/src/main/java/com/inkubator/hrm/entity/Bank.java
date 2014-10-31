@@ -3,9 +3,14 @@ package com.inkubator.hrm.entity;
 
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -37,6 +42,7 @@ public class Bank  implements java.io.Serializable {
      private String swiftCcode; 
      private String iban;
      private String bankIdentificationNo;
+     private Set<CompanyBankAccount> companyBankAccounts = new HashSet<CompanyBankAccount>(0);
 
     public Bank() {
     }
@@ -178,9 +184,14 @@ public class Bank  implements java.io.Serializable {
         this.bankIdentificationNo = bankIdentificationNo;
     }
 
-    
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "bank")
+	public Set<CompanyBankAccount> getCompanyBankAccounts() {
+		return companyBankAccounts;
+	}
 
-
+	public void setCompanyBankAccounts(Set<CompanyBankAccount> companyBankAccounts) {
+		this.companyBankAccounts = companyBankAccounts;
+	}
 }
 
 
