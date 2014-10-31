@@ -10,9 +10,9 @@ import com.inkubator.webcore.util.SearchParameter;
  *
  * @author Deni
  */
-public class ResourceTypeSearchParameter extends SearchParameter{
+public class SavingTypeSearchParameter extends SearchParameter{
     private String code;
-    private String resourceType;
+    private String name;
 
     public String getCode() {
         return code;
@@ -22,12 +22,12 @@ public class ResourceTypeSearchParameter extends SearchParameter{
         this.code = code;
     }
 
-    public String getResourceType() {
-        return resourceType;
+    public String getName() {
+        return name;
     }
 
-    public void setResourceType(String resourceType) {
-        this.resourceType = resourceType;
+    public void setName(String name) {
+        this.name = name;
     }
     
     

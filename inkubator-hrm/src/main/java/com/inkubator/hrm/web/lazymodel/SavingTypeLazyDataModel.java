@@ -4,9 +4,9 @@
  */
 package com.inkubator.hrm.web.lazymodel;
 
-import com.inkubator.hrm.entity.ResourceType;
-import com.inkubator.hrm.service.ResourceTypeService;
-import com.inkubator.hrm.web.search.ResourceTypeSearchParameter;
+import com.inkubator.hrm.entity.SavingType;
+import com.inkubator.hrm.service.SavingTypeService;
+import com.inkubator.hrm.web.search.SavingTypeSearchParameter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,33 +20,33 @@ import org.primefaces.model.SortOrder;
  *
  * @author Deni
  */
-public class ResourceTypeLazyDataModel extends LazyDataModel<ResourceType> implements Serializable{
-    private static final Logger LOGGER = Logger.getLogger(ResourceTypeLazyDataModel.class);
-    private final ResourceTypeSearchParameter searchParameter;
-    private final ResourceTypeService service;
-    private List<ResourceType> resourceTypeList = new ArrayList<>();
+public class SavingTypeLazyDataModel extends LazyDataModel<SavingType> implements Serializable{
+    private static final Logger LOGGER = Logger.getLogger(SavingTypeLazyDataModel.class);
+    private final SavingTypeSearchParameter searchParameter;
+    private final SavingTypeService service;
+    private List<SavingType> savingTypeList = new ArrayList<>();
     private Integer jumlahData;
 
-    public ResourceTypeLazyDataModel(ResourceTypeSearchParameter searchParameter, ResourceTypeService service) {
+    public SavingTypeLazyDataModel(SavingTypeSearchParameter searchParameter, SavingTypeService service) {
         this.searchParameter = searchParameter;
         this.service = service;
     }
     
     @Override
-    public List<ResourceType> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<SavingType> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
         LOGGER.info("Step Load Lazy data Model");
 
         if (sortField != null) {
             if (sortOrder == SortOrder.ASCENDING) {
                 try {
-                    resourceTypeList = service.getByParam(searchParameter, first, pageSize, Order.asc(sortField));
+                    savingTypeList = service.getByParam(searchParameter, first, pageSize, Order.asc(sortField));
                     jumlahData = Integer.parseInt(String.valueOf(service.getTotalResourceTypeByParam(searchParameter)));
                 } catch (Exception ex) {
                     LOGGER.error("Error", ex);
                 }
             } else {
                 try {
-                    resourceTypeList = service.getByParam(searchParameter, first, pageSize, Order.desc(sortField));
+                    savingTypeList = service.getByParam(searchParameter, first, pageSize, Order.desc(sortField));
                     jumlahData = Integer.parseInt(String.valueOf(service.getTotalResourceTypeByParam(searchParameter)));
                 } catch (Exception ex) {
                     LOGGER.error("Error", ex);
@@ -54,7 +54,7 @@ public class ResourceTypeLazyDataModel extends LazyDataModel<ResourceType> imple
             }
         } else {
             try {
-                resourceTypeList = service.getByParam(searchParameter, first, pageSize, Order.desc("name"));
+                savingTypeList = service.getByParam(searchParameter, first, pageSize, Order.desc("name"));
                 jumlahData = Integer.parseInt(String.valueOf(service.getTotalResourceTypeByParam(searchParameter)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
@@ -64,19 +64,19 @@ public class ResourceTypeLazyDataModel extends LazyDataModel<ResourceType> imple
 
         setPageSize(pageSize);
         setRowCount(jumlahData);
-        return resourceTypeList;
+        return savingTypeList;
     }
     
     @Override
-    public Object getRowKey(ResourceType resourceType) {
-        return resourceType.getId();
+    public Object getRowKey(SavingType savingType) {
+        return savingType.getId();
     }
 
     @Override
-    public ResourceType getRowData(String id) {
-        for (ResourceType resourceType : resourceTypeList) {
-            if (id.equals(String.valueOf(resourceType.getId()))) {
-                return resourceType;
+    public SavingType getRowData(String id) {
+        for (SavingType savingType : savingTypeList) {
+            if (id.equals(String.valueOf(savingType.getId()))) {
+                return savingType;
             }
         }
         return null;
