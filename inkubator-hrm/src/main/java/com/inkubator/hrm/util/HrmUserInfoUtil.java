@@ -53,17 +53,23 @@ public class HrmUserInfoUtil extends UserInfoUtil {
 
     public static Boolean isValidRemoteAddress() throws Exception {
         String ipClient = getRequestRemoteAddrByJSF();
+        System.out.println("Ip Client "+ ipClient);
         String riversIp = StringUtils.reverse(ipClient);
         String ipHeaderReverse = StringUtils.substringAfter(riversIp, ".");
         String ipEnd = StringUtils.substringBefore(riversIp, ".");
-        int ipLast = Integer.parseInt(ipEnd);
+        int ipLast = Integer.parseInt(StringUtils.reverse(ipEnd));
+        System.out.println("nilai"+ipLast);
         String ip = StringUtils.remove(ipHeaderReverse, ".");
         int ipHeader = Integer.parseInt(StringUtils.reverse(ip));
+        System.out.println(" nilai ip header "+ipHeader);
         IpPermitService ipPermitService = (IpPermitService) ServiceWebUtil.getService("ipPermitService");
         List<IpPermit> dataToCheck = ipPermitService.getByIpHeader(ipHeader);
+        System.out.println(" ukuran "+dataToCheck.size());
         for (IpPermit ipPermit : dataToCheck) {
-            int fromAddres2 = ipPermit.getFromAddress2();
+            int fromAddres2 = ipPermit.getUntilAddress1();
             int untilAddress2 = ipPermit.getUntilAddress2();
+            System.out.println(fromAddres2);
+                System.out.println(untilAddress2);
             if (ipLast >= fromAddres2 && ipLast <= untilAddress2) {
                 return Boolean.TRUE;
             }
