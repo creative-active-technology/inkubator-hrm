@@ -5,10 +5,10 @@
 package com.inkubator.hrm.web.reference;
 
 import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.ResourceType;
-import com.inkubator.hrm.service.ResourceTypeService;
-import com.inkubator.hrm.web.lazymodel.ResourceTypeLazyDataModel;
-import com.inkubator.hrm.web.search.ResourceTypeSearchParameter;
+import com.inkubator.hrm.entity.BusinessType;
+import com.inkubator.hrm.service.BusinessTypeService;
+import com.inkubator.hrm.web.lazymodel.BusinessTypeLazyDataModel;
+import com.inkubator.hrm.web.search.BusinessTypeSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
@@ -32,21 +32,21 @@ import org.springframework.dao.DataIntegrityViolationException;
  *
  * @author Deni
  */
-@ManagedBean(name = "resourceTypeViewController")
+@ManagedBean(name = "businessTypeViewController")
 @ViewScoped
-public class ResourceTypeViewController extends BaseController{
-    @ManagedProperty(value = "#{resourceTypeService}")
-    private ResourceTypeService service;
-    private ResourceTypeSearchParameter searchParameter;
-    private LazyDataModel<ResourceType> lazy;
-    private ResourceType selected;
+public class BusinessTypeViewController  extends BaseController{
+    @ManagedProperty(value = "#{businessTypeService}")
+    private BusinessTypeService service;
+    private BusinessTypeSearchParameter searchParameter;
+    private LazyDataModel<BusinessType> lazy;
+    private BusinessType selected;
 
     
     @PostConstruct
     @Override
     public void initialization() {
         super.initialization();
-        searchParameter = new ResourceTypeSearchParameter();
+        searchParameter = new BusinessTypeSearchParameter();
     }
     
     @PreDestroy
@@ -91,8 +91,8 @@ public class ResourceTypeViewController extends BaseController{
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 400);
-        options.put("contentHeight", 250);
-        RequestContext.getCurrentInstance().openDialog("resource_type_form", options, params);
+        options.put("contentHeight", 360);
+        RequestContext.getCurrentInstance().openDialog("business_type_form", options, params);
     }
     
     public void doAdd() {
@@ -103,7 +103,7 @@ public class ResourceTypeViewController extends BaseController{
         Map<String, List<String>> dataToSend = new HashMap<>();
         List<String> dataIsi = new ArrayList<>();
         dataIsi.add(String.valueOf(selected.getId()));
-        dataToSend.put("resourceTypeId", dataIsi);
+        dataToSend.put("businessTypeId", dataIsi);
         showDialog(dataToSend);
     }
     
@@ -122,40 +122,42 @@ public class ResourceTypeViewController extends BaseController{
         }
     }
 
-    public ResourceTypeService getService() {
+    public BusinessTypeService getService() {
         return service;
     }
 
-    public void setService(ResourceTypeService service) {
+    public void setService(BusinessTypeService service) {
         this.service = service;
     }
 
-    public ResourceTypeSearchParameter getSearchParameter() {
+    public BusinessTypeSearchParameter getSearchParameter() {
         return searchParameter;
     }
 
-    public void setSearchParameter(ResourceTypeSearchParameter searchParameter) {
+    public void setSearchParameter(BusinessTypeSearchParameter searchParameter) {
         this.searchParameter = searchParameter;
     }
 
-    public LazyDataModel<ResourceType> getLazy() {
+    public LazyDataModel<BusinessType> getLazy() {
         if(lazy == null){
-            lazy = new ResourceTypeLazyDataModel(searchParameter, service);
+            lazy = new BusinessTypeLazyDataModel(searchParameter, service);
         }
         return lazy;
     }
 
-    public void setLazy(LazyDataModel<ResourceType> lazy) {
+    public void setLazy(LazyDataModel<BusinessType> lazy) {
         this.lazy = lazy;
     }
 
-    public ResourceType getSelected() {
+    public BusinessType getSelected() {
         return selected;
     }
 
-    public void setSelected(ResourceType selected) {
+    public void setSelected(BusinessType selected) {
         this.selected = selected;
     }
+
+    
      
      
 }

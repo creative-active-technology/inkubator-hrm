@@ -1,5 +1,6 @@
 package com.inkubator.hrm.service.impl;
 
+import com.inkubator.common.util.RandomNumberUtil;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
@@ -7,10 +8,13 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.SavingTypeDao;
 import com.inkubator.hrm.entity.SavingType;
 import com.inkubator.hrm.service.SavingTypeService;
 import com.inkubator.hrm.web.search.SavingTypeSearchParameter;
+import com.inkubator.securitycore.util.UserInfoUtil;
+import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -40,21 +44,39 @@ public class SavingTypeServiceImpl extends IServiceImpl implements SavingTypeSer
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public SavingType getEntiyByPK(Long id) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
-
+        return savingTypeDao.getEntiyByPK(id);
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(SavingType entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
-
+        // check duplicate name
+        long totalDuplicates = savingTypeDao.getTotalByCode(entity.getCode());
+        if (totalDuplicates > 0) {
+            throw new BussinessException("marital.error_duplicate_marital_code");
+        }
+        entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+        entity.setCreatedBy(UserInfoUtil.getUserName());
+        entity.setCreatedOn(new Date());
+        this.savingTypeDao.save(entity);
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(SavingType entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
-
+        long totalDuplicates = savingTypeDao.getTotalByCodeAndNotId(entity.getCode(), entity.getId());
+        if (totalDuplicates > 0) {
+            throw new BussinessException("marital.error_duplicate_marital_code");
+        }
+        SavingType update = savingTypeDao.getEntiyByPK(entity.getId());
+        update.setCode(entity.getCode());
+        update.setName(entity.getName());
+        update.setDescription(entity.getDescription());
+        update.setUpdatedBy(UserInfoUtil.getUserName());
+        update.setUpdatedOn(new Date());
+        this.savingTypeDao.update(update);
     }
 
     @Override
@@ -145,9 +167,9 @@ public class SavingTypeServiceImpl extends IServiceImpl implements SavingTypeSer
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void delete(SavingType entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
-
+        this.savingTypeDao.delete(entity);
     }
 
     @Override

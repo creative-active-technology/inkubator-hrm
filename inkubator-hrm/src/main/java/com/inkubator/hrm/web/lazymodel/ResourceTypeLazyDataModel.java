@@ -54,7 +54,7 @@ public class ResourceTypeLazyDataModel extends LazyDataModel<ResourceType> imple
             }
         } else {
             try {
-                resourceTypeList = service.getByParam(searchParameter, first, pageSize, Order.desc("name"));
+                resourceTypeList = service.getByParam(searchParameter, first, pageSize, Order.desc("code"));
                 jumlahData = Integer.parseInt(String.valueOf(service.getTotalResourceTypeByParam(searchParameter)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
