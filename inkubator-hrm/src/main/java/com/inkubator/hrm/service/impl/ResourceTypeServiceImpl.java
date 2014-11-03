@@ -5,10 +5,13 @@
 package com.inkubator.hrm.service.impl;
 
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.ResourceTypeDao;
 import com.inkubator.hrm.entity.ResourceType;
 import com.inkubator.hrm.service.ResourceTypeService;
 import com.inkubator.hrm.web.search.ResourceTypeSearchParameter;
+import com.inkubator.securitycore.util.UserInfoUtil;
+import java.util.Date;
 import java.util.List;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,18 +55,38 @@ public class ResourceTypeServiceImpl extends IServiceImpl implements ResourceTyp
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public ResourceType getEntiyByPK(Long id) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return resourceTypeDao.getEntiyByPK(id);
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(ResourceType entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        // check duplicate code
+        long totalDuplicates = resourceTypeDao.getTotalByCode(entity.getCode());
+        if (totalDuplicates > 0) {
+            throw new BussinessException("marital.error_duplicate_marital_code");
+        }
+        entity.setCreatedBy(UserInfoUtil.getUserName());
+        entity.setCreatedOn(new Date());
+        this.resourceTypeDao.save(entity);
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(ResourceType entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        // check duplicate code
+        long totalDuplicates = resourceTypeDao.getTotalByCodeAndNotId(entity.getCode(), entity.getId());
+        if (totalDuplicates > 0) {
+            throw new BussinessException("marital.error_duplicate_marital_code");
+        }
+        ResourceType update = resourceTypeDao.getEntiyByPK(entity.getId());
+        update.setCode(entity.getCode());
+        update.setResourceType(entity.getResourceType());
+        update.setCreatedBy(UserInfoUtil.getUserName());
+        update.setCreatedOn(new Date());
+        this.resourceTypeDao.save(update);
     }
 
     @Override
@@ -132,8 +155,9 @@ public class ResourceTypeServiceImpl extends IServiceImpl implements ResourceTyp
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void delete(ResourceType entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.resourceTypeDao.delete(entity);
     }
 
     @Override

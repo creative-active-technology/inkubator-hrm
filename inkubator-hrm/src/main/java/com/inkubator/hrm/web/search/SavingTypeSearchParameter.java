@@ -5,6 +5,7 @@
 package com.inkubator.hrm.web.search;
 
 import com.inkubator.webcore.util.SearchParameter;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -15,6 +16,11 @@ public class SavingTypeSearchParameter extends SearchParameter{
     private String name;
 
     public String getCode() {
+        if(StringUtils.equalsIgnoreCase(getKeyParam(), "code")){
+            code = getParameter();
+        } else {
+            code = null;
+        }
         return code;
     }
 
@@ -23,6 +29,11 @@ public class SavingTypeSearchParameter extends SearchParameter{
     }
 
     public String getName() {
+        if(StringUtils.equalsIgnoreCase(getKeyParam(), "name")){
+            name = getParameter();
+        } else {
+            name = null;
+        }
         return name;
     }
 

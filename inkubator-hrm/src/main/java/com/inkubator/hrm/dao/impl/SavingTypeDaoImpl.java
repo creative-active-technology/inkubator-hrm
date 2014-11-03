@@ -48,6 +48,9 @@ public class SavingTypeDaoImpl extends IDAOImpl<SavingType> implements SavingTyp
         if (searchParameter.getName()!=null) {
         	criteria.add(Restrictions.like("name", searchParameter.getName(), MatchMode.ANYWHERE));
         } 
+        if (searchParameter.getCode()!=null) {
+        	criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.ANYWHERE));
+        } 
         criteria.add(Restrictions.isNotNull("id"));
     }
 }

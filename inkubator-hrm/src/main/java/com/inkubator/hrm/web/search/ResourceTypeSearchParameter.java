@@ -5,6 +5,7 @@
 package com.inkubator.hrm.web.search;
 
 import com.inkubator.webcore.util.SearchParameter;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -15,6 +16,11 @@ public class ResourceTypeSearchParameter extends SearchParameter{
     private String resourceType;
 
     public String getCode() {
+        if(StringUtils.equalsIgnoreCase(getKeyParam(), "code")){
+            code = getParameter();
+        } else {
+            code = null;
+        }
         return code;
     }
 
@@ -23,6 +29,11 @@ public class ResourceTypeSearchParameter extends SearchParameter{
     }
 
     public String getResourceType() {
+        if(StringUtils.equalsIgnoreCase(getKeyParam(), "name")){
+            resourceType = getParameter();
+        } else {
+            resourceType = null;
+        }
         return resourceType;
     }
 
