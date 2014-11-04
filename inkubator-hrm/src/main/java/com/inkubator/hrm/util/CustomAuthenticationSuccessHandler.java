@@ -39,9 +39,9 @@ public class CustomAuthenticationSuccessHandler extends AuthenticationSuccessHan
             FacesUtil.setSessionAttribute("realName", HrmUserInfoUtil.getRealName());
             String number = RandomNumberUtil.getRandomNumber(15);
             loginHistory.setId(Long.parseLong(number));
-            System.out.println("ip "+HrmUserInfoUtil.getRequestRemoteAddrByJSF());
-            System.out.println("ip2 "+request.getRemoteAddr());
-            loginHistory.setIpAddress(request.getRemoteAddr());
+            String ipHere = IpUtil.getIpFromRequest(request);
+            LOGGER.info(ipHere + " IP Remote");
+            loginHistory.setIpAddress(ipHere);
             loginHistory.setLoginDate(new Date());
             loginHistory.setHrmUser(new HrmUser(authentication.getName()));
             this.loginHistoryService.saveAndPushMessage(loginHistory);
