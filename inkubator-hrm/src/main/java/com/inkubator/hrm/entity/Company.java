@@ -38,6 +38,7 @@ public class Company implements Serializable {
     private String taxAccountNumber;
     private String address;
     private City city;
+    private BusinessType businessType;
     private Integer postalCode;
     private String phone;
     private String fax;
@@ -169,6 +170,16 @@ public class Company implements Serializable {
 
 	public void setCity(City city) {
 		this.city = city;
+	}
+		
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "business_type_id", nullable = false)
+	public BusinessType getBusinessType() {
+		return businessType;
+	}
+
+	public void setBusinessType(BusinessType businessType) {
+		this.businessType = businessType;
 	}
 
 	@Column(name = "postal_code", nullable = false, length = 12)
