@@ -1,5 +1,7 @@
 package com.inkubator.hrm.web.model;
 
+import javax.validation.constraints.Pattern;
+
 
 /**
  *
@@ -124,6 +126,7 @@ public class CompanyModel {
 	public void setPostalCode(Integer postalCode) {
 		this.postalCode = postalCode;
 	}
+	@Pattern(regexp = "^[+][\\d() -]+", message = "{errorr_phone}")
 	public String getPhone() {
 		return phone;
 	}

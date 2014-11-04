@@ -191,7 +191,7 @@ public class Company implements Serializable {
 		this.postalCode = postalCode;
 	}
 
-	@Column(name = "phone", unique = true, nullable = false, length = 12)
+	@Column(name = "phone", unique = true, nullable = false, length = 20)
 	public String getPhone() {
 		return phone;
 	}
@@ -200,7 +200,7 @@ public class Company implements Serializable {
 		this.phone = phone;
 	}
 
-	@Column(name = "fax", length = 12)
+	@Column(name = "fax", length = 20)
 	public String getFax() {
 		return fax;
 	}

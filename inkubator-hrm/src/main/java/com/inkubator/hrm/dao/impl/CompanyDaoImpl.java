@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -32,6 +33,9 @@ public class CompanyDaoImpl extends IDAOImpl<Company> implements CompanyDao {
 	@Override
     public List<Company> getByParam(CompanySearchParameter parameter, int firstResult, int maxResults, Order orderable) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.setFetchMode("city", FetchMode.JOIN);
+		criteria.setFetchMode("city.province", FetchMode.JOIN);
+		criteria.setFetchMode("city.province.country", FetchMode.JOIN);
         doSearchByParam(parameter, criteria);
         criteria.addOrder(orderable);
         criteria.setFirstResult(firstResult);
@@ -57,5 +61,62 @@ public class CompanyDaoImpl extends IDAOImpl<Company> implements CompanyDao {
         
         criteria.add(Restrictions.isNotNull("id"));
     }
+
+	@Override
+	public Company getEntityByPKWithDetail(Long id) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("id", id));
+		criteria.setFetchMode("city", FetchMode.JOIN);
+		criteria.setFetchMode("city.province", FetchMode.JOIN);
+		criteria.setFetchMode("city.province.country", FetchMode.JOIN);
+		criteria.setFetchMode("taxCountry", FetchMode.JOIN);
+		criteria.setFetchMode("businessType", FetchMode.JOIN);
+		return (Company) criteria.uniqueResult();
+	}
+
+	@Override
+	public Long getTotalByLegalNo(String legalNo) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("legalNo", legalNo));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
+
+	@Override
+	public Long getTotalByLegalNoAndNotId(String legalNo, Long id) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("legalNo", legalNo));
+        criteria.add(Restrictions.ne("id", id));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
+
+	@Override
+	public Long getTotalByPhone(String phone) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("phone", phone));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
+
+	@Override
+	public Long getTotalByPhoneAndNotId(String phone, Long id) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("phone", phone));
+        criteria.add(Restrictions.ne("id", id));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
+
+	@Override
+	public Long getTotalByTaxAccountNumber(String taxAccountNumber) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("taxAccountNumber", taxAccountNumber));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
+
+	@Override
+	public Long getTotalByTaxAccountNumberAndNotId(String taxAccountNumber, Long id) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("taxAccountNumber", taxAccountNumber));
+        criteria.add(Restrictions.ne("id", id));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
 
 }

@@ -18,4 +18,6 @@ public interface CompanyService extends IService<Company> {
 
 	public Long getTotalByParam(CompanySearchParameter parameter) throws Exception;
 	
+	public Company getEntityByPKWithDetail(Long id) throws Exception;
+	
 }

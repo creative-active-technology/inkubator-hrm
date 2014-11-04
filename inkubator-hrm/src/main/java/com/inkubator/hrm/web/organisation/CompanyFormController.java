@@ -1,10 +1,7 @@
 package com.inkubator.hrm.web.organisation;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -14,30 +11,20 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
 import org.apache.commons.lang3.StringUtils;
-import org.primefaces.context.RequestContext;
-import org.primefaces.event.SelectEvent;
 
-import ch.lambdaj.Lambda;
-
-import com.google.gson.Gson;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.ApprovalDefinition;
-import com.inkubator.hrm.entity.ApprovalDefinitionLeave;
-import com.inkubator.hrm.entity.AttendanceStatus;
+import com.inkubator.hrm.entity.BusinessType;
 import com.inkubator.hrm.entity.City;
+import com.inkubator.hrm.entity.Company;
 import com.inkubator.hrm.entity.Country;
-import com.inkubator.hrm.entity.Leave;
 import com.inkubator.hrm.entity.Province;
-import com.inkubator.hrm.json.util.JsonUtil;
-import com.inkubator.hrm.service.AttendanceStatusService;
+import com.inkubator.hrm.service.BusinessTypeService;
 import com.inkubator.hrm.service.CityService;
 import com.inkubator.hrm.service.CompanyService;
 import com.inkubator.hrm.service.CountryService;
-import com.inkubator.hrm.service.LeaveService;
 import com.inkubator.hrm.service.ProvinceService;
 import com.inkubator.hrm.web.model.CompanyModel;
-import com.inkubator.hrm.web.model.LeaveModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
@@ -55,6 +42,7 @@ public class CompanyFormController extends BaseController {
     private List<Country> countries;
 	private List<Province> provinces;
 	private List<City> cities;
+	private List<BusinessType> businessTypes;
     @ManagedProperty(value = "#{companyService}")
     private CompanyService companyService;
     @ManagedProperty(value = "#{countryService}")
@@ -63,6 +51,8 @@ public class CompanyFormController extends BaseController {
 	private ProvinceService provinceService;
 	@ManagedProperty(value = "#{cityService}")
 	private CityService cityService;
+	@ManagedProperty(value = "#{businessTypeService}")
+	private BusinessTypeService businessTypeService;
 
     @PostConstruct
     @Override
@@ -70,27 +60,20 @@ public class CompanyFormController extends BaseController {
         super.initialization();
         try {
             isUpdate = Boolean.FALSE;
-            isRenderAvailabilityDate = Boolean.FALSE;
-            isRenderEndOfPeriodMonth = Boolean.FALSE;
-
-            appDefs = new ArrayList<ApprovalDefinition>(); 
-            model = new LeaveModel();
-            model.setIsActive(Boolean.TRUE);
-            attendanceStatusList = attendanceStatusService.getAllData();
+            model = new CompanyModel();
+            businessTypes =  businessTypeService.getAllData();
+            countries = countryService.getAllData();
+            provinces = new ArrayList<Province>();
+            cities = new ArrayList<City>();
 
             String param = FacesUtil.getRequestParameter("execution");
             if (StringUtils.isNotEmpty(param)) {
-                Leave leave = leaveService.getEntityByPkFetchApprovalDefinition(Long.parseLong(param.substring(1)));
-                if (leave != null) {
-                    getModelFromEntity(leave);
-                    Set<ApprovalDefinitionLeave> setAppDefLeaves = leave.getApprovalDefinitionLeaves();
-                    for(ApprovalDefinitionLeave appDefLeave : setAppDefLeaves){
-                    	appDefs.add(appDefLeave.getApprovalDefinition());
-                    }
-                    
+                Company company = companyService.getEntityByPKWithDetail(Long.parseLong(param.substring(1)));
+                if (company != null) {
+                    getModelFromEntity(company);
+                    provinces = provinceService.getByCountryId(model.getCountryId());
+            		cities = cityService.getByProvinceId(model.getProvinceId());
                     isUpdate = Boolean.TRUE;
-                    isRenderAvailabilityDate = StringUtils.equals(model.getAvailability(), HRMConstant.LEAVE_AVAILABILITY_INCREASES_SPECIFIC_DATE);
-                    isRenderEndOfPeriodMonth = StringUtils.equals(model.getEndOfPeriod(), HRMConstant.LEAVE_END_OF_PERIOD_MONTH);
                 }
             }
         } catch (Exception e) {
@@ -102,45 +85,115 @@ public class CompanyFormController extends BaseController {
     public void cleanAndExit() {
         model = null;
         isUpdate = null;
+        countries = null; 
+        provinces = null; 
+        cities = null; 
+        companyService = null; 
+        countryService = null; 
+        provinceService = null; 
+        cityService = null; 
+        businessTypeService = null;
+        businessTypes = null;
     }
 
-    
+	public CompanyModel getModel() {
+		return model;
+	}
+
+	public void setModel(CompanyModel model) {
+		this.model = model;
+	}
+
+	public Boolean getIsUpdate() {
+		return isUpdate;
+	}
+
+	public void setIsUpdate(Boolean isUpdate) {
+		this.isUpdate = isUpdate;
+	}
+
+	public List<Country> getCountries() {
+		return countries;
+	}
+
+	public void setCountries(List<Country> countries) {
+		this.countries = countries;
+	}
+
+	public List<Province> getProvinces() {
+		return provinces;
+	}
+
+	public void setProvinces(List<Province> provinces) {
+		this.provinces = provinces;
+	}
+
+	public List<City> getCities() {
+		return cities;
+	}
+
+	public void setCities(List<City> cities) {
+		this.cities = cities;
+	}
+
+	public List<BusinessType> getBusinessTypes() {
+		return businessTypes;
+	}
+
+	public void setBusinessTypes(List<BusinessType> businessTypes) {
+		this.businessTypes = businessTypes;
+	}
+
+	public void setCompanyService(CompanyService companyService) {
+		this.companyService = companyService;
+	}
+
+	public void setCountryService(CountryService countryService) {
+		this.countryService = countryService;
+	}
+
+	public void setProvinceService(ProvinceService provinceService) {
+		this.provinceService = provinceService;
+	}
+
+	public void setCityService(CityService cityService) {
+		this.cityService = cityService;
+	}
+
+	public void setBusinessTypeService(BusinessTypeService businessTypeService) {
+		this.businessTypeService = businessTypeService;
+	}
 
 	public void doReset() {
         if (isUpdate) {
             try {
-                Leave leave = leaveService.getEntiyByPK(model.getId());
-                if (leave != null) {
-                    getModelFromEntity(leave);
-                    isRenderAvailabilityDate = StringUtils.equals(model.getAvailability(), HRMConstant.LEAVE_AVAILABILITY_INCREASES_SPECIFIC_DATE);
-                    isRenderEndOfPeriodMonth = StringUtils.equals(model.getEndOfPeriod(), HRMConstant.LEAVE_END_OF_PERIOD_MONTH);
+                Company company = companyService.getEntityByPKWithDetail(model.getId());
+                if (company != null) {
+                    getModelFromEntity(company);
                 }
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
             }
         } else {
-            model = new LeaveModel();
-            isRenderAvailabilityDate = Boolean.FALSE;
-            isRenderEndOfPeriodMonth = Boolean.FALSE;
+            model = new CompanyModel();
         }
     }
 
     public String doSave() {
-        Leave leave = getEntityFromViewModel(model);
+        Company company = getEntityFromViewModel(model);
         try {
             if (isUpdate) {
-                leaveService.update(leave, appDefs);
+                companyService.update(company);
                 MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 
             } else {
-                leaveService.save(leave, appDefs);
+            	companyService.save(company);
                 MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             }
-            return "/protected/working_time/leave_detail.htm?faces-redirect=true&execution=e" + leave.getId();
-        } catch (BussinessException ex) { //data already exist(duplicate)
-            LOGGER.error("Error", ex);
+            return "/protected/organisation/company_detail.htm?faces-redirect=true&execution=e" + company.getId();
+        } catch (BussinessException ex) {             
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
@@ -148,144 +201,73 @@ public class CompanyFormController extends BaseController {
         return null;
     }
 
-    private Leave getEntityFromViewModel(LeaveModel model) {
-        Leave leave = new Leave();
+    private Company getEntityFromViewModel(CompanyModel model) {
+        Company company = new Company();
         if (model.getId() != null) {
-            leave.setId(model.getId());
+            company.setId(model.getId());
         }
-        leave.setCode(model.getCode());
-        leave.setName(model.getName());
-        leave.setDescription(model.getDescription());
-        leave.setDayType(model.getDayType());
-        leave.setCalculation(model.getCalculation());
-        leave.setAttendanceStatus(new AttendanceStatus(model.getAttendanceStatusId()));
-        leave.setPeriodBase(model.getPeriodBase());
-        leave.setAvailability(model.getAvailability());
-        leave.setAvailabilityAtSpecificDate(model.getAvailabilityAtSpecificDate());
-        leave.setIsTakingLeaveToNextYear(model.getIsTakingLeaveToNextYear());
-        leave.setMaxTakingLeaveToNextYear(model.getMaxTakingLeaveToNextYear());
-        leave.setBackwardPeriodLimit(model.getBackwardPeriodLimit());
-        leave.setIsAllowedMinus(model.getIsAllowedMinus());
-        leave.setMaxAllowedMinus(model.getMaxAllowedMinus());
-        leave.setEffectiveFrom(model.getEffectiveFrom());
-        leave.setSubmittedLimit(model.getSubmittedLimit());
-        leave.setIsQuotaReduction(model.getIsQuotaReduction());
-        leave.setEndOfPeriod(model.getEndOfPeriod());
-        leave.setEndOfPeriodMonth(model.getEndOfPeriodMonth());
-        leave.setIsOnlyOncePerEmployee(model.getIsOnlyOncePerEmployee());
-        leave.setIsActive(model.getIsActive());
-        leave.setQuotaPerPeriod(model.getQuotaPerPeriod());
-        return leave;
+        company.setCode(model.getCode());
+        company.setName(model.getName());
+        company.setOfficialName(model.getOfficialName());
+        company.setLegalNo(model.getLegalNo());
+        company.setLevel(model.getLevel());
+        company.setTaxCountry(new Country(model.getTaxCountryId()));
+        company.setTaxAccountNumber(model.getTaxAccountNumber());
+        company.setAddress(model.getAddress());
+        company.setCity(new City(model.getCityId()));
+        company.setBusinessType(new BusinessType(model.getBusinessTypeId()));
+        company.setPostalCode(model.getPostalCode());
+        company.setPhone(model.getPhone());
+        company.setFax(model.getFax());
+        company.setVision(model.getVision());
+        company.setMision(model.getMision());
+        return company;
     }
 
-    private void getModelFromEntity(Leave leave) {
-        model.setId(leave.getId());
-        model.setCode(leave.getCode());
-        model.setName(leave.getName());
-        model.setDescription(leave.getDescription());
-        model.setDayType(leave.getDayType());
-        model.setCalculation(leave.getCalculation());
-        model.setAttendanceStatusId(leave.getAttendanceStatus().getId());
-        model.setPeriodBase(leave.getPeriodBase());
-        model.setAvailability(leave.getAvailability());
-        model.setAvailabilityAtSpecificDate(leave.getAvailabilityAtSpecificDate());
-        model.setIsTakingLeaveToNextYear(leave.getIsTakingLeaveToNextYear());
-        model.setMaxTakingLeaveToNextYear(leave.getMaxTakingLeaveToNextYear());
-        model.setBackwardPeriodLimit(leave.getBackwardPeriodLimit());
-        model.setIsAllowedMinus(leave.getIsAllowedMinus());
-        model.setMaxAllowedMinus(leave.getMaxAllowedMinus());
-        model.setEffectiveFrom(leave.getEffectiveFrom());
-        model.setSubmittedLimit(leave.getSubmittedLimit());
-        model.setIsQuotaReduction(leave.getIsQuotaReduction());
-        model.setEndOfPeriod(leave.getEndOfPeriod());
-        model.setEndOfPeriodMonth(leave.getEndOfPeriodMonth());
-        model.setIsOnlyOncePerEmployee(leave.getIsOnlyOncePerEmployee());
-        model.setIsActive(leave.getIsActive());
-        model.setQuotaPerPeriod(leave.getQuotaPerPeriod());
+    private void getModelFromEntity(Company company) {
+        model.setId(company.getId());
+    	model.setCode(company.getCode());
+        //private Byte[] companyLogo;
+        //private String companyLogoFileName;
+    	model.setName(company.getName());
+        model.setOfficialName(company.getOfficialName());
+        model.setLegalNo(company.getLegalNo());
+        model.setLevel(company.getLevel());
+        model.setTaxCountryId(company.getTaxCountry().getId());
+        model.setTaxAccountNumber(company.getTaxAccountNumber());
+        model.setAddress(company.getAddress());
+        model.setCountryId(company.getCity().getProvince().getCountry().getId());
+        model.setProvinceId(company.getCity().getProvince().getId());
+        model.setCityId(company.getCity().getId());
+        model.setBusinessTypeId(company.getBusinessType().getId());
+        model.setPostalCode(company.getPostalCode());
+        model.setPhone(company.getPhone());
+        model.setFax(company.getFax());
+        model.setVision(company.getVision());
+        model.setMision(company.getMision());        
     }
 
     public String doBack() {
-        return "/protected/working_time/leave_view.htm?faces-redirect=true";
-    }
-
-    public void onChangeAvailability() {
-        isRenderAvailabilityDate = StringUtils.equals(model.getAvailability(), HRMConstant.LEAVE_AVAILABILITY_INCREASES_SPECIFIC_DATE);
-        if (isRenderAvailabilityDate == Boolean.FALSE) {
-            model.setAvailabilityAtSpecificDate(null);
-        }
-    }
-
-    public void onChangeEndOfPeriod() {
-        isRenderEndOfPeriodMonth = StringUtils.equals(model.getEndOfPeriod(), HRMConstant.LEAVE_END_OF_PERIOD_MONTH);
-        if (isRenderEndOfPeriodMonth == Boolean.FALSE) {
-            model.setEndOfPeriodMonth(null);
-        }
-    }
-
-    public void onChangeIsTakingLeaveToNextYear() {
-        if (model.getIsTakingLeaveToNextYear() == Boolean.FALSE) {
-            model.setMaxTakingLeaveToNextYear(null);
-            model.setBackwardPeriodLimit(null);
-        }
-    }
-
-    public void onChangeIsAllowedMinus() {
-        if (model.getIsAllowedMinus() == Boolean.FALSE) {
-            model.setMaxAllowedMinus(null);
-        }
-    }
+        return "/protected/organisation/company_view.htm?faces-redirect=true";
+    }       
     
-    public void onChangeName(){
-    	if(!appDefs.isEmpty()) {
-    		Lambda.forEach(appDefs).setSpecificName(model.getName());
-    	}
-    }
+    public void onChangeCountries(){
+		try {
+			provinces.clear();
+			cities.clear();
+			provinces = provinceService.getByCountryId(model.getCountryId());
+		} catch (Exception e) {
+			LOGGER.error("Error", e);
+		}
+	}
+	
+	public void onChangeProvinces(){
+		try {
+			cities.clear();
+			cities = cityService.getByProvinceId(model.getProvinceId());
+		} catch (Exception e) {
+			LOGGER.error("Error", e);
+		}
+	}
     
-    /** Start Approval Definition form */
-    public void doDeleteAppDef() {
-    	appDefs.remove(selectedAppDef);
-    }
-    
-    public void doAddAppDef() {
-    	Map<String, List<String>> dataToSend = new HashMap<>();
-        List<String> appDefName = new ArrayList<>();
-        appDefName.add(HRMConstant.LEAVE);
-        dataToSend.put("appDefName", appDefName);
-        List<String> specificName = new ArrayList<>();
-        specificName.add(model.getName());
-        dataToSend.put("specificName", specificName);
-    	this.showDialogAppDef(dataToSend);
-    }
-    
-    public void doEditAppDef() {
-    	indexOfAppDefs = appDefs.indexOf(selectedAppDef);    	
-    	Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
-    	Map<String, List<String>> dataToSend = new HashMap<>();
-        List<String> values = new ArrayList<>();
-        values.add(gson.toJson(selectedAppDef));
-        dataToSend.put("jsonAppDef", values);
-        this.showDialogAppDef(dataToSend);
-    }
-    
-    private void showDialogAppDef(Map<String, List<String>> params) {
-        Map<String, Object> options = new HashMap<>();
-        options.put("modal", true);
-        options.put("draggable", true);
-        options.put("resizable", false);
-        options.put("contentWidth", 1100);
-        options.put("contentHeight", 400);
-        RequestContext.getCurrentInstance().openDialog("approval_definition_popup_form", options, params);
-    }
-    
-    public void onDialogReturnAddAppDef(SelectEvent event) {
-        ApprovalDefinition appDef = (ApprovalDefinition) event.getObject();
-        appDefs.add(appDef);
-    }
-    
-    public void onDialogReturnEditAppDef(SelectEvent event) {
-        ApprovalDefinition dataUpdated = (ApprovalDefinition) event.getObject();
-        appDefs.remove(indexOfAppDefs);
-		appDefs.add(indexOfAppDefs, dataUpdated);
-    }    
-    /** End Approval Definition form */
 }

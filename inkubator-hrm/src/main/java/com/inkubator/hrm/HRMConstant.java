@@ -208,6 +208,11 @@ public class HRMConstant {
     public static final Integer NOMINAL = 0;
     public static final Integer SALARY = 1;
     /* END */
+    
+    /* Constant for Organization */
+    public static final String ORGANIZATION_LEVEL_HOLDING = "0";
+    public static final String ORGANIZATION_LEVEL_COMPANY = "1";
+    /* END */
 
     /* Constant for ReimbursmentSchema */
     public static final Integer REIMBURSMENT_UNIT = 0;
