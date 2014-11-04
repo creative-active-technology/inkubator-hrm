@@ -196,19 +196,20 @@
             <param-name>org.atmosphere.useNative</param-name>
             <param-value>true</param-value>
         </init-param>
-<!--        <init-param>
+        <!--        <init-param>
             <param-name>org.atmosphere.cpr.sessionSupport</param-name>
             <param-value>true</param-value>
         </init-param>-->
-<!--        <init-param>
-            <param-name>org.atmosphere.cpr.broadcasterCacheClass</param-name>
-            <param-value>org.atmosphere.cache.HeaderBroadcasterCache</param-value>
-        </init-param>
+        <!--        <init-param>
+                    <param-name>org.atmosphere.cpr.broadcasterCacheClass</param-name>
+                    <param-value>org.atmosphere.cache.HeaderBroadcasterCache</param-value>
+                </init-param>
+                <init-param>
+                    <param-name>org.atmosphere.cpr.broadcasterClass</param-name>
+                    <param-value>org.atmosphere.cpr.DefaultBroadcaster</param-value>
+                </init-param>
+        -->        
         <init-param>
-            <param-name>org.atmosphere.cpr.broadcasterClass</param-name>
-            <param-value>org.atmosphere.cpr.DefaultBroadcaster</param-value>
-        </init-param>
--->        <init-param>
             <param-name>org.atmosphere.cpr.CometSupport.maxInactiveActivity</param-name>
             <param-value>1800000</param-value>
         </init-param>
@@ -266,6 +267,14 @@
     </mime-mapping>
     <error-page>
         <error-code>403</error-code>
+        <location>/error/error.htm</location>
+    </error-page>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/error/error_404.htm</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
         <location>/error/error.htm</location>
     </error-page>
     <security-constraint>
