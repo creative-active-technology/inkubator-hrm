@@ -6,10 +6,11 @@ package com.inkubator.hrm.service.impl;
 
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.dao.ResourceNameDao;
 import com.inkubator.hrm.dao.ResourceTypeDao;
-import com.inkubator.hrm.entity.ResourceType;
-import com.inkubator.hrm.service.ResourceTypeService;
-import com.inkubator.hrm.web.search.ResourceTypeSearchParameter;
+import com.inkubator.hrm.entity.ResourceName;
+import com.inkubator.hrm.service.ResourceNameService;
+import com.inkubator.hrm.web.search.ResourceNameSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import java.util.Date;
 import java.util.List;
@@ -25,143 +26,155 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author Deni
  */
-@Service(value = "resourceTypeService")
+@Service(value = "resourceNameService")
 @Lazy
-public class ResourceTypeServiceImpl extends IServiceImpl implements ResourceTypeService{
+public class ResourceNameServiceImpl extends IServiceImpl implements ResourceNameService{
 
+    @Autowired
+    private ResourceNameDao resourceNameDao;
     @Autowired
     private ResourceTypeDao resourceTypeDao;
     
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<ResourceType> getByParam(ResourceTypeSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
-        return resourceTypeDao.getByParam(searchParameter, firstResult, maxResults, order);
+    public List<ResourceName> getByParam(ResourceNameSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
+        return resourceNameDao.getByParam(searchParameter, firstResult, maxResults, order);
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getTotalResourceTypeByParam(ResourceTypeSearchParameter searchParameter) throws Exception {
-        return resourceTypeDao.getTotalResourceTypeByParam(searchParameter);
+    public Long getTotalResourceTypeByParam(ResourceNameSearchParameter searchParameter) throws Exception {
+        return resourceNameDao.getTotalResourceNameByParam(searchParameter);
     }
 
     @Override
-    public ResourceType getEntiyByPK(String id) throws Exception {
+    public ResourceName getEntiyByPK(String id) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public ResourceType getEntiyByPK(Integer id) throws Exception {
+    public ResourceName getEntiyByPK(Integer id) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public ResourceType getEntiyByPK(Long id) throws Exception {
-        return resourceTypeDao.getEntiyByPK(id);
+    public ResourceName getEntiyByPK(Long id) throws Exception {
+        return resourceNameDao.getEntiyByPK(id);
     }
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void save(ResourceType entity) throws Exception {
+    public void save(ResourceName entity) throws Exception {
         // check duplicate code
-        long totalDuplicates = resourceTypeDao.getTotalByCode(entity.getCode());
+        long totalDuplicates = resourceNameDao.getTotalByCode(entity.getCode());
         if (totalDuplicates > 0) {
             throw new BussinessException("marital.error_duplicate_marital_code");
         }
+        entity.setCode(entity.getCode());
+        entity.setName(entity.getName());
+        entity.setDateOfOwnership(entity.getDateOfOwnership());
+        entity.setDescription(entity.getDescription());
+        entity.setIsActive(entity.getIsActive());
+        entity.setResourceType(resourceTypeDao.getEntiyByPK(entity.getResourceType().getId()));
         entity.setCreatedBy(UserInfoUtil.getUserName());
         entity.setCreatedOn(new Date());
-        this.resourceTypeDao.save(entity);
+        this.resourceNameDao.save(entity);
     }
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void update(ResourceType entity) throws Exception {
+    public void update(ResourceName entity) throws Exception {
         // check duplicate code
-        long totalDuplicates = resourceTypeDao.getTotalByCodeAndNotId(entity.getCode(), entity.getId());
+        long totalDuplicates = resourceNameDao.getTotalByCodeAndNotId(entity.getCode(), entity.getId());
         if (totalDuplicates > 0) {
             throw new BussinessException("marital.error_duplicate_marital_code");
         }
-        ResourceType update = resourceTypeDao.getEntiyByPK(entity.getId());
+        ResourceName update = resourceNameDao.getEntiyByPK(entity.getId());
         update.setCode(entity.getCode());
-        update.setResourceType(entity.getResourceType());
-        update.setCreatedBy(UserInfoUtil.getUserName());
-        update.setCreatedOn(new Date());
-        this.resourceTypeDao.save(update);
+        update.setName(entity.getName());
+        update.setResourceType(resourceTypeDao.getEntiyByPK(entity.getResourceType().getId()));
+        update.setDateOfOwnership(entity.getDateOfOwnership());
+        update.setDescription(entity.getDescription());
+        update.setIsActive(entity.getIsActive());
+        update.setUpdatedBy(UserInfoUtil.getUserName());
+        update.setUpdatedOn(new Date());
+        this.resourceNameDao.save(update);
     }
 
     @Override
-    public void saveOrUpdate(ResourceType enntity) throws Exception {
+    public void saveOrUpdate(ResourceName enntity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public ResourceType saveData(ResourceType entity) throws Exception {
+    public ResourceName saveData(ResourceName entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public ResourceType updateData(ResourceType entity) throws Exception {
+    public ResourceName updateData(ResourceName entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public ResourceType saveOrUpdateData(ResourceType entity) throws Exception {
+    public ResourceName saveOrUpdateData(ResourceName entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public ResourceType getEntityByPkIsActive(String id, Integer isActive) throws Exception {
+    public ResourceName getEntityByPkIsActive(String id, Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public ResourceType getEntityByPkIsActive(String id, Byte isActive) throws Exception {
+    public ResourceName getEntityByPkIsActive(String id, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public ResourceType getEntityByPkIsActive(String id, Boolean isActive) throws Exception {
+    public ResourceName getEntityByPkIsActive(String id, Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public ResourceType getEntityByPkIsActive(Integer id, Integer isActive) throws Exception {
+    public ResourceName getEntityByPkIsActive(Integer id, Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public ResourceType getEntityByPkIsActive(Integer id, Byte isActive) throws Exception {
+    public ResourceName getEntityByPkIsActive(Integer id, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public ResourceType getEntityByPkIsActive(Integer id, Boolean isActive) throws Exception {
+    public ResourceName getEntityByPkIsActive(Integer id, Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public ResourceType getEntityByPkIsActive(Long id, Integer isActive) throws Exception {
+    public ResourceName getEntityByPkIsActive(Long id, Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public ResourceType getEntityByPkIsActive(Long id, Byte isActive) throws Exception {
+    public ResourceName getEntityByPkIsActive(Long id, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public ResourceType getEntityByPkIsActive(Long id, Boolean isActive) throws Exception {
+    public ResourceName getEntityByPkIsActive(Long id, Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void delete(ResourceType entity) throws Exception {
-        this.resourceTypeDao.delete(entity);
+    public void delete(ResourceName entity) throws Exception {
+        this.resourceNameDao.delete(entity);
     }
 
     @Override
-    public void softDelete(ResourceType entity) throws Exception {
+    public void softDelete(ResourceName entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -186,43 +199,42 @@ public class ResourceTypeServiceImpl extends IServiceImpl implements ResourceTyp
     }
 
     @Override
-    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<ResourceType> getAllData() throws Exception {
-        return resourceTypeDao.getAllData();
-    }
-
-    @Override
-    public List<ResourceType> getAllData(Boolean isActive) throws Exception {
+    public List<ResourceName> getAllData() throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<ResourceType> getAllData(Integer isActive) throws Exception {
+    public List<ResourceName> getAllData(Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<ResourceType> getAllData(Byte isActive) throws Exception {
+    public List<ResourceName> getAllData(Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<ResourceType> getAllDataPageAble(int firstResult, int maxResults, Order order) throws Exception {
+    public List<ResourceName> getAllData(Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<ResourceType> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Boolean isActive) throws Exception {
+    public List<ResourceName> getAllDataPageAble(int firstResult, int maxResults, Order order) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<ResourceType> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Integer isActive) throws Exception {
+    public List<ResourceName> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<ResourceType> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
+    public List<ResourceName> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Integer isActive) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<ResourceName> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

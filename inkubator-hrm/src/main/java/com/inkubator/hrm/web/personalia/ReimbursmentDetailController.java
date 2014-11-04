@@ -104,4 +104,8 @@ public class ReimbursmentDetailController extends BaseController{
     public Boolean getIsHaveApprovalActivity(){
         return selectedApprovalActivity != null;
     }
+    
+    public Boolean getIsHaveReimbursmentDocument(){
+        return selectedReimbursment.getReimbursmentDocument() != null;
+    }
 }

@@ -156,6 +156,8 @@ public class ReimbursmentFormController extends BaseController {
                 MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             }
+            
+        cleanAndExit();
             return "/protected/personalia/reimbursment_view.htm?faces-redirect=true";
         } catch (BussinessException ex) { //data already exist(duplicate)
             LOGGER.error("Error", ex);
