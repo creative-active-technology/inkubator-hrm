@@ -186,8 +186,9 @@ public class ResourceTypeServiceImpl extends IServiceImpl implements ResourceTyp
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<ResourceType> getAllData() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return resourceTypeDao.getAllData();
     }
 
     @Override

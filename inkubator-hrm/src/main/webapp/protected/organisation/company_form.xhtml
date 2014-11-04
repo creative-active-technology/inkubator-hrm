@@ -1,0 +1,242 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:o="http://omnifaces.org/ui"
+	  xmlns:of="http://omnifaces.org/functions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+				Home
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlCompanyFormId" globalOnly="true" showDetail="true"/>                
+                <o:form id="formCompanyFormId">
+                	<p:focus context="formCompanyFormId"/>
+                	<div id="box_bg" style="margin: 10px">
+	                    <h:panelGrid columns="2">
+	                        <p:graphicImage library="images" name="specification.png" height="36" width="36" />
+	                        <h:panelGroup layout="block">
+	                            <h:panelGrid>
+	                                <p:outputLabel value="#{appmsg['organization.organization']}" styleClass="header_big" />
+	                                <p:outputLabel value="#{appmsg['organization.organization_data_from_reference']}" styleClass="header_small_no_bold" />
+	                            </h:panelGrid>
+	                        </h:panelGroup>
+	                    </h:panelGrid>
+	                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+	                    <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px;margin-bottom:20px;">
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="codeId" value="#{appmsg['organization.organization_code']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:inputText id="codeId" title="#{appmsg['organization.organization_code']}" value="#{companyFormController.model.code}" 
+	                                    		 required="true" maxlength="12" onkeyup="this.value = this.value.toUpperCase();" styleClass="isitext_hrm" style="width:290px;" />
+	                                <p:message for="codeId"/>
+	                            </p:column>
+	                        </p:row>  
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="businessTypeId" value="#{appmsg['organization.organization_business_type']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:selectOneMenu id="businessTypeId" styleClass="isitext_hrm" required="true"  value="#{companyFormController.model.businessTypeId}">
+	                            		<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+	                                    <f:selectItems value="#{companyFormController.businessTypes}" var="businessType" itemValue="#{businessType.id}" itemLabel="#{businessType.name}"/>
+	                                </p:selectOneMenu>
+	                                <p:message for="businessTypeId"/>
+	                            </p:column>
+	                        </p:row> 
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="nameId" value="#{appmsg['organization.organization_name']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:inputText id="nameId" title="#{appmsg['organization.organization_name']}" value="#{companyFormController.model.name}" 
+	                                    		 required="true" maxlength="60" styleClass="isitext_hrm" style="width:290px;"/>
+	                                <p:message for="nameId"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="officialNameId" value="#{appmsg['organization.official_name']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:inputText id="officialNameId" title="#{appmsg['organization.official_name']}" value="#{companyFormController.model.officialName}" 
+	                                    		 required="true" maxlength="60" styleClass="isitext_hrm" style="width:290px;"/>
+	                                <p:message for="officialNameId"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="legalNoId" value="#{appmsg['organization.legal_no']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:inputText id="legalNoId" title="#{appmsg['organization.legal_no']}" value="#{companyFormController.model.legalNo}" 
+	                                    		 required="true" maxlength="60" styleClass="isitext_hrm" style="width:290px;"/>
+	                                <p:message for="legalNoId"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="levelId" value="#{appmsg['organization.company_level']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:selectOneMenu id="levelId" styleClass="isitext_hrm" required="true"  value="#{companyFormController.model.level}">
+	                                    <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+	                                    <!--Cek HRM Constanta..-->
+	                                    <f:selectItem itemLabel="#{appmsg['organization.company']}" itemValue="0" />
+	                                    <f:selectItem itemLabel="#{appmsg['organization.holding']}" itemValue="1" />
+	                                </p:selectOneMenu>
+	                                <p:message for="levelId"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="taxCountryId" value="#{appmsg['organization.tax_country']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:selectOneMenu id="taxCountryId" styleClass="isitext_hrm" required="true" filter="true"  value="#{companyFormController.model.taxCountryId}">
+	                            		<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+	                                    <f:selectItems value="#{companyFormController.countries}" var="country" itemValue="#{country.id}" itemLabel="#{country.countryName}"/>
+	                                </p:selectOneMenu>
+	                                <p:message for="taxCountryId"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="taxAccountNoId" value="#{appmsg['organization.tax_account_number']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:inputText id="taxAccountNoId" title="#{appmsg['organization.tax_account_number']}" value="#{companyFormController.model.taxAccountNumber}" 
+	                                    		 required="true" maxlength="60" styleClass="isitext_hrm" style="width:290px;"/>
+	                                <p:message for="taxAccountNoId"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="addressId" value="#{appmsg['global.address']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:inputTextarea id="addressId" title="#{appmsg['global.address']}" value="#{companyFormController.model.address}" 
+	                                    			 maxlength="1000" required="true" styleClass="isitext_hrm" style="width:290px;" />
+	                                <p:message for="addressId"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="countryId" value="#{appmsg['country.country']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:selectOneMenu id="countryId" styleClass="isitext_hrm" required="true" filter="true"  value="#{companyFormController.model.countryId}">
+	                            		<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+	                                    <f:selectItems value="#{companyFormController.countries}" var="country" itemValue="#{country.id}" itemLabel="#{country.countryName}"/>
+	                                    <p:ajax listener="#{companyFormController.onChangeCountries()}" update="provinceId,cityId"/>
+	                                </p:selectOneMenu>
+	                                <p:message for="countryId"/>
+	                            </p:column>
+	                        </p:row>               
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="provinceId" value="#{appmsg['province.province']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:selectOneMenu id="provinceId" styleClass="isitext_hrm" required="true" filter="true"  value="#{companyFormController.model.provinceId}">
+	                            		<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+	                                    <f:selectItems value="#{companyFormController.provinces}" var="province" itemValue="#{province.id}" itemLabel="#{province.provinceName}"/>
+	                                    <p:ajax listener="#{companyFormController.onChangeProvinces()}" update="cityId"/>
+	                                </p:selectOneMenu>
+	                                <p:message for="provinceId"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="cityId" value="#{appmsg['city.city']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:selectOneMenu id="cityId" styleClass="isitext_hrm" required="true" filter="true"  value="#{companyFormController.model.cityId}">
+	                            		<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+	                                    <f:selectItems value="#{companyFormController.cities}" var="city" itemValue="#{city.id}" itemLabel="#{city.cityName}"/>	                                    
+	                                </p:selectOneMenu>
+	                                <p:message for="cityId"/>
+	                            </p:column>
+	                        </p:row>   
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="postalCodeId" value="#{appmsg['global.postal_code']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:inputText id="postalCodeId" title="#{appmsg['global.postal_code']}" value="#{companyFormController.model.postalCode}" 
+	                                    		 required="true" maxlength="12" styleClass="isitext_hrm" style="width:190px;"/>
+	                                <p:message for="postalCodeId"/>
+	                            </p:column>
+	                        </p:row>  
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="phoneId" value="#{appmsg['global.phone_number']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:inputText id="phoneId" title="#{appmsg['global.phone_number']}" value="#{companyFormController.model.phone}" 
+	                                    		 required="true" maxlength="20" styleClass="isitext_hrm" style="width:190px;"/>
+	                                <p:message for="phoneId"/>
+	                            </p:column>
+	                        </p:row> 
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['global.fax']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:inputText title="#{appmsg['global.fax']}" value="#{companyFormController.model.fax}" 
+	                                    		 maxlength="20" styleClass="isitext_hrm" style="width:190px;"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="visionId" value="#{appmsg['organization.vision']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:inputTextarea id="visionId" title="#{appmsg['organization.vision']}" value="#{companyFormController.model.vision}" 
+	                                    			 maxlength="1000" required="true" styleClass="isitext_hrm" style="width:290px;" />
+	                                <p:message for="visionId"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="misionId" value="#{appmsg['organization.mision']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:inputTextarea id="misionId" title="#{appmsg['organization.mision']}" value="#{companyFormController.model.mision}" 
+	                                    			 maxlength="1000" required="true" styleClass="isitext_hrm" style="width:290px;" />
+	                                <p:message for="misionId"/>
+	                            </p:column>
+	                        </p:row>
+	                 	</p:panelGrid>	
+	                 	                    
+	                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+	                    <div style="margin-bottom: 5px">
+	                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formCompanyFormId,:growlCompanyFormId"
+	                                         action="#{companyFormController.doSave()}" styleClass="isitext_hrm"
+	                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
+	                                         icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+	                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formCompanyFormId" action="#{companyFormController.doReset()}"
+                                                 icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px">  
+	                            <p:resetInput target="formCompanyFormId" />  
+	                        </p:commandButton>
+	                        <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{companyFormController.doBack()}" immediate="true"
+	                                      	 styleClass="label_button"/>
+	                    </div>
+                    </div>
+                </o:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

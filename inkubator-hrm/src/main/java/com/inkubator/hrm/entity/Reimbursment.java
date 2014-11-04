@@ -93,7 +93,7 @@ public class Reimbursment implements java.io.Serializable{
         this.empData = empData;
     }
 
-    @Column(name = "code", unique = true, nullable = false, length = 10)
+    @Column(name = "code", unique = true, nullable = false, length = 25)
     public String getCode() {
         return code;
     }

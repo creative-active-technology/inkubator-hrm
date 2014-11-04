@@ -373,16 +373,17 @@ public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements 
 
         HrmUser requestUser = hrmUserDao.getByEmpDataId(empData.getId());
         ApprovalActivity approvalActivity = isBypassApprovalChecking ? null : super.checkApprovalProcess(HRMConstant.REIMBURSEMENT, requestUser.getUserId());
-
+        
+        String createdBy = org.apache.commons.lang.StringUtils.isEmpty(reimbursment.getCreatedBy()) ? UserInfoUtil.getUserName() : reimbursment.getCreatedBy();
+        Date createdOn = reimbursment.getCreatedOn() == null ? new Date() : reimbursment.getCreatedOn();
+            
         if (approvalActivity == null) {
             reimbursment.setEmpData(empData);
             reimbursment.setReimbursmentSchema(reimbursmentSchema);
             
-            String createdBy = org.apache.commons.lang.StringUtils.isEmpty(reimbursment.getCreatedBy()) ? UserInfoUtil.getUserName() : reimbursment.getCreatedBy();
-            Date createdOn = reimbursment.getCreatedOn() == null ? new Date() : reimbursment.getCreatedOn();
-            
-            reimbursment.setCreatedBy(UserInfoUtil.getUserName());
-            reimbursment.setCreatedOn(new Date());
+            System.out.println(createdOn+"--------------------------------------------------");
+            reimbursment.setCreatedBy(createdBy);
+            reimbursment.setCreatedOn(createdOn);
             if (reimbursmentFile != null) {
                 InputStream inputStream = null;
                 byte[] buffer = null;
@@ -414,6 +415,8 @@ public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements 
              reimbursmentModelJsonParsing.setReimbursmentFileName(uploadPath);*/
             //convert reimbursmentModelJson ke json
             //String json = JsonConverter.getJson(reimbursmentModelJsonParsing, "dd-MM-yyyy");
+            reimbursment.setCreatedBy(createdBy);
+            reimbursment.setCreatedOn(createdOn);
             JsonParser parser = new JsonParser();
             Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
             JsonObject jsonObject = (JsonObject) parser.parse(gson.toJson(reimbursment));

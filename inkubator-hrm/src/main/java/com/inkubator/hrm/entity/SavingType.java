@@ -13,6 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 
 /**
@@ -20,7 +21,8 @@ import javax.persistence.Version;
  * @author rizkykojek
  */
 @Entity
-@Table(name = "saving_type", catalog = "hrm")
+@Table(name = "saving_type", catalog = "hrm", uniqueConstraints =
+        @UniqueConstraint(columnNames = "code"))
 public class SavingType implements Serializable {
 
 	private Long id;
@@ -73,7 +75,7 @@ public class SavingType implements Serializable {
 		this.code = code;
 	}
 
-	@Column(name = "name", unique = true, nullable = false, length = 12)
+	@Column(name = "name", unique = true, nullable = false, length = 25)
 	public String getName() {
 		return name;
 	}
