@@ -6,12 +6,15 @@
 package com.inkubator.hrm.web;
 
 import com.inkubator.hrm.entity.BioDocument;
+import com.inkubator.hrm.entity.Reimbursment;
 import com.inkubator.hrm.service.BioDataService;
 import com.inkubator.hrm.service.BioDocumentService;
 import com.inkubator.hrm.service.BioEducationHistoryService;
+import com.inkubator.hrm.service.ReimbursmentService;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesIO;
 import com.inkubator.webcore.util.FacesUtil;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import javax.faces.bean.ApplicationScoped;
@@ -38,6 +41,8 @@ public class ImageBioDataStreamerController extends BaseController {
     private BioEducationHistoryService educationHistoryService;
     @ManagedProperty(value = "#{bioDocumentService}")
     private BioDocumentService bioDocumentService;
+    @ManagedProperty(value = "#{reimbursmentService}")
+    private ReimbursmentService reimbursmentService;
     private StreamedContent ijazahFile;
 
     public void setBioDataService(BioDataService bioDataService) {
@@ -56,6 +61,11 @@ public class ImageBioDataStreamerController extends BaseController {
         this.facesIO = facesIO;
     }
 
+    public void setReimbursmentService(ReimbursmentService reimbursmentService) {
+        this.reimbursmentService = reimbursmentService;
+    }
+
+    
     public StreamedContent getFotoImage() throws IOException {
 
         FacesContext context = FacesUtil.getFacesContext();
@@ -182,11 +192,12 @@ public class ImageBioDataStreamerController extends BaseController {
         }
     }
 
-    public StreamedContent getReimbusementFile() throws IOException {
+    public StreamedContent getReimbusementFile() throws IOException, Exception {
 
         FacesContext context = FacesUtil.getFacesContext();
         String id = context.getExternalContext().getRequestParameterMap().get("fileName");
         System.out.println(id+"======");
+        Reimbursment reimbursment = reimbursmentService.getEntiyByPK(Long.parseLong(id));
         if (context.getRenderResponse() || id == null) {
             return new DefaultStreamedContent();
         } else {
@@ -196,9 +207,9 @@ public class ImageBioDataStreamerController extends BaseController {
                 if (StringUtils.isEmpty(path)) {
                     path = facesIO.getPathUpload() + "no_image.png";
                 }
-                is = facesIO.getInputStreamFromURL(path);
+                is = new ByteArrayInputStream(reimbursment.getReimbursmentDocument());
 
-                return new DefaultStreamedContent(is, null, StringUtils.substringAfterLast(path, "/"));
+                return new DefaultStreamedContent(is, null, "reimburment");
 
             } catch (Exception ex) {
                 LOGGER.error(ex, ex);

@@ -4,16 +4,16 @@
  */
 package com.inkubator.hrm.entity;
 
+import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -26,46 +26,33 @@ import javax.persistence.Version;
  * @author Deni
  */
 @Entity
-@Table(name = "resource_type", catalog = "hrm", uniqueConstraints = @UniqueConstraint(columnNames = "code")
-)
-public class ResourceType implements java.io.Serializable {
-    private long id;
+@Table(name = "resource_name", catalog = "hrm", uniqueConstraints =
+        @UniqueConstraint(columnNames = "code"))
+public class ResourceName implements Serializable {
+    private Long id;
     private Integer version;
+    
     private String code;
-    private String resourceType;
+    private String name;
+    private ResourceType resourceType;
+    private Date dateOfOwnership;
+    private String description;
+    private Boolean isActive;
+    
     private String createdBy;
     private Date createdOn;
     private String updatedBy;
     private Date updatedOn;
-    private Set<ResourceName> resourceNames = new HashSet<>(0);
-
-    public ResourceType() {
-    }
-
-    public ResourceType(long id) {
-        this.id = id;
-    }
-    
-    public ResourceType(long id, Integer version, String code, String resourceType, String createdBy, Date createdOn, String updatedBy, Date updatedOn) {
-        this.id = id;
-        this.version = version;
-        this.code = code;
-        this.resourceType = resourceType;
-        this.createdBy = createdBy;
-        this.createdOn = createdOn;
-        this.updatedBy = updatedBy;
-        this.updatedOn = updatedOn;
-    }
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO, generator = "resource_type_seq_gen")
+    @GeneratedValue(strategy=GenerationType.AUTO, generator = "resource_name_seq_gen")
     @Column(name = "id", unique = true, nullable = false)
-    @SequenceGenerator(name = "resource_type_seq_gen", sequenceName = "RESOURCE_TYPE_SEQ")
-    public long getId() {
+    @SequenceGenerator(name = "resource_name_seq_gen", sequenceName = "RESOURCE_NAME_SEQ")
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -79,7 +66,7 @@ public class ResourceType implements java.io.Serializable {
         this.version = version;
     }
 
-    @Column(name = "code", unique = true, nullable = false, length = 10)
+    @Column(name = "code", unique = true, nullable = false, length = 12)
     public String getCode() {
         return code;
     }
@@ -88,13 +75,51 @@ public class ResourceType implements java.io.Serializable {
         this.code = code;
     }
 
-    @Column(name = "resource_type", length = 45)
-    public String getResourceType() {
+    @Column(name = "name", unique = true, nullable = false, length = 100)
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "resource_type")
+    public ResourceType getResourceType() {
         return resourceType;
     }
 
-    public void setResourceType(String resourceType) {
+    public void setResourceType(ResourceType resourceType) {
         this.resourceType = resourceType;
+    }
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "date_of_ownership", length = 19)
+    public Date getDateOfOwnership() {
+        return dateOfOwnership;
+    }
+
+    public void setDateOfOwnership(Date dateOfOwnership) {
+        this.dateOfOwnership = dateOfOwnership;
+    }
+
+    @Column(name = "description", length = 65535, columnDefinition = "Text")
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @Column(name = "isActive")
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
     }
 
     @Column(name = "created_by", length = 45)
@@ -133,15 +158,6 @@ public class ResourceType implements java.io.Serializable {
 
     public void setUpdatedOn(Date updatedOn) {
         this.updatedOn = updatedOn;
-    }
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "resourceType")
-    public Set<ResourceName> getResourceNames() {
-        return resourceNames;
-    }
-
-    public void setResourceNames(Set<ResourceName> resourceNames) {
-        this.resourceNames = resourceNames;
     }
     
     
