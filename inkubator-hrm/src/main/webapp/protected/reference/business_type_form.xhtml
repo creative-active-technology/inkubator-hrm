@@ -21,8 +21,8 @@
                         <p:graphicImage library="images" name="marital_status.png" height="36" width="36"  cache="true"/>
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Resource Type Form" styleClass="header_big" />
-                                <p:outputLabel value="Resource Type From Reference" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="Business Type Form" styleClass="header_big" />
+                                <p:outputLabel value="Business Type From Reference" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -41,7 +41,7 @@
                                 <h:outputLabel for="code" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <p:inputText id="code"  value="#{resourceTypeFormController.model.code}"
+                                <p:inputText id="code"  value="#{businessTypeFormController.model.code}"
                                              required="true"  maxlength="45" styleClass="isitext_hrm" style="width:210px;" />
                             </p:column>
                         </p:row>
@@ -53,29 +53,61 @@
                         
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="resourceType" value="Resource Type" styleClass="label_hrm"/>
+                                <p:outputLabel for="name" value="Name" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
-                                <h:outputLabel for="resourceType" value=":" styleClass="label_hrm"/>
+                                <h:outputLabel for="name" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <p:inputText id="resourceType"  value="#{resourceTypeFormController.model.resourceType}"
+                                <p:inputText id="name"  value="#{businessTypeFormController.model.name}"
                                              required="true"  maxlength="45" styleClass="isitext_hrm" style="width:210px;" />
                             </p:column>
                         </p:row>
                         <p:row>
                             <p:column colspan="3">
-                                <p:message for="resourceType"/>
+                                <p:message for="name"/>
                             </p:column>
                         </p:row>
                         
+                        
+                        <p:row>
+                            <p:column style="width: 37%">
+                                <p:outputLabel for="description" value="#{appmsg['role_view.role_description']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="description" value=":"  styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 50%" >
+                                <p:inputTextarea id="description" rows="5" cols="37" counter="counter" maxlength="500" value="#{businessTypeFormController.model.description}" 
+                                                 style="width: 96%; height: 80px;" counterTemplate="#{appmsg['global.remaining']}"   autoResize="true" required="false"
+                                                 label="#{appmsg['role_view.role_description']}" title="#{appmsg['role_view.role_description']}" />
+
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="description"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 25%">
+                                <p:outputLabel  value="" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel  value=""  styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 60%" >
+                                <h:outputText id="counter" />
+                            </p:column>
+                        </p:row>
 
                     </p:panelGrid>
                     <p:focus context="formId" />
                     <p:separator style="margin-top: 20px;margin-bottom: 10px"/>
                     <h:panelGrid columns="2" style="margin-bottom: -30px!important">
                         <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formId,:growlId"
-                                         action="#{resourceTypeFormController.doSave()}" styleClass="isitext_hrm"
+                                         action="#{businessTypeFormController.doSave()}" styleClass="isitext_hrm"
                                          style="margin-right: 5px" label="#{appmsg['global.save']}"
                                          icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
                         <p:commandButton value="#{appmsg['global.clear']}" title="#{appmsg['global.clear']}" process="@this" update="formId" 

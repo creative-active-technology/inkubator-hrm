@@ -10,10 +10,11 @@ import java.io.Serializable;
  *
  * @author Deni
  */
-public class ResourceTypeModel implements Serializable {
+public class BusinessTypeModel implements Serializable{
     private Long id;
     private String code;
-    private String resourceType;
+    private String name;
+    private String description;
 
     public Long getId() {
         return id;
@@ -31,12 +32,20 @@ public class ResourceTypeModel implements Serializable {
         this.code = code;
     }
 
-    public String getResourceType() {
-        return resourceType;
+    public String getName() {
+        return name;
     }
 
-    public void setResourceType(String resourceType) {
-        this.resourceType = resourceType;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
     
     

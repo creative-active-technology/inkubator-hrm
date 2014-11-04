@@ -21,8 +21,8 @@
                             <p:graphicImage library="images" name="marital_status.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="Resource Type" styleClass="header_big" />
-                                    <p:outputLabel value="Resource Type From Reference" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="Saving Type" styleClass="header_big" />
+                                    <p:outputLabel value="Saving Type From Reference" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -33,13 +33,13 @@
                                 <h:panelGrid columns="5">
                                     <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm" />
                                     <p:outputLabel value=":" />
-                                    <p:selectOneMenu value="#{resourceTypeViewController.searchParameter.keyParam}" style="width: 150px;margin-right: 3px" >
+                                    <p:selectOneMenu value="#{savingTypeViewController.searchParameter.keyParam}" style="width: 150px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItem itemLabel="#{appmsg['global.code']}" itemValue="code"/>
                                         <f:selectItem itemLabel="#{appmsg['global.name']}" itemValue="name"/>
                                     </p:selectOneMenu>
-                                    <p:inputText id="searchId" value="#{resourceTypeViewController.searchParameter.parameter}" style="width: 250px" styleClass="label_button"/>
-                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{resourceTypeViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
+                                    <p:inputText id="searchId" value="#{savingTypeViewController.searchParameter.parameter}" style="width: 250px" styleClass="label_button"/>
+                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{savingTypeViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
@@ -47,21 +47,21 @@
                                     <p:commandButton value="Export to XLS" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
                                         <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Marital_Status"/>
                                     </p:commandButton>
-                                    <p:commandButton value="#{appmsg['global.add']}" actionListener="#{resourceTypeViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
-                                        <p:ajax event="dialogReturn" listener="#{resourceTypeViewController.onDialogReturn}"  update="tableId, growlId"/>
+                                    <p:commandButton value="#{appmsg['global.add']}" actionListener="#{savingTypeViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
+                                        <p:ajax event="dialogReturn" listener="#{savingTypeViewController.onDialogReturn}"  update="tableId, growlId"/>
                                     </p:commandButton>
-                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{resourceTypeViewController.doClose()}" icon="ui-icon-home" />
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{savingTypeViewController.doClose()}" icon="ui-icon-home" />
                                     
                                 </h:panelGrid>
                             </p:toolbarGroup>
                         </p:toolbar>
                         <p:focus for="searchId" />
-                        <p:dataTable  var="data"  value="#{resourceTypeViewController.lazy}" lazy="true" paginator="true" pageLinks="7"
+                        <p:dataTable  var="data"  value="#{savingTypeViewController.lazy}" lazy="true" paginator="true" pageLinks="7"
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
                                       id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="Resource Type List"/>
+                                <h:outputText value="Saving Type List"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
@@ -79,24 +79,30 @@
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.resourceType}" />
+                                <h:outputLabel value= "#{data.name}" />
                             </p:column>
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
+                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
+                                                 onclick="statusDialog.show()"  oncomplete="detail.show()" update=":detailPanel"
+                                                 style="font-size: 10px!important" action="#{savingTypeViewController.doSelectEntity()}">                        
+                                    <f:setPropertyActionListener value="#{data}" target="#{savingTypeViewController.selected}" />
+                                </p:commandButton>
+                                - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                 				 style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                                                 action="#{resourceTypeViewController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmDelete.show()">
-                                    <f:setPropertyActionListener value="#{data}" target="#{resourceTypeViewController.selected}" />
+                                                                 action="#{savingTypeViewController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmDelete.show()">
+                                    <f:setPropertyActionListener value="#{data}" target="#{savingTypeViewController.selected}" />
                                 </p:commandButton>
                                 -
                                 <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" ajax="true"
-                                                  action="#{resourceTypeViewController.doEdit()}" >
-                                    <f:setPropertyActionListener value="#{data}" target="#{resourceTypeViewController.selected}" />
-                                    <p:ajax event="dialogReturn" listener="#{resourceTypeViewController.onDialogReturn}"  update="tableId, :formId:growlId"/>
+                                                  action="#{savingTypeViewController.doEdit()}" >
+                                    <f:setPropertyActionListener value="#{data}" target="#{savingTypeViewController.selected}" />
+                                    <p:ajax event="dialogReturn" listener="#{savingTypeViewController.onDialogReturn}"  update="tableId, :formId:growlId"/>
                                 </p:commandButton> 
                             </p:column> 
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>
-                                <p:outputLabel value="#{resourceTypeViewController.lazy.rowCount}"/>
+                                <p:outputLabel value="#{savingTypeViewController.lazy.rowCount}"/>
                                 <p:outputLabel value="Data" style="margin-left: 3px"/>
                             </f:facet>  
                         </p:dataTable>
@@ -125,15 +131,38 @@
                             </h:panelGrid>
                         </div>
                         <h:panelGrid id="panelDialogConfirmId"  columns="3">
-                            <p:outputLabel value="Resource Type Name"  style="font-weight: bold"/>
+                            <p:outputLabel value="Saving Type Name"  style="font-weight: bold"/>
                             <p:outputLabel value=":"  style="font-weight: bold"/>
-                            <p:outputLabel value="#{resourceTypeViewController.selected.resourceType}" styleClass="label_hrm"/>
+                            <p:outputLabel value="#{savingTypeViewController.selected.name}" styleClass="label_hrm"/>
                         </h:panelGrid>
                         <p:separator/>
-                        <p:commandButton value="#{appmsg['global.yes']}" action="#{resourceTypeViewController.doDelete()}" update="formId"
+                        <p:commandButton value="#{appmsg['global.yes']}" action="#{savingTypeViewController.doDelete()}" update="formId"
                                          oncomplete="dialogConfirmDelete.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
                         <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmDelete.hide()" icon="ui-icon-close" />                     	
                     </div>
+                </p:dialog>
+                <p:dialog widgetVar="detail" header="Saving Type Detail" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
+                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)" dynamic="true">
+                    <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['global.code']}" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{savingTypeViewController.selected.code}"/> </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['global.name']}" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{savingTypeViewController.selected.name}"/> </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{savingTypeViewController.selected.description}"/> </p:column>
+                        </p:row>
+
+                        <f:facet name="footer">
+                            <p:row>
+                                <p:column colspan="2"><p:outputLabel value="Saving Type From Reference" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
+                            </p:row>
+                        </f:facet>
+                    </p:panelGrid>
                 </p:dialog>
             </ui:define>
         </ui:composition>

@@ -6,9 +6,9 @@ package com.inkubator.hrm.web.reference;
 
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.SavingType;
-import com.inkubator.hrm.service.SavingTypeService;
-import com.inkubator.hrm.web.model.SavingTypeModel;
+import com.inkubator.hrm.entity.BusinessType;
+import com.inkubator.hrm.service.BusinessTypeService;
+import com.inkubator.hrm.web.model.BusinessTypeModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
@@ -25,13 +25,13 @@ import org.primefaces.context.RequestContext;
  *
  * @author Deni
  */
-@ManagedBean(name = "savingTypeFormController")
+@ManagedBean(name = "businessTypeFormController")
 @ViewScoped
-public class SavingTypeFormController extends BaseController{
-    @ManagedProperty(value = "#{savingTypeService}")
-    private SavingTypeService service;
-    private SavingType selected;
-    private SavingTypeModel model;
+public class BusinessTypeFormController extends BaseController{
+    @ManagedProperty(value = "#{businessTypeService}")
+    private BusinessTypeService service;
+    private BusinessType selected;
+    private BusinessTypeModel model;
     private Boolean isUpdate;
     
     @PostConstruct
@@ -39,13 +39,13 @@ public class SavingTypeFormController extends BaseController{
     public void initialization() {
         super.initialization();
         try{
-            String savingTypeId = FacesUtil.getRequestParameter("savingTypeId");
-            model = new SavingTypeModel();
+            String businessTypeId = FacesUtil.getRequestParameter("businessTypeId");
+            model = new BusinessTypeModel();
             isUpdate = Boolean.FALSE;
-            if (StringUtils.isNotEmpty(savingTypeId)) {
-                SavingType savingType = service.getEntiyByPK(Long.parseLong(savingTypeId));
-                if(savingTypeId != null){
-                    model = getModelFromEntity(savingType);
+            if (StringUtils.isNotEmpty(businessTypeId)) {
+                BusinessType businessType = service.getEntiyByPK(Long.parseLong(businessTypeId));
+                if(businessTypeId != null){
+                    model = getModelFromEntity(businessType);
                     isUpdate = Boolean.TRUE;
                 }
             }
@@ -63,8 +63,8 @@ public class SavingTypeFormController extends BaseController{
         selected = null;
     }
     
-    private SavingTypeModel getModelFromEntity(SavingType entity) {
-        SavingTypeModel model = new SavingTypeModel();
+    private BusinessTypeModel getModelFromEntity(BusinessType entity) {
+        BusinessTypeModel model = new BusinessTypeModel();
         model.setId(entity.getId());
         model.setCode(entity.getCode());
         model.setName(entity.getName());
@@ -72,26 +72,26 @@ public class SavingTypeFormController extends BaseController{
         return model;
     }
     
-    private SavingType getEntityFromViewModel(SavingTypeModel model) {
-        SavingType savingType = new SavingType();
+    private BusinessType getEntityFromViewModel(BusinessTypeModel model) {
+        BusinessType businessType = new BusinessType();
         if (model.getId() != null) {
-            savingType.setId(model.getId());
+            businessType.setId(model.getId());
         }
-        savingType.setCode(model.getCode());
-        savingType.setName(model.getName());
-        savingType.setDescription(model.getDescription());
-        return savingType;
+        businessType.setCode(model.getCode());
+        businessType.setName(model.getName());
+        businessType.setDescription(model.getDescription());
+        return businessType;
     }
     
     public void doSave() {
         System.out.println("masuk dosave");
-        SavingType savingType = getEntityFromViewModel(model);
+        BusinessType businessType = getEntityFromViewModel(model);
         try {
             if (isUpdate) {
-                service.update(savingType);
+                service.update(businessType);
                 RequestContext.getCurrentInstance().closeDialog(HRMConstant.UPDATE_CONDITION);
             } else {
-                service.save(savingType);
+                service.save(businessType);
                 RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
             }
             cleanAndExit();
@@ -103,27 +103,27 @@ public class SavingTypeFormController extends BaseController{
         }
     }
 
-    public SavingTypeService getService() {
+    public BusinessTypeService getService() {
         return service;
     }
 
-    public void setService(SavingTypeService service) {
+    public void setService(BusinessTypeService service) {
         this.service = service;
     }
 
-    public SavingType getSelected() {
+    public BusinessType getSelected() {
         return selected;
     }
 
-    public void setSelected(SavingType selected) {
+    public void setSelected(BusinessType selected) {
         this.selected = selected;
     }
 
-    public SavingTypeModel getModel() {
+    public BusinessTypeModel getModel() {
         return model;
     }
 
-    public void setModel(SavingTypeModel model) {
+    public void setModel(BusinessTypeModel model) {
         this.model = model;
     }
 
