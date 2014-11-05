@@ -470,7 +470,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 	public List<EmpData> getAllDataReportEmpWorkingGroupByParam(ReportEmpWorkingGroupParameter param, int firstResult, int maxResults, Order orderable) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
 		criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
-		criteria.createAlias("wtGroupWorking", "wtGroupWorking", JoinType.INNER_JOIN);
+		criteria.createAlias("wtGroupWorking", "wtGroupWorking", JoinType.LEFT_OUTER_JOIN);
 		criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
 		criteria.createAlias("jabatanByJabatanId.department", "department", JoinType.INNER_JOIN);
 		doSearchReportEmpWorkingGroupByParam(param, criteria);
