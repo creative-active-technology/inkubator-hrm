@@ -11,8 +11,8 @@ public class CompanyModel {
 
 	private Long id;
 	private String code;
-    private Byte[] companyLogo;
-    private String companyLogoFileName;
+    private byte[] companyLogo;
+    private String companyLogoName;
     private String name;    
     private String officialName;
     private String legalNo;
@@ -42,17 +42,17 @@ public class CompanyModel {
 	public void setCode(String code) {
 		this.code = code;
 	}
-	public Byte[] getCompanyLogo() {
+	public byte[] getCompanyLogo() {
 		return companyLogo;
 	}
-	public void setCompanyLogo(Byte[] companyLogo) {
+	public void setCompanyLogo(byte[] companyLogo) {
 		this.companyLogo = companyLogo;
 	}
-	public String getCompanyLogoFileName() {
-		return companyLogoFileName;
+	public String getCompanyLogoName() {
+		return companyLogoName;
 	}
-	public void setCompanyLogoFileName(String companyLogoFileName) {
-		this.companyLogoFileName = companyLogoFileName;
+	public void setCompanyLogoName(String companyLogoName) {
+		this.companyLogoName = companyLogoName;
 	}
 	public String getName() {
 		return name;

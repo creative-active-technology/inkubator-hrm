@@ -34,7 +34,7 @@ public class CompanyDetailController extends BaseController {
         try {
             super.initialization();
             String id = FacesUtil.getRequestParameter("execution");
-            selectedCompany = companyService.getEntityByPKWithDetail(Long.parseLong(id.substring(1)));
+            selectedCompany = companyService.getEntityByPKWithDetail(Long.parseLong(id.substring(1)));           
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
 
@@ -66,9 +66,5 @@ public class CompanyDetailController extends BaseController {
     public String doUpdate() {
         return "/protected/organisation/company_form.htm?faces-redirect=true&execution=e" + selectedCompany.getId();
     }
-
-    
-    
-    
 
 }

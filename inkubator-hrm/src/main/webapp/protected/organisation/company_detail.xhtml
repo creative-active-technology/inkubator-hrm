@@ -47,6 +47,22 @@
 	                        </p:row> 
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['organization.organization_logo']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<h:panelGrid columns="2">
+	                            	<p:graphicImage value="#{imageCompanyStreamerController.companyLogo}" cache="FALSE" width="60" height="40">
+                                        <f:param name="companyId" value="#{companyDetailController.selectedCompany.id}" />
+                                    </p:graphicImage> 
+                                    <p:commandButton ajax="false" value="Download" title="Download" style="font-size: 10px!important" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
+                                    	<p:fileDownload value="#{imageCompanyStreamerController.companyLogo}" />
+                                        <f:param name="companyId" value="#{companyDetailController.selectedCompany.id}" />
+                                   	</p:commandButton>
+                                   	</h:panelGrid>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
 	                                <p:outputLabel value="#{appmsg['organization.organization_name']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">

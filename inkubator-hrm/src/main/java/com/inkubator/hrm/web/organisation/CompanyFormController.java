@@ -11,6 +11,8 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
 import org.apache.commons.lang3.StringUtils;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.UploadedFile;
 
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
@@ -207,6 +209,8 @@ public class CompanyFormController extends BaseController {
             company.setId(model.getId());
         }
         company.setCode(model.getCode());
+        company.setCompanyLogo(model.getCompanyLogo());
+        company.setCompanyLogoName(model.getCompanyLogoName());
         company.setName(model.getName());
         company.setOfficialName(model.getOfficialName());
         company.setLegalNo(model.getLegalNo());
@@ -227,8 +231,7 @@ public class CompanyFormController extends BaseController {
     private void getModelFromEntity(Company company) {
         model.setId(company.getId());
     	model.setCode(company.getCode());
-        //private Byte[] companyLogo;
-        //private String companyLogoFileName;
+    	model.setCompanyLogoName(company.getCompanyLogoName());
     	model.setName(company.getName());
         model.setOfficialName(company.getOfficialName());
         model.setLegalNo(company.getLegalNo());
@@ -269,5 +272,11 @@ public class CompanyFormController extends BaseController {
 			LOGGER.error("Error", e);
 		}
 	}
+	
+	public void handingFotoUpload(FileUploadEvent fileUploadEvent) {
+        UploadedFile logoFile = fileUploadEvent.getFile();
+        model.setCompanyLogo(logoFile.getContents());
+        model.setCompanyLogoName(logoFile.getFileName());
+    }
     
 }

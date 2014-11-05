@@ -57,6 +57,19 @@
 	                        </p:row> 
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['organization.organization_logo']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:fileUpload required="false" sizeLimit="209715200" label="#{appmsg['global.choose_photo']}" fileUploadListener="#{companyFormController.handingFotoUpload}" 
+                                           mode="advanced"  id="uploadFotoId"  style="margin-top:10px;margin-bottom:10px;width: 100%;text-align: left!important"
+                                          dragDropSupport="true" multiple="false" update="logoNameId" allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|doc|docx|rar|zip)$/"/> 
+	                                <p:outputLabel value="#{appmsg['global.file_name']}"/>
+	                                <p:outputLabel value=":" style="margin-left: 5px;margin-right: 5px"/>
+	                                <p:outputLabel value="#{companyFormController.model.companyLogoName}" id="logoNameId"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
 	                                <p:outputLabel for="nameId" value="#{appmsg['organization.organization_name']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
