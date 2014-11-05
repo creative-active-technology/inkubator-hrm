@@ -469,10 +469,10 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 	@Override
 	public List<EmpData> getAllDataReportEmpWorkingGroupByParam(ReportEmpWorkingGroupParameter param, int firstResult, int maxResults, Order orderable) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.setFetchMode("bioData", FetchMode.JOIN);
-		criteria.setFetchMode("jabatanByJabatanId", FetchMode.JOIN);
-		criteria.setFetchMode("jabatanByJabatanId.department", FetchMode.JOIN);
-		criteria.setFetchMode("wtGroupWorking", FetchMode.JOIN);
+		criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
+		criteria.createAlias("wtGroupWorking", "wtGroupWorking", JoinType.LEFT_OUTER_JOIN);
+		criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
+		criteria.createAlias("jabatanByJabatanId.department", "department", JoinType.INNER_JOIN);
 		doSearchReportEmpWorkingGroupByParam(param, criteria);
         criteria.addOrder(orderable);
         criteria.setFirstResult(firstResult);
@@ -483,13 +483,13 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 	@Override
 	public Long getTotalReportEmpWorkingGroupByParam(ReportEmpWorkingGroupParameter param) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
 		doSearchReportEmpWorkingGroupByParam(param, criteria);
 		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
 	}
 	
 	private Criteria doSearchReportEmpWorkingGroupByParam(ReportEmpWorkingGroupParameter param, Criteria criteria) {
 		if(param.getDepartmentId() != null && param.getDepartmentId() != 0){
-			criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
 			criteria.add(Restrictions.eq("jabatanByJabatanId.department.id", param.getDepartmentId()));
 		}
 		

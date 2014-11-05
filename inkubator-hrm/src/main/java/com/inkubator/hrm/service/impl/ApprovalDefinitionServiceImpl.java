@@ -128,6 +128,12 @@ public class ApprovalDefinitionServiceImpl extends IServiceImpl implements Appro
 		if(approvalActivityDao.isStillHaveWaitingStatus(entity.getId())){
 			throw new BussinessException("approval.error_still_have_waiting_status");
 		}
+		
+		/** cek jika dia punya many to many relations atau tidak, ex: leave,overtime
+		 *  jika punya, maka hanya diperbolehkan di edit dari menu konfigurasi */
+		if(entity.getIsHaveManyToManyRelations()){
+			throw new BussinessException("approval.error_only_allow_edit_via_configuration");
+		}
     	
     	long totalExist = this.approvalDefinitionDao.getTotalSameAprrovalProsesExistAndNotId(entity.getName(), entity.getProcessType(), entity.getSequence(), entity.getId());
         if (totalExist > 0) {

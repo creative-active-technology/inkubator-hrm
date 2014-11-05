@@ -41,6 +41,8 @@ public class Country  implements java.io.Serializable {
      private String longitude;
      private Set<Province> provinces = new HashSet<Province>(0);
      private Set<Currency> currency = new HashSet<Currency>(0);
+     private Set<Company> companiesByTaxCountry = new HashSet<Company>(0);
+     
 
     public Country() {
     }
@@ -185,7 +187,7 @@ public class Country  implements java.io.Serializable {
         this.longitude = longitude;
     }
 
-@OneToMany(fetch=FetchType.LAZY, mappedBy="country")
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="country")
     public Set<Province> getProvinces() {
         return this.provinces;
     }
@@ -202,6 +204,15 @@ public class Country  implements java.io.Serializable {
     public void setCurrency(Set<Currency> currency) {
         this.currency = currency;
     }
+
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="taxCountry")
+	public Set<Company> getCompaniesByTaxCountry() {
+		return companiesByTaxCountry;
+	}
+
+	public void setCompaniesByTaxCountry(Set<Company> companiesByTaxCountry) {
+		this.companiesByTaxCountry = companiesByTaxCountry;
+	}
 	
 }
 

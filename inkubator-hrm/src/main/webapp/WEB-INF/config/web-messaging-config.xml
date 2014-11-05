@@ -87,7 +87,12 @@
         <property name="defaultDestinationName" value="notificationMassJadwalKerja"/>
         
     </bean> 
-    
+     <bean id="jmsTemplateSMS" class="org.springframework.jms.core.JmsTemplate" lazy-init="true">
+        <constructor-arg name="connectionFactory" ref="connectionFactoryExpose"/>
+        <property name="sessionTransacted" value="true"/>
+        <property name="defaultDestinationName" value="smsNotifiacation"/>
+        
+    </bean> 
 
     <bean id="notificationUserMessagesListener" class="com.inkubator.hrm.service.impl.NotificationUserMessagesListener" lazy-init="true">
         <property name="applicationUrl" value="${email_param_application_url}"/>

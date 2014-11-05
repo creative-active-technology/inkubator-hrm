@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.TextMessage;
@@ -117,7 +116,7 @@ public class NotificationUserMessagesListener extends IServiceImpl implements Me
                 this.passwordHistoryDao.update(passwordHistory);
                 System.out.println(" suksesss");
             }
-        } catch (JMSException ex) {
+        } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
     }
