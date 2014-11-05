@@ -1,0 +1,296 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg" style="margin: 10px">                     
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="laporan.png" height="36" width="36" cache="true"/>
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['leaveimplementation.report_leave_implementation']}" styleClass="header_big" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator/>
+
+                    <h:form id="formReportLeaveImplementationViewId">
+                        <p:focus context="formReportLeaveImplementationViewId"/>
+                        <p:toolbar  style="margin-top: 10px">
+                            <p:toolbarGroup align="left">
+                                <p:panelGrid style="width: 100%;" styleClass="grid_no_border">
+
+                                    <p:row>
+                                        <p:column>
+                                            <p:outputLabel value="#{appmsg['global.start_date']}" title="#{appmsg['global.start_date']}" styleClass="label_hrm" />
+                                        </p:column>
+                                        <p:column>
+                                            <p:outputLabel value=":" />
+                                        </p:column>
+                                        <p:column>
+                                            <p:calendar value="#{reportLeaveHistoryViewController.searchParameter.startDate}" style="width: 100px" styleClass="isitext_hrm"/>
+
+                                        </p:column>
+
+                                    </p:row>
+                                    <p:row>
+                                        <p:column>
+                                            <p:outputLabel value="#{appmsg['global.end_date']}" title="#{appmsg['global.end_date']}" styleClass="label_hrm" />
+                                        </p:column>
+                                        <p:column>
+                                            <p:outputLabel value=":" />
+                                        </p:column>
+                                        <p:column>
+                                            <p:calendar value="#{reportLeaveHistoryViewController.searchParameter.endDate}" style="width: 100px" styleClass="isitext_hrm"/>
+                                        </p:column>
+
+
+                                    </p:row>
+                                    <p:row>
+                                        <p:column>
+                                            <p:outputLabel value="#{appmsg['approvalactivity.approval_status']}" title="#{appmsg['approvalactivity.approval_status ']}" styleClass="label_hrm" />
+                                        </p:column>
+                                        <p:column>
+                                            <p:outputLabel value=":" />
+                                        </p:column>
+                                        <p:column>
+                                            <p:selectOneMenu id="approvalStatus" value="#{reportLeaveHistoryViewController.searchParameter.approvalStatus}" style="width: 100px;margin-right: 3px" >
+                                                <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                                <f:selectItem itemLabel="#{appmsg['approvalactivity.waiting']}" itemValue="0"/>
+                                                <f:selectItem itemLabel="#{appmsg['approvalactivity.approved']}" itemValue="1"/>
+                                                <f:selectItem itemLabel="#{appmsg['approvalactivity.reject']}" itemValue="2"/>
+                                            </p:selectOneMenu>
+                                        </p:column>
+                                        <p:column>
+                                            <p:commandButton id="btnSearchId" style="margin-left:20px;" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{reportLeaveHistoryViewController.doSearch()}" update="tableReportId"  styleClass="label_button" icon="ui-icon-search"/>
+                                        </p:column>
+                                    </p:row>
+                                </p:panelGrid>
+                            </p:toolbarGroup>
+
+                            <p:toolbarGroup align="right">
+                                <h:panelGrid columns="3" >
+                                    <p:commandButton value="Export to XLS" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
+                                        <pe:exporter target="tableReportExportId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Report_Leave_History"/>
+                                    </p:commandButton>                                    
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{reportLeaveHistoryViewController.doClose()}" icon="ui-icon-home"/>
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                        </p:toolbar>
+
+
+
+                        <p:dataTable  id="tableReportId" var="leaveImplementationData"  value="#{reportLeaveHistoryViewController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['leaveimplementation.list_of_leave_implementation']}"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 3%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column sortBy="numberFilling"  style="text-align: center;width: 15%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['leaveimplementation.filling_number']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{leaveImplementationData.numberFilling}"/>
+                            </p:column>
+                            <p:column sortBy="leave.name"  style="text-align: center;width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['leave.leave']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{leaveImplementationData.leave.name}"/>
+                            </p:column>  
+                            <p:column sortBy="empData.bioData.firstName"  style="text-align: center;width: 20%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.employee']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{leaveImplementationData.empData.nikWithFullName}"/>
+                            </p:column>
+                            <p:column sortBy="startDate"  style="text-align: center;width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.start_date']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{leaveImplementationData.startDate}">
+                                    <f:convertDateTime pattern="dd-MMMM-yyyy" />
+                                </h:outputLabel>
+                            </p:column> 
+                            <p:column sortBy="endDate"  style="text-align: center;width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.end_date']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{leaveImplementationData.endDate}">
+                                    <f:convertDateTime pattern="dd-MMMM-yyyy" />
+                                </h:outputLabel>
+                            </p:column> 
+                            <p:column sortBy="fillingDate"  style="text-align: center;width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['leaveimplementation.filling_date']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{leaveImplementationData.fillingDate}">
+                                    <f:convertDateTime pattern="dd-MMMM-yyyy" />
+                                </h:outputLabel>
+                            </p:column>                              
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
+                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
+                                                 style="font-size: 10px!important" update=":panelDialogDetailId" 
+                                                 action="#{reportLeaveHistoryViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogDetail.show()">                        
+                                    <f:setPropertyActionListener value="#{leaveImplementationData}" target="#{reportLeaveHistoryViewController.selectedLeaveImplementation}" />
+                                </p:commandButton>
+                            </p:column>
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : "/>
+                                <p:outputLabel value="#{reportLeaveHistoryViewController.lazyDataModel.rowCount}"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px"/>
+                            </f:facet>  
+                        </p:dataTable>
+                        <p:blockUI block="formReportLeaveImplementationViewId" trigger="tableReportId,btnSearchId" >
+                            <h:panelGrid columns="2" styleClass="grid_no_border">
+                                <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
+                                <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
+                            </h:panelGrid>
+                        </p:blockUI>
+                        <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
+                            <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
+                        </p:dialog>
+                        <p:dataTable id="tableReportExportId" var="report" rowIndexVar="no"  value="#{reportLeaveHistoryViewController.listReportLeaveHistoryModels}" rendered="False">
+                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['leaveimplementation.list_of_report_leave_implementation']}"/>
+                            </f:facet>
+                            <p:column>
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column headerText="#{appmsg['global.employee']}">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.employee']}"/>
+                                </f:facet>
+                                <h:outputText value="#{report.nikWithFullName}" />
+                            </p:column>
+
+                            <p:column headerText="#{appmsg['leaveimplementation.filling_number']}">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['leaveimplementation.filling_number']}"/>
+                                </f:facet>
+                                <h:outputText value="#{report.numberFilling}" />
+                            </p:column>
+
+                            <p:column headerText="#{appmsg['leave.leave']}">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['leave.leave']}"/>
+                                </f:facet>
+                                <h:outputText value="#{report.leaveScheme}" />
+                            </p:column>
+
+                            <p:column headerText="#{appmsg['leaveimplementation.request_time']}">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['leaveimplementation.request_time']}"/>
+                                </f:facet>
+                                <h:outputText value="#{report.requestTime}" >
+                                    <f:convertDateTime pattern="dd-MMMM-yyyy" />
+                                </h:outputText>
+                            </p:column>
+                            
+                            <p:column headerText="#{appmsg['approvalactivity.approval_time']}">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['approvalactivity.approval_time']}"/>
+                                </f:facet>
+                                <h:outputText value="#{report.approvalTime}" >
+                                    <f:convertDateTime pattern="dd-MMMM-yyyy" />
+                                </h:outputText>
+                            </p:column>
+                            
+                            <p:column headerText="#{appmsg['approvalactivity.approved_by']}">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['approvalactivity.approved_by']}" />
+                                </f:facet>
+                                <h:outputText value="#{report.approvedBy}" style="text-transform: capitalize"/>
+                            </p:column>
+                            
+                            <p:column headerText="#{appmsg['global.start_date']}">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.start_date']}"/>
+                                </f:facet>
+                                <h:outputText value="#{report.startDate}" >
+                                    <f:convertDateTime pattern="dd-MMMM-yyyy" />
+                                </h:outputText>
+                            </p:column>
+                            
+                            <p:column headerText="#{appmsg['global.end_date']}">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.end_date']}"/>
+                                </f:facet>
+                                <h:outputText value="#{report.endDate}" >
+                                    <f:convertDateTime pattern="dd-MMMM-yyyy" />
+                                </h:outputText>
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+                </div>           
+
+                <p:dialog widgetVar="dialogDetail" header="#{appmsg['leaveimplementation.detail_dialog']}" styleClass="header_small_no_bold" width="450" modal="true" resizable="false" hideEffect="puff" 
+                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                    <p:panelGrid id="panelDialogDetailId" style="width:100%;margin:5px;">
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['global.employee']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{reportLeaveHistoryViewController.selectedLeaveImplementation.empData.nikWithFullName}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['leaveimplementation.filling_number']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{reportLeaveHistoryViewController.selectedLeaveImplementation.numberFilling}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['leave.leave']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{reportLeaveHistoryViewController.selectedLeaveImplementation.leave.name}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['leaveimplementation.request_time']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{reportLeaveHistoryViewController.approvalActivity.requestTime}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['approvalactivity.approval_time']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{reportLeaveHistoryViewController.approvalActivity.approvalTime}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['approvalactivity.approved_by']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{reportLeaveHistoryViewController.approvalActivity.approvedBy}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['global.start_date']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{reportLeaveHistoryViewController.selectedLeaveImplementation.startDate}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['global.end_date']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{reportLeaveHistoryViewController.selectedLeaveImplementation.endDate}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+
+                        <f:facet name="footer">
+                            <p:row>
+                                <p:column colspan="2"><p:outputLabel value="#{appmsg['menu.data_reference']} - #{appmsg['bank.bank']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
+                            </p:row>
+                        </f:facet>
+                    </p:panelGrid>
+                </p:dialog>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+
