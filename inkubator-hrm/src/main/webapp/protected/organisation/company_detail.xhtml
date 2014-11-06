@@ -34,151 +34,130 @@
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
 	                                <p:outputLabel value="#{appmsg['organization.organization_code']}" styleClass="label_hrm"/>
 	                            </p:column>
-	                            <p:column  style="width: 80%">
+	                            <p:column  style="width: 30%">
 	                            	<p:outputLabel value="#{companyDetailController.selectedCompany.code}"/>
+	                            </p:column>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['global.address']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 30%">
+	                            	<p:outputLabel value="#{companyDetailController.selectedCompany.address}"/>
 	                            </p:column>
 	                        </p:row>
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
 	                                <p:outputLabel value="#{appmsg['organization.organization_business_type']}" styleClass="label_hrm"/>
 	                            </p:column>
-	                            <p:column  style="width: 80%">
+	                            <p:column  style="width: 30%">
 	                            	<p:outputLabel value="#{companyDetailController.selectedCompany.businessType.name}"/>
+	                            </p:column>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['country.country']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 30%">
+	                            	<p:outputLabel value="#{companyDetailController.selectedCompany.city.province.country.countryName}"/>
 	                            </p:column>
 	                        </p:row> 
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
 	                                <p:outputLabel value="#{appmsg['organization.organization_logo']}" styleClass="label_hrm"/>
 	                            </p:column>
-	                            <p:column style="width: 80%">
-	                            	<h:panelGrid columns="2" rendered="#{not empty companyDetailController.selectedCompany.companyLogoName}">
-		                            	<p:graphicImage value="#{imageCompanyStreamerController.companyLogo}" cache="FALSE" width="100" height="80">
-	                                        <f:param name="companyId" value="#{companyDetailController.selectedCompany.id}" />
-	                                    </p:graphicImage> 
-	                                    <p:commandButton ajax="false" value="Download" title="Download" style="font-size: 10px!important" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
-	                                    	<p:fileDownload value="#{imageCompanyStreamerController.companyLogo}" />
-	                                        <f:param name="companyId" value="#{companyDetailController.selectedCompany.id}" />
-	                                   	</p:commandButton>
-                                   	</h:panelGrid>
+	                            <p:column style="width: 30%">
+		                        	<p:outputLabel value="#{companyDetailController.selectedCompany.companyLogoName}" rendered="#{not empty companyDetailController.selectedCompany.companyLogoName}"/> 
+	                                &nbsp;&nbsp;
+	                                <p:commandButton rendered="#{not empty companyDetailController.selectedCompany.companyLogoName}" ajax="false" value="Download" title="Download" style="font-size: 10px!important" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
+	                                	<p:fileDownload value="#{imageCompanyStreamerController.companyLogo}" /> 
+	                                    <f:param name="companyId" value="#{companyDetailController.selectedCompany.id}" />
+	                                </p:commandButton>
+	                            </p:column>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['province.province']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 30%">
+	                            	<p:outputLabel value="#{companyDetailController.selectedCompany.city.province.provinceName}"/>
 	                            </p:column>
 	                        </p:row>
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
 	                                <p:outputLabel value="#{appmsg['organization.organization_name']}" styleClass="label_hrm"/>
 	                            </p:column>
-	                            <p:column  style="width: 80%">
+	                            <p:column  style="width: 30%">
 	                            	<p:outputLabel value="#{companyDetailController.selectedCompany.name}"/>
+	                            </p:column>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['city.city']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 30%">
+	                            	<p:outputLabel value="#{companyDetailController.selectedCompany.city.cityName}"/>
 	                            </p:column>
 	                        </p:row> 
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
 	                                <p:outputLabel value="#{appmsg['organization.official_name']}" styleClass="label_hrm"/>
 	                            </p:column>
-	                            <p:column  style="width: 80%">
+	                            <p:column  style="width: 30%">
 	                            	<p:outputLabel value="#{companyDetailController.selectedCompany.officialName}"/>
+	                            </p:column>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['global.postal_code']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 30%">
+	                            	<p:outputLabel value="#{companyDetailController.selectedCompany.postalCode}"/>
 	                            </p:column>
 	                        </p:row> 
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
 	                                <p:outputLabel value="#{appmsg['organization.legal_no']}" styleClass="label_hrm"/>
 	                            </p:column>
-	                            <p:column  style="width: 80%">
+	                            <p:column  style="width: 30%">
 	                            	<p:outputLabel value="#{companyDetailController.selectedCompany.legalNo}"/>
+	                            </p:column>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['global.phone_number']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 30%">
+	                            	<p:outputLabel value="#{companyDetailController.selectedCompany.phone}"/>
 	                            </p:column>
 	                        </p:row>
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
 	                                <p:outputLabel value="#{appmsg['organization.company_level']}" styleClass="label_hrm"/>
 	                            </p:column>
-	                            <p:column  style="width: 80%">
+	                            <p:column  style="width: 30%">
 	                            	<p:outputLabel value="#{companyDetailController.selectedCompany.level}"/>
+	                            </p:column>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['global.fax']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 30%">
+	                            	<p:outputLabel value="#{companyDetailController.selectedCompany.fax}"/>
 	                            </p:column>
 	                        </p:row>
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
 	                                <p:outputLabel value="#{appmsg['organization.tax_country']}" styleClass="label_hrm"/>
 	                            </p:column>
-	                            <p:column  style="width: 80%">
+	                            <p:column  style="width: 30%">
 	                            	<p:outputLabel value="#{companyDetailController.selectedCompany.taxCountry.countryName}"/>
+	                            </p:column>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['organization.vision']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 30%">
+	                            	<p:outputLabel value="#{companyDetailController.selectedCompany.vision}"/>
 	                            </p:column>
 	                        </p:row>
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
 	                                <p:outputLabel value="#{appmsg['organization.tax_account_number']}" styleClass="label_hrm"/>
 	                            </p:column>
-	                            <p:column  style="width: 80%">
+	                            <p:column  style="width: 30%">
 	                            	<p:outputLabel value="#{companyDetailController.selectedCompany.taxAccountNumber}"/>
 	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['global.address']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{companyDetailController.selectedCompany.address}"/>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['country.country']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{companyDetailController.selectedCompany.city.province.country.countryName}"/>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['province.province']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{companyDetailController.selectedCompany.city.province.provinceName}"/>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['city.city']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{companyDetailController.selectedCompany.city.cityName}"/>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['global.postal_code']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{companyDetailController.selectedCompany.postalCode}"/>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['global.phone_number']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{companyDetailController.selectedCompany.phone}"/>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['global.fax']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{companyDetailController.selectedCompany.fax}"/>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['organization.vision']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{companyDetailController.selectedCompany.vision}"/>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
 	                                <p:outputLabel value="#{appmsg['organization.mision']}" styleClass="label_hrm"/>
 	                            </p:column>
-	                            <p:column  style="width: 80%">
+	                            <p:column  style="width: 30%">
 	                            	<p:outputLabel value="#{companyDetailController.selectedCompany.mision}"/>
 	                            </p:column>
 	                        </p:row>	                               
