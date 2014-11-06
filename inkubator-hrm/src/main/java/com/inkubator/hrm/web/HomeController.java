@@ -20,14 +20,14 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 
 /**
  *
  * @author Deni Husni FR
  */
 @ManagedBean(name = "homeController")
-@RequestScoped
+@ViewScoped
 public class HomeController extends BaseController {
 
     @ManagedProperty(value = "#{riwayatAksesService}")
@@ -62,20 +62,23 @@ public class HomeController extends BaseController {
     }
 
     public String doCheckInOut() {
-
+//
         try {
             Boolean isValid = HrmUserInfoUtil.isValidRemoteAddress();
+            LOGGER.info("Begin redirecting");
+            LOGGER.info("Kondisi" + isValid);
             HrmUser hrmUser = hrmUserService.getByUserId(HrmUserInfoUtil.getUserName());
-            if (hrmUser.getEmpData() != null && isValid) {
+            if (hrmUser.getEmpData()!=null&&isValid) {
+                LOGGER.info("redirec ok");
                 return "/protected/check_in_out.htm?faces-redirect=true";
             } else {
                 MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.error", "ceckinout.error_employee",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 
             }
-
+//
         } catch (Exception ex) {
-           LOGGER.error(ex, ex);
+            LOGGER.error(ex, ex);
         }
         return null;
     }
