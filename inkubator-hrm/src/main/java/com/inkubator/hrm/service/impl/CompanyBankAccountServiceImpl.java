@@ -82,6 +82,7 @@ public class CompanyBankAccountServiceImpl extends IServiceImpl implements Compa
 		entity.setCreatedOn(new Date());
 		this.companyBankAccountDao.save(entity);
 		
+		this.checkAndUpdateIsDefaults(entity);
 	}
 
 	@Override
@@ -107,6 +108,21 @@ public class CompanyBankAccountServiceImpl extends IServiceImpl implements Compa
 		companyBankAccount.setUpdatedBy(UserInfoUtil.getUserName());
 		companyBankAccount.setUpdatedOn(new Date());
 		this.companyBankAccountDao.update(companyBankAccount);
+		
+		this.checkAndUpdateIsDefaults(companyBankAccount);
+	}
+	
+	/** jika companyBankAccount.isDefault == true, maka update isDefault == flase untuk entity yang lainnya */
+	private void checkAndUpdateIsDefaults(CompanyBankAccount companyBankAccount){		
+		if(companyBankAccount.getIsDefault()){
+			List<CompanyBankAccount> companyBankAccounts =  companyBankAccountDao.getAllDataByCompanyId(companyBankAccount.getCompany().getId());
+			for(CompanyBankAccount cba : companyBankAccounts){
+				if(cba.getIsDefault() && cba.getId()!=companyBankAccount.getId()){
+					cba.setIsDefault(Boolean.FALSE);
+					this.companyBankAccountDao.update(cba);
+				}
+			}
+		}		
 	}
 
 	@Override
