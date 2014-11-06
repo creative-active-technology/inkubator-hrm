@@ -56,8 +56,9 @@ public class CompanyServiceImpl extends IServiceImpl implements CompanyService {
 	}
 
 	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
 	public Company getEntiyByPK(Long id) throws Exception {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+		return companyDao.getEntiyByPK(id);
 
 	}
 
@@ -123,6 +124,10 @@ public class CompanyServiceImpl extends IServiceImpl implements CompanyService {
 		City city = cityDao.getEntiyByPK(c.getCity().getId());
 		BusinessType businessType = businessTypeDao.getEntiyByPK(c.getBusinessType().getId());
 		
+		if(c.getCompanyLogo() != null){
+			company.setCompanyLogo(c.getCompanyLogo());
+			company.setCompanyLogoName(c.getCompanyLogoName());
+		}			
 		company.setCode(c.getCode());
 		company.setName(c.getName());
 		company.setOfficialName(c.getOfficialName());

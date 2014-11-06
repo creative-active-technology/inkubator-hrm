@@ -38,9 +38,8 @@
                                     <p:outputLabel value=":" />
                                     <p:selectOneMenu value="#{hospitalViewController.searchParameter.keyParam}" style="margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemLabel="#{appmsg['hospital.hospital_code']}" itemValue="hospitalCode"/>
-                                        <f:selectItem itemLabel="#{appmsg['hospital.hospital_name']}" itemValue="hospitalName"/>
-                                        <f:selectItem itemLabel="#{appmsg['hospital.city_name']}" itemValue="cityName"/>
+                                        <f:selectItem itemLabel="#{appmsg['hospital.hospital_code']}" itemValue="code"/>
+                                        <f:selectItem itemLabel="#{appmsg['hospital.hospital_name']}" itemValue="name"/>
                                     </p:selectOneMenu>
                                     <p:inputText id="searchId" value="#{hospitalViewController.searchParameter.parameter}" style="width: 250px" styleClass="isitext_hrm"/>
                                     <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{hospitalViewController.doSearch()}" update="tableHospitalId"  styleClass="label_button" icon="ui-icon-search"/>

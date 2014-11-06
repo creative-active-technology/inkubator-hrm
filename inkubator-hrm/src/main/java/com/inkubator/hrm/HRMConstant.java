@@ -213,6 +213,12 @@ public class HRMConstant {
     public static final String ORGANIZATION_LEVEL_HOLDING = "0";
     public static final String ORGANIZATION_LEVEL_COMPANY = "1";
     /* END */
+    
+    /* Constant for FinancialNonBanking */
+    public static final String FINANCIAL_SERVICE_INSURANCE = "0";
+    public static final String FINANCIAL_SERVICE_FINANCING = "1";
+    public static final String FINANCIAL_SERVICE_PENSION = "2";
+    /* END */
 
     /* Constant for ReimbursmentSchema */
     public static final Integer REIMBURSMENT_UNIT = 0;

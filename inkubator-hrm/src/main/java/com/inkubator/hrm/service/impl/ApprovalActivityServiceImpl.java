@@ -320,5 +320,12 @@ public class ApprovalActivityServiceImpl extends IServiceImpl implements Approva
 		return this.approvalActivityDao.isStillHaveWaitingStatus(activityNumber);
 		
 	}
+        
+        @Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<ApprovalActivity> getByApprovalStatus(Integer approvalStatus) {
+		return this.approvalActivityDao.getByApprovalStatus(approvalStatus);
+		
+	}
 
 }
