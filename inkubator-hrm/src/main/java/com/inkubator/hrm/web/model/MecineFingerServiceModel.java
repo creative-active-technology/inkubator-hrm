@@ -17,6 +17,10 @@ public class MecineFingerServiceModel {
     private String code;
     private String description;
     private String hostIp;
+    private Integer host1;
+    private Integer host2;
+    private Integer host3;
+    private Integer host4;
     private Integer serviceData;
     private Integer protocolData;
     private String employeeBaseId;
@@ -62,12 +66,36 @@ public class MecineFingerServiceModel {
         this.description = description;
     }
 
-    public String getHostIp() {
-        return hostIp;
+    public Integer getHost1() {
+        return host1;
     }
 
-    public void setHostIp(String hostIp) {
-        this.hostIp = hostIp;
+    public void setHost1(Integer host1) {
+        this.host1 = host1;
+    }
+
+    public Integer getHost2() {
+        return host2;
+    }
+
+    public void setHost2(Integer host2) {
+        this.host2 = host2;
+    }
+
+    public Integer getHost3() {
+        return host3;
+    }
+
+    public void setHost3(Integer host3) {
+        this.host3 = host3;
+    }
+
+    public Integer getHost4() {
+        return host4;
+    }
+
+    public void setHost4(Integer host4) {
+        this.host4 = host4;
     }
 
     public Integer getServiceData() {
@@ -100,6 +128,14 @@ public class MecineFingerServiceModel {
 
     public void setOpenProtocolPassword(String openProtocolPassword) {
         this.openProtocolPassword = openProtocolPassword;
+    }
+
+    public String getHostIp() {
+        return hostIp;
+    }
+
+    public void setHostIp(String hostIp) {
+        this.hostIp = hostIp;
     }
     
     
