@@ -6,8 +6,10 @@ import java.util.List;
 import org.hibernate.criterion.Order;
 
 import com.inkubator.datacore.service.IService;
+import com.inkubator.hrm.entity.Leave;
 import com.inkubator.hrm.entity.LeaveImplementation;
 import com.inkubator.hrm.entity.LeaveImplementationDate;
+import com.inkubator.hrm.web.search.LeaveImplementationReportSearchParameter;
 import com.inkubator.hrm.web.search.LeaveImplementationSearchParameter;
 
 /**
@@ -33,5 +35,10 @@ public interface LeaveImplementationService extends IService<LeaveImplementation
 	public String save(LeaveImplementation entity, boolean isBypassApprovalChecking) throws Exception;
 	
 	public String cancellation(Long leaveImplementationId, List<LeaveImplementationDate> actualLeaves, List<LeaveImplementationDate> cancellationLeaves, String cancellationDescription) throws Exception;
+        
+        public List<LeaveImplementation> getReportByParam(LeaveImplementationReportSearchParameter parameter, List<String> activityNumbers, Long empDataId, int firstResult, int maxResults, Order orderable) throws Exception;
+
+	public Long getReportTotalByParam(LeaveImplementationReportSearchParameter parameter, List<String> activityNumbers, Long empDataId ) throws Exception;
 	
+        public List<LeaveImplementation> getReportHistoryByParam(LeaveImplementationReportSearchParameter parameter, List<String> activityNumbers, Long empDataId) throws Exception;
 }
