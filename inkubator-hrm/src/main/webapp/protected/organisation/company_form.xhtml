@@ -6,9 +6,7 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:pe="http://primefaces.org/ui/extensions"
-      xmlns:c="http://java.sun.com/jsp/jstl/core"
-      xmlns:o="http://omnifaces.org/ui"
-	  xmlns:of="http://omnifaces.org/functions">
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
     <h:head>
         <title>IGNORED</title>
     </h:head>
@@ -19,11 +17,11 @@
             </ui:define>
             <ui:define name="center">
                 <p:growl id="growlCompanyFormId" globalOnly="true" showDetail="true"/>                
-                <o:form id="formCompanyFormId">
+                <h:form id="formCompanyFormId">
                 	<p:focus context="formCompanyFormId"/>
                 	<div id="box_bg" style="margin: 10px">
 	                    <h:panelGrid columns="2">
-	                        <p:graphicImage library="images" name="specification.png" height="36" width="36" />
+	                        <p:graphicImage library="images" name="company.png" height="36" width="36" />
 	                        <h:panelGroup layout="block">
 	                            <h:panelGrid>
 	                                <p:outputLabel value="#{appmsg['organization.organization']}" styleClass="header_big" />
@@ -55,6 +53,19 @@
 	                                <p:message for="businessTypeId"/>
 	                            </p:column>
 	                        </p:row> 
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['organization.organization_logo']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:fileUpload required="false" sizeLimit="209715200" label="#{appmsg['global.choose_photo']}" fileUploadListener="#{companyFormController.handingFotoUpload}" 
+                                           mode="advanced"  id="uploadFotoId"  style="margin-top:10px;margin-bottom:10px;width: 100%;text-align: left!important"
+                                          dragDropSupport="true" multiple="false" update="logoNameId" allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|doc|docx|rar|zip)$/"/> 
+	                                <p:outputLabel value="#{appmsg['global.file_name']}"/>
+	                                <p:outputLabel value=":" style="margin-left: 5px;margin-right: 5px"/>
+	                                <p:outputLabel value="#{companyFormController.model.companyLogoName}" id="logoNameId"/>
+	                            </p:column>
+	                        </p:row>
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
 	                                <p:outputLabel for="nameId" value="#{appmsg['organization.organization_name']}" styleClass="label_hrm"/>
@@ -234,7 +245,7 @@
 	                                      	 styleClass="label_button"/>
 	                    </div>
                     </div>
-                </o:form>
+                </h:form>
             </ui:define>
         </ui:composition>
     </h:body>

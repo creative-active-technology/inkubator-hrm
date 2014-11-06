@@ -203,8 +203,9 @@ public class SavingTypeServiceImpl extends IServiceImpl implements SavingTypeSer
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<SavingType> getAllData() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+        return savingTypeDao.getAllData();
 
     }
 

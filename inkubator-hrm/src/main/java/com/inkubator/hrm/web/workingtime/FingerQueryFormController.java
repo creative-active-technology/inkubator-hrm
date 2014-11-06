@@ -50,7 +50,15 @@ public class FingerQueryFormController extends BaseController {
             dbTypes.add("IBM-DB2");
             mecineFingerQueryModel = new MecineFingerQueryModel();
             if(mecineFinger!=null){
-                mecineFingerQueryModel.setDbHost(mecineFinger.getDbHost());
+                if(mecineFinger.getDbHost()!= null){
+                    String hostIp = mecineFinger.getDbHost();
+                    String[] partIp = hostIp.replace(".", "-").split("-");
+    //                mecineFingerQueryModel.setDbHost(mecineFinger.getDbHost());
+                    mecineFingerQueryModel.setDbHost1(Integer.parseInt(partIp[0]));
+                    mecineFingerQueryModel.setDbHost2(Integer.parseInt(partIp[1]));
+                    mecineFingerQueryModel.setDbHost3(Integer.parseInt(partIp[2]));
+                    mecineFingerQueryModel.setDbHost4(Integer.parseInt(partIp[3]));
+                }
                 mecineFingerQueryModel.setDbPassword(mecineFinger.getDbPass());
                 mecineFingerQueryModel.setDbQuery(mecineFinger.getQuery());
                 mecineFingerQueryModel.setDbType(mecineFinger.getDbType());
@@ -59,6 +67,8 @@ public class FingerQueryFormController extends BaseController {
                 mecineFingerQueryModel.setDbUserName(mecineFinger.getDbUser());
             }
             mecineFingerQueryModel.setId(mecineFinger.getId());
+            System.out.println(mecineFinger.getId());
+            System.out.println(mecineFingerQueryModel.getId());
         } catch (Exception ex) {
             LOGGER.error("Errot", ex);
         }
@@ -80,6 +90,7 @@ public class FingerQueryFormController extends BaseController {
     
     public String doSave() {
         try {
+            System.out.println(mecineFingerQueryModel.getId()+"=============================");
             mecineFingerService.saveMesineQuery(mecineFingerQueryModel);
             MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());

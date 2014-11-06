@@ -5,16 +5,32 @@
  */
 package com.inkubator.hrm.web.organisation;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import org.hibernate.exception.ConstraintViolationException;
+import org.primefaces.context.RequestContext;
+import org.primefaces.event.SelectEvent;
+import org.springframework.dao.DataIntegrityViolationException;
+
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.Company;
+import com.inkubator.hrm.entity.CompanyBankAccount;
+import com.inkubator.hrm.entity.FinancialPartner;
+import com.inkubator.hrm.service.CompanyBankAccountService;
 import com.inkubator.hrm.service.CompanyService;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
+import com.inkubator.webcore.util.MessagesResourceUtil;
 
 /**
  *
@@ -25,8 +41,13 @@ import com.inkubator.webcore.util.FacesUtil;
 public class CompanyDetailController extends BaseController {
 
     private Company selectedCompany;
+    private CompanyBankAccount selectedCompanyBankAccount;
+    private List<CompanyBankAccount> companyBankAccounts;
+    private List<FinancialPartner> financialPartners;
     @ManagedProperty(value = "#{companyService}")
     private CompanyService companyService;
+    @ManagedProperty(value = "#{companyBankAccountService}")
+    private CompanyBankAccountService companyBankAccountService;
 
     @PostConstruct
     @Override
@@ -34,7 +55,8 @@ public class CompanyDetailController extends BaseController {
         try {
             super.initialization();
             String id = FacesUtil.getRequestParameter("execution");
-            selectedCompany = companyService.getEntityByPKWithDetail(Long.parseLong(id.substring(1)));
+            selectedCompany = companyService.getEntityByPKWithDetail(Long.parseLong(id.substring(1))); 
+            companyBankAccounts = companyBankAccountService.getAllDataByCompanyId(selectedCompany.getId()); 
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
 
@@ -45,6 +67,9 @@ public class CompanyDetailController extends BaseController {
     public void cleanAndExit() {
         selectedCompany = null;
         companyService = null;
+        companyBankAccounts = null;
+        financialPartners = null;
+        selectedCompanyBankAccount = null;
     }    
 
 	public Company getSelectedCompany() {
@@ -59,6 +84,36 @@ public class CompanyDetailController extends BaseController {
 		this.companyService = companyService;
 	}
 
+	public List<CompanyBankAccount> getCompanyBankAccounts() {
+		return companyBankAccounts;
+	}
+
+	public void setCompanyBankAccounts(List<CompanyBankAccount> companyBankAccounts) {
+		this.companyBankAccounts = companyBankAccounts;
+	}
+
+	public List<FinancialPartner> getFinancialPartners() {
+		return financialPartners;
+	}
+
+	public void setFinancialPartners(List<FinancialPartner> financialPartners) {
+		this.financialPartners = financialPartners;
+	}
+
+	public CompanyBankAccount getSelectedCompanyBankAccount() {
+		return selectedCompanyBankAccount;
+	}
+
+	public void setSelectedCompanyBankAccount(
+			CompanyBankAccount selectedCompanyBankAccount) {
+		this.selectedCompanyBankAccount = selectedCompanyBankAccount;
+	}
+	
+	public void setCompanyBankAccountService(
+			CompanyBankAccountService companyBankAccountService) {
+		this.companyBankAccountService = companyBankAccountService;
+	}
+
 	public String doBack() {
         return "/protected/organisation/company_view.htm?faces-redirect=true";
     }
@@ -66,9 +121,75 @@ public class CompanyDetailController extends BaseController {
     public String doUpdate() {
         return "/protected/organisation/company_form.htm?faces-redirect=true&execution=e" + selectedCompany.getId();
     }
+    
+    /**
+     * START Company Bank Account tabView
+     */
+    public void doSelectCompanyBankAccount() {
+        try {
+        	selectedCompanyBankAccount = companyBankAccountService.getEntityByPKWithDetail(selectedCompanyBankAccount.getId());
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
 
-    
-    
-    
+    public void doUpdateCompanyBankAccount() {
+
+        List<String> companyBankAccountId = new ArrayList<>();
+        companyBankAccountId.add(String.valueOf(selectedCompanyBankAccount.getId()));
+
+        List<String> companyId = new ArrayList<>();
+        companyId.add(String.valueOf(selectedCompany.getId()));
+
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("companyBankAccountId", companyBankAccountId);
+        dataToSend.put("companyId", companyId);
+        showDialogCompanyBankAccount(dataToSend);
+
+    }
+
+    public void doAddCompanyBankAccount() {
+    	List<String> companyId = new ArrayList<>();
+        companyId.add(String.valueOf(selectedCompany.getId()));
+
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("companyId", companyId);
+        showDialogCompanyBankAccount(dataToSend);
+    }
+
+    public void doDeleteCompanyBankAccount() {
+        try {
+            companyBankAccountService.delete(selectedCompanyBankAccount);
+            companyBankAccounts = companyBankAccountService.getAllDataByCompanyId(selectedCompany.getId());
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+
+        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (Exception ex) {
+            LOGGER.error("Error when doDelete companyBankAccount", ex);
+        }
+    }
+
+    private void showDialogCompanyBankAccount(Map<String, List<String>> params) {
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 500);
+        options.put("contentHeight", 400);
+        RequestContext.getCurrentInstance().openDialog("company_bank_account_form", options, params);
+    }
+
+    public void onDialogReturnCompanyBankAccount(SelectEvent event) {
+        try {
+        	companyBankAccounts = companyBankAccountService.getAllDataByCompanyId(selectedCompany.getId());
+            super.onDialogReturn(event);
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+    /**
+     * END Company Bank Account tabView
+     */
 
 }

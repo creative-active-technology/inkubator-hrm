@@ -20,6 +20,8 @@ public class IpPermitModel implements Serializable {
     private Integer fromAddress23;
     private Integer untilAddress1;
     private Integer untilAddress2;
+    private String ipAddressFromView;
+    private String ipAddressUntilView;
     private String lokasi;
 
     public Long getId() {
@@ -102,5 +104,19 @@ public class IpPermitModel implements Serializable {
         this.lokasi = lokasi;
     }
 
-    
+    public String getIpAddressFromView() {
+        return ipAddressFromView;
+    }
+
+    public void setIpAddressFromView(String ipAddressFromView) {
+        this.ipAddressFromView = ipAddressFromView;
+    }
+
+    public String getIpAddressUntilView() {
+        return ipAddressUntilView;
+    }
+
+    public void setIpAddressUntilView(String ipAddressUntilView) {
+        this.ipAddressUntilView = ipAddressUntilView;
+    }
 }

@@ -113,6 +113,8 @@ public class IpPermitServiceImpl extends IServiceImpl implements IpPermitService
         update.setFromAddress2(entity.getFromAddress2());
         update.setUntilAddress1(entity.getUntilAddress1());
         update.setUntilAddress2(entity.getUntilAddress2());
+        update.setIpAddressFromView(entity.getIpAddressFromView());
+        update.setIpAddressUntilView(entity.getIpAddressUntilView());
         update.setLokasi(entity.getLokasi());
         update.setUpdatedBy(UserInfoUtil.getUserName());
         update.setUpdatedOn(new Date());

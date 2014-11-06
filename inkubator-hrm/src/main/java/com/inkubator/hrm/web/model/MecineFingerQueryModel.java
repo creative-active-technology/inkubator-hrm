@@ -15,6 +15,10 @@ public class MecineFingerQueryModel {
     private String code;
     private String description;
     private String dbHost;
+    private Integer dbHost1;
+    private Integer dbHost2;
+    private Integer dbHost3;
+    private Integer dbHost4;
     private String dbUserName;
     private String dbType;
     private String dbQuery;
@@ -116,6 +120,38 @@ public class MecineFingerQueryModel {
 
     public void setSwapTimeFieldName(String swapTimeFieldName) {
         this.swapTimeFieldName = swapTimeFieldName;
+    }
+
+    public Integer getDbHost1() {
+        return dbHost1;
+    }
+
+    public void setDbHost1(Integer dbHost1) {
+        this.dbHost1 = dbHost1;
+    }
+
+    public Integer getDbHost2() {
+        return dbHost2;
+    }
+
+    public void setDbHost2(Integer dbHost2) {
+        this.dbHost2 = dbHost2;
+    }
+
+    public Integer getDbHost3() {
+        return dbHost3;
+    }
+
+    public void setDbHost3(Integer dbHost3) {
+        this.dbHost3 = dbHost3;
+    }
+
+    public Integer getDbHost4() {
+        return dbHost4;
+    }
+
+    public void setDbHost4(Integer dbHost4) {
+        this.dbHost4 = dbHost4;
     }
     
     

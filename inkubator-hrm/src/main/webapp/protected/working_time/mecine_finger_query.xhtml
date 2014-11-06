@@ -35,11 +35,14 @@
                         <p:panelGrid style="width: 100%;margin-bottom: 20px;margin-top: 20px" styleClass="grid_border3" >
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="host" value="DB Host" styleClass="label_hrm"/>
+                                    <p:outputLabel for="host1" value="DB Host" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:inputMask id="host" value="#{fingerQueryFormController.mecineFingerQueryModel.dbHost}"  mask="999.999.999.999" required="true" maxlength="6" styleClass="isitext_hrm" style="width:250px;" />
-                                    <p:message for="host"/>
+                                    <pe:inputNumber minValue="1" maxValue="255" id="host1" value="#{fingerQueryFormController.mecineFingerQueryModel.dbHost1}"  title="host1" style="width:50px;" decimalPlaces="0"/>
+                                    <pe:inputNumber maxValue="255" maxlength="3" id="host2" value="#{fingerQueryFormController.mecineFingerQueryModel.dbHost2}" title="host2" style="width:50px;" decimalPlaces="0"/>
+                                    <pe:inputNumber maxValue="255" id="host3" value="#{fingerQueryFormController.mecineFingerQueryModel.dbHost3}" title="host3" style="width:50px;" decimalPlaces="0"/>
+                                    <pe:inputNumber maxValue="255" id="host4" value="#{fingerQueryFormController.mecineFingerQueryModel.dbHost4}" title="host4" style="width:50px;" decimalPlaces="0"/>
+                                    <p:message for="host1"/>
                                 </p:column>
                             </p:row>
                             <p:row>

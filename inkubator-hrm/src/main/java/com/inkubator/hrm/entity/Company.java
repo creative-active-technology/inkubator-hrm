@@ -29,7 +29,8 @@ public class Company implements Serializable {
     private Integer version;
     
     private String code;
-    private Byte[] companyLogo;
+    private byte[] companyLogo;
+    private String companyLogoName;
     private String name;    
     private String officialName;
     private String legalNo;
@@ -88,14 +89,23 @@ public class Company implements Serializable {
 	public void setCode(String code) {
 		this.code = code;
 	}
-
+		
 	@Column(name = "company_logo",columnDefinition="blob")
-	public Byte[] getCompanyLogo() {
+	public byte[] getCompanyLogo() {
 		return companyLogo;
 	}
 
-	public void setCompanyLogo(Byte[] companyLogo) {
+	public void setCompanyLogo(byte[] companyLogo) {
 		this.companyLogo = companyLogo;
+	}
+
+	@Column(name = "company_logo_name")
+	public String getCompanyLogoName() {
+		return companyLogoName;
+	}
+
+	public void setCompanyLogoName(String companyLogoName) {
+		this.companyLogoName = companyLogoName;
 	}
 
 	@Column(name = "name", nullable = false, length = 60)

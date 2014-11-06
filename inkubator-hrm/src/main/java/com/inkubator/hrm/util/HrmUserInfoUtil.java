@@ -5,6 +5,7 @@
  */
 package com.inkubator.hrm.util;
 
+import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.IpPermit;
 import com.inkubator.hrm.service.HrmUserService;
 import com.inkubator.hrm.service.IpPermitService;
@@ -73,5 +74,26 @@ public class HrmUserInfoUtil extends UserInfoUtil {
             }
         }
         return Boolean.FALSE;
+    }
+    
+    public static EmpData getEmpData() {
+        HrmUserService hrmUserService = (HrmUserService) ServiceWebUtil.getService("hrmUserService");
+        String hrmUserName = getUserName();
+        try {
+            return hrmUserService.getByUserIdOrEmail(hrmUserName).getEmpData();
+        } catch (Exception ex) {
+            Logger.getLogger(HrmUserInfoUtil.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    public static String getRealNameByUserName(String hrmUserName) {
+        HrmUserService hrmUserService = (HrmUserService) ServiceWebUtil.getService("hrmUserService");
+        try {
+            return hrmUserService.getByUserIdOrEmail(hrmUserName).getRealName();
+        } catch (Exception ex) {
+            Logger.getLogger(HrmUserInfoUtil.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 }

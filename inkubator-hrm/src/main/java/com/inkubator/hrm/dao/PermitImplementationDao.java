@@ -5,8 +5,6 @@ import java.util.List;
 import org.hibernate.criterion.Order;
 
 import com.inkubator.datacore.dao.IDAO;
-import com.inkubator.hrm.entity.EmpData;
-import com.inkubator.hrm.entity.Leave;
 import com.inkubator.hrm.entity.LeaveImplementation;
 import com.inkubator.hrm.web.search.LeaveImplementationReportSearchParameter;
 import com.inkubator.hrm.web.search.LeaveImplementationSearchParameter;
@@ -15,7 +13,7 @@ import com.inkubator.hrm.web.search.LeaveImplementationSearchParameter;
  *
  * @author rizkykojek
  */
-public interface LeaveImplementationDao extends IDAO<LeaveImplementation> {
+public interface PermitImplementationDao extends IDAO<LeaveImplementation> {
 
 	public List<LeaveImplementation> getByParam(LeaveImplementationSearchParameter parameter, int firstResult, int maxResults, Order orderable);
 
@@ -31,10 +29,8 @@ public interface LeaveImplementationDao extends IDAO<LeaveImplementation> {
 
 	public LeaveImplementation getEntityByApprovalActivityNumberWithDetail(String activityNumber);
         
-        public List<LeaveImplementation> getReportByParam(LeaveImplementationReportSearchParameter parameter, List<String> activityNumbers, Long empDataId , int firstResult, int maxResults, Order orderable);
+        public List<LeaveImplementation> getReportByParam(LeaveImplementationReportSearchParameter parameter, int firstResult, int maxResults, Order orderable);
 
-	public Long getReportTotalByParam(LeaveImplementationReportSearchParameter parameter, List<String> activityNumbers, Long empDataId );
-        
-        public List<LeaveImplementation> getReportHistoryByParam(LeaveImplementationReportSearchParameter parameter, List<String> activityNumbers, Long empDataId);
+	public Long getReportTotalByParam(LeaveImplementationReportSearchParameter parameter);
 	
 }
