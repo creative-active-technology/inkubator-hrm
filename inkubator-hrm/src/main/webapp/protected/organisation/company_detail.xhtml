@@ -251,8 +251,68 @@
                                 </h:panelGrid>
 	                 		</p:tab>
 	                 		
-	                 		<p:tab id="tabFinancialOtherPartnerId" title="#{appmsg['organization.financial_other_partner']}" >
-	                 		
+	                 		<p:tab id="tabFinancialPartnerId" title="#{appmsg['organization.financial_other_partner']}" >
+	                 			<p:dataTable  id="tableFinancialPartnerId" var="financialPartnerData"  value="#{companyDetailController.financialPartners}" lazy="false" paginator="false"
+                                              style="margin-top: 10px;margin-bottom: 10px" rowIndexVar="no">
+                                    <f:facet name="header">  
+                                        <h:outputText value="#{appmsg['organization.list_of_financial_partner']}"/>
+                                    </f:facet>
+                                    <p:column style="text-align: center;width: 3%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['global.number']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value="#{no+1}." />
+                                    </p:column>
+                                    <p:column style="width: 20%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['organization.product_name']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{financialPartnerData.productName}"/>
+                                    </p:column>
+                                    <p:column style="width: 10%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['organization.service_type']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{financialPartnerData.financialNonBanking.financialService}"/>
+                                    </p:column>
+                                    <p:column style="width: 20%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['organization.company_name']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{financialPartnerData.financialNonBanking.name}"/>
+                                    </p:column>
+                                    <p:column style="width: 15%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['organization.contract_no']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{financialPartnerData.accountNumber}"/>
+                                    </p:column>
+                                    <p:column style="width: 15%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['global.account_name']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{financialPartnerData.accountName}"/>
+                                    </p:column>
+                                    <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
+                                        <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+                                                         style="font-size: 10px!important" update=":panelDialogFinancialPartnerConfirmId" 
+                                                         action="#{companyDetailController.doSelectFinancialPartner()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmFinancialPartner.show()">
+                                            <f:setPropertyActionListener value="#{financialPartnerData}" target="#{companyDetailController.selectedFinancialPartner}" />
+                                        </p:commandButton>
+                                        -
+                                        <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
+                                                         action="#{companyDetailController.doUpdateFinancialPartner()}" >
+                                            <f:setPropertyActionListener value="#{financialPartnerData}" target="#{companyDetailController.selectedFinancialPartner}" />
+                                            <p:ajax event="dialogReturn" listener="#{companyDetailController.onDialogReturnFinancialPartner}"  update="tableFinancialPartnerId,:growlCompanyDetailId"/>
+                                        </p:commandButton>
+                                    </p:column>
+                                </p:dataTable>
+                                <h:panelGrid columns="1">
+                                    <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']} #{appmsg['global.address']}" label="#{appmsg['global.add']} #{appmsg['global.address']}" styleClass="label_button" icon="ui-icon-document" 
+                                                     actionListener="#{companyDetailController.doAddFinancialPartner()}" ajax="true" immediate="true">
+                                        <p:ajax event="dialogReturn" listener="#{companyDetailController.onDialogReturnFinancialPartner}"  update="tableFinancialPartnerId,:growlCompanyDetailId"/>
+                                    </p:commandButton>
+                                </h:panelGrid>
 	                 		</p:tab>
 	                 	</p:tabView>	  
                                                         
@@ -266,7 +326,7 @@
                     </div>
                 </h:form>
                 
-                <!-- START Company Bank Account DIALOG --> 
+                <!-- START DIALOG --> 
                 <p:dialog widgetVar="dialogConfirmCompanyBankAccount" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
@@ -291,7 +351,32 @@
                         <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmCompanyBankAccount.hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
-                <!-- END Company Bank Account DIALOG -->
+                
+                <p:dialog widgetVar="dialogConfirmFinancialPartner" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                          appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
+                    <div align="center">
+                        <div align="center">
+                            <h:panelGrid columns="2" style="text-align: justify">
+                                <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
+                                <h:panelGroup>
+                                    <h:panelGrid style="text-align: center">
+                                        <p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
+                                    </h:panelGrid>
+                                </h:panelGroup>
+                            </h:panelGrid>
+                        </div>
+                        <h:panelGrid id="panelDialogFinancialPartnerConfirmId"  columns="3">
+                            <p:outputLabel value="#{appmsg['global.account_number']}"  style="font-weight: bold"/>
+                            <p:outputLabel value=":"  style="font-weight: bold"/>
+                            <p:outputLabel value="#{companyDetailController.selectedFinancialPartner.accountNumber}" styleClass="label_hrm"/>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:commandButton value="#{appmsg['global.yes']}" action="#{companyDetailController.doDeleteFinancialPartner()}" update="formCompanyDetailId:tabView:tableFinancialPartnerId,:growlCompanyDetailId"
+                                         oncomplete="dialogConfirmFinancialPartner.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmFinancialPartner.hide()" icon="ui-icon-close" />                     	
+                    </div>
+                </p:dialog>
+                <!-- END DIALOG -->
                 
             </ui:define>
         </ui:composition>

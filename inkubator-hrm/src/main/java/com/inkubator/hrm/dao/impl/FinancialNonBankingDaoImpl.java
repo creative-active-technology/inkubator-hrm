@@ -1,5 +1,9 @@
 package com.inkubator.hrm.dao.impl;
 
+import java.util.List;
+
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -19,6 +23,13 @@ public class FinancialNonBankingDaoImpl extends IDAOImpl<FinancialNonBanking> im
 	public Class<FinancialNonBanking> getEntityClass() {
 		return FinancialNonBanking.class;
 		
+	}
+
+	@Override
+	public List<FinancialNonBanking> getAllDataByFinancialService(String financialService) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("financialService", financialService));
+		return criteria.list();		
 	}
 
 }

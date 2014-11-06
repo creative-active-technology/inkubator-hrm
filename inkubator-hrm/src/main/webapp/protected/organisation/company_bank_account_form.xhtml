@@ -23,7 +23,7 @@
                         <h:panelGroup layout="block">
                             <h:panelGrid>
                                 <p:outputLabel value="#{appmsg['bank.form_bank']}" styleClass="header_big" />
-                                <p:outputLabel value="#{appmsg['organization.bank_data_form_organization']}" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['organization.bank_data_from_organization']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -33,13 +33,13 @@
                     </h:panelGrid> 
                     <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
                         <p:row>
-                            <p:column style="width: 29%">
+                            <p:column style="width: 39%">
                                 <p:outputLabel for="bankId" value="#{appmsg['bank.bank_name']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="bankId" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 70%">
+                            <p:column  style="width: 60%">
                             	<p:selectOneMenu id="bankId" styleClass="isitext_hrm" value="#{companyBankAccountFormController.model.bankId}" style="width:266px;" required="true">
 	                            	<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
 	                            	<f:selectItems value="#{companyBankAccountFormController.banks}" var="bank" itemValue="#{bank.id}" itemLabel="#{bank.bankName}"/>
@@ -52,13 +52,13 @@
                             </p:column>
                         </p:row>                        
                         <p:row>
-                            <p:column style="width: 29%">
+                            <p:column style="width: 39%">
                                 <p:outputLabel for="accountNumberId" value="#{appmsg['global.account_number']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="accountNumberId" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 70%">
+                            <p:column  style="width: 60%">
                             	<pe:inputNumber id="accountNumberId" title="#{appmsg['global.account_number']}" value="#{companyBankAccountFormController.model.accountNumber}" 
 	                            			 required="true" thousandSeparator="" decimalPlaces="0" maxValue="99999999999999999999" styleClass="isitext_hrm" style="width:260px;"/>
                             </p:column>
@@ -69,13 +69,13 @@
                             </p:column>
                         </p:row>                        
                         <p:row>
-                            <p:column style="width: 29%">
+                            <p:column style="width: 39%">
                                 <p:outputLabel for="savingTypeId" value="#{appmsg['organization.saving_type']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="savingTypeId" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 70%">
+                            <p:column  style="width: 60%">
                             	<p:selectOneMenu id="savingTypeId" styleClass="isitext_hrm" value="#{companyBankAccountFormController.model.savingTypeId}" style="width:266px;" required="true">
 	                            	<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
 	                            	<f:selectItems value="#{companyBankAccountFormController.savingTypes}" var="savingType" itemValue="#{savingType.id}" itemLabel="#{savingType.name}"/>
@@ -88,13 +88,13 @@
                             </p:column>
                         </p:row>                        
                         <p:row>
-                            <p:column style="width: 29%">
+                            <p:column style="width: 39%">
                                 <p:outputLabel for="accountNameId" value="#{appmsg['organization.company_account_name']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="accountNameId" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 70%">
+                            <p:column  style="width: 60%">
                             	<p:inputText id="accountNameId" title="#{appmsg['organization.company_account_name']}" value="#{companyBankAccountFormController.model.accountName}" 
 	                            			 required="true" maxlength="60" styleClass="isitext_hrm" style="width:260px;"/>
                             </p:column>
@@ -105,13 +105,13 @@
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width: 29%">
+                            <p:column style="width: 39%">
                                 <p:outputLabel value="#{appmsg['global.default']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 70%">
+                            <p:column  style="width: 60%">
                             	<p:selectBooleanButton id="isActiveId" value="#{companyBankAccountFormController.model.isDefault}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
 	                                                       offIcon="ui-icon-close" styleClass="label_button"/>
                             </p:column>
@@ -124,7 +124,7 @@
                                          style="margin-right: 5px" label="#{appmsg['global.save']}"
                                          icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
                         <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formCompanyBankAccountFormId"
-                                         icon="ui-icon-refresh" styleClass="isitext_hrm" >  
+                                         action="#{companyBankAccountFormController.doReset()}" icon="ui-icon-refresh" styleClass="isitext_hrm" >  
                             <p:resetInput target="formCompanyBankAccountFormId" />  
                         </p:commandButton>
                     </h:panelGrid>

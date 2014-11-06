@@ -28,6 +28,7 @@ import com.inkubator.hrm.entity.CompanyBankAccount;
 import com.inkubator.hrm.entity.FinancialPartner;
 import com.inkubator.hrm.service.CompanyBankAccountService;
 import com.inkubator.hrm.service.CompanyService;
+import com.inkubator.hrm.service.FinancialPartnerService;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
@@ -42,12 +43,15 @@ public class CompanyDetailController extends BaseController {
 
     private Company selectedCompany;
     private CompanyBankAccount selectedCompanyBankAccount;
+    private FinancialPartner selectedFinancialPartner;
     private List<CompanyBankAccount> companyBankAccounts;
     private List<FinancialPartner> financialPartners;
     @ManagedProperty(value = "#{companyService}")
     private CompanyService companyService;
     @ManagedProperty(value = "#{companyBankAccountService}")
     private CompanyBankAccountService companyBankAccountService;
+    @ManagedProperty(value = "#{financialPartnerService}")
+    private FinancialPartnerService financialPartnerService;
 
     @PostConstruct
     @Override
@@ -56,10 +60,10 @@ public class CompanyDetailController extends BaseController {
             super.initialization();
             String id = FacesUtil.getRequestParameter("execution");
             selectedCompany = companyService.getEntityByPKWithDetail(Long.parseLong(id.substring(1))); 
-            companyBankAccounts = companyBankAccountService.getAllDataByCompanyId(selectedCompany.getId()); 
+            companyBankAccounts = companyBankAccountService.getAllDataByCompanyId(selectedCompany.getId());
+            financialPartners = financialPartnerService.getAllDataByCompanyId(selectedCompany.getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
-
         }
     }
 
@@ -67,9 +71,11 @@ public class CompanyDetailController extends BaseController {
     public void cleanAndExit() {
         selectedCompany = null;
         companyService = null;
+        financialPartnerService = null;
         companyBankAccounts = null;
         financialPartners = null;
         selectedCompanyBankAccount = null;
+        selectedFinancialPartner = null;
     }    
 
 	public Company getSelectedCompany() {
@@ -114,6 +120,22 @@ public class CompanyDetailController extends BaseController {
 		this.companyBankAccountService = companyBankAccountService;
 	}
 
+	public void setSelectedFinancialPartner(
+			FinancialPartner selectedFinancialPartner) {
+		this.selectedFinancialPartner = selectedFinancialPartner;
+	}
+
+	public FinancialPartner getSelectedFinancialPartner() {
+		return selectedFinancialPartner;
+	}
+
+	public void setFinancialPartnerService(
+			FinancialPartnerService financialPartnerService) {
+		this.financialPartnerService = financialPartnerService;
+	}
+	
+	
+
 	public String doBack() {
         return "/protected/organisation/company_view.htm?faces-redirect=true";
     }
@@ -144,7 +166,7 @@ public class CompanyDetailController extends BaseController {
         Map<String, List<String>> dataToSend = new HashMap<>();
         dataToSend.put("companyBankAccountId", companyBankAccountId);
         dataToSend.put("companyId", companyId);
-        showDialogCompanyBankAccount(dataToSend);
+        this.showDialogCompanyBankAccount(dataToSend);
 
     }
 
@@ -154,7 +176,7 @@ public class CompanyDetailController extends BaseController {
 
         Map<String, List<String>> dataToSend = new HashMap<>();
         dataToSend.put("companyId", companyId);
-        showDialogCompanyBankAccount(dataToSend);
+        this.showDialogCompanyBankAccount(dataToSend);
     }
 
     public void doDeleteCompanyBankAccount() {
@@ -175,8 +197,8 @@ public class CompanyDetailController extends BaseController {
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", false);
-        options.put("contentWidth", 500);
-        options.put("contentHeight", 400);
+        options.put("contentWidth", 550);
+        options.put("contentHeight", 350);
         RequestContext.getCurrentInstance().openDialog("company_bank_account_form", options, params);
     }
 
@@ -190,6 +212,77 @@ public class CompanyDetailController extends BaseController {
     }
     /**
      * END Company Bank Account tabView
+     */
+    
+    
+    /**
+     * START FinancialPartner tabView
+     */
+    public void doSelectFinancialPartner() {
+        try {
+        	selectedFinancialPartner = financialPartnerService.getEntityByPKWithDetail(selectedFinancialPartner.getId());
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+
+    public void doUpdateFinancialPartner() {
+
+        List<String> financialPartnerId = new ArrayList<>();
+        financialPartnerId.add(String.valueOf(selectedFinancialPartner.getId()));
+
+        List<String> companyId = new ArrayList<>();
+        companyId.add(String.valueOf(selectedCompany.getId()));
+
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("financialPartnerId", financialPartnerId);
+        dataToSend.put("companyId", companyId);
+        this.showDialogFinancialPartner(dataToSend);
+
+    }
+
+    public void doAddFinancialPartner() {
+    	List<String> companyId = new ArrayList<>();
+        companyId.add(String.valueOf(selectedCompany.getId()));
+
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("companyId", companyId);
+        this.showDialogFinancialPartner(dataToSend);
+    }
+
+    public void doDeleteFinancialPartner() {
+        try {
+        	financialPartnerService.delete(selectedFinancialPartner);
+        	financialPartners = financialPartnerService.getAllDataByCompanyId(selectedCompany.getId());
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+
+        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (Exception ex) {
+            LOGGER.error("Error when doDelete financialPartner", ex);
+        }
+    }
+
+    private void showDialogFinancialPartner(Map<String, List<String>> params) {
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 500);
+        options.put("contentHeight", 350);
+        RequestContext.getCurrentInstance().openDialog("company_financial_partner_form", options, params);
+    }
+
+    public void onDialogReturnFinancialPartner(SelectEvent event) {
+        try {
+        	financialPartners = financialPartnerService.getAllDataByCompanyId(selectedCompany.getId());
+            super.onDialogReturn(event);
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+    /**
+     * END FinancialPartner tabView
      */
 
 }

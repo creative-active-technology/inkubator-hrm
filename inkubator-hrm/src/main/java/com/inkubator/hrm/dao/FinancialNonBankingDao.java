@@ -1,5 +1,7 @@
 package com.inkubator.hrm.dao;
 
+import java.util.List;
+
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.FinancialNonBanking;
 
@@ -9,4 +11,6 @@ import com.inkubator.hrm.entity.FinancialNonBanking;
  */
 public interface FinancialNonBankingDao extends IDAO<FinancialNonBanking> {
 
+	public List<FinancialNonBanking> getAllDataByFinancialService(String financialService);
+	
 }

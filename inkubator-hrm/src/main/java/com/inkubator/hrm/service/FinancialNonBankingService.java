@@ -1,6 +1,9 @@
 package com.inkubator.hrm.service;
 
+import java.util.List;
+
 import com.inkubator.datacore.service.IService;
+import com.inkubator.hrm.entity.FinancialNonBanking;
 
 /**
  *
@@ -8,4 +11,6 @@ import com.inkubator.datacore.service.IService;
  */
 public interface FinancialNonBankingService extends IService<FinancialNonBankingService> {
 
+	public List<FinancialNonBanking> getAllDataByFinancialService(String financialService) throws Exception;
+	
 }
