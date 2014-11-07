@@ -5,7 +5,9 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:pe="http://primefaces.org/ui/extensions">
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:o="http://omnifaces.org/ui"
+	  xmlns:of="http://omnifaces.org/functions">
     <h:head>
         <title>IGNORED</title>
     </h:head>
@@ -15,7 +17,8 @@
                 Home
             </ui:define>
             <ui:define name="center">
-                <p:growl id="growlEmpDataFormId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
+            	<o:importConstants type="javax.faces.event.PhaseId" />
+                <p:growl id="growlEmpDataFormId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>                
                 <h:form id="empDataFormId" >
                     <div id="box_bg" style="margin: 10px">
                         <!--<p:panel style="margin: 10px">-->
@@ -50,7 +53,7 @@
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:inputText value="#{empDataFormController.empDataModel.bioDataName}" maxlength="45"
-                                                 styleClass="isitext_hrm" label="Name" readonly="true" disabled="#{empDataFormController.isEdit}"
+                                                 styleClass="isitext_hrm" label="Name" readonly="#{PhaseId.RENDER_RESPONSE eq facesContext.currentPhaseId}" disabled="#{empDataFormController.isEdit}"
                                                  style="width: 350px" required="true" id="name"  />
                                     <p:commandButton  style="margin-left: 5px" icon="ui-icon-search" title="Cari" action="#{empDataFormController.doSearch()}" widgetVar="cariId" disabled="#{empDataFormController.isEdit}"
                                                       ajax="true" immediate="true">

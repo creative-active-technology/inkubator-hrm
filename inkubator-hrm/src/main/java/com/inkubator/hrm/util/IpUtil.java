@@ -15,6 +15,8 @@ import org.apache.commons.lang.text.StrTokenizer;
  */
 public class IpUtil {
 
+    private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(IpUtil.class);
+
     public static final String _255 = "(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)";
 
     public static final Pattern pattern = Pattern.compile("^(?:" + _255 + "\\.){3}" + _255 + "$");
@@ -45,10 +47,16 @@ public class IpUtil {
     public static boolean isIPv4Private(String ip) {
 
         long longIp = ipV4ToLong(ip);
-
-        return (longIp >= ipV4ToLong("10.0.0.0") && longIp <= ipV4ToLong("10.255.255.255"))
-                || (longIp >= ipV4ToLong("172.16.0.0") && longIp <= ipV4ToLong("172.31.255.255"))
-                || longIp >= ipV4ToLong("192.168.0.0") && longIp <= ipV4ToLong("192.168.255.255");
+        LOGGER.info("IP Number In Long " + longIp);
+        boolean condition = false;
+        if (longIp == 2130706433) {
+            condition = true;
+        }
+        if ((longIp >= ipV4ToLong("10.0.0.0") && longIp <= ipV4ToLong("10.255.255.255")) || (longIp >= ipV4ToLong("172.16.0.0") && longIp <= ipV4ToLong("172.31.255.255"))
+                || (longIp >= ipV4ToLong("192.168.0.0") && longIp <= ipV4ToLong("192.168.255.255"))) {
+            condition = true;
+        }
+        return condition;
 
     }
 
@@ -65,7 +73,7 @@ public class IpUtil {
         boolean found = false;
 
         if ((ip = request.getHeader("x-forwarded-for")) != null) {
-
+            LOGGER.info("IP Number " + ip);
             StrTokenizer tokenizer = new StrTokenizer(ip, ",");
 
             while (tokenizer.hasNext()) {
@@ -85,12 +93,37 @@ public class IpUtil {
         }
 
         if (!found) {
-
+            LOGGER.info("IP Number " + ip);
             ip = request.getRemoteAddr();
 
         }
 
         return ip;
 
+    }
+
+    public static String getClientIpAddr(HttpServletRequest request) {
+        String ip = request.getHeader("X-Forwarded-For");
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("Proxy-Client-IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("WL-Proxy-Client-IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("HTTP_CLIENT_IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("HTTP_X_FORWARDED_FOR");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getRemoteAddr();
+        }
+        LOGGER.info(request.getHeader("X-Forwarded-For"));
+        LOGGER.info(request.getHeader("Proxy-Client-IP"));
+        LOGGER.info(request.getHeader("WL-Proxy-Client-IP"));
+        LOGGER.info(request.getHeader("HTTP_CLIENT_IP"));
+        LOGGER.info(request.getHeader("HTTP_X_FORWARDED_FOR"));
+        return ip;
     }
 }

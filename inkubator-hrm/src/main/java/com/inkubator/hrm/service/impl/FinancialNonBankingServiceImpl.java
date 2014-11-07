@@ -4,8 +4,12 @@ import com.inkubator.common.util.RandomNumberUtil;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
@@ -28,7 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service(value = "financialNonBankingService")
 @Lazy
 public class FinancialNonBankingServiceImpl extends IServiceImpl implements FinancialNonBankingService {
-
+    
     @Autowired
     private FinancialNonBankingDao financialNonBankingDao;
     @Autowired
@@ -233,9 +237,18 @@ public class FinancialNonBankingServiceImpl extends IServiceImpl implements Fina
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<FinancialNonBanking> getAllDataByFinancialService(String financialService) throws Exception {
+            return financialNonBankingDao.getAllDataByFinancialService(financialService);
+
+    }
+
     @Override
     public List<FinancialNonBanking> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
 }

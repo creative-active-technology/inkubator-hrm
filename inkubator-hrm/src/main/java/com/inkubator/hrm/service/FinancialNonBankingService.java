@@ -1,5 +1,7 @@
 package com.inkubator.hrm.service;
 
+import java.util.List;
+
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.FinancialNonBanking;
 import com.inkubator.hrm.web.search.FinancialNonBankingSearchParameter;
@@ -16,4 +18,7 @@ public interface FinancialNonBankingService extends IService<FinancialNonBanking
     public Long getTotalFinancialNonBankingByParam(FinancialNonBankingSearchParameter searchParameter) throws Exception;
     
     public FinancialNonBanking getEntityByPkWithDetail(Long id) throws Exception;
+    
+    public List<FinancialNonBanking> getAllDataByFinancialService(String financialService) throws Exception;
+	
 }

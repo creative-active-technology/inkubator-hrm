@@ -1,5 +1,7 @@
 package com.inkubator.hrm.dao;
 
+import java.util.List;
+
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.FinancialNonBanking;
 import com.inkubator.hrm.web.search.FinancialNonBankingSearchParameter;
@@ -16,4 +18,7 @@ public interface FinancialNonBankingDao extends IDAO<FinancialNonBanking> {
     public Long getTotalResourceTypeByParam(FinancialNonBankingSearchParameter searchParameter);
     
     public FinancialNonBanking getEntityByPkWithDetail(Long id);
+
+    public List<FinancialNonBanking> getAllDataByFinancialService(String financialService);
+	
 }
