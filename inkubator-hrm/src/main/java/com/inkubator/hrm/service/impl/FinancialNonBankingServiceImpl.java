@@ -47,7 +47,7 @@ public class FinancialNonBankingServiceImpl extends IServiceImpl implements Fina
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public Long getTotalFinancialNonBankingByParam(FinancialNonBankingSearchParameter searchParameter) throws Exception {
-        return financialNonBankingDao.getTotalResourceTypeByParam(searchParameter);
+        return financialNonBankingDao.getTotalFinancialNonBankingByParam(searchParameter);
     }
 
     @Override

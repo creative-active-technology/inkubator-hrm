@@ -15,7 +15,7 @@ import org.hibernate.criterion.Order;
 public interface FinancialNonBankingDao extends IDAO<FinancialNonBanking> {
     public List<FinancialNonBanking> getByParamWithDetail(FinancialNonBankingSearchParameter searchParameter, int firstResult, int maxResults, Order order);
 
-    public Long getTotalResourceTypeByParam(FinancialNonBankingSearchParameter searchParameter);
+    public Long getTotalFinancialNonBankingByParam(FinancialNonBankingSearchParameter searchParameter);
     
     public FinancialNonBanking getEntityByPkWithDetail(Long id);
 

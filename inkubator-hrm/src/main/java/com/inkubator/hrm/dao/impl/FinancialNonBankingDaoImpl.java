@@ -45,7 +45,7 @@ public class FinancialNonBankingDaoImpl extends IDAOImpl<FinancialNonBanking> im
     }
 
     @Override
-    public Long getTotalResourceTypeByParam(FinancialNonBankingSearchParameter searchParameter) {
+    public Long getTotalFinancialNonBankingByParam(FinancialNonBankingSearchParameter searchParameter) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearch(searchParameter, criteria);
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
