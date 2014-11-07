@@ -19,8 +19,8 @@ import org.apache.commons.lang3.StringUtils;
  *
  * @author Deni
  */
-@FacesConverter(value = "financialNonBankingConverter")
-public class FinancialNonBankingConverter implements Converter{
+@FacesConverter(value = "financialServiceConverter")
+public class FinancialServiceConverter implements Converter{
 
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
