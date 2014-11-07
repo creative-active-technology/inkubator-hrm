@@ -241,7 +241,7 @@ public class ApprovalActivityServiceImpl extends IServiceImpl implements Approva
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<ApprovalActivity> getRequestHistory(String userName) throws Exception {
-        return this.approvalActivityDao.getRequestHistory(userName);
+        return this.approvalActivityDao.getRequestHistory(userName, 0, 5, Order.desc("requestTime"));
     }
 
     @Override

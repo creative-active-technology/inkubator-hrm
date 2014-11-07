@@ -137,9 +137,6 @@ WHERE bio_data_id=$P{BIODATA_ID}]]>
 	<field name="address_detail" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="contact_name" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
 	<field name="latitude" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>

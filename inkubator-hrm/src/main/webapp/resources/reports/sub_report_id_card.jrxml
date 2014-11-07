@@ -132,7 +132,7 @@ WHERE bio_data_id=$P{BIODATA_ID}]]>
 	<field name="type" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="card_number" class="java.lang.Integer">
+	<field name="card_number" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="valid_date" class="java.sql.Date">
