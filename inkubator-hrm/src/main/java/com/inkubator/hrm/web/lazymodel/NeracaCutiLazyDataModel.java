@@ -54,7 +54,7 @@ public class NeracaCutiLazyDataModel extends LazyDataModel<NeracaCuti> implement
             }
         } else {
             try {
-                neracaCutiList = service.getByParamWithDetail(searchParameter, first, pageSize, Order.desc("kredit"));
+                neracaCutiList = service.getByParamWithDetail(searchParameter, first, pageSize, Order.desc("createdOn"));
                 jumlahData = Integer.parseInt(String.valueOf(service.getTotalNeracaCutiByParam(searchParameter)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);

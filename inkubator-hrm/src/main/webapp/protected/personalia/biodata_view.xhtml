@@ -71,19 +71,19 @@
                             <f:facet name="header">  
                                 <h:outputText value="#{appmsg['biodata.biodata_list']}" styleClass="label_hrm"/>
                             </f:facet> 
-                            <p:column style="text-align: center;width: 25px">
+                            <p:column style="width: 3%">
                                 <f:facet name="header">  
                                     <h:outputText value="No."  />
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="firstName" >
+                            <p:column sortBy="firstName" style="width: 20%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['biodata.fullname']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{biodataView.firstName} #{biodataView.lastName}"/>
                             </p:column>
-                            <p:column sortBy="realName" style="text-align: center">
+                            <p:column sortBy="realName" style="width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['biodata.age']}"/>
                                 </f:facet>
@@ -91,7 +91,7 @@
                                     <f:converter converterId="ageByDateConverter" />
                                 </p:outputLabel>
                             </p:column>
-                            <p:column sortBy="gender" >
+                            <p:column sortBy="gender" style="width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.gender']}"/>
                                 </f:facet>
@@ -99,25 +99,25 @@
                                     <f:converter converterId="genderConverter" />
                                 </p:outputLabel>
                             </p:column>
-                            <p:column sortBy="religion" >
+                            <p:column sortBy="religion" style="width: 12%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['religion.religion']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{biodataView.religion.name}"/>
                             </p:column>
-                             <p:column sortBy="maritalStatus" >
+                             <p:column sortBy="maritalStatus" style="width: 13%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.status']}"/>
                                 </f:facet>
                                  <h:outputLabel value= "#{biodataView.maritalStatus.name}"/>
                             </p:column>
-                            <p:column sortBy="personalEmail" >
+                            <p:column sortBy="personalEmail" style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['biodata.email_address']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{biodataView.personalEmail}"/>
                             </p:column>                                                       
-                            <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 12%;text-align: center" exportable="false">
                                 <p:commandButton  icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
                                                   action="#{bioDataViewController.doDetail()}" style="font-size: 10px!important" >                        
                                     <f:setPropertyActionListener value="#{biodataView}" target="#{bioDataViewController.selectedBioData}" />

@@ -265,14 +265,14 @@ public class BioEducationHistoryFormController extends BaseController{
             List<City> allCity = cityService.getAllData();
             List<City> queried = new ArrayList<City>();
             for (City city : allCity) {
-                if (city.getCityName().toLowerCase().startsWith(query) || city.getCityName().endsWith(query)) {
+                if (city.getCityName().toLowerCase().contains(query) || city.getCityName().contains(query)) {
                     queried.add(city);
                 }
             }
 
             return queried;
         } catch (Exception ex) {
-            Logger.getLogger(BioEducationHistoryFormController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(BioIdCardFormController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }

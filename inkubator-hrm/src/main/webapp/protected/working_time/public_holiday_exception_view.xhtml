@@ -67,13 +67,13 @@
                             <f:facet name="header">  
                                 <h:outputText value="#{appmsg['publicHolidayException.list_of_publicHolidayException']}"/>
                             </f:facet> 
-                            <p:column style="text-align: center;width: 5%">
+                            <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.number']}"/>
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="publicHoliday.leaveScheme.name"  style="width: 20%">
+                            <p:column sortBy="publicHoliday.leaveScheme.name"  style="width: 35%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['publicHolidayException.publicHolidayException_public']}"/>
                                 </f:facet>
@@ -85,7 +85,7 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{publicHolidayExceptionData.empData.bioData.firstName} #{publicHolidayExceptionData.empData.bioData.lastName}"/>
                             </p:column> 
-                            <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 12%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                 				 style="font-size: 10px!important" update=":panelDialogDetailId" 
                                 				 action="#{publicHolidayExceptionViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogDetailPublicHolidayException.show()">                        
