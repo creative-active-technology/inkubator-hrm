@@ -45,6 +45,7 @@ public class NeracaCutiDaoImpl extends IDAOImpl<NeracaCuti> implements NeracaCut
         criteria.setFetchMode("leaveDistribution", FetchMode.JOIN);
         criteria.setFetchMode("leaveDistribution.empData", FetchMode.JOIN);
         criteria.setFetchMode("leaveDistribution.empData.bioData", FetchMode.JOIN);
+        criteria.setFetchMode("leaveDistribution.empData.jabatanByJabatanGajiId", FetchMode.JOIN);
         criteria.setFetchMode("leaveDistribution.leave", FetchMode.JOIN);
         doSearch(searchParameter, criteria);
         criteria.addOrder(order);

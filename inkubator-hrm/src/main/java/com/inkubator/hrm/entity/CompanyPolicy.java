@@ -126,7 +126,7 @@ public class CompanyPolicy  implements java.io.Serializable {
     }
 
     
-    @Column(name="content_policy", length=65535)
+    @Column(name="content_policy", length=65535, columnDefinition = "Text")
     public String getContentPolicy() {
         return this.contentPolicy;
     }

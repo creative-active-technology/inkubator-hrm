@@ -41,7 +41,7 @@ public class ApprovalActivityDaoImpl extends IDAOImpl<ApprovalActivity> implemen
     }
 
     @Override
-    public List<ApprovalActivity> getRequestHistory(String userName) {
+    public List<ApprovalActivity> getRequestHistory(String userName, int firstResult, int maxResults, Order order) {
         ProjectionList proList = Projections.projectionList();
         proList.add(Property.forName("sequence").max());
         proList.add(Projections.groupProperty("activityNumber"));
@@ -54,6 +54,9 @@ public class ApprovalActivityDaoImpl extends IDAOImpl<ApprovalActivity> implemen
         String[] var = {"sequence", "activityNumber"};
         criteria.add(Subqueries.propertiesIn(var, maxSequenceAndActivityNumber));
         criteria.setFetchMode("approvalDefinition", FetchMode.JOIN);
+        criteria.addOrder(order);
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResults);
         return criteria.list();
     }
 

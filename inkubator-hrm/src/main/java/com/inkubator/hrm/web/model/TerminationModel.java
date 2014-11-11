@@ -4,6 +4,7 @@
  */
 package com.inkubator.hrm.web.model;
 
+import com.inkubator.hrm.entity.EmpData;
 import java.util.Date;
 
 /**
@@ -17,6 +18,7 @@ public class TerminationModel {
     private String description;
     private String code;
     private Date effectiveDate;
+    private EmpData empData;
 
     public Long getId() {
         return id;
@@ -65,5 +67,14 @@ public class TerminationModel {
     public void setEffectiveDate(Date effectiveDate) {
         this.effectiveDate = effectiveDate;
     }
+
+    public EmpData getEmpData() {
+        return empData;
+    }
+
+    public void setEmpData(EmpData empData) {
+        this.empData = empData;
+    }
+    
     
 }

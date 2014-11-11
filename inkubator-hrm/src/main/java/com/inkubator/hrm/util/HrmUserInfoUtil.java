@@ -26,6 +26,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
  */
 public class HrmUserInfoUtil extends UserInfoUtil {
 
+    private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(HrmUserInfoUtil.class);
+
     public static String getRealName() {
         HrmUserService hrmUserService = (HrmUserService) ServiceWebUtil.getService("hrmUserService");
         String hrmUserName = getUserName();
@@ -59,7 +61,7 @@ public class HrmUserInfoUtil extends UserInfoUtil {
         String ipHeaderReverse = StringUtils.substringAfter(riversIp, ".");
         String ipEnd = StringUtils.substringBefore(riversIp, ".");
         int ipLast = Integer.parseInt(StringUtils.reverse(ipEnd));
-        System.out.println("nilai" + ipLast);
+        LOGGER.info("Nilai Ip " + IpUtil.getIpFromRequest(httpServletRequest));
         String ip = StringUtils.remove(ipHeaderReverse, ".");
         int ipHeader = Integer.parseInt(StringUtils.reverse(ip));
         IpPermitService ipPermitService = (IpPermitService) ServiceWebUtil.getService("ipPermitService");

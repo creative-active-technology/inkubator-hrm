@@ -105,7 +105,7 @@ public class TerminationFormController extends BaseController{
         terminationModel.setCode(entity.getCode());
         terminationModel.setEffectiveDate(entity.getEffectiveDate());
         terminationModel.setDescription(entity.getDescription());
-        terminationModel.setEmpDataWithNik(entity.getEmpData().getNikWithFullName());
+        terminationModel.setEmpData(entity.getEmpData());
         terminationModel.setTerminationTypeId(entity.getTerminationType().getId());
         return terminationModel;
     }
@@ -130,6 +130,16 @@ public class TerminationFormController extends BaseController{
         }
     }
 
+    public List<EmpData> doAutoCompletEmployee(String param){
+		List<EmpData> empDatas = new ArrayList<EmpData>();
+		try {
+			empDatas = empDataService.getAllDataByNameOrNik(StringUtils.stripToEmpty(param));
+		} catch (Exception e) {
+			LOGGER.error("Error", e);
+		}
+		return empDatas;
+	}
+    
     public List<String> completeEmployeeString(String query) {
             
         try {
@@ -161,8 +171,9 @@ public class TerminationFormController extends BaseController{
         termination.setDescription(model.getDescription());
         termination.setEffectiveDate(model.getEffectiveDate());
         termination.setTerminationType(new TerminationType(model.getTerminationTypeId()));
-        EmpData selectedEmployee = empDataService.getEntityByNik(StringUtils.substringBefore(model.getEmpDataWithNik(), " - "));
-        termination.setEmpData(new EmpData(selectedEmployee.getId()));
+        termination.setEmpData(model.getEmpData());
+//        EmpData selectedEmployee = empDataService.getEntityByNik(StringUtils.substringBefore(model.getEmpDataWithNik(), " - "));
+//        termination.setEmpData(new EmpData(selectedEmployee.getId()));
         return termination;
     }
 

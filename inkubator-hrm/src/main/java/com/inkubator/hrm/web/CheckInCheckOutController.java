@@ -57,8 +57,10 @@ public class CheckInCheckOutController extends BaseController {
         try {
             checkInOutModel = new CheckInOutModel();
             Boolean isValid = HrmUserInfoUtil.isValidRemoteAddress();
+//            Boolean isValid = true;
             HrmUser hrmUser = hrmUserService.getUserWithDetail(HrmUserInfoUtil.getUserName());
             if (hrmUser.getEmpData() == null) {
+                LOGGER.info("Redirect To");
                 ExternalContext context = FacesUtil.getExternalContext();
                 context.redirect(context.getRequestContextPath() + "/protected/home.htm");
             } else {
@@ -96,6 +98,7 @@ public class CheckInCheckOutController extends BaseController {
                 } else {
 //                    MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
 //                            FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+                    LOGGER.info("Redirect To Home Because not Valid IP");
                     ExternalContext context = FacesUtil.getExternalContext();
                     context.redirect(context.getRequestContextPath() + "/protected/home.htm");
                 }

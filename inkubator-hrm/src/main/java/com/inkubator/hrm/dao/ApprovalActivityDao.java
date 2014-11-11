@@ -15,7 +15,7 @@ import com.inkubator.hrm.web.search.ApprovalActivitySearchParameter;
  */
 public interface ApprovalActivityDao extends IDAO<ApprovalActivity> {
 
-    public List<ApprovalActivity> getRequestHistory(String userName);
+    public List<ApprovalActivity> getRequestHistory(String userName, int firstResult, int maxResults, Order order);
 
     public List<ApprovalActivity> getAllDataWithAllRelation(ApprovalActivitySearchParameter searchParameter, int firstResult, int maxResults, Order order);
 

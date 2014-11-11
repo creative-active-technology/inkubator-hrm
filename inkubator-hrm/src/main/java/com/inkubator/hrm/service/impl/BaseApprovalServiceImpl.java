@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ch.lambdaj.Lambda;
 
+import com.inkubator.common.notification.model.SMSSend;
 import com.inkubator.common.util.JsonConverter;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
@@ -60,6 +61,8 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
 	protected JmsTemplate jmsTemplateApproval;
 	@Autowired
 	private JmsTemplate jmsTemplateApprovalGrowl;
+	@Autowired
+    private JmsTemplate jmsTemplateSMS;
 	@Autowired
     private JsonConverter jsonConverter;
 	
@@ -119,15 +122,18 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
 					appActivity.setRequestTime(new Date());					
 					appActivity.setLocale(FacesUtil.getFacesContext().getViewRoot().getLocale().toString());
 					appActivity.setCreatedTime(new Date());
-					
-					//show growl notification for approverUserId
-		        	sendApprovalGrowlNotif(appActivity);
 		        	
 					break; //keluar dari looping
 				}
 			}
 		}
 		
+		//show growl notification for approver
+    	this.sendApprovalGrowlNotif(appActivity);
+    	
+    	//send sms notification to approver
+		this.sendApprovalSmsnotif(appActivity);
+    	
 		return appActivity;
 	}
 	
@@ -240,7 +246,10 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
         	result.put("approvalActivity", nextApproval); 
         	
         	//show growl notification for approverUserId
-        	sendApprovalGrowlNotif(nextApproval);
+        	this.sendApprovalGrowlNotif(nextApproval);
+        	
+        	//send sms notification to approver
+    		this.sendApprovalSmsnotif(nextApproval);
         }
         
         return result;
@@ -297,7 +306,10 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
         	result.put("approvalActivity", nextApproval); 
         	
         	//show growl notification for approverUserId
-        	sendApprovalGrowlNotif(nextApproval);
+        	this.sendApprovalGrowlNotif(nextApproval);
+        	
+        	//send sms notification to approver
+    		this.sendApprovalSmsnotif(nextApproval);
         }
         
         return result;        
@@ -359,7 +371,10 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
         	result.put("approvalActivity", nextApproval); 
         	
         	//show growl notification for approverUserId
-        	sendApprovalGrowlNotif(nextApproval);
+        	this.sendApprovalGrowlNotif(nextApproval);
+        	
+        	//send sms notification to approver
+    		this.sendApprovalSmsnotif(nextApproval);
         }
         
         return result;
@@ -522,6 +537,29 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
     	}
     	
     	return emailAdresses;
+    }
+    
+    /** jika approvalStatus masih waiting dan di approval definition membutuhkan sms approval notif, 
+     *  maka kirim notif dalam bentuk sms ke approverUserId */
+    private void sendApprovalSmsnotif(ApprovalActivity appActivity){
+    	if(appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING && appActivity.getApprovalDefinition().getSmsNotification()){
+	    	
+	    	/** di cek apakah approver memiliki phoneNumber yang valid */
+    		HrmUser approver = hrmUserDao.getByUserId(appActivity.getApprovedBy());
+	    	if(approver != null && StringUtils.isNotEmpty(approver.getPhoneNumber())) {
+				final SMSSend mSSend = new SMSSend();
+				mSSend.setFrom(HRMConstant.SYSTEM_ADMIN);
+				mSSend.setDestination(approver.getPhoneNumber());
+				mSSend.setContent("Dear " + approver.getRealName() + " please check your pending tasks. There is an approval that needs to be approved by you.");
+				//Send notificatin SMS
+				this.jmsTemplateSMS.send(new MessageCreator() {
+					@Override
+					public Message createMessage(Session session) throws JMSException {
+						return session.createTextMessage(jsonConverter.getJson(mSSend));
+					}
+				});
+	    	}
+    	}
     }
     
     /** jika approvalStatus masih waiting, maka kirim notif dalam bentuk growl ke approverUserId 

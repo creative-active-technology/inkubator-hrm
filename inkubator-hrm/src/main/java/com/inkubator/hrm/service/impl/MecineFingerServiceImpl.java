@@ -291,7 +291,8 @@ public class MecineFingerServiceImpl extends IServiceImpl implements MecineFinge
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void saveMesineService(MecineFingerServiceModel serviceModel) throws Exception {
         MecineFinger mecineFinger = this.mecineFingerDao.getEntiyByPK(serviceModel.getId());
-        mecineFinger.setServiceHost(serviceModel.getHostIp());
+        String hostIp = String.valueOf(serviceModel.getHost1()+"."+serviceModel.getHost2()+"."+serviceModel.getHost3()+"."+serviceModel.getHost4());
+        mecineFinger.setServiceHost(hostIp);
         mecineFinger.setServiceType(serviceModel.getServiceData());
         mecineFinger.setServiceOpenProtocol(serviceModel.getProtocolData());
         mecineFinger.setServiceOpenProtocolPassword(serviceModel.getOpenProtocolPassword());
@@ -306,7 +307,8 @@ public class MecineFingerServiceImpl extends IServiceImpl implements MecineFinge
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void saveMesineQuery(MecineFingerQueryModel serviceModel) throws Exception {
         MecineFinger mecineFinger = this.mecineFingerDao.getEntiyByPK(serviceModel.getId());
-        mecineFinger.setDbHost(serviceModel.getDbHost());
+        String hostIp = String.valueOf(serviceModel.getDbHost1()+"."+serviceModel.getDbHost2()+"."+serviceModel.getDbHost3()+"."+serviceModel.getDbHost4());
+        mecineFinger.setDbHost(hostIp);
         mecineFinger.setDbPass(serviceModel.getDbPassword());
         mecineFinger.setDbSwapBase(serviceModel.getSwapTimeFieldName());
         mecineFinger.setDbType(serviceModel.getDbType());

@@ -296,8 +296,12 @@
                                                 <p:menuitem value="#{appmsg['currency.currency']}" icon="img-currency" style="font-size: 12px !important;color: #003366" title="#{appmsg['currency.currency']}" url="/protected/reference/currency_view.htm" />
                                                 <p:menuitem value="#{appmsg['bank.bank']}" icon="img-bank" style="font-size: 12px !important;color: #003366" title="#{appmsg['bank.bank']}" url="/protected/reference/bank_view.htm" />   
                                                 <p:menuitem value="#{appmsg['transactionCodefication.transactionCodefication']}" icon="img-transactionCodefication" style="font-size: 12px !important;color: #003366" title="#{appmsg['transactionCodefication.transactionCodefication']}" url="/protected/reference/transaction_codefication_view.htm" />
-                                                <p:menuitem value="Resource Type" icon="img-transactionCodefication" style="font-size: 12px !important;color: #003366" title="Resource Type" url="/protected/reference/resource_type _view.htm" />
+                                                <p:menuitem value="Resource Type" icon="img-transactionCodefication" style="font-size: 12px !important;color: #003366" title="Resource Type" url="/protected/reference/resource_type_view.htm" />
+                                                <p:menuitem value="Resource Name" icon="img-transactionCodefication" style="font-size: 12px !important;color: #003366" title="Resource Name" url="/protected/reference/resource_name_view.htm" />
                                                 <p:menuitem value="Saving Type" icon="img-transactionCodefication" style="font-size: 12px !important;color: #003366" title="Saving Type" url="/protected/reference/saving_type_view.htm" />
+                                                <p:menuitem value="Business Type" icon="img-transactionCodefication" style="font-size: 12px !important;color: #003366" title="Business Type" url="/protected/reference/business_type_view.htm" />
+                                                <p:menuitem value="Finance Non Banking" icon="img-transactionCodefication" style="font-size: 12px !important;color: #003366" title="Finance Non Banking" url="/protected/reference/finance_non_banking.htm" />
+                                                
                                             </p:submenu>        
                                             <p:submenu label="#{appmsg['menu.organisation_setting']}"  styleClass="menu_child" >
                                                 <p:menuitem value="#{appmsg['costcenter.costcenter']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['costcenter.costcenter']}" url="/protected/organisation/cost_center_view.htm" icon="img-cost-center"/>
@@ -311,7 +315,7 @@
                                                 <p:menuitem value="#{appmsg['jabatan.jabatan']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['jabatan.jabatan']}" url="/protected/organisation/job_title_view.htm" icon="img-job-title"/>
                                                 <p:menuitem value="#{appmsg['jabatandeskripsi.jabatandeskripsi']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['jabatandeskripsi.jabatandeskripsi']}" url="/protected/organisation/job_description_view.htm" icon="img-job-descriptions"/>
                                                 <p:menuitem value="#{appmsg['jabatanspesifikasi.jabatanspesifikasi']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['jabatanspesifikasi.jabatanspesifikasi']}" url="/protected/organisation/job_spesifikasi_view.htm" icon="img-job_spek"/>
-                                                <p:menuitem value="#{appmsg['organization.organization']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['organization.organization']}" url="/protected/organisation/company_view.htm" icon="img-job_spek"/>
+                                                <p:menuitem value="#{appmsg['organization.organization']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['organization.organization']}" url="/protected/organisation/company_view.htm" icon="img-company"/>
                                             </p:submenu> 
                                             <p:submenu label="#{appmsg['menu.working_time_setting']}"  styleClass="menu_child" >
                                                 <p:menuitem value="#{appmsg['menu.presence_status']}" icon="img-status-attendance" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.presence_status']}" url="/protected/working_time/attendance_status_view.htm" />
@@ -348,6 +352,8 @@
                                                 <p:menuitem value="#{appmsg['payroll.pay_salary_grade_position']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['payroll.pay_salary_grade_position']}" url="/protected/payroll/pay_salary_grade_position_view.htm" /> 
                                                 <p:menuitem value="#{appmsg['payroll.pay_salary_jurnal']}" icon="img-penggajian" style="font-size: 12px !important;color: #003366" title="#{appmsg['payroll.pay_salary_jurnal']}" url="/protected/payroll/pay_salary_jurnal_view.htm" /> 
                                                 <p:menuitem value="#{appmsg['menu.work_period']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.work_period']}" url="/protected/working_time/periode_view.htm" /> 
+                                                <p:menuitem value="Tax Component" icon="img-periode" style="font-size: 12px !important;color: #003366" title="Tax Component" url="/protected/payroll/tax_component_view.htm" /> 
+                                                <p:menuitem value="Model Component" icon="img-periode" style="font-size: 12px !important;color: #003366" title="Model Component" url="/protected/payroll/model_component_view.htm" /> 
                                             </p:submenu>
                                         </p:submenu>
                                         <p:submenu label="Personalia"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-employees">
@@ -377,6 +383,7 @@
                                         <p:submenu label="Payroll"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-payroll">
                                             <!--                                            <p:menuitem value="Price Simulator" icon="img-price-simulator" style="font-size: 12px !important;color: #003366" title="Make Price Simulation" url="/protected/price_simulator.htm" /> 
                                                                                         <p:menuitem value="Price Offer" icon="img-button-price" style="font-size: 12px !important;color: #003366" title="Create Offering Price" url="/protected/price_offer.htm" />  -->
+                                            <p:menuitem value="Basic Numeration" icon="img-task" style="font-size: 12px !important;color: #003366" title="Basic Numeration" url="/protected/payroll/basic_renumeration_view.htm" />
                                         </p:submenu>
                                         <p:submenu label="Pengembangan"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-training">
                                             <!--                                            <p:menuitem value="Price Simulator" icon="img-price-simulator" style="font-size: 12px !important;color: #003366" title="Make Price Simulation" url="/protected/price_simulator.htm" /> 

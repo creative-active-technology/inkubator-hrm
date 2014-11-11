@@ -424,6 +424,9 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
         
         EmpData empData = empDataDao.getEntiyByPK(entity.getEmpData().getId());
         WtOverTime wtOverTime = wtOverTimeDao.getEntityByPkWithDetail(entity.getWtOverTime().getId());
+        String createdBy = org.apache.commons.lang.StringUtils.isEmpty(wtOverTime.getCreatedBy()) ? UserInfoUtil.getUserName() : wtOverTime.getCreatedBy();
+        Date createdOn = wtOverTime.getCreatedOn() == null ? new Date() : wtOverTime.getCreatedOn();
+          
         System.out.println(wtOverTime.getName() + "hahaha");
         String overTimeName = wtOverTime.getName();
         entity.setEmpData(empData);
@@ -432,8 +435,8 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
         entity.setImplementationDate(entity.getImplementationDate());
         entity.setStartTime(entity.getStartTime());
         entity.setEndTime(entity.getEndTime());
-        entity.setCreatedBy(UserInfoUtil.getUserName());
-        entity.setCreatedOn(new Date());
+        entity.setCreatedBy(createdBy);
+        entity.setCreatedOn(createdOn);
         entity.setOverTimeName(overTimeName);
         HrmUser requestUser = hrmUserDao.getByEmpDataId(empData.getId());
         List<ApprovalDefinition> appDefs = Lambda.extract(wtOverTime.getApprovalDefinitionOTs(), Lambda.on(ApprovalDefinitionOT.class).getApprovalDefinition());

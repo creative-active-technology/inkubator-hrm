@@ -189,7 +189,7 @@
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{educationHistoryFormController.listCitys}"/>
                                     </p:selectOneMenu>-->
-                                            <p:autoComplete id="cityId" title="#{appmsg['bioIdCard.bioIdCard_place']}" 
+<!--                                            <p:autoComplete id="cityId" title="#{appmsg['bioIdCard.bioIdCard_place']}" 
                                                 value="#{educationHistoryFormController.model.city}"
                                                 completeMethod="#{educationHistoryFormController.completeCity}"
                                                 var="city"
@@ -197,6 +197,16 @@
                                                 itemLabel="#{city.cityName}"
                                                 converter="cityConverter"
                                                 required="false" requiredMessage="#{appmsg['bioIdCard.bioIdCard_place_should_not_be_empty']}" styleClass="isitext_hrm" style="width:200px;"></p:autoComplete>
+                                                -->
+                                <p:autoComplete id="cityId" title="#{appmsg['bioIdCard.bioIdCard_place']}" 
+                                                value="#{educationHistoryFormController.model.city}"
+                                                completeMethod="#{educationHistoryFormController.completeCity}"
+                                                var="city" emptyMessage="Kota tidak ditemukan"
+                                                maxResults="8"
+                                                itemValue="#{city}"
+                                                itemLabel="#{city.cityName}"
+                                                converter="#{cityConverter}"
+                                                required="true" requiredMessage="#{appmsg['bioIdCard.bioIdCard_place_should_not_be_empty']}" styleClass="isitext_hrm" style="width:250px;"></p:autoComplete>
                             </p:column>
                         
                         </p:row>

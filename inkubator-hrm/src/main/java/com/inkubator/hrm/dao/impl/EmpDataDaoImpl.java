@@ -55,6 +55,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
         criteria.add(Restrictions.eq("bioData.gender", gender));
+        criteria.add(Restrictions.neOrIsNotNull("status", HRMConstant.EMP_TERMINATION));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
@@ -64,6 +65,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
         criteria.add(Restrictions.gt("bioData.dateOfBirth", startDate));
         criteria.add(Restrictions.lt("bioData.dateOfBirth", endDate));
+        criteria.add(Restrictions.neOrIsNotNull("status", HRMConstant.EMP_TERMINATION));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
@@ -72,6 +74,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
         criteria.add(Restrictions.lt("bioData.dateOfBirth", date));
+        criteria.add(Restrictions.neOrIsNotNull("status", HRMConstant.EMP_TERMINATION));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
@@ -80,6 +83,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
         criteria.add(Restrictions.gt("bioData.dateOfBirth", date));
+        criteria.add(Restrictions.neOrIsNotNull("status", HRMConstant.EMP_TERMINATION));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
@@ -88,6 +92,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.createAlias("jabatanByJabatanId", "jabatan", JoinType.INNER_JOIN);
         criteria.add(Restrictions.eq("jabatan.department.id", departmentId));
+        criteria.add(Restrictions.neOrIsNotNull("status", HRMConstant.EMP_TERMINATION));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 

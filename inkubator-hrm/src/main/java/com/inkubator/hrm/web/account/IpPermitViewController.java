@@ -7,6 +7,7 @@ package com.inkubator.hrm.web.account;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.IpPermit;
 import com.inkubator.hrm.service.IpPermitService;
+import com.inkubator.hrm.util.IpUtil;
 import com.inkubator.hrm.web.lazymodel.IpPermitLazyDataModel;
 import com.inkubator.hrm.web.search.IpPermitSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
@@ -63,6 +64,9 @@ public class IpPermitViewController extends BaseController{
     public void doSelectEntity() {
         try {
             selected = this.service.getEntiyByPK(selected.getId());
+            Long ip = Long.valueOf(String.valueOf(selected.getFromAddress1()+""+selected.getUntilAddress1()));
+            System.out.println(ip+"---");
+            System.out.println(IpUtil.longToIpV4(ip) + " haha hihi huhu hehe hoho");
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }

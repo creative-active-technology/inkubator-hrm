@@ -44,6 +44,7 @@ public class City implements java.io.Serializable {
     private Set<BioEmploymentHistory> bioEmploymentHistories = new HashSet<BioEmploymentHistory>(0);
     private Set<BioBankAccount> bioBankAccounts = new HashSet<BioBankAccount>(0);
     private Set<BioIdCard> bioIdCards = new HashSet<BioIdCard>(0);
+    private Set<EducationNonFormal> educationNonFormals = new HashSet<EducationNonFormal>(0);
 
     public City() {
     }
@@ -243,6 +244,17 @@ public class City implements java.io.Serializable {
     public void setBioIdCards(Set<BioIdCard> bioIdCards) {
         this.bioIdCards = bioIdCards;
     }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "city")
+	public Set<EducationNonFormal> getEducationNonFormals() {
+		return educationNonFormals;
+	}
+
+	public void setEducationNonFormals(Set<EducationNonFormal> educationNonFormals) {
+		this.educationNonFormals = educationNonFormals;
+	}
+    
+    
 
     
 }

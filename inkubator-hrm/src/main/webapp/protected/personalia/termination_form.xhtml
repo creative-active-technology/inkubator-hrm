@@ -40,7 +40,7 @@
                                 <h:outputLabel for="employeeId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 60%">
-                                <p:autoComplete id="employeeId" 
+<!--                                <p:autoComplete id="employeeId" 
                                                 title="#{appmsg['personachievement.employee_name']}" 
                                                 value="#{terminationFormController.model.empDataWithNik}"
                                                 completeMethod="#{terminationFormController.completeEmployeeString}" 
@@ -48,6 +48,20 @@
                                                 required="true" 
                                                 requiredMessage="#{appmsg['personachievement.person_achievement_should_not_be_empty']}" 
                                                 styleClass="isitext_hrm" size="44" transient="true" style="width:250px;" disabled="#{terminationFormController.isUpdate}">
+                                </p:autoComplete>-->
+                                
+                                <p:autoComplete id="employeeId" 
+                                                title="#{appmsg['personachievement.employee_name']}" 
+                                                value="#{terminationFormController.model.empData}"
+                                                completeMethod="#{terminationFormController.doAutoCompletEmployee}" 
+                                                scrollHeight="100"
+                                                required="true" 
+                                                var="empData"
+                                                itemValue="#{empData}"
+                                                itemLabel="#{empData.nik} #{empData.bioData.firstName} #{empData.bioData.lastName}"
+                                                converter="#{empDataConverter}"
+                                                requiredMessage="#{appmsg['personachievement.person_achievement_should_not_be_empty']}" 
+                                                styleClass="isitext_hrm" transient="true" size="44">
                                 </p:autoComplete>
 
                             </p:column>

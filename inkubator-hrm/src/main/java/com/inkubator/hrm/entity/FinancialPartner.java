@@ -30,7 +30,6 @@ public class FinancialPartner implements Serializable {
     private Integer accountNumber;
     private String accountName;
     private String productName;
-    private Boolean isDefault;
     
     private String createdBy;
     private Date createdOn;
@@ -110,15 +109,6 @@ public class FinancialPartner implements Serializable {
 
 	public void setAccountName(String accountName) {
 		this.accountName = accountName;
-	}
-
-	@Column(name = "is_default")
-	public Boolean getIsDefault() {
-		return isDefault;
-	}
-
-	public void setIsDefault(Boolean isDefault) {
-		this.isDefault = isDefault;
 	}
 
 	@Column(name = "created_by", length = 45)

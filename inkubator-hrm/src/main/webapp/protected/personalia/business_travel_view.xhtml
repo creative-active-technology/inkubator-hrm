@@ -72,26 +72,26 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="businessTravelNo"  style="width: 17%">
+                            <p:column sortBy="businessTravelNo"  style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['businesstravel.business_travel_number']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{businessTravelData.businessTravelNo}"/>
                             </p:column>   
-                            <p:column sortBy="empData.nik"  style="width: 33%">
+                            <p:column sortBy="empData.nik"  style="width: 37%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['businesstravel.employee']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{businessTravelData.empData.nik} #{businessTravelData.empData.bioData.fullName}"/>
                             </p:column> 
-                            <p:column sortBy="destination"  style="width: 33%">
+                            <p:column sortBy="destination"  style="width: 30%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['businesstravel.destination']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{businessTravelData.destination}"/>
                             </p:column>   
                             
-                            <p:column headerText="#{appmsg['global.action']}" style="width: 14%;text-align: center" exportable="false">
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 15%;text-align: center" exportable="false">
                             	<p:commandButton icon="ui-icon-document" title="#{appmsg['global.print']}" label="#{appmsg['global.print']}" 
                                 				 style="font-size: 10px!important" action="#{businessTravelViewController.doBeforePrint()}" onclick="statusDialog.show()"  oncomplete="dialogPrint.show()">                        
                                     <f:setPropertyActionListener value="#{businessTravelData}" target="#{businessTravelViewController.selectedBusinessTravel}" />
