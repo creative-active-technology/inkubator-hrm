@@ -296,12 +296,12 @@
                                                 <p:menuitem value="#{appmsg['currency.currency']}" icon="img-currency" style="font-size: 12px !important;color: #003366" title="#{appmsg['currency.currency']}" url="/protected/reference/currency_view.htm" />
                                                 <p:menuitem value="#{appmsg['bank.bank']}" icon="img-bank" style="font-size: 12px !important;color: #003366" title="#{appmsg['bank.bank']}" url="/protected/reference/bank_view.htm" />   
                                                 <p:menuitem value="#{appmsg['transactionCodefication.transactionCodefication']}" icon="img-transactionCodefication" style="font-size: 12px !important;color: #003366" title="#{appmsg['transactionCodefication.transactionCodefication']}" url="/protected/reference/transaction_codefication_view.htm" />
-                                                <p:menuitem value="Resource Type" icon="img-transactionCodefication" style="font-size: 12px !important;color: #003366" title="Resource Type" url="/protected/reference/resource_type_view.htm" />
-                                                <p:menuitem value="Resource Name" icon="img-transactionCodefication" style="font-size: 12px !important;color: #003366" title="Resource Name" url="/protected/reference/resource_name_view.htm" />
-                                                <p:menuitem value="Saving Type" icon="img-transactionCodefication" style="font-size: 12px !important;color: #003366" title="Saving Type" url="/protected/reference/saving_type_view.htm" />
-                                                <p:menuitem value="Business Type" icon="img-transactionCodefication" style="font-size: 12px !important;color: #003366" title="Business Type" url="/protected/reference/business_type_view.htm" />
-                                                <p:menuitem value="Finance Non Banking" icon="img-transactionCodefication" style="font-size: 12px !important;color: #003366" title="Finance Non Banking" url="/protected/reference/finance_non_banking.htm" />
-                                                <p:menuitem value="Hospital" icon="img-transactionCodefication" style="font-size: 12px !important;color: #003366" title="Hospital" url="/protected/reference/hospital_view.htm" />
+                                                <p:menuitem value="#{appmsg['resourceType.resourceType']}" icon="img-transactionCodefication" style="font-size: 12px !important;color: #003366" title="#{appmsg['resourceType.resourceType']}" url="/protected/reference/resource_type_view.htm" />
+                                                <p:menuitem value="#{appmsg['resourceName.resourceName']}" icon="img-transactionCodefication" style="font-size: 12px !important;color: #003366" title="#{appmsg['resourceName.resourceName']}" url="/protected/reference/resource_name_view.htm" />
+                                                <p:menuitem value="#{appmsg['savingType.savingType']}" icon="img-transactionCodefication" style="font-size: 12px !important;color: #003366" title="#{appmsg['savingType.savingType']}" url="/protected/reference/saving_type_view.htm" />
+                                                <p:menuitem value="#{appmsg['businessType.businessType']}" icon="img-transactionCodefication" style="font-size: 12px !important;color: #003366" title="#{appmsg['businessType.businessType']}" url="/protected/reference/business_type_view.htm" />
+                                                <p:menuitem value="#{appmsg['financialNonBanking.financialNonBanking']}" icon="img-transactionCodefication" style="font-size: 12px !important;color: #003366" title="#{appmsg['financialNonBanking.financialNonBanking']}" url="/protected/reference/finance_non_banking_view.htm" />
+                                                <p:menuitem value="#{appmsg['hospital.hospital']}" icon="img-transactionCodefication" style="font-size: 12px !important;color: #003366" title="#{appmsg['hospital.hospital']}" url="/protected/reference/hospital_view.htm" />
                                                 
                                             </p:submenu>        
                                             <p:submenu label="#{appmsg['menu.organisation_setting']}"  styleClass="menu_child" >
@@ -328,7 +328,7 @@
                                                 <p:menuitem value="#{appmsg['permitClassification.permitClassification']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['permitClassification.permitClassification']}" url="/protected/working_time/permit_classification_view.htm" /> 
                                                 <!--<p:menuitem value="#{appmsg['leavescheme.leave_scheme']}" icon="img-leave-scheme" style="font-size: 12px !important;color: #003366" title="#{appmsg['leavescheme.leave_scheme']}" url="/protected/working_time/leave_scheme_view.htm" />-->
                                                 <p:menuitem value="#{appmsg['publicHoliday.publicHoliday']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['publicHoliday.publicHoliday']}" url="/protected/working_time/public_holiday_view.htm" /> 
-                                                <p:menuitem value="Machine Finger" icon="img-finger-print" style="font-size: 12px !important;color: #003366" title="Machine Finger" url="/protected/working_time/mecine_finger_view.htm" /> 
+                                                <p:menuitem value="#{appmsg['mechineFinger.mechineFinger']}" icon="img-finger-print" style="font-size: 12px !important;color: #003366" title="#{appmsg['mechineFinger.mechineFinger']}" url="/protected/working_time/mecine_finger_view.htm" /> 
 
 
                                             </p:submenu>
@@ -380,6 +380,8 @@
                                             <p:menuitem value="Neraca Cuti" icon="img-periode" style="font-size: 12px !important;color: #003366" title="Neraca Cuti" url="/protected/employee/neraca_cuti_view.htm" />
                                             <p:menuitem value="#{appmsg['leaveimplementation.leave_implementation']}" icon="img-task" style="font-size: 12px !important;color: #003366" title="#{appmsg['leaveimplementation.leave_implementation']}" url="/protected/working_time/leave_implementation_view.htm" />
                                             <p:menuitem value="Implementasi Lembur" icon="img-task" style="font-size: 12px !important;color: #003366" title="Implementasi Lembur" url="/protected/employee/overtime_implementation_view.htm" />
+                                            <p:menuitem value="Permit Distribution" icon="img-task" style="font-size: 12px !important;color: #003366" title="Permit Distribution" url="/protected/employee/permit_distribution_view.htm" />
+                                            <p:menuitem value="Neraca Permit" icon="img-task" style="font-size: 12px !important;color: #003366" title="Neraca Permit" url="/protected/employee/neraca_permit_view.htm" />
                                         </p:submenu>
                                         <p:submenu label="Payroll"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-payroll">
                                             <!--                                            <p:menuitem value="Price Simulator" icon="img-price-simulator" style="font-size: 12px !important;color: #003366" title="Make Price Simulation" url="/protected/price_simulator.htm" /> 
@@ -402,6 +404,7 @@
                                         -->
                                         <p:submenu label="#{appmsg['report.report']}"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-reporting">
                                         	<p:menuitem value="#{appmsg['report.employee_working_group_reporting']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.employee_working_group_reporting']}" url="/protected/report/report_employee_working_group_view.htm" />
+                                                <p:menuitem value="Leave History Report" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="Leave History Report" url="/protected/report/report_leave_history_view.htm" />
                                         </p:submenu>
                                         <p:menuitem value="Logout" icon="ui-icon-power" styleClass="menu" style="color: #ff9933 !important;font-size: 14px!important" title="Logout and Exit" url="/logout.htm" />  
                                     </p:menubar>  

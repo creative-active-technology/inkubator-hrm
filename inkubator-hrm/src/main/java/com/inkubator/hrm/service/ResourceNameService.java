@@ -18,4 +18,7 @@ public interface ResourceNameService extends IService<ResourceName>{
     public List<ResourceName> getByParam(ResourceNameSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
 
     public Long getTotalResourceTypeByParam(ResourceNameSearchParameter searchParameter) throws Exception;
+    
+    public ResourceName getEntityByPkWithDetail(Long id) throws Exception;
+    
 }

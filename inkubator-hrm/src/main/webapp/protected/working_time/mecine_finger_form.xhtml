@@ -21,21 +21,20 @@
                         <p:graphicImage library="images" name="finger_print.png" height="36" width="36"  cache="true"/>
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Mechine Finger" styleClass="header_big" />
-                                <p:outputLabel value="Mechine Finger from Working Time" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['mechineFinger.mechineFinger_form']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['mechineFinger.mechineFinger_header']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
                     <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
                     <h:panelGrid columns="1" style="margin-bottom: 5px;margin-left: 0px">
                         <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
-                        <h:outputLabel value="#{appmsg['maritalstatus.dialog_marital_status_info']}" styleClass="label_hrm" style="font-weight: normal!important"/>
                     </h:panelGrid> 
                     <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
                         
                         <p:row>
                             <p:column style="width: 30%">
-                                <p:outputLabel for="code" value="Code" styleClass="label_hrm"/>
+                                <p:outputLabel for="code" value="#{appmsg['mechineFinger.mechineFinger_code']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="code" value=":" styleClass="label_hrm"/>
@@ -53,7 +52,7 @@
                         
                         <p:row>
                             <p:column style="width: 30%">
-                                <p:outputLabel for="machineName" value="Name" styleClass="label_hrm"/>
+                                <p:outputLabel for="machineName" value="#{appmsg['mechineFinger.mechineFinger_name']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="machineName" value=":" styleClass="label_hrm"/>
@@ -71,7 +70,7 @@
                         
                         <p:row>
                             <p:column style="width: 30%">
-                                <p:outputLabel for="machineMethod" value="Methode" styleClass="label_hrm"/>
+                                <p:outputLabel for="machineMethod" value="#{appmsg['mechineFinger.mechineFinger_method']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="machineMethod" value=":" styleClass="label_hrm"/>

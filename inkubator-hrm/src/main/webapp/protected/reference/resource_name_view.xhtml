@@ -21,8 +21,8 @@
                             <p:graphicImage library="images" name="marital_status.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="Resource Name" styleClass="header_big" />
-                                    <p:outputLabel value="Resource Name From Reference" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['resourceName.resourceName']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['resourceName.resourceName_header']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -61,7 +61,7 @@
                                       id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="Resource Name List"/>
+                                <h:outputText value="#{appmsg['resourceName.resourceName_list']}"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
@@ -83,7 +83,7 @@
                             </p:column>
                             <p:column sortBy="dateOfOwnership" style="width: 23%">
                                 <f:facet name="header">
-                                    <h:outputText value="Date Ownership"/>
+                                    <h:outputText value="#{appmsg['resourceName.date_ownership']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.dateOfOwnership}" >
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
@@ -91,7 +91,7 @@
                             </p:column>
                             <p:column sortBy="resourceType.name" style="width: 23%">
                                 <f:facet name="header">
-                                    <h:outputText value="Resource Name"/>
+                                    <h:outputText value="#{appmsg['resourceType.resourceType']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.resourceType.resourceType}" />
                                     
@@ -146,7 +146,7 @@
                             </h:panelGrid>
                         </div>
                         <h:panelGrid id="panelDialogConfirmId"  columns="3">
-                            <p:outputLabel value="Resource Name"  style="font-weight: bold"/>
+                            <p:outputLabel value="#{appmsg['global.name']}"  style="font-weight: bold"/>
                             <p:outputLabel value=":"  style="font-weight: bold"/>
                             <p:outputLabel value="#{resourceNameViewController.selected.name}" styleClass="label_hrm"/>
                         </h:panelGrid>
@@ -156,7 +156,7 @@
                         <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmDelete.hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
-                <p:dialog widgetVar="detail" header="Resource Name Detail" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
+                <p:dialog widgetVar="detail" header="#{appmsg['resourceName.resourceName_detail']}" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
                           showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)" dynamic="true">
                     <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
                         <p:row>
@@ -168,13 +168,25 @@
                             <p:column><p:outputLabel value="#{resourceNameViewController.selected.name}"/> </p:column>
                         </p:row>
                         <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['resourceName.date_ownership']}" styleClass="label_hrm"/></p:column>
+                            <p:column>
+                                <h:outputLabel value= "#{resourceNameViewController.selected.dateOfOwnership}" >
+                                    <f:convertDateTime pattern="dd MMMM yyyy" />
+                                </h:outputLabel>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['resourceType.resourceType']}" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{resourceNameViewController.selected.resourceType.resourceType}"/> </p:column>
+                        </p:row>
+                        <p:row>
                             <p:column style="color: #003366"><p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{resourceNameViewController.selected.description}"/> </p:column>
                         </p:row>
 
                         <f:facet name="footer">
                             <p:row>
-                                <p:column colspan="2"><p:outputLabel value="Saving Type From Reference" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
+                                <p:column colspan="2"><p:outputLabel value="#{appmsg['resourceName.resourceName_header']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
                             </p:row>
                         </f:facet>
                     </p:panelGrid>

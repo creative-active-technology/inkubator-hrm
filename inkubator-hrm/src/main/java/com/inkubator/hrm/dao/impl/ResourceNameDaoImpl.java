@@ -61,5 +61,13 @@ public class ResourceNameDaoImpl extends IDAOImpl<ResourceName> implements Resou
         } 
         criteria.add(Restrictions.isNotNull("id"));
     }
+
+    @Override
+    public ResourceName getEntityByPkWithDetail(Long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.setFetchMode("resourceType", FetchMode.JOIN);
+        criteria.add(Restrictions.eq("id", id));
+        return (ResourceName) criteria.uniqueResult();
+    }
     
 }

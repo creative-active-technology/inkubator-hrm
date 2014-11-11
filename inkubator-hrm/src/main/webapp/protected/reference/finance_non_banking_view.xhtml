@@ -21,8 +21,8 @@
                             <p:graphicImage library="images" name="marital_status.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="Financial Non Banking" styleClass="header_big" />
-                                    <p:outputLabel value="Financial Non Banking From Reference" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['financialNonBanking.financialNonBanking']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['financialNonBanking.financialNonBanking_header']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -37,6 +37,7 @@
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItem itemLabel="#{appmsg['global.code']}" itemValue="code"/>
                                         <f:selectItem itemLabel="#{appmsg['global.name']}" itemValue="name"/>
+                                        <f:selectItem itemLabel="#{appmsg['financialNonBanking.service_type']}" itemValue="financialService"/>
                                     </p:selectOneMenu>
                                     <p:inputText id="searchId" value="#{financialNonBankingViewController.searchParameter.parameter}" style="width: 250px" styleClass="label_button"/>
                                     <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{financialNonBankingViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
@@ -61,7 +62,7 @@
                                       id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="Financial Non Banking"/>
+                                <h:outputText value="#{appmsg['financialNonBanking.financialNonBanking_list']}"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
@@ -69,17 +70,25 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="code" style="width: 43%">
+                            <p:column sortBy="code" style="width: 20%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.code}" />
                             </p:column>
-                            <p:column sortBy="name" style="width: 43%">
+                            <p:column sortBy="name" style="width: 20%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.name}" />
+                            </p:column>
+                            <p:column sortBy="financialService" style="width: 20%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['financialNonBanking.service_type']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.financialService}" >
+                                    <f:converter converterId="financialServiceConverter" />
+                                </h:outputLabel>
                             </p:column>
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
@@ -141,7 +150,7 @@
                         <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmDelete.hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
-                <p:dialog widgetVar="detail" header="Saving Type Detail" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
+                <p:dialog widgetVar="detail" header="#{appmsg['global.name']}" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
                           showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)" dynamic="true">
                     <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
                         <p:row>
@@ -153,29 +162,29 @@
                             <p:column><p:outputLabel value="#{financialNonBankingViewController.selected.name}"/> </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Address" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['global.address']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{financialNonBankingViewController.selected.address}"/> </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Service Type" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['financialNonBanking.service_type']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{financialNonBankingViewController.selected.financialService}"><f:converter converterId="financialServiceConverter" /></p:outputLabel> </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="City" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['city.city']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{financialNonBankingViewController.selected.city.cityName}"/> </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Provience" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['province.province']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{financialNonBankingViewController.selected.city.province.provinceName}"/> </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Country" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['country.country']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{financialNonBankingViewController.selected.city.province.country.countryName}"/> </p:column>
                         </p:row>
 
                         <f:facet name="footer">
                             <p:row>
-                                <p:column colspan="2"><p:outputLabel value="Saving Type From Reference" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
+                                <p:column colspan="2"><p:outputLabel value="#{appmsg['financialNonBanking.financialNonBanking_header']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
                             </p:row>
                         </f:facet>
                     </p:panelGrid>

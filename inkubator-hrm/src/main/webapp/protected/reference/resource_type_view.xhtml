@@ -21,8 +21,8 @@
                             <p:graphicImage library="images" name="marital_status.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="Resource Type" styleClass="header_big" />
-                                    <p:outputLabel value="Resource Type From Reference" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['resourceType.resourceType']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['resourceType.resourceType_header']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -61,7 +61,7 @@
                                       id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="Resource Type List"/>
+                                <h:outputText value="#{appmsg['resourceType.resourceType_list']}"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
@@ -125,7 +125,7 @@
                             </h:panelGrid>
                         </div>
                         <h:panelGrid id="panelDialogConfirmId"  columns="3">
-                            <p:outputLabel value="Resource Type Name"  style="font-weight: bold"/>
+                            <p:outputLabel value="#{appmsg['global.name']}"  style="font-weight: bold"/>
                             <p:outputLabel value=":"  style="font-weight: bold"/>
                             <p:outputLabel value="#{resourceTypeViewController.selected.resourceType}" styleClass="label_hrm"/>
                         </h:panelGrid>
