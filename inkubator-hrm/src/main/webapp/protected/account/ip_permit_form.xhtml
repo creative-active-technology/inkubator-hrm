@@ -21,8 +21,8 @@
                         <p:graphicImage library="images" name="marital_status.png" height="36" width="36"  cache="true"/>
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Ip Permit Form" styleClass="header_big" />
-                                <p:outputLabel value="Ip Permit Form From Application" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['ipPermit.ipPermit_form']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['ipPermit.ipPermit_header']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -34,7 +34,7 @@
                         
                         <p:row>
                             <p:column style="width: 24%">
-                                <p:outputLabel for="location" value="Lokasi" styleClass="label_hrm"/>
+                                <p:outputLabel for="location" value="#{appmsg['global.location']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="location" value=":" styleClass="label_hrm"/>
@@ -52,7 +52,7 @@
                         
                         <p:row>
                             <p:column style="width: 24%">
-                                <p:outputLabel for="fromAddress1" value="Dari Ip Address" styleClass="label_hrm"/>
+                                <p:outputLabel for="fromAddress1" value="#{appmsg['global.from']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="fromAddress1" value=":" styleClass="label_hrm"/>
@@ -80,7 +80,7 @@
                         
                         <p:row>
                             <p:column style="width: 24%">
-                                <p:outputLabel for="fromAddress5" value="Sampai Ip Address" styleClass="label_hrm"/>
+                                <p:outputLabel for="fromAddress5" value="#{appmsg['global.until']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="fromAddress5" value=":" styleClass="label_hrm"/>

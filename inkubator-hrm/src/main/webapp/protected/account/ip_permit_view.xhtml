@@ -22,8 +22,8 @@
                             <p:graphicImage library="images" name="marital_status.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="Permit Ip" styleClass="header_big" />
-                                    <p:outputLabel value="List Permit Ip from Application" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['ipPermit.ipPermit']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['ipPermit.ipPermit_header']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -36,7 +36,9 @@
                                     <p:outputLabel value=":" />
                                     <p:selectOneMenu value="#{ipPermitViewController.searchParameter.keyParam}" style="width: 150px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemLabel="#{appmsg['maritalstatus.name']}" itemValue="name"/>
+                                        <f:selectItem itemLabel="#{appmsg['global.location']}" itemValue="location"/>
+                                        <f:selectItem itemLabel="#{appmsg['global.from']}" itemValue="from"/>
+                                        <f:selectItem itemLabel="#{appmsg['global.until']}" itemValue="until"/>
                                     </p:selectOneMenu>
                                     <p:inputText id="searchId" value="#{ipPermitViewController.searchParameter.parameter}" style="width: 250px" styleClass="label_button"/>
                                     <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{maritalStatusController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
@@ -61,7 +63,7 @@
                                       id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="List of Permit Ip"/>
+                                <h:outputText value="#{appmsg['ipPermit.list_of_ipPermit']}"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
@@ -71,19 +73,19 @@
                             </p:column>
                             <p:column sortBy="lokasi" style="width: 27%">
                                 <f:facet name="header">
-                                    <h:outputText value="Lokasi"/>
+                                    <h:outputText value="#{appmsg['global.location']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.lokasi}" />
                             </p:column>
-                            <p:column sortBy="lokasi" style="width: 27%">
+                            <p:column sortBy="ipAddressFromView" style="width: 27%">
                                 <f:facet name="header">
-                                    <h:outputText value="Dari"/>
+                                    <h:outputText value="#{appmsg['global.from']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.ipAddressFromView}"/>
                             </p:column>
-                            <p:column sortBy="lokasi" style="width: 27%">
+                            <p:column sortBy="ipAddressUntilView" style="width: 27%">
                                 <f:facet name="header">
-                                    <h:outputText value="Sampai"/>
+                                    <h:outputText value="#{appmsg['global.until']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.ipAddressUntilView}"/>
                             </p:column>
@@ -137,7 +139,7 @@
                             </h:panelGrid>
                         </div>
                         <h:panelGrid id="panelDialogConfirmId"  columns="3">
-                            <p:outputLabel value="#{appmsg['maritalstatus.name']}"  style="font-weight: bold"/>
+                            <p:outputLabel value="#{appmsg['global.location']}"  style="font-weight: bold"/>
                             <p:outputLabel value=":"  style="font-weight: bold"/>
                             <p:outputLabel value="#{ipPermitViewController.selected.lokasi}" styleClass="label_hrm"/>
                         </h:panelGrid>
