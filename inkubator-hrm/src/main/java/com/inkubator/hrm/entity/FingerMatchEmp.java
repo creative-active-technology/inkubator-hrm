@@ -6,9 +6,12 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -23,6 +26,7 @@ public class FingerMatchEmp implements Serializable {
     
     private Integer fingerIndexId;
     private EmpData empData;    
+    private MecineFinger mecineFinger;
     private String nik;
     
     private String createdBy;
@@ -40,6 +44,8 @@ public class FingerMatchEmp implements Serializable {
 
     @Id
     @Column(name = "id", unique = true, nullable = false)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "finger_match_emp_seq_gen")
+    @SequenceGenerator(name = "finger_match_emp_seq_gen", sequenceName = "FingerMatchEmp_SEQ")
     public Long getId() {
         return this.id;
     }
@@ -86,6 +92,15 @@ public class FingerMatchEmp implements Serializable {
 		this.empData = empData;
 	}
 
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "mecine_finger_id", nullable = false)
+	public MecineFinger getMecineFinger() {
+		return mecineFinger;
+	}
+
+	public void setMecineFinger(MecineFinger mecineFinger) {
+		this.mecineFinger = mecineFinger;
+	}
 	
 	@Column(name = "created_by", length = 45)
     public String getCreatedBy() {
