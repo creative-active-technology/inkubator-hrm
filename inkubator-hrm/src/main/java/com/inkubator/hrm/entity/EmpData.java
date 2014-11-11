@@ -551,4 +551,25 @@ public class EmpData implements java.io.Serializable {
 	
     
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "empData")
+	public Set<TempProcessReadFinger> getTempProcessReadFingers() {
+		return tempProcessReadFingers;
+	}
+
+	public void setTempProcessReadFingers(Set<TempProcessReadFinger> tempProcessReadFingers) {
+		this.tempProcessReadFingers = tempProcessReadFingers;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "empData")
+	public Set<FingerMatchEmp> getFingerMatchEmps() {
+		return fingerMatchEmps;
+	}
+
+	public void setFingerMatchEmps(Set<FingerMatchEmp> fingerMatchEmps) {
+		this.fingerMatchEmps = fingerMatchEmps;
+	}
+    
+	
+    
+
 }
