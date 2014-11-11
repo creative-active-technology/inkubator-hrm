@@ -74,6 +74,8 @@ public class EmpData implements java.io.Serializable {
     private Set<LeaveImplementation> temporaryActings = new HashSet<LeaveImplementation>(0);
     private Set<ImplementationOfOverTime> implementationOfOvertimes = new HashSet<ImplementationOfOverTime>(0);
     private Set<CheckInAttendance> checkInAttendances = new HashSet<CheckInAttendance>(0);
+    private Set<TempProcessReadFinger> tempProcessReadFingers = new HashSet<TempProcessReadFinger>(0);
+    private Set<FingerMatchEmp> fingerMatchEmps = new HashSet<FingerMatchEmp>(0);
 
     public EmpData() {
     }
@@ -517,5 +519,26 @@ public class EmpData implements java.io.Serializable {
     public void setCheckInAttendances(Set<CheckInAttendance> checkInAttendances) {
         this.checkInAttendances = checkInAttendances;
     }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "empData")
+	public Set<TempProcessReadFinger> getTempProcessReadFingers() {
+		return tempProcessReadFingers;
+	}
+
+	public void setTempProcessReadFingers(Set<TempProcessReadFinger> tempProcessReadFingers) {
+		this.tempProcessReadFingers = tempProcessReadFingers;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "empData")
+	public Set<FingerMatchEmp> getFingerMatchEmps() {
+		return fingerMatchEmps;
+	}
+
+	public void setFingerMatchEmps(Set<FingerMatchEmp> fingerMatchEmps) {
+		this.fingerMatchEmps = fingerMatchEmps;
+	}
+    
+	
+    
 
 }

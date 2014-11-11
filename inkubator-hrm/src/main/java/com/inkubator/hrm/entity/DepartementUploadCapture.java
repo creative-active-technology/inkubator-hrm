@@ -73,7 +73,7 @@ public class DepartementUploadCapture implements java.io.Serializable {
         this.mecineFinger = mecineFinger;
     }
 
-    @Column(name = "description", length = 65535)
+    @Column(name = "description", length = 65535, columnDefinition = "Text")
     public String getDescription() {
         return this.description;
     }
