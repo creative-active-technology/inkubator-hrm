@@ -55,6 +55,8 @@ public class MecineFinger implements java.io.Serializable {
     private Set<MacineFingerUpload> macineFingerUploads = new HashSet<MacineFingerUpload>(0);
     private Set<DepartementUploadCapture> departementUploadCaptures = new HashSet<DepartementUploadCapture>(0);
     private List<Department> departments = new ArrayList<>(0);
+    private List<FingerSwapCaptured> fingerSwapCaptureds = new ArrayList<FingerSwapCaptured>(0);
+    private List<TempProcessReadFinger> tempProcessReadFingers = new ArrayList<TempProcessReadFinger>(0);
 
     public MecineFinger() {
     }
@@ -130,7 +132,7 @@ public class MecineFinger implements java.io.Serializable {
         this.name = name;
     }
 
-    @Column(name = "description", length = 65535)
+    @Column(name = "description", length = 65535, columnDefinition = "Text")
     public String getDescription() {
         return this.description;
     }
@@ -332,7 +334,26 @@ public class MecineFinger implements java.io.Serializable {
         this.departementUploadCaptures = departementUploadCaptures;
     }
 
-    @Column(name = "base_on_field")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "mecineFinger")
+    public List<FingerSwapCaptured> getFingerSwapCaptureds() {
+		return fingerSwapCaptureds;
+	}
+
+	public void setFingerSwapCaptureds(List<FingerSwapCaptured> fingerSwapCaptureds) {
+		this.fingerSwapCaptureds = fingerSwapCaptureds;
+	}
+		
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "mecineFinger")
+	public List<TempProcessReadFinger> getTempProcessReadFingers() {
+		return tempProcessReadFingers;
+	}
+
+	public void setTempProcessReadFingers(
+			List<TempProcessReadFinger> tempProcessReadFingers) {
+		this.tempProcessReadFingers = tempProcessReadFingers;
+	}
+
+	@Column(name = "base_on_field")
     public Integer getBaseOnField() {
         return baseOnField;
     }
