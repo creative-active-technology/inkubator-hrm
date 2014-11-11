@@ -49,6 +49,7 @@ import com.inkubator.hrm.util.MapUtil;
 import com.inkubator.hrm.util.StringsUtils;
 import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
 import com.inkubator.hrm.web.model.DistributionOvetTimeModel;
+import com.inkubator.hrm.web.model.PermitDistributionModel;
 import com.inkubator.hrm.web.model.PlacementOfEmployeeWorkScheduleModel;
 import com.inkubator.hrm.web.search.EmpDataSearchParameter;
 import com.inkubator.hrm.web.search.ReportEmpWorkingGroupParameter;
@@ -79,13 +80,13 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     @Autowired
     private GolonganJabatanDao golonganJabatanDao;
     @Autowired
-    private EmpCareerHistoryDao empCareerHistoryDao;    
+    private EmpCareerHistoryDao empCareerHistoryDao;
     @Autowired
     private AttendanceStatusDao attendanceStatusDao;
     @Autowired
     private ApprovalActivityDao approvalActivityDao;
     @Autowired
-    private HrmUserDao hrmUserDao;        
+    private HrmUserDao hrmUserDao;
 
     @Override
     public EmpData getEntiyByPK(String id) throws Exception {
@@ -576,27 +577,33 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<EmpData> getEmployeeByOtSearchParameter(DistributionOvetTimeModel model) throws Exception {
-       return empDataDao.getEmployeeByOtSearchParameter(model);
+        return empDataDao.getEmployeeByOtSearchParameter(model);
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<EmpData> getEmpDataByListId(List<Long> data) throws Exception {
-       return this.empDataDao.getEmpDataByListId(data);
+        return this.empDataDao.getEmpDataByListId(data);
     }
 
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<EmpData> getAllDataReportEmpWorkingGroupByParam(ReportEmpWorkingGroupParameter param, int firstResult, int maxResults, Order orderable) {
-		return this.empDataDao.getAllDataReportEmpWorkingGroupByParam(param, firstResult, maxResults, orderable);
-		
-	}
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<EmpData> getAllDataReportEmpWorkingGroupByParam(ReportEmpWorkingGroupParameter param, int firstResult, int maxResults, Order orderable) {
+        return this.empDataDao.getAllDataReportEmpWorkingGroupByParam(param, firstResult, maxResults, orderable);
 
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-	public Long getTotalReportEmpWorkingGroupByParam(ReportEmpWorkingGroupParameter param) {
-		return this.empDataDao.getTotalReportEmpWorkingGroupByParam(param);
-		
-	}
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalReportEmpWorkingGroupByParam(ReportEmpWorkingGroupParameter param) {
+        return this.empDataDao.getTotalReportEmpWorkingGroupByParam(param);
+
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<EmpData> getEmployeelBySearchEmployeePermit(PermitDistributionModel model) throws Exception {
+        return empDataDao.getEmployeeBySearchEmployeePermit(model);
+    }
 
 }

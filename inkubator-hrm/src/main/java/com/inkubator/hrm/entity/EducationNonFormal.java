@@ -26,6 +26,8 @@ public class EducationNonFormal implements Serializable {
     private String address;
     private City city;
     private String postalCode;
+    private String officialPhoneNo;
+    private String officialEmail;
     private String createdBy;
     private String updatedBy;
     private Date createdOn;
@@ -117,6 +119,24 @@ public class EducationNonFormal implements Serializable {
 
 	public void setPostalCode(String postalCode) {
 		this.postalCode = postalCode;
+	}	
+	
+	@Column(name = "official_phone_no", length = 25)
+	public String getOfficialPhoneNo() {
+		return officialPhoneNo;
+	}
+
+	public void setOfficialPhoneNo(String officialPhoneNo) {
+		this.officialPhoneNo = officialPhoneNo;
+	}
+
+	@Column(name = "official_email", length = 100)
+	public String getOfficialEmail() {
+		return officialEmail;
+	}
+
+	public void setOfficialEmail(String officialEmail) {
+		this.officialEmail = officialEmail;
 	}
 
 	@Column(name = "created_by", length = 45)

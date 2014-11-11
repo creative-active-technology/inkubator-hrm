@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -57,6 +58,7 @@ public class MecineFinger implements java.io.Serializable {
     private List<Department> departments = new ArrayList<>(0);
     private List<FingerSwapCaptured> fingerSwapCaptureds = new ArrayList<FingerSwapCaptured>(0);
     private List<TempProcessReadFinger> tempProcessReadFingers = new ArrayList<TempProcessReadFinger>(0);
+    private List<FingerMatchEmp> fingerMatchEmps = new ArrayList<FingerMatchEmp>(0);
 
     public MecineFinger() {
     }
@@ -351,6 +353,15 @@ public class MecineFinger implements java.io.Serializable {
 	public void setTempProcessReadFingers(
 			List<TempProcessReadFinger> tempProcessReadFingers) {
 		this.tempProcessReadFingers = tempProcessReadFingers;
+	}
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "mecineFinger")
+	public List<FingerMatchEmp> getFingerMatchEmps() {
+		return fingerMatchEmps;
+	}
+
+	public void setFingerMatchEmps(List<FingerMatchEmp> fingerMatchEmps) {
+		this.fingerMatchEmps = fingerMatchEmps;
 	}
 
 	@Column(name = "base_on_field")
