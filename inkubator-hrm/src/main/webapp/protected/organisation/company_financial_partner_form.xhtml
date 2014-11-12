@@ -1,0 +1,147 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/dialog_layout.xhtml">
+            <ui:define name="windowTitle">
+
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlFinancialPartnerFormId" globalOnly="true" showDetail="true"/>
+                <h:form id="formFinancialPartnerFormId">
+                	<p:focus context="formFinancialPartnerFormId"/>
+                    <h:panelGrid  columns="2">
+                        <p:graphicImage library="images" name="company.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['organization.financial_partner_form']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['organization.financial_partner_data_from_organization']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="1" style="margin-bottom: 5px;margin-left: 0px">
+                        <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                    </h:panelGrid> 
+                    <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
+                    	<p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="productNameId" value="#{appmsg['organization.product_name']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="productNameId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                            	<p:inputText id="productNameId" title="#{appmsg['organization.product_name']}" value="#{companyFinancialPartnerFormController.model.productName}" 
+	                            			 required="true" maxlength="60" styleClass="isitext_hrm" style="width:260px;"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="productNameId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="serviceTypeId" value="#{appmsg['organization.service_type']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="serviceTypeId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                            	<p:selectOneMenu id="serviceTypeId" styleClass="isitext_hrm" value="#{companyFinancialPartnerFormController.model.financialService}" style="width:266px;" required="true">
+	                            	<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+	                            	<!-- cek HRMConstant -->
+	                            	<f:selectItem itemLabel="#{appmsg['organization.insurance']}" itemValue="0"/>
+	                            	<f:selectItem itemLabel="#{appmsg['organization.financing']}" itemValue="1"/>
+	                            	<f:selectItem itemLabel="#{appmsg['organization.pension_fund']}" itemValue="2"/>
+	                            	<p:ajax listener="#{companyFinancialPartnerFormController.onChangeFinancialService()}" update="financialNonBankingId"/>
+	                        	</p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="serviceTypeId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="financialNonBankingId" value="#{appmsg['organization.service_type']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="financialNonBankingId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                            	<p:selectOneMenu id="financialNonBankingId" styleClass="isitext_hrm" value="#{companyFinancialPartnerFormController.model.financialNonBankingId}" style="width:266px;" required="true">
+	                            	<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+	                            	<f:selectItems value="#{companyFinancialPartnerFormController.financialNonBankings}" var="financialNonBanking" itemValue="#{financialNonBanking.id}" itemLabel="#{financialNonBanking.name}"/>
+	                        	</p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="financialNonBankingId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="accountNumberId" value="#{appmsg['organization.contract_no']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="accountNumberId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                            	<pe:inputNumber id="accountNumberId" title="#{appmsg['global.account_number']}" value="#{companyFinancialPartnerFormController.model.accountNumber}" 
+	                            			 required="true" thousandSeparator="" decimalPlaces="0" maxValue="99999999999999999999" styleClass="isitext_hrm" style="width:260px;"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="accountNumberId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="accountNameId" value="#{appmsg['global.account_name']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="accountNameId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                            	<p:inputText id="accountNameId" title="#{appmsg['organization.company_account_name']}" value="#{companyFinancialPartnerFormController.model.accountName}" 
+	                            			 required="true" maxlength="60" styleClass="isitext_hrm" style="width:260px;"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="accountNameId"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="2" style="margin-bottom: -30px!important">
+                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formFinancialPartnerFormId,:growlFinancialPartnerFormId"
+                                         action="#{companyFinancialPartnerFormController.doSave()}" styleClass="isitext_hrm"
+                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
+                                         icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formFinancialPartnerFormId"
+                                         action="#{companyFinancialPartnerFormController.doReset()}" icon="ui-icon-refresh" styleClass="isitext_hrm" >  
+                            <p:resetInput target="formFinancialPartnerFormId" />  
+                        </p:commandButton>
+                    </h:panelGrid>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

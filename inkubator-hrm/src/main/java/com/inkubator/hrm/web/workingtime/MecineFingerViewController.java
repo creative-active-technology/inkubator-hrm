@@ -94,6 +94,14 @@ public class MecineFingerViewController extends BaseController {
         return "/protected/working_time/mecine_finger_"+ page +".htm?faces-redirect=true&execution=e" + seleced.getId();
     }
     
+    public void doSelectEntity() {
+        try {
+            seleced = this.service.getEntiyByPK(seleced.getId());
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
+        }
+    }
+    
     public void doAdd() {
         Map<String, Object> options = new HashMap<>();
         options.put("modal", true);

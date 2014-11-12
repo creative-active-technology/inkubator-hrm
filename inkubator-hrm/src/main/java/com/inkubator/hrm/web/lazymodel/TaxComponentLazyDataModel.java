@@ -38,7 +38,7 @@ public class TaxComponentLazyDataModel extends LazyDataModel<TaxComponent> imple
 	        if (sortField != null) {
 	            orderable = (sortOrder == SortOrder.ASCENDING) ? Order.asc(sortField) : Order.desc(sortField);
 	        } else {
-	        	orderable = Order.desc("name");
+	        	orderable = Order.desc("id");
 	        }
 	        
 	        taxComponents = taxComponentService.getByParam(parameter, first, pageSize, orderable);

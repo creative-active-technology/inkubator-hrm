@@ -68,44 +68,44 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="wtOverTime" >
+                            <p:column sortBy="wtOverTime" style="width: 15%">
                                 <f:facet name="header">
                                     <h:outputText value="Nama Lembur"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.wtOverTime.name}" />
                             </p:column>
-                            <p:column sortBy="implementationNumber" >
+                            <p:column sortBy="implementationNumber" style="width: 15%">
                                 <f:facet name="header">
                                     <h:outputText value="Nomor Pelaksanaan"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.code}" />
                             </p:column>
-                            <p:column sortBy="empData">
+                            <p:column sortBy="empData" style="width: 25%">
                                 <f:facet name="header">
                                     <h:outputText value="Nama Karyawan"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.empData.nikWithFullName}" />
                             </p:column>
-                            <p:column sortBy="implementationDate">
+                            <p:column sortBy="implementationDate" style="width: 10%">
                                 <f:facet name="header">
                                     <h:outputText value="Tanggal Pelaksanaan"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.implementationDate}" />
                             </p:column>
-                            <p:column sortBy="startTime">
+                            <p:column sortBy="startTime" style="width: 10%">
                                 <f:facet name="header">
                                     <h:outputText value="Mulai Lembur"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.startTime}" />
                             </p:column>
-                            <p:column sortBy="endTime">
+                            <p:column sortBy="endTime" style="width: 10%">
                                 <f:facet name="header">
                                     <h:outputText value="Selesai Lembur"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.endTime}" />
                             </p:column>
 
-                            <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 12%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
                                                  onclick="statusDialog.show()"  oncomplete="detail.show()" update=":detailPanel"
                                                  style="font-size: 10px!important" action="#{implementationOfOverTimeViewController.doSelectEntityWithDetail()}">                        

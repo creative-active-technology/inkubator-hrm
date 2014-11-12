@@ -56,6 +56,11 @@ public class PermitClassification  implements java.io.Serializable {
         this.id = id;
         this.attendanceStatus = attendanceStatus;
     }
+    
+    public PermitClassification(long id) {
+        this.id = id;
+    }
+    
     public PermitClassification(long id, AttendanceStatus attendanceStatus, String code, String name, Boolean status, Integer calculation, Integer basePeriod, Integer availibility, Date dateIncreased, Integer quantity, Integer limitByDay, Boolean onePerEmployee, Integer maxPerMonth, Double salaryCut, Boolean attachmentRequired, String description, String createdBy, Date createdOn, String updatedBy, Date updatedOn) {
        this.id = id;
        this.attendanceStatus = attendanceStatus;

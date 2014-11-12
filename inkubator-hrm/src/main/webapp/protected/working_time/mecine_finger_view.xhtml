@@ -21,8 +21,8 @@
                             <p:graphicImage library="images" name="finger_print.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="Machine Finger" styleClass="header_big" />
-                                    <p:outputLabel value="Machine Finger from Working Time" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['mechineFinger.mechineFinger']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['mechineFinger.mechineFinger_header']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -35,8 +35,8 @@
                                     <p:outputLabel value=":" />
                                     <p:selectOneMenu value="#{mecineFingerViewController.mecineFingerSearchParamater.keyParam}" style="width: 150px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemLabel="Mecine Name" itemValue="name"/>
-                                        <f:selectItem itemLabel="Mecine Method" itemValue="methodType"/>
+                                        <f:selectItem itemLabel="#{appmsg['mechineFinger.mechineFinger_name']}" itemValue="name"/>
+                                        <f:selectItem itemLabel="#{appmsg['mechineFinger.mechineFinger_method']}" itemValue="methodType"/>
                                     </p:selectOneMenu>
                                     <p:inputText id="searchId" value="#{mecineFingerViewController.mecineFingerSearchParamater.parameter}" style="width: 250px" styleClass="label_button"/>
                                     <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{mecineFingerViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
@@ -61,7 +61,7 @@
                                       id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="List of Mecine Finger"/>
+                                <h:outputText value="#{appmsg['mechineFinger.list_of_mechineFinger']}"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
@@ -71,19 +71,19 @@
                             </p:column>
                             <p:column sortBy="code">
                                 <f:facet name="header">
-                                    <h:outputText value="Finger Code"/>
+                                    <h:outputText value="#{appmsg['mechineFinger.mechineFinger_code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.code}" />
                             </p:column>
                             <p:column sortBy="name" >
                                 <f:facet name="header">
-                                    <h:outputText value="Finger Name"/>
+                                    <h:outputText value="#{appmsg['mechineFinger.mechineFinger_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.name}" />
                             </p:column>
-                            <p:column sortBy="name">
+                            <p:column sortBy="mecineMethode">
                                 <f:facet name="header">
-                                    <h:outputText value="Metode"/>
+                                    <h:outputText value="#{appmsg['mechineFinger.mechineFinger_method']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.mecineMethode}" >
                                     <f:converter converterId="mecineFingerConverter"/>
@@ -91,7 +91,7 @@
                             </p:column>
                             <p:column sortBy="description" >
                                 <f:facet name="header">
-                                    <h:outputText value="Deskripsi"/>
+                                    <h:outputText value="#{appmsg['global.description']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.description}" />
                             </p:column>
@@ -104,8 +104,8 @@
                                 - 
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
                                                  onclick="statusDialog.show()"  oncomplete="detail.show()" update=":detailPanel"
-                                                 style="font-size: 10px!important" action="#{maritalStatusController.doSelectEntity()}">                        
-                                    <f:setPropertyActionListener value="#{data}" target="#{maritalStatusController.selected}" />
+                                                 style="font-size: 10px!important" action="#{mecineFingerViewController.doSelectEntity()}">                        
+                                    <f:setPropertyActionListener value="#{data}" target="#{mecineFingerViewController.seleced}" />
                                 </p:commandButton>
                                 -
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
@@ -151,7 +151,7 @@
                             </h:panelGrid>
                         </div>
                         <h:panelGrid id="panelDialogConfirmId"  columns="3">
-                            <p:outputLabel value="Machine Name"  style="font-weight: bold"/>
+                            <p:outputLabel value="#{appmsg['mechineFinger.mechineFinger_name']}"  style="font-weight: bold"/>
                             <p:outputLabel value=":"  style="font-weight: bold"/>
                             <p:outputLabel value="#{mecineFingerViewController.seleced.name}" styleClass="label_hrm"/>
                         </h:panelGrid>
@@ -161,18 +161,34 @@
                         <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmDelete.hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
-                <p:dialog widgetVar="detail" header="#{appmsg['maritalstatus.detail_maritalstatus']}" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
+                <p:dialog widgetVar="detail" header="#{appmsg['mechineFinger.mechineFinger_detail']}" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
                           showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)" dynamic="true">
                     <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
 
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['maritalstatus.name']}" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{maritalStatusController.selected.name}"/> </p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['mechineFinger.mechineFinger_code']}" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{mecineFingerViewController.seleced.code}"/> </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['mechineFinger.mechineFinger_name']}" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{mecineFingerViewController.seleced.name}"/> </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['mechineFinger.mechineFinger_method']}" styleClass="label_hrm"/></p:column>
+                            <p:column>
+                                <h:outputLabel value= "#{mecineFingerViewController.seleced.mecineMethode}" >
+                                    <f:converter converterId="mecineFingerConverter"/>
+                                </h:outputLabel>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/></p:column>
+                            <p:column><h:outputLabel value= "#{mecineFingerViewController.seleced.description}" /></p:column>
                         </p:row>
 
                         <f:facet name="footer">
                             <p:row>
-                                <p:column colspan="2"><p:outputLabel value="#{appmsg['maritalstatus.marital_status_footer']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
+                                <p:column colspan="2"><p:outputLabel value="#{appmsg['mechineFinger.mechineFinger_header']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
                             </p:row>
                         </f:facet>
                     </p:panelGrid>

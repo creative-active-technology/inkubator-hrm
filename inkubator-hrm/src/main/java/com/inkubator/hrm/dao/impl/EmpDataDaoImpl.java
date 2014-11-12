@@ -12,6 +12,7 @@ import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
 import com.inkubator.hrm.web.model.DistributionOvetTimeModel;
+import com.inkubator.hrm.web.model.PermitDistributionModel;
 import com.inkubator.hrm.web.model.PlacementOfEmployeeWorkScheduleModel;
 import com.inkubator.hrm.web.search.EmpDataSearchParameter;
 import com.inkubator.hrm.web.search.ReportEmpWorkingGroupParameter;
@@ -54,6 +55,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
         criteria.add(Restrictions.eq("bioData.gender", gender));
+        criteria.add(Restrictions.neOrIsNotNull("status", HRMConstant.EMP_TERMINATION));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
@@ -63,6 +65,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
         criteria.add(Restrictions.gt("bioData.dateOfBirth", startDate));
         criteria.add(Restrictions.lt("bioData.dateOfBirth", endDate));
+        criteria.add(Restrictions.neOrIsNotNull("status", HRMConstant.EMP_TERMINATION));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
@@ -71,6 +74,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
         criteria.add(Restrictions.lt("bioData.dateOfBirth", date));
+        criteria.add(Restrictions.neOrIsNotNull("status", HRMConstant.EMP_TERMINATION));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
@@ -79,6 +83,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
         criteria.add(Restrictions.gt("bioData.dateOfBirth", date));
+        criteria.add(Restrictions.neOrIsNotNull("status", HRMConstant.EMP_TERMINATION));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
@@ -87,6 +92,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.createAlias("jabatanByJabatanId", "jabatan", JoinType.INNER_JOIN);
         criteria.add(Restrictions.eq("jabatan.department.id", departmentId));
+        criteria.add(Restrictions.neOrIsNotNull("status", HRMConstant.EMP_TERMINATION));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
@@ -462,46 +468,104 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.setFetchMode("jabatanByJabatanGajiId", FetchMode.JOIN);
         criteria.setFetchMode("bioData", FetchMode.JOIN);
         criteria.setFetchMode("jabatanByJabatanGajiId.department", FetchMode.JOIN);
-          criteria.setFetchMode("jabatanByJabatanGajiId.unitKerja", FetchMode.JOIN);
+        criteria.setFetchMode("jabatanByJabatanGajiId.unitKerja", FetchMode.JOIN);
         return criteria.list();
     }
 
-	@Override
-	public List<EmpData> getAllDataReportEmpWorkingGroupByParam(ReportEmpWorkingGroupParameter param, int firstResult, int maxResults, Order orderable) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
-		criteria.createAlias("wtGroupWorking", "wtGroupWorking", JoinType.LEFT_OUTER_JOIN);
-		criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
-		criteria.createAlias("jabatanByJabatanId.department", "department", JoinType.INNER_JOIN);
-		doSearchReportEmpWorkingGroupByParam(param, criteria);
+    @Override
+    public List<EmpData> getAllDataReportEmpWorkingGroupByParam(ReportEmpWorkingGroupParameter param, int firstResult, int maxResults, Order orderable) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
+        criteria.createAlias("wtGroupWorking", "wtGroupWorking", JoinType.LEFT_OUTER_JOIN);
+        criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
+        criteria.createAlias("jabatanByJabatanId.department", "department", JoinType.INNER_JOIN);
+        doSearchReportEmpWorkingGroupByParam(param, criteria);
         criteria.addOrder(orderable);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
-		return criteria.list();
-	}
+        return criteria.list();
+    }
 
-	@Override
-	public Long getTotalReportEmpWorkingGroupByParam(ReportEmpWorkingGroupParameter param) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
-		doSearchReportEmpWorkingGroupByParam(param, criteria);
-		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
-	}
-	
-	private Criteria doSearchReportEmpWorkingGroupByParam(ReportEmpWorkingGroupParameter param, Criteria criteria) {
-		if(param.getDepartmentId() != null && param.getDepartmentId() != 0){
-			criteria.add(Restrictions.eq("jabatanByJabatanId.department.id", param.getDepartmentId()));
-		}
-		
-		if(StringUtils.isNotEmpty(param.getNikStart())){
-			criteria.add(Restrictions.ge("nik", param.getNikStart()));
-		}
-		
-		if(StringUtils.isNotEmpty(param.getNikEnd())){
-			criteria.add(Restrictions.le("nik", param.getNikEnd()));
-		}
-		
-		return criteria;
-	}
+    @Override
+    public Long getTotalReportEmpWorkingGroupByParam(ReportEmpWorkingGroupParameter param) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
+        doSearchReportEmpWorkingGroupByParam(param, criteria);
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+
+    private Criteria doSearchReportEmpWorkingGroupByParam(ReportEmpWorkingGroupParameter param, Criteria criteria) {
+        if (param.getDepartmentId() != null && param.getDepartmentId() != 0) {
+            criteria.add(Restrictions.eq("jabatanByJabatanId.department.id", param.getDepartmentId()));
+        }
+
+        if (StringUtils.isNotEmpty(param.getNikStart())) {
+            criteria.add(Restrictions.ge("nik", param.getNikStart()));
+        }
+
+        if (StringUtils.isNotEmpty(param.getNikEnd())) {
+            criteria.add(Restrictions.le("nik", param.getNikEnd()));
+        }
+
+        return criteria;
+    }
+
+    @Override
+    public List<EmpData> getEmployeeBySearchEmployeePermit(PermitDistributionModel model) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("permitDistributions", "lv", JoinType.LEFT_OUTER_JOIN);
+        criteria.createAlias("jabatanByJabatanId", "jabatan", JoinType.INNER_JOIN);
+        criteria.createAlias("jabatan.department", "dept", JoinType.INNER_JOIN);
+        criteria.createAlias("employeeType", "empType", JoinType.INNER_JOIN);
+        criteria.createAlias("bioData", "bio", JoinType.INNER_JOIN);
+        criteria.createAlias("golonganJabatan", "goljab", JoinType.INNER_JOIN);
+        //ambil yg working groupnya bukan yg dipilih, dan belum punya working group
+        if (model.getPermitId()!= 0 || model.getPermitId() != null) {
+            Disjunction disjunction = Restrictions.disjunction();
+            disjunction.add(Restrictions.isNull("lv.empData"));
+            disjunction.add(Restrictions.not(Restrictions.eq("lv.permitClassification.id", model.getPermitId())));
+            criteria.add(disjunction);
+        }
+        //balance
+//        if (model.getStartBalance() != 0.0){
+//            criteria.add(Restrictions.eq("lv.balance", model.getStartBalance()));
+//        }
+        //departermen equal or like
+        if (model.getDepartmentLikeOrEqual() != 3) {
+            if (Objects.equals(model.getDepartmentLikeOrEqual(), HRMConstant.DEPARTMENT_EQUAL)) {
+                criteria.add(Restrictions.eq("dept.departmentName", model.getDepartmentName()));
+            } else {
+                criteria.add(Restrictions.like("dept.departmentName", model.getDepartmentName(), MatchMode.ANYWHERE));
+            }
+        }
+        //employee type equal or likeS
+        if (model.getEmployeeTypeLikeOrEqual() != 3) {
+            if (Objects.equals(model.getEmployeeTypeLikeOrEqual(), HRMConstant.EMPLOYEE_TYPE_EQUAL)) {
+                criteria.add(Restrictions.eq("empType.name", model.getEmployeeTypeName()));
+            } else {
+                criteria.add(Restrictions.like("empType.name", model.getEmployeeTypeName(), MatchMode.ANYWHERE));
+            }
+        }
+        //gender
+        criteria.add(Restrictions.eq("bio.gender", model.getGender()));
+        //goljab
+        if (model.getGolonganJabatanId() != 0) {
+            criteria.add(Restrictions.eq("goljab.id", model.getGolonganJabatanId()));
+        }
+
+        String sortBy;
+        if (Objects.equals(model.getSortBy(), HRMConstant.SORT_BY_NIK)) {
+            sortBy = "nik";
+        } else {
+            sortBy = "bio.firstName";
+        }
+
+        if (Objects.equals(model.getOrderBy(), HRMConstant.ORDER_BY_ASC)) {
+            criteria.addOrder(Order.asc(sortBy));
+        } else {
+            criteria.addOrder(Order.desc(sortBy));
+        }
+        return criteria.list();
+    }
 
 }

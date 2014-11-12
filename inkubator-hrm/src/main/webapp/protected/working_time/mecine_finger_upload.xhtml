@@ -26,8 +26,8 @@
                             <p:graphicImage library="images" name="finger_print.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="Finger Upload Config" styleClass="header_big" />
-                                    <p:outputLabel value="Finger Upload Config dari Mesin Finger" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['mechineFinger.mechineFingerUpload']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['mechineFinger.mechineFinger_header']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -35,7 +35,7 @@
                         <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px;margin-bottom:20px;">
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="uploadTypeId" value="Upload Type" styleClass="label_hrm"/>
+                                    <p:outputLabel for="uploadTypeId" value="#{appmsg['mechineFinger.upload_type']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:selectOneMenu id="uploadTypeId" styleClass="isitext_hrm" required="true"  value="#{fingerUploadFormController.fingerUploadModel.uploadType}">
@@ -49,7 +49,7 @@
                             </p:row>   
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="extensionId" value="Jenis Extensi" styleClass="label_hrm"/>
+                                    <p:outputLabel for="extensionId" value="#{appmsg['mechineFinger.extension_type']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:selectOneMenu id="extensionId" styleClass="isitext_hrm" required="true"  value="#{fingerUploadFormController.fingerUploadModel.extensionType}">
@@ -61,7 +61,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="departementId" value="Departement" styleClass="label_hrm"/>
+                                    <p:outputLabel for="departementId" value="#{appmsg['department.department']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:pickList value="#{fingerUploadFormController.dualListModel}" var="department" itemValue="#{department}" converter="departmentConverter" id="departementId"
@@ -73,7 +73,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="inOutId" value="Initial In/Out" styleClass="label_hrm"/>
+                                    <p:outputLabel for="inOutId" value="#{appmsg['mechineFinger.inOut']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:selectBooleanButton value="#{fingerUploadFormController.fingerUploadModel.itialInOut}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
@@ -83,7 +83,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="empId" value="Employee ID base on field No" styleClass="label_hrm"/>
+                                    <p:outputLabel for="empId" value="#{appmsg['mechineFinger.employee_base_on_field_No']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:spinner value="#{fingerUploadFormController.fingerUploadModel.fieldNumber}" size="4" min="1" styleClass="isitext_hrm" required="true" id="empId" />
@@ -93,7 +93,7 @@
 
                         </p:panelGrid>	
 
-                        <p:outputLabel value="Layout Sparasi Data" styleClass="header_big"/>
+                        <p:outputLabel value="#{appmsg['mechineFinger.layout_separated_data']}" styleClass="header_big"/>
                         <p:separator/>
 
                         <p:dataTable  var="sparasiData"  value="#{fingerUploadFormController.fingerUploadModel.dataToSave}" lazy="true" paginator="false" 
@@ -101,31 +101,31 @@
 
                             <p:column style="text-align: center;width: 100px"> 
                                 <f:facet name="header">  
-                                    <h:outputText value="No. Field"/>
+                                    <h:outputText value="#{appmsg['mechineFinger.no_field']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{sparasiData.fieldNo}"/>
                             </p:column>
                             <p:column>
                                 <f:facet name="header">  
-                                    <h:outputText value="Type Field"/>
+                                    <h:outputText value="#{appmsg['mechineFinger.type_field']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{sparasiData.fieldType}"/>
                             </p:column>
                             <p:column>
                                 <f:facet name="header">  
-                                    <h:outputText value="Nama Field"/>
+                                    <h:outputText value="#{appmsg['mechineFinger.name_field']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{sparasiData.fieldLabel}"/>
                             </p:column>
                             <p:column>
                                 <f:facet name="header">  
-                                    <h:outputText value="Deskripsi"/>
+                                    <h:outputText value="#{appmsg['global.description']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{sparasiData.description}"/>
                             </p:column>
                             <p:column style="text-align: center">
                                 <f:facet name="header">  
-                                    <h:outputText value="Panjang Data"/>
+                                    <h:outputText value="#{appmsg['mechineFinger.length']}"/>
                                 </f:facet>
                                 <p:spinner value="#{sparasiData.fieldLen}" size="4" min="1" styleClass="isitext_hrm" required="true" id="empId" />
                             </p:column>

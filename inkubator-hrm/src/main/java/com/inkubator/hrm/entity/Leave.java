@@ -114,7 +114,7 @@ public class Leave implements Serializable {
 		this.name = name;
 	}
 
-	@Column(name = "description")
+	@Column(name = "description", length = 65535, columnDefinition = "Text")
 	public String getDescription() {
 		return description;
 	}
