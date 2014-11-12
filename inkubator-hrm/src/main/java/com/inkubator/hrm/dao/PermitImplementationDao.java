@@ -5,32 +5,34 @@ import java.util.List;
 import org.hibernate.criterion.Order;
 
 import com.inkubator.datacore.dao.IDAO;
-import com.inkubator.hrm.entity.LeaveImplementation;
-import com.inkubator.hrm.web.search.LeaveImplementationReportSearchParameter;
-import com.inkubator.hrm.web.search.LeaveImplementationSearchParameter;
+import com.inkubator.hrm.entity.PermitImplementation;
+import com.inkubator.hrm.web.search.PermitImplementationReportSearchParameter;
+import com.inkubator.hrm.web.search.PermitImplementationSearchParameter;
 
 /**
  *
- * @author rizkykojek
+ * @author Taufik
  */
-public interface PermitImplementationDao extends IDAO<LeaveImplementation> {
+public interface PermitImplementationDao extends IDAO<PermitImplementation> {
 
-	public List<LeaveImplementation> getByParam(LeaveImplementationSearchParameter parameter, int firstResult, int maxResults, Order orderable);
+    public List<PermitImplementation> getByParam(PermitImplementationSearchParameter parameter, int firstResult, int maxResults, Order orderable);
 
-	public Long getTotalByParam(LeaveImplementationSearchParameter parameter);
-	
-	public LeaveImplementation getEntityByPkWithDetail(Long id);
-	
-	public List<LeaveImplementation> getAllDataByEmpDataId(Long empDataId, Order order);
+    public Long getTotalByParam(PermitImplementationSearchParameter parameter);
 
-	public long getTotalByNumberFilling(String numberFilling);
+    public PermitImplementation getEntityByPkWithDetail(Long id);
 
-	public long getTotalByNumberFillingAndNotId(String numberFilling, Long id);
+    public List<PermitImplementation> getAllDataByEmpDataId(Long empDataId, Order order);
 
-	public LeaveImplementation getEntityByApprovalActivityNumberWithDetail(String activityNumber);
-        
-        public List<LeaveImplementation> getReportByParam(LeaveImplementationReportSearchParameter parameter, int firstResult, int maxResults, Order orderable);
+    public long getTotalByNumberFilling(String numberFilling);
 
-	public Long getReportTotalByParam(LeaveImplementationReportSearchParameter parameter);
-	
+    public long getTotalByNumberFillingAndNotId(String numberFilling, Long id);
+
+    public PermitImplementation getEntityByApprovalActivityNumberWithDetail(String activityNumber);
+
+    public List<PermitImplementation> getReportByParam(PermitImplementationReportSearchParameter parameter, List<String> activityNumbers, Long empDataId, int firstResult, int maxResults, Order orderable);
+
+    public Long getReportTotalByParam(PermitImplementationReportSearchParameter parameter, List<String> activityNumbers, Long empDataId);
+
+    public List<PermitImplementation> getReportHistoryByParam(PermitImplementationReportSearchParameter parameter, List<String> activityNumbers, Long empDataId);
+
 }

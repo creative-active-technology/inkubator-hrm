@@ -21,8 +21,8 @@
                         <p:graphicImage library="images" name="marital_status.png" height="36" width="36"  cache="true"/>
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Finance Non Banking Form" styleClass="header_big" />
-                                <p:outputLabel value="Finance Non Banking From Reference" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['financialNonBanking.financialNonBanking_form']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['financialNonBanking.financialNonBanking_header']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -35,7 +35,7 @@
                         
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="code" value="Code" styleClass="label_hrm"/>
+                                <p:outputLabel for="code" value="#{appmsg['global.code']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="code" value=":" styleClass="label_hrm"/>
@@ -53,7 +53,7 @@
                         
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="name" value="Name" styleClass="label_hrm"/>
+                                <p:outputLabel for="name" value="#{appmsg['global.name']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="name" value=":" styleClass="label_hrm"/>
@@ -71,7 +71,7 @@
                         
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="serviceType" value="Service Type" styleClass="label_hrm"/>
+                                <p:outputLabel for="serviceType" value="#{appmsg['financialNonBanking.service_type']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="serviceType" value=":" styleClass="label_hrm"/>
@@ -79,9 +79,9 @@
                             <p:column  style="width: 50%">
                                 <p:selectOneMenu id="serviceType" value="#{financialNonBankingFormController.model.financialService}" style="width: 150px;margin-right: 3px" >
                                     <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                    <f:selectItem itemLabel="Insurance" itemValue="0"/>
-                                    <f:selectItem itemLabel="Financing" itemValue="1"/>
-                                    <f:selectItem itemLabel="Pension" itemValue="2"/>
+                                    <f:selectItem itemLabel="#{appmsg['finance.insurance']}" itemValue="0"/>
+                                    <f:selectItem itemLabel="#{appmsg['finance.financing']}" itemValue="1"/>
+                                    <f:selectItem itemLabel="#{appmsg['finance.pension']}" itemValue="2"/>
                                 </p:selectOneMenu>
                             </p:column>
                         </p:row>
@@ -93,7 +93,7 @@
                         
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="address" value="Address" styleClass="label_hrm"/>
+                                <p:outputLabel for="address" value="#{appmsg['global.address']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="address" value=":" styleClass="label_hrm"/>

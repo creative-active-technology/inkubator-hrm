@@ -64,7 +64,7 @@ public class ResourceNameViewController extends BaseController{
     
     public void doSelectEntity() {
         try {
-            selected = this.service.getEntiyByPK(selected.getId());
+            selected = this.service.getEntityByPkWithDetail(selected.getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }

@@ -10,7 +10,8 @@ import org.apache.commons.lang3.StringUtils;
 public class IpPermitSearchParameter extends SearchParameter {
 
     private String lokasi;
-    private Integer ipAddress;
+    private String from;
+    private String until;
 
 //    public String getName() {
 //        if (StringUtils.equalsIgnoreCase(getKeyParam(), "name")) {
@@ -39,7 +40,7 @@ public class IpPermitSearchParameter extends SearchParameter {
 //    }
 
     public String getLokasi() {
-        if (StringUtils.equalsIgnoreCase(getKeyParam(), "lokasi")) {
+        if (StringUtils.equalsIgnoreCase(getKeyParam(), "location")) {
             lokasi = getParameter();
         } else {
             lokasi = null;
@@ -51,18 +52,33 @@ public class IpPermitSearchParameter extends SearchParameter {
         this.lokasi = lokasi;
     }
 
-    public Integer getIpAddress() {
-        if (StringUtils.equalsIgnoreCase(getKeyParam(), "ipAddress")) {
-            ipAddress = Integer.parseInt(getParameter());
+    public String getFrom() {
+        if (StringUtils.equalsIgnoreCase(getKeyParam(), "from")) {
+            from = getParameter();
         } else {
-            ipAddress = null;
+            from = null;
         }
-        return ipAddress;
+        return from;
     }
 
-    public void setIpAddress(Integer ipAddress) {
-        this.ipAddress = ipAddress;
+    public void setFrom(String from) {
+        this.from = from;
     }
+
+    public String getUntil() {
+        if (StringUtils.equalsIgnoreCase(getKeyParam(), "until")) {
+            until = getParameter();
+        } else {
+            until = null;
+        }
+        return until;
+    }
+
+    public void setUntil(String until) {
+        this.until = until;
+    }
+
+    
 
     
 }

@@ -21,8 +21,8 @@
                         <p:graphicImage library="images" name="jabatan.png" height="36" width="36" />
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Pay Salary Grade Position" styleClass="header_big" />
-                                <p:outputLabel value="Pay Salary Grade Position From Payroll" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['paysalarygradeposition.paysalarygradeposition']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['paysalarygradeposition.paysalarygradeposition_header']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -69,7 +69,7 @@
                                       id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="List Pay Salary Grade Position" styleClass="label_hrm"/>
+                                <h:outputText value="#{appmsg['paysalarygradeposition.list_paysalarygradeposition']}" styleClass="label_hrm"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
@@ -163,7 +163,7 @@
                         </div>
                     </h:form>
                 </p:dialog>
-                <p:dialog widgetVar="detailSalaryGrade" header="#{appmsg['unitkerja.detail_unit_kerja']}" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
+                <p:dialog widgetVar="detailSalaryGrade" header="#{appmsg['paysalarygradeposition.paysalarygradeposition_detail']}" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
                           showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)" dynamic="true">
                     <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
                         <p:row>
@@ -181,7 +181,7 @@
                         
                         <f:facet name="footer">
                             <p:row>
-                                <p:column colspan="2"><p:outputLabel value="#{appmsg['unitkerja.unit_kerja_footer']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
+                                <p:column colspan="2"><p:outputLabel value="#{appmsg['paysalarygradeposition.paysalarygradeposition_header']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
                             </p:row>
                         </f:facet>
                     </p:panelGrid>
