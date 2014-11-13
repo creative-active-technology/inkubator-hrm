@@ -337,7 +337,23 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
                 return session.createTextMessage(jsonConverter.getJson(passwordHistory));
             }
         });
-
+        PasswordComplexity complexity = passwordComplexityDao.getByCode(HRMConstant.PASSWORD_CONFIG_CODE);
+        if (complexity.getSmsNotification()) {
+            final SMSSend mSSend = new SMSSend();
+//        String decriptPass=AESUtil.getAESDescription(u.getPassword(), HRMConstant.KEYVALUE, HRMConstant.AES_ALGO);
+            mSSend.setFrom(HRMConstant.SYSTEM_ADMIN);
+            mSSend.setDestination(hrmUser.getPhoneNumber());
+            mSSend.setContent("Dear " + passwordHistory.getRealName() + " You has registered in HR Application with User Name :" + hrmUser.getUserId() + " and Password :" + hrmUser.getPassword());
+            System.out.println("step 2");
+            // Send notificatin SMS
+            this.jmsTemplateSMS.send(new MessageCreator() {
+                @Override
+                public Message createMessage(Session session)
+                        throws JMSException {
+                    return session.createTextMessage(jsonConverter.getJson(mSSend));
+                }
+            });
+        }
     }
 
     @Override
@@ -389,7 +405,7 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
 //        String decriptPass=AESUtil.getAESDescription(u.getPassword(), HRMConstant.KEYVALUE, HRMConstant.AES_ALGO);
             mSSend.setFrom(HRMConstant.SYSTEM_ADMIN);
             mSSend.setDestination(user.getPhoneNumber());
-            mSSend.setContent("Dear " + passwordHistory.getRealName() + " your password in OPTIMA HR has been reset with :" + u.getPassword());
+            mSSend.setContent("Dear " + passwordHistory.getRealName() + " your password in HR Application has been reset with :" + u.getPassword());
             System.out.println("step 2");
             // Send notificatin SMS
             this.jmsTemplateSMS.send(new MessageCreator() {
@@ -449,6 +465,23 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
             }
         });
 
+        PasswordComplexity complexity = passwordComplexityDao.getByCode(HRMConstant.PASSWORD_CONFIG_CODE);
+        if (complexity.getSmsNotification()) {
+            final SMSSend mSSend = new SMSSend();
+//        String decriptPass=AESUtil.getAESDescription(u.getPassword(), HRMConstant.KEYVALUE, HRMConstant.AES_ALGO);
+            mSSend.setFrom(HRMConstant.SYSTEM_ADMIN);
+            mSSend.setDestination(user.getPhoneNumber());
+            mSSend.setContent("Dear " + passwordHistory.getRealName() + " your password in HR Application has been update with :" + newPassword);
+            System.out.println("step 2");
+            // Send notificatin SMS
+            this.jmsTemplateSMS.send(new MessageCreator() {
+                @Override
+                public Message createMessage(Session session)
+                        throws JMSException {
+                    return session.createTextMessage(jsonConverter.getJson(mSSend));
+                }
+            });
+        }
     }
 
     @Override
