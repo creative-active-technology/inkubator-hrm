@@ -759,6 +759,7 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
         double total = 0.0;
 
         for (LeaveImplementationDate entity : actualLeaves) {
+        	//ini artinya ada perubahan, dari yang awalnya cuti sudah dicancel, dikembalikan ke actual(ambil cuti), sehingga harus ada pengurangan neraca cuti
             if (entity.getIsCancelled()) {
                 total = total - 1;
                 entity = leaveImplementationDateDao.getEntiyByPK(entity.getId());
@@ -770,7 +771,8 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
             }
         }
         for (LeaveImplementationDate entity : cancellationLeaves) {
-            if (!entity.getIsCancelled()) {
+        	//ini artinya ada pembatalan cuti, sehingga harus ada penambahan neraca cuti
+        	if (!entity.getIsCancelled()) {
                 total = total + 1;
                 entity = leaveImplementationDateDao.getEntiyByPK(entity.getId());
                 entity.setIsCancelled(Boolean.TRUE);
@@ -781,6 +783,7 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
             }
         }
 
+        //lakukan proses penambahan atau pengurangan neraca cuti, berdasarkan perhitungan di proses sebelumnya
         LeaveImplementation leaveImplementation = leaveImplementationDao.getEntiyByPK(leaveImplementationId);
         LeaveDistribution leaveDistribution = leaveDistributionDao.getEntityByLeaveIdAndEmpDataId(leaveImplementation.getLeave().getId(), leaveImplementation.getEmpData().getId());
         if (total > 0) {
