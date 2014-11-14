@@ -1,0 +1,157 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+				Home
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlCompanyPolicyMainFormId" globalOnly="true" showDetail="true"/>                
+                <h:form id="formCompanyPolicyMainFormId">
+                	<p:focus context="formCompanyPolicyMainFormId"/>
+                	<div id="box_bg" style="margin: 10px">
+	                    <h:panelGrid columns="2">
+	                        <p:graphicImage library="images" name="company_policy.png" height="36" width="36" />
+	                        <h:panelGroup layout="block">
+	                            <h:panelGrid>
+	                                <p:outputLabel value="#{appmsg['companypolicy.company_policy']}" styleClass="header_big" />
+	                                <p:outputLabel value="#{appmsg['companypolicy.company_policy_data_from_organization']}" styleClass="header_small_no_bold" />
+	                            </h:panelGrid>
+	                        </h:panelGroup>
+	                    </h:panelGrid>
+	                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+	                    <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px;margin-bottom:20px;">
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="subjectId" value="#{appmsg['companypolicy.subject']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:inputText id="subjectId" title="#{appmsg['companypolicy.subject']}" value="#{companyPolicyMainFormController.model.subjectTitle}" 
+	                                    		 required="true" maxlength="255" styleClass="isitext_hrm" style="width:290px;" />
+	                                <p:message for="subjectId"/>
+	                            </p:column>
+	                        </p:row>	                        
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="effectiveDateId" value="#{appmsg['companypolicy.effective_date']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:calendar id="effectiveDateId" required="true" pattern="dd-MMMM-yyyy" value="#{companyPolicyMainFormController.model.effectiveDate}"/>
+	                                <p:message for="effectiveDateId"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="contentPolicyId" value="#{appmsg['companypolicy.content']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:editor id="contentPolicyId" required="true" widgetVar="editorWidget" value="#{companyPolicyMainFormController.model.contentPolicy}" width="600" />
+	                                <p:message for="contentPolicyId"/>
+	                            </p:column>
+	                        </p:row> 	
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="departmentsId" value="#{appmsg['department.department']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:pickList id="departmentsId" converter="departmentConverter" value="#{companyPolicyMainFormController.departmentsDualModel}" required="true" var="department" itemLabel="#{department.departmentName}" itemValue="#{department}">
+	                            		<f:facet name="sourceCaption"><p:outputLabel value="#{appmsg['department.list_of_department']}" styleClass="label_hrm"/></f:facet>
+        								<f:facet name="targetCaption"><p:outputLabel value="#{appmsg['global.selected_items']}" styleClass="label_hrm"/></f:facet>
+	                            	</p:pickList>
+	                                <p:message for="departmentsId"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="golJabatansId" value="#{appmsg['functiongroup.function_group']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:pickList id="golJabatansId" converter="golonganJabatanConverter" value="#{companyPolicyMainFormController.golJabatansDualModel}" required="true" var="golJabatan" itemLabel="#{golJabatan.code}" itemValue="#{golJabatan}">
+	                            		<f:facet name="sourceCaption"><p:outputLabel value="#{appmsg['functiongroup.list_of_function_group']}" styleClass="label_hrm"/></f:facet>
+        								<f:facet name="targetCaption"><p:outputLabel value="#{appmsg['global.selected_items']}" styleClass="label_hrm"/></f:facet>
+	                            	</p:pickList>
+	                                <p:message for="golJabatansId"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="attachmentId" value="#{appmsg['biodocument.attachments']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:fileUpload sizeLimit="1000000000" label="#{appmsg['global.choose_file']}" fileUploadListener="#{companyPolicyMainFormController.handingFileUpload}"
+	                                          mode="advanced"  id="attachmentId"  style="margin-top:10px;margin-bottom:10px;width: 100%;text-align: left!important"
+	                                          dragDropSupport="true" multiple="false" update="fileNameId,:growlCompanyPolicyMainFormId"
+	                                          allowTypes="/(\.|\/)(jpe?g|png|mp4|flv|doc|docx|xls|xlsx|pdf|ppt|pptx|pps|ppsx)$/"/> 
+		                            <p:outputLabel value="#{appmsg['global.file_name']}"/>
+		                            <p:outputLabel value=":" style="margin-left: 5px;margin-right: 5px"/>
+		                            <p:outputLabel value="#{companyPolicyMainFormController.model.attachmentFileName}" id="fileNameId"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="isBroadcastId" value="#{appmsg['companypolicy.broadcast']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:selectBooleanButton id="isBroadcastId" value="#{companyPolicyMainFormController.model.isBroadcast}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
+                                                           offIcon="ui-icon-close" styleClass="label_button">
+                                    	<p:ajax listener="#{companyPolicyMainFormController.onChangeIsBroadcast}" update="repeatOnId,isUseAttachmentId" />
+                                    </p:selectBooleanButton>	                                <p:message for="isBroadcastId"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="repeatOnId" value="#{appmsg['global.schedule']}" styleClass="label_hrm" style="margin-left:30px;"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:selectOneMenu id="repeatOnId" styleClass="isitext_hrm" required="#{not companyPolicyMainFormController.isDisabledBroadcastConf}"  value="#{companyPolicyMainFormController.model.repeatOn}" disabled="#{companyPolicyMainFormController.isDisabledBroadcastConf}" style="width:290px;">
+	                            		<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+	                                    <!--Cek HRM Constanta..-->
+	                                    <f:selectItem itemLabel="#{appmsg['companypolicy.weekly']}" itemValue="WEEKLY"/>
+	                                    <f:selectItem itemLabel="#{appmsg['companypolicy.monthly']}" itemValue="MONTHLY"/>
+	                                    <f:selectItem itemLabel="#{appmsg['companypolicy.quarterly']}" itemValue="QUARTERLY"/>
+	                                </p:selectOneMenu>
+	                                <p:message for="repeatOnId"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="isUseAttachmentId" value="#{appmsg['companypolicy.include_attachments']}" styleClass="label_hrm" style="margin-left:30px;"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:selectBooleanButton id="isUseAttachmentId" value="#{companyPolicyMainFormController.model.isUseAttachment}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
+                                                           required="#{not companyPolicyMainFormController.isDisabledBroadcastConf}" disabled="#{companyPolicyMainFormController.isDisabledBroadcastConf}" offIcon="ui-icon-close" styleClass="label_button"/>
+	                            </p:column>
+	                        </p:row>
+	                                           
+	                 	</p:panelGrid>	
+	                 	                    
+	                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+	                    <div style="margin-bottom: 5px">
+	                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formCompanyPolicyMainFormId,:growlCompanyPolicyMainFormId"
+	                                         action="#{companyPolicyMainFormController.doSave()}" styleClass="isitext_hrm"
+	                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
+	                                         icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+	                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formCompanyPolicyMainFormId" action="#{companyPolicyMainFormController.doReset()}"
+                                                 icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px">  
+	                            <p:resetInput target="formCompanyPolicyMainFormId" />  
+	                        </p:commandButton>
+	                        <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{companyPolicyMainFormController.doBack()}" immediate="true"
+	                                      	 styleClass="label_button"/>
+	                    </div>
+                    </div>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

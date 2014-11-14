@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -48,11 +49,11 @@ public class CompanyPolicyDaoImpl extends IDAOImpl<CompanyPolicy> implements Com
     }
 
     private void doSearchByParam(CompanyPolicySearchParameter parameter, Criteria criteria) {
+    	criteria.createAlias("department", "department", JoinType.INNER_JOIN);
         if (StringUtils.isNotEmpty(parameter.getSubject())) {
             criteria.add(Restrictions.like("subjectTitle", parameter.getSubject(), MatchMode.ANYWHERE));
         }
-        if (StringUtils.isNotEmpty(parameter.getDepartment())) {
-        	criteria.createAlias("department", "department", JoinType.INNER_JOIN);
+        if (StringUtils.isNotEmpty(parameter.getDepartment())) {        	
             criteria.add(Restrictions.like("department.departmentName", parameter.getDepartment(), MatchMode.ANYWHERE));
         }
         criteria.add(Restrictions.isNotNull("id"));
@@ -62,7 +63,14 @@ public class CompanyPolicyDaoImpl extends IDAOImpl<CompanyPolicy> implements Com
 	public CompanyPolicy getEntityByPkWithDetail(Long id) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
 		criteria.add(Restrictions.eq("id", id));
+		criteria.setFetchMode("department", FetchMode.JOIN);
 		return (CompanyPolicy) criteria.uniqueResult();		
+	}
+
+	@Override
+	public CompanyPolicy updateAndMerge(CompanyPolicy companyPolicy) {
+		return (CompanyPolicy) getCurrentSession().merge(companyPolicy);
+		
 	}
 
 }

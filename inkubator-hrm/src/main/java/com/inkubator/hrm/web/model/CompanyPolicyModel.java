@@ -14,10 +14,10 @@ public class CompanyPolicyModel implements Serializable {
     private Date effectiveDate;
     private String contentPolicy;
     private Long departmentId;
-    private String attachFilePath;
+    private String attachmentFileName;
     private Boolean isBroadcast;
     private String repeatOn;
-    private Boolean useAttachment;
+    private Boolean isUseAttachment;
     
 	public Long getId() {
 		return id;
@@ -48,12 +48,12 @@ public class CompanyPolicyModel implements Serializable {
 	}
 	public void setDepartmentId(Long departmentId) {
 		this.departmentId = departmentId;
+	}	
+	public String getAttachmentFileName() {
+		return attachmentFileName;
 	}
-	public String getAttachFilePath() {
-		return attachFilePath;
-	}
-	public void setAttachFilePath(String attachFilePath) {
-		this.attachFilePath = attachFilePath;
+	public void setAttachmentFileName(String attachmentFileName) {
+		this.attachmentFileName = attachmentFileName;
 	}
 	public Boolean getIsBroadcast() {
 		return isBroadcast;
@@ -67,10 +67,11 @@ public class CompanyPolicyModel implements Serializable {
 	public void setRepeatOn(String repeatOn) {
 		this.repeatOn = repeatOn;
 	}
-	public Boolean getUseAttachment() {
-		return useAttachment;
+	public Boolean getIsUseAttachment() {
+		return isUseAttachment;
 	}
-	public void setUseAttachment(Boolean useAttachment) {
-		this.useAttachment = useAttachment;
-	}	
+	public void setIsUseAttachment(Boolean isUseAttachment) {
+		this.isUseAttachment = isUseAttachment;
+	}
+	
 }

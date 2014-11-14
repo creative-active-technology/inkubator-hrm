@@ -138,6 +138,9 @@
                             <p:outputLabel value="#{appmsg['companypolicy.subject']}"  style="font-weight: bold"/>
                             <p:outputLabel value=":"  style="font-weight: bold"/>
                             <p:outputLabel value="#{companyPolicyViewController.selectedCompanyPolicy.subjectTitle}" styleClass="label_hrm"/>
+                            <p:outputLabel value="#{appmsg['department.department']}"  style="font-weight: bold"/>
+                            <p:outputLabel value=":"  style="font-weight: bold"/>
+                            <p:outputLabel value="#{companyPolicyViewController.selectedCompanyPolicy.department.departmentName}" styleClass="label_hrm"/>
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{companyPolicyViewController.doDelete()}" update="formCompanyPolicyViewId,:growlCompanyPolicyViewId"
