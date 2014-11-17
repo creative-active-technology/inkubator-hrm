@@ -294,5 +294,8 @@ public class HRMConstant {
     public static final String CHECK_IN_EARLY = "EARLY_COME";
     public static final String CHECK_IN_ON_TIME = "ON TIME";
     public static final String CHECK_IN_LATE = "LATE";
+    
+    public static final Integer REPORT_FAMILY_DEPENDENTS_NO = 0;
+    public static final Integer REPORT_FAMILY_DEPENDENTS_YES = 1;
 
 }

@@ -12,6 +12,7 @@ import com.inkubator.hrm.entity.BioFamilyRelationship;
 import com.inkubator.hrm.entity.EducationLevel;
 import com.inkubator.hrm.entity.FamilyRelation;
 import com.inkubator.hrm.service.BioFamilyRelationshipService;
+import com.inkubator.hrm.web.search.ReportOfEmployeesFamilySearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import java.util.Date;
 import java.util.List;
@@ -279,6 +280,18 @@ public class BioFamilyRelationshipServiceImpl extends IServiceImpl implements Bi
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
     public BioFamilyRelationship getEntityByPKWithDetail(Long id) throws Exception {
         return bioFamilyRelationshipDao.getEntityByPKWithDetail(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<BioFamilyRelationship> getAllDataReportOfEmployeesFamilyByParam(ReportOfEmployeesFamilySearchParameter searchParameter, int firstResult, int maxResults, Order orderable) throws Exception {
+        return bioFamilyRelationshipDao.getAllDataReportOfEmployeesFamilyByParam(searchParameter, firstResult, maxResults, orderable);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalReportOfEmployeesFamilyByParam(ReportOfEmployeesFamilySearchParameter searchParameter) throws Exception {
+        return bioFamilyRelationshipDao.getTotalReportOfEmployeesFamilyByParam(searchParameter);
     }
     
 }

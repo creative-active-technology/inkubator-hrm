@@ -16,6 +16,7 @@ import com.inkubator.hrm.web.model.PermitDistributionModel;
 import com.inkubator.hrm.web.model.PlacementOfEmployeeWorkScheduleModel;
 import com.inkubator.hrm.web.search.EmpDataSearchParameter;
 import com.inkubator.hrm.web.search.ReportEmpWorkingGroupParameter;
+import com.inkubator.hrm.web.search.ReportOfEmployeesFamilySearchParameter;
 
 import java.util.Date;
 import java.util.List;
@@ -566,6 +567,39 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
             criteria.addOrder(Order.desc(sortBy));
         }
         return criteria.list();
+    }
+
+    @Override
+    public List<EmpData> getAllDataReportOfEmployeesFamilyByParam(ReportOfEmployeesFamilySearchParameter searchParameter, int firstResult, int maxResults, Order orderable) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
+//        criteria.createAlias("bioData.bioFamilyRelationships", "familyRelationShip", JoinType.INNER_JOIN);
+        criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
+        criteria.createAlias("jabatanByJabatanId.department", "department", JoinType.INNER_JOIN);
+        criteria.setFetchMode("bioData.bioFamilyRelationships", FetchMode.JOIN);
+//        criteria.setFetchMode("jabatanByJabatanId.jabatanSpesifikasis.specificationAbility", FetchMode.JOIN);
+        
+        doSearchReportOfEmployeesFamilyByParam(searchParameter, criteria);
+        criteria.addOrder(orderable);
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResults);
+        return criteria.list();
+    }
+
+    @Override
+    public Long getTotalReportOfEmployeesFamilyByParam(ReportOfEmployeesFamilySearchParameter searchParameter) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
+        doSearchReportOfEmployeesFamilyByParam(searchParameter, criteria);
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+    
+    private Criteria doSearchReportOfEmployeesFamilyByParam(ReportOfEmployeesFamilySearchParameter param, Criteria criteria) {
+        if (param.getDepartmentId() != null && param.getDepartmentId() != 0) {
+            criteria.add(Restrictions.eq("jabatanByJabatanId.department.id", param.getDepartmentId()));
+        }
+
+        return criteria;
     }
 
 }
