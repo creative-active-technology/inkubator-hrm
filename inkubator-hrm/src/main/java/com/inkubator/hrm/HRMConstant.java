@@ -145,9 +145,9 @@ public class HRMConstant {
     /* END */
     
     /* Constant for Company Policy */
-    public static final String COMP_POLICY_BROADCAST_WEEKLY = "WEEKLY";
-    public static final String COMP_POLICY_BROADCAST_MONTHLY = "MONTHLY";
-    public static final String COMP_POLICY_BROADCAST_QUARTERLY = "QUARTERLY";
+    public static final String COMP_POLICY_REPEAT_ON_WEEKLY = "WEEKLY";
+    public static final String COMP_POLICY_REPEAT_ON_MONTHLY = "MONTHLY";
+    public static final String COMP_POLICY_REPEAT_ON_QUARTERLY = "QUARTERLY";
     /* END */
 
     /* Approval Definition */
