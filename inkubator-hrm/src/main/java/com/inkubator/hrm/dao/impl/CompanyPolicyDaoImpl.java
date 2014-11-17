@@ -64,6 +64,9 @@ public class CompanyPolicyDaoImpl extends IDAOImpl<CompanyPolicy> implements Com
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
 		criteria.add(Restrictions.eq("id", id));
 		criteria.setFetchMode("department", FetchMode.JOIN);
+		criteria.setFetchMode("companyPolicyJabatans", FetchMode.JOIN);
+		criteria.setFetchMode("companyPolicyJabatans.golonganJabatan", FetchMode.JOIN);
+		criteria.setFetchMode("companyPolicyJabatans.golonganJabatan.pangkat", FetchMode.JOIN);
 		return (CompanyPolicy) criteria.uniqueResult();		
 	}
 

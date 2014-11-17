@@ -349,8 +349,6 @@ public class CompanyPolicyServiceImpl extends IServiceImpl implements CompanyPol
 		compPolicy.setSubjectTitle(entity.getSubjectTitle());
 		compPolicy.setEffectiveDate(entity.getEffectiveDate());
 		compPolicy.setContentPolicy(entity.getContentPolicy());
-		Department department = departmentDao.getEntiyByPK(entity.getDepartment().getId());
-		compPolicy.setDepartment(department);
 		compPolicy.setAttachFilePath(attachFilePath);
 		compPolicy.setIsBroadcast(entity.getIsBroadcast());
 		compPolicy.setRepeatOn(entity.getRepeatOn());

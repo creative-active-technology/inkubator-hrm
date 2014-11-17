@@ -109,7 +109,7 @@ public class CompanyPolicyViewController extends BaseController {
     }
 
     public String doAdd() {
-        return "/protected/organisation/company_policy_main_form.htm?faces-redirect=true";
+        return "/protected/organisation/company_policy_form.htm?faces-redirect=true";
     }
 
     public String doUpdate() {

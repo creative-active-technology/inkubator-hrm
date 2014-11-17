@@ -20,8 +20,11 @@ import org.primefaces.model.DefaultUploadedFile;
 import org.primefaces.model.DualListModel;
 import org.primefaces.model.UploadedFile;
 
+import ch.lambdaj.Lambda;
+
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.CompanyPolicy;
+import com.inkubator.hrm.entity.CompanyPolicyJabatan;
 import com.inkubator.hrm.entity.Department;
 import com.inkubator.hrm.entity.GolonganJabatan;
 import com.inkubator.hrm.service.CompanyPolicyService;
@@ -37,11 +40,12 @@ import com.inkubator.webcore.util.MessagesResourceUtil;
  *
  * @author rizkykojek
  */
-@ManagedBean(name = "companyPolicyMainFormController")
+@ManagedBean(name = "companyPolicyFormController")
 @ViewScoped
-public class CompanyPolicyMainFormController extends BaseController {
+public class CompanyPolicyFormController extends BaseController {
 
 	private Boolean isDisabledBroadcastConf;
+	private Boolean isUpdate;
 	private CompanyPolicyModel model;
 	private UploadedFile attachmentFile;
 	private DualListModel<Department> departmentsDualModel;
@@ -61,17 +65,30 @@ public class CompanyPolicyMainFormController extends BaseController {
         super.initialization();
         model = new CompanyPolicyModel();
         isDisabledBroadcastConf = Boolean.TRUE;
+        isUpdate = Boolean.FALSE;
+        
         try {
-	        List<Department> availableDepartments = departmentService.getAllData();
-	        List<GolonganJabatan> availableGolJabatans = golonganJabatanService.getAllData();
-	        departmentsDualModel = new DualListModel<Department>(availableDepartments, new ArrayList<Department>());
-	        golJabatansDualModel = new DualListModel<GolonganJabatan>(availableGolJabatans, new ArrayList<GolonganJabatan>());
+	        String param = FacesUtil.getRequestParameter("execution");
+            if (StringUtils.isEmpty(param)) {
+            	List<Department> availableDepartments = departmentService.getAllData();
+    	        List<GolonganJabatan> availableGolJabatans = golonganJabatanService.getAllData();
+            	departmentsDualModel = new DualListModel<Department>(availableDepartments, new ArrayList<Department>());
+    	        golJabatansDualModel = new DualListModel<GolonganJabatan>(availableGolJabatans, new ArrayList<GolonganJabatan>());
+    	        
+            } else {
+            	CompanyPolicy companyPolicy = companyPolicyService.getEntityByPkWithDetail(Long.parseLong(param.substring(1)));
+            	if (companyPolicy != null) {
+                    getModelFromEntity(companyPolicy);                    
+                    isUpdate = Boolean.TRUE;
+                    isDisabledBroadcastConf = BooleanUtils.isFalse(companyPolicy.getIsBroadcast());
+                }
+            }
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
 
         }
 	}
-	
+
 	@PreDestroy
     public void cleanAndExit() {
 		model = null;
@@ -82,6 +99,7 @@ public class CompanyPolicyMainFormController extends BaseController {
 		departmentsDualModel = null;
 		golJabatansDualModel = null;
 		isDisabledBroadcastConf = null;
+		isUpdate = null;
 	}
 	
 	public CompanyPolicyModel getModel() {
@@ -113,8 +131,7 @@ public class CompanyPolicyMainFormController extends BaseController {
 		return golJabatansDualModel;
 	}
 
-	public void setGolJabatansDualModel(
-			DualListModel<GolonganJabatan> golJabatansDualModel) {
+	public void setGolJabatansDualModel(DualListModel<GolonganJabatan> golJabatansDualModel) {
 		this.golJabatansDualModel = golJabatansDualModel;
 	}
 
@@ -134,8 +151,7 @@ public class CompanyPolicyMainFormController extends BaseController {
 		this.departmentService = departmentService;
 	}
 
-	public void setGolonganJabatanService(
-			GolonganJabatanService golonganJabatanService) {
+	public void setGolonganJabatanService(GolonganJabatanService golonganJabatanService) {
 		this.golonganJabatanService = golonganJabatanService;
 	}
 	
@@ -145,6 +161,14 @@ public class CompanyPolicyMainFormController extends BaseController {
 
 	public void setIsDisabledBroadcastConf(Boolean isDisabledBroadcastConf) {
 		this.isDisabledBroadcastConf = isDisabledBroadcastConf;
+	}
+
+	public Boolean getIsUpdate() {
+		return isUpdate;
+	}
+
+	public void setIsUpdate(Boolean isUpdate) {
+		this.isUpdate = isUpdate;
 	}
 
 	public void doReset() {
@@ -167,10 +191,17 @@ public class CompanyPolicyMainFormController extends BaseController {
 	public String doSave() {
         CompanyPolicy companyPolicy = getEntityFromViewModel(model);
         try {
-            companyPolicyService.save(companyPolicy, attachmentFile, departmentsDualModel.getTarget(), golJabatansDualModel.getTarget());
-            MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
-                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-            return "/protected/organisation/company_policy_view.htm?faces-redirect=true";
+        	if(isUpdate){
+        		companyPolicyService.update(companyPolicy, attachmentFile, golJabatansDualModel.getTarget());
+	            MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
+	                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+	            return "/protected/organisation/company_policy_detail.htm?faces-redirect=true&execution=e" + companyPolicy.getId();
+        	} else {
+	            companyPolicyService.save(companyPolicy, attachmentFile, departmentsDualModel.getTarget(), golJabatansDualModel.getTarget());
+	            MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
+	                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+	            return "/protected/organisation/company_policy_view.htm?faces-redirect=true";
+        	}
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -191,6 +222,9 @@ public class CompanyPolicyMainFormController extends BaseController {
 	
 	private CompanyPolicy getEntityFromViewModel(CompanyPolicyModel model) {
 		CompanyPolicy companyPolicy = new CompanyPolicy();
+		if(model.getId() != null) {
+			companyPolicy.setId(model.getId());
+		}		
 		companyPolicy.setSubjectTitle(model.getSubjectTitle());
 		companyPolicy.setEffectiveDate(model.getEffectiveDate());
 		companyPolicy.setContentPolicy(model.getContentPolicy());
@@ -198,6 +232,30 @@ public class CompanyPolicyMainFormController extends BaseController {
 		companyPolicy.setRepeatOn(model.getRepeatOn());
 		companyPolicy.setIsUseAttachment(model.getIsUseAttachment());
 		return companyPolicy;		
+	}
+	
+	private void getModelFromEntity(CompanyPolicy companyPolicy) {
+		model.setId(companyPolicy.getId());
+		model.setSubjectTitle(companyPolicy.getSubjectTitle());
+		model.setEffectiveDate(companyPolicy.getEffectiveDate());
+		model.setContentPolicy(companyPolicy.getContentPolicy());
+		model.setDepartmentName(companyPolicy.getDepartment().getDepartmentName());
+		model.setAttachmentFileName(companyPolicy.getAttachFileName());
+		model.setIsBroadcast(companyPolicy.getIsBroadcast());
+		model.setRepeatOn(companyPolicy.getRepeatOn());
+		model.setIsUseAttachment(companyPolicy.getIsUseAttachment());
+		
+		//set duallist for golongan jabatan. Removed golJabatan that already selected from "available" list
+		try {
+			List<GolonganJabatan> selectedGolJabatans = Lambda.extract(companyPolicy.getCompanyPolicyJabatans(), Lambda.on(CompanyPolicyJabatan.class).getGolonganJabatan());
+			List<GolonganJabatan> availableGolJabatans = golonganJabatanService.getAllData();	        
+	        for (GolonganJabatan exclude : selectedGolJabatans) {
+				availableGolJabatans.remove(exclude);
+			} 
+	        golJabatansDualModel = new DualListModel<GolonganJabatan>(availableGolJabatans, selectedGolJabatans);
+		} catch (Exception ex) {
+			LOGGER.error("Error", ex);
+		}
 	}
 	
 	public void onChangeIsBroadcast() {

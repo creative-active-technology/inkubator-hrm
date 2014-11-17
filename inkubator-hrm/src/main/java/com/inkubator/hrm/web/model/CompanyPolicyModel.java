@@ -14,6 +14,7 @@ public class CompanyPolicyModel implements Serializable {
     private Date effectiveDate;
     private String contentPolicy;
     private Long departmentId;
+    private String departmentName;
     private String attachmentFileName;
     private Boolean isBroadcast;
     private String repeatOn;
@@ -48,7 +49,13 @@ public class CompanyPolicyModel implements Serializable {
 	}
 	public void setDepartmentId(Long departmentId) {
 		this.departmentId = departmentId;
-	}	
+	}
+	public String getDepartmentName() {
+		return departmentName;
+	}
+	public void setDepartmentName(String departmentName) {
+		this.departmentName = departmentName;
+	}
 	public String getAttachmentFileName() {
 		return attachmentFileName;
 	}
