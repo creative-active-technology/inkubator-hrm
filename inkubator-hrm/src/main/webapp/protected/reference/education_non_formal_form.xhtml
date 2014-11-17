@@ -1,0 +1,233 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/dialog_layout.xhtml">
+            <ui:define name="windowTitle">
+
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlEducationNonFormalFormId" globalOnly="true" showDetail="true"/>
+                <h:form id="formEducationNonFormalFormId">
+                	<p:focus context="formEducationNonFormalFormId"/>
+                    <h:panelGrid  columns="2">
+                        <p:graphicImage library="images" name="graduated.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['educationnonformal.education_non_formal']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['educationnonformal.education_non_formal_data_from_reference']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="1" style="margin-bottom: 5px;margin-left: 0px">
+                        <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                        <h:outputLabel value="#{appmsg['educationnonformal.dialog_info']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                    </h:panelGrid> 
+                    <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
+                        <p:row>
+                            <p:column style="width: 49%">
+                                <p:outputLabel for="codeId" value="#{appmsg['educationnonformal.code']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="codeId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                            	<p:inputText id="codeId" title="#{appmsg['educationnonformal.code']}" value="#{educationNonFormalFormController.model.code}" 
+                                    		 required="true" maxlength="60" onkeyup="this.value = this.value.toUpperCase();" styleClass="isitext_hrm" style="width:190px;" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="codeId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 49%">
+                                <p:outputLabel for="nameId" value="#{appmsg['educationnonformal.name']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="nameId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                            	<p:inputText id="nameId" title="#{appmsg['educationnonformal.name']}" value="#{educationNonFormalFormController.model.name}" 
+                                    		 required="true" maxlength="60" styleClass="isitext_hrm" style="width:190px;" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="nameId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 49%">
+                                <p:outputLabel for="descriptionId" value="#{appmsg['global.description']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="descriptionId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                            	<p:inputTextarea id="descriptionId" title="#{appmsg['global.description']}" value="#{educationNonFormalFormController.model.description}" 
+	                                    			 maxlength="1000" styleClass="isitext_hrm" style="width:190px;" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="descriptionId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 49%">
+                                <p:outputLabel for="addressId" value="#{appmsg['global.address']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="addressId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                            	<p:inputTextarea id="addressId" title="#{appmsg['global.address']}" value="#{educationNonFormalFormController.model.address}" 
+	                                    			 maxlength="1000" required="true" styleClass="isitext_hrm" style="width:190px;" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="addressId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 49%">
+                                <p:outputLabel for="countryId" value="#{appmsg['country.country']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="countryId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                            	<p:selectOneMenu id="countryId" styleClass="isitext_hrm" required="true" filter="true"  value="#{educationNonFormalFormController.model.countryId}">
+	                            	<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+	                                <f:selectItems value="#{educationNonFormalFormController.countries}" var="country" itemValue="#{country.id}" itemLabel="#{country.countryName}"/>
+	                                <p:ajax listener="#{educationNonFormalFormController.onChangeCountries()}" update="provinceId,cityId"/>
+	                        	</p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="countryId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 49%">
+                                <p:outputLabel for="provinceId" value="#{appmsg['province.province']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="provinceId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                            	<p:selectOneMenu id="provinceId" styleClass="isitext_hrm" required="true" filter="true"  value="#{educationNonFormalFormController.model.provinceId}">
+	                            	<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+	                                <f:selectItems value="#{educationNonFormalFormController.provinces}" var="province" itemValue="#{province.id}" itemLabel="#{province.provinceName}"/>
+	                                <p:ajax listener="#{educationNonFormalFormController.onChangeProvinces()}" update="cityId"/>
+	                            </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="provinceId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 49%">
+                                <p:outputLabel for="cityId" value="#{appmsg['city.city']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="cityId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                            	<p:selectOneMenu id="cityId" styleClass="isitext_hrm" required="true" filter="true"  value="#{educationNonFormalFormController.model.cityId}">
+	                            	<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+	                                <f:selectItems value="#{educationNonFormalFormController.cities}" var="city" itemValue="#{city.id}" itemLabel="#{city.cityName}"/>	                                    
+	                            </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="cityId"/>
+                            </p:column>
+                        </p:row>  
+                        <p:row>
+                            <p:column style="width: 49%">
+                                <p:outputLabel for="postalCodeId" value="#{appmsg['global.postal_code']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="postalCodeId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                            	<p:inputText id="postalCodeId" title="#{appmsg['global.postal_code']}" value="#{educationNonFormalFormController.model.postalCode}" 
+                                    		 required="true" maxlength="8" styleClass="isitext_hrm" style="width:190px;" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="postalCodeId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 49%">
+                                <p:outputLabel for="officialEmailId" value="#{appmsg['global.email_address']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="officialEmailId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                            	<p:inputText id="officialEmailId" title="#{appmsg['global.email_address']}" value="#{educationNonFormalFormController.model.officialEmail}" 
+                                    		 maxlength="100" styleClass="isitext_hrm" style="width:190px;" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="officialEmailId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 49%">
+                                <p:outputLabel for="officialPhoneNoId" value="#{appmsg['global.phone_number']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="officialPhoneNoId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                            	<p:inputText id="officialPhoneNoId" title="#{appmsg['global.phone_number']}" value="#{educationNonFormalFormController.model.officialPhoneNo}" 
+                                    		 maxlength="25" styleClass="isitext_hrm" style="width:190px;" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="officialPhoneNoId"/>
+                            </p:column>
+                        </p:row>                      
+                    </p:panelGrid>
+                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="2" style="margin-bottom: -30px!important">
+                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formEducationNonFormalFormId,:growlEducationNonFormalFormId"
+                                         action="#{educationNonFormalFormController.doSave()}" styleClass="isitext_hrm"
+                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
+                                         icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formEducationNonFormalFormId"
+                                         icon="ui-icon-refresh" styleClass="isitext_hrm" >  
+                            <p:resetInput target="formEducationNonFormalFormId" />  
+                        </p:commandButton>
+                    </h:panelGrid>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

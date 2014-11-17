@@ -143,6 +143,12 @@ public class HRMConstant {
     public static final Integer PLACEMENT_MARRIED = 1;
     public static final Integer PLACEMENT_NO_MARRIED = 0;
     /* END */
+    
+    /* Constant for Company Policy */
+    public static final String COMP_POLICY_BROADCAST_WEEKLY = "WEEKLY";
+    public static final String COMP_POLICY_BROADCAST_MONTHLY = "MONTHLY";
+    public static final String COMP_POLICY_BROADCAST_QUARTERLY = "QUARTERLY";
+    /* END */
 
     /* Approval Definition */
     public static final String APPROVAL_TYPE_INDIVIDUAL = "APPROVAL_TYPE_INDIVIDUAL";

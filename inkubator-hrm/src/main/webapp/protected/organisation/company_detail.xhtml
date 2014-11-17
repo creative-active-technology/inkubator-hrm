@@ -65,10 +65,10 @@
 	                            <p:column style="width: 30%">
 		                        	<p:outputLabel value="#{companyDetailController.selectedCompany.companyLogoName}" rendered="#{not empty companyDetailController.selectedCompany.companyLogoName}"/> 
 	                                &nbsp;&nbsp;
-	                                <p:commandButton rendered="#{not empty companyDetailController.selectedCompany.companyLogoName}" ajax="false" value="Download" title="Download" style="font-size: 10px!important" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
+	                                <p:commandLink rendered="#{not empty companyDetailController.selectedCompany.companyLogoName}" ajax="false" value="Download" title="Download" style="font-size: 10px!important" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
 	                                	<p:fileDownload value="#{imageCompanyStreamerController.companyLogo}" /> 
 	                                    <f:param name="companyId" value="#{companyDetailController.selectedCompany.id}" />
-	                                </p:commandButton>
+	                                </p:commandLink>
 	                            </p:column>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
 	                                <p:outputLabel value="#{appmsg['province.province']}" styleClass="label_hrm"/>
