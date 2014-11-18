@@ -273,6 +273,16 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 
         return criteria.list();
     }
+    
+    @Override
+    public List<EmpData> getAllDataByGolJabatanIdAndDepartmentId(Long golJabatanId, Long departmentId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("golonganJabatan.id", golJabatanId));
+        criteria.add(Restrictions.eq("jabatanByJabatanId.department.id", departmentId));
+        criteria.add(Restrictions.ne("status", HRMConstant.EMP_TERMINATION));
+        return criteria.list();
+    }
 
     @Override
     public List<EmpData> getTotalBySearchEmployee(PlacementOfEmployeeWorkScheduleModel model) {

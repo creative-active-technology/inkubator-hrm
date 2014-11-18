@@ -65,7 +65,7 @@
 	                            <p:column style="width: 30%">
 		                        	<p:outputLabel value="#{companyDetailController.selectedCompany.companyLogoName}" rendered="#{not empty companyDetailController.selectedCompany.companyLogoName}"/> 
 	                                &nbsp;&nbsp;
-	                                <p:commandLink rendered="#{not empty companyDetailController.selectedCompany.companyLogoName}" ajax="false" value="Download" title="Download" style="font-size: 10px!important" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
+	                                <p:commandLink rendered="#{not empty companyDetailController.selectedCompany.companyLogoName}" ajax="false" value="Download" title="Download" style="font-size: 10px!important" onclick="PrimeFaces.monitorDownload(start, stop);">
 	                                	<p:fileDownload value="#{imageCompanyStreamerController.companyLogo}" /> 
 	                                    <f:param name="companyId" value="#{companyDetailController.selectedCompany.id}" />
 	                                </p:commandLink>
