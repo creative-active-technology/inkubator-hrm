@@ -1,8 +1,10 @@
 package com.inkubator.hrm.entity;
 // Generated Jul 14, 2014 1:26:56 PM by Hibernate Tools 3.6.0
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -68,6 +70,7 @@ public class BioData implements java.io.Serializable {
     private Set<EmpData> empDatas = new HashSet<EmpData>(0);
     private Set<BioKeahlian> bioKeahlians = new HashSet<BioKeahlian>(0);
     private Set<BioSpesifikasiAbility> bioSpesifikasiAbilitys = new HashSet<BioSpesifikasiAbility>(0);
+    private List<EmpData> listEmpData = new ArrayList<>();
 
     public BioData() {
     }
@@ -511,4 +514,24 @@ public class BioData implements java.io.Serializable {
         return data;
     }
 
+    //    @Transient
+    //    public List<EmpData> getListEmpData() {
+    ////        return new ArrayList(getEmpDatas());
+    //    }
+    //    public void setListEmpData(List<EmpData> listEmpData) {
+    //        this.listEmpData = listEmpData;
+    //    }
+    @Transient
+    public List<EmpData> getListEmpData() {
+        List<EmpData> empData = new ArrayList(empDatas);
+        return empData;
+    }
+
+    public void setListEmpData(List<EmpData> listEmpData) {
+        this.listEmpData = listEmpData;
+    }
+    
+    
+
+    
 }

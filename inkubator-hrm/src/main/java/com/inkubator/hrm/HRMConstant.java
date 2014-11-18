@@ -145,9 +145,9 @@ public class HRMConstant {
     /* END */
     
     /* Constant for Company Policy */
-    public static final String COMP_POLICY_BROADCAST_WEEKLY = "WEEKLY";
-    public static final String COMP_POLICY_BROADCAST_MONTHLY = "MONTHLY";
-    public static final String COMP_POLICY_BROADCAST_QUARTERLY = "QUARTERLY";
+    public static final String COMP_POLICY_REPEAT_ON_WEEKLY = "WEEKLY";
+    public static final String COMP_POLICY_REPEAT_ON_MONTHLY = "MONTHLY";
+    public static final String COMP_POLICY_REPEAT_ON_QUARTERLY = "QUARTERLY";
     /* END */
 
     /* Approval Definition */
@@ -300,5 +300,8 @@ public class HRMConstant {
     public static final String CHECK_IN_EARLY = "EARLY_COME";
     public static final String CHECK_IN_ON_TIME = "ON TIME";
     public static final String CHECK_IN_LATE = "LATE";
+    
+    public static final Integer REPORT_FAMILY_DEPENDENTS_NO = 0;
+    public static final Integer REPORT_FAMILY_DEPENDENTS_YES = 1;
 
 }

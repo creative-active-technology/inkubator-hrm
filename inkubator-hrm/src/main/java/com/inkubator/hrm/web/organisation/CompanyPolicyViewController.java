@@ -90,7 +90,7 @@ public class CompanyPolicyViewController extends BaseController {
 
     public void doSelectEntity() {
         try {
-        	selectedCompanyPolicy = this.companyPolicyService.getEntiyByPK(selectedCompanyPolicy.getId());
+        	selectedCompanyPolicy = this.companyPolicyService.getEntityByPkWithDetail(selectedCompanyPolicy.getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -109,7 +109,7 @@ public class CompanyPolicyViewController extends BaseController {
     }
 
     public String doAdd() {
-        return "/protected/organisation/company_form.htm?faces-redirect=true";
+        return "/protected/organisation/company_policy_form.htm?faces-redirect=true";
     }
 
     public String doUpdate() {

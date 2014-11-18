@@ -19,5 +19,7 @@ public interface CompanyPolicyDao extends IDAO<CompanyPolicy> {
 	public Long getTotalByParam(CompanyPolicySearchParameter parameter);
 	
 	public CompanyPolicy getEntityByPkWithDetail(Long id);
+	
+	public CompanyPolicy updateAndMerge(CompanyPolicy companyPolicy);
 
 }
