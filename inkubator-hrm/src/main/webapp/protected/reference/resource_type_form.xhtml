@@ -21,8 +21,8 @@
                         <p:graphicImage library="images" name="marital_status.png" height="36" width="36"  cache="true"/>
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Resource Type Form" styleClass="header_big" />
-                                <p:outputLabel value="Resource Type From Reference" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['resourceType.resourceType_form']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['resourceType.resourceType_header']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -35,7 +35,7 @@
                         
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="code" value="Code" styleClass="label_hrm"/>
+                                <p:outputLabel for="code" value="#{appmsg['global.code']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="code" value=":" styleClass="label_hrm"/>
@@ -53,7 +53,7 @@
                         
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="resourceType" value="Resource Type" styleClass="label_hrm"/>
+                                <p:outputLabel for="resourceType" value="#{appmsg['resourceType.resourceType']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="resourceType" value=":" styleClass="label_hrm"/>

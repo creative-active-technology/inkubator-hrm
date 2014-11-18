@@ -13,6 +13,7 @@ import com.inkubator.hrm.web.model.PermitDistributionModel;
 import com.inkubator.hrm.web.model.PlacementOfEmployeeWorkScheduleModel;
 import com.inkubator.hrm.web.search.EmpDataSearchParameter;
 import com.inkubator.hrm.web.search.ReportEmpWorkingGroupParameter;
+import com.inkubator.hrm.web.search.ReportOfEmployeesFamilySearchParameter;
 
 import java.util.Date;
 import java.util.List;
@@ -59,6 +60,8 @@ public interface EmpDataDao extends IDAO<EmpData> {
     public Long getTotalNotExistInUserByParam(String param);
 
     public List<EmpData> getAllDataByJabatanId(Long jabatanId, Order order);
+    
+    public List<EmpData> getAllDataByGolJabatanIdAndDepartmentId(Long jabatanId, Long departmentId);
 
     public List<EmpData> getTotalBySearchEmployee(PlacementOfEmployeeWorkScheduleModel model);
 
@@ -75,4 +78,8 @@ public interface EmpDataDao extends IDAO<EmpData> {
     public Long getTotalReportEmpWorkingGroupByParam(ReportEmpWorkingGroupParameter param);
     
     public List<EmpData> getEmployeeBySearchEmployeePermit(PermitDistributionModel model);
+    
+    public List<EmpData> getAllDataReportOfEmployeesFamilyByParam(ReportOfEmployeesFamilySearchParameter searchParameter, int firstResult, int maxResults, Order orderable);
+    
+    public Long getTotalReportOfEmployeesFamilyByParam(ReportOfEmployeesFamilySearchParameter searchParameter);
 }

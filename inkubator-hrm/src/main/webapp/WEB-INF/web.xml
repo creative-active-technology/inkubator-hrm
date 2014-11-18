@@ -275,7 +275,7 @@
     </error-page>
     <error-page>
         <error-code>500</error-code>
-        <location>/error/error.htm</location>
+        <location>/error/error_500.htm</location>
     </error-page>
     <security-constraint>
         <display-name>Restrict direct access to XHTML files</display-name>

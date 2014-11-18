@@ -23,8 +23,8 @@
                             <p:graphicImage library="images" name="finger_print.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="Mecine Finger Service" styleClass="header_big" />
-                                    <p:outputLabel value="Mecine Finger Service from Working Time" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['mechineFinger.mechineFingerService']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['mechineFinger.mechineFinger_header']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -35,7 +35,7 @@
                         <p:panelGrid style="width: 100%;margin-bottom: 20px;margin-top: 20px" styleClass="grid_border3" >
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="host1" value="Host" styleClass="label_hrm"/>
+                                    <p:outputLabel for="host1" value="#{appmsg['mechineFinger.dbhost']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <pe:inputNumber minValue="1" maxValue="255" id="host1" value="#{mecineFingerServiceFormController.mecineFingerServiceModel.host1}"  title="host1" style="width:50px;" decimalPlaces="0"/>
@@ -47,7 +47,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="pass" value="Password" styleClass="label_hrm"/>
+                                    <p:outputLabel for="pass" value="#{appmsg['mechineFinger.password']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:inputText id="pass" value="#{mecineFingerServiceFormController.mecineFingerServiceModel.openProtocolPassword}"  required="true" maxlength="25" styleClass="isitext_hrm" style="width:220px;" />
@@ -57,7 +57,7 @@
 
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel for="type" value="Type" styleClass="label_hrm"/>
+                                    <p:outputLabel for="type" value="#{appmsg['mechineFinger.type']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:selectOneMenu id="type" value="#{mecineFingerServiceFormController.mecineFingerServiceModel.serviceData}" style="width: 150px;margin-right: 3px" required="true">
@@ -72,7 +72,7 @@
 
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel for="protocol" value="Protocol" styleClass="label_hrm"/>
+                                    <p:outputLabel for="protocol" value="#{appmsg['mechineFinger.protocol']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:selectOneMenu id="protocol" value="#{mecineFingerServiceFormController.mecineFingerServiceModel.protocolData}" style="width: 150px;margin-right: 3px" required="true">
@@ -88,7 +88,7 @@
 
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel for="empIdBaseOn" value="Employee ID based on" styleClass="label_hrm"/>
+                                    <p:outputLabel for="empIdBaseOn" value="#{appmsg['mechineFinger.employee_id_based_on']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:selectOneMenu id="empIdBaseOn" value="#{mecineFingerServiceFormController.mecineFingerServiceModel.employeeBaseId}" style="width: 150px;margin-right: 3px" required="true">

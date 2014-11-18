@@ -52,7 +52,7 @@
                                     <p:commandButton value="Export to XLS" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
                                         <pe:exporter target="tableLeaveImplementationId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Leave_Implementation"/>
                                     </p:commandButton>
-                                    <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']}" action="#{leaveImplementationViewController.doAdd()}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true"/>
+                                    <!--<p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']}" action="#{leaveImplementationViewController.doAdd()}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true"/>-->
                                     <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{leaveImplementationViewController.doClose()}" icon="ui-icon-home"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
@@ -121,7 +121,7 @@
                                     <f:setPropertyActionListener value="#{leaveImplementationData}" target="#{leaveImplementationViewController.selectedLeaveImplementation}" />
                                 </p:commandButton>
                                 -
-                                <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.cancel']}" label="#{appmsg['global.cancel']}"  
+                                <p:commandButton icon="ui-icon-arrowreturnthick-1-w" title="#{appmsg['global.cancel']}" label="#{appmsg['global.cancel']}"  
                                 				 style="font-size: 10px!important" action="#{leaveImplementationViewController.doCancellation()}">
                                     <f:setPropertyActionListener value="#{leaveImplementationData}" target="#{leaveImplementationViewController.selectedLeaveImplementation}" />
                                 </p:commandButton> 

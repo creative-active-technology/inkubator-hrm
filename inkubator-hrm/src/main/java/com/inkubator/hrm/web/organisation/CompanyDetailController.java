@@ -133,8 +133,6 @@ public class CompanyDetailController extends BaseController {
 			FinancialPartnerService financialPartnerService) {
 		this.financialPartnerService = financialPartnerService;
 	}
-	
-	
 
 	public String doBack() {
         return "/protected/organisation/company_view.htm?faces-redirect=true";

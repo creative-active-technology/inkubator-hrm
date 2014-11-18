@@ -5,6 +5,7 @@
 package com.inkubator.hrm.web.search;
 
 import com.inkubator.webcore.util.SearchParameter;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -14,9 +15,13 @@ public class FinancialNonBankingSearchParameter extends SearchParameter{
     private String financialService;
     private String code;
     private String name;
-    private String address;
 
     public String getFinancialService() {
+        if(StringUtils.equalsIgnoreCase(getKeyParam(), "financialService")){
+            financialService = getParameter();
+        } else {
+            financialService = null;
+        }
         return financialService;
     }
 
@@ -25,6 +30,11 @@ public class FinancialNonBankingSearchParameter extends SearchParameter{
     }
 
     public String getCode() {
+        if(StringUtils.equalsIgnoreCase(getKeyParam(), "code")){
+            code = getParameter();
+        } else {
+            code = null;
+        }
         return code;
     }
 
@@ -33,6 +43,11 @@ public class FinancialNonBankingSearchParameter extends SearchParameter{
     }
 
     public String getName() {
+        if(StringUtils.equalsIgnoreCase(getKeyParam(), "name")){
+            name = getParameter();
+        } else {
+            name = null;
+        }
         return name;
     }
 
@@ -40,13 +55,6 @@ public class FinancialNonBankingSearchParameter extends SearchParameter{
         this.name = name;
     }
 
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
     
     
 }

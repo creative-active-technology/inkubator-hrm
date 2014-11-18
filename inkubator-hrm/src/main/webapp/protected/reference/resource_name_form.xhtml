@@ -21,8 +21,8 @@
                         <p:graphicImage library="images" name="marital_status.png" height="36" width="36"  cache="true"/>
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Resource Name Form" styleClass="header_big" />
-                                <p:outputLabel value="Resource Name From Reference" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['resourceName.resourceName_form']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['resourceName.resourceName_header']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -35,7 +35,7 @@
                         
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="code" value="Code" styleClass="label_hrm"/>
+                                <p:outputLabel for="code" value="#{appmsg['global.code']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="code" value=":" styleClass="label_hrm"/>
@@ -53,7 +53,7 @@
                         
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="name" value="Name" styleClass="label_hrm"/>
+                                <p:outputLabel for="name" value="#{appmsg['global.name']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="name" value=":" styleClass="label_hrm"/>
@@ -72,13 +72,13 @@
                         
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="resourceType" value="Resource Type" styleClass="label_hrm"/>
+                                <p:outputLabel for="resourceType" value="#{appmsg['resourceType.resourceType']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="resourceType" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <p:selectOneMenu id="resourceType" value="#{resourceNameFormController.model.resourceTypeId}" style="width: 150px;margin-right: 3px" disabled="#{costCenterFormController.isParentDisabled}" >
+                                <p:selectOneMenu id="resourceType" value="#{resourceNameFormController.model.resourceTypeId}" style="width: 150px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{resourceNameFormController.dropDownResourceType}"/>
                                     </p:selectOneMenu>
@@ -93,13 +93,13 @@
                         
                         <p:row>
                             <p:column style="width: 40%;" >
-                                <p:outputLabel for="dateOfOwnership" value="Date of Ownership" styleClass="label_hrm"/>
+                                <p:outputLabel for="dateOfOwnership" value="#{appmsg['resourceName.date_ownership']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="dateOfOwnership" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 80%">
-                                <p:calendar  id="dateOfOwnership" size="40" pattern="dd MMMM yyyy" label="Date of Ownership" value="#{resourceNameFormController.model.dateOfOwnership}"
+                                <p:calendar  id="dateOfOwnership" size="40" pattern="dd MMMM yyyy" label="#{appmsg['resourceName.date_ownership']}" value="#{resourceNameFormController.model.dateOfOwnership}"
                                          required="true" navigator="true">
                                 <f:validator validatorId="birthDateValidator"  />
                                 <f:attribute name="validatorMessage" value="#{appmsg['global.birthDate_validator']}"/>

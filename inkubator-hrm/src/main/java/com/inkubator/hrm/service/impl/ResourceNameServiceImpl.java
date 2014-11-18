@@ -237,5 +237,11 @@ public class ResourceNameServiceImpl extends IServiceImpl implements ResourceNam
     public List<ResourceName> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public ResourceName getEntityByPkWithDetail(Long id) throws Exception {
+        return resourceNameDao.getEntityByPkWithDetail(id);
+    }
     
 }
