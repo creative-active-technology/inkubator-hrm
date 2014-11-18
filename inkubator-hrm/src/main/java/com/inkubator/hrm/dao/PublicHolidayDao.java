@@ -6,6 +6,7 @@ import org.hibernate.criterion.Order;
 
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.PublicHoliday;
+import com.inkubator.hrm.web.search.PublicHolidaySearchParameter;
 
 /**
 *
@@ -20,5 +21,11 @@ public interface PublicHolidayDao extends IDAO<PublicHoliday> {
         public PublicHoliday getEntityByPKWithDetail(Long id);
         
         public List<PublicHoliday> getAllWithDetail();
+        
+        public List<PublicHoliday> getReportByParam(PublicHolidaySearchParameter parameter, int firstResult, int maxResults, Order orderable);
+        
+        public Long getReportTotalByParam(PublicHolidaySearchParameter parameter);
+        
+        public List<PublicHoliday> getReportHistoryByParam(PublicHolidaySearchParameter parameter);
 
 }

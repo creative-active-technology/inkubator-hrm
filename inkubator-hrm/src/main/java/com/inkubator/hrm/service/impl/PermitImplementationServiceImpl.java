@@ -60,6 +60,9 @@ import com.inkubator.hrm.service.WtScheduleShiftService;
 import com.inkubator.hrm.web.search.PermitImplementationReportSearchParameter;
 import com.inkubator.hrm.web.search.PermitImplementationSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+import com.inkubator.webcore.util.FacesIO;
+import java.io.File;
+import org.primefaces.model.UploadedFile;
 
 /**
  *
@@ -85,6 +88,8 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
     private HrmUserDao hrmUserDao;
     @Autowired
     private ApprovalActivityDao approvalActivityDao;
+    @Autowired
+    private FacesIO facesIO;
 //    @Autowired
 //    private PermitImplementationDateDao permitImplementationDateDao;
 
@@ -109,7 +114,7 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void save(PermitImplementation entity) throws Exception {
+    public void save(PermitImplementation entity, UploadedFile documentFile) throws Exception {
 //        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
         // check duplicate number filling
         long totalDuplicates = permitImplementationDao.getTotalByNumberFilling(entity.getNumberFilling());
@@ -130,7 +135,7 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
         // check actualPermit yg diambil, tidak boleh lebih besar dari balancePermit yg tersedia
         Double actualPermit = this.getTotalActualPermit(empData.getId(), permit.getId(), entity.getStartDate(), entity.getEndDate());
         if (actualPermit > permitDistribution.getBalance()) {
-            throw new BussinessException("permitimplementation.error_permit_balance is insufficient");
+            throw new BussinessException("permitimplementation.error_permit_balance_is_insufficient");
         }
 
         entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
@@ -145,6 +150,15 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
 
         permitImplementationDao.save(entity);
 
+        if (documentFile != null) {
+            String uploadPath = getUploadPath(entity.getId(), documentFile);
+            facesIO.transferFile(documentFile);
+            File file = new File(facesIO.getPathUpload() + documentFile.getFileName());
+            file.renameTo(new File(uploadPath));
+
+            entity.setUploadPath(uploadPath);
+            permitImplementationDao.update(entity);
+        }
 //        if (permit.getIsQuotaReduction()) {
         this.creditPermitBalance(permitDistribution, actualPermit);
 //        }
@@ -152,9 +166,11 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void update(PermitImplementation entity) throws Exception {
+    public void update(PermitImplementation entity,  UploadedFile documentFile) throws Exception {
 //        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
-        // check duplicate number filling
+        
+        
+        
         long totalDuplicates = permitImplementationDao.getTotalByNumberFillingAndNotId(entity.getNumberFilling(), entity.getId());
         if (totalDuplicates > 0) {
             throw new BussinessException("permitimplementation.error_duplicate_filling_number");
@@ -162,6 +178,21 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
 
         PermitImplementation permitImplementation = permitImplementationDao.getEntiyByPK(entity.getId());
 
+        // check duplicate number filling
+        String uploadPath = permitImplementation.getUploadPath();
+
+        if (documentFile != null) {
+            //remove old file
+            File oldFile = new File(permitImplementation.getUploadPath());
+            oldFile.delete();
+
+            //added new file
+            uploadPath = getUploadPath(permitImplementation.getId(), documentFile);
+            facesIO.transferFile(documentFile);
+            File file = new File(facesIO.getPathUpload() + documentFile.getFileName());
+            file.renameTo(new File(uploadPath));
+        }
+        
         EmpData empData = empDataDao.getEntiyByPK(entity.getEmpData().getId());
         PermitClassification permit = permitDao.getEntiyByPK(entity.getPermitClassification().getId());
 //        EmpData temporaryActing = entity.getTemporaryActing() != null ? empDataDao.getEntiyByPK(entity.getTemporaryActing().getId()) : null;
@@ -173,7 +204,7 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
         permitImplementation.setStartDate(entity.getStartDate());
         permitImplementation.setEndDate(entity.getEndDate());
         permitImplementation.setFillingDate(entity.getFillingDate());
-//        permitImplementation.setAddress(entity.getAddress());
+        permitImplementation.setUploadPath(uploadPath);
 //        permitImplementation.setMobilePhone(entity.getMobilePhone());
 //        permitImplementation.setMaterialJobsAbandoned(entity.getMaterialJobsAbandoned());
         permitImplementation.setDescription(entity.getDescription());
@@ -276,8 +307,16 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void delete(PermitImplementation entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+        //remove physical file
+        try {
+            File oldFile = new File(entity.getUploadPath());
+            oldFile.delete();
+        } catch (Exception e) {
+            //if any error when removing file, system will continue deleting the record
+        }
 
+        //remove entity
+        permitImplementationDao.delete(entity);
     }
 
     @Override
@@ -804,4 +843,21 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
     public List<PermitImplementation> getReportHistoryByParam(PermitImplementationReportSearchParameter parameter, List<String> activityNumbers, Long empDataId) throws Exception {
         return permitImplementationDao.getReportHistoryByParam(parameter, activityNumbers, empDataId);
     }
+
+    private String getUploadPath(Long id, UploadedFile documentFile) {
+        String extension = StringUtils.substringAfterLast(documentFile.getFileName(), ".");
+        String uploadPath = facesIO.getPathUpload() + "permit_" + id + "." + extension;
+        return uploadPath;
+    }
+
+    @Override
+    public void save(PermitImplementation t) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void update(PermitImplementation t) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
 }

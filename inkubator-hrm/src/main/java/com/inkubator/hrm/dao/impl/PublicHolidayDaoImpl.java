@@ -3,6 +3,7 @@ package com.inkubator.hrm.dao.impl;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.PublicHolidayDao;
 import com.inkubator.hrm.entity.PublicHoliday;
+import com.inkubator.hrm.web.search.PublicHolidaySearchParameter;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
@@ -35,7 +36,7 @@ public class PublicHolidayDaoImpl extends IDAOImpl<PublicHoliday> implements Pub
         criteria.setFetchMode("leaveScheme", FetchMode.JOIN);
         criteria.addOrder(orderable);
         criteria.setFirstResult(firstResult);
-        criteria.setMaxResults(maxResults);        
+        criteria.setMaxResults(maxResults);
         return criteria.list();
     }
 
@@ -53,7 +54,7 @@ public class PublicHolidayDaoImpl extends IDAOImpl<PublicHoliday> implements Pub
         }
         criteria.add(Restrictions.isNotNull("id"));
     }
-    
+
     @Override
     public PublicHoliday getEntityByPKWithDetail(Long id) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
@@ -69,4 +70,44 @@ public class PublicHolidayDaoImpl extends IDAOImpl<PublicHoliday> implements Pub
         return criteria.list();
     }
 
+    @Override
+    public List<PublicHoliday> getReportByParam(PublicHolidaySearchParameter parameter, int firstResult, int maxResults, Order orderable) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        doSearchReportByParam(parameter, criteria);
+        criteria.setFetchMode("leaveScheme", FetchMode.JOIN);
+        criteria.addOrder(orderable);
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResults);
+        return criteria.list();
+    }
+
+    @Override
+    public Long getReportTotalByParam(PublicHolidaySearchParameter parameter) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        doSearchReportByParam(parameter,  criteria);
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+
+    private void doSearchReportByParam(PublicHolidaySearchParameter parameter, Criteria criteria) {
+        //get approval definition ids
+
+        if (parameter.getStartDate() != null) {
+            criteria.add(Restrictions.eq("startDate", parameter.getStartDate()));
+        }
+
+        if (parameter.getEndDate() != null) {
+            criteria.add(Restrictions.eq("endDate", parameter.getEndDate()));
+        }
+
+        
+        criteria.add(Restrictions.isNotNull("id"));
+    }
+
+    @Override
+    public List<PublicHoliday> getReportHistoryByParam(PublicHolidaySearchParameter parameter) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        doSearchReportByParam(parameter, criteria);
+        criteria.setFetchMode("leaveScheme", FetchMode.JOIN);
+        return criteria.list();
+    }
 }
