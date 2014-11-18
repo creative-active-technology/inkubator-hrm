@@ -87,7 +87,9 @@ public class LeaveImplementationApprovalFormController extends BaseController {
             }
             selectedLeaveImplementation = gson.fromJson(selectedApprovalActivity.getPendingData(), LeaveImplementation.class);
             EmpData empData = empDataService.getByIdWithDetail(selectedLeaveImplementation.getEmpData().getId());
-            selectedLeaveImplementation.setEmpData(empData);            
+            EmpData temporaryActing = empDataService.getByIdWithDetail(selectedLeaveImplementation.getTemporaryActing().getId());
+            selectedLeaveImplementation.setEmpData(empData);
+            selectedLeaveImplementation.setTemporaryActing(temporaryActing);            
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
 
