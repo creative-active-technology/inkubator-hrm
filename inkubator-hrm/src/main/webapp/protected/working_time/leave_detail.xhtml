@@ -170,7 +170,7 @@
 	                            	<p:outputLabel value="#{appmsg['leave.only_once_per_employee']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-		                        	<p:outputLabel value="#{leaveDetailController.selectedLeave.isQuotaReduction}">
+		                        	<p:outputLabel value="#{leaveDetailController.selectedLeave.isOnlyOncePerEmployee}">
 	                            		<f:converter converterId="booleanMessageConverter"/>
 	                            	</p:outputLabel>
 	                            </p:column>
