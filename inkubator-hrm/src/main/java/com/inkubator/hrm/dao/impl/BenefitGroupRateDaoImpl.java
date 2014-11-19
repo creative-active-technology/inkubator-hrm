@@ -30,6 +30,7 @@ public class BenefitGroupRateDaoImpl extends IDAOImpl<BenefitGroupRate> implemen
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("benefitGroup.id", benefitGroupId));
         criteria.setFetchMode("golonganJabatan", FetchMode.JOIN);
+        criteria.setFetchMode("golonganJabatan.pangkat", FetchMode.JOIN);
         return criteria.list();
     }
 
