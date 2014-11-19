@@ -1,13 +1,15 @@
 package com.inkubator.hrm.web.converter;
 
-import com.inkubator.hrm.HRMConstant;
-import com.inkubator.webcore.util.FacesUtil;
 import java.util.Locale;
 import java.util.ResourceBundle;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.webcore.util.FacesUtil;
 
 /**
  *
@@ -24,14 +26,9 @@ public class BooleanMessageConverter implements Converter {
 	@Override
 	public String getAsString(FacesContext facesContext, UIComponent uiComponent, Object obj) {
 		
-		ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
-//		if(obj == 0){
-//                    obj = Boolean.FALSE;
-//                }else if (obj == 1){
-//                    obj = Boolean.TRUE;
-//                }
-                
+		ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));    
                 return obj == Boolean.TRUE || obj.equals(1) ? messages.getString("global.yes"):messages.getString("global.no");
+
 	}
 
 }

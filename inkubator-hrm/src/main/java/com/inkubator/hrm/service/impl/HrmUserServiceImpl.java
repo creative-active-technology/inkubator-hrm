@@ -295,6 +295,7 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void saveAndNotification(HrmUser hrmUser) throws Exception {
+        String pass=hrmUser.getPassword();
         if (hrmUser.getEmpData() != null) {
             EmpData empData = empDataDao.getEntiyByPK(hrmUser.getEmpData().getId());
             hrmUser.setEmpData(empData);
@@ -343,7 +344,7 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
 //        String decriptPass=AESUtil.getAESDescription(u.getPassword(), HRMConstant.KEYVALUE, HRMConstant.AES_ALGO);
             mSSend.setFrom(HRMConstant.SYSTEM_ADMIN);
             mSSend.setDestination(hrmUser.getPhoneNumber());
-            mSSend.setContent("Dear " + passwordHistory.getRealName() + " You has registered in HR Application with User Name :" + hrmUser.getUserId() + " and Password :" + hrmUser.getPassword());
+            mSSend.setContent("Dear " + passwordHistory.getRealName() + " You has registered in HR Application with User Name :" + hrmUser.getUserId() + " and Password :" + pass);
             System.out.println("step 2");
             // Send notificatin SMS
             this.jmsTemplateSMS.send(new MessageCreator() {
