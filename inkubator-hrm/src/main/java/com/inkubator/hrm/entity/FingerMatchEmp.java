@@ -23,12 +23,10 @@ public class FingerMatchEmp implements Serializable {
 
     private Long id;
     private Integer version;
-    
     private Integer fingerIndexId;
     private EmpData empData;    
     private MecineFinger mecineFinger;
     private String nik;
-    
     private String createdBy;
     private String updatedBy;
     private Date createdOn;
