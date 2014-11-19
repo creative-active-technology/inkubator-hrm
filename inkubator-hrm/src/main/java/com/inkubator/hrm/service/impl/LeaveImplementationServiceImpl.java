@@ -596,11 +596,18 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
             throw new BussinessException("leaveimplementation.error_submitted_limit");
         }
 
-        // check actualLeave yg diambil, tidak boleh lebih besar dari balanceCuti yg tersedia
+        /** check actualLeave yg diambil, tidak boleh lebih besar dari balanceCuti yg tersedia 
+         *  di cek juga kondisi di leaveDefinition apakah boleh minus atau tidak, kalo boleh maka balance tidak boleh lebih besar dari maxAllowedMinus  */
         List<Date> actualLeaves = this.getAllActualLeave(empData.getId(), leave.getId(), entity.getStartDate(), entity.getEndDate());
         int totalActualLeaves = actualLeaves.size();
         if (totalActualLeaves > leaveDistribution.getBalance()) {
-            throw new BussinessException("leaveimplementation.error_leave_balance_is_insufficient");
+        	if(leave.getIsAllowedMinus()){
+        		if((totalActualLeaves - leaveDistribution.getBalance()) > leave.getMaxAllowedMinus()){
+        			throw new BussinessException("leaveimplementation.error_leave_balance_is_insufficient");
+        		}
+        	} else {
+        		throw new BussinessException("leaveimplementation.error_leave_balance_is_insufficient");
+        	}
         }
 
         entity.setEmpData(empData);

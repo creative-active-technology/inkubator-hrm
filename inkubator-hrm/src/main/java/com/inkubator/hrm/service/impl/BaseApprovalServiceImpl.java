@@ -123,16 +123,16 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
 					appActivity.setLocale(FacesUtil.getFacesContext().getViewRoot().getLocale().toString());
 					appActivity.setCreatedTime(new Date());
 		        	
+					//show growl notification for approver
+			    	this.sendApprovalGrowlNotif(appActivity);
+			    	
+			    	//send sms notification to approver
+					this.sendApprovalSmsnotif(appActivity);
+					
 					break; //keluar dari looping
 				}
 			}
 		}
-		
-		//show growl notification for approver
-    	this.sendApprovalGrowlNotif(appActivity);
-    	
-    	//send sms notification to approver
-		this.sendApprovalSmsnotif(appActivity);
     	
 		return appActivity;
 	}
