@@ -332,8 +332,7 @@ public class GroupWorkingFormController implements Serializable {
 //                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 //            return "no";
 //        }
-        } catch (BussinessException ex) { //data already exist(duplicate)
-//            LOGGER.error("Error", ex);
+        } catch (BussinessException ex) { 
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             return "no";
         } catch (Exception ex) {

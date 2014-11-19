@@ -160,7 +160,6 @@ public class LeaveImplementationCancelController extends BaseController {
         	}
 			return "/protected/working_time/leave_implementation_view.htm?faces-redirect=true";
 		} catch (BussinessException ex) { 
-            LOGGER.error("Error", ex);
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);

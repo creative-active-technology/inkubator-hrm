@@ -258,8 +258,7 @@ public class ApprovalDefinitionFormController extends BaseController {
                 MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
                 return "/protected/approval/approval_definition_detail.htm?faces-redirect=true&execution=e" + approvalDefinition.getId();
-            } catch (BussinessException ex) { //data already exist(duplicate)
-//            LOGGER.error("Error", ex);
+            } catch (BussinessException ex) { 
                 MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
@@ -270,8 +269,7 @@ public class ApprovalDefinitionFormController extends BaseController {
                 MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
                 return "/protected/approval/approval_definition_detail.htm?faces-redirect=true&execution=e" + approvalDefinition.getId();
-            } catch (BussinessException ex) { //data already exist(duplicate)
-//            LOGGER.error("Error", ex);
+            } catch (BussinessException ex) { 
                 MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
