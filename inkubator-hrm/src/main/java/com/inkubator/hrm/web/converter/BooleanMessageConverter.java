@@ -25,13 +25,13 @@ public class BooleanMessageConverter implements Converter {
 	public String getAsString(FacesContext facesContext, UIComponent uiComponent, Object obj) {
 		
 		ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
-		if(obj == 0){
-                    obj = Boolean.FALSE;
-                }else if (obj == 1){
-                    obj = Boolean.TRUE;
-                }
+//		if(obj == 0){
+//                    obj = Boolean.FALSE;
+//                }else if (obj == 1){
+//                    obj = Boolean.TRUE;
+//                }
                 
-                return obj == Boolean.TRUE ? messages.getString("global.yes"):messages.getString("global.no");
+                return obj == Boolean.TRUE || obj.equals(1) ? messages.getString("global.yes"):messages.getString("global.no");
 	}
 
 }
