@@ -7,6 +7,7 @@ import com.inkubator.hrm.dao.LeaveSchemeDao;
 import com.inkubator.hrm.dao.PublicHolidayDao;
 import com.inkubator.hrm.entity.PublicHoliday;
 import com.inkubator.hrm.service.PublicHolidayService;
+import com.inkubator.hrm.web.search.PublicHolidaySearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import java.util.Date;
 import java.util.List;
@@ -271,4 +272,23 @@ public class PublicHolidayServiceImpl extends IServiceImpl implements PublicHoli
     public List<PublicHoliday> getAllWithDetail() throws Exception {
         return publicHolidayDao.getAllWithDetail();
     }
+    
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<PublicHoliday> getReportByParam(PublicHolidaySearchParameter parameter,  int firstResult, int maxResults, Order orderable) throws Exception {
+        return publicHolidayDao.getReportByParam(parameter, firstResult, maxResults, orderable);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getReportTotalByParam(PublicHolidaySearchParameter parameter ) throws Exception {
+        return publicHolidayDao.getReportTotalByParam(parameter);
+    }
+    
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<PublicHoliday> getReportHistoryByParam(PublicHolidaySearchParameter parameter) throws Exception {
+        return publicHolidayDao.getReportHistoryByParam(parameter);
+    }
+    
 }

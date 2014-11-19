@@ -7,29 +7,12 @@
       xmlns:fn="http://java.sun.com/jsp/jstl/functions">
     <h:head>
         <title>Error Informations</title>
-        <link rel="stylesheet" href="${request.contextPath}/resources/css/login.css" type="text/css" media="screen" />
+        <link rel="stylesheet" href="${request.contextPath}/resources/css/error.css" type="text/css" media="screen" />
         <link rel="shortcut icon" href="./hr.ico" type="image/x-icon" />
     </h:head>
     <h:body>
-                <div id="art-page-background-middle-texture">
-                    <div id="art-page-background-glare">
-        <div align="left" style="margin-top: 10px">
-            <p:panel header="The URL not Exist" style="margin: 10px">
-                <h:panelGrid columns="2" style="color: #ff3333">		
-                    <h:outputText value="Date/time:" /> <h:outputText value="#{of:formatDate(now, 'yyyy-MM-dd HH:mm:ss')}" />
-                    <h:outputText value="User agent" /> <h:outputText value="#{header['user-agent']}" />
-                    <h:outputText value="User IP" /> <h:outputText value="#{empty header['x-forwarded-for'] ? request.remoteAddr : fn:split(header['x-forwarded-for'], ',')[0]}" />
-                    <h:outputText value="Request URI:" /> <a href="#{requestScope['javax.servlet.error.request_uri']}">#{requestScope['javax.servlet.error.request_uri']}</a>
-                    <h:outputText value="Ajax request" /> <h:outputText value="#{facesContext.partialViewContext.ajaxRequest ? 'Yes' : 'No'}" />
-                    <h:outputText value="Status code" /> <h:outputText value="#{requestScope['javax.servlet.error.status_code']}" />
-                    <h:outputText value="Exception type" /> <h:outputText value="#{requestScope['javax.servlet.error.exception_type']}" />
-                    <h:outputText value="Exception message" /> <h:outputText value="#{requestScope['javax.servlet.error.message']}" />
-                    <h:outputText value="Stack trace" /> <pre><code>#{of:printStackTrace(requestScope['javax.servlet.error.exception'])}</code></pre>
-                </h:panelGrid>
-            </p:panel>
-            <p:button href="/" value="Go to Login Page" icon="ui-icon-locked" style="width: 150px;margin-top: 5px;margin-bottom: 10px;margin-right: 10px;float: right" title="Log Out"/>
-        </div>
-                    </div>
+        <div  id="box_bg">
+            <p:button href="/" value="Go to Login Page" icon="ui-icon-locked" title="Go to Login Page" style="font-size: 12px"/>
         </div>
     </h:body>
 </html>
