@@ -1,5 +1,5 @@
 package com.inkubator.hrm.entity;
-// Generated Nov 4, 2014 8:14:02 AM by Hibernate Tools 3.6.0
+// Generated Nov 13, 2014 9:33:14 AM by Hibernate Tools 3.6.0
 
 
 import java.util.Date;
@@ -39,6 +39,7 @@ public class PermitImplementation  implements java.io.Serializable {
      private Date startDate;
      private String updatedBy;
      private Date updatedOn;
+     private String uploadPath;
 
     public PermitImplementation() {
     }
@@ -53,7 +54,7 @@ public class PermitImplementation  implements java.io.Serializable {
         this.numberFilling = numberFilling;
         this.startDate = startDate;
     }
-    public PermitImplementation(long id, EmpData empData, PermitClassification permitClassification, String createdBy, Date createdOn, String description, Date endDate, Date fillingDate, String numberFilling, Date startDate, String updatedBy, Date updatedOn) {
+    public PermitImplementation(long id, EmpData empData, PermitClassification permitClassification, String createdBy, Date createdOn, String description, Date endDate, Date fillingDate, String numberFilling, Date startDate, String updatedBy, Date updatedOn, String uploadPath) {
        this.id = id;
        this.empData = empData;
        this.permitClassification = permitClassification;
@@ -66,6 +67,7 @@ public class PermitImplementation  implements java.io.Serializable {
        this.startDate = startDate;
        this.updatedBy = updatedBy;
        this.updatedOn = updatedOn;
+       this.uploadPath = uploadPath;
     }
    
      @Id 
@@ -131,7 +133,7 @@ public class PermitImplementation  implements java.io.Serializable {
     }
 
     
-    @Column(name="description", length=65535, columnDefinition = "Text")
+    @Column(name="description", length=65535)
     public String getDescription() {
         return this.description;
     }
@@ -198,6 +200,16 @@ public class PermitImplementation  implements java.io.Serializable {
     
     public void setUpdatedOn(Date updatedOn) {
         this.updatedOn = updatedOn;
+    }
+
+    
+    @Column(name="upload_path", length=100)
+    public String getUploadPath() {
+        return this.uploadPath;
+    }
+    
+    public void setUploadPath(String uploadPath) {
+        this.uploadPath = uploadPath;
     }
 
 

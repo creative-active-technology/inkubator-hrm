@@ -1,0 +1,191 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:o="http://omnifaces.org/ui"
+      xmlns:of="http://omnifaces.org/functions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlPermitImplementationFormId" globalOnly="true" showDetail="true"/>                
+                <o:form id="formPermitImplementationFormId">
+                    <p:focus context="formPermitImplementationFormId"/>
+                    <div id="box_bg" style="margin: 10px">
+                        <h:panelGrid columns="2">
+                            <p:graphicImage library="images" name="task_ico.png" height="36" width="36" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="#{appmsg['permitimplementation.permit_implementation']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['permitimplementation.permit_implementation_data_from_working_time']}" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+                        <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px;margin-bottom:20px;">
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="fillingNumberId" value="#{appmsg['permitimplementation.filling_number']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:inputText id="fillingNumberId" title="#{appmsg['permitClassification.permitClassification_code']}" value="#{permitImplementationFormController.model.numberFilling}" 
+                                                 required="true" maxlength="60" onkeyup="this.value = this.value.toUpperCase();" styleClass="isitext_hrm" style="width:287px;" />
+                                    <p:message for="fillingNumberId"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="employeeId" value="#{appmsg['global.employee']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:autoComplete id="employeeId" title="#{appmsg['global.employee']}" 
+                                                    value="#{permitImplementationFormController.model.empData}"
+                                                    completeMethod="#{permitImplementationFormController.doAutoCompleteEmployee}"                                                
+                                                    var="empData"
+                                                    itemValue="#{empData}"
+                                                    itemLabel="#{empData.nik} #{empData.bioData.firstName} #{empData.bioData.lastName}"
+                                                    converter="#{empDataConverter}"
+                                                    required="true" styleClass="isitext_hrm" size="45">
+                                        <p:ajax event="itemSelect" listener="#{permitImplementationFormController.onChangeEmployee}" update="permitId,totalWorkingDaysId"/>
+                                    </p:autoComplete>
+                                    <p:message for="employeeId"/>
+                                </p:column>
+                            </p:row>  
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="permitId" value="#{appmsg['permitClassification.permitClassification']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:selectOneMenu id="permitId" styleClass="isitext_hrm" required="true"  value="#{permitImplementationFormController.model.permitId}" style="width:295px;">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{permitImplementationFormController.permits}" var="permit" itemLabel="#{permit.name}" itemValue="#{permit.id}"/>
+                                        <p:ajax listener="#{permitImplementationFormController.onChangePermitClassification()}" update="latestPermitDateId,remainingPermitId"/>
+                                    </p:selectOneMenu>
+                                    <p:message for="permitId"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="latestPermitDateId" value="#{appmsg['permitimplementation.latest_permit_date']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:inputText id="latestPermitDateId" title="#{appmsg['permitimplementation.latest_permit_date']}" value="#{permitImplementationFormController.model.latestPermitDate}" 
+                                                 styleClass="isitext_hrm" style="width:138px;" readonly="true">
+                                        <f:convertDateTime pattern="dd MMMM yyyy" />
+                                    </p:inputText>
+                                    <p:message for="latestPermitDateId"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="remainingPermitId" value="#{appmsg['permitimplementation.remaining_balance_of_permit']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:inputText id="remainingPermitId" title="#{appmsg['permitimplementation.remaining_balance_of_permit']}" value="#{permitImplementationFormController.model.remainingPermit}" 
+                                                 styleClass="isitext_hrm" style="width:80px;" readonly="true"/>
+                                    <p:message for="remainingPermitId"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="startDateId" value="#{appmsg['global.start_date']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:calendar id="startDateId" required="true" pattern="dd MMMM yyyy" value="#{permitImplementationFormController.model.startDate}">
+                                        <p:ajax event="dateSelect" listener="#{permitImplementationFormController.onChangeStartOrEndDate()}" update="totalWorkingDaysId"/>
+                                        <f:validator validatorId="dateBetweenValidator"  />
+                                        <f:attribute name="endTime" value="#{endDateId}"/>
+                                        <f:attribute name="dateBetweenValidatorMessage" value="#{appmsg['publicHoliday.publicHoliday_dateValidator']}"/>
+                                        <f:validator validatorId="backDateValidator"  />	                                    
+                                    </p:calendar>
+                                    <p:message for="startDateId"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="endDateId" value="#{appmsg['global.end_date']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:calendar id="endDateId" binding="#{endDateId}" required="true" pattern="dd MMMM yyyy" value="#{permitImplementationFormController.model.endDate}">
+                                        <f:validator validatorId="backDateValidator"  />
+                                        <p:ajax event="dateSelect" listener="#{permitImplementationFormController.onChangeStartOrEndDate()}" update="totalWorkingDaysId"/>
+                                    </p:calendar>
+                                    <p:message for="endDateId"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="totalWorkingDaysId" value="#{appmsg['permitimplementation.total_working_days']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:inputText id="totalWorkingDaysId" title="#{appmsg['permitimplementation.total_working_days']}" value="#{permitImplementationFormController.model.actualPermitTaken}" 
+                                                 required="true" styleClass="isitext_hrm" style="width:80px;" readonly="true"/>
+                                    <p:message for="totalWorkingDaysId"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="fillingDateId" value="#{appmsg['permitimplementation.filling_date']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:calendar id="fillingDateId" required="true" pattern="dd MMMM yyyy" value="#{permitImplementationFormController.model.fillingDate}"/>
+                                    <p:message for="fillingDateId"/>
+                                </p:column>
+                            </p:row>                     
+
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="descriptionId" value="#{appmsg['global.description']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:inputTextarea id="descriptionId" title="#{appmsg['global.description']}" value="#{permitImplementationFormController.model.description}" 
+                                                     maxlength="1000" styleClass="isitext_hrm" style="width:290px;" />  
+                                    <p:message for="descriptionId"/>
+                                </p:column>
+                            </p:row>        
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="attachmentId" value="#{appmsg['global.file_name']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:fileUpload required="true" sizeLimit="1000000000" label="#{appmsg['global.choose_file']}" fileUploadListener="#{permitImplementationFormController.handingFileUpload}"
+                                                  mode="advanced"  id="attachmentId"  style="margin-top:10px;margin-bottom:10px;width: 100%;text-align: left!important"
+                                                  dragDropSupport="true" multiple="false" update="fileNameId,:growlPermitImplementationFormId"
+                                                  allowTypes="/(\.|\/)(jpe?g|png|mp4|flv|doc|docx|xls|xlsx|pdf|ppt|pptx|pps|ppsx)$/"/> 
+                                    <p:outputLabel value="#{appmsg['global.file_name']}"/>
+                                    <p:outputLabel value="#{permitImplementationFormController.model.uploadFileName}" id="fileNameId"/>  
+                                    <p:message for="attachmentId"/>
+                                </p:column>
+                            </p:row>    
+                        </p:panelGrid>	                 	
+
+                        <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+                        <div style="margin-bottom: 5px">
+                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formPermitImplementationFormId,:growlPermitImplementationFormId"
+                                             action="#{permitImplementationFormController.doSave()}" styleClass="isitext_hrm"
+                                             style="margin-right: 5px" label="#{appmsg['global.save']}"
+                                             icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formPermitImplementationFormId" action="#{permitImplementationFormController.doReset()}"
+                                             icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px">  
+                                <p:resetInput target="formPermitImplementationFormId" />  
+                            </p:commandButton>
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{permitImplementationFormController.doBack()}" immediate="true"
+                                             styleClass="label_button"/>
+                        </div>
+                    </div>
+                </o:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

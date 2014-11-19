@@ -5,7 +5,10 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:pe="http://primefaces.org/ui/extensions">
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:o="http://omnifaces.org/ui"
+	  xmlns:of="http://omnifaces.org/functions">
     <h:head>
         <title>IGNORED</title>
     </h:head>
@@ -16,7 +19,7 @@
             </ui:define>
             <ui:define name="center">
                 <p:growl id="growlPermitClassificationFormlId" globalOnly="true" showDetail="true"/>                
-                <h:form id="formPermitClassificationFormId">
+                <o:form id="formPermitClassificationFormId">
                     <p:focus context="formPermitClassificationFormId"/>
                     <div id="box_bg" style="margin: 10px">
                         <h:panelGrid  columns="2">
@@ -46,7 +49,9 @@
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:inputText id="nameId" title="#{appmsg['permitClassification.permitClassification_name']}" value="#{permitClassificationFormController.permitClassificationModel.name}" 
-                                                 required="true" requiredMessage="#{appmsg['permitClassification.error_empty_code']}" maxlength="60" styleClass="isitext_hrm" style="width:290px;" />
+                                                 required="true" requiredMessage="#{appmsg['permitClassification.error_empty_code']}" maxlength="60" styleClass="isitext_hrm" style="width:290px;" >
+                                        <p:ajax listener="#{permitClassificationFormController.onChangeName()}" update="tableApprovalDevId" />
+                                    </p:inputText>
                                     <p:message for="nameId"/>
                                 </p:column>
                             </p:row>  
@@ -191,7 +196,86 @@
                             </p:row>    
 
 
-                        </p:panelGrid>	                    
+                        </p:panelGrid>
+                        
+                        <p:outputLabel value="#{appmsg['approvaldefinition.list_of_approval_definition']}" styleClass="header_big"/>
+                        <p:separator/>
+
+                        <p:dataTable  var="approvalDefinitionData"  value="#{permitClassificationFormController.appDefs}" lazy="true" paginator="false" 
+                                      id="tableApprovalDevId" style="margin-top: 10px;margin-bottom: 10px" rowIndexVar="no">
+                            <p:column style="text-align: center;width: 25px">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"  />
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['approvaldefinition.approval_name']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{approvalDefinitionData.name}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['approvaldefinition.specific_approval']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{approvalDefinitionData.specificName}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['approvaldefinition.process_name']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{approvalDefinitionData.processType}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['approvaldefinition.approver_type']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{approvalDefinitionData.approverType}"/>
+                            </p:column>
+                            <p:column style="text-align: center">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['approvaldefinition.sequence_approval']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{approvalDefinitionData.sequence}"/>
+                            </p:column>
+                            <p:column style="text-align: center">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['approvaldefinition.min_approve']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{approvalDefinitionData.minApprover}"/>
+                            </p:column>
+                            <p:column style="text-align: center">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['approvaldefinition.min_reject']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{approvalDefinitionData.minRejector}"/>
+                            </p:column>
+
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">                                
+                                <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+                                                 style="font-size: 10px!important" update="tableApprovalDevId" 
+                                                 action="#{permitClassificationFormController.doDeleteAppDef()}" ajax="true" immediate="true" onclick="statusDialog.show()" oncomplete="statusDialog.hide()">
+                                    <f:setPropertyActionListener value="#{approvalDefinitionData}" target="#{permitClassificationFormController.selectedAppDef}" />
+                                </p:commandButton> 
+                                -
+                                <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" immediate="true" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
+                                                 action="#{permitClassificationFormController.doEditAppDef()}" >
+                                    <f:setPropertyActionListener value="#{approvalDefinitionData}" target="#{permitClassificationFormController.selectedAppDef}" />
+                                    <p:ajax event="dialogReturn" listener="#{permitClassificationFormController.onDialogReturnEditAppDef}"  update="tableApprovalDevId"/>
+                                </p:commandButton>
+                            </p:column> 
+                        </p:dataTable>
+
+                        <h:panelGrid columns="1">
+                            <p:commandButton value="#{appmsg['global.add']} #{appmsg['approvaldefinition.approval_definition']}" title="#{appmsg['global.add']} #{appmsg['approvaldefinition.approval_definition']}" label="#{appmsg['global.add']} #{appmsg['approvaldefinition.approval_definition']}" styleClass="label_button" icon="ui-icon-document" 
+                                             actionListener="#{permitClassificationFormController.doAddAppDef()}">
+                                <o:ignoreValidationFailed />
+                                <f:ajax execute="@form" />
+                                <p:ajax event="dialogReturn" listener="#{permitClassificationFormController.onDialogReturnAddAppDef}"  update="tableApprovalDevId"/>
+                            </p:commandButton>
+                        </h:panelGrid>
+                        
                         <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
                         <div style="margin-bottom: 5px">
                             <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formPermitClassificationFormId,:growlPermitClassificationFormlId"
@@ -206,7 +290,7 @@
                                              styleClass="label_button"/>
                         </div>
                     </div>
-                </h:form>
+                </o:form>
             </ui:define>
         </ui:composition>
     </h:body>

@@ -64,4 +64,12 @@ public class PermitClassificationDaoImpl extends IDAOImpl<PermitClassification> 
         return (PermitClassification) criteria.uniqueResult();
     }
 
+    public PermitClassification getEntityByPkFetchApprovalDefinition(Long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.setFetchMode("approvalDefinitionPermits", FetchMode.JOIN);
+        criteria.setFetchMode("approvalDefinitionPermits.approvalDefinition", FetchMode.JOIN);
+        criteria.add(Restrictions.eq("id", id));
+        return (PermitClassification) criteria.uniqueResult();
+    }
+
 }

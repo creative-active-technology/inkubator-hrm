@@ -5,6 +5,8 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.PublicHoliday;
 import com.inkubator.hrm.service.PublicHolidayService;
 import com.inkubator.hrm.web.lazymodel.PublicHolidayLazyDataModel;
+import com.inkubator.hrm.web.lazymodel.PublicHolidayReportLazyDataModel;
+import com.inkubator.hrm.web.search.PublicHolidaySearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
@@ -12,6 +14,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
@@ -37,11 +41,16 @@ public class PublicHolidayViewController extends BaseController {
     private PublicHoliday selectedPublicHoliday;
     @ManagedProperty(value = "#{publicHolidayService}")
     private PublicHolidayService publicHolidayService;
+    private PublicHolidaySearchParameter searchParameter;
+    private List<PublicHoliday> listPublicHolidays;
+    private LazyDataModel<PublicHoliday> lazyDataPublicHolidayReport;
 
     @PostConstruct
     @Override
     public void initialization() {
         super.initialization();
+        searchParameter = new PublicHolidaySearchParameter();
+        listReportHistory();
     }
 
     @PreDestroy
@@ -49,7 +58,28 @@ public class PublicHolidayViewController extends BaseController {
         publicHolidayService = null;
         parameter = null;
         lazyDataPublicHoliday = null;
+        lazyDataPublicHolidayReport = null;
+        searchParameter = null;
         selectedPublicHoliday = null;
+    }
+
+    public LazyDataModel<PublicHoliday> getLazyDataPublicHolidayReport() {
+        if (lazyDataPublicHolidayReport == null) {
+            lazyDataPublicHolidayReport = new PublicHolidayReportLazyDataModel(searchParameter, publicHolidayService);
+        }
+        return lazyDataPublicHolidayReport;
+    }
+
+    public void setLazyDataPublicHolidayReport(LazyDataModel<PublicHoliday> lazyDataPublicHolidayReport) {
+        this.lazyDataPublicHolidayReport = lazyDataPublicHolidayReport;
+    }
+
+    public List<PublicHoliday> getListPublicHolidays() {
+        return listPublicHolidays;
+    }
+
+    public void setListPublicHolidays(List<PublicHoliday> listPublicHolidays) {
+        this.listPublicHolidays = listPublicHolidays;
     }
 
     public void setPublicHolidayService(PublicHolidayService publicHolidayService) {
@@ -87,6 +117,10 @@ public class PublicHolidayViewController extends BaseController {
         lazyDataPublicHoliday = null;
     }
 
+    public void doSearchReport() {
+        lazyDataPublicHolidayReport = null;
+    }
+    
     public void doDetail() {
         try {
             selectedPublicHoliday = this.publicHolidayService.getEntityByPKWithDetail(selectedPublicHoliday.getId());
@@ -135,5 +169,22 @@ public class PublicHolidayViewController extends BaseController {
         //re-calculate searching
         doSearch();
         super.onDialogReturn(event);
+    }
+
+    public PublicHolidaySearchParameter getSearchParameter() {
+        return searchParameter;
+    }
+
+    public void setSearchParameter(PublicHolidaySearchParameter searchParameter) {
+        this.searchParameter = searchParameter;
+    }
+
+    public void listReportHistory() {
+        try {
+            listPublicHolidays = publicHolidayService.getReportHistoryByParam(searchParameter);
+        } catch (Exception ex) {
+            Logger.getLogger(PublicHolidayViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 }
