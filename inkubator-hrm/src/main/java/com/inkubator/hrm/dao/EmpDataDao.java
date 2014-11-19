@@ -60,6 +60,8 @@ public interface EmpDataDao extends IDAO<EmpData> {
     public Long getTotalNotExistInUserByParam(String param);
 
     public List<EmpData> getAllDataByJabatanId(Long jabatanId, Order order);
+    
+    public List<EmpData> getAllDataByGolJabatanIdAndDepartmentId(Long jabatanId, Long departmentId);
 
     public List<EmpData> getTotalBySearchEmployee(PlacementOfEmployeeWorkScheduleModel model);
 

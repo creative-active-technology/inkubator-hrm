@@ -103,8 +103,7 @@ public class UserInfoController extends BaseController {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
                     FacesUtil.getSessionAttribute(WebCoreConstant.BAHASA_ACTIVE).toString());
             isUpdateSucceed = Boolean.TRUE;
-        } catch (BussinessException ex) { //data already exist(duplicate)
-            LOGGER.error("Error", ex);
+        } catch (BussinessException ex) { 
             isUpdateSucceed = Boolean.FALSE;
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex) {
