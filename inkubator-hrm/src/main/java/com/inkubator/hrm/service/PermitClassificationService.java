@@ -5,6 +5,7 @@ import java.util.List;
 import org.hibernate.criterion.Order;
 
 import com.inkubator.datacore.service.IService;
+import com.inkubator.hrm.entity.ApprovalDefinition;
 import com.inkubator.hrm.entity.PermitClassification;
 import com.inkubator.hrm.web.search.PermitClassificationSearchParameter;
 
@@ -20,4 +21,9 @@ public interface PermitClassificationService extends IService<PermitClassificati
         
         public PermitClassification getEntityByPKWithDetail(Long id) throws Exception;
 
+        public void save(PermitClassification entity, List<ApprovalDefinition> appDefs) throws Exception;
+	
+	public void update(PermitClassification entity, List<ApprovalDefinition> appDefs) throws Exception;
+        
+        public PermitClassification getEntityByPkFetchApprovalDefinition(Long id) throws Exception;
 }

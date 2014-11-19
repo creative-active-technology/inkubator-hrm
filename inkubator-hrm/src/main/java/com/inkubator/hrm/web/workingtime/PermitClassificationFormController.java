@@ -1,9 +1,14 @@
 package com.inkubator.hrm.web.workingtime;
 
+import ch.lambdaj.Lambda;
+import com.google.gson.Gson;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.entity.ApprovalDefinition;
+import com.inkubator.hrm.entity.ApprovalDefinitionPermit;
 import com.inkubator.hrm.entity.PermitClassification;
 import com.inkubator.hrm.entity.AttendanceStatus;
+import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.PermitClassificationService;
 import com.inkubator.hrm.service.AttendanceStatusService;
 import com.inkubator.hrm.util.MapUtil;
@@ -11,8 +16,11 @@ import com.inkubator.hrm.web.model.PermitClassificationModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -21,6 +29,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.ValueChangeEvent;
+import org.primefaces.context.RequestContext;
+import org.primefaces.event.SelectEvent;
 
 /**
  *
@@ -41,6 +51,9 @@ public class PermitClassificationFormController extends BaseController {
     private Boolean hidden;
     private Integer minimum;
     private Integer maximum;
+    private List<ApprovalDefinition> appDefs;
+    private ApprovalDefinition selectedAppDef;
+    private int indexOfAppDefs;
 
     @PostConstruct
     @Override
@@ -52,6 +65,7 @@ public class PermitClassificationFormController extends BaseController {
             isUpdate = Boolean.FALSE;
             disabled = Boolean.TRUE;
             hidden = Boolean.FALSE;
+            appDefs = new ArrayList<ApprovalDefinition>(); 
             List<AttendanceStatus> listAttendanceStatuss = attendanceStatusService.getAllData();
 
             for (AttendanceStatus attendanceStatus : listAttendanceStatuss) {
@@ -62,7 +76,7 @@ public class PermitClassificationFormController extends BaseController {
 
             if (param != null) {
                 try {
-                    PermitClassification permitClassification = permitClassificationService.getEntityByPKWithDetail(Long.parseLong(param.substring(1)));
+                    PermitClassification permitClassification = permitClassificationService.getEntityByPkFetchApprovalDefinition(Long.parseLong(param.substring(1)));
                     permitClassificationModel.setId(permitClassification.getId());
                     permitClassificationModel.setCode(permitClassification.getCode());
                     permitClassificationModel.setName(permitClassification.getName());
@@ -84,6 +98,11 @@ public class PermitClassificationFormController extends BaseController {
                     if (permitClassification.getAvailibility().equals(HRMConstant.AVALILIBILITY_PER_DATE)) {
                         hidden = Boolean.TRUE;
                     }
+                    
+                    Set<ApprovalDefinitionPermit> setAppDefPermits = permitClassification.getApprovalDefinitionPermits();
+                    for(ApprovalDefinitionPermit appDefPermit : setAppDefPermits){
+                    	appDefs.add(appDefPermit.getApprovalDefinition());
+                    }
 
                 } catch (Exception e) {
                     LOGGER.error("Error", e);
@@ -102,6 +121,30 @@ public class PermitClassificationFormController extends BaseController {
         isUpdate = null;
     }
 
+    public List<ApprovalDefinition> getAppDefs() {
+        return appDefs;
+    }
+
+    public void setAppDefs(List<ApprovalDefinition> appDefs) {
+        this.appDefs = appDefs;
+    }
+
+    public ApprovalDefinition getSelectedAppDef() {
+        return selectedAppDef;
+    }
+
+    public void setSelectedAppDef(ApprovalDefinition selectedAppDef) {
+        this.selectedAppDef = selectedAppDef;
+    }
+
+    public int getIndexOfAppDefs() {
+        return indexOfAppDefs;
+    }
+
+    public void setIndexOfAppDefs(int indexOfAppDefs) {
+        this.indexOfAppDefs = indexOfAppDefs;
+    }
+    
     public PermitClassificationModel getPermitClassificationModel() {
         return permitClassificationModel;
     }
@@ -176,11 +219,11 @@ public class PermitClassificationFormController extends BaseController {
             PermitClassification permitClassification = getEntityFromViewModel(permitClassificationModel);
 
             if (isUpdate) {
-                permitClassificationService.update(permitClassification);
+                permitClassificationService.update(permitClassification, appDefs);
                 MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             } else {
-                permitClassificationService.save(permitClassification);
+                permitClassificationService.save(permitClassification, appDefs);
                 MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             }
@@ -287,4 +330,58 @@ public class PermitClassificationFormController extends BaseController {
             hidden = Boolean.TRUE;
         }
     }
+    
+    public void onChangeName(){
+    	if(!appDefs.isEmpty()) {
+    		Lambda.forEach(appDefs).setSpecificName(permitClassificationModel.getName());
+    	}
+    }
+    
+    /** Start Approval Definition form */
+    public void doDeleteAppDef() {
+    	appDefs.remove(selectedAppDef);
+    }
+    
+    public void doAddAppDef() {
+    	Map<String, List<String>> dataToSend = new HashMap<>();
+        List<String> appDefName = new ArrayList<>();
+        appDefName.add(HRMConstant.PERMIT);
+        dataToSend.put("appDefName", appDefName);
+        List<String> specificName = new ArrayList<>();
+        specificName.add(permitClassificationModel.getName());
+        dataToSend.put("specificName", specificName);
+    	this.showDialogAppDef(dataToSend);
+    }
+    
+    public void doEditAppDef() {
+    	indexOfAppDefs = appDefs.indexOf(selectedAppDef);    	
+    	Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+    	Map<String, List<String>> dataToSend = new HashMap<>();
+        List<String> values = new ArrayList<>();
+        values.add(gson.toJson(selectedAppDef));
+        dataToSend.put("jsonAppDef", values);
+        this.showDialogAppDef(dataToSend);
+    }
+    
+    private void showDialogAppDef(Map<String, List<String>> params) {
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 1100);
+        options.put("contentHeight", 400);
+        RequestContext.getCurrentInstance().openDialog("approval_definition_popup_form", options, params);
+    }
+    
+    public void onDialogReturnAddAppDef(SelectEvent event) {
+        ApprovalDefinition appDef = (ApprovalDefinition) event.getObject();
+        appDefs.add(appDef);
+    }
+    
+    public void onDialogReturnEditAppDef(SelectEvent event) {
+        ApprovalDefinition dataUpdated = (ApprovalDefinition) event.getObject();
+        appDefs.remove(indexOfAppDefs);
+		appDefs.add(indexOfAppDefs, dataUpdated);
+    }    
+    /** End Approval Definition form */
 }

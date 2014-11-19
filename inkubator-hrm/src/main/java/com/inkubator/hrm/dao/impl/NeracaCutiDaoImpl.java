@@ -48,11 +48,11 @@ public class NeracaCutiDaoImpl extends IDAOImpl<NeracaCuti> implements NeracaCut
         criteria.setFetchMode("leaveDistribution.empData.jabatanByJabatanId", FetchMode.JOIN);
         criteria.setFetchMode("leaveDistribution.leave", FetchMode.JOIN);
         doSearch(searchParameter, criteria);
-        criteria.createAlias("ld.empData", "empData", JoinType.INNER_JOIN);
-        criteria.createAlias("ld.leave", "leave", JoinType.INNER_JOIN);
-        criteria.addOrder(Order.asc("leave.name"));
+//        criteria.createAlias("ld.empData", "empData", JoinType.INNER_JOIN);
+//        criteria.createAlias("ld.leave", "leave", JoinType.INNER_JOIN);
+        criteria.addOrder(Order.asc("l.name"));
         criteria.addOrder(order);
-        criteria.addOrder(Order.asc("empData.nik"));
+        criteria.addOrder(Order.asc("ed.nik"));
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
         return criteria.list();
@@ -78,20 +78,21 @@ public class NeracaCutiDaoImpl extends IDAOImpl<NeracaCuti> implements NeracaCut
     
     private void doSearch(NeracaCutiSearchParameter searchParameter, Criteria criteria) {
         criteria.createAlias("leaveDistribution", "ld", JoinType.INNER_JOIN);
+        criteria.createAlias("ld.empData", "ed", JoinType.INNER_JOIN);
+        criteria.createAlias("ed.bioData", "bio", JoinType.INNER_JOIN);
+        criteria.createAlias("ld.leave", "l", JoinType.INNER_JOIN);
         if (searchParameter.getEmpData()!= null) {
-            criteria.createAlias("ld.empData", "ed", JoinType.INNER_JOIN);
-            criteria.createAlias("ed.bioData", "bio", JoinType.INNER_JOIN);
+
             Disjunction disjunction = Restrictions.disjunction();
             disjunction.add(Restrictions.like("bio.firstName", searchParameter.getEmpData(), MatchMode.ANYWHERE));
             disjunction.add(Restrictions.like("bio.lastName", searchParameter.getEmpData(), MatchMode.ANYWHERE));
             criteria.add(disjunction);
         }
         if (StringUtils.isNotEmpty(searchParameter.getLeave())) {
-            criteria.createAlias("ld.leave", "l", JoinType.INNER_JOIN);
+            
             criteria.add(Restrictions.like("l.name", searchParameter.getLeave(), MatchMode.ANYWHERE));
         }
         if (searchParameter.getNik()!= null) {
-            criteria.createAlias("ld.empData", "ed", JoinType.INNER_JOIN);
             criteria.add(Restrictions.like("ed.nik", searchParameter.getNik(), MatchMode.ANYWHERE));
         }
         criteria.add(Restrictions.isNotNull("id"));

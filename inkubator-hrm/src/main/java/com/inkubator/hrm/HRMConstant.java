@@ -168,6 +168,7 @@ public class HRMConstant {
     public static final String BIO_SKILL_EDIT = "BIO_SKILL_EDIT";
     public static final String BUSINESS_TRAVEL = "BUSINESS_TRAVEL";
     public static final String REIMBURSEMENT = "REIMBURSEMENT";
+    public static final String PERMIT = "PERMIT";
     public static final String LOAN = "LOAN";
     public static final String LEAVE = "LEAVE";
     public static final String LEAVE_CANCELLATION = "LEAVE_CANCELLATION";

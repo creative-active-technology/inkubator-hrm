@@ -68,7 +68,7 @@
 	                                <p:outputLabel value="#{appmsg['biodocument.attachments']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:commandLink ajax="false" value="Download" title="Download" style="font-size: 10px!important" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
+	                            	<p:commandLink ajax="false" value="Download" title="Download" style="font-size: 10px!important" onclick="PrimeFaces.monitorDownload(start, stop);">
                                     	<p:fileDownload value="#{imageCompanyStreamerController.companyPolicyAttachment}" />
                                         <f:param name="id" value="#{companyPolicyDetailController.selectedCompanyPolicy.id}"/>
                                    	</p:commandLink>

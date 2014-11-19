@@ -120,7 +120,7 @@
                                     <h:outputText value="#{appmsg['reportFamilyEmployee.reportFamilyEmployee_dependents']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.dependents}" >
-                                    <f:converter converterId="reportEmployeeConverter" />
+                                    <f:converter converterId="booleanMessageConverter" />
                                 </h:outputLabel>
                             </p:column>
                             
