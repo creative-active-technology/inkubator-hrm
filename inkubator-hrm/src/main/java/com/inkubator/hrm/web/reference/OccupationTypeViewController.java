@@ -124,8 +124,8 @@ public class OccupationTypeViewController extends BaseController {
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", false);
-        options.put("contentWidth", 450);
-        options.put("contentHeight", 325);
+        options.put("contentWidth", 490);
+        options.put("contentHeight", 335);
         RequestContext.getCurrentInstance().openDialog("occupation_type_form", options, params);
     }
 

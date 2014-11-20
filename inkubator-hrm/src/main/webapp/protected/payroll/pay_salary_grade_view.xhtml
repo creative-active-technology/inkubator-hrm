@@ -66,13 +66,13 @@
                             <f:facet name="header">  
                                 <h:outputText value="#{appmsg['paysalarygrade.list_of_pay_salary_grade']}"/>
                             </f:facet> 
-                            <p:column sortBy="gradeSalary" style="width: 15%">
-                                <f:facet name="header">
-                                    <h:outputText value="#{appmsg['paysalarygrade.grade']}"/>
+                            <p:column style="text-align: center;width: 3%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.gradeSalary}" />
+                                <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="minSalary" style="width: 15%;text-align: right;">
+                            <p:column sortBy="minSalary" style="width: 20%;text-align: left;">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['paysalarygrade.min_salary']}"/>
                                 </f:facet>
@@ -80,7 +80,7 @@
                                     <f:convertNumber pattern="###,###" type="currency"/>
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="mediumSalary" style="width: 15%;text-align: right;">
+                            <p:column sortBy="mediumSalary" style="width: 20%;text-align: left;">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['paysalarygrade.medium_salary']}"/>
                                 </f:facet>
@@ -88,7 +88,7 @@
                                     <f:convertNumber pattern="###,###" type="currency"/>
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="maxSalary" style="width: 15%;text-align: right;">
+                            <p:column sortBy="maxSalary" style="width: 20%;text-align: left;">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['paysalarygrade.max_salary']}"/>
                                 </f:facet>
@@ -96,13 +96,19 @@
                                     <f:convertNumber pattern="###,###" type="currency"/>
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="currency" style="width: 18%">
+                            <p:column sortBy="gradeSalary" style="text-align: left; width: 10%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['paysalarygrade.grade']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.gradeSalary}" />
+                            </p:column>
+                            <p:column sortBy="currency" style="text-align: left; width: 15%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['currency.currency']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.currency.name}" />
                             </p:column>
-                            <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 15%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
                                                  onclick="statusDialog.show()"  oncomplete="detail.show()" update=":detailPanel"
                                                  style="font-size: 10px!important" action="#{paySalaryGradeController.doSelectEntity()}">                        

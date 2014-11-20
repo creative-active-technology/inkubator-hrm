@@ -72,24 +72,32 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="numberFilling"  style="width: 15%">
+                            <p:column sortBy="numberFilling"  style="width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['leaveimplementation.filling_number']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{leaveImplementationData.numberFilling}"/>
                             </p:column>
-                            <p:column sortBy="leave.name"  style="width: 20%">
+                            <p:column sortBy="fillingDate"  style="width: 10%">
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['leave.leave']}"/>
+                                    <h:outputText value="#{appmsg['leaveimplementation.filling_date']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{leaveImplementationData.leave.name}"/>
-                            </p:column>  
+                                <h:outputLabel value= "#{leaveImplementationData.fillingDate}">
+                                	<f:convertDateTime pattern="dd-MMMM-yyyy" />
+                                </h:outputLabel>
+                            </p:column>
                             <p:column sortBy="empData.bioData.firstName"  style="width: 20%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.employee']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{leaveImplementationData.empData.nikWithFullName}"/>
                             </p:column>
+                            <p:column sortBy="leave.name"  style="width: 27%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['leave.leave']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{leaveImplementationData.leave.name}"/>
+                            </p:column>  
                             <p:column sortBy="startDate"  style="width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.start_date']}"/>
@@ -106,16 +114,7 @@
                                 	<f:convertDateTime pattern="dd-MMMM-yyyy" />
                                 </h:outputLabel>
                             </p:column> 
-                            <p:column sortBy="fillingDate"  style="width: 10%">
-                                <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['leaveimplementation.filling_date']}"/>
-                                </f:facet>
-                                <h:outputLabel value= "#{leaveImplementationData.fillingDate}">
-                                	<f:convertDateTime pattern="dd-MMMM-yyyy" />
-                                </h:outputLabel>
-                            </p:column>
-                            
-                            <p:column headerText="#{appmsg['global.action']}" style="width: 12%;text-align: center" exportable="false">
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                 				 style="font-size: 10px!important" action="#{leaveImplementationViewController.doDetail()}">                        
                                     <f:setPropertyActionListener value="#{leaveImplementationData}" target="#{leaveImplementationViewController.selectedLeaveImplementation}" />

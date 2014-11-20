@@ -80,25 +80,25 @@
                             <f:facet name="header">  
                                 <h:outputText value="Daftar Periode" styleClass="label_hrm"/>
                             </f:facet> 
-                            <p:column style="text-align: center;width: 25px">
+                            <p:column style="text-align: center;width: 4%">
                                 <f:facet name="header">  
                                     <h:outputText value="No." />
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="tahun" style="width: 150px" >
+                            <p:column sortBy="tahun" style="text-align: left;width: 15%" >
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.year']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{periodeViewData.tahun}"/>
                             </p:column>
-                            <p:column sortBy="bulan">
+                            <p:column sortBy="bulan" style="text-align: left;width: 15%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.month']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{periodeViewData.bulanAsLabel}"/>
                             </p:column>
-                            <p:column sortBy="fromPeriode">
+                            <p:column sortBy="fromPeriode" style="text-align: left;width: 18%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.from']}"/>
                                 </f:facet>
@@ -106,7 +106,7 @@
                                     <f:convertDateTime pattern="dd-MMMM-yyyy"/>
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="untilPeriode">
+                            <p:column sortBy="untilPeriode" style="text-align: left;width: 18%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.until']}"/>
                                 </f:facet>
@@ -114,13 +114,13 @@
                                     <f:convertDateTime pattern="dd-MMMM-yyyy"/>
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="untilPeriode">
+                            <p:column sortBy="untilPeriode" style="text-align: left; width: 15%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['periode.absen']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{periodeViewData.absen}"/>
                             </p:column>
-                            <p:column sortBy="payrollType">
+                            <p:column sortBy="payrollType" style="text-align: left; width: 15%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['periode.payroll']}"/>
                                 </f:facet>
