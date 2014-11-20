@@ -641,4 +641,10 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         return empDataDao.getEmployeeBySearchEmployeeFingerException(model);
     }
 
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public List<EmpData> getEmployeeBySearchEmployeeFingerException(WtFingerExceptionModel model) throws Exception {
+        return empDataDao.getEmployeeBySearchEmployeeFingerException(model);
+    }
+
 }

@@ -655,6 +655,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 
         return criteria;
     }
+
     public List<EmpData> getEmployeeBySearchEmployeeFingerException(WtFingerExceptionModel model) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.createAlias("jabatanByJabatanId", "jabatan", JoinType.INNER_JOIN);
