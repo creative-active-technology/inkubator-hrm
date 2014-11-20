@@ -13,160 +13,126 @@
     <h:body>
         <ui:composition template="/templates/master_layout_full.xhtml">
             <ui:define name="windowTitle">
-				Home
+                Home
             </ui:define>
             <ui:define name="center">               
                 <h:form id="formPermitImplementationDetailId">
-                	<div id="box_bg" style="margin: 10px">
-	                    <h:panelGrid columns="2">
-	                        <p:graphicImage library="images" name="task_ico.png" height="36" width="36" />
-	                        <h:panelGroup layout="block">
-	                            <h:panelGrid>
-	                                <p:outputLabel value="#{appmsg['permitimplementation.permit_implementation']}" styleClass="header_big" />
-	                                <p:outputLabel value="#{appmsg['permitimplementation.permit_implementation_data_from_working_time']}" styleClass="header_small_no_bold" />
-	                            </h:panelGrid>
-	                        </h:panelGroup>
-	                    </h:panelGrid>
-	                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
-	                    <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px">
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['permitimplementation.filling_number']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{permitImplementationDetailController.selectedPermitImplementation.numberFilling}"/>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['global.employee']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{permitImplementationDetailController.selectedPermitImplementation.empData.nikWithFullName}"/>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['global.start_date']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{permitImplementationDetailController.selectedPermitImplementation.startDate}">
-	                            		<f:convertDateTime pattern="dd MMMM yyyy" />
-	                            	</p:outputLabel>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['global.end_date']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{permitImplementationDetailController.selectedPermitImplementation.endDate}">
-	                            		<f:convertDateTime pattern="dd MMMM yyyy" />
-	                            	</p:outputLabel>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['permitimplementation.filling_date']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{permitImplementationDetailController.selectedPermitImplementation.fillingDate}">
-	                            		<f:convertDateTime pattern="dd MMMM yyyy" />
-	                            	</p:outputLabel>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['global.address']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{permitImplementationDetailController.selectedPermitImplementation.address}"/>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['global.phone_number']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{permitImplementationDetailController.selectedPermitImplementation.mobilePhone}"/>
-	                            </p:column>
-	                        </p:row>
-	                        
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{permitImplementationDetailController.selectedPermitImplementation.description}"/>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row rendered="#{permitImplementationDetailController.isHaveApprovalActivity}">
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['approvalactivity.approved_by']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{permitImplementationDetailController.selectedApprovalActivity.approvedBy}"/>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row rendered="#{permitImplementationDetailController.isHaveApprovalActivity}">
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['approvalactivity.approval_status']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 30%">
-	                            	<p:outputLabel value="#{permitImplementationDetailController.selectedApprovalActivity.approvalStatus}">
-	                            		<f:converter converterId="approvalStatusConverter" />
-	                            	</p:outputLabel>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row rendered="#{permitImplementationDetailController.isHaveApprovalActivity}">
-	                        	<p:column style="width: 20%;background-color: #e1f0f0!important" rowspan="2">
-	                                <p:outputLabel value="#{appmsg['approvalactivity.approval_comment']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 30%" rowspan="2">
-	                            	<p:outputLabel value="#{permitImplementationDetailController.selectedApprovalActivity.approvalCommment}"/>
-	                            </p:column>
-	                      	</p:row>
-	                 	</p:panelGrid>    
-	                 	
-	                 	<p:dataTable  id="tablePermitImplementationDateId" var="permitImplementationDateData"  value="#{permitImplementationDetailController.listPermitImplDate}" lazy="false" paginator="false" pageLinks="7"
-	                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
-	                                      rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
-	                                      rowIndexVar="no"> 
-	                            <p:column style="text-align: center;width: 5%">
-	                                <f:facet name="header">  
-	                                    <h:outputText value="#{appmsg['global.number']}"/>
-	                                </f:facet>
-	                                <h:outputLabel value="#{no+1}." />
-	                            </p:column>  
-	                            <p:column style="text-align: center;width: 20%">
-	                                <f:facet name="header">  
-	                                    <h:outputText value="#{appmsg['permitimplementation.permit_date']}"/>
-	                                </f:facet>
-	                                <h:outputLabel value= "#{permitImplementationDateData.actualDate}">
-	                                	<f:convertDateTime pattern="dd-MMMM-yyyy" />
-	                                </h:outputLabel>
-	                            </p:column>
-	                            <p:column style="text-align: center;width: 20%">
-	                                <f:facet name="header">  
-	                                    <h:outputText value="#{appmsg['permitimplementation.status_cancel']}"/>
-	                                </f:facet>
-	                                <h:outputLabel value= "#{permitImplementationDateData.isCancelled}">
-	                                	<f:converter converterId="booleanMessageConverter" />
-	                                </h:outputLabel>
-	                            </p:column>
-	                            <p:column style="text-align: center;width: 20%">
-	                                <f:facet name="header">  
-	                                    <h:outputText value="#{appmsg['permitimplementation.description_of_cancelled_permit']}"/>
-	                                </f:facet>
-	                                <h:outputLabel value= "#{permitImplementationDateData.description}"/>
-	                            </p:column>
-	                    </p:dataTable>                        
-                            
-	                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
-	                    <div style="margin-bottom: 5px">
-	                        <p:commandButton value="#{appmsg['global.back']}" icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{permitImplementationDetailController.doBack()}" immediate="true"
-	                                      	 styleClass="label_button"/>
-	                    </div>
+                    <div id="box_bg" style="margin: 10px">
+                        <h:panelGrid columns="2">
+                            <p:graphicImage library="images" name="task_ico.png" height="36" width="36" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="#{appmsg['permitimplementation.permit_implementation']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['permitimplementation.permit_implementation_data_from_working_time']}" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+                        <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px">
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['permitimplementation.filling_number']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{permitImplementationDetailController.selectedPermitImplementation.numberFilling}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['global.employee']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{permitImplementationDetailController.selectedPermitImplementation.empData.nikWithFullName}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['global.start_date']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{permitImplementationDetailController.selectedPermitImplementation.startDate}">
+                                        <f:convertDateTime pattern="dd MMMM yyyy" />
+                                    </p:outputLabel>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['global.end_date']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{permitImplementationDetailController.selectedPermitImplementation.endDate}">
+                                        <f:convertDateTime pattern="dd MMMM yyyy" />
+                                    </p:outputLabel>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['permitimplementation.filling_date']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{permitImplementationDetailController.selectedPermitImplementation.fillingDate}">
+                                        <f:convertDateTime pattern="dd MMMM yyyy" />
+                                    </p:outputLabel>
+                                </p:column>
+                            </p:row>
+
+
+
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{permitImplementationDetailController.selectedPermitImplementation.description}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row rendered="#{permitImplementationDetailController.selectedPermitImplementation.uploadPath != null}">
+                                <p:column style="width:20%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['biodocument.attachments']}" styleClass="label_hrm"/></p:column>
+                                <p:column style="width:70%;">
+                                    <p:outputLabel value="#{permitImplementationDetailController.selectedPermitImplementation.uploadPath}" styleClass="label_hrm"/>
+                                    &nbsp;&nbsp;
+                                    <p:commandButton ajax="false" value="Download" title="Download" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
+                                        <p:fileDownload value="#{imageBioDataStreamerController.attachmentFile}" />
+                                        <f:param name="permitId" value="#{permitImplementationDetailController.selectedPermitImplementation.id}"/>
+                                    </p:commandButton>
+                                </p:column>
+                            </p:row>
+                            <p:row rendered="#{permitImplementationDetailController.isHaveApprovalActivity}">
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['approvalactivity.approved_by']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{permitImplementationDetailController.selectedApprovalActivity.approvedBy}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row rendered="#{permitImplementationDetailController.isHaveApprovalActivity}">
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['approvalactivity.approval_status']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 30%">
+                                    <p:outputLabel value="#{permitImplementationDetailController.selectedApprovalActivity.approvalStatus}">
+                                        <f:converter converterId="approvalStatusConverter" />
+                                    </p:outputLabel>
+                                </p:column>
+                            </p:row>
+                            <p:row rendered="#{permitImplementationDetailController.isHaveApprovalActivity}">
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" rowspan="2">
+                                    <p:outputLabel value="#{appmsg['approvalactivity.approval_comment']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 30%" rowspan="2">
+                                    <p:outputLabel value="#{permitImplementationDetailController.selectedApprovalActivity.approvalCommment}"/>
+                                </p:column>
+                            </p:row>
+
+                        </p:panelGrid>    
+
+
+
+                        <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+                        <div style="margin-bottom: 5px">
+                            <p:commandButton value="#{appmsg['global.back']}" icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{permitImplementationDetailController.doBack()}" immediate="true"
+                                             styleClass="label_button"/>
+                        </div>
                     </div>
                 </h:form>
             </ui:define>

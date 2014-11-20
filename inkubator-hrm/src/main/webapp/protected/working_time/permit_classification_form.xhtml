@@ -105,7 +105,6 @@
                                     <p:selectOneMenu id="availibilityId" value="#{permitClassificationFormController.permitClassificationModel.availibility}" style="width: 290px;margin-right: 3px" 
                                                      required="true" requiredMessage="#{appmsg['permitClassification.error_empty_availibility']}" valueChangeListener="#{permitClassificationFormController.availibilityChanged}">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemLabel="#{appmsg['permitClassification.permitClassification_avail_full']}" itemValue="0" />
                                         <f:selectItem itemLabel="#{appmsg['permitClassification.permitClassification_avail_month']}" itemValue="1" />
                                         <f:selectItem itemLabel="#{appmsg['permitClassification.permitClassification_avail_date']}" itemValue="2" />
                                         <p:ajax update="dateId, quantityId" event="change" />
@@ -117,8 +116,8 @@
                                     <p:outputLabel for="dateId" value="#{appmsg['permitClassification.permitClassification_date']}" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:calendar id="dateId" value="#{permitClassificationFormController.permitClassificationModel.dateIncreased}" style="width: 290px;margin-right: 3px" 
-                                                required="true" requiredMessage="#{appmsg['permitClassification.error_empty_date']}" disabled="#{permitClassificationFormController.hidden}" />
+                                    <p:spinner id="dateId" value="#{permitClassificationFormController.permitClassificationModel.dateIncreased}" style="margin-right: 3px" 
+                                               required="true" requiredMessage="#{appmsg['permitClassification.error_empty_date']}" disabled="#{permitClassificationFormController.hidden}" min="1" max="31"/>
                                 </p:column>
                             </p:row> 
                             <p:row>
@@ -159,7 +158,7 @@
                                     <p:outputLabel for="maxMonthId" value="#{appmsg['permitClassification.day']}" />
                                 </p:column>
                             </p:row> 
-                             <p:row>
+                            <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
                                     <p:outputLabel for="cutId" value="#{appmsg['permitClassification.permitClassification_cut']}" styleClass="label_hrm" />
                                 </p:column>
@@ -176,7 +175,7 @@
                                 <p:column  style="width: 80%">
                                     <p:selectBooleanButton id="attachmentId" value="#{permitClassificationFormController.permitClassificationModel.attachmentRequired}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
                                                            offIcon="ui-icon-close" styleClass="label_button" />
-                                
+
                                 </p:column>
                             </p:row>
                             <p:row>
@@ -189,7 +188,15 @@
                                     <p:message for="descId"/>
                                 </p:column>
                             </p:row>    
-
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="isActiveId" value="#{appmsg['global.active_status']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:selectBooleanButton id="isActiveId" value="#{permitClassificationFormController.permitClassificationModel.isActive}" onLabel="#{appmsg['global.active']}" offLabel="#{appmsg['global.inactive']}" onIcon="ui-icon-check" 
+                                                           offIcon="ui-icon-close" styleClass="label_button"/>
+                                </p:column>
+                            </p:row>       
 
                         </p:panelGrid>	                    
                         <p:separator style="margin-top: 30px;margin-bottom: 10px"/>

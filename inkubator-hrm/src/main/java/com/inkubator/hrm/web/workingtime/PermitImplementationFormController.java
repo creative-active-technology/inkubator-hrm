@@ -56,6 +56,7 @@ public class PermitImplementationFormController extends BaseController {
     private UploadedFile documentFile;
     @ManagedProperty(value = "#{uploadFilesUtil}")
     private UploadFilesUtil uploadFilesUtil;
+    private Boolean isRequiredAttachment;
 
     @PostConstruct
     @Override
@@ -64,7 +65,7 @@ public class PermitImplementationFormController extends BaseController {
         try {
             isUpdate = Boolean.FALSE;
             model = new PermitImplementationModel();
-
+            isRequiredAttachment = Boolean.TRUE;
             String param = FacesUtil.getRequestParameter("execution");
             if (StringUtils.isNotEmpty(param)) {
                 PermitImplementation permitImplementation = permitImplementationService.getEntityByPkWithDetail(Long.parseLong(param.substring(1)));
@@ -73,6 +74,9 @@ public class PermitImplementationFormController extends BaseController {
                     List<PermitDistribution> permitDistributions = permitDistributionService.getAllDataByEmpIdFetchPermit(permitImplementation.getEmpData().getId());
                     permits = Lambda.extract(permitDistributions, Lambda.on(PermitDistribution.class).getPermitClassification());
                     isUpdate = Boolean.TRUE;
+                    if(StringUtils.isNotEmpty(permitImplementation.getUploadPath())){
+                        isRequiredAttachment = Boolean.FALSE;
+                    }
                 }
             }
         } catch (Exception e) {
@@ -89,6 +93,7 @@ public class PermitImplementationFormController extends BaseController {
         permitDistributionService = null;
         empDataService = null;
         documentFile = null;
+        isRequiredAttachment = null;
     }
 
     public PermitImplementationModel getModel() {
@@ -98,6 +103,16 @@ public class PermitImplementationFormController extends BaseController {
     public void setModel(PermitImplementationModel model) {
         this.model = model;
     }
+
+    public Boolean getIsRequiredAttachment() {
+        return isRequiredAttachment;
+    }
+
+    public void setIsRequiredAttachment(Boolean isRequiredAttachment) {
+        this.isRequiredAttachment = isRequiredAttachment;
+    }
+    
+    
 
     public Boolean getIsUpdate() {
         return isUpdate;
@@ -178,9 +193,9 @@ public class PermitImplementationFormController extends BaseController {
 //                    MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully_and_requires_approval",
 //                            FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 //                } else {
-                    path = "/protected/working_time/permit_implementation_detail.htm?faces-redirect=true&execution=e" + permitImplementation.getId();
-                    MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
-                            FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+                path = "/protected/working_time/permit_implementation_detail.htm?faces-redirect=true&execution=e" + permitImplementation.getId();
+                MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
+                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 //                }
             }
 
@@ -245,8 +260,8 @@ public class PermitImplementationFormController extends BaseController {
         try {
             List<PermitDistribution> permitDistributions = permitDistributionService.getAllDataByEmpIdFetchPermit(model.getEmpData().getId());
             //filter list hanya untuk permit yang isActive = true
-//	    	permitDistributions = Lambda.select(permitDistributions, Lambda.having(Lambda.on(PermitDistribution.class).getPermitClassification().getIsActive(), Matchers.equalTo(true)));
-//	        permits = Lambda.extract(permitDistributions, Lambda.on(PermitDistribution.class).getPermitClassification());
+            permitDistributions = Lambda.select(permitDistributions, Lambda.having(Lambda.on(PermitDistribution.class).getPermitClassification().getIsActive(), Matchers.equalTo(true)));
+            permits = Lambda.extract(permitDistributions, Lambda.on(PermitDistribution.class).getPermitClassification());
             model.setPermitId(null);
 
             //cek juga actual permit taken-nya
@@ -264,6 +279,7 @@ public class PermitImplementationFormController extends BaseController {
             Date latestPermitDate = latestByFillingDate != null ? latestByFillingDate.getEndDate() : null;
             model.setLatestPermitDate(latestPermitDate);
 
+            isRequiredAttachment = !permitDistribution.getPermitClassification().getAttachmentRequired();
             //cek juga actual permit taken-nya
             this.onChangeStartOrEndDate();
         } catch (Exception e) {

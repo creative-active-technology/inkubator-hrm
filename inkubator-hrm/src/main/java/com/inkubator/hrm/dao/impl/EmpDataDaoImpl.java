@@ -15,6 +15,7 @@ import com.inkubator.hrm.web.model.DistributionOvetTimeModel;
 import com.inkubator.hrm.web.model.PermitDistributionModel;
 import com.inkubator.hrm.web.model.PlacementOfEmployeeWorkScheduleModel;
 import com.inkubator.hrm.web.search.EmpDataSearchParameter;
+import com.inkubator.hrm.web.search.ReportEmpDepartmentJabatanParameter;
 import com.inkubator.hrm.web.search.ReportEmpWorkingGroupParameter;
 import com.inkubator.hrm.web.search.ReportOfEmployeesFamilySearchParameter;
 
@@ -25,6 +26,7 @@ import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
@@ -273,7 +275,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 
         return criteria.list();
     }
-    
+
     @Override
     public List<EmpData> getAllDataByGolJabatanIdAndDepartmentId(Long golJabatanId, Long departmentId) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
@@ -531,7 +533,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.createAlias("bioData", "bio", JoinType.INNER_JOIN);
         criteria.createAlias("golonganJabatan", "goljab", JoinType.INNER_JOIN);
         //ambil yg working groupnya bukan yg dipilih, dan belum punya working group
-        if (model.getPermitId()!= 0 || model.getPermitId() != null) {
+        if (model.getPermitId() != 0 || model.getPermitId() != null) {
             Disjunction disjunction = Restrictions.disjunction();
             disjunction.add(Restrictions.isNull("lv.empData"));
             disjunction.add(Restrictions.not(Restrictions.eq("lv.permitClassification.id", model.getPermitId())));
@@ -588,7 +590,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.createAlias("jabatanByJabatanId.department", "department", JoinType.INNER_JOIN);
         criteria.setFetchMode("bioData.bioFamilyRelationships", FetchMode.JOIN);
 //        criteria.setFetchMode("jabatanByJabatanId.jabatanSpesifikasis.specificationAbility", FetchMode.JOIN);
-        
+
         doSearchReportOfEmployeesFamilyByParam(searchParameter, criteria);
         criteria.addOrder(orderable);
         criteria.setFirstResult(firstResult);
@@ -603,7 +605,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         doSearchReportOfEmployeesFamilyByParam(searchParameter, criteria);
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
-    
+
     private Criteria doSearchReportOfEmployeesFamilyByParam(ReportOfEmployeesFamilySearchParameter param, Criteria criteria) {
         if (param.getDepartmentId() != null && param.getDepartmentId() != 0) {
             criteria.add(Restrictions.eq("jabatanByJabatanId.department.id", param.getDepartmentId()));
@@ -612,4 +614,44 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         return criteria;
     }
 
+    @Override
+    public List<EmpData> getAllDataReportEmpDepartmentJabatanByParam(ReportEmpDepartmentJabatanParameter param, int firstResult, int maxResults, Order orderable) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
+        criteria.createAlias("golonganJabatan", "goljab", JoinType.INNER_JOIN);
+        criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
+        criteria.createAlias("jabatanByJabatanId.department", "department", JoinType.INNER_JOIN);
+        doSearchReportEmpDepartmentJabatanByParam(param, criteria);
+        criteria.addOrder(orderable);
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResults);
+        return criteria.list();
+    }
+
+    @Override
+    public Long getTotalReportEmpDepartmentJabatanByParam(ReportEmpDepartmentJabatanParameter param) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
+        criteria.createAlias("golonganJabatan", "goljab", JoinType.INNER_JOIN);
+        doSearchReportEmpDepartmentJabatanByParam(param, criteria);
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+
+    private Criteria doSearchReportEmpDepartmentJabatanByParam(ReportEmpDepartmentJabatanParameter param, Criteria criteria) {
+
+        System.out.println("goljabs " + param.getGolonganJabatanId());
+        System.out.println("departement " + param.getDepartmentId());
+        
+        if (param.getDepartmentId() != null && param.getDepartmentId() != 0) {
+            criteria.add(Restrictions.eq("jabatanByJabatanId.department.id", param.getDepartmentId()));
+        }
+        
+        if (param.getGolonganJabatanId()!= null) {
+           System.out.println("goljabs " + param.getGolonganJabatanId().get(0));
+            criteria.add(Restrictions.in("golonganJabatan.id", param.getGolonganJabatanId()));
+           
+        } 
+
+        return criteria;
+    }
 }

@@ -268,6 +268,7 @@ public class PermitClassificationServiceImpl extends IServiceImpl implements Per
         permitClassification.setSalaryCut(b.getSalaryCut());
         permitClassification.setAttachmentRequired(b.getAttachmentRequired());
         permitClassification.setDescription(b.getDescription());
+        permitClassification.setIsActive(b.getIsActive());
         permitClassification.setAttendanceStatus(attendanceStatus);
         permitClassification.setUpdatedBy(UserInfoUtil.getUserName());
         permitClassification.setUpdatedOn(new Date());
