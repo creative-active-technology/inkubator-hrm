@@ -314,7 +314,19 @@ public class ReimbursmentSchemaFormController extends BaseController{
     }
     
     public void doReset() {
-        cleanAndExit();
+        model.setCostCenter(null);
+        model.setCode(null);
+        model.setName(null);
+        model.setBasicValue(null);
+        model.setEffectiveDate(null);
+        model.setIsAttachDocument(null);
+        model.setMeasurement(null);
+        model.setNominalUnit(null);
+        model.setPayrolComponent(null);
+        model.setPayrollComponent(null);
+        model.setQuantity(null);
+        model.setRatioSalary(null);
+        model.setTimeRange(null);
     }
     
     public ReimbursmentSchemaModel getModel() {

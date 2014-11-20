@@ -336,7 +336,17 @@ public class LoanSchemaFormController extends BaseController{
     }
 
     public void doReset() {
-        cleanAndExit();
+        model.setCode(null);
+        model.setName(null);
+        model.setCostCenter(null);
+        model.setTypeOfInterest(null);
+        model.setMaxPeriode(null);
+        model.setBasicValue(null);
+        model.setMaxNominal(null);
+        model.setMaxPaymentOfSalary(null);
+        model.setInterestRate(null);
+        model.setPenaltyOfNonComplance(null);
+        model.setMinPaymment(null);
     }
     
     

@@ -1,0 +1,204 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlUserFormId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
+                <h:form id="distribusiLeaveId" >
+                    <div id="box_bg" style="margin: 10px">
+                        <!--<p:panel style="margin: 10px">-->
+                        <h:panelGrid style="margin-bottom: 5px" columns="2">
+                            <p:graphicImage library="images" name="task.png" height="36" width="36" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="#{appmsg['fingerException.finger_exception_form']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['fingerException.finger_exception_header']}" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator/>
+                        
+                        <p:panelGrid style="width: 100%;margin-bottom: 10px;margin-top: 20px" styleClass="grid_border3" >
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['department.department']}"  for="department" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <h:panelGrid columns="2" style="margin-left: -10px;">
+                                        <p:selectOneMenu id="department" value="#{wtFingerExceptionFormController.model.departmentLikeOrEqual}" style="width: 150px;margin-right: 3px" >
+                                            <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue="3"/>
+                                            <f:selectItem itemLabel="#{appmsg['employeeworkschedule.equal']}" itemValue="0"/>
+                                            <f:selectItem itemLabel="#{appmsg['employeeworkschedule.like']}" itemValue="1"/>
+                                        </p:selectOneMenu>
+                                        <p:inputText id="departmentText" value="#{wtFingerExceptionFormController.model.departmentName}"
+                                                     required="false" styleClass="isitext_hrm" style="width:210px; margin-left: -10px;" />
+                                    </h:panelGrid>
+                                </p:column>
+                            </p:row>
+                           <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['employeetype.employee_type']}"  for="employeeType" styleClass="label_hrm" />
+                                </p:column>
+
+                                <p:column style="width: 80%">
+                                    <h:panelGrid columns="2" style="margin-left: -10px;">
+                                        <p:selectOneMenu id="employeeType" value="#{wtFingerExceptionFormController.model.employeeTypeLikeOrEqual}" style="width: 150px;margin-right: 3px" >
+                                            <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue="3"/>
+                                            <f:selectItem itemLabel="#{appmsg['employeeworkschedule.equal']}" itemValue="0"/>
+                                            <f:selectItem itemLabel="#{appmsg['employeeworkschedule.like']}" itemValue="1"/>
+                                        </p:selectOneMenu>
+
+                                        <p:inputText id="employeeTypeText" value="#{wtFingerExceptionFormController.model.employeeTypeName}"
+                                                     required="false" styleClass="isitext_hrm" style="width:210px;margin-left: -10px;" />
+
+                                    </h:panelGrid>
+                                </p:column>
+                            </p:row>
+                             <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel value="#{appmsg['global.gender']}"  for="gender" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectOneRadio id="gender" styleClass="isitext_hrm" required="true" value="#{wtFingerExceptionFormController.model.gender}" label="Gender">
+                                        <!--Cek HRM Constanta..-->
+                                        <f:selectItem itemLabel="#{appmsg['global_male']}" itemValue="1" />
+                                        <f:selectItem itemLabel="#{appmsg['global_female']}" itemValue="0" />
+                                    </p:selectOneRadio>
+                                    <p:message for="gender"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['benefitGroupRate.benefitGroupRate_golongan']}"  for="golonganJabatan" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectOneMenu id="golonganJabatan" value="#{wtFingerExceptionFormController.model.golonganJabatanId}" style="min-width: 300px;margin-right: 3px" >
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue="0"/>
+                                        <f:selectItems value="#{wtFingerExceptionFormController.golonganJabatanDropDown}"/>
+                                    </p:selectOneMenu>
+                                    <p:message for="golonganJabatan"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['leavedistribution.sort_by']}"  for="sortBy" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectOneMenu id="sortBy" styleClass="isitext_hrm" required="false" value="#{wtFingerExceptionFormController.model.sortBy}" label="Gender">
+                                        <f:selectItem itemLabel="#{appmsg['global.nik']}" itemValue="0" />
+                                        <f:selectItem itemLabel="#{appmsg['global.name']}" itemValue="1" />
+                                    </p:selectOneMenu>&nbsp;&nbsp;&nbsp;
+                                    <p:selectOneMenu id="orderBy" styleClass="isitext_hrm" required="false" value="#{wtFingerExceptionFormController.model.orderBy}" label="Gender">
+                                        <f:selectItem itemLabel="A-Z" itemValue="0" />
+                                        <f:selectItem itemLabel="Z-A" itemValue="1" />
+                                    </p:selectOneMenu>
+                                    <p:message for="sortBy"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:commandButton value="#{appmsg['global.search']}" ajax="true" action="#{wtFingerExceptionFormController.doSearchEmployee()}" 
+                                                     styleClass="isitext_hrm" 
+                                                     style="margin-right: 5px" label="#{appmsg['global.search']}" update=":formSubmitId, distribusiLeaveId"
+                                                     icon="ui-icon-search" title="#{appmsg['global.search']}">    
+                                    </p:commandButton>
+                                </p:column>
+                            </p:row>
+
+
+                        </p:panelGrid>
+
+                        <p:focus context="distribusiLeaveId" />
+                    </div>
+                </h:form>
+                <h:form id="formSubmitId">
+                    <div id="box_bg" style="margin: 10px">
+                        <div style="margin-top: 10px">
+                            <p:outputLabel value="#{appmsg['employee.list_of_employee']}" styleClass="header_big" />
+                            <p:separator/>
+                        </div>
+                        <p:panelGrid style="width: 100%;margin-bottom: 10px;margin-top: 20px" styleClass="grid_border3" >
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['publicHoliday.publicHoliday_start']}"  styleClass="label_hrm" />
+                                </p:column>
+                                <p:column>
+                                    <p:calendar  id="startDate" size="16" pattern="dd MMMM yyyy" label="Start Date" value="#{wtFingerExceptionFormController.model.startDate}"
+                                                 required="true" navigator="true">
+                                        <f:validator validatorId="birthDateValidator"  />
+                                        <f:attribute name="validatorMessage" value="#{appmsg['global.birthDate_validator']}"/>
+                                    </p:calendar>
+                                    <p:message for="startDate"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['publicHoliday.publicHoliday_end']}"  styleClass="label_hrm" />
+                                </p:column>
+                                <p:column>
+                                    <p:calendar  id="endDate" size="16" pattern="dd MMMM yyyy" label="Start Date" value="#{wtFingerExceptionFormController.model.endDate}"
+                                                 required="true" navigator="true">
+                                        <f:validator validatorId="birthDateValidator"  />
+                                        <f:attribute name="validatorMessage" value="#{appmsg['global.birthDate_validator']}"/>
+                                    </p:calendar>
+                                    <p:message for="endDate"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['fingerException.extend_exception']}"  styleClass="label_hrm" />
+                                </p:column>
+                                <p:column>
+                                    <p:selectBooleanButton value="#{wtFingerExceptionFormController.model.extendException}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
+                                                       offIcon="ui-icon-close"  styleClass="label_button"  id="everyYearsId"/>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                        <div align="center">
+                            <p:pickList value="#{wtFingerExceptionFormController.dualListModel}" var="role" itemValue="#{role}" converter="#{empDataConverter}" id="picklistUserRoleId"
+                                        required="true"  style="margin-top: 15px;margin-bottom: 15px;" label="Daftar Employee" styleClass="isitext_hrm"
+                                        itemLabel="#{role.nik} - #{role.bioData.firstName} #{role.bioData.lastName}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
+                                        removeLabel="#{appmsg['global.remove']}"/>
+                            <p:message for="picklistUserRoleId" />
+                        </div>
+
+                        <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
+                        <div style="margin-bottom: 5px">
+                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formSubmitId,:growlUserFormId" onclick="statusDialog.show()" oncomplete="statusDialog.hide()"
+                                             action="#{wtFingerExceptionFormController.doSave()}" styleClass="label_button" 
+                                             style="margin-right: 5px" label="#{appmsg['global.save']}"
+                                             icon="ui-icon-disk"
+                                             id="buttonSave" title="#{appmsg['global.save']}"/>
+                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" update="formSubmitId,:distribusiLeaveId" action="#{wtFingerExceptionFormController.doReset()}"
+                                             process="@this" icon="ui-icon-refresh" id="cleareId"   styleClass="label_button"  style="margin-right: 5px">  
+                                <p:resetInput target="formSubmitId,:distribusiLeaveId" />  
+                            </p:commandButton>
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{wtFingerExceptionFormController.doBack()}" immediate="true"
+                                             styleClass="label_button"/>
+                            <!--</p:panel>-->
+                        </div>
+                    </div>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+
