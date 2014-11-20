@@ -77,10 +77,10 @@
                                          action="#{paySalaryGradePositionFormController.doSave()}" styleClass="isitext_hrm"
                                          style="margin-right: 5px" label="#{appmsg['global.save']}"
                                          icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
-                        <p:commandButton value="#{appmsg['global.clear']}" title="#{appmsg['global.clear']}" process="@this" update="formId" 
-                                         icon="ui-icon-refresh" styleClass="isitext_hrm" >  
-                            <p:resetInput target="formId" />  
-                        </p:commandButton>
+                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formId" action="#{paySalaryGradePositionFormController.doReset()}"
+                                             icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px" >  
+                                <p:resetInput target="formId" />  
+                            </p:commandButton>
                     </h:panelGrid>
                 </h:form>
             </ui:define>

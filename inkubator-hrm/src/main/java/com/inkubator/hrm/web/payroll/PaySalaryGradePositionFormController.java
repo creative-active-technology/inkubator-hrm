@@ -109,6 +109,10 @@ public class PaySalaryGradePositionFormController extends BaseController{
         return jbm;
     }
     
+    public void doReset(){
+        jabatanModel.setSalaryGradeId(null);
+    }
+    
     public JabatanService getJabatanService() {
         return jabatanService;
     }
