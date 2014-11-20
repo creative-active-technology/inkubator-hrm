@@ -123,16 +123,16 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
 					appActivity.setLocale(FacesUtil.getFacesContext().getViewRoot().getLocale().toString());
 					appActivity.setCreatedTime(new Date());
 		        	
+					//show growl notification for approver
+			    	this.sendApprovalGrowlNotif(appActivity);
+			    	
+			    	//send sms notification to approver
+					this.sendApprovalSmsnotif(appActivity);
+					
 					break; //keluar dari looping
 				}
 			}
 		}
-		
-		//show growl notification for approver
-    	this.sendApprovalGrowlNotif(appActivity);
-    	
-    	//send sms notification to approver
-		this.sendApprovalSmsnotif(appActivity);
     	
 		return appActivity;
 	}
@@ -217,7 +217,8 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
         int approvedCount = approvalActivity.getApprovalCount() + 1; //increment +1
         approvalActivity.setApprovalCount(approvedCount);
         approvalActivity.setApprovalTime(new Date());
-        approvalActivityDao.update(approvalActivity);
+        /** kenapa di flush karena kalau pake Global Transaction (data yg di update, tapi di-query lagi, datanya jadi masih mengacu ke lama/before update) */
+        approvalActivityDao.updateAndFlush(approvalActivity);
         
 
         /** checking process if there is any nextApproval for ApprovalActivity */

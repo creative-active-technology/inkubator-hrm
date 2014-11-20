@@ -105,8 +105,7 @@ public class SpecAbilityFormController extends BaseController {
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             }
             return "/protected/reference/spec_ability_view.htm?faces-redirect=true";
-        } catch (BussinessException ex) { //data already exist(duplicate)
-            LOGGER.error("Error", ex);
+        } catch (BussinessException ex) { 
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);

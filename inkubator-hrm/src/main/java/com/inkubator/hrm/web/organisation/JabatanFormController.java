@@ -170,8 +170,7 @@ public class JabatanFormController extends BaseController {
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             }
             return "/protected/organisation/job_title_detil.htm?faces-redirect=true&execution=e" + jabatan.getId();
-        } catch (BussinessException ex) { //data already exist(duplicate)
-            LOGGER.error("Error", ex);
+        } catch (BussinessException ex) { 
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);

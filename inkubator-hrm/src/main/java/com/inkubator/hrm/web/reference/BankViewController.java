@@ -128,8 +128,8 @@ public class BankViewController extends BaseController {
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", false);
-        options.put("contentWidth", 400);
-        options.put("contentHeight", 480);
+        options.put("contentWidth", 480);
+        options.put("contentHeight", 475);
         RequestContext.getCurrentInstance().openDialog("bank_form", options, params);
     }
 

@@ -1,16 +1,5 @@
 package com.inkubator.hrm.web.account;
 
-import java.util.List;
-
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
-
-import org.apache.commons.lang3.StringUtils;
-
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.HrmMenu;
@@ -19,6 +8,14 @@ import com.inkubator.hrm.web.model.MenuModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+import java.util.List;
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -108,8 +105,7 @@ public class MenuFormController extends BaseController {
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             }
             return "/protected/account/menu_detail.htm?faces-redirect=true&execution=e" + menu.getId();
-        } catch (BussinessException ex) { //data already exist(duplicate)
-            LOGGER.error("Error", ex);
+        } catch (BussinessException ex) { 
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);

@@ -2,12 +2,16 @@ package com.inkubator.hrm.entity;
 // Generated Sep 29, 2014 10:36:37 PM by Hibernate Tools 3.6.0
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -22,28 +26,30 @@ import javax.persistence.Version;
 )
 public class PermitClassification implements java.io.Serializable {
 
-    private long id;
-    private Integer version;
-    private AttendanceStatus attendanceStatus;
-    private String code;
-    private String name;
-    private Boolean status;
-    private Integer calculation;
-    private Integer basePeriod;
-    private Integer availibility;
-    private Integer dateIncreased;
-    private Integer quantity;
-    private Integer limitByDay;
-    private Boolean onePerEmployee;
-    private Integer maxPerMonth;
-    private Double salaryCut;
-    private Boolean attachmentRequired;
-    private Boolean isActive;
-    private String description;
-    private String createdBy;
-    private Date createdOn;
-    private String updatedBy;
-    private Date updatedOn;
+
+     private long id;
+     private Integer version;
+     private AttendanceStatus attendanceStatus;
+     private String code;
+     private String name;
+     private Boolean status;
+     private Integer calculation;
+     private Integer basePeriod;
+     private Integer availibility;
+     private Date dateIncreased;
+     private Integer quantity;
+     private Integer limitByDay;
+     private Boolean onePerEmployee;
+     private Integer maxPerMonth;
+     private Double salaryCut;
+     private Boolean attachmentRequired;
+     private String description;
+     private String createdBy;
+     private Date createdOn;
+     private String updatedBy;
+     private Date updatedOn;
+     private Set<ApprovalDefinitionPermit> approvalDefinitionPermits = new HashSet<ApprovalDefinitionPermit>(0);
+
 
     public PermitClassification() {
     }
@@ -275,13 +281,14 @@ public class PermitClassification implements java.io.Serializable {
         this.updatedOn = updatedOn;
     }
 
-    @Column(name = "is_active", nullable = false)
-    public Boolean getIsActive() {
-        return isActive;
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="permitClassification")
+    public Set<ApprovalDefinitionPermit> getApprovalDefinitionPermits() {
+        return this.approvalDefinitionPermits;
+    }
+    
+    public void setApprovalDefinitionPermits(Set<ApprovalDefinitionPermit> approvalDefinitionPermits) {
+        this.approvalDefinitionPermits = approvalDefinitionPermits;
     }
 
-    public void setIsActive(Boolean isActive) {
-        this.isActive = isActive;
-    }
 
 }

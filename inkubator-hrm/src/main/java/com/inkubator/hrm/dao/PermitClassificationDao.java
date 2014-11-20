@@ -19,5 +19,7 @@ public interface PermitClassificationDao extends IDAO<PermitClassification> {
 	public Long getTotalPermitClassificationByParam(PermitClassificationSearchParameter parameter);
         
         public PermitClassification getEntityByPKWithDetail(Long id);
+        
+        public PermitClassification getEntityByPkFetchApprovalDefinition(Long id);
 
 }

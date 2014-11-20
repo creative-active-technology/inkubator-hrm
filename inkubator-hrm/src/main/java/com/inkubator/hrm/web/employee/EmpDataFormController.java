@@ -227,7 +227,6 @@ public class EmpDataFormController extends BaseController {
                 empDataService.update(empData);
                 return "/protected/employee/employee_placement_detail.htm?faces-redirect=true&execution=e" + empData.getId();
             } catch (BussinessException ex) {
-//                LOGGER.error("Error", ex);
                 MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 
             } catch (Exception ex) {
@@ -239,7 +238,6 @@ public class EmpDataFormController extends BaseController {
                 empDataService.save(empData);
                 return "/protected/employee/employee_placement_detail.htm?faces-redirect=true&execution=e" + empData.getId();
             } catch (BussinessException ex) {
-//                LOGGER.error("Error", ex);
                 MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 
             } catch (Exception ex) {
@@ -348,7 +346,6 @@ public class EmpDataFormController extends BaseController {
             this.empDataService.doSaveRotasi(empData);
             return "/protected/employee/employee_placement_detail.htm?faces-redirect=true&execution=e" + empData.getId();
         } catch (BussinessException ex) {
-//                LOGGER.error("Error", ex);
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 
         } catch (Exception ex) {
