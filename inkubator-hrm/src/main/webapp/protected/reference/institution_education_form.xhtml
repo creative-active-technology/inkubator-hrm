@@ -29,24 +29,22 @@
                     <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
                     <h:panelGrid columns="1" style="margin-bottom: 5px;margin-left: 0px">
                         <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
-
                         <h:outputLabel value="#{appmsg['institutionEducation.dialog_info']}" styleClass="label_hrm" style="font-weight: normal!important"/>
-                        <h:outputLabel value="#{appmsg['institutionEducation.dialog_info_2']}" styleClass="label_hrm" style="font-weight: normal!important"/>
-                        <h:outputLabel value="#{appmsg['institutionEducation.dialog_info_4']}" styleClass="label_hrm" style="font-weight: normal!important"/>
-                        <h:outputLabel value="#{appmsg['institutionEducation.dialog_info_3']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                        <h:outputLabel value="#{appmsg['institutionEducation.dialog_info_5']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                        
 
                     </h:panelGrid> 
                     <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
                         <p:row>
-                            <p:column style="width: 29%">
+                            <p:column style="width: 40%">
                                 <p:outputLabel for="codeId" value="#{appmsg['institutionEducation.institutionEducation_code']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="codeId" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 70%">
+                            <p:column  style="width: 59%">
                                 <p:inputText id="codeId" title="#{appmsg['institutionEducation.institutionEducation_code']}" value="#{institutionEducationFormController.institutionEducationModel.institutionEducationCode}" 
-                                             required="true" requiredMessage="#{appmsg['institutionEducation.institutionEducation_code_should_not_be_empty']}" maxlength="8" styleClass="isitext_hrm" style="width:250px;" />
+                                             required="true" requiredMessage="#{appmsg['institutionEducation.institutionEducation_code_should_not_be_empty']}" maxlength="8" styleClass="isitext_hrm" style="width:300px;" />
 
                             </p:column>
                         </p:row>
@@ -56,15 +54,15 @@
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width: 29%">
+                            <p:column style="width: 40%">
                                 <p:outputLabel for="nameId" value="#{appmsg['institutionEducation.institutionEducation_name']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="nameId" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 70%">
+                            <p:column  style="width: 59%">
                                 <p:inputText id="nameId" title="#{appmsg['institutionEducation.institutionEducation_name']}" value="#{institutionEducationFormController.institutionEducationModel.institutionEducationName}" 
-                                             required="true" requiredMessage="#{appmsg['institutionEducation.institutionEducation_name_should_not_be_empty']}" maxlength="60" styleClass="isitext_hrm" style="width:250px;" />
+                                             required="true" requiredMessage="#{appmsg['institutionEducation.institutionEducation_name_should_not_be_empty']}" maxlength="60" styleClass="isitext_hrm" style="width:300px;" />
 
                             </p:column>
                         </p:row>
@@ -74,26 +72,26 @@
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width: 29%">
+                            <p:column style="width: 40%">
                                 <p:outputLabel for="addresId" value="#{appmsg['institutionEducation.address']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="addresId" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 70%">
+                            <p:column  style="width: 59%">
                                 <p:inputTextarea id="addresId" title="#{appmsg['institutionEducation.address']}" value="#{institutionEducationFormController.institutionEducationModel.address}" 
-                                                 required="true" requiredMessage="#{appmsg['institutionEducation.institutionEducation_address_should_not_be_empty']}" maxlength="500" counter="counter" counterTemplate="#{appmsg['global.remaining']}" styleClass="isitext_hrm" style="width:250px;" />
+                                                 required="true" requiredMessage="#{appmsg['institutionEducation.institutionEducation_address_should_not_be_empty']}" maxlength="500" counter="counter" counterTemplate="#{appmsg['global.remaining']}" styleClass="isitext_hrm" style="width:300px;" />
 
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width: 29%;" >
+                            <p:column style="width: 40%;" >
                                 <p:outputLabel  for="counter" styleClass="label_hrm" />
                             </p:column>
                             <p:column style="width: 1%;" >
                                 <p:outputLabel  for="counter" styleClass="label_hrm" />
                             </p:column>
-                            <p:column style="width: 70%">
+                            <p:column style="width: 59%">
                                 <h:outputText id="counter" />
                             </p:column>
                         </p:row>
@@ -111,7 +109,7 @@
                             </p:column>
                             <p:column style="width: 70%">
                                 <p:selectOneMenu id="countryId" value="#{institutionEducationFormController.institutionEducationModel.countryId}" required="true" valueChangeListener="#{institutionEducationFormController.countryChanged}" 
-                                                 style="width: 250px" filter="true" requiredMessage="#{appmsg['country.country_name_should_not_be_empty']}">
+                                                 style="width: 300px" filter="true" requiredMessage="#{appmsg['country.country_name_should_not_be_empty']}">
                                     <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue="" />
                                     <f:selectItems value="#{institutionEducationFormController.countrys}"  />
                                     <p:ajax update="provinceIdA, provinceId" event="change" />
@@ -124,7 +122,7 @@
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width: 29%;background-color: #e1f0f0!important" >
+                            <p:column style="width: 29%;" >
                                 <p:outputLabel for="provinceIdA" value="#{appmsg['city.province_name']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
@@ -132,7 +130,7 @@
                             </p:column>
                             <p:column style="width: 70%">
                                 <p:selectOneMenu id="provinceIdA" value="#{institutionEducationFormController.institutionEducationModel.provinceId}" required="true" valueChangeListener="#{institutionEducationFormController.provinceChanged}"
-                                                 style="width: 250px" filter="true" requiredMessage="#{appmsg['city.province_should_not_be_empty']}" disabled="#{institutionEducationFormController.disabledProvince}">
+                                                 style="width: 300px" filter="true" requiredMessage="#{appmsg['city.province_should_not_be_empty']}" disabled="#{institutionEducationFormController.disabledProvince}">
                                     <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue="" />
                                     <f:selectItems value="#{institutionEducationFormController.provinces}"  />
                                     <p:ajax update="cityIdA, cityId" event="change" />
@@ -155,7 +153,7 @@
                             <p:column  style="width: 70%">
                                 <p:focus for ="cityIdA">
                                     <p:selectOneMenu id="cityIdA" value="#{institutionEducationFormController.institutionEducationModel.cityId}" required="true"
-                                                     style="width: 250px" filter="true" requiredMessage="#{appmsg['institutionEducation.city_should_not_be_empty']}" disabled="#{institutionEducationFormController.disabledCity}">
+                                                     style="width: 300px" filter="true" requiredMessage="#{appmsg['institutionEducation.city_should_not_be_empty']}" disabled="#{institutionEducationFormController.disabledCity}">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{institutionEducationFormController.citys}" />
                                     </p:selectOneMenu>
@@ -177,7 +175,7 @@
                             </p:column>
                             <p:column  style="width: 70%">
                                 <p:inputText id="postalId" title="#{appmsg['institutionEducation.postal_code']}" value="#{institutionEducationFormController.institutionEducationModel.postalCode}" 
-                                             maxlength="8" styleClass="isitext_hrm" style="width:250px;" >
+                                             maxlength="8" styleClass="isitext_hrm" style="width:300px;" >
                                     <pe:keyFilter mask="num"></pe:keyFilter>
                                 </p:inputText>
 

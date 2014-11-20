@@ -128,8 +128,8 @@ public class NationalityViewController extends BaseController {
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", false);
-        options.put("contentWidth", 400);
-        options.put("contentHeight", 375);
+        options.put("contentWidth",460);
+        options.put("contentHeight", 400);
         RequestContext.getCurrentInstance().openDialog("nationality_form", options, params);
     }
 

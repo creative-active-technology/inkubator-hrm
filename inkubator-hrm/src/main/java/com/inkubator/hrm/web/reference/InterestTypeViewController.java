@@ -89,7 +89,7 @@ public class InterestTypeViewController extends BaseController {
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", false);
-        options.put("contentWidth", 400);
+        options.put("contentWidth", 450);
         options.put("contentHeight", 350);
         RequestContext.getCurrentInstance().openDialog("interest_type_form", options, null);
     }

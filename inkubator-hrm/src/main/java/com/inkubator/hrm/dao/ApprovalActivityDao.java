@@ -48,4 +48,6 @@ public interface ApprovalActivityDao extends IDAO<ApprovalActivity> {
     public List<ApprovalActivity> getAllDataWaitingStatusApproval();
 
     public List<ApprovalActivity> getByApprovalStatus(Integer approvalStatus);
+    
+    public void updateAndFlush(ApprovalActivity approvalActivity);
 }

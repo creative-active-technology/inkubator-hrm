@@ -128,8 +128,8 @@ public class InstitutionEducationViewController extends BaseController {
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", false);
-        options.put("contentWidth", 475);
-        options.put("contentHeight", 525);
+        options.put("contentWidth", 550);
+        options.put("contentHeight", 520);
         RequestContext.getCurrentInstance().openDialog("institution_education_form", options, params);
     }
 
