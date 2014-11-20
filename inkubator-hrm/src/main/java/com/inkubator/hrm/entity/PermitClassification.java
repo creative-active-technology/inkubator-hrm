@@ -26,30 +26,29 @@ import javax.persistence.Version;
 )
 public class PermitClassification implements java.io.Serializable {
 
-
-     private long id;
-     private Integer version;
-     private AttendanceStatus attendanceStatus;
-     private String code;
-     private String name;
-     private Boolean status;
-     private Integer calculation;
-     private Integer basePeriod;
-     private Integer availibility;
-     private Date dateIncreased;
-     private Integer quantity;
-     private Integer limitByDay;
-     private Boolean onePerEmployee;
-     private Integer maxPerMonth;
-     private Double salaryCut;
-     private Boolean attachmentRequired;
-     private String description;
-     private String createdBy;
-     private Date createdOn;
-     private String updatedBy;
-     private Date updatedOn;
-     private Set<ApprovalDefinitionPermit> approvalDefinitionPermits = new HashSet<ApprovalDefinitionPermit>(0);
-
+    private long id;
+    private Integer version;
+    private AttendanceStatus attendanceStatus;
+    private String code;
+    private String name;
+    private Boolean status;
+    private Integer calculation;
+    private Integer basePeriod;
+    private Integer availibility;
+    private Integer dateIncreased;
+    private Integer quantity;
+    private Integer limitByDay;
+    private Boolean onePerEmployee;
+    private Integer maxPerMonth;
+    private Double salaryCut;
+    private Boolean attachmentRequired;
+    private Boolean isActive;
+    private String description;
+    private String createdBy;
+    private Date createdOn;
+    private String updatedBy;
+    private Date updatedOn;
+    private Set<ApprovalDefinitionPermit> approvalDefinitionPermits = new HashSet<ApprovalDefinitionPermit>(0);
 
     public PermitClassification() {
     }
@@ -234,6 +233,15 @@ public class PermitClassification implements java.io.Serializable {
         this.attachmentRequired = attachmentRequired;
     }
 
+    @Column(name = "is_active")
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
+
     @Column(name = "description", length = 65535, columnDefinition = "Text")
     public String getDescription() {
         return this.description;
@@ -281,14 +289,13 @@ public class PermitClassification implements java.io.Serializable {
         this.updatedOn = updatedOn;
     }
 
-    @OneToMany(fetch=FetchType.LAZY, mappedBy="permitClassification")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "permitClassification")
     public Set<ApprovalDefinitionPermit> getApprovalDefinitionPermits() {
         return this.approvalDefinitionPermits;
     }
-    
+
     public void setApprovalDefinitionPermits(Set<ApprovalDefinitionPermit> approvalDefinitionPermits) {
         this.approvalDefinitionPermits = approvalDefinitionPermits;
     }
-
 
 }
