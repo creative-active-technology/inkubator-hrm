@@ -249,5 +249,12 @@ public class ApprovalActivityDaoImpl extends IDAOImpl<ApprovalActivity> implemen
 		criteria.add(Restrictions.eq("approvalStatus", approvalStatus));
 		return criteria.list();
     }
+
+	@Override
+	public void updateAndFlush(ApprovalActivity approvalActivity) {
+		getCurrentSession().update(approvalActivity);
+		getCurrentSession().flush();
+		
+	}
 }
  
