@@ -302,7 +302,7 @@ public class PermitClassification  implements java.io.Serializable {
         this.updatedOn = updatedOn;
     }
 
-    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="permitClassification")
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="permitClassification")
     public Set<ApprovalDefinitionPermit> getApprovalDefinitionPermits() {
         return this.approvalDefinitionPermits;
     }

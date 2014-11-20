@@ -73,19 +73,19 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="code"  style="width: 10%">
+                            <p:column sortBy="code"  style="text-align: left;width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{travelZoneData.code}"/>
                             </p:column>                              
-                            <p:column sortBy="name"  style="width: 46%">
+                            <p:column sortBy="name"  style="text-align: left;width: 35%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{travelZoneData.name}"/>
                             </p:column>
-                            <p:column sortBy="category"  style="width: 21%">
+                            <p:column sortBy="category"  style="text-align: left; width: 22%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['travelZone.travelZone_category']}"/>
                                 </f:facet>
@@ -93,7 +93,7 @@
                                     <f:converter converterId="zoneCategoryConverter"/>
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="distance"  style="width: 10%">
+                            <p:column sortBy="distance"  style="text-align: left;width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['travelZone.travelZone_distance']}"/>
                                 </f:facet>

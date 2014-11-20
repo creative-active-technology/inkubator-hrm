@@ -29,8 +29,7 @@
                     <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
                     <h:panelGrid columns="1" style="margin-bottom: 5px;margin-left: 0px">
                         <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
-                        <h:outputLabel value="#{appmsg['bank.dialog_info']}" styleClass="label_hrm" style="font-weight: normal!important"/>
-                        <h:outputLabel value="#{appmsg['bank.dialog_info_2']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                        <h:outputLabel value="#{appmsg['bank.dialog_info_3']}" styleClass="label_hrm" style="font-weight: normal!important"/>
                     </h:panelGrid> 
                     <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
                         <p:row>
@@ -43,7 +42,7 @@
                             <p:column  style="width: 70%">
                                 <p:focus for ="codeId">
                                     <p:inputText id="codeId" title="#{appmsg['bank.bank_code']}" value="#{bankFormController.bankModel.bankCode}" 
-                                                 required="true" requiredMessage="#{appmsg['bank.bank_code_should_not_be_empty']}" maxlength="8" styleClass="isitext_hrm" style="width:250px;" />
+                                                 required="true" requiredMessage="#{appmsg['bank.bank_code_should_not_be_empty']}" maxlength="8" styleClass="isitext_hrm" style="width:270px;" />
                                 </p:focus>
                             </p:column>
                         </p:row>
@@ -62,7 +61,7 @@
                             <p:column  style="width: 70%">
                                 <p:focus for ="swiftCode">
                                     <p:inputText id="swiftCode" title="swiftCode" value="#{bankFormController.bankModel.swiftCode}" 
-                                                 required="true" requiredMessage="#{appmsg['bank.bank_code_should_not_be_empty']}" maxlength="20" styleClass="isitext_hrm" style="width:250px;" />
+                                                 required="true" requiredMessage="#{appmsg['bank.bank_code_should_not_be_empty']}" maxlength="20" styleClass="isitext_hrm" style="width:270px;" />
                                 </p:focus>
                             </p:column>
                         </p:row>
@@ -72,16 +71,16 @@
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width: 29%">
+                            <p:column style="width: 40%">
                                 <p:outputLabel for="identificationNumber" value="#{appmsg['bank.identification_number']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="identificationNumber" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 70%">
+                            <p:column  style="width: 59%">
                                 <p:focus for ="identificationNumber">
                                     <p:inputText id="identificationNumber" title="identificationNumber" value="#{bankFormController.bankModel.bankIdentificationNumber}" 
-                                                 required="true" requiredMessage="#{appmsg['bank.bank_code_should_not_be_empty']}" maxlength="60" styleClass="isitext_hrm" style="width:250px;" />
+                                                 required="true" requiredMessage="#{appmsg['bank.bank_code_should_not_be_empty']}" maxlength="60" styleClass="isitext_hrm" style="width:270px;" />
                                 </p:focus>
                             </p:column>
                         </p:row>
@@ -100,7 +99,7 @@
                             <p:column  style="width: 70%">
                                 <p:focus for ="iban">
                                     <p:inputText id="iban" title="iban" value="#{bankFormController.bankModel.iban}" 
-                                                 required="true" requiredMessage="#{appmsg['bank.bank_code_should_not_be_empty']}" maxlength="20" styleClass="isitext_hrm" style="width:250px;" />
+                                                 required="true" requiredMessage="#{appmsg['bank.bank_code_should_not_be_empty']}" maxlength="20" styleClass="isitext_hrm" style="width:270px;" />
                                 </p:focus>
                             </p:column>
                         </p:row>
@@ -119,7 +118,7 @@
                             </p:column>
                             <p:column  style="width: 70%">
                                 <p:inputText id="nameId" title="#{appmsg['bank.bank_name']}" value="#{bankFormController.bankModel.bankName}" 
-                                             required="true" requiredMessage="#{appmsg['bank.bank_name_should_not_be_empty']}" maxlength="60" styleClass="isitext_hrm" style="width:250px;" />
+                                             required="true" requiredMessage="#{appmsg['bank.bank_name_should_not_be_empty']}" maxlength="60" styleClass="isitext_hrm" style="width:270px;" />
 
                             </p:column>
                         </p:row>
@@ -137,7 +136,7 @@
                             </p:column>
                             <p:column  style="width: 70%">
                                 <p:inputTextarea id="descriptionId" title="#{appmsg['global.description']}" value="#{bankFormController.bankModel.description}" 
-                                                 required="false" maxlength="500" counter="counter" counterTemplate="#{appmsg['global.remaining']}" styleClass="isitext_hrm" style="width:250px;" />
+                                                 required="false" maxlength="500" counter="counter" counterTemplate="#{appmsg['global.remaining']}" styleClass="isitext_hrm" style="width:270px;" />
 
                             </p:column>
                         </p:row>

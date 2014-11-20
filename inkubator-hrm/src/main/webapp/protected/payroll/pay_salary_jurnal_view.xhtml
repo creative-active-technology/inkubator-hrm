@@ -73,19 +73,19 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="code"  style="width: 10%">
+                            <p:column sortBy="code"  style="text-align: left;width: 17%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{paySalaryJurnalData.code}"/>
                             </p:column>  
-                            <p:column sortBy="name"  style="width: 40%">
+                            <p:column sortBy="name"  style="text-align: left;width: 40%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{paySalaryJurnalData.name}"/>
                             </p:column> 
-                            <p:column sortBy="costCenter.name"  style="width: 27%">
+                            <p:column sortBy="costCenter.name"  style="text-align: left;width: 30%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['paySalaryJurnal.paySalaryJurnal_coa']}"/>
                                 </f:facet>

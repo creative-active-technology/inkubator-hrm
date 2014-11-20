@@ -77,31 +77,31 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="code" style="width: 150px" >
+                            <p:column sortBy="code" style="text-align: left;width: 19%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['jabat.jabatan_code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{jabatanViewData.code}"/>
                             </p:column>
-                            <p:column sortBy="name" >
+                            <p:column sortBy="name" style="text-align: left;width: 19%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['jabatan.jabatan_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{jabatanViewData.name}"/>
                             </p:column>
-                            <p:column sortBy="jabatan" >
+                            <p:column sortBy="jabatan" style="text-align: left;width: 19%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['jabatan.jabatan_deparment_boss']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{jabatanViewData.jabatan.name}"/>
                             </p:column>
-                            <p:column sortBy="department" >
+                            <p:column sortBy="department" style="text-align: left;width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['jabatan.jabatan_deparment']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{jabatanViewData.department.departmentName}"/>
                             </p:column> 
-                            <p:column sortBy="paySalaryGrade" >
+                            <p:column sortBy="paySalaryGrade" style="text-align: left; width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['paysalarygrade.grade']}"/>
                                 </f:facet>

@@ -83,17 +83,25 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="golonganJabatan.code"  style="text-align: center;width: 37%">
+                            <p:column sortBy="golonganJabatan.code"  style="text-align: center;width: 29%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['benefitGroupRate.benefitGroupRate_golongan']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{benefitGroupRateData.golonganJabatan.code}"/>
-                            </p:column>  
-                            <p:column sortBy="nominal"  style="width: 40%">
+                            </p:column> 
+                            <p:column sortBy="golonganJabatan.pangkat"  style="text-align: center;width: 29%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['jabatan.pangkat_name']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{benefitGroupRateData.golonganJabatan.pangkat.pangkatName}"/>
+                            </p:column> 
+                            <p:column sortBy="nominal"  style="width: 29%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['benefitGroupRate.benefitGroupRate_nominal']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{benefitGroupRateData.nominal}"/>
+                                <h:outputLabel value= "#{benefitGroupRateData.nominal}">
+                                    <f:convertNumber pattern="###,###" type="currency"/>
+                                </h:outputLabel>
                             </p:column>  
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
 
