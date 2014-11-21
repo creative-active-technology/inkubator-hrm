@@ -27,11 +27,12 @@
     <task:scheduler id="myScheduler" pool-size="10"/>
     
     <bean id="approvalActivityCronService" class="com.inkubator.hrm.service.impl.ApprovalActivityCronServiceImpl"/>
-<!--    <bean id="leaveCronService" class="com.inkubator.hrm.service.impl.LeaveCronServiceImpl"/>
-    
     <bean id="scheduleService" class="com.inkubator.hrm.service.impl.ScheduleServiceImpl">
         <property name="difWeekToDelete" value="${dif.number.week.to.delete}"/>        
     </bean>
+    <!--    <bean id="leaveCronService" class="com.inkubator.hrm.service.impl.LeaveCronServiceImpl"/>
+    
+
     <bean id="checkPasswordHistoryEmailNotSendService" class="com.inkubator.hrm.service.impl.CheckPasswordHistoryEmailNotSendServiceImpl" lazy-init="false">
         <property name="applicationUrl" value="${email_param_application_url}"/>
         <property name="applicationName" value="${email_param_application_name}"/>

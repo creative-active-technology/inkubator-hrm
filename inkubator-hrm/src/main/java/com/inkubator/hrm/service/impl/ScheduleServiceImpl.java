@@ -13,11 +13,13 @@ import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.AttendanceStatusDao;
 import com.inkubator.hrm.dao.EmpDataDao;
+import com.inkubator.hrm.dao.LoginHistoryDao;
 import com.inkubator.hrm.dao.RiwayatAksesDao;
 import com.inkubator.hrm.dao.TempJadwalKaryawanDao;
 import com.inkubator.hrm.dao.WtHolidayDao;
 import com.inkubator.hrm.dao.WtWorkingHourDao;
 import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.LoginHistory;
 import com.inkubator.hrm.entity.RiwayatAkses;
 import com.inkubator.hrm.entity.TempJadwalKaryawan;
 import com.inkubator.hrm.entity.WtGroupWorking;
@@ -44,6 +46,8 @@ public class ScheduleServiceImpl extends IServiceImpl implements ScheduleService
     @Autowired
     private RiwayatAksesDao riwayatAksesDao;
     @Autowired
+    private LoginHistoryDao loginHistoryDao;
+    @Autowired
     private EmpDataDao empDataDao;
     @Autowired
     private TempJadwalKaryawanDao tempJadwalKaryawanDao;
@@ -65,6 +69,17 @@ public class ScheduleServiceImpl extends IServiceImpl implements ScheduleService
         LOGGER.info("Finish Running Dellete Riwayar Akses");
     }
 
+    @Scheduled(cron = "${cron.delete.login.history}")
+    @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Override
+    public void deleteLoginHistory() throws Exception {
+        LOGGER.info("Begin Running Dellete Riwayar Akses");
+        List<LoginHistory> dataToDelete = loginHistoryDao.getByWeekDif(difWeekToDelete);
+        LOGGER.info("Ukuran Data to Delete " + dataToDelete.size());
+        loginHistoryDao.deleteBatch(dataToDelete);
+        LOGGER.info("Finish Running Dellete Riwayar Akses");
+    }
+    
     public void setDifWeekToDelete(int difWeekToDelete) {
         this.difWeekToDelete = difWeekToDelete;
     }
@@ -144,4 +159,5 @@ public class ScheduleServiceImpl extends IServiceImpl implements ScheduleService
 //            return o1.getScheduleDate().compareTo(o2.getScheduleDate());
 //        }
 //    };
+
 }

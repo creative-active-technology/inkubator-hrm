@@ -5,10 +5,13 @@
  */
 package com.inkubator.hrm.dao.impl;
 
+import com.inkubator.common.CommonUtilConstant;
+import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.LoginHistoryDao;
 import com.inkubator.hrm.entity.LoginHistory;
 import com.inkubator.hrm.web.search.LoginHistorySearchParameter;
+import java.util.Date;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.MatchMode;
@@ -69,6 +72,29 @@ public class LoginHistoryDaoImpl extends IDAOImpl<LoginHistory> implements Login
             criteria.add(Restrictions.like("ipAddress", searchParameter.getIpAddress(), MatchMode.ANYWHERE));
         }
         criteria.add(Restrictions.isNotNull("id"));
+    }
+
+    @Override
+    public List<LoginHistory> getByWeekDif(int value) {
+        Date now = new Date();
+        Date parameter = DateTimeUtil.getDateFrom(now, -value, CommonUtilConstant.DATE_FORMAT_WEEK);
+        System.out.println(" Tanggal param "+parameter);
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.lt("loginDate", parameter));
+        return criteria.list();
+    }
+
+    @Override
+    public void deleteBatch(List<LoginHistory> data) {
+        int counter = 0;
+        for (LoginHistory dataToDelte : data) {
+            getCurrentSession().delete(dataToDelte);
+            counter++;
+            if (counter % 20 == 0) {
+                getCurrentSession().flush();
+                getCurrentSession().clear();
+            }
+        }
     }
 
 }
