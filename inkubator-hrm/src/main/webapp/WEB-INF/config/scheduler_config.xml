@@ -27,7 +27,9 @@
     <task:scheduler id="myScheduler" pool-size="10"/>
     
     <bean id="approvalActivityCronService" class="com.inkubator.hrm.service.impl.ApprovalActivityCronServiceImpl"/>
-<!--    <bean id="leaveCronService" class="com.inkubator.hrm.service.impl.LeaveCronServiceImpl"/>
+<!--    
+	<bean id="leaveCronService" class="com.inkubator.hrm.service.impl.LeaveCronServiceImpl"/>
+	<bean id="companyPolicyCronService" class="com.inkubator.hrm.service.impl.CompanyPolicyCronServiceImpl" />
     
     <bean id="scheduleService" class="com.inkubator.hrm.service.impl.ScheduleServiceImpl">
         <property name="difWeekToDelete" value="${dif.number.week.to.delete}"/>        
