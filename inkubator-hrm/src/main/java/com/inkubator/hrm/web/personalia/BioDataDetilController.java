@@ -666,7 +666,7 @@ public class BioDataDetilController extends BaseController {
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", false);
-        options.put("contentWidth", 900);
+        options.put("contentWidth", 930);
         options.put("contentHeight", 400);
         RequestContext.getCurrentInstance().openDialog("bio_address_form", options, params);
     }
