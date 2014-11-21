@@ -67,7 +67,15 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="permitDistribution" style="width: 30%">
+                            <p:column sortBy="permitDistribution" style="width: 12%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['global.date']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.createdOn}" >
+                                    <f:convertDateTime pattern="dd MMM yyyy" />
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column sortBy="permitDistribution" style="width: 12%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.nik']}"/>
                                 </f:facet>
@@ -80,6 +88,12 @@
                                 <h:outputLabel value= "#{data.permitDistribution.empData.bioData.firstName} #{data.permitDistribution.empData.bioData.lastName}" />
                             </p:column>
                             <p:column sortBy="permitDistribution" style="width: 30%">
+                                <f:facet name="header">
+                                    <h:outputText value="Jabatan"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.permitDistribution.empData.jabatanByJabatanId.name}" />
+                            </p:column>
+                            <p:column sortBy="permitDistribution" style="width: 25%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['permitbalance.permit_type']}"/>
                                 </f:facet>
@@ -97,13 +111,19 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{data.kredit}" />
                             </p:column>
+                            <p:column sortBy="saldo" style="width: 12%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['costcenter.balance']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.permitDistribution.balance}" />
+                            </p:column>
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
-                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
+<!--                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
                                                  onclick="statusDialog.show()"  oncomplete="detail.show()" update=":detailPanel"
                                                  style="font-size: 10px!important" action="#{neracaPermitViewController.doSelectEntity()}">                        
                                     <f:setPropertyActionListener value="#{data}" target="#{neracaPermitViewController.selected}" />
                                 </p:commandButton>
-                            </p:column> 
+                            </p:column> -->
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>
                                 <p:outputLabel value="#{neracaPermitViewController.lazy.rowCount}"/>

@@ -141,6 +141,7 @@ public class PermitDistributionDaoImpl extends IDAOImpl<PermitDistribution> impl
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
 		criteria.add(Restrictions.eq("empData.id", empDataId));
 		criteria.add(Restrictions.eq("permitClassification.id", permitClassificationId));
+                criteria.setFetchMode("permitClassification", FetchMode.JOIN);
 		return (PermitDistribution) criteria.uniqueResult();
 	}
 }
