@@ -80,7 +80,9 @@
                                     <p:outputLabel  value="Notification Send" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%">
-                                    <p:outputLabel  value="#{approvalActivityDetailController.selected.notificationSend}" />
+                                    <p:outputLabel  value="#{approvalActivityDetailController.selected.notificationSend}" >
+                                        <f:converter converterId="booleanMessageConverter" />
+                                    </p:outputLabel>
                                 </p:column>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important">
                                     <p:outputLabel  value="Reject Count" style="font-weight: bold"/>
@@ -152,7 +154,9 @@
                                     <p:outputLabel  value="Allow On Behalf" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%">
-                                    <p:outputLabel  value="#{approvalActivityDetailController.selected.approvalDefinition.allowOnBehalf}" />
+                                    <p:outputLabel  value="#{approvalActivityDetailController.selected.approvalDefinition.allowOnBehalf}" >
+                                        <f:converter converterId="booleanMessageConverter" />
+                                    </p:outputLabel>
                                 </p:column>
 
                             </p:row>
@@ -163,7 +167,9 @@
                                     
                                 </p:column>
                                 <p:column style="width: 37%">
-                                    <p:outputLabel  value="#{approvalActivityDetailController.selected.approvalDefinition.autoApproveOnDelay}" />
+                                    <p:outputLabel  value="#{approvalActivityDetailController.selected.approvalDefinition.autoApproveOnDelay}" >
+                                        <f:converter converterId="booleanMessageConverter" />
+                                    </p:outputLabel>
                                 </p:column>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important">
                                     <p:outputLabel  value="Delay Time" style="font-weight: bold"/>
@@ -180,7 +186,9 @@
                                     
                                 </p:column>
                                 <p:column style="width: 37%">
-                                    <p:outputLabel  value="#{approvalActivityDetailController.selected.approvalDefinition.escalateOnDelay}" />
+                                    <p:outputLabel  value="#{approvalActivityDetailController.selected.approvalDefinition.escalateOnDelay}" >
+                                        <f:converter converterId="booleanMessageConverter" />
+                                    </p:outputLabel>
                                 </p:column>
 
                             </p:row>

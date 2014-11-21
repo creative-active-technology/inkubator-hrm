@@ -6,10 +6,12 @@
 package com.inkubator.hrm.web;
 
 import com.inkubator.hrm.entity.BioDocument;
+import com.inkubator.hrm.entity.PermitImplementation;
 import com.inkubator.hrm.entity.Reimbursment;
 import com.inkubator.hrm.service.BioDataService;
 import com.inkubator.hrm.service.BioDocumentService;
 import com.inkubator.hrm.service.BioEducationHistoryService;
+import com.inkubator.hrm.service.PermitImplementationService;
 import com.inkubator.hrm.service.ReimbursmentService;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesIO;
@@ -43,6 +45,8 @@ public class ImageBioDataStreamerController extends BaseController {
     private BioDocumentService bioDocumentService;
     @ManagedProperty(value = "#{reimbursmentService}")
     private ReimbursmentService reimbursmentService;
+    @ManagedProperty(value = "#{permitImplementationService}")
+    private PermitImplementationService permitImplementationService;
     private StreamedContent ijazahFile;
 
     public void setBioDataService(BioDataService bioDataService) {
@@ -65,6 +69,12 @@ public class ImageBioDataStreamerController extends BaseController {
         this.reimbursmentService = reimbursmentService;
     }
 
+    public void setPermitImplementationService(PermitImplementationService permitImplementationService) {
+        this.permitImplementationService = permitImplementationService;
+    }
+
+    
+    
     
     public StreamedContent getFotoImage() throws IOException {
 
@@ -196,7 +206,6 @@ public class ImageBioDataStreamerController extends BaseController {
 
         FacesContext context = FacesUtil.getFacesContext();
         String id = context.getExternalContext().getRequestParameterMap().get("fileName");
-        System.out.println(id+"======");
         Reimbursment reimbursment = reimbursmentService.getEntiyByPK(Long.parseLong(id));
         if (context.getRenderResponse() || id == null) {
             return new DefaultStreamedContent();
@@ -217,5 +226,31 @@ public class ImageBioDataStreamerController extends BaseController {
             }
         }
 
+    }
+
+    public StreamedContent getAttachmentFile() throws IOException {
+        FacesContext context = FacesUtil.getFacesContext();
+        String id = context.getExternalContext().getRequestParameterMap().get("permitId");
+        System.out.println("id====" +id);
+        System.out.println("context====" +context);
+        if (context.getRenderResponse() || id == null) {
+            return new DefaultStreamedContent();
+        } else {
+            InputStream is = null;
+            try {
+                PermitImplementation permitImplementation = permitImplementationService.getEntiyByPK(Long.parseLong(id));
+                String path = permitImplementation.getUploadPath();
+                if (StringUtils.isEmpty(path)) {
+                    path = facesIO.getPathUpload() + "no_image.png";
+                }
+                is = facesIO.getInputStreamFromURL(path);
+
+                return new DefaultStreamedContent(is, null, StringUtils.substringAfterLast(path, "/"));
+
+            } catch (Exception ex) {
+                LOGGER.error(ex, ex);
+                return new DefaultStreamedContent();
+            }
+        }
     }
 }

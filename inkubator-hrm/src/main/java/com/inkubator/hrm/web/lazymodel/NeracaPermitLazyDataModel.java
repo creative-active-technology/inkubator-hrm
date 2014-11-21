@@ -54,7 +54,7 @@ public class NeracaPermitLazyDataModel extends LazyDataModel<NeracaPermit> imple
             }
         } else {
             try {
-                neracaPermitList = service.getByParamWithDetail(searchParameter, first, pageSize, Order.desc("kredit"));
+                neracaPermitList = service.getByParamWithDetail(searchParameter, first, pageSize, Order.desc("createdOn"));
                 jumlahData = Integer.parseInt(String.valueOf(service.getTotalNeracaPermitByParam(searchParameter)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);

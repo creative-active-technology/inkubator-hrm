@@ -140,7 +140,12 @@ public class PaySalaryGradeFormController extends BaseController{
         return paySalaryGrade;
     }
     
-    
+    public void doReset(){
+        paySalaryGradeModel.setMinSalary(null);
+        paySalaryGradeModel.setMediumSalary(null);
+        paySalaryGradeModel.setMaxSalary(null);
+        paySalaryGradeModel.setCurrencyid(null);
+    }
     
     public PaySalaryGradeService getPaySalaryGradeService() {
         return paySalaryGradeService;

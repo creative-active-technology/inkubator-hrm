@@ -42,9 +42,14 @@ public class NeracaPermitDaoImpl extends IDAOImpl<NeracaPermit> implements Nerac
         criteria.setFetchMode("permitDistribution", FetchMode.JOIN);
         criteria.setFetchMode("permitDistribution.empData", FetchMode.JOIN);
         criteria.setFetchMode("permitDistribution.empData.bioData", FetchMode.JOIN);
+        criteria.setFetchMode("permitDistribution.empData.jabatanByJabatanId", FetchMode.JOIN);
         criteria.setFetchMode("permitDistribution.permitClassification", FetchMode.JOIN);
         doSearch(searchParameter, criteria);
+        criteria.createAlias("ld.empData", "empData", JoinType.INNER_JOIN);
+        criteria.createAlias("ld.permitClassification", "permitClassification", JoinType.INNER_JOIN);
+        criteria.addOrder(Order.asc("permitClassification.name"));
         criteria.addOrder(order);
+        criteria.addOrder(Order.asc("empData.nik"));
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
         return criteria.list();

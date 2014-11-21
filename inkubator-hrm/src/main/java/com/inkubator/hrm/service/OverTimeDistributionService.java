@@ -21,7 +21,7 @@ public interface OverTimeDistributionService extends IService<OverTimeDistributi
 
     public Long getTotalOverTimeDistributionByParam(OverTimeDistributionSearchParameter searchParameter) throws Exception;
 
-    public OverTimeDistribution getEntityByParamWithDetail(Long id) throws Exception;
+    public OverTimeDistribution getEntityByParamWithDetail(Long empId, Long overTimeId) throws Exception;
 
     public List<OverTimeDistribution> getAllDataByIdWithDetail() throws Exception;
     

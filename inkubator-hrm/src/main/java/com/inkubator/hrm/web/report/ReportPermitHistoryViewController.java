@@ -38,7 +38,7 @@ import org.hibernate.validator.constraints.Email;
  */
 @ManagedBean(name = "reportLeaveHistoryViewController")
 @ViewScoped
-public class ReportLeaveHistoryViewController1 extends BaseController {
+public class ReportPermitHistoryViewController extends BaseController {
 
     private LeaveImplementationReportSearchParameter searchParameter;
     private LazyDataModel<LeaveImplementation> lazyDataModel;
@@ -215,7 +215,7 @@ public class ReportLeaveHistoryViewController1 extends BaseController {
                 listReportLeaveHistoryModels.add(reportLeaveHistoryModel);
             }
         } catch (Exception ex) {
-            Logger.getLogger(ReportLeaveHistoryViewController1.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ReportPermitHistoryViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }
