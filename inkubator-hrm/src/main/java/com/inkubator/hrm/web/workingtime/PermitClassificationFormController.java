@@ -93,6 +93,7 @@ public class PermitClassificationFormController extends BaseController {
                     permitClassificationModel.setSalaryCut(permitClassification.getSalaryCut());
                     permitClassificationModel.setAttachmentRequired(permitClassification.getAttachmentRequired());
                     permitClassificationModel.setDescription(permitClassification.getDescription());
+                    permitClassificationModel.setIsActive(permitClassification.getIsActive());
                     isUpdate = Boolean.TRUE;
                     disabled = Boolean.FALSE;
                     if (permitClassification.getAvailibility().equals(HRMConstant.AVALILIBILITY_PER_DATE)) {
@@ -258,6 +259,7 @@ public class PermitClassificationFormController extends BaseController {
         permitClassification.setSalaryCut(permitClassificationModel.getSalaryCut());
         permitClassification.setAttachmentRequired(permitClassificationModel.getAttachmentRequired());
         permitClassification.setDescription(permitClassificationModel.getDescription());
+        permitClassification.setIsActive(permitClassificationModel.getIsActive());
         return permitClassification;
     }
 
@@ -314,6 +316,7 @@ public class PermitClassificationFormController extends BaseController {
                 permitClassificationModel.setSalaryCut(permitClassification.getSalaryCut());
                 permitClassificationModel.setAttachmentRequired(permitClassification.getAttachmentRequired());
                 permitClassificationModel.setDescription(permitClassification.getDescription());
+                permitClassificationModel.setIsActive(permitClassification.getIsActive());
                 isUpdate = Boolean.TRUE;
                 disabled = Boolean.FALSE;
                 if (permitClassification.getAvailibility().equals(HRMConstant.AVALILIBILITY_PER_DATE)) {

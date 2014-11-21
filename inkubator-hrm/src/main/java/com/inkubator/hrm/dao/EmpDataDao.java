@@ -11,7 +11,9 @@ import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
 import com.inkubator.hrm.web.model.DistributionOvetTimeModel;
 import com.inkubator.hrm.web.model.PermitDistributionModel;
 import com.inkubator.hrm.web.model.PlacementOfEmployeeWorkScheduleModel;
+import com.inkubator.hrm.web.model.WtFingerExceptionModel;
 import com.inkubator.hrm.web.search.EmpDataSearchParameter;
+import com.inkubator.hrm.web.search.ReportEmpDepartmentJabatanParameter;
 import com.inkubator.hrm.web.search.ReportEmpWorkingGroupParameter;
 import com.inkubator.hrm.web.search.ReportOfEmployeesFamilySearchParameter;
 
@@ -60,7 +62,7 @@ public interface EmpDataDao extends IDAO<EmpData> {
     public Long getTotalNotExistInUserByParam(String param);
 
     public List<EmpData> getAllDataByJabatanId(Long jabatanId, Order order);
-    
+
     public List<EmpData> getAllDataByGolJabatanIdAndDepartmentId(Long jabatanId, Long departmentId);
 
     public List<EmpData> getTotalBySearchEmployee(PlacementOfEmployeeWorkScheduleModel model);
@@ -72,14 +74,21 @@ public interface EmpDataDao extends IDAO<EmpData> {
     public List<EmpData> getEmployeeByOtSearchParameter(DistributionOvetTimeModel model);
 
     public List<EmpData> getEmpDataByListId(List<Long> data);
-    
+
     public List<EmpData> getAllDataReportEmpWorkingGroupByParam(ReportEmpWorkingGroupParameter param, int firstResult, int maxResults, Order orderable);
-    
+
     public Long getTotalReportEmpWorkingGroupByParam(ReportEmpWorkingGroupParameter param);
-    
+
     public List<EmpData> getEmployeeBySearchEmployeePermit(PermitDistributionModel model);
-    
+
     public List<EmpData> getAllDataReportOfEmployeesFamilyByParam(ReportOfEmployeesFamilySearchParameter searchParameter, int firstResult, int maxResults, Order orderable);
-    
+
     public Long getTotalReportOfEmployeesFamilyByParam(ReportOfEmployeesFamilySearchParameter searchParameter);
+
+    public List<EmpData> getAllDataReportEmpDepartmentJabatanByParam(ReportEmpDepartmentJabatanParameter param, int firstResult, int maxResults, Order orderable);
+
+    public Long getTotalReportEmpDepartmentJabatanByParam(ReportEmpDepartmentJabatanParameter param);
+
+    public List<EmpData> getEmployeeBySearchEmployeeFingerException(WtFingerExceptionModel model);
+
 }

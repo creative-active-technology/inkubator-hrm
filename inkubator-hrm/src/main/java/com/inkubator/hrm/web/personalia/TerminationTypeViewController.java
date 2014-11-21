@@ -129,8 +129,8 @@ public class TerminationTypeViewController extends BaseController {
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", false);
-        options.put("contentWidth", 400);
-        options.put("contentHeight", 400);
+        options.put("contentWidth", 530);
+        options.put("contentHeight", 360);
         RequestContext.getCurrentInstance().openDialog("termination_type_form", options, params);
     }
 

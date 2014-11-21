@@ -63,7 +63,7 @@ public class OverTimeDistributionViewController extends BaseController{
     
     public void doSelectEntity() {
         try {
-            selected = this.overTimeDistributionService.getEntityByParamWithDetail(selected.getEmpData().getId());
+            selected = this.overTimeDistributionService.getEntityByParamWithDetail(selected.getEmpData().getId(), selected.getWtOverTime().getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -90,9 +90,12 @@ public class OverTimeDistributionViewController extends BaseController{
     
     public void doUpdate() {
         Map<String, List<String>> dataToSend = new HashMap<>();
-        List<String> values = new ArrayList<>();
-        values.add(String.valueOf(selected.getEmpData().getId()));
-        dataToSend.put("empDataId", values);
+        List<String> empDataId = new ArrayList<>();
+        List<String> overTimeId = new ArrayList<>();
+        empDataId.add(String.valueOf(selected.getEmpData().getId()));
+        overTimeId.add(String.valueOf(selected.getWtOverTime().getId()));
+        dataToSend.put("empDataId", empDataId);
+        dataToSend.put("overTimeId", overTimeId);
         showDialog(dataToSend);
     }
     
@@ -115,7 +118,7 @@ public class OverTimeDistributionViewController extends BaseController{
     
      public void onDelete() {
         try {
-            selected = this.overTimeDistributionService.getEntityByParamWithDetail(selected.getEmpData().getId());
+            selected = this.overTimeDistributionService.getEntityByParamWithDetail(selected.getEmpData().getId(), selected.getWtOverTime().getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
