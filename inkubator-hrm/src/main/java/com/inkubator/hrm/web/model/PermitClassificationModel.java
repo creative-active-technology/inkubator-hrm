@@ -18,13 +18,14 @@ public class PermitClassificationModel implements Serializable {
     private Integer calculation;
     private Integer basePeriod;
     private Integer availibility;
-    private Date dateIncreased;
+    private Integer dateIncreased;
     private Integer quantity;
     private Integer limitByDay;
     private Boolean onePerEmployee;
     private Integer maxPerMonth;
     private Double salaryCut;
     private Boolean attachmentRequired;
+    private Boolean isActive;
 
     public Long getId() {
         return id;
@@ -98,11 +99,11 @@ public class PermitClassificationModel implements Serializable {
         this.availibility = availibility;
     }
 
-    public Date getDateIncreased() {
+    public Integer getDateIncreased() {
         return dateIncreased;
     }
 
-    public void setDateIncreased(Date dateIncreased) {
+    public void setDateIncreased(Integer dateIncreased) {
         this.dateIncreased = dateIncreased;
     }
 
@@ -121,8 +122,6 @@ public class PermitClassificationModel implements Serializable {
     public void setLimitByDay(Integer limitByDay) {
         this.limitByDay = limitByDay;
     }
-    
-    
 
     public Boolean getOnePerEmployee() {
         return onePerEmployee;
@@ -154,6 +153,14 @@ public class PermitClassificationModel implements Serializable {
 
     public void setAttachmentRequired(Boolean attachmentRequired) {
         this.attachmentRequired = attachmentRequired;
+    }
+
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
     }
 
 }
