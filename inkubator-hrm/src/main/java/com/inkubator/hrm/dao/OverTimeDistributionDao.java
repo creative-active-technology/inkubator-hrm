@@ -22,7 +22,7 @@ public interface OverTimeDistributionDao extends IDAO<OverTimeDistribution>{
 
     public Long getTotalOverTimeDistributionByParam(OverTimeDistributionSearchParameter searchParameter);
 
-    public OverTimeDistribution getEntityByParamWithDetail(Long id);
+    public OverTimeDistribution getEntityByParamWithDetail(Long empId, Long overTimeId);
     
     public List<OverTimeDistribution> getAllDataByIdWithDetail();
     
