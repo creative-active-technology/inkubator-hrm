@@ -53,15 +53,16 @@ public class OverTimeDistributionEditFormController extends BaseController{
     @Override
     public void initialization() {
         super.initialization();
-        String param = FacesUtil.getRequestParameter("empDataId");
-        System.out.println(param+"------------------------------");
+        String empDataId = FacesUtil.getRequestParameter("empDataId");
+        String overTimeId = FacesUtil.getRequestParameter("overTimeId");
+        System.out.println(empDataId+"------------------------------"+overTimeId);
         model = new OverTimeDistributionModel();
         try {
             wtOverTimeList = wtOverTimeService.getAllData();
-            if (param != null) {
+            if (empDataId != null && overTimeId != null) {
                 
                 isEdit = Boolean.TRUE;
-                OverTimeDistribution overTimeDistribution = overTimeDistributionService.getEntityByParamWithDetail(Long.parseLong(param));
+                OverTimeDistribution overTimeDistribution = overTimeDistributionService.getEntityByParamWithDetail(Long.parseLong(empDataId), Long.parseLong(overTimeId));
                 model.setOldEmpId(overTimeDistribution.getEmpData().getId());
                 model.setOldOverTimeId(overTimeDistribution.getWtOverTime().getId());
                 model.setEmpDataId(overTimeDistribution.getEmpData().getId());

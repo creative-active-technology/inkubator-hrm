@@ -229,8 +229,8 @@ public class OverTimeDistributionServiceImpl extends IServiceImpl implements Ove
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-    public OverTimeDistribution getEntityByParamWithDetail(Long id) throws Exception {
-        return overTimeDistributionDao.getEntityByParamWithDetail(id);
+    public OverTimeDistribution getEntityByParamWithDetail(Long empId, Long overTimeId) throws Exception {
+        return overTimeDistributionDao.getEntityByParamWithDetail(empId, overTimeId);
     }
 
     @Override
