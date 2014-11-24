@@ -304,5 +304,11 @@ public class HRMConstant {
     
     public static final Integer REPORT_FAMILY_DEPENDENTS_NO = 0;
     public static final Integer REPORT_FAMILY_DEPENDENTS_YES = 1;
+    
+    public static final Integer PAY_SALARY_JURNAL_TYPE_DEBET = 0;
+    public static final Integer PAY_SALARY_JURNAL_TYPE_KREDIT = 1;
+    
+    public static final Integer PAY_SALARY_JURNAL_MODEL_CASH = 0;
+    public static final Integer PAY_SALARY_JURNAL_MODEL_TRANSFER = 1;
 
 }

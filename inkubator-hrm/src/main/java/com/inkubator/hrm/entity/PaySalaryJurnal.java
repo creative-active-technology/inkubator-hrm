@@ -35,6 +35,8 @@ public class PaySalaryJurnal  implements java.io.Serializable {
      private Date updatedOn;
      private String code;
      private String name;
+     private Integer typeJurnal;
+     private Integer modelJurnal;
      private String description;
 
     public PaySalaryJurnal() {
@@ -157,6 +159,24 @@ public class PaySalaryJurnal  implements java.io.Serializable {
     
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Column(name="type_jurnal", length=1)
+    public Integer getTypeJurnal() {
+        return typeJurnal;
+    }
+
+    public void setTypeJurnal(Integer typeJurnal) {
+        this.typeJurnal = typeJurnal;
+    }
+
+    @Column(name="model_jurnal", length=1)
+    public Integer getModelJurnal() {
+        return modelJurnal;
+    }
+
+    public void setModelJurnal(Integer modelJurnal) {
+        this.modelJurnal = modelJurnal;
     }
 
 

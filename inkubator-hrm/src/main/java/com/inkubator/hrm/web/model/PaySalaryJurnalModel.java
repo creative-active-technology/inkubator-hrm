@@ -13,6 +13,8 @@ public class PaySalaryJurnalModel implements Serializable {
     private String name;
     private String description;
     private Long coa;
+    private Integer typeJurnal;
+    private Integer modelJurnal;
 
     public Long getId() {
         return id;
@@ -54,6 +56,22 @@ public class PaySalaryJurnalModel implements Serializable {
 
     public void setCoa(Long coa) {
         this.coa = coa;
+    }
+
+    public Integer getTypeJurnal() {
+        return typeJurnal;
+    }
+
+    public void setTypeJurnal(Integer typeJurnal) {
+        this.typeJurnal = typeJurnal;
+    }
+
+    public Integer getModelJurnal() {
+        return modelJurnal;
+    }
+
+    public void setModelJurnal(Integer modelJurnal) {
+        this.modelJurnal = modelJurnal;
     }
     
     
