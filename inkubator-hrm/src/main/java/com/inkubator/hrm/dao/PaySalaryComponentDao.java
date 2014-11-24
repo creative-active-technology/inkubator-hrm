@@ -7,11 +7,18 @@ package com.inkubator.hrm.dao;
 
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.PaySalaryComponent;
+import com.inkubator.hrm.web.search.PaySalaryComponentSearchParameter;
+import java.util.List;
+import org.hibernate.criterion.Order;
 
 /**
  *
  * @author Deni Husni FR
  */
 public interface PaySalaryComponentDao extends IDAO<PaySalaryComponent>{
+    public List<PaySalaryComponent> getByParamWithDetail(PaySalaryComponentSearchParameter searchParameter, int firstResult, int maxResults, Order order);
+
+    public Long getTotalResourceTypeByParam(PaySalaryComponentSearchParameter searchParameter);
     
+    public PaySalaryComponent getEntityByPkWithDetail(Long id);
 }
