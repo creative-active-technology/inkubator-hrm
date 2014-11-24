@@ -1,11 +1,12 @@
-package com.inkubator.hrm.web.payroll;
+package com.inkubator.hrm.web.reference;
 
+import com.inkubator.hrm.web.personalia.*;
 import com.inkubator.hrm.web.reference.*;
 import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.PaySalaryJurnal;
-import com.inkubator.hrm.service.PaySalaryJurnalService;
-import com.inkubator.hrm.web.lazymodel.PaySalaryJurnalLazyDataModel;
-import com.inkubator.hrm.web.search.PaySalaryJurnalSearchParameter;
+import com.inkubator.hrm.entity.Disease;
+import com.inkubator.hrm.service.DiseaseService;
+import com.inkubator.hrm.web.lazymodel.DiseaseLazyDataModel;
+import com.inkubator.hrm.web.search.DiseaseSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
@@ -29,72 +30,71 @@ import org.springframework.dao.DataIntegrityViolationException;
  *
  * @author Taufik Hidayat
  */
-@ManagedBean(name = "paySalaryJurnalViewController")
+@ManagedBean(name = "diseaseViewController")
 @ViewScoped
-public class PaySalaryJurnalViewController extends BaseController {
+public class DiseaseViewController extends BaseController {
 
-    private PaySalaryJurnalSearchParameter searchParameter;
-    private LazyDataModel<PaySalaryJurnal> lazyDataPaySalaryJurnal;
-    private PaySalaryJurnal selectedPaySalaryJurnal;
-    @ManagedProperty(value = "#{paySalaryJurnalService}")
-    private PaySalaryJurnalService paySalaryJurnalService;
+    private DiseaseSearchParameter searchParameter;
+    private LazyDataModel<Disease> lazyDataDisease;
+    private Disease selectedDisease;
+    @ManagedProperty(value = "#{diseaseService}")
+    private DiseaseService diseaseService;
 
     @PostConstruct
     @Override
     public void initialization() {
         super.initialization();
-        searchParameter = new PaySalaryJurnalSearchParameter();
+        searchParameter = new DiseaseSearchParameter();
     }
 
     @PreDestroy
     public void cleanAndExit() {
-        paySalaryJurnalService = null;
+        diseaseService = null;
         searchParameter = null;
-        lazyDataPaySalaryJurnal = null;
-        selectedPaySalaryJurnal = null;
+        lazyDataDisease = null;
+        selectedDisease = null;
     }
 
-    public void setPaySalaryJurnalService(PaySalaryJurnalService paySalaryJurnalService) {
-        this.paySalaryJurnalService = paySalaryJurnalService;
+    public void setDiseaseService(DiseaseService diseaseService) {
+        this.diseaseService = diseaseService;
     }
-    
 
-    public PaySalaryJurnalSearchParameter getSearchParameter() {
+    public DiseaseSearchParameter getSearchParameter() {
         return searchParameter;
     }
 
-    public void setSearchParameter(PaySalaryJurnalSearchParameter searchParameter) {
+    public void setSearchParameter(DiseaseSearchParameter searchParameter) {
         this.searchParameter = searchParameter;
     }
 
     
 
-    public LazyDataModel<PaySalaryJurnal> getLazyDataPaySalaryJurnal() {
-        if (lazyDataPaySalaryJurnal == null) {
-            lazyDataPaySalaryJurnal = new PaySalaryJurnalLazyDataModel(searchParameter, paySalaryJurnalService);
+    public LazyDataModel<Disease> getLazyDataDisease() {
+        if (lazyDataDisease == null) {
+            lazyDataDisease = new DiseaseLazyDataModel(searchParameter, diseaseService);
         }
-        return lazyDataPaySalaryJurnal;
+        return lazyDataDisease;
     }
 
-    public void setLazyDataPaySalaryJurnal(LazyDataModel<PaySalaryJurnal> lazyDataPaySalaryJurnal) {
-        this.lazyDataPaySalaryJurnal = lazyDataPaySalaryJurnal;
+    public void setLazyDataDisease(LazyDataModel<Disease> lazyDataDisease) {
+        this.lazyDataDisease = lazyDataDisease;
     }
 
-    public PaySalaryJurnal getSelectedPaySalaryJurnal() {
-        return selectedPaySalaryJurnal;
+    public Disease getSelectedDisease() {
+        return selectedDisease;
     }
 
-    public void setSelectedPaySalaryJurnal(PaySalaryJurnal selectedPaySalaryJurnal) {
-        this.selectedPaySalaryJurnal = selectedPaySalaryJurnal;
+    public void setSelectedDisease(Disease selectedDisease) {
+        this.selectedDisease = selectedDisease;
     }
 
     public void doSearch() {
-        lazyDataPaySalaryJurnal = null;
+        lazyDataDisease = null;
     }
 
     public void doDetail() {
         try {
-            selectedPaySalaryJurnal = this.paySalaryJurnalService.getEntityByPKWithDetail(selectedPaySalaryJurnal.getId());
+            selectedDisease = this.diseaseService.getEntiyByPK(selectedDisease.getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -102,14 +102,14 @@ public class PaySalaryJurnalViewController extends BaseController {
 
     public void doDelete() {
         try {
-            paySalaryJurnalService.delete(selectedPaySalaryJurnal);
+            diseaseService.delete(selectedDisease);
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 
         } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-            LOGGER.error("Error when doDelete paySalaryJurnal ", ex);
+            LOGGER.error("Error when doDelete disease ", ex);
         } catch (Exception ex) {
-            LOGGER.error("Error when doDelete paySalaryJurnal", ex);
+            LOGGER.error("Error when doDelete disease", ex);
         }
     }
 
@@ -120,7 +120,7 @@ public class PaySalaryJurnalViewController extends BaseController {
     public void doUpdate() {
         Map<String, List<String>> dataToSend = new HashMap<>();
         List<String> values = new ArrayList<>();
-        values.add(String.valueOf(selectedPaySalaryJurnal.getId()));
+        values.add(String.valueOf(selectedDisease.getId()));
         dataToSend.put("param", values);
         showDialog(dataToSend);
     }
@@ -130,9 +130,9 @@ public class PaySalaryJurnalViewController extends BaseController {
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", false);
-        options.put("contentWidth", 480);
-        options.put("contentHeight", 410);
-        RequestContext.getCurrentInstance().openDialog("pay_salary_jurnal_form", options, params);
+        options.put("contentWidth", 400);
+        options.put("contentHeight", 400);
+        RequestContext.getCurrentInstance().openDialog("disease_form", options, params);
     }
 
     @Override

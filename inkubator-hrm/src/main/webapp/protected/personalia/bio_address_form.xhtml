@@ -49,13 +49,13 @@
 	                        	</p:selectOneMenu>
                             </p:column>
                             
-                            <p:column style="width: 13%">
+                            <p:column style="width: 20%">
                                 <p:outputLabel for="statusAddressId" value="#{appmsg['bioaddress.ownership_status']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="statusAddressId" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 36%">
+                            <p:column  style="width: 29%">
                             	<p:selectOneMenu id="statusAddressId" styleClass="isitext_hrm" value="#{bioAddressFormController.model.statusAddress}" style="width:245px;" required="true">
 	                            	<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
 	                            	<!--Cek HRM Constanta..-->
