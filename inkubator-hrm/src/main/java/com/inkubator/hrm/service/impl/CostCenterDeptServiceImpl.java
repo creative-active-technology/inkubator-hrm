@@ -211,8 +211,9 @@ public class CostCenterDeptServiceImpl extends IServiceImpl implements CostCente
 	}
 
 	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
 	public List<CostCenterDept> getAllData() throws Exception {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+		return costCenterDeptDao.getAllData();
 
 	}
 
