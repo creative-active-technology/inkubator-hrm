@@ -86,9 +86,10 @@
                                     <f:selectItem itemLabel="#{appmsg['modelComponent.modelComponent_ceil']}" itemValue="1"/>
                                     <f:selectItem itemLabel="#{appmsg['modelComponent.modelComponent_tax']}" itemValue="2"/>
                                     <f:selectItem itemLabel="#{appmsg['modelComponent.modelComponent_upload']}" itemValue="3"/>
-                                    <f:selectItem itemLabel="#{appmsg['modelComponent.modelComponent_limited']}" itemValue="4"/>
-                                    <f:selectItem itemLabel="#{appmsg['modelComponent.modelComponent_formula']}" itemValue="5"/>
-                                    <f:selectItem itemLabel="#{appmsg['modelComponent.modelComponent_link']}" itemValue="6"/>
+                                    <f:selectItem itemLabel="#{appmsg['modelComponent.modelComponent_formula']}" itemValue="4"/>
+                                    <f:selectItem itemLabel="#{appmsg['modelComponent.modelComponent_loan_deduction']}" itemValue="5"/>
+                                    <f:selectItem itemLabel="#{appmsg['modelComponent.modelComponent_reimbursement']}" itemValue="6"/>
+                                    <f:selectItem itemLabel="#{appmsg['modelComponent.modelComponent_benefit']}" itemValue="7"/>
                                     <p:ajax update="benefitId" event="change" />
                                 </p:selectOneMenu>
 
@@ -101,7 +102,7 @@
                         </p:row>    
                          <p:row>
                             <p:column style="width: 39%">
-                                <p:outputLabel for="benefitId" value="#{appmsg['modelComponent.modelComponent_benefit']}" styleClass="label_hrm"/>
+                                <p:outputLabel for="benefitId" value="#{appmsg['modelComponent.modelComponent_benefit_reference']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="benefitId" value=":" styleClass="label_hrm"/>
@@ -109,7 +110,7 @@
                             <p:column  style="width: 60%">
 
                                 <p:selectOneMenu id="benefitId" value="#{modelComponentFormController.modelComponentModel.benefitGroupId}" style="width: 150px;margin-right: 3px" 
-                                                 required="true" requiredMessage="#{appmsg['modelComponent.modelComponent_benefit_should_not_be_empty']}" disabled="#{modelComponentFormController.disabledBenefit}">
+                                                 required="true" disabled="#{modelComponentFormController.disabledBenefit}">
                                     <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                     <f:selectItems value="#{modelComponentFormController.benefits}"/>
                                 </p:selectOneMenu>
