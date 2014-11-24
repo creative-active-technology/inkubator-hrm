@@ -168,6 +168,14 @@
                             <p:column style="width:70%;"><p:outputLabel value="#{paySalaryJurnalViewController.selectedPaySalaryJurnal.costCenter.name}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['paySalaryJurnal.type_jurnal']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{paySalaryJurnalViewController.selectedPaySalaryJurnal.typeJurnal}" styleClass="label_hrm"><f:converter converterId="paySalaryJurnalTypeJurnalConverter"/></p:outputLabel></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['paySalaryJurnal.model_jurnal']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{paySalaryJurnalViewController.selectedPaySalaryJurnal.modelJurnal}" styleClass="label_hrm"><f:converter converterId="paySalaryJurnalModelJurnalConverter"/></p:outputLabel></p:column>
+                        </p:row>
+                        <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:70%;"><p:outputLabel value="#{paySalaryJurnalViewController.selectedPaySalaryJurnal.description}" styleClass="label_hrm"/></p:column>
                         </p:row>

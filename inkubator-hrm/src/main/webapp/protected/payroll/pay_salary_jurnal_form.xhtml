@@ -91,6 +91,48 @@
                         </p:row>
                         <p:row>
                             <p:column style="width: 50%">
+                                <p:outputLabel for="typeJurnal" value="#{appmsg['paySalaryJurnal.type_jurnal']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="typeJurnal" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 49%">
+                                <p:selectOneMenu id="typeJurnal" value="#{paySalaryJurnalFormController.paySalaryJurnalModel.typeJurnal}" required="true"
+                                                 style="width: 280px" filter="true" requiredMessage="#{appmsg['paySalaryJurnal.paySalaryJurnal_coa_should_not_be_empty']}" >
+                                    <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                    <f:selectItem itemLabel="#{appmsg['paySalaryJurnal.debet']}" itemValue="0"/>
+                                    <f:selectItem itemLabel="#{appmsg['paySalaryJurnal.kredit']}" itemValue="1"/>
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="typeJurnal"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 50%">
+                                <p:outputLabel for="modelJurnal" value="#{appmsg['paySalaryJurnal.model_jurnal']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="modelJurnal" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 49%">
+                                <p:selectOneMenu id="modelJurnal" value="#{paySalaryJurnalFormController.paySalaryJurnalModel.modelJurnal}" required="true"
+                                                 style="width: 280px" filter="true" requiredMessage="#{appmsg['paySalaryJurnal.paySalaryJurnal_coa_should_not_be_empty']}" >
+                                    <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                    <f:selectItem itemLabel="#{appmsg['paySalaryJurnal.cash']}" itemValue="0"/>
+                                    <f:selectItem itemLabel="#{appmsg['paySalaryJurnal.transfer']}" itemValue="1"/>
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="modelJurnal"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 50%">
                                 <p:outputLabel for="descriptionId" value="#{appmsg['global.description']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">

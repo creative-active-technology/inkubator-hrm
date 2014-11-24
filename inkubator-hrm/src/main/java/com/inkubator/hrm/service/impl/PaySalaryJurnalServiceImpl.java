@@ -251,6 +251,8 @@ public class PaySalaryJurnalServiceImpl extends IServiceImpl implements PaySalar
         paySalaryJurnal.setCode(b.getCode());
         paySalaryJurnal.setName(b.getName());
         paySalaryJurnal.setCostCenter(costCenter);
+        paySalaryJurnal.setTypeJurnal(b.getTypeJurnal());
+        paySalaryJurnal.setModelJurnal(b.getModelJurnal());
         paySalaryJurnal.setDescription(b.getDescription());
         paySalaryJurnal.setUpdatedBy(UserInfoUtil.getUserName());
         paySalaryJurnal.setUpdatedOn(new Date());
