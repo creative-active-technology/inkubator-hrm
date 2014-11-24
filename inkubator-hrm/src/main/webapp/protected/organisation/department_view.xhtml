@@ -97,7 +97,7 @@
                                 <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" ajax="true"
                                                   action="#{departmentController.doEdit()}" >
                                     <f:setPropertyActionListener value="#{departmentData}" target="#{departmentController.selectedDepartment}" />
-                                    <p:ajax event="dialogReturn" listener="#{overTimeViewController.onDialogReturn}"  update="tableDepartmentId, :formDepartmentId:growlDepartmentId"/>
+                                    <p:ajax event="dialogReturn" listener="#{departmentController.onDialogReturn}"  update="tableDepartmentId, :formDepartmentId:growlDepartmentId"/>
                                 </p:commandButton> 
                             </p:column> 
                             <f:facet name="footer">
@@ -153,6 +153,11 @@
                         <p:row>
                             <p:column style="color: #003366"><p:outputLabel value="#{appmsg['department.name']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{departmentController.selectedDepartment.departmentName}"/> </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['costcenter.costcenter2']}" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{departmentController.selectedDepartment.costCenterDept.name}"/> </p:column>
                         </p:row>
 
                         <f:facet name="footer">

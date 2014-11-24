@@ -7,7 +7,9 @@ package com.inkubator.hrm.service.impl;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.dao.CostCenterDeptDao;
 import com.inkubator.hrm.dao.DepartmentDao;
+import com.inkubator.hrm.entity.CostCenterDept;
 import com.inkubator.hrm.entity.Department;
 import com.inkubator.hrm.service.DepartmentService;
 import com.inkubator.hrm.web.search.DepartmentSearchParameter;
@@ -31,6 +33,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class DepartmentServiceImpl extends IServiceImpl implements DepartmentService {
     @Autowired
     private DepartmentDao departmentDao;
+    @Autowired
+    private CostCenterDeptDao costCenterDeptDao;
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
@@ -75,8 +79,8 @@ public class DepartmentServiceImpl extends IServiceImpl implements DepartmentSer
             throw new BussinessException("department.error_duplicate_department_name");
         }
         entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
-        entity.setDepartmentCode(entity.getDepartmentCode());
-        entity.setDepartmentName(entity.getDepartmentName());
+        CostCenterDept costCenterDept = costCenterDeptDao.getEntiyByPK(entity.getCostCenterDept().getId());
+        entity.setCostCenterDept(costCenterDept);
         entity.setCreatedBy(UserInfoUtil.getUserName());
         entity.setCreatedOn(new Date());
         this.departmentDao.save(entity);
@@ -89,9 +93,12 @@ public class DepartmentServiceImpl extends IServiceImpl implements DepartmentSer
         if (totalDuplicates > 0) {
             throw new BussinessException("department.error_duplicate_department_name");
         }
+        
+        CostCenterDept costCenterDept = costCenterDeptDao.getEntiyByPK(entity.getCostCenterDept().getId());        
         Department departmentUpdate = this.departmentDao.getEntiyByPK(entity.getId());
         departmentUpdate.setDepartmentCode(entity.getDepartmentCode());
         departmentUpdate.setDepartmentName(entity.getDepartmentName());
+        departmentUpdate.setCostCenterDept(costCenterDept);
         departmentUpdate.setUpdatedBy(UserInfoUtil.getUserName());
         departmentUpdate.setUpdatedOn(new Date());
         this.departmentDao.update(departmentUpdate);
@@ -233,4 +240,11 @@ public class DepartmentServiceImpl extends IServiceImpl implements DepartmentSer
     public List<Department> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ,propagation = Propagation.SUPPORTS, timeout = 30)
+	public Department getEntityByPkWithDetail(Long id) {
+		return departmentDao.getEntityByPkWithDetail(id);
+		
+	}
 }
