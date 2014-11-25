@@ -2,8 +2,6 @@ package com.inkubator.hrm.entity;
 // Generated Nov 21, 2014 4:26:05 PM by Hibernate Tools 3.6.0
 
 
-import com.inkubator.hrm.entity.EmpData;
-import com.inkubator.hrm.entity.Hospital;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
