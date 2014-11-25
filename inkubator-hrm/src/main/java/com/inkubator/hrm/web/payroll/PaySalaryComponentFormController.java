@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.TreeMap;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -141,7 +142,7 @@ public class PaySalaryComponentFormController extends BaseController{
         
         MapUtil.sortByValue(dropDownTaxComponent);
         MapUtil.sortByValue(dropDownPaySalaryJurnal);
-        MapUtil.sortByValue(dropDownModelComponent);
+//        MapUtil.sortByValue(dropDownModelComponent);
     }
     
     private PaySalaryComponentModel getModelFromEntity(PaySalaryComponent entity) {
@@ -202,10 +203,10 @@ public class PaySalaryComponentFormController extends BaseController{
     }
     
     public void doChangeTaxable() throws Exception{
-        if(model.getTaxableCheck() == Boolean.TRUE){
-            disableTax = Boolean.TRUE;
-        }else{
+        if(Objects.equals(model.getTaxableCheck(), Boolean.TRUE)){
             disableTax = Boolean.FALSE;
+        }else{
+            disableTax = Boolean.TRUE;
         }
     }
     
