@@ -3,9 +3,11 @@ package com.inkubator.hrm.entity;
 
 import com.inkubator.common.util.AESUtil;
 import com.inkubator.hrm.HRMConstant;
+
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -77,6 +79,7 @@ public class EmpData implements java.io.Serializable {
     private Set<TempProcessReadFinger> tempProcessReadFingers = new HashSet<TempProcessReadFinger>(0);
     private Set<FingerMatchEmp> fingerMatchEmps = new HashSet<FingerMatchEmp>(0);
     private Set<PermitDistribution> permitDistributions = new HashSet<>(0);
+    private Set<PayTempUploadData> payTempUploadDatas = new HashSet<PayTempUploadData>(0);
 
     public EmpData() {
     }
@@ -546,6 +549,17 @@ public class EmpData implements java.io.Serializable {
 
 	public void setFingerMatchEmps(Set<FingerMatchEmp> fingerMatchEmps) {
 		this.fingerMatchEmps = fingerMatchEmps;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "empData")
+	public Set<PayTempUploadData> getPayTempUploadDatas() {
+		return payTempUploadDatas;
+	}
+
+	public void setPayTempUploadDatas(Set<PayTempUploadData> payTempUploadDatas) {
+		this.payTempUploadDatas = payTempUploadDatas;
 	}   
+	
+	
 	    
 }

@@ -10,7 +10,9 @@ import com.inkubator.hrm.dao.PaySalaryComponentDao;
 import com.inkubator.hrm.entity.PaySalaryComponent;
 import com.inkubator.hrm.service.PaySalaryComponentService;
 import com.inkubator.hrm.web.search.PaySalaryComponentSearchParameter;
+
 import java.util.List;
+
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -207,5 +209,19 @@ public class PaySalaryComponentServiceImpl extends IServiceImpl implements PaySa
     public PaySalaryComponent getEntityByPkWithDetail(Long id) throws Exception {
         return paySalaryComponentDao.getEntityByPkWithDetail(id);
     }
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<PaySalaryComponent> getAllDataComponentUploadByParam(PaySalaryComponentSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
+		return paySalaryComponentDao.getAllDataComponentUploadByParam(searchParameter, firstResult, maxResults, order);
+		
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Long getTotalComponentUploadByParam(PaySalaryComponentSearchParameter searchParameter) throws Exception {
+		return paySalaryComponentDao.getTotalComponentUploadByParam(searchParameter);
+		
+	}
 
 }

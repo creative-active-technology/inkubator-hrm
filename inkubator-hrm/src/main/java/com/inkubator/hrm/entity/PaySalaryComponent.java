@@ -45,6 +45,7 @@ public class PaySalaryComponent  implements java.io.Serializable {
      private String updatedBy;
      private Date updatedOn;
      private Set<PaySalaryEmpType> paySalaryEmpTypes = new HashSet<PaySalaryEmpType>(0);
+     private Set<PayTempUploadData> payTempUploadDatas = new HashSet<PayTempUploadData>(0);
 
     public PaySalaryComponent() {
     }
@@ -223,7 +224,7 @@ public class PaySalaryComponent  implements java.io.Serializable {
         this.updatedOn = updatedOn;
     }
 
-@OneToMany(fetch=FetchType.LAZY, mappedBy="paySalaryComponent")
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="paySalaryComponent")
     public Set<PaySalaryEmpType> getPaySalaryEmpTypes() {
         return this.paySalaryEmpTypes;
     }
@@ -232,8 +233,14 @@ public class PaySalaryComponent  implements java.io.Serializable {
         this.paySalaryEmpTypes = paySalaryEmpTypes;
     }
 
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="paySalaryComponent")
+	public Set<PayTempUploadData> getPayTempUploadDatas() {
+		return payTempUploadDatas;
+	}
 
-
+	public void setPayTempUploadDatas(Set<PayTempUploadData> payTempUploadDatas) {
+		this.payTempUploadDatas = payTempUploadDatas;
+	}
 
 }
 
