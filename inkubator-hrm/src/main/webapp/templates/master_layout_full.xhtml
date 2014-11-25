@@ -307,6 +307,7 @@
                                             <p:submenu label="#{appmsg['menu.organisation_setting']}"  styleClass="menu_child" >
                                                 <p:menuitem value="#{appmsg['costcenter.costcenter']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['costcenter.costcenter']}" url="/protected/organisation/cost_center_view.htm" icon="img-cost-center"/>
                                                 <p:menuitem value="#{appmsg['organizationletter.organization_letter']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['organizationletter.organization_letter']}" url="/protected/organisation/organization_letter_view.htm" icon="img-organization-letter"/> 
+                                                <p:menuitem value="#{appmsg['costcenter.costcenter2']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['costcenter.costcenter2']}" url="/protected/organisation/cost_center_dept_view.htm" icon="img-cost-center"/>
                                                 <p:menuitem value="#{appmsg['menu.department']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.department']}" url="/protected/organisation/department_view.htm" icon="img-department"/>
                                                 <p:menuitem value="#{appmsg['unitkerja.unit_kerja']}" icon="img-unit-kerja" style="color: #003366" title="#{appmsg['unitkerja.unit_kerja']}" url="/protected/reference/unit_kerja_view.htm" />
                                                 <p:menuitem value="#{appmsg['employeetype.employee_type']}" icon="img-employee-type" style="color: #003366" title="#{appmsg['employeetype.employee_type']}" url="/protected/organisation/employee_type_view.htm" />
@@ -348,14 +349,14 @@
                                                 </p:submenu>
 
                                             </p:submenu>
-                                            <p:submenu label="#{appmsg['payroll.payroll']}"  styleClass="menu_child" >
-                                                <p:menuitem value="#{appmsg['benefitGroup.benefitGroup']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['benefitGroup.benefitGroup']}" url="/protected/payroll/benefit_group_view.htm" /> 
+                                            <p:submenu label="#{appmsg['payroll.payroll_conf']}"  styleClass="menu_child" >
                                                 <p:menuitem value="#{appmsg['payroll.pay_salary_grade']}" icon="img-grade-level" style="font-size: 12px !important;color: #003366" title="#{appmsg['payroll.pay_salary_grade']}" url="/protected/payroll/pay_salary_grade_view.htm" /> 
                                                 <p:menuitem value="#{appmsg['payroll.pay_salary_grade_position']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['payroll.pay_salary_grade_position']}" url="/protected/payroll/pay_salary_grade_position_view.htm" /> 
                                                 <p:menuitem value="#{appmsg['payroll.pay_salary_jurnal']}" icon="img-penggajian" style="font-size: 12px !important;color: #003366" title="#{appmsg['payroll.pay_salary_jurnal']}" url="/protected/payroll/pay_salary_jurnal_view.htm" /> 
-                                                <p:menuitem value="#{appmsg['menu.work_period']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.work_period']}" url="/protected/working_time/periode_view.htm" /> 
+                                                <p:menuitem value="#{appmsg['benefitGroup.benefitGroup']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['benefitGroup.benefitGroup']}" url="/protected/payroll/benefit_group_view.htm" /> 
                                                 <p:menuitem value="#{appmsg['taxComponent.taxComponent']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['taxComponent.taxComponent']}" url="/protected/payroll/tax_component_view.htm" /> 
                                                 <p:menuitem value="#{appmsg['modelComponent.modelComponent']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['modelComponent.modelComponent']}" url="/protected/payroll/model_component_view.htm" /> 
+                                                <p:menuitem value="#{appmsg['paySalaryComponent.paySalaryComponent']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['paySalaryComponent.paySalaryComponent']}" url="/protected/payroll/pay_salary_component_view.htm" /> 
                                             </p:submenu>
                                         </p:submenu>
                                         <p:submenu label="Personalia"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-employees">
@@ -406,10 +407,11 @@
                                                 
                                             </p:submenu>
                                         </p:submenu>
-                                        <p:submenu label="Payroll"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-payroll">
+                                        <p:submenu label="#{appmsg['payroll.payroll']}"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-payroll">
                                             <!--                                            <p:menuitem value="Price Simulator" icon="img-price-simulator" style="font-size: 12px !important;color: #003366" title="Make Price Simulation" url="/protected/price_simulator.htm" /> 
                                                                                         <p:menuitem value="Price Offer" icon="img-button-price" style="font-size: 12px !important;color: #003366" title="Create Offering Price" url="/protected/price_offer.htm" />  -->
                                             <p:menuitem value="Basic Numeration" icon="img-task" style="font-size: 12px !important;color: #003366" title="Basic Numeration" url="/protected/payroll/basic_renumeration_view.htm" />
+                                            <p:menuitem value="#{appmsg['menu.work_period']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.work_period']}" url="/protected/working_time/periode_view.htm" /> 
                                         </p:submenu>
                                         <p:submenu label="Pengembangan"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-training">
                                             <!--                                            <p:menuitem value="Price Simulator" icon="img-price-simulator" style="font-size: 12px !important;color: #003366" title="Make Price Simulation" url="/protected/price_simulator.htm" /> 

@@ -212,7 +212,7 @@ public class ModelComponentServiceImpl extends IServiceImpl implements ModelComp
             throw new BussinessException("modelComponent.error_duplicate_modelComponent_name");
         }
 
-        if (modelComponent.getSpesific().equals(HRMConstant.LINK_SCHEMA)) {
+        if (modelComponent.getSpesific().equals(HRMConstant.MODEL_COMP_BENEFIT_TABLE)) {
             BenefitGroup benefitGroup = benefitGroupDao.getEntiyByPK(modelComponent.getBenefitGroup().getId());
             modelComponent.setBenefitGroup(benefitGroup);
         }
@@ -263,7 +263,7 @@ public class ModelComponentServiceImpl extends IServiceImpl implements ModelComp
         }
 
         ModelComponent modelComponent = modelComponentDao.getEntiyByPK(b.getId());
-        if (modelComponent.getSpesific().equals(HRMConstant.LINK_SCHEMA)) {
+        if (b.getSpesific().equals(HRMConstant.MODEL_COMP_BENEFIT_TABLE)) {
             BenefitGroup benefitGroup = benefitGroupDao.getEntiyByPK(b.getBenefitGroup().getId());
             modelComponent.setBenefitGroup(benefitGroup);
         }else{

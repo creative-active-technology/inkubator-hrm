@@ -47,6 +47,7 @@ public class LoanSchema implements java.io.Serializable {
     private BigDecimal minPayment;
     private Double maxPaymentOfSalary;
     private Double penaltyOfNonComplance;
+    private Integer payrollComponent;
     private Double interestRate;
     private String createdBy;
     private Date createdOn;
@@ -223,6 +224,17 @@ public class LoanSchema implements java.io.Serializable {
     public void setUpdatedOn(Date updatedOn) {
         this.updatedOn = updatedOn;
     }
+
+    @Column(name = "payroll_component", length = 2)
+    public Integer getPayrollComponent() {
+        return payrollComponent;
+    }
+
+    public void setPayrollComponent(Integer payrollComponent) {
+        this.payrollComponent = payrollComponent;
+    }
+    
+    
     
     @Transient
     public List<EmployeeType> getEmployeeTypes() {

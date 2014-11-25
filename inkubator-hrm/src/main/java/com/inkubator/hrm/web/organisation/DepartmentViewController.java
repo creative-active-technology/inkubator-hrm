@@ -90,7 +90,7 @@ public class DepartmentViewController extends BaseController{
     
     public void doDetail() {
         try {
-            selectedDepartment = this.departmentService.getEntiyByPK(selectedDepartment.getId());
+            selectedDepartment = this.departmentService.getEntityByPkWithDetail(selectedDepartment.getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }

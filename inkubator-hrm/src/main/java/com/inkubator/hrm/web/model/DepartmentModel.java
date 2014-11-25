@@ -14,6 +14,7 @@ public class DepartmentModel implements Serializable {
     private Long id;
     private String code;
     private String name;
+    private Long costCenterDeptId;
 
     public Long getId() {
         return id;
@@ -38,6 +39,13 @@ public class DepartmentModel implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
-    
+
+	public Long getCostCenterDeptId() {
+		return costCenterDeptId;
+	}
+
+	public void setCostCenterDeptId(Long costCenterDeptId) {
+		this.costCenterDeptId = costCenterDeptId;
+	}
     
 }

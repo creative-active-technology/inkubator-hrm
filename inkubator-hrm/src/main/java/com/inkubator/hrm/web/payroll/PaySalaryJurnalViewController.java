@@ -131,7 +131,7 @@ public class PaySalaryJurnalViewController extends BaseController {
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 480);
-        options.put("contentHeight", 410);
+        options.put("contentHeight", 440);
         RequestContext.getCurrentInstance().openDialog("pay_salary_jurnal_form", options, params);
     }
 

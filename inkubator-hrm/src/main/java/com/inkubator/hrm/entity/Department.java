@@ -9,6 +9,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -29,6 +31,7 @@ public class Department implements java.io.Serializable {
     private Integer version;
     private String departmentCode;
     private String departmentName;
+    private CostCenterDept costCenterDept;
     private String createdBy;
     private Date createdOn;
     private String updatedBy;
@@ -92,7 +95,17 @@ public class Department implements java.io.Serializable {
         this.departmentName = departmentName;
     }
 
-    @Column(name = "created_by", length = 45)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cost_center_id", nullable = false)
+    public CostCenterDept getCostCenterDept() {
+		return costCenterDept;
+	}
+
+	public void setCostCenterDept(CostCenterDept costCenterDept) {
+		this.costCenterDept = costCenterDept;
+	}
+
+	@Column(name = "created_by", length = 45)
     public String getCreatedBy() {
         return this.createdBy;
     }

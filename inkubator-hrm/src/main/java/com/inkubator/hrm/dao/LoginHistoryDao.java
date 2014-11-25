@@ -23,5 +23,9 @@ public interface LoginHistoryDao extends IDAO<LoginHistory> {
             int firstResult, int maxResults, Order order);
 
     public Long getTotalLoginHistoryByParam(LoginHistorySearchParameter searchParameter);
+    
+    public List<LoginHistory> getByWeekDif(int value);
+    
+    public void deleteBatch(List<LoginHistory> data);
  
 }

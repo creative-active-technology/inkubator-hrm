@@ -190,14 +190,16 @@ public class HRMConstant {
     public static final String EMP_ROTATION = "EMP_ROTATION";
     public static final String EMP_TERMINATION = "EMP_TERMINATION";
     /* END */
+    
     /* Constant for  Model Component */
-    public static final Integer BASIC_SALARY = 0;
-    public static final Integer CEIL = 1;
-    public static final Integer TAX_TOTAL = 2;
-    public static final Integer UPLOAD = 3;
-    public static final Integer LIMITED_TIME = 4;
-    public static final Integer FORMULA = 5;
-    public static final Integer LINK_SCHEMA = 6;
+    public static final Integer MODEL_COMP_BASIC_SALARY = 0;
+    public static final Integer MODEL_COMP_CEIL = 1;
+    public static final Integer MODEL_COMP_TAX = 2;
+    public static final Integer MODEL_COMP_UPLOAD = 3;
+    public static final Integer MODEL_COMP_FORMULA = 4;
+    public static final Integer MODEL_COMP_LOAN = 5;
+    public static final Integer MODEL_COMP_REIMBURSEMENT = 6;
+    public static final Integer MODEL_COMP_BENEFIT_TABLE = 7;
     /* END */
 
     /* Constant for  Appraisal Element */
@@ -304,5 +306,11 @@ public class HRMConstant {
     
     public static final Integer REPORT_FAMILY_DEPENDENTS_NO = 0;
     public static final Integer REPORT_FAMILY_DEPENDENTS_YES = 1;
+    
+    public static final Integer PAY_SALARY_JURNAL_TYPE_DEBET = 0;
+    public static final Integer PAY_SALARY_JURNAL_TYPE_KREDIT = 1;
+    
+    public static final Integer PAY_SALARY_JURNAL_MODEL_CASH = 0;
+    public static final Integer PAY_SALARY_JURNAL_MODEL_TRANSFER = 1;
 
 }
