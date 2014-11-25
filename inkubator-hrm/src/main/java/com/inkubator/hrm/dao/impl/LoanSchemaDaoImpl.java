@@ -36,7 +36,7 @@ public class LoanSchemaDaoImpl extends IDAOImpl<LoanSchema> implements LoanSchem
     public List<LoanSchema> getAllDataWithAllRelation(LoanSchemaSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchByParam(searchParameter, criteria);
-        criteria.setFetchMode("costCenter", FetchMode.JOIN);
+//        criteria.setFetchMode("costCenter", FetchMode.JOIN);
         criteria.addOrder(order);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);

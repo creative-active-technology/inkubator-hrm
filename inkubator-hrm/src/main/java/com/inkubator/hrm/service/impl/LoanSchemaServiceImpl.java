@@ -128,6 +128,7 @@ public class LoanSchemaServiceImpl extends IServiceImpl implements LoanSchemaSer
         update.setMinPayment(entity.getMinPayment());
         update.setPenaltyOfNonComplance(entity.getPenaltyOfNonComplance());
         update.setTypeOfInterest(entity.getTypeOfInterest());
+        update.setPayrollComponent(entity.getPayrollComponent());
         update.setUpdatedBy(UserInfoUtil.getUserName());
         update.setUpdatedOn(new Date());
         this.loanSchemaDao.saveAndMerge(update);

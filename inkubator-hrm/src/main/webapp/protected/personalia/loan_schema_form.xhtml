@@ -175,6 +175,20 @@
                                 </p:column>
                             </p:row>
                             
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Payroll Component"  for="payrollComponent" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectOneRadio id="payrollComponent" styleClass="isitext_hrm" required="true"  value="#{loanSchemaFormController.model.payrollComponent}">
+                                        <!--Cek HRM Constanta..-->
+                                        <f:selectItem itemLabel="#{appmsg['global.no']}" itemValue="0" id="no"/>
+                                        <f:selectItem itemLabel="#{appmsg['global.yes']}" itemValue="1"  id="yes" />
+                                    </p:selectOneRadio>
+                                    <p:message for="payrollComponent"/>
+                                </p:column>
+                            </p:row>
+                            
                         </p:panelGrid>
                         <p:focus context="formId" />
                         <!--<p:separator style="margin-top: 20px;margin-bottom: 10px"/>-->

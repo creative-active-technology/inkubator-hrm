@@ -29,8 +29,7 @@
                     <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
                     <h:panelGrid columns="1" style="margin-bottom: 5px;margin-left: 0px">
                         <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
-                        <h:outputLabel value="#{appmsg['bioFamilyRelationship.dialog_info']}" styleClass="label_hrm" style="font-weight: normal!important"/>
-                        <h:outputLabel value="#{appmsg['bioFamilyRelationship.dialog_info_2']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                        <h:outputLabel value="#{appmsg['bioFamilyRelationship.dialog_info_3']}" styleClass="label_hrm" style="font-weight: normal!important"/>
                     </h:panelGrid> 
                     <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
                         <p:row>
@@ -43,7 +42,7 @@
                             <p:column  style="width: 70%">
                                 <p:focus for ="nameId">
                                     <p:inputText id="nameId" title="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_name']}" value="#{bioFamilyRelationshipFormController.bioFamilyRelationshipModel.name}" 
-                                                 required="true" requiredMessage="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_name_should_not_be_empty']}" maxlength="60" styleClass="isitext_hrm" style="width:250px;" />
+                                                 required="true" requiredMessage="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_name_should_not_be_empty']}" maxlength="60" styleClass="isitext_hrm" style="width:300px;" />
                                 </p:focus>
                             </p:column>
                         </p:row>
@@ -80,7 +79,7 @@
                             </p:column>
                             <p:column  style="width: 70%">
 
-                                <p:selectOneMenu id="relationId" value="#{bioFamilyRelationshipFormController.bioFamilyRelationshipModel.familyRelationId}" style="width: 200px;margin-right: 3px" 
+                                <p:selectOneMenu id="relationId" value="#{bioFamilyRelationshipFormController.bioFamilyRelationshipModel.familyRelationId}" style="width: 310px;margin-right: 3px" 
                                                  required="true" requiredMessage="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_relation_should_not_be_empty']}">
                                     <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                     <f:selectItems value="#{bioFamilyRelationshipFormController.familyRelations}"/>
@@ -115,13 +114,13 @@
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width: 29%">
+                            <p:column style="width: 35%">
                                 <p:outputLabel for="dependentsId" value="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_dependents']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="dependentsId" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 70%">
+                            <p:column  style="width: 64%">
 
                                 <p:selectOneRadio id="dependentsId" styleClass="isitext_hrm" required="true" value="#{bioFamilyRelationshipFormController.bioFamilyRelationshipModel.dependents}" label="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_dependents']}">
                                     <!--Cek HRM Constanta..-->
@@ -145,7 +144,7 @@
                             </p:column>
                             <p:column  style="width: 70%">
 
-                                <p:selectOneMenu id="lastId" value="#{bioFamilyRelationshipFormController.bioFamilyRelationshipModel.educationLevelId}" style="width: 200px;margin-right: 3px" 
+                                <p:selectOneMenu id="lastId" value="#{bioFamilyRelationshipFormController.bioFamilyRelationshipModel.educationLevelId}" style="width: 310px;margin-right: 3px" 
                                                  required="true" requiredMessage="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_last_should_not_be_empty']}" maxlength="60" >
                                     <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                     <f:selectItems value="#{bioFamilyRelationshipFormController.educationLevels}"/>
@@ -170,7 +169,7 @@
                                     <p:autoComplete id="occupationId" title="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_occupation']}" scrollHeight="100" 
                                                     value="#{bioFamilyRelationshipFormController.bioFamilyRelationshipModel.occupation}"
                                                 completeMethod="#{bioFamilyRelationshipFormController.completeOccupation}"
-                                                required="true" requiredMessage="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_occupation_should_not_be_empty']}" styleClass="isitext_hrm" style="width: 200px;margin-right: 3px"></p:autoComplete>
+                                                required="true" requiredMessage="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_occupation_should_not_be_empty']}" styleClass="isitext_hrm" size="43" style="width: 300px;margin-right: 3px"></p:autoComplete>
                                 </p:focus>
                             </p:column>
                         </p:row>
