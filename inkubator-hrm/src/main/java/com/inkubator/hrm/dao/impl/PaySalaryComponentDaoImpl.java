@@ -96,13 +96,14 @@ public class PaySalaryComponentDaoImpl extends IDAOImpl<PaySalaryComponent> impl
 	}
 
 	private void doSearchComponentUploadByParam(PaySalaryComponentSearchParameter searchParameter, Criteria criteria) {
-		if (StringUtils.isEmpty(searchParameter.getName())) {
+		if (StringUtils.isNotEmpty(searchParameter.getName())) {
         	criteria.add(Restrictions.like("name", searchParameter.getName(), MatchMode.ANYWHERE));
         } 
-        if (StringUtils.isEmpty(searchParameter.getCode())) {
+        if (StringUtils.isNotEmpty(searchParameter.getCode())) {
         	criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.ANYWHERE));
         } 
         criteria.add(Restrictions.isNotNull("id"));
+        criteria.createAlias("modelComponent", "modelComponent");
         criteria.add(Restrictions.eq("modelComponent.spesific", HRMConstant.MODEL_COMP_UPLOAD));
 	}
     
