@@ -20,4 +20,6 @@ public interface WtPeriodeDao extends IDAO<WtPeriode> {
     public List<WtPeriode> getByParam(WtPeriodeSearchParameter searchParameter, int firstResult, int maxResults, Order order);
 
     public Long getTotalWtPeriodeByParam(WtPeriodeSearchParameter searchParameter);
+    
+    public WtPeriode getEntityByStatusActive();
 }
