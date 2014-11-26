@@ -25,7 +25,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository(value = "reimbursmentSchemaDao")
 @Lazy
-public class ReimbursmentSchemaDaoImpl extends IDAOImpl<ReimbursmentSchema> implements ReimbursmentSchemaDao{
+public class ReimbursmentSchemaDaoImpl extends IDAOImpl<ReimbursmentSchema> implements ReimbursmentSchemaDao {
 
     @Override
     public Class<ReimbursmentSchema> getEntityClass() {
@@ -67,20 +67,20 @@ public class ReimbursmentSchemaDaoImpl extends IDAOImpl<ReimbursmentSchema> impl
         criteria.add(Restrictions.like("code", code, MatchMode.ANYWHERE));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
-    
+
     private void doSearchReimbursmentByParam(ReimbursmentSchemaSearchParameter searchParameter, Criteria criteria) {
         BigDecimal bg = new BigDecimal("0");
         Integer resNominalUnit = 0;
-        if(searchParameter.getNominalUnit()!= null){
+        if (searchParameter.getNominalUnit() != null) {
             resNominalUnit = searchParameter.getNominalUnit().compareTo(bg);
         }
-        if (searchParameter.getCode()!= null) {
-        	criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.ANYWHERE));
+        if (searchParameter.getCode() != null) {
+            criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.ANYWHERE));
         }
-        if (searchParameter.getName()!= null) {
-        	criteria.add(Restrictions.like("name", searchParameter.getName(), MatchMode.ANYWHERE));
+        if (searchParameter.getName() != null) {
+            criteria.add(Restrictions.like("name", searchParameter.getName(), MatchMode.ANYWHERE));
         }
-        if (searchParameter.getNominalUnit()!= null && resNominalUnit != 0) {
+        if (searchParameter.getNominalUnit() != null && resNominalUnit != 0) {
             criteria.add(Restrictions.eq("nominalUnit", searchParameter.getNominalUnit()));
         }
         criteria.add(Restrictions.isNotNull("id"));
@@ -91,4 +91,11 @@ public class ReimbursmentSchemaDaoImpl extends IDAOImpl<ReimbursmentSchema> impl
         getCurrentSession().update(reimbursmentSchema);
         getCurrentSession().flush();
     }
-}   
+
+    @Override
+    public List<ReimbursmentSchema> isPayrollComponent() {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("payrollComponent", Boolean.TRUE));
+        return criteria.list();
+    }
+}
