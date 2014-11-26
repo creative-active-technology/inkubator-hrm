@@ -20,6 +20,7 @@ import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.PaySalaryComponent;
 import com.inkubator.hrm.entity.PayTempUploadData;
 import com.inkubator.hrm.service.PayTempUploadDataService;
+import com.inkubator.hrm.web.search.PayTempUploadDataSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 
 /**
@@ -269,16 +270,22 @@ public class PayTempUploadDataServiceImpl extends IServiceImpl implements PayTem
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<PayTempUploadData> getAllDataByPaySalaryComponentId(Long paySalaryComponentId, int firstResult, int maxResults, Order orderable) {
-		return this.payTempUploadDataDao.getAllDataByPaySalaryComponentId(paySalaryComponentId, firstResult, maxResults, orderable);
+	public List<PayTempUploadData> getAllDataByParam(PayTempUploadDataSearchParameter parameter, int firstResult, int maxResults, Order orderable) {
+		return this.payTempUploadDataDao.getAllDataByParam(parameter, firstResult, maxResults, orderable);
 
 	}
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-	public Long getTotalByPaySalaryComponentId(Long paySalaryComponentId) {
-		return this.payTempUploadDataDao.getTotalByPaySalaryComponentId(paySalaryComponentId);
+	public Long getTotalByParam(PayTempUploadDataSearchParameter parameter) {
+		return this.payTempUploadDataDao.getTotalByParam(parameter);
 
+	}
+	
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Long getTotalByPaySalaryComponentId(Long paySalaryComponentId){
+		return this.payTempUploadDataDao.getTotalByPaySalaryComponentId(paySalaryComponentId);
 	}
 
 	@Override
@@ -286,6 +293,12 @@ public class PayTempUploadDataServiceImpl extends IServiceImpl implements PayTem
 	public PayTempUploadData getEntityByPkWithDetail(Long id) {
 		return this.payTempUploadDataDao.getEntityByPkWithDetail(id);
 
+	}
+	
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Double getTotalSalaryByPaySalaryComponentId(Long paySalaryComponentId){
+		return this.payTempUploadDataDao.getTotalSalaryByPaySalaryComponentId(paySalaryComponentId);
 	}
 
 }

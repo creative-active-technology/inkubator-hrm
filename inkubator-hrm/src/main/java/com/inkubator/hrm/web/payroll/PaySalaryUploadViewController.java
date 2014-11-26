@@ -83,16 +83,8 @@ public class PaySalaryUploadViewController extends BaseController {
 	public void doSearch() {
         lazyDataModel = null;
     }
-
-    public void doSelectEntity() {
-        try {
-        	selectedPaySalaryComponent = this.paySalaryComponentService.getEntiyByPK(selectedPaySalaryComponent.getId());
-        } catch (Exception ex) {
-            LOGGER.error("Error", ex);
-        }
-    }
     
     public String doDetail() {
-        return "/protected/working_time/leave_detail.htm?faces-redirect=true&execution=e" + selectedPaySalaryComponent.getId();
+        return "/protected/payroll/pay_salary_upload_detail.htm?faces-redirect=true&execution=e" + selectedPaySalaryComponent.getId();
     }
 }

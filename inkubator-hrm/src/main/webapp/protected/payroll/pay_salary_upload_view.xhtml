@@ -15,18 +15,17 @@
                 Home
             </ui:define>
             <ui:define name="center">
-                <div id="box_bg" style="margin: 10px">
-                    
-                        <h:panelGrid style="margin-bottom: 5px" columns="2">
-                            <p:graphicImage library="images" name="cost_center.png" height="36" width="36" />
-                            <h:panelGroup layout="block">
-                                <h:panelGrid>
-                                    <p:outputLabel value="#{appmsg['paysalaryupload.upload_component_model']}" styleClass="header_big" />
-                                    <p:outputLabel value="#{appmsg['paysalaryupload.data_upload_component_model_from_application']}" styleClass="header_small_no_bold" />
-                                </h:panelGrid>
-                            </h:panelGroup>
-                        </h:panelGrid>
-                        <p:separator/>
+                <div id="box_bg" style="margin: 10px">                    
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                    	<p:graphicImage library="images" name="cost_center.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                        	<h:panelGrid>
+                            	<p:outputLabel value="#{appmsg['paysalaryupload.upload_component_model']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['paysalaryupload.data_upload_component_model_from_application']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator/>
                     <p:growl id="growlPaySalaryUploadViewId" globalOnly="true" showDetail="true" />
 					<h:form id="formPaySalaryUploadId">
                         <p:toolbar  style="margin-top: 10px">
@@ -46,9 +45,9 @@
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3" >
                                     <p:commandButton value="Export to XLS" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
-                                        <pe:exporter target="tablePaySalaryUploadId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Cost_Center"/>
-                                    </p:commandButton>
-                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{paySalaryUploadViewController.doClose()}" icon="ui-icon-home" />                                    
+                                        <pe:exporter target="tablePaySalaryUploadId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Upload_Component_Model"/>
+                                    </p:commandButton>   
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{paySalaryUploadViewController.doClose()}" icon="ui-icon-home" />                                                                     
                                 </h:panelGrid>
                             </p:toolbarGroup>
                         </p:toolbar>
@@ -84,11 +83,11 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{paySalaryUploadData.payTempUploadDatas.size()}" />
                             </p:column>
-                            <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
-                                <p:commandButton  icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" style="font-size: 10px!important" ajax="true"
-                                                  action="#{paySalaryUploadViewController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="detailCostCenterDept.show()">                        
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">                                
+                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
+                                				 style="font-size: 10px!important" action="#{paySalaryUploadViewController.doDetail()}">                        
                                     <f:setPropertyActionListener value="#{paySalaryUploadData}" target="#{paySalaryUploadViewController.selectedPaySalaryComponent}" />
-                                </p:commandButton> 
+                                </p:commandButton>
                             </p:column> 
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>
