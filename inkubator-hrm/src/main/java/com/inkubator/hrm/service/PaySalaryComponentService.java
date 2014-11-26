@@ -23,6 +23,11 @@ public interface PaySalaryComponentService extends IService<PaySalaryComponent> 
     public Long getTotalResourceTypeByParam(PaySalaryComponentSearchParameter searchParameter) throws Exception;
 
     public PaySalaryComponent getEntityByPkWithDetail(Long id) throws Exception;
+    
+    public List<PaySalaryComponent> getAllDataComponentUploadByParam(PaySalaryComponentSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
+    
+    public Long getTotalComponentUploadByParam(PaySalaryComponentSearchParameter searchParameter) throws Exception;
 
     public Map<String, Long> returnComponentChange(Long id) throws Exception;
+    
 }

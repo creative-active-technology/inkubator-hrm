@@ -6,10 +6,11 @@
 package com.inkubator.hrm.service.impl;
 
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.hrm.dao.InclusionReimbursmentDao;
 import com.inkubator.hrm.dao.WtPeriodeDao;
-import com.inkubator.hrm.entity.WtPeriode;
-import com.inkubator.hrm.service.WtPeriodeService;
-import com.inkubator.hrm.web.search.WtPeriodeSearchParameter;
+import com.inkubator.hrm.entity.Reimbursment;
+import com.inkubator.hrm.service.InclusionReimbursmentService;
+import com.inkubator.hrm.web.model.InclusionReimbursmentModel;
 import java.util.List;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,112 +22,126 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
- * @author Deni Husni FR
+ * @author Deni
  */
-@Service(value = "wtPeriodeService")
+@Service(value = "inclusionReimbursmentService")
 @Lazy
-public class WtPeriodeServiceImpl extends IServiceImpl implements WtPeriodeService {
-
+public class InclusionReimbursmentServiceImpl extends IServiceImpl implements InclusionReimbursmentService{
+    
+    @Autowired
+    private InclusionReimbursmentDao inclusionReimbursmentDao;
     @Autowired
     private WtPeriodeDao wtPeriodeDao;
+    
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<Reimbursment> getByParam(String parameter, InclusionReimbursmentModel inclusionReimbursmentModel, int firstResult, int maxResults, Order order) throws Exception {
+        return inclusionReimbursmentDao.getByParam(parameter, inclusionReimbursmentModel, firstResult, maxResults, order);
+    }
 
     @Override
-    public WtPeriode getEntiyByPK(String id) throws Exception {
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalResourceTypeByParam(String parameter, InclusionReimbursmentModel inclusionReimbursmentModel) throws Exception {
+        return inclusionReimbursmentDao.getTotalResourceTypeByParam(parameter, inclusionReimbursmentModel);
+    }
+
+    @Override
+    public Reimbursment getEntiyByPK(String id) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public WtPeriode getEntiyByPK(Integer id) throws Exception {
+    public Reimbursment getEntiyByPK(Integer id) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public WtPeriode getEntiyByPK(Long id) throws Exception {
+    public Reimbursment getEntiyByPK(Long id) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void save(WtPeriode entity) throws Exception {
+    public void save(Reimbursment entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void update(WtPeriode entity) throws Exception {
+    public void update(Reimbursment entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void saveOrUpdate(WtPeriode enntity) throws Exception {
+    public void saveOrUpdate(Reimbursment enntity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public WtPeriode saveData(WtPeriode entity) throws Exception {
+    public Reimbursment saveData(Reimbursment entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public WtPeriode updateData(WtPeriode entity) throws Exception {
+    public Reimbursment updateData(Reimbursment entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public WtPeriode saveOrUpdateData(WtPeriode entity) throws Exception {
+    public Reimbursment saveOrUpdateData(Reimbursment entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public WtPeriode getEntityByPkIsActive(String id, Integer isActive) throws Exception {
+    public Reimbursment getEntityByPkIsActive(String id, Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public WtPeriode getEntityByPkIsActive(String id, Byte isActive) throws Exception {
+    public Reimbursment getEntityByPkIsActive(String id, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public WtPeriode getEntityByPkIsActive(String id, Boolean isActive) throws Exception {
+    public Reimbursment getEntityByPkIsActive(String id, Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public WtPeriode getEntityByPkIsActive(Integer id, Integer isActive) throws Exception {
+    public Reimbursment getEntityByPkIsActive(Integer id, Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public WtPeriode getEntityByPkIsActive(Integer id, Byte isActive) throws Exception {
+    public Reimbursment getEntityByPkIsActive(Integer id, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public WtPeriode getEntityByPkIsActive(Integer id, Boolean isActive) throws Exception {
+    public Reimbursment getEntityByPkIsActive(Integer id, Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public WtPeriode getEntityByPkIsActive(Long id, Integer isActive) throws Exception {
+    public Reimbursment getEntityByPkIsActive(Long id, Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public WtPeriode getEntityByPkIsActive(Long id, Byte isActive) throws Exception {
+    public Reimbursment getEntityByPkIsActive(Long id, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public WtPeriode getEntityByPkIsActive(Long id, Boolean isActive) throws Exception {
+    public Reimbursment getEntityByPkIsActive(Long id, Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void delete(WtPeriode entity) throws Exception {
+    public void delete(Reimbursment entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void softDelete(WtPeriode entity) throws Exception {
+    public void softDelete(Reimbursment entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -151,61 +166,49 @@ public class WtPeriodeServiceImpl extends IServiceImpl implements WtPeriodeServi
     }
 
     @Override
-    public List<WtPeriode> getAllData() throws Exception {
+    public List<Reimbursment> getAllData() throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<WtPeriode> getAllData(Boolean isActive) throws Exception {
+    public List<Reimbursment> getAllData(Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<WtPeriode> getAllData(Integer isActive) throws Exception {
+    public List<Reimbursment> getAllData(Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<WtPeriode> getAllData(Byte isActive) throws Exception {
+    public List<Reimbursment> getAllData(Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<WtPeriode> getAllDataPageAble(int firstResult, int maxResults, Order order) throws Exception {
+    public List<Reimbursment> getAllDataPageAble(int firstResult, int maxResults, Order order) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<WtPeriode> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Boolean isActive) throws Exception {
+    public List<Reimbursment> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<WtPeriode> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Integer isActive) throws Exception {
+    public List<Reimbursment> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<WtPeriode> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
+    public List<Reimbursment> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<WtPeriode> getByParam(WtPeriodeSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
-       return this.wtPeriodeDao.getByParam(searchParameter, firstResult, maxResults, order);
+    public List<Reimbursment> getByWtPeriodeWhereComponentPayrollIsActive(InclusionReimbursmentModel inclusionReimbursmentModel) throws Exception {
+        return inclusionReimbursmentDao.getByWtPeriodeWhereComponentPayrollIsActive(inclusionReimbursmentModel);
     }
-
-    @Override
-    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getTotalWtPeriodeByParam(WtPeriodeSearchParameter searchParameter) throws Exception {
-       return this.wtPeriodeDao.getTotalWtPeriodeByParam(searchParameter);
-    }
-
-    @Override
-    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public WtPeriode getEntityByStatusActive() throws Exception {
-        return wtPeriodeDao.getEntityByStatusActive();
-    }
-
+    
 }

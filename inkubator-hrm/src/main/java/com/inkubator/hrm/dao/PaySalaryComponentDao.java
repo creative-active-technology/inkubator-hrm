@@ -21,4 +21,9 @@ public interface PaySalaryComponentDao extends IDAO<PaySalaryComponent>{
     public Long getTotalResourceTypeByParam(PaySalaryComponentSearchParameter searchParameter);
     
     public PaySalaryComponent getEntityByPkWithDetail(Long id);
+
+	public List<PaySalaryComponent> getAllDataComponentUploadByParam(PaySalaryComponentSearchParameter searchParameter, int firstResult, int maxResults, Order order);
+
+	public Long getTotalComponentUploadByParam(PaySalaryComponentSearchParameter searchParameter);
+	
 }
