@@ -42,7 +42,7 @@
                             </p:column>
                             <p:column  style="width: 50%">
                                 <p:inputText id="implementationNumber"  value="#{implementationOfOverTimeFormController.model.implementationNumber}"
-                                             required="true" styleClass="isitext_hrm" style="width:256px;" />
+                                             required="true" styleClass="isitext_hrm" style="width:230px;" />
                             </p:column>
                         </p:row>
                         <p:row>
@@ -69,7 +69,7 @@
                                                 itemLabel="#{empData.nik} #{empData.bioData.firstName} #{empData.bioData.lastName}"
                                                 converter="#{empDataConverter}"
                                                 requiredMessage="#{appmsg['personachievement.person_achievement_should_not_be_empty']}"
-                                                styleClass="isitext_hrm" size="40">
+                                                styleClass="isitext_hrm" size="32">
                                         <!--<p:ajax update="startTime" process="@this" listener="#{implementationOfOverTimeFormController.doValidateStartAndEndTime()}"/>-->
                                         <p:ajax event="itemSelect" listener="#{implementationOfOverTimeFormController.doSelectEmployee}" />
                                     </p:autoComplete>
@@ -90,7 +90,7 @@
                                 <h:outputLabel for="implementationDate" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 50%">
-                                <p:calendar  id="implementationDate" size="40" pattern="dd MMMM yyyy" label="Implementation Date" value="#{implementationOfOverTimeFormController.model.implementationDate}"
+                                <p:calendar  id="implementationDate" size="32" pattern="dd MMMM yyyy" label="Implementation Date" value="#{implementationOfOverTimeFormController.model.implementationDate}"
                                          required="true" navigator="true">
 <!--                                    <f:validator validatorId="birthDateValidator"  />
                                     <f:attribute name="validatorMessage" value="#{appmsg['global.birthDate_validator']}"/>-->
