@@ -82,7 +82,7 @@ public class PayTempUploadDataServiceImpl extends IServiceImpl implements PayTem
 		payTempUploadData.setNominalValue(entity.getNominalValue());
 		payTempUploadData.setUpdatedBy(UserInfoUtil.getUserName());
 		payTempUploadData.setUpdatedOn(new Date());
-        this.payTempUploadDataDao.save(payTempUploadData);
+        this.payTempUploadDataDao.update(payTempUploadData);
 
 	}
 

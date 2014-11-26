@@ -50,7 +50,9 @@
 	                                <p:outputLabel value="#{appmsg['global.total']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{paySalaryUploadDetailController.model.totalSalary}" styleClass="label_hrm"/>
+	                            	<p:outputLabel value="#{paySalaryUploadDetailController.model.totalSalary}" styleClass="label_hrm">
+	                            		<f:convertNumber pattern="###,###" type="currency"/>
+	                            	</p:outputLabel>
 	                            </p:column>
 	                        </p:row>
 						</p:panelGrid>
@@ -72,7 +74,9 @@
                                 <h:panelGrid columns="4" >
                                 	<p:commandButton value="#{appmsg['global.reuse']}" title="#{appmsg['global.reuse']}" onclick="PrimeFaces.monitorDownload(start, stop)"/>
                                 	<p:commandButton value="#{appmsg['global.upload']}" title="#{appmsg['global.upload']}" onclick="PrimeFaces.monitorDownload(start, stop)"/>
-                                	<p:commandButton value="#{appmsg['global.add_data']}" title="#{appmsg['global.reuse']}" onclick="PrimeFaces.monitorDownload(start, stop)"/>
+                                    <p:commandButton value="#{appmsg['global.add_data']}" actionListener="#{paySalaryUploadDetailController.doAddData()}" title="#{appmsg['global.add_data']}" label="#{appmsg['global.add_data']}" styleClass="label_button" ajax="true">
+                                        <p:ajax event="dialogReturn" listener="#{paySalaryUploadDetailController.onDialogReturn}"  update="formPaySalaryUploadDetailId,:growlPaySalaryUploadDetailId"/>
+                                    </p:commandButton>
                                     <p:commandButton value="Export to XLS" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
                                         <pe:exporter target="tablePaySalaryUploadId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Employee"/>
                                     </p:commandButton>                                                                        
@@ -106,7 +110,9 @@
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.nominal']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{payTempUploadData.nominalValue}" />
+                                <h:outputLabel value= "#{payTempUploadData.nominalValue}">
+                                	<f:convertNumber pattern="###,###" type="currency"/>
+                                </h:outputLabel>
                             </p:column>
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
@@ -118,7 +124,7 @@
                                 <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" ajax="true"
                                                  action="#{paySalaryUploadDetailController.doEditData()}" >
                                     <f:setPropertyActionListener value="#{payTempUploadData}" target="#{paySalaryUploadDetailController.selectedPayTempUploadData}" />
-                                    <p:ajax event="dialogReturn" listener="#{paySalaryUploadDetailController.onDialogReturn}"  update="tablePaySalaryUploadId,:growlPaySalaryUploadDetailId"/>
+                                    <p:ajax event="dialogReturn" listener="#{paySalaryUploadDetailController.onDialogReturn}"  update=":formPaySalaryUploadDetailId,:growlPaySalaryUploadDetailId"/>
                                 </p:commandButton>
                             </p:column> 
                             <f:facet name="footer">
@@ -127,6 +133,13 @@
                                 <p:outputLabel value="Data" style="margin-left: 3px"/>
                             </f:facet>  
                         </p:dataTable>
+                        
+                        <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+	                    <div style="margin-bottom: 5px">
+	                        <p:commandButton value="#{appmsg['global.close']}" icon="ui-icon-contact"  title="#{appmsg['global.close']}" action="#{paySalaryUploadDetailController.doBack()}" immediate="true"
+	                                      	 styleClass="label_button"/>
+	                    </div>
+	                    
                         <p:blockUI block="formPaySalaryUploadDetailId" trigger="tablePaySalaryUploadId,btnSearchId" >
                             <h:panelGrid columns="2" styleClass="grid_no_border">
                                 <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>

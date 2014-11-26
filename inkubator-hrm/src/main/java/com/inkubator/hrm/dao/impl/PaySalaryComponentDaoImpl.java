@@ -81,6 +81,7 @@ public class PaySalaryComponentDaoImpl extends IDAOImpl<PaySalaryComponent> impl
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         this.doSearchComponentUploadByParam(searchParameter, criteria);
         criteria.setFetchMode("payTempUploadDatas", FetchMode.JOIN);
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         criteria.addOrder(order);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);

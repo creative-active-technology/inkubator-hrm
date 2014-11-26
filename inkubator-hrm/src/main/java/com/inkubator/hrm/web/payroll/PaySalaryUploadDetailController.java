@@ -1,5 +1,10 @@
 package com.inkubator.hrm.web.payroll;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
@@ -8,6 +13,8 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
 import org.hibernate.exception.ConstraintViolationException;
+import org.primefaces.context.RequestContext;
+import org.primefaces.event.SelectEvent;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import com.inkubator.hrm.HRMConstant;
@@ -142,6 +149,12 @@ public class PaySalaryUploadDetailController extends BaseController {
 		}
 	}
 	
+	@Override
+	public void onDialogReturn(SelectEvent event) {		
+		model = this.getModelFromEntity(selectedPaySalaryComponent);
+		super.onDialogReturn(event);
+	}
+	
 	public void doUpload(){
 		
 	}
@@ -151,12 +164,36 @@ public class PaySalaryUploadDetailController extends BaseController {
 	}
 	
 	public void doAddData(){
-		
+		Map<String, List<String>> dataToSend = new HashMap<>();
+        List<String> paySalaryComponentValues = new ArrayList<>();
+        paySalaryComponentValues.add(String.valueOf(selectedPaySalaryComponent.getId()));
+        dataToSend.put("paySalaryComponentId", paySalaryComponentValues);
+		showDialog(dataToSend);
 	}
 	
 	public void doEditData(){
+		Map<String, List<String>> dataToSend = new HashMap<>();
 		
+        List<String> payTempUploadDataValues = new ArrayList<>();
+        payTempUploadDataValues.add(String.valueOf(selectedPayTempUploadData.getId()));
+        dataToSend.put("payTempUploadDataId", payTempUploadDataValues);
+        
+        List<String> paySalaryComponentValues = new ArrayList<>();
+        paySalaryComponentValues.add(String.valueOf(selectedPaySalaryComponent.getId()));
+        dataToSend.put("paySalaryComponentId", paySalaryComponentValues);
+        
+        showDialog(dataToSend);
 	}
+	
+	private void showDialog(Map<String, List<String>> params) {
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 400);
+        options.put("contentHeight", 320);
+        RequestContext.getCurrentInstance().openDialog("pay_temp_upload_data_form", options, params);
+    }
 	
 	public void doDeleteData(){
 		try {

@@ -89,6 +89,7 @@ public class PayTempUploadDataDaoImpl extends IDAOImpl<PayTempUploadData> implem
         criteria.add(Restrictions.eq("id", id));
         criteria.setFetchMode("empData", FetchMode.JOIN);
         criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+        criteria.setFetchMode("paySalaryComponent", FetchMode.JOIN);
         return (PayTempUploadData) criteria.uniqueResult();
     }
 
