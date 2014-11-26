@@ -146,7 +146,7 @@
                         <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmModelComponent.hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
-                <p:dialog widgetVar="dialogDetailModelComponent" header="#{appmsg['modelComponent.detail_dialog']}" styleClass="header_small_no_bold" width="450" modal="true" resizable="false" hideEffect="puff" 
+                <p:dialog widgetVar="dialogDetailModelComponent" header="#{appmsg['modelComponent.detail_dialog']}" styleClass="header_small_no_bold" width="650" modal="true" resizable="false" hideEffect="puff" 
                           showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogDetailId" style="width:100%;margin:5px;">
                         <p:row>
@@ -161,12 +161,12 @@
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['modelComponent.modelComponent_specific']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:70%;">
                                 <h:outputLabel value= "#{modelComponentViewController.selectedModelComponent.spesific}" styleClass="label_hrm">
-                                    <f:converter converterId="spesificConverter" />
+                                    <f:converter converterId="modelCompSpesificConverter" />
                                 </h:outputLabel>
                             </p:column>
                         </p:row>                        
                         <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['modelComponent.modelComponent_benefit']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['modelComponent.modelComponent_benefit_reference']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:70%;"><p:outputLabel value="#{modelComponentViewController.selectedModelComponent.benefitGroup.name}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>

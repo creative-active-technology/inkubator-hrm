@@ -5,6 +5,7 @@
  */
 package com.inkubator.hrm.web.model;
 
+import com.inkubator.hrm.entity.ModelComponent;
 import java.io.Serializable;
 
 /**
@@ -25,6 +26,7 @@ public class PaySalaryComponentModel implements Serializable {
     private Integer componentCategory;
     private Boolean resetData;
     private Boolean taxableCheck;
+    private ModelComponent modelComponent;
 
     public Long getId() {
         return id;
@@ -120,6 +122,14 @@ public class PaySalaryComponentModel implements Serializable {
 
     public void setTaxableCheck(Boolean taxableCheck) {
         this.taxableCheck = taxableCheck;
+    }
+
+    public ModelComponent getModelComponent() {
+        return modelComponent;
+    }
+
+    public void setModelComponent(ModelComponent modelComponent) {
+        this.modelComponent = modelComponent;
     }
     
     

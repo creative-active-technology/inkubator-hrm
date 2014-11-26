@@ -29,6 +29,7 @@ public class TaxComponent  implements java.io.Serializable {
      private Date createdOn;
      private String description;
      private String name;
+     private Boolean isUseOnComponent;
      private String updatedBy;
      private Date updatedOn;
 
@@ -110,9 +111,17 @@ public class TaxComponent  implements java.io.Serializable {
     public void setName(String name) {
         this.name = name;
     }
-
     
-    @Column(name="updated_by", length=45)
+    @Column(name="is_use_on_component")
+    public Boolean getIsUseOnComponent() {
+		return isUseOnComponent;
+	}
+
+	public void setIsUseOnComponent(Boolean isUseOnComponent) {
+		this.isUseOnComponent = isUseOnComponent;
+	}
+
+	@Column(name="updated_by", length=45)
     public String getUpdatedBy() {
         return this.updatedBy;
     }
