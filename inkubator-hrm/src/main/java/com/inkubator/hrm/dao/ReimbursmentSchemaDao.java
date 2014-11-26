@@ -14,16 +14,19 @@ import org.hibernate.criterion.Order;
  *
  * @author Deni
  */
-public interface ReimbursmentSchemaDao extends IDAO<ReimbursmentSchema>{
+public interface ReimbursmentSchemaDao extends IDAO<ReimbursmentSchema> {
+
     public List<ReimbursmentSchema> getAllDataWithAllRelation(ReimbursmentSchemaSearchParameter searchParameter, int firstResult, int maxResults, Order order);
-    
+
     public Long getTotalReimbursmentByParam(ReimbursmentSchemaSearchParameter searchParameter);
-    
+
     public ReimbursmentSchema getEntityByPkWithAllRelation(Long id);
-    
+
     public Long getTotalByCodeAndNotId(String code, Long id);
-    
+
     public Long getByReimbursmentCode(String code);
-    
+
     public void saveAndMerge(ReimbursmentSchema reimbursmentSchema);
+
+    public List<ReimbursmentSchema> isPayrollComponent();
 }

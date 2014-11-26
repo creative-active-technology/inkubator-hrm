@@ -6,11 +6,23 @@
 package com.inkubator.hrm.service.impl;
 
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.dao.BenefitGroupDao;
+import com.inkubator.hrm.dao.LoanSchemaDao;
+import com.inkubator.hrm.dao.ModelComponentDao;
 import com.inkubator.hrm.dao.PaySalaryComponentDao;
+import com.inkubator.hrm.dao.ReimbursmentSchemaDao;
+import com.inkubator.hrm.entity.BenefitGroup;
+import com.inkubator.hrm.entity.LoanSchema;
+import com.inkubator.hrm.entity.ModelComponent;
 import com.inkubator.hrm.entity.PaySalaryComponent;
+import com.inkubator.hrm.entity.ReimbursmentSchema;
 import com.inkubator.hrm.service.PaySalaryComponentService;
 import com.inkubator.hrm.web.search.PaySalaryComponentSearchParameter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -29,6 +41,14 @@ public class PaySalaryComponentServiceImpl extends IServiceImpl implements PaySa
 
     @Autowired
     private PaySalaryComponentDao paySalaryComponentDao;
+    @Autowired
+    private ModelComponentDao modelComponentDao;
+    @Autowired
+    private LoanSchemaDao loanSchemaDao;
+    @Autowired
+    private ReimbursmentSchemaDao reimbursmentSchemaDao;
+    @Autowired
+    private BenefitGroupDao benefitGroupDao;
 
     @Override
     public PaySalaryComponent getEntiyByPK(String id) throws Exception {
@@ -206,6 +226,33 @@ public class PaySalaryComponentServiceImpl extends IServiceImpl implements PaySa
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
     public PaySalaryComponent getEntityByPkWithDetail(Long id) throws Exception {
         return paySalaryComponentDao.getEntityByPkWithDetail(id);
+    }
+
+    @Override
+    public Map<String, Long> returnComponentChange(Long id) throws Exception {
+        ModelComponent component = this.modelComponentDao.getEntiyByPK(id);
+        Map<String, Long> data = new HashMap();
+        if (Objects.equals(component.getSpesific(), HRMConstant.MODEL_COMP_LOAN)) {
+            List<LoanSchema> dataToSend = loanSchemaDao.getEntityIsPayRollComponent();
+            for (LoanSchema loanSchema : dataToSend) {
+                data.put(loanSchema.getName(), loanSchema.getId());
+            }
+        }
+
+        if (component.getSpesific().equals(HRMConstant.MODEL_COMP_REIMBURSEMENT)) {
+            List<ReimbursmentSchema> dataToSend = this.reimbursmentSchemaDao.isPayrollComponent();
+            for (ReimbursmentSchema rs : dataToSend) {
+                data.put(rs.getName(), rs.getId());
+            }
+        }
+
+        if (component.getSpesific().equals(HRMConstant.MODEL_COMP_BENEFIT_TABLE)) {
+            List<BenefitGroup> dataToSend = this.benefitGroupDao.getAllData();
+            for (BenefitGroup bg : dataToSend) {
+                data.put(bg.getName(), bg.getId());
+            }
+        }
+        return data;
     }
 
 }

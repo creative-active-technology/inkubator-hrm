@@ -45,16 +45,16 @@ public class ModelComponentDaoImpl extends IDAOImpl<ModelComponent> implements M
     }
 
     private void doSearchModelComponentByParam(ModelComponentSearchParameter parameter, Criteria criteria) {
-        if (parameter.getCode()!= null) {
+        if (parameter.getCode() != null) {
             criteria.add(Restrictions.like("code", parameter.getCode(), MatchMode.ANYWHERE));
         }
-        
-        if (parameter.getName()!= null) {
+
+        if (parameter.getName() != null) {
             criteria.add(Restrictions.like("name", parameter.getName(), MatchMode.ANYWHERE));
         }
         criteria.add(Restrictions.isNotNull("id"));
     }
-    
+
     @Override
     public ModelComponent getEntityByPKWithDetail(Long id) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
@@ -63,4 +63,5 @@ public class ModelComponentDaoImpl extends IDAOImpl<ModelComponent> implements M
         return (ModelComponent) criteria.uniqueResult();
     }
 
+  
 }
