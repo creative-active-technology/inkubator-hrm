@@ -129,7 +129,7 @@ public class HospitalViewController extends BaseController {
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 450);
-        options.put("contentHeight", 550);
+        options.put("contentHeight", 500);
         RequestContext.getCurrentInstance().openDialog("hospital_form", options, params);
     }
 

@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.TreeMap;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -44,7 +45,8 @@ import org.primefaces.model.DualListModel;
  */
 @ManagedBean(name = "paySalaryComponentFormController")
 @ViewScoped
-public class PaySalaryComponentFormController extends BaseController{
+public class PaySalaryComponentFormController extends BaseController {
+
     private PaySalaryComponentModel model;
     private Boolean isUpdate;
     @ManagedProperty(value = "#{paySalaryComponentService}")
@@ -58,16 +60,19 @@ public class PaySalaryComponentFormController extends BaseController{
     @ManagedProperty(value = "#{taxComponentService}")
     private TaxComponentService taxComponentService;
     private Boolean disableTax;
-    
+    private Boolean isDisableComponetModel;
+
     //Dropdown
-    private Map<String, Long> dropDownModelComponent = new TreeMap<String, Long>();;
+    private Map<String, Long> dropDownModelComponent = new TreeMap<String, Long>();
     private List<ModelComponent> listModelComponent = new ArrayList<>();
-    private Map<String, Long> dropDownPaySalaryJurnal = new TreeMap<String, Long>();;
+    private Map<String, Long> dropDownPaySalaryJurnal = new TreeMap<String, Long>();
     private List<PaySalaryJurnal> listPaySalaryJurnal = new ArrayList<>();
-    private Map<String, Long> dropDownTaxComponent = new TreeMap<String, Long>();;
+    private Map<String, Long> dropDownTaxComponent = new TreeMap<String, Long>();
+    ;
     private List<TaxComponent> listTaxComponent = new ArrayList<>();
     private DualListModel<EmployeeType> dualListModel = new DualListModel<>();
-    
+    private Map<String, Long> dropDownModelRef = new HashMap<>();
+
     @PostConstruct
     @Override
     public void initialization() {
@@ -88,17 +93,17 @@ public class PaySalaryComponentFormController extends BaseController{
 //                    dualListModel = new DualListModel<>(sourceSpiRole, targetRole);
                     isUpdate = Boolean.TRUE;
                 }
-            }else{
+            } else {
                 List<EmployeeType> source = this.employeeTypeService.getAllData();
                 dualListModel.setSource(source);
             }
-            
+            isDisableComponetModel = Boolean.TRUE;
             listDrowDown();
         } catch (Exception e) {
             LOGGER.error("Error", e);
         }
     }
-    
+
     @PreDestroy
     public void cleanAndExit() {
         isUpdate = null;
@@ -118,44 +123,45 @@ public class PaySalaryComponentFormController extends BaseController{
         dropDownTaxComponent = null;
         listTaxComponent = null;
         disableTax = null;
+        System.out.println(" jajajajjajj");
     }
-    
-    public void listDrowDown() throws Exception{
+
+    public void listDrowDown() throws Exception {
         //model component
         listModelComponent = modelComponentService.getAllData();
         for (ModelComponent modelComponent : listModelComponent) {
             dropDownModelComponent.put(modelComponent.getName(), modelComponent.getId());
         }
-        
+
         //pay salary jurnal
         listPaySalaryJurnal = paySalaryJurnalService.getAllData();
-        for (PaySalaryJurnal paySalaryJurnal: listPaySalaryJurnal) {
+        for (PaySalaryJurnal paySalaryJurnal : listPaySalaryJurnal) {
             dropDownPaySalaryJurnal.put(paySalaryJurnal.getName(), paySalaryJurnal.getId());
         }
-        
+
         //tax component
         listTaxComponent = taxComponentService.getAllData();
         for (TaxComponent taxComponent : listTaxComponent) {
             dropDownTaxComponent.put(taxComponent.getName(), taxComponent.getId());
         }
-        
+        dropDownModelRef = new HashMap<>();
         MapUtil.sortByValue(dropDownTaxComponent);
         MapUtil.sortByValue(dropDownPaySalaryJurnal);
-        MapUtil.sortByValue(dropDownModelComponent);
+//        MapUtil.sortByValue(dropDownModelComponent);
     }
-    
+
     private PaySalaryComponentModel getModelFromEntity(PaySalaryComponent entity) {
         PaySalaryComponentModel paySalaryComponentModel = new PaySalaryComponentModel();
         paySalaryComponentModel.setId(entity.getId());
         paySalaryComponentModel.setCode(entity.getCode());
         paySalaryComponentModel.setName(entity.getName());
-        if(entity.getModelComponent()!= null){
+        if (entity.getModelComponent() != null) {
             paySalaryComponentModel.setModelComponentId(entity.getModelComponent().getId());
         }
-        if(entity.getTaxComponent()!= null){
+        if (entity.getTaxComponent() != null) {
             paySalaryComponentModel.setTaxComponentId(entity.getTaxComponent().getId());
         }
-        if(entity.getPaySalaryJurnal()!= null){
+        if (entity.getPaySalaryJurnal() != null) {
             paySalaryComponentModel.setPaySalaryJurnalId(entity.getPaySalaryJurnal().getId());
         }
         paySalaryComponentModel.setRenumeration(entity.getRenumeration());
@@ -164,8 +170,7 @@ public class PaySalaryComponentFormController extends BaseController{
         paySalaryComponentModel.setResetData(entity.getResetData());
         return paySalaryComponentModel;
     }
-    
-    
+
     private PaySalaryComponent getEntityFromViewModel(PaySalaryComponentModel model) throws Exception {
         PaySalaryComponent paySalaryComponent = new PaySalaryComponent();
         if (model.getId() != null) {
@@ -182,7 +187,7 @@ public class PaySalaryComponentFormController extends BaseController{
         paySalaryComponent.setResetData(model.getResetData());
         return paySalaryComponent;
     }
-    
+
     public void doSave() throws Exception {
         PaySalaryComponent paySalaryComponent = getEntityFromViewModel(model);
         try {
@@ -194,21 +199,21 @@ public class PaySalaryComponentFormController extends BaseController{
                 RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
             }
             cleanAndExit();
-        } catch (BussinessException ex) { 
+        } catch (BussinessException ex) {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
     }
-    
-    public void doChangeTaxable() throws Exception{
-        if(model.getTaxableCheck() == Boolean.TRUE){
-            disableTax = Boolean.TRUE;
-        }else{
+
+    public void doChangeTaxable() throws Exception {
+        if (Objects.equals(model.getTaxableCheck(), Boolean.TRUE)) {
             disableTax = Boolean.FALSE;
+        } else {
+            disableTax = Boolean.TRUE;
         }
     }
-    
+
     public String doBack() {
         return "/protected/payroll/pay_salary_component_view.htm?faces-redirect=true";
     }
@@ -218,18 +223,18 @@ public class PaySalaryComponentFormController extends BaseController{
         super.onDialogReturn(event);
 
     }
-    
+
     public void doSearch() {
-      
+
         Map<String, Object> options = new HashMap<>();
         options.put("modal", false);
         options.put("draggable", true);
         options.put("resizable", false);
-        options.put("contentWidth", 700);
-        options.put("contentHeight", 350);
+        options.put("contentWidth", 460);
+        options.put("contentHeight", 320);
         RequestContext.getCurrentInstance().openDialog("pay_salary_component_formula", options, null);
     }
-    
+
     public Boolean getDisableTax() {
         return disableTax;
     }
@@ -237,7 +242,7 @@ public class PaySalaryComponentFormController extends BaseController{
     public void setDisableTax(Boolean disableTax) {
         this.disableTax = disableTax;
     }
-    
+
     public PaySalaryComponentModel getModel() {
         return model;
     }
@@ -349,6 +354,35 @@ public class PaySalaryComponentFormController extends BaseController{
     public void setDualListModel(DualListModel<EmployeeType> dualListModel) {
         this.dualListModel = dualListModel;
     }
-    
-    
+
+    public void doCangeComponentModel() {
+        dropDownModelRef = new HashMap<>();
+        try {
+            dropDownModelRef = this.paySalaryComponentService.returnComponentChange(model.getModelComponentId());
+            if (dropDownModelRef.size() > 0) {
+                isDisableComponetModel = Boolean.FALSE;
+            } else {
+                isDisableComponetModel = Boolean.TRUE;
+            }
+        } catch (Exception ex) {
+            LOGGER.info(ex, ex);
+        }
+    }
+
+    public Map<String, Long> getDropDownModelRef() {
+        return dropDownModelRef;
+    }
+
+    public void setDropDownModelRef(Map<String, Long> dropDownModelRef) {
+        this.dropDownModelRef = dropDownModelRef;
+    }
+
+    public Boolean getIsDisableComponetModel() {
+        return isDisableComponetModel;
+    }
+
+    public void setIsDisableComponetModel(Boolean isDisableComponetModel) {
+        this.isDisableComponetModel = isDisableComponetModel;
+    }
+
 }

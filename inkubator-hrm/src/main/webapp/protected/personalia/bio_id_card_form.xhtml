@@ -43,7 +43,7 @@
                             <p:column  style="width: 70%">
                                 <p:focus for ="typeId">
                                     <p:inputText id="typeId" title="#{appmsg['bioIdCard.bioIdCard_type']}" value="#{bioIdCardFormController.bioIdCardModel.type}" 
-                                                 required="true" requiredMessage="#{appmsg['bioIdCard.bioIdCard_type_should_not_be_empty']}" maxlength="60" styleClass="isitext_hrm" style="width:250px;" />
+                                                 required="true" requiredMessage="#{appmsg['bioIdCard.bioIdCard_type_should_not_be_empty']}" maxlength="60" styleClass="isitext_hrm" style="width:280px;" />
                                 </p:focus>
                             </p:column>
                         </p:row>
@@ -53,16 +53,16 @@
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width: 29%">
+                            <p:column style="width: 39%">
                                 <p:outputLabel for="numberId" value="#{appmsg['bioIdCard.bioIdCard_number']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="numberId" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 70%">
+                            <p:column  style="width: 60%">
 
                                 <p:inputText id="numberId" title="#{appmsg['bioIdCard.bioIdCard_number']}" value="#{bioIdCardFormController.bioIdCardModel.cardNumber}" 
-                                             required="true" requiredMessage="#{appmsg['bioIdCard.bioIdCard_number_should_not_be_empty']}" maxlength="60" styleClass="isitext_hrm" style="width:250px;" >
+                                             required="true" requiredMessage="#{appmsg['bioIdCard.bioIdCard_number_should_not_be_empty']}" maxlength="60" styleClass="isitext_hrm" style="width:280px;" >
                                     <pe:keyFilter mask="num"></pe:keyFilter>
                                 </p:inputText>
 
@@ -112,7 +112,7 @@
                                                 itemValue="#{city}"
                                                 itemLabel="#{city.cityName}"
                                                 converter="#{cityConverter}"
-                                                required="true" requiredMessage="#{appmsg['bioIdCard.bioIdCard_place_should_not_be_empty']}" styleClass="isitext_hrm" style="width:250px;"></p:autoComplete>
+                                                required="true" requiredMessage="#{appmsg['bioIdCard.bioIdCard_place_should_not_be_empty']}" styleClass="isitext_hrm" size="39" style="width:250px;"></p:autoComplete>
 
 
                             </p:column>

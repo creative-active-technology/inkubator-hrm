@@ -42,7 +42,7 @@
                             </p:column>
                             <p:column  style="width: 50%">
                                 <p:inputText id="code"  value="#{resourceNameFormController.model.code}"
-                                             required="true"  maxlength="45" styleClass="isitext_hrm" style="width:210px;" />
+                                             required="true"  maxlength="45" styleClass="isitext_hrm" style="width:250px;" />
                             </p:column>
                         </p:row>
                         <p:row>
@@ -60,7 +60,7 @@
                             </p:column>
                             <p:column  style="width: 50%">
                                 <p:inputText id="name"  value="#{resourceNameFormController.model.name}"
-                                             required="true"  maxlength="45" styleClass="isitext_hrm" style="width:210px;" />
+                                             required="true"  maxlength="45" styleClass="isitext_hrm" style="width:250px;" />
                             </p:column>
                         </p:row>
                         <p:row>
@@ -78,7 +78,7 @@
                                 <h:outputLabel for="resourceType" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <p:selectOneMenu id="resourceType" value="#{resourceNameFormController.model.resourceTypeId}" style="width: 150px;margin-right: 3px" >
+                                <p:selectOneMenu id="resourceType" value="#{resourceNameFormController.model.resourceTypeId}" style="width: 156px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{resourceNameFormController.dropDownResourceType}"/>
                                     </p:selectOneMenu>
@@ -99,7 +99,7 @@
                                 <h:outputLabel for="dateOfOwnership" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 80%">
-                                <p:calendar  id="dateOfOwnership" size="40" pattern="dd MMMM yyyy" label="#{appmsg['resourceName.date_ownership']}" value="#{resourceNameFormController.model.dateOfOwnership}"
+                                <p:calendar  id="dateOfOwnership" size="20" pattern="dd MMMM yyyy" label="#{appmsg['resourceName.date_ownership']}" value="#{resourceNameFormController.model.dateOfOwnership}"
                                          required="true" navigator="true">
                                 <f:validator validatorId="birthDateValidator"  />
                                 <f:attribute name="validatorMessage" value="#{appmsg['global.birthDate_validator']}"/>
