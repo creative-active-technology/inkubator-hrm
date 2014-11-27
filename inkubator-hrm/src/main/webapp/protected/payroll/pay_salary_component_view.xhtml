@@ -83,9 +83,9 @@
                                 <h:outputLabel value= "#{data.name}" />
                             </p:column>
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
-                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
-                                                 onclick="statusDialog.show()"  oncomplete="detail.show()" update=":detailPanel"
-                                                 style="font-size: 10px!important" action="#{paySalaryComponentViewController.doSelectEntityWithDetail()}">                        
+                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
+                                                         style="font-size: 10px!important" 
+                                                         action="#{paySalaryComponentViewController.doDetail()}">                        
                                     <f:setPropertyActionListener value="#{data}" target="#{paySalaryComponentViewController.selected}" />
                                 </p:commandButton>
                                 - 
@@ -142,29 +142,7 @@
                         <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmDelete.hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
-                <p:dialog widgetVar="detail" header="#{appmsg['savingType.savingType_detail']}" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)" dynamic="true">
-                    <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
-                        <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['global.code']}" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{paySalaryComponentViewController.selected.code}"/> </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['global.name']}" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{paySalaryComponentViewController.selected.name}"/> </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{paySalaryComponentViewController.selected.description}"/> </p:column>
-                        </p:row>
-
-                        <f:facet name="footer">
-                            <p:row>
-                                <p:column colspan="2"><p:outputLabel value="#{appmsg['paySalaryComponent.paySalaryComponent_header']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
-                            </p:row>
-                        </f:facet>
-                    </p:panelGrid>
-                </p:dialog>
+                
             </ui:define>
         </ui:composition>
     </h:body>

@@ -21,8 +21,8 @@
                         <p:graphicImage library="images" name="cost_center.png" height="36" width="36"  cache="true"/>
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Implementation of OverTime" styleClass="header_big" />
-                                <p:outputLabel value="Implementation of OverTime from Employee" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['overTimeImplementation.overTimeImplementation_form']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['overTimeImplementation.overTimeImplementation_header']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -35,7 +35,7 @@
                         
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="implementationNumber" value="Implementation Number" styleClass="label_hrm"/>
+                                <p:outputLabel for="implementationNumber" value="#{appmsg['overTimeImplementation.implementation_number']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="implementationNumber" value=":" styleClass="label_hrm"/>
@@ -84,13 +84,13 @@
 
                         <p:row>
                             <p:column style="width: 40%;" >
-                                <p:outputLabel for="implementationDate" value="Implementation Date" styleClass="label_hrm"/>
+                                <p:outputLabel for="implementationDate" value="#{appmsg['overTimeImplementation.implementation_date']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="implementationDate" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 50%">
-                                <p:calendar  id="implementationDate" size="32" pattern="dd MMMM yyyy" label="Implementation Date" value="#{implementationOfOverTimeFormController.model.implementationDate}"
+                                <p:calendar  id="implementationDate" size="32" pattern="dd MMMM yyyy" label="#{appmsg['overTimeImplementation.implementation_date']}" value="#{implementationOfOverTimeFormController.model.implementationDate}"
                                          required="true" navigator="true">
 <!--                                    <f:validator validatorId="birthDateValidator"  />
                                     <f:attribute name="validatorMessage" value="#{appmsg['global.birthDate_validator']}"/>-->
@@ -106,7 +106,7 @@
                         
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="overtimeName" value="Nama Lembur" styleClass="label_hrm"/>
+                                <p:outputLabel for="overtimeName" value="#{appmsg['overTimeImplementation.overtime_name']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="overtimeName" value=":" styleClass="label_hrm"/>
@@ -126,7 +126,7 @@
                         
                         <p:row>
                             <p:column style="width: 40%;">
-                                <p:outputLabel for="startTime" value="Start Time" styleClass="label_hrm"/>
+                                <p:outputLabel for="startTime" value="#{appmsg['overTimeImplementation.start_overtime']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="startTime" value=":" styleClass="label_hrm"/>
@@ -150,7 +150,7 @@
                         
                         <p:row>
                             <p:column style="width: 40%;">
-                                <p:outputLabel for="endTime" value="End Time" styleClass="label_hrm"/>
+                                <p:outputLabel for="endTime" value="#{appmsg['overTimeImplementation.end_overtime']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="endTime" value=":" styleClass="label_hrm"/>

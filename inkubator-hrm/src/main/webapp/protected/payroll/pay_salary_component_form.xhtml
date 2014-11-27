@@ -70,7 +70,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Data Model Refferensi"  for="modelReferensi" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['paySalaryComponent.model_referensi']}"  for="modelReferensi" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:selectOneMenu id="modelReferensi" value="#{paySalaryComponentFormController.model.modelComponentId}" style="margin-right: 3px;width: 257px" required="true" disabled="#{paySalaryComponentFormController.isDisableComponetModel}" >

@@ -22,8 +22,8 @@
 	                        <p:graphicImage library="images" name="task_ico.png" height="36" width="36" />
 	                        <h:panelGroup layout="block">
 	                            <h:panelGrid>
-	                                <p:outputLabel value="Overtime Implementation Detail" styleClass="header_big" />
-	                                <p:outputLabel value="Overtime Implementation Detail from Working Time" styleClass="header_small_no_bold" />
+	                                <p:outputLabel value="#{appmsg['overTimeImplementation.detail']}" styleClass="header_big" />
+	                                <p:outputLabel value="#{appmsg['overTimeImplementation.detail_header']}" styleClass="header_small_no_bold" />
 	                            </h:panelGrid>
 	                        </h:panelGroup>
 	                    </h:panelGrid>
@@ -31,10 +31,10 @@
 	                    <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px">
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['leaveimplementation.filling_number']}" styleClass="label_hrm"/>
+	                                <p:outputLabel value="#{appmsg['overTimeImplementation.implementation_number']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{leaveImplementationDetailController.selectedLeaveImplementation.numberFilling}"/>
+                                        <p:outputLabel value="#{implementationOfOverTimeDetailController.selectedImplementationOfOverTime.code}"/>
 	                            </p:column>
 	                        </p:row>
 	                        <p:row>
@@ -42,103 +42,74 @@
 	                                <p:outputLabel value="#{appmsg['global.employee']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{leaveImplementationDetailController.selectedLeaveImplementation.empData.nikWithFullName}"/>
+                                        <p:outputLabel value="#{implementationOfOverTimeDetailController.selectedImplementationOfOverTime.empData.nikWithFullName}"/>
 	                            </p:column>
 	                        </p:row>
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['global.start_date']}" styleClass="label_hrm"/>
+	                                <p:outputLabel value="#{appmsg['overTimeImplementation.overtime_name']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{leaveImplementationDetailController.selectedLeaveImplementation.startDate}">
+                                        <p:outputLabel value="#{implementationOfOverTimeDetailController.selectedImplementationOfOverTime.overTimeName}">
+	                            		<f:convertDateTime pattern="dd MMMM yyyy" />
+	                            	</p:outputLabel>
+	                            </p:column>
+	                        </p:row>
+                                <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['overTimeImplementation.implementation_date']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+                                        <p:outputLabel value="#{implementationOfOverTimeDetailController.selectedImplementationOfOverTime.implementationDate}">
 	                            		<f:convertDateTime pattern="dd MMMM yyyy" />
 	                            	</p:outputLabel>
 	                            </p:column>
 	                        </p:row>
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['global.end_date']}" styleClass="label_hrm"/>
+	                                <p:outputLabel value="#{appmsg['overTimeImplementation.start_overtime']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{leaveImplementationDetailController.selectedLeaveImplementation.endDate}">
-	                            		<f:convertDateTime pattern="dd MMMM yyyy" />
+                                        <p:outputLabel value="#{implementationOfOverTimeDetailController.selectedImplementationOfOverTime.startTime}">
+	                            		
 	                            	</p:outputLabel>
 	                            </p:column>
 	                        </p:row>
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['leaveimplementation.filling_date']}" styleClass="label_hrm"/>
+	                                <p:outputLabel value="#{appmsg['overTimeImplementation.end_overtime']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{leaveImplementationDetailController.selectedLeaveImplementation.fillingDate}">
-	                            		<f:convertDateTime pattern="dd MMMM yyyy" />
+                                        <p:outputLabel value="#{implementationOfOverTimeDetailController.selectedImplementationOfOverTime.endTime}">
+	                            		
 	                            	</p:outputLabel>
 	                            </p:column>
 	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['global.address']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{leaveImplementationDetailController.selectedLeaveImplementation.address}"/>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['global.phone_number']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{leaveImplementationDetailController.selectedLeaveImplementation.mobilePhone}"/>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['leaveimplementation.material_jobs_abandoned']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{leaveImplementationDetailController.selectedLeaveImplementation.materialJobsAbandoned}"/>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['leaveimplementation.temporary_acting']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{leaveImplementationDetailController.selectedLeaveImplementation.temporaryActing.nikWithFullName}"/>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{leaveImplementationDetailController.selectedLeaveImplementation.description}"/>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row rendered="#{leaveImplementationDetailController.isHaveApprovalActivity}">
+	                        
+	                        <p:row rendered="#{implementationOfOverTimeDetailController.isHaveApprovalActivity}">
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
 	                                <p:outputLabel value="#{appmsg['approvalactivity.approved_by']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{leaveImplementationDetailController.selectedApprovalActivity.approvedBy}"/>
+	                            	<p:outputLabel value="#{implementationOfOverTimeDetailController.selectedApprovalActivity.approvedBy}"/>
 	                            </p:column>
 	                        </p:row>
-	                        <p:row rendered="#{leaveImplementationDetailController.isHaveApprovalActivity}">
+	                        <p:row rendered="#{implementationOfOverTimeDetailController.isHaveApprovalActivity}">
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
 	                                <p:outputLabel value="#{appmsg['approvalactivity.approval_status']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 30%">
-	                            	<p:outputLabel value="#{leaveImplementationDetailController.selectedApprovalActivity.approvalStatus}">
+	                            	<p:outputLabel value="#{implementationOfOverTimeDetailController.selectedApprovalActivity.approvalStatus}">
 	                            		<f:converter converterId="approvalStatusConverter" />
 	                            	</p:outputLabel>
 	                            </p:column>
 	                        </p:row>
-	                        <p:row rendered="#{leaveImplementationDetailController.isHaveApprovalActivity}">
+	                        <p:row rendered="#{implementationOfOverTimeDetailController.isHaveApprovalActivity}">
 	                        	<p:column style="width: 20%;background-color: #e1f0f0!important" rowspan="2">
 	                                <p:outputLabel value="#{appmsg['approvalactivity.approval_comment']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 30%" rowspan="2">
-	                            	<p:outputLabel value="#{leaveImplementationDetailController.selectedApprovalActivity.approvalCommment}"/>
+                                        <p:outputLabel value="#{implementationOfOverTimeDetailController.selectedApprovalActivity.approvalCommment}"/>
 	                            </p:column>
 	                      	</p:row>
 	                 	</p:panelGrid>                            
