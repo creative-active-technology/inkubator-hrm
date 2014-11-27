@@ -13,10 +13,10 @@
         <ui:composition template="/templates/dialog_layout.xhtml">
             <ui:define name="center">
                 <div align="center">
-                    <p:inputTextarea value="#{paySalaryComponentFormulaController.formulaOne}" id="formulaOneId"  style="width: 430px;font-size: 16px"/>
+                    <p:inputTextarea value="#{paySalaryComponentFormulaController.formulaOne}" id="formulaOneId"  style="width: 430px;height: 100px;font-size: 16px" />
                 </div>
-                <p:messages id="infoId" showDetail="true" showSummary="true" />
-                <h:form>
+                <p:messages id="infoId" showDetail="false" showSummary="true" />
+                <h:form id="formulaFormId">
                     <div align="center" style="margin-top: 5px">
                         <h:panelGrid columns="10">
                             <p:commandButton value="1" action="#{paySalaryComponentFormulaController.doAddOne()}" update=":formulaOneId" partialSubmit="true" process="@this"/>
@@ -33,7 +33,7 @@
 
                         <h:panelGrid columns="10">
                             <p:commandButton value="X" action="#{paySalaryComponentFormulaController.doAddCross()}" update=":formulaOneId" partialSubmit="true" process="@this"/>
-                            <p:commandButton value=":" action="#{paySalaryComponentFormulaController.doAddDevide()}" update=":formulaOneId" partialSubmit="true" process="@this"/>
+                            <p:commandButton value="/" action="#{paySalaryComponentFormulaController.doAddDevide()}" update=":formulaOneId" partialSubmit="true" process="@this"/>
                             <p:commandButton value="+" action="#{paySalaryComponentFormulaController.doAddPlus()}" update=":formulaOneId" partialSubmit="true" process="@this"/>
                             <p:commandButton value="-" action="#{paySalaryComponentFormulaController.doAddMinus()}" update=":formulaOneId" partialSubmit="true" process="@this"/>
                             <p:commandButton value="." action="#{paySalaryComponentFormulaController.doAddDecimal()}" update=":formulaOneId" partialSubmit="true" process="@this"/>
@@ -68,36 +68,61 @@
                         </h:panelGrid>
 
                         <!--<p:separator style="margin-left: 5px"/>-->
-                        <h:panelGrid columns="4">
+                        <h:panelGrid columns="3">
                             <p:commandButton value="Basic Salary" action="#{paySalaryComponentFormulaController.doAddBasicSalary()}" update=":formulaOneId" partialSubmit="true" process="@this" style="width: 100px"/>
                             <p:commandButton value="Working Day" action="#{paySalaryComponentFormulaController.doAddWorkingDay()}" update=":formulaOneId" partialSubmit="true" process="@this" style="width: 100px" />
                             <p:commandButton value="Total Day" action="#{paySalaryComponentFormulaController.doAddTotalWorkingDay()}" update=":formulaOneId" partialSubmit="true" process="@this" style="width: 100px" />
                             <p:commandButton value="Over Time" action="#{paySalaryComponentFormulaController.doAddOverTime()}" update=":formulaOneId" partialSubmit="true" process="@this" style="width: 100px" />
                             <p:commandButton value="Less Time" action="#{paySalaryComponentFormulaController.doAddLessTime()}" update=":formulaOneId" partialSubmit="true" process="@this" style="width: 100px" />
                             <p:commandButton value="More Time" action="#{paySalaryComponentFormulaController.doAddMoreTime()}" update=":formulaOneId" partialSubmit="true" process="@this" style="width: 100px" />
-                            <p:commandButton value="Check ?" action="#{paySalaryComponentFormulaController.doCheck()}" update=":formulaOneId,:infoId" style="width: 100px"/>
-                            <p:commandButton value="Clear" action="#{paySalaryComponentFormulaController.doAddClear()}" update=":formulaOneId,:infoId" partialSubmit="true" process="@this" style="width: 100px"/>
-
-                        </h:panelGrid>
-                        <h:panelGrid columns="1">
-                            <p:commandButton value="OK" action="#{paySalaryComponentFormulaController.doAddClear()}" update=":formulaOneId" partialSubmit="true" process="@this" style="width: 200px"/>
-                        </h:panelGrid>
-
-                        <h:panelGrid>
-                            <p:outputLabel value="Basic Salary" />
-                            <p:outputLabel value=":" />
-                            <p:inputText value="#{paySalaryComponentFormulaController.basicSalary}" />
-
-                            <p:outputLabel value="Working Day" />
-                            <p:outputLabel value=":" />
-                            <p:inputText value="#{paySalaryComponentFormulaController.workingDay}" />
-                            
-                            <p:outputLabel value="Working Day" />
-                            <p:outputLabel value=":" />
-                            <p:inputText value="#{paySalaryComponentFormulaController.workingDay}" />
 
                         </h:panelGrid>
 
+
+                        <h:panelGrid columns="9" id="panelFormId"> 
+                            <p:outputLabel value="Basic Salary" styleClass="label_hrm"/>
+                            <p:outputLabel value=":" styleClass="label_hrm"/>
+                            <pe:inputNumber value="#{paySalaryComponentFormulaController.basicSalary}" decimalPlaces="2" style="width: 40px" required="true" label="Basic Salary" />
+
+
+                            <p:outputLabel value="Working Day" styleClass="label_hrm"/>
+                            <p:outputLabel value=":" styleClass="label_hrm"/>
+                            <pe:inputNumber value="#{paySalaryComponentFormulaController.workingDay}" decimalPlaces="2" style="width: 40px" required="true" label="Working Day" />
+
+                            <p:outputLabel value="Total Day" styleClass="label_hrm"/>
+                            <p:outputLabel value=":" styleClass="label_hrm"/>
+                            <pe:inputNumber value="#{paySalaryComponentFormulaController.totalDay}" decimalPlaces="2" style="width: 40px" required="true" label="Total Day" />
+
+                            <p:outputLabel value="Over Time" styleClass="label_hrm"/>
+                            <p:outputLabel value=":" styleClass="label_hrm"/>
+                            <pe:inputNumber value="#{paySalaryComponentFormulaController.overTIme}" decimalPlaces="2" style="width: 40px" required="true" label="Over Time" />
+
+                            <p:outputLabel value="Less Time" styleClass="label_hrm"/>
+                            <p:outputLabel value=":" styleClass="label_hrm"/>
+                            <pe:inputNumber value="#{paySalaryComponentFormulaController.lessTime}" decimalPlaces="2" style="width: 40px" required="true" label="Less Time" />
+
+                            <p:outputLabel value="More Time" styleClass="label_hrm"/>
+                            <p:outputLabel value=":" styleClass="label_hrm"/>
+                            <pe:inputNumber value="#{paySalaryComponentFormulaController.moreTime}" decimalPlaces="2" style="width: 40px" required="true" label="More Time" />
+
+
+                        </h:panelGrid>
+
+
+                        <h:panelGrid columns="3">
+                            <p:outputLabel value="Hasil" styleClass="label_hrm"/>
+                            <p:outputLabel value=":" styleClass="label_hrm"/>
+                            <h:panelGroup>
+                                <p:outputLabel value="#{paySalaryComponentFormulaController.outPut}" id="ouPutId"/>
+                            </h:panelGroup>
+
+                        </h:panelGrid>
+
+                        <h:panelGrid columns="3">
+                            <p:commandButton value="Clear" action="#{paySalaryComponentFormulaController.doAddClear()}" update=":formulaOneId,:infoId,panelFormId" partialSubmit="true" process="@this" style="width: 100px" immediate="true"/>
+                            <p:commandButton value="Check ?" action="#{paySalaryComponentFormulaController.doCheck()}" update=":formulaOneId,:infoId,ouPutId" style="width: 100px"/>
+                            <p:commandButton value="OK" action="#{paySalaryComponentFormulaController.doOkFormula()}" update=":formulaOneId" partialSubmit="true" process="@this" style="width: 100px"/>
+                        </h:panelGrid>
                     </div>
                 </h:form>
             </ui:define>

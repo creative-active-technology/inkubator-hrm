@@ -16,6 +16,7 @@ import javax.faces.bean.ViewScoped;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -32,7 +33,7 @@ public class PaySalaryComponentFormulaController extends BaseController {
     private Double moreTime;
     private Double overTIme;
     private Double totalDay;
-    
+    private Double outPut;
 
     @PostConstruct
     @Override
@@ -160,9 +161,9 @@ public class PaySalaryComponentFormulaController extends BaseController {
 
     public void doAddDevide() {
         if (getFormulaOne() != null) {
-            formulaOne = getFormulaOne() + ":";
+            formulaOne = getFormulaOne() + "/";
         } else {
-            formulaOne = ":";
+            formulaOne = "/";
         }
 
     }
@@ -297,7 +298,7 @@ public class PaySalaryComponentFormulaController extends BaseController {
         if (getFormulaOne() != null) {
             formulaOne = getFormulaOne() + "bS";
         } else {
-            formulaOne = "bs";
+            formulaOne = "bS";
         }
     }
 
@@ -405,8 +406,40 @@ public class PaySalaryComponentFormulaController extends BaseController {
         }
     }
 
+    public void doAddTmb() {
+        if (getFormulaOne() != null) {
+            formulaOne = getFormulaOne() + "tmb";
+        } else {
+            formulaOne = "tmb";
+        }
+    }
+
+    public void doAddPayDate() {
+        if (getFormulaOne() != null) {
+            formulaOne = getFormulaOne() + "payDate";
+        } else {
+            formulaOne = "payDate";
+        }
+    }
+
+    public void doAddRangPeriode() {
+        if (getFormulaOne() != null) {
+            formulaOne = getFormulaOne() + "range";
+        } else {
+            formulaOne = "range";
+        }
+    }
+
     public void doAddClear() {
         formulaOne = null;
+        basicSalary = null;
+        workingDay = null;
+        lessTime = null;
+        moreTime = null;
+        overTIme = null;
+        moreTime = null;
+        overTIme = null;
+        totalDay = null;
 
     }
 
@@ -428,7 +461,7 @@ public class PaySalaryComponentFormulaController extends BaseController {
         jsEngine.put("oT", overTIme);
         jsEngine.put("tD", totalDay);
         try {
-            jsEngine.eval(formulaOne);
+            outPut = (Double) jsEngine.eval(formulaOne);
 //            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.ok", "formula_ok", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (ScriptException ex) {
             System.out.println(" nilai " + ex.getMessage());
@@ -484,8 +517,15 @@ public class PaySalaryComponentFormulaController extends BaseController {
         this.totalDay = totalDay;
     }
 
-   
+    public Double getOutPut() {
+        return outPut;
+    }
 
-   
-    
+    public void setOutPut(Double outPut) {
+        this.outPut = outPut;
+    }
+
+    public void doOkFormula() {
+        RequestContext.getCurrentInstance().closeDialog(formulaOne);
+    }
 }

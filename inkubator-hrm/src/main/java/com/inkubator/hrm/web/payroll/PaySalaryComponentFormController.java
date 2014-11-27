@@ -221,8 +221,12 @@ public class PaySalaryComponentFormController extends BaseController {
     @Override
     public void onDialogReturn(SelectEvent event) {
         super.onDialogReturn(event);
-
+        String dataFormula=(String) event.getObject();
+        model.setFormula(dataFormula);
+        
     }
+
+    
 
     public void doSearch() {
 
@@ -231,7 +235,7 @@ public class PaySalaryComponentFormController extends BaseController {
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 460);
-        options.put("contentHeight", 320);
+        options.put("contentHeight", 450);
         RequestContext.getCurrentInstance().openDialog("pay_salary_component_formula", options, null);
     }
 
