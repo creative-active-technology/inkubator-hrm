@@ -37,6 +37,7 @@ public class UserEmployeeSearchController extends BaseController {
     public void cleanAndExit() {
 		param = null;
 		lazyDataEmpData = null;
+                empDataService = null;
 	}
 	
 	public String getParam() {

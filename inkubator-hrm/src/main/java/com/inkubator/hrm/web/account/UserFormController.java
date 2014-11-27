@@ -90,6 +90,8 @@ public class UserFormController extends BaseController {
         hrmRoleService = null;
         passwordComplexity = null;
         passwordComplexityService = null;
+        userModel = null;
+        isEdit = null;
     }
     
     public void setPasswordComplexityService(PasswordComplexityService passwordComplexityService) {
