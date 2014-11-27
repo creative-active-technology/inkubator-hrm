@@ -26,6 +26,13 @@ import javax.script.ScriptException;
 public class PaySalaryComponentFormulaController extends BaseController {
 
     private String formulaOne;
+    private Double basicSalary;
+    private Double workingDay;
+    private Double lessTime;
+    private Double moreTime;
+    private Double overTIme;
+    private Double totalDay;
+    
 
     @PostConstruct
     @Override
@@ -414,18 +421,71 @@ public class PaySalaryComponentFormulaController extends BaseController {
     public void doCheck() {
         ScriptEngineManager mgr = new ScriptEngineManager();
         ScriptEngine jsEngine = mgr.getEngineByName("JavaScript");
-        jsEngine.put("bS", 2.0);
-        jsEngine.put("wD", 2.0);
-        jsEngine.put("lT", 2.0);
-        jsEngine.put("mT", 2.0);
-        jsEngine.put("oT", 2.0);
-        jsEngine.put("tD", 2.0);
+        jsEngine.put("bS", basicSalary);
+        jsEngine.put("wD", workingDay);
+        jsEngine.put("lT", lessTime);
+        jsEngine.put("mT", moreTime);
+        jsEngine.put("oT", overTIme);
+        jsEngine.put("tD", totalDay);
         try {
             jsEngine.eval(formulaOne);
-            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "formula.ok", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+//            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.ok", "formula_ok", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (ScriptException ex) {
             System.out.println(" nilai " + ex.getMessage());
-            MessagesResourceUtil.setMessagesFromException(FacesMessage.SEVERITY_ERROR, "global.error", ex.getMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "formula_error", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         }
     }
+
+    public Double getBasicSalary() {
+        return basicSalary;
+    }
+
+    public void setBasicSalary(Double basicSalary) {
+        this.basicSalary = basicSalary;
+    }
+
+    public Double getWorkingDay() {
+        return workingDay;
+    }
+
+    public void setWorkingDay(Double workingDay) {
+        this.workingDay = workingDay;
+    }
+
+    public Double getLessTime() {
+        return lessTime;
+    }
+
+    public void setLessTime(Double lessTime) {
+        this.lessTime = lessTime;
+    }
+
+    public Double getMoreTime() {
+        return moreTime;
+    }
+
+    public void setMoreTime(Double moreTime) {
+        this.moreTime = moreTime;
+    }
+
+    public Double getOverTIme() {
+        return overTIme;
+    }
+
+    public void setOverTIme(Double overTIme) {
+        this.overTIme = overTIme;
+    }
+
+    public Double getTotalDay() {
+        return totalDay;
+    }
+
+    public void setTotalDay(Double totalDay) {
+        this.totalDay = totalDay;
+    }
+
+   
+
+   
+    
 }

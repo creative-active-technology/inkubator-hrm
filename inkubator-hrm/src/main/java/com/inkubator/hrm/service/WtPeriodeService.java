@@ -20,4 +20,6 @@ public interface WtPeriodeService extends IService<WtPeriode> {
     public List<WtPeriode> getByParam(WtPeriodeSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
 
     public Long getTotalWtPeriodeByParam(WtPeriodeSearchParameter searchParameter) throws Exception;
+    
+    public WtPeriode getEntityByStatusActive() throws Exception;
 }

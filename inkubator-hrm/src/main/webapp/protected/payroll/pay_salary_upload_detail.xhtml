@@ -1,0 +1,178 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>TODO supply a title</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg" style="margin: 10px">
+                   <h:panelGrid style="margin-bottom: 5px" columns="2">
+                    	<p:graphicImage library="images" name="cost_center.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                        	<h:panelGrid>
+                            	<p:outputLabel value="#{appmsg['paysalaryupload.upload_component_model']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['paysalaryupload.data_upload_component_model_from_application']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator/>
+                    <p:growl id="growlPaySalaryUploadDetailId" globalOnly="true" showDetail="true" />
+					<h:form id="formPaySalaryUploadDetailId">
+						<p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px;margin-bottom:20px;">
+							<p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['paysalaryupload.component_name']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:outputLabel value="#{paySalaryUploadDetailController.model.paySalaryComponentName}" styleClass="label_hrm"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['paysalaryupload.total_employee']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:outputLabel value="#{paySalaryUploadDetailController.model.totalEmployee}" styleClass="label_hrm"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['global.total']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:outputLabel value="#{paySalaryUploadDetailController.model.totalSalary}" styleClass="label_hrm">
+	                            		<f:convertNumber pattern="###,###" type="currency"/>
+	                            	</p:outputLabel>
+	                            </p:column>
+	                        </p:row>
+						</p:panelGrid>
+                        <p:toolbar  style="margin-top: 10px">
+                            <p:toolbarGroup align="left">
+                                <h:panelGrid columns="5">
+                                    <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm" />
+                                    <p:outputLabel value=":" />
+                                    <p:selectOneMenu value="#{paySalaryUploadDetailController.parameter.keyParam}" style="width: 150px;margin-right: 3px" >
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItem itemLabel="#{appmsg['global.nik']}" itemValue="nik"/>
+                                        <f:selectItem itemLabel="#{appmsg['employee.employee_name']}" itemValue="name"/>
+                                    </p:selectOneMenu>
+                                    <p:inputText id="searchId" value="#{paySalaryUploadDetailController.parameter.parameter}" style="width: 250px" styleClass="label_button"/>
+                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{paySalaryUploadDetailController.doSearch()}" update="tablePaySalaryUploadId"  styleClass="label_button" icon="ui-icon-search"/>
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                            <p:toolbarGroup align="right">
+                                <h:panelGrid columns="4" >
+                                	<p:commandButton value="#{appmsg['global.reuse']}" title="#{appmsg['global.reuse']}" onclick="PrimeFaces.monitorDownload(start, stop)"/>
+                                	<p:commandButton value="#{appmsg['global.upload']}" title="#{appmsg['global.upload']}" onclick="PrimeFaces.monitorDownload(start, stop)"/>
+                                    <p:commandButton value="#{appmsg['global.add_data']}" actionListener="#{paySalaryUploadDetailController.doAddData()}" title="#{appmsg['global.add_data']}" label="#{appmsg['global.add_data']}" styleClass="label_button" ajax="true">
+                                        <p:ajax event="dialogReturn" listener="#{paySalaryUploadDetailController.onDialogReturn}"  update="formPaySalaryUploadDetailId,:growlPaySalaryUploadDetailId"/>
+                                    </p:commandButton>
+                                    <p:commandButton value="Export to XLS" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
+                                        <pe:exporter target="tablePaySalaryUploadId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Employee"/>
+                                    </p:commandButton>                                                                        
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                        </p:toolbar>
+                        <p:focus for="searchId" />
+                        <p:dataTable  id="tablePaySalaryUploadId" var="payTempUploadData"  value="#{paySalaryUploadDetailController.lazyPayTempUploadData}" lazy="true" paginator="true" pageLinks="7"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <p:column style="text-align: center;width: 3%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column sortBy="empData.nik" style="width: 20%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['global.nik']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{payTempUploadData.empData.nik}" />
+                            </p:column>
+                            <p:column sortBy="empData.bioData.firstName" style="width: 40%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['employee.employee_name']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{payTempUploadData.empData.bioData.fullName}" />
+                            </p:column>
+                            <p:column sortBy="nominalValue" style="width: 20%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['global.nominal']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{payTempUploadData.nominalValue}">
+                                	<f:convertNumber pattern="###,###" type="currency"/>
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
+                                <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+                                				 style="font-size: 10px!important" update=":panelDialogConfirmId" 
+                                				 action="#{paySalaryUploadDetailController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmPayTempUploadData.show()">
+                                    <f:setPropertyActionListener value="#{payTempUploadData}" target="#{paySalaryUploadDetailController.selectedPayTempUploadData}" />
+                                </p:commandButton>
+                                -
+                                <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" ajax="true"
+                                                 action="#{paySalaryUploadDetailController.doEditData()}" >
+                                    <f:setPropertyActionListener value="#{payTempUploadData}" target="#{paySalaryUploadDetailController.selectedPayTempUploadData}" />
+                                    <p:ajax event="dialogReturn" listener="#{paySalaryUploadDetailController.onDialogReturn}"  update=":formPaySalaryUploadDetailId,:growlPaySalaryUploadDetailId"/>
+                                </p:commandButton>
+                            </p:column> 
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : "/>
+                                <p:outputLabel value="#{paySalaryUploadDetailController.lazyPayTempUploadData.rowCount}"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px"/>
+                            </f:facet>  
+                        </p:dataTable>
+                        
+                        <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+	                    <div style="margin-bottom: 5px">
+	                        <p:commandButton value="#{appmsg['global.close']}" icon="ui-icon-contact"  title="#{appmsg['global.close']}" action="#{paySalaryUploadDetailController.doBack()}" immediate="true"
+	                                      	 styleClass="label_button"/>
+	                    </div>
+	                    
+                        <p:blockUI block="formPaySalaryUploadDetailId" trigger="tablePaySalaryUploadId,btnSearchId" >
+                            <h:panelGrid columns="2" styleClass="grid_no_border">
+                                <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
+                                <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
+                            </h:panelGrid>
+                        </p:blockUI>
+                    </h:form>
+                </div>
+                <p:dialog widgetVar="dialogConfirmPayTempUploadData" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                          appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
+                    <div align="center">
+                        <div align="center">
+                            <h:panelGrid columns="2" style="text-align: justify">
+                                <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
+                                <h:panelGroup>
+                                    <h:panelGrid style="text-align: center">
+                                        <p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
+                                    </h:panelGrid>
+                                </h:panelGroup>
+                            </h:panelGrid>
+                        </div>
+                        <h:panelGrid id="panelDialogConfirmId"  columns="3">
+                            <p:outputLabel value="#{appmsg['employee.employee_name']}"  style="font-weight: bold"/>
+                            <p:outputLabel value=":"  style="font-weight: bold"/>
+                            <p:outputLabel value="#{paySalaryUploadDetailController.selectedPayTempUploadData.empData.bioData.fullName}" styleClass="label_hrm"/>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:commandButton value="#{appmsg['global.yes']}" action="#{paySalaryUploadDetailController.doDeleteData()}" update="formPaySalaryUploadDetailId,growlPaySalaryUploadDetailId"
+                                         oncomplete="dialogConfirmPayTempUploadData.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmPayTempUploadData.hide()" icon="ui-icon-close" />                     	
+                    </div>
+                </p:dialog>                
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

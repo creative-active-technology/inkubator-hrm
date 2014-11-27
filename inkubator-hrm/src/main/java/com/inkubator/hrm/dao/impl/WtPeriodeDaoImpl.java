@@ -58,4 +58,11 @@ public class WtPeriodeDaoImpl extends IDAOImpl<WtPeriode> implements WtPeriodeDa
         }
         criteria.add(Restrictions.isNotNull("id"));
     }
+
+    @Override
+    public WtPeriode getEntityByStatusActive() {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("payrollType", "Active"));
+        return (WtPeriode) criteria.uniqueResult();
+    }
 }

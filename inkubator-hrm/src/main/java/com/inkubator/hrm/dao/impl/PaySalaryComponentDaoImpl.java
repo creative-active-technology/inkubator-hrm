@@ -6,10 +6,14 @@
 package com.inkubator.hrm.dao.impl;
 
 import com.inkubator.datacore.dao.impl.IDAOImpl;
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.PaySalaryComponentDao;
 import com.inkubator.hrm.entity.PaySalaryComponent;
 import com.inkubator.hrm.web.search.PaySalaryComponentSearchParameter;
+
 import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.MatchMode;
@@ -72,6 +76,37 @@ public class PaySalaryComponentDaoImpl extends IDAOImpl<PaySalaryComponent> impl
         criteria.add(Restrictions.isNotNull("id"));
     }
 
+	@Override
+	public List<PaySalaryComponent> getAllDataComponentUploadByParam(PaySalaryComponentSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        this.doSearchComponentUploadByParam(searchParameter, criteria);
+        criteria.setFetchMode("payTempUploadDatas", FetchMode.JOIN);
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        criteria.addOrder(order);
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResults);
+        return criteria.list();
+		
+	}
+
+	@Override
+	public Long getTotalComponentUploadByParam(PaySalaryComponentSearchParameter searchParameter) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		this.doSearchComponentUploadByParam(searchParameter, criteria);
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
+
+	private void doSearchComponentUploadByParam(PaySalaryComponentSearchParameter searchParameter, Criteria criteria) {
+		if (StringUtils.isNotEmpty(searchParameter.getName())) {
+        	criteria.add(Restrictions.like("name", searchParameter.getName(), MatchMode.ANYWHERE));
+        } 
+        if (StringUtils.isNotEmpty(searchParameter.getCode())) {
+        	criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.ANYWHERE));
+        } 
+        criteria.add(Restrictions.isNotNull("id"));
+        criteria.createAlias("modelComponent", "modelComponent");
+        criteria.add(Restrictions.eq("modelComponent.spesific", HRMConstant.MODEL_COMP_UPLOAD));
+	}
     
 
 }

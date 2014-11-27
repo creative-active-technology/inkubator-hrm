@@ -15,7 +15,7 @@
                 <div align="center">
                     <p:inputTextarea value="#{paySalaryComponentFormulaController.formulaOne}" id="formulaOneId"  style="width: 430px;font-size: 16px"/>
                 </div>
-                <p:messages id="infoId" />
+                <p:messages id="infoId" showDetail="true" showSummary="true" />
                 <h:form>
                     <div align="center" style="margin-top: 5px">
                         <h:panelGrid columns="10">
@@ -83,6 +83,20 @@
                             <p:commandButton value="OK" action="#{paySalaryComponentFormulaController.doAddClear()}" update=":formulaOneId" partialSubmit="true" process="@this" style="width: 200px"/>
                         </h:panelGrid>
 
+                        <h:panelGrid>
+                            <p:outputLabel value="Basic Salary" />
+                            <p:outputLabel value=":" />
+                            <p:inputText value="#{paySalaryComponentFormulaController.basicSalary}" />
+
+                            <p:outputLabel value="Working Day" />
+                            <p:outputLabel value=":" />
+                            <p:inputText value="#{paySalaryComponentFormulaController.workingDay}" />
+                            
+                            <p:outputLabel value="Working Day" />
+                            <p:outputLabel value=":" />
+                            <p:inputText value="#{paySalaryComponentFormulaController.workingDay}" />
+
+                        </h:panelGrid>
 
                     </div>
                 </h:form>

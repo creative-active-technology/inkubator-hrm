@@ -19,6 +19,7 @@ import com.inkubator.hrm.entity.PaySalaryComponent;
 import com.inkubator.hrm.entity.ReimbursmentSchema;
 import com.inkubator.hrm.service.PaySalaryComponentService;
 import com.inkubator.hrm.web.search.PaySalaryComponentSearchParameter;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,8 +62,9 @@ public class PaySalaryComponentServiceImpl extends IServiceImpl implements PaySa
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
     public PaySalaryComponent getEntiyByPK(Long id) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return paySalaryComponentDao.getEntiyByPK(id);
     }
 
     @Override
@@ -228,6 +230,18 @@ public class PaySalaryComponentServiceImpl extends IServiceImpl implements PaySa
         return paySalaryComponentDao.getEntityByPkWithDetail(id);
     }
 
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<PaySalaryComponent> getAllDataComponentUploadByParam(PaySalaryComponentSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
+		return paySalaryComponentDao.getAllDataComponentUploadByParam(searchParameter, firstResult, maxResults, order);		
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Long getTotalComponentUploadByParam(PaySalaryComponentSearchParameter searchParameter) throws Exception {
+		return paySalaryComponentDao.getTotalComponentUploadByParam(searchParameter);		
+	}
+	
     @Override
     public Map<String, Long> returnComponentChange(Long id) throws Exception {
         ModelComponent component = this.modelComponentDao.getEntiyByPK(id);
