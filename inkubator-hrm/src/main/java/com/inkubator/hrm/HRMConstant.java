@@ -314,4 +314,8 @@ public class HRMConstant {
     public static final Integer PAY_SALARY_JURNAL_MODEL_TRANSFER = 1;
     
     public static final Boolean REIMBURSMENT_PAYROLL_COMPONENT = Boolean.TRUE;
+    
+    public static final Integer PAY_SALARY_COMPONENT_TUNJANGAN = 0;
+    public static final Integer PAY_SALARY_COMPONENT_POTONGAN = 1;
+    public static final Integer PAY_SALARY_COMPONENT_SUBSIDI = 2;
 }

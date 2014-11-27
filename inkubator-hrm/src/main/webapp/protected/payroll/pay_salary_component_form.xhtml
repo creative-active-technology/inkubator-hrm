@@ -28,11 +28,7 @@
                             </h:panelGroup>
                         </h:panelGrid>
                         <p:separator/>
-
-
-
-                        <p:panelGrid style="width: 100%;margin-bottom: 20px;margin-top: 20px" styleClass="grid_border3"  >
-
+                        <p:panelGrid style="width: 100%;margin-bottom: 20px;margin-top: 20px" styleClass="grid_border3" >
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="#{appmsg['paySalaryComponent.paySalaryComponent_code']}"  for="code" styleClass="label_hrm" />
@@ -70,10 +66,10 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Data Model Refferensi"  for="modelReferensi" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['paySalaryComponent.model_referensi']}"  for="modelReferensi" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneMenu id="modelReferensi" value="#{paySalaryComponentFormController.model.modelComponentId}" style="margin-right: 3px;width: 257px" required="true" disabled="#{paySalaryComponentFormController.isDisableComponetModel}" >
+                                    <p:selectOneMenu id="modelReferensi" value="#{paySalaryComponentFormController.model.modelReffernsiId}" style="margin-right: 3px;width: 257px" required="true" disabled="#{paySalaryComponentFormController.isDisableComponetModel}" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{paySalaryComponentFormController.dropDownModelRef}"/>
                                     </p:selectOneMenu>
@@ -86,14 +82,7 @@
                                     <p:outputLabel  value="#{appmsg['paySalaryComponent.paySalaryComponent_formula']}"  for="formula" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:inputTextarea id="formula" value="#{paySalaryComponentFormController.model.formula}" required="true"  style="width: 250px"  readonly="true"/>
-<!--                                    <p:inputText id="formula" value="#{paySalaryComponentFormController.model.formula}"
-                                             required="true" styleClass="isitext_hrm" style="width:210px;" />-->
-<!--                                    <p:commandButton  style="margin-left: 5px" icon="ui-icon-search" title="Cari" action="#{paySalaryComponentFormController.doSearch()}" widgetVar="cariId" 
-                                                      ajax="true" immediate="true">
-                                        <p:ajax event="dialogReturn" listener="#{paySalaryComponentFormController.onDialogReturn}"/>
-
-                                    </p:commandButton>-->
+                                    <p:inputTextarea id="formula" value="#{paySalaryComponentFormController.model.formula}" required="false"  style="width: 250px"  readonly="true"/>
                                     <p:message for="formula"/>
                                 </p:column>
                             </p:row>
@@ -102,7 +91,7 @@
                                 <p:column style="width: 80%">
                                     <p:commandButton  style="margin-left: 0px"  title="Buat Rumus" action="#{paySalaryComponentFormController.doSearch()}" widgetVar="cariId" 
                                                       ajax="true" immediate="true" value="Buat Rumus">
-                                        <p:ajax event="dialogReturn" listener="#{paySalaryComponentFormController.onDialogReturn}"/>
+                                        <p:ajax event="dialogReturn" listener="#{paySalaryComponentFormController.onDialogReturn}" update="formula"/>
 
                                     </p:commandButton>
                                 </p:column>

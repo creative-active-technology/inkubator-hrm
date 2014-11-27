@@ -8,6 +8,7 @@ package com.inkubator.hrm.web.payroll;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.PaySalaryComponent;
 import com.inkubator.hrm.service.PaySalaryComponentService;
+import com.inkubator.hrm.web.lazymodel.PaySalaryComponentLazyDataModel;
 import com.inkubator.hrm.web.search.PaySalaryComponentSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
@@ -29,7 +30,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 @ManagedBean(name = "paySalaryComponentViewController")
 @ViewScoped
 public class PaySalaryComponentViewController extends BaseController{
-    @ManagedProperty(value = "#{paySalaryComponent}")
+    @ManagedProperty(value = "#{paySalaryComponentService}")
     private PaySalaryComponentService service;
     private PaySalaryComponentSearchParameter searchParameter;
     private LazyDataModel<PaySalaryComponent> lazy;
@@ -94,6 +95,10 @@ public class PaySalaryComponentViewController extends BaseController{
         return "/protected/payroll/pay_salary_component_form.htm?faces-redirect=true&execution=e" + selected.getId();
     }
     
+    public String doDetail() {
+        return "/protected/payroll/pay_salary_component_detail.htm?faces-redirect=true&execution=e" + selected.getId();
+    }
+    
     public PaySalaryComponentService getService() {
         return service;
     }
@@ -111,6 +116,9 @@ public class PaySalaryComponentViewController extends BaseController{
     }
 
     public LazyDataModel<PaySalaryComponent> getLazy() {
+        if (lazy == null) {
+            lazy = new PaySalaryComponentLazyDataModel(searchParameter, service);
+        }
         return lazy;
     }
 

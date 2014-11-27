@@ -21,8 +21,8 @@
                             <p:graphicImage library="images" name="marital_status.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="Over Time Implementation" styleClass="header_big" />
-                                    <p:outputLabel value="Over Time Implementation from Employee" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['overTimeImplementation.overTimeImplementation']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['overTimeImplementation.overTimeImplementation_header']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -60,7 +60,7 @@
                                       id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="Daftar Over Time Implementation"/>
+                                <h:outputText value="#{appmsg['overTimeImplementation.overTimeImplementation_list']}"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
@@ -70,37 +70,37 @@
                             </p:column>
                             <p:column sortBy="wtOverTime" style="width: 15%">
                                 <f:facet name="header">
-                                    <h:outputText value="Nama Lembur"/>
+                                    <h:outputText value="#{appmsg['overTimeImplementation.name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.wtOverTime.name}" />
                             </p:column>
                             <p:column sortBy="implementationNumber" style="width: 15%">
                                 <f:facet name="header">
-                                    <h:outputText value="Nomor Pelaksanaan"/>
+                                    <h:outputText value="#{appmsg['overTimeImplementation.implementation_number']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.code}" />
                             </p:column>
                             <p:column sortBy="empData" style="width: 25%">
                                 <f:facet name="header">
-                                    <h:outputText value="Nama Karyawan"/>
+                                    <h:outputText value="#{appmsg['overTimeImplementation.employee_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.empData.nikWithFullName}" />
                             </p:column>
                             <p:column sortBy="implementationDate" style="width: 10%">
                                 <f:facet name="header">
-                                    <h:outputText value="Tanggal Pelaksanaan"/>
+                                    <h:outputText value="#{appmsg['overTimeImplementation.implementation_date']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.implementationDate}" />
                             </p:column>
                             <p:column sortBy="startTime" style="width: 10%">
                                 <f:facet name="header">
-                                    <h:outputText value="Mulai Lembur"/>
+                                    <h:outputText value="#{appmsg['overTimeImplementation.start_overtime']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.startTime}" />
                             </p:column>
                             <p:column sortBy="endTime" style="width: 10%">
                                 <f:facet name="header">
-                                    <h:outputText value="Selesai Lembur"/>
+                                    <h:outputText value="#{appmsg['overTimeImplementation.end_overtime']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.endTime}" />
                             </p:column>
@@ -155,7 +155,7 @@
                             </h:panelGrid>
                         </div>
                         <h:panelGrid id="panelDialogConfirmId"  columns="3">
-                            <p:outputLabel value="#{appmsg['maritalstatus.name']}"  style="font-weight: bold"/>
+                            <p:outputLabel value="#{appmsg['overTimeImplementation.employee_name']}"  style="font-weight: bold"/>
                             <p:outputLabel value=":"  style="font-weight: bold"/>
                             <p:outputLabel value="#{implementationOfOverTimeViewController.selected.empData.nikWithFullName}" styleClass="label_hrm"/>
                         </h:panelGrid>
@@ -165,19 +165,23 @@
                         <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmDelete.hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
-                <p:dialog widgetVar="detail" header="Detil Leave Distribution" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
+                <p:dialog widgetVar="detail" header="#{appmsg['overTimeImplementation.detail']}" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
                           showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)" dynamic="true">
                     <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Nomor Lembur" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['overTimeImplementation.implementation_number']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{implementationOfOverTimeViewController.selected.code}"/> </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Nama Lembur" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['overTimeImplementation.name']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{implementationOfOverTimeViewController.selected.wtOverTime.name}"/> </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Tanggal Lembur" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['overTimeImplementation.employee_name']}" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{implementationOfOverTimeViewController.selected.empData.nikWithFullName}"/> </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['overTimeImplementation.implementation_date']}" styleClass="label_hrm"/></p:column>
                             <p:column>
                                 <p:outputLabel value="#{implementationOfOverTimeViewController.selected.implementationDate}">
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
@@ -186,18 +190,18 @@
                         </p:row>
                         
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Start Time" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['overTimeImplementation.start_overtime']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{implementationOfOverTimeViewController.selected.startTime}"/> 
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="End Date" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['overTimeImplementation.end_overtime']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{implementationOfOverTimeViewController.selected.endTime}" /></p:column>
                         </p:row>
 
                         <f:facet name="footer">
                             <p:row>
-                                <p:column colspan="2"><p:outputLabel value="#{appmsg['maritalstatus.marital_status_footer']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
+                                <p:column colspan="2"><p:outputLabel value="#{appmsg['overTimeImplementation.overTimeImplementation_header']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
                             </p:row>
                         </f:facet>
                     </p:panelGrid>
