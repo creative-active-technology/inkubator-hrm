@@ -76,6 +76,7 @@ public class BioMedicalHistoryFormController extends BaseController {
         bioMedicalHistoryService = null;
 //        bioMedicalHistoryModel = null;
         isUpdate = null;
+        listYears = null;
     }
 
     public BioMedicalHistoryModel getBioMedicalHistoryModel() {

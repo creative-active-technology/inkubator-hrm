@@ -86,6 +86,7 @@ public class PaySalaryJurnalFormController extends BaseController {
 //        paySalaryJurnalModel = null;
         costCenterService = null;
         isUpdate = null;
+        coas = null;
     }
 
     public PaySalaryJurnalModel getPaySalaryJurnalModel() {

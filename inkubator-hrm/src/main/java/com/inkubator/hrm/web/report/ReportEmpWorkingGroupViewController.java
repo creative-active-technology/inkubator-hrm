@@ -52,6 +52,7 @@ public class ReportEmpWorkingGroupViewController extends BaseController {
         searchParameter = null;
         lazyDataModel = null;
         listDepartment = null;
+        departmentService = null;
     }
 
 	public ReportEmpWorkingGroupParameter getSearchParameter() {

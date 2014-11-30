@@ -86,6 +86,7 @@ public class JabatanDetailController extends BaseController {
         selectedJabatan = null;
         jabatanService = null;
         listJabatanSpesifikasi = null;
+        jabatanDeskripsis = null;
     }
 
     public List<JabatanSpesifikasi> getListJabatanSpesifikasi() {

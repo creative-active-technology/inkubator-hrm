@@ -72,6 +72,7 @@ public class BioIdCardFormController extends BaseController {
         bioIdCardService = null;
 //        bioIdCardModel = null;
         isUpdate = null;
+        cityService = null;
     }
 
     public BioIdCardModel getBioIdCardModel() {

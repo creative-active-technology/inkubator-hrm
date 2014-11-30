@@ -86,6 +86,9 @@ public class ModelComponentFormController extends BaseController {
         modelComponentService = null;
 //        modelComponentModel = null;
         isUpdate = null;
+        benefitGroupService = null;
+        benefits = null;
+        disabledBenefit = null;
     }
 
     public void setDisabledBenefit(Boolean disabledBenefit) {

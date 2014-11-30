@@ -104,6 +104,13 @@ public class CountryFormController extends BaseController {
         countryService = null;
         countryModel = null;
         isUpdate = null;
+        file = null;
+        buffer = null;
+        infoRendered = null;
+        emptyModel = null;
+        tipeImage = null;
+        locale = null;
+        messages = null;
     }
 
     public CountryModel getCountryModel() {

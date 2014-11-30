@@ -235,6 +235,7 @@ public class JabatanFormController extends BaseController {
         costCenterService = null;
         golonganJabatanService = null;
         jabatanService = null;
+        klasifikasiKerjaService = null;
         isDisable = null;
         isEdit = null;
         jabatanModel = null;
@@ -243,6 +244,7 @@ public class JabatanFormController extends BaseController {
         departments = null;
         posBiayas = null;
         jabatanAtasans = null;
+        dualListModel = null;
     }
 
     public JabatanModel getJabatanModel() {

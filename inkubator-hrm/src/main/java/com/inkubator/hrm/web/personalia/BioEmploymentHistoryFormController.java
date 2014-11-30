@@ -86,6 +86,9 @@ public class BioEmploymentHistoryFormController extends BaseController {
         bioEmploymentHistoryService = null;
 //        bioEmploymentHistoryModel = null;
         isUpdate = null;
+        cityService = null;
+        occupationTypeService = null;
+        listYears = null;
     }
 
     public BioEmploymentHistoryModel getBioEmploymentHistoryModel() {

@@ -47,7 +47,8 @@ public class ApprovalRequestDetailController extends BaseController {
    
     @PreDestroy
     public void cleanAndExit() {
-        
+        approvalActivityService = null;
+        dataResuest = null;
     }
 
     public void setApprovalActivityService(ApprovalActivityService approvalActivityService) {

@@ -64,6 +64,8 @@ public class ReportEmpDepartmentJabatanViewController extends BaseController {
         listDepartment = null;
         dualListModel = null;
         listGoljab = null;
+        departmentService = null;
+        golonganJabatanService = null;
     }
 
     public DualListModel<GolonganJabatan> getDualListModel() {

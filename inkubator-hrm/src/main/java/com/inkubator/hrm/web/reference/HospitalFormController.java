@@ -120,6 +120,16 @@ public class HospitalFormController extends BaseController {
         hospitalService = null;
 //        hospitalModel = null;
         isUpdate = null;
+        cityService = null;
+        provinceService = null;
+        countryService = null;
+        countrys = null;
+        provinces = null;
+        citys = null;
+        disabledProvince = null;
+        disabledCity = null;
+        locale = null;
+        messages = null;
     }
 
     public HospitalModel getHospitalModel() {
