@@ -71,7 +71,8 @@ public class InclusionReimbursmentViewController extends BaseController{
         inclusionReimbursmentService = null;
         wtPeriodeService = null;
         selected = null;
-        
+        inclusionReimbursmentModel = null;
+        jmlNominalReimbursment = null;
     }
     
     public void doSearch() {

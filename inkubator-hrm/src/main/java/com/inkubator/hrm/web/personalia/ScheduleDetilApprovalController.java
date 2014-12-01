@@ -64,6 +64,14 @@ public class ScheduleDetilApprovalController extends BaseController {
 //    	loanService = null;
 //        comment = null;
 //        empDataService = null;
+        wtGroupWorkingService = null;
+        wtScheduleShiftService = null;
+        wtScheduleShiftLazyDataModel = null;
+        listTempJadwalKaryawan = null;
+        id = null;
+        selectedWtGroupWorking = null;
+        wtGroupWorkingService = null;
+        approvalActivityService = null;
     }
 
     public void setWtScheduleShiftService(WtScheduleShiftService wtScheduleShiftService) {

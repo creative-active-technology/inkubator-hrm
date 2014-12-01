@@ -120,6 +120,13 @@ public class PermitClassificationFormController extends BaseController {
         permitClassificationService = null;
 //        permitClassificationModel = null;
         isUpdate = null;
+        attendanceStatusService = null;
+        attendanceStatuss = null;
+        disabled = null;
+        hidden = null;
+        appDefs = null;
+        selectedAppDef = null;
+        
     }
 
     public List<ApprovalDefinition> getAppDefs() {

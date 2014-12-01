@@ -187,6 +187,7 @@ public class CostCenterFormController extends BaseController{
         costCenterParent = null;
         costCenterModel = null;
         costCentreService = null;
+        costCenterList = null;
         isEdit = null;
         isParentDisabled = null;
 

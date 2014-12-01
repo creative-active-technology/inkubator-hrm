@@ -122,7 +122,10 @@ public class BasicRenumerationDetailController extends BaseController {
         id = null;
         benefitGroupRateService = null;
         listBenefitGroupRate = null;
-
+        total = null;
+        listBenefit = null;
+        listSubsidi = null;
+        subsidiTotal = null;
     }
 
     public String getTotal() {

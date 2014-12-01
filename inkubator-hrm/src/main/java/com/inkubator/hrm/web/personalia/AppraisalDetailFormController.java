@@ -77,6 +77,8 @@ public class AppraisalDetailFormController extends BaseController {
         appraisalDetailService = null;
 //        appraisalDetailModel = null;
         isUpdate = null;
+        appraisalElementService = null;
+        elements = null;
     }
 
     public AppraisalDetailModel getAppraisalDetailModel() {

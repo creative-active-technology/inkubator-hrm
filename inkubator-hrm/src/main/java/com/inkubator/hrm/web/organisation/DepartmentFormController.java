@@ -151,5 +151,6 @@ public class DepartmentFormController extends BaseController {
         selectedDepartment = null;
         isEdit = null;
         costCenterDeptService = null;
+        costCenterDepts = null;
     }
 }

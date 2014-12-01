@@ -124,6 +124,14 @@ public class InstitutionEducationFormController extends BaseController {
         institutionEducationService = null;
 //        institutionEducationModel = null;
         isUpdate = null;
+        cityService = null;
+        provinceService = null;
+        countryService = null;
+        countrys = null;
+        provinces = null;
+        citys = null;
+        locale = null;
+        messages = null;
     }
 
     public InstitutionEducationModel getInstitutionEducationModel() {

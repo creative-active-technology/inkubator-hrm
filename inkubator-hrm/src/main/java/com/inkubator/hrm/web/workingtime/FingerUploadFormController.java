@@ -108,7 +108,14 @@ public class FingerUploadFormController extends BaseController {
 
     @PreDestroy
     private void cleanAndExit() {
-
+        fingerUploadModel = null;
+        fileExtension = null;
+        dualListModel = null;
+        departmentService = null;
+        mecineFingerService = null;
+        selectdMacineFingerUpload = null;
+        sparasiUploadModel = null;
+        mecineFinger = null;
     }
 
     public FingerUploadModel getFingerUploadModel() {

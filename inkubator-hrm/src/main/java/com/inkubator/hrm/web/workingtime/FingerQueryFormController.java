@@ -77,7 +77,10 @@ public class FingerQueryFormController extends BaseController {
     
     @PreDestroy
     private void cleanAndExit() {
-        
+        mecineFinger = null;
+        mecineFingerQueryModel = null;
+        mecineFingerService = null;
+        dbTypes = null;
     }
     
     public void doDeleteData() {

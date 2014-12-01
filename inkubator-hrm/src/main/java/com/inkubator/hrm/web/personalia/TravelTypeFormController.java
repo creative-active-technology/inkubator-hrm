@@ -81,6 +81,9 @@ public class TravelTypeFormController extends BaseController {
         travelTypeService = null;
 //        travelTypeModel = null;
         isUpdate = null;
+        attendanceStatusService = null;
+        attendances = null;
+        
     }
 
     public TravelTypeModel getTravelTypeModel() {

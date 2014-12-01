@@ -141,6 +141,20 @@ public class BioBankAccountFormController extends BaseController {
         bioBankAccountService = null;
 //        bioBankAccountModel = null;
         isUpdate = null;
+        bankService = null;
+        currencyService = null;
+        banks = null;
+        currencys = null;
+        cityService = null;
+        provinceService = null;
+        countryService = null;
+        countrys = null;
+        provinces = null;
+        citys = null;
+        disabledProvince = null;
+        disabledCity = null;
+        locale = null;
+        messages = null;
     }
 
     public BioBankAccountModel getBioBankAccountModel() {

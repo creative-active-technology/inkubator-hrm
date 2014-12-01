@@ -81,6 +81,8 @@ public class ProvinceFormController extends BaseController {
         provinceService = null;
 //        provinceModel = null;
         isUpdate = null;
+        countryService = null;
+        countrys = null;
     }
 
     public ProvinceModel getProvinceModel() {
