@@ -54,7 +54,7 @@
                                             <p:outputLabel value=":" />
                                         </p:column>
                                         <p:column >
-                                            <p:pickList value="#{reportEmpDepartmentJabatanViewController.dualListModel}" var="golJab" itemValue="#{golJab}" converter="#{golonganJabatanPicklistConverter}" id="picklistUserRoleId"
+                                            <p:pickList value="#{reportEmpDepartmentJabatanViewController.dualListModel}" var="golJab" itemValue="#{golJab}" converter="golonganJabatanPicklistConverter" id="picklistUserRoleId"
                                                          style="margin-top: 15px;margin-bottom: 15px;" label="Daftar Golongan Jabatan" styleClass="isitext_hrm"
                                                         itemLabel="#{golJab.code}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
                                                         removeLabel="#{appmsg['global.remove']}"/>

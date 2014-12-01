@@ -17,31 +17,37 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.service.JabatanService;
+import com.inkubator.webcore.util.ServiceWebUtil;
+import javax.faces.convert.FacesConverter;
 
 /**
  *
  * @author rizkykojek
  */
-@ManagedBean(name = "jabatanConverter")
-@ApplicationScoped
+//@ManagedBean(name = "jabatanConverter")
+//@ApplicationScoped
+@FacesConverter(value = "jabatanConverter")
 public class JabatanConverter implements Converter {
 
-	@ManagedProperty(value = "#{jabatanService}")
-    private JabatanService jabatanService;
-
-	public void setJabatanService(JabatanService jabatanService) {
-		this.jabatanService = jabatanService;
-	}
+//	@ManagedProperty(value = "#{jabatanService}")
+//    private JabatanService jabatanService;
+//
+//	public void setJabatanService(JabatanService jabatanService) {
+//		this.jabatanService = jabatanService;
+//	}
 
 	@Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
         if (!StringUtils.isNumeric(value)) {
             return null;
         }
+        JabatanService jabatanService = (JabatanService) ServiceWebUtil.getService("jabatanService");
+        Object object = null;
         try {
             Long id = Long.parseLong(value);
-            Jabatan jabatan = jabatanService.getEntiyByPK(id);
-            return jabatan;
+//            Jabatan jabatan = jabatanService.getEntiyByPK(id);
+            object = jabatanService.getEntiyByPK(id);
+            return object;
         } catch (Exception e) {
             e.printStackTrace();
             throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error when converting to Jabatan using JabatanConverter", ""));

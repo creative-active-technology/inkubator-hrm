@@ -38,7 +38,8 @@ public class EmpDataModel implements Serializable {
     private long departementId;
     private String noSk;
     private Date rotasiDate;
-   
+    private String nikAndName;
+    private Integer ptkpStatusInt;
 
     public Long getId() {
         return id;
@@ -160,7 +161,7 @@ public class EmpDataModel implements Serializable {
         this.heatlyPremi = heatlyPremi;
     }
 
-    public Boolean isPtkpStatus() {
+    public Boolean getPtkpStatus() {
         return ptkpStatus;
     }
 
@@ -222,6 +223,22 @@ public class EmpDataModel implements Serializable {
 
     public void setRotasiDate(Date rotasiDate) {
         this.rotasiDate = rotasiDate;
+    }
+
+    public String getNikAndName() {
+        return nikAndName;
+    }
+
+    public void setNikAndName(String nikAndName) {
+        this.nikAndName = nikAndName;
+    }
+
+    public Integer getPtkpStatusInt() {
+        return ptkpStatusInt;
+    }
+
+    public void setPtkpStatusInt(Integer ptkpStatusInt) {
+        this.ptkpStatusInt = ptkpStatusInt;
     }
 
    

@@ -708,4 +708,12 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         return criteria.list();
     }
 
+    @Override
+    public EmpData getEmpDataWithBiodata(Long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.setFetchMode("bioData", FetchMode.JOIN);
+        criteria.add(Restrictions.eq("id", id));
+        return (EmpData) criteria.uniqueResult();
+    }
+
 }
