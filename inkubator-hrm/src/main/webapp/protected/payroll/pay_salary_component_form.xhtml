@@ -198,11 +198,11 @@
                         <div style="margin-bottom: 5px">
 
                             <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="bioDataFormId" 
-                                             action="#{bioDataFormController.doSave()}" styleClass="label_button" 
+                                             action="#{paySalaryComponentFormController.doSaved()}" styleClass="label_button" 
                                              style="margin-right: 5px" label="#{appmsg['global.save']}"
                                              icon="ui-icon-disk"
                                              id="buttonSave" title="#{appmsg['global.save']}"/>
-                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" action="#{bioDataFormController.doReset()}" onclick="statusDialog.show()" oncomplete="statusDialog.hide()"
+                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" action="#{paySalaryComponentFormController.doReset()}" onclick="statusDialog.show()" oncomplete="statusDialog.hide()"
                                              process="@this" icon="ui-icon-refresh" id="cleareId" update="bioDataFormId"  styleClass="label_button"  style="margin-right: 5px">  
                                 <p:resetInput target="bioDataFormId" />  
                             </p:commandButton>
