@@ -9,15 +9,13 @@ import com.inkubator.hrm.entity.City;
 import com.inkubator.hrm.service.CityService;
 import com.inkubator.webcore.util.ServiceWebUtil;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ApplicationScoped;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.convert.FacesConverter;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -28,18 +26,14 @@ import org.apache.commons.lang3.StringUtils;
 @FacesConverter(value = "cityConverter")
 public class CityConverter implements Converter {
 
-//    @ManagedProperty(value = "#{cityService}")
-//    private CityService cityService;
-//
-//    public void setCityService(CityService cityService) {
-//        this.cityService = cityService;
-//    }
-    
+    private static final Logger LOGGER = Logger.getLogger(CityConverter.class);
+
+    @Override
     public Object getAsObject(FacesContext contet, UIComponent component, String value) {
+        CityService cityService = (CityService) ServiceWebUtil.getService("cityService");
         if (!StringUtils.isNumeric(value)) {
             return null;
         }
-        CityService cityService = (CityService) ServiceWebUtil.getService("empDataService");
         Object object = null;
         try {
             Long id = Long.parseLong(value);
@@ -47,11 +41,12 @@ public class CityConverter implements Converter {
 //            City city = cityService.getEntiyByPK(id);
             return object;
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
             throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Input tidak valid", ""));
         }
     }
 
+    @Override
     public String getAsString(FacesContext contet, UIComponent component, Object value) {
         if (value == null || value.equals("")) {
             return null;

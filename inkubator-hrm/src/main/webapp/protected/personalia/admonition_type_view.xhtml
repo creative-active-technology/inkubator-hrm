@@ -54,7 +54,7 @@
                                         <p:ajax event="dialogReturn" listener="#{admonitionTypeViewController.onDialogReturn}"  update="tableAdmonitionTypeId,:growlAdmonitionTypeViewlId"/>
                                     </p:commandButton>
                                     
-                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{admonitionTypeViewController.doClose()}" icon="ui-icon-home"/>
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{admonitionTypeViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
                         </p:toolbar>

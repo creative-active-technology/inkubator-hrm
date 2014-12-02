@@ -53,7 +53,7 @@
                                     <p:commandButton value="#{appmsg['global.export']}" style="margin-right: 5px" icon="ui-icon-calculator" title="#{appmsg['global.export_excel']}" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
                                         <pe:exporter target="tableFunctionGroupId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Function_Group"/>
                                     </p:commandButton>
-                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{golonganJabatanViewController.doClose()}" icon="ui-icon-home"/>
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{golonganJabatanViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
                         </p:toolbar>

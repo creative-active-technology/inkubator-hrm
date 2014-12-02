@@ -49,7 +49,7 @@
                                         <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Marital_Status"/>
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.add']}" action="#{permitDistributionViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true" />
-                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{maritalStatusController.doClose()}" icon="ui-icon-home" />
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{maritalStatusController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
 
                                 </h:panelGrid>
                             </p:toolbarGroup>

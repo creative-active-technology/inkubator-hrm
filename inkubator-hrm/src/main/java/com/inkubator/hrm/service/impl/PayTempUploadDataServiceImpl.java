@@ -1,11 +1,13 @@
 package com.inkubator.hrm.service.impl;
 
+import java.io.File;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.criterion.Order;
+import org.primefaces.model.UploadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -20,15 +22,16 @@ import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.PaySalaryComponent;
 import com.inkubator.hrm.entity.PayTempUploadData;
 import com.inkubator.hrm.service.PayTempUploadDataService;
+import com.inkubator.hrm.web.model.PaySalaryUploadFileModel;
 import com.inkubator.hrm.web.search.PayTempUploadDataSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+import com.inkubator.webcore.util.FacesIO;
 
 /**
  *
  * @author rizkykojek
  */
 @Service(value = "payTempUploadDataService")
-@Lazy
 public class PayTempUploadDataServiceImpl extends IServiceImpl implements PayTempUploadDataService {
 
 	@Autowired
@@ -37,6 +40,9 @@ public class PayTempUploadDataServiceImpl extends IServiceImpl implements PayTem
 	private EmpDataDao empDataDao;
 	@Autowired
 	private PaySalaryComponentDao paySalaryComponentDao;
+	
+	@Autowired
+    private FacesIO facesIO;
 	
 	@Override
 	public PayTempUploadData getEntiyByPK(String id) throws Exception {
@@ -300,5 +306,53 @@ public class PayTempUploadDataServiceImpl extends IServiceImpl implements PayTem
 	public Double getTotalSalaryByPaySalaryComponentId(Long paySalaryComponentId){
 		return this.payTempUploadDataDao.getTotalSalaryByPaySalaryComponentId(paySalaryComponentId);
 	}
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor =Exception.class)
+	public void executeBatchFileUpload(PaySalaryUploadFileModel model) {
+		
+		EmpData empData = empDataDao.getEntityByNik(model.getNik());
+		PaySalaryComponent paySalaryComponent = paySalaryComponentDao.getEntiyByPK(model.getPaySalaryComponentId());
+		
+		if(empData!= null && paySalaryComponent != null) {
+			PayTempUploadData entity = new PayTempUploadData();
+			entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+			entity.setPaySalaryComponent(paySalaryComponent);
+			entity.setEmpData(empData);
+			entity.setNominalValue(Double.parseDouble(model.getNominal()));
+			entity.setPathUpload(model.getPathUpload());
+	        entity.setCreatedBy(model.getCreatedBy());
+	        entity.setCreatedOn(new Date());
+	        this.payTempUploadDataDao.save(entity);
+		}
+		
+	}
+
+	@Override	
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor =Exception.class)
+	public String updateFileAndDeleteData(long paySalaryComponentId, UploadedFile documentFile) throws Exception {
+		String uploadPath = this.getUploadPath(paySalaryComponentId, documentFile);
+		
+		if (documentFile != null) {        
+            //remove old file
+            File oldFile = new File(uploadPath);
+            oldFile.delete();
+
+            //added new file            
+            facesIO.transferFile(documentFile);
+            File file = new File(facesIO.getPathUpload() + documentFile.getFileName());
+            file.renameTo(new File(uploadPath));
+        }
+		
+		payTempUploadDataDao.deleteByPaySalaryComponentId(paySalaryComponentId);
+		
+		return uploadPath;
+	}
+	
+	private String getUploadPath(Long id, UploadedFile documentFile) {
+        String extension = StringUtils.substringAfterLast(documentFile.getFileName(), ".");
+        String uploadPath = facesIO.getPathUpload() + "paysalaryupload_" + id + "." + extension;
+        return uploadPath;
+    }
 
 }

@@ -4,6 +4,8 @@
  */
 package com.inkubator.hrm.web.converter;
 
+import com.inkubator.hrm.entity.GolonganJabatan;
+import com.inkubator.hrm.service.GolonganJabatanService;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
@@ -12,7 +14,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
-
 import org.apache.commons.lang3.StringUtils;
 
 import com.inkubator.hrm.entity.GolonganJabatan;

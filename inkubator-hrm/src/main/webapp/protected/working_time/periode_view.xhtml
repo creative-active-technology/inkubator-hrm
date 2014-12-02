@@ -65,7 +65,7 @@
                                                      styleClass="label_button" ajax="true">
                                         <p:ajax event="dialogReturn" listener="#{roleViewController.onDialogReturn}"  update="tablePeriodeId,:roleViewGrowlId"/>
                                     </p:commandButton>-->
-                                    <p:commandButton value="#{appmsg['global.close']}"  styleClass="label_button" action="#{roleViewController.doClose()}" title="#{appmsg['global.close']}" icon="ui-icon-home" immediate="true"
+                                    <p:commandButton value="#{appmsg['global.close']}"  styleClass="label_button" action="#{roleViewController.doClose()}" title="#{appmsg['global.close']}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"
                                                      label="#{appmsg['global.close']}"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>

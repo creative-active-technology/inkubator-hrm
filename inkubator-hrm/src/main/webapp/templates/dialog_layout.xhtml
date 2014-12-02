@@ -22,6 +22,19 @@
         <h:inputHidden value="#{homeController.bahasa}" />
         <ui:insert name="center" />
         <h:outputScript library="js" name="indonesia_locale.js" />
+        
+        <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
+            <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
+        </p:dialog>
+        <script type="text/javascript">
+            function start() {
+                PF('statusDialog').show();
+            }
+
+            function stop() {
+                PF('statusDialog').hide();
+            }
+        </script>
     </h:body>
 </html>
 

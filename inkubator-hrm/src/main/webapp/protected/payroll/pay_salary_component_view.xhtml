@@ -51,7 +51,7 @@
                                                      styleClass="label_button" ajax="true" immediate="true">
 
                                     </p:commandButton>
-                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{paySalaryComponentViewController.doClose()}" icon="ui-icon-home" />
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{paySalaryComponentViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
                                     
                                 </h:panelGrid>
                             </p:toolbarGroup>

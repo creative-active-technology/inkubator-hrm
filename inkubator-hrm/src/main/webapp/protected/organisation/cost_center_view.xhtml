@@ -50,7 +50,7 @@
                                     <p:commandButton value="#{appmsg['global.add']}" actionListener="#{costCenterController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
                                         <p:ajax event="dialogReturn" listener="#{costCenterController.onDialogReturn}"  update="tableCostCenterId"/>
                                     </p:commandButton>
-                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{costCenterController.doClose()}" icon="ui-icon-home" />
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{costCenterController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
                                     
                                 </h:panelGrid>
                             </p:toolbarGroup>
