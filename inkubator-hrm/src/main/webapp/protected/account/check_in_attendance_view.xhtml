@@ -49,7 +49,7 @@
                                     <p:commandButton value="Export to XLS" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
                                         <pe:exporter target="tableLoginHistoryId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Login_History"/>
                                     </p:commandButton>
-                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{loginHistoryController.doClose()}" icon="ui-icon-home" />
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{loginHistoryController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
                         </p:toolbar>

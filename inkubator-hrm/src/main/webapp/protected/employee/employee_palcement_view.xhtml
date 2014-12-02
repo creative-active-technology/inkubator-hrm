@@ -58,7 +58,7 @@
 
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.close']}"  styleClass="label_button" action="#{empDataViewController.doClose()}" title="#{appmsg['global.close']}" icon="ui-icon-home"
-                                                     label="#{appmsg['global.close']}"/>
+                                                     label="#{appmsg['global.close']}" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
 

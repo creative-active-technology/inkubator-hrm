@@ -55,7 +55,7 @@
                                     <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']}" action="#{cityViewController.doAdd()}" label="#{appmsg['global.add']}" 
                                                      styleClass="label_button" icon="ui-icon-document" ajax="true" immediate="true"/>
 
-                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{cityViewController.doClose()}" icon="ui-icon-home"/>
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{cityViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
                         </p:toolbar>
