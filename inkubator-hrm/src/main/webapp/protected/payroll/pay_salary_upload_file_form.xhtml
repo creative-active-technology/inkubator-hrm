@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/dialog_layout.xhtml">
+            <ui:define name="windowTitle">
+
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlPaySalaryUploadFileFormId" globalOnly="true" showDetail="true"/>
+                <h:form id="formPaySalaryUploadFileFormId">
+                    <h:panelGrid  columns="2">
+                        <p:graphicImage library="images" name="cost_center.png" height="36" width="36"  cache="true"/>
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['paysalaryupload.upload_component_model']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['paysalaryupload.data_upload_component_model_from_application']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="1" style="margin-bottom: 5px;margin-left: 0px">
+                        <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                    </h:panelGrid> 
+                    <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
+                        <p:row>
+                            <p:column style="width: 20%">
+                                <p:outputLabel for="paySalaryComponentNameId" value="#{appmsg['paysalaryupload.component_name']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="paySalaryComponentNameId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                                <p:inputText id="paySalaryComponentNameId" readonly="true" value="#{paySalaryUploadFileFormController.selectedPaySalaryComponent.name}" styleClass="isitext_hrm" style="width:197px;" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="paySalaryComponentNameId"/>
+                            </p:column>
+                        </p:row>                        
+                        <p:row>
+                            <p:column style="width: 20%">
+                                <p:outputLabel for="fileId" value="#{appmsg['global.file_name']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="fileId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                                <p:fileUpload id="fileId"  required="true" sizeLimit="1000000000" label="#{appmsg['global.choose_file']}" fileUploadListener="#{paySalaryUploadFileFormController.handingFileUpload}"
+	                                          mode="advanced" style="margin-top:10px;margin-bottom:10px;width: 100%;text-align: left!important"
+	                                          dragDropSupport="true" multiple="false" update="fileNameId,:growlPaySalaryUploadFileFormId"
+	                                          allowTypes="/(\.|\/)(csv|xls|xlsx)$/"/> 
+	                            <p:outputLabel value="#{appmsg['global.file_name']}"/>
+	                            <p:outputLabel value=":" style="margin-left: 5px;margin-right: 5px"/>
+	                            <p:outputLabel value="#{paySalaryUploadFileFormController.fileName}" id="fileNameId"/> 
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="fileId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 20%">
+                                <p:outputLabel value="Download Template" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+								<p:commandLink ajax="false" value="CSV" title="CSV" style="font-size: 12px!important" onclick="PrimeFaces.monitorDownload(start, stop);">
+                                    <p:fileDownload value="#{imageFileTemplateStreamerController.paySalaryUploadFile}" />
+                                    <f:param name="extension" value="csv"/>
+                                </p:commandLink>
+                                &nbsp;&nbsp;&nbsp;
+                                <p:commandLink ajax="false" value="XLS" title="XLS" style="font-size: 12px!important" onclick="PrimeFaces.monitorDownload(start, stop);">
+                                    <p:fileDownload value="#{imageFileTemplateStreamerController.paySalaryUploadFile}" />
+                                    <f:param name="extension" value="xls"/>
+                                </p:commandLink>
+                                &nbsp;&nbsp;&nbsp;
+                                <p:commandLink ajax="false" value="XLSX" title="XLSX" style="font-size: 12px!important" onclick="PrimeFaces.monitorDownload(start, stop);">
+                                    <p:fileDownload value="#{imageFileTemplateStreamerController.paySalaryUploadFile}" />
+                                    <f:param name="extension" value="xlsx"/>
+                                </p:commandLink>   
+                            </p:column>
+                        </p:row>                       
+                    </p:panelGrid>
+                    <p:focus context="formPaySalaryUploadFileFormId" />
+                    <p:separator style="margin-top: 20px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="2" style="margin-bottom: -30px!important">
+                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formPaySalaryUploadFileFormId,:growlPaySalaryUploadFileFormId"
+                                         action="#{paySalaryUploadFileFormController.doSave()}" styleClass="isitext_hrm" onclick="PrimeFaces.monitorDownload(start, stop);"
+                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
+                                         icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                        <p:commandButton value="#{appmsg['global.clear']}" title="#{appmsg['global.clear']}" process="@this" update="formPaySalaryUploadFileFormId" 
+                                         icon="ui-icon-refresh" styleClass="isitext_hrm" >  
+                            <p:resetInput target="formPaySalaryUploadFileFormId" />  
+                        </p:commandButton>
+                    </h:panelGrid>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+
