@@ -107,6 +107,12 @@ public class PaySalaryComponentDaoImpl extends IDAOImpl<PaySalaryComponent> impl
         criteria.createAlias("modelComponent", "modelComponent");
         criteria.add(Restrictions.eq("modelComponent.spesific", HRMConstant.MODEL_COMP_UPLOAD));
 	}
+
+    @Override
+    public void saveAndMerge(PaySalaryComponent paySalaryComponent) {
+        getCurrentSession().update(paySalaryComponent);
+        getCurrentSession().flush();
+    }
     
 
 }

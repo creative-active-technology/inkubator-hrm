@@ -30,4 +30,6 @@ public interface PaySalaryComponentService extends IService<PaySalaryComponent> 
 
     public Map<String, Long> returnComponentChange(Long id) throws Exception;
     
+    public void saveWithEmployeeType(PaySalaryComponent paySalaryComponent) throws Exception;
+    
 }

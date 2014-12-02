@@ -5,11 +5,14 @@
  */
 package com.inkubator.hrm.web.payroll;
 
+import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.EmployeeType;
 import com.inkubator.hrm.entity.ModelComponent;
 import com.inkubator.hrm.entity.PaySalaryComponent;
+import com.inkubator.hrm.entity.PaySalaryEmpType;
+import com.inkubator.hrm.entity.PaySalaryEmpTypeId;
 import com.inkubator.hrm.entity.PaySalaryJurnal;
 import com.inkubator.hrm.entity.TaxComponent;
 import com.inkubator.hrm.service.EmployeeTypeService;
@@ -19,14 +22,17 @@ import com.inkubator.hrm.service.PaySalaryJurnalService;
 import com.inkubator.hrm.service.TaxComponentService;
 import com.inkubator.hrm.util.MapUtil;
 import com.inkubator.hrm.web.model.PaySalaryComponentModel;
+import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.TreeMap;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -86,11 +92,11 @@ public class PaySalaryComponentFormController extends BaseController {
                 PaySalaryComponent paySalaryComponent = paySalaryComponentService.getEntityByPkWithDetail(Long.parseLong(loanId.substring(1)));
                 if (loanId.substring(1) != null) {
                     model = getModelFromEntity(paySalaryComponent);
-//                    List<EmployeeType> sourceSpiRole = this.employeeTypeService.getAllData();
-//                    List<EmployeeType> targetRole = paySalaryComponent.getEmployeeTypes();
-//                    sourceSpiRole.removeAll(targetRole);
+                    List<EmployeeType> sourceSpiRole = this.employeeTypeService.getAllData();
+                    List<EmployeeType> targetRole = paySalaryComponent.getEmployeeTypes();
+                    sourceSpiRole.removeAll(targetRole);
 //
-//                    dualListModel = new DualListModel<>(sourceSpiRole, targetRole);
+                    dualListModel = new DualListModel<>(sourceSpiRole, targetRole);
                     isUpdate = Boolean.TRUE;
                 }
             } else {
@@ -205,7 +211,40 @@ public class PaySalaryComponentFormController extends BaseController {
             LOGGER.error("Error", ex);
         }
     }
+    
+    public String doSaved() throws Exception{
+        PaySalaryComponent paySalaryComponent = getEntityFromViewModel(model);
+        if (isUpdate) {
+            return doUpdate(paySalaryComponent);
+        } else {
+            return doInsert(paySalaryComponent);
+        }
+    }
 
+    private String doUpdate(PaySalaryComponent paySalaryComponent) {
+            try {
+                Set<PaySalaryEmpType> dataToSave = new HashSet<>();
+                List<EmployeeType> employeeTypes = dualListModel.getTarget();
+                for (EmployeeType employeeType : employeeTypes) {
+                    PaySalaryEmpType paySalaryEmpType = new PaySalaryEmpType();
+                    paySalaryEmpType.setId(new PaySalaryEmpTypeId(paySalaryComponent.getId(), employeeType.getId()));
+                    paySalaryEmpType.setEmployeeType(employeeType);
+                    paySalaryEmpType.setPaySalaryComponent(paySalaryComponent);
+                    dataToSave.add(paySalaryEmpType);
+                }
+                paySalaryComponent.setPaySalaryEmpTypes(dataToSave);
+                paySalaryComponentService.update(paySalaryComponent);
+                MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
+                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+                 return "/protected/payroll/pay_salary_component_detail.htm?faces-redirect=true&execution=e" + paySalaryComponent.getId();
+
+            
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
+        }
+        return null;
+    }
+    
     public void doChangeTaxable() throws Exception {
         if (Objects.equals(model.getTaxableCheck(), Boolean.TRUE)) {
             disableTax = Boolean.FALSE;
@@ -226,7 +265,30 @@ public class PaySalaryComponentFormController extends BaseController {
         
     }
 
-    
+    private String doInsert(PaySalaryComponent paySalaryComponent) {
+        try {
+                paySalaryComponent.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+                Set<PaySalaryEmpType> dataToSave = new HashSet<>();
+                List<EmployeeType> employeeTypes = dualListModel.getTarget();
+                for (EmployeeType employeeType : employeeTypes) {
+                    PaySalaryEmpType paySalaryEmpType = new PaySalaryEmpType();
+                    paySalaryEmpType.setId(new PaySalaryEmpTypeId(paySalaryComponent.getId(), employeeType.getId()));
+                    paySalaryEmpType.setEmployeeType(employeeType);
+                    paySalaryEmpType.setPaySalaryComponent(paySalaryComponent);
+                    dataToSave.add(paySalaryEmpType);
+                }
+                paySalaryComponent.setPaySalaryEmpTypes(dataToSave);
+                paySalaryComponentService.saveWithEmployeeType(paySalaryComponent);
+                MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
+                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+                 return "/protected/payroll/pay_salary_component_detail.htm?faces-redirect=true&execution=e" + paySalaryComponent.getId();
+
+            
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
+        }
+        return null;
+    }
 
     public void doSearch() {
 
