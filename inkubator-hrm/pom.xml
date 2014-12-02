@@ -21,11 +21,11 @@
             <artifactId>lambdaj</artifactId>
             <version>2.3.3</version>
         </dependency>
-<!--        <dependency>
+        <dependency>
             <groupId>com.inkubator</groupId>
             <artifactId>batch-core</artifactId>
             <version>1.0.0.RELEASE</version>
-        </dependency>-->
+        </dependency>
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
@@ -98,7 +98,7 @@
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-all</artifactId>
-            <version>2.2.2</version>
+            <version>2.3.7</version>
         </dependency>
         <dependency>
             <groupId>com.inkubator</groupId>
