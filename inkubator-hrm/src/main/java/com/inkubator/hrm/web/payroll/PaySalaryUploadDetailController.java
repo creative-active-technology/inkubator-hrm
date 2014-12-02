@@ -168,8 +168,8 @@ public class PaySalaryUploadDetailController extends BaseController {
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", false);
-        options.put("contentWidth", 500);
-        options.put("contentHeight", 320);
+        options.put("contentWidth", 600);
+        options.put("contentHeight", 360);
         RequestContext.getCurrentInstance().openDialog("pay_salary_upload_file_form", options, params);
     }
 	
