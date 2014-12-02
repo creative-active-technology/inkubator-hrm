@@ -42,7 +42,7 @@
                                                 var="empData"
                                                 itemValue="#{empData}"
                                                 itemLabel="#{empData.nik} #{empData.bioData.firstName} #{empData.bioData.lastName}"
-                                                converter="#{empDataConverter}"
+                                                converter="empDataConverter"
                                                 required="true" styleClass="isitext_hrm" size="46">
                                     	<p:ajax event="itemSelect" listener="#{loanFormController.onChangeEmployee(flowRequestContext)}" update="loanSchemaId"/>
                                     </p:autoComplete>

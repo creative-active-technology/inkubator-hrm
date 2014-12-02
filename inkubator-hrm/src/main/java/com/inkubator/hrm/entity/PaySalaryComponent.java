@@ -1,9 +1,12 @@
 package com.inkubator.hrm.entity;
 // Generated Nov 24, 2014 11:16:03 AM by Hibernate Tools 4.3.1
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,6 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 
@@ -42,6 +46,7 @@ public class PaySalaryComponent implements java.io.Serializable {
     private Date createdOn;
     private String updatedBy;
     private Date updatedOn;
+    private List<EmployeeType> employeeTypes = new ArrayList<>(0);
     private Set<PaySalaryEmpType> paySalaryEmpTypes = new HashSet<PaySalaryEmpType>(0);
     private Set<PayTempUploadData> payTempUploadDatas = new HashSet<PayTempUploadData>(0);
     private Integer modelReffernsil;
@@ -214,7 +219,7 @@ public class PaySalaryComponent implements java.io.Serializable {
         this.updatedOn = updatedOn;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "paySalaryComponent")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "paySalaryComponent", orphanRemoval = true)
     public Set<PaySalaryEmpType> getPaySalaryEmpTypes() {
         return this.paySalaryEmpTypes;
     }
@@ -241,4 +246,14 @@ public class PaySalaryComponent implements java.io.Serializable {
         this.modelReffernsil = modelReffernsil;
     }
 
+    @Transient
+    public List<EmployeeType> getEmployeeTypes() {
+        return employeeTypes;
+    }
+
+    public void setEmployeeTypes(List<EmployeeType> employeeTypes) {
+        this.employeeTypes = employeeTypes;
+    }
+
+    
 }

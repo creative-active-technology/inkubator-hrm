@@ -102,7 +102,7 @@
                                         <p:outputLabel  value="Education Level" style="font-weight: bold"/>
                                     </p:column>
                                     <p:column style="text-align: center;">
-                                        <p:pickList value="#{jabatanSpesifikasiDetailController.dualListModel}" var="role" itemValue="#{role}" converter="#{educationLevelConverter}" id="educationLevelId"
+                                        <p:pickList value="#{jabatanSpesifikasiDetailController.dualListModel}" var="role" itemValue="#{role}" converter="educationLevelConverter" id="educationLevelId"
                                                     required="false"  style="margin-top: 15px;margin-bottom: 15px;" label="Daftar Education Level" styleClass="isitext_hrm"
                                                     itemLabel="#{role.name}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
                                                     removeLabel="#{appmsg['global.remove']}"/>
@@ -117,7 +117,7 @@
                                         <p:outputLabel  value="Jenis Profesi" style="font-weight: bold"/>
                                     </p:column>
                                     <p:column style="text-align: center;">
-                                        <p:pickList value="#{jabatanSpesifikasiDetailController.occupationDualListModel}" var="role" itemValue="#{role}" converter="#{occupationTypeConverter}" id="picklistOccupation"
+                                        <p:pickList value="#{jabatanSpesifikasiDetailController.occupationDualListModel}" var="role" itemValue="#{role}" converter="occupationTypeConverter" id="picklistOccupation"
                                                     required="false"  style="margin-top: 15px;margin-bottom: 15px;" label="Daftar Education Level" styleClass="isitext_hrm"
                                                     itemLabel="#{role.occupationTypeName}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
                                                     removeLabel="#{appmsg['global.remove']}"/>
@@ -132,7 +132,7 @@
                                         <p:outputLabel  value="Bidang" style="font-weight: bold"/>
                                     </p:column>
                                     <p:column style="text-align: center;">
-                                        <p:pickList value="#{jabatanSpesifikasiDetailController.majorDualListModel}" var="role" itemValue="#{role}" converter="#{majorConverter}" id="picklistMajor"
+                                        <p:pickList value="#{jabatanSpesifikasiDetailController.majorDualListModel}" var="role" itemValue="#{role}" converter="majorConverter" id="picklistMajor"
                                                     required="false"  style="margin-top: 15px;margin-bottom: 15px;" label="Daftar Education Level" styleClass="isitext_hrm"
                                                     itemLabel="#{role.majorName}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
                                                     removeLabel="#{appmsg['global.remove']}"/>
@@ -147,7 +147,7 @@
                                         <p:outputLabel  value="Faculty" style="font-weight: bold"/>
                                     </p:column>
                                     <p:column style="text-align: center;">
-                                        <p:pickList value="#{jabatanSpesifikasiDetailController.facultyDualListModel}" var="role" itemValue="#{role}" converter="#{facultyConverter}" id="picklistFaculty"
+                                        <p:pickList value="#{jabatanSpesifikasiDetailController.facultyDualListModel}" var="role" itemValue="#{role}" converter="facultyConverter" id="picklistFaculty"
                                                     required="false"  style="margin-top: 15px;margin-bottom: 15px;" label="Daftar Education Level" styleClass="isitext_hrm"
                                                     itemLabel="#{role.facultyName}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
                                                     removeLabel="#{appmsg['global.remove']}"/>

@@ -32,7 +32,7 @@
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3" >
                                     <p:commandButton value="Export to XLS" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
-                                        <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Inclusion_Reimbursment"/>
+                                        <pe:exporter target="tableIdExpands" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Inclusion_Reimbursment"/>
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{savingTypeViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
                                     
@@ -153,6 +153,82 @@
                                     <f:convertNumber rendered="###,###" />
                                 </h:outputLabel>
                             </p:column>
+<!--                            <p:column sortBy="nominal" style="width: 20%" rendered="false" exportable="true" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['reimbursement.nominal']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.nominal}" >
+                                    <f:convertNumber rendered="###,###" />
+                                </h:outputLabel>
+                            </p:column>-->
+                            
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : "/>
+                                <p:outputLabel value="#{inclusionReimbursmentViewController.lazy.rowCount}"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px"/>
+                            </f:facet>  
+                        </p:dataTable>
+                        <!-- 
+                        	hide datatable, used for reporting expand 
+                        -->
+                        <p:dataTable  var="data" rendered="false" value="#{inclusionReimbursmentViewController.lazy}" lazy="true" paginator="true" pageLinks="7"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      id="tableIdExpands" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['inclusionReimbursment.list_inclusion_reimbursment']}"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 3%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column sortBy="empData.nik" style="width: 20%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['global.nik']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.empData.nik}" />
+                            </p:column>
+                            <p:column sortBy="bioData.firstName" style="width: 20%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['global.name']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.empData.bioData.firstName} #{data.empData.bioData.lastName}" />
+                            </p:column>
+                            <p:column sortBy="claimDate" style="width: 20%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['reimbursement.claim_date']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.claimDate}" >
+                                    <f:convertDateTime pattern="dd MMMM yyyy" />
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column sortBy="reimbursmentSchema.name" style="width: 20%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['reimbursement.name']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.reimbursmentSchema.name}" >
+                                    <f:convertDateTime pattern="dd MMMM yyyy" />
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column sortBy="nominal" style="width: 20%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['reimbursement.nominal']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "Rp. " />
+                                <h:outputLabel value= "#{data.nominal}" >
+                                    <f:convertNumber rendered="###,###" />
+                                </h:outputLabel>
+                            </p:column>
+<!--                            <p:column sortBy="nominal" style="width: 20%" rendered="false" exportable="true" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['reimbursement.nominal']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.nominal}" >
+                                    <f:convertNumber rendered="###,###" />
+                                </h:outputLabel>
+                            </p:column>-->
                             
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>

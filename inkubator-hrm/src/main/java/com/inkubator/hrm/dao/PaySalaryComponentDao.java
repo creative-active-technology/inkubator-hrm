@@ -15,15 +15,17 @@ import org.hibernate.criterion.Order;
  *
  * @author Deni Husni FR
  */
-public interface PaySalaryComponentDao extends IDAO<PaySalaryComponent>{
+public interface PaySalaryComponentDao extends IDAO<PaySalaryComponent> {
+
     public List<PaySalaryComponent> getByParamWithDetail(PaySalaryComponentSearchParameter searchParameter, int firstResult, int maxResults, Order order);
 
     public Long getTotalResourceTypeByParam(PaySalaryComponentSearchParameter searchParameter);
-    
+
     public PaySalaryComponent getEntityByPkWithDetail(Long id);
 
-	public List<PaySalaryComponent> getAllDataComponentUploadByParam(PaySalaryComponentSearchParameter searchParameter, int firstResult, int maxResults, Order order);
+    public List<PaySalaryComponent> getAllDataComponentUploadByParam(PaySalaryComponentSearchParameter searchParameter, int firstResult, int maxResults, Order order);
 
-	public Long getTotalComponentUploadByParam(PaySalaryComponentSearchParameter searchParameter);
-	
+    public Long getTotalComponentUploadByParam(PaySalaryComponentSearchParameter searchParameter);
+
+    public void saveAndMerge(PaySalaryComponent paySalaryComponent);
 }

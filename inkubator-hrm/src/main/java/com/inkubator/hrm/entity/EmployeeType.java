@@ -29,8 +29,8 @@ public class EmployeeType implements java.io.Serializable {
     private Date updatedOn;
     private Set<ReimbursmentSchemaEmployeeType> reimbursmentSchemaEmployeeTypes = new HashSet<ReimbursmentSchemaEmployeeType>(0);
     private Set<EmpData> empDatas = new HashSet<EmpData>(0);
+    private Set<PaySalaryEmpType> paySalaryEmpTypes = new HashSet<PaySalaryEmpType>(0);
 
-    
     public EmployeeType() {
     }
 
@@ -118,7 +118,7 @@ public class EmployeeType implements java.io.Serializable {
     public void setUpdatedOn(Date updatedOn) {
         this.updatedOn = updatedOn;
     }
-    
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "employeeType")
     public Set<ReimbursmentSchemaEmployeeType> getReimbursmentSchemaEmployeeTypes() {
         return reimbursmentSchemaEmployeeTypes;
@@ -130,14 +130,25 @@ public class EmployeeType implements java.io.Serializable {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "employeeType")
     public Set<EmpData> getEmpDatas() {
-		return empDatas;
-	}
+        return empDatas;
+    }
 
-	public void setEmpDatas(Set<EmpData> empDatas) {
-		this.empDatas = empDatas;
-	}
+    public void setEmpDatas(Set<EmpData> empDatas) {
+        this.empDatas = empDatas;
+    }
 
-	@Override
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "paySalaryComponent")
+    public Set<PaySalaryEmpType> getPaySalaryEmpTypes() {
+        return paySalaryEmpTypes;
+    }
+
+    public void setPaySalaryEmpTypes(Set<PaySalaryEmpType> paySalaryEmpTypes) {
+        this.paySalaryEmpTypes = paySalaryEmpTypes;
+    }
+
+    
+    
+    @Override
     public int hashCode() {
         int hash = 7;
         hash = 37 * hash + Objects.hashCode(this.id);
@@ -182,6 +193,5 @@ public class EmployeeType implements java.io.Serializable {
         }
         return true;
     }
-    
-    
+
 }
