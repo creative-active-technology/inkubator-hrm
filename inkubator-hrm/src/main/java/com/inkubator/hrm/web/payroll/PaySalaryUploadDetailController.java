@@ -156,8 +156,22 @@ public class PaySalaryUploadDetailController extends BaseController {
 	}
 	
 	public void doUpload(){
-		
+		Map<String, List<String>> dataToSend = new HashMap<>();
+        List<String> paySalaryComponentValues = new ArrayList<>();
+        paySalaryComponentValues.add(String.valueOf(selectedPaySalaryComponent.getId()));
+        dataToSend.put("paySalaryComponentId", paySalaryComponentValues);
+		this.showDialogUpload(dataToSend);
 	}
+	
+	private void showDialogUpload(Map<String, List<String>> params) {
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 500);
+        options.put("contentHeight", 320);
+        RequestContext.getCurrentInstance().openDialog("pay_salary_upload_file_form", options, params);
+    }
 	
 	public void doReuse(){
 		
@@ -168,7 +182,7 @@ public class PaySalaryUploadDetailController extends BaseController {
         List<String> paySalaryComponentValues = new ArrayList<>();
         paySalaryComponentValues.add(String.valueOf(selectedPaySalaryComponent.getId()));
         dataToSend.put("paySalaryComponentId", paySalaryComponentValues);
-		showDialog(dataToSend);
+		showDialogData(dataToSend);
 	}
 	
 	public void doEditData(){
@@ -182,10 +196,10 @@ public class PaySalaryUploadDetailController extends BaseController {
         paySalaryComponentValues.add(String.valueOf(selectedPaySalaryComponent.getId()));
         dataToSend.put("paySalaryComponentId", paySalaryComponentValues);
         
-        showDialog(dataToSend);
+        showDialogData(dataToSend);
 	}
 	
-	private void showDialog(Map<String, List<String>> params) {
+	private void showDialogData(Map<String, List<String>> params) {
         Map<String, Object> options = new HashMap<>();
         options.put("modal", true);
         options.put("draggable", true);

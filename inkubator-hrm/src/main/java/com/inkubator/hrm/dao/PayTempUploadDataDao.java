@@ -24,4 +24,6 @@ public interface PayTempUploadDataDao extends IDAO<PayTempUploadData> {
 
 	public Double getTotalSalaryByPaySalaryComponentId(Long paySalaryComponentId);
 	
+	public void deleteByPaySalaryComponentId(Long paySalaryComponentId);
+	
 }

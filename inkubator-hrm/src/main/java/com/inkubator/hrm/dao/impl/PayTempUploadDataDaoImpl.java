@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.Query;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
@@ -92,5 +93,11 @@ public class PayTempUploadDataDaoImpl extends IDAOImpl<PayTempUploadData> implem
         criteria.setFetchMode("paySalaryComponent", FetchMode.JOIN);
         return (PayTempUploadData) criteria.uniqueResult();
     }
+
+	@Override
+	public void deleteByPaySalaryComponentId(Long paySalaryComponentId) {
+		Query query = getCurrentSession().createQuery("delete from PayTempUploadData temp where temp.paySalaryComponent.id = :paySalaryComponentId").setLong("paySalaryComponentId", paySalaryComponentId);
+		query.executeUpdate();
+	}
 
 }

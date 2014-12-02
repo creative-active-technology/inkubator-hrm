@@ -73,7 +73,9 @@
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="4" >
                                 	<p:commandButton value="#{appmsg['global.reuse']}" title="#{appmsg['global.reuse']}" onclick="PrimeFaces.monitorDownload(start, stop)"/>
-                                	<p:commandButton value="#{appmsg['global.upload']}" title="#{appmsg['global.upload']}" onclick="PrimeFaces.monitorDownload(start, stop)"/>
+                                    <p:commandButton value="#{appmsg['global.upload']}" actionListener="#{paySalaryUploadDetailController.doUpload()}" title="#{appmsg['global.upload']}" label="#{appmsg['global.upload']}" styleClass="label_button" ajax="true">
+                                        <p:ajax event="dialogReturn" listener="#{paySalaryUploadDetailController.onDialogReturn}"  update="formPaySalaryUploadDetailId,:growlPaySalaryUploadDetailId"/>
+                                    </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.add_data']}" actionListener="#{paySalaryUploadDetailController.doAddData()}" title="#{appmsg['global.add_data']}" label="#{appmsg['global.add_data']}" styleClass="label_button" ajax="true">
                                         <p:ajax event="dialogReturn" listener="#{paySalaryUploadDetailController.onDialogReturn}"  update="formPaySalaryUploadDetailId,:growlPaySalaryUploadDetailId"/>
                                     </p:commandButton>
