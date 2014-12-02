@@ -314,14 +314,17 @@ public class PayTempUploadDataServiceImpl extends IServiceImpl implements PayTem
 		EmpData empData = empDataDao.getEntityByNik(model.getNik());
 		PaySalaryComponent paySalaryComponent = paySalaryComponentDao.getEntiyByPK(model.getPaySalaryComponentId());
 		
-		PayTempUploadData entity = new PayTempUploadData();
-		entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
-		entity.setPaySalaryComponent(paySalaryComponent);
-		entity.setEmpData(empData);
-		entity.setNominalValue(Double.parseDouble(model.getNominal()));
-        entity.setCreatedBy(model.getCreatedBy());
-        entity.setCreatedOn(new Date());
-        this.payTempUploadDataDao.save(entity);
+		if(empData!= null && paySalaryComponent != null) {
+			PayTempUploadData entity = new PayTempUploadData();
+			entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+			entity.setPaySalaryComponent(paySalaryComponent);
+			entity.setEmpData(empData);
+			entity.setNominalValue(Double.parseDouble(model.getNominal()));
+			entity.setPathUpload(model.getPathUpload());
+	        entity.setCreatedBy(model.getCreatedBy());
+	        entity.setCreatedOn(new Date());
+	        this.payTempUploadDataDao.save(entity);
+		}
 		
 	}
 

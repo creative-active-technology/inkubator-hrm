@@ -6,6 +6,8 @@ import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.NonTransientResourceException;
 import org.springframework.batch.item.ParseException;
 import org.springframework.batch.item.UnexpectedInputException;
+import org.springframework.batch.item.excel.mapping.BeanPropertyRowMapper;
+import org.springframework.batch.item.excel.poi.PoiItemReader;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
@@ -23,15 +25,18 @@ public class PaySalaryUploadReader implements ItemReader<PaySalaryUploadFileMode
 
 	private String createdBy;
 	private String paySalaryComponentId;
+	private String pathUpload;
 	private String extension;
 	private FlatFileItemReader<PaySalaryUploadFileModel> csvFileReader;
+	private PoiItemReader<PaySalaryUploadFileModel> excelFileReader;
 	
 	public PaySalaryUploadReader(String filePath){
 		this.extension = StringUtils.substringAfterLast(filePath, ".");
+		this.pathUpload = filePath;
 		if(StringUtils.equals(this.extension, "csv")){
 			this.initializationCsvReader(filePath);
 		} else {
-			//excel generated jek
+			this.initializationExcelReader(filePath);
 		}
 		
 	}
@@ -60,19 +65,44 @@ public class PaySalaryUploadReader implements ItemReader<PaySalaryUploadFileMode
 		csvFileReader.open(new ExecutionContext());
 	}
 	
+	private void initializationExcelReader(String filePath){
+		//read a Excel file
+		Resource resource = new FileSystemResource(filePath);
+		
+		try {
+			//mapped to an object
+			BeanPropertyRowMapper<PaySalaryUploadFileModel> rowMapper = new BeanPropertyRowMapper<PaySalaryUploadFileModel>();
+			rowMapper.setTargetType(PaySalaryUploadFileModel.class);		
+			rowMapper.afterPropertiesSet();		
+		
+			//initial poiItemReader
+			excelFileReader = new PoiItemReader<PaySalaryUploadFileModel>();
+			excelFileReader.setResource(resource);
+			excelFileReader.setLinesToSkip(1);
+			excelFileReader.setRowMapper(rowMapper);
+			excelFileReader.afterPropertiesSet();
+			excelFileReader.open(new ExecutionContext());
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	@Override
 	public PaySalaryUploadFileModel read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
 		PaySalaryUploadFileModel model = null;
 		if(StringUtils.equals(extension, "csv")){
 			model = csvFileReader.read();	
 		}else {
-			//excel generated jek
+			model = excelFileReader.read();
 		}
 			
 		//kenapa di cek null, karena tanda batch process telah berakhir ialah read.process == null
 		if(model!= null){ 
 			model.setCreatedBy(createdBy);
 			model.setPaySalaryComponentId(Long.parseLong(paySalaryComponentId));
+			model.setPathUpload(pathUpload);
 		}
 		
 		return model;

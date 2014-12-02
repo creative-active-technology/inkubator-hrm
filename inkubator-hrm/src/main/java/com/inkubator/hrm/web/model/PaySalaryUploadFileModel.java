@@ -15,8 +15,9 @@ public class PaySalaryUploadFileModel implements Serializable{
 	private String nik;
     private String nominal;
     private Long paySalaryComponentId;
-    private String createdBy;
-    
+    private String pathUpload;
+    private String createdBy;    	
+	
 	public String getNik() {
 		return nik;
 	}
@@ -34,6 +35,12 @@ public class PaySalaryUploadFileModel implements Serializable{
 	}
 	public void setPaySalaryComponentId(Long paySalaryComponentId) {
 		this.paySalaryComponentId = paySalaryComponentId;
+	}
+	public String getPathUpload() {
+		return pathUpload;
+	}
+	public void setPathUpload(String pathUpload) {
+		this.pathUpload = pathUpload;
 	}
 	public String getCreatedBy() {
 		return createdBy;

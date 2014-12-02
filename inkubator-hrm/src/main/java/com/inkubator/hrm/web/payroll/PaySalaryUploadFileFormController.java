@@ -146,10 +146,10 @@ public class PaySalaryUploadFileFormController extends BaseController {
 
 	public void doSave() {
         try {
-        	String uploadPath = this.payTempUploadDataService.updateFileAndDeleteData(selectedPaySalaryComponent.getId(), file);
+        	String pathUpload = this.payTempUploadDataService.updateFileAndDeleteData(selectedPaySalaryComponent.getId(), file);
         	
         	JobParameters jobParameters = new JobParametersBuilder()
-		        	.addString("input.file.path", uploadPath)
+		        	.addString("input.file.path", pathUpload)
 		        	.addString("createdBy", UserInfoUtil.getUserName())        			
 		        	.addString("paySalaryComponentId", String.valueOf(selectedPaySalaryComponent.getId()))
 		        	.addString("timeInMilis", String.valueOf(System.currentTimeMillis())).toJobParameters();
