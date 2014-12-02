@@ -52,7 +52,7 @@
                                         <pe:exporter target="tableLoanId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Loan"/>
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']}" action="#{loanViewController.doAdd()}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true"/>
-                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{loanViewController.doClose()}" icon="ui-icon-home"/>
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{loanViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
                         </p:toolbar>

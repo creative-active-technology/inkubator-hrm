@@ -48,7 +48,7 @@
                                     <p:commandButton value="#{appmsg['global.add']}" action="#{roleViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" icon="ui-icon-document"
                                                      styleClass="label_button"/>
                                     <p:commandButton value="#{appmsg['global.close']}"  styleClass="label_button" action="#{roleViewController.doClose()}" title="#{appmsg['global.close']}" icon="ui-icon-home"
-                                                     label="#{appmsg['global.close']}"/>
+                                                     label="#{appmsg['global.close']}" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
 
