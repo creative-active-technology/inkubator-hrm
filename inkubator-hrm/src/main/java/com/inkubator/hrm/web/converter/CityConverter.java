@@ -7,10 +7,8 @@ package com.inkubator.hrm.web.converter;
 
 import com.inkubator.hrm.entity.City;
 import com.inkubator.hrm.service.CityService;
+import com.inkubator.webcore.util.ServiceWebUtil;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ApplicationScoped;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -22,18 +20,21 @@ import org.apache.commons.lang3.StringUtils;
  *
  * @author Taufik Hidayat
  */
-@ManagedBean(name = "cityConverter")
-@ApplicationScoped
+//@ManagedBean(name = "cityConverter")
+//@ApplicationScoped
+@FacesConverter(value = "cityConverter")
 public class CityConverter implements Converter {
 
-    @ManagedProperty(value = "#{cityService}")
-    private CityService cityService;
-
-    public void setCityService(CityService cityService) {
-        this.cityService = cityService;
-    }
+//    @ManagedProperty(value = "#{cityService}")
+//    private CityService cityService;
+//
+//    public void setCityService(CityService cityService) {
+//        this.cityService = cityService;
+//    }
     
+    @Override
     public Object getAsObject(FacesContext contet, UIComponent component, String value) {
+         CityService cityService = (CityService) ServiceWebUtil.getService("cityService");
         if (!StringUtils.isNumeric(value)) {
             return null;
         }
@@ -48,6 +49,7 @@ public class CityConverter implements Converter {
         }
     }
 
+    @Override
     public String getAsString(FacesContext contet, UIComponent component, Object value) {
         if (value == null || value.equals("")) {
             return null;
