@@ -71,6 +71,7 @@ public class BioDocumentFormController extends BaseController {
 		isUpdate = null;
 		bioDocumentService = null;
 		documentFile = null;
+                uploadFilesUtil = null;
 	}
 
 	public BioDocumentModel getModel() {

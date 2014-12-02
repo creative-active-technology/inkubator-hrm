@@ -255,26 +255,33 @@
                                     <p:sticky target="menuId" />
                                     <p:menubar style="margin-left: 0px;margin-right: 0px;margin-top: 0px" styleClass="panelMenu" autoDisplay="false" id="menuId">  
                                         <p:menuitem value="" url="/protected/home.htm"  title="Back to Home" style="font-size: 12px !important;font-weight: normal!important;color: white" icon="ui-icon-home" />  
-                                        <p:submenu label="Account"  styleClass="menu" icon="img-user-account">
-                                            <p:menuitem value="#{appmsg['menu.user_view']}"  style="color: #003366" title="#{appmsg['menu.user_view']}" url="/protected/account/user_view.htm"  icon="img-user"/> 
-                                            <p:menuitem value="#{appmsg['menu.role_view']}"  style="color: #003366" title="#{appmsg['menu.role_view']}" url="/protected/account/role_view.htm" icon="img-user-role" />
-                                            <p:menuitem value="#{appmsg['menu.menu_view']}"  style="color: #003366" title="#{appmsg['menu.menu_view']}" url="/protected/account/menu_view.htm" icon="img-user-menu" />
-                                            <p:menuitem value="#{appmsg['favorite_menu.favorite_menu']}"  style="color: #003366" title="#{appmsg['favorite_menu.favorite_menu']}" url="/protected/account/favorite_menu_view.htm" icon="img-favorite-menu" /> 
-                                            <p:separator/>
-                                            <p:menuitem value="#{appmsg['passwordhistory.password_config']}"  style="color: #003366" title="Password Setting" url="/protected/account/password_configuration.htm" icon="img-password-config"/>  
-                                            <p:menuitem value="#{appmsg['passwordhistory.password_history']}"  style="color: #003366" title="Create Offering Price" url="/protected/account/password_history.htm" icon="img-password-history" /> 
-                                            <p:menuitem value="#{appmsg['loginhistory.login_history']}"  style="color: #003366" title="#{appmsg['loginhistory.login_history']}" url="/protected/account/login_history.htm" icon="img-login-history" />  
-                                            <p:menuitem value="#{appmsg['ipPermit.ipPermit']}"  style="color: #003366" title="#{appmsg['ipPermit.ipPermit']}" url="/protected/account/ip_permit_view.htm" icon="img-login-history" />  
-                                            <p:menuitem value="#{appmsg['checkIn.checkIn_application']}"  style="color: #003366" title="#{appmsg['checkIn.checkIn_application']}" url="/protected/account/check_in_attendance_view.htm" icon="img-login-history" />                                          
-                                            <p:menuitem value="#{appmsg['transactionCodefication.transactionCodefication']}" icon="img-transactionCodefication" style="font-size: 12px !important;color: #003366" title="#{appmsg['transactionCodefication.transactionCodefication']}" url="/protected/reference/transaction_codefication_view.htm" />
+                                        <p:submenu label="Aplikasi"  styleClass="menu" icon="img-user-account">
+                                            <p:submenu label="#{appmsg['menu.account']}"  styleClass="menu_child" >
+                                                <p:menuitem value="#{appmsg['menu.user_view']}"  style="color: #003366" title="#{appmsg['menu.user_view']}" url="/protected/account/user_view.htm"  icon="img-user"/> 
+                                                <p:menuitem value="#{appmsg['menu.role_view']}"  style="color: #003366" title="#{appmsg['menu.role_view']}" url="/protected/account/role_view.htm" icon="img-user-role" />
+                                            </p:submenu>
+                                            <p:submenu label="#{appmsg['menu.approvalPattern']}"  styleClass="menu_child" >
+                                                <p:menuitem value="Approval Definition"  style="color: #003366" title="Approval Definition" url="/protected/approval/approval_definition_view.htm"  icon="img-approval-definition"/> 
+                                                <!--<p:menuitem value="Approval Activity"  style="color: #003366" title="#{appmsg['menu.role_view']}" url="/protected/account/role_view.htm" icon="img-approval-activity" />-->
+                                                <p:menuitem value="Approval Activity History"  style="color: #003366" title="Approval Activity History" url="/protected/approval/approval_activity_view.htm" icon="img-approval-activity" />
+                                            </p:submenu>
+                                            <p:submenu label="#{appmsg['menu.applicationMenu']}"  styleClass="menu_child" >
+                                                <p:menuitem value="#{appmsg['menu.menu_view']}"  style="color: #003366" title="#{appmsg['menu.menu_view']}" url="/protected/account/menu_view.htm" icon="img-user-menu" />
+                                                <p:menuitem value="#{appmsg['favorite_menu.favorite_menu']}"  style="color: #003366" title="#{appmsg['favorite_menu.favorite_menu']}" url="/protected/account/favorite_menu_view.htm" icon="img-favorite-menu" /> 
+                                            </p:submenu>
+                                            <p:submenu label="#{appmsg['menu.login']}"  styleClass="menu_child" >
+                                                <p:menuitem value="#{appmsg['passwordhistory.password_config']}"  style="color: #003366" title="Password Setting" url="/protected/account/password_configuration.htm" icon="img-password-config"/>  
+                                                <p:menuitem value="#{appmsg['passwordhistory.password_history']}"  style="color: #003366" title="Create Offering Price" url="/protected/account/password_history.htm" icon="img-password-history" /> 
+                                                <p:menuitem value="#{appmsg['loginhistory.login_history']}"  style="color: #003366" title="#{appmsg['loginhistory.login_history']}" url="/protected/account/login_history.htm" icon="img-login-history" />
+                                            </p:submenu>
+                                            <p:submenu label="#{appmsg['menu.miscellaneous']}"  styleClass="menu_child" >
+                                                <p:menuitem value="#{appmsg['ipPermit.ipPermit']}"  style="color: #003366" title="#{appmsg['ipPermit.ipPermit']}" url="/protected/account/ip_permit_view.htm" icon="img-login-history" />  
+                                                <p:menuitem value="#{appmsg['checkIn.checkIn_application']}"  style="color: #003366" title="#{appmsg['checkIn.checkIn_application']}" url="/protected/account/check_in_attendance_view.htm" icon="img-login-history" />                                          
+                                                <p:menuitem value="#{appmsg['transactionCodefication.transactionCodefication']}" icon="img-transactionCodefication" style="font-size: 12px !important;color: #003366" title="#{appmsg['transactionCodefication.transactionCodefication']}" url="/protected/reference/transaction_codefication_view.htm" />
+                                            </p:submenu>
                                         </p:submenu>
-                                        <p:submenu label="Approval Matrix"  styleClass="menu" icon="img-approval-matrix">
-                                            <p:menuitem value="Approval Definition"  style="color: #003366" title="Approval Definition" url="/protected/approval/approval_definition_view.htm"  icon="img-approval-definition"/> 
-                                            <!--<p:menuitem value="Approval Activity"  style="color: #003366" title="#{appmsg['menu.role_view']}" url="/protected/account/role_view.htm" icon="img-approval-activity" />-->
-                                            <p:menuitem value="Approval Activity History"  style="color: #003366" title="Approval Activity History" url="/protected/approval/approval_activity_view.htm" icon="img-approval-activity" />
-
-                                        </p:submenu>
-
+<!--                                        <p:submenu label="Approval Matrix"  styleClass="menu" icon="img-approval-matrix">
+                                        </p:submenu>-->
                                         <p:submenu label="#{appmsg['menu.configuration']}" style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-configuration">
                                             <p:submenu label="#{appmsg['menu.data_reference']}"  styleClass="menu_child" >
                                                 <p:submenu label="#{appmsg['menu.demograph']}"  styleClass="menu_child" >
@@ -290,7 +297,7 @@
                                                     <p:menuitem value="#{appmsg['faculty.faculty']}" icon="img-faculty" style="font-size: 12px !important;color: #003366" title="#{appmsg['faculty.faculty']}" url="/protected/reference/faculty_view.htm" />
                                                     <p:menuitem value="#{appmsg['major.major']}" icon="img-major" style="font-size: 12px !important;color: #003366" title="#{appmsg['major.major']}" url="/protected/reference/major_view.htm" />
                                                     <p:menuitem value="#{appmsg['institutionEducation.institutionEducation']}" icon="img-institutionEducation" style="font-size: 12px !important;color: #003366" title="#{appmsg['institutionEducation.institutionEducation']}" url="/protected/reference/institution_education_view.htm" />
-                                                    <p:menuitem value="#{appmsg['educationnonformal.education_non_formal']}" icon="img-education-level" style="font-size: 12px !important;color: #003366" title="#{appmsg['educationnonformal.education_non_formal']}" url="/protected/reference/education_non_formal_view.htm" />
+                                                    <p:menuitem value="#{appmsg['educationnonformal.education_non_formal']}" icon="img-education_non_formal" style="font-size: 12px !important;color: #003366" title="#{appmsg['educationnonformal.education_non_formal']}" url="/protected/reference/education_non_formal_view.htm" />
                                                     <p:menuitem value="#{appmsg['language.language']}" icon="img-language" style="font-size: 12px !important;color: #003366" title="#{appmsg['language.language']}" url="/protected/reference/language_view.htm" />
                                                     <p:menuitem value="#{appmsg['occupationType.occupationType']}" icon="img-occupationType" style="font-size: 12px !important;color: #003366" title="#{appmsg['occupationType.occupationType']}" url="/protected/reference/occupation_type_view.htm" />
                                                     <p:menuitem value="#{appmsg['specificationability.specification_ability']}" icon="img-specification-ability" style="color: #003366" title="#{appmsg['specificationability.specification_ability']}" url="/protected/reference/spec_ability_view.htm" />
@@ -302,16 +309,16 @@
                                                     <p:menuitem value="#{appmsg['city.city']}" icon="img-city" style="font-size: 12px !important;color: #003366" title="#{appmsg['city.city']}" url="/protected/reference/city_view.htm" />
                                                 </p:submenu>
                                                 <p:submenu label="#{appmsg['menu.financial_bussiness']}"  styleClass="menu_child" >
-                                                    <p:menuitem value="#{appmsg['businessType.businessType']}" icon="img-transactionCodefication" style="font-size: 12px !important;color: #003366" title="#{appmsg['businessType.businessType']}" url="/protected/reference/business_type_view.htm" />
+                                                    <p:menuitem value="#{appmsg['businessType.businessType']}" icon="img-bussiness_type" style="font-size: 12px !important;color: #003366" title="#{appmsg['businessType.businessType']}" url="/protected/reference/business_type_view.htm" />
                                                     <p:menuitem value="#{appmsg['bank.bank']}" icon="img-bank" style="font-size: 12px !important;color: #003366" title="#{appmsg['bank.bank']}" url="/protected/reference/bank_view.htm" />
                                                     <p:menuitem value="#{appmsg['currency.currency']}" icon="img-currency" style="font-size: 12px !important;color: #003366" title="#{appmsg['currency.currency']}" url="/protected/reference/currency_view.htm" />
-                                                    <p:menuitem value="#{appmsg['savingType.savingType']}" icon="img-transactionCodefication" style="font-size: 12px !important;color: #003366" title="#{appmsg['savingType.savingType']}" url="/protected/reference/saving_type_view.htm" />
-                                                    <p:menuitem value="#{appmsg['financialNonBanking.financialNonBanking']}" icon="img-transactionCodefication" style="font-size: 12px !important;color: #003366" title="#{appmsg['financialNonBanking.financialNonBanking']}" url="/protected/reference/finance_non_banking_view.htm" />
+                                                    <p:menuitem value="#{appmsg['savingType.savingType']}" icon="img-saving_type" style="font-size: 12px !important;color: #003366" title="#{appmsg['savingType.savingType']}" url="/protected/reference/saving_type_view.htm" />
+                                                    <p:menuitem value="#{appmsg['financialNonBanking.financialNonBanking']}" icon="img-finance_non_banking" style="font-size: 12px !important;color: #003366" title="#{appmsg['financialNonBanking.financialNonBanking']}" url="/protected/reference/finance_non_banking_view.htm" />
                                                 </p:submenu>
                                                 <p:submenu label="#{appmsg['menu.miscellaneous']}"  styleClass="menu_child" >
-                                                    <p:menuitem value="#{appmsg['hospital.hospital']}" icon="img-transactionCodefication" style="font-size: 12px !important;color: #003366" title="#{appmsg['hospital.hospital']}" url="/protected/reference/hospital_view.htm" />
-                                                    <p:menuitem value="#{appmsg['resourceType.resourceType']}" icon="img-transactionCodefication" style="font-size: 12px !important;color: #003366" title="#{appmsg['resourceType.resourceType']}" url="/protected/reference/resource_type_view.htm" />
-                                                    <p:menuitem value="#{appmsg['resourceName.resourceName']}" icon="img-transactionCodefication" style="font-size: 12px !important;color: #003366" title="#{appmsg['resourceName.resourceName']}" url="/protected/reference/resource_name_view.htm" />
+                                                    <p:menuitem value="#{appmsg['hospital.hospital']}" icon="img-hospital" style="font-size: 12px !important;color: #003366" title="#{appmsg['hospital.hospital']}" url="/protected/reference/hospital_view.htm" />
+                                                    <p:menuitem value="#{appmsg['resourceType.resourceType']}" icon="img-resource_name" style="font-size: 12px !important;color: #003366" title="#{appmsg['resourceType.resourceType']}" url="/protected/reference/resource_type_view.htm" />
+                                                    <p:menuitem value="#{appmsg['resourceName.resourceName']}" icon="img-resource_type" style="font-size: 12px !important;color: #003366" title="#{appmsg['resourceName.resourceName']}" url="/protected/reference/resource_name_view.htm" />
                                                 </p:submenu>
                                             </p:submenu>           
                                             <p:submenu label="#{appmsg['menu.organisation_setting']}"  styleClass="menu_child" >

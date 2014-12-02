@@ -72,7 +72,9 @@ public class MecineFingerServiceFormController extends BaseController {
 
     @PreDestroy
     public void cleanAndExit() {
-
+        mecineFinger = null;
+        mecineFingerService = null;
+        mecineFingerServiceModel = null;
     }
 
     public String doSave() {

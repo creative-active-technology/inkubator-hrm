@@ -90,7 +90,10 @@ public class JabatanSpesifikasiViewController extends BaseController{
 
     @PreDestroy
     private void cleanAndExit() {
-
+        jabatanSearchParameter = null;
+        lazyJabatanDataModel = null;
+        jabatanService = null;
+        selectedJabatan = null;
     }
 
     public String doViewShema() {

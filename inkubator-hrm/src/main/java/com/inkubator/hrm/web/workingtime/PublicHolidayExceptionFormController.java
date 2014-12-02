@@ -83,6 +83,9 @@ public class PublicHolidayExceptionFormController extends BaseController {
         publicHolidayExceptionService = null;
 //        publicHolidayExceptionModel = null;
         isUpdate = null;
+        publicHolidayService = null;
+        publicHolidays = null;
+        empDataService = null;
     }
 
     public PublicHolidayExceptionModel getPublicHolidayExceptionModel() {

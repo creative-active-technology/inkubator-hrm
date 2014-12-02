@@ -107,6 +107,7 @@ public class CityDetailController extends BaseController {
     public void cleanAndExit() {
         selectedCity = null;
         cityService = null;
+        emptyModel = null;
     }
 
 }

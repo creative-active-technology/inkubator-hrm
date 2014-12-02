@@ -100,6 +100,12 @@ public class BioFamilyRelationshipFormController extends BaseController {
         bioFamilyRelationshipService = null;
 //        bioFamilyRelationshipModel = null;
         isUpdate = null;
+        familyRelationService = null;
+        educationLevelService = null;
+        occupationTypeService = null;
+        familyRelations = null;
+        educationLevels = null;
+        
     }
 
     public BioFamilyRelationshipModel getBioFamilyRelationshipModel() {

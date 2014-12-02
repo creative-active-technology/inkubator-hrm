@@ -56,6 +56,8 @@ public class ReportOfEmployeesFamilyViewController extends BaseController {
         searchParameter = null;
         lazyDataModel = null;
         listDepartment = null;
+        departmentService = null;
+        bioFamilyRelationshipService = null;
     }
 
     public void doSearch() {

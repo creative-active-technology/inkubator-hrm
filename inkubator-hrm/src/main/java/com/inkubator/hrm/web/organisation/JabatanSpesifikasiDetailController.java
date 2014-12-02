@@ -162,7 +162,9 @@ public class JabatanSpesifikasiDetailController extends BaseController{
         occupationSource = null;
         dualListModel = null;
         selectedJabatan = null;
+        selectedJobSpec = null;
         jabatanService = null;
+        jabatanSpecService = null;
         listJabatanSpesifikasi = null;
         source = null;
         educationLevelService = null;

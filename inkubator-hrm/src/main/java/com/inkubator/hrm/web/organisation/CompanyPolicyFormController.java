@@ -100,6 +100,7 @@ public class CompanyPolicyFormController extends BaseController {
 		golJabatansDualModel = null;
 		isDisabledBroadcastConf = null;
 		isUpdate = null;
+                uploadFilesUtil = null;
 	}
 	
 	public CompanyPolicyModel getModel() {

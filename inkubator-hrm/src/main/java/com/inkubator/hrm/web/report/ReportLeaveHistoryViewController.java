@@ -75,6 +75,14 @@ public class ReportLeaveHistoryViewController extends BaseController {
         leaveImplementationService = null;
         searchParameter = null;
         lazyDataModel = null;
+        selectedLeaveImplementation = null;
+        approvalActivityService = null;
+        selectedApprovalActivity = null;
+        activityNumbers = null;
+        approvalActivity = null;
+        empData = null;
+        listLeaveImplementations = null;
+        listReportLeaveHistoryModels = null;
     }
 
     public List<ReportLeaveHistoryModel> getListReportLeaveHistoryModels() {
