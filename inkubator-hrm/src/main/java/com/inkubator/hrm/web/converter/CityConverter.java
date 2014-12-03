@@ -30,7 +30,7 @@ public class CityConverter implements Converter {
 //
 //    public void setCityService(CityService cityService) {
 //        this.cityService = cityService;
-//    }
+//    }itu 
     
     @Override
     public Object getAsObject(FacesContext contet, UIComponent component, String value) {
