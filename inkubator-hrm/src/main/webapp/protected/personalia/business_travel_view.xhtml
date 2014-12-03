@@ -93,7 +93,8 @@
                             
                             <p:column headerText="#{appmsg['global.action']}" style="width: 15%;text-align: center" exportable="false">
                             	<p:commandButton icon="ui-icon-document" title="#{appmsg['global.print']}" label="#{appmsg['global.print']}" 
-                                				 style="font-size: 10px!important" action="#{businessTravelViewController.doBeforePrint()}" onclick="statusDialog.show()"  oncomplete="dialogPrint.show()">                        
+                                				 style="font-size: 10px!important" update=":formPrintId" 
+                                				 action="#{businessTravelViewController.doBeforePrint()}"  onclick="statusDialog.show()"  oncomplete="dialogPrint.show()">                        
                                     <f:setPropertyActionListener value="#{businessTravelData}" target="#{businessTravelViewController.selectedBusinessTravel}" />
                                 </p:commandButton>
                                 -
