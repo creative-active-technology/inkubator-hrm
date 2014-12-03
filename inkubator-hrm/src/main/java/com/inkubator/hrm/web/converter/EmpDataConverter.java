@@ -17,31 +17,37 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.service.EmpDataService;
+import com.inkubator.webcore.util.ServiceWebUtil;
+import javax.faces.convert.FacesConverter;
 
 /**
  *
  * @author Deni
  */
-@ManagedBean(name = "empDataConverter")
-@ApplicationScoped
+//@ManagedBean(name = "empDataConverter")
+//@ApplicationScoped
+@FacesConverter(value = "empDataConverter")
 public class EmpDataConverter implements Converter {
 
-	@ManagedProperty(value = "#{empDataService}")
-	private EmpDataService empDataService;
-
-	public void setEmpDataService(EmpDataService empDataService) {
-		this.empDataService = empDataService;
-	}
+//	@ManagedProperty(value = "#{empDataService}")
+//	private EmpDataService empDataService;
+//
+//	public void setEmpDataService(EmpDataService empDataService) {
+//		this.empDataService = empDataService;
+//	}
 
 	@Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
         if (!StringUtils.isNumeric(value)) {
             return null;
         }
+        EmpDataService empDataService = (EmpDataService) ServiceWebUtil.getService("empDataService");
+        Object object = null;
         try {
             Long id = Long.parseLong(value);
-            EmpData empData = empDataService.getByIdWithDetail(id);
-            return empData;
+//            EmpData empData = empDataService.getByIdWithDetail(id);
+            object = empDataService.getEntiyByPK(id);
+            return object;
         } catch (Exception e) {
             e.printStackTrace();
             throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error when converting to EmpData using EmpDataConverter", ""));

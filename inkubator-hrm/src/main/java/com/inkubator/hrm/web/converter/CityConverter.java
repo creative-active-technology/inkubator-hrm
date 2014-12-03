@@ -15,6 +15,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.convert.FacesConverter;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -25,26 +26,22 @@ import org.apache.commons.lang3.StringUtils;
 @FacesConverter(value = "cityConverter")
 public class CityConverter implements Converter {
 
-//    @ManagedProperty(value = "#{cityService}")
-//    private CityService cityService;
-//
-//    public void setCityService(CityService cityService) {
-//        this.cityService = cityService;
-//    }itu 
-    
+    private static final Logger LOGGER = Logger.getLogger(CityConverter.class);
+
     @Override
     public Object getAsObject(FacesContext contet, UIComponent component, String value) {
-         CityService cityService = (CityService) ServiceWebUtil.getService("cityService");
+        CityService cityService = (CityService) ServiceWebUtil.getService("cityService");
         if (!StringUtils.isNumeric(value)) {
             return null;
         }
+        Object object = null;
         try {
             Long id = Long.parseLong(value);
-            
-            City city = cityService.getEntiyByPK(id);
-            return city;
+            object = cityService.getEntiyByPK(id);
+//            City city = cityService.getEntiyByPK(id);
+            return object;
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
             throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Input tidak valid", ""));
         }
     }

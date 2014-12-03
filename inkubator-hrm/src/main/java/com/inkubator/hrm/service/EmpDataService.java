@@ -82,4 +82,8 @@ public interface EmpDataService extends IService<EmpData> {
     public Long getTotalReportEmpDepartmentJabatanByParam(ReportEmpDepartmentJabatanParameter param);
     
     public List<EmpData> getEmployeeBySearchEmployeeFingerException(WtFingerExceptionModel model) throws Exception;
+    
+    public void saveForPtkp(EmpData empData) throws Exception;
+    
+    public EmpData getEmpDataWithBiodata(Long id) throws Exception;
 }

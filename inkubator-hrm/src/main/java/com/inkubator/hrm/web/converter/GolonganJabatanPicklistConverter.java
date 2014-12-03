@@ -16,29 +16,39 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import org.apache.commons.lang3.StringUtils;
 
+import com.inkubator.hrm.entity.GolonganJabatan;
+import com.inkubator.hrm.service.GolonganJabatanService;
+import com.inkubator.webcore.util.ServiceWebUtil;
+import javax.faces.convert.FacesConverter;
+
 /**
  *
  * @author Taufik
  */
-@ManagedBean(name = "golonganJabatanPicklistConverter")
-@ApplicationScoped
+//@ManagedBean(name = "golonganJabatanPicklistConverter")
+//@ApplicationScoped
+@FacesConverter(value = "golonganJabatanPicklistConverter")
 public class GolonganJabatanPicklistConverter implements Converter {
-    @ManagedProperty(value = "#{golonganJabatanService}")
-    private GolonganJabatanService golonganJabatanService;
 
-    public void setGolonganJabatanService(GolonganJabatanService golonganJabatanService) {
-        this.golonganJabatanService = golonganJabatanService;
-    }
+//    @ManagedProperty(value = "#{golonganJabatanService}")
+//    private GolonganJabatanService golonganJabatanService;
+//
+//    public void setGolonganJabatanService(GolonganJabatanService golonganJabatanService) {
+//        this.golonganJabatanService = golonganJabatanService;
+//    }
 
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
         if (!StringUtils.isNumeric(value)) {
             return null;
         }
+        GolonganJabatanService golonganJabatanService = (GolonganJabatanService) ServiceWebUtil.getService("golonganJabatanService");
+        Object object = null;
         try {
             Long id = Long.parseLong(value);
-            GolonganJabatan golonganJabatan = golonganJabatanService.getEntiyByPK(id);
-            return golonganJabatan;
+//            GolonganJabatan golonganJabatan = golonganJabatanService.getEntiyByPK(id);
+            object = golonganJabatanService.getEntiyByPK(id);
+            return object;
         } catch (Exception e) {
             e.printStackTrace();
             throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error when converting to GolonganJabatan using GolonganJabatanConverter", ""));

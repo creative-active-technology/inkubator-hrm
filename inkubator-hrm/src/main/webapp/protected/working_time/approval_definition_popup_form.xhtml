@@ -111,7 +111,7 @@
                                                 disabled="#{approvalDefinitionPopupFormController.approverTypeIndividual}"
                                                 var="hrmUser" itemValue="#{hrmUser}"
                                                 itemLabel="#{hrmUser.empData.nik} #{hrmUser.empData.bioData.firstName} #{hrmUser.empData.bioData.lastName}"
-                                                converter="#{hrmUserConverter}"
+                                                converter="hrmUserConverter"
                                                 required="true" styleClass="isitext_hrm" size="45">
                                     </p:autoComplete>
                                     <p:message for="approverIndividualId"/>
@@ -138,7 +138,7 @@
                                                 disabled="#{approvalDefinitionPopupFormController.approverTypePosition}"
                                                 var="jabatan" itemValue="#{jabatan}"
                                                 itemLabel="#{jabatan.code} #{jabatan.name}"
-                                                converter="#{jabatanConverter}"
+                                                converter="jabatanConverter"
                                                 required="true" styleClass="isitext_hrm" size="45">
                                     </p:autoComplete>
                                     <p:message for="approverPositionId"/>
@@ -179,7 +179,7 @@
                                                 disabled="#{approvalDefinitionPopupFormController.onBehalfApproverTypeIndividual}"
                                                 var="hrmUser" itemValue="#{hrmUser}"
                                                 itemLabel="#{hrmUser.empData.nik} #{hrmUser.empData.bioData.firstName} #{hrmUser.empData.bioData.lastName}"
-                                                converter="#{hrmUserConverter}"
+                                                converter="hrmUserConverter"
                                                 required="true" styleClass="isitext_hrm" size="45">
                                     </p:autoComplete>
                                     <p:message for="onBehalfIndividualId"/>
@@ -194,7 +194,7 @@
                                                 disabled="#{approvalDefinitionPopupFormController.onBehalfApproverTypePosition}"
                                                 var="jabatan" itemValue="#{jabatan}"
                                                 itemLabel="#{jabatan.code} #{jabatan.name}"
-                                                converter="#{jabatanConverter}"
+                                                converter="jabatanConverter"
                                                 required="true" styleClass="isitext_hrm" size="45">
                                     </p:autoComplete>
                                     <p:message for="onBehalfPositionId"/>
