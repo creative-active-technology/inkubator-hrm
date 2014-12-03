@@ -16,6 +16,7 @@
             </ui:define>
             <ui:define name="center">
                 <p:growl id="growlCostCenterDeptFormId" globalOnly="true" showDetail="true"/>
+                <p:focus context="formCostCenterDeptId" />
                 <h:form id="formCostCenterDeptId">
                     <h:panelGrid  columns="2">
                         <p:graphicImage library="images" name="cost_center.png" height="36" width="36"  cache="true"/>
@@ -79,8 +80,7 @@
 
                             </p:column>
                         </p:row>
-                    </p:panelGrid>
-                    <p:focus context="formCostCenterDeptId" />
+                    </p:panelGrid>                    
                     <p:separator style="margin-top: 20px;margin-bottom: 10px"/>
                     <h:panelGrid columns="2" style="margin-bottom: -30px!important">
                         <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formCostCenterDeptId,:growlCostCenterDeptFormId"
