@@ -17,9 +17,9 @@ import org.hibernate.criterion.Order;
  * @author Deni
  */
 public interface PayComponentDataExceptionService  extends IService<PayComponentDataException>{
-    public List<PayComponentDataException> getByParamWithDetailForDetail(String searchParameter, int firstResult, int maxResults, Order order) throws Exception;
+    public List<PayComponentDataException> getByParamWithDetailForDetail(String searchParameter, String paySalaryComponentId, int firstResult, int maxResults, Order order) throws Exception;
 
-    public Long getTotalByParamForDetail(String searchParameter) throws Exception;
+    public Long getTotalByParamForDetail(String searchParameter, String paySalaryComponentId) throws Exception;
     
     public PayComponentDataException getByPaySalaryComponentId(Long id) throws Exception;
     

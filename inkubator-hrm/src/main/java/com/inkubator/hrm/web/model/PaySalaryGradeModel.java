@@ -14,6 +14,7 @@ public class PaySalaryGradeModel {
     private Long id;
     private Long currencyid;
     private Integer gradeSalary;
+    private String gradeSalaryRomanov;
     private BigDecimal minSalary;
     private BigDecimal mediumSalary;
     private BigDecimal maxSalary;
@@ -66,6 +67,12 @@ public class PaySalaryGradeModel {
     public void setMaxSalary(BigDecimal maxSalary) {
         this.maxSalary = maxSalary;
     }
-    
-    
+
+    public String getGradeSalaryRomanov() {
+        return gradeSalaryRomanov;
+    }
+
+    public void setGradeSalaryRomanov(String gradeSalaryRomanov) {
+        this.gradeSalaryRomanov = gradeSalaryRomanov;
+    }
 }

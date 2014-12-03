@@ -27,12 +27,14 @@ public class PayComponentDataExceptionLazyDataModel extends LazyDataModel<PayCom
     private PayComponentDataExceptionModel payComponentDataExceptionModel;
     private List<PayComponentDataException> payComponentDataExceptionList = new ArrayList<>();
     private final String parameter;
+    private final String paySalaryComponentId;
     private Integer jumlahData;
 
-    public PayComponentDataExceptionLazyDataModel(PayComponentDataExceptionService service, PayComponentDataExceptionModel payComponentDataExceptionModel, String parameter) {
+    public PayComponentDataExceptionLazyDataModel(PayComponentDataExceptionService service, PayComponentDataExceptionModel payComponentDataExceptionModel, String paySalaryComponentId, String parameter) {
         this.service = service;
         this.payComponentDataExceptionModel = payComponentDataExceptionModel;
         this.parameter = parameter;
+        this.paySalaryComponentId = paySalaryComponentId;
     }
     
     @Override
@@ -42,23 +44,23 @@ public class PayComponentDataExceptionLazyDataModel extends LazyDataModel<PayCom
         if (sortField != null) {
             if (sortOrder == SortOrder.ASCENDING) {
                 try {
-                    payComponentDataExceptionList = service.getByParamWithDetailForDetail(parameter, first, pageSize, Order.asc(sortField));
-                    jumlahData = Integer.parseInt(String.valueOf(service.getTotalByParamForDetail(parameter)));
+                    payComponentDataExceptionList = service.getByParamWithDetailForDetail(parameter, paySalaryComponentId, first, pageSize, Order.asc(sortField));
+                    jumlahData = Integer.parseInt(String.valueOf(service.getTotalByParamForDetail(parameter, paySalaryComponentId)));
                 } catch (Exception ex) {
                     LOGGER.error("Error", ex);
                 }
             } else {
                 try {
-                    payComponentDataExceptionList = service.getByParamWithDetailForDetail(parameter, first, pageSize, Order.desc(sortField));
-                    jumlahData = Integer.parseInt(String.valueOf(service.getTotalByParamForDetail(parameter)));
+                    payComponentDataExceptionList = service.getByParamWithDetailForDetail(parameter, paySalaryComponentId, first, pageSize, Order.desc(sortField));
+                    jumlahData = Integer.parseInt(String.valueOf(service.getTotalByParamForDetail(parameter, paySalaryComponentId)));
                 } catch (Exception ex) {
                     LOGGER.error("Error", ex);
                 }
             }
         } else {
             try {
-                payComponentDataExceptionList = service.getByParamWithDetailForDetail(parameter, first, pageSize, Order.desc("empData"));
-                jumlahData = Integer.parseInt(String.valueOf(service.getTotalByParamForDetail(parameter)));
+                payComponentDataExceptionList = service.getByParamWithDetailForDetail(parameter, paySalaryComponentId, first, pageSize, Order.desc("empData"));
+                jumlahData = Integer.parseInt(String.valueOf(service.getTotalByParamForDetail(parameter, paySalaryComponentId)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
             }

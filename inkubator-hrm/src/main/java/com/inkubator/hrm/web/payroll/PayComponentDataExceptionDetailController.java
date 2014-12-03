@@ -5,6 +5,7 @@
  */
 package com.inkubator.hrm.web.payroll;
 
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.PayComponentDataException;
 import com.inkubator.hrm.entity.PaySalaryComponent;
 import com.inkubator.hrm.entity.WtPeriode;
@@ -15,6 +16,7 @@ import com.inkubator.hrm.web.lazymodel.PayComponentDataExceptionLazyDataModel;
 import com.inkubator.hrm.web.model.PayComponentDataExceptionModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
+import com.inkubator.webcore.util.MessagesResourceUtil;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,13 +25,16 @@ import java.util.Map;
 import java.util.logging.Level;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import org.apache.log4j.Logger;
+import org.hibernate.exception.ConstraintViolationException;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.LazyDataModel;
+import org.springframework.dao.DataIntegrityViolationException;
 
 /**
  *
@@ -136,6 +141,29 @@ public class PayComponentDataExceptionDetailController extends BaseController {
         showDialog(dataToSend);
     }
     
+    public void doSelectEntity() {
+        try {
+            selected = this.payComponentDataExceptionService.getEntiyByPK(selected.getId());
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
+        }
+    }
+    
+    public void doDelete() {
+        try {
+            this.payComponentDataExceptionService.delete(selected);
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully",
+                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+
+        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint",
+                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            LOGGER.error("Error", ex);
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
+        }
+    }
+    
     public void doEdit() {
         Map<String, List<String>> dataToSend = new HashMap<>();
         List<String> paySalaryComponenId = new ArrayList<>();
@@ -183,7 +211,7 @@ public class PayComponentDataExceptionDetailController extends BaseController {
 
     public LazyDataModel<PayComponentDataException> getLazyDataModel() {
         if (lazyDataModel == null) {
-            lazyDataModel = new PayComponentDataExceptionLazyDataModel(payComponentDataExceptionService, payComponentDataExceptionModel, parameter);
+            lazyDataModel = new PayComponentDataExceptionLazyDataModel(payComponentDataExceptionService, payComponentDataExceptionModel, paySalaryComponentId, parameter);
         }
         return lazyDataModel;
     }

@@ -42,14 +42,14 @@ public class PayComponentDataExceptionServiceImpl extends IServiceImpl implement
     
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<PayComponentDataException> getByParamWithDetailForDetail(String searchParameter, int firstResult, int maxResults, Order order) throws Exception {
-        return payComponentDataExceptionDao.getByParamWithDetailForDetail(searchParameter, firstResult, maxResults, order);
+    public List<PayComponentDataException> getByParamWithDetailForDetail(String searchParameter, String paySalaryComponentId, int firstResult, int maxResults, Order order) throws Exception {
+        return payComponentDataExceptionDao.getByParamWithDetailForDetail(searchParameter, paySalaryComponentId, firstResult, maxResults, order);
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getTotalByParamForDetail(String searchParameter) throws Exception {
-        return payComponentDataExceptionDao.getTotalByParamForDetail(searchParameter);
+    public Long getTotalByParamForDetail(String searchParameter, String paySalaryComponentId) throws Exception {
+        return payComponentDataExceptionDao.getTotalByParamForDetail(searchParameter, paySalaryComponentId);
     }
 
     @Override

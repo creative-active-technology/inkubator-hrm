@@ -37,9 +37,10 @@ public class PayComponentDataExceptionDaoImpl extends IDAOImpl<PayComponentDataE
     }
 
     @Override
-    public List<PayComponentDataException> getByParamWithDetailForDetail(String searchParameter, int firstResult, int maxResults, Order order) {
+    public List<PayComponentDataException> getByParamWithDetailForDetail(String searchParameter, String paySalaryComponentId, int firstResult, int maxResults, Order order) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchByParamForDetail(searchParameter, criteria);
+        criteria.add(Restrictions.eq("paySalaryComponent.id", Long.valueOf(paySalaryComponentId.substring(1))));
         criteria.addOrder(order);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
@@ -47,9 +48,10 @@ public class PayComponentDataExceptionDaoImpl extends IDAOImpl<PayComponentDataE
     }
 
     @Override
-    public Long getTotalByParamForDetail(String searchParameter) {
+    public Long getTotalByParamForDetail(String searchParameter,  String paySalaryComponentId) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchByParamForDetail(searchParameter, criteria);
+        criteria.add(Restrictions.eq("paySalaryComponent.id", Long.valueOf(paySalaryComponentId.substring(1))));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 

@@ -100,7 +100,9 @@
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['paysalarygrade.grade']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.gradeSalary}" />
+                                <h:outputLabel value= "#{data.gradeSalary}" >
+                                    <f:converter converterId="romanovConverter" />
+                                </h:outputLabel>
                             </p:column>
                             <p:column sortBy="currency" style="text-align: left; width: 15%">
                                 <f:facet name="header">
