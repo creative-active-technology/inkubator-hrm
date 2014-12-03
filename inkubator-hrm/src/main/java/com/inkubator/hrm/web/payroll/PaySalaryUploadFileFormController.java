@@ -25,6 +25,7 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.PaySalaryComponent;
 import com.inkubator.hrm.service.PaySalaryComponentService;
 import com.inkubator.hrm.service.PayTempUploadDataService;
+import com.inkubator.hrm.util.CryptoUtils;
 import com.inkubator.hrm.util.UploadFilesUtil;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.controller.BaseController;
@@ -146,8 +147,10 @@ public class PaySalaryUploadFileFormController extends BaseController {
 
 	public void doSave() {
         try {
+        	//save upload file to disk and delete all data before running jobs
         	String pathUpload = this.payTempUploadDataService.updateFileAndDeleteData(selectedPaySalaryComponent.getId(), file);
         	
+        	//running jobs batch to execute file upload
         	JobParameters jobParameters = new JobParametersBuilder()
 		        	.addString("input.file.path", pathUpload)
 		        	.addString("createdBy", UserInfoUtil.getUserName())        			
@@ -155,7 +158,11 @@ public class PaySalaryUploadFileFormController extends BaseController {
 		        	.addString("timeInMilis", String.valueOf(System.currentTimeMillis())).toJobParameters();
         	JobExecution jobExecution = jobLauncher.run(jobPaySalaryUpload, jobParameters);
         	System.out.println("Exit Status : " + jobExecution.getStatus());
-			RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
+        	
+        	//encrypt file that already upload/save to disk
+        	CryptoUtils.encrypt(HRMConstant.AES_ALGO, HRMConstant.KEYVALUE, pathUpload, pathUpload);        	
+			
+        	RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
             cleanAndExit();
         } catch (Exception ex) {
             LOGGER.error("Error", ex);

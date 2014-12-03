@@ -112,9 +112,11 @@
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.nominal']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{payTempUploadData.nominalValue}">
-                                	<f:convertNumber pattern="###,###" type="currency"/>
-                                </h:outputLabel>
+                                <div style="text-align: right;">
+	                                <h:outputLabel value= "#{payTempUploadData.nominalValue}">
+	                                	<f:convertNumber pattern="###,###" type="currency"/>
+	                                </h:outputLabel>
+                                </div>
                             </p:column>
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
@@ -138,7 +140,7 @@
                         
                         <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
 	                    <div style="margin-bottom: 5px">
-	                        <p:commandButton value="#{appmsg['global.close']}" icon="ui-icon-contact"  title="#{appmsg['global.close']}" action="#{paySalaryUploadDetailController.doBack()}" immediate="true"
+	                        <p:commandButton value="#{appmsg['global.back']}" icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{paySalaryUploadDetailController.doBack()}" immediate="true"
 	                                      	 styleClass="label_button"/>
 	                    </div>
 	                    

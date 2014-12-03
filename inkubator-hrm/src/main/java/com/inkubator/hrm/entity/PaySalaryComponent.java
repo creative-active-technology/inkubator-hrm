@@ -51,7 +51,7 @@ public class PaySalaryComponent implements java.io.Serializable {
     private Set<PayTempUploadData> payTempUploadDatas = new HashSet<PayTempUploadData>(0);
     private Set<PayComponentDataException> payComponentDataExceptions = new HashSet<PayComponentDataException>(0);
     private Integer modelReffernsil;
-    
+    private Integer totalPayTempUploadDatas;
 
     public PaySalaryComponent() {
     }
@@ -256,6 +256,15 @@ public class PaySalaryComponent implements java.io.Serializable {
     public void setEmployeeTypes(List<EmployeeType> employeeTypes) {
         this.employeeTypes = employeeTypes;
     }
+
+    @Transient
+	public Integer getTotalPayTempUploadDatas() {
+		return totalPayTempUploadDatas;
+	}
+
+	public void setTotalPayTempUploadDatas(Integer totalPayTempUploadDatas) {
+		this.totalPayTempUploadDatas = totalPayTempUploadDatas;
+	}
 
     @OneToMany(fetch=FetchType.LAZY, mappedBy="paySalaryComponent")
     public Set<PayComponentDataException> getPayComponentDataExceptions() {
