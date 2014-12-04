@@ -51,13 +51,13 @@
                         </p:row>
                         <p:row>
                             <p:column style="width: 30%">
-                                <p:outputLabel for="grade" value="#{appmsg['payroll.grade_level']}" styleClass="label_hrm"/>
+                                <p:outputLabel for="grade" value="#{appmsg['paysalarygradeposition.salaryStructure']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="grade" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 69%">
-                                <p:selectOneMenu id="grade" value="#{paySalaryGradePositionFormController.jabatanModel.salaryGradeId}" style="width: 150px;margin-right: 3px">
+                                <p:selectOneMenu id="grade" value="#{paySalaryGradePositionFormController.jabatanModel.salaryGradeId}" style="width: 200px;margin-right: 3px">
                                     <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                     <f:selectItems value="#{paySalaryGradePositionFormController.listDropDownGrade}"/>
                                 </p:selectOneMenu>
