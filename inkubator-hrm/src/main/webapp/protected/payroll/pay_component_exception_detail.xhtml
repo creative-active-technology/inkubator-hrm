@@ -21,8 +21,8 @@
                             <p:graphicImage library="images" name="marital_status.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="Pay Component Data Exception" styleClass="header_big" />
-                                    <p:outputLabel value="Pay Component Data Exception from Payroll" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['componentException.componentException_detail']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['componentException.componentException_header']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -32,12 +32,12 @@
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3" >
                                     <p:commandButton value="Export to XLS" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
-                                        <pe:exporter target="tableIdExpands" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Inclusion_Reimbursment"/>
+                                        <pe:exporter target="tableIdForExportTable" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Component_Exception"/>
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.add']}" actionListener="#{payComponentDataExceptionDetailController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
                                         <p:ajax event="dialogReturn" listener="#{payComponentDataExceptionDetailController.onDialogReturn}" update="tableId, growlId, jumlahNominal, jumlahKaryawan"/>
                                     </p:commandButton>
-                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{savingTypeViewController.doClose()}" icon="ui-icon-home" />
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{payComponentDataExceptionDetailController.doClose()}" icon="ui-icon-home" />
                                     
                                 </h:panelGrid>
                             </p:toolbarGroup>
@@ -45,7 +45,7 @@
                         <p:panelGrid style="width: 100%;margin-bottom: 10px;margin-top: 10px" styleClass="grid_border3" >
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Nama Komponen" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['componentException.name']}" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:outputLabel value="#{payComponentDataExceptionDetailController.payComponentDataExceptionModel.componentName}" >
@@ -54,7 +54,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Periode Komponen" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['componentException.period']}" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:outputLabel value="#{payComponentDataExceptionDetailController.payComponentDataExceptionModel.startDate}" >
@@ -69,7 +69,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Jumlah Karyawan Pengecualian" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['componentException.employee_exception']}" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:outputLabel id="jumlahKaryawan" value="#{payComponentDataExceptionDetailController.jumlahKaryawan}" >
@@ -79,7 +79,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Jumlah Nominal Pengecualian" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['componentException.nominal_exception']}" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:outputLabel value="Rp. " />
@@ -134,14 +134,73 @@
                             </p:column>
                             <p:column sortBy="nominal" style="width: 20%">
                                 <f:facet name="header">
-                                    <h:outputText value="Nominal"/>
+                                    <h:outputText value="#{appmsg['componentException.nominal']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "Rp. " />
                                 <h:outputLabel value= "#{data.nominal}" />
                             </p:column>
+                            <p:column sortBy="resetAfterMonth" style="width: 20%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['componentException.reset_after_month']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.resetAfterMonth}" >
+                                    <f:converter converterId="booleanMessageConverter" />
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
+                                <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+                                				 style="font-size: 10px!important" update=":panelDialogConfirmId" 
+                                                                 action="#{payComponentDataExceptionDetailController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmDelete.show()">
+                                    <f:setPropertyActionListener value="#{data}" target="#{payComponentDataExceptionDetailController.selected}" />
+                                </p:commandButton>
+                                -
+                                <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" ajax="true"
+                                                  action="#{payComponentDataExceptionDetailController.doEdit()}" >
+                                    <f:setPropertyActionListener value="#{data}" target="#{payComponentDataExceptionDetailController.selected}" />
+                                    <p:ajax event="dialogReturn" listener="#{payComponentDataExceptionDetailController.onDialogReturn}"  update="tableId, :formId:growlId, :formId:jumlahNominal"/>
+                                </p:commandButton> 
+                            </p:column> 
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : "/>
+                                <p:outputLabel value="#{payComponentDataExceptionDetailController.lazyDataModel.rowCount}"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px"/>
+                            </f:facet>  
+                        </p:dataTable>
+                        
+                        <p:dataTable  rendered="false" var="data"  value="#{payComponentDataExceptionDetailController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      id="tableIdForExportTable" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['inclusionReimbursment.list_inclusion_reimbursment']}"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 3%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column sortBy="empData.nik" style="width: 20%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['global.nik']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.empData.nik}" />
+                            </p:column>
+                            <p:column sortBy="bioData.firstName" style="width: 20%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['global.name']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.empData.bioData.firstName} #{data.empData.bioData.lastName}" />
+                            </p:column>
                             <p:column sortBy="nominal" style="width: 20%">
                                 <f:facet name="header">
-                                    <h:outputText value="Reset After Month"/>
+                                    <h:outputText value="#{appmsg['componentException.nominal']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.nominal}" />
+                            </p:column>
+                            <p:column sortBy="resetAfterMonth" style="width: 20%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['componentException.reset_after_month']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.resetAfterMonth}" >
                                     <f:converter converterId="booleanMessageConverter" />

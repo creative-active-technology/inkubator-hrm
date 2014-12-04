@@ -21,8 +21,8 @@
                         <p:graphicImage library="images" name="marital_status.png" height="36" width="36"  cache="true"/>
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Pay Component Data Exception" styleClass="header_big" />
-                                <p:outputLabel value="Pay Component Data Exception from Payroll" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['componentException.componentException_form']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['componentException.componentException_header']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -35,7 +35,7 @@
                         
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="componentName" value="Nama Komponen" styleClass="label_hrm"/>
+                                <p:outputLabel for="componentName" value="#{appmsg['componentException.name']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="componentName" value=":" styleClass="label_hrm"/>
@@ -53,7 +53,7 @@
                         
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="employeeId" value="#{appmsg['global.name']}" styleClass="label_hrm"/>
+                                <p:outputLabel for="employeeId" value="#{appmsg['employee.employee_name']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="employeeId" value=":" styleClass="label_hrm"/>
@@ -83,13 +83,13 @@
                         
                         <p:row>
                             <p:column style="width: 37%">
-                                <p:outputLabel for="fixedNominal" value="Fixed Nominal" styleClass="label_hrm"/>
+                                <p:outputLabel for="fixedNominal" value="#{appmsg['componentException.fixed_nominal']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="fixedNominal" value=":"  styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 50%" >
-                                <pe:inputNumber id="fixedNominal" title="Fixed Nominal" value="#{payComponentDataExceptionFormController.model.nominal}" 
+                                <pe:inputNumber id="fixedNominal" title="#{appmsg['componentException.fixed_nominal']}" value="#{payComponentDataExceptionFormController.model.nominal}" 
 	                                				decimalPlaces="0" required="true" styleClass="isitext_hrm" style="width:210px;" />
                             </p:column>
                         </p:row>
@@ -101,7 +101,7 @@
                         
                         <p:row>
                             <p:column style="width: 37%">
-                                <p:outputLabel for="resetAfterMonth" value="Reset After Month" styleClass="label_hrm"/>
+                                <p:outputLabel for="resetAfterMonth" value="#{appmsg['componentException.reset_after_month']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="resetAfterMonth" value=":"  styleClass="label_hrm"/>

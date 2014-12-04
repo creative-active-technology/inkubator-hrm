@@ -74,6 +74,7 @@ public class PaySalaryGradeFormController extends BaseController{
                 isEdit = Boolean.TRUE;
                 paySalaryGradeModel.setId(paySalaryGrade.getId());
                 paySalaryGradeModel.setGradeSalary(paySalaryGrade.getGradeSalary());
+                paySalaryGradeModel.setGradeSalaryRomanov(String.valueOf(RomanovUtil.convertToRoman(paySalaryGrade.getGradeSalary())));
                 paySalaryGradeModel.setCurrencyid(paySalaryGrade.getCurrency().getId());
                 paySalaryGradeModel.setMinSalary(paySalaryGrade.getMinSalary());
                 paySalaryGradeModel.setMediumSalary(paySalaryGrade.getMediumSalary());

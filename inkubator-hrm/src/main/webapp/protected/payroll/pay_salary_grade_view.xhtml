@@ -54,7 +54,7 @@
                                         <p:ajax event="dialogReturn" listener="#{paySalaryGradeController.onDialogReturn}"  update="tableId, growlId"/>
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{maritalStatusController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
-                                    
+
                                 </h:panelGrid>
                             </p:toolbarGroup>
                         </p:toolbar>
@@ -72,54 +72,58 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="minSalary" style="width: 20%;text-align: left;">
-                                <f:facet name="header">
-                                    <h:outputText value="#{appmsg['paysalarygrade.min_salary']}"/>
-                                </f:facet>
-                                <h:outputLabel value= "#{data.minSalary}" >
-                                    <f:convertNumber pattern="###,###" type="currency"/>
-                                </h:outputLabel>
-                            </p:column>
-                            <p:column sortBy="mediumSalary" style="width: 20%;text-align: left;">
-                                <f:facet name="header">
-                                    <h:outputText value="#{appmsg['paysalarygrade.medium_salary']}"/>
-                                </f:facet>
-                                <h:outputLabel value= "#{data.mediumSalary}" >
-                                    <f:convertNumber pattern="###,###" type="currency"/>
-                                </h:outputLabel>
-                            </p:column>
-                            <p:column sortBy="maxSalary" style="width: 20%;text-align: left;">
-                                <f:facet name="header">
-                                    <h:outputText value="#{appmsg['paysalarygrade.max_salary']}"/>
-                                </f:facet>
-                                <h:outputLabel value= "#{data.maxSalary}" >
-                                    <f:convertNumber pattern="###,###" type="currency"/>
-                                </h:outputLabel>
-                            </p:column>
-                            <p:column sortBy="gradeSalary" style="text-align: left; width: 10%">
+                            <p:column sortBy="gradeSalary" style="text-align: center; width: 10%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['paysalarygrade.grade']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.gradeSalary}" >
-                                    <f:converter converterId="romanovConverter" />
-                                </h:outputLabel>
+                                <div style="text-align: center;">
+                                    <h:outputLabel value= "#{data.gradeSalary}" >
+                                        <f:converter converterId="romanovConverter" />
+                                    </h:outputLabel>
+                                </div>
                             </p:column>
-                            <p:column sortBy="currency" style="text-align: left; width: 15%">
+                            <p:column sortBy="minSalary" style="width: 20%;text-align: center;">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['paysalarygrade.min_salary']}"/>
+                                </f:facet>
+                                <div style="text-align: right;">
+                                    <h:outputLabel value= "#{data.minSalary}" >
+                                        <f:convertNumber pattern="###,###" type="currency"/>
+                                    </h:outputLabel>
+                                </div>
+                            </p:column>
+                            <p:column sortBy="mediumSalary" style="width: 20%;text-align: center;">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['paysalarygrade.medium_salary']}"/>
+                                </f:facet>
+                                <div style="text-align: right;">
+                                    <h:outputLabel value= "#{data.mediumSalary}" >
+                                        <f:convertNumber pattern="###,###" type="currency"/>
+                                    </h:outputLabel>
+                                </div>
+                            </p:column>
+                            <p:column sortBy="maxSalary" style="width: 20%;text-align: center;">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['paysalarygrade.max_salary']}"/>
+                                </f:facet>
+                                <div style="text-align: right;">
+                                    <h:outputLabel value= "#{data.maxSalary}" >
+                                        <f:convertNumber pattern="###,###" type="currency"/>
+                                    </h:outputLabel>
+                                </div>
+                            </p:column>
+                            <p:column sortBy="currency" style="text-align: center; width: 15%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['currency.currency']}"/>
                                 </f:facet>
+                                <div style="text-align: left;">
                                 <h:outputLabel value= "#{data.currency.name}" />
+                                </div>
                             </p:column>
                             <p:column headerText="#{appmsg['global.action']}" style="width: 15%;text-align: center" exportable="false">
-                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
-                                                 onclick="statusDialog.show()"  oncomplete="detail.show()" update=":detailPanel"
-                                                 style="font-size: 10px!important" action="#{paySalaryGradeController.doSelectEntity()}">                        
-                                    <f:setPropertyActionListener value="#{data}" target="#{paySalaryGradeController.selected}" />
-                                </p:commandButton>
-                                - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
-                                				 style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                                                 action="#{paySalaryGradeController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmDelete.show()">
+                                                 style="font-size: 10px!important" update=":panelDialogConfirmId" 
+                                                 action="#{paySalaryGradeController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmDelete.show()">
                                     <f:setPropertyActionListener value="#{data}" target="#{paySalaryGradeController.selected}" />
                                 </p:commandButton>
                                 -
@@ -170,38 +174,7 @@
                         <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmDelete.hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
-                <p:dialog widgetVar="detail" header="#{appmsg['paysalarygrade.pay_salary_grade_detail']}" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)" dynamic="true">
-                    <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
 
-                        <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['paysalarygrade.grade']}" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{paySalaryGradeController.selected.gradeSalary}"/> </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['paysalarygrade.min_salary']}" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{paySalaryGradeController.selected.minSalary}"/> </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['paysalarygrade.medium_salary']}" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{paySalaryGradeController.selected.mediumSalary}"/> </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['paysalarygrade.max_salary']}" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{paySalaryGradeController.selected.maxSalary}"/> </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['currency.currency']}" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{paySalaryGradeController.selected.currency.name}"/> </p:column>
-                        </p:row>
-
-                        <f:facet name="footer">
-                            <p:row>
-                                <p:column colspan="2"><p:outputLabel value="#{appmsg['paysalarygrade.pay_salary_grade_header']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
-                            </p:row>
-                        </f:facet>
-                    </p:panelGrid>
-                </p:dialog>
             </ui:define>
         </ui:composition>
     </h:body>

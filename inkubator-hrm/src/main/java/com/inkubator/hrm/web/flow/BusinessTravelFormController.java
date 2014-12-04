@@ -111,6 +111,10 @@ public class BusinessTravelFormController implements Serializable{
 				//calculate total amount
 				double totalAmount = calculateTotalAmount(listBusinessTravelComponent);
 				model.setTotalAmount(totalAmount);
+				
+				//set employee data with detail
+				EmpData empData = empDataService.getByEmpIdWithDetail(model.getEmpData().getId());
+				model.setEmpData(empData);
 			}
 		} catch (Exception ex) {
 			LOGGER.error("Error", ex);
