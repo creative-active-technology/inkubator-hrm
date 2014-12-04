@@ -12,6 +12,7 @@
         <link rel="stylesheet" href="${request.contextPath}/resources/css/theme_customize.css" type="text/css" media="screen" />
         <link rel="stylesheet" href="${request.contextPath}/resources/css/table_custome.css" type="text/css" media="screen" />
         <link rel="shortcut icon" href="${request.contextPath}/hr.ico" type="image/x-icon" />
+        <link href='http://fonts.googleapis.com/css?family=PT+Sans|Open+Sans' rel='stylesheet' type='text/css' />
         <title><ui:insert name="windowTitle"/></title>
         <ui:insert name="jsInclude"/>
     </h:head>
@@ -431,7 +432,8 @@
                                             <p:menuitem value="#{appmsg['inclusionReimbursment.inclusionReimbursment']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['inclusionReimbursment.inclusionReimbursment']}" url="/protected/payroll/inclusion_reimbursment_view.htm" /> 
                                             <p:menuitem value="#{appmsg['paysalaryupload.upload_component_model']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['paysalaryupload.upload_component_model']}" url="/protected/payroll/pay_salary_upload_view.htm" icon="img-cost-center"/> 
                                             <p:menuitem value="#{appmsg['ptkp.ptkp_menu']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['paysalaryupload.upload_component_model']}" url="/protected/payroll/pay_salary_upload_view.htm" icon="img-cost-center"/> 
-                                        
+                                            <p:menuitem value="#{appmsg['componentException.componentException']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['componentException.componentException']}" url="/protected/payroll/pay_component_exception_view.htm" /> 
+                                            
                                         </p:submenu>
                                         <p:submenu label="Pengembangan"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-training">
                                             <!--                                            <p:menuitem value="Price Simulator" icon="img-price-simulator" style="font-size: 12px !important;color: #003366" title="Make Price Simulation" url="/protected/price_simulator.htm" /> 

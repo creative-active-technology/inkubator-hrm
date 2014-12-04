@@ -51,7 +51,7 @@ public class BioFamilyRelationshipDaoImpl extends IDAOImpl<BioFamilyRelationship
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
         criteria.createAlias("familyRelation", "familyRelation", JoinType.INNER_JOIN);
-        criteria.createAlias("bioData.empDatas", "empData", JoinType.INNER_JOIN);
+//        criteria.createAlias("bioData.empDatas", "empData", JoinType.INNER_JOIN);
         criteria.createAlias("educationLevel", "educationLevel", JoinType.INNER_JOIN);
         criteria.setFetchMode("bioData", FetchMode.JOIN);
         criteria.setFetchMode("bioData.empDatas", FetchMode.JOIN);
