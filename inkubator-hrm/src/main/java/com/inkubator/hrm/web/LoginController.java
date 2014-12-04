@@ -134,9 +134,9 @@ public class LoginController extends BaseController {
         RequestContext context = FacesUtil.getRequestContext();
         Boolean emailIsExist = Boolean.FALSE;
         try {
-            HrmUser user = userService.getByEmailAddress(emailAddress);
+            HrmUser user = userService.getByEmailAddressInNotLock(emailAddress);
             if (user == null) {
-                MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.error", "error.email_not_registered",
+                MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.error", "error.email_not_registered",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             } else {
                 emailIsExist = Boolean.TRUE;

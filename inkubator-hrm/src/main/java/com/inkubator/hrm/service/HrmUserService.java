@@ -42,4 +42,6 @@ public interface HrmUserService extends IService<HrmUser> {
     public List<HrmUser> getAllDataByNameOrNik(String param) throws Exception;
 
     public HrmUser getUserWithDetail(String userName) throws Exception;
+
+    public HrmUser getByEmailAddressInNotLock(String emailAddress) throws Exception;
 }

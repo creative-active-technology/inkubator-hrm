@@ -8,7 +8,7 @@
 
 	<!-- stored job-meta in database -->
 	<bean id="jobRepository" class="org.springframework.batch.core.repository.support.JobRepositoryFactoryBean">
-		<property name="dataSource" ref="c3p0DataSource-1" />
+		<property name="dataSource" ref="dataSourceJBoss" />
 		<property name="transactionManager" ref="transactionManager" />
 	</bean>
 

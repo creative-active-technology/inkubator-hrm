@@ -295,7 +295,7 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void saveAndNotification(HrmUser hrmUser) throws Exception {
-        String pass=hrmUser.getPassword();
+        String pass = hrmUser.getPassword();
         if (hrmUser.getEmpData() != null) {
             EmpData empData = empDataDao.getEntiyByPK(hrmUser.getEmpData().getId());
             hrmUser.setEmpData(empData);
@@ -525,5 +525,11 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
         HrmUser hrmUser = this.hrmUserDao.getByUserId(userName);
         hrmUser.getEmpData().getId();
         return hrmUser;
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public HrmUser getByEmailAddressInNotLock(String emailAddress) throws Exception {
+        return this.hrmUserDao.getByEmailAddressInNotLock(emailAddress);
     }
 }

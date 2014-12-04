@@ -147,4 +147,13 @@ public class HrmUserDaoImpl extends IDAOImpl<HrmUser> implements HrmUserDao {
         return criteria.list();
 	}
 
+    @Override
+    public HrmUser getByEmailAddressInNotLock(String emailAddress) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("emailAddress", emailAddress));
+        criteria.add(Restrictions.eq("isLock", 0));
+        return (HrmUser) criteria.uniqueResult();
+        
+    }
+
 }
