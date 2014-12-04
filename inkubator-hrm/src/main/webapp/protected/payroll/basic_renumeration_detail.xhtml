@@ -21,8 +21,8 @@
                         <p:graphicImage library="images" name="bio_data.png" height="36" width="36" />
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="#{appmsg['placement.placement_detail']}" styleClass="header_big" />
-                                <p:outputLabel value="#{appmsg['placement.placement_header']}" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['basicNumeration.employeeBasicRenumeration']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['basicNumeration.renumerationVariableData']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -83,11 +83,11 @@
                                         </f:facet>
                                         <h:outputLabel value="#{no+1}." />
                                     </p:column>
-                                    <p:column sortBy="benefitGroup"  style="text-align: center;width: 37%">
+                                    <p:column sortBy="benefitGroup"  style="width: 37%">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['benefitGroup.benefitGroup_name']}"/>
                                         </f:facet>
-                                        <h:outputLabel value= "#{benefitGroupRateData.benefitGroup}"/>
+                                        <h:outputLabel value= "#{benefitGroupRateData.benefitGroup}" />
                                         <f:facet name="footer">  
                                             <h:outputText value="Total"/>
                                         </f:facet> 
@@ -96,20 +96,24 @@
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['benefitGroupRate.benefitGroupRate_nominal']}"/>
                                         </f:facet>
+                                        <div style="text-align: right">
                                         <p:outputLabel  value="#{benefitGroupRateData.nominal}" rendered="#{sec:areAnyGranted('SUPERVISOR_FINANCE_ROLE') and benefitGroupRateData.benefitGroup == 'Basic Salary'}">
                                             <f:converter converterId="salaryConverter" id="salaryId"/>
                                         </p:outputLabel>
                                         <p:outputLabel value="#.###.###" rendered="#{sec:areNotGranted('SUPERVISOR_FINANCE_ROLE') and benefitGroupRateData.benefitGroup == 'Basic Salary'}"/>
                                         <h:outputText value="#{benefitGroupRateData.nominal}" rendered="#{benefitGroupRateData.benefitGroup != 'Basic Salary'}"/>
+                                        </div>
                                         <f:facet name="footer">  
                                             <p:outputLabel  value="#{basicRenumerationDetailController.total}" rendered="#{sec:areAnyGranted('SUPERVISOR_FINANCE_ROLE')}"/>
+                                            <div style="text-align: right">
                                             <p:outputLabel value="#.###.###" rendered="#{sec:areNotGranted('SUPERVISOR_FINANCE_ROLE')}"/>
+                                            </div>
                                         </f:facet> 
                                     </p:column>       
 
                                 </p:dataTable>
                             </p:tab>  
-                            <p:tab id="spekJabatanId" title="Subsidi">  
+                            <p:tab id="spekJabatanId" title="Nama Subsidi">  
                                 <p:dataTable  id="tableSubsidiId" var="subsidiData"  value="#{basicRenumerationDetailController.listSubsidi}" lazy="false" paginator="false"
                                               style="margin-top: 10px;margin-bottom: 10px"
                                               rowIndexVar="no">
@@ -119,7 +123,7 @@
                                         </f:facet>
                                         <h:outputLabel value="#{no+1}." />
                                     </p:column>
-                                    <p:column sortBy="subsidiName"  style="text-align: center;width: 37%">
+                                    <p:column sortBy="subsidiName"  style="width: 37%">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['benefitGroup.benefitGroup_name']}"/>
                                         </f:facet>
@@ -132,9 +136,13 @@
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['benefitGroupRate.benefitGroupRate_nominal']}"/>
                                         </f:facet>
+                                        <div style="text-align:right">
                                         <h:outputLabel value= "#{subsidiData.nominal}"/>
+                                        </div>
                                         <f:facet name="footer">  
+                                            <div style="text-align:right">
                                             <h:outputText value="#{basicRenumerationDetailController.subsidiTotal}"/>
+                                            </div>
                                         </f:facet> 
                                     </p:column>       
 
