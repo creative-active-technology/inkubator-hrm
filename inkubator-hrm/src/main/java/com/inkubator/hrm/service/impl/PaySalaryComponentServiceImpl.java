@@ -5,7 +5,22 @@
  */
 package com.inkubator.hrm.service.impl;
 
-import com.inkubator.common.util.RandomNumberUtil;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+
+import org.hibernate.criterion.Order;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.BenefitGroupDao;
@@ -26,21 +41,6 @@ import com.inkubator.hrm.entity.ReimbursmentSchema;
 import com.inkubator.hrm.service.PaySalaryComponentService;
 import com.inkubator.hrm.web.search.PaySalaryComponentSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
-import java.util.ArrayList;
-import java.util.Date;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import org.hibernate.criterion.Order;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -99,6 +99,7 @@ public class PaySalaryComponentServiceImpl extends IServiceImpl implements PaySa
         update.setFormula(entity.getFormula());
         update.setComponentCategory(entity.getComponentCategory());
         update.setResetData(entity.getResetData());
+        update.setModelReffernsil(entity.getModelReffernsil());
         if(entity.getModelComponent() != null){
             update.setModelComponent(modelComponentDao.getEntiyByPK(entity.getModelComponent().getId()));
         }
@@ -279,7 +280,11 @@ public class PaySalaryComponentServiceImpl extends IServiceImpl implements PaySa
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<PaySalaryComponent> getAllDataComponentUploadByParam(PaySalaryComponentSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
-        return paySalaryComponentDao.getAllDataComponentUploadByParam(searchParameter, firstResult, maxResults, order);
+    	List<PaySalaryComponent> list = paySalaryComponentDao.getAllDataComponentUploadByParam(searchParameter, firstResult, maxResults, order);    	
+    	for(PaySalaryComponent paySalaryComponent :list){
+    		paySalaryComponent.setTotalPayTempUploadDatas(paySalaryComponent.getPayTempUploadDatas().size());
+    	}
+    	return list;
     }
 
     @Override

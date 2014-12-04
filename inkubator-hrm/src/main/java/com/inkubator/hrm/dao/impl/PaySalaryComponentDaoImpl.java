@@ -5,12 +5,6 @@
  */
 package com.inkubator.hrm.dao.impl;
 
-import com.inkubator.datacore.dao.impl.IDAOImpl;
-import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.dao.PaySalaryComponentDao;
-import com.inkubator.hrm.entity.PaySalaryComponent;
-import com.inkubator.hrm.web.search.PaySalaryComponentSearchParameter;
-
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -22,6 +16,12 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
+
+import com.inkubator.datacore.dao.impl.IDAOImpl;
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.dao.PaySalaryComponentDao;
+import com.inkubator.hrm.entity.PaySalaryComponent;
+import com.inkubator.hrm.web.search.PaySalaryComponentSearchParameter;
 
 /**
  *
@@ -80,8 +80,8 @@ public class PaySalaryComponentDaoImpl extends IDAOImpl<PaySalaryComponent> impl
 	public List<PaySalaryComponent> getAllDataComponentUploadByParam(PaySalaryComponentSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         this.doSearchComponentUploadByParam(searchParameter, criteria);
-        criteria.setFetchMode("payTempUploadDatas", FetchMode.JOIN);
-        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        /*criteria.setFetchMode("payTempUploadDatas", FetchMode.JOIN);
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);*/
         criteria.addOrder(order);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);

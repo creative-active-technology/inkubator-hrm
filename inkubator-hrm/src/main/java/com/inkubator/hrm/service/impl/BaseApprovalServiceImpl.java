@@ -41,6 +41,7 @@ import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.web.model.ApprovalPushMessageModel;
+import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesUtil;
 
 /**
@@ -95,12 +96,15 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
 		return this.checkApprovalProcess(listAppDef, requestByEmployee);
 	}
 	
-	protected ApprovalActivity checkApprovalProcess(List<ApprovalDefinition> listAppDef, String requestByEmployee) throws Exception {
-		//sorting by sequence ASC
-		listAppDef = Lambda.sort(listAppDef, Lambda.on(ApprovalDefinition.class).getSequence());
+	protected ApprovalActivity checkApprovalProcess(List<ApprovalDefinition> listAppDef, String requestByEmployee) throws Exception {		
 		
 		ApprovalActivity appActivity = null;
-		if(!listAppDef.isEmpty()){ //if not empty
+		
+		/** Lakukan proses pengecekan approval process hanya jika user yg input bukan ADMINISTRATOR_ROLE dan memiliki list approval definition */
+		if(!UserInfoUtil.hasRole(HRMConstant.ADMINISTRATOR_ROLE) && !listAppDef.isEmpty()){ 
+			
+			//sorting by sequence ASC
+			listAppDef = Lambda.sort(listAppDef, Lambda.on(ApprovalDefinition.class).getSequence());
 			
 			/** Looping semua approvalDefinition berdasarkan urutan sequence (if any)
 			 *  Looping akan berhenti jika sudah ditemukan approvalActivity yang harus di proses */

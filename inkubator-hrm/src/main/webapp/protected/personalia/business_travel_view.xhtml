@@ -40,7 +40,7 @@
                                     <p:selectOneMenu value="#{businessTravelViewController.searchParameter.keyParam}" style="margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItem itemLabel="#{appmsg['businesstravel.business_travel_number']}" itemValue="businessTravelNumber"/>
-                                        <f:selectItem itemLabel="#{appmsg['businesstravel.employee']}" itemValue="employeeName"/>
+                                        <f:selectItem itemLabel="#{appmsg['businesstravel.employee']}" itemValue="employee"/>
                                         <f:selectItem itemLabel="#{appmsg['businesstravel.destination']}" itemValue="destination"/>
                                     </p:selectOneMenu>
                                     <p:inputText id="searchId" value="#{businessTravelViewController.searchParameter.parameter}" style="width: 250px" styleClass="isitext_hrm"/>
@@ -93,7 +93,8 @@
                             
                             <p:column headerText="#{appmsg['global.action']}" style="width: 15%;text-align: center" exportable="false">
                             	<p:commandButton icon="ui-icon-document" title="#{appmsg['global.print']}" label="#{appmsg['global.print']}" 
-                                				 style="font-size: 10px!important" action="#{businessTravelViewController.doBeforePrint()}" onclick="statusDialog.show()"  oncomplete="dialogPrint.show()">                        
+                                				 style="font-size: 10px!important" update=":formPrintId" 
+                                				 action="#{businessTravelViewController.doBeforePrint()}"  onclick="statusDialog.show()"  oncomplete="dialogPrint.show()">                        
                                     <f:setPropertyActionListener value="#{businessTravelData}" target="#{businessTravelViewController.selectedBusinessTravel}" />
                                 </p:commandButton>
                                 -

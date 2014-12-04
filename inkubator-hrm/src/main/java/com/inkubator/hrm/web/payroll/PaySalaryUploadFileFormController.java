@@ -28,6 +28,17 @@ import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
 
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.entity.PaySalaryComponent;
+import com.inkubator.hrm.service.PaySalaryComponentService;
+import com.inkubator.hrm.service.PayTempUploadDataService;
+import com.inkubator.hrm.util.CryptoUtils;
+import com.inkubator.hrm.util.UploadFilesUtil;
+import com.inkubator.securitycore.util.UserInfoUtil;
+import com.inkubator.webcore.controller.BaseController;
+import com.inkubator.webcore.util.FacesUtil;
+import com.inkubator.webcore.util.MessagesResourceUtil;
+
 /**
  *
  * @author rizkykojek
@@ -143,16 +154,22 @@ public class PaySalaryUploadFileFormController extends BaseController {
 
     public void doSave() {
         try {
-            String pathUpload = this.payTempUploadDataService.updateFileAndDeleteData(selectedPaySalaryComponent.getId(), file);
-
-            JobParameters jobParameters = new JobParametersBuilder()
-                    .addString("input.file.path", pathUpload)
-                    .addString("createdBy", UserInfoUtil.getUserName())
-                    .addString("paySalaryComponentId", String.valueOf(selectedPaySalaryComponent.getId()))
-                    .addString("timeInMilis", String.valueOf(System.currentTimeMillis())).toJobParameters();
-            JobExecution jobExecution = jobLauncher.run(jobPaySalaryUpload, jobParameters);
-            System.out.println("Exit Status : " + jobExecution.getStatus());
-            RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
+        	//save upload file to disk and delete all data before running jobs
+        	String pathUpload = this.payTempUploadDataService.updateFileAndDeleteData(selectedPaySalaryComponent.getId(), file);
+        	
+        	//running jobs batch to execute file upload
+        	JobParameters jobParameters = new JobParametersBuilder()
+		        	.addString("input.file.path", pathUpload)
+		        	.addString("createdBy", UserInfoUtil.getUserName())        			
+		        	.addString("paySalaryComponentId", String.valueOf(selectedPaySalaryComponent.getId()))
+		        	.addString("timeInMilis", String.valueOf(System.currentTimeMillis())).toJobParameters();
+        	JobExecution jobExecution = jobLauncher.run(jobPaySalaryUpload, jobParameters);
+        	System.out.println("Exit Status : " + jobExecution.getStatus());
+        	
+        	//encrypt file that already upload/save to disk
+        	CryptoUtils.encrypt(HRMConstant.AES_ALGO, HRMConstant.KEYVALUE, pathUpload, pathUpload);        	
+			
+        	RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
             cleanAndExit();
         } catch (Exception ex) {
             LOGGER.error("Error", ex);

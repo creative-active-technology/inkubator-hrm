@@ -163,7 +163,7 @@ public class BusinessTravelViewController extends BaseController {
 	        for(BusinessTravelComponent btc :businessTravelComponents){
 	        	totalAmount = totalAmount + btc.getPayByAmount();
 	        }
-	        TerbilangUtil terbilang = new TerbilangUtil(totalAmount);
+	        TerbilangUtil terbilang = new TerbilangUtil(Double.valueOf(totalAmount).longValue());
 	        totalAmountTerbilang = terbilang.toString();
 	        String capitalizeWord = StringUtils.capitalize(StringUtils.substring(totalAmountTerbilang, 0, 1));
 	        totalAmountTerbilang = capitalizeWord + StringUtils.substring(totalAmountTerbilang, 1, totalAmountTerbilang.length());

@@ -25,7 +25,7 @@ public class PaySalaryComponentModel implements Serializable {
     private Integer componentCategory;
     private Boolean resetData;
     private Boolean taxableCheck;
-    private Long modelReffernsiId;
+    private Integer modelReffernsiId;
 
     public Long getId() {
         return id;
@@ -123,11 +123,11 @@ public class PaySalaryComponentModel implements Serializable {
         this.taxableCheck = taxableCheck;
     }
 
-    public Long getModelReffernsiId() {
+    public Integer getModelReffernsiId() {
         return modelReffernsiId;
     }
 
-    public void setModelReffernsiId(Long modelReffernsiId) {
+    public void setModelReffernsiId(Integer modelReffernsiId) {
         this.modelReffernsiId = modelReffernsiId;
     }
 

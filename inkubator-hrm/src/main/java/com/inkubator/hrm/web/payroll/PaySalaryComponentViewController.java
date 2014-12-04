@@ -99,6 +99,10 @@ public class PaySalaryComponentViewController extends BaseController{
         return "/protected/payroll/pay_salary_component_detail.htm?faces-redirect=true&execution=e" + selected.getId();
     }
     
+    public String doDetailForDataException() {
+        return "/protected/payroll/pay_component_exception_detail.htm?faces-redirect=true&execution=e" + selected.getId();
+    }
+    
     public PaySalaryComponentService getService() {
         return service;
     }
