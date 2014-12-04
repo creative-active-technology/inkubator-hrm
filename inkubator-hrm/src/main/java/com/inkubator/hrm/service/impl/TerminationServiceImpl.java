@@ -8,16 +8,20 @@ import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.EmpDataDao;
+import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.dao.LoanPaymentDetailDao;
 import com.inkubator.hrm.dao.TerminationDao;
 import com.inkubator.hrm.dao.TerminationTypeDao;
 import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.Termination;
 import com.inkubator.hrm.service.TerminationService;
 import com.inkubator.hrm.web.search.TerminationSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+
 import java.util.Date;
 import java.util.List;
+
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -42,6 +46,8 @@ public class TerminationServiceImpl extends IServiceImpl implements TerminationS
     private EmpDataDao empDataDao;
     @Autowired
     private LoanPaymentDetailDao loanPaymentDetailDao;
+    @Autowired
+    private HrmUserDao hrmUserDao;
     
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ,propagation = Propagation.SUPPORTS, timeout = 50)
@@ -100,10 +106,18 @@ public class TerminationServiceImpl extends IServiceImpl implements TerminationS
         entity.setCreatedBy(UserInfoUtil.getUserName());
         entity.setCreatedOn(new Date());
         this.terminationDao.save(entity);
+        
         //set status employee to terminate
-        EmpData statusEmpData = empDataDao.getEntiyByPK(entity.getEmpData().getId());
-        statusEmpData.setStatus(HRMConstant.EMP_TERMINATION);
-        this.empDataDao.update(statusEmpData);
+        EmpData empData = empDataDao.getEntiyByPK(entity.getEmpData().getId());
+        empData.setStatus(HRMConstant.EMP_TERMINATION);
+        this.empDataDao.update(empData);
+        
+        //if employee is have user account, lock the user, so user can't login anymore into the application
+        HrmUser user = hrmUserDao.getByEmpDataId(empData.getId());
+        if(user != null){
+        	user.setIsLock(HRMConstant.LOCK);
+        	this.hrmUserDao.update(user);
+        }
         
     }
 
