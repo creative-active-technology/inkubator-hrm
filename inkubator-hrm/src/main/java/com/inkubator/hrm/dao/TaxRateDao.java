@@ -20,5 +20,9 @@ public interface TaxRateDao extends IDAO<TaxRate>{
     public List<TaxRate> getByParam(int firstResult, int maxResults, Order order);
 
     public Long getTotalByParam();
+
+	public Boolean isValueBetweenLowRateAndTopRate(Double lowRate, Double topRate);
+
+	public Boolean isValueBetweenLowRateAndTopRate(Double lowRate, Double topRate, Long excludeId);
     
 }

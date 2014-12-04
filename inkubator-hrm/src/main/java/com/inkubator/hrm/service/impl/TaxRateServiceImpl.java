@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.TaxRateDao;
 import com.inkubator.hrm.entity.TaxRate;
 import com.inkubator.hrm.service.TaxRateService;
@@ -51,6 +52,10 @@ public class TaxRateServiceImpl extends IServiceImpl implements TaxRateService {
 	@Override
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor =Exception.class)
 	public void save(TaxRate entity) throws Exception {
+		if(taxRateDao.isValueBetweenLowRateAndTopRate(entity.getLowRate(), entity.getTopRate())){
+			throw new BussinessException("taxrate.value_is_not_valid");
+		}
+		
 		entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         entity.setCreatedBy(UserInfoUtil.getUserName());
         entity.setCreatedOn(new Date());
@@ -59,7 +64,11 @@ public class TaxRateServiceImpl extends IServiceImpl implements TaxRateService {
 
 	@Override
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor =Exception.class)
-	public void update(TaxRate entity) throws Exception {
+	public void update(TaxRate entity) throws Exception {		
+		if(taxRateDao.isValueBetweenLowRateAndTopRate(entity.getLowRate(), entity.getTopRate(), entity.getId())){
+			throw new BussinessException("taxrate.value_is_not_valid");
+		}
+		
 		TaxRate taxRate = taxRateDao.getEntiyByPK(entity.getId());
         taxRate.setLowRate(entity.getLowRate());
         taxRate.setTopRate(entity.getTopRate());
