@@ -77,19 +77,19 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="code" style="text-align: left;width: 19%">
+                            <p:column sortBy="code" style="text-align: left;width: 12%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['jabat.jabatan_code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{jabatanViewData.code}"/>
                             </p:column>
-                            <p:column sortBy="name" style="text-align: left;width: 19%">
+                            <p:column sortBy="name" style="text-align: left;width: 24%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['jabatan.jabatan_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{jabatanViewData.name}"/>
                             </p:column>
-                            <p:column sortBy="jabatan" style="text-align: left;width: 19%">
+                            <p:column sortBy="jabatan" style="text-align: left;width: 21%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['jabatan.jabatan_deparment_boss']}"/>
                                 </f:facet>
@@ -101,7 +101,13 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{jabatanViewData.department.departmentName}"/>
                             </p:column> 
-                            <p:column sortBy="paySalaryGrade" style="text-align: left; width: 15%">
+                            <p:column sortBy="gj.code" style="text-align: left;width: 8%">
+                                <f:facet name="header"> 
+                                    <h:outputText value="#{appmsg['benefitGroupRate.benefitGroupRate_golongan 2']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{jabatanViewData.golonganJabatan.code}"/>
+                            </p:column>
+                            <p:column sortBy="paySalaryGrade" style="text-align: left; width: 7%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['paysalarygrade.grade']}"/>
                                 </f:facet>
@@ -109,12 +115,12 @@
                             </p:column> 
                           
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
-                                <p:commandButton  icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
+<!--                                <p:commandButton  icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
                                                   onclick="statusDialog.show()" oncomplete="detailSalaryGrade.show()" update=":detailPanel"
                                                   action="#{paySalaryGradePositionController.doDetail()}" style="font-size: 10px!important" >                        
                                     <f:setPropertyActionListener value="#{jabatanViewData}" target="#{paySalaryGradePositionController.selectedJabatan}" />
-                                </p:commandButton>
-                                - 
+                                </p:commandButton>-->
+                                
                                 <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
                                                   action="#{paySalaryGradePositionController.doEdit()}" >
                                     <f:setPropertyActionListener value="#{jabatanViewData}" target="#{paySalaryGradePositionController.selectedJabatan}" />
