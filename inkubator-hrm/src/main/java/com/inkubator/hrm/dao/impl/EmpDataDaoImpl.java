@@ -5,6 +5,26 @@
  */
 package com.inkubator.hrm.dao.impl;
 
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
+
+import org.apache.commons.lang3.StringUtils;
+import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Disjunction;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Property;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Subqueries;
+import org.hibernate.sql.JoinType;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Repository;
+
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.EmpDataDao;
@@ -19,27 +39,6 @@ import com.inkubator.hrm.web.search.EmpDataSearchParameter;
 import com.inkubator.hrm.web.search.ReportEmpDepartmentJabatanParameter;
 import com.inkubator.hrm.web.search.ReportEmpWorkingGroupParameter;
 import com.inkubator.hrm.web.search.ReportOfEmployeesFamilySearchParameter;
-
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-
-import org.apache.commons.lang3.StringUtils;
-import org.hibernate.Criteria;
-import org.hibernate.FetchMode;
-import org.hibernate.criterion.Conjunction;
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Disjunction;
-import org.hibernate.criterion.MatchMode;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Property;
-import org.hibernate.criterion.Restrictions;
-import org.hibernate.criterion.Subqueries;
-import org.hibernate.sql.JoinType;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Repository;
 
 /**
  *
@@ -208,6 +207,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         disjunction.add(Restrictions.like("bioData.lastName", param, MatchMode.ANYWHERE));
         disjunction.add(Restrictions.like("nik", param, MatchMode.ANYWHERE));
         criteria.add(disjunction);
+        criteria.add(Restrictions.neOrIsNotNull("status", HRMConstant.EMP_TERMINATION));
         return criteria.list();
     }
 
@@ -265,6 +265,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
             disjunction.add(Restrictions.like("nik", param, MatchMode.ANYWHERE));
             criteria.add(disjunction);
         }
+        criteria.add(Restrictions.neOrIsNotNull("status", HRMConstant.EMP_TERMINATION));
         return criteria;
     }
 
@@ -272,6 +273,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     public List<EmpData> getAllDataByJabatanId(Long jabatanId, Order order) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("jabatanByJabatanId.id", jabatanId));
+        criteria.add(Restrictions.neOrIsNotNull("status", HRMConstant.EMP_TERMINATION));
         criteria.addOrder(order);
 
         return criteria.list();
@@ -283,7 +285,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
         criteria.add(Restrictions.eq("golonganJabatan.id", golJabatanId));
         criteria.add(Restrictions.eq("jabatanByJabatanId.department.id", departmentId));
-        criteria.add(Restrictions.ne("status", HRMConstant.EMP_TERMINATION));
+        criteria.add(Restrictions.neOrIsNotNull("status", HRMConstant.EMP_TERMINATION));
         return criteria.list();
     }
 
@@ -338,14 +340,6 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         } else {
             criteria.addOrder(Order.desc(sortBy));
         }
-        return criteria.list();
-    }
-
-    @Override
-    public List<EmpData> getAllDataWithEndTime(Date date) {
-        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.createAlias("tempJadwalKaryawans", "tj");
-        criteria.add(Restrictions.eq("tj.endTime", date));
         return criteria.list();
     }
 

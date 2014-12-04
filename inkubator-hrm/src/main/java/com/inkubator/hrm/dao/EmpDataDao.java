@@ -67,8 +67,6 @@ public interface EmpDataDao extends IDAO<EmpData> {
 
     public List<EmpData> getTotalBySearchEmployee(PlacementOfEmployeeWorkScheduleModel model);
 
-    public List<EmpData> getAllDataWithEndTime(Date date);
-
     public List<EmpData> getEmployeeBySearchEmployeeLeave(DistributionLeaveSchemeModel model);
 
     public List<EmpData> getEmployeeByOtSearchParameter(DistributionOvetTimeModel model);
