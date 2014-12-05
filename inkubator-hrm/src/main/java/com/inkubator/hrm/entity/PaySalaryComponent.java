@@ -52,6 +52,7 @@ public class PaySalaryComponent implements java.io.Serializable {
     private Set<PayComponentDataException> payComponentDataExceptions = new HashSet<PayComponentDataException>(0);
     private Integer modelReffernsil;
     private Integer totalPayTempUploadDatas;
+    private Set<PayTempKalkulasi> payTempKalkulasis = new HashSet<PayTempKalkulasi>(0);
 
     public PaySalaryComponent() {
     }
@@ -230,14 +231,14 @@ public class PaySalaryComponent implements java.io.Serializable {
         this.paySalaryEmpTypes = paySalaryEmpTypes;
     }
 
-    @OneToMany(fetch=FetchType.LAZY, mappedBy="paySalaryComponent")
-	public Set<PayTempUploadData> getPayTempUploadDatas() {
-		return payTempUploadDatas;
-	}
-    
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "paySalaryComponent")
+    public Set<PayTempUploadData> getPayTempUploadDatas() {
+        return payTempUploadDatas;
+    }
+
     public void setPayTempUploadDatas(Set<PayTempUploadData> payTempUploadDatas) {
-		this.payTempUploadDatas = payTempUploadDatas;
-	}
+        this.payTempUploadDatas = payTempUploadDatas;
+    }
 
     @Column(name = "model_refferensi")
     public Integer getModelReffernsil() {
@@ -258,20 +259,29 @@ public class PaySalaryComponent implements java.io.Serializable {
     }
 
     @Transient
-	public Integer getTotalPayTempUploadDatas() {
-		return totalPayTempUploadDatas;
-	}
+    public Integer getTotalPayTempUploadDatas() {
+        return totalPayTempUploadDatas;
+    }
 
-	public void setTotalPayTempUploadDatas(Integer totalPayTempUploadDatas) {
-		this.totalPayTempUploadDatas = totalPayTempUploadDatas;
-	}
+    public void setTotalPayTempUploadDatas(Integer totalPayTempUploadDatas) {
+        this.totalPayTempUploadDatas = totalPayTempUploadDatas;
+    }
 
-    @OneToMany(fetch=FetchType.LAZY, mappedBy="paySalaryComponent")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "paySalaryComponent")
     public Set<PayComponentDataException> getPayComponentDataExceptions() {
         return this.payComponentDataExceptions;
     }
-    
+
     public void setPayComponentDataExceptions(Set<PayComponentDataException> payComponentDataExceptions) {
         this.payComponentDataExceptions = payComponentDataExceptions;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "paySalaryComponent")
+    public Set<PayTempKalkulasi> getPayTempKalkulasis() {
+        return this.payTempKalkulasis;
+    }
+
+    public void setPayTempKalkulasis(Set<PayTempKalkulasi> payTempKalkulasis) {
+        this.payTempKalkulasis = payTempKalkulasis;
     }
 }
