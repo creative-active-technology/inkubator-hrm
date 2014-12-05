@@ -12,6 +12,7 @@ import com.inkubator.hrm.entity.PayTempKalkulasi;
  *
  * @author denifahri
  */
-public interface PayTempKalkulasiService  extends IService<PayTempKalkulasi> {
-    
+public interface PayTempKalkulasiService extends IService<PayTempKalkulasi> {
+
+    public void calcualtePayRoll() throws Exception;
 }

@@ -620,7 +620,7 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     public Long getTotalReportOfEmployeesFamilyByParam(ReportOfEmployeesFamilySearchParameter searchParameter) throws Exception {
         return empDataDao.getTotalReportOfEmployeesFamilyByParam(searchParameter);
     }
-    
+
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<EmpData> getAllDataReportEmpDepartmentJabatanByParam(ReportEmpDepartmentJabatanParameter param, int firstResult, int maxResults, Order orderable) {
@@ -654,6 +654,12 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public EmpData getEmpDataWithBiodata(Long id) throws Exception {
         return empDataDao.getEmpDataWithBiodata(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<EmpData> getAllDataNotTerminate() throws Exception {
+        return this.empDataDao.getAllDataNotTerminate();
     }
 
 }

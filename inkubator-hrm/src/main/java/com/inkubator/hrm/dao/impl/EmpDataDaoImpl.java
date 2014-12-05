@@ -636,16 +636,16 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 
         System.out.println("goljabs " + param.getGolonganJabatanId());
         System.out.println("departement " + param.getDepartmentId());
-        
+
         if (param.getDepartmentId() != null && param.getDepartmentId() != 0) {
             criteria.add(Restrictions.eq("jabatanByJabatanId.department.id", param.getDepartmentId()));
         }
-        
-        if (param.getGolonganJabatanId()!= null) {
-           System.out.println("goljabs " + param.getGolonganJabatanId().get(0));
+
+        if (param.getGolonganJabatanId() != null) {
+            System.out.println("goljabs " + param.getGolonganJabatanId().get(0));
             criteria.add(Restrictions.in("golonganJabatan.id", param.getGolonganJabatanId()));
-           
-        } 
+
+        }
 
         return criteria;
     }
@@ -708,6 +708,13 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.setFetchMode("bioData", FetchMode.JOIN);
         criteria.add(Restrictions.eq("id", id));
         return (EmpData) criteria.uniqueResult();
+    }
+
+    @Override
+    public List<EmpData> getAllDataNotTerminate() {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
+        return criteria.list();
     }
 
 }

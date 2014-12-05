@@ -5,6 +5,7 @@
  */
 package com.inkubator.hrm.dao.impl;
 
+import com.inkubator.common.util.DateTimeUtil;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -22,6 +23,9 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.PaySalaryComponentDao;
 import com.inkubator.hrm.entity.PaySalaryComponent;
 import com.inkubator.hrm.web.search.PaySalaryComponentSearchParameter;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -65,54 +69,70 @@ public class PaySalaryComponentDaoImpl extends IDAOImpl<PaySalaryComponent> impl
         criteria.add(Restrictions.eq("id", id));
         return (PaySalaryComponent) criteria.uniqueResult();
     }
-    
+
     private void doSearchByParam(PaySalaryComponentSearchParameter searchParameter, Criteria criteria) {
-        if (searchParameter.getName()!=null) {
-        	criteria.add(Restrictions.like("name", searchParameter.getName(), MatchMode.ANYWHERE));
-        } 
-        if (searchParameter.getCode()!=null) {
-        	criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.ANYWHERE));
-        } 
+        if (searchParameter.getName() != null) {
+            criteria.add(Restrictions.like("name", searchParameter.getName(), MatchMode.ANYWHERE));
+        }
+        if (searchParameter.getCode() != null) {
+            criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.ANYWHERE));
+        }
         criteria.add(Restrictions.isNotNull("id"));
     }
 
-	@Override
-	public List<PaySalaryComponent> getAllDataComponentUploadByParam(PaySalaryComponentSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+    @Override
+    public List<PaySalaryComponent> getAllDataComponentUploadByParam(PaySalaryComponentSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         this.doSearchComponentUploadByParam(searchParameter, criteria);
         /*criteria.setFetchMode("payTempUploadDatas", FetchMode.JOIN);
-        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);*/
+         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);*/
         criteria.addOrder(order);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
         return criteria.list();
-		
-	}
 
-	@Override
-	public Long getTotalComponentUploadByParam(PaySalaryComponentSearchParameter searchParameter) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		this.doSearchComponentUploadByParam(searchParameter, criteria);
+    }
+
+    @Override
+    public Long getTotalComponentUploadByParam(PaySalaryComponentSearchParameter searchParameter) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        this.doSearchComponentUploadByParam(searchParameter, criteria);
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
-	}
+    }
 
-	private void doSearchComponentUploadByParam(PaySalaryComponentSearchParameter searchParameter, Criteria criteria) {
-		if (StringUtils.isNotEmpty(searchParameter.getName())) {
-        	criteria.add(Restrictions.like("name", searchParameter.getName(), MatchMode.ANYWHERE));
-        } 
+    private void doSearchComponentUploadByParam(PaySalaryComponentSearchParameter searchParameter, Criteria criteria) {
+        if (StringUtils.isNotEmpty(searchParameter.getName())) {
+            criteria.add(Restrictions.like("name", searchParameter.getName(), MatchMode.ANYWHERE));
+        }
         if (StringUtils.isNotEmpty(searchParameter.getCode())) {
-        	criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.ANYWHERE));
-        } 
+            criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.ANYWHERE));
+        }
         criteria.add(Restrictions.isNotNull("id"));
         criteria.createAlias("modelComponent", "modelComponent");
         criteria.add(Restrictions.eq("modelComponent.spesific", HRMConstant.MODEL_COMP_UPLOAD));
-	}
+    }
 
     @Override
     public void saveAndMerge(PaySalaryComponent paySalaryComponent) {
         getCurrentSession().update(paySalaryComponent);
         getCurrentSession().flush();
     }
-    
+
+    @Override
+    public PaySalaryComponent getByEployeeTypeIdComponentIdAndJoinDate(Long typeId, Long componentId, Date joinDate) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("paySalaryEmpTypes", "payType");
+        criteria.createAlias("payType.employeeType", "employeeType");
+        criteria.add(Restrictions.eq("id", componentId));
+        criteria.add(Restrictions.eq("employeeType.id", typeId));
+        int timeTmb = 0;
+        try {
+            timeTmb = DateTimeUtil.getTotalDay(joinDate, new Date() );
+        } catch (Exception ex) {
+            LOGGER.error(ex);
+        }
+        criteria.add(Restrictions.ge("activeFromTmb", timeTmb));
+        return (PaySalaryComponent) criteria.uniqueResult();
+    }
 
 }

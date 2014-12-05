@@ -88,7 +88,9 @@ public interface EmpDataDao extends IDAO<EmpData> {
     public Long getTotalReportEmpDepartmentJabatanByParam(ReportEmpDepartmentJabatanParameter param);
 
     public List<EmpData> getEmployeeBySearchEmployeeFingerException(WtFingerExceptionModel model);
-    
+
     public EmpData getEmpDataWithBiodata(Long id);
+
+    public List<EmpData> getAllDataNotTerminate();
 
 }

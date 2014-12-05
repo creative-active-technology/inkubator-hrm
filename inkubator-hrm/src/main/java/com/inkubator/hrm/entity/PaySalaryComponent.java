@@ -53,6 +53,7 @@ public class PaySalaryComponent implements java.io.Serializable {
     private Integer modelReffernsil;
     private Integer totalPayTempUploadDatas;
     private Set<PayTempKalkulasi> payTempKalkulasis = new HashSet<PayTempKalkulasi>(0);
+    private Integer activeFromTmb;
 
     public PaySalaryComponent() {
     }
@@ -284,4 +285,14 @@ public class PaySalaryComponent implements java.io.Serializable {
     public void setPayTempKalkulasis(Set<PayTempKalkulasi> payTempKalkulasis) {
         this.payTempKalkulasis = payTempKalkulasis;
     }
+
+    @Column(name = "active_from_tmb_day")
+    public Integer getActiveFromTmb() {
+        return activeFromTmb;
+    }
+
+    public void setActiveFromTmb(Integer activeFromTmb) {
+        this.activeFromTmb = activeFromTmb;
+    }
+
 }
