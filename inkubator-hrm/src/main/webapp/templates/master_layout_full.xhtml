@@ -14,6 +14,7 @@
         <link rel="shortcut icon" href="${request.contextPath}/hr.ico" type="image/x-icon" />
         <link href='http://fonts.googleapis.com/css?family=PT+Sans|Open+Sans' rel='stylesheet' type='text/css' />
         <title><ui:insert name="windowTitle"/></title>
+        <style>.ui-menu-child{width:200px !important}</style>
         <ui:insert name="jsInclude"/>
     </h:head>
     <h:body>
@@ -373,7 +374,7 @@
                                                 <p:menuitem value="#{appmsg['taxComponent.taxComponent']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['taxComponent.taxComponent']}" url="/protected/payroll/tax_component_view.htm" /> 
                                                 <p:menuitem value="#{appmsg['modelComponent.modelComponent']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['modelComponent.modelComponent']}" url="/protected/payroll/model_component_view.htm" /> 
                                                 <p:menuitem value="#{appmsg['paySalaryComponent.paySalaryComponent']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['paySalaryComponent.paySalaryComponent']}" url="/protected/payroll/pay_salary_component_view.htm" /> 
-                                                <p:menuitem value="Pay Component Exception" icon="img-periode" style="font-size: 12px !important;color: #003366" title="Pay Component Exception" url="/protected/payroll/pay_component_exception_view.htm" /> 
+                                                
                                             
                                             </p:submenu>
                                         </p:submenu>
@@ -434,7 +435,7 @@
                                             <p:menuitem value="#{appmsg['paysalaryupload.upload_component_model']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['paysalaryupload.upload_component_model']}" url="/protected/payroll/pay_salary_upload_view.htm" icon="img-cost-center"/> 
                                             <p:menuitem value="#{appmsg['ptkp.ptkp_menu']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['paysalaryupload.upload_component_model']}" url="/protected/payroll/pay_salary_upload_view.htm" icon="img-cost-center"/> 
                                             <p:menuitem value="#{appmsg['componentException.componentException']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['componentException.componentException']}" url="/protected/payroll/pay_component_exception_view.htm" /> 
-                                            
+                                            <p:menuitem value="Pay Component Exception" icon="img-periode" style="font-size: 12px !important;color: #003366" title="Pay Component Exception" url="/protected/payroll/pay_component_exception_view.htm" /> 
                                         </p:submenu>
                                         <p:submenu label="Pengembangan"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-training">
                                             <!--                                            <p:menuitem value="Price Simulator" icon="img-price-simulator" style="font-size: 12px !important;color: #003366" title="Make Price Simulation" url="/protected/price_simulator.htm" /> 
@@ -451,9 +452,9 @@
                                         </p:submenu> 
                                         -->
                                         <p:submenu label="#{appmsg['report.report']}"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-reporting">
-                                        	<p:menuitem value="#{appmsg['report.employee_working_group_reporting']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.employee_working_group_reporting']}" url="/protected/report/report_employee_working_group_view.htm" />
+                                            <p:menuitem value="#{appmsg['report.employee_working_group']}" icon="img-reporting" style="font-size: 12px !important;width:190px;color: #003366" title="#{appmsg['report.employee_working_group_reporting']}" url="/protected/report/report_employee_working_group_view.htm" />
                                                 <p:menuitem value="Leave History Report" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="Leave History Report" url="/protected/report/report_leave_history_view.htm" />
-                                                <p:menuitem value="#{appmsg['reportFamilyEmployee.reportFamilyEmployee']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['reportFamilyEmployee.reportFamilyEmployee']}" url="/protected/report/report_employees_family_view.htm" />
+                                                <p:menuitem value="#{appmsg['report.employee_family']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['reportFamilyEmployee.reportFamilyEmployee']}" url="/protected/report/report_employees_family_view.htm" />
                                         </p:submenu>
                                         <p:menuitem value="Logout" icon="ui-icon-power" styleClass="menu" style="color: #ff9933 !important;font-size: 14px!important" title="Logout and Exit" url="/logout.htm" />  
                                     </p:menubar>  
