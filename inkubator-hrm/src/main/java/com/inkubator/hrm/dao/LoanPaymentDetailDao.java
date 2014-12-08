@@ -5,6 +5,8 @@ import java.util.List;
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.Loan;
 import com.inkubator.hrm.entity.LoanPaymentDetail;
+import com.inkubator.hrm.web.model.LoanPaymentDetailModel;
+import org.hibernate.criterion.Order;
 
 /**
  *
@@ -12,9 +14,17 @@ import com.inkubator.hrm.entity.LoanPaymentDetail;
  */
 public interface LoanPaymentDetailDao extends IDAO<LoanPaymentDetail> {
 
-	public List<LoanPaymentDetail> getAllDataByLoanId(Long loanId);
+    public List<LoanPaymentDetail> getAllDataByLoanId(Long loanId);
 
-	public void save(List<LoanPaymentDetail> loanPaymentDetails, Loan loan);
-	
-	public Long getTotalUnpaidByEmpDataId(Long empDataId);
+    public void save(List<LoanPaymentDetail> loanPaymentDetails, Loan loan);
+
+    public Long getTotalUnpaidByEmpDataId(Long empDataId);
+
+    public List<LoanPaymentDetail> getByParam(String parameter, LoanPaymentDetailModel loanPaymentDetailModel, int firstResult, int maxResults, Order order);
+
+    public List<LoanPaymentDetail> getByWtPeriodeWhereComponentPayrollIsActive(LoanPaymentDetailModel loanPaymentDetailModel);
+
+    public Long getTotalResourceTypeByParam(String parameter, LoanPaymentDetailModel loanPaymentDetailModel);
+    
+    public Long getTotalUnPaidLoanByLoanId(Long loanId, LoanPaymentDetailModel loanPaymentDetailModel);
 }

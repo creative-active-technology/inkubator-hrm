@@ -71,7 +71,9 @@
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['educationlevel.level']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{educationLevelData.level}"/>
+                                <h:outputLabel value= "#{educationLevelData.level}">
+                                    <f:converter converterId="romanovConverter" />
+                                </h:outputLabel>
                             </p:column>
                             <p:column sortBy="name"  style="width: 80%">
                                 <f:facet name="header">  
