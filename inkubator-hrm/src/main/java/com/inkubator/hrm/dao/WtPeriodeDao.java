@@ -22,4 +22,7 @@ public interface WtPeriodeDao extends IDAO<WtPeriode> {
     public Long getTotalWtPeriodeByParam(WtPeriodeSearchParameter searchParameter);
     
     public WtPeriode getEntityByStatusActive();
+    
+    public WtPeriode getEntityAbsenByStatusActive();
+    
 }
