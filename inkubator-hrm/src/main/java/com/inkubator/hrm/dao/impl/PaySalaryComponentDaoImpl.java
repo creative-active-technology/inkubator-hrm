@@ -127,12 +127,22 @@ public class PaySalaryComponentDaoImpl extends IDAOImpl<PaySalaryComponent> impl
         criteria.add(Restrictions.eq("employeeType.id", typeId));
         int timeTmb = 0;
         try {
-            timeTmb = DateTimeUtil.getTotalDay(joinDate, new Date() );
+            timeTmb = DateTimeUtil.getTotalDay(joinDate, new Date());
         } catch (Exception ex) {
             LOGGER.error(ex);
         }
         criteria.add(Restrictions.ge("activeFromTmb", timeTmb));
         return (PaySalaryComponent) criteria.uniqueResult();
+    }
+
+    @Override
+    public List<PaySalaryComponent> getAllNotInExceptAndEmpTyeAndTmb(Long empTypeId, int fromTbm) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("paySalaryEmpTypes", "payType");
+        criteria.createAlias("payType.employeeType", "employeeType");
+        criteria.add(Restrictions.eq("employeeType.id", empTypeId));
+        criteria.add(Restrictions.le("activeFromTmb", fromTbm));
+        return criteria.list();
     }
 
 }

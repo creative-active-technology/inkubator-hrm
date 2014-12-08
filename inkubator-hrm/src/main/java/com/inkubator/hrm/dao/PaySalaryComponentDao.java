@@ -31,4 +31,6 @@ public interface PaySalaryComponentDao extends IDAO<PaySalaryComponent> {
     public void saveAndMerge(PaySalaryComponent paySalaryComponent);
 
     public PaySalaryComponent getByEployeeTypeIdComponentIdAndJoinDate(Long typeId, Long componentId, Date joinDate);
+
+    public List<PaySalaryComponent> getAllNotInExceptAndEmpTyeAndTmb(Long empTypeId, int fromTbm);
 }

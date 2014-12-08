@@ -100,9 +100,6 @@ public class PaySalaryComponentFormController extends BaseController {
                         } else {
                             isDisableComponetModel = Boolean.TRUE;
                         }
-                        System.out.println(dropDownModelRef + " ");
-                        System.out.println(dropDownModelRef.size());
-                        System.out.println(isDisableComponetModel);
                     } catch (Exception ex) {
                         LOGGER.info(ex, ex);
                     }
@@ -144,7 +141,6 @@ public class PaySalaryComponentFormController extends BaseController {
         dropDownTaxComponent = null;
         listTaxComponent = null;
         disableTax = null;
-        System.out.println(" jajajajjajj");
     }
 
     public void listDrowDown() throws Exception {
@@ -190,6 +186,7 @@ public class PaySalaryComponentFormController extends BaseController {
         paySalaryComponentModel.setFormula(entity.getFormula());
         paySalaryComponentModel.setComponentCategory(entity.getComponentCategory());
         paySalaryComponentModel.setResetData(entity.getResetData());
+        paySalaryComponentModel.setActiveFromTmb(entity.getActiveFromTmb());
         return paySalaryComponentModel;
     }
 
@@ -210,6 +207,7 @@ public class PaySalaryComponentFormController extends BaseController {
         paySalaryComponent.setComponentCategory(model.getComponentCategory());
         paySalaryComponent.setModelReffernsil(model.getModelReffernsiId());
         paySalaryComponent.setResetData(model.getResetData());
+        paySalaryComponent.setActiveFromTmb(model.getActiveFromTmb());
         return paySalaryComponent;
     }
 

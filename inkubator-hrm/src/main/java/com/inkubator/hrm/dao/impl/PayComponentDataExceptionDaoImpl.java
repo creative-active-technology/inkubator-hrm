@@ -107,4 +107,12 @@ public class PayComponentDataExceptionDaoImpl extends IDAOImpl<PayComponentDataE
         return (PayComponentDataException) criteria.uniqueResult();
 
     }
+
+    @Override
+    public List<PayComponentDataException> getAllByEmpId(Long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("empData", "emp");
+        criteria.add(Restrictions.eq("emp.id", id));
+        return criteria.list();
+    }
 }
