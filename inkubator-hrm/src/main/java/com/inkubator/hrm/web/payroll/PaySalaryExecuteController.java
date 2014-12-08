@@ -43,7 +43,7 @@ public class PaySalaryExecuteController extends BaseController {
 
     public void calculatePayRoll() {
         try {
-            payTempKalkulasiService.calcualtePayRoll();
+            payTempKalkulasiService.calculatePayRoll();
         } catch (Exception ex) {
           LOGGER.error(ex, ex);
         }
