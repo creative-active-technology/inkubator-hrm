@@ -23,6 +23,7 @@ import com.inkubator.hrm.entity.PayTempUploadData;
 import com.inkubator.hrm.service.PayTempKalkulasiService;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -215,7 +216,7 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
 
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
-    public void calcualtePayRoll() throws Exception {
+    public void calculatePayRoll() throws Exception {
         List<EmpData> totalEmployee = empDataDao.getAllDataNotTerminate();
         List<PaySalaryComponent> totalPayComponet = paySalaryComponentDao.getAllData();
 
@@ -262,6 +263,25 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
                     this.payTempKalkulasiDao.saveBatch(dataToSaveByUpload);
 
                 }
+                if (paySalaryComponent.getModelComponent().getSpesific().equals(HRMConstant.MODEL_COMP_BASIC_SALARY)) {
+                    PayTempKalkulasi kalkulasi = new PayTempKalkulasi();
+                    kalkulasi.setEmpData(empData);
+
+                    kalkulasi.setPaySalaryComponent(paySalaryComponent);
+                    kalkulasi.setCreatedBy(UserInfoUtil.getUserName());
+                    kalkulasi.setCreatedOn(new Date());
+                    kalkulasi.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
+                    String basicSalaryEncripted = empData.getBasicSalaryDecrypted();
+                    if ((timeTmb / 30) >= 1) {
+
+                        kalkulasi.setNominal(new BigDecimal(basicSalaryEncripted));
+                    } else {
+                        BigDecimal value = new BigDecimal(basicSalaryEncripted).divide(new BigDecimal(timeTmb), RoundingMode.UP);
+                        kalkulasi.setNominal(value);
+                    }
+                    payTempKalkulasiDao.save(kalkulasi);
+                }
+
                 System.out.println("Procecss " + i);
                 i++;
 
