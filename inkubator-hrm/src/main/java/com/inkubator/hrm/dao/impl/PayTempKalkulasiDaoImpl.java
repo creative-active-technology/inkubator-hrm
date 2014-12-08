@@ -9,7 +9,10 @@ import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.PayTempKalkulasiDao;
 import com.inkubator.hrm.entity.OverTimeDistribution;
 import com.inkubator.hrm.entity.PayTempKalkulasi;
+
 import java.util.List;
+
+import org.hibernate.Query;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -38,5 +41,11 @@ public class PayTempKalkulasiDaoImpl extends IDAOImpl<PayTempKalkulasi> implemen
             }
         }
     }
+
+	@Override
+	public void deleteAllData() {
+		Query query = getCurrentSession().createQuery("delete from PayTempKalkulasi");
+        query.executeUpdate();
+	}
 
 }

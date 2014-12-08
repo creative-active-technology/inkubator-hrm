@@ -10,12 +10,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.hibernate.criterion.Order;
 import org.primefaces.model.UploadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.inkubator.common.util.FilesUtil;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.dao.EmpDataDao;
@@ -35,6 +35,7 @@ import com.inkubator.webcore.util.FacesIO;
  * @author rizkykojek
  */
 @Service(value = "payTempUploadDataService")
+@Lazy
 public class PayTempUploadDataServiceImpl extends IServiceImpl implements PayTempUploadDataService {
 
 	@Autowired
