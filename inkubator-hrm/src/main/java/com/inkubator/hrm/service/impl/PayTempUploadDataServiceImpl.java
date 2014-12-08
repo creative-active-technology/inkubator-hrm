@@ -1,6 +1,8 @@
 package com.inkubator.hrm.service.impl;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
 
@@ -13,6 +15,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.inkubator.common.util.FilesUtil;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.dao.EmpDataDao;
@@ -335,8 +338,7 @@ public class PayTempUploadDataServiceImpl extends IServiceImpl implements PayTem
 		
 		if (documentFile != null) {        
             //remove old file
-            File oldFile = new File(uploadPath);
-            oldFile.delete();
+            Files.deleteIfExists(Paths.get(uploadPath));
 
             //added new file            
             facesIO.transferFile(documentFile);
