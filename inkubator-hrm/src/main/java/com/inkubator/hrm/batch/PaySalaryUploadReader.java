@@ -103,6 +103,13 @@ public class PaySalaryUploadReader implements ItemReader<PaySalaryUploadFileMode
 			model.setCreatedBy(createdBy);
 			model.setPaySalaryComponentId(Long.parseLong(paySalaryComponentId));
 			model.setPathUpload(pathUpload);
+		} else {
+			//end of batch process, should close reader
+			if(StringUtils.equals(extension, "csv")){
+				csvFileReader.close();
+			}else {
+				excelFileReader.close();
+			}
 		}
 		
 		return model;

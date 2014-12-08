@@ -26,6 +26,7 @@ public class PaySalaryComponentModel implements Serializable {
     private Boolean resetData;
     private Boolean taxableCheck;
     private Integer modelReffernsiId;
+    private Integer activeFromTmb;
 
     public Long getId() {
         return id;
@@ -129,6 +130,14 @@ public class PaySalaryComponentModel implements Serializable {
 
     public void setModelReffernsiId(Integer modelReffernsiId) {
         this.modelReffernsiId = modelReffernsiId;
+    }
+
+    public Integer getActiveFromTmb() {
+        return activeFromTmb;
+    }
+
+    public void setActiveFromTmb(Integer activeFromTmb) {
+        this.activeFromTmb = activeFromTmb;
     }
 
     

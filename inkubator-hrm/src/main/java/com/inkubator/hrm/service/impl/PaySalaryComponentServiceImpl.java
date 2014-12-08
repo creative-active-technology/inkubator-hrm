@@ -100,6 +100,7 @@ public class PaySalaryComponentServiceImpl extends IServiceImpl implements PaySa
         update.setComponentCategory(entity.getComponentCategory());
         update.setResetData(entity.getResetData());
         update.setModelReffernsil(entity.getModelReffernsil());
+        update.setActiveFromTmb(entity.getActiveFromTmb());
         if(entity.getModelComponent() != null){
             update.setModelComponent(modelComponentDao.getEntiyByPK(entity.getModelComponent().getId()));
         }
