@@ -8,15 +8,18 @@ package com.inkubator.hrm.service.impl;
 import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.PayComponentDataExceptionDao;
 import com.inkubator.hrm.dao.PaySalaryComponentDao;
 import com.inkubator.hrm.dao.PayTempKalkulasiDao;
+import com.inkubator.hrm.dao.PayTempUploadDataDao;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.PayComponentDataException;
 import com.inkubator.hrm.entity.PaySalaryComponent;
 import com.inkubator.hrm.entity.PaySalaryEmpType;
 import com.inkubator.hrm.entity.PayTempKalkulasi;
+import com.inkubator.hrm.entity.PayTempUploadData;
 import com.inkubator.hrm.service.PayTempKalkulasiService;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import java.math.BigDecimal;
@@ -47,6 +50,8 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
     private PaySalaryComponentDao paySalaryComponentDao;
     @Autowired
     private PayComponentDataExceptionDao payComponentDataExceptionDao;
+    @Autowired
+    private PayTempUploadDataDao payTempUploadDataDao;
 
     @Override
     public PayTempKalkulasi getEntiyByPK(String id) throws Exception {
@@ -233,49 +238,34 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
             this.payTempKalkulasiDao.saveBatch(dataToSave);
             int timeTmb = 0;
             timeTmb = DateTimeUtil.getTotalDay(empData.getJoinDate(), new Date());
-            System.out.println(" Total Waktu nya "+timeTmb);
+            System.out.println(" Total Waktu nya " + timeTmb);
             List<PaySalaryComponent> totalPayComponetNotExcp = paySalaryComponentDao.getAllNotInExceptAndEmpTyeAndTmb(empData.getEmployeeType().getId(), timeTmb);
             System.out.println(" Employee Name " + empData.getBioData().getFirstName());
             System.out.println(" Ukuran Hak nya " + totalPayComponetNotExcp.size());
-            System.out.println("Procecss " + i);
-            i++;
-//            for (PaySalaryComponent psc : totalPayComponet) {
-//                PayTempKalkulasi kalkulasi = new PayTempKalkulasi();
-//                kalkulasi.setEmpData(empData);
-//                kalkulasi.setPaySalaryComponent(psc);
-//                PayComponentDataException pcde = this.payComponentDataExceptionDao.getByEmpIdAndComponentId(empData.getId(), psc.getId());
-//                if (pcde != null) {
-//                    kalkulasi.setNominal(pcde.getNominal());
-//                    LOGGER.info("Step Sebab Eksepion ");
-//                    LOGGER.info("Employe Name " + empData.getBioData().getFirstName());
-//                    LOGGER.info("Exception Type " + pcde.getPaySalaryComponent().getName());
-//                } else {
-//                    LOGGER.info("Step Sebab kecuali Eksepsion ");
-//                    Long typeKaryawan = empData.getEmployeeType().getId();
-//                    Date karyawanTmb = empData.getJoinDate();
-//                    Long payComponentId = psc.getId();
-//                    LOGGER.info("Employe Name " + empData.getBioData().getFirstName());
-//                    LOGGER.info("Employe Type " + empData.getEmployeeType().getName());
-//                    LOGGER.info("PayComponent name " + psc.getName());
-//                    LOGGER.info("===============================");
-//
-//                    PaySalaryComponent pcToInput = paySalaryComponentDao.getByEployeeTypeIdComponentIdAndJoinDate(typeKaryawan, payComponentId, karyawanTmb);
-////                          LOGGER.info("PayComponent name " + pcToInput.getName());
-//                    List<PaySalaryEmpType> data = psc.getEmployeeTypesBySet();
-//                    if(data.contains(empData.getEmployeeType()))
-//                    for (PaySalaryEmpType data1 : data) {
-//                        System.out.println(data1.getEmployeeType().getName());
-//                    }
-//                    System.out.println("ukuran sdkfsdkfkdfkdf " + data.size());
-//                    if (pcToInput != null) {
-//                        LOGGER.info("=============================== Ada Dalam Type");
-//                        LOGGER.info("Employe Name " + empData.getBioData().getNickname());
-//                        LOGGER.info("Employe Type " + empData.getEmployeeType().getName());
-//                        LOGGER.info("Component Name " + pcToInput.getName());
-//                    }
-//
-//                }
 
+            for (PaySalaryComponent paySalaryComponent : totalPayComponetNotExcp) {
+                if (paySalaryComponent.getModelComponent().getSpesific().equals(HRMConstant.MODEL_COMP_UPLOAD)) {
+                    List<PayTempUploadData> dataTosaveByUpload = this.payTempUploadDataDao.getAllbyEmpIdAndComponentId(empData.getId(), paySalaryComponent.getId());
+                    List<PayTempKalkulasi> dataToSaveByUpload = new ArrayList();
+                    for (PayTempUploadData payUpload : dataTosaveByUpload) {
+                        PayTempKalkulasi kalkulasi = new PayTempKalkulasi();
+                        kalkulasi.setEmpData(empData);
+                        kalkulasi.setNominal(new BigDecimal(payUpload.getNominalValue()));
+                        kalkulasi.setPaySalaryComponent(payUpload.getPaySalaryComponent());
+                        kalkulasi.setCreatedBy(UserInfoUtil.getUserName());
+                        kalkulasi.setCreatedOn(new Date());
+                        kalkulasi.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
+                        dataToSaveByUpload.add(kalkulasi);
+                        LOGGER.info("Save By Upload");
+                        LOGGER.info("Nama " + empData.getBioData().getFirstName());
+                    }
+                    this.payTempKalkulasiDao.saveBatch(dataToSaveByUpload);
+
+                }
+                System.out.println("Procecss " + i);
+                i++;
+
+            }
         }
     }
 }
