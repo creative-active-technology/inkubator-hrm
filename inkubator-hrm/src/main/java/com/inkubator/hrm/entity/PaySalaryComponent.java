@@ -30,7 +30,7 @@ import javax.persistence.Version;
     @UniqueConstraint(columnNames = "code")}
 )
 public class PaySalaryComponent implements java.io.Serializable {
-
+    
     private long id;
     private Integer version;
     private ModelComponent modelComponent;
@@ -54,14 +54,14 @@ public class PaySalaryComponent implements java.io.Serializable {
     private Integer totalPayTempUploadDatas;
     private Set<PayTempKalkulasi> payTempKalkulasis = new HashSet<PayTempKalkulasi>(0);
     private Integer activeFromTmb;
-
+    
     public PaySalaryComponent() {
     }
-
+    
     public PaySalaryComponent(long id) {
         this.id = id;
     }
-
+    
     public PaySalaryComponent(long id, ModelComponent modelComponent, PaySalaryJurnal paySalaryJurnal, TaxComponent taxComponent, String code, String name, Boolean renumeration, String formula, Integer componentCategory, Boolean resetData, String createdBy, Date createdOn, String updatedBy, Date updatedOn, Set<PaySalaryEmpType> paySalaryEmpTypes) {
         this.id = id;
         this.modelComponent = modelComponent;
@@ -79,220 +79,224 @@ public class PaySalaryComponent implements java.io.Serializable {
         this.updatedOn = updatedOn;
         this.paySalaryEmpTypes = paySalaryEmpTypes;
     }
-
+    
     @Id
-
+    
     @Column(name = "id", unique = true, nullable = false)
     public long getId() {
         return this.id;
     }
-
+    
     public void setId(long id) {
         this.id = id;
     }
-
+    
     @Version
     @Column(name = "version")
     public Integer getVersion() {
         return this.version;
     }
-
+    
     public void setVersion(Integer version) {
         this.version = version;
     }
-
+    
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "model_component_id")
     public ModelComponent getModelComponent() {
         return this.modelComponent;
     }
-
+    
     public void setModelComponent(ModelComponent modelComponent) {
         this.modelComponent = modelComponent;
     }
-
+    
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "paysalary_jurnal_id")
     public PaySalaryJurnal getPaySalaryJurnal() {
         return this.paySalaryJurnal;
     }
-
+    
     public void setPaySalaryJurnal(PaySalaryJurnal paySalaryJurnal) {
         this.paySalaryJurnal = paySalaryJurnal;
     }
-
+    
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tax_component_id")
     public TaxComponent getTaxComponent() {
         return this.taxComponent;
     }
-
+    
     public void setTaxComponent(TaxComponent taxComponent) {
         this.taxComponent = taxComponent;
     }
-
+    
     @Column(name = "code", unique = true, length = 45)
     public String getCode() {
         return this.code;
     }
-
+    
     public void setCode(String code) {
         this.code = code;
     }
-
+    
     @Column(name = "name", unique = true, length = 60)
     public String getName() {
         return this.name;
     }
-
+    
     public void setName(String name) {
         this.name = name;
     }
-
+    
     @Column(name = "renumeration")
     public Boolean getRenumeration() {
         return this.renumeration;
     }
-
+    
     public void setRenumeration(Boolean renumeration) {
         this.renumeration = renumeration;
     }
-
+    
     @Column(name = "formula")
     public String getFormula() {
         return this.formula;
     }
-
+    
     public void setFormula(String formula) {
         this.formula = formula;
     }
-
+    
     @Column(name = "component_category")
     public Integer getComponentCategory() {
         return this.componentCategory;
     }
-
+    
     public void setComponentCategory(Integer componentCategory) {
         this.componentCategory = componentCategory;
     }
-
+    
     @Column(name = "reset_data")
     public Boolean getResetData() {
         return this.resetData;
     }
-
+    
     public void setResetData(Boolean resetData) {
         this.resetData = resetData;
     }
-
+    
     @Column(name = "created_by", length = 45)
     public String getCreatedBy() {
         return this.createdBy;
     }
-
+    
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
     }
-
+    
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_on", length = 19)
     public Date getCreatedOn() {
         return this.createdOn;
     }
-
+    
     public void setCreatedOn(Date createdOn) {
         this.createdOn = createdOn;
     }
-
+    
     @Column(name = "updated_by", length = 45)
     public String getUpdatedBy() {
         return this.updatedBy;
     }
-
+    
     public void setUpdatedBy(String updatedBy) {
         this.updatedBy = updatedBy;
     }
-
+    
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updated_on", length = 19)
     public Date getUpdatedOn() {
         return this.updatedOn;
     }
-
+    
     public void setUpdatedOn(Date updatedOn) {
         this.updatedOn = updatedOn;
     }
-
+    
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "paySalaryComponent", orphanRemoval = true)
     public Set<PaySalaryEmpType> getPaySalaryEmpTypes() {
         return this.paySalaryEmpTypes;
     }
-
+    
     public void setPaySalaryEmpTypes(Set<PaySalaryEmpType> paySalaryEmpTypes) {
         this.paySalaryEmpTypes = paySalaryEmpTypes;
     }
-
+    
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "paySalaryComponent")
     public Set<PayTempUploadData> getPayTempUploadDatas() {
         return payTempUploadDatas;
     }
-
+    
     public void setPayTempUploadDatas(Set<PayTempUploadData> payTempUploadDatas) {
         this.payTempUploadDatas = payTempUploadDatas;
     }
-
+    
     @Column(name = "model_refferensi")
     public Integer getModelReffernsil() {
         return modelReffernsil;
     }
-
+    
     public void setModelReffernsil(Integer modelReffernsil) {
         this.modelReffernsil = modelReffernsil;
     }
-
+    
     @Transient
     public List<EmployeeType> getEmployeeTypes() {
         return employeeTypes;
     }
-
+    
     public void setEmployeeTypes(List<EmployeeType> employeeTypes) {
         this.employeeTypes = employeeTypes;
     }
-
+    
     @Transient
     public Integer getTotalPayTempUploadDatas() {
         return totalPayTempUploadDatas;
     }
-
+    
     public void setTotalPayTempUploadDatas(Integer totalPayTempUploadDatas) {
         this.totalPayTempUploadDatas = totalPayTempUploadDatas;
     }
-
+    
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "paySalaryComponent")
     public Set<PayComponentDataException> getPayComponentDataExceptions() {
         return this.payComponentDataExceptions;
     }
-
+    
     public void setPayComponentDataExceptions(Set<PayComponentDataException> payComponentDataExceptions) {
         this.payComponentDataExceptions = payComponentDataExceptions;
     }
-
+    
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "paySalaryComponent")
     public Set<PayTempKalkulasi> getPayTempKalkulasis() {
         return this.payTempKalkulasis;
     }
-
+    
     public void setPayTempKalkulasis(Set<PayTempKalkulasi> payTempKalkulasis) {
         this.payTempKalkulasis = payTempKalkulasis;
     }
-
+    
     @Column(name = "active_from_tmb_day")
     public Integer getActiveFromTmb() {
         return activeFromTmb;
     }
-
+    
     public void setActiveFromTmb(Integer activeFromTmb) {
         this.activeFromTmb = activeFromTmb;
     }
 
+    @Transient
+    public List<PaySalaryEmpType> getEmployeeTypesBySet() {
+        return new ArrayList<>(paySalaryEmpTypes);
+    }
 }
