@@ -17,13 +17,18 @@ import org.hibernate.criterion.Order;
  * @author Deni
  */
 public interface PayComponentDataExceptionDao extends IDAO<PayComponentDataException> {
+
     public List<PayComponentDataException> getByParamWithDetailForDetail(String searchParameter, String paySalaryComponentId, int firstResult, int maxResults, Order order);
 
     public Long getTotalByParamForDetail(String searchParameter, String paySalaryComponentId);
-    
-    public PayComponentDataException getByPaySalaryComponentId(Long id);
-    
-    public List<PayComponentDataException> getByPaySalaryComponent(Long id);
-    
-}
 
+    public PayComponentDataException getByPaySalaryComponentId(Long id);
+
+    public List<PayComponentDataException> getByPaySalaryComponent(Long id);
+
+    public PayComponentDataException getByEmpIdAndComponentId(Long empId, Long pauSalaryComponentId);
+    
+    public List<PayComponentDataException>getAllByEmpId(Long id);
+    
+
+}

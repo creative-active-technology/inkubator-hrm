@@ -14,16 +14,18 @@ import com.inkubator.hrm.web.search.PayTempUploadDataSearchParameter;
  */
 public interface PayTempUploadDataDao extends IDAO<PayTempUploadData> {
 
-	public List<PayTempUploadData> getAllDataByParam(PayTempUploadDataSearchParameter parameter, int firstResult, int maxResults, Order orderable);
-	
-	public Long getTotalByParam(PayTempUploadDataSearchParameter parameter);
-	
-	public PayTempUploadData getEntityByPkWithDetail(Long id);
+    public List<PayTempUploadData> getAllDataByParam(PayTempUploadDataSearchParameter parameter, int firstResult, int maxResults, Order orderable);
 
-	public Long getTotalByPaySalaryComponentId(Long paySalaryComponentId);
+    public Long getTotalByParam(PayTempUploadDataSearchParameter parameter);
 
-	public Double getTotalSalaryByPaySalaryComponentId(Long paySalaryComponentId);
-	
-	public void deleteByPaySalaryComponentId(Long paySalaryComponentId);
-	
+    public PayTempUploadData getEntityByPkWithDetail(Long id);
+
+    public Long getTotalByPaySalaryComponentId(Long paySalaryComponentId);
+
+    public Double getTotalSalaryByPaySalaryComponentId(Long paySalaryComponentId);
+
+    public void deleteByPaySalaryComponentId(Long paySalaryComponentId);
+
+    public List<PayTempUploadData> getAllbyEmpIdAndComponentId(Long empId, Long componentId);
+
 }

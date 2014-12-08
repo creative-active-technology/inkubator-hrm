@@ -58,32 +58,33 @@ public interface EmpDataService extends IService<EmpData> {
 //<<<<<<< HEAD
 //    public List<EmpData> getTotalBySearchEmployee(Long workingGroupId, Integer deptLikeOrEqual, String deptName, Integer empTypeLikeOrEqual, String empTypeName, Integer gender, Long golJabId, Integer sortBy, Integer orderBy) throws Exception;
 //        
-
     public List<EmpData> getTotalBySearchEmployee(PlacementOfEmployeeWorkScheduleModel model) throws Exception;
 
     public List<EmpData> getEmployeelBySearchEmployeeLeave(DistributionLeaveSchemeModel model) throws Exception;
 
     public List<EmpData> getEmployeeByOtSearchParameter(DistributionOvetTimeModel model) throws Exception;
-    
-    public List<EmpData>getEmpDataByListId(List<Long> data)throws Exception;
-    
+
+    public List<EmpData> getEmpDataByListId(List<Long> data) throws Exception;
+
     public List<EmpData> getAllDataReportEmpWorkingGroupByParam(ReportEmpWorkingGroupParameter param, int firstResult, int maxResults, Order orderable);
-    
+
     public Long getTotalReportEmpWorkingGroupByParam(ReportEmpWorkingGroupParameter param);
-    
+
     public List<EmpData> getEmployeelBySearchEmployeePermit(PermitDistributionModel model) throws Exception;
-    
+
     public List<EmpData> getAllDataReportOfEmployeesFamilyByParam(ReportOfEmployeesFamilySearchParameter searchParameter, int firstResult, int maxResults, Order orderable) throws Exception;
-    
+
     public Long getTotalReportOfEmployeesFamilyByParam(ReportOfEmployeesFamilySearchParameter searchParameter) throws Exception;
 
     public List<EmpData> getAllDataReportEmpDepartmentJabatanByParam(ReportEmpDepartmentJabatanParameter param, int firstResult, int maxResults, Order orderable);
-    
+
     public Long getTotalReportEmpDepartmentJabatanByParam(ReportEmpDepartmentJabatanParameter param);
-    
+
     public List<EmpData> getEmployeeBySearchEmployeeFingerException(WtFingerExceptionModel model) throws Exception;
-    
+
     public void saveForPtkp(EmpData empData) throws Exception;
-    
+
     public EmpData getEmpDataWithBiodata(Long id) throws Exception;
+
+    public List<EmpData> getAllDataNotTerminate() throws Exception;
 }

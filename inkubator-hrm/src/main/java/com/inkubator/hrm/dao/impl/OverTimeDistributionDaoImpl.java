@@ -97,6 +97,7 @@ public class OverTimeDistributionDaoImpl extends IDAOImpl<OverTimeDistribution> 
         criteria.add(Restrictions.isNotNull("id"));
     }
     
+    @Override
     public void saveBatch(List<OverTimeDistribution> data) {
          int counter = 0;
         for (OverTimeDistribution overTimeDistribution : data) {

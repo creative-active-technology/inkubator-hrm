@@ -27,33 +27,33 @@ import com.inkubator.hrm.web.search.PayTempUploadDataSearchParameter;
 @Lazy
 public class PayTempUploadDataDaoImpl extends IDAOImpl<PayTempUploadData> implements PayTempUploadDataDao {
 
-	@Override
-	public Class<PayTempUploadData> getEntityClass() {
-		return PayTempUploadData.class;		
-	}
-	
-	@Override
-	public List<PayTempUploadData> getAllDataByParam(PayTempUploadDataSearchParameter parameter, int firstResult, int maxResults, Order orderable) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		this.doSearchByParam(parameter, criteria);
+    @Override
+    public Class<PayTempUploadData> getEntityClass() {
+        return PayTempUploadData.class;
+    }
+
+    @Override
+    public List<PayTempUploadData> getAllDataByParam(PayTempUploadDataSearchParameter parameter, int firstResult, int maxResults, Order orderable) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        this.doSearchByParam(parameter, criteria);
         criteria.addOrder(orderable);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
         return criteria.list();
-	}
+    }
 
-	@Override
-	public Long getTotalByParam(PayTempUploadDataSearchParameter parameter) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		this.doSearchByParam(parameter, criteria);
+    @Override
+    public Long getTotalByParam(PayTempUploadDataSearchParameter parameter) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        this.doSearchByParam(parameter, criteria);
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
-	}
-	
-	private void doSearchByParam(PayTempUploadDataSearchParameter parameter, Criteria criteria){
-		criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
-		criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
-		
-		if (parameter.getNik() != null) {
+    }
+
+    private void doSearchByParam(PayTempUploadDataSearchParameter parameter, Criteria criteria) {
+        criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+        criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
+
+        if (parameter.getNik() != null) {
             criteria.add(Restrictions.like("empData.nik", parameter.getNik(), MatchMode.ANYWHERE));
         }
 
@@ -63,28 +63,28 @@ public class PayTempUploadDataDaoImpl extends IDAOImpl<PayTempUploadData> implem
             disjunction.add(Restrictions.like("bioData.lastName", parameter.getName(), MatchMode.ANYWHERE));
             criteria.add(disjunction);
         }
-        
-        if(parameter.getPaySalaryComponentId() != null){
-        	criteria.add(Restrictions.eq("paySalaryComponent.id", parameter.getPaySalaryComponentId()));
+
+        if (parameter.getPaySalaryComponentId() != null) {
+            criteria.add(Restrictions.eq("paySalaryComponent.id", parameter.getPaySalaryComponentId()));
         }
         criteria.add(Restrictions.isNotNull("id"));
-	}
-	
-	@Override
-	public Long getTotalByPaySalaryComponentId(Long paySalaryComponentId) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.add(Restrictions.eq("paySalaryComponent.id", paySalaryComponentId));
+    }
+
+    @Override
+    public Long getTotalByPaySalaryComponentId(Long paySalaryComponentId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("paySalaryComponent.id", paySalaryComponentId));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
-	}
-	
-	@Override
-	public Double getTotalSalaryByPaySalaryComponentId(Long paySalaryComponentId) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.add(Restrictions.eq("paySalaryComponent.id", paySalaryComponentId));
+    }
+
+    @Override
+    public Double getTotalSalaryByPaySalaryComponentId(Long paySalaryComponentId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("paySalaryComponent.id", paySalaryComponentId));
         return (Double) criteria.setProjection(Projections.sum("nominalValue")).uniqueResult();
-	}
-	
-	@Override
+    }
+
+    @Override
     public PayTempUploadData getEntityByPkWithDetail(Long id) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("id", id));
@@ -94,10 +94,21 @@ public class PayTempUploadDataDaoImpl extends IDAOImpl<PayTempUploadData> implem
         return (PayTempUploadData) criteria.uniqueResult();
     }
 
-	@Override
-	public void deleteByPaySalaryComponentId(Long paySalaryComponentId) {
-		Query query = getCurrentSession().createQuery("delete from PayTempUploadData temp where temp.paySalaryComponent.id = :paySalaryComponentId").setLong("paySalaryComponentId", paySalaryComponentId);
-		query.executeUpdate();
-	}
+    @Override
+    public void deleteByPaySalaryComponentId(Long paySalaryComponentId) {
+        Query query = getCurrentSession().createQuery("delete from PayTempUploadData temp where temp.paySalaryComponent.id = :paySalaryComponentId").setLong("paySalaryComponentId", paySalaryComponentId);
+        query.executeUpdate();
+    }
+
+    @Override
+    public List<PayTempUploadData> getAllbyEmpIdAndComponentId(Long empId, Long componentId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("paySalaryComponent", "ps");
+        criteria.createAlias("empData", "emp");
+        criteria.add(Restrictions.eq("ps.id", componentId));
+        criteria.add(Restrictions.eq("emp.id", empId));
+        return criteria.list();
+
+    }
 
 }

@@ -29,7 +29,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository(value = "payComponentDataExceptionDao")
 @Lazy
-public class PayComponentDataExceptionDaoImpl extends IDAOImpl<PayComponentDataException> implements PayComponentDataExceptionDao{
+public class PayComponentDataExceptionDaoImpl extends IDAOImpl<PayComponentDataException> implements PayComponentDataExceptionDao {
 
     @Override
     public Class<PayComponentDataException> getEntityClass() {
@@ -48,7 +48,7 @@ public class PayComponentDataExceptionDaoImpl extends IDAOImpl<PayComponentDataE
     }
 
     @Override
-    public Long getTotalByParamForDetail(String searchParameter,  String paySalaryComponentId) {
+    public Long getTotalByParamForDetail(String searchParameter, String paySalaryComponentId) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchByParamForDetail(searchParameter, criteria);
         criteria.add(Restrictions.eq("paySalaryComponent.id", Long.valueOf(paySalaryComponentId.substring(1))));
@@ -74,16 +74,16 @@ public class PayComponentDataExceptionDaoImpl extends IDAOImpl<PayComponentDataE
         criteria.add(Restrictions.eq("paySalaryComponent.id", id));
         return criteria.list();
     }
-    
+
     private void doSearchByParam(PayComponentDataExceptionSearchParameter searchParameter, Criteria criteria) {
-        if (searchParameter.getPaySalaryComponent()!=null) {
+        if (searchParameter.getPaySalaryComponent() != null) {
             criteria.createAlias("paySalaryComponent", "paySalaryComponent", JoinType.INNER_JOIN);
             criteria.add(Restrictions.like("paySalaryComponent.name", searchParameter.getPaySalaryComponent(), MatchMode.ANYWHERE));
-        } 
+        }
         criteria.add(Restrictions.isNotNull("id"));
     }
-    
-        private void doSearchByParamForDetail(String searchParameter, Criteria criteria) {
+
+    private void doSearchByParamForDetail(String searchParameter, Criteria criteria) {
         criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
         criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
         criteria.createAlias("paySalaryComponent", "paySalaryComponent", JoinType.INNER_JOIN);
@@ -95,5 +95,24 @@ public class PayComponentDataExceptionDaoImpl extends IDAOImpl<PayComponentDataE
             criteria.add(disjunction);
         }
         criteria.add(Restrictions.isNotNull("id"));
+    }
+
+    @Override
+    public PayComponentDataException getByEmpIdAndComponentId(Long empId, Long paySalaryCompId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("empData", "emp");
+        criteria.createAlias("paySalaryComponent", "payComp");
+        criteria.add(Restrictions.eq("emp.id", empId));
+        criteria.add(Restrictions.eq("payComp.id", paySalaryCompId));
+        return (PayComponentDataException) criteria.uniqueResult();
+
+    }
+
+    @Override
+    public List<PayComponentDataException> getAllByEmpId(Long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("empData", "emp");
+        criteria.add(Restrictions.eq("emp.id", id));
+        return criteria.list();
     }
 }
