@@ -1,4 +1,3 @@
-
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
@@ -46,8 +45,7 @@
                                     <p:outputLabel  value="#{appmsg['paySalaryComponent.paySalaryComponent_name']}"  for="name" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:inputText id="name" value="#{paySalaryComponentFormController.model.name}" onkeyup="this.value = this.value.toUpperCase();"
-                                                 required="true" styleClass="isitext_hrm" style="width:250px;" />
+                                    <p:inputText id="name" value="#{paySalaryComponentFormController.model.name}" required="true" styleClass="isitext_hrm" style="width:250px;" />
                                     <p:message for="name"/>
                                 </p:column>
                             </p:row>
@@ -111,7 +109,16 @@
                                     <p:message for="componentCategory"/>
                                 </p:column>
                             </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Hari Minimum TMB"  for="hariMinTmb" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:spinner id="hariMinTmb" value="#{paySalaryComponentFormController.model.activeFromTmb}" size="4" min="0" max="365" styleClass="isitext_hrm" required="true">
 
+                                    </p:spinner>
+                                </p:column>
+                            </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="#{appmsg['paySalaryComponent.paySalaryComponent_jurnal_gaji']}"  for="salaryJurnal" styleClass="label_hrm" />
@@ -178,6 +185,7 @@
                                     <p:message for="taxable"/>
                                 </p:column>
                             </p:row>
+
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="#{appmsg['paySalaryComponent.paySalaryComponent_employee_type']}"  for="picklistUserRoleId" styleClass="label_hrm" />
