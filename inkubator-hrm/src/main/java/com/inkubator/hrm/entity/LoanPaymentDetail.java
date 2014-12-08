@@ -18,6 +18,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 
 /**
@@ -41,6 +42,7 @@ public class LoanPaymentDetail implements java.io.Serializable {
     private Date createdOn;
     private String updatedBy;
     private Date updatedOn;
+    private Long bayarKe;
     
 
     public LoanPaymentDetail() {
@@ -184,4 +186,15 @@ public class LoanPaymentDetail implements java.io.Serializable {
     public void setUpdatedOn(Date updatedOn) {
         this.updatedOn = updatedOn;
     }    
+
+    @Transient
+    public Long getBayarKe() {
+        return bayarKe;
+    }
+
+    public void setBayarKe(Long bayarKe) {
+        this.bayarKe = bayarKe;
+    }
+    
+    
 }
