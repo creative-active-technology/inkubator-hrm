@@ -410,14 +410,14 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
                 kalkulasi.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
                 kalkulasi.setEmpData(empData);
                 kalkulasi.setPaySalaryComponent(dataException.getPaySalaryComponent());
-                BigDecimal nominal = this.getNominalBasedCategory(dataException.getNominal(), dataException.getPaySalaryComponent());
-                kalkulasi.setNominal(nominal);
+                kalkulasi.setFactor(this.getFactorBasedCategory(dataException.getPaySalaryComponent().getComponentCategory()));
+                kalkulasi.setNominal(dataException.getNominal());
                 
                 kalkulasi.setCreatedBy(UserInfoUtil.getUserName());
                 kalkulasi.setCreatedOn(new Date());                
                 datas.add(kalkulasi);
                 
-                LOGGER.info("Save By ComponentDataException - "+ dataException.getPaySalaryComponent().getName() +", nominal : " + nominal);
+                LOGGER.info("Save By ComponentDataException - "+ dataException.getPaySalaryComponent().getName() +", nominal : " + dataException.getNominal());
             }
             
             int timeTmb = DateTimeUtil.getTotalDay(empData.getJoinDate(), new Date());  
@@ -431,7 +431,8 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
                         kalkulasi.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
                         kalkulasi.setEmpData(empData);
                         kalkulasi.setPaySalaryComponent(payUpload.getPaySalaryComponent());
-                        BigDecimal nominal = this.getNominalBasedCategory(payUpload.getNominalValue(), paySalaryComponent);
+                        kalkulasi.setFactor(this.getFactorBasedCategory(payUpload.getPaySalaryComponent().getComponentCategory()));
+                        BigDecimal nominal = new BigDecimal(payUpload.getNominalValue());
                         kalkulasi.setNominal(nominal);                        
                         
                         kalkulasi.setCreatedBy(UserInfoUtil.getUserName());
@@ -445,13 +446,13 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
                     PayTempKalkulasi kalkulasi = new PayTempKalkulasi();
                     kalkulasi.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
                     kalkulasi.setEmpData(empData);
-                    kalkulasi.setPaySalaryComponent(paySalaryComponent);                    
+                    kalkulasi.setPaySalaryComponent(paySalaryComponent); 
+                    kalkulasi.setFactor(this.getFactorBasedCategory(paySalaryComponent.getComponentCategory()));
                     BigDecimal nominal = new BigDecimal(empData.getBasicSalaryDecrypted());
                     if ((timeTmb / 30) < 1) { 
                     	//jika TMB belum memenuhi satu bulan, jadi basic salary dibagi pro-rate
                     	nominal = nominal.divide(new BigDecimal(timeTmb), RoundingMode.UP);
                     }
-                    nominal = this.getNominalBasedCategory(nominal, paySalaryComponent);
                     kalkulasi.setNominal(nominal);
                     
                     kalkulasi.setCreatedBy(UserInfoUtil.getUserName());
@@ -468,7 +469,8 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
                         kalkulasi.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
                         kalkulasi.setEmpData(empData);
                         kalkulasi.setPaySalaryComponent(paySalaryComponent);
-                        BigDecimal nominal = this.getNominalBasedCategory(payDetail.getTotalPayment(), paySalaryComponent);
+                        kalkulasi.setFactor(this.getFactorBasedCategory(paySalaryComponent.getComponentCategory()));
+                        BigDecimal nominal = new BigDecimal(payDetail.getTotalPayment());
                         nominal = nominal.setScale(0, RoundingMode.UP);
                         kalkulasi.setNominal(nominal);
                         
@@ -487,14 +489,14 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
                         kalkulasi.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
                         kalkulasi.setEmpData(empData);
                         kalkulasi.setPaySalaryComponent(paySalaryComponent);
-                        BigDecimal nominal = this.getNominalBasedCategory(reimbursment.getNominal(), paySalaryComponent);
-                        kalkulasi.setNominal(nominal);
+                        kalkulasi.setFactor(this.getFactorBasedCategory(paySalaryComponent.getComponentCategory()));
+                        kalkulasi.setNominal(reimbursment.getNominal());
                         
                         kalkulasi.setCreatedBy(UserInfoUtil.getUserName());
                         kalkulasi.setCreatedOn(new Date());                        
                         datas.add(kalkulasi);
                         
-                        LOGGER.info("Save By Reimbursment, nominal : " + nominal);
+                        LOGGER.info("Save By Reimbursment, nominal : " + reimbursment.getNominal());
                 	}
                 	
                 } else if (paySalaryComponent.getModelComponent().getSpesific().equals(HRMConstant.MODEL_COMP_FORMULA)) {
@@ -513,7 +515,8 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
                         kalkulasi.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
                         kalkulasi.setEmpData(empData);
                         kalkulasi.setPaySalaryComponent(paySalaryComponent);
-                        BigDecimal nominal = this.getNominalBasedCategory(outPut, paySalaryComponent);
+                        kalkulasi.setFactor(this.getFactorBasedCategory(paySalaryComponent.getComponentCategory()));
+                        BigDecimal nominal = new BigDecimal(outPut);
                         kalkulasi.setNominal(nominal);
                         
                         kalkulasi.setCreatedBy(UserInfoUtil.getUserName());
@@ -530,9 +533,9 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
                         kalkulasi.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
                         kalkulasi.setEmpData(empData);
                         kalkulasi.setPaySalaryComponent(paySalaryComponent);
-                        //nominal untuk benefit dikali nilai dari measurement
-                        BigDecimal nominal = this.getNominalBasedCategory(benefitGroupRate.getNominal(), paySalaryComponent);
-                        nominal =  nominal.multiply(this.getMultiplierFromMeasurement(benefitGroupRate.getBenefitGroup().getMeasurement()));
+                        kalkulasi.setFactor(this.getFactorBasedCategory(paySalaryComponent.getComponentCategory()));
+                        //nominal untuk benefit dikali nilai dari measurement                        
+                        BigDecimal nominal =  new BigDecimal(benefitGroupRate.getNominal()).multiply(this.getMultiplierFromMeasurement(benefitGroupRate.getBenefitGroup().getMeasurement()));
                         kalkulasi.setNominal(nominal);
                         
                         kalkulasi.setCreatedBy(UserInfoUtil.getUserName());
@@ -562,16 +565,18 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
     	return multiplier;
     }
     
-    private BigDecimal getNominalBasedCategory(BigDecimal nominal, PaySalaryComponent paySalaryComponent){
-    	if(ObjectUtils.equals(paySalaryComponent.getComponentCategory(), HRMConstant.PAY_SALARY_COMPONENT_POTONGAN)){
-    		//jika termasuk kategori potongan, maka dibuat minus
-    		nominal = nominal.negate();
-    	}    	
-    	return nominal;
-    }
-    
-    private BigDecimal getNominalBasedCategory(Double nominal, PaySalaryComponent paySalaryComponent){   	
-    	return this.getNominalBasedCategory(new BigDecimal(nominal), paySalaryComponent);
+    private Integer getFactorBasedCategory(Integer componentStrategy){
+    	Integer factor = 1;
+    	
+    	if(ObjectUtils.equals(componentStrategy, HRMConstant.PAY_SALARY_COMPONENT_POTONGAN)){
+    		factor = -1;
+    	} else if(ObjectUtils.equals(componentStrategy, HRMConstant.PAY_SALARY_COMPONENT_SUBSIDI)){
+    		factor = 0;
+    	} else if(ObjectUtils.equals(componentStrategy, HRMConstant.PAY_SALARY_COMPONENT_TUNJANGAN)){
+    		factor = 1;
+    	}
+    	
+    	return factor;
     }
 
 	@Override
