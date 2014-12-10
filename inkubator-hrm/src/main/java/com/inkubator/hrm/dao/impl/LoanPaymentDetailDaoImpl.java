@@ -89,7 +89,7 @@ public class LoanPaymentDetailDaoImpl extends IDAOImpl<LoanPaymentDetail> implem
         criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
         criteria.createAlias("loan.loanSchema", "loanSchema", JoinType.INNER_JOIN);
         criteria.add(Restrictions.eq("loanSchema.payrollComponent", 1));
-        criteria.add(Restrictions.gt("dueDate", loanPaymentDetailModel.getEndDataPeriod()));
+        criteria.add(Restrictions.ge("dueDate", loanPaymentDetailModel.getEndDataPeriod()));
         criteria.add(Restrictions.le("dueDate", loanPaymentDetailModel.getEndDateAbsen()));
         return criteria.list();
     }
@@ -132,4 +132,16 @@ public class LoanPaymentDetailDaoImpl extends IDAOImpl<LoanPaymentDetail> implem
         criteria.add(Restrictions.gt("dueDate", loanPaymentDetailModel.getEndDataPeriod()));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
+
+	@Override
+	public List<LoanPaymentDetail> getAllDataByEmpDataIdAndLoanSchemaIdAndPeriodTime(Long empDataid, Long loanSchemaId, Date fromPeriode, Date untilPeriode) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("loan", "loan", JoinType.INNER_JOIN);
+        criteria.createAlias("loan.loanSchema", "loanSchema", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("loan.empData.id", empDataid));
+        criteria.add(Restrictions.eq("loanSchema.id", loanSchemaId));
+        criteria.add(Restrictions.ge("dueDate", fromPeriode));
+        criteria.add(Restrictions.le("dueDate", untilPeriode));
+        return criteria.list();
+	}
 }

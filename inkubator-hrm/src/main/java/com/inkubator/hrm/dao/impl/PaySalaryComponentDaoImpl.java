@@ -136,12 +136,15 @@ public class PaySalaryComponentDaoImpl extends IDAOImpl<PaySalaryComponent> impl
     }
 
     @Override
-    public List<PaySalaryComponent> getAllNotInExceptAndEmpTyeAndTmb(Long empTypeId, int fromTbm) {
+    public List<PaySalaryComponent> getAllDataByEmpTypeIdAndActiveFromTmAndIdNotIn(Long empTypeId, int fromTbm, List<Long> componentIds) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.createAlias("paySalaryEmpTypes", "payType");
         criteria.createAlias("payType.employeeType", "employeeType");
         criteria.add(Restrictions.eq("employeeType.id", empTypeId));
         criteria.add(Restrictions.le("activeFromTmb", fromTbm));
+        if(!componentIds.isEmpty()){
+        	criteria.add(Restrictions.not(Restrictions.in("id", componentIds)));
+        }
         return criteria.list();
     }
 

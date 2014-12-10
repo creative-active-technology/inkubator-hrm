@@ -8,7 +8,10 @@ import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.ReimbursmentDao;
 import com.inkubator.hrm.entity.Reimbursment;
 import com.inkubator.hrm.web.search.ReimbursmentSearchParameter;
+
+import java.util.Date;
 import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.Disjunction;
@@ -116,4 +119,14 @@ public class ReimburstmentDaoImpl extends IDAOImpl<Reimbursment> implements Reim
         criteria.setFetchMode("reimbursmentSchema", FetchMode.JOIN);
         return (Reimbursment) criteria.uniqueResult();
     }
+
+	@Override
+	public List<Reimbursment> getAllDataByEmpDataIdAndReimbursmentSchemaIdAndPeriodTime(Long empDataid, Long reimbursmentSchemaId, Date fromPeriode, Date untilPeriode) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("empData.id", empDataid));
+        criteria.add(Restrictions.eq("reimbursmentSchema.id", reimbursmentSchemaId));
+        criteria.add(Restrictions.ge("claimDate", fromPeriode));
+        criteria.add(Restrictions.le("claimDate", untilPeriode));
+        return criteria.list();
+	}
 }

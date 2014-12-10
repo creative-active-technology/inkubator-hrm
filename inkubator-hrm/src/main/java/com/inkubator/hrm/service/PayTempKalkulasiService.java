@@ -20,7 +20,7 @@ import org.hibernate.criterion.Order;
  */
 public interface PayTempKalkulasiService extends IService<PayTempKalkulasi> {
 
-    public void calculatePayRoll() throws Exception;
+    /*public void calculatePayRoll() throws Exception;*/
 
     public List<PayTempKalkulasiModel> getByParam(String searchParameter, int firstResult, int maxResults, Order order);
 

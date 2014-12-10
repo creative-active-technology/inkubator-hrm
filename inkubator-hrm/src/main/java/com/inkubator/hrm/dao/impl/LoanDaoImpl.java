@@ -91,4 +91,11 @@ public class LoanDaoImpl extends IDAOImpl<Loan> implements LoanDao {
 		criteria.setFetchMode("loanSchema", FetchMode.JOIN);
 		return (Loan) criteria.uniqueResult();
 	}
+
+	@Override
+	public List<Loan> getAllDataByEmpDataId(Long empDataId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("empData.id", empDataId));
+		return criteria.list();
+	}
 }

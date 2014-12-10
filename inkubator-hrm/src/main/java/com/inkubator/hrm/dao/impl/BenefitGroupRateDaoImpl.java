@@ -3,7 +3,9 @@ package com.inkubator.hrm.dao.impl;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.BenefitGroupRateDao;
 import com.inkubator.hrm.entity.BenefitGroupRate;
+
 import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.Projections;
@@ -72,4 +74,12 @@ public class BenefitGroupRateDaoImpl extends IDAOImpl<BenefitGroupRate> implemen
         criteria.setFetchMode("benefitGroup", FetchMode.JOIN);
         return criteria.list();
     }
+
+	@Override
+	public List<BenefitGroupRate> getAllDataByBenefitGroupIdAndGolJabatanId(Long benefitGroupId, Long golJabatanId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("benefitGroup.id", benefitGroupId));
+        criteria.add(Restrictions.eq("golonganJabatan.id", golJabatanId));
+        return criteria.list();
+	}
 }

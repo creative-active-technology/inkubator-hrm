@@ -21,4 +21,6 @@ public interface LoanDao extends IDAO<Loan> {
 	public Loan getEntityByPkWithDetail(Long id);
 
 	public Loan getEntityByApprovalActivityNumberWithDetail(String approvalActivityNumber);
+	
+	public List<Loan> getAllDataByEmpDataId(Long empDataId);
 }
