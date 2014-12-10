@@ -21,6 +21,8 @@ import com.inkubator.hrm.entity.PaySalaryEmpType;
 import com.inkubator.hrm.entity.PayTempKalkulasi;
 import com.inkubator.hrm.entity.PayTempUploadData;
 import com.inkubator.hrm.service.PayTempKalkulasiService;
+import com.inkubator.hrm.web.model.PayTempKalkulasiModel;
+import com.inkubator.hrm.web.search.PayTempKalkulasiSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -287,5 +289,23 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
 
             }
         }
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<PayTempKalkulasiModel> getByParam(String searchParameter, int firstResult, int maxResults, Order order) {
+        return payTempKalkulasiDao.getByParam(searchParameter, firstResult, maxResults, order);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalPayTempKalkulasiByParam(String searchParameter) {
+        return payTempKalkulasiDao.getTotalPayTempKalkulasiByParam(searchParameter);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public PayTempKalkulasi getEntityByPkWithDetail(Long id) {
+        return payTempKalkulasiDao.getEntityByPkWithDetail(id);
     }
 }

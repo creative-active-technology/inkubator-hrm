@@ -1,6 +1,7 @@
 package com.inkubator.hrm.entity;
 // Generated Nov 24, 2014 11:16:03 AM by Hibernate Tools 4.3.1
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -54,6 +55,8 @@ public class PaySalaryComponent implements java.io.Serializable {
     private Integer totalPayTempUploadDatas;
     private Set<PayTempKalkulasi> payTempKalkulasis = new HashSet<PayTempKalkulasi>(0);
     private Integer activeFromTmb;
+    private Integer totalEmpData;
+    private BigDecimal totalNominal;
     
     public PaySalaryComponent() {
     }
@@ -299,4 +302,24 @@ public class PaySalaryComponent implements java.io.Serializable {
     public List<PaySalaryEmpType> getEmployeeTypesBySet() {
         return new ArrayList<>(paySalaryEmpTypes);
     }
+
+    @Transient
+    public Integer getTotalEmpData() {
+        return totalEmpData;
+    }
+
+    public void setTotalEmpData(Integer totalEmpData) {
+        this.totalEmpData = totalEmpData;
+    }
+
+    @Transient
+    public BigDecimal getTotalNominal() {
+        return totalNominal;
+    }
+
+    public void setTotalNominal(BigDecimal totalNominal) {
+        this.totalNominal = totalNominal;
+    }
+    
+    
 }

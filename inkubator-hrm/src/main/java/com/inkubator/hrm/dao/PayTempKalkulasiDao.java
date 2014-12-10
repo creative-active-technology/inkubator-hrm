@@ -7,7 +7,10 @@ package com.inkubator.hrm.dao;
 
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.PayTempKalkulasi;
+import com.inkubator.hrm.web.model.PayTempKalkulasiModel;
+import com.inkubator.hrm.web.search.PayTempKalkulasiSearchParameter;
 import java.util.List;
+import org.hibernate.criterion.Order;
 
 /**
  *
@@ -15,4 +18,10 @@ import java.util.List;
  */
 public interface PayTempKalkulasiDao extends IDAO<PayTempKalkulasi>{
     public void saveBatch(List<PayTempKalkulasi>data);
+    
+    public List<PayTempKalkulasiModel> getByParam(String searchParameter, int firstResult, int maxResults, Order order);
+
+    public Long getTotalPayTempKalkulasiByParam(String searchParameter);
+    
+    public PayTempKalkulasi getEntityByPkWithDetail(Long id);
 }
