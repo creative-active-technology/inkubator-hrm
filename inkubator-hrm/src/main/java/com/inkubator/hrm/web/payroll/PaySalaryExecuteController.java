@@ -5,11 +5,16 @@
  */
 package com.inkubator.hrm.web.payroll;
 
+import com.inkubator.hrm.entity.PayTempKalkulasi;
+import com.inkubator.hrm.web.lazymodel.PaySalaryExecuteLazyDataModel;
+import com.inkubator.hrm.web.model.PayTempKalkulasiModel;
+import com.inkubator.hrm.web.search.PayTempKalkulasiSearchParameter;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import org.primefaces.model.LazyDataModel;
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
@@ -31,37 +36,64 @@ public class PaySalaryExecuteController extends BaseController {
 
     @ManagedProperty(value = "#{empDataService}")
     private EmpDataService empDataService;
-     @ManagedProperty(value = "#{payTempKalkulasiService}")
+    @ManagedProperty(value = "#{payTempKalkulasiService}")
     private PayTempKalkulasiService payTempKalkulasiService;
-     @ManagedProperty(value = "#{jobLauncher}")
-     private JobLauncher jobLauncher;
-     @ManagedProperty(value = "#{jobPayEmployeeCalculation}")
-     private Job jobPayEmployeeCalculation;
+    private PayTempKalkulasiSearchParameter searchParameter;
+    private LazyDataModel<PayTempKalkulasiModel> lazyDataModel;
+    private PayTempKalkulasi selected;
+    private String parameter;
+    @ManagedProperty(value = "#{jobLauncher}")
+    private JobLauncher jobLauncher;
+    @ManagedProperty(value = "#{jobPayEmployeeCalculation}")
+    private Job jobPayEmployeeCalculation;
 
     @PostConstruct
     @Override
     public void initialization() {
         super.initialization();
+        searchParameter = new PayTempKalkulasiSearchParameter();
 
     }
 
     @PreDestroy
     public void cleanAndExit() {
+        selected = null;
+        lazyDataModel = null;
+        searchParameter = null;
+        payTempKalkulasiService = null;
+        empDataService = null;
+        parameter = null;
+    }
 
+    public void doSearch() {
+        System.out.println(searchParameter.getPaySalaryComponent() + " hohohohooho" + parameter);
+        lazyDataModel = null;
+    }
+
+    public void doSelectEntity() {
+        try {
+            selected = this.payTempKalkulasiService.getEntityByPkWithDetail(selected.getId());
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
+        }
     }
 
     public void calculatePayRoll() {
         try {
-        	payTempKalkulasiService.deleteAllData();
-        	
-        	JobParameters jobParameters = new JobParametersBuilder()
-        			.addString("timeInMilis", String.valueOf(System.currentTimeMillis())).toJobParameters();
-        	JobExecution jobExecution = jobLauncher.run(jobPayEmployeeCalculation, jobParameters);
-	
+            payTempKalkulasiService.deleteAllData();
+
+            JobParameters jobParameters = new JobParametersBuilder()
+                    .addString("timeInMilis", String.valueOf(System.currentTimeMillis())).toJobParameters();
+            JobExecution jobExecution = jobLauncher.run(jobPayEmployeeCalculation, jobParameters);
+
             //payTempKalkulasiService.calculatePayRoll();
         } catch (Exception ex) {
-          LOGGER.error(ex, ex);
+            LOGGER.error(ex, ex);
         }
+    }
+
+    public String doDetail() {
+        return "/protected/payroll/salary_execution_detail.htm?faces-redirect=true&execution=e" + selected.getId();
     }
 
     public void setEmpDataService(EmpDataService empDataService) {
@@ -72,23 +104,55 @@ public class PaySalaryExecuteController extends BaseController {
         this.payTempKalkulasiService = payTempKalkulasiService;
     }
 
-	public JobLauncher getJobLauncher() {
-		return jobLauncher;
-	}
+    public PayTempKalkulasiSearchParameter getSearchParameter() {
+        return searchParameter;
+    }
 
-	public void setJobLauncher(JobLauncher jobLauncher) {
-		this.jobLauncher = jobLauncher;
-	}
+    public void setSearchParameter(PayTempKalkulasiSearchParameter searchParameter) {
+        this.searchParameter = searchParameter;
+    }
 
-	public Job getJobPayEmployeeCalculation() {
-		return jobPayEmployeeCalculation;
-	}
+    public LazyDataModel<PayTempKalkulasiModel> getLazyDataModel() {
+        if (lazyDataModel == null) {
+            lazyDataModel = new PaySalaryExecuteLazyDataModel(parameter, payTempKalkulasiService);
+        }
+        return lazyDataModel;
+    }
 
-	public void setJobPayEmployeeCalculation(Job jobPayEmployeeCalculation) {
-		this.jobPayEmployeeCalculation = jobPayEmployeeCalculation;
-	}
-    
-    
+    public void setLazyDataModel(LazyDataModel<PayTempKalkulasiModel> lazyDataModel) {
+        this.lazyDataModel = lazyDataModel;
+    }
 
-    
+    public PayTempKalkulasi getSelected() {
+        return selected;
+    }
+
+    public void setSelected(PayTempKalkulasi selected) {
+        this.selected = selected;
+    }
+
+    public String getParameter() {
+        return parameter;
+    }
+
+    public void setParameter(String parameter) {
+        this.parameter = parameter;
+    }
+
+    public JobLauncher getJobLauncher() {
+        return jobLauncher;
+    }
+
+    public void setJobLauncher(JobLauncher jobLauncher) {
+        this.jobLauncher = jobLauncher;
+    }
+
+    public Job getJobPayEmployeeCalculation() {
+        return jobPayEmployeeCalculation;
+    }
+
+    public void setJobPayEmployeeCalculation(Job jobPayEmployeeCalculation) {
+        this.jobPayEmployeeCalculation = jobPayEmployeeCalculation;
+    }
+
 }

@@ -13,7 +13,6 @@ import java.util.List;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.hibernate.criterion.Order;
@@ -30,7 +29,6 @@ import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.dao.BenefitGroupDao;
 import com.inkubator.hrm.dao.BenefitGroupRateDao;
 import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.LoanPaymentDetailDao;
@@ -40,8 +38,6 @@ import com.inkubator.hrm.dao.PayTempKalkulasiDao;
 import com.inkubator.hrm.dao.PayTempUploadDataDao;
 import com.inkubator.hrm.dao.ReimbursmentDao;
 import com.inkubator.hrm.dao.WtPeriodeDao;
-import com.inkubator.hrm.entity.ApprovalDefinition;
-import com.inkubator.hrm.entity.BenefitGroup;
 import com.inkubator.hrm.entity.BenefitGroupRate;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.LoanPaymentDetail;
@@ -52,6 +48,7 @@ import com.inkubator.hrm.entity.PayTempUploadData;
 import com.inkubator.hrm.entity.Reimbursment;
 import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.PayTempKalkulasiService;
+import com.inkubator.hrm.web.model.PayTempKalkulasiModel;
 import com.inkubator.securitycore.util.UserInfoUtil;
 
 /**
@@ -364,7 +361,24 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
             }
         }
     }*/
-    
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<PayTempKalkulasiModel> getByParam(String searchParameter, int firstResult, int maxResults, Order order) {
+        return payTempKalkulasiDao.getByParam(searchParameter, firstResult, maxResults, order);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalPayTempKalkulasiByParam(String searchParameter) {
+        return payTempKalkulasiDao.getTotalPayTempKalkulasiByParam(searchParameter);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public PayTempKalkulasi getEntityByPkWithDetail(Long id) {
+        return payTempKalkulasiDao.getEntityByPkWithDetail(id);
+    }
     
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor =Exception.class)
@@ -566,5 +580,4 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
 		payTempKalkulasiDao.deleteAllData();
 		
 	}
-    
 }

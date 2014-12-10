@@ -9,6 +9,10 @@ import java.util.List;
 
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.PayTempKalkulasi;
+import com.inkubator.hrm.web.model.PayTempKalkulasiModel;
+import com.inkubator.hrm.web.search.PayTempKalkulasiSearchParameter;
+import java.util.List;
+import org.hibernate.criterion.Order;
 
 /**
  *
@@ -18,8 +22,13 @@ public interface PayTempKalkulasiService extends IService<PayTempKalkulasi> {
 
     /*public void calculatePayRoll() throws Exception;*/
 
-	public List<PayTempKalkulasi> getAllDataCalculatedPayment() throws Exception;
-	
-	public void deleteAllData() throws Exception;
-	
+    public List<PayTempKalkulasiModel> getByParam(String searchParameter, int firstResult, int maxResults, Order order);
+
+    public Long getTotalPayTempKalkulasiByParam(String searchParameter);
+
+    public PayTempKalkulasi getEntityByPkWithDetail(Long id);
+
+    public List<PayTempKalkulasi> getAllDataCalculatedPayment() throws Exception;
+
+    public void deleteAllData() throws Exception;
 }
