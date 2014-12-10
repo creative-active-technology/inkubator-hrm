@@ -1,11 +1,13 @@
 package com.inkubator.hrm.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.Loan;
 import com.inkubator.hrm.entity.LoanPaymentDetail;
 import com.inkubator.hrm.web.model.LoanPaymentDetailModel;
+
 import org.hibernate.criterion.Order;
 
 /**
@@ -27,4 +29,6 @@ public interface LoanPaymentDetailDao extends IDAO<LoanPaymentDetail> {
     public Long getTotalResourceTypeByParam(String parameter, LoanPaymentDetailModel loanPaymentDetailModel);
     
     public Long getTotalUnPaidLoanByLoanId(Long loanId, LoanPaymentDetailModel loanPaymentDetailModel);
+
+	public List<LoanPaymentDetail> getAllDataByEmpDataIdAndLoanSchemaIdAndPeriodTime(Long empDataid, Long loanSchemaId, Date fromPeriode, Date untilPeriode);
 }

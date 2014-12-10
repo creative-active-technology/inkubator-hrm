@@ -8,8 +8,10 @@ package com.inkubator.hrm.dao;
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.PaySalaryComponent;
 import com.inkubator.hrm.web.search.PaySalaryComponentSearchParameter;
+
 import java.util.Date;
 import java.util.List;
+
 import org.hibernate.criterion.Order;
 
 /**
@@ -32,5 +34,5 @@ public interface PaySalaryComponentDao extends IDAO<PaySalaryComponent> {
 
     public PaySalaryComponent getByEployeeTypeIdComponentIdAndJoinDate(Long typeId, Long componentId, Date joinDate);
 
-    public List<PaySalaryComponent> getAllNotInExceptAndEmpTyeAndTmb(Long empTypeId, int fromTbm);
+    public List<PaySalaryComponent> getAllDataByEmpTypeIdAndActiveFromTmAndIdNotIn(Long empTypeId, int fromTbm, List<Long> componentIds);
 }

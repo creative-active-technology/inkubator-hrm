@@ -34,6 +34,7 @@ public class BenefitGroup implements java.io.Serializable {
     private String name;
     private Date validDate;
     private String description;
+    private Integer measurement;
     private Set<BenefitGroupRate> benefitGroupRates = new HashSet<BenefitGroupRate>(0);
 
     public BenefitGroup() {
@@ -152,7 +153,16 @@ public class BenefitGroup implements java.io.Serializable {
         this.description = description;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "benefitGroup", orphanRemoval = true)
+    @Column(name = "measurement", nullable = false)
+    public Integer getMeasurement() {
+		return measurement;
+	}
+
+	public void setMeasurement(Integer measurement) {
+		this.measurement = measurement;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "benefitGroup", orphanRemoval = true)
     public Set<BenefitGroupRate> getBenefitGroupRates() {
         return this.benefitGroupRates;
     }
