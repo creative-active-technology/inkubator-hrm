@@ -5,6 +5,24 @@
  */
 package com.inkubator.hrm.service.impl;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+
+import org.hibernate.criterion.Order;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
@@ -17,25 +35,12 @@ import com.inkubator.hrm.dao.PayTempUploadDataDao;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.PayComponentDataException;
 import com.inkubator.hrm.entity.PaySalaryComponent;
-import com.inkubator.hrm.entity.PaySalaryEmpType;
 import com.inkubator.hrm.entity.PayTempKalkulasi;
 import com.inkubator.hrm.entity.PayTempUploadData;
 import com.inkubator.hrm.service.PayTempKalkulasiService;
 import com.inkubator.hrm.web.model.PayTempKalkulasiModel;
 import com.inkubator.hrm.web.search.PayTempKalkulasiSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import org.hibernate.criterion.Order;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -221,7 +226,15 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
     public void calculatePayRoll() throws Exception {
         List<EmpData> totalEmployee = empDataDao.getAllDataNotTerminate();
         List<PaySalaryComponent> totalPayComponet = paySalaryComponentDao.getAllData();
-
+        ScriptEngineManager mgr = new ScriptEngineManager();
+        ScriptEngine jsEngine = mgr.getEngineByName("JavaScript");
+        Double basicSalary = null;
+        Double workingDay = null;
+        Double lessTime = null;
+        Double moreTime = null;
+        Double overTIme = null;
+        Double totalDay = null;
+        Double outPut;
         System.out.println(" Jumlah Component " + totalPayComponet.size());
         System.out.println(" Jumlah Employye " + totalEmployee.size());
         int i = 1;
@@ -268,20 +281,61 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
                 if (paySalaryComponent.getModelComponent().getSpesific().equals(HRMConstant.MODEL_COMP_BASIC_SALARY)) {
                     PayTempKalkulasi kalkulasi = new PayTempKalkulasi();
                     kalkulasi.setEmpData(empData);
-
                     kalkulasi.setPaySalaryComponent(paySalaryComponent);
                     kalkulasi.setCreatedBy(UserInfoUtil.getUserName());
                     kalkulasi.setCreatedOn(new Date());
                     kalkulasi.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
                     String basicSalaryEncripted = empData.getBasicSalaryDecrypted();
                     if ((timeTmb / 30) >= 1) {
-
                         kalkulasi.setNominal(new BigDecimal(basicSalaryEncripted));
+                        LOGGER.info("Save By Basic Salary Full");
+                        LOGGER.info("Save By Basic Nominal " + kalkulasi.getNominal().toString());
                     } else {
                         BigDecimal value = new BigDecimal(basicSalaryEncripted).divide(new BigDecimal(timeTmb), RoundingMode.UP);
                         kalkulasi.setNominal(value);
+                        LOGGER.info("Save By Basic Salary Not Full");
+                        LOGGER.info("Save By Basic Nominal " + kalkulasi.getNominal().toString());
                     }
                     payTempKalkulasiDao.save(kalkulasi);
+                }
+                if (paySalaryComponent.getModelComponent().getSpesific().equals(HRMConstant.MODEL_COMP_LOAN)) {
+//Kalkulasi untuk table loan_payment_detail dengan syarat Query pada loan_id. emp_1d=emp_id berdasarkan data yang di dapat dari loop dan tanggal due_date berada pada rentang
+//                    tanggal from_period dan until_perion yang nilai absennya active.
+                }
+
+                if (paySalaryComponent.getModelComponent().getSpesific().equals(HRMConstant.MODEL_COMP_REIMBURSEMENT)) {
+//Kalkulasi unutk reimbusrment
+                }
+
+                if (paySalaryComponent.getModelComponent().getSpesific().equals(HRMConstant.MODEL_COMP_FORMULA)) {
+//Kalkulasi unutk Rumus dari perhitungan dari database
+                    String formulaOne = paySalaryComponent.getFormula();
+                    if (formulaOne != null) {
+                        basicSalary = Double.parseDouble(empData.getBasicSalaryDecrypted());
+                        jsEngine.put("bS", basicSalary);
+                        jsEngine.put("wD", 0);// Kedepannya akandi isin dari database setelah proses absensi karyawan beres
+                        jsEngine.put("lT", 0);//Kedepannya akandi isin dari database setelah proses absensi karyawan beres
+                        jsEngine.put("mT", 0);//Kedepannya akandi isin dari database setelah proses absensi karyawan beres
+                        jsEngine.put("oT", 0);//Kedepannya akandi isin dari database setelah proses absensi karyawan beres
+                        jsEngine.put("tD", 0);//Kedepannya akandi isin dari database setelah proses absensi karyawan beres
+                        try {
+                            outPut = (Double) jsEngine.eval(formulaOne);
+                            PayTempKalkulasi kalkulasi = new PayTempKalkulasi();
+                            kalkulasi.setEmpData(empData);
+                            kalkulasi.setPaySalaryComponent(paySalaryComponent);
+                            kalkulasi.setCreatedBy(UserInfoUtil.getUserName());
+                            kalkulasi.setCreatedOn(new Date());
+                            kalkulasi.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
+                            kalkulasi.setNominal(new BigDecimal(outPut));
+                            payTempKalkulasiDao.save(kalkulasi);
+//            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.ok", "formula_ok", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+                        } catch (ScriptException ex) {
+                            LOGGER.error(ex, ex);
+
+                        }
+
+                    }
+
                 }
 
                 System.out.println("Procecss " + i);
@@ -308,4 +362,140 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
     public PayTempKalkulasi getEntityByPkWithDetail(Long id) {
         return payTempKalkulasiDao.getEntityByPkWithDetail(id);
     }
+    
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor =Exception.class)
+    public List<PayTempKalkulasi> getAllDataCalculatedPayment() throws Exception {
+    	List<EmpData> totalEmployee = empDataDao.getAllDataNotTerminate();
+        List<PaySalaryComponent> totalPayComponet = paySalaryComponentDao.getAllData();
+        ScriptEngineManager mgr = new ScriptEngineManager();
+        ScriptEngine jsEngine = mgr.getEngineByName("JavaScript");
+        Double basicSalary = null;
+        Double workingDay = null;
+        Double lessTime = null;
+        Double moreTime = null;
+        Double overTIme = null;
+        Double totalDay = null;
+        Double outPut;
+        System.out.println(" Jumlah Component " + totalPayComponet.size());
+        System.out.println(" Jumlah Employye " + totalEmployee.size());
+        int i = 1;
+        List<PayTempKalkulasi> datas = new ArrayList();
+        for (EmpData empData : totalEmployee) {
+            List<PayComponentDataException> totalPayComponentException = payComponentDataExceptionDao.getAllByEmpId(empData.getId());
+            //List<PayTempKalkulasi> dataToSave = new ArrayList();
+            for (PayComponentDataException dataException : totalPayComponentException) {
+                PayTempKalkulasi kalkulasi = new PayTempKalkulasi();
+                kalkulasi.setEmpData(empData);
+                kalkulasi.setNominal(dataException.getNominal());
+                kalkulasi.setPaySalaryComponent(dataException.getPaySalaryComponent());
+                kalkulasi.setCreatedBy(UserInfoUtil.getUserName());
+                kalkulasi.setCreatedOn(new Date());
+                kalkulasi.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
+                datas.add(kalkulasi);
+            }
+            //this.payTempKalkulasiDao.saveBatch(dataToSave);
+            int timeTmb = 0;
+            timeTmb = DateTimeUtil.getTotalDay(empData.getJoinDate(), new Date());
+            System.out.println(" Total Waktu nya " + timeTmb);
+            List<PaySalaryComponent> totalPayComponetNotExcp = paySalaryComponentDao.getAllNotInExceptAndEmpTyeAndTmb(empData.getEmployeeType().getId(), timeTmb);
+            System.out.println(" Employee Name " + empData.getBioData().getFirstName());
+            System.out.println(" Ukuran Hak nya " + totalPayComponetNotExcp.size());
+
+            for (PaySalaryComponent paySalaryComponent : totalPayComponetNotExcp) {
+                if (paySalaryComponent.getModelComponent().getSpesific().equals(HRMConstant.MODEL_COMP_UPLOAD)) {
+                    List<PayTempUploadData> dataTosaveByUpload = this.payTempUploadDataDao.getAllbyEmpIdAndComponentId(empData.getId(), paySalaryComponent.getId());
+                    //List<PayTempKalkulasi> dataToSaveByUpload = new ArrayList();
+                    for (PayTempUploadData payUpload : dataTosaveByUpload) {
+                        PayTempKalkulasi kalkulasi = new PayTempKalkulasi();
+                        kalkulasi.setEmpData(empData);
+                        kalkulasi.setNominal(new BigDecimal(payUpload.getNominalValue()));
+                        kalkulasi.setPaySalaryComponent(payUpload.getPaySalaryComponent());
+                        kalkulasi.setCreatedBy(UserInfoUtil.getUserName());
+                        kalkulasi.setCreatedOn(new Date());
+                        kalkulasi.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
+                        datas.add(kalkulasi);
+                        LOGGER.info("Save By Upload");
+                        LOGGER.info("Nama " + empData.getBioData().getFirstName());
+                    }
+                    //this.payTempKalkulasiDao.saveBatch(dataToSaveByUpload);
+
+                }
+                if (paySalaryComponent.getModelComponent().getSpesific().equals(HRMConstant.MODEL_COMP_BASIC_SALARY)) {
+                    PayTempKalkulasi kalkulasi = new PayTempKalkulasi();
+                    kalkulasi.setEmpData(empData);
+                    kalkulasi.setPaySalaryComponent(paySalaryComponent);
+                    kalkulasi.setCreatedBy(UserInfoUtil.getUserName());
+                    kalkulasi.setCreatedOn(new Date());
+                    kalkulasi.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
+                    String basicSalaryEncripted = empData.getBasicSalaryDecrypted();
+                    if ((timeTmb / 30) >= 1) {
+                        kalkulasi.setNominal(new BigDecimal(basicSalaryEncripted));
+                        LOGGER.info("Save By Basic Salary Full");
+                        LOGGER.info("Save By Basic Nominal " + kalkulasi.getNominal().toString());
+                    } else {
+                        BigDecimal value = new BigDecimal(basicSalaryEncripted).divide(new BigDecimal(timeTmb), RoundingMode.UP);
+                        kalkulasi.setNominal(value);
+                        LOGGER.info("Save By Basic Salary Not Full");
+                        LOGGER.info("Save By Basic Nominal " + kalkulasi.getNominal().toString());
+                    }
+                    datas.add(kalkulasi);
+                    //payTempKalkulasiDao.save(kalkulasi);
+                }
+                if (paySalaryComponent.getModelComponent().getSpesific().equals(HRMConstant.MODEL_COMP_LOAN)) {
+//Kalkulasi untuk table loan_payment_detail dengan syarat Query pada loan_id. emp_1d=emp_id berdasarkan data yang di dapat dari loop dan tanggal due_date berada pada rentang
+//                    tanggal from_period dan until_perion yang nilai absennya active.
+                }
+
+                if (paySalaryComponent.getModelComponent().getSpesific().equals(HRMConstant.MODEL_COMP_REIMBURSEMENT)) {
+//Kalkulasi unutk reimbusrment
+                }
+
+                if (paySalaryComponent.getModelComponent().getSpesific().equals(HRMConstant.MODEL_COMP_FORMULA)) {
+//Kalkulasi unutk Rumus dari perhitungan dari database
+                    /*String formulaOne = paySalaryComponent.getFormula();
+                    if (formulaOne != null) {
+                        basicSalary = Double.parseDouble(empData.getBasicSalaryDecrypted());
+                        jsEngine.put("bS", basicSalary);
+                        jsEngine.put("wD", 0);// Kedepannya akandi isin dari database setelah proses absensi karyawan beres
+                        jsEngine.put("lT", 0);//Kedepannya akandi isin dari database setelah proses absensi karyawan beres
+                        jsEngine.put("mT", 0);//Kedepannya akandi isin dari database setelah proses absensi karyawan beres
+                        jsEngine.put("oT", 0);//Kedepannya akandi isin dari database setelah proses absensi karyawan beres
+                        jsEngine.put("tD", 0);//Kedepannya akandi isin dari database setelah proses absensi karyawan beres
+                        try {
+                            outPut = (Double) jsEngine.eval(formulaOne);
+                            PayTempKalkulasi kalkulasi = new PayTempKalkulasi();
+                            kalkulasi.setEmpData(empData);
+                            kalkulasi.setPaySalaryComponent(paySalaryComponent);
+                            kalkulasi.setCreatedBy(UserInfoUtil.getUserName());
+                            kalkulasi.setCreatedOn(new Date());
+                            kalkulasi.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
+                            kalkulasi.setNominal(new BigDecimal(outPut));
+                            datas.add(kalkulasi);
+                            //payTempKalkulasiDao.save(kalkulasi);
+//            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.ok", "formula_ok", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+                        } catch (ScriptException ex) {
+                            LOGGER.error(ex, ex);
+
+                        }
+
+                    }*/
+
+                }
+
+                System.out.println("Procecss " + i);
+                i++;
+
+            }
+        }
+        
+        return datas;
+    }
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor =Exception.class)
+	public void deleteAllData() throws Exception {
+		payTempKalkulasiDao.deleteAllData();
+		
+	}
 }

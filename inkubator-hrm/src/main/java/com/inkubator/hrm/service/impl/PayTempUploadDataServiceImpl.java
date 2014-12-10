@@ -1,6 +1,8 @@
 package com.inkubator.hrm.service.impl;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
 
@@ -8,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.hibernate.criterion.Order;
 import org.primefaces.model.UploadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -32,6 +35,7 @@ import com.inkubator.webcore.util.FacesIO;
  * @author rizkykojek
  */
 @Service(value = "payTempUploadDataService")
+@Lazy
 public class PayTempUploadDataServiceImpl extends IServiceImpl implements PayTempUploadDataService {
 
 	@Autowired
@@ -335,8 +339,7 @@ public class PayTempUploadDataServiceImpl extends IServiceImpl implements PayTem
 		
 		if (documentFile != null) {        
             //remove old file
-            File oldFile = new File(uploadPath);
-            oldFile.delete();
+            Files.deleteIfExists(Paths.get(uploadPath));
 
             //added new file            
             facesIO.transferFile(documentFile);

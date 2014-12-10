@@ -22,6 +22,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
 import org.hibernate.transform.Transformers;
+import org.hibernate.Query;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -55,7 +56,7 @@ public class PayTempKalkulasiDaoImpl extends IDAOImpl<PayTempKalkulasi> implemen
     public List<PayTempKalkulasiModel> getByParam(String searchParameter, int firstResult, int maxResults, Order order) {
         final StringBuilder query = new StringBuilder("select B.code as code, B.name as name, count(A.empData) as jumlahKaryawan, sum(A.nominal) as nominal from PayTempKalkulasi A");
         query.append(" inner join A.paySalaryComponent B");
-        if (searchParameter!= null) {
+        if (searchParameter != null) {
             query.append(" WHERE name like :name");
         }
         query.append(" group by B.name");
@@ -81,16 +82,16 @@ public class PayTempKalkulasiDaoImpl extends IDAOImpl<PayTempKalkulasi> implemen
     @Override
     public Long getTotalPayTempKalkulasiByParam(String searchParameter) {
         final StringBuilder query = new StringBuilder("SELECT count(*) FROM (SELECT count(B.name) FROM hrm.pay_temp_kalkulasi A INNER JOIN hrm.pay_salary_component B WHERE A.pay_salary_component_id = B.id");
-        
-        if (searchParameter!= null) {
+
+        if (searchParameter != null) {
             query.append(" AND B.name like :name ");
         }
         query.append(" GROUP BY B.name) AS jumlahRow");
         System.out.println(query.toString());
-        if(searchParameter!= null){
-            Query hbm = getCurrentSession().createSQLQuery(query.toString()).setParameter("name", '%' +searchParameter+ '%');
+        if (searchParameter != null) {
+            Query hbm = getCurrentSession().createSQLQuery(query.toString()).setParameter("name", '%' + searchParameter + '%');
             return Long.valueOf(hbm.uniqueResult().toString());
-        }else{
+        } else {
             Query hbm = getCurrentSession().createSQLQuery(query.toString());
             return Long.valueOf(hbm.uniqueResult().toString());
         }
@@ -121,6 +122,12 @@ public class PayTempKalkulasiDaoImpl extends IDAOImpl<PayTempKalkulasi> implemen
         criteria.setFetchMode("empData", FetchMode.JOIN);
         criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
         return (PayTempKalkulasi) criteria.uniqueResult();
+    }
+
+    @Override
+    public void deleteAllData() {
+        Query query = getCurrentSession().createQuery("delete from PayTempKalkulasi");
+        query.executeUpdate();
     }
 
 }

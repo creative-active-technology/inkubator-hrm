@@ -17,6 +17,7 @@ import org.hibernate.criterion.Order;
  * @author denifahri
  */
 public interface PayTempKalkulasiDao extends IDAO<PayTempKalkulasi>{
+	
     public void saveBatch(List<PayTempKalkulasi>data);
     
     public List<PayTempKalkulasiModel> getByParam(String searchParameter, int firstResult, int maxResults, Order order);
@@ -24,4 +25,7 @@ public interface PayTempKalkulasiDao extends IDAO<PayTempKalkulasi>{
     public Long getTotalPayTempKalkulasiByParam(String searchParameter);
     
     public PayTempKalkulasi getEntityByPkWithDetail(Long id);
+
+    public void deleteAllData();
+    
 }
