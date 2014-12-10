@@ -30,18 +30,23 @@
                         <p:growl id="growlId" globalOnly="true" showDetail="true" />
                         <p:toolbar  style="margin-top: 10px">
                             <p:toolbarGroup align="left">
-                                
+                                <h:panelGrid columns="3" >
+                                    <p:commandButton value="Kalkulasi" styleClass="label_button" icon="ui-icon-document" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
+                                                     onclick="statusDialog.show()"  oncomplete="detail.show()" update=":detailPanel"
+                                                     >                        
+                                    </p:commandButton>
+                                </h:panelGrid>
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3" >
                                     <p:commandButton value="Export to XLS" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
                                         <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Marital_Status"/>
                                     </p:commandButton>
-                                    <p:commandButton value="#{appmsg['global.add']}" actionListener="#{savingTypeViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
+                                    <p:commandButton value="Pajak" actionListener="#{savingTypeViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
                                         <p:ajax event="dialogReturn" listener="#{savingTypeViewController.onDialogReturn}"  update="tableId, growlId"/>
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{savingTypeViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
-                                    
+
                                 </h:panelGrid>
                             </p:toolbarGroup>
                         </p:toolbar>
@@ -51,11 +56,11 @@
                                     <p:outputLabel  value="#{appmsg['inclusionReimbursment.reimbursment_periode']}" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:outputLabel value="#{inclusionReimbursmentViewController.inclusionReimbursmentModel.startDate}" >
+                                    <p:outputLabel value="#{paySalaryExecuteController.payTempKalkulasiModel.startDate}" >
                                         <f:convertDateTime pattern="dd MMMM yyyy" />
                                     </p:outputLabel>
                                     <p:outputLabel value=" - " />
-                                    <p:outputLabel value="#{paySalaryExecuteController.inclusionReimbursmentModel.endDate}" >
+                                    <p:outputLabel value="#{paySalaryExecuteController.payTempKalkulasiModel.endDate}" >
                                         <f:convertDateTime pattern="dd MMMM yyyy" />
                                     </p:outputLabel>
                                 </p:column>
@@ -65,15 +70,30 @@
                                     <p:outputLabel  value="#{appmsg['inclusionReimbursment.total_employee_reimbursment']}" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:outputLabel value="#{inclusionReimbursmentViewController.jumlahKaryawan}" />
+                                    <p:outputLabel value="#{paySalaryExecuteController.getTotalKaryawan}" />
                                     <p:outputLabel value=" #{appmsg['global.people']}" />
                                 </p:column>
-                                
                             </p:row>
-                            
-                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Nama Komponen" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column>
+                                    <p:inputText id="searchId" value="#{paySalaryExecuteController.parameter}" style="width: 180px" styleClass="label_button"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                </p:column>
+                                <p:column>
+                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{paySalaryExecuteController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
+                                </p:column>
+                            </p:row>
+
+
 
                         </p:panelGrid>
+                        <p:defaultCommand target="btnSearchId" />
                         <p:dataTable  var="data"  value="#{paySalaryExecuteController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7"
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
                                       id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
@@ -109,16 +129,18 @@
                                 <f:facet name="header">
                                     <h:outputText value="Nominal"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.nominal}" >
-                                    <f:convertNumber pattern="###,###" type="currency"/>
-                                </h:outputLabel>
+                                <div style="text-align: right">
+                                    <h:outputLabel value= "#{data.nominal}" >
+                                        <f:convertNumber pattern="###,###" type="currency"/>
+                                    </h:outputLabel>
+                                </div>
                             </p:column>
-                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
-<!--                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
-                                                         style="font-size: 10px!important" 
-                                                         action="#{paySalaryExecuteController.doDetail()}">                        
-                                    <f:setPropertyActionListener value="#{data}" target="#{paySalaryExecuteController.selected}" />
-                                </p:commandButton>-->
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
+                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
+                                                 style="font-size: 10px!important" 
+                                                 action="#{paySalaryExecuteController.doDetail()}">                        
+                                    <f:setPropertyActionListener value="#{data}" target="#{paySalaryExecuteController.payTempKalkulasiModel}" />
+                                </p:commandButton>
                             </p:column> 
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>
@@ -126,7 +148,7 @@
                                 <p:outputLabel value="Data" style="margin-left: 3px"/>
                             </f:facet>  
                         </p:dataTable>
-                        <p:blockUI block="formId" trigger="tableId" >
+                        <p:blockUI block="formId" trigger="tableId, btnSearchId" >
                             <h:panelGrid columns="2" styleClass="grid_no_border">
                                 <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
                                 <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
@@ -137,7 +159,37 @@
                 <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
                     <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
                 </p:dialog>
-                
+                <p:dialog widgetVar="detail" header="#{appmsg['savingType.savingType_detail']}" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
+                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)" dynamic="true">
+                    <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
+                        <p:row>
+                            <p:column style="text-align: center">
+                                <p:calendar  id="tanggalLahirid" size="44" pattern="dd MMMM yyyy" label="Tanggal Lahir" value="#{empPersonAchievementFormController.model.dateAchievement}"
+                                             required="true" navigator="true">
+                                </p:calendar>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="text-align: center">
+                                <p:progressBar widgetVar="pbAjax" ajax="true" value="#{paySalaryExecuteController.progress}" labelTemplate="{value}%" styleClass="animated" global="false">
+                                    <p:ajax event="complete" listener="#{paySalaryExecuteController.onComplete}" />
+                                </p:progressBar>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="text-align: center;">
+                                <p:commandButton value="Start" type="button" onclick="PF('pbAjax').start();" widgetVar="startButton2" />
+                            </p:column>
+                        </p:row>
+
+                        <f:facet name="footer">
+                            <p:row>
+                                <p:column colspan="2"><p:outputLabel value="#{appmsg['savingType.savingType_header']}" styleClass="label_hrm" style="margin-left: 5px " /></p:column>
+                            </p:row>
+                        </f:facet>
+                    </p:panelGrid>
+                </p:dialog>
+
             </ui:define>
         </ui:composition>
     </h:body>

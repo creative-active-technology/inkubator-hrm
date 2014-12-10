@@ -17,6 +17,7 @@ import java.util.Date;
  */
 public class PayTempKalkulasiModel implements Serializable {
     private long id;
+    private Long paySalaryComponentId;
     private Integer version;
     private EmpData empData;
     private PaySalaryComponent paySalaryComponent;
@@ -28,6 +29,9 @@ public class PayTempKalkulasiModel implements Serializable {
     private String code;
     private String name;
     private Long jumlahKaryawan;
+    private Long jumlahKaryawanKeseluruhan;
+    private Date startDate;
+    private Date endDate;
 
     public long getId() {
         return id;
@@ -123,6 +127,38 @@ public class PayTempKalkulasiModel implements Serializable {
 
     public void setJumlahKaryawan(Long jumlahKaryawan) {
         this.jumlahKaryawan = jumlahKaryawan;
+    }
+
+    public Long getJumlahKaryawanKeseluruhan() {
+        return jumlahKaryawanKeseluruhan;
+    }
+
+    public void setJumlahKaryawanKeseluruhan(Long jumlahKaryawanKeseluruhan) {
+        this.jumlahKaryawanKeseluruhan = jumlahKaryawanKeseluruhan;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public Long getPaySalaryComponentId() {
+        return paySalaryComponentId;
+    }
+
+    public void setPaySalaryComponentId(Long paySalaryComponentId) {
+        this.paySalaryComponentId = paySalaryComponentId;
     }
     
     

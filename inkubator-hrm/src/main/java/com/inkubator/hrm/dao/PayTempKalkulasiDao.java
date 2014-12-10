@@ -28,4 +28,10 @@ public interface PayTempKalkulasiDao extends IDAO<PayTempKalkulasi>{
 
     public void deleteAllData();
     
+    public Long getTotalKaryawan();
+    
+    public List<PayTempKalkulasi> getByParamForDetail(String searchParameter, int firstResult, int maxResults, Order order, Long paySalaryComponentId);
+    
+    public Long getTotalPayTempKalkulasiByParamForDetail(String searchParameter, Long paySalaryComponentId);
+    
 }

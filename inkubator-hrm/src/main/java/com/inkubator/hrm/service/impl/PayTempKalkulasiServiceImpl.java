@@ -39,7 +39,6 @@ import com.inkubator.hrm.entity.PayTempKalkulasi;
 import com.inkubator.hrm.entity.PayTempUploadData;
 import com.inkubator.hrm.service.PayTempKalkulasiService;
 import com.inkubator.hrm.web.model.PayTempKalkulasiModel;
-import com.inkubator.hrm.web.search.PayTempKalkulasiSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 
 /**
@@ -362,11 +361,11 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
     public PayTempKalkulasi getEntityByPkWithDetail(Long id) {
         return payTempKalkulasiDao.getEntityByPkWithDetail(id);
     }
-    
+
     @Override
-    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor =Exception.class)
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public List<PayTempKalkulasi> getAllDataCalculatedPayment() throws Exception {
-    	List<EmpData> totalEmployee = empDataDao.getAllDataNotTerminate();
+        List<EmpData> totalEmployee = empDataDao.getAllDataNotTerminate();
         List<PaySalaryComponent> totalPayComponet = paySalaryComponentDao.getAllData();
         ScriptEngineManager mgr = new ScriptEngineManager();
         ScriptEngine jsEngine = mgr.getEngineByName("JavaScript");
@@ -454,32 +453,32 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
                 if (paySalaryComponent.getModelComponent().getSpesific().equals(HRMConstant.MODEL_COMP_FORMULA)) {
 //Kalkulasi unutk Rumus dari perhitungan dari database
                     /*String formulaOne = paySalaryComponent.getFormula();
-                    if (formulaOne != null) {
-                        basicSalary = Double.parseDouble(empData.getBasicSalaryDecrypted());
-                        jsEngine.put("bS", basicSalary);
-                        jsEngine.put("wD", 0);// Kedepannya akandi isin dari database setelah proses absensi karyawan beres
-                        jsEngine.put("lT", 0);//Kedepannya akandi isin dari database setelah proses absensi karyawan beres
-                        jsEngine.put("mT", 0);//Kedepannya akandi isin dari database setelah proses absensi karyawan beres
-                        jsEngine.put("oT", 0);//Kedepannya akandi isin dari database setelah proses absensi karyawan beres
-                        jsEngine.put("tD", 0);//Kedepannya akandi isin dari database setelah proses absensi karyawan beres
-                        try {
-                            outPut = (Double) jsEngine.eval(formulaOne);
-                            PayTempKalkulasi kalkulasi = new PayTempKalkulasi();
-                            kalkulasi.setEmpData(empData);
-                            kalkulasi.setPaySalaryComponent(paySalaryComponent);
-                            kalkulasi.setCreatedBy(UserInfoUtil.getUserName());
-                            kalkulasi.setCreatedOn(new Date());
-                            kalkulasi.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
-                            kalkulasi.setNominal(new BigDecimal(outPut));
-                            datas.add(kalkulasi);
-                            //payTempKalkulasiDao.save(kalkulasi);
-//            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.ok", "formula_ok", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-                        } catch (ScriptException ex) {
-                            LOGGER.error(ex, ex);
+                     if (formulaOne != null) {
+                     basicSalary = Double.parseDouble(empData.getBasicSalaryDecrypted());
+                     jsEngine.put("bS", basicSalary);
+                     jsEngine.put("wD", 0);// Kedepannya akandi isin dari database setelah proses absensi karyawan beres
+                     jsEngine.put("lT", 0);//Kedepannya akandi isin dari database setelah proses absensi karyawan beres
+                     jsEngine.put("mT", 0);//Kedepannya akandi isin dari database setelah proses absensi karyawan beres
+                     jsEngine.put("oT", 0);//Kedepannya akandi isin dari database setelah proses absensi karyawan beres
+                     jsEngine.put("tD", 0);//Kedepannya akandi isin dari database setelah proses absensi karyawan beres
+                     try {
+                     outPut = (Double) jsEngine.eval(formulaOne);
+                     PayTempKalkulasi kalkulasi = new PayTempKalkulasi();
+                     kalkulasi.setEmpData(empData);
+                     kalkulasi.setPaySalaryComponent(paySalaryComponent);
+                     kalkulasi.setCreatedBy(UserInfoUtil.getUserName());
+                     kalkulasi.setCreatedOn(new Date());
+                     kalkulasi.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
+                     kalkulasi.setNominal(new BigDecimal(outPut));
+                     datas.add(kalkulasi);
+                     //payTempKalkulasiDao.save(kalkulasi);
+                     //            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.ok", "formula_ok", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+                     } catch (ScriptException ex) {
+                     LOGGER.error(ex, ex);
 
-                        }
+                     }
 
-                    }*/
+                     }*/
 
                 }
 
@@ -488,14 +487,32 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
 
             }
         }
-        
+
         return datas;
     }
 
-	@Override
-	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor =Exception.class)
-	public void deleteAllData() throws Exception {
-		payTempKalkulasiDao.deleteAllData();
-		
-	}
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void deleteAllData() throws Exception {
+        payTempKalkulasiDao.deleteAllData();
+
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalKaryawan() throws Exception {
+        return payTempKalkulasiDao.getTotalKaryawan();
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<PayTempKalkulasi> getByParamForDetail(String searchParameter, int firstResult, int maxResults, Order order, Long paySalaryComponentId) throws Exception {
+        return payTempKalkulasiDao.getByParamForDetail(searchParameter, firstResult, maxResults, order, paySalaryComponentId);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalPayTempKalkulasiByParamForDetail(String searchParameter, Long paySalaryComponentId) throws Exception {
+        return payTempKalkulasiDao.getTotalPayTempKalkulasiByParamForDetail(searchParameter, paySalaryComponentId);
+    }
 }

@@ -6,6 +6,7 @@
 package com.inkubator.hrm.web.payroll;
 
 import com.inkubator.hrm.entity.PayTempKalkulasi;
+import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.web.lazymodel.PaySalaryExecuteLazyDataModel;
 import com.inkubator.hrm.web.model.PayTempKalkulasiModel;
 import com.inkubator.hrm.web.search.PayTempKalkulasiSearchParameter;
@@ -24,7 +25,14 @@ import org.springframework.batch.core.launch.JobLauncher;
 
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.PayTempKalkulasiService;
+import com.inkubator.hrm.service.WtPeriodeService;
+import com.inkubator.hrm.web.model.PaySalaryExecuteModel;
 import com.inkubator.webcore.controller.BaseController;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 
 /**
  *
@@ -42,17 +50,38 @@ public class PaySalaryExecuteController extends BaseController {
     private LazyDataModel<PayTempKalkulasiModel> lazyDataModel;
     private PayTempKalkulasi selected;
     private String parameter;
+    private Integer jumlahKaryawan;
+    private Double jumlahNominal;
     @ManagedProperty(value = "#{jobLauncher}")
     private JobLauncher jobLauncher;
     @ManagedProperty(value = "#{jobPayEmployeeCalculation}")
     private Job jobPayEmployeeCalculation;
+    @ManagedProperty(value = "#{wtPeriodeService}")
+    private WtPeriodeService wtPeriodeService;
+    private Long getTotalKaryawan;
+    private PayTempKalkulasiModel payTempKalkulasiModel;
+    private Integer progress;
 
     @PostConstruct
     @Override
     public void initialization() {
         super.initialization();
         searchParameter = new PayTempKalkulasiSearchParameter();
-
+        payTempKalkulasiModel = new PayTempKalkulasiModel();
+        progress = null;
+        WtPeriode wtPeriode;
+        try {
+            wtPeriode = wtPeriodeService.getEntityByStatusActive();
+           getTotalKaryawan = payTempKalkulasiService.getTotalKaryawan();
+            System.out.println(getTotalKaryawan);
+            if(wtPeriode != null){
+                payTempKalkulasiModel.setStartDate(wtPeriode.getFromPeriode());
+                payTempKalkulasiModel.setEndDate(wtPeriode.getUntilPeriode());
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(PaySalaryExecuteController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
 
     @PreDestroy
@@ -63,6 +92,7 @@ public class PaySalaryExecuteController extends BaseController {
         payTempKalkulasiService = null;
         empDataService = null;
         parameter = null;
+        getTotalKaryawan = null;
     }
 
     public void doSearch() {
@@ -93,7 +123,7 @@ public class PaySalaryExecuteController extends BaseController {
     }
 
     public String doDetail() {
-        return "/protected/payroll/salary_execution_detail.htm?faces-redirect=true&execution=e" + selected.getId();
+        return "/protected/payroll/salary_execution_detail.htm?faces-redirect=true&execution=e" + payTempKalkulasiModel.getPaySalaryComponentId();
     }
 
     public void setEmpDataService(EmpDataService empDataService) {
@@ -155,4 +185,66 @@ public class PaySalaryExecuteController extends BaseController {
         this.jobPayEmployeeCalculation = jobPayEmployeeCalculation;
     }
 
+    public Integer getJumlahKaryawan() {
+        return jumlahKaryawan;
+    }
+
+    public void setJumlahKaryawan(Integer jumlahKaryawan) {
+        this.jumlahKaryawan = jumlahKaryawan;
+    }
+
+    public Double getJumlahNominal() {
+        return jumlahNominal;
+    }
+
+    public void setJumlahNominal(Double jumlahNominal) {
+        this.jumlahNominal = jumlahNominal;
+    }
+
+    public WtPeriodeService getWtPeriodeService() {
+        return wtPeriodeService;
+    }
+
+    public void setWtPeriodeService(WtPeriodeService wtPeriodeService) {
+        this.wtPeriodeService = wtPeriodeService;
+    }
+
+    public Long getGetTotalKaryawan() {
+        return getTotalKaryawan;
+    }
+
+    public void setGetTotalKaryawan(Long getTotalKaryawan) {
+        this.getTotalKaryawan = getTotalKaryawan;
+    }
+
+    public PayTempKalkulasiModel getPayTempKalkulasiModel() {
+        return payTempKalkulasiModel;
+    }
+
+    public void setPayTempKalkulasiModel(PayTempKalkulasiModel payTempKalkulasiModel) {
+        this.payTempKalkulasiModel = payTempKalkulasiModel;
+    }
+
+    public Integer getProgress() {
+        if(progress == null ) {
+            progress = 0;
+        }
+        else {
+            progress = progress + (int)(Math.random() * 35);
+             
+            if(progress > 100)
+                progress = 100;
+        }
+        System.out.println(progress);
+        return progress;
+    }
+
+    public void setProgress(Integer progress) {
+        this.progress = progress;
+    }
+     
+    public void onComplete() {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Progress Completed"));
+    }
+    
 }

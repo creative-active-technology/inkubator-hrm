@@ -31,4 +31,10 @@ public interface PayTempKalkulasiService extends IService<PayTempKalkulasi> {
     public List<PayTempKalkulasi> getAllDataCalculatedPayment() throws Exception;
 
     public void deleteAllData() throws Exception;
+
+    public Long getTotalKaryawan() throws Exception;
+
+    public List<PayTempKalkulasi> getByParamForDetail(String searchParameter, int firstResult, int maxResults, Order order, Long paySalaryComponentId) throws Exception;
+
+    public Long getTotalPayTempKalkulasiByParamForDetail(String searchParameter, Long paySalaryComponentId) throws Exception;
 }

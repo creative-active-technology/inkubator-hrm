@@ -54,7 +54,7 @@ public class PayTempKalkulasiDaoImpl extends IDAOImpl<PayTempKalkulasi> implemen
 
     @Override
     public List<PayTempKalkulasiModel> getByParam(String searchParameter, int firstResult, int maxResults, Order order) {
-        final StringBuilder query = new StringBuilder("select B.code as code, B.name as name, count(A.empData) as jumlahKaryawan, sum(A.nominal) as nominal from PayTempKalkulasi A");
+        final StringBuilder query = new StringBuilder("select B.id as paySalaryComponentId, A.id as id, B.code as code, B.name as name, count(A.empData) as jumlahKaryawan, sum(A.nominal) as nominal from PayTempKalkulasi A");
         query.append(" inner join A.paySalaryComponent B");
         if (searchParameter != null) {
             query.append(" WHERE name like :name");
@@ -128,6 +128,46 @@ public class PayTempKalkulasiDaoImpl extends IDAOImpl<PayTempKalkulasi> implemen
     public void deleteAllData() {
         Query query = getCurrentSession().createQuery("delete from PayTempKalkulasi");
         query.executeUpdate();
+    }
+
+    @Override
+    public Long getTotalKaryawan() {
+        final StringBuilder query = new StringBuilder("select  count(A.empData) from PayTempKalkulasi A");
+        Query hbm = getCurrentSession().createQuery(query.toString());
+        return Long.valueOf(hbm.uniqueResult().toString());
+    }
+
+    @Override
+    public List<PayTempKalkulasi> getByParamForDetail(String searchParameter, int firstResult, int maxResults, Order order, Long paySalaryComponentId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        doSearchByParam(searchParameter, criteria, paySalaryComponentId);
+        criteria.addOrder(order);
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResults);
+        return criteria.list();
+    }
+
+    @Override
+    public Long getTotalPayTempKalkulasiByParamForDetail(String searchParameter, Long paySalaryComponentId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        doSearchByParam(searchParameter, criteria, paySalaryComponentId);
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+
+    public void doSearchByParam(String searchParameter, Criteria criteria, Long paySalaryComponentId) {
+        criteria.createAlias("paySalaryComponent", "paySalaryComponent", JoinType.INNER_JOIN);
+        criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+        criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("paySalaryComponent.id", paySalaryComponentId)); 
+        if (StringUtils.isNotEmpty(searchParameter)) {
+            Disjunction disjunction = Restrictions.disjunction();
+            disjunction.add(Restrictions.like("empData.nik", searchParameter, MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.like("bioData.firstName", searchParameter, MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.like("bioData.lastName", searchParameter, MatchMode.ANYWHERE));
+            criteria.add(disjunction);
+//            criteria.add(Restrictions.like("bioData.firstName", parameter, MatchMode.ANYWHERE));
+        }
+        criteria.add(Restrictions.isNotNull("id"));
     }
 
 }
