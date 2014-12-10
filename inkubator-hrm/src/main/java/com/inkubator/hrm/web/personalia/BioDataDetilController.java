@@ -1272,7 +1272,7 @@ public class BioDataDetilController extends BaseController {
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 500);
-        options.put("contentHeight", 500);
+        options.put("contentHeight", 460);
         RequestContext.getCurrentInstance().openDialog("bio_family_relationship_form", options, params);
     }
 
@@ -1412,7 +1412,7 @@ public class BioDataDetilController extends BaseController {
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 500);
-        options.put("contentHeight", 500);
+        options.put("contentHeight", 410);
         RequestContext.getCurrentInstance().openDialog("bio_id_card_form", options, params);
     }
 

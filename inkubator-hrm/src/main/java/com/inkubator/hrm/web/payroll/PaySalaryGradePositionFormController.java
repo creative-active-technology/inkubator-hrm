@@ -11,6 +11,7 @@ import com.inkubator.hrm.entity.PaySalaryGrade;
 import com.inkubator.hrm.service.JabatanService;
 import com.inkubator.hrm.service.PaySalaryGradeService;
 import com.inkubator.hrm.util.MapUtil;
+import com.inkubator.hrm.util.RomanovUtil;
 import com.inkubator.hrm.web.model.JabatanModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
@@ -40,7 +41,7 @@ public class PaySalaryGradePositionFormController extends BaseController{
     private JabatanService jabatanService;
     private JabatanModel jabatanModel;
     private List<PaySalaryGrade> listSalaryGrade = new ArrayList<>();
-    private Map<Integer, Long> listDropDownGrade = new TreeMap<Integer, Long>();
+    private Map<String, Long> listDropDownGrade = new TreeMap<String, Long>();
     
     @PostConstruct
     @Override
@@ -62,7 +63,7 @@ public class PaySalaryGradePositionFormController extends BaseController{
     public void listDropDownGrade() throws Exception{
         listSalaryGrade = paySalaryGradeService.getAllData();
         for (PaySalaryGrade paySalaryGrade : listSalaryGrade) {
-            listDropDownGrade.put(paySalaryGrade.getGradeSalary(), paySalaryGrade.getId());
+            listDropDownGrade.put(RomanovUtil.convertToRoman(paySalaryGrade.getGradeSalary())+ ". " + paySalaryGrade.getMinSalary() + " - " + paySalaryGrade.getMaxSalary(), paySalaryGrade.getId());
         }
         MapUtil.sortByValue(listDropDownGrade);
     }
@@ -145,11 +146,11 @@ public class PaySalaryGradePositionFormController extends BaseController{
         this.listSalaryGrade = listSalaryGrade;
     }
 
-    public Map<Integer, Long> getListDropDownGrade() {
+    public Map<String, Long> getListDropDownGrade() {
         return listDropDownGrade;
     }
 
-    public void setListDropDownGrade(Map<Integer, Long> listDropDownGrade) {
+    public void setListDropDownGrade(Map<String, Long> listDropDownGrade) {
         this.listDropDownGrade = listDropDownGrade;
     }
     

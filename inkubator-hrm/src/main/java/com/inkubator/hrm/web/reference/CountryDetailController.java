@@ -88,6 +88,7 @@ public class CountryDetailController extends BaseController {
     public void cleanAndExit() {
         selectedCountry = null;
         countryService = null;
+        emptyModel = null;
     }
 
     

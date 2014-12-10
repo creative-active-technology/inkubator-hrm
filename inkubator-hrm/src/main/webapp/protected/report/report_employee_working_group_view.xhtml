@@ -32,36 +32,6 @@
                         <p:toolbar  style="margin-top: 10px">
                             <p:toolbarGroup align="left">
                             	<p:panelGrid style="width: 100%;" styleClass="grid_no_border">
-                            		<p:row>
-                            			<p:column>
-                            				<p:outputLabel value="#{appmsg['department.department']}" title="#{appmsg['department.department']}" styleClass="label_hrm" />
-                            			</p:column>
-                            			<p:column>
-                            				<p:outputLabel value=":" />
-                            			</p:column>
-                            			<p:column >
-                            				<p:selectOneMenu value="#{reportEmpWorkingGroupViewController.searchParameter.departmentId}" filter="true" style="margin-right: 3px" >
-		                                    	<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-			                                    <f:selectItems value="#{reportEmpWorkingGroupViewController.listDepartment}" var="department" itemValue="#{department.id}" itemLabel="#{department.departmentName}"/>
-		                                    </p:selectOneMenu>
-                            			</p:column>
-                            		</p:row>
-                            		<p:row>
-                            			<p:column>
-                            				<p:outputLabel value="#{appmsg['global.nik']}" title="#{appmsg['global.nik']}" styleClass="label_hrm" />
-                            			</p:column>
-                            			<p:column>
-                            				<p:outputLabel value=":" />
-                            			</p:column>
-                            			<p:column>
-                            				<p:inputText value="#{reportEmpWorkingGroupViewController.searchParameter.nikStart}" style="width: 100px" styleClass="isitext_hrm"/>
-                            				<p:outputLabel value="&nbsp; #{appmsg['global.to']} &nbsp;" styleClass="label_hrm" />
-                            				<p:inputText value="#{reportEmpWorkingGroupViewController.searchParameter.nikEnd}" style="width: 100px" styleClass="isitext_hrm"/>
-                            			</p:column>
-                            			<p:column>
-                            				<p:commandButton id="btnSearchId" style="margin-left:20px;" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{reportEmpWorkingGroupViewController.doSearch()}" update="tableReportId"  styleClass="label_button" icon="ui-icon-search"/>
-                            			</p:column>
-                            		</p:row>
                             	</p:panelGrid>
                             </p:toolbarGroup>
                             
@@ -70,10 +40,42 @@
                                     <p:commandButton value="Export to XLS" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
                                         <pe:exporter target="tableReportId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Report_Employee_Working_Group"/>
                                     </p:commandButton>                                    
-                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{reportEmpWorkingGroupViewController.doClose()}" icon="ui-icon-home"/>
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{reportEmpWorkingGroupViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
                         </p:toolbar>
+                        <p:panelGrid style="width: 100%;margin-bottom: 10px;margin-top: 10px" styleClass="grid_border3">
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['department.department']}" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectOneMenu value="#{reportEmpWorkingGroupViewController.searchParameter.departmentId}" filter="true" style="margin-right: 3px" >
+		                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+			                <f:selectItems value="#{reportEmpWorkingGroupViewController.listDepartment}" var="department" itemValue="#{department.id}" itemLabel="#{department.departmentName}"/>
+		                    </p:selectOneMenu>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['global.nik']}" styleClass="label_hrm" />
+                                    <p:outputLabel value=":" />
+                                </p:column>
+                            	<p:column>
+                                    <p:inputText value="#{reportEmpWorkingGroupViewController.searchParameter.nikStart}" style="width: 100px" styleClass="isitext_hrm"/>
+                                        <p:outputLabel value="&nbsp; #{appmsg['global.to']} &nbsp;" styleClass="label_hrm" />
+                                    <p:inputText value="#{reportEmpWorkingGroupViewController.searchParameter.nikEnd}" style="width: 100px" styleClass="isitext_hrm"/>
+                            	</p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    
+                                </p:column>
+                                <p:column>
+                                    <p:commandButton id="btnSearchId" style="margin-left:0px;" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{reportEmpWorkingGroupViewController.doSearch()}" update="tableReportId"  styleClass="label_button" icon="ui-icon-search"/>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
 
                         <p:dataTable  id="tableReportId" var="empData"  value="#{reportEmpWorkingGroupViewController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7"
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
@@ -86,21 +88,21 @@
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.number']}"/>
                                 </f:facet>
-                                <h:outputLabel value="#{no+1}." />
+                                <h:outputLabel value="#{no+1}."/>
                             </p:column>
-                            <p:column sortBy="nik"  style="text-align: center;width: 10%">
+                            <p:column sortBy="nik"  style="width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.nik']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{empData.nik}"/>
                             </p:column>
-                            <p:column sortBy="bioData.firstName"  style="text-align: center;width: 15%">
+                            <p:column sortBy="bioData.firstName"  style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['employee.employee_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{empData.bioData.fullName}"/>
                             </p:column>
-                            <p:column sortBy="joinDate"  style="text-align: center;width: 10%">
+                            <p:column sortBy="joinDate"  style="width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['employee.join_date']}"/>
                                 </f:facet>
@@ -108,25 +110,25 @@
                                 	<f:convertDateTime pattern="dd MMMM yyyy" />
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="jabatanByJabatanId.name"  style="text-align: center;width: 15%">
+                            <p:column sortBy="jabatanByJabatanId.name"  style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['jabatan.jabatan']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{empData.jabatanByJabatanId.name}"/>
                             </p:column>  
-                            <p:column sortBy="department.departmentName"  style="text-align: center;width: 10%">
+                            <p:column sortBy="department.departmentName"  style="width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['department.department']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{empData.jabatanByJabatanId.department.departmentName}"/>
                             </p:column>
-                            <p:column sortBy="wtGroupWorking.code"  style="text-align: center;width: 15%">
+                            <p:column sortBy="wtGroupWorking.code"  style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['workinggroup.working_group_code_of_working_group']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{empData.wtGroupWorking.code}"/>
                             </p:column> 
-                            <p:column sortBy="wtGroupWorking.name"  style="text-align: center;width: 15%">
+                            <p:column sortBy="wtGroupWorking.name"  style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['workinggroup.working_group_name_of_working_group']}"/>
                                 </f:facet>

@@ -75,8 +75,9 @@ public class JabatanDaoImpl extends IDAOImpl<Jabatan> implements JabatanDao {
             criteria.createAlias("department", "dd", JoinType.INNER_JOIN);
             criteria.add(Restrictions.like("dd.departmentName", parameter.getDepartementName(), MatchMode.ANYWHERE));
         }
-        if (StringUtils.isNotEmpty(parameter.getJabatan())) {
             criteria.createAlias("golonganJabatan", "gj", JoinType.INNER_JOIN);
+        if (StringUtils.isNotEmpty(parameter.getJabatan())) {
+            
             criteria.createAlias("gj.pangkat", "pp", JoinType.INNER_JOIN);
             criteria.add(Restrictions.like("pp.pangkatName", parameter.getJabatan(), MatchMode.ANYWHERE));
         }

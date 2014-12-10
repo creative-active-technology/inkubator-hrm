@@ -54,7 +54,7 @@
                                         <p:ajax event="dialogReturn" listener="#{paySalaryJurnalViewController.onDialogReturn}"  update="tablePaySalaryJurnalId,:growlPaySalaryJurnalViewlId"/>
                                     </p:commandButton>
                                     
-                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{paySalaryJurnalViewController.doClose()}" icon="ui-icon-home"/>
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{paySalaryJurnalViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
                         </p:toolbar>
@@ -166,6 +166,14 @@
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['paySalaryJurnal.paySalaryJurnal_coa']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:70%;"><p:outputLabel value="#{paySalaryJurnalViewController.selectedPaySalaryJurnal.costCenter.name}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['paySalaryJurnal.type_jurnal']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{paySalaryJurnalViewController.selectedPaySalaryJurnal.typeJurnal}" styleClass="label_hrm"><f:converter converterId="paySalaryJurnalTypeJurnalConverter"/></p:outputLabel></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['paySalaryJurnal.model_jurnal']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{paySalaryJurnalViewController.selectedPaySalaryJurnal.modelJurnal}" styleClass="label_hrm"><f:converter converterId="paySalaryJurnalModelJurnalConverter"/></p:outputLabel></p:column>
                         </p:row>
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/></p:column>

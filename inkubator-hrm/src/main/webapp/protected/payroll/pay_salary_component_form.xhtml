@@ -1,0 +1,232 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlBidoDataFormId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
+                <h:form id="bioDataFormId" >
+                    <div id="box_bg" style="margin: 10px">
+                        <!--<p:panel style="margin: 10px">-->
+                        <h:panelGrid style="margin-bottom: 5px" columns="2">
+                            <p:graphicImage library="images" name="biodata.png" height="36" width="36" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="#{appmsg['paySalaryComponent.paySalaryComponent_form']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['paySalaryComponent.paySalaryComponent_header']}" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:panelGrid style="width: 100%;margin-bottom: 20px;margin-top: 20px" styleClass="grid_border3" >
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['paySalaryComponent.paySalaryComponent_code']}"  for="code" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:inputText id="code" value="#{paySalaryComponentFormController.model.code}" onkeyup="this.value = this.value.toUpperCase();"
+                                                 required="true" styleClass="isitext_hrm" style="width:250px;" />
+                                    <p:message for="code"/>
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['paySalaryComponent.paySalaryComponent_name']}"  for="name" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:inputText id="name" value="#{paySalaryComponentFormController.model.name}" required="true" styleClass="isitext_hrm" style="width:250px;" />
+                                    <p:message for="name"/>
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['paySalaryComponent.paySalaryComponent_model']}"  for="name" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectOneMenu id="componentModel"  style="margin-right: 3px;width: 257px" value="#{paySalaryComponentFormController.model.modelComponentId}" >
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{paySalaryComponentFormController.dropDownModelComponent}"/>
+                                        <p:ajax update="modelReferensi" listener="#{paySalaryComponentFormController.doCangeComponentModel()}" partialSubmit="true" process="@this" />
+                                    </p:selectOneMenu>
+                                    <p:message for="componentModel"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['paySalaryComponent.model_referensi']}"  for="modelReferensi" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectOneMenu id="modelReferensi" value="#{paySalaryComponentFormController.model.modelReffernsiId}" style="margin-right: 3px;width: 257px" required="true" disabled="#{paySalaryComponentFormController.isDisableComponetModel}" >
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{paySalaryComponentFormController.dropDownModelRef}"/>
+                                    </p:selectOneMenu>
+                                    <p:message for="componentModel"/>
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['paySalaryComponent.paySalaryComponent_formula']}"  for="formula" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:inputTextarea id="formula" value="#{paySalaryComponentFormController.model.formula}" required="false"  style="width: 250px"  readonly="true"/>
+                                    <p:message for="formula"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" />
+                                <p:column style="width: 80%">
+                                    <p:commandButton  style="margin-left: 0px"  title="Buat Rumus" action="#{paySalaryComponentFormController.doSearch()}" widgetVar="cariId" 
+                                                      ajax="true" immediate="true" value="Buat Rumus">
+                                        <p:ajax event="dialogReturn" listener="#{paySalaryComponentFormController.onDialogReturn}" update="formula"/>
+
+                                    </p:commandButton>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['paySalaryComponent.paySalaryComponent_category']}"  for="componentCategory" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectOneMenu id="componentCategory" value="#{paySalaryComponentFormController.model.componentCategory}" style="width: 150px;margin-right: 3px" >
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItem itemLabel="#{appmsg['paySalaryComponent.paySalaryComponent_tunjangan']}" itemValue="0"/>
+                                        <f:selectItem itemLabel="#{appmsg['paySalaryComponent.paySalaryComponent_potongan']}" itemValue="1"/>
+                                        <f:selectItem itemLabel="#{appmsg['paySalaryComponent.paySalaryComponent_subsidi']}" itemValue="2"/>
+                                    </p:selectOneMenu>
+                                    <p:message for="componentCategory"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Hari Minimum TMB"  for="hariMinTmb" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:spinner id="hariMinTmb" value="#{paySalaryComponentFormController.model.activeFromTmb}" size="4" min="0" max="365" styleClass="isitext_hrm" required="true">
+
+                                    </p:spinner>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['paySalaryComponent.paySalaryComponent_jurnal_gaji']}"  for="salaryJurnal" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectOneMenu id="salaryJurnal" value="#{paySalaryComponentFormController.model.paySalaryJurnalId}" style="width: 150px;margin-right: 3px" >
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{paySalaryComponentFormController.dropDownPaySalaryJurnal}"/>
+                                    </p:selectOneMenu>
+                                    <p:message for="salaryJurnal"/>
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['paySalaryComponent.paySalaryComponent_reset_upload']}"  for="resetUpload" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+<!--                                    <p:selectBooleanCheckbox id="resetUpload" value="#{paySalaryComponentFormController.model.resetData}" />
+                                    <p:outputLabel value=" #{appmsg['global.yes']}" styleClass="label_hrm" style="margin-bottom: 3px;"/>-->
+                                    <p:selectBooleanButton value="#{paySalaryComponentFormController.model.resetData}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
+                                                           offIcon="ui-icon-close"  id="resetUpload" styleClass="label_button" />
+                                    <p:message for="resetUpload"/>
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['paySalaryComponent.paySalaryComponent_renumerasi']}"  for="renumerasi" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectBooleanButton value="#{paySalaryComponentFormController.model.renumeration}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
+                                                           offIcon="ui-icon-close"  id="renumerasi" styleClass="label_button" />
+                                    <p:message for="renumerasi"/>
+<!--                                    <p:selectBooleanCheckbox id="renumerasi" value="#{paySalaryComponentFormController.model.renumeration}" />
+                                    <p:outputLabel value=" #{appmsg['global.yes']}" styleClass="label_hrm" style="margin-bottom: 3px;"/>
+                                    <p:message for="renumerasi"/>-->
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['paySalaryComponent.paySalaryComponent_taxable']}"  for="taxable" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectBooleanButton value="#{paySalaryComponentFormController.model.taxableCheck}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
+                                                           offIcon="ui-icon-close"   styleClass="label_button"  >
+                                        <p:ajax update="taxable" process="@this" listener="#{paySalaryComponentFormController.doChangeTaxable()}"/>
+                                    </p:selectBooleanButton>
+
+
+<!--                                    <p:selectBooleanCheckbox id="taxableCheck" value="#{paySalaryComponentFormController.model.taxableCheck}" >
+                                        <p:ajax update="taxable" process="@this" listener="#{paySalaryComponentFormController.doChangeTaxable()}"/>
+                                    </p:selectBooleanCheckbox>-->
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" />
+                                <p:column style="width: 80%">
+                                    <p:selectOneMenu id="taxable" value="#{paySalaryComponentFormController.model.taxComponentId}" style="width: 650px;margin-right: 3px" disabled="#{paySalaryComponentFormController.disableTax}">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{paySalaryComponentFormController.dropDownTaxComponent}"/>
+                                    </p:selectOneMenu>
+                                    <p:message for="taxable"/>
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['paySalaryComponent.paySalaryComponent_employee_type']}"  for="picklistUserRoleId" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:pickList value="#{paySalaryComponentFormController.dualListModel}" var="role" itemValue="#{role}" converter="employeeTypeConverter" id="picklistUserRoleId"
+                                                required="true"  style="margin-top: 15px;margin-bottom: 15px" label="#{appmsg['role_view.header1']}" styleClass="isitext_hrm"
+                                                itemLabel="#{role.name}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
+                                                removeLabel="#{appmsg['global.remove']}"/>
+                                    <p:message for="picklistUserRoleId" />
+                                </p:column>
+                            </p:row>
+
+                        </p:panelGrid>
+
+
+                        <p:separator/>
+
+                        <div style="margin-bottom: 5px">
+
+                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="bioDataFormId" 
+                                             action="#{paySalaryComponentFormController.doSaved()}" styleClass="label_button" 
+                                             style="margin-right: 5px" label="#{appmsg['global.save']}"
+                                             icon="ui-icon-disk"
+                                             id="buttonSave" title="#{appmsg['global.save']}"/>
+                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" action="#{paySalaryComponentFormController.doReset()}" onclick="statusDialog.show()" oncomplete="statusDialog.hide()"
+                                             process="@this" icon="ui-icon-refresh" id="cleareId" update="bioDataFormId"  styleClass="label_button"  style="margin-right: 5px">  
+                                <p:resetInput target="bioDataFormId" />  
+                            </p:commandButton>
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{paySalaryComponentFormController.doBack()}" immediate="true" ajax="true" partialSubmit="true" process="@this"
+                                             styleClass="label_button"/>
+
+                        </div>
+
+                    </div>
+                    <p:focus  context="bioDataFormId" id="focusId"/>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

@@ -3,9 +3,11 @@ package com.inkubator.hrm.entity;
 
 import com.inkubator.common.util.AESUtil;
 import com.inkubator.hrm.HRMConstant;
+
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -77,6 +79,8 @@ public class EmpData implements java.io.Serializable {
     private Set<TempProcessReadFinger> tempProcessReadFingers = new HashSet<TempProcessReadFinger>(0);
     private Set<FingerMatchEmp> fingerMatchEmps = new HashSet<FingerMatchEmp>(0);
     private Set<PermitDistribution> permitDistributions = new HashSet<>(0);
+    private Set<PayTempUploadData> payTempUploadDatas = new HashSet<PayTempUploadData>(0);
+    private Set<PayComponentDataException> payComponentDataExceptions = new HashSet<PayComponentDataException>(0);
 
     public EmpData() {
     }
@@ -520,7 +524,7 @@ public class EmpData implements java.io.Serializable {
     public void setCheckInAttendances(Set<CheckInAttendance> checkInAttendances) {
         this.checkInAttendances = checkInAttendances;
     }
-    
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "empData")
     public Set<PermitDistribution> getPermitDistributions() {
         return permitDistributions;
@@ -531,21 +535,39 @@ public class EmpData implements java.io.Serializable {
     }
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "empData")
-	public Set<TempProcessReadFinger> getTempProcessReadFingers() {
-		return tempProcessReadFingers;
-	}
+    public Set<TempProcessReadFinger> getTempProcessReadFingers() {
+        return tempProcessReadFingers;
+    }
 
-	public void setTempProcessReadFingers(Set<TempProcessReadFinger> tempProcessReadFingers) {
-		this.tempProcessReadFingers = tempProcessReadFingers;
-	}
+    public void setTempProcessReadFingers(Set<TempProcessReadFinger> tempProcessReadFingers) {
+        this.tempProcessReadFingers = tempProcessReadFingers;
+    }
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "empData")
-	public Set<FingerMatchEmp> getFingerMatchEmps() {
-		return fingerMatchEmps;
-	}
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "empData")
+    public Set<FingerMatchEmp> getFingerMatchEmps() {
+        return fingerMatchEmps;
+    }
 
-	public void setFingerMatchEmps(Set<FingerMatchEmp> fingerMatchEmps) {
-		this.fingerMatchEmps = fingerMatchEmps;
-	}   
-	    
+    public void setFingerMatchEmps(Set<FingerMatchEmp> fingerMatchEmps) {
+        this.fingerMatchEmps = fingerMatchEmps;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "empData")
+    public Set<PayTempUploadData> getPayTempUploadDatas() {
+        return payTempUploadDatas;
+    }
+
+    public void setPayTempUploadDatas(Set<PayTempUploadData> payTempUploadDatas) {
+        this.payTempUploadDatas = payTempUploadDatas;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "empData")
+    public Set<PayComponentDataException> getPayComponentDataExceptions() {
+        return this.payComponentDataExceptions;
+    }
+
+    public void setPayComponentDataExceptions(Set<PayComponentDataException> payComponentDataExceptions) {
+        this.payComponentDataExceptions = payComponentDataExceptions;
+    }
+
 }

@@ -56,6 +56,7 @@ public class SpecAbilityViewController extends BaseController {
         searchParameter = null;
         lazyDataSpecificationAbility = null;
         selectedSpecificationAbility = null;
+        selectedSpecAbi = null;
     }
 
     public LazyDataModel<SpecificationAbilityModelView> getLazyDataSpecificationAbility() {

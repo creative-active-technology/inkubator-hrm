@@ -67,7 +67,7 @@ public class ModelComponentFormController extends BaseController {
                     modelComponentModel.setName(modelComponent.getName());
                     modelComponentModel.setDescription(modelComponent.getDescription());
                     modelComponentModel.setSpesific(modelComponent.getSpesific());
-                    if (modelComponent.getSpesific().equals(HRMConstant.LINK_SCHEMA)) {
+                    if (modelComponent.getSpesific().equals(HRMConstant.MODEL_COMP_BENEFIT_TABLE)) {
                         modelComponentModel.setBenefitGroupId(modelComponent.getBenefitGroup().getId());
                         disabledBenefit = Boolean.FALSE;
                     }
@@ -86,6 +86,9 @@ public class ModelComponentFormController extends BaseController {
         modelComponentService = null;
 //        modelComponentModel = null;
         isUpdate = null;
+        benefitGroupService = null;
+        benefits = null;
+        disabledBenefit = null;
     }
 
     public void setDisabledBenefit(Boolean disabledBenefit) {
@@ -155,7 +158,7 @@ public class ModelComponentFormController extends BaseController {
         modelComponent.setName(modelComponentModel.getName());
         modelComponent.setSpesific(modelComponentModel.getSpesific());
         modelComponent.setDescription(modelComponentModel.getDescription());
-        if (modelComponent.getSpesific().equals(HRMConstant.LINK_SCHEMA)) {
+        if (modelComponent.getSpesific().equals(HRMConstant.MODEL_COMP_BENEFIT_TABLE)) {
             modelComponent.setBenefitGroup(new BenefitGroup(modelComponentModel.getBenefitGroupId()));
         }
         return modelComponent;
@@ -165,7 +168,7 @@ public class ModelComponentFormController extends BaseController {
 
         System.out.println("Specific Id  " + String.valueOf(event.getNewValue()));
 
-        if (String.valueOf(event.getNewValue()).equals(String.valueOf(HRMConstant.LINK_SCHEMA))) {
+        if (String.valueOf(event.getNewValue()).equals(String.valueOf(HRMConstant.MODEL_COMP_BENEFIT_TABLE))) {
             disabledBenefit = Boolean.FALSE;
         } else {
             disabledBenefit = Boolean.TRUE;

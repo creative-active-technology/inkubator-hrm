@@ -29,6 +29,7 @@
                     </div>
                     <div style="clear: both"/>
                     <div id="box_bg">
+                        <p:growl id="growlRest" life="6000" showDetail="true" escape="false" showSummary="true" globalOnly="false"/>
                         <p:growl id="loginGrowl" life="5000" showDetail="true" escape="false" />
                         <!-- input hidden disini untuk memaksa view ini memanggil loginController yg bertujuan untuk memaksa nge-set default language/locale -->
                         <h:inputHidden value="#{loginController.selectedLanguage}"/>
@@ -88,7 +89,7 @@
                                     <p:watermark for="j_password" value="#{appmsg['loginform.water_mark_password']}" />
                                     <pe:tooltip for="loginId" value="#{appmsg['loginform.login_tooltip']}" showEffect="slideToggle" 
                                                 hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>
-                                      <pe:tooltip for="resetPasswordId" value="#{appmsg['loginform.reset_password_tips']}" showEffect="slideToggle" 
+                                    <pe:tooltip for="resetPasswordId" value="#{appmsg['loginform.reset_password_tips']}" showEffect="slideToggle" 
                                                 hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>
                                 </h:panelGrid>
                             </h:panelGrid>
@@ -138,7 +139,7 @@
         <p:dialog id="dialogResetId" widgetVar="dialogReset" modal="true" width="450" height="155" header="#{appmsg['loginform.form_reset_password']}"
                   draggable="false" hideEffect="puff" showEffect="clip" appendTo="@(body)"
                   dynamic="true" resizable="false">
-            <p:growl id="growlRest" life="6000" showDetail="true" escape="false" showSummary="true" globalOnly="false"/>
+
             <h:form id="resetForm">
                 <div align="justify">
                     <h:outputLabel value="#{appmsg['loginform.reset_dialog_info']}"/>

@@ -1,7 +1,6 @@
 package com.inkubator.hrm.web.report;
 
 import com.inkubator.hrm.entity.ApprovalActivity;
-import com.inkubator.hrm.entity.ApprovalDefinitionLeave;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -12,13 +11,8 @@ import javax.faces.bean.ViewScoped;
 
 import org.primefaces.model.LazyDataModel;
 
-import com.inkubator.hrm.entity.Department;
-import com.inkubator.hrm.entity.EmpData;
-import com.inkubator.hrm.entity.Leave;
 import com.inkubator.hrm.entity.LeaveImplementation;
 import com.inkubator.hrm.service.ApprovalActivityService;
-import com.inkubator.hrm.service.ApprovalDefinitionLeaveService;
-import com.inkubator.hrm.service.DepartmentService;
 import com.inkubator.hrm.service.LeaveImplementationService;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.web.lazymodel.LeaveImplementationReportSearchLazyDataModel;
@@ -30,13 +24,12 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.lang3.StringUtils;
-import org.hibernate.validator.constraints.Email;
 
 /**
  *
  * @author rizkykojek
  */
-@ManagedBean(name = "reportLeaveHistoryViewController")
+@ManagedBean(name = "reportPermitHistoryViewController")
 @ViewScoped
 public class ReportPermitHistoryViewController extends BaseController {
 
@@ -75,6 +68,14 @@ public class ReportPermitHistoryViewController extends BaseController {
         leaveImplementationService = null;
         searchParameter = null;
         lazyDataModel = null;
+        selectedLeaveImplementation = null;
+        approvalActivity = null;
+        approvalActivityService = null;
+        selectedApprovalActivity = null;
+        activityNumbers = null;
+        empData = null;
+        listLeaveImplementations = null;
+        listReportLeaveHistoryModels = null;
     }
 
     public List<ReportLeaveHistoryModel> getListReportLeaveHistoryModels() {

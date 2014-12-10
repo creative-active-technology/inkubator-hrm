@@ -54,16 +54,20 @@ public class LoanDaoImpl extends IDAOImpl<Loan> implements LoanDao {
 	}
 	
 	private void doSearchByParam(LoanSearchParameter parameter, Criteria criteria) {
+		criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+		criteria.createAlias("loanSchema", "loanSchema", JoinType.INNER_JOIN);
+		
         if (StringUtils.isNotEmpty(parameter.getLoanSchema())) {
-        	criteria.setFetchMode("loanSchema", FetchMode.JOIN);
             criteria.add(Restrictions.like("loanSchema.name", parameter.getLoanSchema(), MatchMode.ANYWHERE));
         }
-        if (StringUtils.isNotEmpty(parameter.getEmployee())) {
-        	criteria.createAlias("empData.bioData", "bio", JoinType.INNER_JOIN);
+        if (StringUtils.isNotEmpty(parameter.getEmployee())) {        	
+        	criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
+        	
             Disjunction disjunction = Restrictions.disjunction();
-            disjunction.add(Restrictions.like("bio.nik", parameter.getEmployee(), MatchMode.ANYWHERE));
-            disjunction.add(Restrictions.like("bio.firstName", parameter.getEmployee(), MatchMode.ANYWHERE));
-            disjunction.add(Restrictions.like("bio.lastName", parameter.getEmployee(), MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.like("empData.nik", parameter.getEmployee(), MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.like("bioData.firstName", parameter.getEmployee(), MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.like("bioData.lastName", parameter.getEmployee(), MatchMode.ANYWHERE));
+            criteria.add(disjunction);
         }
         criteria.add(Restrictions.isNotNull("id"));
     }
@@ -86,5 +90,12 @@ public class LoanDaoImpl extends IDAOImpl<Loan> implements LoanDao {
 		criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
 		criteria.setFetchMode("loanSchema", FetchMode.JOIN);
 		return (Loan) criteria.uniqueResult();
+	}
+
+	@Override
+	public List<Loan> getAllDataByEmpDataId(Long empDataId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("empData.id", empDataId));
+		return criteria.list();
 	}
 }

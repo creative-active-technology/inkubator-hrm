@@ -11,6 +11,7 @@ import com.inkubator.hrm.entity.PaySalaryGrade;
 import com.inkubator.hrm.service.CurrencyService;
 import com.inkubator.hrm.service.PaySalaryGradeService;
 import com.inkubator.hrm.util.MapUtil;
+import com.inkubator.hrm.util.RomanovUtil;
 import com.inkubator.hrm.web.model.PaySalaryGradeModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
@@ -73,6 +74,7 @@ public class PaySalaryGradeFormController extends BaseController{
                 isEdit = Boolean.TRUE;
                 paySalaryGradeModel.setId(paySalaryGrade.getId());
                 paySalaryGradeModel.setGradeSalary(paySalaryGrade.getGradeSalary());
+                paySalaryGradeModel.setGradeSalaryRomanov(String.valueOf(RomanovUtil.convertToRoman(paySalaryGrade.getGradeSalary())));
                 paySalaryGradeModel.setCurrencyid(paySalaryGrade.getCurrency().getId());
                 paySalaryGradeModel.setMinSalary(paySalaryGrade.getMinSalary());
                 paySalaryGradeModel.setMediumSalary(paySalaryGrade.getMediumSalary());
@@ -87,11 +89,13 @@ public class PaySalaryGradeFormController extends BaseController{
                     paySalaryGradeModel.setGradeSalary(grade);
                 }else{
                     for (PaySalaryGrade salaryGrade : listGrade) {
-                        if(grade < salaryGrade.getGradeSalary() || salaryGrade.getGradeSalary() == 0 || salaryGrade.getGradeSalary() == null){
-                            grade = salaryGrade.getGradeSalary() + 1;
+                        if(grade < salaryGrade.getGradeSalary()){
+                            grade = salaryGrade.getGradeSalary();
                         }
                     }
+                    grade = grade + 1;
                     paySalaryGradeModel.setGradeSalary(grade);
+                    paySalaryGradeModel.setGradeSalaryRomanov(String.valueOf(RomanovUtil.convertToRoman(grade)));
                 }
             }
             listCurrencyDropDown();

@@ -10,6 +10,7 @@ import com.inkubator.hrm.entity.Department;
 import com.inkubator.hrm.web.search.DepartmentSearchParameter;
 import java.util.List;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -71,4 +72,12 @@ public class DepartmentDaoImpl extends IDAOImpl<Department> implements Departmen
         criteria.add(Restrictions.ne("id", id));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
+
+	@Override
+	public Department getEntityByPkWithDetail(Long id) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("id", id));
+		criteria.setFetchMode("costCenterDept", FetchMode.JOIN);
+		return (Department) criteria.uniqueResult();
+	}
 }

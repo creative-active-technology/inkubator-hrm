@@ -66,6 +66,8 @@ public class PaySalaryJurnalFormController extends BaseController {
                         paySalaryJurnalModel.setCode(paySalaryJurnal.getCode());
                         paySalaryJurnalModel.setName(paySalaryJurnal.getName());
                         paySalaryJurnalModel.setCoa(paySalaryJurnal.getCostCenter().getId());
+                        paySalaryJurnalModel.setTypeJurnal(paySalaryJurnal.getTypeJurnal());
+                        paySalaryJurnalModel.setModelJurnal(paySalaryJurnal.getModelJurnal());
                         paySalaryJurnalModel.setDescription(paySalaryJurnal.getDescription());
                         isUpdate = Boolean.TRUE;
                     }
@@ -84,6 +86,7 @@ public class PaySalaryJurnalFormController extends BaseController {
 //        paySalaryJurnalModel = null;
         costCenterService = null;
         isUpdate = null;
+        coas = null;
     }
 
     public PaySalaryJurnalModel getPaySalaryJurnalModel() {
@@ -147,6 +150,8 @@ public class PaySalaryJurnalFormController extends BaseController {
         paySalaryJurnal.setCode(paySalaryJurnalModel.getCode());
         paySalaryJurnal.setName(paySalaryJurnalModel.getName());
         paySalaryJurnal.setCostCenter(new CostCenter(paySalaryJurnalModel.getCoa()));
+        paySalaryJurnal.setTypeJurnal(paySalaryJurnalModel.getTypeJurnal());
+        paySalaryJurnal.setModelJurnal(paySalaryJurnalModel.getModelJurnal());
         paySalaryJurnal.setDescription(paySalaryJurnalModel.getDescription());
         return paySalaryJurnal;
     }

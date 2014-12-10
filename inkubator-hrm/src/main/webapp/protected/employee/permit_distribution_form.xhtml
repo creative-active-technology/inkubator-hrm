@@ -188,7 +188,7 @@
                             </p:row>
                         </p:panelGrid>
                         <div align="center">
-                            <p:pickList value="#{permitDistributionFormController.dualListModel}" var="role" itemValue="#{role}" converter="#{empDataConverter}" id="picklistUserRoleId"
+                            <p:pickList value="#{permitDistributionFormController.dualListModel}" var="role" itemValue="#{role}" converter="empDataConverter" id="picklistUserRoleId"
                                         required="true"  style="margin-top: 15px;margin-bottom: 15px;" label="Daftar Employee" styleClass="isitext_hrm"
                                         itemLabel="#{role.nik} - #{role.bioData.firstName} #{role.bioData.lastName}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
                                         removeLabel="#{appmsg['global.remove']}"/>

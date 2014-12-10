@@ -24,6 +24,7 @@ public class LoanSchemaModel implements Serializable{
     private Double interestRate;;
     private Double maxPaymentOfSalary;
     private Double penaltyOfNonComplance;
+    private Integer payrollComponent;
 
     public Long getId() {
         return id;
@@ -120,4 +121,14 @@ public class LoanSchemaModel implements Serializable{
     public void setInterestRate(Double interestRate) {
         this.interestRate = interestRate;
     }
+
+    public Integer getPayrollComponent() {
+        return payrollComponent;
+    }
+
+    public void setPayrollComponent(Integer payrollComponent) {
+        this.payrollComponent = payrollComponent;
+    }
+    
+    
 }

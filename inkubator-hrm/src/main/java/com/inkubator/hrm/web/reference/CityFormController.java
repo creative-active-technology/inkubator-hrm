@@ -119,6 +119,14 @@ public class CityFormController extends BaseController {
         cityService = null;
 //        cityModel = null;
         isUpdate = null;
+        provinceService = null;
+        countryService = null;
+        countrys = null;
+        provinces = null;
+        emptyModel = null;
+        disabled = null;
+        locale = null;
+        messages = null;
     }
 
     public CityModel getCityModel() {

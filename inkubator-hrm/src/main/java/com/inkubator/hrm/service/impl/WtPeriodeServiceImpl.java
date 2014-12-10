@@ -202,4 +202,16 @@ public class WtPeriodeServiceImpl extends IServiceImpl implements WtPeriodeServi
        return this.wtPeriodeDao.getTotalWtPeriodeByParam(searchParameter);
     }
 
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public WtPeriode getEntityByStatusActive() throws Exception {
+        return wtPeriodeDao.getEntityByStatusActive();
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public WtPeriode getEntityAbsenByStatusActive() throws Exception {
+        return wtPeriodeDao.getEntityAbsenByStatusActive();
+    }
+
 }

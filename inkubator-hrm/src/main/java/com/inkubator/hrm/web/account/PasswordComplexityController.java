@@ -15,6 +15,7 @@ import com.inkubator.webcore.util.MessagesResourceUtil;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -101,6 +102,16 @@ public class PasswordComplexityController extends BaseController {
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
+    }
+    
+    @PreDestroy
+    public void cleandAndExit(){
+        period = null;
+        notificationSelection = null;
+        passwordComplexityService = null;
+        passwordComplexityModel = null;
+        isDisable = null;
+        isEdit = null;
     }
 
     public Boolean getIsDisable() {

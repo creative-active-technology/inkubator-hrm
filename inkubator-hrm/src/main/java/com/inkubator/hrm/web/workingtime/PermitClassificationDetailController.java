@@ -92,6 +92,9 @@ public class PermitClassificationDetailController extends BaseController {
     public void cleanAndExit() {
         selectedPermitClassification = null;
         permitClassificationService = null;
+        selectedApprovalDefinitionPermit = null;
+        hidden = null;
+        approvalDefinitionPermitService = null;
     }
 
     public List<ApprovalDefinitionPermit> getSelectedApprovalDefinitionPermit() {

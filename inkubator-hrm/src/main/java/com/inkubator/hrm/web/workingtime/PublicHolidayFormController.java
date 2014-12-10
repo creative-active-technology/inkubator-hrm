@@ -79,6 +79,8 @@ public class PublicHolidayFormController extends BaseController {
         publicHolidayService = null;
 //        publicHolidayModel = null;
         isUpdate = null;
+        leaveSchemeService = null;
+        leaveSchemes = null;
     }
 
     public PublicHolidayModel getPublicHolidayModel() {

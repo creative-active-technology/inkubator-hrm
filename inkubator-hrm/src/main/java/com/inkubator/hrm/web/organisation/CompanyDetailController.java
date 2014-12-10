@@ -76,6 +76,7 @@ public class CompanyDetailController extends BaseController {
         financialPartners = null;
         selectedCompanyBankAccount = null;
         selectedFinancialPartner = null;
+        companyBankAccountService = null;
     }    
 
 	public Company getSelectedCompany() {

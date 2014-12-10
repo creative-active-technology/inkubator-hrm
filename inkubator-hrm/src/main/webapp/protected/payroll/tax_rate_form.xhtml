@@ -1,0 +1,110 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/dialog_layout.xhtml">
+            <ui:define name="windowTitle">
+
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlTaxRateFormId" globalOnly="true" showDetail="true"/>
+                <p:focus context="formTaxRateId" />
+                <h:form id="formTaxRateId">
+                    <h:panelGrid  columns="2">
+                        <p:graphicImage library="images" name="login_history.png" height="36" width="36"  cache="true"/>
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['taxrate.tax_rate_form']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['taxrate.data_tax_rate']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="1" style="margin-bottom: 5px;margin-left: 0px">
+                        <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                        <h:outputLabel value="#{appmsg['taxrate.dialog_tax_rate_info']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                    </h:panelGrid> 
+                    <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
+                        <p:row>
+                            <p:column style="width: 40%">
+                                <p:outputLabel for="lowRateId" value="#{appmsg['taxrate.lowest']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="lowRateId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                                <pe:inputNumber id="lowRateId" title="#{appmsg['taxrate.lowest']}" value="#{taxRateFormController.model.lowRate}" 
+	                                			decimalPlaces="0" maxValue="1000000000000000" required="true" styleClass="isitext_hrm" style="width:160px;">
+	                            	<f:validator validatorId="doubleNumberBetweenValidator"  />
+                                    <f:attribute name="endNumberDouble" value="#{topRateId}"/>
+                                    <f:attribute name="validatorMessage" value="#{appmsg['taxrate.tax_rate_double_validator']}"/>
+	                            </pe:inputNumber>	                                
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="lowRateId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 40%">
+                                <p:outputLabel for="topRateId" value="#{appmsg['taxrate.highest']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="topRateId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                                <pe:inputNumber id="topRateId" binding="#{topRateId}" title="#{appmsg['taxrate.highest']}" value="#{taxRateFormController.model.topRate}" 
+	                                				decimalPlaces="0" maxValue="1000000000000000" required="true" styleClass="isitext_hrm" style="width:160px;"/>	                                
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="topRateId"/>
+                            </p:column>
+                        </p:row> 
+                        <p:row>
+                            <p:column style="width: 40%">
+                                <p:outputLabel for="percentRateId" value="#{appmsg['global.tax']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="percentRateId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                                <pe:inputNumber id="percentRateId" title="#{appmsg['global.tax']}" value="#{taxRateFormController.model.percentRate}" 
+	                                				decimalPlaces="2" maxValue="100" required="true" styleClass="isitext_hrm" style="width:110px;"/>	                                
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="percentRateId"/>
+                            </p:column>
+                        </p:row>                       
+                    </p:panelGrid>                    
+                    <p:separator style="margin-top: 20px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="2" style="margin-bottom: -30px!important">
+                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formTaxRateId,:growlTaxRateFormId"
+                                         action="#{taxRateFormController.doSave()}" styleClass="isitext_hrm"
+                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
+                                         icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                        <p:commandButton value="#{appmsg['global.clear']}" title="#{appmsg['global.clear']}" process="@this" update="formTaxRateId" 
+                                         icon="ui-icon-refresh" styleClass="isitext_hrm" >  
+                            <p:resetInput target="formTaxRateId" />  
+                        </p:commandButton>
+                    </h:panelGrid>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

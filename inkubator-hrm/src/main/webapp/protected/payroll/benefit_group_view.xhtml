@@ -54,7 +54,7 @@
                                         <p:ajax event="dialogReturn" listener="#{benefitGroupViewController.onDialogReturn}"  update="tableBenefitGroupId,:growlBenefitGroupViewlId"/>
                                     </p:commandButton>
 
-                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{benefitGroupViewController.doClose()}" icon="ui-icon-home"/>
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{benefitGroupViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
                         </p:toolbar>

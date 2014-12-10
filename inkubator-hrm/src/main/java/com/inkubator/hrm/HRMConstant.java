@@ -11,6 +11,7 @@ package com.inkubator.hrm;
  */
 public class HRMConstant {
 
+    public static final String ADMINISTRATOR_ROLE = "ADMINISTRATOR_ROLE";
     public static final String SYSTEM_ADMIN = "SYSTEM_ADMIN";
     public static final String SPRING_SECURITY_CHECK = "j_spring_security_check";
     public static final String BAHASA_ACTIVE = "bahasa_active";
@@ -18,7 +19,7 @@ public class HRMConstant {
     public static final String USER_LOGIN_ID = "user_login_id";
     public static final String NOTIFICATION_LOGIN_CHANEL_SOCKET = "/notificationsLogin";
     public static final String NOTIFICATION_APPROVAL_CHANEL_SOCKET = "/notificationsApproval";
-    public static final String CHECK_IN_OUT_CHANEL_SOCKET="/checkInChekOut";
+    public static final String CHECK_IN_OUT_CHANEL_SOCKET = "/checkInChekOut";
     public static final String PASSWORD_CONFIG_CODE = "passconfigcode";
     public static final String APPROVAL_PROCESS_CREATE_USER_ID = "PEMBUATAN USER";
     public static final String APPROVAL_PROCESS_UPDATE_USER_ID = "UPDATE USER";
@@ -143,7 +144,7 @@ public class HRMConstant {
     public static final Integer PLACEMENT_MARRIED = 1;
     public static final Integer PLACEMENT_NO_MARRIED = 0;
     /* END */
-    
+
     /* Constant for Company Policy */
     public static final String COMP_POLICY_REPEAT_ON_WEEKLY = "WEEKLY";
     public static final String COMP_POLICY_REPEAT_ON_MONTHLY = "MONTHLY";
@@ -190,14 +191,16 @@ public class HRMConstant {
     public static final String EMP_ROTATION = "EMP_ROTATION";
     public static final String EMP_TERMINATION = "EMP_TERMINATION";
     /* END */
+
     /* Constant for  Model Component */
-    public static final Integer BASIC_SALARY = 0;
-    public static final Integer CEIL = 1;
-    public static final Integer TAX_TOTAL = 2;
-    public static final Integer UPLOAD = 3;
-    public static final Integer LIMITED_TIME = 4;
-    public static final Integer FORMULA = 5;
-    public static final Integer LINK_SCHEMA = 6;
+    public static final Integer MODEL_COMP_BASIC_SALARY = 0;
+    public static final Integer MODEL_COMP_CEIL = 1;
+    public static final Integer MODEL_COMP_TAX = 2;
+    public static final Integer MODEL_COMP_UPLOAD = 3;
+    public static final Integer MODEL_COMP_FORMULA = 4;
+    public static final Integer MODEL_COMP_LOAN = 5;
+    public static final Integer MODEL_COMP_REIMBURSEMENT = 6;
+    public static final Integer MODEL_COMP_BENEFIT_TABLE = 7;
     /* END */
 
     /* Constant for  Appraisal Element */
@@ -215,12 +218,12 @@ public class HRMConstant {
     public static final Integer NOMINAL = 0;
     public static final Integer SALARY = 1;
     /* END */
-    
+
     /* Constant for Organization */
     public static final String ORGANIZATION_LEVEL_HOLDING = "0";
     public static final String ORGANIZATION_LEVEL_COMPANY = "1";
     /* END */
-    
+
     /* Constant for FinancialNonBanking */
     public static final String FINANCIAL_SERVICE_INSURANCE = "0";
     public static final String FINANCIAL_SERVICE_FINANCING = "1";
@@ -292,17 +295,36 @@ public class HRMConstant {
     public static final Integer PROTOCOL_HTTP = 1;
     public static final Integer PROTOCOL_XMPP = 2;
     public static final Integer PROTOCOL_OTHER = 3;
-    
-    public static final String SERVICE_NIK="NIK";
-    public static final String INDEX_MECINE="IDX";
+
+    public static final String SERVICE_NIK = "NIK";
+    public static final String INDEX_MECINE = "IDX";
 
     public static final Integer CHECK_IN = 0;
     public static final Integer CHECK_OUT = 1;
     public static final String CHECK_IN_EARLY = "EARLY_COME";
     public static final String CHECK_IN_ON_TIME = "ON TIME";
     public static final String CHECK_IN_LATE = "LATE";
-    
+
     public static final Integer REPORT_FAMILY_DEPENDENTS_NO = 0;
     public static final Integer REPORT_FAMILY_DEPENDENTS_YES = 1;
 
+    public static final Integer PAY_SALARY_JURNAL_TYPE_DEBET = 0;
+    public static final Integer PAY_SALARY_JURNAL_TYPE_KREDIT = 1;
+
+    public static final Integer PAY_SALARY_JURNAL_MODEL_CASH = 0;
+    public static final Integer PAY_SALARY_JURNAL_MODEL_TRANSFER = 1;
+
+    public static final Boolean REIMBURSMENT_PAYROLL_COMPONENT = Boolean.TRUE;
+
+    /* Pay Salary Component */
+    public static final Integer PAY_SALARY_COMPONENT_TUNJANGAN = 0;
+    public static final Integer PAY_SALARY_COMPONENT_POTONGAN = 1;
+    public static final Integer PAY_SALARY_COMPONENT_SUBSIDI = 2;
+    
+    /* Benefit Group */
+    public static final Integer BENEFIT_GROUP_MEASUREMENT_HOUR = 0;
+    public static final Integer BENEFIT_GROUP_MEASUREMENT_DAY = 1;
+    public static final Integer BENEFIT_GROUP_MEASUREMENT_PERIOD = 2;
+    public static final Integer BENEFIT_GROUP_MEASUREMENT_HOUR_MULTIPLIER = 173;
+    public static final Integer BENEFIT_GROUP_MEASUREMENT_DAY_MULTIPLIER = 22;
 }

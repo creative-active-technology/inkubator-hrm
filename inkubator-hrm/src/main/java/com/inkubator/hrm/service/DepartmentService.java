@@ -15,9 +15,13 @@ import org.hibernate.criterion.Order;
  * @author deniarianto
  */
 public interface DepartmentService extends IService<Department> {
+	
     public List<Department> getByParam(DepartmentSearchParameter searchParameter, int firstResult, int maxResults, Order order);
 
     public Long getTotalDepartmentByParam(DepartmentSearchParameter searchParameter);
 
     public Long getByDepartmentName(String name);
+    
+    public Department getEntityByPkWithDetail(Long id);
+    
 }

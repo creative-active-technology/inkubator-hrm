@@ -33,13 +33,13 @@
                     <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
 
                         <p:row>
-                            <p:column style="width: 39%">
+                            <p:column style="width: 40%">
                                 <p:outputLabel for="employeeId" value="#{appmsg['personachievement.employee_name']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="employeeId" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 60%">
+                            <p:column  style="width: 59%">
 <!--                                <p:autoComplete id="employeeId" 
                                                 title="#{appmsg['personachievement.employee_name']}" 
                                                 value="#{terminationFormController.model.empDataWithNik}"
@@ -59,9 +59,9 @@
                                                 var="empData"
                                                 itemValue="#{empData}"
                                                 itemLabel="#{empData.nik} #{empData.bioData.firstName} #{empData.bioData.lastName}"
-                                                converter="#{empDataConverter}"
+                                                converter="empDataConverter"
                                                 requiredMessage="#{appmsg['personachievement.person_achievement_should_not_be_empty']}" 
-                                                styleClass="isitext_hrm" transient="true" size="44">
+                                                styleClass="isitext_hrm" transient="true" size="30">
                                 </p:autoComplete>
 
                             </p:column>
@@ -72,15 +72,15 @@
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width: 39%">
+                            <p:column style="width: 40%">
                                 <p:outputLabel for="terminationLetter" value="#{appmsg['terminate.code_termination']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="terminationLetter" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column style="width: 67%" >
+                            <p:column style="width: 59%" >
                                 <p:inputText id="terminationLetter" value="#{terminationFormController.model.code}" onkeyup="this.value = this.value.toUpperCase();"
-                                             disabled="#{terminationFormController.isUpdate}" required="true" maxlength="6" styleClass="isitext_hrm" style="width:96%;" >
+                                             disabled="#{terminationFormController.isUpdate}" required="true" maxlength="6" styleClass="isitext_hrm" style="width:94%;" >
                                     <pe:keyFilter mask="num"></pe:keyFilter>
                                 </p:inputText>
                             </p:column>
@@ -91,15 +91,15 @@
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width: 39%">
+                            <p:column style="width: 40%">
                                 <p:outputLabel for="effectiveDataId" value="#{appmsg['terminate.effective_date']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="effectiveDataId" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column style="width: 67%" >
+                            <p:column style="width: 59%" >
                                 <p:calendar  id="effectiveDataId" pattern="dd MMMM yyyy" label="Tanggal Lahir" value="#{terminationFormController.model.effectiveDate}"
-                                             required="true" navigator="true" size="44">
+                                             required="true" navigator="true" size="19">
                                     <f:validator validatorId="birthDateValidator"  />
                                     <f:attribute name="validatorMessage" value="#{appmsg['global.birthDate_validator']}"/>
                                 </p:calendar>
@@ -111,13 +111,13 @@
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width: 39%">
+                            <p:column style="width: 40%">
                                 <p:outputLabel for="terminationTypeId" value="#{appmsg['terminate.termination_type']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="terminationTypeId" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column style="width: 67%" >
+                            <p:column style="width: 59%" >
                                 <p:selectOneMenu id="terminationTypeId" value="#{terminationFormController.model.terminationTypeId}" style="width: 150px;margin-right: 3px" required="true">
                                     <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                     <f:selectItems value="#{terminationFormController.dropDownTerminationType}"/>
@@ -131,15 +131,15 @@
                         </p:row>
                         
                         <p:row>
-                            <p:column style="width: 37%">
+                            <p:column style="width: 40%">
                                 <p:outputLabel for="description" value="#{appmsg['role_view.role_description']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="description" value=":"  styleClass="label_hrm"/>
                             </p:column>
-                            <p:column style="width: 50%" >
+                            <p:column style="width: 59%" >
                                 <p:inputTextarea id="description" rows="5" cols="37" counter="counter" maxlength="500" value="#{terminationFormController.model.description}" 
-                                                 style="width: 96%; height: 80px;" counterTemplate="#{appmsg['global.remaining']}"   autoResize="true" required="false"
+                                                 style="width: 94%; height: 80px;" counterTemplate="#{appmsg['global.remaining']}"   autoResize="true" required="false"
                                                  label="#{appmsg['role_view.role_description']}" title="#{appmsg['role_view.role_description']}" />
 
                             </p:column>

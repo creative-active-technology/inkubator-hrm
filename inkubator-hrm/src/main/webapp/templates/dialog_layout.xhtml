@@ -12,6 +12,9 @@
         <!--<link rel="stylesheet" href="${request.contextPath}/resources/css/hr_content_css.css" type="text/css" media="screen" />-->
         <link rel="stylesheet" href="${request.contextPath}/resources/css/theme_customize.css" type="text/css" media="screen" />
         <link rel="shortcut icon" href="${request.contextPath}/logo.ico" type="image/x-icon" />
+        <style>
+            input[readonly="readonly"]{background-color:#CBDEEF!important;color: #FF4242!important;}
+        </style>
         <title><ui:insert name="windowTitle"/></title>
         <ui:insert name="jsInclude"/>
     </h:head>
@@ -19,6 +22,19 @@
         <h:inputHidden value="#{homeController.bahasa}" />
         <ui:insert name="center" />
         <h:outputScript library="js" name="indonesia_locale.js" />
+        
+        <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
+            <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
+        </p:dialog>
+        <script type="text/javascript">
+            function start() {
+                PF('statusDialog').show();
+            }
+
+            function stop() {
+                PF('statusDialog').hide();
+            }
+        </script>
     </h:body>
 </html>
 

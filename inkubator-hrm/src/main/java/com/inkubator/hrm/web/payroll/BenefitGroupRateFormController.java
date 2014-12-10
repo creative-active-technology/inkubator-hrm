@@ -78,6 +78,8 @@ public class BenefitGroupRateFormController extends BaseController {
         benefitGroupRateService = null;
 //        benefitGroupRateModel = null;
         isUpdate = null;
+        golonganJabatanService = null;
+        golonganJabatans = null;
     }
 
     public BenefitGroupRateModel getBenefitGroupRateModel() {

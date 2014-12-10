@@ -4,9 +4,13 @@
  */
 package com.inkubator.hrm.web.organisation;
 
+import java.util.List;
+
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.entity.CostCenterDept;
 import com.inkubator.hrm.entity.Department;
+import com.inkubator.hrm.service.CostCenterDeptService;
 import com.inkubator.hrm.service.DepartmentService;
 import com.inkubator.hrm.web.model.DepartmentModel;
 import com.inkubator.webcore.controller.BaseController;
@@ -29,8 +33,11 @@ import org.primefaces.context.RequestContext;
 public class DepartmentFormController extends BaseController {
     @ManagedProperty(value = "#{departmentService}")
     private DepartmentService departmentService;
+    @ManagedProperty(value = "#{costCenterDeptService}")
+    private CostCenterDeptService costCenterDeptService;
     private Department selectedDepartment;
     private DepartmentModel departmentModel;
+    private List<CostCenterDept> costCenterDepts;
     private Boolean isEdit;
 
     public DepartmentModel getDepartmentModel() {
@@ -40,8 +47,6 @@ public class DepartmentFormController extends BaseController {
     public void setDepartmentModel(DepartmentModel departmentModel) {
         this.departmentModel = departmentModel;
     }
-
-    
     
     public DepartmentService getDepartmentService() {
         return departmentService;
@@ -67,23 +72,40 @@ public class DepartmentFormController extends BaseController {
         this.isEdit = isEdit;
     }
     
-    @PostConstruct
+    public CostCenterDeptService getCostCenterDeptService() {
+		return costCenterDeptService;
+	}
+
+	public void setCostCenterDeptService(CostCenterDeptService costCenterDeptService) {
+		this.costCenterDeptService = costCenterDeptService;
+	}
+
+	public List<CostCenterDept> getCostCenterDepts() {
+		return costCenterDepts;
+	}
+
+	public void setCostCenterDepts(List<CostCenterDept> costCenterDepts) {
+		this.costCenterDepts = costCenterDepts;
+	}
+
+	@PostConstruct
     @Override
     public void initialization() {
       
-        super.initialization();
+        super.initialization();        
         String param = FacesUtil.getRequestParameter("param");
         departmentModel = new DepartmentModel();
         try {
+        	costCenterDepts = costCenterDeptService.getAllData();
             if (param != null) {
-
                 isEdit = Boolean.TRUE;
                 Department department = departmentService.getEntiyByPK(Long.parseLong(param));
                 departmentModel.setId(department.getId());
                 departmentModel.setCode(department.getDepartmentCode());
                 departmentModel.setName(department.getDepartmentName());
-
-
+                if(department.getCostCenterDept() != null){
+                	departmentModel.setCostCenterDeptId(department.getCostCenterDept().getId());
+                }
             } else {
                 isEdit = Boolean.FALSE;
             }
@@ -109,9 +131,6 @@ public class DepartmentFormController extends BaseController {
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
-            //cleanAndExit();
-
-//        cleanAndExit();
     }
     
     private Department getEntityFromViewModel(DepartmentModel departmentModel) {
@@ -121,15 +140,17 @@ public class DepartmentFormController extends BaseController {
         }
         department.setDepartmentCode(departmentModel.getCode());
         department.setDepartmentName(departmentModel.getName());
+        department.setCostCenterDept(new CostCenterDept(departmentModel.getCostCenterDeptId()));
         return department;
     }
     
     @PreDestroy
     private void cleanAndExit() {
-        departmentModel = null;
+        //departmentModel = null;
         departmentService = null;
         selectedDepartment = null;
         isEdit = null;
-
+        costCenterDeptService = null;
+        costCenterDepts = null;
     }
 }
