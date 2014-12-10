@@ -317,9 +317,9 @@ public class HRMConstant {
     public static final Boolean REIMBURSMENT_PAYROLL_COMPONENT = Boolean.TRUE;
 
     /* Pay Salary Component */
-    public static final Integer PAY_SALARY_COMPONENT_TUNJANGAN = 0;
-    public static final Integer PAY_SALARY_COMPONENT_POTONGAN = 1;
-    public static final Integer PAY_SALARY_COMPONENT_SUBSIDI = 2;
+    public static final Integer PAY_SALARY_COMPONENT_TUNJANGAN = 0;//0
+    public static final Integer PAY_SALARY_COMPONENT_POTONGAN = 1;//-1
+    public static final Integer PAY_SALARY_COMPONENT_SUBSIDI = 2;//1
     
     /* Benefit Group */
     public static final Integer BENEFIT_GROUP_MEASUREMENT_HOUR = 0;

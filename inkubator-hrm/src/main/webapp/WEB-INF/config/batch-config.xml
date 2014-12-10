@@ -4,7 +4,8 @@
 	xmlns:batch="http://www.springframework.org/schema/batch" 
 	xmlns:task="http://www.springframework.org/schema/task"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
-		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.2.xsd">
+		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.2.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.2.xsd">
 
 	<!-- stored job-meta in database -->
 	<bean id="jobRepository" class="org.springframework.batch.core.repository.support.JobRepositoryFactoryBean">
@@ -27,7 +28,8 @@
 	<!-- ALL batch jobs -->
 	<batch:job id="jobPaySalaryUpload">
 		<batch:step id="stepPaySalaryUpload_1">
-			<batch:tasklet>
+			<!-- throttle limit is thread that executed simultaneously, pooled by task executor   -->
+			<batch:tasklet task-executor="executor" throttle-limit="8">
 				<batch:chunk reader="customPaySalaryUploadItemReader" writer="customPaySalaryUploadItemWriter"
 					commit-interval="10">
 				</batch:chunk>
@@ -44,9 +46,11 @@
 		</batch:step>
 	</batch:job>
 	
+	<!-- Task Executor -->
+	<task:executor id="executor" pool-size="50"/>	
 	
 	<!-- reader and writer for pay_salary_upload -->	
-	<bean id="customPaySalaryUploadItemReader" class="com.inkubator.hrm.batch.PaySalaryUploadReader" scope="step">
+	<bean id="customPaySalaryUploadItemReader" class="com.inkubator.hrm.batch.PaySalaryUploadReader" scope="step" destroy-method="destroy">
 	    <constructor-arg name="filePath"  value="#{jobParameters['input.file.path']}"></constructor-arg>
 	    <property name="createdBy" value="#{jobParameters['createdBy']}"/>
 	    <property name="paySalaryComponentId" value="#{jobParameters['paySalaryComponentId']}"/>
