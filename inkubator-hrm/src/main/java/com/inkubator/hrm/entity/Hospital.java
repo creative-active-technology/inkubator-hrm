@@ -43,6 +43,10 @@ public class Hospital implements java.io.Serializable {
         this.id = id;
         this.city = city;
     }
+    
+    public Hospital(long id) {
+        this.id = id;
+    }
 
     public Hospital(long id, City city, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String code, String name, String address, String phone) {
         this.id = id;
