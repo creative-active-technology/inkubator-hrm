@@ -69,25 +69,25 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="code" style="width: 13%">
+                            <p:column sortBy="ed.nik" style="width: 13%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.nik']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.empData.nik}" />
                             </p:column>
-                            <p:column sortBy="code" style="width: 23%">
+                            <p:column sortBy="bio.firstName" style="width: 23%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['employee.employee_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.empData.bioData.firstName} #{data.empData.bioData.lastName}" />
                             </p:column>
-                            <p:column sortBy="name" style="width: 23%">
+                            <p:column sortBy="jabatan.code" style="width: 23%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['jabat.jabatan_code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.empData.jabatanByJabatanId.code}" />
                             </p:column>
-                            <p:column sortBy="name" style="width: 23%">
+                            <p:column sortBy="jabatan.name" style="width: 23%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['jabatan.jabatan_name']}"/>
                                 </f:facet>

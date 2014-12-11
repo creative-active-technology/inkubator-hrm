@@ -13,6 +13,7 @@ public class BenefitGroupModel implements Serializable {
     private String code;
     private String name;
     private Date validDate;
+    private Integer measurement;
     private String description;
 
     public Long getId() {
@@ -46,9 +47,15 @@ public class BenefitGroupModel implements Serializable {
     public void setValidDate(Date validDate) {
         this.validDate = validDate;
     }
-   
-    
-    
+
+    public Integer getMeasurement() {
+        return measurement;
+    }
+
+    public void setMeasurement(Integer measurement) {
+        this.measurement = measurement;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -56,6 +63,5 @@ public class BenefitGroupModel implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
-    
-    
+
 }

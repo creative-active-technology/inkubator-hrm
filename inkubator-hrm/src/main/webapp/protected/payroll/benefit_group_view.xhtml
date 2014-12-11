@@ -85,12 +85,20 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{benefitGroupData.name}"/>
                             </p:column>
-                            <p:column sortBy="validDate"  style="text-align: left; width: 30%">
+                            <p:column sortBy="validDate"  style="text-align: left; width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['benefitGroup.benefitGroup_validDate']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{benefitGroupData.validDate}">
                                     <f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column sortBy="measurement"  style="text-align: left; width: 15%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['reimbursment.measurement']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{benefitGroupData.measurement}">
+                                    <f:converter converterId="benefitGroupMeasurementConverter" />
                                 </h:outputLabel>
                             </p:column>
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">

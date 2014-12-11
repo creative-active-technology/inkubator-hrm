@@ -6,7 +6,6 @@
 package com.inkubator.hrm.web.payroll;
 
 import java.util.Date;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,7 +25,6 @@ import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
 
-import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.PayTempKalkulasi;
 import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.EmpDataService;
@@ -81,8 +79,7 @@ public class PaySalaryExecuteController extends BaseController {
         try {
             wtPeriodePayroll = wtPeriodeService.getEntityByStatusActive();
             wtPeriodeAbsen = wtPeriodeService.getEntityAbsenByStatusActive();
-            List<EmpData> getAllDataNotTerminate = empDataService.getAllDataNotTerminate();
-            getTotalKaryawan = Long.valueOf(getAllDataNotTerminate.size());
+            getTotalKaryawan = empDataService.getTotalEmpDataNotTerminate();
             if (wtPeriodePayroll != null) {
                 payTempKalkulasiModel.setStartDate(wtPeriodePayroll.getFromPeriode());
                 payTempKalkulasiModel.setEndDate(wtPeriodePayroll.getUntilPeriode());
@@ -124,7 +121,7 @@ public class PaySalaryExecuteController extends BaseController {
     public void doCalculatePayroll() {
         try {
         	payTempKalkulasiService.deleteAllData();
-            long sleepVariable = empDataService.getTotalNotTerminate() * 3;
+            long sleepVariable = empDataService.getTotalEmpDataNotTerminate() * 3;
             
             JobParameters jobParameters = new JobParametersBuilder()
                     .addString("timeInMilis", String.valueOf(System.currentTimeMillis()))

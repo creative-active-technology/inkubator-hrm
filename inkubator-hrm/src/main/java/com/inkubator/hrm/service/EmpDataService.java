@@ -89,5 +89,6 @@ public interface EmpDataService extends IService<EmpData> {
 
     public List<EmpData> getAllDataNotTerminate() throws Exception;
     
-    public Long getTotalNotTerminate();
+    public Long getTotalEmpDataNotTerminate() throws Exception;
+
 }

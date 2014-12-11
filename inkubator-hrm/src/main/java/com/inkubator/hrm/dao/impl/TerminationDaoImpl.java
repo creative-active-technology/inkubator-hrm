@@ -12,6 +12,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -69,18 +70,23 @@ public class TerminationDaoImpl extends IDAOImpl<Termination> implements Termina
         criteria.add(Restrictions.like("code", code, MatchMode.ANYWHERE));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
-    
+
     private void doSearchTerminationByParam(TerminationSearchParameter searchParameter, Criteria criteria) {
-        if (searchParameter.getCode()!= null) {
-        	criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.ANYWHERE));
-        } 
+        criteria.createAlias("empData", "ed", JoinType.INNER_JOIN);
+        criteria.createAlias("ed.bioData", "bio", JoinType.INNER_JOIN);
+
+        criteria.createAlias("terminationType", "tt", JoinType.INNER_JOIN);
+        if (searchParameter.getCode() != null) {
+            criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.ANYWHERE));
+        }
         if (StringUtils.isNotEmpty(searchParameter.getEmpData())) {
-            criteria.createAlias("empData", "ed", JoinType.INNER_JOIN);
-            criteria.createAlias("ed.bioData", "bio", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("bio.firstName", searchParameter.getEmpData(), MatchMode.ANYWHERE));
+            Disjunction disjunction = Restrictions.disjunction();
+            disjunction.add(Restrictions.like("ed.nik", searchParameter.getEmpData(), MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.like("bio.firstName", searchParameter.getEmpData(), MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.like("bio.lastName", searchParameter.getEmpData(), MatchMode.ANYWHERE));
+            criteria.add(disjunction);
         }
         if (StringUtils.isNotEmpty(searchParameter.getTerminationType())) {
-            criteria.createAlias("terminationType", "tt", JoinType.INNER_JOIN);
             criteria.add(Restrictions.like("tt.name", searchParameter.getTerminationType(), MatchMode.ANYWHERE));
         }
         criteria.add(Restrictions.isNotNull("id"));

@@ -69,7 +69,7 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="empData" style="width: 30%">
+                            <p:column sortBy="bio.firstName" style="width: 30%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['personachievement.employee_name']}"/> 
                                 </f:facet>
@@ -91,7 +91,7 @@
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="admonitionType" style="width: 25%">
+                            <p:column sortBy="at.name" style="width: 25%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['admonitionType.admonitionType']}"/>
                                 </f:facet>

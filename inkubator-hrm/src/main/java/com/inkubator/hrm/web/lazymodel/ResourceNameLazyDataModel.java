@@ -36,30 +36,18 @@ public class ResourceNameLazyDataModel extends LazyDataModel<ResourceName> imple
     public List<ResourceName> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
         LOGGER.info("Step Load Lazy data Model");
 
-        if (sortField != null) {
-            if (sortOrder == SortOrder.ASCENDING) {
-                try {
-                    resourceNameList = service.getByParam(searchParameter, first, pageSize, Order.asc(sortField));
-                    jumlahData = Integer.parseInt(String.valueOf(service.getTotalResourceTypeByParam(searchParameter)));
-                } catch (Exception ex) {
-                    LOGGER.error("Error", ex);
-                }
-            } else {
-                try {
-                    resourceNameList = service.getByParam(searchParameter, first, pageSize, Order.desc(sortField));
-                    jumlahData = Integer.parseInt(String.valueOf(service.getTotalResourceTypeByParam(searchParameter)));
-                } catch (Exception ex) {
-                    LOGGER.error("Error", ex);
-                }
-            }
-        } else {
             try {
-                resourceNameList = service.getByParam(searchParameter, first, pageSize, Order.desc("code"));
+                Order order = null;
+                if(sortField != null){
+                    order = (sortOrder == SortOrder.ASCENDING) ? Order.asc(sortField) : Order.desc(sortField);
+                }else{
+                    order = Order.desc("code");
+                }
+                resourceNameList = service.getByParam(searchParameter, first, pageSize, order);
                 jumlahData = Integer.parseInt(String.valueOf(service.getTotalResourceTypeByParam(searchParameter)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
             }
-        }
         LOGGER.info("Success Load Lazy data Model");
 
         setPageSize(pageSize);

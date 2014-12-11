@@ -65,16 +65,16 @@ public class PersonalDisciplineDaoImpl extends IDAOImpl<PersonalDiscipline> impl
     }
     
     private void doSearchPersonalDisciplineByParam(PersonalDisciplineSearchParameter searchParameter, Criteria criteria) {
+        criteria.createAlias("empData", "ed", JoinType.INNER_JOIN);
+        criteria.createAlias("ed.bioData", "bio", JoinType.INNER_JOIN);
+        criteria.createAlias("admonitionType", "at", JoinType.INNER_JOIN);
         if (StringUtils.isNotEmpty(searchParameter.getEmpData())) {
-            criteria.createAlias("empData", "ed", JoinType.INNER_JOIN);
-            criteria.createAlias("ed.bioData", "bio", JoinType.INNER_JOIN);
             Disjunction disjunction = Restrictions.disjunction();
             disjunction.add(Restrictions.like("bio.firstName", searchParameter.getEmpData(), MatchMode.ANYWHERE));
             disjunction.add(Restrictions.like("bio.lastName", searchParameter.getEmpData(), MatchMode.ANYWHERE));
             criteria.add(disjunction);
         }
         if (StringUtils.isNotEmpty(searchParameter.getAdmonitionType())) {
-            criteria.createAlias("admonitionType", "at", JoinType.INNER_JOIN);
             criteria.add(Restrictions.like("at.name", searchParameter.getAdmonitionType(), MatchMode.ANYWHERE));
         }
         criteria.add(Restrictions.isNotNull("id"));

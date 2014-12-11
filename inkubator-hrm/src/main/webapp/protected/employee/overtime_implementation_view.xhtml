@@ -35,7 +35,8 @@
                                     <p:outputLabel value=":" />
                                     <p:selectOneMenu value="#{implementationOfOverTimeViewController.searchParameter.keyParam}" style="width: 150px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemLabel="#{appmsg['maritalstatus.name']}" itemValue="name"/>
+                                        <f:selectItem itemLabel="#{appmsg['overTimeImplementation.overtimeName']}" itemValue="overTimeName"/>
+                                        <f:selectItem itemLabel="#{appmsg['overTimeImplementation.employeeName']}" itemValue="employeeName"/>
                                     </p:selectOneMenu>
                                     <p:inputText id="searchId" value="#{implementationOfOverTimeViewController.searchParameter.parameter}" style="width: 250px" styleClass="label_button"/>
                                     <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{implementationOfOverTimeViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>

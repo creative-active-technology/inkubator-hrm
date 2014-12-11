@@ -75,12 +75,12 @@ public class ReimburstmentDaoImpl extends IDAOImpl<Reimbursment> implements Reim
 
     private void doSearchReimbursmentByParam(ReimbursmentSearchParameter searchParameter, Criteria criteria) {
 
+        criteria.createAlias("empData", "ed", JoinType.INNER_JOIN);
+        criteria.createAlias("ed.bioData", "bio", JoinType.INNER_JOIN);
         if (searchParameter.getCode() != null) {
             criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.ANYWHERE));
         }
-        if (searchParameter.getEmpData()!= null) {
-            criteria.createAlias("empData", "ed", JoinType.INNER_JOIN);
-            criteria.createAlias("ed.bioData", "bio", JoinType.INNER_JOIN);
+        if (searchParameter.getEmpData() != null) {
             Disjunction disjunction = Restrictions.disjunction();
             disjunction.add(Restrictions.like("ed.nik", searchParameter.getEmpData(), MatchMode.ANYWHERE));
             disjunction.add(Restrictions.like("bio.firstName", searchParameter.getEmpData(), MatchMode.ANYWHERE));
@@ -120,13 +120,13 @@ public class ReimburstmentDaoImpl extends IDAOImpl<Reimbursment> implements Reim
         return (Reimbursment) criteria.uniqueResult();
     }
 
-	@Override
-	public List<Reimbursment> getAllDataByEmpDataIdAndReimbursmentSchemaIdAndPeriodTime(Long empDataid, Long reimbursmentSchemaId, Date fromPeriode, Date untilPeriode) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+    @Override
+    public List<Reimbursment> getAllDataByEmpDataIdAndReimbursmentSchemaIdAndPeriodTime(Long empDataid, Long reimbursmentSchemaId, Date fromPeriode, Date untilPeriode) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("empData.id", empDataid));
         criteria.add(Restrictions.eq("reimbursmentSchema.id", reimbursmentSchemaId));
         criteria.add(Restrictions.ge("claimDate", fromPeriode));
         criteria.add(Restrictions.le("claimDate", untilPeriode));
         return criteria.list();
-	}
+    }
 }

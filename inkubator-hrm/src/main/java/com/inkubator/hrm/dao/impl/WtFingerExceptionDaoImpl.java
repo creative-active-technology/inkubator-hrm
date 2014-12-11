@@ -93,8 +93,9 @@ public class WtFingerExceptionDaoImpl extends IDAOImpl<WtFingerException> implem
     
     private void doSearch(WtFingerExceptionSearchParameter searchParameter, Criteria criteria) {
         criteria.createAlias("empData", "ed", JoinType.INNER_JOIN);
+        criteria.createAlias("ed.bioData", "bio", JoinType.INNER_JOIN);
+        criteria.createAlias("ed.jabatanByJabatanId", "jabatan", JoinType.INNER_JOIN);
         if (StringUtils.isNotEmpty(searchParameter.getEmpData())) {
-            criteria.createAlias("ed.bioData", "bio", JoinType.INNER_JOIN);
             Disjunction disjunction = Restrictions.disjunction();
             disjunction.add(Restrictions.like("bio.firstName", searchParameter.getEmpData(), MatchMode.ANYWHERE));
             disjunction.add(Restrictions.like("bio.lastName", searchParameter.getEmpData(), MatchMode.ANYWHERE));
@@ -104,11 +105,9 @@ public class WtFingerExceptionDaoImpl extends IDAOImpl<WtFingerException> implem
             criteria.add(Restrictions.like("ed.nik", searchParameter.getNik(), MatchMode.ANYWHERE));
         }
         if(searchParameter.getNamaJabatan() != null){
-            criteria.createAlias("ed.jabatanByJabatanId", "jabatan", JoinType.INNER_JOIN);
             criteria.add(Restrictions.like("jabatan.name", searchParameter.getNamaJabatan(), MatchMode.ANYWHERE));
         }
         if(searchParameter.getCodeJabatan()!= null){
-            criteria.createAlias("ed.jabatanByJabatanId", "jabatan", JoinType.INNER_JOIN);
             criteria.add(Restrictions.like("jabatan.code", searchParameter.getCodeJabatan(), MatchMode.ANYWHERE));
         }
         criteria.add(Restrictions.isNotNull("id"));

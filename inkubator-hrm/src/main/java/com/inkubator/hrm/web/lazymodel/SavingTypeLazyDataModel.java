@@ -36,30 +36,19 @@ public class SavingTypeLazyDataModel extends LazyDataModel<SavingType> implement
     public List<SavingType> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
         LOGGER.info("Step Load Lazy data Model");
 
-        if (sortField != null) {
-            if (sortOrder == SortOrder.ASCENDING) {
-                try {
-                    savingTypeList = service.getByParam(searchParameter, first, pageSize, Order.asc(sortField));
-                    jumlahData = Integer.parseInt(String.valueOf(service.getTotalResourceTypeByParam(searchParameter)));
-                } catch (Exception ex) {
-                    LOGGER.error("Error", ex);
-                }
-            } else {
-                try {
-                    savingTypeList = service.getByParam(searchParameter, first, pageSize, Order.desc(sortField));
-                    jumlahData = Integer.parseInt(String.valueOf(service.getTotalResourceTypeByParam(searchParameter)));
-                } catch (Exception ex) {
-                    LOGGER.error("Error", ex);
-                }
-            }
-        } else {
             try {
-                savingTypeList = service.getByParam(searchParameter, first, pageSize, Order.desc("name"));
-                jumlahData = Integer.parseInt(String.valueOf(service.getTotalResourceTypeByParam(searchParameter)));
+                Order order = null;
+                if(sortField != null){
+                    order = (sortOrder == SortOrder.ASCENDING) ? Order.asc(sortField) : Order.desc(sortField);
+                }else{
+                    order = Order.desc("name");
+                }
+                savingTypeList = service.getByParam(searchParameter, first, pageSize, order);
+                jumlahData = Integer.parseInt(String.valueOf(service.getTotalSavingTypeByParam(searchParameter)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
             }
-        }
+        
         LOGGER.info("Success Load Lazy data Model");
 
         setPageSize(pageSize);

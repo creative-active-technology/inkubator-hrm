@@ -21,7 +21,8 @@ import org.primefaces.model.SortOrder;
  *
  * @author Deni
  */
-public class PayComponentDataExceptionLazyDataModel extends LazyDataModel<PayComponentDataException> implements Serializable{
+public class PayComponentDataExceptionLazyDataModel extends LazyDataModel<PayComponentDataException> implements Serializable {
+
     private static final Logger LOGGER = Logger.getLogger(PayComponentDataExceptionLazyDataModel.class);
     private final PayComponentDataExceptionService service;
     private PayComponentDataExceptionModel payComponentDataExceptionModel;
@@ -36,42 +37,31 @@ public class PayComponentDataExceptionLazyDataModel extends LazyDataModel<PayCom
         this.parameter = parameter;
         this.paySalaryComponentId = paySalaryComponentId;
     }
-    
+
     @Override
     public List<PayComponentDataException> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
         LOGGER.info("Step Load Lazy data Model");
 
-        if (sortField != null) {
-            if (sortOrder == SortOrder.ASCENDING) {
-                try {
-                    payComponentDataExceptionList = service.getByParamWithDetailForDetail(parameter, paySalaryComponentId, first, pageSize, Order.asc(sortField));
-                    jumlahData = Integer.parseInt(String.valueOf(service.getTotalByParamForDetail(parameter, paySalaryComponentId)));
-                } catch (Exception ex) {
-                    LOGGER.error("Error", ex);
-                }
-            } else {
-                try {
-                    payComponentDataExceptionList = service.getByParamWithDetailForDetail(parameter, paySalaryComponentId, first, pageSize, Order.desc(sortField));
-                    jumlahData = Integer.parseInt(String.valueOf(service.getTotalByParamForDetail(parameter, paySalaryComponentId)));
-                } catch (Exception ex) {
-                    LOGGER.error("Error", ex);
-                }
+        try {
+            Order order = null;
+            if(sortField != null){
+                order = (sortOrder == SortOrder.ASCENDING) ? Order.asc(sortField) : Order.desc(sortField);
+            }else{
+                order = Order.desc("bioData.firstName");
             }
-        } else {
-            try {
-                payComponentDataExceptionList = service.getByParamWithDetailForDetail(parameter, paySalaryComponentId, first, pageSize, Order.desc("empData"));
-                jumlahData = Integer.parseInt(String.valueOf(service.getTotalByParamForDetail(parameter, paySalaryComponentId)));
-            } catch (Exception ex) {
-                LOGGER.error("Error", ex);
-            }
+            payComponentDataExceptionList = service.getByParamWithDetailForDetail(parameter, paySalaryComponentId, first, pageSize, order);
+            jumlahData = Integer.parseInt(String.valueOf(service.getTotalByParamForDetail(parameter, paySalaryComponentId)));
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
         }
+
         LOGGER.info("Success Load Lazy data Model");
 
         setPageSize(pageSize);
         setRowCount(jumlahData);
         return payComponentDataExceptionList;
     }
-    
+
     @Override
     public Object getRowKey(PayComponentDataException payComponentDataException) {
         return payComponentDataException.getId();
@@ -95,5 +85,5 @@ public class PayComponentDataExceptionLazyDataModel extends LazyDataModel<PayCom
             super.setRowIndex(rowIndex % getPageSize());
         }
     }
-    
+
 }

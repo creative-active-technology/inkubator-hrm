@@ -94,6 +94,6 @@ public interface EmpDataDao extends IDAO<EmpData> {
 
     public List<EmpData> getAllDataNotTerminate();
 
-	public Long getTotalNotTerminate();
+    public Long getTotalEmpDataNotTerminate();
 
 }

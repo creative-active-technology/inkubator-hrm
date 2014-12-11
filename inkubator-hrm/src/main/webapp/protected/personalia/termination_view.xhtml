@@ -70,7 +70,7 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="empData" style="width: 25%">
+                            <p:column sortBy="bio.firstName" style="width: 25%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['personachievement.employee_name']}"/>
                                 </f:facet>
@@ -84,7 +84,7 @@
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="terminationType" style="width: 20%">
+                            <p:column sortBy="tt.name" style="width: 20%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['terminate.termination_type']}"/>
                                 </f:facet>

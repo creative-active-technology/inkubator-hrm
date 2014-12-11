@@ -257,13 +257,13 @@ public class SavingTypeServiceImpl extends IServiceImpl implements SavingTypeSer
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<SavingType> getByParam(SavingTypeSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
+    public List<SavingType> getByParam(SavingTypeSearchParameter searchParameter, int firstResult, int maxResults, Order order)  throws Exception{
         return savingTypeDao.getByParam(searchParameter, firstResult, maxResults, order);
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getTotalResourceTypeByParam(SavingTypeSearchParameter searchParameter) {
-        return savingTypeDao.getTotalResourceTypeByParam(searchParameter);
+    public Long getTotalSavingTypeByParam(SavingTypeSearchParameter searchParameter) throws Exception{
+        return savingTypeDao.getTotalSavingTypeByParam(searchParameter);
     }
 }
