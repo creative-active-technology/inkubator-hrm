@@ -5,6 +5,7 @@
  */
 package com.inkubator.hrm.web.payroll;
 
+import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.PayTempKalkulasi;
 import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.web.lazymodel.PaySalaryExecuteLazyDataModel;
@@ -72,8 +73,8 @@ public class PaySalaryExecuteController extends BaseController {
         WtPeriode wtPeriode;
         try {
             wtPeriode = wtPeriodeService.getEntityByStatusActive();
-            getTotalKaryawan = payTempKalkulasiService.getTotalKaryawan();
-            System.out.println(getTotalKaryawan);
+            List<EmpData> getAllDataNotTerminate = empDataService.getAllDataNotTerminate();
+            getTotalKaryawan = Long.valueOf(getAllDataNotTerminate.size());
             if (wtPeriode != null) {
                 payTempKalkulasiModel.setStartDate(wtPeriode.getFromPeriode());
                 payTempKalkulasiModel.setEndDate(wtPeriode.getUntilPeriode());
@@ -248,7 +249,6 @@ public class PaySalaryExecuteController extends BaseController {
     }
 
     public void startProgress() {
-        
 
         for (int i = 0; i < 100; i++) {
             setProgress(i);
