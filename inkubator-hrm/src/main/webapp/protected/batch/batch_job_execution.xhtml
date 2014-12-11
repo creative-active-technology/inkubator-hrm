@@ -1,0 +1,163 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg" style="margin: 10px">
+                    <!--<p:panel style="margin: 10px" >-->
+                    <h:form id="formBatchJobExecutionId">
+                        <h:panelGrid style="margin-bottom: 5px" columns="2">
+                            <p:graphicImage library="images" name="login_history_1.png" height="36" width="36" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="#{appmsg['batchJobExecution.batchHistory']}" styleClass="header_big" />
+                                    <!--<p:outputLabel value="#{appmsg['loginhistory.data_login_employee']}" styleClass="header_small_no_bold" />-->
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator/>
+
+                        <p:toolbar  style="margin-top: 10px">
+                            <p:toolbarGroup align="left">
+                                <h:panelGrid columns="5">
+                                    <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm" />
+                                    <p:outputLabel value=":" />
+                                    <p:selectOneMenu value="#{batchJobExecutionController.batchJobExecutionSearchParameter.keyParam}" style="width: 150px;margin-right: 3px" >
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItem itemLabel="#{appmsg['batchJobExecution.jobName']}" itemValue="jobName"/>
+                                        <f:selectItem itemLabel="#{appmsg['batchJobExecution.status']}" itemValue="status"/>
+                                    </p:selectOneMenu>
+                                    <p:inputText id="searchId" value="#{batchJobExecutionController.batchJobExecutionSearchParameter.parameter}" style="width: 250px" styleClass="label_button"/>
+                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{batchJobExecutionController.doSearch()}" update="tableBatchJobExecutionId"  styleClass="label_button" icon="ui-icon-search"/>
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                            <p:toolbarGroup align="right">
+                                <h:panelGrid columns="2">
+                                    <p:commandButton value="Export to XLS" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
+                                        <pe:exporter target="tableBatchJobExecutionId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Batch_Job_Execution"/>
+                                    </p:commandButton>
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{batchJobExecutionController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                        </p:toolbar>
+                        <p:focus for="searchId" />
+
+                        <p:dataTable  var="batchJobExecutionData"  value="#{batchJobExecutionController.lazyDataBatchJobExecution}" lazy="true" paginator="true" pageLinks="7"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      id="tableBatchJobExecutionId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['batchJobExecution.batchListMonitoring']}"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 5%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+<!--                            <p:column sortBy="jobExecutionId"  style="width: 20%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['batchJobExecution.jobExecutionId']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{batchJobExecutionData.jobExecutionId}"/>
+                            </p:column>-->
+<!--                            <p:column sortBy="version" style="width: 20%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['batchJobExecution.version']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{batchJobExecutionData.version}">
+                                    <f:convertDateTime pattern ="dd-MMMM-yyyy  hh:mm:ss" timeZone="GMT+7"/>
+                                </h:outputLabel>
+                            </p:column>-->
+                            <p:column sortBy="">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['batchJobExecution.batchJobInstance']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{batchJobExecutionData.batchJobInstance.jobName}"/>
+                            </p:column>
+                            <p:column sortBy="status">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['batchJobExecution.status']}"/>
+                                </f:facet>
+                                    <h:outputLabel value= "#{batchJobExecutionData.status}">
+                                    </h:outputLabel>
+                            </p:column>
+<!--                            <p:column sortBy="createTime" style="text-align: center;width: 15%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['batchJobExecution.createTime']}"/>
+                                </f:facet>
+                                    <h:outputLabel value= "#{batchJobExecutionData.createTime}">
+                                    <f:convertDateTime pattern ="dd-MMMM-yyyy  hh:mm:ss" timeZone="GMT+7" />
+                                    </h:outputLabel>>
+                            </p:column>-->
+                            <p:column sortBy="startTime" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['batchJobExecution.startTime']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{batchJobExecutionData.startTime}">
+                                <f:convertDateTime pattern ="dd-MMMM-yyyy  hh:mm:ss" timeZone="GMT+7" />
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column sortBy="endTime" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['batchJobExecution.endTime']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{batchJobExecutionData.endTime}">
+                                    <f:convertDateTime pattern ="dd-MMMM-yyyy  hh:mm:ss" timeZone="GMT+7" />
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column sortBy="exitCode" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['batchJobExecution.exitCode']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{batchJobExecutionData.exitCode}"/>
+                            </p:column>
+                            <p:column sortBy="exitMessage" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['batchJobExecution.exitMessage']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{batchJobExecutionData.exitMessage}"/>
+                            </p:column>
+<!--                            <p:column sortBy="lastUpdated" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['batchJobExecution.lastUpdated']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{batchJobExecutionData.lastUpdated}"/>
+                            </p:column>-->
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : "/>
+                                <p:outputLabel value="#{batchJobExecutionController.lazyDataBatchJobExecution.rowCount}"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px"/>
+                            </f:facet>  
+                        </p:dataTable>
+                        <p:blockUI block="formBatchJobExecutionId" trigger="tableBatchJobExecutionId,btnSearchId" >
+                            <h:panelGrid columns="2" styleClass="grid_no_border">
+                                <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
+                                <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
+                            </h:panelGrid>
+                        </p:blockUI>
+                    </h:form>
+                    <!--</p:panel>-->
+                </div>
+<!--                 <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
+                    <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
+                </p:dialog>-->
+            </ui:define>
+        </ui:composition>
+
+    </h:body>
+</html>
+
