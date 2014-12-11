@@ -77,8 +77,9 @@ public class BioPeopleInterestFormController extends BaseController{
                 long educationId = Long.parseLong(param.substring(1));
                 BioPeopleInterest peopleInterest = peopleInterestService.getAllDataByPK(educationId);
                 model.setId(peopleInterest.getId());
-                model.setInterestId(peopleInterest.getInterestType().getId());
-                model.setName(peopleInterest.getName());
+                if(peopleInterest.getInterestType() != null){
+                    model.setInterestId(peopleInterest.getInterestType().getId());
+                }model.setName(peopleInterest.getName());
                 bioDataId = peopleInterest.getBiodata().getId();
             } else {
                 isEdit = Boolean.FALSE;

@@ -15,8 +15,8 @@
 
             </ui:define>
             <ui:define name="center">
-                <p:growl id="growlDepartmentFormlId" globalOnly="true" showDetail="true"/>
-                <h:form id="formDepartmentId" >
+                <p:growl id="growlId" globalOnly="true" showDetail="true"/>
+                <h:form id="formId" >
                     <h:panelGrid  columns="2">
                         <p:graphicImage library="images" name="bio_data.png" height="36" width="36"  cache="true"/>
                         <h:panelGroup layout="block">
@@ -45,7 +45,7 @@
                                         <f:selectItems value="#{educationHistoryFormController.listYears}"/>
                                 <f:validator validatorId="yearIntegerNumberBetweenValidator"  />
                                 <f:attribute name="endNumberInteger" value="#{yearOut}"/>
-                                <f:attribute name="validatorMessage" value="#{appmsg['global.DateIn_validator ']}"/>
+                                <f:attribute name="validatorMessage" value="#{appmsg['global.DateIn_validator']}"/>
                                 </p:selectOneMenu>
                             </p:column>
                             
@@ -165,7 +165,7 @@
                                 <h:outputLabel for="score" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 33%">
-                                <p:inputText id="score"  value="#{educationHistoryFormController.model.score}"
+                                <pe:inputNumber id="score"  value="#{educationHistoryFormController.model.score}"
                                              required="true"  maxlength="45" styleClass="isitext_hrm" style="width:143px;" />
                             </p:column>
                         </p:row>
@@ -238,16 +238,16 @@
                         </p:row>
 
                     </p:panelGrid>
-                    <p:focus context="formDepartmentId" />
+                    <p:focus context="formId" />
                     <p:separator style="margin-top: 20px;margin-bottom: 10px"/>
                     <h:panelGrid columns="2" style="margin-bottom: -30px!important">
-                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formDepartmentId,:growlDepartmentFormlId"
+                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formId,:growlId"
                                          action="#{educationHistoryFormController.doSave()}" styleClass="isitext_hrm"
                                          style="margin-right: 5px" label="#{appmsg['global.save']}"
                                          icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
-                        <p:commandButton value="#{appmsg['global.clear']}" title="#{appmsg['global.clear']}" process="@this" update="formDepartmentId" 
+                        <p:commandButton value="#{appmsg['global.clear']}" title="#{appmsg['global.clear']}" process="@this" update="formId" 
                                          icon="ui-icon-refresh" styleClass="isitext_hrm" >  
-                            <p:resetInput target="formDepartmentId" />  
+                            <p:resetInput target="formId" />  
                         </p:commandButton>
                     </h:panelGrid>
                 </h:form>

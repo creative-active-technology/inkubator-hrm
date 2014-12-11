@@ -21,8 +21,8 @@
                             <p:graphicImage library="images" name="marital_status.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="Kalkulasi Penggajian" styleClass="header_big" />
-                                    <p:outputLabel value="Kalkulasi Penggajian from Payroll" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['salaryCalculation.salaryCalculation']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['salaryCalculation.salaryCalculation_header']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -40,7 +40,7 @@
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3" >
                                     <p:commandButton value="Export to XLS" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
-                                        <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Marital_Status"/>
+                                        <pe:exporter target="tableIdForExport" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Salary_Calculation"/>
                                     </p:commandButton>
                                     <p:commandButton value="Pajak" actionListener="#{savingTypeViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
                                         <p:ajax event="dialogReturn" listener="#{savingTypeViewController.onDialogReturn}"  update="tableId, growlId"/>
@@ -53,7 +53,7 @@
                         <p:panelGrid style="width: 100%;margin-bottom: 10px;margin-top: 10px" styleClass="grid_border3" >
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="#{appmsg['inclusionReimbursment.reimbursment_periode']}" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['salaryCalculation.period']}" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:outputLabel value="#{paySalaryExecuteController.payTempKalkulasiModel.startDate}" >
@@ -76,7 +76,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Nama Komponen" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['salaryCalculation.component_name']}" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column>
                                     <p:inputText id="searchId" value="#{paySalaryExecuteController.parameter}" style="width: 180px" styleClass="label_button"/>
@@ -99,7 +99,7 @@
                                       id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="Pay Salary Execute"/>
+                                <h:outputText value="#{appmsg['salaryCalculation.list_salary_calculation']}"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
@@ -109,27 +109,28 @@
                             </p:column>
                             <p:column sortBy="code" style="width: 23%">
                                 <f:facet name="header">
-                                    <h:outputText value="#{appmsg['global.code']}"/>
+                                    <h:outputText value="#{appmsg['salaryCalculation.code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.code}" />
                             </p:column>
                             <p:column sortBy="name" style="width: 23%">
                                 <f:facet name="header">
-                                    <h:outputText value="#{appmsg['global.name']}"/>
+                                    <h:outputText value="#{appmsg['salaryCalculation.name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.name}" />
                             </p:column>
                             <p:column sortBy="jumlahKaryawan" style="width: 23%">
                                 <f:facet name="header">
-                                    <h:outputText value="Jumlah Karyawan"/>
+                                    <h:outputText value="#{appmsg['salaryCalculation.jumlah_karyawan']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.jumlahKaryawan}" />
                             </p:column>
                             <p:column sortBy="jumlahKaryawan" style="width: 23%">
                                 <f:facet name="header">
-                                    <h:outputText value="Nominal"/>
+                                    <h:outputText value="#{appmsg['salaryCalculation.jumlah_nominal']}"/>
                                 </f:facet>
                                 <div style="text-align: right">
+                                    <h:outputText value="Rp. "/>
                                     <h:outputLabel value= "#{data.nominal}" >
                                         <f:convertNumber pattern="###,###" type="currency"/>
                                     </h:outputLabel>
@@ -148,6 +149,58 @@
                                 <p:outputLabel value="Data" style="margin-left: 3px"/>
                             </f:facet>  
                         </p:dataTable>
+                        
+                        <!--
+                                Table for Export
+                        -->
+                        <p:dataTable  rendered="false" var="data"  value="#{paySalaryExecuteController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      id="tableIdForExport" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['salaryCalculation.list_salary_calculation']}"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 3%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column sortBy="code" style="width: 23%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['salaryCalculation.code']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.code}" />
+                            </p:column>
+                            <p:column sortBy="name" style="width: 23%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['salaryCalculation.name']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.name}" />
+                            </p:column>
+                            <p:column sortBy="jumlahKaryawan" style="width: 23%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['salaryCalculation.jumlah_karyawan']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.jumlahKaryawan}" />
+                            </p:column>
+                            <p:column sortBy="jumlahKaryawan" style="width: 23%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['salaryCalculation.jumlah_nominal']}"/>
+                                </f:facet>
+                                <div style="text-align: right">
+                                    <h:outputLabel value= "#{data.nominal}" >
+                                        <f:convertNumber pattern="###,###" type="currency"/>
+                                    </h:outputLabel>
+                                </div>
+                            </p:column> 
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : "/>
+                                <p:outputLabel value="#{paySalaryExecuteController.lazyDataModel.rowCount}"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px"/>
+                            </f:facet>  
+                        </p:dataTable>
+                        
                         <p:blockUI block="formId" trigger="tableId, btnSearchId" >
                             <h:panelGrid columns="2" styleClass="grid_no_border">
                                 <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
