@@ -19,6 +19,7 @@ import com.inkubator.hrm.web.search.ReportOfEmployeesFamilySearchParameter;
 
 import java.util.List;
 import java.util.Map;
+
 import org.hibernate.criterion.Order;
 
 /**
@@ -89,4 +90,5 @@ public interface EmpDataService extends IService<EmpData> {
     public List<EmpData> getAllDataNotTerminate() throws Exception;
     
     public Long getTotalEmpDataNotTerminate() throws Exception;
+
 }

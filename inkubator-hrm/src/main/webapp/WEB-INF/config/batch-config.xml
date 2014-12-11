@@ -46,7 +46,7 @@
 	
 	
 	<!-- reader and writer for pay_salary_upload -->	
-	<bean id="customPaySalaryUploadItemReader" class="com.inkubator.hrm.batch.PaySalaryUploadReader" scope="step">
+	<bean id="customPaySalaryUploadItemReader" class="com.inkubator.hrm.batch.PaySalaryUploadReader" scope="step" destroy-method="destroy">
 	    <constructor-arg name="filePath"  value="#{jobParameters['input.file.path']}"></constructor-arg>
 	    <property name="createdBy" value="#{jobParameters['createdBy']}"/>
 	    <property name="paySalaryComponentId" value="#{jobParameters['paySalaryComponentId']}"/>
@@ -60,6 +60,8 @@
 	<!-- reader and writer for pay_employee_calculation -->
 	<bean id="customPayEmployeeCalculationItemReader" class="com.inkubator.hrm.batch.PayEmployeeCalculationReader" scope="step">
 		<constructor-arg name="payTempKalkulasiService" ref="payTempKalkulasiService"/>
+		<constructor-arg name="payrollCalculationDate" value="#{jobParameters['payrollCalculationDate']}"/>
+		<constructor-arg name="createdBy" value="#{jobParameters['createdBy']}"/>
 	</bean>	
 	<bean id="customPayEmployeeCalculationItemWriter" class="org.springframework.batch.item.database.JdbcBatchItemWriter">
 		<property name="dataSource" ref="c3p0DataSource-1" />

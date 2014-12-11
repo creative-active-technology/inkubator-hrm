@@ -1,5 +1,6 @@
 package com.inkubator.hrm.batch;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.batch.item.ItemReader;
@@ -17,9 +18,9 @@ import com.inkubator.hrm.service.PayTempKalkulasiService;
 public class PayEmployeeCalculationReader implements ItemReader<PayTempKalkulasi> {
 	private List<PayTempKalkulasi> listObject;
 	
-	public PayEmployeeCalculationReader(PayTempKalkulasiService payTempKalkulasiService) throws Exception{
+	public PayEmployeeCalculationReader(PayTempKalkulasiService payTempKalkulasiService, Date payrollCalculationDate, String createdBy) throws Exception{
 		//get populated data
-		listObject = payTempKalkulasiService.getAllDataCalculatedPayment();
+		listObject = payTempKalkulasiService.getAllDataCalculatedPayment(payrollCalculationDate, createdBy);
 	}
 	
 	@Override

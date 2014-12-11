@@ -716,7 +716,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
         return criteria.list();
     }
-
+    
     @Override
     public Long getTotalEmpDataNotTerminate() {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());

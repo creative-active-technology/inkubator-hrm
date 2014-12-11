@@ -314,20 +314,24 @@ public class PayTempUploadDataServiceImpl extends IServiceImpl implements PayTem
 	@Override
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor =Exception.class)
 	public void executeBatchFileUpload(PaySalaryUploadFileModel model) {
+		Boolean isInsertable = this.payTempUploadDataDao.getAllByNikAndComponentId(model.getNik(), model.getPaySalaryComponentId()).isEmpty();
 		
-		EmpData empData = empDataDao.getEntityByNik(model.getNik());
-		PaySalaryComponent paySalaryComponent = paySalaryComponentDao.getEntiyByPK(model.getPaySalaryComponentId());
-		
-		if(empData!= null && paySalaryComponent != null) {
-			PayTempUploadData entity = new PayTempUploadData();
-			entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
-			entity.setPaySalaryComponent(paySalaryComponent);
-			entity.setEmpData(empData);
-			entity.setNominalValue(Double.parseDouble(model.getNominal()));
-			entity.setPathUpload(model.getPathUpload());
-	        entity.setCreatedBy(model.getCreatedBy());
-	        entity.setCreatedOn(new Date());
-	        this.payTempUploadDataDao.save(entity);
+		//skip jika data sudah ada di database(tidak boleh duplikat)
+		if(isInsertable) {
+			EmpData empData = empDataDao.getEntityByNik(model.getNik());
+			PaySalaryComponent paySalaryComponent = paySalaryComponentDao.getEntiyByPK(model.getPaySalaryComponentId());
+			
+			if(empData!= null && paySalaryComponent != null) {
+				PayTempUploadData entity = new PayTempUploadData();
+				entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+				entity.setPaySalaryComponent(paySalaryComponent);
+				entity.setEmpData(empData);
+				entity.setNominalValue(Double.parseDouble(model.getNominal()));
+				entity.setPathUpload(model.getPathUpload());
+		        entity.setCreatedBy(model.getCreatedBy());
+		        entity.setCreatedOn(new Date());
+		        this.payTempUploadDataDao.save(entity);
+			}
 		}
 		
 	}
