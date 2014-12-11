@@ -260,4 +260,8 @@ public class PaySalaryExecuteController extends BaseController {
         }
         setProgress(100);
     }
+    
+    public void doPrefareCalculation(){
+        progress=0;
+    }
 }
