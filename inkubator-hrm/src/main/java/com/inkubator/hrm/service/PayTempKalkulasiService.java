@@ -5,14 +5,14 @@
  */
 package com.inkubator.hrm.service;
 
+import java.util.Date;
 import java.util.List;
+
+import org.hibernate.criterion.Order;
 
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.PayTempKalkulasi;
 import com.inkubator.hrm.web.model.PayTempKalkulasiModel;
-import com.inkubator.hrm.web.search.PayTempKalkulasiSearchParameter;
-import java.util.List;
-import org.hibernate.criterion.Order;
 
 /**
  *
@@ -28,7 +28,7 @@ public interface PayTempKalkulasiService extends IService<PayTempKalkulasi> {
 
     public PayTempKalkulasi getEntityByPkWithDetail(Long id);
 
-    public List<PayTempKalkulasi> getAllDataCalculatedPayment() throws Exception;
+    public List<PayTempKalkulasi> getAllDataCalculatedPayment(Date payrollCalculationDate, String createdBy) throws Exception;
 
     public void deleteAllData() throws Exception;
 

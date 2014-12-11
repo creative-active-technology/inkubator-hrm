@@ -5,35 +5,38 @@
  */
 package com.inkubator.hrm.web.payroll;
 
-import com.inkubator.hrm.entity.EmpData;
-import com.inkubator.hrm.entity.PayTempKalkulasi;
-import com.inkubator.hrm.entity.WtPeriode;
-import com.inkubator.hrm.web.lazymodel.PaySalaryExecuteLazyDataModel;
-import com.inkubator.hrm.web.model.PayTempKalkulasiModel;
-import com.inkubator.hrm.web.search.PayTempKalkulasiSearchParameter;
+import java.util.Date;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import org.primefaces.model.LazyDataModel;
+import javax.faces.context.FacesContext;
 
+import org.primefaces.model.LazyDataModel;
+import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
 
+import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.PayTempKalkulasi;
+import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.PayTempKalkulasiService;
 import com.inkubator.hrm.service.WtPeriodeService;
-import com.inkubator.hrm.web.model.PaySalaryExecuteModel;
+import com.inkubator.hrm.web.lazymodel.PaySalaryExecuteLazyDataModel;
+import com.inkubator.hrm.web.model.PayTempKalkulasiModel;
+import com.inkubator.hrm.web.search.PayTempKalkulasiSearchParameter;
+import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.controller.BaseController;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 
 /**
  *
@@ -53,8 +56,8 @@ public class PaySalaryExecuteController extends BaseController {
     private String parameter;
     private Integer jumlahKaryawan;
     private Double jumlahNominal;
-    @ManagedProperty(value = "#{jobLauncher}")
-    private JobLauncher jobLauncher;
+    @ManagedProperty(value = "#{jobLauncherAsync}")
+    private JobLauncher jobLauncherAsync;
     @ManagedProperty(value = "#{jobPayEmployeeCalculation}")
     private Job jobPayEmployeeCalculation;
     @ManagedProperty(value = "#{wtPeriodeService}")
@@ -62,6 +65,10 @@ public class PaySalaryExecuteController extends BaseController {
     private Long getTotalKaryawan;
     private PayTempKalkulasiModel payTempKalkulasiModel;
     private Integer progress;
+    private Date payrollCalculationDate;
+    private JobExecution jobExecution;
+    private WtPeriode wtPeriodePayroll;
+    private WtPeriode wtPeriodeAbsen;
 
     @PostConstruct
     @Override
@@ -70,14 +77,15 @@ public class PaySalaryExecuteController extends BaseController {
         searchParameter = new PayTempKalkulasiSearchParameter();
         payTempKalkulasiModel = new PayTempKalkulasiModel();
         progress = null;
-        WtPeriode wtPeriode;
+       
         try {
-            wtPeriode = wtPeriodeService.getEntityByStatusActive();
+            wtPeriodePayroll = wtPeriodeService.getEntityByStatusActive();
+            wtPeriodeAbsen = wtPeriodeService.getEntityAbsenByStatusActive();
             List<EmpData> getAllDataNotTerminate = empDataService.getAllDataNotTerminate();
             getTotalKaryawan = Long.valueOf(getAllDataNotTerminate.size());
-            if (wtPeriode != null) {
-                payTempKalkulasiModel.setStartDate(wtPeriode.getFromPeriode());
-                payTempKalkulasiModel.setEndDate(wtPeriode.getUntilPeriode());
+            if (wtPeriodePayroll != null) {
+                payTempKalkulasiModel.setStartDate(wtPeriodePayroll.getFromPeriode());
+                payTempKalkulasiModel.setEndDate(wtPeriodePayroll.getUntilPeriode());
             }
         } catch (Exception ex) {
             Logger.getLogger(PaySalaryExecuteController.class.getName()).log(Level.SEVERE, null, ex);
@@ -94,10 +102,14 @@ public class PaySalaryExecuteController extends BaseController {
         empDataService = null;
         parameter = null;
         getTotalKaryawan = null;
+        payrollCalculationDate = null;
+        jobLauncherAsync = null;
+        jobExecution = null;
+        wtPeriodePayroll = null;
+        wtPeriodeAbsen = null;
     }
 
     public void doSearch() {
-        System.out.println(searchParameter.getPaySalaryComponent() + " hohohohooho" + parameter);
         lazyDataModel = null;
     }
 
@@ -109,18 +121,47 @@ public class PaySalaryExecuteController extends BaseController {
         }
     }
 
-    public void calculatePayRoll() {
+    public void doCalculatePayroll() {
         try {
-            payTempKalkulasiService.deleteAllData();
-
+        	payTempKalkulasiService.deleteAllData();
+            long sleepVariable = empDataService.getTotalNotTerminate() * 3;
+            
             JobParameters jobParameters = new JobParametersBuilder()
-                    .addString("timeInMilis", String.valueOf(System.currentTimeMillis())).toJobParameters();
-            JobExecution jobExecution = jobLauncher.run(jobPayEmployeeCalculation, jobParameters);
-
-            //payTempKalkulasiService.calculatePayRoll();
+                    .addString("timeInMilis", String.valueOf(System.currentTimeMillis()))
+                    .addDate("payrollCalculationDate", payrollCalculationDate)
+	                .addString("createdBy", UserInfoUtil.getUserName()).toJobParameters();
+            jobExecution = jobLauncherAsync.run(jobPayEmployeeCalculation, jobParameters);
+            
+            int i = 0;
+            while(true){
+            	if(jobExecution.getStatus() == BatchStatus.STARTED || jobExecution.getStatus() == BatchStatus.STARTING) {
+	            	if(i <= 85){
+	            		setProgress(i++);
+	            	}
+	                try {
+	                    Thread.sleep(sleepVariable);
+	                } catch (InterruptedException e) {}	
+            	} else {
+            		setProgress(100);
+            		break;
+            	}
+            }
+            
         } catch (Exception ex) {
             LOGGER.error(ex, ex);
         }
+    }
+    
+    public void onComplete() {
+    	if(jobExecution.getStatus() == BatchStatus.COMPLETED){
+    		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Informasi","Kalkulasi Penggajian sukses dilakukan"));
+    	} else {
+    		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Informasi","Kalkulasi Penggajian gagal dilakukan"));
+    	}
+    }
+    
+    public void doPrefareCalculation(){
+        progress=0;
     }
 
     public String doDetail() {
@@ -170,15 +211,23 @@ public class PaySalaryExecuteController extends BaseController {
         this.parameter = parameter;
     }
 
-    public JobLauncher getJobLauncher() {
-        return jobLauncher;
-    }
+    public JobLauncher getJobLauncherAsync() {
+		return jobLauncherAsync;
+	}
 
-    public void setJobLauncher(JobLauncher jobLauncher) {
-        this.jobLauncher = jobLauncher;
-    }
+	public void setJobLauncherAsync(JobLauncher jobLauncherAsync) {
+		this.jobLauncherAsync = jobLauncherAsync;
+	}
 
-    public Job getJobPayEmployeeCalculation() {
+	public JobExecution getJobExecution() {
+		return jobExecution;
+	}
+
+	public void setJobExecution(JobExecution jobExecution) {
+		this.jobExecution = jobExecution;
+	}
+
+	public Job getJobPayEmployeeCalculation() {
         return jobPayEmployeeCalculation;
     }
 
@@ -226,17 +275,15 @@ public class PaySalaryExecuteController extends BaseController {
         this.payTempKalkulasiModel = payTempKalkulasiModel;
     }
 
-    public Integer getProgress() {
-//        if (progress == null) {
-//            progress = 0;
-//        } else {
-//            progress = progress + (int) (Math.random() * 35);
-//
-//            if (progress > 100) {
-//                progress = 100;
-//            }
-//        }
-//        System.out.println(progress);
+    public Date getPayrollCalculationDate() {
+		return payrollCalculationDate;
+	}
+
+	public void setPayrollCalculationDate(Date payrollCalculationDate) {
+		this.payrollCalculationDate = payrollCalculationDate;
+	}
+
+	public Integer getProgress() {
         return progress;
     }
 
@@ -244,24 +291,21 @@ public class PaySalaryExecuteController extends BaseController {
         this.progress = progress;
     }
 
-    public void onComplete() {
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Progress Completed"));
-    }
+	public WtPeriode getWtPeriodePayroll() {
+		return wtPeriodePayroll;
+	}
 
-    public void startProgress() {
+	public void setWtPeriodePayroll(WtPeriode wtPeriodePayroll) {
+		this.wtPeriodePayroll = wtPeriodePayroll;
+	}
 
-        for (int i = 0; i < 100; i++) {
-            setProgress(i);
-            System.out.println("TestFunction - setting progress to: " + i);
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-            }
-        }
-        setProgress(100);
-    }
+	public WtPeriode getWtPeriodeAbsen() {
+		return wtPeriodeAbsen;
+	}
+
+	public void setWtPeriodeAbsen(WtPeriode wtPeriodeAbsen) {
+		this.wtPeriodeAbsen = wtPeriodeAbsen;
+	}
     
-    public void doPrefareCalculation(){
-        progress=0;
-    }
+    
 }

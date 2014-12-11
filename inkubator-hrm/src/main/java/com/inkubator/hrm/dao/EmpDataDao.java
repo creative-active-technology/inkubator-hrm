@@ -19,6 +19,7 @@ import com.inkubator.hrm.web.search.ReportOfEmployeesFamilySearchParameter;
 
 import java.util.Date;
 import java.util.List;
+
 import org.hibernate.criterion.Order;
 
 /**
@@ -92,5 +93,7 @@ public interface EmpDataDao extends IDAO<EmpData> {
     public EmpData getEmpDataWithBiodata(Long id);
 
     public List<EmpData> getAllDataNotTerminate();
+
+	public Long getTotalNotTerminate();
 
 }
