@@ -231,7 +231,7 @@
                         </p:row>
                         <p:row>
                             <p:column style="text-align: center;">
-                                <p:commandButton value="Start" type="button" onclick="PF('pbAjax').start();" widgetVar="startButton2" />
+                                <p:commandButton value="Start"  onclick="PF('pbAjax').start();" widgetVar="startButton2" action="#{paySalaryExecuteController.startProgress()}" />
                             </p:column>
                         </p:row>
 
