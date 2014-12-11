@@ -75,6 +75,7 @@ public class PaySalaryExecuteController extends BaseController {
         searchParameter = new PayTempKalkulasiSearchParameter();
         payTempKalkulasiModel = new PayTempKalkulasiModel();
         progress = null;
+        payrollCalculationDate =  new Date();
        
         try {
             wtPeriodePayroll = wtPeriodeService.getEntityByStatusActive();
