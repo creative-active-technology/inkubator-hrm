@@ -73,8 +73,7 @@ public class PaySalaryExecuteController extends BaseController {
         WtPeriode wtPeriode;
         try {
             wtPeriode = wtPeriodeService.getEntityByStatusActive();
-            List<EmpData> getAllDataNotTerminate = empDataService.getAllDataNotTerminate();
-           getTotalKaryawan = Long.valueOf(getAllDataNotTerminate.size());
+           getTotalKaryawan = empDataService.getTotalEmpDataNotTerminate();
            if(wtPeriode != null){
                 payTempKalkulasiModel.setStartDate(wtPeriode.getFromPeriode());
                 payTempKalkulasiModel.setEndDate(wtPeriode.getUntilPeriode());

@@ -87,4 +87,6 @@ public interface EmpDataService extends IService<EmpData> {
     public EmpData getEmpDataWithBiodata(Long id) throws Exception;
 
     public List<EmpData> getAllDataNotTerminate() throws Exception;
+    
+    public Long getTotalEmpDataNotTerminate() throws Exception;
 }

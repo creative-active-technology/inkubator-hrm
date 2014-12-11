@@ -662,4 +662,10 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         return this.empDataDao.getAllDataNotTerminate();
     }
 
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalEmpDataNotTerminate() throws Exception {
+        return this.empDataDao.getTotalEmpDataNotTerminate();
+    }
+
 }

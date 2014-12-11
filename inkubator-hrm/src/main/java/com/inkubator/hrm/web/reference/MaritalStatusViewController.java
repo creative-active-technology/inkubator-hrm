@@ -91,7 +91,7 @@ public class MaritalStatusViewController extends BaseController{
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 400);
-        options.put("contentHeight", 280);
+        options.put("contentHeight", 250);
         RequestContext.getCurrentInstance().openDialog("marital_status_form", options, null);
     }
     
@@ -101,7 +101,7 @@ public class MaritalStatusViewController extends BaseController{
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 400);
-        options.put("contentHeight", 280);
+        options.put("contentHeight", 250);
         Map<String, List<String>> dataToSend = new HashMap<>();
         List<String> dataIsi = new ArrayList<>();
         dataIsi.add(String.valueOf(selected.getId()));

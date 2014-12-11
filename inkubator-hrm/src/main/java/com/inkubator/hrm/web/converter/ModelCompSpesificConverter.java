@@ -46,6 +46,8 @@ public class ModelCompSpesificConverter implements Converter {
         	message = messages.getString("modelComponent.modelComponent_reimbursement");
         } else if (data.equals(HRMConstant.MODEL_COMP_BENEFIT_TABLE)) {
         	message = messages.getString("modelComponent.modelComponent_benefit");
+        }else if (data.equals(HRMConstant.MODEL_COMP_TAKE_HOME_PAY)) {
+        	message = messages.getString("modelComponent.modelComponent_take_home_pay");
         }
 
         return message;

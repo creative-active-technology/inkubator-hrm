@@ -21,10 +21,10 @@ import org.primefaces.model.SortOrder;
  * @author Deni
  */
 public class InterestTypeLazyDataModel extends LazyDataModel<InterestType> implements Serializable{
-    private static final Logger LOGGER = Logger.getLogger(CostCenterLazyDataModel.class);
+    private static final Logger LOGGER = Logger.getLogger(InterestTypeLazyDataModel.class);
     private final InterestTypeSearchParameter search;
     private final InterestTypeService service;
-    private List<InterestType> costCenterList = new ArrayList<>();
+    private List<InterestType> interestTypeList = new ArrayList<>();
     private Integer jumlahData;
 
     public InterestTypeLazyDataModel(InterestTypeSearchParameter search, InterestTypeService service) {
@@ -36,35 +36,24 @@ public class InterestTypeLazyDataModel extends LazyDataModel<InterestType> imple
     public List<InterestType> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
         LOGGER.info("Step Load Lazy data Model");
 
-        if (sortField != null) {
-            if (sortOrder == SortOrder.ASCENDING) {
-                try {
-                    costCenterList = service.getByParam(search, first, pageSize, Order.asc(sortField));
-                    jumlahData = Integer.parseInt(String.valueOf(service.getTotalInterestTypeByParam(search)));
-                } catch (Exception ex) {
-                    LOGGER.error("Error", ex);
-                }
-            } else {
-                try {
-                    costCenterList = service.getByParam(search, first, pageSize, Order.desc(sortField));
-                    jumlahData = Integer.parseInt(String.valueOf(service.getTotalInterestTypeByParam(search)));
-                } catch (Exception ex) {
-                    LOGGER.error("Error", ex);
-                }
-            }
-        } else {
             try {
-                costCenterList = service.getByParam(search, first, pageSize, Order.desc("name"));
+                Order order = null;
+                if(sortField != null){
+                    order = (sortOrder == SortOrder.ASCENDING) ? Order.asc(sortField) : Order.desc(sortField);
+                }else{
+                    order = Order.desc("name");
+                }
+                interestTypeList = service.getByParam(search, first, pageSize, order);
                 jumlahData = Integer.parseInt(String.valueOf(service.getTotalInterestTypeByParam(search)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
             }
-        }
+        
         LOGGER.info("Success Load Lazy data Model");
 
         setPageSize(pageSize);
         setRowCount(jumlahData);
-        return costCenterList;
+        return interestTypeList;
     }
     
     @Override
@@ -74,7 +63,7 @@ public class InterestTypeLazyDataModel extends LazyDataModel<InterestType> imple
 
     @Override
     public InterestType getRowData(String id) {
-        for (InterestType interestType : costCenterList) {
+        for (InterestType interestType : interestTypeList) {
             if (id.equals(String.valueOf(interestType.getId()))) {
                 return interestType;
             }

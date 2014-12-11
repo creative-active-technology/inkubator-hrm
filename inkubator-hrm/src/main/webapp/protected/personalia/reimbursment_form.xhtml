@@ -15,8 +15,8 @@
                 Home
             </ui:define>
             <ui:define name="center">
-                <p:growl id="growlUserFormId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
-                <h:form id="jobTitleFormId" >
+                <p:growl id="growlId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
+                <h:form id="formId" >
                     <div id="box_bg" style="margin: 10px">
                         <!--<p:panel style="margin: 10px">-->
                         <h:panelGrid style="margin-bottom: 5px" columns="2">
@@ -139,11 +139,11 @@
                         <div style="margin-bottom: 5px">
                             <p:commandButton value="#{appmsg['global.save']}" ajax="true" action="#{reimbursmentFormController.doSaved()}"
                                              styleClass="isitext_hrm" 
-                                             style="margin-right: 5px" label="#{appmsg['global.save']}" update="jobTitleFormId, :growlUserFormId"
+                                             style="margin-right: 5px" label="#{appmsg['global.save']}" update="formId, :growlId"
                                              icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
-                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="jobTitleFormId" action="#{reimbursmentFormController.doReset()}"
+                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formId" action="#{reimbursmentFormController.doReset()}"
                                              icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px" >  
-                                <p:resetInput target="jobTitleFormId" />  
+                                <p:resetInput target="formId" />  
                             </p:commandButton>
                             <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}"  immediate="true" action="#{reimbursmentFormController.doBack()}"
                                              styleClass="label_button"/>

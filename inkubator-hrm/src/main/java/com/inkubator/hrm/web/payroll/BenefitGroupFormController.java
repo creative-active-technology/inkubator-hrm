@@ -46,6 +46,7 @@ public class BenefitGroupFormController extends BaseController {
                     benefitGroupModel.setName(benefitGroup.getName());
                     benefitGroupModel.setValidDate(benefitGroup.getValidDate());
                     benefitGroupModel.setDescription(benefitGroup.getDescription());
+                    benefitGroupModel.setMeasurement(benefitGroup.getMeasurement());
                     isUpdate = Boolean.TRUE;
                 }
             } catch (Exception e) {
@@ -108,6 +109,7 @@ public class BenefitGroupFormController extends BaseController {
         benefitGroup.setName(benefitGroupModel.getName());
         benefitGroup.setValidDate(benefitGroupModel.getValidDate());
         benefitGroup.setDescription(benefitGroupModel.getDescription());
+        benefitGroup.setMeasurement(benefitGroupModel.getMeasurement());
         return benefitGroup;
     }
 }

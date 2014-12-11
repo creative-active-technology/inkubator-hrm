@@ -15,6 +15,7 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -50,6 +51,7 @@ public class ResourceNameDaoImpl extends IDAOImpl<ResourceName> implements Resou
     }
     
     private void doSearchByParam(ResourceNameSearchParameter searchParameter, Criteria criteria) {
+        criteria.createAlias("resourceType", "resourceType", JoinType.INNER_JOIN);
         if (searchParameter.getCode()!=null) {
         	criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.ANYWHERE));
         }
@@ -57,7 +59,7 @@ public class ResourceNameDaoImpl extends IDAOImpl<ResourceName> implements Resou
         	criteria.add(Restrictions.like("name", searchParameter.getName(), MatchMode.ANYWHERE));
         } 
         if (searchParameter.getResourceType()!=null) {
-        	criteria.add(Restrictions.like("resourceType", searchParameter.getResourceType(), MatchMode.ANYWHERE));
+        	criteria.add(Restrictions.like("resourceType.resourceType", searchParameter.getResourceType(), MatchMode.ANYWHERE));
         } 
         criteria.add(Restrictions.isNotNull("id"));
     }

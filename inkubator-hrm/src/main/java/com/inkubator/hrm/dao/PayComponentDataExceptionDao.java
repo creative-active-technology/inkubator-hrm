@@ -7,8 +7,6 @@ package com.inkubator.hrm.dao;
 
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.PayComponentDataException;
-import com.inkubator.hrm.web.model.PayComponentDataExceptionModel;
-import com.inkubator.hrm.web.search.PayComponentDataExceptionSearchParameter;
 import java.util.List;
 import org.hibernate.criterion.Order;
 

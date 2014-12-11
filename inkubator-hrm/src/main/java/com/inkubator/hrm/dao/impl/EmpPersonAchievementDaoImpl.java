@@ -27,7 +27,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository(value = "empPersonAchievementDaoImpl")
 @Lazy
-public class EmpPersonAchievementDaoImpl extends IDAOImpl<EmpPersonAchievement> implements EmpPersonAchievementDao{
+public class EmpPersonAchievementDaoImpl extends IDAOImpl<EmpPersonAchievement> implements EmpPersonAchievementDao {
 
     @Override
     public Class<EmpPersonAchievement> getEntityClass() {
@@ -61,14 +61,14 @@ public class EmpPersonAchievementDaoImpl extends IDAOImpl<EmpPersonAchievement> 
         criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
         return (EmpPersonAchievement) criteria.uniqueResult();
     }
-    
+
     private void doSearchEmpPersonAchievementByParam(EmpPersonAchievementSearchParameter searchParameter, Criteria criteria) {
-        if (searchParameter.getAchievementName()!= null) {
-        	criteria.add(Restrictions.like("achievementName", searchParameter.getAchievementName(), MatchMode.ANYWHERE));
-        } 
+        if (searchParameter.getAchievementName() != null) {
+            criteria.add(Restrictions.like("achievementName", searchParameter.getAchievementName(), MatchMode.ANYWHERE));
+        }
+        criteria.createAlias("empData", "ed", JoinType.INNER_JOIN);
+        criteria.createAlias("ed.bioData", "bd", JoinType.INNER_JOIN);
         if (StringUtils.isNotEmpty(searchParameter.getEmpData())) {
-            criteria.createAlias("empData", "ed", JoinType.INNER_JOIN);
-            criteria.createAlias("ed.bioData", "bd", JoinType.INNER_JOIN);
             Disjunction disjunction = Restrictions.disjunction();
             disjunction.add(Restrictions.like("bd.firstName", searchParameter.getEmpData(), MatchMode.ANYWHERE));
             disjunction.add(Restrictions.like("bd.lastName", searchParameter.getEmpData(), MatchMode.ANYWHERE));

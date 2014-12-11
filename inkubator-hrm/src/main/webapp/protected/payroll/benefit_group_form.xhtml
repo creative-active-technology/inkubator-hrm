@@ -78,7 +78,7 @@
                                 <h:outputLabel for="validId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 63%">
-                               <p:calendar id="validId" pattern="dd MMMM yyyy" binding="#{endId}" value="#{benefitGroupFormController.benefitGroupModel.validDate}" style="width: 150px;margin-right: 3px" 
+                                <p:calendar id="validId" pattern="dd MMMM yyyy" binding="#{endId}" value="#{benefitGroupFormController.benefitGroupModel.validDate}" style="width: 150px;margin-right: 3px" 
                                             required="true" requiredMessage="#{appmsg['benefitGroup.benefitGroup_validDate_should_not_be_empty']}" navigator="true" />
 
                             </p:column>
@@ -86,6 +86,27 @@
                         <p:row>
                             <p:column colspan="3">
                                 <p:message for="validId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 42%">
+                                <p:outputLabel for="measurement" value="#{appmsg['reimbursment.measurement']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="measurement" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 63%">
+                                <p:selectOneMenu id="measurement" value="#{benefitGroupFormController.benefitGroupModel.measurement}" style="width: 150px;margin-right: 3px" >
+                                    <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                    <f:selectItem itemLabel="#{appmsg['benefitGroupMeasurement.perHour']}" itemValue="0"/>
+                                    <f:selectItem itemLabel="#{appmsg['benefitGroupMeasurement.perDay']}" itemValue="1"/>
+                                    <f:selectItem itemLabel="#{appmsg['benefitGroupMeasurement.perPeriode']}" itemValue="2"/>
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="measurement"/>
                             </p:column>
                         </p:row>
                         <p:row>

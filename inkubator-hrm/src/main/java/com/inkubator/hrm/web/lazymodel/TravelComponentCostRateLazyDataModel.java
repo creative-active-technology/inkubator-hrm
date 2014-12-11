@@ -36,30 +36,19 @@ public class TravelComponentCostRateLazyDataModel extends LazyDataModel<TravelCo
     public List<TravelComponentCostRate> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
         LOGGER.info("Step Load Lazy data Model");
 
-        if (sortField != null) {
-            if (sortOrder == SortOrder.ASCENDING) {
-                try {
-                    travelComponentCostRateList = service.getAllDataWithAllRelation(parameter, first, pageSize, Order.asc(sortField));
-                    jumlahData = Integer.parseInt(String.valueOf(service.getTotalTravelComponentRateByParam(parameter)));
-                } catch (Exception ex) {
-                    LOGGER.error("Error", ex);
-                }
-            } else {
-                try {
-                    travelComponentCostRateList = service.getAllDataWithAllRelation(parameter, first, pageSize, Order.desc(sortField));
-                    jumlahData = Integer.parseInt(String.valueOf(service.getTotalTravelComponentRateByParam(parameter)));
-                } catch (Exception ex) {
-                    LOGGER.error("Error", ex);
-                }
-            }
-        } else {
             try {
-                travelComponentCostRateList = service.getAllDataWithAllRelation(parameter, first, pageSize, Order.desc("code"));
+                Order order = null;
+                if(sortField != null){
+                    order = (sortOrder == SortOrder.ASCENDING) ? Order.asc(sortField) : Order.desc(sortField);
+                }else{
+                    order = Order.desc("code");
+                }
+                travelComponentCostRateList = service.getAllDataWithAllRelation(parameter, first, pageSize, order);
                 jumlahData = Integer.parseInt(String.valueOf(service.getTotalTravelComponentRateByParam(parameter)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
             }
-        }
+        
         LOGGER.info("Success Load Lazy data Model");
 
         setPageSize(pageSize);

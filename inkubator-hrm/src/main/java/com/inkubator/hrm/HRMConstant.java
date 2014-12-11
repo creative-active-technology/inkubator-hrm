@@ -201,6 +201,7 @@ public class HRMConstant {
     public static final Integer MODEL_COMP_LOAN = 5;
     public static final Integer MODEL_COMP_REIMBURSEMENT = 6;
     public static final Integer MODEL_COMP_BENEFIT_TABLE = 7;
+    public static final Integer MODEL_COMP_TAKE_HOME_PAY = 100;
     /* END */
 
     /* Constant for  Appraisal Element */

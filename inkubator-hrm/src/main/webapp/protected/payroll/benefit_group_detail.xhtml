@@ -63,6 +63,16 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel value="#{appmsg['reimbursment.measurement']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 37%">
+                                    <p:outputLabel value="#{benefitGroupDetailController.selectedBenefitGroup.measurement}" styleClass="label_hrm">
+                                        <f:converter converterId="benefitGroupMeasurementConverter" />
+                                    </p:outputLabel>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
                                     <p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 37%">

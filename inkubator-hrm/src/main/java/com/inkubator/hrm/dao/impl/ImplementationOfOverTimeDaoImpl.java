@@ -11,10 +11,12 @@ import com.inkubator.hrm.web.search.ImplementationOfOvertimeSearchParameter;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -69,9 +71,18 @@ public class ImplementationOfOverTimeDaoImpl extends IDAOImpl<ImplementationOfOv
     }
     
     private void doSearchByParam(ImplementationOfOvertimeSearchParameter searchParameter, Criteria criteria) {
-
-        if (searchParameter.getCode() != null) {
-            criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.ANYWHERE));
+         criteria.createAlias("wtOverTime", "wtOverTime", JoinType.INNER_JOIN);
+        criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+        criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
+        if (searchParameter.getEmployeeName()!= null) {
+             Disjunction disjunction = Restrictions.disjunction();
+            disjunction.add(Restrictions.like("empData.nik", searchParameter.getEmployeeName(), MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.like("bioData.firstName", searchParameter.getEmployeeName(), MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.like("bioData.lastName", searchParameter.getEmployeeName(), MatchMode.ANYWHERE));
+            criteria.add(disjunction);
+        }
+        if (searchParameter.getOverTimeName()!= null) {
+             criteria.add(Restrictions.like("wtOverTime.name", searchParameter.getOverTimeName(), MatchMode.ANYWHERE));
         }
 
         criteria.add(Restrictions.isNotNull("id"));

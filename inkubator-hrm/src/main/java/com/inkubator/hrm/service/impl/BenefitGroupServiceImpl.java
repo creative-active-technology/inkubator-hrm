@@ -245,6 +245,7 @@ public class BenefitGroupServiceImpl extends IServiceImpl implements BenefitGrou
         benefitGroup.setName(b.getName());
         benefitGroup.setValidDate(b.getValidDate());
         benefitGroup.setDescription(b.getDescription());
+        benefitGroup.setMeasurement(b.getMeasurement());
         benefitGroup.setUpdatedBy(UserInfoUtil.getUserName());
         benefitGroup.setUpdatedOn(new Date());
         benefitGroupDao.update(benefitGroup);

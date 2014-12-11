@@ -133,7 +133,7 @@ public class BenefitGroupViewController extends BaseController {
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 530);
-        options.put("contentHeight", 420);
+        options.put("contentHeight", 430);
         RequestContext.getCurrentInstance().openDialog("benefit_group_form", options, params);
     }
 

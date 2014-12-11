@@ -36,30 +36,19 @@ public class ImplementationOfOverTimeLazyDataModel extends LazyDataModel<Impleme
     public List<ImplementationOfOverTime> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
         LOGGER.info("Step Load Lazy data Model");
 
-        if (sortField != null) {
-            if (sortOrder == SortOrder.ASCENDING) {
-                try {
-                    implementationOfOverTimeList = service.getAllDataWithDetail(searchParameter, first, pageSize, Order.asc(sortField));
-                    jumlahData = Integer.parseInt(String.valueOf(service.getTotalImplementationOfOverTimeByParam(searchParameter)));
-                } catch (Exception ex) {
-                    LOGGER.error("Error", ex);
-                }
-            } else {
-                try {
-                    implementationOfOverTimeList = service.getAllDataWithDetail(searchParameter, first, pageSize, Order.desc(sortField));
-                    jumlahData = Integer.parseInt(String.valueOf(service.getTotalImplementationOfOverTimeByParam(searchParameter)));
-                } catch (Exception ex) {
-                    LOGGER.error("Error", ex);
-                }
-            }
-        } else {
             try {
-                implementationOfOverTimeList = service.getAllDataWithDetail(searchParameter, first, pageSize, Order.desc("code"));
+                Order order = null;
+                if(sortField != null){
+                    order = (sortOrder == SortOrder.ASCENDING) ? Order.asc(sortField) : Order.desc(sortField);
+                }else{
+                    order = Order.desc("code");
+                }
+                implementationOfOverTimeList = service.getAllDataWithDetail(searchParameter, first, pageSize, order);
                 jumlahData = Integer.parseInt(String.valueOf(service.getTotalImplementationOfOverTimeByParam(searchParameter)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
             }
-        }
+        
         LOGGER.info("Success Load Lazy data Model");
 
         setPageSize(pageSize);

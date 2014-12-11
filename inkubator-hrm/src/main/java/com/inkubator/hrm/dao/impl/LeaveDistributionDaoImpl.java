@@ -58,19 +58,19 @@ public class LeaveDistributionDaoImpl extends IDAOImpl<LeaveDistribution> implem
     }
 
     private void doSearch(LeaveDistributionSearchParameter searchParameter, Criteria criteria) {
+        criteria.createAlias("empData", "ed", JoinType.INNER_JOIN);
+        criteria.createAlias("ed.bioData", "bio", JoinType.INNER_JOIN);
+        criteria.createAlias("leave", "l", JoinType.INNER_JOIN);
         if (StringUtils.isNotEmpty(searchParameter.getEmpData())) {
-            criteria.createAlias("empData", "ed", JoinType.INNER_JOIN);
-            criteria.createAlias("ed.bioData", "bio", JoinType.INNER_JOIN);
             Disjunction disjunction = Restrictions.disjunction();
             disjunction.add(Restrictions.like("bio.firstName", searchParameter.getEmpData(), MatchMode.ANYWHERE));
             disjunction.add(Restrictions.like("bio.lastName", searchParameter.getEmpData(), MatchMode.ANYWHERE));
             criteria.add(disjunction);
         }
         if (StringUtils.isNotEmpty(searchParameter.getLeave())) {
-            criteria.createAlias("leave", "l", JoinType.INNER_JOIN);
             criteria.add(Restrictions.like("l.name", searchParameter.getLeave(), MatchMode.ANYWHERE));
         }
-        if (searchParameter.getNik()!= null) {
+        if (searchParameter.getNik() != null) {
             criteria.createAlias("empData", "ed", JoinType.INNER_JOIN);
             criteria.add(Restrictions.like("ed.nik", searchParameter.getNik(), MatchMode.ANYWHERE));
         }
@@ -95,7 +95,7 @@ public class LeaveDistributionDaoImpl extends IDAOImpl<LeaveDistribution> implem
         criteria.setFetchMode("leave", FetchMode.JOIN);
         return criteria.list();
     }
-    
+
     @Override
     public void saveBatch(List<LeaveDistribution> data) {
         int counter = 0;
@@ -109,38 +109,38 @@ public class LeaveDistributionDaoImpl extends IDAOImpl<LeaveDistribution> implem
         }
     }
 
-	@Override
-	public List<LeaveDistribution> getAllDataByLeaveIdAndIsActiveEmployee(Long leaveId) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.add(Restrictions.eq("leave.id", leaveId));
-		criteria.createAlias("empData", "empData");
-		Disjunction disjunction = Restrictions.disjunction();
+    @Override
+    public List<LeaveDistribution> getAllDataByLeaveIdAndIsActiveEmployee(Long leaveId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("leave.id", leaveId));
+        criteria.createAlias("empData", "empData");
+        Disjunction disjunction = Restrictions.disjunction();
         disjunction.add(Restrictions.eq("empData.status", HRMConstant.EMP_PLACEMENT));
         disjunction.add(Restrictions.eq("empData.status", HRMConstant.EMP_ROTATION));
         criteria.add(disjunction);
-		return criteria.list();
-	}
+        return criteria.list();
+    }
 
-	@Override
-	public List<LeaveDistribution> getAllDataByEndDateLessThan(Date date) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.add(Restrictions.lt("endDate", date));
-		return criteria.list();
-	}
+    @Override
+    public List<LeaveDistribution> getAllDataByEndDateLessThan(Date date) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.lt("endDate", date));
+        return criteria.list();
+    }
 
-	@Override
-	public List<LeaveDistribution> getAllDataByEmpIdFetchLeave(Long empDataId) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.add(Restrictions.eq("empData.id", empDataId));
+    @Override
+    public List<LeaveDistribution> getAllDataByEmpIdFetchLeave(Long empDataId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("empData.id", empDataId));
         criteria.setFetchMode("leave", FetchMode.JOIN);
         return criteria.list();
-	}
+    }
 
-	@Override
-	public LeaveDistribution getEntityByLeaveIdAndEmpDataId(Long leaveId, Long empDataId) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.add(Restrictions.eq("empData.id", empDataId));
-		criteria.add(Restrictions.eq("leave.id", leaveId));
-		return (LeaveDistribution) criteria.uniqueResult();
-	}
+    @Override
+    public LeaveDistribution getEntityByLeaveIdAndEmpDataId(Long leaveId, Long empDataId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("empData.id", empDataId));
+        criteria.add(Restrictions.eq("leave.id", leaveId));
+        return (LeaveDistribution) criteria.uniqueResult();
+    }
 }

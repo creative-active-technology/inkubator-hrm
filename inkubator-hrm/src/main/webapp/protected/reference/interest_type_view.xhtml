@@ -96,7 +96,7 @@
                                 <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" ajax="true"
                                                   action="#{interestTypeController.doEdit()}" >
                                     <f:setPropertyActionListener value="#{data}" target="#{interestTypeController.selected}" />
-                                    <p:ajax event="dialogReturn" listener="#{interestTypeController.onDialogReturn}"  update="tableId"/>
+                                    <p:ajax event="dialogReturn" listener="#{interestTypeController.onDialogReturn}"  update="tableId, :formId:growlId"/>
                                 </p:commandButton> 
                             </p:column> 
                             <f:facet name="footer">

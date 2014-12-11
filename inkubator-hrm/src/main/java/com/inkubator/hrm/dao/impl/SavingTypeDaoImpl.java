@@ -38,7 +38,7 @@ public class SavingTypeDaoImpl extends IDAOImpl<SavingType> implements SavingTyp
     }
 
     @Override
-    public Long getTotalResourceTypeByParam(SavingTypeSearchParameter searchParameter) {
+    public Long getTotalSavingTypeByParam(SavingTypeSearchParameter searchParameter) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchByParam(searchParameter, criteria);
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();

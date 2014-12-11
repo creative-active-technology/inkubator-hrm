@@ -11,7 +11,7 @@ import org.hibernate.criterion.Order;
  * @author rizkykojek
  */
 public interface SavingTypeService extends IService<SavingType> {
-    public List<SavingType> getByParam(SavingTypeSearchParameter searchParameter, int firstResult, int maxResults, Order order);
+    public List<SavingType> getByParam(SavingTypeSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
 
-    public Long getTotalResourceTypeByParam(SavingTypeSearchParameter searchParameter);
+    public Long getTotalSavingTypeByParam(SavingTypeSearchParameter searchParameter) throws Exception;
 }

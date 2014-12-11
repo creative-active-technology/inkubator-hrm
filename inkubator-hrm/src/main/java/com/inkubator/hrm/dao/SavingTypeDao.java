@@ -13,5 +13,5 @@ import org.hibernate.criterion.Order;
 public interface SavingTypeDao extends IDAO<SavingType> {
     public List<SavingType> getByParam(SavingTypeSearchParameter searchParameter, int firstResult, int maxResults, Order order);
 
-    public Long getTotalResourceTypeByParam(SavingTypeSearchParameter searchParameter);
+    public Long getTotalSavingTypeByParam(SavingTypeSearchParameter searchParameter);
 }
