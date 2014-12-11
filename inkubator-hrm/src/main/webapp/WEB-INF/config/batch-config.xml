@@ -46,7 +46,7 @@
 	
 	
 	<!-- reader and writer for pay_salary_upload -->	
-	<bean id="customPaySalaryUploadItemReader" class="com.inkubator.hrm.batch.PaySalaryUploadReader" scope="step">
+	<bean id="customPaySalaryUploadItemReader" class="com.inkubator.hrm.batch.PaySalaryUploadReader" scope="step" destroy-method="destroy">
 	    <constructor-arg name="filePath"  value="#{jobParameters['input.file.path']}"></constructor-arg>
 	    <property name="createdBy" value="#{jobParameters['createdBy']}"/>
 	    <property name="paySalaryComponentId" value="#{jobParameters['paySalaryComponentId']}"/>

@@ -120,6 +120,7 @@ public class PaySalaryExecuteController extends BaseController {
 
     public void doCalculatePayroll() {
         try {
+        	System.out.println("=============================================START doCalculatePayroll " + new Date());
         	payTempKalkulasiService.deleteAllData();
             long sleepVariable = empDataService.getTotalEmpDataNotTerminate() * 3;
             
@@ -143,7 +144,7 @@ public class PaySalaryExecuteController extends BaseController {
             		break;
             	}
             }
-            
+            System.out.println("=============================================END doCalculatePayroll " + new Date());
         } catch (Exception ex) {
             LOGGER.error(ex, ex);
         }
