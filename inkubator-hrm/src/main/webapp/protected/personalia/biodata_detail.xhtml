@@ -1892,15 +1892,15 @@
                         <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmSpesifikasi.hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
-                <p:dialog widgetVar="dialogDetailSpesifikasi" header="Keahlian" styleClass="header_small_no_bold" width="400" modal="true" resizable="false" hideEffect="puff" 
+                <p:dialog widgetVar="dialogDetailSpesifikasi" header="#{appmsg['specAbility.ability']}" styleClass="header_small_no_bold" width="400" modal="true" resizable="false" hideEffect="puff" 
                           showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogBioSpesifikasiId" style="width:100%;margin:5px;">
                         <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="Nama Spesifikasi" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedDioSpesifikasiAbility.optionAbility}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['specAbility.name']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedDioSpesifikasiAbility.specificationAbility.name}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="Score" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['specAbility.score']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:70%;">
                                 <p:outputLabel value="#{bioDataDetilController.selectedDioSpesifikasiAbility.score}" styleClass="label_hrm" />
                             </p:column>
@@ -1908,7 +1908,7 @@
 
                         <f:facet name="footer">
                             <p:row>
-                                <p:column colspan="2"><p:outputLabel value="#{appmsg['menu.data_reference']} - Keahlian" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
+                                <p:column colspan="2"><p:outputLabel value="#{appmsg['menu.data_reference']} - #{appmsg['specAbility.ability']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
                             </p:row>
                         </f:facet>
                     </p:panelGrid>

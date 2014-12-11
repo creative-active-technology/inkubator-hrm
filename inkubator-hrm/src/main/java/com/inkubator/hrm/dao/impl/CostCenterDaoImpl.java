@@ -15,6 +15,7 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -64,6 +65,7 @@ public class CostCenterDaoImpl extends IDAOImpl<CostCenter> implements CostCente
     }
     
     private void doSearchCostCenterByParam(CostCenterSearchParameter searchParameter, Criteria criteria) {
+        criteria.setFetchMode("costCenter", FetchMode.JOIN);
         if (searchParameter.getName()!=null) {
         	criteria.add(Restrictions.like("name", searchParameter.getName(), MatchMode.ANYWHERE));
         } 

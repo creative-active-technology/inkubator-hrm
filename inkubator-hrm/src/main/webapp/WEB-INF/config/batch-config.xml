@@ -66,7 +66,7 @@
 		<property name="sql">
 			<value>
             <![CDATA[        
-            	insert into pay_temp_kalkulasi(id,pay_salary_component_id,emp_data_id,nominal,created_on,created_by,version) values (:id,:paySalaryComponent.id,:empData.id,:nominal,:createdOn,:createdBy,0)
+            	insert into pay_temp_kalkulasi(id,pay_salary_component_id,emp_data_id,nominal,factor,created_on,created_by,version) values (:id,:paySalaryComponent.id,:empData.id,:nominal,:factor,:createdOn,:createdBy,0)
             ]]>
 			</value>
 		</property>

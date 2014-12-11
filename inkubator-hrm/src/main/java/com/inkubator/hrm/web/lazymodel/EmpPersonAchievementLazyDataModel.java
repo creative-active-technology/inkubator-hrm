@@ -35,31 +35,18 @@ public class EmpPersonAchievementLazyDataModel extends LazyDataModel<EmpPersonAc
     @Override
     public List<EmpPersonAchievement> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
         LOGGER.info("Step Load Lazy data Model");
-
-        if (sortField != null) {
-            if (sortOrder == SortOrder.ASCENDING) {
-                try {
-                    empPersonAchievementList = service.getAllDataWithEmployee(parameter, first, pageSize, Order.asc(sortField));
-                    jumlahData = Integer.parseInt(String.valueOf(service.getTotalEmpPersonAchievementByParam(parameter)));
-                } catch (Exception ex) {
-                    LOGGER.error("Error", ex);
-                }
-            } else {
-                try {
-                    empPersonAchievementList = service.getAllDataWithEmployee(parameter, first, pageSize, Order.desc(sortField));
-                    jumlahData = Integer.parseInt(String.valueOf(service.getTotalEmpPersonAchievementByParam(parameter)));
-                } catch (Exception ex) {
-                    LOGGER.error("Error", ex);
-                }
-            }
-        } else {
             try {
-                empPersonAchievementList = service.getAllDataWithEmployee(parameter, first, pageSize, Order.desc("achievementName"));
+                Order order = null;
+                if(sortField != null){
+                    order = (sortOrder == SortOrder.ASCENDING) ? Order.asc(sortField) : Order.desc(sortField);
+                }else{
+                    order = Order.desc("achievementName");
+                }
+                empPersonAchievementList = service.getAllDataWithEmployee(parameter, first, pageSize, order);
                 jumlahData = Integer.parseInt(String.valueOf(service.getTotalEmpPersonAchievementByParam(parameter)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
             }
-        }
         LOGGER.info("Success Load Lazy data Model");
 
         setPageSize(pageSize);

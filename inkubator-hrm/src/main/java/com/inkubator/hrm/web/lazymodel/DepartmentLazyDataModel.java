@@ -35,31 +35,19 @@ public class DepartmentLazyDataModel extends LazyDataModel<Department> implement
     @Override
     public List<Department> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
         LOGGER.info("Step Load Lazy data Model");
-
-        if (sortField != null) {
-            if (sortOrder == SortOrder.ASCENDING) {
-                try {
-                    departmentList = departmentService.getByParam(departmentSearchParameter, first, pageSize, Order.asc(sortField));
-                    jumlahData = Integer.parseInt(String.valueOf(departmentService.getTotalDepartmentByParam(departmentSearchParameter)));
-                } catch (Exception ex) {
-                    LOGGER.error("Error", ex);
-                }
-            } else {
-                try {
-                    departmentList = departmentService.getByParam(departmentSearchParameter, first, pageSize, Order.desc(sortField));
-                    jumlahData = Integer.parseInt(String.valueOf(departmentService.getTotalDepartmentByParam(departmentSearchParameter)));
-                } catch (Exception ex) {
-                    LOGGER.error("Error", ex);
-                }
-            }
-        } else {
             try {
-                departmentList = departmentService.getByParam(departmentSearchParameter, first, pageSize, Order.desc("departmentName"));
+                Order order = null;
+                if(sortField != null){
+                    order = (sortOrder == SortOrder.ASCENDING) ? Order.asc(sortField) : Order.desc(sortField);
+                }else{
+                    order = Order.desc("departmentName");
+                }
+                departmentList = departmentService.getByParam(departmentSearchParameter, first, pageSize, order);
                 jumlahData = Integer.parseInt(String.valueOf(departmentService.getTotalDepartmentByParam(departmentSearchParameter)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
             }
-        }
+        
         LOGGER.info("Success Load Lazy data Model");
 
         setPageSize(pageSize);

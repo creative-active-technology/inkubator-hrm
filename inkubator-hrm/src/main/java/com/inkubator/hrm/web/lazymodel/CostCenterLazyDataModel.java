@@ -35,31 +35,19 @@ public class CostCenterLazyDataModel extends LazyDataModel<CostCenter> implement
     @Override
     public List<CostCenter> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
         LOGGER.info("Step Load Lazy data Model");
-
-        if (sortField != null) {
-            if (sortOrder == SortOrder.ASCENDING) {
-                try {
-                    costCenterList = costCenterService.getByParam(costCenterSearchParameter, first, pageSize, Order.asc(sortField));
-                    jumlahData = Integer.parseInt(String.valueOf(costCenterService.getTotalCostCenterByParam(costCenterSearchParameter)));
-                } catch (Exception ex) {
-                    LOGGER.error("Error", ex);
-                }
-            } else {
-                try {
-                    costCenterList = costCenterService.getByParam(costCenterSearchParameter, first, pageSize, Order.desc(sortField));
-                    jumlahData = Integer.parseInt(String.valueOf(costCenterService.getTotalCostCenterByParam(costCenterSearchParameter)));
-                } catch (Exception ex) {
-                    LOGGER.error("Error", ex);
-                }
-            }
-        } else {
             try {
-                costCenterList = costCenterService.getByParam(costCenterSearchParameter, first, pageSize, Order.desc("code"));
+                Order order = null;
+                if(sortField != null){
+                    order = (sortOrder == sortOrder.ASCENDING) ? Order.asc(sortField) : Order.desc(sortField);
+                }else{
+                    order = Order.desc("name");
+                }
+                costCenterList = costCenterService.getByParam(costCenterSearchParameter, first, pageSize, order);
                 jumlahData = Integer.parseInt(String.valueOf(costCenterService.getTotalCostCenterByParam(costCenterSearchParameter)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
             }
-        }
+        
         LOGGER.info("Success Load Lazy data Model");
 
         setPageSize(pageSize);

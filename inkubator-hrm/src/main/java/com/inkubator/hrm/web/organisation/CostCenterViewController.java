@@ -40,16 +40,6 @@ public class CostCenterViewController extends BaseController{
     private CostCenterSearchParameter costCenterSearchParameter;
     private LazyDataModel<CostCenter> lazyDataCostCenter;
     private CostCenter selectedCostCenter;
-    List<String> dataIsi2;
-
-    public List<String> getDataIsi2() {
-        return dataIsi2;
-    }
-
-    public void setDataIsi2(List<String> dataIsi2) {
-        this.dataIsi2 = dataIsi2;
-    }
-    
     
     public CostCenterService getCostCenterService() {
         return costCenterService;

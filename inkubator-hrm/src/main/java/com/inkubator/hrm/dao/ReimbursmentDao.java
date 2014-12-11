@@ -7,7 +7,10 @@ package com.inkubator.hrm.dao;
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.Reimbursment;
 import com.inkubator.hrm.web.search.ReimbursmentSearchParameter;
+
+import java.util.Date;
 import java.util.List;
+
 import org.hibernate.criterion.Order;
 
 /**
@@ -30,4 +33,6 @@ public interface ReimbursmentDao extends IDAO<Reimbursment>{
     public Reimbursment getEntityByApprovalActivityNumberWithDetail(String approvalActivityNumber);
     
     public Reimbursment getEntityByReimbursmentNoWithDetail(String reimburmentNo);
+
+	public List<Reimbursment> getAllDataByEmpDataIdAndReimbursmentSchemaIdAndPeriodTime(Long empDataid, Long reimbursmentSchemaId, Date fromPeriode, Date untilPeriode);
 }

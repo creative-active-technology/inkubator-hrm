@@ -27,6 +27,7 @@ public class PayTempKalkulasi implements java.io.Serializable {
     private EmpData empData;
     private PaySalaryComponent paySalaryComponent;
     private BigDecimal nominal;
+    private Integer factor;
     private Date createdOn;
     private String createdBy;
     private String updatedBy;
@@ -98,9 +99,18 @@ public class PayTempKalkulasi implements java.io.Serializable {
 
     public void setNominal(BigDecimal nominal) {
         this.nominal = nominal;
-    }
+    }    
+    
+    @Column(name = "factor")
+    public Integer getFactor() {
+		return factor;
+	}
 
-    @Temporal(TemporalType.TIMESTAMP)
+	public void setFactor(Integer factor) {
+		this.factor = factor;
+	}
+
+	@Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_on", length = 19)
     public Date getCreatedOn() {
         return this.createdOn;
