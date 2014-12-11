@@ -81,7 +81,7 @@ public class PaySalaryExecuteController extends BaseController {
         } catch (Exception ex) {
             Logger.getLogger(PaySalaryExecuteController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
 
     @PreDestroy
@@ -226,25 +226,41 @@ public class PaySalaryExecuteController extends BaseController {
     }
 
     public Integer getProgress() {
-        if(progress == null ) {
-            progress = 0;
-        }
-        else {
-            progress = progress + (int)(Math.random() * 35);
-             
-            if(progress > 100)
-                progress = 100;
-        }
-        System.out.println(progress);
+//        if (progress == null) {
+//            progress = 0;
+//        } else {
+//            progress = progress + (int) (Math.random() * 35);
+//
+//            if (progress > 100) {
+//                progress = 100;
+//            }
+//        }
+//        System.out.println(progress);
         return progress;
     }
 
     public void setProgress(Integer progress) {
         this.progress = progress;
     }
-     
+
     public void onComplete() {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Progress Completed"));
     }
+
+    public void startProgress() {
+
+        for (int i = 0; i < 100; i++) {
+            setProgress(i);
+            System.out.println("TestFunction - setting progress to: " + i);
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+            }
+        }
+        setProgress(100);
+    }
     
+    public void doPrefareCalculation(){
+        progress=0;
+    }
 }
