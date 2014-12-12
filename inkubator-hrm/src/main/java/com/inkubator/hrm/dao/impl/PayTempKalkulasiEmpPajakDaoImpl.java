@@ -8,6 +8,8 @@ package com.inkubator.hrm.dao.impl;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.PayTempKalkulasiEmpPajakDao;
 import com.inkubator.hrm.entity.PayTempKalkulasiEmpPajak;
+
+import org.hibernate.Query;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -24,4 +26,9 @@ public class PayTempKalkulasiEmpPajakDaoImpl extends IDAOImpl<PayTempKalkulasiEm
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
+    @Override
+    public void deleteAllData() {
+        Query query = getCurrentSession().createQuery("delete from PayTempKalkulasiEmpPajak");
+        query.executeUpdate();
+    }
 }

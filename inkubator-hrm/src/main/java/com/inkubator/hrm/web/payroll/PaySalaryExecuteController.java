@@ -28,6 +28,7 @@ import org.springframework.batch.core.launch.JobLauncher;
 import com.inkubator.hrm.entity.PayTempKalkulasi;
 import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.EmpDataService;
+import com.inkubator.hrm.service.PayTempKalkulasiEmpPajakService;
 import com.inkubator.hrm.service.PayTempKalkulasiService;
 import com.inkubator.hrm.service.WtPeriodeService;
 import com.inkubator.hrm.web.lazymodel.PaySalaryExecuteLazyDataModel;
@@ -48,6 +49,8 @@ public class PaySalaryExecuteController extends BaseController {
     private EmpDataService empDataService;
     @ManagedProperty(value = "#{payTempKalkulasiService}")
     private PayTempKalkulasiService payTempKalkulasiService;
+    @ManagedProperty(value = "#{payTempKalkulasiEmpPajakService}")
+    private PayTempKalkulasiEmpPajakService payTempKalkulasiEmpPajakService;
     private PayTempKalkulasiSearchParameter searchParameter;
     private LazyDataModel<PayTempKalkulasiModel> lazyDataModel;
     private PayTempKalkulasi selected;
@@ -105,6 +108,7 @@ public class PaySalaryExecuteController extends BaseController {
         jobExecution = null;
         wtPeriodePayroll = null;
         wtPeriodeAbsen = null;
+        payTempKalkulasiEmpPajakService = null;
     }
 
     public void doSearch() {
@@ -123,6 +127,7 @@ public class PaySalaryExecuteController extends BaseController {
         try {
         	System.out.println("=============================================START doCalculatePayroll " + new Date());
         	payTempKalkulasiService.deleteAllData();
+        	payTempKalkulasiEmpPajakService.deleteAllData();
             long sleepVariable = empDataService.getTotalEmpDataNotTerminate() * 3;
             
             JobParameters jobParameters = new JobParametersBuilder()
@@ -305,6 +310,12 @@ public class PaySalaryExecuteController extends BaseController {
 	public void setWtPeriodeAbsen(WtPeriode wtPeriodeAbsen) {
 		this.wtPeriodeAbsen = wtPeriodeAbsen;
 	}
+
+	public void setPayTempKalkulasiEmpPajakService(
+			PayTempKalkulasiEmpPajakService payTempKalkulasiEmpPajakService) {
+		this.payTempKalkulasiEmpPajakService = payTempKalkulasiEmpPajakService;
+	}
     
+	
     
 }

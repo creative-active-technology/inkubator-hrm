@@ -49,7 +49,6 @@ import com.inkubator.hrm.entity.Reimbursment;
 import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.PayTempKalkulasiService;
 import com.inkubator.hrm.web.model.PayTempKalkulasiModel;
-import com.inkubator.securitycore.util.UserInfoUtil;
 
 /**
  *
@@ -603,5 +602,11 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
     public Long getTotalPayTempKalkulasiByParamForDetail(String searchParameter, Long paySalaryComponentId) throws Exception {
         return payTempKalkulasiDao.getTotalPayTempKalkulasiByParamForDetail(searchParameter, paySalaryComponentId);
     }
+
+	@Override
+	public List<PayTempKalkulasi> getAllDataByEmpDataIdAndTaxNotNull(Long empDataId) {
+		return payTempKalkulasiDao.getAllDataByEmpDataIdAndTaxNotNull(empDataId);
+		
+	}
     
 }
