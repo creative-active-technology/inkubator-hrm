@@ -382,8 +382,8 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public List<PayTempKalkulasi> getAllDataCalculatedPayment() throws Exception {
-System.out.println("=============================================START " + new Date());
+    public List<PayTempKalkulasi> getAllDataCalculatedPayment(Date payrollCalculationDate, String createdBy) throws Exception {
+    	System.out.println("=============================================START " + new Date());
 
         //initial
         WtPeriode periode = wtPeriodeDao.getEntityByStatusActive();
@@ -413,14 +413,14 @@ System.out.println("=============================================START " + new D
                 kalkulasi.setFactor(this.getFactorBasedCategory(dataException.getPaySalaryComponent().getComponentCategory()));
                 kalkulasi.setNominal(dataException.getNominal());
 
-                kalkulasi.setCreatedBy(UserInfoUtil.getUserName());
-                kalkulasi.setCreatedOn(new Date());
+                kalkulasi.setCreatedBy(createdBy);
+                kalkulasi.setCreatedOn(payrollCalculationDate);
                 datas.add(kalkulasi);
 
                 LOGGER.info("Save By ComponentDataException - " + dataException.getPaySalaryComponent().getName() + ", nominal : " + dataException.getNominal());
             }
 
-            int timeTmb = DateTimeUtil.getTotalDay(empData.getJoinDate(), new Date());
+            int timeTmb = DateTimeUtil.getTotalDay(empData.getJoinDate(), payrollCalculationDate);
             List<Long> componentIds = Lambda.extract(payComponentExceptions, Lambda.on(PayComponentDataException.class).getPaySalaryComponent().getId());
             List<PaySalaryComponent> totalPayComponetNotExcp = paySalaryComponentDao.getAllDataByEmpTypeIdAndActiveFromTmAndIdNotIn(empData.getEmployeeType().getId(), timeTmb, componentIds);
             for (PaySalaryComponent paySalaryComponent : totalPayComponetNotExcp) {
@@ -435,8 +435,8 @@ System.out.println("=============================================START " + new D
                         BigDecimal nominal = new BigDecimal(payUpload.getNominalValue());
                         kalkulasi.setNominal(nominal);
 
-                        kalkulasi.setCreatedBy(UserInfoUtil.getUserName());
-                        kalkulasi.setCreatedOn(new Date());
+                        kalkulasi.setCreatedBy(createdBy);
+                        kalkulasi.setCreatedOn(payrollCalculationDate);
                         datas.add(kalkulasi);
 
                         LOGGER.info("Save By Upload - " + payUpload.getPaySalaryComponent().getName() + ", nominal : " + nominal);
@@ -455,8 +455,8 @@ System.out.println("=============================================START " + new D
                     }
                     kalkulasi.setNominal(nominal);
 
-                    kalkulasi.setCreatedBy(UserInfoUtil.getUserName());
-                    kalkulasi.setCreatedOn(new Date());
+                    kalkulasi.setCreatedBy(createdBy);
+                    kalkulasi.setCreatedOn(payrollCalculationDate);
                     datas.add(kalkulasi);
 
                     LOGGER.info("Save By Basic Salary " + (((timeTmb / 30) < 1) ? "Not Full" : "Full") + ", nominal : " + nominal);
@@ -474,8 +474,8 @@ System.out.println("=============================================START " + new D
                         nominal = nominal.setScale(0, RoundingMode.UP);
                         kalkulasi.setNominal(nominal);
 
-                        kalkulasi.setCreatedBy(UserInfoUtil.getUserName());
-                        kalkulasi.setCreatedOn(new Date());
+                        kalkulasi.setCreatedBy(createdBy);
+                        kalkulasi.setCreatedOn(payrollCalculationDate);
                         datas.add(kalkulasi);
 
                         LOGGER.info("Save By Loan - " + paySalaryComponent.getName() + ", nominal : " + nominal);
@@ -492,8 +492,8 @@ System.out.println("=============================================START " + new D
                         kalkulasi.setFactor(this.getFactorBasedCategory(paySalaryComponent.getComponentCategory()));
                         kalkulasi.setNominal(reimbursment.getNominal());
 
-                        kalkulasi.setCreatedBy(UserInfoUtil.getUserName());
-                        kalkulasi.setCreatedOn(new Date());
+                        kalkulasi.setCreatedBy(createdBy);
+                        kalkulasi.setCreatedOn(payrollCalculationDate);
                         datas.add(kalkulasi);
 
                         LOGGER.info("Save By Reimbursment, nominal : " + reimbursment.getNominal());
@@ -519,8 +519,8 @@ System.out.println("=============================================START " + new D
                         BigDecimal nominal = new BigDecimal(outPut);
                         kalkulasi.setNominal(nominal);
 
-                        kalkulasi.setCreatedBy(UserInfoUtil.getUserName());
-                        kalkulasi.setCreatedOn(new Date());
+                        kalkulasi.setCreatedBy(createdBy);
+                        kalkulasi.setCreatedOn(payrollCalculationDate);
                         datas.add(kalkulasi);
 
                         LOGGER.info("Save By Formula, nominal : " + nominal);
@@ -538,8 +538,8 @@ System.out.println("=============================================START " + new D
                         BigDecimal nominal = new BigDecimal(benefitGroupRate.getNominal()).multiply(this.getMultiplierFromMeasurement(benefitGroupRate.getBenefitGroup().getMeasurement()));
                         kalkulasi.setNominal(nominal);
 
-                        kalkulasi.setCreatedBy(UserInfoUtil.getUserName());
-                        kalkulasi.setCreatedOn(new Date());
+                        kalkulasi.setCreatedBy(createdBy);
+                        kalkulasi.setCreatedOn(payrollCalculationDate);
                         datas.add(kalkulasi);
 
                         LOGGER.info("Save By Benefit - " + paySalaryComponent.getName() + ", nominal : " + nominal);

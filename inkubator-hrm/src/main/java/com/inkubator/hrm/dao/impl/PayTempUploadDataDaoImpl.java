@@ -110,5 +110,16 @@ public class PayTempUploadDataDaoImpl extends IDAOImpl<PayTempUploadData> implem
         return criteria.list();
 
     }
+    
+    @Override
+    public List<PayTempUploadData> getAllByNikAndComponentId(String nik, Long componentId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("paySalaryComponent", "ps");
+        criteria.createAlias("empData", "emp");
+        criteria.add(Restrictions.eq("ps.id", componentId));
+        criteria.add(Restrictions.eq("emp.nik", nik));
+        return criteria.list();
+
+    }
 
 }

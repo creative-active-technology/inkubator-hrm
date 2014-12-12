@@ -690,7 +690,4 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     public Long getTotalEmpDataNotTerminate() throws Exception {
         return this.empDataDao.getTotalEmpDataNotTerminate();
     }
-
-
-
 }

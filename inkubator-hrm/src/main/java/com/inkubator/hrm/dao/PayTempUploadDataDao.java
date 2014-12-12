@@ -28,4 +28,6 @@ public interface PayTempUploadDataDao extends IDAO<PayTempUploadData> {
 
     public List<PayTempUploadData> getAllbyEmpIdAndComponentId(Long empId, Long componentId);
 
+	public List<PayTempUploadData> getAllByNikAndComponentId(String nik, Long componentId);
+
 }
