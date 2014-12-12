@@ -296,5 +296,11 @@ public class ReimbursmentSchemaServiceImpl extends IServiceImpl implements Reimb
         reimbursmentSchema.setCreatedOn(new Date());
         this.reimbursmentSchemaDao.save(reimbursmentSchema);
     }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ,propagation = Propagation.SUPPORTS, timeout = 50)
+    public String getReimbursmentSchemaNameByPk(Long id) throws Exception {
+        return reimbursmentSchemaDao.getReimbursmentSchemaNameByPk(id);
+    }
     
 }

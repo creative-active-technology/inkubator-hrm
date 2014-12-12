@@ -98,4 +98,11 @@ public class ReimbursmentSchemaDaoImpl extends IDAOImpl<ReimbursmentSchema> impl
         criteria.add(Restrictions.eq("payrollComponent", Boolean.TRUE));
         return criteria.list();
     }
+
+    @Override
+    public String getReimbursmentSchemaNameByPk(Long id) throws Exception {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("id", id));
+        return (String) criteria.setProjection(Projections.property("name")).uniqueResult();
+    }
 }

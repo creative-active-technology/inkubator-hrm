@@ -40,8 +40,7 @@ public class PaySalaryComponentDetailController extends BaseController{
             super.initialization();
             String paySalaryEmpType = FacesUtil.getRequestParameter("execution");
             selectedPaySalaryComponent = paySalaryComponentService.getEntityByPkWithDetail(Long.parseLong(paySalaryEmpType.substring(1)));
-            listPaySalaryComponentEmpType = paySalaryComponentEmployeeTypeService.getEntityByPaySalaryComponentId(Long.parseLong(paySalaryEmpType.substring(1)));            
-            System.out.println(listPaySalaryComponentEmpType.size());
+            listPaySalaryComponentEmpType = paySalaryComponentEmployeeTypeService.getEntityByPaySalaryComponentId(Long.parseLong(paySalaryEmpType.substring(1)));
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
 

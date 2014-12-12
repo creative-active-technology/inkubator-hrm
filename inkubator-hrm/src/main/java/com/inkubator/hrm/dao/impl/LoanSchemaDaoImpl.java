@@ -108,4 +108,11 @@ public class LoanSchemaDaoImpl extends IDAOImpl<LoanSchema> implements LoanSchem
         criteria.add(Restrictions.eq("payrollComponent", HRMConstant.PAYROLL_COMPONENT_YES));
         return criteria.list();
     }
+
+    @Override
+    public String getLoanSchemaNameByPk(Long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("id", id));
+        return (String) criteria.setProjection(Projections.property("name")).uniqueResult();
+    }
 }

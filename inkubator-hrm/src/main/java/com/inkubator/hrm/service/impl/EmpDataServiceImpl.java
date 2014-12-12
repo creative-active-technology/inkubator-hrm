@@ -51,12 +51,14 @@ import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
 import com.inkubator.hrm.web.model.DistributionOvetTimeModel;
 import com.inkubator.hrm.web.model.PermitDistributionModel;
 import com.inkubator.hrm.web.model.PlacementOfEmployeeWorkScheduleModel;
+import com.inkubator.hrm.web.model.PtkpViewModel;
 import com.inkubator.hrm.web.model.WtFingerExceptionModel;
 import com.inkubator.hrm.web.search.EmpDataSearchParameter;
 import com.inkubator.hrm.web.search.ReportEmpDepartmentJabatanParameter;
 import com.inkubator.hrm.web.search.ReportEmpWorkingGroupParameter;
 import com.inkubator.hrm.web.search.ReportOfEmployeesFamilySearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+import java.util.ArrayList;
 
 /**
  *
@@ -432,6 +434,27 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<PtkpViewModel> getByParamForPtkpView(EmpDataSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
+        List<EmpData> getAllEmpData = empDataDao.getByParam(searchParameter, firstResult, maxResults, order);
+        List<PtkpViewModel> listPtkpView = new ArrayList<>();
+        for (EmpData empData : getAllEmpData) {
+            PtkpViewModel ptkpViewModel = new PtkpViewModel();
+            ptkpViewModel.setId(empData.getId());
+            ptkpViewModel.setFirstName(empData.getBioData().getFirstName());
+            ptkpViewModel.setLastName(empData.getBioData().getLastName());
+            ptkpViewModel.setAge(empData.getBioData().getDateOfBirth());
+            ptkpViewModel.setGender(empData.getBioData().getGender());
+            ptkpViewModel.setStatus(empData.getBioData().getMaritalStatus().getName());
+            ptkpViewModel.setNik(empData.getNik());
+            ptkpViewModel.setTanggungan(empData.getPtkpNumber());
+//            ptkpViewModel.setNominalPtkp(empData.get);
+            listPtkpView.add(ptkpViewModel);
+        }
+        return listPtkpView;
+    }
+    
+    @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public Long getTotalEmpDataByParam(EmpDataSearchParameter searchParameter) throws Exception {
         return this.empDataDao.getTotalEmpDataByParam(searchParameter);
@@ -667,5 +690,7 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     public Long getTotalEmpDataNotTerminate() throws Exception {
         return this.empDataDao.getTotalEmpDataNotTerminate();
     }
+
+
 
 }

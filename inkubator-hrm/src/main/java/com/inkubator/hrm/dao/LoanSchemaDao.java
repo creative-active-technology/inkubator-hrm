@@ -31,4 +31,6 @@ public interface LoanSchemaDao extends IDAO<LoanSchema> {
     public List<LoanSchema> getAllDataByEmployeeTypeId(Long employeeTypeId);
 
     public List<LoanSchema> getEntityIsPayRollComponent();
+    
+    public String getLoanSchemaNameByPk(Long id);
 }

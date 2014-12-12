@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.BenefitGroupDao;
 import com.inkubator.hrm.dao.LoanSchemaDao;
@@ -91,6 +92,11 @@ public class PaySalaryComponentServiceImpl extends IServiceImpl implements PaySa
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(PaySalaryComponent entity) throws Exception {
+        // check duplicate model component and referensi dan not id
+        Long totalDuplicates = paySalaryComponentDao.getTotalByModelComponentAndModelReferensiAndNotId(entity.getModelComponent().getId(), entity.getModelReffernsil(), entity.getId());
+        if (totalDuplicates > 0) {
+            throw new BussinessException("paySalaryComponent.error_duplicate_model_component_and_referensi");
+        }
         PaySalaryComponent update = this.getEntityByPkWithDetail(entity.getId());
         update.getPaySalaryEmpTypes().clear();
         update.setCode(entity.getCode());
@@ -324,7 +330,11 @@ public class PaySalaryComponentServiceImpl extends IServiceImpl implements PaySa
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void saveWithEmployeeType(PaySalaryComponent paySalaryComponent) throws Exception {
-
+        // check duplicate model component and referensi
+        Long totalDuplicates = paySalaryComponentDao.getTotalByModelComponentAndModelReferensi(paySalaryComponent.getModelComponent().getId(), paySalaryComponent.getModelReffernsil());
+        if (totalDuplicates > 0) {
+            throw new BussinessException("paySalaryComponent.error_duplicate_model_component_and_referensi");
+        }
         if (paySalaryComponent.getModelComponent() != null) {
             paySalaryComponent.setModelComponent(modelComponentDao.getEntiyByPK(paySalaryComponent.getModelComponent().getId()));
         }

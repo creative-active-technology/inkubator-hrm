@@ -9,13 +9,14 @@ import com.inkubator.hrm.entity.BenefitGroup;
 import com.inkubator.hrm.web.search.BenefitGroupSearchParameter;
 
 /**
-*
-* @author Taufik Hidayat
-*/
+ *
+ * @author Taufik Hidayat
+ */
 public interface BenefitGroupService extends IService<BenefitGroup> {
 
-	public List<BenefitGroup> getByParam(BenefitGroupSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception;
+    public List<BenefitGroup> getByParam(BenefitGroupSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception;
 
-	public Long getTotalByParam(BenefitGroupSearchParameter parameter) throws Exception;
+    public Long getTotalByParam(BenefitGroupSearchParameter parameter) throws Exception;
 
+    public String getBenefitGroupNameByPk(Long id) throws Exception;
 }

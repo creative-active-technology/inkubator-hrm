@@ -62,7 +62,7 @@
                         </p:toolbar>
                         <p:focus for="pencarianId" />
 
-                        <p:dataTable  var="empViewData"  value="#{empPtkpViewController.empDataLazyDataModel}" lazy="true" paginator="true" pageLinks="7" 
+                        <p:dataTable  var="ptkpViewModel"  value="#{empPtkpViewController.ptkpViewLazyDataModel}" lazy="true" paginator="true" pageLinks="7" 
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
                                       id="tableEmpDataId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
@@ -79,34 +79,37 @@
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['placement.nik']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{empViewData.nik}"/>
+                                <h:outputLabel value= "#{ptkpViewModel.nik}"/>
                             </p:column>
                             <p:column sortBy="bioData" style="width: 28%;">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{empViewData.bioData.firstName} #{empViewData.bioData.lastName}"/>
+                                <h:outputLabel value= "#{ptkpViewModel.firstName} #{ptkpViewModel.lastName}"/>
                             </p:column>
-                            <p:column sortBy="joinDate" style="width: 13%;" >
+                           <p:column sortBy="bioData" style="width: 28%;">
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['placement.join_data']}"/>
+                                    <h:outputText value="#{appmsg['global.gender']}"/>
                                 </f:facet>
-                                <p:outputLabel value= "#{empViewData.joinDate}">
-                                    <f:convertDateTime pattern="dd MMMM yyyy" />
-                                </p:outputLabel>
+                               <h:outputLabel value= "#{ptkpViewModel.gender}">
+                                    <f:converter converterId="genderConverter" />
+                                </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="jabatanByJabatanId" style="width: 10%" >
+                             <p:column sortBy="bioData" style="width: 28%;">
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['placement.jabatan_code']}"/>
+                                    <h:outputText value="#{appmsg['global.status']}"/>
                                 </f:facet>
-                                <p:outputLabel value= "#{empViewData.jabatanByJabatanId.code}"/>
+                                 <h:outputLabel value= "#{ptkpViewModel.status}">
+                                </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="jabatanByJabatanId" style="width: 25%;">
+                             <p:column sortBy="bioData" style="width: 28%;">
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['placement.jabatan_name']}"/>
+                                    <h:outputText value="#{appmsg['global.status']}"/>
                                 </f:facet>
-                                <p:outputLabel value= "#{empViewData.jabatanByJabatanId.name}"/>
+                                 <h:outputLabel value= "#{ptkpViewModel.tanggungan}">
+                                </h:outputLabel>
                             </p:column>
+                            
 
                             <p:column headerText="#{appmsg['global.action']}" style="width: 3%;text-align: center" exportable="false">
                                 <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
@@ -117,7 +120,7 @@
                             </p:column>          
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : " styleClass="label_hrm" />
-                                <p:outputLabel value="#{empPtkpViewController.empDataLazyDataModel.rowCount}" styleClass="label_hrm"/>
+                                <p:outputLabel value="#{empPtkpViewController.ptkpViewLazyDataModel.rowCount}" styleClass="label_hrm"/>
                                 <p:outputLabel value="Data" style="margin-left: 3px" styleClass="label_hrm"/>
                             </f:facet>  
                         </p:dataTable>

@@ -26,6 +26,7 @@ import com.inkubator.hrm.web.search.PaySalaryComponentSearchParameter;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.hibernate.sql.JoinType;
 
 /**
  *
@@ -146,6 +147,27 @@ public class PaySalaryComponentDaoImpl extends IDAOImpl<PaySalaryComponent> impl
         	criteria.add(Restrictions.not(Restrictions.in("id", componentIds)));
         }
         return criteria.list();
+    }
+
+    @Override
+    public Long getTotalByModelComponentAndModelReferensi(Long modelComponentId, Integer modelReferensi) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("modelComponent", "modelComponent", JoinType.INNER_JOIN);
+        criteria.setFetchMode("modelComponent", FetchMode.JOIN);
+        criteria.add(Restrictions.eq("modelComponent.id", modelComponentId));
+        criteria.add(Restrictions.eq("modelReffernsil", modelReferensi));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+
+    @Override
+    public Long getTotalByModelComponentAndModelReferensiAndNotId(Long modelComponentId, Integer modelReferensi, Long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("modelComponent", "modelComponent", JoinType.INNER_JOIN);
+        criteria.setFetchMode("modelComponent", FetchMode.JOIN);
+        criteria.add(Restrictions.eq("modelComponent.id", modelComponentId));
+        criteria.add(Restrictions.eq("modelReffernsil", modelReferensi));
+        criteria.add(Restrictions.ne("id", id));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
 }
