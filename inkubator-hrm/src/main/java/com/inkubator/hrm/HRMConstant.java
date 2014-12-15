@@ -328,4 +328,15 @@ public class HRMConstant {
     public static final Integer BENEFIT_GROUP_MEASUREMENT_PERIOD = 2;
     public static final Integer BENEFIT_GROUP_MEASUREMENT_HOUR_MULTIPLIER = 173;
     public static final Integer BENEFIT_GROUP_MEASUREMENT_DAY_MULTIPLIER = 22;
+    
+    /* Tax Free */
+    public static final String TF_STATUS_TIDAK_KAWIN = "TK";
+    public static final String TF_STATUS_KAWIN = "K";
+    public static final Integer TF_INC_PERSON_ZERO = 0;
+    public static final Integer TF_INC_PERSON_ONE = 1;
+    public static final Integer TF_INC_PERSON_TWO = 2;
+    public static final Integer TF_INC_PERSON_THREE = 0;
+    
+    public static final Integer GLOBAL_MARRIED = 1;
+    public static final Integer GLOBAL_NO_MARRIED = 0;
 }

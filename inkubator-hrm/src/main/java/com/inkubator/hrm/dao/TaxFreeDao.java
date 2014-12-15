@@ -13,5 +13,5 @@ import com.inkubator.hrm.entity.TaxFree;
  * @author deni
  */
 public interface TaxFreeDao extends IDAO<TaxFree>{
-    
+    public TaxFree getEntityByTfStatusAndIncPerson(String tfStatus, Integer incPerson);
 }
