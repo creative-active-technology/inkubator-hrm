@@ -49,13 +49,13 @@ public class EmpRotasiDaoImpl extends IDAOImpl<EmpRotasi> implements EmpRotasiDa
     private void doSearchEmpRotasiByParam(EmpRotasiSearchParameter searchParameter, Criteria criteria) {
         if (searchParameter.getNIK() != null) {
             criteria.createAlias("empData", "ep", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("ep.nik", searchParameter.getNIK(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("ep.nik", searchParameter.getNIK(), MatchMode.START));
         }
 
         if (searchParameter.getName() != null) {
             criteria.createAlias("empData", "ep", JoinType.INNER_JOIN);
             criteria.createAlias("ep.bioData", "bio", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("bio.firstName", searchParameter.getName(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("bio.firstName", searchParameter.getName(), MatchMode.START));
         }
         if (searchParameter.getJabatanLama() != null) {
             criteria.createAlias("jabatanByOldFunctionId", "jbo", JoinType.INNER_JOIN);
