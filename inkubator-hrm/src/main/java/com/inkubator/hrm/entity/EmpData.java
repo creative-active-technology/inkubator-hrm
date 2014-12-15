@@ -43,6 +43,7 @@ public class EmpData implements java.io.Serializable {
     private Jabatan jabatanByJabatanId;
     private GolonganJabatan golonganJabatan;
     private Jabatan jabatanByJabatanGajiId;
+    private TaxFree taxFree;
     private String nik;
     private Date joinDate;
     private String ppmp;
@@ -206,6 +207,16 @@ public class EmpData implements java.io.Serializable {
 
     public void setJabatanByJabatanGajiId(Jabatan jabatanByJabatanGajiId) {
         this.jabatanByJabatanGajiId = jabatanByJabatanGajiId;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "tax_free_id")
+    public TaxFree getTaxFree() {
+        return taxFree;
+    }
+
+    public void setTaxFree(TaxFree taxFree) {
+        this.taxFree = taxFree;
     }
 
     @Column(name = "NIK", unique = true, length = 45)

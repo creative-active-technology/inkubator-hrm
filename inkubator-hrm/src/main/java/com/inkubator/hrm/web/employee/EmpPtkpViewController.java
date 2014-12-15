@@ -8,8 +8,6 @@ package com.inkubator.hrm.web.employee;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.web.lazymodel.EmpDataLazyDataModel;
-import com.inkubator.hrm.web.lazymodel.PtkpViewLazyDataModel;
-import com.inkubator.hrm.web.model.PtkpViewModel;
 import com.inkubator.hrm.web.search.EmpDataSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 import java.util.ArrayList;
@@ -34,7 +32,7 @@ import org.primefaces.model.LazyDataModel;
 public class EmpPtkpViewController extends BaseController {
 
     private EmpDataSearchParameter empDataSearchParameter;
-    private LazyDataModel<PtkpViewModel> ptkpViewLazyDataModel;
+    private LazyDataModel<EmpData> empDataLazyDataModel;
     @ManagedProperty(value = "#{empDataService}")
     private EmpDataService empDataService;
     private EmpData selectedEmpData;
@@ -50,7 +48,7 @@ public class EmpPtkpViewController extends BaseController {
     @PreDestroy
     public void cleanAndExit() {
         empDataSearchParameter = null;
-        ptkpViewLazyDataModel = null;
+        empDataLazyDataModel = null;
         empDataService = null;
         selectedEmpData = null;
 
@@ -76,7 +74,7 @@ public class EmpPtkpViewController extends BaseController {
 
     @Override
     public void onDialogReturn(SelectEvent event) {
-        ptkpViewLazyDataModel = null;
+        empDataLazyDataModel = null;
         super.onDialogReturn(event);
 
     }
@@ -89,16 +87,17 @@ public class EmpPtkpViewController extends BaseController {
         this.empDataSearchParameter = empDataSearchParameter;
     }
 
-    public LazyDataModel<PtkpViewModel> getPtkpViewLazyDataModel() {
-        if (ptkpViewLazyDataModel == null) {
-            ptkpViewLazyDataModel = new PtkpViewLazyDataModel(empDataSearchParameter, empDataService);
+    public LazyDataModel<EmpData> getEmpDataLazyDataModel() {
+        if (empDataLazyDataModel == null) {
+            empDataLazyDataModel = new EmpDataLazyDataModel(empDataSearchParameter, empDataService);
         }
-        return ptkpViewLazyDataModel;
+        return empDataLazyDataModel;
     }
 
-    public void setPtkpViewLazyDataModel(LazyDataModel<PtkpViewModel> ptkpViewLazyDataModel) {
-        this.ptkpViewLazyDataModel = ptkpViewLazyDataModel;
+    public void setEmpDataLazyDataModel(LazyDataModel<EmpData> empDataLazyDataModel) {
+        this.empDataLazyDataModel = empDataLazyDataModel;
     }
+    
 
     public void doSearch() {
 

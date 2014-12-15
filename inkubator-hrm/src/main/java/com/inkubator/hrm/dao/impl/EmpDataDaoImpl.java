@@ -113,6 +113,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.setFetchMode("jabatanByJabatanId.department", FetchMode.JOIN);
         criteria.setFetchMode("jabatanByJabatanId.unitKerja", FetchMode.JOIN);
         criteria.setFetchMode("wtGroupWorking", FetchMode.JOIN);
+        criteria.setFetchMode("taxFree", FetchMode.JOIN);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
         return criteria.list();
@@ -706,8 +707,11 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     @Override
     public EmpData getEmpDataWithBiodata(Long id) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.setFetchMode("bioData", FetchMode.JOIN);
         criteria.add(Restrictions.eq("id", id));
+        criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
+        criteria.createAlias("bioData.maritalStatus", "maritalStatus", JoinType.INNER_JOIN);
+        criteria.setFetchMode("bioData", FetchMode.JOIN);
+        criteria.setFetchMode("maritalStatus", FetchMode.JOIN);
         return (EmpData) criteria.uniqueResult();
     }
 
