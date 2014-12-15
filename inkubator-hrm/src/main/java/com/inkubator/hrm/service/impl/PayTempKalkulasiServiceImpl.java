@@ -49,7 +49,6 @@ import com.inkubator.hrm.entity.Reimbursment;
 import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.PayTempKalkulasiService;
 import com.inkubator.hrm.web.model.PayTempKalkulasiModel;
-import com.inkubator.securitycore.util.UserInfoUtil;
 
 /**
  *
@@ -399,7 +398,10 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
         Double outPut = null;
 
         //Start calculation
-        List<EmpData> totalEmployee = empDataDao.getAllDataNotTerminate();
+        //List<EmpData> totalEmployee = empDataDao.getAllDataNotTerminate();
+        List<EmpData> totalEmployee = new ArrayList<EmpData>();
+        EmpData emp = empDataDao.getEntiyByPK((long)112);
+        totalEmployee.add(emp);
         System.out.println(" Total Employee " + totalEmployee.size());
         for (EmpData empData : totalEmployee) {
             LOGGER.info(" ============= EMPLOYEE : " + empData.getBioData().getFirstName() + " =====================");
@@ -603,5 +605,11 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
     public Long getTotalPayTempKalkulasiByParamForDetail(String searchParameter, Long paySalaryComponentId) throws Exception {
         return payTempKalkulasiDao.getTotalPayTempKalkulasiByParamForDetail(searchParameter, paySalaryComponentId);
     }
+
+	@Override
+	public List<PayTempKalkulasi> getAllDataByEmpDataIdAndTaxNotNull(Long empDataId) {
+		return payTempKalkulasiDao.getAllDataByEmpDataIdAndTaxNotNull(empDataId);
+		
+	}
     
 }
