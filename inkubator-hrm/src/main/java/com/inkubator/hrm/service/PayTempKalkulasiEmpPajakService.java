@@ -13,5 +13,7 @@ import com.inkubator.hrm.entity.PayTempKalkulasiEmpPajak;
  * @author denifahri
  */
 public interface PayTempKalkulasiEmpPajakService extends IService<PayTempKalkulasiEmpPajak>{
+
+	public void deleteAllData() throws Exception;
     
 }
