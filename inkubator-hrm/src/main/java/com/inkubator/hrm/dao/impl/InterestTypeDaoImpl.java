@@ -56,7 +56,7 @@ public class InterestTypeDaoImpl extends IDAOImpl<InterestType> implements Inter
     
     private void doSearchInterestTypeByParam(InterestTypeSearchParameter searchParameter, Criteria criteria) {
         if (searchParameter.getName()!=null) {
-        	criteria.add(Restrictions.like("name", searchParameter.getName(), MatchMode.ANYWHERE));
+        	criteria.add(Restrictions.like("name", searchParameter.getName(), MatchMode.START));
         } 
         criteria.add(Restrictions.isNotNull("id"));
     }
