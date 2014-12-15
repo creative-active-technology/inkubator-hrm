@@ -269,4 +269,10 @@ public class BenefitGroupServiceImpl extends IServiceImpl implements BenefitGrou
         return this.benefitGroupDao.getTotalBenefitGroupByParam(parameter);
     }
 
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ,propagation = Propagation.SUPPORTS, timeout = 50)
+    public String getBenefitGroupNameByPk(Long id) throws Exception {
+        return benefitGroupDao.getBenefitGroupNameByPk(id);
+    }
+
 }

@@ -23,4 +23,5 @@ public interface ReimbursmentSchemaService extends IService<ReimbursmentSchema>{
     
     public void saveAndNotification(ReimbursmentSchema reimbursmentSchema) throws Exception;
     
+    public String getReimbursmentSchemaNameByPk(Long id) throws Exception;
 }

@@ -18,7 +18,7 @@
                 <div id="box_bg" style="margin: 10px">
                     <h:form id="formId">
                         <h:panelGrid style="margin-bottom: 5px" columns="2">
-                            <p:graphicImage library="images" name="marital_status.png" height="36" width="36" />
+                            <p:graphicImage library="images" name="permit_balance.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
                                     <p:outputLabel value="#{appmsg['permitbalance.permitbalance']}" styleClass="header_big" />
@@ -123,7 +123,7 @@
                                                  style="font-size: 10px!important" action="#{neracaPermitViewController.doSelectEntity()}">                        
                                     <f:setPropertyActionListener value="#{data}" target="#{neracaPermitViewController.selected}" />
                                 </p:commandButton>
-                            </p:column> -->
+                            --></p:column> 
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>
                                 <p:outputLabel value="#{neracaPermitViewController.lazy.rowCount}"/>

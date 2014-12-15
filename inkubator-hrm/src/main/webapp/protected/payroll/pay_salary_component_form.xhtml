@@ -14,8 +14,8 @@
                 Home
             </ui:define>
             <ui:define name="center">
-                <p:growl id="growlBidoDataFormId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
-                <h:form id="bioDataFormId" >
+                <p:growl id="growlId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
+                <h:form id="formId" >
                     <div id="box_bg" style="margin: 10px">
                         <!--<p:panel style="margin: 10px">-->
                         <h:panelGrid style="margin-bottom: 5px" columns="2">
@@ -180,7 +180,7 @@
                                 <p:column style="width: 80%">
                                     <p:selectOneMenu id="taxable" value="#{paySalaryComponentFormController.model.taxComponentId}" style="width: 650px;margin-right: 3px" disabled="#{paySalaryComponentFormController.disableTax}">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItems value="#{paySalaryComponentFormController.dropDownTaxComponent}"/>
+                                        <f:selectItems value="#{paySalaryComponentFormController.dropDownKomponenPajak}"/>
                                     </p:selectOneMenu>
                                     <p:message for="taxable"/>
                                 </p:column>
@@ -206,14 +206,14 @@
 
                         <div style="margin-bottom: 5px">
 
-                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="bioDataFormId" 
+                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formId, :growlId" 
                                              action="#{paySalaryComponentFormController.doSaved()}" styleClass="label_button" 
                                              style="margin-right: 5px" label="#{appmsg['global.save']}"
                                              icon="ui-icon-disk"
                                              id="buttonSave" title="#{appmsg['global.save']}"/>
                             <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" action="#{paySalaryComponentFormController.doReset()}" onclick="statusDialog.show()" oncomplete="statusDialog.hide()"
-                                             process="@this" icon="ui-icon-refresh" id="cleareId" update="bioDataFormId"  styleClass="label_button"  style="margin-right: 5px">  
-                                <p:resetInput target="bioDataFormId" />  
+                                             process="@this" icon="ui-icon-refresh" id="cleareId" update="formId"  styleClass="label_button"  style="margin-right: 5px">  
+                                <p:resetInput target="formId" />  
                             </p:commandButton>
                             <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{paySalaryComponentFormController.doBack()}" immediate="true" ajax="true" partialSubmit="true" process="@this"
                                              styleClass="label_button"/>
@@ -221,7 +221,7 @@
                         </div>
 
                     </div>
-                    <p:focus  context="bioDataFormId" id="focusId"/>
+                    <p:focus  context="formId" id="focusId"/>
                 </h:form>
             </ui:define>
 

@@ -27,8 +27,13 @@ import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -73,11 +78,11 @@ public class PaySalaryComponentFormController extends BaseController {
     private List<ModelComponent> listModelComponent = new ArrayList<>();
     private Map<String, Long> dropDownPaySalaryJurnal = new TreeMap<String, Long>();
     private List<PaySalaryJurnal> listPaySalaryJurnal = new ArrayList<>();
-    private Map<String, Long> dropDownTaxComponent = new TreeMap<String, Long>();
-    ;
+    private HashMap<String, Long> dropDownTaxComponent = new HashMap<String, Long>();
     private List<TaxComponent> listTaxComponent = new ArrayList<>();
     private DualListModel<EmployeeType> dualListModel = new DualListModel<>();
     private Map<String, Long> dropDownModelRef = new HashMap<>();
+    Map<String, Long> dropDownKomponenPajak = new HashMap<String, Long>();
 
     @PostConstruct
     @Override
@@ -115,7 +120,7 @@ public class PaySalaryComponentFormController extends BaseController {
                 dualListModel.setSource(source);
                 isDisableComponetModel = Boolean.TRUE;
             }
-            
+
             listDrowDown();
         } catch (Exception e) {
             LOGGER.error("Error", e);
@@ -134,6 +139,7 @@ public class PaySalaryComponentFormController extends BaseController {
         taxComponentService = null;
         employeeTypeService = null;
         dualListModel = null;
+        dropDownKomponenPajak = null;
         dropDownModelComponent = null;
         listModelComponent = null;
         dropDownPaySalaryJurnal = null;
@@ -157,17 +163,39 @@ public class PaySalaryComponentFormController extends BaseController {
         }
 
         //tax component
-        listTaxComponent = taxComponentService.getAllData();
+        listTaxComponent = taxComponentService.getAllDataByUseComponent();
         for (TaxComponent taxComponent : listTaxComponent) {
-            dropDownTaxComponent.put(taxComponent.getName(), taxComponent.getId());
+            dropDownTaxComponent.put(taxComponent.getId() + " - " +taxComponent.getName(), taxComponent.getId());
         }
 //        dropDownModelRef = new HashMap<>();
-        MapUtil.sortByValue(dropDownTaxComponent);
+//        sortByValues(dropDownTaxComponent);
+        dropDownKomponenPajak = sortByValues(dropDownTaxComponent);
         MapUtil.sortByValue(dropDownPaySalaryJurnal);
 //        MapUtil.sortByValue(dropDownModelComponent);
     }
 
-    private PaySalaryComponentModel getModelFromEntity(PaySalaryComponent entity) {
+    private static HashMap sortByValues(HashMap map) {
+        List list = new LinkedList(map.entrySet());
+        // Defined Custom Comparator here
+        Collections.sort(list, new Comparator() {
+            public int compare(Object o1, Object o2) {
+                return ((Comparable) ((Map.Entry) (o1)).getValue())
+                        .compareTo(((Map.Entry) (o2)).getValue());
+            }
+        });
+
+       // Here I am copying the sorted list in HashMap
+        // using LinkedHashMap to preserve the insertion order
+        HashMap sortedHashMap = new LinkedHashMap();
+        for (Iterator it = list.iterator(); it.hasNext();) {
+            Map.Entry entry = (Map.Entry) it.next();
+            sortedHashMap.put(entry.getKey(), entry.getValue());
+        }
+        return sortedHashMap;
+    }
+
+
+private PaySalaryComponentModel getModelFromEntity(PaySalaryComponent entity) {
         PaySalaryComponentModel paySalaryComponentModel = new PaySalaryComponentModel();
         paySalaryComponentModel.setId(entity.getId());
         paySalaryComponentModel.setCode(entity.getCode());
@@ -175,8 +203,11 @@ public class PaySalaryComponentFormController extends BaseController {
         if (entity.getModelComponent() != null) {
             paySalaryComponentModel.setModelComponentId(entity.getModelComponent().getId());
         }
+        paySalaryComponentModel.setTaxableCheck(Boolean.FALSE);
         if (entity.getTaxComponent() != null) {
             paySalaryComponentModel.setTaxComponentId(entity.getTaxComponent().getId());
+            paySalaryComponentModel.setTaxableCheck(Boolean.TRUE);
+            disableTax = Boolean.FALSE;
         }
         if (entity.getPaySalaryJurnal() != null) {
             paySalaryComponentModel.setPaySalaryJurnalId(entity.getPaySalaryJurnal().getId());
@@ -255,6 +286,8 @@ public class PaySalaryComponentFormController extends BaseController {
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             return "/protected/payroll/pay_salary_component_detail.htm?faces-redirect=true&execution=e" + paySalaryComponent.getId();
 
+        }catch (BussinessException ex) { 
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -274,7 +307,7 @@ public class PaySalaryComponentFormController extends BaseController {
     }
 
     @Override
-    public void onDialogReturn(SelectEvent event) {
+        public void onDialogReturn(SelectEvent event) {
         super.onDialogReturn(event);
         String dataFormula = (String) event.getObject();
         model.setFormula(dataFormula);
@@ -299,7 +332,9 @@ public class PaySalaryComponentFormController extends BaseController {
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             return "/protected/payroll/pay_salary_component_detail.htm?faces-redirect=true&execution=e" + paySalaryComponent.getId();
 
-        } catch (Exception ex) {
+        }  catch (BussinessException ex) { 
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        }catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
         return null;
@@ -412,11 +447,11 @@ public class PaySalaryComponentFormController extends BaseController {
         this.listPaySalaryJurnal = listPaySalaryJurnal;
     }
 
-    public Map<String, Long> getDropDownTaxComponent() {
+    public HashMap<String, Long> getDropDownTaxComponent() {
         return dropDownTaxComponent;
     }
 
-    public void setDropDownTaxComponent(Map<String, Long> dropDownTaxComponent) {
+    public void setDropDownTaxComponent(HashMap<String, Long> dropDownTaxComponent) {
         this.dropDownTaxComponent = dropDownTaxComponent;
     }
 
@@ -466,4 +501,15 @@ public class PaySalaryComponentFormController extends BaseController {
         this.isDisableComponetModel = isDisableComponetModel;
     }
 
+    public Map<String, Long> getDropDownKomponenPajak() {
+        return dropDownKomponenPajak;
+    }
+
+    public void setDropDownKomponenPajak(Map<String, Long> dropDownKomponenPajak) {
+        this.dropDownKomponenPajak = dropDownKomponenPajak;
+    }
+
+    
+
+    
 }

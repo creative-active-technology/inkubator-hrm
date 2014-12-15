@@ -29,13 +29,14 @@ import org.primefaces.model.LazyDataModel;
  */
 @ManagedBean(name = "empPtkpViewController")
 @ViewScoped
-public class EmpPtkpViewController extends BaseController{
+public class EmpPtkpViewController extends BaseController {
+
     private EmpDataSearchParameter empDataSearchParameter;
     private LazyDataModel<EmpData> empDataLazyDataModel;
     @ManagedProperty(value = "#{empDataService}")
     private EmpDataService empDataService;
     private EmpData selectedEmpData;
-    
+
     @PostConstruct
     @Override
     public void initialization() {
@@ -52,7 +53,7 @@ public class EmpPtkpViewController extends BaseController{
         selectedEmpData = null;
 
     }
-    
+
     public void doEdit() {
         Map<String, List<String>> dataToSend = new HashMap<>();
         List<String> dataIsi = new ArrayList<>();
@@ -60,24 +61,24 @@ public class EmpPtkpViewController extends BaseController{
         dataToSend.put("empDataId", dataIsi);
         showDialog(dataToSend);
     }
-    
-    public void showDialog(Map<String, List<String>> params){
+
+    public void showDialog(Map<String, List<String>> params) {
         Map<String, Object> options = new HashMap<>();
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 400);
-        options.put("contentHeight", 270);
+        options.put("contentHeight", 280);
         RequestContext.getCurrentInstance().openDialog("emp_ptkp_form", options, params);
     }
-    
+
     @Override
     public void onDialogReturn(SelectEvent event) {
         empDataLazyDataModel = null;
-       super.onDialogReturn(event);
+        super.onDialogReturn(event);
 
     }
-    
+
     public EmpDataSearchParameter getEmpDataSearchParameter() {
         return empDataSearchParameter;
     }
@@ -93,12 +94,13 @@ public class EmpPtkpViewController extends BaseController{
         return empDataLazyDataModel;
     }
 
-    public void doSearch() {
-
-    }
-    
     public void setEmpDataLazyDataModel(LazyDataModel<EmpData> empDataLazyDataModel) {
         this.empDataLazyDataModel = empDataLazyDataModel;
+    }
+    
+
+    public void doSearch() {
+
     }
 
     public EmpDataService getEmpDataService() {
@@ -116,6 +118,6 @@ public class EmpPtkpViewController extends BaseController{
     public void setSelectedEmpData(EmpData selectedEmpData) {
         this.selectedEmpData = selectedEmpData;
     }
-    
+
     
 }

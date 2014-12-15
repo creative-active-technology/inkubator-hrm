@@ -50,5 +50,12 @@ public class TaxComponentDaoImpl extends IDAOImpl<TaxComponent> implements TaxCo
         criteria.add(Restrictions.isNotNull("id"));
     }
 
+    @Override
+    public List<TaxComponent> getAllDataByUseComponent() {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("isUseOnComponent", Boolean.TRUE));
+        return criteria.list();
+    }
+
 
 }

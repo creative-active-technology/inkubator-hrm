@@ -7,15 +7,14 @@ import java.util.List;
 import org.hibernate.criterion.Order;
 
 /**
-*
-* @author Taufik hidayat
-*/
+ *
+ * @author Taufik hidayat
+ */
 public interface BenefitGroupDao extends IDAO<BenefitGroup> {
 
-	public List<BenefitGroup> getByParam(BenefitGroupSearchParameter parameter, int firstResult, int maxResults, Order orderable);
+    public List<BenefitGroup> getByParam(BenefitGroupSearchParameter parameter, int firstResult, int maxResults, Order orderable);
 
-	public Long getTotalBenefitGroupByParam(BenefitGroupSearchParameter parameter);
-        
-  
-
+    public Long getTotalBenefitGroupByParam(BenefitGroupSearchParameter parameter);
+    
+    public String getBenefitGroupNameByPk(Long id) throws Exception;
 }

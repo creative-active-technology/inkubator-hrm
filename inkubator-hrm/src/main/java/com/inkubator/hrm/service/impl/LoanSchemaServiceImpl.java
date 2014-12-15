@@ -281,5 +281,11 @@ public class LoanSchemaServiceImpl extends IServiceImpl implements LoanSchemaSer
 	public List<LoanSchema> getAllDataByEmployeeTypeId(Long employeeTypeId) throws Exception {
 		return loanSchemaDao.getAllDataByEmployeeTypeId(employeeTypeId);
 	}
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ,propagation = Propagation.SUPPORTS, timeout = 50)
+    public String getLoanSchemaNameByPk(Long id) throws Exception {
+        return loanSchemaDao.getLoanSchemaNameByPk(id);
+    }
     
 }

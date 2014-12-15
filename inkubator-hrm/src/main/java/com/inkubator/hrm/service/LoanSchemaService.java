@@ -25,4 +25,5 @@ public interface LoanSchemaService extends IService<LoanSchema>{
     
     public List<LoanSchema> getAllDataByEmployeeTypeId(Long empDataId) throws Exception;
     
+    public String getLoanSchemaNameByPk(Long id) throws Exception;
 }
