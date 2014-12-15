@@ -53,31 +53,31 @@ public class ApprovalDefinitionDaoImpl extends IDAOImpl<ApprovalDefinition> impl
 
     private void doSearchApprovalDefinitionByParam(ApprovalDefinitionSearchParameter searchParameter, Criteria criteria) {
         if (searchParameter.getApprovalName() != null) {
-            criteria.add(Restrictions.like("name", searchParameter.getApprovalName(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("name", searchParameter.getApprovalName(), MatchMode.START));
         }
         if (searchParameter.getProcessName() != null) {
 
-            criteria.add(Restrictions.like("processType", searchParameter.getProcessName(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("processType", searchParameter.getProcessName(), MatchMode.START));
         }
         if (searchParameter.getApproverPosition() != null) {
             criteria.createAlias("jabatanByApproverPosition", "ap", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("ap.name", searchParameter.getApproverPosition(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("ap.name", searchParameter.getApproverPosition(), MatchMode.START));
         }
         if (searchParameter.getApproverIndividual() != null) {
             criteria.createAlias("hrmUserByApproverIndividual", "au", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("au.realName", searchParameter.getApproverIndividual(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("au.realName", searchParameter.getApproverIndividual(), MatchMode.START));
         }
 
         if (searchParameter.getOnBehalfApproverPosition() != null) {
             criteria.createAlias("jabatanByOnBehalfPosition", "ap", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("ap.name", searchParameter.getApproverPosition(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("ap.name", searchParameter.getApproverPosition(), MatchMode.START));
         }
         if (searchParameter.getOnBehaltAppriverIndividual() != null) {
             criteria.createAlias("hrmUserByOnBehalfIndividual", "au", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("au.realName", searchParameter.getApproverIndividual(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("au.realName", searchParameter.getApproverIndividual(), MatchMode.START));
         }
         if (searchParameter.getApproverType() != null) {
-            criteria.add(Restrictions.like("approverType", searchParameter.getApproverType(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("approverType", searchParameter.getApproverType(), MatchMode.START));
         }
         criteria.add(Restrictions.isNotNull("id"));
     }

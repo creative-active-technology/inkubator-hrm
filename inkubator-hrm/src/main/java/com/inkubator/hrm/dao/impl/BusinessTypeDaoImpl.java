@@ -49,10 +49,10 @@ public class BusinessTypeDaoImpl extends IDAOImpl<BusinessType> implements Busin
     
     private void doSearchByParam(BusinessTypeSearchParameter searchParameter, Criteria criteria) {
         if (searchParameter.getName()!=null) {
-        	criteria.add(Restrictions.like("name", searchParameter.getName(), MatchMode.ANYWHERE));
+        	criteria.add(Restrictions.like("name", searchParameter.getName(), MatchMode.START));
         } 
         if (searchParameter.getCode()!=null) {
-        	criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.ANYWHERE));
+        	criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.START));
         } 
         criteria.add(Restrictions.isNotNull("id"));
     }
