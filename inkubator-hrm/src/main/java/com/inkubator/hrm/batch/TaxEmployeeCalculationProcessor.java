@@ -16,6 +16,7 @@ import com.inkubator.hrm.entity.PayTempKalkulasi;
 import com.inkubator.hrm.entity.PayTempKalkulasiEmpPajak;
 import com.inkubator.hrm.entity.TaxComponent;
 import com.inkubator.hrm.entity.TaxRate;
+import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.TaxRateService;
 
 /**
@@ -27,6 +28,7 @@ public class TaxEmployeeCalculationProcessor implements ItemProcessor<List<PayTe
 	private List<TaxRate> taxRates;
 	private Date payrollCalculationDate; 
 	private String createdBy;
+	private EmpDataService empDataService;
 	private transient Logger LOGGER = Logger.getLogger(getClass());
 	
 	public TaxEmployeeCalculationProcessor(TaxRateService taxRateService){
@@ -82,9 +84,8 @@ public class TaxEmployeeCalculationProcessor implements ItemProcessor<List<PayTe
 		PayTempKalkulasiEmpPajak pajak_16 = Lambda.selectFirst(outputs, Lambda.having(Lambda.on(PayTempKalkulasiEmpPajak.class).getTaxComponent().getId(), Matchers.equalTo(16L)));
 		pajak_16.setNominal(12 * pajak_14.getNominal());
 		
-		//pajak 17 belum di coding, masih nunggu commit dari deni... perubahan entity di emp data
 		PayTempKalkulasiEmpPajak pajak_17 = Lambda.selectFirst(outputs, Lambda.having(Lambda.on(PayTempKalkulasiEmpPajak.class).getTaxComponent().getId(), Matchers.equalTo(17L)));
-		
+		pajak_17.setNominal(pajak_17.getEmpData().getTaxFree().getFreeNominal().doubleValue());
 		
 		PayTempKalkulasiEmpPajak pajak_18 = Lambda.selectFirst(outputs, Lambda.having(Lambda.on(PayTempKalkulasiEmpPajak.class).getTaxComponent().getId(), Matchers.equalTo(18L)));
 		pajak_18.setNominal(pajak_16.getNominal() - pajak_17.getNominal());
@@ -92,11 +93,14 @@ public class TaxEmployeeCalculationProcessor implements ItemProcessor<List<PayTe
 		PayTempKalkulasiEmpPajak pajak_19 = Lambda.selectFirst(outputs, Lambda.having(Lambda.on(PayTempKalkulasiEmpPajak.class).getTaxComponent().getId(), Matchers.equalTo(19L)));		
 		pajak_19.setNominal(this.getTaxProgressive(pajak_18.getNominal()));
 		
+		PayTempKalkulasiEmpPajak pajak_21 = Lambda.selectFirst(outputs, Lambda.having(Lambda.on(PayTempKalkulasiEmpPajak.class).getTaxComponent().getId(), Matchers.equalTo(21L)));
+		pajak_21.setNominal(this.roundingHundred(pajak_19.getNominal() / 12));
+		
+		
+		/** START gross up calculation (optional per company)
+		 * (jika employee bayar pajak sendiri, comment code dibawah ini sampai END tag) */ 
 		PayTempKalkulasiEmpPajak pajak_2 = Lambda.selectFirst(outputs, Lambda.having(Lambda.on(PayTempKalkulasiEmpPajak.class).getTaxComponent().getId(), Matchers.equalTo(2L)));
-		pajak_2.setNominal(this.roundingHundred(pajak_18.getNominal() / 12));
-		
-		
-		//gross up calculation(optional every company)
+		pajak_2.setNominal(pajak_21.getNominal());
 		pajak_7.setNominal(pajak_7.getNominal() + pajak_2.getNominal());
 		pajak_9.setNominal(pajak_9.getNominal() + pajak_2.getNominal());
 		pajak_10.setNominal(0.05 * pajak_7.getNominal());
@@ -104,28 +108,15 @@ public class TaxEmployeeCalculationProcessor implements ItemProcessor<List<PayTe
 		pajak_14.setNominal(pajak_9.getNominal() - pajak_13.getNominal());
 		pajak_16.setNominal(12 * pajak_14.getNominal());
 		pajak_18.setNominal(pajak_16.getNominal() - pajak_17.getNominal());
-		pajak_19.setNominal(this.getTaxProgressive(pajak_18.getNominal()));
-		PayTempKalkulasiEmpPajak pajak_21 = Lambda.selectFirst(outputs, Lambda.having(Lambda.on(PayTempKalkulasiEmpPajak.class).getTaxComponent().getId(), Matchers.equalTo(21L)));
+		pajak_19.setNominal(this.getTaxProgressive(pajak_18.getNominal()));		
 		pajak_21.setNominal(this.roundingHundred(pajak_19.getNominal() / 12));
-		pajak_2.setNominal(pajak_21.getNominal());
+		/** END gross up calculation */
+		
+		//Final TAX
+		PayTempKalkulasiEmpPajak pajak_23 = Lambda.selectFirst(outputs, Lambda.having(Lambda.on(PayTempKalkulasiEmpPajak.class).getTaxComponent().getId(), Matchers.equalTo(23L)));
+		pajak_23.setNominal(pajak_21.getNominal());
 		
 		return outputs;
-	}
-
-	public Date getPayrollCalculationDate() {
-		return payrollCalculationDate;
-	}
-
-	public void setPayrollCalculationDate(Date payrollCalculationDate) {
-		this.payrollCalculationDate = payrollCalculationDate;
-	}
-
-	public String getCreatedBy() {
-		return createdBy;
-	}
-
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
 	}
 	
 	private Double getTaxProgressive(double nominal){
@@ -158,5 +149,29 @@ public class TaxEmployeeCalculationProcessor implements ItemProcessor<List<PayTe
 		
 		return nominal;
 	}
+	
+	public Date getPayrollCalculationDate() {
+		return payrollCalculationDate;
+	}
 
+	public void setPayrollCalculationDate(Date payrollCalculationDate) {
+		this.payrollCalculationDate = payrollCalculationDate;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public EmpDataService getEmpDataService() {
+		return empDataService;
+	}
+
+	public void setEmpDataService(EmpDataService empDataService) {
+		this.empDataService = empDataService;
+	}
+	
 }
