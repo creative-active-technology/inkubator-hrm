@@ -76,6 +76,7 @@
 		<property name="payTempKalkulasiService" ref="payTempKalkulasiService"/>
 	</bean>
 	<bean id="customTaxEmployeeCalculationItemProcessor" class="com.inkubator.hrm.batch.TaxEmployeeCalculationProcessor" scope="step">		
+		<constructor-arg name="taxRateService" ref="taxRateService"/>
 		<property name="payrollCalculationDate" value="#{jobParameters['payrollCalculationDate']}"/>
 		<property name="createdBy" value="#{jobParameters['createdBy']}"/>
 	</bean>	

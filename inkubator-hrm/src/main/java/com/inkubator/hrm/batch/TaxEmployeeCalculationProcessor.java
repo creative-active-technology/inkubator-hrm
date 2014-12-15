@@ -2,8 +2,10 @@ package com.inkubator.hrm.batch;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.hamcrest.Matchers;
 import org.springframework.batch.item.ItemProcessor;
 
@@ -13,6 +15,8 @@ import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.hrm.entity.PayTempKalkulasi;
 import com.inkubator.hrm.entity.PayTempKalkulasiEmpPajak;
 import com.inkubator.hrm.entity.TaxComponent;
+import com.inkubator.hrm.entity.TaxRate;
+import com.inkubator.hrm.service.TaxRateService;
 
 /**
  *
@@ -20,8 +24,19 @@ import com.inkubator.hrm.entity.TaxComponent;
  */
 public class TaxEmployeeCalculationProcessor implements ItemProcessor<List<PayTempKalkulasi>, List<PayTempKalkulasiEmpPajak>> {
 
+	private List<TaxRate> taxRates;
 	private Date payrollCalculationDate; 
 	private String createdBy;
+	private transient Logger LOGGER = Logger.getLogger(getClass());
+	
+	public TaxEmployeeCalculationProcessor(TaxRateService taxRateService){
+		try {
+			taxRates = taxRateService.getAllData();
+			taxRates = Lambda.sort(taxRates, Lambda.on(TaxRate.class).getLowRate());
+		} catch (Exception e) {
+			LOGGER.error("Error", e);
+		}
+	}
 	
 	@Override
 	public List<PayTempKalkulasiEmpPajak> process(List<PayTempKalkulasi> items) throws Exception {
@@ -67,6 +82,33 @@ public class TaxEmployeeCalculationProcessor implements ItemProcessor<List<PayTe
 		PayTempKalkulasiEmpPajak pajak_16 = Lambda.selectFirst(outputs, Lambda.having(Lambda.on(PayTempKalkulasiEmpPajak.class).getTaxComponent().getId(), Matchers.equalTo(16L)));
 		pajak_16.setNominal(12 * pajak_14.getNominal());
 		
+		//pajak 17 belum di coding, masih nunggu commit dari deni... perubahan entity di emp data
+		PayTempKalkulasiEmpPajak pajak_17 = Lambda.selectFirst(outputs, Lambda.having(Lambda.on(PayTempKalkulasiEmpPajak.class).getTaxComponent().getId(), Matchers.equalTo(17L)));
+		
+		
+		PayTempKalkulasiEmpPajak pajak_18 = Lambda.selectFirst(outputs, Lambda.having(Lambda.on(PayTempKalkulasiEmpPajak.class).getTaxComponent().getId(), Matchers.equalTo(18L)));
+		pajak_18.setNominal(pajak_16.getNominal() - pajak_17.getNominal());
+		
+		PayTempKalkulasiEmpPajak pajak_19 = Lambda.selectFirst(outputs, Lambda.having(Lambda.on(PayTempKalkulasiEmpPajak.class).getTaxComponent().getId(), Matchers.equalTo(19L)));		
+		pajak_19.setNominal(this.getTaxProgressive(pajak_18.getNominal()));
+		
+		PayTempKalkulasiEmpPajak pajak_2 = Lambda.selectFirst(outputs, Lambda.having(Lambda.on(PayTempKalkulasiEmpPajak.class).getTaxComponent().getId(), Matchers.equalTo(2L)));
+		pajak_2.setNominal(this.roundingHundred(pajak_18.getNominal() / 12));
+		
+		
+		//gross up calculation(optional every company)
+		pajak_7.setNominal(pajak_7.getNominal() + pajak_2.getNominal());
+		pajak_9.setNominal(pajak_9.getNominal() + pajak_2.getNominal());
+		pajak_10.setNominal(0.05 * pajak_7.getNominal());
+		pajak_13.setNominal(pajak_10.getNominal() + pajak_11.getNominal() +  pajak_12.getNominal());
+		pajak_14.setNominal(pajak_9.getNominal() - pajak_13.getNominal());
+		pajak_16.setNominal(12 * pajak_14.getNominal());
+		pajak_18.setNominal(pajak_16.getNominal() - pajak_17.getNominal());
+		pajak_19.setNominal(this.getTaxProgressive(pajak_18.getNominal()));
+		PayTempKalkulasiEmpPajak pajak_21 = Lambda.selectFirst(outputs, Lambda.having(Lambda.on(PayTempKalkulasiEmpPajak.class).getTaxComponent().getId(), Matchers.equalTo(21L)));
+		pajak_21.setNominal(this.roundingHundred(pajak_19.getNominal() / 12));
+		pajak_2.setNominal(pajak_21.getNominal());
+		
 		return outputs;
 	}
 
@@ -86,6 +128,35 @@ public class TaxEmployeeCalculationProcessor implements ItemProcessor<List<PayTe
 		this.createdBy = createdBy;
 	}
 	
+	private Double getTaxProgressive(double nominal){
+		double tax = 0.0;
+		Iterator<TaxRate> iter = taxRates.iterator();
+		for(;iter.hasNext();){
+			TaxRate taxRate = iter.next();
+			
+			if(nominal > taxRate.getTopRate()) {
+				if(iter.hasNext()){
+					tax = tax + (((taxRate.getTopRate() * taxRate.getPercentRate()) / 100));				
+					nominal = nominal - taxRate.getTopRate();
+				} else {
+					tax = tax + (((nominal * taxRate.getPercentRate()) / 100));
+				}
+			} else {
+				tax = tax + (((nominal * taxRate.getPercentRate()) / 100));
+				break;
+			}
+		}
+		
+		return tax;
+	}
 	
+	private Double roundingHundred(double nominal){
+		
+		nominal = nominal / 100;
+		nominal = Math.ceil(nominal);
+		nominal = nominal * 100;
+		
+		return nominal;
+	}
 
 }
