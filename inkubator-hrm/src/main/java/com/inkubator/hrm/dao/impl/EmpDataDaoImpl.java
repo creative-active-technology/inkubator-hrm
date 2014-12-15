@@ -729,4 +729,12 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
          return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
+	@Override
+	public Long getTotalByTaxFreeIsNull() {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.isNull("taxFree"));
+        criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
+
 }

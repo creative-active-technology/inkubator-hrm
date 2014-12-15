@@ -25,6 +25,7 @@ import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
 
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.PayTempKalkulasi;
 import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.EmpDataService;
@@ -36,6 +37,8 @@ import com.inkubator.hrm.web.model.PayTempKalkulasiModel;
 import com.inkubator.hrm.web.search.PayTempKalkulasiSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.controller.BaseController;
+import com.inkubator.webcore.util.FacesUtil;
+import com.inkubator.webcore.util.MessagesResourceUtil;
 
 /**
  *
@@ -160,12 +163,21 @@ public class PaySalaryExecuteController extends BaseController {
     	if(jobExecution.getStatus() == BatchStatus.COMPLETED){
     		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Informasi","Kalkulasi Penggajian sukses dilakukan"));
     	} else {
-    		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Informasi","Kalkulasi Penggajian gagal dilakukan"));
+    		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Informasi","Kalkulasi Penggajian gagal dilakukan"));
     	}
     }
     
-    public void doPrefareCalculation(){
-        progress=0;
+    public void doInitCalculation(){
+    	try {
+			if(empDataService.getTotalByTaxFreeIsNull()>0) {
+				MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_ERROR, "global.error", "salaryCalculation.error_employee_does_not_have_ptkp",
+			        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+				FacesContext.getCurrentInstance().validationFailed();
+			}
+			progress=0;
+		} catch (Exception e) {
+			LOGGER.error("Error ", e);
+		}
     }
 
     public String doDetail() {
