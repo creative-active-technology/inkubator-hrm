@@ -127,43 +127,51 @@ public class PaySalaryExecuteController extends BaseController {
     }
 
     public void doCalculatePayroll() {
-        try {
-        	System.out.println("=============================================START doCalculatePayroll " + new Date());
-        	payTempKalkulasiService.deleteAllData();
-        	payTempKalkulasiEmpPajakService.deleteAllData();
-            long sleepVariable = empDataService.getTotalEmpDataNotTerminate() * 3;
-            
-            JobParameters jobParameters = new JobParametersBuilder()
-                    .addString("timeInMilis", String.valueOf(System.currentTimeMillis()))
-                    .addDate("payrollCalculationDate", payrollCalculationDate)
-	                .addString("createdBy", UserInfoUtil.getUserName()).toJobParameters();
-            jobExecution = jobLauncherAsync.run(jobPayEmployeeCalculation, jobParameters);
-            
-            int i = 0;
-            while(true){
-            	if(jobExecution.getStatus() == BatchStatus.STARTED || jobExecution.getStatus() == BatchStatus.STARTING) {
-	            	if(i <= 85){
-	            		setProgress(i++);
+    	/** to cater prevent multiple click, that will make batch execute multiple time. 
+    	 *  please see onComplete method that will set jobExecution == null */
+    	if(jobExecution == null){ 
+	        try {
+	        	System.out.println("=============================================START doCalculatePayroll " + new Date());
+	        	payTempKalkulasiService.deleteAllData();
+	        	payTempKalkulasiEmpPajakService.deleteAllData();
+	            long sleepVariable = empDataService.getTotalEmpDataNotTerminate() * 3;
+	            
+	            JobParameters jobParameters = new JobParametersBuilder()
+	                    .addString("timeInMilis", String.valueOf(System.currentTimeMillis()))
+	                    .addDate("payrollCalculationDate", payrollCalculationDate)
+		                .addString("createdBy", UserInfoUtil.getUserName()).toJobParameters();
+	            jobExecution = jobLauncherAsync.run(jobPayEmployeeCalculation, jobParameters);
+	            
+	            int i = 0;
+	            while(true){
+	            	if(jobExecution.getStatus() == BatchStatus.STARTED || jobExecution.getStatus() == BatchStatus.STARTING) {
+		            	if(i <= 85){
+		            		setProgress(i++);
+		            	}
+		                try {
+		                    Thread.sleep(sleepVariable);
+		                } catch (InterruptedException e) {}	
+	            	} else {
+	            		setProgress(100);
+	            		break;
 	            	}
-	                try {
-	                    Thread.sleep(sleepVariable);
-	                } catch (InterruptedException e) {}	
-            	} else {
-            		setProgress(100);
-            		break;
-            	}
-            }
-            System.out.println("=============================================END doCalculatePayroll " + new Date());
-        } catch (Exception ex) {
-            LOGGER.error("Error ", ex);
-        }
+	            }
+	            System.out.println("=============================================END doCalculatePayroll " + new Date());
+	        } catch (Exception ex) {
+	            LOGGER.error("Error ", ex);
+	        }
+    	}
     }
     
     public void onComplete() {
-    	if(jobExecution.getStatus() == BatchStatus.COMPLETED){
-    		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Informasi","Kalkulasi Penggajian sukses dilakukan"));
-    	} else {
-    		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Informasi","Kalkulasi Penggajian gagal dilakukan"));
+    	if(jobExecution != null) {
+	    	setProgress(0);
+	    	if(jobExecution.getStatus() == BatchStatus.COMPLETED){
+	    		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Informasi","Kalkulasi Penggajian sukses dilakukan"));
+	    	} else {
+	    		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Informasi","Kalkulasi Penggajian gagal dilakukan"));
+	    	}
+	    	jobExecution = null;
     	}
     }
     

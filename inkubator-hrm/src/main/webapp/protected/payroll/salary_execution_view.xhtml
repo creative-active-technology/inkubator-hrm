@@ -225,11 +225,11 @@
                                 <p:calendar  id="tanggalKalkulasiId" pattern="dd MMMM yyyy" label="Tanggal Kalkulasi" value="#{paySalaryExecuteController.payrollCalculationDate}"
                                              required="true" navigator="true" mindate="#{paySalaryExecuteController.wtPeriodeAbsen.fromPeriode}" maxdate="#{paySalaryExecuteController.wtPeriodeAbsen.untilPeriode}">
                                 </p:calendar>
-                                <p:commandButton value="Calculate"  onclick="PF('pbAjax').start();" widgetVar="startButton2" action="#{paySalaryExecuteController.doCalculatePayroll()}"  id="startID" icon="ui-icon-refresh" update="detailPanel"/>
+                                <p:commandButton value="Calculate"  onclick="PF('pbAjax').start();" widgetVar="startButton" action="#{paySalaryExecuteController.doCalculatePayroll()}"  id="startID" icon="ui-icon-refresh" update="detailPanel"/>
                             </h:panelGrid>
 
                             <p:progressBar widgetVar="pbAjax" ajax="true" value="#{paySalaryExecuteController.progress}" labelTemplate="{value}%" styleClass="animated" global="false" style="margin-bottom: 20px">
-                                <p:ajax event="complete" listener="#{paySalaryExecuteController.onComplete}" update=":formId:growlId" oncomplete="detail.hide()" />
+                                <p:ajax event="complete" listener="#{paySalaryExecuteController.onComplete}" update=":formId:growlId,:formId:tableId" oncomplete="detail.hide()" />
                             </p:progressBar>
                             <p:focus for="startID"/>
                             <p:defaultCommand target="startID" />
