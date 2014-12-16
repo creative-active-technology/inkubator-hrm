@@ -1,5 +1,5 @@
 /*
-<<<<<<< HEAD
+ <<<<<<< HEAD
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
@@ -26,10 +26,9 @@ import org.springframework.stereotype.Repository;
  *
  * @author Taufik
  */
-
 @Repository(value = "neracaPermitDao")
 @Lazy
-public class NeracaPermitDaoImpl extends IDAOImpl<NeracaPermit> implements NeracaPermitDao{
+public class NeracaPermitDaoImpl extends IDAOImpl<NeracaPermit> implements NeracaPermitDao {
 
     @Override
     public Class<NeracaPermit> getEntityClass() {
@@ -45,11 +44,11 @@ public class NeracaPermitDaoImpl extends IDAOImpl<NeracaPermit> implements Nerac
         criteria.setFetchMode("permitDistribution.empData.jabatanByJabatanId", FetchMode.JOIN);
         criteria.setFetchMode("permitDistribution.permitClassification", FetchMode.JOIN);
         doSearch(searchParameter, criteria);
-        criteria.createAlias("ld.empData", "empData", JoinType.INNER_JOIN);
+//        criteria.createAlias("ld.empData", "empData", JoinType.INNER_JOIN);
         criteria.createAlias("ld.permitClassification", "permitClassification", JoinType.INNER_JOIN);
         criteria.addOrder(Order.asc("permitClassification.name"));
         criteria.addOrder(order);
-        criteria.addOrder(Order.asc("empData.nik"));
+//        criteria.addOrder(Order.asc("ed.nik"));
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
         return criteria.list();
@@ -72,31 +71,31 @@ public class NeracaPermitDaoImpl extends IDAOImpl<NeracaPermit> implements Nerac
         criteria.add(Restrictions.eq("id", id));
         return (NeracaPermit) criteria.uniqueResult();
     }
-    
+
     private void doSearch(NeracaPermitSearchParameter searchParameter, Criteria criteria) {
         criteria.createAlias("permitDistribution", "ld", JoinType.INNER_JOIN);
-        if (searchParameter.getEmpData()!= null) {
-            criteria.createAlias("ld.empData", "ed", JoinType.INNER_JOIN);
-            criteria.createAlias("ed.bioData", "bio", JoinType.INNER_JOIN);
+        criteria.createAlias("ld.empData", "ed", JoinType.INNER_JOIN);
+        criteria.createAlias("ed.bioData", "bio", JoinType.INNER_JOIN);
+        if (searchParameter.getEmpData() != null) {
             Disjunction disjunction = Restrictions.disjunction();
-            disjunction.add(Restrictions.like("bio.firstName", searchParameter.getEmpData(), MatchMode.ANYWHERE));
-            disjunction.add(Restrictions.like("bio.lastName", searchParameter.getEmpData(), MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.like("bio.firstName", searchParameter.getEmpData(), MatchMode.START));
+            disjunction.add(Restrictions.like("bio.lastName", searchParameter.getEmpData(), MatchMode.START));
             criteria.add(disjunction);
         }
         if (StringUtils.isNotEmpty(searchParameter.getPermit())) {
             criteria.createAlias("ld.permit", "l", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("l.name", searchParameter.getPermit(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("l.name", searchParameter.getPermit(), MatchMode.START));
         }
-        if (searchParameter.getNik()!= null) {
+        if (searchParameter.getNik() != null) {
             criteria.createAlias("ld.empData", "ed", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("ed.nik", searchParameter.getNik(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("ed.nik", searchParameter.getNik(), MatchMode.START));
         }
         criteria.add(Restrictions.isNotNull("id"));
     }
 
     @Override
     public void saveBacth(List<NeracaPermit> data) {
-       int counter = 0;
+        int counter = 0;
         for (NeracaPermit neracaPermit : data) {
             getCurrentSession().save(neracaPermit);
             counter++;
