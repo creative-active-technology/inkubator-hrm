@@ -62,17 +62,17 @@ public class PermitDistributionDaoImpl extends IDAOImpl<PermitDistribution> impl
             criteria.createAlias("empData", "ed", JoinType.INNER_JOIN);
             criteria.createAlias("ed.bioData", "bio", JoinType.INNER_JOIN);
             Disjunction disjunction = Restrictions.disjunction();
-            disjunction.add(Restrictions.like("bio.firstName", searchParameter.getEmpData(), MatchMode.ANYWHERE));
-            disjunction.add(Restrictions.like("bio.lastName", searchParameter.getEmpData(), MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.like("bio.firstName", searchParameter.getEmpData(), MatchMode.START));
+            disjunction.add(Restrictions.like("bio.lastName", searchParameter.getEmpData(), MatchMode.START));
             criteria.add(disjunction);
         }
         if (StringUtils.isNotEmpty(searchParameter.getPermitClassification())) {
             criteria.createAlias("permitClassification", "p", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("p.name", searchParameter.getPermitClassification(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("p.name", searchParameter.getPermitClassification(), MatchMode.START));
         }
         if (searchParameter.getNik()!= null) {
             criteria.createAlias("empData", "ed", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("ed.nik", searchParameter.getNik(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("ed.nik", searchParameter.getNik(), MatchMode.START));
         }
         criteria.add(Restrictions.isNotNull("id"));
     }
