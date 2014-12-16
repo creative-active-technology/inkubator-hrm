@@ -53,13 +53,13 @@ public class ResourceNameDaoImpl extends IDAOImpl<ResourceName> implements Resou
     private void doSearchByParam(ResourceNameSearchParameter searchParameter, Criteria criteria) {
         criteria.createAlias("resourceType", "resourceType", JoinType.INNER_JOIN);
         if (searchParameter.getCode()!=null) {
-        	criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.ANYWHERE));
+        	criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.START));
         }
         if (searchParameter.getName()!=null) {
-        	criteria.add(Restrictions.like("name", searchParameter.getName(), MatchMode.ANYWHERE));
+        	criteria.add(Restrictions.like("name", searchParameter.getName(), MatchMode.START));
         } 
         if (searchParameter.getResourceType()!=null) {
-        	criteria.add(Restrictions.like("resourceType.resourceType", searchParameter.getResourceType(), MatchMode.ANYWHERE));
+        	criteria.add(Restrictions.like("resourceType.resourceType", searchParameter.getResourceType(), MatchMode.START));
         } 
         criteria.add(Restrictions.isNotNull("id"));
     }
