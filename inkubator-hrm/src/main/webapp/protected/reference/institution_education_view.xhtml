@@ -160,6 +160,10 @@
                             <p:column style="width:70%;"><p:outputLabel value="#{institutionEducationViewController.selectedInstitutionEducation.institutionEducationName}" styleClass="label_hrm"/></p:column>
                         </p:row>  
                         <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['educationhistory.education_level']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{institutionEducationViewController.selectedInstitutionEducation.educationLevel.name}" styleClass="label_hrm"/></p:column>
+                        </p:row>  
+                        <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['institutionEducation.address']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:70%;"><p:outputLabel value="#{institutionEducationViewController.selectedInstitutionEducation.address}" styleClass="label_hrm"/></p:column>
                         </p:row>  

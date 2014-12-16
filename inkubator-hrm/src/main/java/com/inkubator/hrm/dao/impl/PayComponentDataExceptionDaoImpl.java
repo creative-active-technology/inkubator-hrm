@@ -78,7 +78,7 @@ public class PayComponentDataExceptionDaoImpl extends IDAOImpl<PayComponentDataE
     private void doSearchByParam(PayComponentDataExceptionSearchParameter searchParameter, Criteria criteria) {
         if (searchParameter.getPaySalaryComponent() != null) {
             criteria.createAlias("paySalaryComponent", "paySalaryComponent", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("paySalaryComponent.name", searchParameter.getPaySalaryComponent(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("paySalaryComponent.name", searchParameter.getPaySalaryComponent(), MatchMode.START));
         }
         criteria.add(Restrictions.isNotNull("id"));
     }
@@ -89,9 +89,9 @@ public class PayComponentDataExceptionDaoImpl extends IDAOImpl<PayComponentDataE
         criteria.createAlias("paySalaryComponent", "paySalaryComponent", JoinType.INNER_JOIN);
         if (StringUtils.isNotEmpty(searchParameter)) {
             Disjunction disjunction = Restrictions.disjunction();
-            disjunction.add(Restrictions.like("empData.nik", searchParameter, MatchMode.ANYWHERE));
-            disjunction.add(Restrictions.like("bioData.firstName", searchParameter, MatchMode.ANYWHERE));
-            disjunction.add(Restrictions.like("bioData.lastName", searchParameter, MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.like("empData.nik", searchParameter, MatchMode.START));
+            disjunction.add(Restrictions.like("bioData.firstName", searchParameter, MatchMode.START));
+            disjunction.add(Restrictions.like("bioData.lastName", searchParameter, MatchMode.START));
             criteria.add(disjunction);
         }
         criteria.add(Restrictions.isNotNull("id"));

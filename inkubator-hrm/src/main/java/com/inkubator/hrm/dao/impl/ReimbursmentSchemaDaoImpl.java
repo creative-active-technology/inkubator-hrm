@@ -75,10 +75,10 @@ public class ReimbursmentSchemaDaoImpl extends IDAOImpl<ReimbursmentSchema> impl
             resNominalUnit = searchParameter.getNominalUnit().compareTo(bg);
         }
         if (searchParameter.getCode() != null) {
-            criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.START));
         }
         if (searchParameter.getName() != null) {
-            criteria.add(Restrictions.like("name", searchParameter.getName(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("name", searchParameter.getName(), MatchMode.START));
         }
         if (searchParameter.getNominalUnit() != null && resNominalUnit != 0) {
             criteria.add(Restrictions.eq("nominalUnit", searchParameter.getNominalUnit()));

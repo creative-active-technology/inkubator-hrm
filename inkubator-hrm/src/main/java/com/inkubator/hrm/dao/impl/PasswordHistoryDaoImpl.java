@@ -53,16 +53,16 @@ public class PasswordHistoryDaoImpl extends IDAOImpl<PasswordHistory> implements
     
     private void doSearchPasswordHistByParam(PasswordHistorySearchParameter searchParameter, Criteria criteria) {
         if (searchParameter.getUsername()!=null) {
-        	criteria.add(Restrictions.like("userName", searchParameter.getUsername(), MatchMode.ANYWHERE));
+        	criteria.add(Restrictions.like("userName", searchParameter.getUsername(), MatchMode.START));
         } 
         if(searchParameter.getRealname()!=null){
-        	criteria.add(Restrictions.like("realName", searchParameter.getRealname(), MatchMode.ANYWHERE));
+        	criteria.add(Restrictions.like("realName", searchParameter.getRealname(), MatchMode.START));
         }
         if(searchParameter.getEmailAddress()!=null){
-        	criteria.add(Restrictions.like("emailAddress", searchParameter.getEmailAddress(), MatchMode.ANYWHERE));
+        	criteria.add(Restrictions.like("emailAddress", searchParameter.getEmailAddress(), MatchMode.START));
         }
         if(searchParameter.getPhoneNumber()!=null){
-        	criteria.add(Restrictions.like("phoneNumber", searchParameter.getPhoneNumber(), MatchMode.ANYWHERE));
+        	criteria.add(Restrictions.like("phoneNumber", searchParameter.getPhoneNumber(), MatchMode.START));
         }
         criteria.add(Restrictions.isNotNull("id"));
     }

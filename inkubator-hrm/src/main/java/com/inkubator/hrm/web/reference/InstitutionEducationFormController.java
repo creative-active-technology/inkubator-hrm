@@ -4,10 +4,12 @@ import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.City;
 import com.inkubator.hrm.entity.Country;
+import com.inkubator.hrm.entity.EducationLevel;
 import com.inkubator.hrm.entity.InstitutionEducation;
 import com.inkubator.hrm.entity.Province;
 import com.inkubator.hrm.service.CityService;
 import com.inkubator.hrm.service.CountryService;
+import com.inkubator.hrm.service.EducationLevelService;
 import com.inkubator.hrm.service.InstitutionEducationService;
 import com.inkubator.hrm.service.ProvinceService;
 import com.inkubator.hrm.util.MapUtil;
@@ -51,9 +53,12 @@ public class InstitutionEducationFormController extends BaseController {
     private ProvinceService provinceService;
     @ManagedProperty(value = "#{countryService}")
     private CountryService countryService;
+    @ManagedProperty(value = "#{educationLevelService}")
+    private EducationLevelService educationLevelService;
     private Map<String, Long> countrys = new TreeMap<>();
     private Map<String, Long> provinces = new TreeMap<>();
     private Map<String, Long> citys = new TreeMap<>();
+    private Map<String, Long> dropDownEducationLevel = new TreeMap<>();
     private Boolean disabledProvince;
     private Boolean disabledCity;
     private String locale;
@@ -77,6 +82,12 @@ public class InstitutionEducationFormController extends BaseController {
                 countrys.put(country.getCountryName(), country.getId());
             }
 
+            List<EducationLevel> listEducationLevel = educationLevelService.getAllData();
+
+            for (EducationLevel educationLevel : listEducationLevel) {
+                dropDownEducationLevel.put(educationLevel.getName(), educationLevel.getId());
+            }
+            MapUtil.sortByValue(dropDownEducationLevel);
             MapUtil.sortByValue(countrys);
 
             if (StringUtils.isNumeric(param)) {
@@ -90,6 +101,9 @@ public class InstitutionEducationFormController extends BaseController {
                         institutionEducationModel.setProvinceId(institutionEducation.getCity().getProvince().getId());
                         institutionEducationModel.setCityId(institutionEducation.getCity().getId());
                         institutionEducationModel.setAddress(institutionEducation.getAddress());
+                        if (institutionEducation.getEducationLevel() != null) {
+                            institutionEducationModel.setEducationLevelId(institutionEducation.getEducationLevel().getId());
+                        }
                         institutionEducationModel.setPostalCode(institutionEducation.getPostalCode());
                         isUpdate = Boolean.TRUE;
                         disabledCity = Boolean.FALSE;
@@ -100,7 +114,7 @@ public class InstitutionEducationFormController extends BaseController {
                         }
 
                         MapUtil.sortByValue(provinces);
-
+                        
                         List<City> listCities = cityService.getByProvinceIdWithDetail(institutionEducationModel.getProvinceId());
 
                         for (City city : listCities) {
@@ -132,6 +146,8 @@ public class InstitutionEducationFormController extends BaseController {
         citys = null;
         locale = null;
         messages = null;
+        educationLevelService = null;
+        dropDownEducationLevel = null;
     }
 
     public InstitutionEducationModel getInstitutionEducationModel() {
@@ -218,7 +234,7 @@ public class InstitutionEducationFormController extends BaseController {
                 RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
             }
             cleanAndExit();
-        } catch (BussinessException ex) { 
+        } catch (BussinessException ex) {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
@@ -233,6 +249,7 @@ public class InstitutionEducationFormController extends BaseController {
         institutionEducation.setInstitutionEducationCode(institutionEducationModel.getInstitutionEducationCode());
         institutionEducation.setInstitutionEducationName(institutionEducationModel.getInstitutionEducationName());
         institutionEducation.setCity(new City(institutionEducationModel.getCityId()));
+        institutionEducation.setEducationLevel(new EducationLevel(institutionEducationModel.getEducationLevelId()));
         institutionEducation.setAddress(institutionEducationModel.getAddress());
         institutionEducation.setPostalCode(institutionEducationModel.getPostalCode());
         return institutionEducation;
@@ -295,4 +312,21 @@ public class InstitutionEducationFormController extends BaseController {
             LOGGER.error("Error", ex);
         }
     }
+
+    public EducationLevelService getEducationLevelService() {
+        return educationLevelService;
+    }
+
+    public void setEducationLevelService(EducationLevelService educationLevelService) {
+        this.educationLevelService = educationLevelService;
+    }
+
+    public Map<String, Long> getDropDownEducationLevel() {
+        return dropDownEducationLevel;
+    }
+
+    public void setDropDownEducationLevel(Map<String, Long> dropDownEducationLevel) {
+        this.dropDownEducationLevel = dropDownEducationLevel;
+    }
+
 }

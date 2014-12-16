@@ -40,8 +40,6 @@
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItem itemLabel="#{appmsg['placement.nik']}" itemValue="NIK"/>
                                         <f:selectItem itemLabel="#{appmsg['global.name']}" itemValue="name" />
-                                        <f:selectItem itemLabel="#{appmsg['placement.jabatan_code']}" itemValue="jabatanKode" />
-                                        <f:selectItem itemLabel="#{appmsg['placement.jabatan_name']}" itemValue="jabatanName" />
                                     </p:selectOneMenu>
                                     <p:inputText value="#{empPtkpViewController.empDataSearchParameter.parameter}" style="width: 250px" id="pencarianId" styleClass="isitext_hrm" 
                                                  label="#{appmsg['global.searching']}" title="#{appmsg['global.searching']}"/>
@@ -81,13 +79,13 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{ptkpView.nik}"/>
                             </p:column>
-                           <p:column sortBy="bioData" style="width: 28%;">
+                           <p:column sortBy="bio.firstName" style="width: 28%;">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{ptkpView.bioData.firstName} #{ptkpView.bioData.lastName}"/>
                             </p:column>
-                            <p:column sortBy="bioData" style="width: 28%;">
+                            <p:column sortBy="bio.gender" style="width: 12%;">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.gender']}"/>
                                 </f:facet>
@@ -95,7 +93,7 @@
                                     <f:converter converterId="genderConverter" />
                                 </h:outputLabel>
                             </p:column>
-                             <p:column sortBy="bioData" style="width: 28%;">
+                             <p:column sortBy="ptkpStatus" style="width: 15%;">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.status']}"/>
                                 </f:facet>
@@ -103,19 +101,22 @@
                                      <f:converter converterId="mariedMessageConverter" />
                                 </h:outputLabel>
                             </p:column>
-                             <p:column sortBy="bioData" style="width: 28%;">
+                             <p:column sortBy="ptkpNumber" style="width: 13%;">
                                 <f:facet name="header">  
-                                    <h:outputText value="Tanggungan"/>
+                                    <h:outputText value="#{appmsg['reportFamilyEmployee.reportFamilyEmployee_dependents']}"/>
                                 </f:facet>
-                                 <h:outputLabel value= "#{ptkpView.ptkpNumber}">
-                                </h:outputLabel>
+                                 <h:outputLabel value= "#{ptkpView.ptkpNumber}" />
+                                 <h:outputLabel value= " #{appmsg['global.people']}" />
                             </p:column>
-                            <p:column sortBy="bioData" style="width: 28%;">
+                            <p:column style="width: 38%;">
                                 <f:facet name="header">  
                                     <h:outputText value="Nominal"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{ptkpView.taxFree.freeNominal}">
-                                </h:outputLabel>
+                                <div style="text-align: right">
+                                    <h:outputLabel value= "#{ptkpView.taxFree.freeNominal}">
+                                        <f:convertNumber pattern="###,###" type="currency"/>
+                                    </h:outputLabel>
+                                </div>
                             </p:column>
                             
 

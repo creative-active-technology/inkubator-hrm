@@ -98,4 +98,6 @@ public interface EmpDataDao extends IDAO<EmpData> {
     
     public Long getTotalByTaxFreeIsNull();
 
+	public List<EmpData> getAllDataNotTerminateAndJoinDateLowerThan(Date payrollCalculationDate);
+
 }

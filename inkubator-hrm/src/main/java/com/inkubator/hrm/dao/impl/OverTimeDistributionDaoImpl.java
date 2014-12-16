@@ -82,17 +82,17 @@ public class OverTimeDistributionDaoImpl extends IDAOImpl<OverTimeDistribution> 
             criteria.createAlias("empData", "ed", JoinType.INNER_JOIN);
             criteria.createAlias("ed.bioData", "bio", JoinType.INNER_JOIN);
             Disjunction disjunction = Restrictions.disjunction();
-            disjunction.add(Restrictions.like("bio.firstName", searchParameter.getEmpData(), MatchMode.ANYWHERE));
-            disjunction.add(Restrictions.like("bio.lastName", searchParameter.getEmpData(), MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.like("bio.firstName", searchParameter.getEmpData(), MatchMode.START));
+            disjunction.add(Restrictions.like("bio.lastName", searchParameter.getEmpData(), MatchMode.START));
             criteria.add(disjunction);
         }
         if (searchParameter.getNik()!= null) {
             criteria.createAlias("empData", "ed", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("ed.nik", searchParameter.getNik(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("ed.nik", searchParameter.getNik(), MatchMode.START));
         }
         if (StringUtils.isNotEmpty(searchParameter.getWtOverTime())) {
             criteria.createAlias("wtOverTime", "ot", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("ot.name", searchParameter.getWtOverTime(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("ot.name", searchParameter.getWtOverTime(), MatchMode.START));
         }
         criteria.add(Restrictions.isNotNull("id"));
     }
