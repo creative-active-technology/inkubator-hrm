@@ -96,6 +96,26 @@
                             </p:column>
                         </p:row>
                         <p:row>
+                            <p:column style="width: 40%">
+                                <p:outputLabel for="educationLevel" value="#{appmsg['educationhistory.education_level']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="educationLevel" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                                <p:selectOneMenu id="educationLevel" value="#{institutionEducationFormController.institutionEducationModel.educationLevelId}" style="width: 150px;margin-right: 3px" >
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{institutionEducationFormController.dropDownEducationLevel}"/>
+                                    </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="educationLevel"/>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
                             <p:column colspan="3">
                                 <p:message for="addresId"/>
                             </p:column>

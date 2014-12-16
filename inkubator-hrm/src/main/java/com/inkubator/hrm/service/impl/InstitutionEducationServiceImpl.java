@@ -5,6 +5,7 @@ import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.InstitutionEducationDao;
 import com.inkubator.hrm.dao.CityDao;
+import com.inkubator.hrm.dao.EducationLevelDao;
 import com.inkubator.hrm.entity.InstitutionEducation;
 import com.inkubator.hrm.service.InstitutionEducationService;
 import com.inkubator.hrm.web.search.InstitutionEducationSearchParameter;
@@ -31,6 +32,8 @@ public class InstitutionEducationServiceImpl extends IServiceImpl implements Ins
     private CityDao cityDao;
     @Autowired
     private InstitutionEducationDao institutionEducationDao;
+    @Autowired
+    private EducationLevelDao educationLevelDao;
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -203,8 +206,9 @@ public class InstitutionEducationServiceImpl extends IServiceImpl implements Ins
         if (totalDuplicates > 0) {
             throw new BussinessException("institutionEducation.error_duplicate_institutionEducation_code");
         }
-
+        
         institutionEducation.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+        institutionEducation.setEducationLevel(this.educationLevelDao.getEntiyByPK(institutionEducation.getEducationLevel().getId()));
         institutionEducation.setCity(this.cityDao.getEntiyByPK(institutionEducation.getCity().getId()));
         institutionEducation.setCreatedBy(UserInfoUtil.getUserName());
         institutionEducation.setCreatedOn(new Date());
@@ -248,6 +252,7 @@ public class InstitutionEducationServiceImpl extends IServiceImpl implements Ins
         institutionEducation.setInstitutionEducationCode(b.getInstitutionEducationCode());
         institutionEducation.setInstitutionEducationName(b.getInstitutionEducationName());
         institutionEducation.setCity(this.cityDao.getEntiyByPK(institutionEducation.getCity().getId()));
+        institutionEducation.setEducationLevel(this.educationLevelDao.getEntiyByPK(b.getEducationLevel().getId()));
         institutionEducation.setAddress(b.getAddress());
         institutionEducation.setPostalCode(b.getPostalCode());
         institutionEducation.setUpdatedBy(UserInfoUtil.getUserName());

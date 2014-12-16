@@ -14,10 +14,7 @@
             <ui:define name="windowTitle">
                 Country Form
             </ui:define>
-            <ui:define name="jsInclude">
-                <script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"></script>
 
-            </ui:define>
             <ui:define name="center">
                 <p:growl id="growlCountryFormlId" globalOnly="true" showDetail="true"/>
                 <h:form id="formCountryFormId">
@@ -70,7 +67,7 @@
                                                  required="true" requiredMessage="#{appmsg['country.country_name_should_not_be_empty']}" maxlength="60" styleClass="isitext_hrm" style="width:75%;" />
                                     <p:message for="nameId"/>
                                 </p:column>                                       
-                                
+
                             </p:row>
                             <p:row>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
@@ -146,8 +143,13 @@
                         </div>
                     </div>
                 </h:form>
+                <script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"></script>
             </ui:define>
+<!--            <ui:define name="jsInclude">
+                <script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"></script>
 
+            </ui:define>-->
+            <!--<h:outputScript name="http://maps.google.com/maps/api/js?sensor=false" />-->
         </ui:composition>
 
     </h:body>

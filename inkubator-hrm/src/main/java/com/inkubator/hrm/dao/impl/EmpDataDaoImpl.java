@@ -140,9 +140,9 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         if (dataSearchParameter.getNIK() != null) {
             criteria.add(Restrictions.like("nik", dataSearchParameter.getNIK(), MatchMode.START));
         }
-
+        criteria.createAlias("bioData", "bio", JoinType.INNER_JOIN);
         if (dataSearchParameter.getName() != null) {
-            criteria.createAlias("bioData", "bio", JoinType.INNER_JOIN);
+            
             Disjunction disjunction = Restrictions.disjunction();
             disjunction.add(Restrictions.like("bio.firstName", dataSearchParameter.getName(), MatchMode.START));
             disjunction.add(Restrictions.like("bio.lastName", dataSearchParameter.getName(), MatchMode.START));
@@ -728,5 +728,13 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
          return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
+
+	@Override
+	public Long getTotalByTaxFreeIsNull() {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.isNull("taxFree"));
+        criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
 
 }

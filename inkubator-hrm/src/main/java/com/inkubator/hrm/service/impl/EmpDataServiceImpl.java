@@ -59,6 +59,7 @@ import com.inkubator.hrm.web.search.ReportEmpDepartmentJabatanParameter;
 import com.inkubator.hrm.web.search.ReportEmpWorkingGroupParameter;
 import com.inkubator.hrm.web.search.ReportOfEmployeesFamilySearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+
 import java.util.ArrayList;
 
 /**
@@ -688,4 +689,11 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     public Long getTotalEmpDataNotTerminate() throws Exception {
         return this.empDataDao.getTotalEmpDataNotTerminate();
     }
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Long getTotalByTaxFreeIsNull() throws Exception {
+		return this.empDataDao.getTotalByTaxFreeIsNull();
+		
+	}
 }
