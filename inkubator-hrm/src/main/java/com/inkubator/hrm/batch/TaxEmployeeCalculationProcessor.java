@@ -62,7 +62,7 @@ public class TaxEmployeeCalculationProcessor implements ItemProcessor<List<PayTe
             outputs.add(pajak);
 		}
 		
-		double nominal_pajak_7 = Lambda.sum(Lambda.select(outputs, Lambda.having(Lambda.on(PayTempKalkulasiEmpPajak.class).getTaxComponent().getId(), Matchers.isIn(new Long[]{1L,3L,4L,5L,6L}))), Lambda.on(PayTempKalkulasiEmpPajak.class).getNominal()).doubleValue();
+		double nominal_pajak_7 = Lambda.sum(Lambda.select(outputs, Lambda.having(Lambda.on(PayTempKalkulasiEmpPajak.class).getTaxComponent().getId(), Matchers.isIn(new Long[]{1L,3L,4L,5L,6L}))), Lambda.on(PayTempKalkulasiEmpPajak.class).getNominal());
 		PayTempKalkulasiEmpPajak pajak_7 = Lambda.selectFirst(outputs, Lambda.having(Lambda.on(PayTempKalkulasiEmpPajak.class).getTaxComponent().getId(), Matchers.equalTo(7L)));
 		pajak_7.setNominal(nominal_pajak_7);
 		

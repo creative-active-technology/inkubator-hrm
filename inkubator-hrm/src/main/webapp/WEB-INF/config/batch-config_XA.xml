@@ -13,7 +13,7 @@
     </bean>
 
     <!-- calling this to running job -->
-    <bean id="jobLauncher" class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
+    <bean id="jobLauncher" class="org.springframework.batch.core.launch.support.SimpleJobLauncher" >
         <property name="jobRepository" ref="jobRepository" />
     </bean>
     <bean id="jobLauncherAsync" class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
@@ -73,6 +73,7 @@
     </bean>	
     <bean id="customTaxEmployeeCalculationItemReader" class="com.inkubator.hrm.batch.TaxEmployeeCalculationReader" scope="step">
         <constructor-arg name="empDataService" ref="empDataService"/>
+        <constructor-arg name="payrollCalculationDate" value="#{jobParameters['payrollCalculationDate']}"/>
         <property name="payTempKalkulasiService" ref="payTempKalkulasiService"/>
     </bean>
     <bean id="customTaxEmployeeCalculationItemProcessor" class="com.inkubator.hrm.batch.TaxEmployeeCalculationProcessor" scope="step">		
