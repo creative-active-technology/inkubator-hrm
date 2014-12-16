@@ -737,4 +737,12 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
 	}
 
+	@Override
+	public List<EmpData> getAllDataNotTerminateAndJoinDateLowerThan(Date payrollCalculationDate) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
+        criteria.add(Restrictions.lt("joinDate", payrollCalculationDate));
+        return criteria.list();
+	}
+
 }

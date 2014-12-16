@@ -155,7 +155,7 @@ public class PaySalaryExecuteController extends BaseController {
             }
             System.out.println("=============================================END doCalculatePayroll " + new Date());
         } catch (Exception ex) {
-            LOGGER.error(ex, ex);
+            LOGGER.error("Error ", ex);
         }
     }
     

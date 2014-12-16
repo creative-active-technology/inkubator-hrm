@@ -17,6 +17,7 @@ import com.inkubator.hrm.web.search.ReportEmpDepartmentJabatanParameter;
 import com.inkubator.hrm.web.search.ReportEmpWorkingGroupParameter;
 import com.inkubator.hrm.web.search.ReportOfEmployeesFamilySearchParameter;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -92,5 +93,7 @@ public interface EmpDataService extends IService<EmpData> {
     public Long getTotalEmpDataNotTerminate() throws Exception;
     
     public Long getTotalByTaxFreeIsNull() throws Exception;
+    
+    public List<EmpData> getAllDataNotTerminateAndJoinDateLowerThan(Date payrollCalculationDate) throws Exception;
 
 }
