@@ -65,13 +65,13 @@ public class UnitKerjaDaoImpl extends IDAOImpl<UnitKerja> implements UnitKerjaDa
     
     private void doSearchUnitKerjaByParam(UnitKerjaSearchParameter searchParameter, Criteria criteria) {
         if (searchParameter.getName() != null) {
-        	criteria.add(Restrictions.like("name", searchParameter.getName(), MatchMode.ANYWHERE));
+        	criteria.add(Restrictions.like("name", searchParameter.getName(), MatchMode.START));
         } 
         if(searchParameter.getCode() != null ){
-        	criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.ANYWHERE));
+        	criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.START));
         }
         if(searchParameter.getLocation() != null ){
-        	criteria.add(Restrictions.like("location", searchParameter.getLocation(), MatchMode.ANYWHERE));
+        	criteria.add(Restrictions.like("location", searchParameter.getLocation(), MatchMode.START));
         }
         if(searchParameter.getLocation() != null){
         
