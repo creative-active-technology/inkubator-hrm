@@ -18,4 +18,6 @@ public interface TaxComponentDao extends IDAO<TaxComponent> {
     public Long getTotalTaxComponentByParam(String parameter);
 
     public List<TaxComponent> getAllDataByUseComponent();
+    
+    public String getTaxComponentNameByPk(Long id);
 }

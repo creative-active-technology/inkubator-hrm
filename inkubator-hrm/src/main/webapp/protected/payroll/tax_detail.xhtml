@@ -1,0 +1,188 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>TODO supply a title</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg" style="margin: 10px">
+                    <h:form id="formId">
+                        <h:panelGrid style="margin-bottom: 5px" columns="2">
+                            <p:graphicImage library="images" name="marital_status.png" height="36" width="36" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="#{appmsg['salaryCalculation.taxCalculation_detail']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['salaryCalculation.taxCalculation_header']}" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:growl id="growlId" globalOnly="true" showDetail="true" />
+                        <p:toolbar  style="margin-top: 10px">
+                            <p:toolbarGroup align="right">
+                                <h:panelGrid columns="3" >
+                                    <p:commandButton value="Export to XLS" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
+                                        <pe:exporter target="tableIdToExport" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_of_Salary_Calculation_Employee"/>
+                                    </p:commandButton>
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{savingTypeViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
+
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                        </p:toolbar>
+                        <p:panelGrid style="width: 100%;margin-bottom: 10px;margin-top: 10px" styleClass="grid_border3" >
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['salaryCalculation.period']}" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:outputLabel value="#{PayTempKalkulasiEmpPajakDetailController.startDate}" >
+                                        <f:convertDateTime pattern="dd MMMM yyyy" />
+                                    </p:outputLabel>
+                                    <p:outputLabel value=" - " />
+                                    <p:outputLabel value="#{PayTempKalkulasiEmpPajakDetailController.endDate}" >
+                                        <f:convertDateTime pattern="dd MMMM yyyy" />
+                                    </p:outputLabel>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['salaryCalculation.taxName']}" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:outputLabel value="#{PayTempKalkulasiEmpPajakDetailController.taxComponentName}" />
+                                </p:column>
+
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['global.nik_or_name']}" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column>
+                                    <p:inputText id="searchId" value="#{PayTempKalkulasiEmpPajakDetailController.searchParameter}" style="width: 180px" styleClass="label_button"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+
+                                </p:column>
+                                <p:column>
+                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{PayTempKalkulasiEmpPajakDetailController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
+                                </p:column>
+                            </p:row>
+
+                        </p:panelGrid>
+                        <p:defaultCommand target="btnSearchId" />
+                        <p:dataTable  var="data"  value="#{PayTempKalkulasiEmpPajakDetailController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['salaryCalculation.list_of_employee']}"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 3%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column sortBy="empData.nik" style="width: 20%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['global.nik']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.empData.nik}" />
+                            </p:column>
+                           <p:column sortBy="bioData.firstName" style="width: 20%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['global.name']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.empData.bioData.firstName} #{data.empData.bioData.lastName}" />
+                            </p:column>
+                             <p:column sortBy="nominal" style="width: 20%" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['reimbursement.nominal']}"/>
+                                </f:facet>
+                                <div style="text-align: right;">
+                                    <h:outputText value="Rp. "/>
+                                     <h:outputLabel value= "#{data.nominal}" >
+                                        <f:convertNumber rendered="###,###" />
+                                    </h:outputLabel>
+                                </div>
+                            </p:column>-->
+
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : "/>
+                                <p:outputLabel value="#{PayTempKalkulasiEmpPajakDetailController.lazyDataModel.rowCount}"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px"/>
+                            </f:facet>  
+                        </p:dataTable>
+                        <!-- 
+                                hide datatable, used for reporting expand 
+                        -->
+                        <p:dataTable  rendered="false" var="data"  value="#{paySalaryExecuteDetailController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      id="tableIdToExport" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['salaryCalculation.list_of_employee']}"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 3%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column sortBy="empData.nik" style="width: 20%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['global.nik']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.empData.nik}" />
+                            </p:column>
+                            <p:column sortBy="bioData.firstName" style="width: 20%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['global.name']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.empData.bioData.firstName} #{data.empData.bioData.lastName}" />
+                            </p:column>
+                            <p:column sortBy="nominal" style="width: 20%" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['reimbursement.nominal']}"/>
+                                </f:facet>
+                                <div style="text-align: right;">
+                                     <h:outputLabel value= "#{data.nominal}" >
+                                        <f:convertNumber rendered="###,###" />
+                                    </h:outputLabel>
+                                </div>
+                            </p:column>
+
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : "/>
+                                <p:outputLabel value="#{paySalaryExecuteDetailController.lazyDataModel.rowCount}"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px"/>
+                            </f:facet>  
+                        </p:dataTable>
+                        <p:blockUI block="formId" trigger="tableId, btnSearchId" >
+                            <h:panelGrid columns="2" styleClass="grid_no_border">
+                                <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
+                                <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
+                            </h:panelGrid>
+                        </p:blockUI>
+                    </h:form>
+                </div>
+                <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
+                    <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
+                </p:dialog>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
