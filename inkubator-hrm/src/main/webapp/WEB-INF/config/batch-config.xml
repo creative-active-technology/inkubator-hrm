@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:batch="http://www.springframework.org/schema/batch" 
-	xmlns:task="http://www.springframework.org/schema/task"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:batch="http://www.springframework.org/schema/batch" 
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
 		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.2.xsd">
 
-	<!-- stored job-meta in database -->
-	<bean id="jobRepository" class="org.springframework.batch.core.repository.support.JobRepositoryFactoryBean">
-		<property name="dataSource" ref="c3p0DataSource-1" />
-		<property name="transactionManager" ref="transactionManager" />
-	</bean>
+    <!-- stored job-meta in database -->
+    <bean id="jobRepository" class="org.springframework.batch.core.repository.support.JobRepositoryFactoryBean">
+        <property name="dataSource" ref="c3p0DataSource-1" />
+        <property name="transactionManager" ref="transactionManager" />
+    </bean>
 
-	<!-- calling this to running job -->
-	<bean id="jobLauncher" class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
-		<property name="jobRepository" ref="jobRepository" />
-	</bean>
-	<bean id="jobLauncherAsync" class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
-		<property name="jobRepository" ref="jobRepository" />
-		<!-- To make execution asynchronously. For further detail, please refer to this page http://docs.spring.io/spring-batch/trunk/reference/htmlsingle/#configuringJobLauncher -->
-		<property name="taskExecutor">
-			<bean class="org.springframework.core.task.SimpleAsyncTaskExecutor" />
-		</property>
-	</bean>
+    <!-- calling this to running job -->
+    <bean id="jobLauncher" class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
+        <property name="jobRepository" ref="jobRepository" />
+    </bean>
+    <bean id="jobLauncherAsync" class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
+        <property name="jobRepository" ref="jobRepository" />
+        <!-- To make execution asynchronously. For further detail, please refer to this page http://docs.spring.io/spring-batch/trunk/reference/htmlsingle/#configuringJobLauncher -->
+        <property name="taskExecutor">
+            <bean class="org.springframework.core.task.SimpleAsyncTaskExecutor" />
+        </property>
+    </bean>
 	
 	<!-- ALL batch jobs -->
 	<batch:job id="jobPaySalaryUpload">
@@ -35,33 +35,50 @@
 		</batch:step>
 	</batch:job>	
 	<batch:job id="jobPayEmployeeCalculation">
-		<batch:step id="stepPayEmployeeCalculation_1">
+		<batch:step id="stepPayEmployeeCalculation_1" next="stepPayEmployeeCalculation_2">
 			<batch:tasklet>
 				<batch:chunk reader="customPayEmployeeCalculationItemReader" writer="customPayEmployeeCalculationItemWriter"
 					commit-interval="10">
 				</batch:chunk>
 			</batch:tasklet>
 		</batch:step>
+		<batch:step id="stepPayEmployeeCalculation_2">
+			<batch:tasklet>
+				<!-- commmit interval is set "2" because the behavior in this step is quite different, item in this step is list(that contains @23 item), so in the real action is commit every @46 record -->
+				<batch:chunk reader="customTaxEmployeeCalculationItemReader" processor="customTaxEmployeeCalculationItemProcessor" writer="customTaxEmployeeCalculationItemWriter"
+					commit-interval="2">
+				</batch:chunk>
+			</batch:tasklet>
+		</batch:step>
 	</batch:job>
 	
 	
-	<!-- reader and writer for pay_salary_upload -->	
-	<bean id="customPaySalaryUploadItemReader" class="com.inkubator.hrm.batch.PaySalaryUploadReader" scope="step" destroy-method="destroy">
-	    <constructor-arg name="filePath"  value="#{jobParameters['input.file.path']}"></constructor-arg>
-	    <property name="createdBy" value="#{jobParameters['createdBy']}"/>
-	    <property name="paySalaryComponentId" value="#{jobParameters['paySalaryComponentId']}"/>
-	</bean>	
-	<bean id="customPaySalaryUploadItemWriter" class="org.springframework.batch.item.adapter.ItemWriterAdapter">
-	    <property name="targetObject" ref="payTempUploadDataService" />
-	    <property name="targetMethod" value="executeBatchFileUpload" />
-	</bean>
+    <!-- reader and writer for pay_salary_upload -->	
+    <bean id="customPaySalaryUploadItemReader" class="com.inkubator.hrm.batch.PaySalaryUploadReader" scope="step" destroy-method="destroy">
+        <constructor-arg name="filePath"  value="#{jobParameters['input.file.path']}"></constructor-arg>
+        <property name="createdBy" value="#{jobParameters['createdBy']}"/>
+        <property name="paySalaryComponentId" value="#{jobParameters['paySalaryComponentId']}"/>
+    </bean>	
+    <bean id="customPaySalaryUploadItemWriter" class="org.springframework.batch.item.adapter.ItemWriterAdapter">
+        <property name="targetObject" ref="payTempUploadDataService" />
+        <property name="targetMethod" value="executeBatchFileUpload" />
+    </bean>
 	
-	
-	<!-- reader and writer for pay_employee_calculation -->
+		
+	<!-- reader, processor and writer for pay_employee_calculation -->
 	<bean id="customPayEmployeeCalculationItemReader" class="com.inkubator.hrm.batch.PayEmployeeCalculationReader" scope="step">
 		<constructor-arg name="payTempKalkulasiService" ref="payTempKalkulasiService"/>
 		<constructor-arg name="payrollCalculationDate" value="#{jobParameters['payrollCalculationDate']}"/>
 		<constructor-arg name="createdBy" value="#{jobParameters['createdBy']}"/>
+	</bean>	
+	<bean id="customTaxEmployeeCalculationItemReader" class="com.inkubator.hrm.batch.TaxEmployeeCalculationReader" scope="step">
+		<constructor-arg name="empDataService" ref="empDataService"/>
+		<property name="payTempKalkulasiService" ref="payTempKalkulasiService"/>
+	</bean>
+	<bean id="customTaxEmployeeCalculationItemProcessor" class="com.inkubator.hrm.batch.TaxEmployeeCalculationProcessor" scope="step">		
+		<constructor-arg name="taxRateService" ref="taxRateService"/>
+		<property name="payrollCalculationDate" value="#{jobParameters['payrollCalculationDate']}"/>
+		<property name="createdBy" value="#{jobParameters['createdBy']}"/>
 	</bean>	
 	<bean id="customPayEmployeeCalculationItemWriter" class="org.springframework.batch.item.database.JdbcBatchItemWriter">
 		<property name="dataSource" ref="c3p0DataSource-1" />
@@ -77,6 +94,19 @@
 			<bean class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider" />
 		</property>
 	</bean>
-	
+	<bean id="customTaxEmployeeCalculationItemWriter" class="com.inkubator.hrm.batch.TaxEmployeeCalculationWriter">
+		<property name="dataSource" ref="c3p0DataSource-1" />
+		<property name="sql">
+			<value>
+            <![CDATA[        
+            	insert into pay_temp_kalkulasi_emp_pajak(id,tax_component_id,emp_data_id,nominal,created_on,created_by,version) values (:id,:taxComponent.id,:empData.id,:nominal,:createdOn,:createdBy,0)
+            ]]>
+			</value>
+		</property>
+		<!-- It will take care matching between object property and sql name parameter -->
+		<property name="itemSqlParameterSourceProvider">
+			<bean class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider" />
+		</property>
+	</bean>	
 	
 </beans>

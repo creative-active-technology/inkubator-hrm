@@ -13,5 +13,7 @@ import com.inkubator.hrm.entity.PayTempKalkulasiEmpPajak;
  * @author denifahri
  */
 public interface PayTempKalkulasiEmpPajakDao extends IDAO<PayTempKalkulasiEmpPajak>{
+
+	public void deleteAllData();
     
 }

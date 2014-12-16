@@ -56,7 +56,7 @@ public class CheckInAttendanceDaoImpl extends IDAOImpl<CheckInAttendance> implem
     private void doSearchByParam(CheckInAttendanceSearchParameter searchParameter, Criteria criteria) {
 
         if (searchParameter.getEmpData()!= null) {
-            criteria.add(Restrictions.like("empData", searchParameter.getEmpData(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("empData", searchParameter.getEmpData(), MatchMode.START));
         }
 
         criteria.add(Restrictions.isNotNull("id"));

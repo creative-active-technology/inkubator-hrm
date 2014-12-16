@@ -138,14 +138,14 @@ public class ApprovalActivityDaoImpl extends IDAOImpl<ApprovalActivity> implemen
 
     private void doSearchByParam(ApprovalActivitySearchParameter searchParameter, Criteria criteria) {
         if (searchParameter.getRequestBy() != null) {
-            criteria.add(Restrictions.like("requestBy", searchParameter.getRequestBy(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("requestBy", searchParameter.getRequestBy(), MatchMode.START));
         }
         if (searchParameter.getApprovedBy() != null) {
-            criteria.add(Restrictions.like("approvedBy", searchParameter.getApprovedBy(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("approvedBy", searchParameter.getApprovedBy(), MatchMode.START));
         }
         if (StringUtils.isNotEmpty(searchParameter.getName())) {
             criteria.createAlias("approvalDefinition", "ad", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("ad.name", searchParameter.getName(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("ad.name", searchParameter.getName(), MatchMode.START));
         }
 
         criteria.add(Restrictions.isNotNull("id"));

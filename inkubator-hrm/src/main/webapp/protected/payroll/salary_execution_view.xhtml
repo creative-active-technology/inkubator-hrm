@@ -34,7 +34,7 @@
                             <p:toolbarGroup align="left">
                                 <h:panelGrid columns="3" >
                                     <p:commandButton value="#{appmsg['salaryCalculation.calculation']}" styleClass="label_button" icon="ui-icon-document" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
-                                                     onclick="statusDialog.show()"  oncomplete="detail.show()" update=":detailPanel" action="#{paySalaryExecuteController.doPrefareCalculation()}"
+                                                     onclick="statusDialog.show()"  oncomplete="if (!args.validationFailed) {detail.show();} else {statusDialog.hide();}" update=":detailPanel,growlId" action="#{paySalaryExecuteController.doInitCalculation()}"
                                                      >                        
                                     </p:commandButton>
                                 </h:panelGrid>
@@ -227,8 +227,6 @@
                                 <p:calendar  id="tanggalKalkulasiId" pattern="dd MMMM yyyy" label="Tanggal Kalkulasi" value="#{paySalaryExecuteController.payrollCalculationDate}"
                                              required="true" navigator="true" mindate="#{paySalaryExecuteController.wtPeriodeAbsen.fromPeriode}" maxdate="#{paySalaryExecuteController.wtPeriodeAbsen.untilPeriode}">
                                 </p:calendar>
-                                <!--                        <p:outputLabel/>
-                                                        <p:outputLabel/>-->
                                 <p:commandButton value="Calculate"  onclick="PF('pbAjax').start();" widgetVar="startButton2" action="#{paySalaryExecuteController.doCalculatePayroll()}"  id="startID" icon="ui-icon-refresh" update="detailPanel"/>
                             </h:panelGrid>
 
@@ -239,34 +237,6 @@
                             <p:defaultCommand target="startID" />
                         </h:form>
                     </div>
-                    <!--                    <p:panelGrid id="detailPanel" style="width:100%;margin:5px;" styleClass="grid_no_border">
-                                            <p:row>
-                                                <p:column><p:outputLabel value="Tanggal Payroll" /></p:column>
-                                                <p:column style="text-align: center">
-                                                    <p:calendar  id="tanggalKalkulasiId" pattern="dd MMMM yyyy" label="Tanggal Kalkulasi" value="#{empPersonAchievementFormController.model.dateAchievement}"
-                                                                 required="true" navigator="true">
-                                                    </p:calendar>
-                                                </p:column>
-                                            </p:row>
-                                            <p:row>
-                                                <p:column style="text-align: center" colspan="2">
-                                                    <p:progressBar widgetVar="pbAjax" ajax="true" value="#{paySalaryExecuteController.progress}" labelTemplate="{value}%" styleClass="animated" global="false">
-                                                        <p:ajax event="complete" listener="#{paySalaryExecuteController.onComplete}" />
-                                                    </p:progressBar>
-                                                </p:column>
-                                            </p:row>
-                                            <p:row>
-                                                <p:column style="text-align: center;">
-                                                    <p:commandButton value="Start"  onclick="PF('pbAjax').start();" widgetVar="startButton2" action="#{paySalaryExecuteController.startProgress()}" />
-                                                </p:column>
-                                            </p:row>
-                    
-                                            <f:facet name="footer">
-                                                <p:row>
-                                                    <p:column colspan="2"><p:outputLabel value="#{appmsg['savingType.savingType_header']}" styleClass="label_hrm" style="margin-left: 5px " /></p:column>
-                                                </p:row>
-                                            </f:facet>
-                                        </p:panelGrid>-->
                 </p:dialog>
 
             </ui:define>

@@ -408,7 +408,7 @@
                                                 <p:menuitem value="#{appmsg['personaldisipline.personal_disipline']}" icon="img-rule" style="font-size: 12px !important;color: #003366" title="#{appmsg['personaldisipline.personal_disipline']}" url="/protected/personalia/personal_discipline_view.htm" />
                                             </p:submenu>
                                             <p:menuitem value="#{appmsg['businesstravel.business_travel']}" icon="img-business-travel" style="font-size: 12px !important;color: #003366" title="#{appmsg['businesstravel.business_travel']}" url="/protected/personalia/business_travel_view.htm" />
-                                            <p:menuitem value="#{appmsg['loan.loan']}" icon="img-loan" style="font-size: 12px !important;color: #003366" title="#{appmsg['loan.loan']}" url="/protected/personalia/loan_view.htm" />
+                                            <!--<p:menuitem value="#{appmsg['loan.loan']}" icon="img-loan" style="font-size: 12px !important;color: #003366" title="#{appmsg['loan.loan']}" url="/protected/personalia/loan_view.htm" />-->
                                             <p:menuitem value="#{appmsg['reimbursment.reimbursment']}" icon="img-reimbursement" style="font-size: 12px !important;color: #003366" title="#{appmsg['reimbursment.reimbursment']}" url="/protected/personalia/reimbursment_view.htm" />
                                         </p:submenu>
                                         <p:submenu label="#{appmsg['menu.working_time']}"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-task">
@@ -443,6 +443,15 @@
                                                 <p:menuitem value="Lembur diatas 56 Jam" icon="img-lembur_56_jam" style="font-size: 12px !important;color: #003366" title="#{appmsg['overtimedistribution.overtime_distribution']}" url="#" />
 
                                             </p:submenu>
+                                        </p:submenu>
+                                        <p:submenu label="#{appmsg['loan.loan']}" styleClass="menu" icon="img-loan">
+                                            <p:menuitem value="#{appmsg['loan.loanHistory']}" icon="img-loan" style="font-size: 12px !important;color: #003366" title="#{appmsg['loan.loanHistory']}" url="/protected/personalia/loan_view.htm" />
+                                            <p:menuitem value="#{appmsg['loan.loanApplicationInbox']}" icon="img-loan" style="font-size: 12px !important;color: #003366" title="#{appmsg['loan.loanApplicationInbox']}" url="#"/>
+                                            <p:menuitem value="#{appmsg['loan.cancellationForm']}" icon="img-loan" style="font-size: 12px !important;color: #003366" title="#{appmsg['loan.cancellationForm']}" url="#"/>
+                                            <p:menuitem value="#{appmsg['loan.cancellationInbox']}" icon="img-loan" style="font-size: 12px !important;color: #003366" title="#{appmsg['loan.cancellationInbox']}" url="#"/>
+                                            <p:menuitem value="#{appmsg['loan.loanUpload']}" icon="img-loan" style="font-size: 12px !important;color: #003366" title="#{appmsg['loan.loanUpload']}" url="#"/>
+                                            <p:menuitem value="#{appmsg['loan.loanStatus']}" icon="img-loan" style="font-size: 12px !important;color: #003366" title="#{appmsg['loan.loanStatus']}" url="#"/>
+                                            <p:menuitem value="#{appmsg['loan.disbursementTable']}" icon="img-loan" style="font-size: 12px !important;color: #003366" title="#{appmsg['loan.disbursementTable']}" url="#"/>
                                         </p:submenu>
                                         <p:submenu label="#{appmsg['payroll.payroll']}"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-payroll">
                                             <!--                                            <p:menuitem value="Price Simulator" icon="img-price-simulator" style="font-size: 12px !important;color: #003366" title="Make Price Simulation" url="/protected/price_simulator.htm" /> 
