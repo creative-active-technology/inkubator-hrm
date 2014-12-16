@@ -696,4 +696,11 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 		return this.empDataDao.getTotalByTaxFreeIsNull();
 		
 	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<EmpData> getAllDataNotTerminateAndJoinDateLowerThan(Date payrollCalculationDate) throws Exception {	
+		return this.empDataDao.getAllDataNotTerminateAndJoinDateLowerThan(payrollCalculationDate);
+		
+	}
 }
