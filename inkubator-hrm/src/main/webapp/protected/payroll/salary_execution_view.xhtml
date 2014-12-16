@@ -12,9 +12,11 @@
     <h:body>
         <ui:composition template="/templates/master_layout_full.xhtml">
             <ui:define name="windowTitle">
+                <!--<h:outputStylesheet library="css" name="progress_bar.css" />-->
                 Home
             </ui:define>
             <ui:define name="center">
+                 <h:outputStylesheet library="css" name="progress_bar.css" />
                 <div id="box_bg" style="margin: 10px">
                     <h:form id="formId">
                         <h:panelGrid style="margin-bottom: 5px" columns="2">
@@ -213,7 +215,7 @@
                     <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
                 </p:dialog>
                 <p:dialog widgetVar="detail" header="#{appmsg['salaryCalculation.calculation']}" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)" dynamic="true" closable="false">
+                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)" dynamic="false" closable="false">
 
                     <div align="center">
                         <h:form id="detailPanel">

@@ -34,6 +34,7 @@ public class EducationLevel implements Serializable {
     private Set<BioEducationHistory> educationHistorys = new HashSet<BioEducationHistory>(0);
     private Set<BioFamilyRelationship> bioFamilyRelationships = new HashSet<BioFamilyRelationship>(0);
     private Set<JabatanEdukasi> jabatanEdukasis = new HashSet<JabatanEdukasi>(0);
+     private Set<InstitutionEducation> institutionEducations = new HashSet<InstitutionEducation>(0);
     private List<EducationLevel> listEducationLevels = new ArrayList<>(0);
 
     public EducationLevel() {
@@ -161,6 +162,15 @@ public class EducationLevel implements Serializable {
         this.listEducationLevels = listEducationLevels;
     }
 
+    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="educationLevel")
+    public Set<InstitutionEducation> getInstitutionEducations() {
+        return institutionEducations;
+    }
+
+    public void setInstitutionEducations(Set<InstitutionEducation> institutionEducations) {
+        this.institutionEducations = institutionEducations;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 7;

@@ -16,6 +16,7 @@ public class InstitutionEducationModel implements Serializable {
     private Long cityId;
     private String address;
     private Integer postalCode;
+    private Long educationLevelId;
 
     public Long getId() {
         return id;
@@ -83,7 +84,11 @@ public class InstitutionEducationModel implements Serializable {
         this.postalCode = postalCode;
     }
 
-    
+    public Long getEducationLevelId() {
+        return educationLevelId;
+    }
 
-    
+    public void setEducationLevelId(Long educationLevelId) {
+        this.educationLevelId = educationLevelId;
+    }
 }

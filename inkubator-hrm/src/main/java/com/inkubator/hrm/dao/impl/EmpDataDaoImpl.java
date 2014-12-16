@@ -140,9 +140,9 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         if (dataSearchParameter.getNIK() != null) {
             criteria.add(Restrictions.like("nik", dataSearchParameter.getNIK(), MatchMode.ANYWHERE));
         }
-
+        criteria.createAlias("bioData", "bio", JoinType.INNER_JOIN);
         if (dataSearchParameter.getName() != null) {
-            criteria.createAlias("bioData", "bio", JoinType.INNER_JOIN);
+            
             Disjunction disjunction = Restrictions.disjunction();
             disjunction.add(Restrictions.like("bio.firstName", dataSearchParameter.getName(), MatchMode.ANYWHERE));
             disjunction.add(Restrictions.like("bio.lastName", dataSearchParameter.getName(), MatchMode.ANYWHERE));
