@@ -53,7 +53,7 @@ public class HrmRoleDaoImpl extends IDAOImpl<HrmRole> implements HrmRoleDao{
 
     private void doSearchLHrmRoleByParam(HrmRoleSearchParameter searchParameter, Criteria criteria) {
         if (searchParameter.getRoleName()!= null) {
-            criteria.add(Restrictions.like("roleName", searchParameter.getRoleName(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("roleName", searchParameter.getRoleName(), MatchMode.START));
         }
         criteria.add(Restrictions.isNotNull("id"));
     }

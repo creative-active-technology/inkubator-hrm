@@ -67,10 +67,10 @@ public class CostCenterDaoImpl extends IDAOImpl<CostCenter> implements CostCente
     private void doSearchCostCenterByParam(CostCenterSearchParameter searchParameter, Criteria criteria) {
         criteria.setFetchMode("costCenter", FetchMode.JOIN);
         if (searchParameter.getName()!=null) {
-        	criteria.add(Restrictions.like("name", searchParameter.getName(), MatchMode.ANYWHERE));
+        	criteria.add(Restrictions.like("name", searchParameter.getName(), MatchMode.START));
         } 
         if(searchParameter.getCode()!=null){
-        	criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.ANYWHERE));
+        	criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.START));
         }
         criteria.add(Restrictions.isNotNull("id"));
     }

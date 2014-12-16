@@ -129,23 +129,23 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     private void doSearchEmpDataByParam(EmpDataSearchParameter dataSearchParameter, Criteria criteria) {
         if (dataSearchParameter.getJabatanKode() != null) {
             criteria.createAlias("jabatanByJabatanId", "jb", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("jb.code", dataSearchParameter.getJabatanKode(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("jb.code", dataSearchParameter.getJabatanKode(), MatchMode.START));
         }
 
         if (dataSearchParameter.getJabatanName() != null) {
             criteria.createAlias("jabatanByJabatanId", "jb", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("jb.name", dataSearchParameter.getJabatanName(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("jb.name", dataSearchParameter.getJabatanName(), MatchMode.START));
         }
 
         if (dataSearchParameter.getNIK() != null) {
-            criteria.add(Restrictions.like("nik", dataSearchParameter.getNIK(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("nik", dataSearchParameter.getNIK(), MatchMode.START));
         }
 
         if (dataSearchParameter.getName() != null) {
             criteria.createAlias("bioData", "bio", JoinType.INNER_JOIN);
             Disjunction disjunction = Restrictions.disjunction();
-            disjunction.add(Restrictions.like("bio.firstName", dataSearchParameter.getName(), MatchMode.ANYWHERE));
-            disjunction.add(Restrictions.like("bio.lastName", dataSearchParameter.getName(), MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.like("bio.firstName", dataSearchParameter.getName(), MatchMode.START));
+            disjunction.add(Restrictions.like("bio.lastName", dataSearchParameter.getName(), MatchMode.START));
             criteria.add(disjunction);
         }
         criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
@@ -728,5 +728,13 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
          return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
+
+	@Override
+	public Long getTotalByTaxFreeIsNull() {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.isNull("taxFree"));
+        criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
 
 }

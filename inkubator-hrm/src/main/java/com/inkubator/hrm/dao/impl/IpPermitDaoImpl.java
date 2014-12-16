@@ -57,13 +57,13 @@ public class IpPermitDaoImpl extends IDAOImpl<IpPermit> implements IpPermitDao {
 
     private void doSearchMaritalStatusByParam(IpPermitSearchParameter searchParameter, Criteria criteria) {
         if (searchParameter.getLokasi() != null) {
-            criteria.add(Restrictions.like("lokasi", searchParameter.getLokasi(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("lokasi", searchParameter.getLokasi(), MatchMode.START));
         }
         if (searchParameter.getFrom()!= null) {
-            criteria.add(Restrictions.like("ipAddressFromView", searchParameter.getFrom(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("ipAddressFromView", searchParameter.getFrom(), MatchMode.START));
         }
         if (searchParameter.getUntil()!= null) {
-            criteria.add(Restrictions.like("ipAddressUntilView", searchParameter.getUntil(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("ipAddressUntilView", searchParameter.getUntil(), MatchMode.START));
         }
         criteria.add(Restrictions.isNotNull("id"));
     }

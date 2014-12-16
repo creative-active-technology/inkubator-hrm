@@ -95,5 +95,7 @@ public interface EmpDataDao extends IDAO<EmpData> {
     public List<EmpData> getAllDataNotTerminate();
 
     public Long getTotalEmpDataNotTerminate();
+    
+    public Long getTotalByTaxFreeIsNull();
 
 }
