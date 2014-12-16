@@ -82,10 +82,10 @@ public class LoanSchemaDaoImpl extends IDAOImpl<LoanSchema> implements LoanSchem
             resMaxNominal = searchParameter.getMaxNominal().compareTo(bg);
         }
         if (searchParameter.getName() != null) {
-            criteria.add(Restrictions.like("name", searchParameter.getName(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("name", searchParameter.getName(), MatchMode.START));
         }
         if (searchParameter.getCode() != null) {
-            criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.START));
         }
         if (searchParameter.getMaxNominal() != null && resMaxNominal != 0) {
             criteria.add(Restrictions.eq("maxNominal", searchParameter.getMaxNominal()));

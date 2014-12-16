@@ -78,13 +78,13 @@ public class ReimburstmentDaoImpl extends IDAOImpl<Reimbursment> implements Reim
         criteria.createAlias("empData", "ed", JoinType.INNER_JOIN);
         criteria.createAlias("ed.bioData", "bio", JoinType.INNER_JOIN);
         if (searchParameter.getCode() != null) {
-            criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.START));
         }
         if (searchParameter.getEmpData() != null) {
             Disjunction disjunction = Restrictions.disjunction();
-            disjunction.add(Restrictions.like("ed.nik", searchParameter.getEmpData(), MatchMode.ANYWHERE));
-            disjunction.add(Restrictions.like("bio.firstName", searchParameter.getEmpData(), MatchMode.ANYWHERE));
-            disjunction.add(Restrictions.like("bio.lastName", searchParameter.getEmpData(), MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.like("ed.nik", searchParameter.getEmpData(), MatchMode.START));
+            disjunction.add(Restrictions.like("bio.firstName", searchParameter.getEmpData(), MatchMode.START));
+            disjunction.add(Restrictions.like("bio.lastName", searchParameter.getEmpData(), MatchMode.START));
             criteria.add(disjunction);
         }
         criteria.add(Restrictions.isNotNull("id"));

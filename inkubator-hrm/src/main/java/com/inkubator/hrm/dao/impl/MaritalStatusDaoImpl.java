@@ -56,7 +56,7 @@ public class MaritalStatusDaoImpl extends IDAOImpl<MaritalStatus> implements Mar
     
     private void doSearchMaritalStatusByParam(MaritalStatusSearchParameter searchParameter, Criteria criteria) {
         if (searchParameter.getName()!=null) {
-        	criteria.add(Restrictions.like("name", searchParameter.getName(), MatchMode.ANYWHERE));
+        	criteria.add(Restrictions.like("name", searchParameter.getName(), MatchMode.START));
         } 
         criteria.add(Restrictions.isNotNull("id"));
     }

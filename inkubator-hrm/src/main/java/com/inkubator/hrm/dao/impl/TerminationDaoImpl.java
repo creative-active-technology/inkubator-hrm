@@ -77,17 +77,17 @@ public class TerminationDaoImpl extends IDAOImpl<Termination> implements Termina
 
         criteria.createAlias("terminationType", "tt", JoinType.INNER_JOIN);
         if (searchParameter.getCode() != null) {
-            criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.START));
         }
         if (StringUtils.isNotEmpty(searchParameter.getEmpData())) {
             Disjunction disjunction = Restrictions.disjunction();
-            disjunction.add(Restrictions.like("ed.nik", searchParameter.getEmpData(), MatchMode.ANYWHERE));
-            disjunction.add(Restrictions.like("bio.firstName", searchParameter.getEmpData(), MatchMode.ANYWHERE));
-            disjunction.add(Restrictions.like("bio.lastName", searchParameter.getEmpData(), MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.like("ed.nik", searchParameter.getEmpData(), MatchMode.START));
+            disjunction.add(Restrictions.like("bio.firstName", searchParameter.getEmpData(), MatchMode.START));
+            disjunction.add(Restrictions.like("bio.lastName", searchParameter.getEmpData(), MatchMode.START));
             criteria.add(disjunction);
         }
         if (StringUtils.isNotEmpty(searchParameter.getTerminationType())) {
-            criteria.add(Restrictions.like("tt.name", searchParameter.getTerminationType(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("tt.name", searchParameter.getTerminationType(), MatchMode.START));
         }
         criteria.add(Restrictions.isNotNull("id"));
     }

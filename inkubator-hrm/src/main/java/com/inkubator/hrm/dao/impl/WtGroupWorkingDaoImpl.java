@@ -51,11 +51,11 @@ public class WtGroupWorkingDaoImpl extends IDAOImpl<WtGroupWorking> implements W
 
     private void doSearchWtGroupWorkingByParam(WtGroupWorkingSearchParameter searchParameter, Criteria criteria) {
         if (searchParameter.getKode() != null && !searchParameter.getKode().isEmpty()) {
-            criteria.add(Restrictions.like("code", searchParameter.getKode(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("code", searchParameter.getKode(), MatchMode.START));
         }
 
         if (searchParameter.getName() != null && !searchParameter.getName().isEmpty()) {
-            criteria.add(Restrictions.like("name", searchParameter.getName(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("name", searchParameter.getName(), MatchMode.START));
         }
 
     }

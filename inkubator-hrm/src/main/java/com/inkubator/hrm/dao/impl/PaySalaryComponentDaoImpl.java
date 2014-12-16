@@ -73,10 +73,10 @@ public class PaySalaryComponentDaoImpl extends IDAOImpl<PaySalaryComponent> impl
 
     private void doSearchByParam(PaySalaryComponentSearchParameter searchParameter, Criteria criteria) {
         if (searchParameter.getName() != null) {
-            criteria.add(Restrictions.like("name", searchParameter.getName(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("name", searchParameter.getName(), MatchMode.START));
         }
         if (searchParameter.getCode() != null) {
-            criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.START));
         }
         criteria.add(Restrictions.isNotNull("id"));
     }
@@ -103,10 +103,10 @@ public class PaySalaryComponentDaoImpl extends IDAOImpl<PaySalaryComponent> impl
 
     private void doSearchComponentUploadByParam(PaySalaryComponentSearchParameter searchParameter, Criteria criteria) {
         if (StringUtils.isNotEmpty(searchParameter.getName())) {
-            criteria.add(Restrictions.like("name", searchParameter.getName(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("name", searchParameter.getName(), MatchMode.START));
         }
         if (StringUtils.isNotEmpty(searchParameter.getCode())) {
-            criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.START));
         }
         criteria.add(Restrictions.isNotNull("id"));
         criteria.createAlias("modelComponent", "modelComponent");

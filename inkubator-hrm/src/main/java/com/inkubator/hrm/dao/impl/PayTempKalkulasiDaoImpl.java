@@ -162,9 +162,9 @@ public class PayTempKalkulasiDaoImpl extends IDAOImpl<PayTempKalkulasi> implemen
         criteria.add(Restrictions.eq("paySalaryComponent.id", paySalaryComponentId)); 
         if (StringUtils.isNotEmpty(searchParameter)) {
             Disjunction disjunction = Restrictions.disjunction();
-            disjunction.add(Restrictions.like("empData.nik", searchParameter, MatchMode.ANYWHERE));
-            disjunction.add(Restrictions.like("bioData.firstName", searchParameter, MatchMode.ANYWHERE));
-            disjunction.add(Restrictions.like("bioData.lastName", searchParameter, MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.like("empData.nik", searchParameter, MatchMode.START));
+            disjunction.add(Restrictions.like("bioData.firstName", searchParameter, MatchMode.START));
+            disjunction.add(Restrictions.like("bioData.lastName", searchParameter, MatchMode.START));
             criteria.add(disjunction);
 //            criteria.add(Restrictions.like("bioData.firstName", parameter, MatchMode.ANYWHERE));
         }

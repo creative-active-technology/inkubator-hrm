@@ -70,12 +70,12 @@ public class PersonalDisciplineDaoImpl extends IDAOImpl<PersonalDiscipline> impl
         criteria.createAlias("admonitionType", "at", JoinType.INNER_JOIN);
         if (StringUtils.isNotEmpty(searchParameter.getEmpData())) {
             Disjunction disjunction = Restrictions.disjunction();
-            disjunction.add(Restrictions.like("bio.firstName", searchParameter.getEmpData(), MatchMode.ANYWHERE));
-            disjunction.add(Restrictions.like("bio.lastName", searchParameter.getEmpData(), MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.like("bio.firstName", searchParameter.getEmpData(), MatchMode.START));
+            disjunction.add(Restrictions.like("bio.lastName", searchParameter.getEmpData(), MatchMode.START));
             criteria.add(disjunction);
         }
         if (StringUtils.isNotEmpty(searchParameter.getAdmonitionType())) {
-            criteria.add(Restrictions.like("at.name", searchParameter.getAdmonitionType(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("at.name", searchParameter.getAdmonitionType(), MatchMode.START));
         }
         criteria.add(Restrictions.isNotNull("id"));
     }
