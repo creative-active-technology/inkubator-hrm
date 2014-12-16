@@ -49,7 +49,7 @@ public class LeaveDaoImpl extends IDAOImpl<Leave> implements LeaveDao {
 
     private void doSearchByParam(LeaveSearchParameter parameter, Criteria criteria) {
         if (StringUtils.isNotEmpty(parameter.getName())) {
-            criteria.add(Restrictions.like("name", parameter.getName(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("name", parameter.getName(), MatchMode.START));
         }
         if (StringUtils.isNotEmpty(parameter.getCode())) {
             criteria.add(Restrictions.like("code", parameter.getCode(), MatchMode.ANYWHERE));

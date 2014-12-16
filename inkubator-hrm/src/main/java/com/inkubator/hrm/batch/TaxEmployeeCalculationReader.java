@@ -1,5 +1,6 @@
 package com.inkubator.hrm.batch;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.batch.item.ItemReader;
@@ -20,9 +21,9 @@ public class TaxEmployeeCalculationReader implements ItemReader<List<PayTempKalk
 	private List<EmpData> listEmployee;
 	private PayTempKalkulasiService payTempKalkulasiService;
 	
-	public TaxEmployeeCalculationReader(EmpDataService empDataService) throws Exception{
+	public TaxEmployeeCalculationReader(EmpDataService empDataService, Date payrollCalculationDate) throws Exception{
 		//get populated data
-		listEmployee = empDataService.getAllDataNotTerminate();
+		listEmployee = empDataService.getAllDataNotTerminateAndJoinDateLowerThan(payrollCalculationDate);
 		/*listEmployee = new ArrayList<EmpData>();
         EmpData emp = empDataService.getEntiyByPK((long)173);
         listEmployee.add(emp);*/

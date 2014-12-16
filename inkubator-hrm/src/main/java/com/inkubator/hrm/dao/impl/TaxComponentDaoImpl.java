@@ -57,5 +57,11 @@ public class TaxComponentDaoImpl extends IDAOImpl<TaxComponent> implements TaxCo
         return criteria.list();
     }
 
+    @Override
+    public String getTaxComponentNameByPk(Long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("id", id));
+        return (String) criteria.setProjection(Projections.property("name")).uniqueResult();
+    }
 
 }
