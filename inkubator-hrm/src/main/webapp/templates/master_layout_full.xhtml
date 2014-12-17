@@ -14,23 +14,23 @@
         <link rel="shortcut icon" href="${request.contextPath}/hr.ico" type="image/x-icon" />
         <link href='http://fonts.googleapis.com/css?family=PT+Sans|Open+Sans' rel='stylesheet' type='text/css' />
         <title><ui:insert name="windowTitle"/></title>
-<!--        <style>
-            .ui-menu-child{
-                width:200px !important
-            }
-            .animated .ui-progressbar-value { 
-                background-image: url("../../resources/images/pbar-ani.gif"); 
-            }
-
-        </style>-->
-<!--        <script type="text/javascript">
-            
-            function cancel() {
-                clearInterval(window['progress']);
-                PF('pbClient').setValue(0);
-                PF('startButton1').enable();
-            }
-        </script>-->
+        <!--        <style>
+                    .ui-menu-child{
+                        width:200px !important
+                    }
+                    .animated .ui-progressbar-value { 
+                        background-image: url("../../resources/images/pbar-ani.gif"); 
+                    }
+        
+                </style>-->
+        <!--        <script type="text/javascript">
+                    
+                    function cancel() {
+                        clearInterval(window['progress']);
+                        PF('pbClient').setValue(0);
+                        PF('startButton1').enable();
+                    }
+                </script>-->
         <ui:insert name="jsInclude"/>
     </h:head>
     <h:body>
@@ -468,6 +468,7 @@
                                             <p:menuitem value="#{appmsg['payroll.confirmation']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['payroll.confirmation']}" icon="img-cost-center" url="/protected/payroll/salary_confirmation_view.htm"/> 
                                             <p:menuitem value="#{appmsg['payroll.monthEnd']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['payroll.monthEnd']}" icon="img-cost-center"/>                                             
                                             <!--<p:menuitem value="#{appmsg['componentException.componentException']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['componentException.componentException']}" url="/protected/payroll/pay_component_exception_view.htm" />--> 
+                                            <p:menuitem value="Pay Receiver" style="font-size: 12px !important;color: #003366" title="Pay Receiver View" icon="img-cost-center" url="/protected/payroll/pay_receiver_view.htm"/> 
                                         </p:submenu>
                                         <p:submenu label="Pengembangan"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-training">
                                             <!--                                            <p:menuitem value="Price Simulator" icon="img-price-simulator" style="font-size: 12px !important;color: #003366" title="Make Price Simulation" url="/protected/price_simulator.htm" /> 

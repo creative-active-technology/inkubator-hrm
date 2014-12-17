@@ -116,19 +116,19 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="empData.nik" style="width: 20%">
+                            <p:column sortBy="empData.nik" style="width: 12%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.nik']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.empData.nik}" />
                             </p:column>
-                            <p:column sortBy="bioData.firstName" style="width: 20%">
+                            <p:column sortBy="bioData.firstName" style="width: 25%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.empData.bioData.firstName} #{data.empData.bioData.lastName}" />
                             </p:column>
-                            <p:column sortBy="claimDate" style="width: 20%">
+                            <p:column sortBy="claimDate" style="width: 15%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['reimbursement.claim_date']}"/>
                                 </f:facet>
@@ -136,7 +136,7 @@
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="reimbursmentSchema.name" style="width: 20%">
+                            <p:column sortBy="reimbursmentSchema.name" style="width: 25%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['reimbursement.name']}"/>
                                 </f:facet>

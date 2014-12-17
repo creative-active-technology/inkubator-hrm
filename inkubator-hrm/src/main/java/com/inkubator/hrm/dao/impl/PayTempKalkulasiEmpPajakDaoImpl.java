@@ -82,12 +82,12 @@ public class PayTempKalkulasiEmpPajakDaoImpl extends IDAOImpl<PayTempKalkulasiEm
         doSearchByParam(searchParameter, criteria, taxComponentId);
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
-    
+
     public void doSearchByParam(String searchParameter, Criteria criteria, Long taxComponentId) {
         criteria.createAlias("taxComponent", "taxComponent", JoinType.INNER_JOIN);
         criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
         criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
-        criteria.add(Restrictions.eq("taxComponent.id", taxComponentId)); 
+        criteria.add(Restrictions.eq("taxComponent.id", taxComponentId));
         if (StringUtils.isNotEmpty(searchParameter)) {
             Disjunction disjunction = Restrictions.disjunction();
             disjunction.add(Restrictions.like("empData.nik", searchParameter, MatchMode.ANYWHERE));
@@ -107,4 +107,12 @@ public class PayTempKalkulasiEmpPajakDaoImpl extends IDAOImpl<PayTempKalkulasiEm
 		
 		return (PayTempKalkulasiEmpPajak) criteria.uniqueResult();
 	}
+
+    @Override
+    public List<PayTempKalkulasiEmpPajak> getAllDataByEmpDataId(Long empDataId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("taxComponent", "taxComponent", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("empData.id", empDataId));
+        return criteria.list();
+    }
 }

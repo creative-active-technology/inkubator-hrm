@@ -27,4 +27,5 @@ public interface PayTempKalkulasiEmpPajakService extends IService<PayTempKalkula
 
     public Long getTotalPayTempKalkulasiEmpPajakByParamForDetail(String searchParameter, Long taxComponentId) throws Exception;
 
+    public List<PayTempKalkulasiEmpPajak> getAllDataByEmpDataId(Long empDataId) throws Exception;
 }

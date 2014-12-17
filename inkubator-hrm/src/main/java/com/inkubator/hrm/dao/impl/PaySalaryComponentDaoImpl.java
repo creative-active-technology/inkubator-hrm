@@ -190,5 +190,4 @@ public class PaySalaryComponentDaoImpl extends IDAOImpl<PaySalaryComponent> impl
         
         return paySalaryComponent;
 	}
-
 }
