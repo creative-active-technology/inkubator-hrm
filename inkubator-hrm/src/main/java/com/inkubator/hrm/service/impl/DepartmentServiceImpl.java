@@ -83,6 +83,7 @@ public class DepartmentServiceImpl extends IServiceImpl implements DepartmentSer
         entity.setCostCenterDept(costCenterDept);
         entity.setCreatedBy(UserInfoUtil.getUserName());
         entity.setCreatedOn(new Date());
+        entity.setDescription(entity.getDescription());
         this.departmentDao.save(entity);
     }
 
@@ -101,6 +102,7 @@ public class DepartmentServiceImpl extends IServiceImpl implements DepartmentSer
         departmentUpdate.setCostCenterDept(costCenterDept);
         departmentUpdate.setUpdatedBy(UserInfoUtil.getUserName());
         departmentUpdate.setUpdatedOn(new Date());
+        departmentUpdate.setDescription(entity.getDescription());
         this.departmentDao.update(departmentUpdate);
     }
 

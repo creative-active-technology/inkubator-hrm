@@ -75,19 +75,25 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{departmentData.departmentCode}" />
                             </p:column>
-                            <p:column sortBy="departmentName" style="width: 60%">
+                            <p:column sortBy="departmentName" style="width: 30%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['department.name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{departmentData.departmentName}" />
                             </p:column>
+                            <p:column style="width: 30%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['costcenter.costcenter2']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{departmentData.costCenterDept.name}" />
+                            </p:column>
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
-                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
+<!--                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
                                                  onclick="statusDialog.show()"  oncomplete="detailDepartment.show()" update=":detailPanel"
                                                  style="font-size: 10px!important" action="#{departmentController.doDetail()}">                        
                                     <f:setPropertyActionListener value="#{departmentData}" target="#{departmentController.selectedDepartment}" />
-                                </p:commandButton>
-                                - 
+                                </p:commandButton>-->
+                                 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                 				 style="font-size: 10px!important" update=":panelDialogConfirmId" 
                                                                  action="#{departmentController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmDepartment.show()">
