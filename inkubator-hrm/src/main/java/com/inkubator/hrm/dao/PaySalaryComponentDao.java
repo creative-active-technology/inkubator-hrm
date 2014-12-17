@@ -39,4 +39,6 @@ public interface PaySalaryComponentDao extends IDAO<PaySalaryComponent> {
     public Long getTotalByModelComponentAndModelReferensi(Long modelComponentId, Integer modelReferensi);
     
     public Long getTotalByModelComponentAndModelReferensiAndNotId(Long modelComponentId, Integer modelReferensi, Long id);
+    
+    public PaySalaryComponent getEntityBySpecificModelComponent(Integer specific);
 }

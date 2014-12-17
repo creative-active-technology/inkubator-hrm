@@ -24,9 +24,6 @@ public class TaxEmployeeCalculationReader implements ItemReader<List<PayTempKalk
 	public TaxEmployeeCalculationReader(EmpDataService empDataService, Date payrollCalculationDate) throws Exception{
 		//get populated data
 		listEmployee = empDataService.getAllDataNotTerminateAndJoinDateLowerThan(payrollCalculationDate);
-		/*listEmployee = new ArrayList<EmpData>();
-        EmpData emp = empDataService.getEntiyByPK((long)173);
-        listEmployee.add(emp);*/
 	}
 
 	@Override

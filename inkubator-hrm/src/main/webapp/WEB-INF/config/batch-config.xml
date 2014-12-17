@@ -29,7 +29,7 @@
         <batch:step id="stepPaySalaryUpload_1">
             <batch:tasklet>
                 <batch:chunk reader="customPaySalaryUploadItemReader" writer="customPaySalaryUploadItemWriter"
-                             commit-interval="10">
+                             commit-interval="20">
                 </batch:chunk>
             </batch:tasklet>
         </batch:step>
@@ -38,15 +38,22 @@
         <batch:step id="stepPayEmployeeCalculation_1" next="stepPayEmployeeCalculation_2">
             <batch:tasklet>
                 <batch:chunk reader="customPayEmployeeCalculationItemReader" writer="customPayEmployeeCalculationItemWriter"
-                             commit-interval="10">
+                             commit-interval="20">
                 </batch:chunk>
             </batch:tasklet>
         </batch:step>
-        <batch:step id="stepPayEmployeeCalculation_2">
+        <batch:step id="stepPayEmployeeCalculation_2" next="stepPayEmployeeCalculation_3">
             <batch:tasklet>
                 <!-- commmit interval is set "2" because the behavior in this step is quite different, item in this step is list(that contains @23 item), so in the real action is commit every @46 record -->
                 <batch:chunk reader="customTaxEmployeeCalculationItemReader" processor="customTaxEmployeeCalculationItemProcessor" writer="customTaxEmployeeCalculationItemWriter"
                              commit-interval="2">
+                </batch:chunk>
+            </batch:tasklet>
+        </batch:step>
+        <batch:step id="stepPayEmployeeCalculation_3">
+            <batch:tasklet>                
+                <batch:chunk reader="customFinalEmployeeCalculationItemReader" writer="customFinalEmployeeCalculationItemWriter"
+                             commit-interval="10">
                 </batch:chunk>
             </batch:tasklet>
         </batch:step>
@@ -75,6 +82,10 @@
         <constructor-arg name="empDataService" ref="empDataService"/>
         <constructor-arg name="payrollCalculationDate" value="#{jobParameters['payrollCalculationDate']}"/>
         <property name="payTempKalkulasiService" ref="payTempKalkulasiService"/>
+    </bean>
+    <bean id="customFinalEmployeeCalculationItemReader" class="com.inkubator.hrm.batch.FinalEmployeeCalculationReader" scope="step">
+        <constructor-arg name="empDataService" ref="empDataService"/>
+        <constructor-arg name="payrollCalculationDate" value="#{jobParameters['payrollCalculationDate']}"/>
     </bean>
     <bean id="customTaxEmployeeCalculationItemProcessor" class="com.inkubator.hrm.batch.TaxEmployeeCalculationProcessor" scope="step">		
         <constructor-arg name="taxRateService" ref="taxRateService"/>
@@ -108,6 +119,10 @@
         <property name="itemSqlParameterSourceProvider">
             <bean class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider" />
         </property>
+    </bean>
+    <bean id="customFinalEmployeeCalculationItemWriter" class="org.springframework.batch.item.adapter.ItemWriterAdapter">
+        <property name="targetObject" ref="payTempKalkulasiService" />
+        <property name="targetMethod" value="executeBatchFinalSalaryCalculation" />
     </bean>	
 	
 </beans>

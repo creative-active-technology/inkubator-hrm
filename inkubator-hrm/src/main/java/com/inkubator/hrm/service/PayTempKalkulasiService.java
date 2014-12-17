@@ -8,9 +8,12 @@ package com.inkubator.hrm.service;
 import java.util.Date;
 import java.util.List;
 
+import javax.script.ScriptException;
+
 import org.hibernate.criterion.Order;
 
 import com.inkubator.datacore.service.IService;
+import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.PayTempKalkulasi;
 import com.inkubator.hrm.web.model.PayTempKalkulasiModel;
 
@@ -39,4 +42,6 @@ public interface PayTempKalkulasiService extends IService<PayTempKalkulasi> {
     public Long getTotalPayTempKalkulasiByParamForDetail(String searchParameter, Long paySalaryComponentId) throws Exception;
 
 	public List<PayTempKalkulasi> getAllDataByEmpDataIdAndTaxNotNull(Long empDataId);
+	
+	public void executeBatchFinalSalaryCalculation(EmpData empData) throws ScriptException;
 }

@@ -9,10 +9,11 @@ import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.PayTempKalkulasiEmpPajakDao;
 import com.inkubator.hrm.entity.PayTempKalkulasiEmpPajak;
 import com.inkubator.hrm.web.model.PayTempKalkulasiEmpPajakModel;
+
 import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
-
 import org.hibernate.Query;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
@@ -97,4 +98,13 @@ public class PayTempKalkulasiEmpPajakDaoImpl extends IDAOImpl<PayTempKalkulasiEm
         }
         criteria.add(Restrictions.isNotNull("id"));
     }
+
+	@Override
+	public PayTempKalkulasiEmpPajak getEntityByEmpDataIdAndTaxComponentId(Long empDataId, Long taxComponentId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("taxComponent.id", taxComponentId));
+		criteria.add(Restrictions.eq("empData.id", empDataId));
+		
+		return (PayTempKalkulasiEmpPajak) criteria.uniqueResult();
+	}
 }

@@ -26,5 +26,7 @@ public interface PayTempKalkulasiEmpPajakDao extends IDAO<PayTempKalkulasiEmpPaj
     public List<PayTempKalkulasiEmpPajak> getByParamForDetail(String searchParameter, int firstResult, int maxResults, Order order, Long taxComponentId);
 
     public Long getTotalPayTempKalkulasiEmpPajakByParamForDetail(String searchParameter, Long taxComponentId);
+    
+    public PayTempKalkulasiEmpPajak getEntityByEmpDataIdAndTaxComponentId(Long empDataId, Long taxComponentId);
 
 }

@@ -182,4 +182,14 @@ public class PayTempKalkulasiDaoImpl extends IDAOImpl<PayTempKalkulasi> implemen
 		return criteria.list();
 	}
 
+	@Override
+	public PayTempKalkulasi getEntityByEmpDataIdAndSpecificModelComponent(Long empDataId, Integer specific){
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("paySalaryComponent", "paySalaryComponent", JoinType.INNER_JOIN);
+		criteria.createAlias("paySalaryComponent.modelComponent", "modelComponent", JoinType.INNER_JOIN);
+		criteria.add(Restrictions.eq("empData.id", empDataId));
+		criteria.add(Restrictions.eq("modelComponent.spesific", specific));
+		
+		return (PayTempKalkulasi) criteria.uniqueResult();
+	}
 }
