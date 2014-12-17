@@ -22,6 +22,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
 import com.inkubator.datacore.dao.impl.IDAOImpl;
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.PayTempKalkulasiDao;
 import com.inkubator.hrm.entity.PayTempKalkulasi;
 import com.inkubator.hrm.web.model.PayTempKalkulasiModel;
@@ -181,5 +182,16 @@ public class PayTempKalkulasiDaoImpl extends IDAOImpl<PayTempKalkulasi> implemen
 		criteria.addOrder(Order.desc("taxComponent.id"));
 		return criteria.list();
 	}
+
+    @Override
+    public PayTempKalkulasi getEntityByEmpIdAndModelTakeHomePayId(Long empId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+        criteria.createAlias("paySalaryComponent", "paySalaryComponent", JoinType.INNER_JOIN);
+        criteria.createAlias("paySalaryComponent.modelComponent", "modelComponent", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("empData.id", empId));
+        criteria.add(Restrictions.eq("modelComponent.spesific", HRMConstant.MODEL_COMP_TAKE_HOME_PAY));
+        return (PayTempKalkulasi) criteria.uniqueResult();
+    }
 
 }

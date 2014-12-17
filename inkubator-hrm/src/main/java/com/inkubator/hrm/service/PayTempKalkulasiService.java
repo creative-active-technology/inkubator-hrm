@@ -21,7 +21,6 @@ import com.inkubator.hrm.web.model.PayTempKalkulasiModel;
 public interface PayTempKalkulasiService extends IService<PayTempKalkulasi> {
 
     /*public void calculatePayRoll() throws Exception;*/
-
     public List<PayTempKalkulasiModel> getByParam(String searchParameter, int firstResult, int maxResults, Order order);
 
     public Long getTotalPayTempKalkulasiByParam(String searchParameter);
@@ -38,5 +37,7 @@ public interface PayTempKalkulasiService extends IService<PayTempKalkulasi> {
 
     public Long getTotalPayTempKalkulasiByParamForDetail(String searchParameter, Long paySalaryComponentId) throws Exception;
 
-	public List<PayTempKalkulasi> getAllDataByEmpDataIdAndTaxNotNull(Long empDataId);
+    public List<PayTempKalkulasi> getAllDataByEmpDataIdAndTaxNotNull(Long empDataId);
+    
+    public PayTempKalkulasi getEntityByEmpIdAndModelTakeHomePayId(Long empId) throws Exception;
 }

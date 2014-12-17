@@ -611,5 +611,11 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
 		return payTempKalkulasiDao.getAllDataByEmpDataIdAndTaxNotNull(empDataId);
 		
 	}
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public PayTempKalkulasi getEntityByEmpIdAndModelTakeHomePayId(Long empId) throws Exception {
+        return payTempKalkulasiDao.getEntityByEmpIdAndModelTakeHomePayId(empId);
+    }
     
 }
