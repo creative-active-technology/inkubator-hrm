@@ -7,11 +7,18 @@ package com.inkubator.hrm.dao;
 
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.PayReceiverBankAccount;
+import com.inkubator.hrm.web.model.PayReceiverBankAccountModel;
+import com.inkubator.hrm.web.search.PayReceiverBankAccountSearchParameter;
+import java.util.List;
+import org.hibernate.criterion.Order;
 
 /**
  *
  * @author denifahri
  */
 public interface PayReceiverBankAccountDao extends IDAO<PayReceiverBankAccount> {
-    
+
+    public List<PayReceiverBankAccountModel> getByParam(PayReceiverBankAccountSearchParameter searchParameter, int firstResult, int maxResults, Order order);
+
+    public Long getTotalByParam(PayReceiverBankAccountSearchParameter searchParameter);
 }
