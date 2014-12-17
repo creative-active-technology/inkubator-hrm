@@ -1,0 +1,156 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg" style="margin: 10px">                     
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="cost_center.png" height="36" width="36" cache="true"/>
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['salaryconfirmation.employee_salary_confirmation']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['salaryconfirmation.employee_data_based_salary_confirmation']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator/>
+
+                    <h:form id="formSalaryConfirmationViewId">
+                    	<p:focus context="formSalaryConfirmationViewId"/>
+                        <p:toolbar  style="margin-top: 10px">
+                            <p:toolbarGroup align="left">
+                            	<p:panelGrid style="width: 100%;" styleClass="grid_no_border">
+                            	</p:panelGrid>
+                            </p:toolbarGroup>
+                            
+                            <p:toolbarGroup align="right">
+                                <h:panelGrid columns="3" >
+                                    <p:commandButton value="Export to XLS" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
+                                        <pe:exporter target="tableSalaryConfirmationId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Employee_Salary_Confirmation"/>
+                                    </p:commandButton>                                    
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{salaryConfirmationViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                        </p:toolbar>
+                        <p:panelGrid style="width: 100%;margin-bottom: 10px;margin-top: 10px" styleClass="grid_border3">
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['global.name']}" styleClass="label_hrm" />
+                                    <p:outputLabel value=":" />
+                                </p:column>
+                            	<p:column>
+                                    <p:inputText value="#{salaryConfirmationViewController.searchParameter.name}" style="width: 200px" styleClass="isitext_hrm"/>
+                            	</p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['global.nik']}" styleClass="label_hrm" />
+                                    <p:outputLabel value=":" />
+                                </p:column>
+                            	<p:column>
+                                    <p:inputText value="#{salaryConfirmationViewController.searchParameter.nik}" style="width: 200px" styleClass="isitext_hrm"/>
+                            	</p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['functiongroup.function_group']}" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectOneMenu value="#{salaryConfirmationViewController.searchParameter.golonganJabatanId}" filter="true" style="margin-right: 3px" >
+				                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+					                	<f:selectItems value="#{salaryConfirmationViewController.listGolJab}" var="golJab" itemValue="#{golJab.id}" itemLabel="#{golJab.code}"/>
+				                    </p:selectOneMenu>
+                                </p:column>
+                            </p:row>                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    
+                                </p:column>
+                                <p:column>
+                                    <p:commandButton id="btnSearchId" style="margin-left:0px;" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{salaryConfirmationViewController.doSearch()}" update="tableSalaryConfirmationId"  styleClass="label_button" icon="ui-icon-search"/>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+
+                        <p:dataTable  id="tableSalaryConfirmationId" var="empData"  value="#{salaryConfirmationViewController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['employee.list_of_employee']}"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 3%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}."/>
+                            </p:column>
+                            <p:column sortBy="nik"  style="width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.nik']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{empData.nik}"/>
+                            </p:column>
+                            <p:column sortBy="bioData.firstName"  style="width: 20%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['employee.employee_name']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{empData.bioData.fullName}"/>
+                            </p:column>
+                            <p:column sortBy="jabatanByJabatanId.name"  style="width: 20%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['jabatan.jabatan']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{empData.jabatanByJabatanId.name}"/>
+                            </p:column>
+                            <p:column sortBy="golonganJabatan.code"  style="width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['functiongroup.function_group']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{empData.golonganJabatan.code}"/>
+                            </p:column>
+                            <p:column sortBy="joinDate"  style="width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['employee.join_date']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{empData.joinDate}">
+                                	<f:convertDateTime pattern="dd MMMM yyyy" />
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 7%;text-align: center" exportable="false">
+                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
+                                				 style="font-size: 10px!important" action="#{leaveViewController.doDetail()}">                        
+                                    <f:setPropertyActionListener value="#{leaveData}" target="#{leaveViewController.selectedLeave}" />
+                                </p:commandButton>
+                            </p:column>                                                   
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : "/>
+                                <p:outputLabel value="#{salaryConfirmationViewController.lazyDataModel.rowCount}"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px"/>
+                            </f:facet>  
+                        </p:dataTable>
+                        <p:blockUI block="formSalaryConfirmationViewId" trigger="tableSalaryConfirmationId,btnSearchId" >
+                            <h:panelGrid columns="2" styleClass="grid_no_border">
+                                <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
+                                <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
+                            </h:panelGrid>
+                        </p:blockUI>
+                    </h:form>
+                </div>                
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

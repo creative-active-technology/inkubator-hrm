@@ -81,7 +81,7 @@ public class PaySalaryGradeDaoImpl extends IDAOImpl<PaySalaryGrade> implements P
         }
         if (searchParameter.getCurrency()!= null) {
             criteria.createAlias("currency", "c", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("c.name", searchParameter.getCurrency(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("c.name", searchParameter.getCurrency(), MatchMode.START));
         }
         criteria.add(Restrictions.isNotNull("id"));
     }
