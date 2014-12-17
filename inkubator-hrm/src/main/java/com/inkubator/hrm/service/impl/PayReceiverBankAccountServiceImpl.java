@@ -9,11 +9,16 @@ import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.dao.PayReceiverBankAccountDao;
 import com.inkubator.hrm.entity.PayReceiverBankAccount;
 import com.inkubator.hrm.service.PayReceiverBankAccountService;
+import com.inkubator.hrm.web.model.PayReceiverBankAccountModel;
+import com.inkubator.hrm.web.search.PayReceiverBankAccountSearchParameter;
 import java.util.List;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -184,6 +189,18 @@ public class PayReceiverBankAccountServiceImpl extends IServiceImpl implements P
     @Override
     public List<PayReceiverBankAccount> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<PayReceiverBankAccountModel> getByParam(PayReceiverBankAccountSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
+        return payReceiverBankAccountDao.getByParam(searchParameter, firstResult, maxResults, order);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalByParam(PayReceiverBankAccountSearchParameter searchParameter) throws Exception {
+        return this.payReceiverBankAccountDao.getTotalByParam(searchParameter);
     }
 
 }

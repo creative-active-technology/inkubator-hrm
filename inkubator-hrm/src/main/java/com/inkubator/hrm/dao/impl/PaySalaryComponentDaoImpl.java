@@ -169,5 +169,4 @@ public class PaySalaryComponentDaoImpl extends IDAOImpl<PaySalaryComponent> impl
         criteria.add(Restrictions.ne("id", id));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
-
 }

@@ -131,8 +131,8 @@
                             </p:column>
                             <p:column headerText="#{appmsg['global.action']}" style="width: 7%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
-                                				 style="font-size: 10px!important" action="#{leaveViewController.doDetail()}">                        
-                                    <f:setPropertyActionListener value="#{leaveData}" target="#{leaveViewController.selectedLeave}" />
+                                				 style="font-size: 10px!important" action="#{salaryConfirmationViewController.doDetail()}">                        
+                                    <f:setPropertyActionListener value="#{empData}" target="#{salaryConfirmationViewController.selectedEmpData}" />
                                 </p:commandButton>
                             </p:column>                                                   
                             <f:facet name="footer">
