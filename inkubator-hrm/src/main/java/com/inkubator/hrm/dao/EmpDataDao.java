@@ -16,6 +16,7 @@ import com.inkubator.hrm.web.search.EmpDataSearchParameter;
 import com.inkubator.hrm.web.search.ReportEmpDepartmentJabatanParameter;
 import com.inkubator.hrm.web.search.ReportEmpWorkingGroupParameter;
 import com.inkubator.hrm.web.search.ReportOfEmployeesFamilySearchParameter;
+import com.inkubator.hrm.web.search.SalaryConfirmationParameter;
 
 import java.util.Date;
 import java.util.List;
@@ -99,5 +100,9 @@ public interface EmpDataDao extends IDAO<EmpData> {
     public Long getTotalByTaxFreeIsNull();
 
 	public List<EmpData> getAllDataNotTerminateAndJoinDateLowerThan(Date payrollCalculationDate);
+
+	public List<EmpData> getAllDataSalaryConfirmationByParam(SalaryConfirmationParameter param, int firstResult, int maxResults, Order orderable);
+
+	public Long getTotalSalaryConfirmationByParam(SalaryConfirmationParameter param);
 
 }
