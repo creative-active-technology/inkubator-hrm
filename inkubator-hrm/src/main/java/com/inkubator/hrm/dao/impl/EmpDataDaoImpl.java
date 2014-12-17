@@ -749,9 +749,8 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 	@Override
 	public List<EmpData> getAllDataSalaryConfirmationByParam(SalaryConfirmationParameter param, int firstResult, int maxResults, Order orderable) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
 		criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
-		criteria.createAlias("golonganJabatan", "golonganJabatan", JoinType.INNER_JOIN);
+		this.doSearchSalaryConfirmationByParam(param, criteria);
 		criteria.addOrder(orderable);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
@@ -761,8 +760,32 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 
 	@Override
 	public Long getTotalSalaryConfirmationByParam(SalaryConfirmationParameter param) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());		
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		this.doSearchSalaryConfirmationByParam(param, criteria);
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
+	
+	private Criteria doSearchSalaryConfirmationByParam(SalaryConfirmationParameter param, Criteria criteria){
+		criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
+		criteria.createAlias("golonganJabatan", "golonganJabatan", JoinType.INNER_JOIN);		
+		criteria.add(Restrictions.isNotEmpty("payTempKalkulasis"));
+		
+		if (StringUtils.isNotEmpty(param.getNik())) {
+            criteria.add(Restrictions.like("nik", param.getNik(), MatchMode.START));
+        }
+		
+		if (StringUtils.isNotEmpty(param.getName())) {
+            Disjunction disjunction = Restrictions.disjunction();
+            disjunction.add(Restrictions.like("bioData.firstName", param.getName(), MatchMode.START));
+            disjunction.add(Restrictions.like("bioData.lastName", param.getName(), MatchMode.START));
+            criteria.add(disjunction);
+        }
+		
+		if (param.getGolonganJabatanId() != null && param.getGolonganJabatanId() != 0) {
+            criteria.add(Restrictions.eq("golonganJabatan.id", param.getGolonganJabatanId()));
+        }
+
+        return criteria;
 	}
 
 }
