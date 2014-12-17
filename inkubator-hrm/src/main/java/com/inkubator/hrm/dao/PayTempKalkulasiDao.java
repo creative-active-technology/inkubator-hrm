@@ -38,5 +38,7 @@ public interface PayTempKalkulasiDao extends IDAO<PayTempKalkulasi> {
     public List<PayTempKalkulasi> getAllDataByEmpDataIdAndTaxNotNull(Long empDataId);
     
     public PayTempKalkulasi getEntityByEmpIdAndModelTakeHomePayId(Long empId);
+    
+    public List<PayTempKalkulasi> getAllDataByEmpDataId(Long empDataId);
 
 }

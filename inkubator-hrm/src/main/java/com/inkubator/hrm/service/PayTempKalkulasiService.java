@@ -40,4 +40,6 @@ public interface PayTempKalkulasiService extends IService<PayTempKalkulasi> {
     public List<PayTempKalkulasi> getAllDataByEmpDataIdAndTaxNotNull(Long empDataId);
     
     public PayTempKalkulasi getEntityByEmpIdAndModelTakeHomePayId(Long empId) throws Exception;
+    
+    public List<PayTempKalkulasi> getAllDataByEmpDataId(Long empDataId) throws Exception;
 }

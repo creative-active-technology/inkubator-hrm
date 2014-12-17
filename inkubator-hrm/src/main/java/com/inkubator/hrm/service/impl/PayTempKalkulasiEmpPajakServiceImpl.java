@@ -223,4 +223,10 @@ public class PayTempKalkulasiEmpPajakServiceImpl extends IServiceImpl implements
         return payTempKalkulasiEmpPajakDao.getTotalPayTempKalkulasiEmpPajakByParamForDetail(searchParameter, taxComponentId);
     }
 
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public List<PayTempKalkulasiEmpPajak> getAllDataByEmpDataId(Long empDataId) throws Exception {
+        return payTempKalkulasiEmpPajakDao.getAllDataByEmpDataId(empDataId);
+    }
+
 }

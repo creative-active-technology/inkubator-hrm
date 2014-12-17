@@ -160,7 +160,7 @@ public class PayTempKalkulasiDaoImpl extends IDAOImpl<PayTempKalkulasi> implemen
         criteria.createAlias("paySalaryComponent", "paySalaryComponent", JoinType.INNER_JOIN);
         criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
         criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
-        criteria.add(Restrictions.eq("paySalaryComponent.id", paySalaryComponentId)); 
+        criteria.add(Restrictions.eq("paySalaryComponent.id", paySalaryComponentId));
         if (StringUtils.isNotEmpty(searchParameter)) {
             Disjunction disjunction = Restrictions.disjunction();
             disjunction.add(Restrictions.like("empData.nik", searchParameter, MatchMode.START));
@@ -172,16 +172,16 @@ public class PayTempKalkulasiDaoImpl extends IDAOImpl<PayTempKalkulasi> implemen
         criteria.add(Restrictions.isNotNull("id"));
     }
 
-	@Override
-	public List<PayTempKalkulasi> getAllDataByEmpDataIdAndTaxNotNull(Long empDataId) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.createAlias("paySalaryComponent", "paySalaryComponent", JoinType.INNER_JOIN);
-		criteria.createAlias("paySalaryComponent.taxComponent", "taxComponent", JoinType.INNER_JOIN);
-		criteria.add(Restrictions.eq("empData.id", empDataId));
-		criteria.add(Restrictions.isNotNull("paySalaryComponent.taxComponent"));
-		criteria.addOrder(Order.desc("taxComponent.id"));
-		return criteria.list();
-	}
+    @Override
+    public List<PayTempKalkulasi> getAllDataByEmpDataIdAndTaxNotNull(Long empDataId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("paySalaryComponent", "paySalaryComponent", JoinType.INNER_JOIN);
+        criteria.createAlias("paySalaryComponent.taxComponent", "taxComponent", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("empData.id", empDataId));
+        criteria.add(Restrictions.isNotNull("paySalaryComponent.taxComponent"));
+        criteria.addOrder(Order.desc("taxComponent.id"));
+        return criteria.list();
+    }
 
     @Override
     public PayTempKalkulasi getEntityByEmpIdAndModelTakeHomePayId(Long empId) {
@@ -189,9 +189,23 @@ public class PayTempKalkulasiDaoImpl extends IDAOImpl<PayTempKalkulasi> implemen
         criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
         criteria.createAlias("paySalaryComponent", "paySalaryComponent", JoinType.INNER_JOIN);
         criteria.createAlias("paySalaryComponent.modelComponent", "modelComponent", JoinType.INNER_JOIN);
+        criteria.setFetchMode("empData", FetchMode.JOIN);
+        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+        criteria.setFetchMode("empData.golonganJabatan", FetchMode.JOIN);
         criteria.add(Restrictions.eq("empData.id", empId));
         criteria.add(Restrictions.eq("modelComponent.spesific", HRMConstant.MODEL_COMP_TAKE_HOME_PAY));
         return (PayTempKalkulasi) criteria.uniqueResult();
+    }
+
+    @Override
+    public List<PayTempKalkulasi> getAllDataByEmpDataId(Long empDataId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("paySalaryComponent", "paySalaryComponent", JoinType.INNER_JOIN);
+        criteria.createAlias("paySalaryComponent.taxComponent", "taxComponent", JoinType.INNER_JOIN);
+        criteria.createAlias("paySalaryComponent.modelComponent", "modelComponent", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("empData.id", empDataId));
+        criteria.add(Restrictions.ne("modelComponent.spesific", HRMConstant.MODEL_COMP_TAKE_HOME_PAY));
+        return criteria.list();
     }
 
 }

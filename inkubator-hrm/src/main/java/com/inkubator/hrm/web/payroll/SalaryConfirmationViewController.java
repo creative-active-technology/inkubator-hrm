@@ -33,6 +33,7 @@ public class SalaryConfirmationViewController extends BaseController {
     private GolonganJabatanService golonganJabatanService;
     @ManagedProperty(value = "#{empDataService}")
     private EmpDataService empDataService;
+    private EmpData selectedEmpData;
 
     @PostConstruct
     @Override
@@ -40,61 +41,75 @@ public class SalaryConfirmationViewController extends BaseController {
         super.initialization();
         searchParameter = new SalaryConfirmationParameter();
         try {
-        	listGolJab = golonganJabatanService.getAllData();
-		} catch (Exception e) {
-			LOGGER.error("Error", e);
-		}
+            listGolJab = golonganJabatanService.getAllData();
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
     }
 
     @PreDestroy
     public void cleanAndExit() {
-    	empDataService = null;
+        empDataService = null;
         searchParameter = null;
         lazyDataModel = null;
         listGolJab = null;
         golonganJabatanService = null;
+        selectedEmpData = null;
     }
 
-	public LazyDataModel<EmpData> getLazyDataModel() {
-		if(lazyDataModel == null){
-			lazyDataModel =  new SalaryConfirmationLazyDataModel(searchParameter, empDataService);
-		}
-		return lazyDataModel;
-	}
+    public String doDetail() {
+        return "/protected/payroll/salary_confirmation_detail.htm?faces-redirect=true&execution=e" + selectedEmpData.getId();
+    }
+    
+    public LazyDataModel<EmpData> getLazyDataModel() {
+        if (lazyDataModel == null) {
+            lazyDataModel = new SalaryConfirmationLazyDataModel(searchParameter, empDataService);
+        }
+        return lazyDataModel;
+    }
 
-	public void setLazyDataModel(LazyDataModel<EmpData> lazyDataModel) {
-		this.lazyDataModel = lazyDataModel;
-	}
+    public void setLazyDataModel(LazyDataModel<EmpData> lazyDataModel) {
+        this.lazyDataModel = lazyDataModel;
+    }
 
-	public EmpDataService getEmpDataService() {
-		return empDataService;
-	}
+    public EmpDataService getEmpDataService() {
+        return empDataService;
+    }
 
-	public void setEmpDataService(EmpDataService empDataService) {
-		this.empDataService = empDataService;
-	}
+    public void setEmpDataService(EmpDataService empDataService) {
+        this.empDataService = empDataService;
+    }
 
-	public List<GolonganJabatan> getListGolJab() {
-		return listGolJab;
-	}
+    public List<GolonganJabatan> getListGolJab() {
+        return listGolJab;
+    }
 
-	public void setListGolJab(List<GolonganJabatan> listGolJab) {
-		this.listGolJab = listGolJab;
-	}
+    public void setListGolJab(List<GolonganJabatan> listGolJab) {
+        this.listGolJab = listGolJab;
+    }
 
-	public void setGolonganJabatanService(GolonganJabatanService golonganJabatanService) {
-		this.golonganJabatanService = golonganJabatanService;
-	}
+    public void setGolonganJabatanService(GolonganJabatanService golonganJabatanService) {
+        this.golonganJabatanService = golonganJabatanService;
+    }
 
-	public SalaryConfirmationParameter getSearchParameter() {
-		return searchParameter;
-	}
+    public SalaryConfirmationParameter getSearchParameter() {
+        return searchParameter;
+    }
 
-	public void setSearchParameter(SalaryConfirmationParameter searchParameter) {
-		this.searchParameter = searchParameter;
-	}
+    public void setSearchParameter(SalaryConfirmationParameter searchParameter) {
+        this.searchParameter = searchParameter;
+    }
 
-	public void doSearch() {
+    public void doSearch() {
         lazyDataModel = null;
     }
+
+    public EmpData getSelectedEmpData() {
+        return selectedEmpData;
+    }
+
+    public void setSelectedEmpData(EmpData selectedEmpData) {
+        this.selectedEmpData = selectedEmpData;
+    }
+
 }
