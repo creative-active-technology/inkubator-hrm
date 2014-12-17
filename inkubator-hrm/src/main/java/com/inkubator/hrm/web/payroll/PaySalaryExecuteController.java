@@ -192,6 +192,10 @@ public class PaySalaryExecuteController extends BaseController {
         return "/protected/payroll/salary_execution_detail.htm?faces-redirect=true&execution=e" + payTempKalkulasiModel.getPaySalaryComponentId();
     }
 
+    public String doTax(){
+        return "/protected/payroll/tax_view.htm?faces-redirect=true";
+    }
+    
     public void setEmpDataService(EmpDataService empDataService) {
         this.empDataService = empDataService;
     }
