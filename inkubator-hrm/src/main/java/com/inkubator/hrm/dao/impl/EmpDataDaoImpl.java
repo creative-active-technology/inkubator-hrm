@@ -39,6 +39,7 @@ import com.inkubator.hrm.web.search.EmpDataSearchParameter;
 import com.inkubator.hrm.web.search.ReportEmpDepartmentJabatanParameter;
 import com.inkubator.hrm.web.search.ReportEmpWorkingGroupParameter;
 import com.inkubator.hrm.web.search.ReportOfEmployeesFamilySearchParameter;
+import com.inkubator.hrm.web.search.SalaryConfirmationParameter;
 
 /**
  *
@@ -743,6 +744,25 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
         criteria.add(Restrictions.lt("joinDate", payrollCalculationDate));
         return criteria.list();
+	}
+
+	@Override
+	public List<EmpData> getAllDataSalaryConfirmationByParam(SalaryConfirmationParameter param, int firstResult, int maxResults, Order orderable) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
+		criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
+		criteria.createAlias("golonganJabatan", "golonganJabatan", JoinType.INNER_JOIN);
+		criteria.addOrder(orderable);
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResults);
+		return criteria.list();
+		
+	}
+
+	@Override
+	public Long getTotalSalaryConfirmationByParam(SalaryConfirmationParameter param) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());		
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
 	}
 
 }

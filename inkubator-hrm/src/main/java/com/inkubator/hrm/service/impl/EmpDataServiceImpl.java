@@ -58,6 +58,7 @@ import com.inkubator.hrm.web.search.EmpDataSearchParameter;
 import com.inkubator.hrm.web.search.ReportEmpDepartmentJabatanParameter;
 import com.inkubator.hrm.web.search.ReportEmpWorkingGroupParameter;
 import com.inkubator.hrm.web.search.ReportOfEmployeesFamilySearchParameter;
+import com.inkubator.hrm.web.search.SalaryConfirmationParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 
 import java.util.ArrayList;
@@ -701,6 +702,20 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
 	public List<EmpData> getAllDataNotTerminateAndJoinDateLowerThan(Date payrollCalculationDate) throws Exception {	
 		return this.empDataDao.getAllDataNotTerminateAndJoinDateLowerThan(payrollCalculationDate);
+		
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<EmpData> getAllDataSalaryConfirmationByParam(SalaryConfirmationParameter param, int firstResult, int maxResults, Order orderable) {
+		return this.empDataDao.getAllDataSalaryConfirmationByParam(param, firstResult, maxResults, orderable);
+		
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Long getTotalSalaryConfirmationByParam(SalaryConfirmationParameter param) {
+		return this.empDataDao.getTotalSalaryConfirmationByParam(param);
 		
 	}
 }
