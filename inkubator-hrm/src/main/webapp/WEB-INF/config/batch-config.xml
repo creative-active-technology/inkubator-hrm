@@ -7,16 +7,16 @@
 		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.2.xsd">
 
     <!-- stored job-meta in database -->
-    <bean id="jobRepository" class="org.springframework.batch.core.repository.support.JobRepositoryFactoryBean">
+    <bean id="jobRepository" class="org.springframework.batch.core.repository.support.JobRepositoryFactoryBean" lazy-init="true">
         <property name="dataSource" ref="c3p0DataSource-1" />
         <property name="transactionManager" ref="transactionManager" />
     </bean>
 
     <!-- calling this to running job -->
-    <bean id="jobLauncher" class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
+    <bean id="jobLauncher" class="org.springframework.batch.core.launch.support.SimpleJobLauncher" lazy-init="true">
         <property name="jobRepository" ref="jobRepository" />
     </bean>
-    <bean id="jobLauncherAsync" class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
+    <bean id="jobLauncherAsync" class="org.springframework.batch.core.launch.support.SimpleJobLauncher" lazy-init="true">
         <property name="jobRepository" ref="jobRepository" />
         <!-- To make execution asynchronously. For further detail, please refer to this page http://docs.spring.io/spring-batch/trunk/reference/htmlsingle/#configuringJobLauncher -->
         <property name="taskExecutor">
@@ -61,38 +61,38 @@
 	
 	
     <!-- reader and writer for pay_salary_upload -->	
-    <bean id="customPaySalaryUploadItemReader" class="com.inkubator.hrm.batch.PaySalaryUploadReader" scope="step" destroy-method="destroy">
+    <bean id="customPaySalaryUploadItemReader" class="com.inkubator.hrm.batch.PaySalaryUploadReader" scope="step" destroy-method="destroy" lazy-init="true">
         <constructor-arg name="filePath"  value="#{jobParameters['input.file.path']}"></constructor-arg>
         <property name="createdBy" value="#{jobParameters['createdBy']}"/>
         <property name="paySalaryComponentId" value="#{jobParameters['paySalaryComponentId']}"/>
     </bean>	
-    <bean id="customPaySalaryUploadItemWriter" class="org.springframework.batch.item.adapter.ItemWriterAdapter">
+    <bean id="customPaySalaryUploadItemWriter" class="org.springframework.batch.item.adapter.ItemWriterAdapter" lazy-init="true">
         <property name="targetObject" ref="payTempUploadDataService" />
         <property name="targetMethod" value="executeBatchFileUpload" />
     </bean>
 	
 		
     <!-- reader, processor and writer for pay_employee_calculation -->
-    <bean id="customPayEmployeeCalculationItemReader" class="com.inkubator.hrm.batch.PayEmployeeCalculationReader" scope="step">
+    <bean id="customPayEmployeeCalculationItemReader" class="com.inkubator.hrm.batch.PayEmployeeCalculationReader" scope="step" lazy-init="true">
         <constructor-arg name="payTempKalkulasiService" ref="payTempKalkulasiService"/>
         <constructor-arg name="payrollCalculationDate" value="#{jobParameters['payrollCalculationDate']}"/>
         <constructor-arg name="createdBy" value="#{jobParameters['createdBy']}"/>
     </bean>	
-    <bean id="customTaxEmployeeCalculationItemReader" class="com.inkubator.hrm.batch.TaxEmployeeCalculationReader" scope="step">
+    <bean id="customTaxEmployeeCalculationItemReader" class="com.inkubator.hrm.batch.TaxEmployeeCalculationReader" scope="step" lazy-init="true">
         <constructor-arg name="empDataService" ref="empDataService"/>
         <constructor-arg name="payrollCalculationDate" value="#{jobParameters['payrollCalculationDate']}"/>
         <property name="payTempKalkulasiService" ref="payTempKalkulasiService"/>
     </bean>
-    <bean id="customFinalEmployeeCalculationItemReader" class="com.inkubator.hrm.batch.FinalEmployeeCalculationReader" scope="step">
+    <bean id="customFinalEmployeeCalculationItemReader" class="com.inkubator.hrm.batch.FinalEmployeeCalculationReader" scope="step" lazy-init="true">
         <constructor-arg name="empDataService" ref="empDataService"/>
         <constructor-arg name="payrollCalculationDate" value="#{jobParameters['payrollCalculationDate']}"/>
     </bean>
-    <bean id="customTaxEmployeeCalculationItemProcessor" class="com.inkubator.hrm.batch.TaxEmployeeCalculationProcessor" scope="step">		
+    <bean id="customTaxEmployeeCalculationItemProcessor" class="com.inkubator.hrm.batch.TaxEmployeeCalculationProcessor" scope="step" lazy-init="true">		
         <constructor-arg name="taxRateService" ref="taxRateService"/>
         <property name="payrollCalculationDate" value="#{jobParameters['payrollCalculationDate']}"/>
         <property name="createdBy" value="#{jobParameters['createdBy']}"/>
     </bean>	
-    <bean id="customPayEmployeeCalculationItemWriter" class="org.springframework.batch.item.database.JdbcBatchItemWriter">
+    <bean id="customPayEmployeeCalculationItemWriter" class="org.springframework.batch.item.database.JdbcBatchItemWriter" lazy-init="true">
         <property name="dataSource" ref="c3p0DataSource-1" />
         <property name="sql">
             <value>
@@ -106,7 +106,7 @@
             <bean class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider" />
         </property>
     </bean>
-    <bean id="customTaxEmployeeCalculationItemWriter" class="com.inkubator.hrm.batch.TaxEmployeeCalculationWriter">
+    <bean id="customTaxEmployeeCalculationItemWriter" class="com.inkubator.hrm.batch.TaxEmployeeCalculationWriter" lazy-init="true">
         <property name="dataSource" ref="c3p0DataSource-1" />
         <property name="sql">
             <value>
@@ -120,7 +120,7 @@
             <bean class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider" />
         </property>
     </bean>
-    <bean id="customFinalEmployeeCalculationItemWriter" class="org.springframework.batch.item.adapter.ItemWriterAdapter">
+    <bean id="customFinalEmployeeCalculationItemWriter" class="org.springframework.batch.item.adapter.ItemWriterAdapter" lazy-init="true">
         <property name="targetObject" ref="payTempKalkulasiService" />
         <property name="targetMethod" value="executeBatchFinalSalaryCalculation" />
     </bean>	
