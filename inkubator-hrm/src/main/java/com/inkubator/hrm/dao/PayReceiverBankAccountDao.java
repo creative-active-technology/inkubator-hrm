@@ -23,4 +23,7 @@ public interface PayReceiverBankAccountDao extends IDAO<PayReceiverBankAccount> 
     public Long getTotalByParam(PayReceiverBankAccountSearchParameter searchParameter);
     
     public List<PayReceiverBankAccount> getAllByEmpId(long id) ;
+
+	public List<PayReceiverBankAccount> getAllDataWithDetail();
+	
 }

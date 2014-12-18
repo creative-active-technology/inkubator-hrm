@@ -48,4 +48,6 @@ public interface PayTempKalkulasiService extends IService<PayTempKalkulasi> {
     
     public List<PayTempKalkulasi> getAllDataByEmpDataId(Long empDataId) throws Exception;
 
+	public PayTempKalkulasi getEntityByEmpDataIdAndSpecificModelComponent(Long empDataid, Integer specific);
+
 }

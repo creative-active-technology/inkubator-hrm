@@ -708,5 +708,12 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
     public List<PayTempKalkulasi> getAllDataByEmpDataId(Long empDataId) throws Exception {
         return payTempKalkulasiDao.getAllDataByEmpDataId(empDataId);
     }
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+	public PayTempKalkulasi getEntityByEmpDataIdAndSpecificModelComponent(Long empDataId, Integer specific) {
+		return payTempKalkulasiDao.getEntityByEmpDataIdAndSpecificModelComponent(empDataId, specific);
+		
+	}
     
 }

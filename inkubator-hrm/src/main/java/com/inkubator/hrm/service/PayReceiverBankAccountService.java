@@ -27,4 +27,7 @@ public interface PayReceiverBankAccountService extends IService<PayReceiverBankA
     public List<PayReceiverBankAccount> getAllByEmpId(long id) throws Exception;
 
     public void updateList(List<PayReceiverBankAccount> list) throws Exception;
+
+	public List<PayReceiverBankAccount> getAllDataWithDetail() throws Exception;
+
 }
