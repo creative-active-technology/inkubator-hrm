@@ -5,64 +5,49 @@
  */
 package com.inkubator.hrm.web.payroll;
 
+import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.PayReceiverBankAccountService;
-import com.inkubator.hrm.web.lazymodel.PayReceiverBankAccountLazyDataModel;
 import com.inkubator.hrm.web.model.PayReceiverBankAccountModel;
-import com.inkubator.hrm.web.search.PayReceiverBankAccountSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
+import com.inkubator.webcore.util.FacesUtil;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import org.primefaces.model.LazyDataModel;
 
 /**
  *
  * @author denifahri
  */
-@ManagedBean(name = "payReceiverBankViewController")
+@ManagedBean(name = "distributionBankController")
 @ViewScoped
 public class DistributionBankController extends BaseController {
 
-    private PayReceiverBankAccountSearchParameter parameter;
     @ManagedProperty(value = "#{payReceiverBankAccountService}")
     private PayReceiverBankAccountService payReceiverBankAccountService;
-    private LazyDataModel<PayReceiverBankAccountModel> lazyDataModel;
     private PayReceiverBankAccountModel selectedPayReceiverBankAccountModel;
+    @ManagedProperty(value = "#{empDataService}")
+    private EmpDataService empDataService;
+    private EmpData empData;
 
     @PostConstruct
     @Override
     public void initialization() {
-        super.initialization();
-        parameter = new PayReceiverBankAccountSearchParameter();
+        try {
+            super.initialization();
+            String empId = FacesUtil.getRequestParameter("execution");
+            System.out.println(" Hehrehehheehhe " +empId);
+            empData = empDataService.getByPKBankTransfer(Long.parseLong(empId.substring(1)));
 
-    }
-
-    public PayReceiverBankAccountSearchParameter getParameter() {
-        return parameter;
-    }
-
-    public void setParameter(PayReceiverBankAccountSearchParameter parameter) {
-        this.parameter = parameter;
-    }
-
-    public LazyDataModel<PayReceiverBankAccountModel> getLazyDataModel() {
-        if (lazyDataModel == null) {
-            lazyDataModel = new PayReceiverBankAccountLazyDataModel(parameter, payReceiverBankAccountService);
+        } catch (Exception ex) {
+         LOGGER.error(ex, ex);
         }
-        return lazyDataModel;
-    }
 
-    public void setLazyDataModel(LazyDataModel<PayReceiverBankAccountModel> lazyDataModel) {
-        this.lazyDataModel = lazyDataModel;
     }
 
     public void setPayReceiverBankAccountService(PayReceiverBankAccountService payReceiverBankAccountService) {
         this.payReceiverBankAccountService = payReceiverBankAccountService;
-    }
-
-    public void doSearch() {
-        lazyDataModel = null;
     }
 
     public String doDetail() {
@@ -80,4 +65,17 @@ public class DistributionBankController extends BaseController {
     public String doDistribution() {
         return "/protected/payroll/distribution_bank_transfer.htm?faces-redirect=true&execution=e" + selectedPayReceiverBankAccountModel.getEmpId();
     }
+
+    public void setEmpDataService(EmpDataService empDataService) {
+        this.empDataService = empDataService;
+    }
+
+    public EmpData getEmpData() {
+        return empData;
+    }
+
+    public void setEmpData(EmpData empData) {
+        this.empData = empData;
+    }
+
 }

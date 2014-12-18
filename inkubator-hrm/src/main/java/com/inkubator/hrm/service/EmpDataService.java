@@ -17,7 +17,6 @@ import com.inkubator.hrm.web.search.ReportEmpDepartmentJabatanParameter;
 import com.inkubator.hrm.web.search.ReportEmpWorkingGroupParameter;
 import com.inkubator.hrm.web.search.ReportOfEmployeesFamilySearchParameter;
 import com.inkubator.hrm.web.search.SalaryConfirmationParameter;
-
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -90,15 +89,17 @@ public interface EmpDataService extends IService<EmpData> {
     public EmpData getEmpDataWithBiodata(Long id) throws Exception;
 
     public List<EmpData> getAllDataNotTerminate() throws Exception;
-    
+
     public Long getTotalEmpDataNotTerminate() throws Exception;
-    
+
     public Long getTotalByTaxFreeIsNull() throws Exception;
-    
+
     public List<EmpData> getAllDataNotTerminateAndJoinDateLowerThan(Date payrollCalculationDate) throws Exception;
 
-	public List<EmpData> getAllDataSalaryConfirmationByParam(SalaryConfirmationParameter parameter, int first, int pageSize, Order orderable);
+    public List<EmpData> getAllDataSalaryConfirmationByParam(SalaryConfirmationParameter parameter, int first, int pageSize, Order orderable);
 
-	public Long getTotalSalaryConfirmationByParam(SalaryConfirmationParameter parameter);
+    public Long getTotalSalaryConfirmationByParam(SalaryConfirmationParameter parameter);
+    
+    public EmpData getByPKBankTransfer(long  id) throws Exception;
 
 }
