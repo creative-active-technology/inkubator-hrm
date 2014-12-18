@@ -5,12 +5,15 @@
  */
 package com.inkubator.hrm.service.impl;
 
+import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.dao.PayReceiverBankAccountDao;
 import com.inkubator.hrm.entity.PayReceiverBankAccount;
 import com.inkubator.hrm.service.PayReceiverBankAccountService;
 import com.inkubator.hrm.web.model.PayReceiverBankAccountModel;
 import com.inkubator.hrm.web.search.PayReceiverBankAccountSearchParameter;
+import com.inkubator.securitycore.util.UserInfoUtil;
+import java.util.Date;
 import java.util.List;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -201,6 +204,33 @@ public class PayReceiverBankAccountServiceImpl extends IServiceImpl implements P
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public Long getTotalByParam(PayReceiverBankAccountSearchParameter searchParameter) throws Exception {
         return this.payReceiverBankAccountDao.getTotalByParam(searchParameter);
+    }
+
+    @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
+    public void saveList(List<PayReceiverBankAccount> list) throws Exception {
+        for (PayReceiverBankAccount account : list) {
+            account.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+            account.setCreatedBy(UserInfoUtil.getUserName());
+            account.setCreatedOn(new Date());
+            payReceiverBankAccountDao.save(account);
+        }
+    }
+
+    @Override
+    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS, isolation = Isolation.REPEATABLE_READ, timeout = 50)
+    public List<PayReceiverBankAccount> getAllByEmpId(long id) throws Exception {
+        return this.payReceiverBankAccountDao.getAllByEmpId(id);
+    }
+
+    @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
+    public void updateList(List<PayReceiverBankAccount> list) throws Exception {
+        for (PayReceiverBankAccount account : list) {
+            account.setUpdatedBy(UserInfoUtil.getUserName());
+            account.setUpdatedOn(new Date());
+            payReceiverBankAccountDao.update(account);
+        }
     }
 
 }

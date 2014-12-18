@@ -13,6 +13,7 @@ import com.inkubator.hrm.web.model.PayReceiverBankAccountModel;
 import com.inkubator.hrm.web.search.PayReceiverBankAccountSearchParameter;
 import java.util.List;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
@@ -138,12 +139,22 @@ public class PayReceiverBankAccountDaoImpl extends IDAOImpl<PayReceiverBankAccou
         }
 
         if (searchParameter.getEmpName() == null || searchParameter.getGolJab() == null || searchParameter.getNik() == null) {
-            
+
             return Long.valueOf(getCurrentSession().createSQLQuery(nativeQuery.toString())
                     .setParameter("empCondistion", HRMConstant.EMP_TERMINATION)
                     .uniqueResult().toString());
         }
         return null;
+    }
+
+    @Override
+    public List<PayReceiverBankAccount> getAllByEmpId(long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("empData", "ep");
+        criteria.add(Restrictions.eq("ep.id", id));
+        criteria.setFetchMode("bioBankAccount", FetchMode.JOIN);
+        criteria.setFetchMode("bioBankAccount.bank", FetchMode.JOIN);
+        return criteria.list();
     }
 
 }
