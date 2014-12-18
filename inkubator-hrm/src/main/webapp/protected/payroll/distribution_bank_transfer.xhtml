@@ -34,9 +34,9 @@
                                     <p:outputLabel  value="Nama Karyawan" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 85%">
-                                    <p:outputLabel  value="#{distributionBankController.empData.nik}" />
+                                    <p:outputLabel  value="#{distributionBankController.empData.nik}  - #{distributionBankController.empData.bioData.firstName} #{distributionBankController.empData.bioData.lastName}" />
                                 </p:column>
-                              
+
 
                             </p:row>
                             <p:row>
@@ -44,9 +44,9 @@
                                     <p:outputLabel  value="Golongan Jabatan" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 85%">
-                                    <p:outputLabel  value="#{distributionBankController.empData.bioData.firstName} #{distributionBankController.empData.bioData.lastName}" />
+                                    <p:outputLabel  value="#{distributionBankController.empData.golonganJabatan.code}" />
                                 </p:column>
-                                
+
 
                             </p:row>
                             <p:row>
@@ -54,15 +54,17 @@
                                     <p:outputLabel  value="Tanggal Bekerja" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 85%" >
-                                    <p:outputLabel value="#{distributionBankController.empData.nik}" />
+                                    <p:outputLabel value="#{distributionBankController.empData.joinDate}" >
+                                        <f:convertDateTime pattern="dd MMMM yyyy" />
+                                    </p:outputLabel>
                                 </p:column>
-                                                       
+
                             </p:row>
-                            
+
                         </p:panelGrid>
-                        <p:dataTable value="#{userDetailController.selectedHrmUser.roles}" var="listRole" rowIndexVar="no" style="margin-top: 20px;margin-bottom: 15px">
+                        <p:dataTable value="#{distributionBankController.dataToCalculate}" var="listPayReceipt" rowIndexVar="no" style="margin-top: 20px;margin-bottom: 5px" id="tableDistribusiId">
                             <f:facet name="header">  
-                                <h:outputText value="#{appmsg['role_view.header1']}" style="text-align: left" styleClass="label_hrm"/> 
+                                <h:outputText value="Distribusi Gaji Karyawan" style="text-align: left" styleClass="label_hrm"/> 
                             </f:facet>
                             <p:column style="text-align: center;width: 25px;max-width: 25px">
                                 <f:facet name="header">  
@@ -70,23 +72,44 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column  style="width:120px"> 
+                            <p:column  > 
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['role_view.role_name']}" />
+                                    <h:outputText value="Nama Akun" />
                                 </f:facet>
-                                <h:outputLabel value=" #{listRole.roleName}" />
+                                <h:outputLabel value=" #{listPayReceipt.bioBankAccount.ownerName}" />
                             </p:column> 
+                            <p:column  > 
+                                <f:facet name="header">  
+                                    <h:outputText value="Nomor Rekening" />
+                                </f:facet>
+                                <h:outputLabel value=" #{listPayReceipt.bioBankAccount.accountNumber}" />
+                            </p:column>
+                            <p:column  > 
+                                <f:facet name="header">  
+                                    <h:outputText value="Nama Bank" />
+                                </f:facet>
+                                <h:outputLabel value=" #{listPayReceipt.bioBankAccount.bank.bankName}" />
+                            </p:column>
                             <p:column  style="width: 250px"> 
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['role_view.role_description']}" />
+                                    <h:outputText value="Percent" />
                                 </f:facet>
-                                <h:outputLabel value=" #{listRole.description}" />
+                                <div align="right">
+                                    <p:spinner min="0" max="100" value="#{listPayReceipt.persen}" size="4"  suffix=" %"  stepFactor="1"   >
+                                        <p:ajax update=":bankTransferFormId,:growBankTransferId" process="@this" listener="#{distributionBankController.doChange()}" partialSubmit="true"/>
+                                    </p:spinner>
+
+                                </div>
                             </p:column>
                         </p:dataTable>
+                        <div align="right">
+                            <p:outputLabel value="Total : #{distributionBankController.totalPercent} %" id="totalId"  styleClass="label_hrm" style="margin-right: 10px" />
+                        </div>
+                        <!--<p:messages showDetail="true" showSummary="false"/>-->
                         <p:separator/>
                         <h:panelGrid columns="2" style="margin-bottom: 5px;float: left">
-                            <p:commandButton value="#{appmsg['global.edit']}"  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" action="#{userDetailController.doEdit()}" styleClass="label_button"/>
-                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{userDetailController.doBack()}" styleClass="label_button"/>
+                            <p:commandButton value="#{appmsg['global.save']}"  icon="ui-icon-folder-open" title="#{appmsg['global.save']}" action="#{distributionBankController.doSave()}" styleClass="label_button" update=":growBankTransferId"/>
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{distributionBankController.doBack()}" styleClass="label_button"/>
                         </h:panelGrid>
                         <div style="clear: both"/>
                     </h:form>
