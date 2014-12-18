@@ -105,5 +105,6 @@ public interface EmpDataDao extends IDAO<EmpData> {
 
     public Long getTotalSalaryConfirmationByParam(SalaryConfirmationParameter param);
 
+    public EmpData getByPKBankTransfer(long id);
 
 }

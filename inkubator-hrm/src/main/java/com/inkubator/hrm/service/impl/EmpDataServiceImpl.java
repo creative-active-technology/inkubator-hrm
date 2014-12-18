@@ -722,10 +722,7 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, timeout = 30)
     public EmpData getByPKBankTransfer(long id) throws Exception {
-        EmpData data = this.empDataDao.getEntiyByPK(id);
-        data.getBioData().getFirstName();
-        data.getBioData().getLastName();
-        data.getGolonganJabatan().getCode();
+        EmpData data = this.empDataDao.getByPKBankTransfer(id);
         return data;
     }
 }
