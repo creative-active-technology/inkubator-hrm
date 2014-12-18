@@ -118,13 +118,17 @@
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['periode.absen']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{periodeViewData.absen}"/>
+                                <h:outputLabel value= "#{periodeViewData.absen}">
+                                    <f:converter converterId="periodAbsenConverter"/>
+                                </h:outputLabel>
                             </p:column>
                             <p:column sortBy="payrollType" style="width: 15%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['periode.payroll']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{periodeViewData.payrollType}"/>
+                                <h:outputLabel value= "#{periodeViewData.payrollType}">
+                                    <f:converter converterId="periodPayrollConverter"/>
+                                </h:outputLabel>
                             </p:column>
 <!--                            <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
                                 <p:commandButton  icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" update=":detailPanel"
