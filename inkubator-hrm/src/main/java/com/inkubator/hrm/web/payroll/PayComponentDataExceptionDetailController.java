@@ -180,7 +180,7 @@ public class PayComponentDataExceptionDetailController extends BaseController {
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", false);
-        options.put("contentWidth", 400);
+        options.put("contentWidth", 420);
         options.put("contentHeight", 300);
         RequestContext.getCurrentInstance().openDialog("pay_component_exception_form", options, params);
     }
