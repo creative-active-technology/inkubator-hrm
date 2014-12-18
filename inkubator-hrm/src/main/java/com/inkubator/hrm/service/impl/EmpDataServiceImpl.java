@@ -437,7 +437,7 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     public List<EmpData> getByParam(EmpDataSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
         return this.empDataDao.getByParam(searchParameter, firstResult, maxResults, order);
     }
-    
+
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public Long getTotalEmpDataByParam(EmpDataSearchParameter searchParameter) throws Exception {
@@ -658,18 +658,18 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         String status = HRMConstant.TF_STATUS_TIDAK_KAWIN;
         Integer ptkpNumber = HRMConstant.TF_INC_PERSON_ZERO;
         /*
-            Jika gender = female, dianggap tidak punya tanggungan dan tidak menikah
-            Jika tanggungan lebih besar dari 3,  tanggungan max tetap 3
-        */
+         Jika gender = female, dianggap tidak punya tanggungan dan tidak menikah
+         Jika tanggungan lebih besar dari 3,  tanggungan max tetap 3
+         */
 //        if(update.getBioData().getGender() == HRMConstant.GLOBAL_FEMALE){
 //            status = HRMConstant.TF_STATUS_TIDAK_KAWIN;
 //        }else{
-            status = (empData.getPtkpStatus() == Boolean.TRUE) ? "K" : "TK" ;
-            ptkpNumber = (empData.getPtkpNumber() > 3) ? 3 : empData.getPtkpNumber();
+        status = (empData.getPtkpStatus() == Boolean.TRUE) ? "K" : "TK";
+        ptkpNumber = (empData.getPtkpNumber() > 3) ? 3 : empData.getPtkpNumber();
 //      }
-            
+
         taxFree = taxFreeDao.getEntityByTfStatusAndIncPerson(status, ptkpNumber);
-         update.setTaxFree(taxFree);
+        update.setTaxFree(taxFree);
         this.empDataDao.update(update);
     }
 
@@ -691,31 +691,41 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         return this.empDataDao.getTotalEmpDataNotTerminate();
     }
 
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-	public Long getTotalByTaxFreeIsNull() throws Exception {
-		return this.empDataDao.getTotalByTaxFreeIsNull();
-		
-	}
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalByTaxFreeIsNull() throws Exception {
+        return this.empDataDao.getTotalByTaxFreeIsNull();
 
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<EmpData> getAllDataNotTerminateAndJoinDateLowerThan(Date payrollCalculationDate) throws Exception {	
-		return this.empDataDao.getAllDataNotTerminateAndJoinDateLowerThan(payrollCalculationDate);
-		
-	}
+    }
 
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<EmpData> getAllDataSalaryConfirmationByParam(SalaryConfirmationParameter param, int firstResult, int maxResults, Order orderable) {
-		return this.empDataDao.getAllDataSalaryConfirmationByParam(param, firstResult, maxResults, orderable);
-		
-	}
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<EmpData> getAllDataNotTerminateAndJoinDateLowerThan(Date payrollCalculationDate) throws Exception {
+        return this.empDataDao.getAllDataNotTerminateAndJoinDateLowerThan(payrollCalculationDate);
 
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-	public Long getTotalSalaryConfirmationByParam(SalaryConfirmationParameter param) {
-		return this.empDataDao.getTotalSalaryConfirmationByParam(param);
-		
-	}
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<EmpData> getAllDataSalaryConfirmationByParam(SalaryConfirmationParameter param, int firstResult, int maxResults, Order orderable) {
+        return this.empDataDao.getAllDataSalaryConfirmationByParam(param, firstResult, maxResults, orderable);
+
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalSalaryConfirmationByParam(SalaryConfirmationParameter param) {
+        return this.empDataDao.getTotalSalaryConfirmationByParam(param);
+
+    }
+
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, timeout = 30)
+    public EmpData getByPKBankTransfer(long id) throws Exception {
+        EmpData data = this.empDataDao.getEntiyByPK(id);
+        data.getBioData().getFirstName();
+        data.getBioData().getLastName();
+        data.getGolonganJabatan().getCode();
+        return data;
+    }
 }
