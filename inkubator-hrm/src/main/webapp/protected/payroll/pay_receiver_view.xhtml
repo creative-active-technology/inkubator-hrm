@@ -45,9 +45,9 @@
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3" >
-                                    <p:commandButton value="Export to XLS" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
-                                        <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Marital_Status"/>
-                                    </p:commandButton>
+                                    <p:commandButton ajax="false" value="Export to XLS" title="Export to XLS" style="font-size: 12px!important" onclick="PrimeFaces.monitorDownload(start, stop);">
+                                    	<p:fileDownload value="#{excelExportStreamerController.payReceiverAccountList}" />
+                                	</p:commandButton>
 
                                     <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{payReceiverBankViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
 

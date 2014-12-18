@@ -11,7 +11,9 @@ import com.inkubator.hrm.entity.PayReceiverBankAccount;
 import com.inkubator.hrm.service.PayReceiverBankAccountService;
 import com.inkubator.hrm.web.model.PayReceiverBankAccountModel;
 import com.inkubator.hrm.web.search.PayReceiverBankAccountSearchParameter;
+
 import java.util.List;
+
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -152,8 +154,9 @@ public class PayReceiverBankAccountServiceImpl extends IServiceImpl implements P
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<PayReceiverBankAccount> getAllData() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return payReceiverBankAccountDao.getAllData();
     }
 
     @Override
@@ -202,5 +205,12 @@ public class PayReceiverBankAccountServiceImpl extends IServiceImpl implements P
     public Long getTotalByParam(PayReceiverBankAccountSearchParameter searchParameter) throws Exception {
         return this.payReceiverBankAccountDao.getTotalByParam(searchParameter);
     }
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<PayReceiverBankAccount> getAllDataWithDetail() throws Exception {
+		return this.payReceiverBankAccountDao.getAllDataWithDetail();
+		
+	}
 
 }

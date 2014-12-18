@@ -5,21 +5,22 @@
  */
 package com.inkubator.hrm.dao.impl;
 
+import java.util.List;
+
+import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
+import org.hibernate.criterion.Order;
+import org.hibernate.sql.JoinType;
+import org.hibernate.transform.Transformers;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Repository;
+
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.PayReceiverBankAccountDao;
 import com.inkubator.hrm.entity.PayReceiverBankAccount;
 import com.inkubator.hrm.web.model.PayReceiverBankAccountModel;
 import com.inkubator.hrm.web.search.PayReceiverBankAccountSearchParameter;
-import java.util.List;
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Disjunction;
-import org.hibernate.criterion.MatchMode;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
-import org.hibernate.transform.Transformers;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Repository;
 
 /**
  *
@@ -145,5 +146,16 @@ public class PayReceiverBankAccountDaoImpl extends IDAOImpl<PayReceiverBankAccou
         }
         return null;
     }
+
+	@Override
+	public List<PayReceiverBankAccount> getAllDataWithDetail() {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+		criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
+		criteria.setFetchMode("bioBankAccount", FetchMode.JOIN);
+		criteria.setFetchMode("bioBankAccount.bank", FetchMode.JOIN);
+		criteria.addOrder(Order.asc("bioData.firstName"));
+		return criteria.list();
+	}
 
 }
