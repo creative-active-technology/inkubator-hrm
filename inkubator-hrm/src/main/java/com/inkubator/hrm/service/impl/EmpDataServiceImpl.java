@@ -598,14 +598,14 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<EmpData> getAllDataReportEmpWorkingGroupByParam(ReportEmpWorkingGroupParameter param, int firstResult, int maxResults, Order orderable) {
+    public List<EmpData> getAllDataReportEmpWorkingGroupByParam(ReportEmpWorkingGroupParameter param, int firstResult, int maxResults, Order orderable) throws Exception{
         return this.empDataDao.getAllDataReportEmpWorkingGroupByParam(param, firstResult, maxResults, orderable);
 
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getTotalReportEmpWorkingGroupByParam(ReportEmpWorkingGroupParameter param) {
+    public Long getTotalReportEmpWorkingGroupByParam(ReportEmpWorkingGroupParameter param) throws Exception{
         return this.empDataDao.getTotalReportEmpWorkingGroupByParam(param);
 
     }
@@ -630,14 +630,14 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<EmpData> getAllDataReportEmpDepartmentJabatanByParam(ReportEmpDepartmentJabatanParameter param, int firstResult, int maxResults, Order orderable) {
+    public List<EmpData> getAllDataReportEmpDepartmentJabatanByParam(ReportEmpDepartmentJabatanParameter param, int firstResult, int maxResults, Order orderable) throws Exception{
         return this.empDataDao.getAllDataReportEmpDepartmentJabatanByParam(param, firstResult, maxResults, orderable);
 
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getTotalReportEmpDepartmentJabatanByParam(ReportEmpDepartmentJabatanParameter param) {
+    public Long getTotalReportEmpDepartmentJabatanByParam(ReportEmpDepartmentJabatanParameter param) throws Exception{
         return this.empDataDao.getTotalReportEmpDepartmentJabatanByParam(param);
 
     }
@@ -707,14 +707,14 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<EmpData> getAllDataSalaryConfirmationByParam(SalaryConfirmationParameter param, int firstResult, int maxResults, Order orderable) {
+    public List<EmpData> getAllDataSalaryConfirmationByParam(SalaryConfirmationParameter param, int firstResult, int maxResults, Order orderable) throws Exception{
         return this.empDataDao.getAllDataSalaryConfirmationByParam(param, firstResult, maxResults, orderable);
 
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getTotalSalaryConfirmationByParam(SalaryConfirmationParameter param) {
+    public Long getTotalSalaryConfirmationByParam(SalaryConfirmationParameter param) throws Exception{
         return this.empDataDao.getTotalSalaryConfirmationByParam(param);
 
     }

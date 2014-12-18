@@ -267,7 +267,7 @@ public class TaxComponentServiceImpl extends IServiceImpl implements TaxComponen
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<TaxComponent> getAllDataByUseComponent() {
+    public List<TaxComponent> getAllDataByUseComponent() throws Exception{
         return this.taxComponentDao.getAllDataByUseComponent();
     }
 

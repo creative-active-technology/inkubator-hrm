@@ -17,5 +17,5 @@ import org.hibernate.criterion.Order;
  */
 public interface BatchJobExecutionService extends IService<BatchJobExecution>{
     public List<BatchJobExecution> getByParam(BatchJobExecutionSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception;
-    public Long getTotalByParam(BatchJobExecutionSearchParameter parameter);
+    public Long getTotalByParam(BatchJobExecutionSearchParameter parameter) throws Exception;
 }

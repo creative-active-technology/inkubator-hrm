@@ -359,7 +359,7 @@ public class JabatanServiceImpl extends IServiceImpl implements JabatanService {
 
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
 	@Override
-	public List<Jabatan> getAllDataByCodeOrName(String param) {
+	public List<Jabatan> getAllDataByCodeOrName(String param) throws Exception{
     	return jabatanDao.getAllDataByCodeOrName(param);		
 	}
 

@@ -255,7 +255,7 @@ public class BioDocumentServiceImpl extends IServiceImpl implements BioDocumentS
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<BioDocument> getAllDataByBioDataId(Long bioDataId) {
+    public List<BioDocument> getAllDataByBioDataId(Long bioDataId) throws Exception{
         return bioDocumentDao.getAllDataByBioDataId(bioDataId);
 
     }

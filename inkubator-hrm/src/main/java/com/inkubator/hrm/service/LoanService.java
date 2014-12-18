@@ -28,6 +28,6 @@ public interface LoanService extends IService<Loan>,BaseApprovalService {
 	
 	public List<LoanPaymentDetail> getAllDataLoanPaymentDetails(Double interestRate, Integer termin, Date loanPaymentDate, Double nominalPrincipal, Integer typeOfInterest) throws Exception;
 
-	public Loan getEntityByApprovalActivityNumberWithDetail(String approvalActivityNumber);
+	public Loan getEntityByApprovalActivityNumberWithDetail(String approvalActivityNumber) throws Exception;
 
 }

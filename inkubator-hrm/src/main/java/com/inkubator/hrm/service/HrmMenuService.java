@@ -14,22 +14,22 @@ import com.inkubator.hrm.web.search.HrmMenuSearchParameter;
  */
 public interface HrmMenuService extends IService<HrmMenu> {
 	
-	public List<HrmMenu> getByParam(HrmMenuSearchParameter parameter, int firstResult, int maxResults, Order orderable);
+	public List<HrmMenu> getByParam(HrmMenuSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception;
 
-    public Long getTotalByParam(HrmMenuSearchParameter parameter);
+    public Long getTotalByParam(HrmMenuSearchParameter parameter) throws Exception;
     
-    public List<HrmMenu> getAllDataByParamAndNotIds(HrmMenuSearchParameter parameter, List<Long> ids, int firstResult, int maxResults, Order orderable);
+    public List<HrmMenu> getAllDataByParamAndNotIds(HrmMenuSearchParameter parameter, List<Long> ids, int firstResult, int maxResults, Order orderable) throws Exception;
 
-    public Long getTotalByParamAndNotIds(HrmMenuSearchParameter parameter, List<Long> ids);
+    public Long getTotalByParamAndNotIds(HrmMenuSearchParameter parameter, List<Long> ids) throws Exception;
     
-    public List<HrmMenu> getAllDataByLevel(Integer level);
+    public List<HrmMenu> getAllDataByLevel(Integer level) throws Exception;
 
-	public HrmMenu getEntityByPkWithDetail(long id);
+	public HrmMenu getEntityByPkWithDetail(long id) throws Exception;
 
-	public List<HrmMenu> getAllDataByLevelAndNotId(int level, Long id);
+	public List<HrmMenu> getAllDataByLevelAndNotId(int level, Long id) throws Exception;
 	
-	public List<HrmMenu> getAllDataByUserRolesAndHaveNoChild(String parameter, List<Long> exceptMenuIds, List<String> roles, int firstResult, int maxResults, Order orderable);
+	public List<HrmMenu> getAllDataByUserRolesAndHaveNoChild(String parameter, List<Long> exceptMenuIds, List<String> roles, int firstResult, int maxResults, Order orderable) throws Exception;
 	
-	public Long getTotalByUserRolesAndHaveNoChild(String parameter, List<Long> exceptMenuIds, List<String> roles);
+	public Long getTotalByUserRolesAndHaveNoChild(String parameter, List<Long> exceptMenuIds, List<String> roles) throws Exception;
 
 }
