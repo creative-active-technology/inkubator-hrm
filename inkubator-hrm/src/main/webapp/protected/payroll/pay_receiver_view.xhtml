@@ -22,8 +22,8 @@
                             <p:graphicImage library="images" name="model_komponen_gaji.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="Daftar Rekening Penerima" styleClass="header_big" />
-                                    <p:outputLabel value="Rekening Penerima dari Penggajian" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['transferAccount.listOfReceiverAccount']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['transferAccount.receiverAccountFromPayroll']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -36,9 +36,9 @@
                                     <p:outputLabel value=":" />
                                     <p:selectOneMenu value="#{payReceiverBankViewController.parameter.keyParam}" style="width: 150px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemLabel="Nik" itemValue="nik"/>
-                                        <f:selectItem itemLabel="Nama Pegawai" itemValue="empName"/>
-                                        <f:selectItem itemLabel="Golongan Jabatan" itemValue="golJab"/>
+                                        <f:selectItem itemLabel="#{appmsg['mechineFinger.nik']}" itemValue="nik"/>
+                                        <f:selectItem itemLabel="#{appmsg['personachievement.employee_name']}" itemValue="empName"/>
+                                        <f:selectItem itemLabel="#{appmsg['benefitGroupRate.benefitGroupRate_golongan']}" itemValue="golJab"/>
                                     </p:selectOneMenu>
                                     <p:inputText id="searchId" value="#{payReceiverBankViewController.parameter.parameter}" style="width: 250px" styleClass="label_button"/>
                                     <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{payReceiverBankViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
@@ -61,7 +61,7 @@
                                       id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="Daftar Rekening Penerima"/>
+                                <h:outputText value="#{appmsg['transferAccount.listOfReceiverAccount']}"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
@@ -83,13 +83,13 @@
                             </p:column>
                             <p:column style="width: 15%">
                                 <f:facet name="header">  
-                                    <h:outputText value="Golongan Jabatan"/>
+                                    <h:outputText value="#{appmsg['benefitGroupRate.benefitGroupRate_golongan']}"/>
                                 </f:facet>
                                 <p:outputLabel value="#{data.golJab}" />
                             </p:column>
                             <p:column >
                                 <f:facet name="header">
-                                    <h:outputText value="TMB"/>
+                                    <h:outputText value="#{appmsg['transferAccount.TMB']}"/>
                                 </f:facet>
                                 <p:outputLabel value="#{data.joinDate}">
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
@@ -97,7 +97,7 @@
                             </p:column>
                             <p:column >
                                 <f:facet name="header">
-                                    <h:outputText value="Jumlah Rekening"/>
+                                    <h:outputText value="#{appmsg['transferAccount.accountTotal']}"/>
                                 </f:facet>
                                 <p:outputLabel value="#{data.totalAccount}"/>
                             </p:column>
@@ -108,12 +108,12 @@
                                     <f:setPropertyActionListener value="#{data}" target="#{payReceiverBankViewController.selectedPayReceiverBankAccountModel}" />
                                 </p:commandButton>
 
-                            </p:column> 
+                            </p:column>
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>
                                 <p:outputLabel value="#{payReceiverBankViewController.lazyDataModel.rowCount}"/>
                                 <p:outputLabel value="Data" style="margin-left: 3px"/>
-                            </f:facet>  
+                            </f:facet>
                         </p:dataTable>
                         <p:blockUI block="formId" trigger="tableId,btnSearchId" >
                             <h:panelGrid columns="2" styleClass="grid_no_border">
