@@ -405,7 +405,7 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
         Double outPut = null;
 
         //Start calculation
-        List<EmpData> totalEmployee = empDataDao.getAllDataNotTerminateAndJoinDateLowerThan(payrollCalculationDate);
+        List<EmpData> totalEmployee = empDataDao.getAllDataNotTerminateAndJoinDateLowerThan(periode.getUntilPeriode());
         /*List<EmpData> totalEmployee = new ArrayList<EmpData>();
         EmpData emp = empDataDao.getEntiyByPK((long)112);
         totalEmployee.add(emp);*/

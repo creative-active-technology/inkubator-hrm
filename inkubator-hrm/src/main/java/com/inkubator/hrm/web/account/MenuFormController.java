@@ -137,25 +137,22 @@ public class MenuFormController extends BaseController {
     }
 
     private void getModelFromEntity(HrmMenu menu) {
-        model.setId(menu.getId());
-        model.setName(menu.getName());
-        model.setIconName(menu.getIconName());
-        model.setUrlName(menu.getUrlName());
-        model.setMenuLevel(menu.getMenuLevel());
-        model.setMenuStyle(menu.getMenuStyle());
-        model.setMenuStyleClass(menu.getMenuStyleClass());
-        if(menu.getMenuLevel() > 1){
-        	model.setParentMenuId(menu.getHrmMenu().getId());
-        	List<HrmMenu> listParentMenu;
-            try {
-                listParentMenu = menuService.getAllDataByLevelAndNotId(model.getMenuLevel() - 1, model.getId());
+    	try {
+	    	model.setId(menu.getId());
+	        model.setName(menu.getName());
+	        model.setIconName(menu.getIconName());
+	        model.setUrlName(menu.getUrlName());
+	        model.setMenuLevel(menu.getMenuLevel());
+	        model.setMenuStyle(menu.getMenuStyle());
+	        model.setMenuStyleClass(menu.getMenuStyleClass());
+	        if(menu.getMenuLevel() > 1){
+	        	model.setParentMenuId(menu.getHrmMenu().getId());
+	        	List<HrmMenu> listParentMenu = menuService.getAllDataByLevelAndNotId(model.getMenuLevel() - 1, model.getId());
                 model.setListParentMenu(listParentMenu);
                 isDisableParent = Boolean.FALSE;
-
-            } catch (Exception ex) {
-                LOGGER.error("Error", ex);
-            }
-    		
+	        }
+    	} catch (Exception ex) {
+            LOGGER.error("Error", ex);
         }
     }
 
