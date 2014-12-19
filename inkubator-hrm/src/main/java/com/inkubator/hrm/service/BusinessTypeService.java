@@ -15,7 +15,7 @@ import org.hibernate.criterion.Order;
  * @author Deni
  */
 public interface BusinessTypeService extends IService<BusinessType> {
-    public List<BusinessType> getByParam(BusinessTypeSearchParameter searchParameter, int firstResult, int maxResults, Order order);
+    public List<BusinessType> getByParam(BusinessTypeSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
 
-    public Long getTotalBusinessTypeByParam(BusinessTypeSearchParameter searchParameter);
+    public Long getTotalBusinessTypeByParam(BusinessTypeSearchParameter searchParameter) throws Exception;
 }

@@ -23,7 +23,7 @@ public interface LoginHistoryService extends IService<LoginHistory> {
 
     public Long getTotalLoginHistoryByParam(LoginHistorySearchParameter searchParameter) throws Exception;
     
-    public void saveAndPushMessage(LoginHistory entity);
+    public void saveAndPushMessage(LoginHistory entity) throws Exception;
     
-    public void updateAndPushMessage(LoginHistory entity);
+    public void updateAndPushMessage(LoginHistory entity) throws Exception;
 }

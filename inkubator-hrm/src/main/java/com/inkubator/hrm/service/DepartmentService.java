@@ -16,12 +16,12 @@ import org.hibernate.criterion.Order;
  */
 public interface DepartmentService extends IService<Department> {
 	
-    public List<Department> getByParam(DepartmentSearchParameter searchParameter, int firstResult, int maxResults, Order order);
+    public List<Department> getByParam(DepartmentSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
 
-    public Long getTotalDepartmentByParam(DepartmentSearchParameter searchParameter);
+    public Long getTotalDepartmentByParam(DepartmentSearchParameter searchParameter) throws Exception;
 
-    public Long getByDepartmentName(String name);
+    public Long getByDepartmentName(String name) throws Exception;
     
-    public Department getEntityByPkWithDetail(Long id);
+    public Department getEntityByPkWithDetail(Long id) throws Exception;
     
 }

@@ -516,7 +516,7 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-	public Loan getEntityByApprovalActivityNumberWithDetail(String approvalActivityNumber) {
+	public Loan getEntityByApprovalActivityNumberWithDetail(String approvalActivityNumber) throws Exception{
 		return loanDao.getEntityByApprovalActivityNumberWithDetail(approvalActivityNumber);
 		
 	}

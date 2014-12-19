@@ -280,14 +280,14 @@ public class FinancialPartnerServiceImpl extends IServiceImpl implements Financi
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-	public List<FinancialPartner> getAllDataByCompanyId(Long companyId) {
+	public List<FinancialPartner> getAllDataByCompanyId(Long companyId) throws Exception{
 		return financialPartnerDao.getAllDataByCompanyId(companyId);
 		
 	}
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-	public FinancialPartner getEntityByPKWithDetail(Long id) {
+	public FinancialPartner getEntityByPKWithDetail(Long id) throws Exception{
 		return financialPartnerDao.getEntityByPKWithDetail(id);
 		
 	}

@@ -38,19 +38,19 @@ public class DepartmentServiceImpl extends IServiceImpl implements DepartmentSer
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<Department> getByParam(DepartmentSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
+    public List<Department> getByParam(DepartmentSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception{
         return this.departmentDao.getByParam(searchParameter, firstResult, maxResults, order);
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getTotalDepartmentByParam(DepartmentSearchParameter searchParameter) {
+    public Long getTotalDepartmentByParam(DepartmentSearchParameter searchParameter) throws Exception{
         return this.departmentDao.getTotalDepartmentByParam(searchParameter);
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getByDepartmentName(String name) {
+    public Long getByDepartmentName(String name) throws Exception{
         return this.departmentDao.getByDepartmentCode(name);
     }
 
@@ -245,7 +245,7 @@ public class DepartmentServiceImpl extends IServiceImpl implements DepartmentSer
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ,propagation = Propagation.SUPPORTS, timeout = 30)
-	public Department getEntityByPkWithDetail(Long id) {
+	public Department getEntityByPkWithDetail(Long id) throws Exception{
 		return departmentDao.getEntityByPkWithDetail(id);
 		
 	}

@@ -367,19 +367,19 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
      }*/
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<PayTempKalkulasiModel> getByParam(String searchParameter, int firstResult, int maxResults, Order order) {
+    public List<PayTempKalkulasiModel> getByParam(String searchParameter, int firstResult, int maxResults, Order order) throws Exception{
         return payTempKalkulasiDao.getByParam(searchParameter, firstResult, maxResults, order);
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getTotalPayTempKalkulasiByParam(String searchParameter) {
+    public Long getTotalPayTempKalkulasiByParam(String searchParameter) throws Exception{
         return payTempKalkulasiDao.getTotalPayTempKalkulasiByParam(searchParameter);
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public PayTempKalkulasi getEntityByPkWithDetail(Long id) {
+    public PayTempKalkulasi getEntityByPkWithDetail(Long id) throws Exception{
         return payTempKalkulasiDao.getEntityByPkWithDetail(id);
     }
 
@@ -664,7 +664,7 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<PayTempKalkulasi> getAllDataByEmpDataIdAndTaxNotNull(Long empDataId) {
+	public List<PayTempKalkulasi> getAllDataByEmpDataIdAndTaxNotNull(Long empDataId) throws Exception{
 		return payTempKalkulasiDao.getAllDataByEmpDataIdAndTaxNotNull(empDataId);
 		
 	}
@@ -708,5 +708,12 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
     public List<PayTempKalkulasi> getAllDataByEmpDataId(Long empDataId) throws Exception {
         return payTempKalkulasiDao.getAllDataByEmpDataId(empDataId);
     }
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+	public PayTempKalkulasi getEntityByEmpDataIdAndSpecificModelComponent(Long empDataId, Integer specific) {
+		return payTempKalkulasiDao.getEntityByEmpDataIdAndSpecificModelComponent(empDataId, specific);
+		
+	}
     
 }

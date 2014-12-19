@@ -13,7 +13,7 @@ import com.inkubator.hrm.entity.BioDocument;
  */
 public interface BioDocumentService extends IService<BioDocument> {
 
-	public List<BioDocument> getAllDataByBioDataId(Long bioDataId);
+	public List<BioDocument> getAllDataByBioDataId(Long bioDataId) throws Exception;
 	
 	public void save(BioDocument entity, UploadedFile documentFile) throws Exception;
 	

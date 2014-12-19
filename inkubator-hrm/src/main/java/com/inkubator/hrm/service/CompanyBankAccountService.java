@@ -13,6 +13,6 @@ public interface CompanyBankAccountService extends IService<CompanyBankAccount> 
 
 	public List<CompanyBankAccount> getAllDataByCompanyId(Long companyId) throws Exception;
 
-	public CompanyBankAccount getEntityByPKWithDetail(Long id);
+	public CompanyBankAccount getEntityByPKWithDetail(Long id) throws Exception;
 	
 }

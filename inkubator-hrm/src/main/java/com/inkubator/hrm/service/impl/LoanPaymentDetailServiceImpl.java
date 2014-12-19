@@ -245,7 +245,7 @@ public class LoanPaymentDetailServiceImpl extends IServiceImpl implements
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<LoanPaymentDetail> getAllDataByLoanId(Long loanId) {
+    public List<LoanPaymentDetail> getAllDataByLoanId(Long loanId) throws Exception{
         return loanPaymentDetailDao.getAllDataByLoanId(loanId);
     }
 

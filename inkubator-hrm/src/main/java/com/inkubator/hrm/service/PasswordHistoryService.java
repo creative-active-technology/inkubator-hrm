@@ -19,7 +19,7 @@ public interface PasswordHistoryService extends IService<PasswordHistory>{
 
     public Long getTotalLoginHistoryByParam(PasswordHistorySearchParameter searchParameter) throws Exception;
     
-    public void saveAndPushMessage(PasswordHistory entity);
+    public void saveAndPushMessage(PasswordHistory entity) throws Exception;
     
-    public void updateAndPushMessage(PasswordHistory entity);
+    public void updateAndPushMessage(PasswordHistory entity) throws Exception;
 }

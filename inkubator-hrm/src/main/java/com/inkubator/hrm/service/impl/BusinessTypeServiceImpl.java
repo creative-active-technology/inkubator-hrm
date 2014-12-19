@@ -35,13 +35,13 @@ public class BusinessTypeServiceImpl extends IServiceImpl implements BusinessTyp
     
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<BusinessType> getByParam(BusinessTypeSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
+    public List<BusinessType> getByParam(BusinessTypeSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception{
         return businessTypeDao.getByParam(searchParameter, firstResult, maxResults, order);
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getTotalBusinessTypeByParam(BusinessTypeSearchParameter searchParameter) {
+    public Long getTotalBusinessTypeByParam(BusinessTypeSearchParameter searchParameter) throws Exception{
         return businessTypeDao.getTotalBusinessTypeByParam(searchParameter);
     }
 

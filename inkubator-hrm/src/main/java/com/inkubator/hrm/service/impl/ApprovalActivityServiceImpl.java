@@ -294,7 +294,7 @@ public class ApprovalActivityServiceImpl extends IServiceImpl implements Approva
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public ApprovalActivity getEntityByActivityNumberLastSequence(String activityNumber) {
+	public ApprovalActivity getEntityByActivityNumberLastSequence(String activityNumber) throws Exception{
 		List<ApprovalActivity> approvalActivities = this.approvalActivityDao.getAllDataByActivityNumberWithDetail(activityNumber, Order.desc("sequence"));
 		ApprovalActivity lastApprovalActivity = null;
 		if(!approvalActivities.isEmpty()){
@@ -305,7 +305,7 @@ public class ApprovalActivityServiceImpl extends IServiceImpl implements Approva
 	
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public ApprovalActivity getEntityByPreviousActivityNumberLastSequence(String previousActivityNumber) {
+	public ApprovalActivity getEntityByPreviousActivityNumberLastSequence(String previousActivityNumber) throws Exception{
 		List<ApprovalActivity> approvalActivities = this.approvalActivityDao.getAllDataByPreviousActivityNumber(previousActivityNumber, Order.desc("sequence"));
 		ApprovalActivity lastApprovalActivity = null;
 		if(!approvalActivities.isEmpty()){
@@ -316,7 +316,7 @@ public class ApprovalActivityServiceImpl extends IServiceImpl implements Approva
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public Boolean isStillHaveWaitingStatus(String activityNumber) {
+	public Boolean isStillHaveWaitingStatus(String activityNumber) throws Exception{
 		return this.approvalActivityDao.isStillHaveWaitingStatus(activityNumber);
 		
 	}
