@@ -18,6 +18,6 @@ public interface LeaveSchemeService extends IService<LeaveScheme> {
 
 	public Long getTotalByParam(LeaveSchemeSearchParameter parameter) throws Exception;
 
-	public LeaveScheme getEntiyByPkFetchLeave(Long id);
+	public LeaveScheme getEntiyByPkFetchLeave(Long id) throws Exception;
 
 }

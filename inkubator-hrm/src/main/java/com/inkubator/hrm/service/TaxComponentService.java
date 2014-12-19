@@ -17,7 +17,7 @@ public interface TaxComponentService extends IService<TaxComponent> {
 
     public Long getTotalTaxComponentByParam(String parameter) throws Exception;
 
-    public List<TaxComponent> getAllDataByUseComponent();
+    public List<TaxComponent> getAllDataByUseComponent() throws Exception;
     
     public String getTaxComponentNameByPk(Long id) throws Exception;
 

@@ -41,6 +41,6 @@ public interface JabatanService extends IService<Jabatan> {
     
     public List<Jabatan>getByName(String name)throws Exception;
 
-	public List<Jabatan> getAllDataByCodeOrName(String param);
+	public List<Jabatan> getAllDataByCodeOrName(String param) throws Exception;
 
 }

@@ -19,5 +19,5 @@ public interface PangkatService extends IService<Pangkat> {
 
 	public Long getTotalByParam(PangkatSearchParameter parameter) throws Exception;
 	
-	public Map<Long, String> getAllDataMaps();
+	public Map<Long, String> getAllDataMaps() throws Exception;
 }

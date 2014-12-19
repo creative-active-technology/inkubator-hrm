@@ -20,8 +20,8 @@
                         <p:graphicImage library="images" name="user_account.png" height="36" width="36" />
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Distribusi Bang Transfer" styleClass="header_big" />
-                                <p:outputLabel value="Bank Transfer dari Penggajian" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['bankTransferDistribution.bankTransferDistribution']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['bankTransferDistribution.fromPayroll']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -31,7 +31,7 @@
                         <p:panelGrid style="width: 100%;margin-top: 20px;" styleClass="grid_border3">
                             <p:row>
                                 <p:column style="width: 15%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Nama Karyawan" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['employee.employee_name']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 85%">
                                     <p:outputLabel  value="#{distributionBankController.empData.nik}  - #{distributionBankController.empData.bioData.firstName} #{distributionBankController.empData.bioData.lastName}" />
@@ -41,7 +41,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 15%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Golongan Jabatan" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['benefitGroupRate.benefitGroupRate_golongan']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 85%">
                                     <p:outputLabel  value="#{distributionBankController.empData.golonganJabatan.code}" />
@@ -51,7 +51,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 15%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Tanggal Bekerja" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg[distributionBankTransfer.workDate]}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 85%" >
                                     <p:outputLabel value="#{distributionBankController.empData.joinDate}" >
@@ -64,7 +64,7 @@
                         </p:panelGrid>
                         <p:dataTable value="#{distributionBankController.dataToCalculate}" var="listPayReceipt" rowIndexVar="no" style="margin-top: 20px;margin-bottom: 5px" id="tableDistribusiId">
                             <f:facet name="header">  
-                                <h:outputText value="Distribusi Gaji Karyawan" style="text-align: left" styleClass="label_hrm"/> 
+                                <h:outputText value="#{appmsg['bankTransferDistribution.employeePayrollDistribution']}" style="text-align: left" styleClass="label_hrm"/> 
                             </f:facet>
                             <p:column style="text-align: center;width: 25px;max-width: 25px">
                                 <f:facet name="header">  
@@ -74,25 +74,25 @@
                             </p:column>
                             <p:column  > 
                                 <f:facet name="header">  
-                                    <h:outputText value="Nama Akun" />
+                                    <h:outputText value="#{appmsg['bankTransferDistribution.accountName']}" />
                                 </f:facet>
                                 <h:outputLabel value=" #{listPayReceipt.bioBankAccount.ownerName}" />
                             </p:column> 
                             <p:column  > 
                                 <f:facet name="header">  
-                                    <h:outputText value="Nomor Rekening" />
+                                    <h:outputText value="#{appmsg['bankTransferDistribution.accountNumber']}" />
                                 </f:facet>
                                 <h:outputLabel value=" #{listPayReceipt.bioBankAccount.accountNumber}" />
                             </p:column>
                             <p:column  > 
                                 <f:facet name="header">  
-                                    <h:outputText value="Nama Bank" />
+                                    <h:outputText value="#{appmsg['bankTransferDistribution.bankName']}" />
                                 </f:facet>
                                 <h:outputLabel value=" #{listPayReceipt.bioBankAccount.bank.bankName}" />
                             </p:column>
                             <p:column  style="width: 250px"> 
                                 <f:facet name="header">  
-                                    <h:outputText value="Percent" />
+                                    <h:outputText value="#{appmsg['bankTransferDistribution.percent']}" />
                                 </f:facet>
                                 <div align="right">
                                     <p:spinner min="0" max="100" value="#{listPayReceipt.persen}" size="4"  suffix=" %"  stepFactor="1"   >

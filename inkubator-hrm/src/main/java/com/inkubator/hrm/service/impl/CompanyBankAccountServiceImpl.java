@@ -315,7 +315,7 @@ public class CompanyBankAccountServiceImpl extends IServiceImpl implements Compa
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-	public CompanyBankAccount getEntityByPKWithDetail(Long id) {
+	public CompanyBankAccount getEntityByPKWithDetail(Long id) throws Exception{
 		return companyBankAccountDao.getEntityByPKWithDetail(id);
 		
 	}

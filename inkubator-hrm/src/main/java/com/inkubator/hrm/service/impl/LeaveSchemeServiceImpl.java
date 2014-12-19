@@ -293,7 +293,7 @@ public class LeaveSchemeServiceImpl extends IServiceImpl implements LeaveSchemeS
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-	public LeaveScheme getEntiyByPkFetchLeave(Long id) {
+	public LeaveScheme getEntiyByPkFetchLeave(Long id) throws Exception{
 		return leaveSchemeDao.getEntityByPkFetchLeave(id);
 	}
 
