@@ -28,6 +28,8 @@ import com.inkubator.hrm.web.search.PayTempUploadDataSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -227,10 +229,22 @@ public class PaySalaryUploadDetailController extends BaseController {
 		PaySalaryUploadModel model = new PaySalaryUploadModel();
 		model.setPaySalaryComponentId(paySalaryComponent.getId());
 		model.setPaySalaryComponentName(paySalaryComponent.getName());
-		Long totalEmployee = payTempUploadDataService.getTotalByPaySalaryComponentId(paySalaryComponent.getId());
-		model.setTotalEmployee(totalEmployee);
-		Double totalSalary = payTempUploadDataService.getTotalSalaryByPaySalaryComponentId(paySalaryComponent.getId());
-		model.setTotalSalary(totalSalary);
+		Long totalEmployee;
+            try {
+                totalEmployee = payTempUploadDataService.getTotalByPaySalaryComponentId(paySalaryComponent.getId());
+                model.setTotalEmployee(totalEmployee);
+            } catch (Exception ex) {
+                Logger.getLogger(PaySalaryUploadDetailController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+		
+		Double totalSalary;
+            try {
+                totalSalary = payTempUploadDataService.getTotalSalaryByPaySalaryComponentId(paySalaryComponent.getId());
+                model.setTotalSalary(totalSalary);
+            } catch (Exception ex) {
+                Logger.getLogger(PaySalaryUploadDetailController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+		
 		
 		return model;
 	}
