@@ -742,7 +742,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     public List<EmpData> getAllDataNotTerminateAndJoinDateLowerThan(Date payrollCalculationDate) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
-        criteria.add(Restrictions.lt("joinDate", payrollCalculationDate));
+        criteria.add(Restrictions.le("joinDate", payrollCalculationDate));
         return criteria.list();
     }
 

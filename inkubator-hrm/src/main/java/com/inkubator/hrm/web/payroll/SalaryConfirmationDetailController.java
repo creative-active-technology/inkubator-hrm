@@ -58,7 +58,7 @@ public class SalaryConfirmationDetailController extends BaseController {
             ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
             String empDataId = FacesUtil.getRequestParameter("execution");
             selectedPayTempKalkulasi = payTempKalkulasiService.getEntityByEmpIdAndModelTakeHomePayId(Long.parseLong(empDataId.substring(1)));
-            WtPeriode wtPeriode = wtPeriodeService.getEntityByStatusActive();
+            WtPeriode wtPeriode = wtPeriodeService.getEntityByPayrollTypeActive();
             DateMidnight date1 = new DateMidnight(selectedPayTempKalkulasi.getEmpData().getJoinDate());
             DateTime now = new DateTime(wtPeriode.getUntilPeriode());
             // mencari total tahun

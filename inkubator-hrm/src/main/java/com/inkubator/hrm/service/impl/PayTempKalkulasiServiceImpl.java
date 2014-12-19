@@ -389,7 +389,7 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
         System.out.println("=============================================START " + new Date());
 
         //initial
-        WtPeriode periode = wtPeriodeDao.getEntityByStatusActive();
+        WtPeriode periode = wtPeriodeDao.getEntityByPayrollTypeActive();
         PaySalaryComponent totalIncomeComponent = paySalaryComponentDao.getEntityBySpecificModelComponent(HRMConstant.MODEL_COMP_TAKE_HOME_PAY);
         PaySalaryComponent taxComponent = paySalaryComponentDao.getEntityBySpecificModelComponent(HRMConstant.MODEL_COMP_TAX);
         PaySalaryComponent ceilComponent = paySalaryComponentDao.getEntityBySpecificModelComponent(HRMConstant.MODEL_COMP_CEIL);
