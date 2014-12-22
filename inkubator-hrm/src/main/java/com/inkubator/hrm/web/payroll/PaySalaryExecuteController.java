@@ -80,12 +80,11 @@ public class PaySalaryExecuteController extends BaseController {
         super.initialization();
         searchParameter = new PayTempKalkulasiSearchParameter();
         payTempKalkulasiModel = new PayTempKalkulasiModel();
-        progress = null;
-        payrollCalculationDate =  new Date();
+        progress = null;        
        
         try {
-            wtPeriodePayroll = wtPeriodeService.getEntityByStatusActive();
-            wtPeriodeAbsen = wtPeriodeService.getEntityAbsenByStatusActive();
+            wtPeriodePayroll = wtPeriodeService.getEntityByPayrollTypeActive();
+            wtPeriodeAbsen = wtPeriodeService.getEntityByAbsentTypeActive();
             getTotalKaryawan = empDataService.getTotalEmpDataNotTerminate();
             if (wtPeriodePayroll != null) {
                 payTempKalkulasiModel.setStartDate(wtPeriodePayroll.getFromPeriode());

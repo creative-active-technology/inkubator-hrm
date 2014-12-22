@@ -6,10 +6,13 @@
 package com.inkubator.hrm.dao.impl;
 
 import com.inkubator.datacore.dao.impl.IDAOImpl;
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.WtPeriodeDao;
 import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.web.search.WtPeriodeSearchParameter;
+
 import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
@@ -60,16 +63,16 @@ public class WtPeriodeDaoImpl extends IDAOImpl<WtPeriode> implements WtPeriodeDa
     }
 
     @Override
-    public WtPeriode getEntityByStatusActive() {
+    public WtPeriode getEntityByPayrollTypeActive() {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.eq("payrollType", "Active"));
+        criteria.add(Restrictions.eq("payrollType", HRMConstant.PERIODE_PAYROLL_ACTIVE));
         return (WtPeriode) criteria.uniqueResult();
     }
 
     @Override
-    public WtPeriode getEntityAbsenByStatusActive() {
+    public WtPeriode getEntityByAbsentTypeActive() {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.eq("absen", "Active"));
+        criteria.add(Restrictions.eq("absen", HRMConstant.PERIODE_ABSEN_ACTIVE));
         return (WtPeriode) criteria.uniqueResult();
     }
 }

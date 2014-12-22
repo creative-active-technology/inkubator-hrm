@@ -36,6 +36,7 @@ public class Department implements java.io.Serializable {
     private Date createdOn;
     private String updatedBy;
     private Date updatedOn;
+    private String description;
     private Set<Jabatan> jabatans = new HashSet<>(0);
     private Set<DepartementUploadCapture> departementUploadCaptures = new HashSet<>(0);
 
@@ -46,7 +47,7 @@ public class Department implements java.io.Serializable {
         this.id = id;
     }
 
-    public Department(long id, String departmentCode, String departmentName, String createdBy, Date createdOn, String updatedBy, Date updatedOn) {
+    public Department(long id, String departmentCode, String departmentName, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String Description) {
         this.id = id;
         this.departmentCode = departmentCode;
         this.departmentName = departmentName;
@@ -54,6 +55,7 @@ public class Department implements java.io.Serializable {
         this.createdOn = createdOn;
         this.updatedBy = updatedBy;
         this.updatedOn = updatedOn;
+        this.description = description;
     }
 
     @Id
@@ -131,6 +133,15 @@ public class Department implements java.io.Serializable {
 
     public void setUpdatedBy(String updatedBy) {
         this.updatedBy = updatedBy;
+    }
+    
+    @Column(name="description", length=65535, columnDefinition="Text")
+    public String getDescription() {
+        return this.description;
+    }
+    
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Temporal(TemporalType.TIMESTAMP)

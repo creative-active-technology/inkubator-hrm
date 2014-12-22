@@ -66,7 +66,7 @@ public class PayComponentDataExceptionDetailController extends BaseController {
         try {
             paySalaryComponentId = FacesUtil.getRequestParameter("execution");
             PaySalaryComponent paySalaryComponent = paySalaryComponentService.getEntiyByPK(Long.parseLong(paySalaryComponentId.substring(1)));
-            WtPeriode wtPeriode = wtPeriodeService.getEntityByStatusActive();
+            WtPeriode wtPeriode = wtPeriodeService.getEntityByPayrollTypeActive();
             List<PayComponentDataException> listPayComponentDataException = payComponentDataExceptionService.getByPaySalaryComponent(Long.parseLong(paySalaryComponentId.substring(1)));
             payComponentDataExceptionModel = getModelFromEntity(paySalaryComponent, listPayComponentDataException.size(), wtPeriode);
             //hitung jumlah nominal
@@ -180,7 +180,7 @@ public class PayComponentDataExceptionDetailController extends BaseController {
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", false);
-        options.put("contentWidth", 400);
+        options.put("contentWidth", 420);
         options.put("contentHeight", 300);
         RequestContext.getCurrentInstance().openDialog("pay_component_exception_form", options, params);
     }

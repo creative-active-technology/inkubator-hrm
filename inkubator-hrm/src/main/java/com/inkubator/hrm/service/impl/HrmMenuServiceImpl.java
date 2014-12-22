@@ -267,60 +267,60 @@ public class HrmMenuServiceImpl extends IServiceImpl implements HrmMenuService {
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<HrmMenu> getByParam(HrmMenuSearchParameter parameter,int firstResult, int maxResults, Order orderable) {
+	public List<HrmMenu> getByParam(HrmMenuSearchParameter parameter,int firstResult, int maxResults, Order orderable) throws Exception{
 		return hrmMenuDao.getByParam(parameter, firstResult, maxResults, orderable);
 
 	}
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-	public Long getTotalByParam(HrmMenuSearchParameter parameter) {
+	public Long getTotalByParam(HrmMenuSearchParameter parameter) throws Exception{
 		return hrmMenuDao.getTotalByParam(parameter);
 
 	}
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<HrmMenu> getAllDataByLevel(Integer level) {
+	public List<HrmMenu> getAllDataByLevel(Integer level) throws Exception{
 		return hrmMenuDao.getAllDataByLevel(level);
 		
 	}
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-	public HrmMenu getEntityByPkWithDetail(long id) {
+	public HrmMenu getEntityByPkWithDetail(long id) throws Exception{
 		return hrmMenuDao.getEntityByPkWithDetail(id);
 	}
 
 	@Override
-	public List<HrmMenu> getAllDataByLevelAndNotId(int level, Long id) {
+	public List<HrmMenu> getAllDataByLevelAndNotId(int level, Long id) throws Exception{
 		return hrmMenuDao.getAllDataByLevelAndNotId(level, id);
 		
 	}
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<HrmMenu> getAllDataByParamAndNotIds(HrmMenuSearchParameter parameter, List<Long> ids, int firstResult, int maxResults, Order orderable) {
+	public List<HrmMenu> getAllDataByParamAndNotIds(HrmMenuSearchParameter parameter, List<Long> ids, int firstResult, int maxResults, Order orderable) throws Exception{
 		return hrmMenuDao.getAllDataByParamAndNotIds(parameter, ids, firstResult, maxResults, orderable);
 		
 	}
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-	public Long getTotalByParamAndNotIds(HrmMenuSearchParameter parameter, List<Long> ids) {
+	public Long getTotalByParamAndNotIds(HrmMenuSearchParameter parameter, List<Long> ids) throws Exception{
 		return hrmMenuDao.getTotalByParamAndNotIds(parameter, ids);
 	}
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<HrmMenu> getAllDataByUserRolesAndHaveNoChild(String parameter, List<Long> exceptMenuIds, List<String> roles, int firstResult, int maxResults, Order orderable) {
+	public List<HrmMenu> getAllDataByUserRolesAndHaveNoChild(String parameter, List<Long> exceptMenuIds, List<String> roles, int firstResult, int maxResults, Order orderable) throws Exception{
 		return hrmMenuDao.getAllDataByUserRolesAndHaveNoChild(parameter, exceptMenuIds, roles, firstResult, maxResults, orderable);
 		
 	}	
 	
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public Long getTotalByUserRolesAndHaveNoChild(String parameter, List<Long> exceptMenuIds, List<String> roles) {
+	public Long getTotalByUserRolesAndHaveNoChild(String parameter, List<Long> exceptMenuIds, List<String> roles) throws Exception{
 		return hrmMenuDao.getTotalByUserRolesAndHaveNoChild(parameter, exceptMenuIds, roles);
 		
 	}

@@ -96,13 +96,15 @@ public interface EmpDataDao extends IDAO<EmpData> {
     public List<EmpData> getAllDataNotTerminate();
 
     public Long getTotalEmpDataNotTerminate();
-    
+
     public Long getTotalByTaxFreeIsNull();
 
-	public List<EmpData> getAllDataNotTerminateAndJoinDateLowerThan(Date payrollCalculationDate);
+    public List<EmpData> getAllDataNotTerminateAndJoinDateLowerThan(Date payrollCalculationDate);
 
-	public List<EmpData> getAllDataSalaryConfirmationByParam(SalaryConfirmationParameter param, int firstResult, int maxResults, Order orderable);
+    public List<EmpData> getAllDataSalaryConfirmationByParam(SalaryConfirmationParameter param, int firstResult, int maxResults, Order orderable);
 
-	public Long getTotalSalaryConfirmationByParam(SalaryConfirmationParameter param);
+    public Long getTotalSalaryConfirmationByParam(SalaryConfirmationParameter param);
+
+    public EmpData getByPKBankTransfer(long id);
 
 }

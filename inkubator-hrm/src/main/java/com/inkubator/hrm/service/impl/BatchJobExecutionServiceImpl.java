@@ -197,7 +197,7 @@ public class BatchJobExecutionServiceImpl extends IServiceImpl implements BatchJ
 
     @Override
     @Transactional(readOnly = true, propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, timeout = 30)
-    public Long getTotalByParam(BatchJobExecutionSearchParameter parameter) {
+    public Long getTotalByParam(BatchJobExecutionSearchParameter parameter) throws Exception{
         return this.batchJobExecutionDao.getTotalByParam(parameter);
     }
     

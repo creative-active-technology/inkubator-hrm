@@ -46,33 +46,32 @@ public class RoleFormController extends BaseController {
     private HrmMenu selectedMenu;
     @ManagedProperty(value = "#{hrmRoleService}")
     private HrmRoleService hrmRoleService;
-    
 
     @PostConstruct
     @Override
     public void initialization() {
-    	try {
-    		roleModel = new RoleModel();
-    		menus = new ArrayList<HrmMenu>();
-    		
-	        String param = FacesUtil.getRequestParameter("execution");	        
-	        isEdit = param != null;
-	        if(isEdit) {	            
-	        	HrmRole hrmRole = hrmRoleService.getEntityByPkWithMenus(Long.parseLong(param.substring(1)));
-	            getModelFromEntity(hrmRole);
-	        }
-    	} catch (Exception ex) {
+        try {
+            roleModel = new RoleModel();
+            menus = new ArrayList<HrmMenu>();
+
+            String param = FacesUtil.getRequestParameter("execution");
+            isEdit = param != null;
+            if (isEdit) {
+                HrmRole hrmRole = hrmRoleService.getEntityByPkWithMenus(Long.parseLong(param.substring(1)));
+                getModelFromEntity(hrmRole);
+            }
+        } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
     }
 
-	@PreDestroy
+    @PreDestroy
     private void cleanAndExit() {
         roleModel = null;
         isEdit = null;
         hrmRoleService = null;
         menus = null;
-        selectedMenu =  null;
+        selectedMenu = null;
     }
 
     public void setHrmRoleService(HrmRoleService hrmRoleService) {
@@ -96,22 +95,22 @@ public class RoleFormController extends BaseController {
     }
 
     public HrmMenu getSelectedMenu() {
-		return selectedMenu;
-	}
+        return selectedMenu;
+    }
 
-	public void setSelectedMenu(HrmMenu selectedMenu) {
-		this.selectedMenu = selectedMenu;
-	}
+    public void setSelectedMenu(HrmMenu selectedMenu) {
+        this.selectedMenu = selectedMenu;
+    }
 
-	public List<HrmMenu> getMenus() {
-		return menus;
-	}
+    public List<HrmMenu> getMenus() {
+        return menus;
+    }
 
-	public void setMenus(List<HrmMenu> menus) {
-		this.menus = menus;
-	}
+    public void setMenus(List<HrmMenu> menus) {
+        this.menus = menus;
+    }
 
-	public String doSave() {
+    public String doSave() {
         HrmRole hrmRole = getEntityFromView(roleModel);
         if (isEdit) {
             doUpdate(hrmRole);
@@ -120,7 +119,7 @@ public class RoleFormController extends BaseController {
         }
         return "/protected/account/role_detail.htm?faces-redirect=true&execution=e" + roleModel.getId();
     }
-    
+
     public String doBack() {
         return "/protected/account/role_view.htm?faces-redirect=true";
     }
@@ -157,33 +156,33 @@ public class RoleFormController extends BaseController {
             LOGGER.error("Error", ex);
         }
     }
-    
-    public void doDeleteMenu(){
-    	menus.remove(selectedMenu);
+
+    public void doDeleteMenu() {
+        menus.remove(selectedMenu);
     }
-    
+
     public void doReset() {
-    	if (isEdit) {
+        if (isEdit) {
             try {
-            	HrmRole hrmRole = hrmRoleService.getEntityByPkWithMenus(roleModel.getId());
-	            getModelFromEntity(hrmRole);
+                HrmRole hrmRole = hrmRoleService.getEntityByPkWithMenus(roleModel.getId());
+                getModelFromEntity(hrmRole);
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
             }
         } else {
-        	roleModel = new RoleModel();
+            roleModel = new RoleModel();
         }
     }
-    
-    public void doShowMenuList(){
-    	Map<String, List<String>> dataToSend = new HashMap<>();
+
+    public void doShowMenuList() {
+        Map<String, List<String>> dataToSend = new HashMap<>();
         List<String> values = new ArrayList<>();
-        for(HrmMenu menu: menus){
-        	values.add(String.valueOf(menu.getId()));
-        }        
+        for (HrmMenu menu : menus) {
+            values.add(String.valueOf(menu.getId()));
+        }
         dataToSend.put("menuIds", values);
-        
-    	Map<String, Object> options = new HashMap<>();
+
+        Map<String, Object> options = new HashMap<>();
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", true);
@@ -191,16 +190,16 @@ public class RoleFormController extends BaseController {
         options.put("contentHeight", 400);
         RequestContext.getCurrentInstance().openDialog("role_menus_form", options, dataToSend);
     }
-    
+
     @Override
     public void onDialogReturn(SelectEvent event) {
-    	HrmMenu menu = (HrmMenu) event.getObject();
-    	if(!menus.contains(menu)){
-    		menus.add(menu);
-    	} else {
-    		MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "role_form.selected_menu_already_contained_in_the_list",
+        HrmMenu menu = (HrmMenu) event.getObject();
+        if (!menus.contains(menu)) {
+            menus.add(menu);
+        } else {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "role_form.selected_menu_already_contained_in_the_list",
                     FacesUtil.getSessionAttribute(WebCoreConstant.BAHASA_ACTIVE).toString());
-    	}
+        }
     }
 
     public HrmRole getEntityFromView(RoleModel roleModel) {
@@ -212,14 +211,14 @@ public class RoleFormController extends BaseController {
         hrmRole.setDescription(roleModel.getDescription());
         return hrmRole;
     }
-    
+
     private void getModelFromEntity(HrmRole role) {
-    	roleModel.setId(role.getId());
+        roleModel.setId(role.getId());
         roleModel.setRoleName(role.getRoleName());
         roleModel.setDescription(role.getDescription());
         menus.clear();
-        for(HrmMenuRole menuRoles : role.getHrmMenuRoles()){
-        	menus.add(menuRoles.getHrmMenu());
+        for (HrmMenuRole menuRoles : role.getHrmMenuRoles()) {
+            menus.add(menuRoles.getHrmMenu());
         }
-	}
+    }
 }

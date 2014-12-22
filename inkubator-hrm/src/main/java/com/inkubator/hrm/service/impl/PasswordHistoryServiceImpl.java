@@ -51,12 +51,12 @@ public class PasswordHistoryServiceImpl extends IServiceImpl implements Password
     }
 
     @Override
-    public void saveAndPushMessage(PasswordHistory entity) {
+    public void saveAndPushMessage(PasswordHistory entity) throws Exception{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void updateAndPushMessage(PasswordHistory entity) {
+    public void updateAndPushMessage(PasswordHistory entity)  throws Exception{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

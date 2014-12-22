@@ -52,7 +52,7 @@ public class PayTempKalkulasiEmpPajakDetailController extends BaseController {
         String taxComponent = FacesUtil.getRequestParameter("execution");
         if (taxComponent != null) {
             try {
-                WtPeriode wtPeriode = wtPeriodeService.getEntityByStatusActive();
+                WtPeriode wtPeriode = wtPeriodeService.getEntityByPayrollTypeActive();
                 
                 if (wtPeriode != null) {
                     startDate = wtPeriode.getFromPeriode();

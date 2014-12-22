@@ -11,8 +11,8 @@ import com.inkubator.hrm.entity.FinancialPartner;
  */
 public interface FinancialPartnerService extends IService<FinancialPartner> {
 
-	public List<FinancialPartner> getAllDataByCompanyId(Long companyId);
+	public List<FinancialPartner> getAllDataByCompanyId(Long companyId) throws Exception;
 
-	public FinancialPartner getEntityByPKWithDetail(Long id);
+	public FinancialPartner getEntityByPKWithDetail(Long id) throws Exception;
 
 }

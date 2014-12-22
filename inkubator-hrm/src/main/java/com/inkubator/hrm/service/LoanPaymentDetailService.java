@@ -13,7 +13,7 @@ import org.hibernate.criterion.Order;
  */
 public interface LoanPaymentDetailService extends IService<LoanPaymentDetail> {
 
-    public List<LoanPaymentDetail> getAllDataByLoanId(Long loanId);
+    public List<LoanPaymentDetail> getAllDataByLoanId(Long loanId) throws Exception;
 
     public List<LoanPaymentDetail> getByParam(String parameter, LoanPaymentDetailModel loanPaymentDetailModel, int firstResult, int maxResults, Order order) throws Exception;
 

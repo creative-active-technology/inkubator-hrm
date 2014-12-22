@@ -339,4 +339,11 @@ public class HRMConstant {
     
     public static final Integer GLOBAL_MARRIED = 1;
     public static final Integer GLOBAL_NO_MARRIED = 0;
+    
+    /* Periode */
+    public static final String PERIODE_ABSEN_VOID = "Void";
+    public static final String PERIODE_ABSEN_ACTIVE = "Active";
+    public static final String PERIODE_PAYROLL_VOID = "Void";
+    public static final String PERIODE_PAYROLL_ACTIVE = "Active";
+    public static final String PERIODE_PAYROLL_NOT_ACTIVE = "Not Active";
 }

@@ -21,4 +21,13 @@ public interface PayReceiverBankAccountService extends IService<PayReceiverBankA
     public List<PayReceiverBankAccountModel> getByParam(PayReceiverBankAccountSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
 
     public Long getTotalByParam(PayReceiverBankAccountSearchParameter searchParameter) throws Exception;
+
+    public void saveList(List<PayReceiverBankAccount> list) throws Exception;
+
+    public List<PayReceiverBankAccount> getAllByEmpId(long id) throws Exception;
+
+    public void updateList(List<PayReceiverBankAccount> list) throws Exception;
+
+	public List<PayReceiverBankAccount> getAllDataWithDetail() throws Exception;
+
 }

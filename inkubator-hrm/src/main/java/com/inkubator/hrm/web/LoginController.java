@@ -10,18 +10,12 @@ import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.service.HrmUserService;
-import com.inkubator.hrm.service.PayReceiverBankAccountService;
-import com.inkubator.hrm.web.model.PayReceiverBankAccountModel;
-import com.inkubator.hrm.web.search.PayReceiverBankAccountSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
 import java.io.IOException;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
@@ -51,29 +45,17 @@ public class LoginController extends BaseController {
     private DateFormatter dateFormatter;
     @ManagedProperty(value = "#{hrmUserService}")
     private HrmUserService userService;
-    @ManagedProperty(value = "#{payReceiverBankAccountService}")
-    private PayReceiverBankAccountService payReceiverBankAccountService;
 
     @PostConstruct
     @Override
     public void initialization() {
-        try {
-            PayReceiverBankAccountSearchParameter parameter=new PayReceiverBankAccountSearchParameter();
-            List<PayReceiverBankAccountModel> data=payReceiverBankAccountService.getByParam(parameter, 0, 10, null);
-                  for (PayReceiverBankAccountModel data1 : data) {
-                      System.out.println(data1);
-            }
-            
-            if (FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE) == null) {
-                selectedLanguage = "in";
-                FacesUtil.setSessionAttribute(HRMConstant.BAHASA_ACTIVE, selectedLanguage);
-            } else {
-                selectedLanguage = (String) FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE);
-            }
-            FacesUtil.getFacesContext().getViewRoot().setLocale(new Locale(selectedLanguage));
-        } catch (Exception ex) {
-            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+        if (FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE) == null) {
+            selectedLanguage = "in";
+            FacesUtil.setSessionAttribute(HRMConstant.BAHASA_ACTIVE, selectedLanguage);
+        } else {
+            selectedLanguage = (String) FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE);
         }
+        FacesUtil.getFacesContext().getViewRoot().setLocale(new Locale(selectedLanguage));
     }
 
     @PreDestroy
@@ -168,9 +150,4 @@ public class LoginController extends BaseController {
         }
         context.addCallbackParam("emailIsExist", emailIsExist);
     }
-
-    public void setPayReceiverBankAccountService(PayReceiverBankAccountService payReceiverBankAccountService) {
-        this.payReceiverBankAccountService = payReceiverBankAccountService;
-    }
-    
 }

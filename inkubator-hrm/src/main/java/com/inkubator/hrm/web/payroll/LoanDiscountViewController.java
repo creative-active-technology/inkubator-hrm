@@ -50,12 +50,12 @@ public class LoanDiscountViewController extends BaseController{
         try {
             loanPaymentDetailModel = new LoanPaymentDetailModel();
             WtPeriode wtPeriode;
-            wtPeriode = wtPeriodeService.getEntityByStatusActive();
+            wtPeriode = wtPeriodeService.getEntityByPayrollTypeActive();
             if(wtPeriode != null){
                 loanPaymentDetailModel.setEndDataPeriod(wtPeriode.getUntilPeriode());
                 loanPaymentDetailModel.setStartDatePeriod(wtPeriode.getFromPeriode());
             }
-            wtPeriode = wtPeriodeService.getEntityAbsenByStatusActive();
+            wtPeriode = wtPeriodeService.getEntityByAbsentTypeActive();
             if(wtPeriode != null ){
                 loanPaymentDetailModel.setStartDateAbsen(wtPeriode.getFromPeriode());
                 loanPaymentDetailModel.setEndDateAbsen(wtPeriode.getUntilPeriode());
