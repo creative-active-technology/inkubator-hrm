@@ -16,6 +16,7 @@ import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.PayTempKalkulasi;
 import com.inkubator.hrm.web.model.PayTempKalkulasiModel;
+import com.inkubator.hrm.web.model.SalaryJournalModel;
 
 /**
  *
@@ -39,15 +40,18 @@ public interface PayTempKalkulasiService extends IService<PayTempKalkulasi> {
     public List<PayTempKalkulasi> getByParamForDetail(String searchParameter, int firstResult, int maxResults, Order order, Long paySalaryComponentId) throws Exception;
 
     public Long getTotalPayTempKalkulasiByParamForDetail(String searchParameter, Long paySalaryComponentId) throws Exception;
-	
-	public void executeBatchFinalSalaryCalculation(EmpData empData) throws ScriptException;
+
+    public void executeBatchFinalSalaryCalculation(EmpData empData) throws ScriptException;
 
     public List<PayTempKalkulasi> getAllDataByEmpDataIdAndTaxNotNull(Long empDataId) throws Exception;
-    
+
     public PayTempKalkulasi getEntityByEmpIdAndModelTakeHomePayId(Long empId) throws Exception;
-    
+
     public List<PayTempKalkulasi> getAllDataByEmpDataId(Long empDataId) throws Exception;
 
-	public PayTempKalkulasi getEntityByEmpDataIdAndSpecificModelComponent(Long empDataid, Integer specific);
+    public List<SalaryJournalModel> getByParamForSalaryJournal(String searchParameter, int firstResult, int maxResults, Order order) throws Exception;
 
+    public Long getTotalPayTempKalkulasiForSalaryJournal(String searchParameter) throws Exception;
+
+    public PayTempKalkulasi getEntityByEmpDataIdAndSpecificModelComponent(Long empDataid, Integer specific);
 }
