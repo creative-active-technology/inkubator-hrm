@@ -13,6 +13,7 @@ import org.hibernate.criterion.Order;
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.PayTempKalkulasi;
 import com.inkubator.hrm.web.model.PayTempKalkulasiModel;
+import com.inkubator.hrm.web.model.SalaryJournalModel;
 
 /**
  *
@@ -42,4 +43,8 @@ public interface PayTempKalkulasiService extends IService<PayTempKalkulasi> {
     public PayTempKalkulasi getEntityByEmpIdAndModelTakeHomePayId(Long empId) throws Exception;
     
     public List<PayTempKalkulasi> getAllDataByEmpDataId(Long empDataId) throws Exception;
+    
+    public List<SalaryJournalModel> getByParamForSalaryJournal(String searchParameter, int firstResult, int maxResults, Order order) throws Exception;
+    
+    public Long getTotalPayTempKalkulasiForSalaryJournal(String searchParameter) throws Exception;
 }

@@ -49,6 +49,7 @@ import com.inkubator.hrm.entity.Reimbursment;
 import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.PayTempKalkulasiService;
 import com.inkubator.hrm.web.model.PayTempKalkulasiModel;
+import com.inkubator.hrm.web.model.SalaryJournalModel;
 
 /**
  *
@@ -621,6 +622,112 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public List<PayTempKalkulasi> getAllDataByEmpDataId(Long empDataId) throws Exception {
         return payTempKalkulasiDao.getAllDataByEmpDataId(empDataId);
+    }
+
+    private Integer sisaData;
+    private Integer parameterLoop;
+    private Integer previousMaxResult;
+    private Integer indexDataTerakhir;
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<SalaryJournalModel> getByParamForSalaryJournal(String searchParameter, int firstResult, int maxResults, Order order) throws Exception {
+        System.out.println(sisaData + " sisaData atas" + parameterLoop);
+        Integer jumlahRowsTambahan = Integer.valueOf(String.valueOf(payTempKalkulasiDao.getTotalPayTempKalkulasiForSalaryJournalDebetAndKredit()));
+        //reset sisaData biar bisa bulak balik page akhir + 1 halaman page akhir
+        Integer hitLastPage = 0;
+        if (parameterLoop == null) {
+            parameterLoop = 0;
+        }
+        Integer currentResult = maxResults;
+        Long totalData = payTempKalkulasiDao.getTotalPayTempKalkulasiForSalaryJournal(searchParameter);
+        Integer totalPage = Integer.valueOf(String.valueOf(totalData)) / Integer.valueOf(String.valueOf(maxResults));
+        //get list debet and credit
+        List<SalaryJournalModel> listDebet = payTempKalkulasiDao.getByParamForSalaryJournalDebet();
+        List<SalaryJournalModel> listKredit = payTempKalkulasiDao.getByParamForSalaryJournalKredit();
+        List<SalaryJournalModel> listSalaryJournal = new ArrayList<SalaryJournalModel>();
+
+        if (totalData % maxResults != 0) {
+            totalPage = totalPage + 1;
+        }
+        //jika halaman terakhir, total recordnya cukup untuk data tambahan
+        Long spaceKosong = (totalPage * maxResults) - totalData;
+        Boolean isSpaceKosongCukup = (spaceKosong < jumlahRowsTambahan) ? Boolean.FALSE : Boolean.TRUE;
+        Boolean isLastPage = (firstResult == (totalPage * maxResults) - maxResults) ? Boolean.TRUE : Boolean.FALSE;
+
+        listSalaryJournal = payTempKalkulasiDao.getByParamForSalaryJournal(searchParameter, firstResult, maxResults, order);
+        SalaryJournalModel salaryJournalModel;
+        if (sisaData == null) {
+            sisaData = 0;
+        }
+        if (indexDataTerakhir == null) {
+            indexDataTerakhir = jumlahRowsTambahan;
+        }
+        Integer sisaDataTerakhir = 0;
+        if (isLastPage) {
+            sisaData = 0;
+            parameterLoop = Integer.valueOf(String.valueOf(maxResults)) - listSalaryJournal.size();
+            sisaDataTerakhir = jumlahRowsTambahan - parameterLoop;
+            hitLastPage = hitLastPage + 1;
+        }
+        Double totalUang = 0.0;
+        int j = 0;
+        if (hitLastPage == 0 && spaceKosong != 0) {
+            indexDataTerakhir = indexDataTerakhir - Integer.valueOf(String.valueOf(spaceKosong));
+            sisaData = jumlahRowsTambahan - Integer.valueOf(String.valueOf(spaceKosong));
+            parameterLoop = jumlahRowsTambahan;
+            int temp = sisaData;
+            sisaData = parameterLoop - temp;
+            System.out.println("space Kosong :" + spaceKosong);
+            System.out.println("sisa Data : " + sisaData);
+        } else if (isSpaceKosongCukup || totalData % maxResults == 0) {
+            parameterLoop = jumlahRowsTambahan;
+            sisaData = 0;
+        }
+        for (j = sisaData; j < parameterLoop; j++) {
+            indexDataTerakhir = indexDataTerakhir - 1;
+            totalUang = listDebet.get(j).getJumlahDebet().doubleValue() - listKredit.get(j).getJumlahKredit().doubleValue();
+            salaryJournalModel = new SalaryJournalModel();
+            salaryJournalModel.setCostCenterCode(listKredit.get(j).getCostCenterCodeKredit());
+            salaryJournalModel.setCostCenterName(listKredit.get(j).getCostCenterNameKredit());
+            salaryJournalModel.setJurnalName("");
+            //debet > kredit => hasil ditaro di kredit
+            //debet < kredit => hasil ditaro di debet
+            if (listDebet.get(j).getJumlahDebet().doubleValue() > listKredit.get(j).getJumlahKredit().doubleValue()) {
+                salaryJournalModel.setDebet2(new BigDecimal(0));
+                salaryJournalModel.setKredit(totalUang);
+            } else {
+                salaryJournalModel.setDebet2(new BigDecimal(totalUang));
+                salaryJournalModel.setKredit(0.0);
+            }
+            listSalaryJournal.add(salaryJournalModel);
+            if (j == 0) {
+                sisaData = 0;
+            } else {
+                sisaData = sisaData + 1;
+            }
+        }
+        System.out.println(indexDataTerakhir + "index data terakhir");
+        if (isLastPage) {
+            sisaData = sisaData + 1;
+            parameterLoop = parameterLoop + sisaDataTerakhir;
+        }
+        System.out.println(sisaData + " sisaData bawah" + parameterLoop);
+        //reset sisaData dan hitLastPage jika terjadi pergantian maxResult
+        if (previousMaxResult != currentResult) {
+            sisaData = null;
+            hitLastPage = 0;
+        }
+        previousMaxResult = currentResult;
+        System.out.println("sisa Data bawah : " + sisaData);
+        return listSalaryJournal;
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public Long getTotalPayTempKalkulasiForSalaryJournal(String searchParameter) throws Exception {
+        Long totalData = payTempKalkulasiDao.getTotalPayTempKalkulasiForSalaryJournal(searchParameter) + payTempKalkulasiDao.getTotalPayTempKalkulasiForSalaryJournalDebetAndKredit();
+        return totalData;
     }
 
 }
