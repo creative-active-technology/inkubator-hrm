@@ -35,12 +35,18 @@ public class LogMonthEndPayroll implements Serializable {
     private String empName;
     private String empGolJabatan;
     private String empStatus;
+    private Integer modelCompSpecific;
     private Long paySalaryCompId;
     private String paySalaryCompCode;
     private String paySalaryDesc;
+    private Integer factor;
     private BigDecimal nominal;
     private String createdBy;
     private Date createdOn;
+    
+    public LogMonthEndPayroll(){
+    	
+    }
     
     public LogMonthEndPayroll(Long id){
     	this.id = id;
@@ -140,6 +146,15 @@ public class LogMonthEndPayroll implements Serializable {
 
 	public void setEmpStatus(String empStatus) {
 		this.empStatus = empStatus;
+	}	
+
+	@Column(name = "model_comp_specific", nullable = false)
+	public Integer getModelCompSpecific() {
+		return modelCompSpecific;
+	}
+
+	public void setModelCompSpecific(Integer modelCompSpecific) {
+		this.modelCompSpecific = modelCompSpecific;
 	}
 
 	@Column(name = "pay_salary_comp_id", nullable = false)
@@ -169,6 +184,15 @@ public class LogMonthEndPayroll implements Serializable {
 		this.paySalaryDesc = paySalaryDesc;
 	}
 
+	@Column(name = "factor")
+    public Integer getFactor() {
+		return factor;
+	}
+
+	public void setFactor(Integer factor) {
+		this.factor = factor;
+	}
+	
 	@Column(name = "nominal", precision = 10, scale = 0, nullable = false)
 	public BigDecimal getNominal() {
 		return nominal;

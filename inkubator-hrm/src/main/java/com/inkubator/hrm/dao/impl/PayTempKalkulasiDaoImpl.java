@@ -201,7 +201,6 @@ public class PayTempKalkulasiDaoImpl extends IDAOImpl<PayTempKalkulasi> implemen
     public List<PayTempKalkulasi> getAllDataByEmpDataId(Long empDataId) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.createAlias("paySalaryComponent", "paySalaryComponent", JoinType.INNER_JOIN);
-        criteria.createAlias("paySalaryComponent.taxComponent", "taxComponent", JoinType.INNER_JOIN);
         criteria.createAlias("paySalaryComponent.modelComponent", "modelComponent", JoinType.INNER_JOIN);
         criteria.add(Restrictions.eq("empData.id", empDataId));
         criteria.add(Restrictions.ne("modelComponent.spesific", HRMConstant.MODEL_COMP_TAKE_HOME_PAY));
