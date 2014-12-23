@@ -12,6 +12,7 @@ import org.hibernate.criterion.Order;
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.PayTempKalkulasi;
 import com.inkubator.hrm.web.model.PayTempKalkulasiModel;
+import com.inkubator.hrm.web.model.SalaryJournalModel;
 
 /**
  *
@@ -42,5 +43,15 @@ public interface PayTempKalkulasiDao extends IDAO<PayTempKalkulasi> {
     public PayTempKalkulasi getEntityByEmpIdAndModelTakeHomePayId(Long empId);
     
     public List<PayTempKalkulasi> getAllDataByEmpDataId(Long empDataId);
+
+    public List<SalaryJournalModel> getByParamForSalaryJournal(String searchParameter, int firstResult, int maxResults, Order order);
+    
+    public Long getTotalPayTempKalkulasiForSalaryJournal(String searchParameter);
+    
+    public List<SalaryJournalModel> getByParamForSalaryJournalDebet();
+    
+    public List<SalaryJournalModel> getByParamForSalaryJournalKredit();
+    
+    public Long getTotalPayTempKalkulasiForSalaryJournalDebetAndKredit();
 
 }
