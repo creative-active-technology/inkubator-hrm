@@ -256,7 +256,7 @@ public class LoanPaymentDetailServiceImpl extends IServiceImpl implements
         List<LoanPaymentDetail> loanPaymentDetailLazy = new ArrayList<>();
         Long bayarKe;
         for (LoanPaymentDetail loanPaymentDetail : loanPaymentDetails) {
-            Long sisaBayar = loanPaymentDetailDao.getTotalUnPaidLoanByLoanId(loanPaymentDetail.getLoan().getId(), loanPaymentDetailModel);
+            Long sisaBayar = loanPaymentDetailDao.getTotalUnPaidLoanByLoanId(loanPaymentDetail.getLoan().getId(), loanPaymentDetailModel.getEndDataPeriod());
             bayarKe = loanPaymentDetail.getLoan().getTermin() - sisaBayar;
             bayarKe = bayarKe + 1;
             loanPaymentDetail.setBayarKe(bayarKe);
