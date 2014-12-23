@@ -10,8 +10,8 @@ import org.hibernate.criterion.Order;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
-import com.inkubator.hrm.entity.LogMonthEndPayroll;
 import com.inkubator.hrm.service.LogMonthEndPayrollService;
+import com.inkubator.hrm.web.model.LogMonthEndPayrollViewModel;
 import com.inkubator.hrm.web.search.LogMonthEndPayrollSearchParameter;
 
 
@@ -19,12 +19,12 @@ import com.inkubator.hrm.web.search.LogMonthEndPayrollSearchParameter;
 *
 * @author rizkykojek
 */
-public class LogMonthEndPayrollLazyDataModel extends LazyDataModel<LogMonthEndPayroll> implements Serializable {
+public class LogMonthEndPayrollLazyDataModel extends LazyDataModel<LogMonthEndPayrollViewModel> implements Serializable {
 
 	private static final Logger LOGGER = Logger.getLogger(LogMonthEndPayrollLazyDataModel.class);
     private final LogMonthEndPayrollSearchParameter parameter;
     private final LogMonthEndPayrollService logMonthEndPayrollService;
-    private List<LogMonthEndPayroll> list = new ArrayList<>();
+    private List<LogMonthEndPayrollViewModel> list = new ArrayList<>();
     private Integer total;
 
     public LogMonthEndPayrollLazyDataModel(LogMonthEndPayrollSearchParameter parameter, LogMonthEndPayrollService logMonthEndPayrollService) {
@@ -33,14 +33,14 @@ public class LogMonthEndPayrollLazyDataModel extends LazyDataModel<LogMonthEndPa
     }
 
     @Override
-    public List<LogMonthEndPayroll> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<LogMonthEndPayrollViewModel> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
         LOGGER.info("Step Load Lazy data Model");        
         try {
         	Order orderable = null;
 	        if (sortField != null) {
 	            orderable = (sortOrder == SortOrder.ASCENDING) ? Order.asc(sortField) : Order.desc(sortField);
 	        } else {
-	        	orderable = Order.desc("id");
+	        	orderable = Order.asc("empName");
 	        }
 	        
 	        list = logMonthEndPayrollService.getByParam(parameter, first, pageSize, orderable);
@@ -58,15 +58,15 @@ public class LogMonthEndPayrollLazyDataModel extends LazyDataModel<LogMonthEndPa
     }
 
     @Override
-    public Object getRowKey(LogMonthEndPayroll logMonthEndPayroll) {
-        return logMonthEndPayroll.getId();
+    public Object getRowKey(LogMonthEndPayrollViewModel model) {
+        return model.getId();
     }
 
     @Override
-    public LogMonthEndPayroll getRowData(String id) {
-        for (LogMonthEndPayroll logMonthEndPayroll : list) {
-            if (id.equals(String.valueOf(logMonthEndPayroll.getId()))) {
-                return logMonthEndPayroll;
+    public LogMonthEndPayrollViewModel getRowData(String id) {
+        for (LogMonthEndPayrollViewModel model : list) {
+            if (id.equals(String.valueOf(model.getId()))) {
+                return model;
             }
         }
         return null;

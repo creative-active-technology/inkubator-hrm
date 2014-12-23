@@ -1,5 +1,6 @@
 package com.inkubator.hrm.service.impl;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
@@ -14,6 +15,7 @@ import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.dao.LogMonthEndPayrollDao;
 import com.inkubator.hrm.entity.LogMonthEndPayroll;
 import com.inkubator.hrm.service.LogMonthEndPayrollService;
+import com.inkubator.hrm.web.model.LogMonthEndPayrollViewModel;
 import com.inkubator.hrm.web.search.LogMonthEndPayrollSearchParameter;
 
 /**
@@ -239,8 +241,10 @@ public class LogMonthEndPayrollServiceImpl extends IServiceImpl implements LogMo
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<LogMonthEndPayroll> getByParam(LogMonthEndPayrollSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception {
-		return logMonthEndPayrollDao.getByParam(parameter, firstResult, maxResults, orderable);
+	public List<LogMonthEndPayrollViewModel> getByParam(LogMonthEndPayrollSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception {
+		System.out.println("S");
+		List<LogMonthEndPayrollViewModel> list = logMonthEndPayrollDao.getByParam(parameter, firstResult, maxResults, orderable);
+		return list;
 
 	}
 
@@ -250,5 +254,11 @@ public class LogMonthEndPayrollServiceImpl extends IServiceImpl implements LogMo
 		return logMonthEndPayrollDao.getTotalByParam(parameter);
 
 	}
+	
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public BigDecimal getTotalTakeHomePayByPeriodeId(Long periodeId) throws Exception {
+		return logMonthEndPayrollDao.getTotalTakeHomePayByPeriodeId(periodeId);
 
+	}
 }

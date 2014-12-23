@@ -1,5 +1,6 @@
 package com.inkubator.hrm.web.payroll;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -20,11 +21,11 @@ import org.springframework.batch.core.repository.JobExecutionAlreadyRunningExcep
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
 import org.springframework.batch.core.repository.JobRestartException;
 
-import com.inkubator.hrm.entity.LogMonthEndPayroll;
 import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.LogMonthEndPayrollService;
 import com.inkubator.hrm.service.WtPeriodeService;
 import com.inkubator.hrm.web.lazymodel.LogMonthEndPayrollLazyDataModel;
+import com.inkubator.hrm.web.model.LogMonthEndPayrollViewModel;
 import com.inkubator.hrm.web.search.LogMonthEndPayrollSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.controller.BaseController;
@@ -39,10 +40,10 @@ public class LogMonthEndPayrollViewController extends BaseController {
 
 	private WtPeriode periode;
 	private Long totalEmployee;
-	private Double totalNominal;
+	private BigDecimal totalNominal;
     private LogMonthEndPayrollSearchParameter parameter;
     private JobExecution jobExecution;
-    private LazyDataModel<LogMonthEndPayroll> lazyDataModel;
+    private LazyDataModel<LogMonthEndPayrollViewModel> lazyDataModel;
     @ManagedProperty(value = "#{logMonthEndPayrollService}")
     private LogMonthEndPayrollService logMonthEndPayrollService;
     @ManagedProperty(value = "#{wtPeriodeService}")
@@ -58,10 +59,11 @@ public class LogMonthEndPayrollViewController extends BaseController {
         super.initialization();
         
         try {
+        	periode = wtPeriodeService.getEntityByPayrollTypeActive();
         	parameter =  new LogMonthEndPayrollSearchParameter();
-			periode = wtPeriodeService.getEntityByPayrollTypeActive();
-			totalEmployee = 0L;
-			totalNominal = 0.0;
+			parameter.setPeriodeId(periode.getId());
+			totalEmployee = logMonthEndPayrollService.getTotalByParam(new LogMonthEndPayrollSearchParameter());
+			totalNominal = logMonthEndPayrollService.getTotalTakeHomePayByPeriodeId(periode.getId());
 		} catch (Exception e) {
 			LOGGER.error("Error", e);
 		}
@@ -81,7 +83,7 @@ public class LogMonthEndPayrollViewController extends BaseController {
         jobExecution = null;
     }
     
-	public LazyDataModel<LogMonthEndPayroll> getLazyDataModel() {
+	public LazyDataModel<LogMonthEndPayrollViewModel> getLazyDataModel() {
     	if(lazyDataModel == null) {
     		lazyDataModel = new LogMonthEndPayrollLazyDataModel(parameter, logMonthEndPayrollService);
     	}
@@ -96,7 +98,7 @@ public class LogMonthEndPayrollViewController extends BaseController {
 		this.parameter = parameter;
 	}
 
-	public void setLazyDataModel(LazyDataModel<LogMonthEndPayroll> lazyDataModel) {
+	public void setLazyDataModel(LazyDataModel<LogMonthEndPayrollViewModel> lazyDataModel) {
 		this.lazyDataModel = lazyDataModel;
 	}
 
@@ -121,11 +123,11 @@ public class LogMonthEndPayrollViewController extends BaseController {
 		this.totalEmployee = totalEmployee;
 	}
 
-	public Double getTotalNominal() {
+	public BigDecimal getTotalNominal() {
 		return totalNominal;
 	}
 
-	public void setTotalNominal(Double totalNominal) {
+	public void setTotalNominal(BigDecimal totalNominal) {
 		this.totalNominal = totalNominal;
 	}
 
