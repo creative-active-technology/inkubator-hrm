@@ -40,10 +40,10 @@
                                         <f:selectItem itemLabel="#{appmsg['approvaldefinition.approval_name']}" itemValue="approvalName"/>
                                         <f:selectItem itemLabel="#{appmsg['approvaldefinition.process_name']}" itemValue="processName"/>
                                         <f:selectItem itemLabel="#{appmsg['approvaldefinition.approver_type']}" itemValue="approverType" />
-                                        <f:selectItem itemLabel="Jabatan Approver" itemValue="approverPosition" />
-                                        <f:selectItem itemLabel="Individu Approver" itemValue="approverIndividual" />
-                                        <f:selectItem itemLabel="On Behalf Jabatan" itemValue="onBehalfApproverPosition" />
-                                        <f:selectItem itemLabel="On Behalf Individu" itemValue="onBehaltAppriverIndividual" />
+                                        <f:selectItem itemLabel="#{appmsg['approvalActivity.approverPosition']}" itemValue="approverPosition" />
+                                        <f:selectItem itemLabel="#{appmsg['approvalActivity.approverIndividual']}" itemValue="approverIndividual" />
+                                        <f:selectItem itemLabel="#{appmsg['approvalActivity.onBehalfPosition']}" itemValue="onBehalfApproverPosition" />
+                                        <f:selectItem itemLabel="#{appmsg['approvalActivity.onBehalfIndividual']}" itemValue="onBehaltAppriverIndividual" />
                                     </p:selectOneMenu>
                                     <p:inputText value="#{approvalDefinitionViewController.approvalDefinitionSearchParameter.parameter}" style="width: 250px" id="pencarianId" styleClass="isitext_hrm" 
                                                  label="#{appmsg['global.searching']}" title="#{appmsg['global.searching']}"/>
@@ -169,14 +169,14 @@
                                 </h:panelGrid>
                             </div>
                             <h:panelGrid  columns="3">
-                                <p:outputLabel value="Approval Definition Name" styleClass="label_hrm"/>
+                                <p:outputLabel value="#{appmsg['approvalActivity.approvalDefinitionName']}" styleClass="label_hrm"/>
                                 <p:outputLabel value=":"  styleClass="label_hrm" />
                                 <p:outputLabel value="#{approvalDefinitionViewController.selectedApprovalDefinition.name}" styleClass="isitext_hrm"/>
 
-                                <p:outputLabel value="Process Name" styleClass="label_hrm"/>
+                                <p:outputLabel value="#{appmsg['approvaldefinition.process_name']}" styleClass="label_hrm"/>
                                 <p:outputLabel value=":"  styleClass="label_hrm" />
                                 <p:outputLabel value="#{approvalDefinitionViewController.selectedApprovalDefinition.processType}" styleClass="isitext_hrm"/>
-                                <p:outputLabel value="Urutan Approval" styleClass="label_hrm"/>
+                                <p:outputLabel value="#{appmsg['approvaldefinition.sequence_approval']}" styleClass="label_hrm"/>
                                 <p:outputLabel value=":"  styleClass="label_hrm" />
                                 <p:outputLabel value="#{approvalDefinitionViewController.selectedApprovalDefinition.sequence}" styleClass="isitext_hrm"/>
                             </h:panelGrid>

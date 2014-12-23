@@ -47,7 +47,7 @@ public class InclusionReimbursmentViewController extends BaseController{
         try {
             super.initialization();
             inclusionReimbursmentModel = new InclusionReimbursmentModel();
-            WtPeriode wtPeriode = wtPeriodeService.getEntityByStatusActive();
+            WtPeriode wtPeriode = wtPeriodeService.getEntityByPayrollTypeActive();
             if(wtPeriode != null){
                 inclusionReimbursmentModel.setStartDate(wtPeriode.getFromPeriode());
                 inclusionReimbursmentModel.setEndDate(wtPeriode.getUntilPeriode());

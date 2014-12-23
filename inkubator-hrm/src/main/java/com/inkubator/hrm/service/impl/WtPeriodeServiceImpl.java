@@ -204,14 +204,14 @@ public class WtPeriodeServiceImpl extends IServiceImpl implements WtPeriodeServi
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public WtPeriode getEntityByStatusActive() throws Exception {
-        return wtPeriodeDao.getEntityByStatusActive();
+    public WtPeriode getEntityByPayrollTypeActive() throws Exception {
+        return wtPeriodeDao.getEntityByPayrollTypeActive();
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public WtPeriode getEntityAbsenByStatusActive() throws Exception {
-        return wtPeriodeDao.getEntityAbsenByStatusActive();
+    public WtPeriode getEntityByAbsentTypeActive() throws Exception {
+        return wtPeriodeDao.getEntityByAbsentTypeActive();
     }
 
 }

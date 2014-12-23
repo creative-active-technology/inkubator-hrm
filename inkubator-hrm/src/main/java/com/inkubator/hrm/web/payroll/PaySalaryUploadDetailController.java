@@ -227,24 +227,16 @@ public class PaySalaryUploadDetailController extends BaseController {
 
 	private PaySalaryUploadModel getModelFromEntity(PaySalaryComponent paySalaryComponent) {
 		PaySalaryUploadModel model = new PaySalaryUploadModel();
-		model.setPaySalaryComponentId(paySalaryComponent.getId());
-		model.setPaySalaryComponentName(paySalaryComponent.getName());
-		Long totalEmployee;
-            try {
-                totalEmployee = payTempUploadDataService.getTotalByPaySalaryComponentId(paySalaryComponent.getId());
-                model.setTotalEmployee(totalEmployee);
-            } catch (Exception ex) {
-                Logger.getLogger(PaySalaryUploadDetailController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-		
-		Double totalSalary;
-            try {
-                totalSalary = payTempUploadDataService.getTotalSalaryByPaySalaryComponentId(paySalaryComponent.getId());
-                model.setTotalSalary(totalSalary);
-            } catch (Exception ex) {
-                Logger.getLogger(PaySalaryUploadDetailController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-		
+		try {
+			model.setPaySalaryComponentId(paySalaryComponent.getId());
+			model.setPaySalaryComponentName(paySalaryComponent.getName());
+			Long totalEmployee = payTempUploadDataService.getTotalByPaySalaryComponentId(paySalaryComponent.getId());
+	        model.setTotalEmployee(totalEmployee);
+			Double totalSalary = payTempUploadDataService.getTotalSalaryByPaySalaryComponentId(paySalaryComponent.getId());
+			model.setTotalSalary(totalSalary);
+		} catch (Exception ex) {
+            LOGGER.error("Error when bind to model ", ex);
+        }
 		
 		return model;
 	}
