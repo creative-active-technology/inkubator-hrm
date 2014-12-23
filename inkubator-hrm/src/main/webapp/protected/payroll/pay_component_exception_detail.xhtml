@@ -60,7 +60,7 @@
                                     <p:outputLabel value="#{payComponentDataExceptionDetailController.payComponentDataExceptionModel.startDate}" >
                                         <f:convertDateTime pattern="dd MMMM yyyy" />
                                     </p:outputLabel>
-                                    <p:outputLabel value="-" />
+                                    <p:outputLabel value=" s/d " />
                                     <p:outputLabel value="#{payComponentDataExceptionDetailController.payComponentDataExceptionModel.endDate}" >
                                         <f:convertDateTime pattern="dd MMMM yyyy" />
                                     </p:outputLabel>
@@ -84,7 +84,7 @@
                                 <p:column style="width: 80%">
                                     <p:outputLabel value="Rp. " />
                                     <p:outputLabel id="jumlahNominal" value="#{payComponentDataExceptionDetailController.jmlNominalComponentException}" >
-                                        <!--<f:convertNumber rendered="###,###" />-->
+                                        <f:convertNumber pattern="###,###" type="currency"/>
                                     </p:outputLabel>
                                 </p:column>
                             </p:row>
@@ -136,8 +136,12 @@
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['componentException.nominal']}"/>
                                 </f:facet>
+                                <div style="text-align: right">
                                 <h:outputLabel value= "Rp. " />
-                                <h:outputLabel value= "#{data.nominal}" />
+                                <h:outputLabel value= "#{data.nominal}" >
+                                    <f:convertNumber pattern="###,###" type="currency"/>
+                                </h:outputLabel>
+                                </div>
                             </p:column>
                             <p:column sortBy="resetAfterMonth" style="width: 20%">
                                 <f:facet name="header">
@@ -231,6 +235,11 @@
                                 <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
                             </h:panelGrid>
                         </p:blockUI>
+                        <p:separator/>
+                        <h:panelGrid columns="4" style="margin-bottom: 5px;float: left">
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{payComponentDataExceptionDetailController.doBack()}" styleClass="label_button"/>
+                        </h:panelGrid>
+                        <div style="clear: both"/>
                     </h:form>
                 </div>
                 <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
