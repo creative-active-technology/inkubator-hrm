@@ -215,26 +215,24 @@
                     <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
                 </p:dialog>
                 <p:dialog widgetVar="detail" header="#{appmsg['salaryCalculation.calculation']}" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)" dynamic="false" closable="false">
+                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)" dynamic="false" closable="false" focus="detailPanel">
 
                     <div align="center">
                         <h:form id="detailPanel">
-
                             <p:messages/>
                             <h:panelGrid columns="4"  style="margin-bottom: 10px">
                                 <p:outputLabel value="Tanggal Payroll"  styleClass="label_hrm"/>
                                 <p:outputLabel value=":"  styleClass="label_hrm"/>
                                 <p:calendar  id="tanggalKalkulasiId" pattern="dd MMMM yyyy" label="Tanggal Kalkulasi" value="#{paySalaryExecuteController.payrollCalculationDate}"
-                                             required="true" navigator="true" mindate="#{paySalaryExecuteController.wtPeriodeAbsen.fromPeriode}" maxdate="#{paySalaryExecuteController.wtPeriodeAbsen.untilPeriode}">
+                                             required="true" navigator="true">
                                 </p:calendar>
-                                <p:commandButton value="Calculate"  onclick="PF('pbAjax').start();" widgetVar="startButton" action="#{paySalaryExecuteController.doCalculatePayroll()}"  id="startID" icon="ui-icon-refresh" update="detailPanel"/>
+                                <p:commandButton value="Calculate"  onclick="PF('pbAjax').start();PF('closeWidget').disable();" widgetVar="startButton" action="#{paySalaryExecuteController.doCalculatePayroll()}"  id="startID" icon="ui-icon-refresh" update="detailPanel"/>
                             </h:panelGrid>
 
                             <p:progressBar widgetVar="pbAjax" ajax="true" value="#{paySalaryExecuteController.progress}" labelTemplate="{value}%" styleClass="animated" global="false" style="margin-bottom: 20px">
-                                <p:ajax event="complete" listener="#{paySalaryExecuteController.onComplete}" update=":formId:growlId,:formId:tableId" oncomplete="detail.hide()" />
+                                <p:ajax event="complete" listener="#{paySalaryExecuteController.onComplete}" update=":formId:growlId,:formId:tableId" oncomplete="if (!args.validationFailed) {detail.hide();}"/>
                             </p:progressBar>
-                            <p:focus for="startID"/>
-                            <p:defaultCommand target="startID" />
+                            <p:commandButton value="#{appmsg['global.close']}" id="closeId" widgetVar="closeWidget" onclick="detail.hide();" immediate="true"/>                            
                         </h:form>
                     </div>
                 </p:dialog>
