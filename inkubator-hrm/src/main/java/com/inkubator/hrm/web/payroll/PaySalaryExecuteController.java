@@ -169,6 +169,7 @@ public class PaySalaryExecuteController extends BaseController {
 	    		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Informasi","Kalkulasi Penggajian sukses dilakukan"));
 	    	} else {
 	    		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Informasi","Kalkulasi Penggajian gagal dilakukan"));
+	    		FacesContext.getCurrentInstance().validationFailed();
 	    	}
 	    	jobExecution = null;
     	}
