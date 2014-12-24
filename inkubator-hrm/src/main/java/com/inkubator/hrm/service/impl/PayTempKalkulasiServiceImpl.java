@@ -746,7 +746,7 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
         //get list debet and credit
         List<SalaryJournalModel> listDebet = payTempKalkulasiDao.getByParamForSalaryJournalDebet();
         List<SalaryJournalModel> listKredit = payTempKalkulasiDao.getByParamForSalaryJournalKredit();
-        List<SalaryJournalModel> listSalaryJournal = new ArrayList<SalaryJournalModel>();
+        List<SalaryJournalModel> listSalaryJournal = new ArrayList<>();
 
         if (totalData % maxResults != 0) {
             totalPage = totalPage + 1;
