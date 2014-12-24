@@ -162,7 +162,7 @@ public class PaySalaryExecuteController extends BaseController {
     	}
     }
     
-    public void onComplete() {
+    public void onCompleteCalculatePayroll() {
     	if(jobExecution != null) {
 	    	setProgress(0);
 	    	if(jobExecution.getStatus() == BatchStatus.COMPLETED){
@@ -175,7 +175,7 @@ public class PaySalaryExecuteController extends BaseController {
     	}
     }
     
-    public void doInitCalculation(){
+    public void doInitCalculatePayroll(){
     	try {
 			if(empDataService.getTotalByTaxFreeIsNull()>0) {
 				MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_ERROR, "global.error", "salaryCalculation.error_employee_does_not_have_ptkp",

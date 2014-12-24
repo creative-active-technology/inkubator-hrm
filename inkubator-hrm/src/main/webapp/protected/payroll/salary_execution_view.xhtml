@@ -34,7 +34,7 @@
                             <p:toolbarGroup align="left">
                                 <h:panelGrid columns="3" >
                                     <p:commandButton value="#{appmsg['salaryCalculation.calculation']}" styleClass="label_button" icon="ui-icon-document" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
-                                                     onclick="statusDialog.show()"  oncomplete="if (!args.validationFailed) {detail.show();} else {statusDialog.hide();}" update=":detailPanel,growlId" action="#{paySalaryExecuteController.doInitCalculation()}"
+                                                     onclick="statusDialog.show()"  oncomplete="if (!args.validationFailed) {detail.show();} else {statusDialog.hide();}" update=":detailPanel,growlId" action="#{paySalaryExecuteController.doInitCalculatePayroll()}"
                                                      >                        
                                     </p:commandButton>
                                 </h:panelGrid>
@@ -230,7 +230,7 @@
                             </h:panelGrid>
 
                             <p:progressBar widgetVar="pbAjax" ajax="true" value="#{paySalaryExecuteController.progress}" labelTemplate="{value}%" styleClass="animated" global="false" style="margin-bottom: 20px">
-                                <p:ajax event="complete" listener="#{paySalaryExecuteController.onComplete}" update=":formId:growlId,:formId:tableId" oncomplete="if (!args.validationFailed) {detail.hide();}"/>
+                                <p:ajax event="complete" listener="#{paySalaryExecuteController.onCompleteCalculatePayroll}" update=":formId:growlId,:formId:tableId" oncomplete="if (!args.validationFailed) {detail.hide();}"/>
                             </p:progressBar>
                             <p:commandButton value="#{appmsg['global.close']}" id="closeId" widgetVar="closeWidget" onclick="detail.hide();" immediate="true"/>                            
                         </h:form>
