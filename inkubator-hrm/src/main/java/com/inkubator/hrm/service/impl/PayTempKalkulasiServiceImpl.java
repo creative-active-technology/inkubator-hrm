@@ -494,6 +494,11 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
                         BigDecimal nominal = new BigDecimal(payDetail.getTotalPayment());
                         nominal = nominal.setScale(0, RoundingMode.UP);
                         kalkulasi.setNominal(nominal);
+                        
+                        //set detail loan
+                        int termin = payDetail.getLoan().getTermin();
+                        long cicilanKe = termin - loanPaymentDetailDao.getTotalUnPaidLoanByLoanId(payDetail.getLoan().getId(), periode.getUntilPeriode());                        
+                        kalkulasi.setDetail(cicilanKe + "/" + termin);
 
                         kalkulasi.setCreatedBy(createdBy);
                         kalkulasi.setCreatedOn(payrollCalculationDate);
@@ -514,6 +519,9 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
                         kalkulasi.setFactor(this.getFactorBasedCategory(paySalaryComponent.getComponentCategory()));
                         kalkulasi.setNominal(reimbursment.getNominal());
 
+                        //set detail reimbursement
+                        kalkulasi.setDetail(reimbursment.getCode());
+                        
                         kalkulasi.setCreatedBy(createdBy);
                         kalkulasi.setCreatedOn(payrollCalculationDate);
                         datas.add(kalkulasi);
@@ -562,6 +570,9 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
                         BigDecimal nominal = new BigDecimal(benefitGroupRate.getNominal()).multiply(this.getMultiplierFromMeasurement(benefitGroupRate.getBenefitGroup().getMeasurement()));
                         kalkulasi.setNominal(nominal);
 
+                        //set detail benefit
+                        kalkulasi.setDetail(benefitGroupRate.getGolonganJabatan().getCode());
+                        
                         kalkulasi.setCreatedBy(createdBy);
                         kalkulasi.setCreatedOn(payrollCalculationDate);
                         datas.add(kalkulasi);

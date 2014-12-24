@@ -40,6 +40,8 @@ import com.inkubator.hrm.entity.PaySalaryComponent;
 import com.inkubator.hrm.entity.PaySalaryEmpType;
 import com.inkubator.hrm.entity.ReimbursmentSchema;
 import com.inkubator.hrm.service.PaySalaryComponentService;
+import com.inkubator.hrm.web.model.PayComponentDataExceptionModelView;
+import com.inkubator.hrm.web.search.PayComponentDataExceptionSearchParameter;
 import com.inkubator.hrm.web.search.PaySalaryComponentSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 
@@ -347,6 +349,18 @@ public class PaySalaryComponentServiceImpl extends IServiceImpl implements PaySa
         paySalaryComponent.setCreatedBy(UserInfoUtil.getUserName());
         paySalaryComponent.setCreatedOn(new Date());
         paySalaryComponentDao.save(paySalaryComponent);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<PayComponentDataExceptionModelView> getByParamWithDetailForDataException(PayComponentDataExceptionSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
+        return paySalaryComponentDao.getByParamWithDetailForDataException(searchParameter, firstResult, maxResults, order);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public Long getTotalByParamDataException(PayComponentDataExceptionSearchParameter searchParameter) throws Exception {
+        return paySalaryComponentDao.getTotalByParamDataException(searchParameter);
     }
 
 }

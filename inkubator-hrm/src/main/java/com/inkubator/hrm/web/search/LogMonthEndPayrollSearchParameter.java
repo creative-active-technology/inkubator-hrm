@@ -11,6 +11,7 @@ public class LogMonthEndPayrollSearchParameter extends SearchParameter {
 
     private String name;
     private String nik;
+    private Long periodeId;
 
     public String getName() {
         if (StringUtils.equalsIgnoreCase(getKeyParam(), "name")) {
@@ -38,4 +39,14 @@ public class LogMonthEndPayrollSearchParameter extends SearchParameter {
 		this.nik = nik;
 	}
 
-    }
+	public Long getPeriodeId() {
+		return periodeId;
+	}
+
+	public void setPeriodeId(Long periodeId) {
+		this.periodeId = periodeId;
+	}
+	
+	
+
+}

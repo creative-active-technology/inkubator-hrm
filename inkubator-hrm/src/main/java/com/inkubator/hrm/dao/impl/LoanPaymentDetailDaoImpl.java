@@ -123,13 +123,13 @@ public class LoanPaymentDetailDaoImpl extends IDAOImpl<LoanPaymentDetail> implem
     }
 
     @Override
-    public Long getTotalUnPaidLoanByLoanId(Long loanId, LoanPaymentDetailModel loanPaymentDetailModel) {
+    public Long getTotalUnPaidLoanByLoanId(Long loanId, Date periodEndDate) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.createAlias("loan", "loan", JoinType.INNER_JOIN);
         criteria.createAlias("loan.loanSchema", "loanSchema", JoinType.INNER_JOIN);
         criteria.add(Restrictions.eq("loan.id", loanId));
         criteria.add(Restrictions.eq("loanSchema.payrollComponent", 1));
-        criteria.add(Restrictions.gt("dueDate", loanPaymentDetailModel.getEndDataPeriod()));
+        criteria.add(Restrictions.gt("dueDate", periodEndDate));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
