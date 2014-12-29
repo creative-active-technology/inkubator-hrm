@@ -53,6 +53,9 @@ import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.PayTempKalkulasiService;
 import com.inkubator.hrm.web.model.PayTempKalkulasiModel;
 import com.inkubator.hrm.web.model.SalaryJournalModel;
+import com.inkubator.webcore.util.FacesUtil;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 /**
  *
@@ -792,7 +795,9 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
             salaryJournalModel = new SalaryJournalModel();
             salaryJournalModel.setCostCenterCode(listKredit.get(j).getCostCenterCodeKredit());
             salaryJournalModel.setCostCenterName(listKredit.get(j).getCostCenterNameKredit());
-            salaryJournalModel.setJurnalName("");
+            salaryJournalModel.setJurnalCode("000000");
+            ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+            salaryJournalModel.setJurnalName(messages.getString("salaryJournal.paySalaryEmployee"));
             //debet > kredit => hasil ditaro di kredit
             //debet < kredit => hasil ditaro di debet
             if (listDebet.get(j).getJumlahDebet().doubleValue() > listKredit.get(j).getJumlahKredit().doubleValue()) {
