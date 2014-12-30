@@ -189,14 +189,14 @@
                                 <p:column style="width: 80%">
                                     <pe:inputNumber id="strtBalance" decimalPlaces="1" value="#{leaveDistributionSchemeFormController.model.startBalance}"
                                                     styleClass="isitext_hrm" style="width:50px;" required="true" />
-                                    <p:outputLabel  value=" Hari" />
+                                    <p:outputLabel  value="#{appmsg['global.day']}" />
                                     <p:message for="strtBalance"/>
                                 </p:column>
                             </p:row>
                         </p:panelGrid>
                         <div align="center">
                             <p:pickList value="#{leaveDistributionSchemeFormController.dualListModel}" var="role" itemValue="#{role}" converter="empDataConverter" id="picklistUserRoleId"
-                                        required="true"  style="margin-top: 15px;margin-bottom: 15px;" label="Daftar Employee" styleClass="isitext_hrm"
+                                        required="true"  style="margin-top: 15px;margin-bottom: 15px;" label="#{appmsg['salaryCalculation.list_of_employee']}" styleClass="isitext_hrm"
                                         itemLabel="#{role.nik} - #{role.bioData.firstName} #{role.bioData.lastName}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
                                         removeLabel="#{appmsg['global.remove']}"/>
                             <p:message for="picklistUserRoleId" />
