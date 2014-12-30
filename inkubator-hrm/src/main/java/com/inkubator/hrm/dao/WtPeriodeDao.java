@@ -25,4 +25,7 @@ public interface WtPeriodeDao extends IDAO<WtPeriode> {
     
     public WtPeriode getEntityByAbsentTypeActive();
     
+    public List<WtPeriode> getAllYears();
+    
+    public WtPeriode getEntityByMonthAndYear(String month, String year);
 }

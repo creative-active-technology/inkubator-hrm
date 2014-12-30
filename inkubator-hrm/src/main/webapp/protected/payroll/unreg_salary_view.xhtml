@@ -21,8 +21,8 @@
                             <p:graphicImage library="images" name="marital_status.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="#{appmsg['salaryJournal.salaryJournal']}" styleClass="header_big" />
-                                    <p:outputLabel value="#{appmsg['salaryJournal.salaryJournal_header']}" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['unregSalary.unregSalary']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['unregSalary.unregSalary_header']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -33,22 +33,22 @@
                                 <h:panelGrid columns="5">
                                     <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm" />
                                     <p:outputLabel value=":" />
-                                    <p:selectOneMenu value="#{salaryJournalViewController.searchParameter.keyParam}" style="width: 150px;margin-right: 3px" >
+                                    <p:selectOneMenu value="#{savingTypeViewController.searchParameter.keyParam}" style="width: 150px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItem itemLabel="#{appmsg['global.code']}" itemValue="code"/>
                                         <f:selectItem itemLabel="#{appmsg['global.name']}" itemValue="name"/>
                                     </p:selectOneMenu>
-                                    <p:inputText id="searchId" value="#{salaryJournalViewController.searchParameter}" style="width: 250px" styleClass="label_button"/>
-                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{salaryJournalViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
+                                    <p:inputText id="searchId" value="#{savingTypeViewController.searchParameter.parameter}" style="width: 250px" styleClass="label_button"/>
+                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{savingTypeViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3" >
                                     <p:commandButton value="Export to XLS" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
-                                        <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Marital_Status"/>
+                                        <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Unreguler_Salary"/>
                                     </p:commandButton>
-                                    <p:commandButton value="#{appmsg['global.add']}" actionListener="#{savingTypeViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
-                                        <p:ajax event="dialogReturn" listener="#{savingTypeViewController.onDialogReturn}"  update="tableId, growlId"/>
+                                    <p:commandButton value="#{appmsg['global.add']}" actionListener="#{unregSalaryViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
+                                        <p:ajax event="dialogReturn" listener="#{unregSalaryViewController.onDialogReturn}"  update="tableId, growlId"/>
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{savingTypeViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
 
@@ -56,12 +56,12 @@
                             </p:toolbarGroup>
                         </p:toolbar>
                         <p:focus for="searchId" />
-                        <p:dataTable  var="data"  value="#{salaryJournalViewController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7"
+                        <p:dataTable  var="data"  value="#{unregSalaryViewController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7"
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
-                                      id="tableId" rows="11" rowsPerPageTemplate="3,5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="#{appmsg['salaryJournal.salaryJournal_list']}"/>
+                                <h:outputText value="#{appmsg['unregSalary.unregSalary_list']}"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
@@ -69,44 +69,60 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="costCenterCode" style="width: 10%">
+                            <p:column sortBy="code" style="width: 20%">
                                 <f:facet name="header">
-                                    <h:outputText value="#{appmsg['salaryJournal.costCenterCode']}"/>
+                                    <h:outputText value="#{appmsg['global.code']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.costCenterCode}" />
+                                <h:outputLabel value= "#{data.code}" />
                             </p:column>
-                            <p:column sortBy="costCenterName" style="width: 15%">
+                            <p:column sortBy="name" style="width: 20%">
                                 <f:facet name="header">
-                                    <h:outputText value="#{appmsg['salaryJournal.costCenterName']}"/>
+                                    <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.costCenterName}" />
+                                <h:outputLabel value= "#{data.name}" />
                             </p:column>
-                            <p:column sortBy="jurnalName" style="width: 15%">
+                            <p:column sortBy="name" style="width: 20%">
                                 <f:facet name="header">
-                                    <h:outputText value="#{appmsg['salaryJournal.journalName']}"/>
+                                    <h:outputText value="#{appmsg['unregSalary.basePeriode']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.jurnalName}" />
+                                <h:outputLabel value= "#{data.wtPeriode.bulan} #{data.wtPeriode.tahun}" />
                             </p:column>
-                            <p:column sortBy="debet2" style="width: 15%">
+                            <p:column sortBy="name" style="width: 20%">
                                 <f:facet name="header">
-                                    <h:outputText value="#{appmsg['salaryJournal.debet']}"/>
+                                    <h:outputText value="#{appmsg['unregSalary.basePeriode']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.debet}" >
-                                    <f:convertNumber pattern="###,###" type="currency"/>
+                                <h:outputLabel value= "#{data.salaryDate}" >
+                                    <f:convertDateTime pattern="dd MMMM yyyy" />
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="kredit" style="width: 15%">
-                                <f:facet name="header">
-                                    <h:outputText value="#{appmsg['salaryJournal.kredit']}"/>
-                                </f:facet>
-                                <h:outputLabel value= "#{data.kredit}" >
-                                    <f:convertNumber pattern="###,###" type="currency"/>
-                                </h:outputLabel>
-                            </p:column>
-                            
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
+                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
+                                                 onclick="statusDialog.show()"  oncomplete="detail.show()" update=":detailPanel"
+                                                 style="font-size: 10px!important" action="#{savingTypeViewController.doSelectEntity()}">                        
+                                    <f:setPropertyActionListener value="#{data}" target="#{savingTypeViewController.selected}" />
+                                </p:commandButton>
+                                - 
+                                <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+                                                 style="font-size: 10px!important" update=":panelDialogConfirmId" 
+                                                 action="#{unregSalaryViewController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmDelete.show()">
+                                    <f:setPropertyActionListener value="#{data}" target="#{unregSalaryViewController.selected}" />
+                                </p:commandButton>
+                                -
+                                <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" ajax="true"
+                                                  action="#{unregSalaryViewController.doEdit()}" >
+                                    <f:setPropertyActionListener value="#{data}" target="#{unregSalaryViewController.selected}" />
+                                    <p:ajax event="dialogReturn" listener="#{unregSalaryViewController.onDialogReturn}"  update="tableId, :formId:growlId"/>
+                                </p:commandButton> 
+                                -
+                                <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
+                                                  action="#{unregSalaryViewController.doEmployeeSetting()}" >
+                                    <f:setPropertyActionListener value="#{data}" target="#{unregSalaryViewController.selected}" />
+
+                                </p:commandButton>  
+                            </p:column> 
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>
-                                <p:outputLabel value="#{salaryJournalViewController.lazyDataModel.rowCount}"/>
+                                <p:outputLabel value="#{savingTypeViewController.lazy.rowCount}"/>
                                 <p:outputLabel value="Data" style="margin-left: 3px"/>
                             </f:facet>  
                         </p:dataTable>
@@ -135,12 +151,12 @@
                             </h:panelGrid>
                         </div>
                         <h:panelGrid id="panelDialogConfirmId"  columns="3">
-                            <p:outputLabel value="#{appmsg['global.name']}"  style="font-weight: bold"/>
+                            <p:outputLabel value="#{appmsg['unregSalary.name']}"  style="font-weight: bold"/>
                             <p:outputLabel value=":"  style="font-weight: bold"/>
-                            <p:outputLabel value="#{savingTypeViewController.selected.name}" styleClass="label_hrm"/>
+                            <p:outputLabel value="#{unregSalaryViewController.selected.name}" styleClass="label_hrm"/>
                         </h:panelGrid>
                         <p:separator/>
-                        <p:commandButton value="#{appmsg['global.yes']}" action="#{savingTypeViewController.doDelete()}" update="formId"
+                        <p:commandButton value="#{appmsg['global.yes']}" action="#{unregSalaryViewController.doDelete()}" update="formId"
                                          oncomplete="dialogConfirmDelete.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
                         <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmDelete.hide()" icon="ui-icon-close" />                     	
                     </div>
