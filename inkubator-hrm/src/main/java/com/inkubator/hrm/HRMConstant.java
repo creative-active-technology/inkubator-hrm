@@ -343,6 +343,7 @@ public class HRMConstant {
     /* Periode */
     public static final String PERIODE_ABSEN_VOID = "Void";
     public static final String PERIODE_ABSEN_ACTIVE = "Active";
+    public static final String PERIODE_ABSEN_NOT_ACTIVE = "Not Active";
     public static final String PERIODE_PAYROLL_VOID = "Void";
     public static final String PERIODE_PAYROLL_ACTIVE = "Active";
     public static final String PERIODE_PAYROLL_NOT_ACTIVE = "Not Active";

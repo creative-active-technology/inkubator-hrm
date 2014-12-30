@@ -162,19 +162,20 @@ public class PaySalaryExecuteController extends BaseController {
     	}
     }
     
-    public void onComplete() {
+    public void onCompleteCalculatePayroll() {
     	if(jobExecution != null) {
 	    	setProgress(0);
 	    	if(jobExecution.getStatus() == BatchStatus.COMPLETED){
 	    		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Informasi","Kalkulasi Penggajian sukses dilakukan"));
 	    	} else {
 	    		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Informasi","Kalkulasi Penggajian gagal dilakukan"));
+	    		FacesContext.getCurrentInstance().validationFailed();
 	    	}
 	    	jobExecution = null;
     	}
     }
     
-    public void doInitCalculation(){
+    public void doInitCalculatePayroll(){
     	try {
 			if(empDataService.getTotalByTaxFreeIsNull()>0) {
 				MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_ERROR, "global.error", "salaryCalculation.error_employee_does_not_have_ptkp",

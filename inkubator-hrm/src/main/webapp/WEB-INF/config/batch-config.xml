@@ -78,7 +78,7 @@
     </batch:job>
     
     
-    <!-- reader and writer for month_end_payroll -->
+    <!-- reader, processor and writer for month_end_payroll -->
     <bean id="customMonthEndPayrollItemReader" class="org.springframework.batch.item.database.HibernatePagingItemReader" lazy-init="true">
 	    <property name="sessionFactory" ref="sessionFactory"/>
 	    <property name="queryString" value="from PayTempKalkulasi as payTempKalkulasi 

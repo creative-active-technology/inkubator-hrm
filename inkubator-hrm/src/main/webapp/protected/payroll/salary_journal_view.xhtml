@@ -81,6 +81,12 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{data.costCenterName}" />
                             </p:column>
+                            <p:column sortBy="jurnalCode" style="width: 15%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['salaryJournal.journalCode']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.jurnalCode}" />
+                            </p:column>
                             <p:column sortBy="jurnalName" style="width: 15%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['salaryJournal.journalName']}"/>
@@ -89,7 +95,7 @@
                             </p:column>
                             <p:column sortBy="debet2" style="width: 15%">
                                 <f:facet name="header">
-                                    <h:outputText value="#{appmsg['salaryJournal.debet']}"/>
+                                    <h:outputText value="#{appmsg['salaryJournal.debit']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.debet}" >
                                     <f:convertNumber pattern="###,###" type="currency"/>
@@ -97,7 +103,7 @@
                             </p:column>
                             <p:column sortBy="kredit" style="width: 15%">
                                 <f:facet name="header">
-                                    <h:outputText value="#{appmsg['salaryJournal.kredit']}"/>
+                                    <h:outputText value="#{appmsg['salaryJournal.credit']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.kredit}" >
                                     <f:convertNumber pattern="###,###" type="currency"/>

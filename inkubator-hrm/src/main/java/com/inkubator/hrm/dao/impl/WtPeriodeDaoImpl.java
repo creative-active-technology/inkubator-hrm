@@ -11,6 +11,7 @@ import com.inkubator.hrm.dao.WtPeriodeDao;
 import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.web.search.WtPeriodeSearchParameter;
 
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -89,6 +90,14 @@ public class WtPeriodeDaoImpl extends IDAOImpl<WtPeriode> implements WtPeriodeDa
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("bulan", Integer.valueOf(month)));
         criteria.add(Restrictions.eq("tahun", year));
+        return (WtPeriode) criteria.uniqueResult();
+    }
+
+    @Override
+    public WtPeriode getEntityByFromPeriodeAndUntilPeriode(Date fromPeriode, Date untilPeriode) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("fromPeriode", fromPeriode));
+        criteria.add(Restrictions.eq("untilPeriode", untilPeriode));
         return (WtPeriode) criteria.uniqueResult();
     }
 }

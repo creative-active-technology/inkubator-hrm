@@ -6,29 +6,32 @@ import java.util.Date;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 import org.primefaces.model.LazyDataModel;
+import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
-import org.springframework.batch.core.JobParametersInvalidException;
 import org.springframework.batch.core.launch.JobLauncher;
-import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
-import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
-import org.springframework.batch.core.repository.JobRestartException;
 
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.LogMonthEndPayrollService;
+import com.inkubator.hrm.service.PayTempKalkulasiService;
 import com.inkubator.hrm.service.WtPeriodeService;
 import com.inkubator.hrm.web.lazymodel.LogMonthEndPayrollLazyDataModel;
 import com.inkubator.hrm.web.model.LogMonthEndPayrollViewModel;
 import com.inkubator.hrm.web.search.LogMonthEndPayrollSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.controller.BaseController;
+import com.inkubator.webcore.util.FacesUtil;
+import com.inkubator.webcore.util.MessagesResourceUtil;
 
 /**
  *
@@ -44,10 +47,13 @@ public class LogMonthEndPayrollViewController extends BaseController {
     private LogMonthEndPayrollSearchParameter parameter;
     private JobExecution jobExecution;
     private LazyDataModel<LogMonthEndPayrollViewModel> lazyDataModel;
+    private Integer progress;
     @ManagedProperty(value = "#{logMonthEndPayrollService}")
     private LogMonthEndPayrollService logMonthEndPayrollService;
     @ManagedProperty(value = "#{wtPeriodeService}")
     private WtPeriodeService wtPeriodeService;
+    @ManagedProperty(value = "#{payTempKalkulasiService}")
+    private PayTempKalkulasiService payTempKalkulasiService;
     @ManagedProperty(value = "#{jobLauncherAsync}")
     private JobLauncher jobLauncherAsync;
     @ManagedProperty(value = "#{jobMonthEndPayroll}")
@@ -60,10 +66,10 @@ public class LogMonthEndPayrollViewController extends BaseController {
         
         try {
         	periode = wtPeriodeService.getEntityByPayrollTypeActive();
-        	parameter =  new LogMonthEndPayrollSearchParameter();
+        	parameter = new LogMonthEndPayrollSearchParameter();
 			parameter.setPeriodeId(periode.getId());
-			totalEmployee = logMonthEndPayrollService.getTotalByParam(new LogMonthEndPayrollSearchParameter());
-			totalNominal = logMonthEndPayrollService.getTotalTakeHomePayByPeriodeId(periode.getId());
+			totalEmployee = logMonthEndPayrollService.getTotalByParam(parameter);
+			totalNominal = (totalEmployee == 0 ? new BigDecimal(0) : logMonthEndPayrollService.getTotalTakeHomePayByPeriodeId(periode.getId()));
 		} catch (Exception e) {
 			LOGGER.error("Error", e);
 		}
@@ -81,6 +87,8 @@ public class LogMonthEndPayrollViewController extends BaseController {
         jobLauncherAsync = null;
         jobMonthEndPayroll = null;
         jobExecution = null;
+        progress = null;
+        payTempKalkulasiService = null;
     }
     
 	public LazyDataModel<LogMonthEndPayrollViewModel> getLazyDataModel() {
@@ -167,25 +175,100 @@ public class LogMonthEndPayrollViewController extends BaseController {
 		this.jobMonthEndPayroll = jobMonthEndPayroll;
 	}
 
+	public Integer getProgress() {
+		return progress;
+	}
+
+	public void setProgress(Integer progress) {
+		this.progress = progress;
+	}
+
+	public PayTempKalkulasiService getPayTempKalkulasiService() {
+		return payTempKalkulasiService;
+	}
+
+	public void setPayTempKalkulasiService(
+			PayTempKalkulasiService payTempKalkulasiService) {
+		this.payTempKalkulasiService = payTempKalkulasiService;
+	}
+
 	public void doSearch() {
         lazyDataModel = null;
     }
 
     public void doMonthEndProcess(){
-    	JobParameters jobParameters = new JobParametersBuilder()
-	        .addString("timeInMilis", String.valueOf(System.currentTimeMillis()))
-	        .addDate("periodeStart", periode.getFromPeriode())
-	        .addDate("periodeEnd", periode.getUntilPeriode())
-	        .addLong("periodeId", periode.getId())
-	        .addString("createdBy", UserInfoUtil.getUserName())
-	        .addDate("createdOn", new Timestamp(new Date().getTime())).toJobParameters();
+    	/** to cater prevent multiple click, that will make batch execute multiple time. 
+    	 *  please see onComplete method that will set jobExecution == null */
+    	if(jobExecution == null){ 
+	        try {
+	        	System.out.println("=============================================START doMonthEndProcess " + new Date());
+	            long sleepVariable = payTempKalkulasiService.getTotalData();
+	            
+	            JobParameters jobParameters = new JobParametersBuilder()
+				        .addDate("periodeStart", periode.getFromPeriode())
+				        .addDate("periodeEnd", periode.getUntilPeriode())
+				        .addLong("periodeId", periode.getId())
+				        .addString("createdBy", UserInfoUtil.getUserName())
+				        .addDate("createdOn", new Timestamp(new Date().getTime())).toJobParameters();
+    	
+	            jobExecution = jobLauncherAsync.run(jobMonthEndPayroll, jobParameters);
+	            
+	            int i = 0;
+	            while(true){
+	            	if(jobExecution.getStatus() == BatchStatus.STARTED || jobExecution.getStatus() == BatchStatus.STARTING) {
+		            	if(i <= 85){
+		            		setProgress(i++);
+		            	}
+		                try {
+		                    Thread.sleep(sleepVariable);
+		                } catch (InterruptedException e) {}	
+	            	} else {
+	            		setProgress(100);
+	            		break;
+	            	}
+	            }
+	            System.out.println("=============================================END doMonthEndProcess " + new Date());
+	        } catch (Exception ex) {
+	            LOGGER.error("Error ", ex);
+	        }
+    	}
+    	
+    }
+    
+    public void onCompleteMonthEndProcess() {
+    	if(jobExecution != null) {
+	    	setProgress(0);
+	    	if(jobExecution.getStatus() == BatchStatus.COMPLETED){
+	    		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Informasi","Kalkulasi Penggajian sukses dilakukan"));
+	    		try {
+	    			parameter = new LogMonthEndPayrollSearchParameter();
+	    			parameter.setPeriodeId(periode.getId());
+			    	totalEmployee = logMonthEndPayrollService.getTotalByParam(parameter);
+					totalNominal = (totalEmployee == 0 ? new BigDecimal(0) : logMonthEndPayrollService.getTotalTakeHomePayByPeriodeId(periode.getId()));
+					logMonthEndPayrollService.afterMonthEndProcess();
+		    	} catch (Exception ex) {
+		            LOGGER.error("Error ", ex);
+		        }
+	    	} else {
+	    		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Informasi","Kalkulasi Penggajian gagal dilakukan"));
+	    		FacesContext.getCurrentInstance().validationFailed();
+	    	}
+	    	jobExecution = null;
+    	}
+    }
+    
+    public void doInitMonthEndProcess(){
     	try {
-			jobExecution = jobLauncherAsync.run(jobMonthEndPayroll, jobParameters);
-		} catch (JobExecutionAlreadyRunningException | JobRestartException
-				| JobInstanceAlreadyCompleteException
-				| JobParametersInvalidException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			if(payTempKalkulasiService.getTotalData() == 0) {
+				MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_ERROR, "global.error", "payroll.system_has_not_execute_of_calculation_salary_process",
+			        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+				FacesContext.getCurrentInstance().validationFailed();
+			}
+			progress=0;
+		} catch (Exception e) {
+			LOGGER.error("Error ", e);
 		}
     }
+    
+    
 }
