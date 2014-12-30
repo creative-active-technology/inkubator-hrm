@@ -38,25 +38,25 @@
 
                             <p:column> 
                                 <f:facet name="header">  
-                                    <h:outputText value="Nama" />
+                                    <h:outputText value="#{appmsg['global.name']}" />
                                 </f:facet>
                                 <p:outputLabel value=" #{listJabatan.code}" />
                             </p:column> 
                             <p:column > 
                                 <f:facet name="header">  
-                                    <h:outputText value="Tanggal Lahir" />
+                                    <h:outputText value="#{appmsg['global.birth_date']}" />
                                 </f:facet>
                                 <p:outputLabel value="#{listJabatan.name}" />
                             </p:column>
                             <p:column  > 
                                 <f:facet name="header">  
-                                    <h:outputText value="Email Address" />
+                                    <h:outputText value="#{appmsg['global.email_address']}" />
                                 </f:facet>
                                 <h:outputLabel value=" #{listJabatan.department.departmentName}" />
                             </p:column>
                             <p:column style="text-align: center" > 
                                 <f:facet name="header">  
-                                    <h:outputText value="Aksi" />
+                                    <h:outputText value="#{appmsg['global.action']}" />
                                 </f:facet>
                                 <p:commandButton value="Select"  style="font-size: 11px!important" action="#{positionSearchController.doSelect(listJabatan)}"/>
                             </p:column>
