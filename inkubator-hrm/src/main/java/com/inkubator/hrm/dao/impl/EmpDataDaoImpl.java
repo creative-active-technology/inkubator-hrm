@@ -135,7 +135,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 
         if (dataSearchParameter.getJabatanName() != null) {
             criteria.createAlias("jabatanByJabatanId", "jb", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("jb.name", dataSearchParameter.getJabatanName(), MatchMode.START));
+            criteria.add(Restrictions.like("jb.name", dataSearchParameter.getJabatanName(), MatchMode.ANYWHERE));
         }
 
         if (dataSearchParameter.getNIK() != null) {

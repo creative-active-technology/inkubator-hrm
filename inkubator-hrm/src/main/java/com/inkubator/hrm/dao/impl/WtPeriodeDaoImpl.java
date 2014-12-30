@@ -77,11 +77,27 @@ public class WtPeriodeDaoImpl extends IDAOImpl<WtPeriode> implements WtPeriodeDa
         return (WtPeriode) criteria.uniqueResult();
     }
 
-	@Override
-	public WtPeriode getEntityByFromPeriodeAndUntilPeriode(Date fromPeriode, Date untilPeriode) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.add(Restrictions.eq("fromPeriode", fromPeriode));
-		criteria.add(Restrictions.eq("untilPeriode", untilPeriode));
-		return (WtPeriode) criteria.uniqueResult();
-	}
+    @Override
+    public List<WtPeriode> getAllYears() {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.setProjection(Projections.distinct(Projections.property("tahun")));
+//        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        return criteria.list();
+    }
+
+    @Override
+    public WtPeriode getEntityByMonthAndYear(String month, String year) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("bulan", Integer.valueOf(month)));
+        criteria.add(Restrictions.eq("tahun", year));
+        return (WtPeriode) criteria.uniqueResult();
+    }
+
+    @Override
+    public WtPeriode getEntityByFromPeriodeAndUntilPeriode(Date fromPeriode, Date untilPeriode) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("fromPeriode", fromPeriode));
+        criteria.add(Restrictions.eq("untilPeriode", untilPeriode));
+        return (WtPeriode) criteria.uniqueResult();
+    }
 }
