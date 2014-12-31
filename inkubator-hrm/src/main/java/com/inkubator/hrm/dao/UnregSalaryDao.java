@@ -16,9 +16,11 @@ import org.hibernate.criterion.Order;
  * @author deni
  */
 public interface UnregSalaryDao extends IDAO<UnregSalary> {
+	
     public List<UnregSalary> getByParam(UnregSalarySearchParameter searchParameter, int firstResult, int maxResults, Order order);
 
     public Long getTotalByParam(UnregSalarySearchParameter searchParameter);
     
     public UnregSalary getEntityByPkWithDetail(Long id);
+    
 }

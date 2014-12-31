@@ -180,7 +180,7 @@ public class MedicalCare  implements java.io.Serializable {
     }
 
     
-    @Column(name="material_jobs_abandoned", nullable=false, length=65535)
+    @Column(name="material_jobs_abandoned", nullable=false, length=65535, columnDefinition = "Text")
     public String getMaterialJobsAbandoned() {
         return this.materialJobsAbandoned;
     }
@@ -250,7 +250,7 @@ public class MedicalCare  implements java.io.Serializable {
     }
 
     
-    @Column(name="medical_notes", length=65535)
+    @Column(name="medical_notes", length=65535, columnDefinition = "Text")
     public String getMedicalNotes() {
         return this.medicalNotes;
     }

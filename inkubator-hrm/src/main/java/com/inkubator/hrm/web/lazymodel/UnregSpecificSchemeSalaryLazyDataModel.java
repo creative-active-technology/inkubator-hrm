@@ -21,16 +21,16 @@ import com.inkubator.hrm.web.search.UnregSalarySearchParameter;
 
 /**
  *
- * @author deni
+ * @author rizkykojek
  */
-public class UnregSalaryLazyDataModel extends LazyDataModel<UnregSalary> implements Serializable{
-    private static final Logger LOGGER = Logger.getLogger(UnregSalaryLazyDataModel.class);
+public class UnregSpecificSchemeSalaryLazyDataModel extends LazyDataModel<UnregSalary> implements Serializable{
+    private static final Logger LOGGER = Logger.getLogger(UnregSpecificSchemeSalaryLazyDataModel.class);
     private final UnregSalarySearchParameter searchParameter;
     private final UnregSalaryService service;
     private List<UnregSalary> unregSalaryList = new ArrayList<>();
     private Integer jumlahData;
 
-    public UnregSalaryLazyDataModel(UnregSalarySearchParameter searchParameter, UnregSalaryService service) {
+    public UnregSpecificSchemeSalaryLazyDataModel(UnregSalarySearchParameter searchParameter, UnregSalaryService service) {
         this.searchParameter = searchParameter;
         this.service = service;
     }
@@ -46,8 +46,8 @@ public class UnregSalaryLazyDataModel extends LazyDataModel<UnregSalary> impleme
                 }else{
                     order = Order.desc("name");
                 }
-                unregSalaryList = service.getByParam(searchParameter, first, pageSize, order);
-                jumlahData = Integer.parseInt(String.valueOf(service.getTotalByParam(searchParameter)));
+                unregSalaryList = service.getAllDataComponentByParam(searchParameter, first, pageSize, order);
+                jumlahData = Integer.parseInt(String.valueOf(service.getTotalComponentByParam(searchParameter)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
             }

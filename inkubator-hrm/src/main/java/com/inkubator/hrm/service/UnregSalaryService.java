@@ -17,9 +17,14 @@ import org.hibernate.criterion.Order;
  * @author deni
  */
 public interface UnregSalaryService extends IService<UnregSalary> {
-    public List<UnregSalary> getByParam(UnregSalarySearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
+    
+	public List<UnregSalary> getByParam(UnregSalarySearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
 
     public Long getTotalByParam(UnregSalarySearchParameter searchParameter) throws Exception;
+    
+    public List<UnregSalary> getAllDataComponentByParam(UnregSalarySearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
+
+    public Long getTotalComponentByParam(UnregSalarySearchParameter searchParameter) throws Exception;
     
     public void saved(UnregSalaryModel model) throws Exception;
     
