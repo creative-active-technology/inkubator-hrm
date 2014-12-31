@@ -23,8 +23,8 @@
                             <p:graphicImage library="images" name="task.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="Detil Penempatan Jadwal Kerja" styleClass="header_big" />
-                                    <p:outputLabel value="Data Penempatan Jadwal Kerja dari Aplikasi" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['workinggroup.work_schedule_placement_detail']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['workinggroup.work_schedule_placement_data_from_application']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -94,7 +94,7 @@
                                         </h:outputLabel>
                                     </p:column>
                                     <p:column style="width: 17%;background-color: #e1f0f0!important" >
-                                        <p:outputLabel  value="Jenis Perulangan" style="font-weight: bold"/>
+                                        <p:outputLabel  value="#{appmsg['scheduleApproval.recurrence_Type']}" style="font-weight: bold"/>
                                     </p:column>
                                     <p:column style="width: 34%" >
                                         <p:outputLabel value="#{scheduleApprovalFormController.selectedWtGroupWorking.typeSequeace}" >
@@ -104,7 +104,7 @@
                                 </p:row>
                                 <p:row>
                                     <p:column style="width: 17%;background-color: #e1f0f0!important" >
-                                        <p:outputLabel  value="Siklus Kerja" style="font-weight: bold"/>
+                                        <p:outputLabel  value="#{appmsg['scheduleApproval.work_cycle']}" style="font-weight: bold"/>
                                     </p:column>
                                     <p:column style="width: 34%">
                                         <p:outputLabel  value="#{scheduleApprovalFormController.beginScheduleDate}" >
@@ -116,7 +116,7 @@
                                         </p:outputLabel>
                                     </p:column>
                                     <p:column style="width: 17%;background-color: #e1f0f0!important">
-                                        <p:outputLabel  value="Detail Jadwal Kerja" style="font-weight: bold"/>
+                                        <p:outputLabel  value="#{appmsg['scheduleApproval.work_schedule_detail']}" style="font-weight: bold"/>
                                     </p:column>
                                     <p:column style="width: 34%">
                                         <p:commandLink action="#{scheduleApprovalFormController.doDetail()}" 
@@ -142,26 +142,26 @@
                                     Daftar Karyawan
                                 </f:facet>
                                 <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
-                                <p:column headerText="NIK">
+                                <p:column headerText="#{appmsg['global.nik']}">
                                     <p:outputLabel value="#{emp.nik}" />
                                 </p:column>
-                                <p:column headerText="Nama">
+                                <p:column headerText="#{appmsg['global.name']}">
                                     <p:outputLabel value="#{emp.bioData.firstName} #{emp.bioData.lastName}" />
                                 </p:column>
-                                <p:column headerText="Tangaal Bergabung">
+                                <p:column headerText="#{appmsg['scheduleApproval.join_date']}">
                                     <p:outputLabel value="#{emp.joinDate}" >
                                         <f:convertDateTime pattern="dd MMMM yyyy" />
                                     </p:outputLabel>
                                 </p:column>
 
 
-                                <p:column headerText="Jabatan">
+                                <p:column headerText="#{appmsg[jobspec.jobspec_position]}">
                                     <p:outputLabel value="#{emp.jabatanByJabatanId.name}" />
                                 </p:column>
-                                <p:column headerText="Departement">
+                                <p:column headerText="#{appmsg['menu.department']}">
                                     <p:outputLabel value="#{emp.jabatanByJabatanId.department.departmentName}" />
                                 </p:column>
-                                <p:column headerText="Unit Kerja">
+                                <p:column headerText="#{appmsg['unitkerja.unit_kerja']}">
                                     <p:outputLabel value="#{emp.jabatanByJabatanId.unitKerja.name}" />
                                 </p:column>
 
