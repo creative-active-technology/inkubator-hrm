@@ -204,8 +204,8 @@
                             <p:graphicImage library="images" name="finger_print.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="Sparasi Data Form" styleClass="header_big" />
-                                    <p:outputLabel value="Sparasi Data dari Mesin Finger" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['mechinefinger.separationDataForm']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['mechineFinger.fromMechine']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -213,7 +213,7 @@
                         <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
                             <p:row>
                                 <p:column style="width: 29%">
-                                    <p:outputLabel for="fieldId" value="No. Field" styleClass="label_hrm"/>
+                                    <p:outputLabel for="fieldId" value="#{appmsg['mechineFinger.no_field']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column style="width: 1%">
                                     <h:outputLabel for="fieldId" value=":" styleClass="label_hrm"/>
@@ -231,7 +231,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 29%">
-                                    <p:outputLabel for="fieldTypeId" value="Type Field" styleClass="label_hrm"/>
+                                    <p:outputLabel for="fieldTypeId" value="#{appmsg['mechineFinger.type_field']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column style="width: 1%">
                                     <h:outputLabel for="fieldTypeId" value=":" styleClass="label_hrm"/>
@@ -254,7 +254,7 @@
                                     <h:outputLabel for="fieldNameId" value=":" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 70%">
-                                    <p:inputText id="fieldNameId" title="Nama Field" value="#{fingerUploadFormController.sparasiUploadModel.fieldName}" maxlength="45"
+                                    <p:inputText id="fieldNameId" title="#{appmsg['mechineFinger.name_field']}" value="#{fingerUploadFormController.sparasiUploadModel.fieldName}" maxlength="45"
                                                  required="true"   styleClass="isitext_hrm" style="width:250px;" />
                                 </p:column>
                             </p:row>
@@ -285,7 +285,7 @@
 
                             <p:row>
                                 <p:column style="width: 29%">
-                                    <p:outputLabel for="descId" value="Deskripsi" styleClass="label_hrm"/>
+                                    <p:outputLabel for="descId" value="#{appmsg['global.description']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column style="width: 1%">
                                     <h:outputLabel for="descId" value=":" styleClass="label_hrm"/>
