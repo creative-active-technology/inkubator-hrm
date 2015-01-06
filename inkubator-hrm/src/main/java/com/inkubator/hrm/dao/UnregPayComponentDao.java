@@ -5,21 +5,22 @@
  */
 package com.inkubator.hrm.dao;
 
+import java.util.List;
+
+import org.hibernate.criterion.Order;
+
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.UnregPayComponents;
-import com.inkubator.hrm.entity.UnregPayComponentsId;
 import com.inkubator.hrm.web.search.UnregPayComponentSearchParameter;
-import java.util.List;
-import org.hibernate.criterion.Order;
 
 /**
  *
  * @author deni
  */
 public interface UnregPayComponentDao extends IDAO<UnregPayComponents> {
+	
     public List<UnregPayComponents> getByParam(Long unregSalaryId, UnregPayComponentSearchParameter searchParameter, int firstResult, int maxResults, Order order);
 
     public Long getTotalByParam(Long unregSalaryId, UnregPayComponentSearchParameter searchParameter);
     
-    public UnregPayComponents getEntityByPK(UnregPayComponentsId unregPayComponentsId);
 }

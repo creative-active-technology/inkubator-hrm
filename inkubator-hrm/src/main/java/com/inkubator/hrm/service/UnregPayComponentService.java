@@ -5,12 +5,13 @@
  */
 package com.inkubator.hrm.service;
 
+import java.util.List;
+
+import org.hibernate.criterion.Order;
+
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.UnregPayComponents;
-import com.inkubator.hrm.entity.UnregPayComponentsId;
 import com.inkubator.hrm.web.search.UnregPayComponentSearchParameter;
-import java.util.List;
-import org.hibernate.criterion.Order;
 
 /**
  *
@@ -21,6 +22,5 @@ public interface UnregPayComponentService extends IService<UnregPayComponents> {
     public List<UnregPayComponents> getByParam(Long unregSalaryId, UnregPayComponentSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
 
     public Long getTotalByParam(Long unregSalaryId, UnregPayComponentSearchParameter searchParameter) throws Exception;
-
-    public UnregPayComponents getEntityByPK(UnregPayComponentsId unregPayComponentsId) throws Exception;
+    
 }

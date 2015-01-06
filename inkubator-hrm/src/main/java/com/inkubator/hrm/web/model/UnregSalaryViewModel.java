@@ -18,7 +18,7 @@ public class UnregSalaryViewModel {
     private String code;
     private String name;
     private String year;
-    private String bulan;
+    private Integer bulan;
     private Integer month;
     private Integer totalComponent;
     private Date salaryDate;
@@ -47,14 +47,6 @@ public class UnregSalaryViewModel {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getYear() {
-        return year;
-    }
-
-    public void setYear(String year) {
-        this.year = year;
     }
 
     public Integer getMonth() {
@@ -97,15 +89,23 @@ public class UnregSalaryViewModel {
         this.unregSalaryId = unregSalaryId;
     }
 
-    public String getBulan() {
-        return bulan;
-    }
+	public String getYear() {
+		return year;
+	}
 
-    public void setBulan(String bulan) {
-        this.bulan = bulan;
-    }
+	public void setYear(String year) {
+		this.year = year;
+	}
 
-    public BigInteger getTotal() {
+	public Integer getBulan() {
+		return bulan;
+	}
+
+	public void setBulan(Integer bulan) {
+		this.bulan = bulan;
+	}
+
+	public BigInteger getTotal() {
         return total;
     }
 

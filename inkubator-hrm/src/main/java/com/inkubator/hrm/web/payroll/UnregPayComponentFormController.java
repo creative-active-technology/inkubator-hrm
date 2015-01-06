@@ -5,11 +5,25 @@
  */
 package com.inkubator.hrm.web.payroll;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+
+import org.apache.commons.lang3.StringUtils;
+import org.primefaces.context.RequestContext;
+
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.PaySalaryComponent;
 import com.inkubator.hrm.entity.UnregPayComponents;
-import com.inkubator.hrm.entity.UnregPayComponentsId;
 import com.inkubator.hrm.entity.UnregSalary;
 import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.PaySalaryComponentService;
@@ -20,18 +34,6 @@ import com.inkubator.hrm.web.model.UnregSalaryModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
-import org.apache.commons.lang3.StringUtils;
-import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -113,7 +115,7 @@ public class UnregPayComponentFormController extends BaseController {
 
         private UnregPayComponents getEntityFromViewModel(UnregSalaryModel model) {
         UnregPayComponents unregPayComponents = new UnregPayComponents();
-        unregPayComponents.setId(new UnregPayComponentsId(Long.valueOf(unregSalaryId), model.getPayComponentId()));
+        unregPayComponents.setId(model.getPayComponentId());
         unregPayComponents.setPaySalaryComponent(new PaySalaryComponent(model.getPayComponentId()));
         unregPayComponents.setUnregSalary(new UnregSalary(Long.valueOf(unregSalaryId)));
         return unregPayComponents;

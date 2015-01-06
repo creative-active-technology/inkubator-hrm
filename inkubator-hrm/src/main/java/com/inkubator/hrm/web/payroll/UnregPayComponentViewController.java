@@ -5,30 +5,32 @@
  */
 package com.inkubator.hrm.web.payroll;
 
-import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.UnregPayComponents;
-import com.inkubator.hrm.entity.UnregPayComponentsId;
-import com.inkubator.hrm.service.UnregPayComponentService;
-import com.inkubator.hrm.web.lazymodel.UnregPayComponentLazyDataModel;
-import com.inkubator.hrm.web.search.UnregPayComponentSearchParameter;
-import com.inkubator.webcore.controller.BaseController;
-import com.inkubator.webcore.util.FacesUtil;
-import com.inkubator.webcore.util.MessagesResourceUtil;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+
 import org.hibernate.exception.ConstraintViolationException;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.LazyDataModel;
 import org.springframework.dao.DataIntegrityViolationException;
+
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.entity.UnregPayComponents;
+import com.inkubator.hrm.service.UnregPayComponentService;
+import com.inkubator.hrm.web.lazymodel.UnregPayComponentLazyDataModel;
+import com.inkubator.hrm.web.search.UnregPayComponentSearchParameter;
+import com.inkubator.webcore.controller.BaseController;
+import com.inkubator.webcore.util.FacesUtil;
+import com.inkubator.webcore.util.MessagesResourceUtil;
 
 /**
  *
@@ -101,7 +103,7 @@ public class UnregPayComponentViewController extends BaseController {
 
     public void doSelectEntity() {
         try {
-            selected = this.unregPayComponentService.getEntityByPK(new UnregPayComponentsId(selected.getUnregSalary().getId(), selected.getPaySalaryComponent().getId()));
+            selected = this.unregPayComponentService.getEntiyByPK(selected.getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }

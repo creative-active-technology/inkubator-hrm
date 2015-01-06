@@ -5,15 +5,8 @@
  */
 package com.inkubator.hrm.service.impl;
 
-import com.inkubator.datacore.service.impl.IServiceImpl;
-import com.inkubator.hrm.dao.PaySalaryComponentDao;
-import com.inkubator.hrm.dao.UnregPayComponentDao;
-import com.inkubator.hrm.dao.UnregSalaryDao;
-import com.inkubator.hrm.entity.UnregPayComponents;
-import com.inkubator.hrm.entity.UnregPayComponentsId;
-import com.inkubator.hrm.service.UnregPayComponentService;
-import com.inkubator.hrm.web.search.UnregPayComponentSearchParameter;
 import java.util.List;
+
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -21,6 +14,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.hrm.dao.PaySalaryComponentDao;
+import com.inkubator.hrm.dao.UnregPayComponentDao;
+import com.inkubator.hrm.dao.UnregSalaryDao;
+import com.inkubator.hrm.entity.UnregPayComponents;
+import com.inkubator.hrm.service.UnregPayComponentService;
+import com.inkubator.hrm.web.search.UnregPayComponentSearchParameter;
 
 /**
  *
@@ -211,12 +212,6 @@ public class UnregPayComponentServiceImpl extends IServiceImpl implements UnregP
     @Override
     public List<UnregPayComponents> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public UnregPayComponents getEntityByPK(UnregPayComponentsId unregPayComponentsId) throws Exception {
-        return unregPayComponentDao.getEntityByPK(unregPayComponentsId);
     }
     
 }
