@@ -24,4 +24,6 @@ public interface DepartmentService extends IService<Department> {
     
     public Department getEntityByPkWithDetail(Long id) throws Exception;
     
+    public Department getEntityByUnregSalaryIdWithDetail(Long unregSalaryId) throws Exception;
+    
 }

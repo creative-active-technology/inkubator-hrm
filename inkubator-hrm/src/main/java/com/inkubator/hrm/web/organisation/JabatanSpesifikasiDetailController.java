@@ -84,7 +84,7 @@ public class JabatanSpesifikasiDetailController extends BaseController{
             super.initialization();
             userId = FacesUtil.getRequestParameter("execution");
             
-            selectedJabatan = jabatanService.getJabatanByIdWithDetail(Long.parseLong(userId.substring(1)));
+            selectedJabatan = jabatanService.getJabatanByIdForSpecDetail(Long.parseLong(userId.substring(1)));
             listJabatanSpesifikasi = jabatanSpecService.getAllDataByJabatanId(selectedJabatan.getId());
             
             //source

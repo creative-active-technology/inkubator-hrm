@@ -1,7 +1,10 @@
 package com.inkubator.hrm.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 
@@ -28,6 +32,7 @@ public class Religion implements java.io.Serializable {
     private Date updatedOn;
     private Set<WtHoliday> wtHolidays = new HashSet<WtHoliday>(0);
     private Set<BioData> bioDatas = new HashSet<BioData>(0);
+    private List<Religion> listReligion = new ArrayList<>(0);
 
     public Religion() {
     }
@@ -135,4 +140,61 @@ public class Religion implements java.io.Serializable {
     public void setBioDatas(Set<BioData> bioDatas) {
         this.bioDatas = bioDatas;
     }
+
+    @Transient
+    public List<Religion> getListReligion() {
+        return listReligion;
+    }
+
+    public void setListReligion(List<Religion> listReligion) {
+        this.listReligion = listReligion;
+    }
+    
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 41 * hash + (int) (this.id ^ (this.id >>> 32));
+        hash = 41 * hash + Objects.hashCode(this.version);
+        hash = 41 * hash + Objects.hashCode(this.createdBy);
+        hash = 41 * hash + Objects.hashCode(this.createdOn);
+        hash = 41 * hash + Objects.hashCode(this.name);
+        hash = 41 * hash + Objects.hashCode(this.updatedBy);
+        hash = 41 * hash + Objects.hashCode(this.updatedOn);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Religion other = (Religion) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        if (!Objects.equals(this.version, other.version)) {
+            return false;
+        }
+        if (!Objects.equals(this.createdBy, other.createdBy)) {
+            return false;
+        }
+        if (!Objects.equals(this.createdOn, other.createdOn)) {
+            return false;
+        }
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        if (!Objects.equals(this.updatedBy, other.updatedBy)) {
+            return false;
+        }
+        if (!Objects.equals(this.updatedOn, other.updatedOn)) {
+            return false;
+        }
+        return true;
+    }
+    
+    
 }

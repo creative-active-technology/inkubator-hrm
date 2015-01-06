@@ -223,8 +223,9 @@ public class PaySalaryComponentServiceImpl extends IServiceImpl implements PaySa
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<PaySalaryComponent> getAllData() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return paySalaryComponentDao.getAllData();
     }
 
     @Override

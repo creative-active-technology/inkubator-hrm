@@ -101,7 +101,7 @@ public class UnregPayComponents  implements java.io.Serializable {
     }
 
     
-    @Column(name="descriptions", length=65535)
+    @Column(name="descriptions", length=65535, columnDefinition="Text")
     public String getDescriptions() {
         return this.descriptions;
     }

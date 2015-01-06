@@ -8,6 +8,7 @@ package com.inkubator.hrm.web.lazymodel;
 import com.inkubator.hrm.entity.UnregSalary;
 import com.inkubator.hrm.service.SavingTypeService;
 import com.inkubator.hrm.service.UnregSalaryService;
+import com.inkubator.hrm.web.model.UnregSalaryViewModel;
 import com.inkubator.hrm.web.search.SavingTypeSearchParameter;
 import com.inkubator.hrm.web.search.UnregSalarySearchParameter;
 import java.io.Serializable;
@@ -23,11 +24,11 @@ import org.primefaces.model.SortOrder;
  *
  * @author deni
  */
-public class UnregSalaryLazyDataModel extends LazyDataModel<UnregSalary> implements Serializable{
+public class UnregSalaryLazyDataModel extends LazyDataModel<UnregSalaryViewModel> implements Serializable{
     private static final Logger LOGGER = Logger.getLogger(UnregSalaryLazyDataModel.class);
     private final UnregSalarySearchParameter searchParameter;
     private final UnregSalaryService service;
-    private List<UnregSalary> unregSalaryList = new ArrayList<>();
+    private List<UnregSalaryViewModel> unregSalaryList = new ArrayList<>();
     private Integer jumlahData;
 
     public UnregSalaryLazyDataModel(UnregSalarySearchParameter searchParameter, UnregSalaryService service) {
@@ -36,7 +37,7 @@ public class UnregSalaryLazyDataModel extends LazyDataModel<UnregSalary> impleme
     }
     
     @Override
-    public List<UnregSalary> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<UnregSalaryViewModel> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
         LOGGER.info("Step Load Lazy data Model");
 
             try {
@@ -46,8 +47,8 @@ public class UnregSalaryLazyDataModel extends LazyDataModel<UnregSalary> impleme
                 }else{
                     order = Order.desc("name");
                 }
-                unregSalaryList = service.getByParam(searchParameter, first, pageSize, order);
-                jumlahData = Integer.parseInt(String.valueOf(service.getTotalByParam(searchParameter)));
+                unregSalaryList = service.getByParamWithViewModel(searchParameter, first, pageSize, order);
+                jumlahData = Integer.parseInt(String.valueOf(service.getTotalByParamViewModel(searchParameter)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
             }
@@ -60,15 +61,15 @@ public class UnregSalaryLazyDataModel extends LazyDataModel<UnregSalary> impleme
     }
     
     @Override
-    public Object getRowKey(UnregSalary unregSalary) {
-        return unregSalary.getId();
+    public Object getRowKey(UnregSalaryViewModel unregSalaryViewModel) {
+        return unregSalaryViewModel.getId();
     }
 
     @Override
-    public UnregSalary getRowData(String id) {
-        for (UnregSalary unregSalary : unregSalaryList) {
-            if (id.equals(String.valueOf(unregSalary.getId()))) {
-                return unregSalary;
+    public UnregSalaryViewModel getRowData(String id) {
+        for (UnregSalaryViewModel unregSalaryViewModel : unregSalaryList) {
+            if (id.equals(String.valueOf(unregSalaryViewModel.getId()))) {
+                return unregSalaryViewModel;
             }
         }
         return null;

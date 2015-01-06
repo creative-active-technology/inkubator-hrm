@@ -10,11 +10,14 @@ import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.GolonganJabatanDao;
 import com.inkubator.hrm.dao.PangkatDao;
+import com.inkubator.hrm.dao.UnregGoljabDao;
 import com.inkubator.hrm.entity.GolonganJabatan;
 import com.inkubator.hrm.entity.Pangkat;
+import com.inkubator.hrm.entity.UnregGoljab;
 import com.inkubator.hrm.service.GolonganJabatanService;
 import com.inkubator.hrm.web.search.GolonganJabatanSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.hibernate.criterion.Order;
@@ -37,6 +40,8 @@ public class GolonganJabatanServiceImpl extends IServiceImpl implements Golongan
     private GolonganJabatanDao golJabatanDao;
     @Autowired
     private PangkatDao pangkatDao;
+    @Autowired
+    private UnregGoljabDao unregGoljabDao;
 
     @Override
     public GolonganJabatan getEntiyByPK(String id) throws Exception {
@@ -249,6 +254,19 @@ public class GolonganJabatanServiceImpl extends IServiceImpl implements Golongan
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<GolonganJabatan> getAllWithDetail() throws Exception {
         return golJabatanDao.getAllWithDetail();
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public GolonganJabatan getEntityByUnregSalaryIdWithDetail(Long unregSalaryId) throws Exception {
+        GolonganJabatan golonganJabatan = new GolonganJabatan();
+        List<GolonganJabatan> golonganJabatans = new ArrayList<>();
+        for (UnregGoljab unregGoljab : this.unregGoljabDao.getAllDataByUnregSalaryId(unregSalaryId)) {
+            golonganJabatans.add(unregGoljab.getGolonganJabatan());
+        }
+     
+        golonganJabatan.setListGolonganJabatans(golonganJabatans);
+        return golonganJabatan;
     }
 
 }

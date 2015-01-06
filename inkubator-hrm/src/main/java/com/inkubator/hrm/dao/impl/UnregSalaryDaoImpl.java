@@ -8,14 +8,17 @@ package com.inkubator.hrm.dao.impl;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.UnregSalaryDao;
 import com.inkubator.hrm.entity.UnregSalary;
+import com.inkubator.hrm.web.model.UnregSalaryViewModel;
 import com.inkubator.hrm.web.search.UnregSalarySearchParameter;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.Query;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.Transformers;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -66,5 +69,49 @@ public class UnregSalaryDaoImpl extends IDAOImpl<UnregSalary> implements UnregSa
         criteria.add(Restrictions.eq("id", id));
         criteria.setFetchMode("wtPeriode", FetchMode.JOIN);
         return (UnregSalary) criteria.uniqueResult();
+    }
+
+    @Override
+    public void deleteAllDataByUnregSalaryId(Long unregSalaryId) {
+        String hqlDeleteUnregDepartment = "delete from UnregDepartement ud where ud.unregSalary.id = :unregSalaryId";
+        String hqlDeleteUnregEmpReligion = "delete from UnregEmpReligion uer where uer.unregSalary.id = :unregSalaryId";
+        String hqlDeleteUnregEmpType = "delete from UnregEmpType uet where uet.unregSalary.id = :unregSalaryId";
+        String hqlDeleteUnregGoljab = "delete from UnregGoljab ug where ug.unregSalary.id = :unregSalaryId";
+        int deletedJabatanEdukasi = getCurrentSession().createQuery(hqlDeleteUnregDepartment).setString("unregSalaryId", String.valueOf(unregSalaryId)).executeUpdate();
+        int deletedJabatanMajor = getCurrentSession().createQuery(hqlDeleteUnregEmpReligion).setString("unregSalaryId", String.valueOf(unregSalaryId)).executeUpdate();
+        int deletedJabatanFaculty = getCurrentSession().createQuery(hqlDeleteUnregEmpType).setString("unregSalaryId", String.valueOf(unregSalaryId)).executeUpdate();
+        int deletedJabatanOccupation = getCurrentSession().createQuery(hqlDeleteUnregGoljab).setString("unregSalaryId", String.valueOf(unregSalaryId)).executeUpdate();
+    }
+
+    @Override
+    public List<UnregSalaryViewModel> getByParamWithViewModel(UnregSalarySearchParameter searchParameter, int firstResult, int maxResults, Order order) {
+        final StringBuilder query = new StringBuilder("SELECT A.id AS unregSalaryId, A.code AS code, A.name AS name, A.salary_date AS salaryDate, C.bulan AS bulan, C.tahun AS year, count(B.unreg_id) AS total");
+        query.append(" FROM hrm.unreg_salary A");
+        query.append(" LEFT JOIN hrm.unreg_pay_components B ON A.id = B.unreg_id");
+        query.append(" INNER JOIN wt_periode C WHERE A.based_period_id = C.id");
+        query.append(" GROUP BY A.code");
+        return getCurrentSession().createSQLQuery(query.toString())
+                .setMaxResults(maxResults).setFirstResult(firstResult)
+                .setResultTransformer(Transformers.aliasToBean(UnregSalaryViewModel.class))
+                .list();
+    }
+
+    @Override
+    public Long getTotalByParamViewModel(UnregSalarySearchParameter searchParameter) {
+        final StringBuilder query = new StringBuilder("SELECT count(*) FROM (SELECT count(A.code)");
+        query.append(" FROM hrm.unreg_salary A");
+        query.append(" LEFT JOIN hrm.unreg_pay_components B ON A.id = B.unreg_id");
+        query.append(" INNER JOIN wt_periode C WHERE A.based_period_id = C.id");
+//        query.append(" GROUP BY A.code");
+//        if (searchParameter.getCode() != null) {
+//            query.append(" WHERE B.code like '%" + searchParameter.getCode() + "%'");
+//        } else if (searchParameter.getName() != null) {
+//            query.append(" WHERE B.name like '%" + searchParameter.getName() + "%'");
+//        }
+        query.append(" GROUP BY A.code) as totalData");
+        System.out.println(query.toString());
+        Query hbm = getCurrentSession().createSQLQuery(query.toString());
+        System.out.println(Long.valueOf(hbm.uniqueResult().toString()) + "muahahhahahahahha");
+        return Long.valueOf(hbm.uniqueResult().toString());
     }
 }

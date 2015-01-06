@@ -1,8 +1,10 @@
 package com.inkubator.hrm.entity;
 // Generated Jun 16, 2014 11:34:46 AM by Hibernate Tools 3.6.0
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.Column;
@@ -15,6 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 
@@ -25,6 +28,7 @@ import javax.persistence.Version;
 @Table(name = "department", catalog = "hrm", uniqueConstraints = @UniqueConstraint(columnNames = "department_code")
 )
 public class Department implements java.io.Serializable {
+
     private static final long serialVersionUID = 5004048901073633038L;
 
     private long id;
@@ -39,6 +43,7 @@ public class Department implements java.io.Serializable {
     private String description;
     private Set<Jabatan> jabatans = new HashSet<>(0);
     private Set<DepartementUploadCapture> departementUploadCaptures = new HashSet<>(0);
+    private List<Department> listDepartments = new ArrayList<>(0);
 
     public Department() {
     }
@@ -100,14 +105,14 @@ public class Department implements java.io.Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cost_center_id", nullable = false)
     public CostCenterDept getCostCenterDept() {
-		return costCenterDept;
-	}
+        return costCenterDept;
+    }
 
-	public void setCostCenterDept(CostCenterDept costCenterDept) {
-		this.costCenterDept = costCenterDept;
-	}
+    public void setCostCenterDept(CostCenterDept costCenterDept) {
+        this.costCenterDept = costCenterDept;
+    }
 
-	@Column(name = "created_by", length = 45)
+    @Column(name = "created_by", length = 45)
     public String getCreatedBy() {
         return this.createdBy;
     }
@@ -134,12 +139,12 @@ public class Department implements java.io.Serializable {
     public void setUpdatedBy(String updatedBy) {
         this.updatedBy = updatedBy;
     }
-    
-    @Column(name="description", length=65535, columnDefinition="Text")
+
+    @Column(name = "description", length = 65535, columnDefinition = "Text")
     public String getDescription() {
         return this.description;
     }
-    
+
     public void setDescription(String description) {
         this.description = description;
     }
@@ -172,6 +177,15 @@ public class Department implements java.io.Serializable {
         this.departementUploadCaptures = departementUploadCaptures;
     }
 
+    @Transient
+    public List<Department> getListDepartments() {
+        return listDepartments;
+    }
+
+    public void setListDepartments(List<Department> listDepartments) {
+        this.listDepartments = listDepartments;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 7;

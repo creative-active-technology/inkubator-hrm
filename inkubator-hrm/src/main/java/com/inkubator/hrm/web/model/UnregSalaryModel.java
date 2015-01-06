@@ -20,6 +20,7 @@ public class UnregSalaryModel {
     private Date salaryDate;
     private Integer month;
     private String year;
+    private Long payComponentId;
 
     public Long getId() {
         return id;
@@ -85,7 +86,11 @@ public class UnregSalaryModel {
         this.year = year;
     }
 
+    public Long getPayComponentId() {
+        return payComponentId;
+    }
 
-    
-    
+    public void setPayComponentId(Long payComponentId) {
+        this.payComponentId = payComponentId;
+    }
 }

@@ -13,7 +13,7 @@
         <link rel="stylesheet" href="${request.contextPath}/resources/css/table_custome.css" type="text/css" media="screen" />
         <link rel="stylesheet" href="${request.contextPath}/resources/css/grid_css.css" type="text/css" media="screen" />
         <link rel="shortcut icon" href="${request.contextPath}/hr.ico" type="image/x-icon" />
-        <link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css' />
+        <!--<link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css' />-->
         <title><ui:insert name="windowTitle"/></title>
         <!--        <style>
                     .ui-menu-child{
@@ -477,7 +477,9 @@
                                                 <p:menuitem value="#{appmsg['payroll.exceptionScheme']}" icon="img-pay_component_exception" style="font-size: 12px !important;color: #003366" title="#{appmsg['payroll.exceptionScheme']}" url="/protected/payroll/pay_component_exception_view.htm" /> 
                                                 <p:menuitem value="#{appmsg['payroll.paySalaryCalculation']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['payroll.paySalaryCalculation']}" icon="img-cost-center" url="/protected/payroll/salary_execution_view.htm"/>
                                                 <p:menuitem value="#{appmsg['payroll.payment']}" icon="img-pay_component_exception" style="font-size: 12px !important;color: #003366" title="#{appmsg['payroll.payment']}" url="#" /> 
+                                                
                                             </p:submenu>
+                                            <p:menuitem value="Unreg Salary" style="font-size: 12px !important;color: #003366" title="Unreg Salary" icon="img-ptkp" url="/protected/payroll/unreg_salary_view.htm"/> 
                                         </p:submenu>
                                         <p:submenu label="Pengembangan"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-training">
                                             <!--                                            <p:menuitem value="Price Simulator" icon="img-price-simulator" style="font-size: 12px !important;color: #003366" title="Make Price Simulation" url="/protected/price_simulator.htm" /> 
