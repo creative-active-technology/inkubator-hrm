@@ -20,8 +20,8 @@
                         <p:graphicImage library="images" name="biodata.png" height="36" width="36" />
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Employee Setting" styleClass="header_big" />
-                                <p:outputLabel value="Unreg Salary from Payroll" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['unregSalary.employeeSetting']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['unregSalary.unregSalary_header']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -43,7 +43,7 @@
                                         </p:row>
                                         <p:row>
                                             <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                                <p:outputLabel  value="Dasar Periode" style="font-weight: bold"/>
+                                                <p:outputLabel  value="#{appmsg['unregSalary.basePeriode']}" style="font-weight: bold"/>
                                             </p:column>
                                             <p:column style="width: 80%">
                                                 <p:outputLabel  value="#{UnregSalaryEmpSettingFormController.model.month}" >
@@ -54,7 +54,7 @@
                                         </p:row>
                                         <p:row>
                                             <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                                <p:outputLabel  value="Periode" style="font-weight: bold"/>
+                                                <p:outputLabel  value="#{appmsg['unregSalary.periode']}" style="font-weight: bold"/>
                                             </p:column>
                                             <p:column style="width: 80%">
                                                 <p:calendar  id="startPeriode" size="25" pattern="dd MMMM yyyy" label="Start Periode" value="#{UnregSalaryEmpSettingFormController.model.startPeriodDate}"
@@ -74,7 +74,7 @@
                                         </p:row>
                                         <p:row>
                                             <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                                <p:outputLabel  value="Golongan Jabatan" style="font-weight: bold"/>
+                                                <p:outputLabel  value="#{appmsg['functiongroup.function_group']}" style="font-weight: bold"/>
                                             </p:column>
                                             <p:column style="width: 80%">
                                                 <p:pickList value="#{UnregSalaryEmpSettingFormController.goljabDualListModel}" var="role" itemValue="#{role}" converter="golonganJabatanConverter" id="picklistGolonganJabatan"
@@ -86,7 +86,7 @@
                                         </p:row>
                                         <p:row>
                                             <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                                <p:outputLabel  value="Departement" style="font-weight: bold"/>
+                                                <p:outputLabel  value="#{appmsg['menu.department']}" style="font-weight: bold"/>
                                             </p:column>
                                             <p:column style="width: 80%">
                                                 <p:pickList value="#{UnregSalaryEmpSettingFormController.departmentDualListModel}" var="role" itemValue="#{role}" converter="departmentConverter" id="picklistDepartement"
@@ -98,7 +98,7 @@
                                         </p:row>
                                         <p:row>
                                             <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                                <p:outputLabel  value="Agama" style="font-weight: bold"/>
+                                                <p:outputLabel  value="#{appmsg['religion.religion']}" style="font-weight: bold"/>
                                             </p:column>
                                             <p:column style="width: 80%">
                                                 <p:pickList value="#{UnregSalaryEmpSettingFormController.religionDualListModel}" var="role" itemValue="#{role}" converter="religionConverter" id="picklistReligion"
@@ -110,7 +110,7 @@
                                         </p:row>
                                         <p:row>
                                             <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                                <p:outputLabel  value="Status Karyawan" style="font-weight: bold"/>
+                                                <p:outputLabel  value="#{appmsg['unregSalary.employeeStatus']}" style="font-weight: bold"/>
                                             </p:column>
                                             <p:column style="width: 80%">
                                                 <p:pickList value="#{UnregSalaryEmpSettingFormController.empTypeDualListModel}" var="role" itemValue="#{role}" converter="employeeTypeConverter" id="picklistEmployeeType"
@@ -127,10 +127,10 @@
 
                         <p:separator/>
                         <h:panelGrid columns="4" style="margin-bottom: 5px;float: left">
-                            <p:commandButton value="#{appmsg['global.add']}" actionListener="#{UnregSalaryEmpSettingFormController.doSave()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true" update=":growlId">
+                            <p:commandButton value="#{appmsg['global.edit']}" actionListener="#{UnregSalaryEmpSettingFormController.doSave()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true" update=":growlId">
                                 <!--<p:ajax event="dialogReturn" listener="#{UnregSalaryEmpSettingFormController.onDialogReturn}" update=":growlId"/>-->
                             </p:commandButton>
-                            <p:commandButton value="#{appmsg['global.edit']}"  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" action="#{bioDataDetilController.doEdit()}" styleClass="label_button"/>
+                            <!--<p:commandButton value="#{appmsg['global.edit']}"  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" action="#{bioDataDetilController.doEdit()}" styleClass="label_button"/>-->
                             <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{bioDataDetilController.doBack()}" styleClass="label_button"/>
 
                         </h:panelGrid>

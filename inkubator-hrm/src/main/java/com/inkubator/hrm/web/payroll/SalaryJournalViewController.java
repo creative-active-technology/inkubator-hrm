@@ -6,13 +6,15 @@
 package com.inkubator.hrm.web.payroll;
 
 import com.inkubator.hrm.entity.PayTempKalkulasi;
-import com.inkubator.hrm.entity.SavingType;
+import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.PayTempKalkulasiService;
-import com.inkubator.hrm.service.SavingTypeService;
+import com.inkubator.hrm.service.WtPeriodeService;
 import com.inkubator.hrm.web.lazymodel.SalaryJournalLazyDataModel;
 import com.inkubator.hrm.web.model.SalaryJournalModel;
-import com.inkubator.hrm.web.search.SavingTypeSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.bean.ManagedBean;
@@ -30,14 +32,25 @@ public class SalaryJournalViewController extends BaseController {
 
     @ManagedProperty(value = "#{payTempKalkulasiService}")
     private PayTempKalkulasiService payTempKalkulasiService;
+    @ManagedProperty(value = "#{wtPeriodeService}")
+    private WtPeriodeService wtPeriodeService;
     private String searchParameter;
     private LazyDataModel<SalaryJournalModel> lazyDataModel;
     private PayTempKalkulasi selected;
+    private Date startDate;
+    private Date endDate;
 
     @PostConstruct
     @Override
     public void initialization() {
         super.initialization();
+        try {
+            WtPeriode wtPeriode = wtPeriodeService.getEntityByPayrollTypeActive();
+            startDate = wtPeriode.getFromPeriode();
+            endDate = wtPeriode.getUntilPeriode();
+        } catch (Exception ex) {
+            Logger.getLogger(SalaryJournalViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @PreDestroy
@@ -46,6 +59,8 @@ public class SalaryJournalViewController extends BaseController {
         lazyDataModel = null;
         payTempKalkulasiService = null;
         selected = null;
+        startDate = null;
+        endDate = null;
     }
 
     public void doSearch() {
@@ -87,4 +102,29 @@ public class SalaryJournalViewController extends BaseController {
         this.selected = selected;
     }
 
+    public WtPeriodeService getWtPeriodeService() {
+        return wtPeriodeService;
+    }
+
+    public void setWtPeriodeService(WtPeriodeService wtPeriodeService) {
+        this.wtPeriodeService = wtPeriodeService;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    
 }

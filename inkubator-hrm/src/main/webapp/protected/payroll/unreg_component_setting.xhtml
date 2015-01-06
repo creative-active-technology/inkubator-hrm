@@ -21,7 +21,7 @@
                             <p:graphicImage library="images" name="marital_status.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="Component Setting" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['unregSalary.componentSetting']}" styleClass="header_big" />
                                     <p:outputLabel value="#{appmsg['unregSalary.unregSalary_header']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
@@ -33,13 +33,13 @@
                                 <h:panelGrid columns="5">
                                     <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm" />
                                     <p:outputLabel value=":" />
-                                    <p:selectOneMenu value="#{savingTypeViewController.searchParameter.keyParam}" style="width: 150px;margin-right: 3px" >
+                                    <p:selectOneMenu value="#{unregPayComponentViewController.searchParameter.keyParam}" style="width: 150px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemLabel="#{appmsg['global.code']}" itemValue="code"/>
-                                        <f:selectItem itemLabel="#{appmsg['global.name']}" itemValue="name"/>
+                                        <f:selectItem itemLabel="#{appmsg['unregSalary.componentName']}" itemValue="componentName"/>
+                                        <f:selectItem itemLabel="#{appmsg['unregSalary.componentModel']}" itemValue="componentModel"/>
                                     </p:selectOneMenu>
-                                    <p:inputText id="searchId" value="#{savingTypeViewController.searchParameter.parameter}" style="width: 250px" styleClass="label_button"/>
-                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{savingTypeViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
+                                    <p:inputText id="searchId" value="#{unregPayComponentViewController.searchParameter.parameter}" style="width: 250px" styleClass="label_button"/>
+                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{unregPayComponentViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
@@ -61,7 +61,7 @@
                                       id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="#{appmsg['unregSalary.unregSalary_list']}"/>
+                                <h:outputText value="#{appmsg['unregSalary.component_list']}"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
@@ -69,15 +69,15 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="name" style="width: 50%">
+                            <p:column sortBy="paySalaryComponent.name" style="width: 50%">
                                 <f:facet name="header">
-                                    <h:outputText value="Tax Component"/>
+                                    <h:outputText value="#{appmsg['unregSalary.componentName']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.paySalaryComponent.taxComponent.name}" />
+                                <h:outputLabel value= "#{data.paySalaryComponent.name}" />
                             </p:column>
-                            <p:column sortBy="name" style="width: 37%">
+                            <p:column sortBy="modelComponent.name" style="width: 37%">
                                 <f:facet name="header">
-                                    <h:outputText value="Model Component"/>
+                                    <h:outputText value="#{appmsg['unregSalary.componentModel']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.paySalaryComponent.modelComponent.name}" />
                             </p:column>

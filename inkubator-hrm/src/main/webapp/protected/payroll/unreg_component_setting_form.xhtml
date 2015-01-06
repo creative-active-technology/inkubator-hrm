@@ -21,8 +21,8 @@
                         <p:graphicImage library="images" name="department.png" height="36" width="36"  cache="true"/>
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Component Setting Form" styleClass="header_big" />
-                                <p:outputLabel value="#{appmsg['department.data_of_department']}" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['unregSalary.componentSettingForm']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['unregSalary.unregSalary_header']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -33,32 +33,32 @@
                     <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="name" value="Nama Penghasilan" styleClass="label_hrm"/>
+                                <p:outputLabel for="name" value="#{appmsg['unregSalary.salaryName']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="name" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <p:inputText id="name" value="#{unregPayComponentFormController.model.name}" required="true" styleClass="isitext_hrm" style="width:210px;" />
+                                <p:outputLabel id="name" value="#{unregPayComponentFormController.model.name}"  styleClass="isitext_hrm" style="width:210px;" />
                             </p:column>
                         </p:row>
                         
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel value="Dasar Periode" styleClass="label_hrm"/>
+                                <p:outputLabel value="#{appmsg['unregSalary.basePeriode']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <h:outputLabel value="#{unregPayComponentFormController.model.month}" styleClass="label_hrm"/>
+                                <h:outputLabel value="#{unregPayComponentFormController.model.month}" styleClass="isitext_hrm"/>
                                 <h:outputLabel value=" " styleClass="label_hrm"/>
-                                <h:outputLabel value="#{unregPayComponentFormController.model.year}" styleClass="label_hrm"/>
+                                <h:outputLabel value="#{unregPayComponentFormController.model.year}" styleClass="isitext_hrm"/>
                         </p:column>
                         </p:row>
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="paySalaryComponent" value="Component Dipilih" styleClass="label_hrm"/>
+                                <p:outputLabel for="paySalaryComponent" value="#{appmsg['unregSalary.component']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="paySalaryComponent" value=":" styleClass="label_hrm"/>

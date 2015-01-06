@@ -11,11 +11,14 @@ import com.inkubator.hrm.entity.UnregPayComponents;
 import com.inkubator.hrm.entity.UnregPayComponentsId;
 import com.inkubator.hrm.web.search.UnregPayComponentSearchParameter;
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -55,6 +58,14 @@ public class UnregPayComponentDaoImpl extends IDAOImpl<UnregPayComponents> imple
     }
 
     public void doSearchByParam(UnregPayComponentSearchParameter searchParameter, Criteria criteria) {
+        criteria.createAlias("paySalaryComponent", "paySalaryComponent", JoinType.INNER_JOIN);
+        criteria.createAlias("paySalaryComponent.modelComponent", "modelComponent", JoinType.INNER_JOIN);
+        if (StringUtils.isNotEmpty(searchParameter.getComponentModel())) {
+            criteria.add(Restrictions.like("modelComponent.name", searchParameter.getComponentModel(), MatchMode.ANYWHERE));
+        }
+        if (StringUtils.isNotEmpty(searchParameter.getComponentName())) {
+            criteria.add(Restrictions.like("paySalaryComponent.name", searchParameter.getComponentName(), MatchMode.ANYWHERE));
+        }
         criteria.add(Restrictions.isNotNull("id"));
     }
 

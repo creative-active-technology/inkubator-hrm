@@ -85,13 +85,21 @@ public class UnregSalaryDaoImpl extends IDAOImpl<UnregSalary> implements UnregSa
 
     @Override
     public List<UnregSalaryViewModel> getByParamWithViewModel(UnregSalarySearchParameter searchParameter, int firstResult, int maxResults, Order order) {
+        System.out.println(order + "lolololololo");
         final StringBuilder query = new StringBuilder("SELECT A.id AS unregSalaryId, A.code AS code, A.name AS name, A.salary_date AS salaryDate, C.bulan AS bulan, C.tahun AS year, count(B.unreg_id) AS total");
         query.append(" FROM hrm.unreg_salary A");
         query.append(" LEFT JOIN hrm.unreg_pay_components B ON A.id = B.unreg_id");
         query.append(" INNER JOIN wt_periode C WHERE A.based_period_id = C.id");
+        doSearchByParam(searchParameter, query);
         query.append(" GROUP BY A.code");
+        if (order.toString().contains("code") || order.toString().contains("name") || order.toString().contains("total") || order.toString().contains("salaryDate")) {
+            query.append(" order by " + order);
+        } else {
+            query.append(" order by A." + order);
+        }
+        query.append(" LIMIT " + firstResult + ", " + maxResults);
+        System.out.println(query.toString());
         return getCurrentSession().createSQLQuery(query.toString())
-                .setMaxResults(maxResults).setFirstResult(firstResult)
                 .setResultTransformer(Transformers.aliasToBean(UnregSalaryViewModel.class))
                 .list();
     }
@@ -102,16 +110,17 @@ public class UnregSalaryDaoImpl extends IDAOImpl<UnregSalary> implements UnregSa
         query.append(" FROM hrm.unreg_salary A");
         query.append(" LEFT JOIN hrm.unreg_pay_components B ON A.id = B.unreg_id");
         query.append(" INNER JOIN wt_periode C WHERE A.based_period_id = C.id");
-//        query.append(" GROUP BY A.code");
-//        if (searchParameter.getCode() != null) {
-//            query.append(" WHERE B.code like '%" + searchParameter.getCode() + "%'");
-//        } else if (searchParameter.getName() != null) {
-//            query.append(" WHERE B.name like '%" + searchParameter.getName() + "%'");
-//        }
+        doSearchByParam(searchParameter, query);
         query.append(" GROUP BY A.code) as totalData");
-        System.out.println(query.toString());
         Query hbm = getCurrentSession().createSQLQuery(query.toString());
-        System.out.println(Long.valueOf(hbm.uniqueResult().toString()) + "muahahhahahahahha");
         return Long.valueOf(hbm.uniqueResult().toString());
+    }
+
+    public void doSearchByParam(UnregSalarySearchParameter searchParameter, StringBuilder query) {
+        if (searchParameter.getCode() != null) {
+            query.append(" AND A.code like '%" + searchParameter.getCode() + "%'");
+        } else if (searchParameter.getName() != null) {
+            query.append(" AND A.name like '%" + searchParameter.getName() + "%'");
+        }
     }
 }
