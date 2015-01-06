@@ -4,6 +4,7 @@ package com.inkubator.hrm.entity;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,6 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 
@@ -42,6 +44,7 @@ public class UnregSalary implements java.io.Serializable {
     private Set<UnregEmpType> unregEmpTypes = new HashSet<UnregEmpType>(0);
     private Set<UnregPayComponents> unregPayComponentses = new HashSet<UnregPayComponents>(0);
     private Set<UnregEmpReligion> unregEmpReligions = new HashSet<UnregEmpReligion>(0);
+    private Integer totalUnregPayComponents;
 
     public UnregSalary() {
     }
@@ -230,4 +233,13 @@ public class UnregSalary implements java.io.Serializable {
         this.wtPeriode = wtPeriode;
     }
 
+    @Transient
+	public Integer getTotalUnregPayComponents() {
+		return totalUnregPayComponents;
+	}
+
+	public void setTotalUnregPayComponents(Integer totalUnregPayComponents) {
+		this.totalUnregPayComponents = totalUnregPayComponents;
+	}
+    
 }

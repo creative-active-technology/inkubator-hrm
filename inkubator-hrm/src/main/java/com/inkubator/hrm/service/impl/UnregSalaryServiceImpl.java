@@ -37,8 +37,10 @@ import com.inkubator.hrm.web.model.UnregSalaryModel;
 import com.inkubator.hrm.web.model.UnregSalaryViewModel;
 import com.inkubator.hrm.web.search.UnregSalarySearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+
 import java.util.Date;
 import java.util.List;
+
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -376,6 +378,21 @@ public class UnregSalaryServiceImpl extends IServiceImpl implements UnregSalaryS
         return unregSalaryDao.getTotalByParamViewModel(searchParameter);
     }
 
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<UnregSalary> getAllDataComponentByParam(UnregSalarySearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
+		List<UnregSalary> list = unregSalaryDao.getByParam(searchParameter, firstResult, maxResults, order);
+		for(UnregSalary unregSalary : list){
+			unregSalary.setTotalUnregPayComponents(unregSalary.getUnregPayComponentses().size());
+		}
+		return list;
+	}
 
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Long getTotalComponentByParam(UnregSalarySearchParameter searchParameter) throws Exception {
+		return unregSalaryDao.getTotalByParam(searchParameter);
+		
+	}
 
 }

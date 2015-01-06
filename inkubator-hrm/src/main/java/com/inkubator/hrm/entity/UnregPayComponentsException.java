@@ -29,8 +29,8 @@ public class UnregPayComponentsException  implements java.io.Serializable {
      private UnregPayComponentsExceptionId id;
      private Integer version;
      private EmpData empData;
-     private PaySalaryComponent paySalaryComponent;
-     private UnregSalary unregSalary;
+     private UnregPayComponents unregPayComponents;
+     private Double nominal;
      private String descriptions;
      private String createdBy;
      private Date createdOn;
@@ -38,20 +38,20 @@ public class UnregPayComponentsException  implements java.io.Serializable {
      private Date updatedOn;
 
     public UnregPayComponentsException() {
+    	
     }
 
 	
-    public UnregPayComponentsException(UnregPayComponentsExceptionId id, EmpData empData, PaySalaryComponent paySalaryComponent, UnregSalary unregSalary) {
+    public UnregPayComponentsException(UnregPayComponentsExceptionId id, EmpData empData, UnregPayComponents unregPayComponents) {
         this.id = id;
         this.empData = empData;
-        this.paySalaryComponent = paySalaryComponent;
-        this.unregSalary = unregSalary;
+        this.unregPayComponents = unregPayComponents;
     }
-    public UnregPayComponentsException(UnregPayComponentsExceptionId id, EmpData empData, PaySalaryComponent paySalaryComponent, UnregSalary unregSalary, String descriptions, String createdBy, Date createdOn, String updatedBy, Date updatedOn) {
+    
+    public UnregPayComponentsException(UnregPayComponentsExceptionId id, EmpData empData, UnregPayComponents unregPayComponents, String descriptions, String createdBy, Date createdOn, String updatedBy, Date updatedOn) {
        this.id = id;
        this.empData = empData;
-       this.paySalaryComponent = paySalaryComponent;
-       this.unregSalary = unregSalary;
+       this.unregPayComponents = unregPayComponents;
        this.descriptions = descriptions;
        this.createdBy = createdBy;
        this.createdOn = createdOn;
@@ -59,12 +59,9 @@ public class UnregPayComponentsException  implements java.io.Serializable {
        this.updatedOn = updatedOn;
     }
    
-     @EmbeddedId
-
-    
+    @EmbeddedId
     @AttributeOverrides( {
-        @AttributeOverride(name="unregId", column=@Column(name="unreg_id", nullable=false) ), 
-        @AttributeOverride(name="paySalaryCompId", column=@Column(name="pay_salary_comp_id", nullable=false) ), 
+        @AttributeOverride(name="unregPayComponentsId", column=@Column(name="unreg_pay_components_id", nullable=false) ), 
         @AttributeOverride(name="empDataId", column=@Column(name="emp_data_id", nullable=false) ) } )
     public UnregPayComponentsExceptionId getId() {
         return this.id;
@@ -84,7 +81,7 @@ public class UnregPayComponentsException  implements java.io.Serializable {
         this.version = version;
     }
 
-@ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="emp_data_id", nullable=false, insertable=false, updatable=false)
     public EmpData getEmpData() {
         return this.empData;
@@ -94,28 +91,26 @@ public class UnregPayComponentsException  implements java.io.Serializable {
         this.empData = empData;
     }
 
-@ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="pay_salary_comp_id", nullable=false, insertable=false, updatable=false)
-    public PaySalaryComponent getPaySalaryComponent() {
-        return this.paySalaryComponent;
-    }
-    
-    public void setPaySalaryComponent(PaySalaryComponent paySalaryComponent) {
-        this.paySalaryComponent = paySalaryComponent;
-    }
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="unreg_pay_components_id", nullable=false, insertable=false, updatable=false)
+    public UnregPayComponents getUnregPayComponents() {
+		return unregPayComponents;
+	}
 
-@ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="unreg_id", nullable=false, insertable=false, updatable=false)
-    public UnregSalary getUnregSalary() {
-        return this.unregSalary;
-    }
-    
-    public void setUnregSalary(UnregSalary unregSalary) {
-        this.unregSalary = unregSalary;
-    }
+	public void setUnregPayComponents(UnregPayComponents unregPayComponents) {
+		this.unregPayComponents = unregPayComponents;
+	}
 
-    
-    @Column(name="descriptions", length=65535)
+	@Column(name="nominal", nullable = false)
+	public Double getNominal() {
+		return nominal;
+	}
+
+	public void setNominal(Double nominal) {
+		this.nominal = nominal;
+	}
+
+	@Column(name="descriptions", length=65535, columnDefinition = "Text")
     public String getDescriptions() {
         return this.descriptions;
     }
@@ -123,7 +118,6 @@ public class UnregPayComponentsException  implements java.io.Serializable {
     public void setDescriptions(String descriptions) {
         this.descriptions = descriptions;
     }
-
     
     @Column(name="created_by", length=45)
     public String getCreatedBy() {
@@ -143,7 +137,6 @@ public class UnregPayComponentsException  implements java.io.Serializable {
     public void setCreatedOn(Date createdOn) {
         this.createdOn = createdOn;
     }
-
     
     @Column(name="updated_by", length=45)
     public String getUpdatedBy() {
@@ -163,9 +156,6 @@ public class UnregPayComponentsException  implements java.io.Serializable {
     public void setUpdatedOn(Date updatedOn) {
         this.updatedOn = updatedOn;
     }
-
-
-
 
 }
 
