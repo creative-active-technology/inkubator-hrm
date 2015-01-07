@@ -14,7 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 import ch.lambdaj.Lambda;
 
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.hrm.dao.PaySalaryComponentDao;
 import com.inkubator.hrm.dao.UnregPayComponentsDao;
+import com.inkubator.hrm.dao.UnregSalaryDao;
 import com.inkubator.hrm.entity.UnregPayComponents;
 import com.inkubator.hrm.entity.UnregPayComponentsException;
 import com.inkubator.hrm.service.UnregPayComponentsService;
@@ -30,6 +32,10 @@ public class UnregPayComponentsServiceImpl extends IServiceImpl implements Unreg
 
 	@Autowired
 	private UnregPayComponentsDao unregPayComponentsDao;
+	@Autowired
+    private PaySalaryComponentDao paySalaryComponentDao;
+    @Autowired
+    private UnregSalaryDao unregSalaryDao;
 	
 	@Override
 	public UnregPayComponents getEntiyByPK(String id) throws Exception {
@@ -51,8 +57,11 @@ public class UnregPayComponentsServiceImpl extends IServiceImpl implements Unreg
 	}
 
 	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void save(UnregPayComponents entity) throws Exception {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+		entity.setPaySalaryComponent(paySalaryComponentDao.getEntiyByPK(entity.getPaySalaryComponent().getId()));
+        entity.setUnregSalary(unregSalaryDao.getEntiyByPK(entity.getUnregSalary().getId()));
+        this.unregPayComponentsDao.save(entity);
 
 	}
 
@@ -153,8 +162,9 @@ public class UnregPayComponentsServiceImpl extends IServiceImpl implements Unreg
 	}
 
 	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void delete(UnregPayComponents entity) throws Exception {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+		unregPayComponentsDao.delete(entity);
 
 	}
 

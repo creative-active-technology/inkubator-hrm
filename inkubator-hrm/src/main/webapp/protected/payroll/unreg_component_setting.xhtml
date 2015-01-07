@@ -35,8 +35,8 @@
                                     <p:outputLabel value=":" />
                                     <p:selectOneMenu value="#{unregPayComponentViewController.searchParameter.keyParam}" style="width: 150px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemLabel="#{appmsg['unregSalary.componentName']}" itemValue="componentName"/>
-                                        <f:selectItem itemLabel="#{appmsg['unregSalary.componentModel']}" itemValue="componentModel"/>
+                                        <f:selectItem itemLabel="#{appmsg['unregSalary.componentName']}" itemValue="name"/>
+                                        <f:selectItem itemLabel="#{appmsg['unregSalary.componentModel']}" itemValue="modelComponentName"/>
                                     </p:selectOneMenu>
                                     <p:inputText id="searchId" value="#{unregPayComponentViewController.searchParameter.parameter}" style="width: 250px" styleClass="label_button"/>
                                     <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{unregPayComponentViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>

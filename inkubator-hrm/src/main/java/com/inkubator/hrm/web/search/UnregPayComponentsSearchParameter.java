@@ -16,6 +16,7 @@ public class UnregPayComponentsSearchParameter extends SearchParameter{
 
     private String code;
     private String name;
+    private String modelComponentName;
     private Long unregSalaryId;
     
     public String getCode() {
@@ -43,6 +44,19 @@ public class UnregPayComponentsSearchParameter extends SearchParameter{
     public void setName(String name) {
         this.name = name;
     }
+
+	public String getModelComponentName() {
+		if(StringUtils.equalsIgnoreCase(getKeyParam(), "modelComponentName")){
+			modelComponentName = getParameter();
+        } else {
+        	modelComponentName = null;
+        }
+        return modelComponentName;
+	}
+
+	public void setModelComponentName(String modelComponentName) {
+		this.modelComponentName = modelComponentName;
+	}
 
 	public Long getUnregSalaryId() {
 		return unregSalaryId;

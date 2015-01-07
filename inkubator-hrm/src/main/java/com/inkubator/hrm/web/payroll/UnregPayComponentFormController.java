@@ -27,7 +27,7 @@ import com.inkubator.hrm.entity.UnregPayComponents;
 import com.inkubator.hrm.entity.UnregSalary;
 import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.PaySalaryComponentService;
-import com.inkubator.hrm.service.UnregPayComponentService;
+import com.inkubator.hrm.service.UnregPayComponentsService;
 import com.inkubator.hrm.service.UnregSalaryService;
 import com.inkubator.hrm.service.WtPeriodeService;
 import com.inkubator.hrm.web.model.UnregSalaryModel;
@@ -45,8 +45,8 @@ public class UnregPayComponentFormController extends BaseController {
 
     @ManagedProperty(value = "#{unregSalaryService}")
     private UnregSalaryService unregSalaryService;
-    @ManagedProperty(value = "#{unregPayComponentService}")
-    private UnregPayComponentService unregPayComponentService;
+    @ManagedProperty(value = "#{unregPayComponentsService}")
+    private UnregPayComponentsService unregPayComponentsService;
     @ManagedProperty(value = "#{wtPeriodeService}")
     private WtPeriodeService wtPeriodeService;
     @ManagedProperty(value = "#{paySalaryComponentService}")
@@ -61,7 +61,7 @@ public class UnregPayComponentFormController extends BaseController {
     public void initialization() {
         super.initialization();
         try {
-             unregSalaryId = FacesUtil.getRequestParameter("unregSalaryId");
+            unregSalaryId = FacesUtil.getRequestParameter("unregSalaryId");
             System.out.println("hahahah" + unregSalaryId);
             model = new UnregSalaryModel();
             if (StringUtils.isNotEmpty(unregSalaryId)) {
@@ -83,7 +83,7 @@ public class UnregPayComponentFormController extends BaseController {
     @PreDestroy
     private void cleanAndExit() {
         unregSalaryService = null;
-        unregPayComponentService = null;
+        unregPayComponentsService = null;
         wtPeriodeService = null;
         paySalaryComponentService = null;
         model = null;
@@ -103,7 +103,7 @@ public class UnregPayComponentFormController extends BaseController {
 
         UnregPayComponents unregPayComponents = getEntityFromViewModel(model);
         try {
-            unregPayComponentService.save(unregPayComponents);
+        	unregPayComponentsService.save(unregPayComponents);
             RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
             cleanAndExit();
         } catch (BussinessException ex) {
@@ -129,15 +129,16 @@ public class UnregPayComponentFormController extends BaseController {
         this.unregSalaryService = unregSalaryService;
     }
 
-    public UnregPayComponentService getUnregPayComponentService() {
-        return unregPayComponentService;
-    }
+    public UnregPayComponentsService getUnregPayComponentsService() {
+		return unregPayComponentsService;
+	}
 
-    public void setUnregPayComponentService(UnregPayComponentService unregPayComponentService) {
-        this.unregPayComponentService = unregPayComponentService;
-    }
+	public void setUnregPayComponentsService(
+			UnregPayComponentsService unregPayComponentsService) {
+		this.unregPayComponentsService = unregPayComponentsService;
+	}
 
-    public WtPeriodeService getWtPeriodeService() {
+	public WtPeriodeService getWtPeriodeService() {
         return wtPeriodeService;
     }
 

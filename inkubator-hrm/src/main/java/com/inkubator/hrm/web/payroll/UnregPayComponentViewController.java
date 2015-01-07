@@ -25,9 +25,9 @@ import org.springframework.dao.DataIntegrityViolationException;
 
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.UnregPayComponents;
-import com.inkubator.hrm.service.UnregPayComponentService;
+import com.inkubator.hrm.service.UnregPayComponentsService;
 import com.inkubator.hrm.web.lazymodel.UnregPayComponentLazyDataModel;
-import com.inkubator.hrm.web.search.UnregPayComponentSearchParameter;
+import com.inkubator.hrm.web.search.UnregPayComponentsSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
@@ -40,9 +40,9 @@ import com.inkubator.webcore.util.MessagesResourceUtil;
 @ViewScoped
 public class UnregPayComponentViewController extends BaseController {
 
-    @ManagedProperty(value = "#{unregPayComponentService}")
-    private UnregPayComponentService unregPayComponentService;
-    private UnregPayComponentSearchParameter searchParameter;
+    @ManagedProperty(value = "#{unregPayComponentsService}")
+    private UnregPayComponentsService unregPayComponentsService;
+    private UnregPayComponentsSearchParameter searchParameter;
     private LazyDataModel<UnregPayComponents> lazyDataModel;
     private UnregPayComponents selected;
     private Long unregSalaryId;
@@ -53,14 +53,15 @@ public class UnregPayComponentViewController extends BaseController {
         super.initialization();
         String unregSalary = FacesUtil.getRequestParameter("execution");
         unregSalaryId = Long.valueOf(unregSalary.substring(1));
-        searchParameter = new UnregPayComponentSearchParameter();
+        searchParameter = new UnregPayComponentsSearchParameter();
+        searchParameter.setUnregSalaryId(unregSalaryId);
     }
 
     @PreDestroy
     private void cleanAndExit() {
         searchParameter = null;
         lazyDataModel = null;
-        unregPayComponentService = null;
+        unregPayComponentsService = null;
         selected = null;
     }
 
@@ -103,7 +104,7 @@ public class UnregPayComponentViewController extends BaseController {
 
     public void doSelectEntity() {
         try {
-            selected = this.unregPayComponentService.getEntiyByPK(selected.getId());
+            selected = this.unregPayComponentsService.getEntityByPkWithDetail(selected.getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -111,7 +112,7 @@ public class UnregPayComponentViewController extends BaseController {
     
     public void doDelete() {
         try {
-            this.unregPayComponentService.delete(selected);
+            this.unregPayComponentsService.delete(selected);
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 
@@ -123,26 +124,26 @@ public class UnregPayComponentViewController extends BaseController {
             LOGGER.error("Error", ex);
         }
     }
-        
-    public UnregPayComponentService getUnregPayComponentService() {
-        return unregPayComponentService;
-    }
 
-    public void setUnregPayComponentService(UnregPayComponentService unregPayComponentService) {
-        this.unregPayComponentService = unregPayComponentService;
-    }
+    public UnregPayComponentsService getUnregPayComponentsService() {
+		return unregPayComponentsService;
+	}
 
-    public UnregPayComponentSearchParameter getSearchParameter() {
-        return searchParameter;
-    }
+	public void setUnregPayComponentsService(UnregPayComponentsService unregPayComponentsService) {
+		this.unregPayComponentsService = unregPayComponentsService;
+	}
 
-    public void setSearchParameter(UnregPayComponentSearchParameter searchParameter) {
-        this.searchParameter = searchParameter;
-    }
+	public UnregPayComponentsSearchParameter getSearchParameter() {
+		return searchParameter;
+	}
 
-    public LazyDataModel<UnregPayComponents> getLazyDataModel() {
+	public void setSearchParameter(UnregPayComponentsSearchParameter searchParameter) {
+		this.searchParameter = searchParameter;
+	}
+
+	public LazyDataModel<UnregPayComponents> getLazyDataModel() {
         if (lazyDataModel == null) {
-            lazyDataModel = new UnregPayComponentLazyDataModel(searchParameter, unregPayComponentService, unregSalaryId);
+            lazyDataModel = new UnregPayComponentLazyDataModel(searchParameter, unregPayComponentsService);
         }
         return lazyDataModel;
     }

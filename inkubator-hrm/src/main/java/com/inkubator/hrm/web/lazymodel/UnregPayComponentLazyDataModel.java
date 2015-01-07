@@ -5,17 +5,19 @@
  */
 package com.inkubator.hrm.web.lazymodel;
 
-import com.inkubator.hrm.entity.UnregPayComponents;
-import com.inkubator.hrm.service.UnregPayComponentService;
-import com.inkubator.hrm.web.search.UnregPayComponentSearchParameter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.Order;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
+
+import com.inkubator.hrm.entity.UnregPayComponents;
+import com.inkubator.hrm.service.UnregPayComponentsService;
+import com.inkubator.hrm.web.search.UnregPayComponentsSearchParameter;
 
 /**
  *
@@ -23,16 +25,14 @@ import org.primefaces.model.SortOrder;
  */
 public class UnregPayComponentLazyDataModel extends LazyDataModel<UnregPayComponents> implements Serializable{
     private static final Logger LOGGER = Logger.getLogger(UnregPayComponentLazyDataModel.class);
-    private final UnregPayComponentSearchParameter searchParameter;
-    private final UnregPayComponentService service;
+    private final UnregPayComponentsSearchParameter searchParameter;
+    private final UnregPayComponentsService service;
     private List<UnregPayComponents> unregPayComponentList = new ArrayList<>();
     private Integer jumlahData;
-    private Long unregSalaryId;
 
-    public UnregPayComponentLazyDataModel(UnregPayComponentSearchParameter searchParameter, UnregPayComponentService service, Long unregSalaryId) {
+    public UnregPayComponentLazyDataModel(UnregPayComponentsSearchParameter searchParameter, UnregPayComponentsService service) {
         this.searchParameter = searchParameter;
         this.service = service;
-        this.unregSalaryId = unregSalaryId;
     }
     
     @Override
@@ -46,8 +46,8 @@ public class UnregPayComponentLazyDataModel extends LazyDataModel<UnregPayCompon
                 }else{
                     order = Order.desc("paySalaryComponent");
                 }
-                unregPayComponentList = service.getByParam(unregSalaryId, searchParameter, first, pageSize, order);
-                jumlahData = Integer.parseInt(String.valueOf(service.getTotalByParam(unregSalaryId, searchParameter)));
+                unregPayComponentList = service.getByParam(searchParameter, first, pageSize, order);
+                jumlahData = Integer.parseInt(String.valueOf(service.getTotalByParam(searchParameter)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
             }
