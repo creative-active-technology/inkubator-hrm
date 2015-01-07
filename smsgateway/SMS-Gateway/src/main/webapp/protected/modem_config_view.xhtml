@@ -1,0 +1,161 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>Facelet Title</title>
+        <!--<link rel="stylesheet" href="${request.contextPath}/resources/css/sms_login_form.css" type="text/css" media="screen" />-->
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml"> 
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <div class="ui-grid-col-10" id="header_isi">
+                    <p:growl id="modemFormId" showDetail="true" showSummary="true" globalOnly="true" />
+                    <h:form id="modemViewFormId">
+                        <div style="margin: 10px">
+                            <p:outputLabel value="#{appmsg['modem.modem']}"  style="font-size: 24px;font-family: Verdana;color: #003333" />
+                            <p:outputLabel value="#{appmsg['modem.modem_list_and_configuration']}"  style="font-size: 11px;margin-left: 5px" />
+                        </div>
+                        <p:breadCrumb  style="margin-bottom: 5px;margin-left: 10px;margin-right: 10px;margin-top: 5px">
+                            <p:menuitem value="#{appmsg['modem.modem_list']}"  url="/protected/home.htm" />
+                            <p:menuitem value="#{appmsg['modem.modem_list']}"  url="/protected/modem_config_view.htm" />
+                        </p:breadCrumb>
+                        <p:focus for="pecarianTxtid" />
+                        <div style="margin-top: 10px;clear: both" />
+                        <h:panelGrid columns="4"  style="margin-left: 10px;margin-right: 10px;margin-top: 10px;margin-bottom: 5px;float: left">
+                            <p:outputLabel value="#{appmsg['modem.search']}" style="font-weight: bold"/>
+                            <p:outputLabel value=":" style="font-weight: bold"/>
+                            <p:inputText  placeholder="Full Text Service"  style="width: 260px"  id="pecarianTxtid" value="#{modemViewController.param}"/>
+                            <p:commandButton value="Cari"  icon="ui-icon-search" action="#{modemViewController.doSearch()}" update="tableModemId"/>
+                        </h:panelGrid>
+                        <h:panelGrid columns="4"  style="margin-left: 10px;margin-right: 10px;margin-top: 10px;margin-bottom: 5px;float: right">
+                            <p:commandButton value="#{appmsg['global.add']}"  icon="ui-icon-plus" action="#{modemViewController.doAdd()}"/>
+                            <p:commandButton value="#{appmsg['modem.activate_modem']}"  icon="ui-icon-signal-diag"  title="Aktifkan Semua Modem"/>
+                            <p:commandButton value="#{appmsg['modem.turn_off_service']}"  icon="ui-icon-signal"  title="Matikan  Semua Service Modem"/>
+                        </h:panelGrid>
+                        <div style="clear: both" />
+                        <p:dataTable value="#{modemViewController.dataModemDefinitions}" var="modem"  rowIndexVar="no" style="margin-left: 10px; margin-right: 10px;margin-top: 5px" id="tableModemId">
+                            <p:column style="text-align: center;width: 3%;">
+                                <f:facet name="header">  
+                                    <h:outputText value="No."  />
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column sortBy="modemId" >
+                                <f:facet name="header">  
+                                    <h:outputText value="Modem ID"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{modem.modemId}"/>
+                            </p:column>
+                            <p:column  style="text-align: center;width: 150px" >
+                                <f:facet name="header">  
+                                    <h:outputText value="Aksi"/>
+                                </f:facet>
+                                <p:commandButton icon="ui-icon-folder-open" style="font-size: 10px" action="#{modemViewController.doEdit()}" >
+                                    <f:setPropertyActionListener value="#{modem}" target="#{modemViewController.selectedModemDefinition}" />
+                                </p:commandButton>
+                                -
+                                <p:commandButton icon="ui-icon-trash" style="font-size: 10px" onclick="PF('statusDialog').show();" ajax="true" oncomplete="PF('confirmDialogDelete').show()" update=":deleteDialogFormId">
+                                    <f:setPropertyActionListener value="#{modem}" target="#{modemViewController.selectedModemDefinition}" />
+                                </p:commandButton>
+                                -
+                                <p:commandButton icon="ui-icon-zoomin" style="font-size: 10px" ajax="true" title="Detil Modem" action="#{modemViewController.doDeteail()}" >
+                                    <f:setPropertyActionListener value="#{modem}" target="#{modemViewController.selectedModemDefinition}" />
+                                </p:commandButton>
+                                -
+                                <p:commandButton icon="ui-icon-power" style="font-size: 10px" ajax="true" title="Disconent Modem" action="#{modemViewController.doConnect()}" >
+                                    <f:setPropertyActionListener value="#{modem}" target="#{modemViewController.selectedModemDefinition}" />
+                                </p:commandButton>
+                            </p:column>
+                            <p:column  >
+                                <f:facet name="header">  
+                                    <h:outputText value="Manufactur"/>
+                                </f:facet>
+                                <p:outputLabel value= "#{modem.manufacture}"/>
+                            </p:column>
+                            <p:column sortBy="comId" >
+                                <f:facet name="header">  
+                                    <h:outputText value="Nama Port"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{modem.comId}"/>
+                            </p:column>
+                            <p:column sortBy="baudRate" >
+                                <f:facet name="header">  
+                                    <h:outputText value="Kecepatan"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{modem.baudRate}"/>
+                            </p:column>
+                            <p:column sortBy="pinNumber" >
+                                <f:facet name="header">  
+                                    <h:outputText value="SMSC"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{modem.smscNumber}"/>
+                            </p:column>
+                            <p:column sortBy="pinNumber" >
+                                <f:facet name="header">  
+                                    <h:outputText value="Harga SMS"/>
+                                </f:facet>
+                                <div align="right">
+                                    <p:outputLabel value= "#{modem.pricePerSms}"/>
+                                </div>
+                            </p:column>
+                            <p:column sortBy="currentValue" >
+                                <f:facet name="header">  
+                                    <h:outputText value="Total Pulsa"/>
+                                </f:facet>
+                                <div align="right">
+                                    <p:outputLabel value= "#{modem.currentValue}"/>
+                                </div>
+                            </p:column>
+                            <p:column sortBy="pinNumber"  style="text-align: center">
+                                <f:facet name="header">  
+                                    <h:outputText value="Terkoneksi"/>
+                                </f:facet>
+                                <p:outputLabel value= "#{modem.isConnected}">
+                                    <f:converter converterId="booleanMessageConverter" />
+                                </p:outputLabel>
+                            </p:column>
+                        </p:dataTable>
+
+                    </h:form>
+                    <p:dialog widgetVar="confirmDialogDelete" header="Konfirmasi Delete" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
+                              appendTo="@(body)" resizable="false" id="confirmDialogDeleteId" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
+                        <h:form id="deleteDialogFormId">
+                            <div align="center">
+                                <div align="center">
+                                    <h:panelGrid columns="2" style="text-align: justify">
+                                        <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
+                                        <h:panelGroup>
+                                            <h:panelGrid style="text-align: center">
+                                                <p:outputLabel value="Apakah Anda yakin akan  menghapus data berikut?" styleClass="label_hrm"/>
+                                            </h:panelGrid>
+                                        </h:panelGroup>
+                                    </h:panelGrid>
+                                </div>
+                                <h:panelGrid  columns="3">
+                                    <p:outputLabel value="Sfesifikasi Modem" styleClass="label_hrm"/>
+                                    <p:outputLabel value=":"  styleClass="label_hrm" />
+                                    <p:outputLabel value="#{modemViewController.selectedModemDefinition.manufacture} - #{modemViewController.selectedModemDefinition.comId}" styleClass="isitext_hrm"/>
+                                </h:panelGrid>
+                                <p:separator/>
+                                <p:commandButton value="Ya" action="#{modemViewController.doDelete()}" id="yesId" title="#{appmsg['global.yes']}" styleClass="isitext_hrm" update=":modemViewFormId"
+                                                 oncomplete="PF('confirmDialogDelete').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                                <p:commandButton value="Tidak" oncomplete="PF('confirmDialogDelete').hide()" icon="ui-icon-close" title="#{appmsg['global.no']}"  styleClass="isitext_hrm"/>
+
+                            </div>
+                        </h:form>
+                    </p:dialog>
+                 
+                </div>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

@@ -1,0 +1,139 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>Facelet Title</title>
+        <!--<link rel="stylesheet" href="${request.contextPath}/resources/css/sms_login_form.css" type="text/css" media="screen" />-->
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml"> 
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <div class="ui-grid-col-10" id="header_isi">
+                    <p:growl id="modemFormId" showDetail="true" showSummary="true" globalOnly="true" />
+                    <h:form id="modemViewFormId">
+                        <div style="margin: 10px">
+                            <p:outputLabel value="Pengiriman SMS"  style="font-size: 24px;font-family: Verdana;color: #003333" />
+                            <p:outputLabel value="Daftar modem dan konfigurasi"  style="font-size: 11px;margin-left: 5px" />
+                        </div>
+                        <p:breadCrumb  style="margin-bottom: 5px;margin-left: 10px;margin-right: 10px;margin-top: 5px">
+                            <p:menuitem value="Daftar Pengiriman SMS"  url="/protected/home.htm" />
+                            <p:menuitem value="Daftar Pengiriman SMS"  url="/protected/sending_sms_history.htm" />
+                        </p:breadCrumb>
+                        <p:focus for="pecarianTxtid" />
+                        <div style="margin-top: 10px;clear: both" />
+                        <h:panelGrid columns="4"  style="margin-left: 10px;margin-right: 10px;margin-top: 10px;margin-bottom: 5px;float: left">
+                            <p:outputLabel value="Pencarian" style="font-weight: bold"/>
+                            <p:outputLabel value=":" style="font-weight: bold"/>
+                            <p:inputText  placeholder="Full Text Service"  style="width: 260px"  id="pecarianTxtid" value="#{modemViewController.param}"/>
+                            <p:commandButton value="Cari"  icon="ui-icon-search" action="#{modemViewController.doSearch()}" />
+                        </h:panelGrid>
+                        <h:panelGrid columns="4"  style="margin-left: 10px;margin-right: 10px;margin-top: 10px;margin-bottom: 5px;float: right">
+                            <p:commandButton value="Kirim SMS"  icon="fa fa-envelope-o" action="#{sendingSMSViewController.doAddSms()}"/>
+                            <p:commandButton value="Penjadwalan SMS"  icon="fa fa-calendar" action="#{sendingSMSViewController.doAddSchedule()}"/>
+                        </h:panelGrid>
+                        <div style="clear: both" />
+                        <p:dataTable  var="smsHistory"  value="#{sendingSMSViewController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7" 
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      id="tableEmpDataId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="Daftar Pengiriman SMS" styleClass="label_hrm"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 3%;">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"  />
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column sortBy="#{smsHistory.fromSms}">
+                                <f:facet name="header">  
+                                    <h:outputText value="Pengirim"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{smsHistory.fromSms}"/>
+                            </p:column>
+                            <p:column sortBy="#{smsHistory.destination}">
+                                <f:facet name="header">  
+                                    <h:outputText value="Penerima"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{smsHistory.destination}"/>
+                            </p:column>
+<!--                            <p:column sortBy="#{smsHistory.contentSms}">
+                                <f:facet name="header">  
+                                    <h:outputText value="ISI SMS"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{smsHistory.contentSms}"/>
+                            </p:column>-->
+                            <p:column sortBy="#{smsHistory.contentSms}">
+                                <f:facet name="header">  
+                                    <h:outputText value="Tanggal Kirim"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{smsHistory.sendDate}"/>
+                            </p:column>
+                            <p:column sortBy="#{smsHistory.contentSms}">
+                                <f:facet name="header">  
+                                    <h:outputText value="Waktu Kirim"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{smsHistory.sendTime}"/>
+                            </p:column>
+                            <p:column sortBy="#{smsHistory.contentSms}">
+                                <f:facet name="header">  
+                                    <h:outputText value="Terkirim"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{smsHistory.isSend}"/>
+                            </p:column>
+                            <p:column sortBy="#{smsHistory.priceSms}">
+                                <f:facet name="header">  
+                                    <h:outputText value="Harga"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{smsHistory.priceSms}"/>
+                            </p:column>
+                            <p:column sortBy="#{smsHistory.isSchedule}">
+                                <f:facet name="header">  
+                                    <h:outputText value="Terjadwal"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{smsHistory.isSchedule}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+                    <p:dialog widgetVar="confirmDialogDelete" header="Konfirmasi Delete" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
+                              appendTo="@(body)" resizable="false" id="confirmDialogDeleteId" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
+                        <h:form id="deleteDialogFormId">
+                            <div align="center">
+                                <div align="center">
+                                    <h:panelGrid columns="2" style="text-align: justify">
+                                        <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
+                                        <h:panelGroup>
+                                            <h:panelGrid style="text-align: center">
+                                                <p:outputLabel value="Apakah Anda yakin akan  menghapus data berikut?" styleClass="label_hrm"/>
+                                            </h:panelGrid>
+                                        </h:panelGroup>
+                                    </h:panelGrid>
+                                </div>
+                                <h:panelGrid  columns="3">
+                                    <p:outputLabel value="Sfesifikasi Modem" styleClass="label_hrm"/>
+                                    <p:outputLabel value=":"  styleClass="label_hrm" />
+                                    <p:outputLabel value="#{modemViewController.selectedModemDefinition.manufacture} - #{modemViewController.selectedModemDefinition.comId}" styleClass="isitext_hrm"/>
+                                </h:panelGrid>
+                                <p:separator/>
+                                <p:commandButton value="Ya" action="#{modemViewController.doDelete()}" id="yesId" title="#{appmsg['global.yes']}" styleClass="isitext_hrm" update=":modemViewFormId"
+                                                 oncomplete="PF('confirmDialogDelete').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                                <p:commandButton value="Tidak" oncomplete="PF('confirmDialogDelete').hide()" icon="ui-icon-close" title="#{appmsg['global.no']}"  styleClass="isitext_hrm"/>
+
+                            </div>
+                        </h:form>
+                    </p:dialog>
+
+                </div>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

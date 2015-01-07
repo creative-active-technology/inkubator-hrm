@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="biodata3" language="groovy" pageWidth="242" pageHeight="153" orientation="Landscape" columnWidth="226" leftMargin="8" rightMargin="8" topMargin="34" bottomMargin="8" uuid="a88436a3-9945-4fe1-a08c-5ab9bbe8f177">
+	<property name="ireport.zoom" value="1.7715610000000017"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<field name="NIK" class="java.lang.String"/>
+	<field name="name" class="java.lang.String"/>
+	<field name="jabatan" class="java.lang.String"/>
+	<field name="department" class="java.lang.String"/>
+	<field name="tmb" class="java.lang.String"/>
+	<field name="photo" class="java.lang.String"/>
+	<field name="barcode" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="111">
+			<textField>
+				<reportElement x="75" y="11" width="100" height="19" uuid="60134d2a-7003-48df-8a82-18d9cada8ce2"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NIK}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="75" y="49" width="100" height="12" uuid="94bd7127-758d-4904-8969-cb8b0ffc1695"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{jabatan}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="75" y="33" width="100" height="12" uuid="b145f231-679c-424c-8077-40b4a06397ce"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="75" y="65" width="100" height="12" uuid="20b8c809-a4cf-4864-a181-22103ab4ab12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{department}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="75" y="80" width="100" height="12" uuid="fc45a14d-dd6b-4a79-a142-0620ac4274aa"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tmb}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="7" y="11" width="57" height="71" uuid="10d9476c-c387-4293-9724-35dbdbc3717f"/>
+				<imageExpression><![CDATA[$F{photo}]]></imageExpression>
+			</image>
+			<componentElement>
+				<reportElement x="7" y="85" width="57" height="15" uuid="ff3c017a-4415-4eda-94a0-3741ab98248e"/>
+				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code128B" drawText="false" checksumRequired="false">
+					<jr:codeExpression><![CDATA[$F{barcode}]]></jr:codeExpression>
+				</jr:barbecue>
+			</componentElement>
+		</band>
+	</detail>
+</jasperReport>

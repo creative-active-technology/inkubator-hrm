@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+          http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd
+          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+    
+    <context:property-placeholder location="classpath*:mail_config.properties" />
+    <bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl" >
+         <property name="javaMailProperties">
+            <props>
+                <prop key="mail.smtp.auth">false</prop>
+                <prop key="mail.smtp.starttls.enable">false</prop>
+                <prop key="mail.smtp.host">10.10.30.19</prop>
+                <prop key="mail.smtp.port">25</prop>
+            </props>
+        </property>
+    </property>
+    <roperty name="username" value="noreply_hr@incubatechnology.com" />
+    <property name="password" value="optima@123Hris" />
+    </bean>
+    <bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean" lazy-init="true">
+        <property name="velocityProperties" >
+            <value>
+                resource.loader=class
+                class.resource.loader.class=org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+            </value>
+        </property>
+    </bean>
+    <bean id="velocityTemplateSender" class="com.inkubator.common.notification.service.impl.VelocityTemplateSenderImpl" lazy-init="true">
+        <property name="javaMailSender" ref="javaMailSender"/>
+        <property name="velocityEngine" ref="velocityEngine"/>
+    </bean>
+</beans>

@@ -1,0 +1,209 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>Facelet Title</title>
+        <!--<link rel="stylesheet" href="${request.contextPath}/resources/css/sms_login_form.css" type="text/css" media="screen" />-->
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml"> 
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <div class="ui-grid-col-10" id="header_isi">
+                    <p:growl globalOnly="true" id="growlModemConfig" showSummary="true" showDetail="true"/>
+                    <h:form id="smsFormId">
+                        <div style="margin: 10px">
+                            <p:outputLabel value="Modem Form"  style="font-size: 24px;font-family: Verdana;color: #003333" />
+                            <p:outputLabel value="Form Input Konfigurasi Modem"  style="font-size: 11px;margin-left: 5px" />
+                        </div>
+                        <p:breadCrumb  style="margin-bottom: 5px;margin-left: 10px;margin-right: 10px;margin-top: 5px">
+                            <p:menuitem value="Home"  url="/protected/home.htm" />
+                            <p:menuitem value="Daftar Pengiriman SMS"  url="/protected/sending_sms_history.htm" />
+                            <p:menuitem value="Kirim SMS"  url="/protected/sending_sms.htm" />
+
+                        </p:breadCrumb>
+                        <div style="font-size: 12px;margin-left: 5px;margin-top: 10px;margin-left: 20px;margin-bottom: 30px">   
+                            <h:panelGrid columns="1"  cellpadding="2" cellspacing="1" id="modemFormInputId">
+                                <p:outputLabel value="Kirim Ke" for="sendId"/>
+                                <h:panelGroup>
+                                    <p:inputText value="#{sendingSMSController.smsSendModel.listPhoneAsString}"  placeholder="NO HP" id="sendId" required="true" style="width: 250px" readonly="true"/>
+                                    <p:commandButton value="+"  style="margin-left: 5px"  oncomplete="PF('addDialogSMS').show()" immediate="true"/>
+                                </h:panelGroup>
+                                <p:outputLabel value="Jenis Modem" for="modemId"/>
+                                <p:selectOneMenu id="modemId"  value="#{sendingSMSController.smsSendModel.modemId}"
+                                                 required="true" label="Pilihan Modem"
+                                                 style="text-align: left;width: 250px" >
+                                    <f:selectItem itemLabel="Silahkan Pilih" itemValue="" />
+                                    <f:selectItems value="#{sendingSMSController.mapOfModem}"/>
+
+                                </p:selectOneMenu>
+                                <p:outputLabel value="Isi SMS" for="smsContent"/>
+                                <p:inputTextarea id="smsContent" rows="4" cols="20" counter="counter" maxlength="150" value="#{sendingSMSController.smsSendModel.smsContent}" required="true"
+                                                 style="width: 250px; height: 90px;" counterTemplate="{0} sisa karakter" autoResize="true" label="SMS" title="SMS"/>
+
+                                <p:outputLabel/>
+                                <p:outputLabel id="counter"/>
+                            </h:panelGrid> 
+                            <h:panelGrid columns="2">
+                                <p:commandButton value="Kirim" icon="ui-icon-disk" action="#{sendingSMSController.doSend()}" update="modemFormInputId,:growlModemConfig" />
+                                <p:commandButton value="Batal" title="Batal" process="@this" update="modemFormInputId" action="#{sendingSMSController.doReset()}"
+                                                 icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px" >  
+                                    <p:resetInput target="modemFormInputId" />  
+                                </p:commandButton>
+
+                            </h:panelGrid>
+                        </div>
+                    </h:form>
+                    <p:dialog widgetVar="addDialogSMS" header="Tambah No.HP" modal="true" width="375" dynamic="true" 
+                              appendTo="@(body)" resizable="false"   closeOnEscape="true" >
+                        <h:form id="addId">
+                            <p:messages/>
+                            <h:panelGrid  columns="4">
+                                <p:outputLabel value="No. HP"/>
+                                <p:outputLabel value=":"  />
+                                <p:inputText  value="#{sendingSMSController.smsSendModel.phoneNumber}" placeholder="Contoh : +8787878787"/>
+                                <p:commandButton value="Tambah" action="#{sendingSMSController.doAdd()}" id="yesId" title="Ya" update=":smsFormId:sendId,addId"
+                                                 style="margin-right: 5px" />
+                            </h:panelGrid>
+                            <p:focus for="addId" />
+                        </h:form>
+                    </p:dialog>
+                </div>
+            </ui:define>
+        </ui:composition>
+        <!--
+                <h:form>
+                    <div id="header_login">
+                        <div id="header_login_left">
+                            <p:outputLabel value="SMS" style="color: #33cc00;font-weight: bold;font-size: 14px"/> 
+                            <p:outputLabel value="Gateway" style="color: #ffffff;margin-left: 4px"/>
+                        </div>
+                        <div style="float: right;padding-top: 7px;margin-right: 5px">
+                            <p:commandButton value="Logout" style="font-family:Trebuchet MS;font-size: 13px" icon="ui-icon-power"/>
+                        </div>
+                    </div>
+                    <div id="header_menu" style="margin-bottom: 10px" >
+                        <h:panelGrid style="font-size: 12px;padding-top: 6px" columns="4" id="menuId">
+                            <p:commandButton value="Kirim SMS"  title="Kirim SMS" action="#{homeController.doRedirectSms()}"/>
+                            <p:commandButton value="Scheduller SMS"  title="Scheduller SMS"/>
+                            <p:commandButton value="SMS History"  title="SMS History"/>
+                            <p:commandButton value="Modem Config" title="Modem Config" action="#{homeController.doRedirectModemConfig()}"/>
+                        </h:panelGrid>
+                    </div>
+                </h:form>
+                <p:outputLabel value="Kirim SMS" style="font-size: 16px;margin-left: 10px;font-weight: bold;color: #006600" />
+                <h:form id="smsFormId">
+                    <div style="font-size: 12px;margin-left: 5px;margin-top: 10px;margin-left: 20px;margin-bottom: 30px">   
+                        <h:panelGrid columns="1"  cellpadding="2" cellspacing="1" id="modemFormInputId">
+                            <p:outputLabel value="Kirim Ke" for="sendId"/>
+                            <h:panelGroup>
+                                <p:inputText value="#{sendingSMSController.smsSendModel.listPhoneAsString}"  placeholder="NO HP" id="sendId" required="true" style="width: 250px" readonly="true"/>
+                                <p:commandButton value="+"  style="margin-left: 5px"  oncomplete="PF('addDialogSMS').show()" immediate="true"/>
+                            </h:panelGroup>
+        
+                            <p:outputLabel value="Jenis Modem" for="modemId"/>
+                            <p:selectOneMenu id="modemId"  value="#{sendingSMSController.smsSendModel.modemId}"
+                                             required="true" label="Pilihan Modem"
+                                             style="text-align: left;width: 250px" >
+                                <f:selectItem itemLabel="Silahkan Pilih" itemValue="" />
+                                <f:selectItems value="#{sendingSMSController.mapOfModem}"/>
+        
+                            </p:selectOneMenu>
+                            <p:outputLabel value="Isi SMS" for="smsContent"/>
+                            <p:inputTextarea id="smsContent" rows="4" cols="20" counter="counter" maxlength="150" value="#{sendingSMSController.smsSendModel.smsContent}" required="true"
+                                             style="width: 250px; height: 90px;" counterTemplate="{0} sisa karakter" autoResize="true" label="SMS" title="SMS"/>
+        
+                            <p:outputLabel/>
+                            <p:outputLabel id="counter"/>
+                        </h:panelGrid> 
+                        <h:panelGrid columns="2">
+                            <p:commandButton value="Kirim" icon="ui-icon-disk" action="#{sendingSMSController.doSend()}" update="modemFormInputId,:growlModemConfig" />
+                            <p:commandButton value="Batal" title="Batal" process="@this" update="modemFormInputId" action="#{sendingSMSController.doReset()}"
+                                             icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px" >  
+                                <p:resetInput target="modemFormInputId" />  
+                            </p:commandButton>
+        
+                        </h:panelGrid>
+                    </div>
+                </h:form>-->
+        <!--        <p:outputLabel value="Daftar Pengiriman SMS" style="font-size: 16px;margin-left: 10px;font-weight: bold;color: #006600" />
+                <p:separator style="margin-left: 8px;margin-right: 8px"/>-->
+        <!--        <h:form id="tableId">
+                    <div style="width: 100%;font-size: 12px;margin-bottom: 20px">   
+                        <p:dataTable style="margin-top: 10px;padding-right: 5px;padding-left: 5px" value="#{sendingSMSController.dataTableSMSActivities}" var="smsActivity" rowIndexVar="no" >
+                            <p:column style="text-align: center;width: 3%;">
+                                <f:facet name="header">  
+                                    <h:outputText value="No."  />
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column sortBy="fromSms" >
+                                <f:facet name="header">  
+                                    <h:outputText value="SMS Dari"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{smsActivity.fromSms}"/>
+                            </p:column>
+                            <p:column sortBy="destination" >
+                                <f:facet name="header">  
+                                    <h:outputText value="SMS Ke"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{smsActivity.destination}"/>
+                            </p:column>
+                            <p:column sortBy="contentSms" style="text-align: center">
+                                <f:facet name="header">  
+                                    <h:outputText value="Isi SMS"/>
+                                </f:facet>
+                                <h:outputLabel value= "Lihat Isi SMS"/>
+                            </p:column>
+                            <p:column sortBy="contentSms" style="text-align: center">
+                                <f:facet name="header">  
+                                    <h:outputText value="Tanggal Kirim"/>
+                                </f:facet>
+                                <p:outputLabel value= "#{smsActivity.sendDate}">
+                                    <f:convertDateTime pattern="dd MMMM yyyy" />
+                                </p:outputLabel>
+                            </p:column>
+                            <p:column sortBy="contentSms" style="text-align: center">
+                                <f:facet name="header">  
+                                    <h:outputText value="Waktu Kirim"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{smsActivity.sendTime}"/>
+                            </p:column>
+                            <p:column sortBy="contentSms" style="text-align: center">
+                                <f:facet name="header">  
+                                    <h:outputText value="Scheduller SMS"/>
+                                </f:facet>
+                                <p:outputLabel value= "#{smsActivity.isSchedule}">
+                                    <f:converter converterId="booleanMessageConverter"/>
+                                </p:outputLabel>
+                            </p:column>
+                            <p:column sortBy="contentSms" style="text-align: center">
+                                <f:facet name="header">  
+                                    <h:outputText value="SMS Terkirm"/>
+                                </f:facet>
+                                <p:outputLabel value= "#{smsActivity.isSend}">
+                                    <f:converter converterId="booleanMessageConverter"/>
+                                </p:outputLabel>
+                            </p:column>
+                            <p:column sortBy="contentSms" style="text-align: center">
+                                <f:facet name="header">  
+                                    <h:outputText value="Harga SMS"/>
+                                </f:facet>
+                                <p:outputLabel value= "#{smsActivity.priceSms}">
+                                </p:outputLabel>
+                            </p:column>
+                        </p:dataTable>
+                    </div>
+        
+                </h:form>-->
+
+    </h:body>
+</html>
+

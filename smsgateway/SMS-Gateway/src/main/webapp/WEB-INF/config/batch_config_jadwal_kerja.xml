@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jee="http://www.springframework.org/schema/jee"
+       xmlns:jms="http://www.springframework.org/schema/jms"
+       xmlns:batch="http://www.springframework.org/schema/batch" 
+       xsi:schemaLocation="http://www.springframework.org/schema/batch 
+		http://www.springframework.org/schema/batch/spring-batch-2.2.xsd
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		">
+    
+    <bean id="dataSourceBatch" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver" /> 
+        <property name="url" value="jdbc:mysql://localhost:3306/hrm" /> 
+        <property name="username" value="root" /> 
+        <property name="password" value="123Sahatea" /> 
+    </bean>
+    <bean id="transactionManagerBatch" class="org.springframework.batch.support.transaction.ResourcelessTransactionManager">
+        <property name="dataSource" ref="dataSourceBatch"/>
+    </bean>
+
+    <bean id="pagingItemReader" class="org.springframework.batch.item.database.JdbcPagingItemReader" scope="step">
+        <property name="dataSource" ref="dataSourceBatch" />
+        <property name="queryProvider">
+            <bean class="org.springframework.batch.item.database.support.SqlPagingQueryProviderFactoryBean">
+                <property name="dataSource" ref="dataSourceBatch" />
+                <property name="selectClause" value="select id, NIK, shift_group_id" />
+                <property name="fromClause" value="from emp_data" />
+                <property name="whereClause" value="where shift_group_id=:group_id" />
+                <property name="sortKey" value="id" />
+            </bean>
+            
+        </property>  
+        <property name="parameterValues">
+            <map>
+                <entry key="name" value="#{jobParameters['name']}" />
+            </map>
+        </property>
+        <property name="pageSize" value="10" />
+        <property name="rowMapper">
+            <bean class="com.inkubator.hrm.batch.EmployeeRowMapper" />
+        </property>
+    </bean> 
+        
+    <bean id="jobRepository" class="org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean">
+        <property name="transactionManager" ref="transactionManagerBatch" /> 
+    </bean>
+       
+    <bean id="jobLauncher" class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
+        <property name="jobRepository" ref="jobRepository" /> 
+    </bean>
+
+
+    <batch:job id="testJob" xmlns="http://www.springframework.org/schema/batch">
+        <batch:step id="step1">
+            <batch:tasklet>
+                <batch:chunk reader="pagingItemReader"
+                             commit-interval="1" />
+            </batch:tasklet>
+        </batch:step>
+    </batch:job>
+    
+    <!--<bean id="jadwalKerjaWriter" class=""-->
+</beans>

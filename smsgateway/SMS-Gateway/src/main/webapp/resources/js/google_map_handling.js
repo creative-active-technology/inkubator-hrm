@@ -1,0 +1,2 @@
+var currentMarker=null;function handlePointClick(a){null==currentMarker&&(document.getElementById("lat").value=a.latLng.lat(),document.getElementById("lng").value=a.latLng.lng(),currentMarker=new google.maps.Marker({position:new google.maps.LatLng(a.latLng.lat(),a.latLng.lng())}),map.addOverlay(currentMarker),dlg.show())}function markerAddComplete(){var a=document.getElementById("title");currentMarker.setTitle(a.value);a.value="";currentMarker=null;dlg.hide()}
+function cancel(){dlg.hide();currentMarker.setMap(null);currentMarker=null;return!1};

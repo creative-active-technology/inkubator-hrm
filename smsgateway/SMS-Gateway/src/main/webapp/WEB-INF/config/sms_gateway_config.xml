@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+          http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd
+          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+    
+    <!--<context:property-placeholder location="classpath*:sms_config.properties" />-->
+<!--    <bean id="sMSServiceUtil" class="com.inkubator.common.notification.util.SMSServiceUtil" lazy-init="false" destroy-method="close" init-method="initialisasi">
+        <property name="modemId"  value="${sms_gateway.modem_id}"/>
+        <property name="comId"  value="${sms_gateway.com_port}"/>
+        <property name="baudRate"  value="${sms_gateway.baud_rate}"/>
+        <property name="manufacture"  value="${sms_gateway.manufacture}"/>
+        <property name="pinNumber"  value="${sms_gateway.pinNumber}"/>
+        <property name="inBound"  value="${sms_gateway.inBound}"/>
+        <property name="outBound"  value="${sms_gateway.outBound}"/>
+        <property name="smscNumber"  value="${sms_gateway.smscNumber}"/>
+    </bean>-->
+    
+    <bean id="modemManageService" class="com.inkubator.sms.gateway.service.impl.ModemManageService" lazy-init="true" />
+        
+   
+</beans>

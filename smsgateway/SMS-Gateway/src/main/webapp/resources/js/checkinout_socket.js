@@ -1,0 +1,1 @@
+function handleCheckInOut(a){PF("socketNotificationGrowl").show([a])};
