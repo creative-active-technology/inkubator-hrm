@@ -20,14 +20,14 @@
                         <p:graphicImage library="images" name="biodata.png" height="36" width="36" />
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Employee Setting" styleClass="header_big" />
-                                <p:outputLabel value="Unreg Salary from Payroll" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['unregSalary.employeeSetting']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['unregSalary.unregSalary_header']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
                     <p:separator />
-                    <p:growl id="growlBioDetailFormId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
-                    <h:form id="formBioDetailFormId" >
+                    <p:growl id="growlId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
+                    <h:form id="formId" >
                         <p:panelGrid style="width: 100%;margin-bottom: 10px" styleClass="grid_no_border">
                             <p:row>
 
@@ -43,12 +43,81 @@
                                         </p:row>
                                         <p:row>
                                             <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                                <p:outputLabel  value="#{appmsg['global.gender']}" style="font-weight: bold"/>
+                                                <p:outputLabel  value="#{appmsg['unregSalary.basePeriode']}" style="font-weight: bold"/>
                                             </p:column>
                                             <p:column style="width: 80%">
-                                                <p:outputLabel  value="#{bioDataDetilController.selectedBioData.gender}" >
-                                                    <f:converter converterId="genderConverter"/>
+                                                <p:outputLabel  value="#{UnregSalaryEmpSettingFormController.model.month}" >
+                                                    <f:converter converterId="monthNumberAsStringConverter" />
                                                 </p:outputLabel>
+                                                <p:outputLabel  value=" #{UnregSalaryEmpSettingFormController.model.year}" />
+                                            </p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                                <p:outputLabel  value="#{appmsg['unregSalary.periode']}" style="font-weight: bold"/>
+                                            </p:column>
+                                            <p:column style="width: 80%">
+                                                <p:calendar  id="startPeriode" size="25" pattern="dd MMMM yyyy" label="Start Periode" value="#{UnregSalaryEmpSettingFormController.model.startPeriodDate}"
+                                                             required="true" navigator="true">
+                                                    <f:validator validatorId="birthDateValidator"  />
+                                                    <f:attribute name="validatorMessage" value="#{appmsg['global.birthDate_validator']}"/>
+                                                </p:calendar>
+                                                <p:outputLabel  value=" s/d " style="font-weight: bold"/>
+                                                <p:calendar  id="endPeriode" size="25" pattern="dd MMMM yyyy" label="End Periode" value="#{UnregSalaryEmpSettingFormController.model.endPeriodDate}"
+                                                             required="true" navigator="true">
+                                                    <f:validator validatorId="birthDateValidator"  />
+                                                    <f:attribute name="validatorMessage" value="#{appmsg['global.birthDate_validator']}"/>
+                                                </p:calendar>
+                                                <p:message for="startPeriode"/>
+                                                <p:message for="endPeriode"/>
+                                            </p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                                <p:outputLabel  value="#{appmsg['functiongroup.function_group']}" style="font-weight: bold"/>
+                                            </p:column>
+                                            <p:column style="width: 80%">
+                                                <p:pickList value="#{UnregSalaryEmpSettingFormController.goljabDualListModel}" var="role" itemValue="#{role}" converter="golonganJabatanConverter" id="picklistGolonganJabatan"
+                                                            required="false"  style="margin-top: 15px;margin-bottom: 15px;" label="Daftar Golongan Jabatan" styleClass="isitext_hrm"
+                                                            itemLabel="#{role.code}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
+                                                            removeLabel="#{appmsg['global.remove']}"/>
+                                                <p:message for="picklistGolonganJabatan" />
+                                            </p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                                <p:outputLabel  value="#{appmsg['menu.department']}" style="font-weight: bold"/>
+                                            </p:column>
+                                            <p:column style="width: 80%">
+                                                <p:pickList value="#{UnregSalaryEmpSettingFormController.departmentDualListModel}" var="role" itemValue="#{role}" converter="departmentConverter" id="picklistDepartement"
+                                                            required="false"  style="margin-top: 15px;margin-bottom: 15px;" label="Daftar Departement" styleClass="isitext_hrm"
+                                                            itemLabel="#{role.departmentName}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
+                                                            removeLabel="#{appmsg['global.remove']}"/>
+                                                <p:message for="picklistDepartement" />
+                                            </p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                                <p:outputLabel  value="#{appmsg['religion.religion']}" style="font-weight: bold"/>
+                                            </p:column>
+                                            <p:column style="width: 80%">
+                                                <p:pickList value="#{UnregSalaryEmpSettingFormController.religionDualListModel}" var="role" itemValue="#{role}" converter="religionConverter" id="picklistReligion"
+                                                            required="false"  style="margin-top: 15px;margin-bottom: 15px;" label="Daftar Religion" styleClass="isitext_hrm"
+                                                            itemLabel="#{role.name}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
+                                                            removeLabel="#{appmsg['global.remove']}"/>
+                                                <p:message for="picklistReligion" />
+                                            </p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                                <p:outputLabel  value="#{appmsg['unregSalary.employeeStatus']}" style="font-weight: bold"/>
+                                            </p:column>
+                                            <p:column style="width: 80%">
+                                                <p:pickList value="#{UnregSalaryEmpSettingFormController.empTypeDualListModel}" var="role" itemValue="#{role}" converter="employeeTypeConverter" id="picklistEmployeeType"
+                                                            required="false"  style="margin-top: 15px;margin-bottom: 15px;" label="Daftar Employee Type" styleClass="isitext_hrm"
+                                                            itemLabel="#{role.name}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
+                                                            removeLabel="#{appmsg['global.remove']}"/>
+                                                <p:message for="picklistGolonganJabatan" />
                                             </p:column>
                                         </p:row>
                                     </p:panelGrid>
@@ -58,7 +127,10 @@
 
                         <p:separator/>
                         <h:panelGrid columns="4" style="margin-bottom: 5px;float: left">
-                            <p:commandButton value="#{appmsg['global.edit']}"  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" action="#{bioDataDetilController.doEdit()}" styleClass="label_button"/>
+                            <p:commandButton value="#{appmsg['global.edit']}" actionListener="#{UnregSalaryEmpSettingFormController.doSave()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true" update=":growlId">
+                                <!--<p:ajax event="dialogReturn" listener="#{UnregSalaryEmpSettingFormController.onDialogReturn}" update=":growlId"/>-->
+                            </p:commandButton>
+                            <!--<p:commandButton value="#{appmsg['global.edit']}"  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" action="#{bioDataDetilController.doEdit()}" styleClass="label_button"/>-->
                             <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{bioDataDetilController.doBack()}" styleClass="label_button"/>
 
                         </h:panelGrid>

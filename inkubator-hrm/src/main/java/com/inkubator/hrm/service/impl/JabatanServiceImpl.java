@@ -308,6 +308,14 @@ public class JabatanServiceImpl extends IServiceImpl implements JabatanService {
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public Jabatan getJabatanByIdForSpecDetail(Long id) throws Exception {
+        Jabatan jabatan = jabatanDao.getJabatanByIdWithDetail(id);
+        jabatan.getGolonganJabatan().getPangkat().getPangkatName();
+        return jabatan;
+    }
+    
+    @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<Jabatan> getJabatansByLevel(Integer level) throws Exception {
         return this.jabatanDao.getJabatansByLevel(level);
@@ -362,5 +370,7 @@ public class JabatanServiceImpl extends IServiceImpl implements JabatanService {
 	public List<Jabatan> getAllDataByCodeOrName(String param) throws Exception{
     	return jabatanDao.getAllDataByCodeOrName(param);		
 	}
+
+
 
 }

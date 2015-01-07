@@ -9,6 +9,7 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.UnregSalary;
 import com.inkubator.hrm.service.UnregSalaryService;
 import com.inkubator.hrm.web.lazymodel.UnregSalaryLazyDataModel;
+import com.inkubator.hrm.web.model.UnregSalaryViewModel;
 import com.inkubator.hrm.web.search.UnregSalarySearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
@@ -40,8 +41,9 @@ public class UnregSalaryViewController extends BaseController {
     @ManagedProperty(value = "#{unregSalaryService}")
     private UnregSalaryService unregSalaryService;
     private UnregSalarySearchParameter searchParameter;
-    private LazyDataModel<UnregSalary> lazyDataModel;
+    private LazyDataModel<UnregSalaryViewModel> lazyDataModel;
     private UnregSalary selected;
+    private UnregSalaryViewModel selectedViewModel;
 
     @PostConstruct
     @Override
@@ -56,6 +58,7 @@ public class UnregSalaryViewController extends BaseController {
         lazyDataModel = null;
         unregSalaryService = null;
         selected = null;
+        selectedViewModel = null;
     }
 
     public void doSearch() {
@@ -64,7 +67,7 @@ public class UnregSalaryViewController extends BaseController {
 
     public void doSelectEntity() {
         try {
-            selected = this.unregSalaryService.getEntiyByPK(selected.getId());
+            selected = this.unregSalaryService.getEntiyByPK(Long.valueOf(String.valueOf(selectedViewModel.getUnregSalaryId())));
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -102,7 +105,7 @@ public class UnregSalaryViewController extends BaseController {
     public void doEdit() {
         Map<String, List<String>> dataToSend = new HashMap<>();
         List<String> dataIsi = new ArrayList<>();
-        dataIsi.add(String.valueOf(selected.getId()));
+        dataIsi.add(String.valueOf(selectedViewModel.getUnregSalaryId()));
         dataToSend.put("unregSalaryId", dataIsi);
         showDialog(dataToSend);
     }
@@ -116,16 +119,19 @@ public class UnregSalaryViewController extends BaseController {
 
     public void onDelete() {
         try {
-            selected = this.unregSalaryService.getEntiyByPK(selected.getId());
+            selected = this.unregSalaryService.getEntiyByPK(Long.valueOf(String.valueOf(selectedViewModel.getUnregSalaryId())));
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
     }
 
     public String doEmployeeSetting() {
-        return "/protected/payroll/unreg_emp_setting_form.htm?faces-redirect=true&execution=e" + selected.getId();
+        return "/protected/payroll/unreg_emp_setting_form.htm?faces-redirect=true&execution=e" + selectedViewModel.getUnregSalaryId();
     }
     
+    public String doComponentSetting(){
+        return "/protected/payroll/unreg_component_setting.htm?faces-redirect=true&execution=e" + selectedViewModel.getUnregSalaryId();
+    }
     public UnregSalaryService getUnregSalaryService() {
         return unregSalaryService;
     }
@@ -142,14 +148,14 @@ public class UnregSalaryViewController extends BaseController {
         this.searchParameter = searchParameter;
     }
 
-    public LazyDataModel<UnregSalary> getLazyDataModel() {
+    public LazyDataModel<UnregSalaryViewModel> getLazyDataModel() {
         if (lazyDataModel == null) {
             lazyDataModel = new UnregSalaryLazyDataModel(searchParameter, unregSalaryService);
         }
         return lazyDataModel;
     }
 
-    public void setLazyDataModel(LazyDataModel<UnregSalary> lazyDataModel) {
+    public void setLazyDataModel(LazyDataModel<UnregSalaryViewModel> lazyDataModel) {
         this.lazyDataModel = lazyDataModel;
     }
 
@@ -161,4 +167,13 @@ public class UnregSalaryViewController extends BaseController {
         this.selected = selected;
     }
 
+    public UnregSalaryViewModel getSelectedViewModel() {
+        return selectedViewModel;
+    }
+
+    public void setSelectedViewModel(UnregSalaryViewModel selectedViewModel) {
+        this.selectedViewModel = selectedViewModel;
+    }
+
+    
 }
