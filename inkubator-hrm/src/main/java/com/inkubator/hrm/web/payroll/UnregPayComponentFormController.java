@@ -115,7 +115,7 @@ public class UnregPayComponentFormController extends BaseController {
 
         private UnregPayComponents getEntityFromViewModel(UnregSalaryModel model) {
         UnregPayComponents unregPayComponents = new UnregPayComponents();
-        unregPayComponents.setId(model.getPayComponentId());
+//        unregPayComponents.setId(model.getPayComponentId());
         unregPayComponents.setPaySalaryComponent(new PaySalaryComponent(model.getPayComponentId()));
         unregPayComponents.setUnregSalary(new UnregSalary(Long.valueOf(unregSalaryId)));
         return unregPayComponents;

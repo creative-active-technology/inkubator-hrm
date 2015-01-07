@@ -14,10 +14,12 @@ import com.inkubator.hrm.web.search.UnregPayComponentsSearchParameter;
  */
 public interface UnregPayComponentsDao extends IDAO<UnregPayComponents> {
 
-	public List<UnregPayComponents> getByParam(UnregPayComponentsSearchParameter searchParameter, int firstResult, int maxResults, Order order);
+    public List<UnregPayComponents> getByParam(UnregPayComponentsSearchParameter searchParameter, int firstResult, int maxResults, Order order);
 
-	public Long getTotalByParam(UnregPayComponentsSearchParameter searchParameter);
+    public Long getTotalByParam(UnregPayComponentsSearchParameter searchParameter);
 
-	public UnregPayComponents getEntityByPkWithDetail(Long unregPayComponentsId);
-
+    public UnregPayComponents getEntityByPkWithDetail(Long unregPayComponentsId);
+    
+    public Long getEntityByPaySalaryComponentsAndUnregId(Long paySalaryCompId, Long unregId);
+    
 }

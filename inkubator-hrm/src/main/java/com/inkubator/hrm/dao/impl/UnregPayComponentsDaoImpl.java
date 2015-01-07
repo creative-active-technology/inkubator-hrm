@@ -25,54 +25,62 @@ import com.inkubator.hrm.web.search.UnregPayComponentsSearchParameter;
 @Lazy
 public class UnregPayComponentsDaoImpl extends IDAOImpl<UnregPayComponents> implements UnregPayComponentsDao {
 
-	@Override
-	public Class<UnregPayComponents> getEntityClass() {
-		return UnregPayComponents.class;
-	}
+    @Override
+    public Class<UnregPayComponents> getEntityClass() {
+        return UnregPayComponents.class;
+    }
 
-	@Override
-	public List<UnregPayComponents> getByParam(UnregPayComponentsSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());		
+    @Override
+    public List<UnregPayComponents> getByParam(UnregPayComponentsSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         this.doSearchByParam(searchParameter, criteria);
         criteria.addOrder(order);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
         return criteria.list();
-	}
+    }
 
-	@Override
-	public Long getTotalByParam(UnregPayComponentsSearchParameter searchParameter) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+    @Override
+    public Long getTotalByParam(UnregPayComponentsSearchParameter searchParameter) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         this.doSearchByParam(searchParameter, criteria);
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
-	}
+    }
 
-	private void doSearchByParam(UnregPayComponentsSearchParameter searchParameter, Criteria criteria) {
-		criteria.createAlias("paySalaryComponent", "paySalaryComponent", JoinType.INNER_JOIN);
-		criteria.createAlias("paySalaryComponent.modelComponent", "modelComponent", JoinType.INNER_JOIN);
+    private void doSearchByParam(UnregPayComponentsSearchParameter searchParameter, Criteria criteria) {
+        criteria.createAlias("paySalaryComponent", "paySalaryComponent", JoinType.INNER_JOIN);
+        criteria.createAlias("paySalaryComponent.modelComponent", "modelComponent", JoinType.INNER_JOIN);
         if (searchParameter.getName() != null) {
             criteria.add(Restrictions.like("paySalaryComponent.name", searchParameter.getName(), MatchMode.START));
         }
         if (searchParameter.getModelComponentName() != null) {
-        	criteria.add(Restrictions.like("modelComponent.name", searchParameter.getModelComponentName(), MatchMode.START));
+            criteria.add(Restrictions.like("modelComponent.name", searchParameter.getModelComponentName(), MatchMode.START));
         }
         if (searchParameter.getCode() != null) {
             criteria.add(Restrictions.like("paySalaryComponent.code", searchParameter.getCode(), MatchMode.START));
         }
-        if (searchParameter.getUnregSalaryId() != null){
-        	criteria.add(Restrictions.eq("unregSalary.id", searchParameter.getUnregSalaryId()));
+        if (searchParameter.getUnregSalaryId() != null) {
+            criteria.add(Restrictions.eq("unregSalary.id", searchParameter.getUnregSalaryId()));
         }
         criteria.add(Restrictions.isNotNull("id"));
     }
 
-	@Override
-	public UnregPayComponents getEntityByPkWithDetail(Long unregPayComponentsId) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.add(Restrictions.eq("id", unregPayComponentsId));
-		criteria.setFetchMode("unregSalary", FetchMode.JOIN);
-		criteria.setFetchMode("unregSalary.wtPeriode", FetchMode.JOIN);
-		criteria.setFetchMode("paySalaryComponent", FetchMode.JOIN);
-		return (UnregPayComponents) criteria.uniqueResult();
-	}
-	
+    @Override
+    public UnregPayComponents getEntityByPkWithDetail(Long unregPayComponentsId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("id", unregPayComponentsId));
+        criteria.setFetchMode("unregSalary", FetchMode.JOIN);
+        criteria.setFetchMode("unregSalary.wtPeriode", FetchMode.JOIN);
+        criteria.setFetchMode("paySalaryComponent", FetchMode.JOIN);
+        return (UnregPayComponents) criteria.uniqueResult();
+    }
+
+    @Override
+    public Long getEntityByPaySalaryComponentsAndUnregId(Long paySalaryCompId, Long unregId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("paySalaryComponent.id", paySalaryCompId));
+        criteria.add(Restrictions.eq("unregSalary.id", unregId));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+
 }
