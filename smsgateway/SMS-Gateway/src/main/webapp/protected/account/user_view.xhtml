@@ -20,24 +20,27 @@
                     <p:growl id="modemFormId" showDetail="true" showSummary="true" globalOnly="true" />
                     <h:form id="modemViewFormId">
                         <div style="margin: 10px">
-                            <p:outputLabel value="Login History"  style="font-size: 24px;font-family: Verdana;color: #003333" />
-                            <p:outputLabel value="Login History from Account"  style="font-size: 11px;margin-left: 5px" />
+                            <p:outputLabel value="User"  style="font-size: 24px;font-family: Verdana;color: #003333" />
+                            <p:outputLabel value="User from Account"  style="font-size: 11px;margin-left: 5px" />
                         </div>
                         <p:breadCrumb  style="margin-bottom: 5px;margin-left: 10px;margin-right: 10px;margin-top: 5px">
                             <p:menuitem value="#{appmsg['modem.modem_list']}"  url="/protected/home.htm" />
-                            <p:menuitem value="Login History"  url="/protected/account/login_history_view.htm" />
+                            <p:menuitem value="User"  url="/protected/account/user_view.htm" />
                         </p:breadCrumb>
                         <p:focus for="pecarianTxtid" />
                         <div style="margin-top: 10px;clear: both" />
                         <h:panelGrid columns="4"  style="margin-left: 10px;margin-right: 10px;margin-top: 10px;margin-bottom: 5px;float: left">
                             <p:outputLabel value="#{appmsg['modem.search']}" style="font-weight: bold"/>
                             <p:outputLabel value=":" style="font-weight: bold"/>
-                            <p:inputText  placeholder="Full Text Service"  style="width: 260px"  id="pecarianTxtid" value="#{loginHistoryViewController.parameter}" type="search"/>
-                            <p:commandButton value="Cari"  icon="ui-icon-search" action="#{loginHistoryViewController.doSearch()}" update="tableModemId"/>
+                            <p:inputText  placeholder="Full Text Service"  style="width: 260px"  id="pecarianTxtid" value="#{userViewController.parameter}" type="search"/>
+                            <p:commandButton value="Cari"  icon="ui-icon-search" action="#{userViewController.doSearch()}" update="tableModemId"/>
+                        </h:panelGrid>
+                        <h:panelGrid columns="4"  style="margin-left: 10px;margin-right: 10px;margin-top: 10px;margin-bottom: 5px;float: right">
+                            <p:commandButton value="#{appmsg['global.add']}"  icon="ui-icon-plus" action="#{userViewController.doAdd()}"/>
                         </h:panelGrid>
                         
                         <div style="clear: both" />
-                        <p:dataTable value="#{loginHistoryViewController.lazyDataModel}" var="data" lazy="true" paginator="true" pageLinks="5" paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                        <p:dataTable value="#{userViewController.lazyDataModel}" var="data" lazy="true" paginator="true" pageLinks="5" paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
                                      rows="5" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin: 10px" id="tableModemId" 
                                      rowIndexVar="no">
                             <p:column style="text-align: center;width: 3%;">
@@ -50,13 +53,13 @@
                                 <f:facet name="header">  
                                     <h:outputText value="Username"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.userName}"/>
+                                <h:outputLabel value= "#{data.userId}"/>
                             </p:column>
                             <p:column sortBy="loginDate" >
                                 <f:facet name="header">  
                                     <h:outputText value="Login Date"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.loginDate}">
+                                <h:outputLabel value= "#{data.realName}">
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
                                 </h:outputLabel>
                             </p:column>
@@ -64,7 +67,7 @@
                                 <f:facet name="header">  
                                     <h:outputText value="Log Out Date"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.logOutDate}">
+                                <h:outputLabel value= "#{data.emailAddress}">
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
                                 </h:outputLabel>
                             </p:column>
@@ -72,15 +75,7 @@
                                 <f:facet name="header">  
                                     <h:outputText value="Ip Address"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.ipAddress}">
-                                    <f:convertDateTime pattern="dd MMMM yyyy" />
-                                </h:outputLabel>
-                            </p:column>
-                            <p:column sortBy="languange" >
-                                <f:facet name="header">  
-                                    <h:outputText value="Language"/>
-                                </f:facet>
-                                <h:outputLabel value= "#{data.languange}">
+                                <h:outputLabel value= "#{data.phoneNumber}">
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
                                 </h:outputLabel>
                             </p:column>
