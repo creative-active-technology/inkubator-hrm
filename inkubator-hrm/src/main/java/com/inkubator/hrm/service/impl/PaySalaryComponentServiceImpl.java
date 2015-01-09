@@ -306,16 +306,17 @@ public class PaySalaryComponentServiceImpl extends IServiceImpl implements PaySa
     @Override
     public Map<String, Long> returnComponentChange(Long id) throws Exception {
         ModelComponent component = this.modelComponentDao.getEntiyByPK(id);
+//        List<Integer> listModelReferensi = paySalaryComponentDao.getAllModelReferensiId();
         Map<String, Long> data = new HashMap();
         if (Objects.equals(component.getSpesific(), HRMConstant.MODEL_COMP_LOAN)) {
-            List<LoanSchema> dataToSend = loanSchemaDao.getEntityIsPayRollComponent();
+            List<LoanSchema> dataToSend = loanSchemaDao.getEntityIsPayRollComponent(component.getId());
             for (LoanSchema loanSchema : dataToSend) {
                 data.put(loanSchema.getName(), loanSchema.getId());
             }
         }
-
+        
         if (component.getSpesific().equals(HRMConstant.MODEL_COMP_REIMBURSEMENT)) {
-            List<ReimbursmentSchema> dataToSend = this.reimbursmentSchemaDao.isPayrollComponent();
+            List<ReimbursmentSchema> dataToSend = this.reimbursmentSchemaDao.isPayrollComponent(component.getId());
             for (ReimbursmentSchema rs : dataToSend) {
                 data.put(rs.getName(), rs.getId());
             }

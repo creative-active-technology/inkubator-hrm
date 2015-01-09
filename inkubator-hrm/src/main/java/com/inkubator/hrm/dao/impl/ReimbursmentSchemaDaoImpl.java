@@ -6,16 +6,21 @@ package com.inkubator.hrm.dao.impl;
 
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.ReimbursmentSchemaDao;
+import com.inkubator.hrm.entity.PaySalaryComponent;
 import com.inkubator.hrm.entity.ReimbursmentSchema;
 import com.inkubator.hrm.web.search.ReimbursmentSchemaSearchParameter;
 import java.math.BigDecimal;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Subqueries;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -93,9 +98,16 @@ public class ReimbursmentSchemaDaoImpl extends IDAOImpl<ReimbursmentSchema> impl
     }
 
     @Override
-    public List<ReimbursmentSchema> isPayrollComponent() {
+    public List<ReimbursmentSchema> isPayrollComponent(Long id) {
+        ProjectionList proList = Projections.projectionList();
+        proList.add(Projections.groupProperty("modelReffernsil"));
+        DetachedCriteria subQuery = DetachedCriteria.forClass(PaySalaryComponent.class);
+        subQuery.createAlias("modelComponent", "mc").add(Restrictions.eq("mc.id", id));
+        subQuery.setProjection(proList);
+        List<Integer> list = subQuery.getExecutableCriteria(getCurrentSession()).list();
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("payrollComponent", Boolean.TRUE));
+        criteria.add(Property.forName("id").notIn(subQuery));
         return criteria.list();
     }
 

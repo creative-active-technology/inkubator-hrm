@@ -236,4 +236,11 @@ public class PaySalaryComponentDaoImpl extends IDAOImpl<PaySalaryComponent> impl
         return Long.valueOf(hbm.uniqueResult().toString());
 
     }
+
+    @Override
+    public List<Integer> getAllModelReferensiId() {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.setProjection(Projections.property("modelReffernsil"));
+        return criteria.list();
+    }
 }

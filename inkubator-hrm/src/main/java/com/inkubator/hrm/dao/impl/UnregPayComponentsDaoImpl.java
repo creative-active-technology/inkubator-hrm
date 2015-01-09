@@ -33,6 +33,8 @@ public class UnregPayComponentsDaoImpl extends IDAOImpl<UnregPayComponents> impl
     @Override
     public List<UnregPayComponents> getByParam(UnregPayComponentsSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.setFetchMode("paySalaryComponent", FetchMode.JOIN);
+        criteria.setFetchMode("paySalaryComponent.modelComponent", FetchMode.JOIN);
         this.doSearchByParam(searchParameter, criteria);
         criteria.addOrder(order);
         criteria.setFirstResult(firstResult);
@@ -48,15 +50,16 @@ public class UnregPayComponentsDaoImpl extends IDAOImpl<UnregPayComponents> impl
     }
 
     private void doSearchByParam(UnregPayComponentsSearchParameter searchParameter, Criteria criteria) {
-        criteria.createAlias("paySalaryComponent", "paySalaryComponent", JoinType.INNER_JOIN);
-        criteria.createAlias("paySalaryComponent.modelComponent", "modelComponent", JoinType.INNER_JOIN);
         if (searchParameter.getName() != null) {
+            criteria.createAlias("paySalaryComponent", "paySalaryComponent", JoinType.INNER_JOIN);
             criteria.add(Restrictions.like("paySalaryComponent.name", searchParameter.getName(), MatchMode.START));
         }
         if (searchParameter.getModelComponentName() != null) {
+            criteria.createAlias("paySalaryComponent.modelComponent", "modelComponent", JoinType.INNER_JOIN);
             criteria.add(Restrictions.like("modelComponent.name", searchParameter.getModelComponentName(), MatchMode.START));
         }
         if (searchParameter.getCode() != null) {
+            criteria.createAlias("paySalaryComponent", "paySalaryComponent", JoinType.INNER_JOIN);
             criteria.add(Restrictions.like("paySalaryComponent.code", searchParameter.getCode(), MatchMode.START));
         }
         if (searchParameter.getUnregSalaryId() != null) {
