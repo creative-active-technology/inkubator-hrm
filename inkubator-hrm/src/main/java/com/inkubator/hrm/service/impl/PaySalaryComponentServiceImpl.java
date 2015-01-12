@@ -321,9 +321,8 @@ public class PaySalaryComponentServiceImpl extends IServiceImpl implements PaySa
                 data.put(rs.getName(), rs.getId());
             }
         }
-
         if (component.getSpesific().equals(HRMConstant.MODEL_COMP_BENEFIT_TABLE)) {
-            List<BenefitGroup> dataToSend = this.benefitGroupDao.getAllData();
+            List<BenefitGroup> dataToSend = this.benefitGroupDao.getBenefitGroupData(component.getId());
             for (BenefitGroup bg : dataToSend) {
                 data.put(bg.getName(), bg.getId());
             }
