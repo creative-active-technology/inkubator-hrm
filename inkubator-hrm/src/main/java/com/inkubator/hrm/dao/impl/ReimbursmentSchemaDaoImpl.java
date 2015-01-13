@@ -99,12 +99,14 @@ public class ReimbursmentSchemaDaoImpl extends IDAOImpl<ReimbursmentSchema> impl
 
     @Override
     public List<ReimbursmentSchema> isPayrollComponent(Long id) {
+        //ngambil data yang ada di dalem pay salary component
         ProjectionList proList = Projections.projectionList();
         proList.add(Projections.groupProperty("modelReffernsil"));
         DetachedCriteria subQuery = DetachedCriteria.forClass(PaySalaryComponent.class);
         subQuery.createAlias("modelComponent", "mc").add(Restrictions.eq("mc.id", id));
         subQuery.setProjection(proList);
-        List<Integer> list = subQuery.getExecutableCriteria(getCurrentSession()).list();
+//        List<Integer> list = subQuery.getExecutableCriteria(getCurrentSession()).list();
+        //ngambil data yang payroll componentnya 1, dan idnya tidak sama dengan id subquery
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("payrollComponent", Boolean.TRUE));
         criteria.add(Property.forName("id").notIn(subQuery));
