@@ -235,7 +235,7 @@
                                     <p:commandLink id="calendarId" title="Calendar" onclick="statusDialog.show()" oncomplete="calendarDialog.show()" ajax="true" update=":caledarFormId" >
                                         <p:graphicImage library="images" name="calendar_ico.png" width="22" height="22"  cache="true"/> 
                                     </p:commandLink>
-                                    <h:commandLink id="helpId" title="Need Help Clik Me">
+                                    <h:commandLink id="helpId" on title="Need Help Clik Me">
                                         <p:graphicImage library="images" name="help_ico.png" width="22" height="22"  cache="true"/> 
                                     </h:commandLink>
                                     <h:outputLink id="logoutId" style="margin-left: 22px;margin-right: 10px" value="${request.contextPath}/logout.htm" title="Logout and Exit">
@@ -247,7 +247,7 @@
                                                                                     hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>-->
                                     <pe:tooltip for="helpId" value="Need Help? Click Me" showEffect="slideToggle"
                                                 hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/> 
-                                    <pe:tooltip for="calculatorId" value="Need Calculation Click Me" showEffect="slideToggle"
+                                    <pe:tooltip for="calculatorId"  value="Need Calculation Click Me" showEffect="slideToggle"
                                                 hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/> 
                                     <pe:tooltip for="calendarId" value="To See Calendar" showEffect="slideToggle"
                                                 hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>
@@ -435,7 +435,7 @@
                                                 <p:menuitem value="Data Log Interface" icon="img-data_log_interface" style="font-size: 12px !important;color: #003366" title="#{appmsg['overtimedistribution.overtime_distribution']}" url="#" />
                                                 <p:menuitem value="Data Realisasi" icon="img-data_realisasi" style="font-size: 12px !important;color: #003366" title="#{appmsg['overtimedistribution.overtime_distribution']}" url="#" />
                                                 <p:menuitem value="Koreksi Realisasi" icon="img-koreksi_realisasi" style="font-size: 12px !important;color: #003366" title="#{appmsg['overtimedistribution.overtime_distribution']}" url="#" />
-                                                <p:menuitem value="Informasi Status Kehadiran" icon="img-attendance_status" style="font-size: 12px !important;color: #003366" title="#{appmsg['overtimedistribution.overtime_distribution']}" url="#" />
+                                                <p:menuitem value="Informasi Status Kehadiran" icon="img-attendance_status" style="font-size: 12px !important;color: #003366" title="#{appmsg['overtimedistribution.overtime_distribution']}" url="/protected/payroll/pay_temp_attendance_status_view.htm" />
                                             </p:submenu>
                                             <p:submenu label="#{appmsg['workingTime.calculation']}"  styleClass="menu_child" >
                                                 <p:menuitem value="Periode Waktu Kerja" icon="img-working_time_periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['overtimedistribution.overtime_distribution']}" url="#" />
