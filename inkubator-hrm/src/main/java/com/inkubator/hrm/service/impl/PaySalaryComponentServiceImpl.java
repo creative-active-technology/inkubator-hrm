@@ -192,7 +192,8 @@ public class PaySalaryComponentServiceImpl extends IServiceImpl implements PaySa
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void delete(PaySalaryComponent entity) throws Exception {
-        this.paySalaryComponentDao.delete(entity);
+        PaySalaryComponent data=this.paySalaryComponentDao.getEntiyByPK(entity.getId());
+        this.paySalaryComponentDao.delete(data);
     }
 
     @Override
