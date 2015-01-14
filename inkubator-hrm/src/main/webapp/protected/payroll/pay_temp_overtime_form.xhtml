@@ -32,13 +32,13 @@
                     </h:panelGrid> 
                     <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">                        
                         <p:row>
-                            <p:column style="width: 20%">
+                            <p:column style="width: 30%">
                                 <p:outputLabel for="fileId" value="#{appmsg['global.file_name']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="fileId" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 70%">
+                            <p:column  style="width: 59%">
                                 <p:fileUpload id="fileId"  required="true" sizeLimit="1000000000" label="#{appmsg['global.choose_file']}" fileUploadListener="#{payTempOvertimeFormController.handingFileUpload}"
 	                                          mode="advanced" style="margin-top:10px;margin-bottom:10px;width: 100%;text-align: left!important"
 	                                          dragDropSupport="true" multiple="false" update="fileNameId,:growlPaySalaryUploadFileFormId"
@@ -53,7 +53,17 @@
                                 <p:message for="fileId"/>
                             </p:column>
                         </p:row>
-                                          
+                        <p:row>
+                            <p:column style="width: 30%">
+                                <p:outputLabel value="Ekstensi diperbolehkan" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 59%">
+                                <h:outputLabel value=".xls, .xlsx, .csv" styleClass="header_small_no_bold"/>
+                            </p:column>
+                        </p:row>  
                     </p:panelGrid>
                     <p:focus context="formPaySalaryUploadFileFormId" />
                     <p:separator style="margin-top: 20px;margin-bottom: 10px"/>
