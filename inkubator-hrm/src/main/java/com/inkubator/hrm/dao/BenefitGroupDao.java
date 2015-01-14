@@ -17,4 +17,6 @@ public interface BenefitGroupDao extends IDAO<BenefitGroup> {
     public Long getTotalBenefitGroupByParam(BenefitGroupSearchParameter parameter);
     
     public String getBenefitGroupNameByPk(Long id) throws Exception;
+    
+    public List<BenefitGroup> getBenefitGroupData(Long id);
 }

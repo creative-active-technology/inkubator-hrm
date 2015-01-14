@@ -58,7 +58,7 @@ public class PaySalaryComponentViewController extends BaseController{
     
     public void doSelectEntityWithDetail() {
         try {
-            selected = this.service.getEntityByPkWithDetail(selected.getId());
+            selected = this.service.getEntiyByPK(selected.getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
