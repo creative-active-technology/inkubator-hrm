@@ -54,8 +54,11 @@ public class PayTempAttendanceStatusLazyDataModel extends LazyDataModel<PayTempA
                 }else{
                     order = Order.desc("code");
                 }
-                payTempAttendanceStatusList = service.getByParam(parameter, payTempAttendanceStatusModel, first, pageSize, order);
-                jumlahData = Integer.parseInt(String.valueOf(service.getTotalResourceTypeByParam(parameter, payTempAttendanceStatusModel)));
+                //payTempAttendanceStatusList = service.getByParam(parameter, payTempAttendanceStatusModel, first, pageSize, order);
+                //jumlahData = Integer.parseInt(String.valueOf(service.getTotalResourceTypeByParam(parameter, payTempAttendanceStatusModel)));
+                
+                payTempAttendanceStatusList = new ArrayList<PayTempAttendanceStatus>();
+                jumlahData = 0;
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
             }
