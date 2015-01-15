@@ -24,4 +24,6 @@ public interface PayTempAttendanceStatusDao extends IDAO<PayTempAttendanceStatus
     public List<PayTempAttendanceStatus> getByWtPeriodeWhereComponentPayrollIsActive(InclusionReimbursmentModel inclusionReimbursmentModel);
     
     public Long getTotalResourceTypeByParam(String parameter, InclusionReimbursmentModel inclusionReimbursmentModel);*/
+    
+    public List<PayTempAttendanceStatus> getAllByNik(String nik);
 }

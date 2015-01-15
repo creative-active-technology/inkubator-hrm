@@ -13,7 +13,10 @@ import com.inkubator.hrm.web.model.PayTempAttendanceStatusModel;
 import com.inkubator.webcore.controller.BaseController;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,6 +25,8 @@ import javax.annotation.PreDestroy;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import org.primefaces.context.RequestContext;
+import org.primefaces.event.SelectEvent;
 
 import org.primefaces.model.LazyDataModel;
 
@@ -78,10 +83,30 @@ public class PayTempAttendanceStatusViewController extends BaseController{
         jumlahHariKerja = null;
     }
     
+    @Override
+    public void onDialogReturn(SelectEvent event) {
+        //model = this.getModelFromEntity(selectedPaySalaryComponent);
+        super.onDialogReturn(event);
+    }
+        
     public void doSearch() {
         lazy = null;
     }
 
+    public void doUpload() {
+        Map<String, List<String>> dataToSend = new HashMap<>();     
+        this.showDialogUpload(dataToSend);
+    }
+
+    private void showDialogUpload(Map<String, List<String>> params) {
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 600);
+        options.put("contentHeight", 360);
+        RequestContext.getCurrentInstance().openDialog("pay_temp_attendance_upload_file_form", options, params);
+    }
     
     public PayTempAttendanceStatusService getPayTempAttendanceStatusService() {
 		return payTempAttendanceStatusService;
