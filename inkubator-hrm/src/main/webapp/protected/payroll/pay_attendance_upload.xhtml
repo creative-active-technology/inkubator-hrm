@@ -51,13 +51,13 @@
                                 <h:outputLabel for="fileId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 70%">
-                                <p:fileUpload id="fileId"  required="true" sizeLimit="1000000000" label="#{appmsg['global.choose_file']}" fileUploadListener="#{payTempAttendanceUploadFileFormController.handingFileUpload}"
+                                <p:fileUpload id="fileId"  required="true" sizeLimit="1000000000" label="#{appmsg['global.choose_file']}" fileUploadListener="#{payAttendanceUploadController.handingFileUpload}"
 	                                          mode="advanced" style="margin-top:10px;margin-bottom:10px;width: 100%;text-align: left!important"
 	                                          dragDropSupport="true" multiple="false" update="fileNameId,:growlPaySalaryUploadFileFormId"
 	                                          allowTypes="/(\.|\/)(csv|xls|xlsx)$/"/> 
 	                            <p:outputLabel value="#{appmsg['global.file_name']}"/>
 	                            <p:outputLabel value=":" style="margin-left: 5px;margin-right: 5px"/>
-	                            <p:outputLabel value="#{payTempAttendanceUploadFileFormController.fileName}" id="fileNameId"/> 
+	                            <p:outputLabel value="#{payAttendanceUploadController.fileName}" id="fileNameId"/> 
                             </p:column>
                         </p:row>
                         <p:row>
@@ -94,7 +94,7 @@
                     <p:separator style="margin-top: 20px;margin-bottom: 10px"/>
                     <h:panelGrid columns="2" style="margin-bottom: -30px!important">
                         <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formPaySalaryUploadFileFormId,:growlPaySalaryUploadFileFormId"
-                                         action="#{payTempAttendanceUploadFileFormController.doSave()}" styleClass="isitext_hrm" onclick="PrimeFaces.monitorDownload(start, stop);"
+                                         action="#{payAttendanceUploadController.doSave()}" styleClass="isitext_hrm" onclick="PrimeFaces.monitorDownload(start, stop);"
                                          style="margin-right: 5px" label="#{appmsg['global.save']}"
                                          icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
                         <p:commandButton value="#{appmsg['global.clear']}" title="#{appmsg['global.clear']}" process="@this" update="formPaySalaryUploadFileFormId" 

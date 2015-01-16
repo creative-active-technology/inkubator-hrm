@@ -44,9 +44,9 @@ import com.inkubator.webcore.util.MessagesResourceUtil;
  *
  * @author Ahmad Mudzakkir Amal
  */
-@ManagedBean(name = "payTempAttendanceUploadFileFormController")
+@ManagedBean(name = "payAttendanceUploadController")
 @ViewScoped
-public class PayTempAttendanceUploadFileFormController extends BaseController {
+public class PayAttendanceUploadController extends BaseController {
 
     private UploadedFile file;
     private String fileName;

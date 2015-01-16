@@ -275,11 +275,11 @@ public class PayTempAttendanceStatusServiceImpl extends IServiceImpl implements
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public String updateFileAndDeleteData(UploadedFile documentFile) throws Exception {
         String uploadPath = this.getUploadPath(documentFile);
-
+        System.out.println("Path Upload : " + uploadPath);
+        LOGGER.info("Path Uploaded file : " + uploadPath);
         if (documentFile != null) {
             //remove old file
             Files.deleteIfExists(Paths.get(uploadPath));
-
             //added new file            
             facesIO.transferFile(documentFile);
             File file = new File(facesIO.getPathUpload() + documentFile.getFileName());
@@ -292,7 +292,7 @@ public class PayTempAttendanceStatusServiceImpl extends IServiceImpl implements
     
     private String getUploadPath( UploadedFile documentFile) {
         String extension = StringUtils.substringAfterLast(documentFile.getFileName(), ".");
-        String uploadPath = facesIO.getPathUpload() + "paysalaryupload_." + extension;
+        String uploadPath = facesIO.getPathUpload() + "paysalaryupload." + extension;
         return uploadPath;
     }
 
