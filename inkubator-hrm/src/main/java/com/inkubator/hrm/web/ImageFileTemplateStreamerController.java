@@ -82,7 +82,7 @@ public class ImageFileTemplateStreamerController extends BaseController {
             	String fileName = StringUtils.EMPTY;
                 StringBuffer path = new StringBuffer();
                 path.append(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/resources/file_template/"));
-                path.append("\\");
+                //path.append("\\");
                 switch (extension) {
 					case "csv":
 						path.append("pay_temp_attendance_upload.csv");
