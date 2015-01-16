@@ -103,7 +103,7 @@
                                 - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                 				 style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                				 action="#{permitClassificationViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmPermitClassification.show()">
+                                				  onclick="statusDialog.show()"  oncomplete="dialogConfirmPermitClassification.show()">
                                     <f:setPropertyActionListener value="#{permitClassificationData}" target="#{permitClassificationViewController.selectedPermitClassification}" />
                                 </p:commandButton>
                                 -

@@ -16,21 +16,21 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 
 import com.inkubator.hrm.web.model.PaySalaryUploadFileModel;
+import com.inkubator.hrm.web.model.PayTempAttendanceStatusModel;
 
 /**
  *
- * @author rizkykojek
+ * @author Ahmad Mudzakkir Amal
  */
-public class PaySalaryUploadReader implements ItemReader<PaySalaryUploadFileModel> {
+public class PayTempAttendanceUploadReader implements ItemReader<PayTempAttendanceStatusModel> {
 
-	private String createdBy;
-	private String paySalaryComponentId;
+	private String createdBy;	
 	private final String pathUpload;
 	private final String extension;
-	private FlatFileItemReader<PaySalaryUploadFileModel> csvFileReader;
-	private PoiItemReader<PaySalaryUploadFileModel> excelFileReader;
+	private FlatFileItemReader<PayTempAttendanceStatusModel> csvFileReader;
+	private PoiItemReader<PayTempAttendanceStatusModel> excelFileReader;
 	
-	public PaySalaryUploadReader(String filePath){
+	public PayTempAttendanceUploadReader(String filePath){
             System.out.println(filePath+"teuing ti mana");
 		this.extension = StringUtils.substringAfterLast(filePath, ".");
 		this.pathUpload = filePath;
@@ -48,13 +48,13 @@ public class PaySalaryUploadReader implements ItemReader<PaySalaryUploadFileMode
 		
 		//split by separated coma
 		DelimitedLineTokenizer lineTokenizer = new DelimitedLineTokenizer(DelimitedLineTokenizer.DELIMITER_COMMA);
-		lineTokenizer.setNames(new String[]{"Nik","Nominal"});
+		lineTokenizer.setNames(new String[]{"Nik","WorkingDays"});
 		
 		//mapped to an object
-		BeanWrapperFieldSetMapper<PaySalaryUploadFileModel> beanWrapperFieldSetMapper = new BeanWrapperFieldSetMapper<>();
-		beanWrapperFieldSetMapper.setTargetType(PaySalaryUploadFileModel.class);
+		BeanWrapperFieldSetMapper<PayTempAttendanceStatusModel> beanWrapperFieldSetMapper = new BeanWrapperFieldSetMapper<>();
+		beanWrapperFieldSetMapper.setTargetType(PayTempAttendanceStatusModel.class);
 		
-		DefaultLineMapper<PaySalaryUploadFileModel> lineMapper =  new DefaultLineMapper<>();
+		DefaultLineMapper<PayTempAttendanceStatusModel> lineMapper =  new DefaultLineMapper<>();
 		lineMapper.setLineTokenizer(lineTokenizer);
 		lineMapper.setFieldSetMapper(beanWrapperFieldSetMapper);		
 		
@@ -73,8 +73,8 @@ public class PaySalaryUploadReader implements ItemReader<PaySalaryUploadFileMode
 		
 		try {
 			//mapped to an object
-			BeanPropertyRowMapper<PaySalaryUploadFileModel> rowMapper = new BeanPropertyRowMapper<>();
-			rowMapper.setTargetType(PaySalaryUploadFileModel.class);		
+			BeanPropertyRowMapper<PayTempAttendanceStatusModel> rowMapper = new BeanPropertyRowMapper<>();
+			rowMapper.setTargetType(PayTempAttendanceStatusModel.class);		
 			rowMapper.afterPropertiesSet();		
 		
 			//initial poiItemReader
@@ -93,8 +93,8 @@ public class PaySalaryUploadReader implements ItemReader<PaySalaryUploadFileMode
 	}
 	
 	@Override
-	public PaySalaryUploadFileModel read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
-		PaySalaryUploadFileModel model = null;
+	public PayTempAttendanceStatusModel read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
+		PayTempAttendanceStatusModel model = null;
 		if(StringUtils.equals(extension, "csv")){
 			model = csvFileReader.read();	
 		}else {
@@ -104,7 +104,6 @@ public class PaySalaryUploadReader implements ItemReader<PaySalaryUploadFileMode
 		//kenapa di cek null, karena tanda batch process telah berakhir ialah read.process == null
 		if(model!= null){ 
 			model.setCreatedBy(createdBy);
-			model.setPaySalaryComponentId(Long.parseLong(paySalaryComponentId));
 			model.setPathUpload(pathUpload);
 		}
 		
@@ -128,11 +127,5 @@ public class PaySalaryUploadReader implements ItemReader<PaySalaryUploadFileMode
 		this.createdBy = createdBy;
 	}
 
-	public String getPaySalaryComponentId() {
-		return paySalaryComponentId;
-	}
-
-	public void setPaySalaryComponentId(String paySalaryComponentId) {
-		this.paySalaryComponentId = paySalaryComponentId;
-	}
+	
 }

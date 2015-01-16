@@ -33,6 +33,25 @@
                 </batch:chunk>
             </batch:tasklet>
         </batch:step>
+    </batch:job>
+    <batch:job id="jobPayAttendanceUpload">
+        <batch:step id="stepPayAttendanceUpload_1">
+            <batch:tasklet>
+                <batch:chunk reader="customPayAttendanceUploadItemReader" writer="customPayAttendanceUploadItemWriter"
+                             commit-interval="20">
+                </batch:chunk>
+            </batch:tasklet>
+        </batch:step>
+    </batch:job>
+    
+    <batch:job id="jobPayTempOvertimeUpload">
+        <batch:step id="stepJobPayTempOvertimeUpload_1">
+            <batch:tasklet>
+                <batch:chunk reader="customPayTempOvertimeUploadItemReader" writer="customPayTempOvertimeUploadItemWriter"
+                             commit-interval="20">
+                </batch:chunk>
+            </batch:tasklet>
+        </batch:step>
     </batch:job>	
     <batch:job id="jobPayEmployeeCalculation">
         <batch:step id="stepPayEmployeeCalculation_1" next="stepPayEmployeeCalculation_2">
@@ -132,6 +151,26 @@
     </bean>	
     <bean id="customPaySalaryUploadItemWriter" class="org.springframework.batch.item.adapter.ItemWriterAdapter" lazy-init="true">
         <property name="targetObject" ref="payTempUploadDataService" />
+        <property name="targetMethod" value="executeBatchFileUpload" />
+    </bean>
+    
+    <!-- reader and writer for pay_temp_attendance_upload -->	
+    <bean id="customPayAttendanceUploadItemReader" class="com.inkubator.hrm.batch.PayTempAttendanceUploadReader" scope="step" destroy-method="destroy" lazy-init="true">
+        <constructor-arg name="filePath"  value="#{jobParameters['input.file.path']}"></constructor-arg>
+        <property name="createdBy" value="#{jobParameters['createdBy']}"/>
+    </bean>	
+    <bean id="customPayAttendanceUploadItemWriter" class="org.springframework.batch.item.adapter.ItemWriterAdapter" lazy-init="true">
+        <property name="targetObject" ref="payTempAttendanceStatusService" />
+        <property name="targetMethod" value="executeBatchFileUpload" />
+    </bean>
+    
+        <!-- reader and writer for pay_temp_upload-->	
+    <bean id="customPayTempOvertimeUploadItemReader" class="com.inkubator.hrm.batch.PayTempOvertimeUploadReader" scope="step" destroy-method="destroy" lazy-init="true">
+        <constructor-arg name="filePath"  value="#{jobParameters['input.file.path']}"></constructor-arg>
+        <property name="createdBy" value="#{jobParameters['createdBy']}"/>
+    </bean>	
+    <bean id="customPayTempOvertimeUploadItemWriter" class="org.springframework.batch.item.adapter.ItemWriterAdapter" lazy-init="true">
+        <property name="targetObject" ref="payTempOvertimeService" />
         <property name="targetMethod" value="executeBatchFileUpload" />
     </bean>
 	
