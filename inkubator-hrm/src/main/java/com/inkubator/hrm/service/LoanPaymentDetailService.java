@@ -19,6 +19,6 @@ public interface LoanPaymentDetailService extends IService<LoanPaymentDetail> {
 
     public List<LoanPaymentDetail> getByWtPeriodeWhereComponentPayrollIsActive(LoanPaymentDetailModel loanPaymentDetailModel) throws Exception;
 
-    public Long getTotalResourceTypeByParam(String parameter, LoanPaymentDetailModel loanPaymentDetailModel) throws Exception;
+    public Long getTotalByParam(String parameter, LoanPaymentDetailModel loanPaymentDetailModel) throws Exception;
 
 }

@@ -43,14 +43,14 @@ public class LoanDiscountLazyDataModel extends LazyDataModel<LoanPaymentDetail> 
             if (sortOrder == SortOrder.ASCENDING) {
                 try {
                     loanPaymentDetailList = service.getByParam(parameter, loanPaymentDetailModel, first, pageSize, Order.asc(sortField));
-                    jumlahData = Integer.parseInt(String.valueOf(service.getTotalResourceTypeByParam(parameter, loanPaymentDetailModel)));
+                    jumlahData = Integer.parseInt(String.valueOf(service.getTotalByParam(parameter, loanPaymentDetailModel)));
                 } catch (Exception ex) {
                     LOGGER.error("Error", ex);
                 }
             } else {
                 try {
                     loanPaymentDetailList = service.getByParam(parameter, loanPaymentDetailModel, first, pageSize, Order.desc(sortField));
-                    jumlahData = Integer.parseInt(String.valueOf(service.getTotalResourceTypeByParam(parameter, loanPaymentDetailModel)));
+                    jumlahData = Integer.parseInt(String.valueOf(service.getTotalByParam(parameter, loanPaymentDetailModel)));
                 } catch (Exception ex) {
                     LOGGER.error("Error", ex);
                 }
@@ -58,7 +58,7 @@ public class LoanDiscountLazyDataModel extends LazyDataModel<LoanPaymentDetail> 
         } else {
             try {
                 loanPaymentDetailList = service.getByParam(parameter, loanPaymentDetailModel, first, pageSize, Order.desc("paymentDate"));
-                jumlahData = Integer.parseInt(String.valueOf(service.getTotalResourceTypeByParam(parameter, loanPaymentDetailModel)));
+                jumlahData = Integer.parseInt(String.valueOf(service.getTotalByParam(parameter, loanPaymentDetailModel)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
             }

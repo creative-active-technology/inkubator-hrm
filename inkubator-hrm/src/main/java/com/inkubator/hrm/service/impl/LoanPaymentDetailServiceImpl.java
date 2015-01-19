@@ -273,12 +273,12 @@ public class LoanPaymentDetailServiceImpl extends IServiceImpl implements
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getTotalResourceTypeByParam(String parameter, LoanPaymentDetailModel loanPaymentDetailModel) throws Exception {
+    public Long getTotalByParam(String parameter, LoanPaymentDetailModel loanPaymentDetailModel) throws Exception {
         List<Loan> listLoan = loanDao.getAllData();
         for (Loan listLoans : listLoan) {
 //            Long 
         }
-        return loanPaymentDetailDao.getTotalResourceTypeByParam(parameter, loanPaymentDetailModel);
+        return loanPaymentDetailDao.getTotalByParam(parameter, loanPaymentDetailModel);
     }
 
 }
