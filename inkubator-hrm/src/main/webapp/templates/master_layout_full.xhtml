@@ -435,14 +435,12 @@
                                                 <p:menuitem value="Data Log Interface" icon="img-data_log_interface" style="font-size: 12px !important;color: #003366" title="#{appmsg['overtimedistribution.overtime_distribution']}" url="#" />
                                                 <p:menuitem value="Data Realisasi" icon="img-data_realisasi" style="font-size: 12px !important;color: #003366" title="#{appmsg['overtimedistribution.overtime_distribution']}" url="#" />
                                                 <p:menuitem value="Koreksi Realisasi" icon="img-koreksi_realisasi" style="font-size: 12px !important;color: #003366" title="#{appmsg['overtimedistribution.overtime_distribution']}" url="#" />
-                                                <p:menuitem value="Informasi Status Kehadiran" icon="img-attendance_status" style="font-size: 12px !important;color: #003366" title="#{appmsg['overtimedistribution.overtime_distribution']}" url="/protected/payroll/pay_temp_attendance_status_view.htm" />
                                             </p:submenu>
                                             <p:submenu label="#{appmsg['workingTime.calculation']}"  styleClass="menu_child" >
                                                 <p:menuitem value="Periode Waktu Kerja" icon="img-working_time_periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['overtimedistribution.overtime_distribution']}" url="#" />
                                                 <p:menuitem value="Selisih Waktu Kerja" icon="img-working_time_difference" style="font-size: 12px !important;color: #003366" title="#{appmsg['overtimedistribution.overtime_distribution']}" url="#" />
                                                 <p:menuitem value="Detail Realisasi Jadwal" icon="img-detail_realisasi_jadwal" style="font-size: 12px !important;color: #003366" title="#{appmsg['overtimedistribution.overtime_distribution']}" url="#" />
                                                 <p:menuitem value="Lembur diatas 56 Jam" icon="img-lembur_56_jam" style="font-size: 12px !important;color: #003366" title="#{appmsg['overtimedistribution.overtime_distribution']}" url="#" />
-
                                             </p:submenu>
                                         </p:submenu>
                                         <p:submenu label="#{appmsg['loan.loan']}" styleClass="menu" icon="img-loan">
@@ -461,12 +459,15 @@
                                             <p:menuitem value="#{appmsg['menu.period']}" icon="img-working_periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.work_period']}" url="/protected/working_time/periode_view.htm" />
                                             <p:menuitem value="#{appmsg['payroll.basicRenumeration']}" icon="img-basic_numeration" style="font-size: 12px !important;color: #003366" title="payroll.basicRenumeration" url="/protected/payroll/basic_renumeration_view.htm" />
                                             <p:menuitem value="#{appmsg['payroll.reimbursmentList']}" icon="img-inclusion_reimbursment" style="font-size: 12px !important;color: #003366" title="#{appmsg['payroll.reimbursmentList']}" url="/protected/payroll/inclusion_reimbursment_view.htm" /> 
-                                            <p:menuitem value="#{appmsg['payroll.loanDiscount']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['payroll.loanDiscount']}" /> 
-                                            <p:menuitem value="#{appmsg['payroll.uploadData']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['payroll.uploadData']}" url="/protected/payroll/pay_salary_upload_view.htm" icon="img-pay_salary_upload"/> 
-
+                                            <!--<p:menuitem value="#{appmsg['payroll.loanDiscount']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['payroll.loanDiscount']}" />-->
+                                            <p:submenu label="#{appmsg['menu.working_time']}" styleClass="menu_child" icon="img-payroll">
+                                                <p:menuitem value="Informasi Status Kehadiran" icon="img-attendance_status" style="font-size: 12px !important;color: #003366" title="#{appmsg['overtimedistribution.overtime_distribution']}" url="/protected/payroll/pay_temp_attendance_status_view.htm" />
+                                                <p:menuitem value="#{appmsg['payTempOvertime.payTempOvertime']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['payTempOvertime.payTempOvertime']}" icon="img-ptkp" url="/protected/payroll/pay_temp_overtime_view.htm"/>
+                                            </p:submenu>
+                                            <p:menuitem value="#{appmsg['payroll.uploadData']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['payroll.uploadData']}" url="/protected/payroll/pay_salary_upload_view.htm" icon="img-pay_salary_upload"/>
                                             <p:menuitem value="#{appmsg['payroll.ptkpData']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['payroll.ptkpData']}" icon="img-ptkp" url="/protected/employee/emp_ptkp_view.htm"/> 
                                             <p:menuitem value="#{appmsg['transferAccount.transferAccount']}" style="font-size: 12px !important;color: #003366" title="Pay Receiver View" icon="img-cost-center" url="/protected/payroll/pay_receiver_view.htm"/> 
-
+                                            <p:menuitem value="#{appmsg['payroll.paySalaryCalculation']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['payroll.paySalaryCalculation']}" icon="img-cost-center" url="/protected/payroll/salary_execution_view.htm"/>
                                             <p:menuitem value="#{appmsg['payroll.confirmation']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['payroll.confirmation']}" icon="img-cost-center" url="/protected/payroll/salary_confirmation_view.htm"/> 
                                             <p:menuitem value="#{appmsg['payroll.monthEnd']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['payroll.monthEnd']}" icon="img-cost-center" url="/protected/payroll/log_month_end_payroll_view.htm"/>                                             
                                             <!--<p:menuitem value="#{appmsg['componentException.componentException']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['componentException.componentException']}" url="/protected/payroll/pay_component_exception_view.htm" />--> 
@@ -474,12 +475,11 @@
                                             <p:menuitem value="#{appmsg['salaryJournal.salaryJournal']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['salaryJournal.salaryJournal']}" icon="img-cost-center" url="/protected/payroll/salary_journal_view.htm"/> 
                                             <p:submenu label="#{appmsg['payroll.irregular_income']}" styleClass="menu_child" icon="img-payroll">
                                                 <p:menuitem value="#{appmsg['payroll.planning']}" icon="img-pay_component_exception" style="font-size: 12px !important;color: #003366" title="#{appmsg['payroll.planning']}" url="/protected/payroll/unreg_salary_view.htm" /> 
-                                                <p:menuitem value="#{appmsg['payroll.exceptionScheme']}" icon="img-pay_component_exception" style="font-size: 12px !important;color: #003366" title="#{appmsg['payroll.exceptionScheme']}" url="/protected/payroll/unreg_specific_scheme_view.htm" /> 
-                                                <p:menuitem value="#{appmsg['payroll.paySalaryCalculation']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['payroll.paySalaryCalculation']}" icon="img-cost-center" url="/protected/payroll/salary_execution_view.htm"/>
+                                                <p:menuitem value="#{appmsg['payroll.exceptionScheme']}" icon="img-pay_component_exception" style="font-size: 12px !important;color: #003366" title="#{appmsg['payroll.exceptionScheme']}" url="/protected/payroll/unreg_specific_scheme_view.htm" />
                                                 <p:menuitem value="#{appmsg['payroll.payment']}" icon="img-pay_component_exception" style="font-size: 12px !important;color: #003366" title="#{appmsg['payroll.payment']}" url="#" /> 
                                                 
                                             </p:submenu>
-                                            <p:menuitem value="#{appmsg['payTempOvertime.payTempOvertime']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['payTempOvertime.payTempOvertime']}" icon="img-ptkp" url="/protected/payroll/pay_temp_overtime_view.htm"/>
+                                            
                                             <!--<p:menuitem value="#{appmsg['unregSalary.unregSalary']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['unregSalary.unregSalary']}" icon="img-ptkp" url="/protected/payroll/unreg_salary_view.htm"/>--> 
                                         </p:submenu>
                                         <p:submenu label="Pengembangan"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-training">
