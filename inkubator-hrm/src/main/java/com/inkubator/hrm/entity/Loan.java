@@ -4,10 +4,11 @@
  */
 package com.inkubator.hrm.entity;
 
+import com.inkubator.common.CommonUtilConstant;
+import com.inkubator.common.util.DateTimeUtil;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,9 +25,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.persistence.Version;
-
-import com.inkubator.common.CommonUtilConstant;
-import com.inkubator.common.util.DateTimeUtil;
 
 /**
  *
@@ -51,7 +49,7 @@ public class Loan implements java.io.Serializable {
     private Date createdOn;
     private String updatedBy;
     private Date updatedOn;
-    private Boolean statusPencairan;
+    private Integer statusPencairan;
     private Set<LoanPaymentDetail> loanPaymentDetails = new HashSet<LoanPaymentDetail>(0);
 
     public Loan() {
@@ -221,11 +219,11 @@ public class Loan implements java.io.Serializable {
     }
 
     @Column(name = "status_pencairan")
-    public Boolean getStatusPencairan() {
+    public Integer getStatusPencairan() {
         return this.statusPencairan;
     }
 
-    public void setStatusPencairan(Boolean statusPencairan) {
+    public void setStatusPencairan(Integer statusPencairan) {
         this.statusPencairan = statusPencairan;
     }
 
