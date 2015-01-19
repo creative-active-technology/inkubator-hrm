@@ -33,6 +33,15 @@
                 </batch:chunk>
             </batch:tasklet>
         </batch:step>
+    </batch:job>
+    <batch:job id="jobPayTempOvertimeUpload">
+        <batch:step id="stepJobPayTempOvertimeUpload_1">
+            <batch:tasklet>
+                <batch:chunk reader="customPayTempOvertimeUploadItemReader" writer="customPayTempOvertimeUploadItemWriter"
+                             commit-interval="20">
+                </batch:chunk>
+            </batch:tasklet>
+        </batch:step>
     </batch:job>	
     <batch:job id="jobPayEmployeeCalculation">
         <batch:step id="stepPayEmployeeCalculation_1" next="stepPayEmployeeCalculation_2">
@@ -67,8 +76,53 @@
             </batch:tasklet>
         </batch:step>
     </batch:job>
+    <batch:job id="jobMonthEndPayroll">
+        <batch:step id="stepMonthEndPayroll_1">
+            <batch:tasklet>
+                <batch:chunk reader="customMonthEndPayrollItemReader" processor="customMonthEndPayrollItemProcessor" writer="customMonthEndPayrollItemWriter"
+                             commit-interval="20">
+                </batch:chunk>
+            </batch:tasklet>
+        </batch:step>
+    </batch:job>
     
     
+    <!-- reader, processor and writer for month_end_payroll -->
+    <bean id="customMonthEndPayrollItemReader" class="org.springframework.batch.item.database.HibernatePagingItemReader" lazy-init="true">
+	    <property name="sessionFactory" ref="sessionFactory"/>
+	    <property name="queryString" value="from PayTempKalkulasi as payTempKalkulasi 
+	    									inner join fetch payTempKalkulasi.empData as empData
+	    									inner join fetch empData.bioData as bioData
+	    									inner join fetch empData.golonganJabatan as golonganJabatan
+	    									inner join fetch empData.employeeType as employeeType
+	    									inner join fetch payTempKalkulasi.paySalaryComponent as paySalaryComponent
+	    									inner join fetch paySalaryComponent.modelComponent as modelComponent"/>
+	    <property name="pageSize" value="100"/>
+	</bean>
+	<bean id="customMonthEndPayrollItemProcessor" class="com.inkubator.hrm.batch.MonthEndPayrollProcessor" scope="step" lazy-init="true">
+        <property name="periodeId" value="#{jobParameters['periodeId']}"/>
+        <property name="periodeStart" value="#{jobParameters['periodeStart']}"/>
+        <property name="periodeEnd" value="#{jobParameters['periodeEnd']}"/>
+        <property name="createdBy" value="#{jobParameters['createdBy']}"/>
+        <property name="createdOn" value="#{jobParameters['createdOn']}"/>
+    </bean>
+	<bean id="customMonthEndPayrollItemWriter" class="org.springframework.batch.item.database.JdbcBatchItemWriter" lazy-init="true">
+        <property name="dataSource" ref="dataSourceJBoss" />
+        <property name="sql">
+            <value>
+            <![CDATA[        
+            	insert into log_month_end_payroll(emp_data_id,emp_gol_jabatan,emp_name,emp_nik,emp_status,factor,nominal,model_comp_specific,pay_salary_comp_id,pay_salary_comp_code,pay_salary_desc,periode_id,periode_start,periode_end,created_by,created_on,version) 
+            	values (:empDataId,:empGolJabatan,:empName,:empNik,:empStatus,:factor,:nominal,:modelCompSpecific,:paySalaryCompId,:paySalaryCompCode,:paySalaryDesc,:periodeId,:periodeStart,:periodeEnd,:createdBy,:createdOn,0)
+            ]]>
+            </value>
+        </property>
+        <!-- It will take care matching between object property and sql name parameter -->
+        <property name="itemSqlParameterSourceProvider">
+            <bean class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider" />
+        </property>
+    </bean>
+  
+
     <!-- reader and writer for pay_receiver_account -->
     <bean id="customPayReceiverAccountItemReader" class="com.inkubator.hrm.batch.PayReceiverAccountReader" scope="step" lazy-init="true">
         <constructor-arg name="payReceiverBankAccountService" ref="payReceiverBankAccountService"/>
@@ -87,6 +141,16 @@
     </bean>	
     <bean id="customPaySalaryUploadItemWriter" class="org.springframework.batch.item.adapter.ItemWriterAdapter" lazy-init="true">
         <property name="targetObject" ref="payTempUploadDataService" />
+        <property name="targetMethod" value="executeBatchFileUpload" />
+    </bean>
+    
+        <!-- reader and writer for pay_temp_upload-->	
+    <bean id="customPayTempOvertimeUploadItemReader" class="com.inkubator.hrm.batch.PayTempOvertimeUploadReader" scope="step" destroy-method="destroy" lazy-init="true">
+        <constructor-arg name="filePath"  value="#{jobParameters['input.file.path']}"></constructor-arg>
+        <property name="createdBy" value="#{jobParameters['createdBy']}"/>
+    </bean>	
+    <bean id="customPayTempOvertimeUploadItemWriter" class="org.springframework.batch.item.adapter.ItemWriterAdapter" lazy-init="true">
+        <property name="targetObject" ref="payTempOvertimeService" />
         <property name="targetMethod" value="executeBatchFileUpload" />
     </bean>
 	
@@ -116,7 +180,7 @@
         <property name="sql">
             <value>
             <![CDATA[        
-            	insert into pay_temp_kalkulasi(id,pay_salary_component_id,emp_data_id,nominal,factor,created_on,created_by,version) values (:id,:paySalaryComponent.id,:empData.id,:nominal,:factor,:createdOn,:createdBy,0)
+            	insert into pay_temp_kalkulasi(id,pay_salary_component_id,emp_data_id,nominal,factor,detail,created_on,created_by,version) values (:id,:paySalaryComponent.id,:empData.id,:nominal,:factor,:detail,:createdOn,:createdBy,0)
             ]]>
             </value>
         </property>

@@ -1,14 +1,5 @@
 package com.inkubator.hrm.web.payroll;
 
-import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.PaySalaryComponent;
-import com.inkubator.hrm.service.PaySalaryComponentService;
-import com.inkubator.hrm.service.PayTempUploadDataService;
-import com.inkubator.hrm.util.UploadFilesUtil;
-import com.inkubator.securitycore.util.UserInfoUtil;
-import com.inkubator.webcore.controller.BaseController;
-import com.inkubator.webcore.util.FacesUtil;
-import com.inkubator.webcore.util.MessagesResourceUtil;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -29,10 +20,7 @@ import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
 
 import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.PaySalaryComponent;
-import com.inkubator.hrm.service.PaySalaryComponentService;
 import com.inkubator.hrm.service.PayTempAttendanceStatusService;
-import com.inkubator.hrm.service.PayTempUploadDataService;
 import com.inkubator.hrm.util.CryptoUtils;
 import com.inkubator.hrm.util.UploadFilesUtil;
 import com.inkubator.securitycore.util.UserInfoUtil;
@@ -44,9 +32,9 @@ import com.inkubator.webcore.util.MessagesResourceUtil;
  *
  * @author Ahmad Mudzakkir Amal
  */
-@ManagedBean(name = "payTempAttendanceUploadFileFormController")
+@ManagedBean(name = "payAttendanceUploadController")
 @ViewScoped
-public class PayTempAttendanceUploadFileFormController extends BaseController {
+public class PayAttendanceUploadController extends BaseController {
 
     private UploadedFile file;
     private String fileName;

@@ -14,13 +14,17 @@ import com.inkubator.hrm.web.search.LoanSearchParameter;
  */
 public interface LoanDao extends IDAO<Loan> {
 
-	public List<Loan> getByParam(LoanSearchParameter parameter, int firstResult, int maxResults, Order orderable);
+    public List<Loan> getByParam(LoanSearchParameter parameter, int firstResult, int maxResults, Order orderable);
 
-	public Long getTotalByParam(LoanSearchParameter parameter);
+    public List<Loan> getByParamByStatusPencairan(LoanSearchParameter parameter, int firstResult, int maxResults, Order orderable);
 
-	public Loan getEntityByPkWithDetail(Long id);
+    public Long getTotalByParam(LoanSearchParameter parameter);
 
-	public Loan getEntityByApprovalActivityNumberWithDetail(String approvalActivityNumber);
-	
-	public List<Loan> getAllDataByEmpDataId(Long empDataId);
+    public Long getTotalByParamByStatusPencairan(LoanSearchParameter parameter);
+
+    public Loan getEntityByPkWithDetail(Long id);
+
+    public Loan getEntityByApprovalActivityNumberWithDetail(String approvalActivityNumber);
+
+    public List<Loan> getAllDataByEmpDataId(Long empDataId);
 }

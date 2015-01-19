@@ -34,9 +34,9 @@ import org.primefaces.model.LazyDataModel;
  *
  * @author Ahmad Mudzakkir Amal
  */
-@ManagedBean(name = "payTempAttendanceStatusViewController")
+@ManagedBean(name = "payAttendanceViewController")
 @ViewScoped
-public class PayTempAttendanceStatusViewController extends BaseController{
+public class PayAttendanceViewController extends BaseController{
     @ManagedProperty(value = "#{payTempAttendanceStatusService}")
     private PayTempAttendanceStatusService payTempAttendanceStatusService;
     @ManagedProperty(value = "#{wtPeriodeService}")
@@ -67,7 +67,7 @@ public class PayTempAttendanceStatusViewController extends BaseController{
                 jmlNominalReimbursment = jmlNominalReimbursment.add(listReimbursement.getNominal());
             }*/
         } catch (Exception ex) {
-            Logger.getLogger(PayTempAttendanceStatusViewController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PayAttendanceViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -105,7 +105,7 @@ public class PayTempAttendanceStatusViewController extends BaseController{
         options.put("resizable", false);
         options.put("contentWidth", 600);
         options.put("contentHeight", 360);
-        RequestContext.getCurrentInstance().openDialog("pay_temp_attendance_upload_file_form", options, params);
+        RequestContext.getCurrentInstance().openDialog("pay_attendance_upload", options, params);
     }
     
     public PayTempAttendanceStatusService getPayTempAttendanceStatusService() {
