@@ -1,16 +1,33 @@
 package com.inkubator.hrm.service.impl;
 
+import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.PayTempAttendanceStatusDao;
 import com.inkubator.hrm.dao.WtPeriodeDao;
+import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.PaySalaryComponent;
 import com.inkubator.hrm.entity.PayTempAttendanceStatus;
+import com.inkubator.hrm.entity.PayTempUploadData;
 import com.inkubator.hrm.service.PayTempAttendanceStatusService;
+import com.inkubator.hrm.web.model.PaySalaryUploadFileModel;
 import com.inkubator.hrm.web.model.PayTempAttendanceStatusModel;
+import com.inkubator.webcore.util.FacesIO;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.criterion.Order;
+import org.primefaces.model.UploadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -26,6 +43,12 @@ public class PayTempAttendanceStatusServiceImpl extends IServiceImpl implements
 
     @Autowired
     private PayTempAttendanceStatusDao payTempAttendanceStatusDao;
+    
+    @Autowired
+    private EmpDataDao empDataDao;
+    
+    @Autowired
+    private FacesIO facesIO;
 
     @Override
     public void delete(PayTempAttendanceStatus arg0) throws Exception {
@@ -209,16 +232,14 @@ public class PayTempAttendanceStatusServiceImpl extends IServiceImpl implements
     public List<PayTempAttendanceStatus> getByParam(String parameter,
             PayTempAttendanceStatusModel payTempAttendanceStatusModel,
             int firstResult, int maxResults, Order order) throws Exception {
-        // TODO Auto-generated method stub
-        return null;
+        return new ArrayList<PayTempAttendanceStatus>();
     }
 
     @Override
     public List<PayTempAttendanceStatus> getByWtPeriodeWhereComponentPayrollIsActive(
             PayTempAttendanceStatusModel payTempAttendanceStatusModel)
             throws Exception {
-        // TODO Auto-generated method stub
-        return null;
+        return new ArrayList<PayTempAttendanceStatus>();
     }
 
     @Override
@@ -226,7 +247,53 @@ public class PayTempAttendanceStatusServiceImpl extends IServiceImpl implements
             PayTempAttendanceStatusModel payTempAttendanceStatusModel)
             throws Exception {
         // TODO Auto-generated method stub
-        return null;
+        return 0l;
+    }
+    
+     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void executeBatchFileUpload(PayTempAttendanceStatusModel model) throws Exception {
+        Boolean isInsertable = this.payTempAttendanceStatusDao.getAllByNik(model.getNik()).isEmpty();
+
+        //skip jika data sudah ada di database(tidak boleh duplikat)
+        if (isInsertable) {
+            EmpData empData = empDataDao.getEntityByNik(model.getNik());            
+            if (empData != null) {
+                PayTempAttendanceStatus entity = new PayTempAttendanceStatus();
+                entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));                
+                entity.setEmpData(empData);
+                entity.setTotalAttendance(Integer.parseInt(model.getTotalAttendance()));                
+                entity.setCreatedBy(model.getCreatedBy());
+                entity.setCreatedOn(new Date());
+                this.payTempAttendanceStatusDao.save(entity);
+            }
+        }
+
+    }
+
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public String updateFileAndDeleteData(UploadedFile documentFile) throws Exception {
+        String uploadPath = this.getUploadPath(documentFile);
+        System.out.println("Path Upload : " + uploadPath);
+        LOGGER.info("Path Uploaded file : " + uploadPath);
+        if (documentFile != null) {
+            //remove old file
+            Files.deleteIfExists(Paths.get(uploadPath));
+            //added new file            
+            facesIO.transferFile(documentFile);
+            File file = new File(facesIO.getPathUpload() + documentFile.getFileName());
+            file.renameTo(new File(uploadPath));
+        }
+
+        //payTempUploadDataDao.deleteByPaySalaryComponentId(paySalaryComponentId);
+        return uploadPath;
+    }
+    
+    private String getUploadPath( UploadedFile documentFile) {
+        String extension = StringUtils.substringAfterLast(documentFile.getFileName(), ".");
+        String uploadPath = facesIO.getPathUpload() + "paysalaryupload." + extension;
+        return uploadPath;
     }
 
 }
