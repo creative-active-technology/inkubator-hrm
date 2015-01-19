@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
 import com.inkubator.datacore.dao.impl.IDAOImpl;
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.LoanDao;
 import com.inkubator.hrm.entity.Loan;
 import com.inkubator.hrm.web.search.LoanSearchParameter;
@@ -106,11 +107,21 @@ public class LoanDaoImpl extends IDAOImpl<Loan> implements LoanDao {
         criteria.setFetchMode("empData", FetchMode.JOIN);
         criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
         criteria.setFetchMode("loanSchema", FetchMode.JOIN);
-        criteria.add(Restrictions.eq("statusPencairan", Boolean.FALSE));
+        criteria.add(Restrictions.eq("statusPencairan", HRMConstant.LOAN_UNPAID));
         criteria.addOrder(orderable);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
         return criteria.list();
     }
 
+    @Override
+    public Long getTotalByParamByStatusPencairan(LoanSearchParameter parameter) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        doSearchByParam(parameter, criteria);
+        criteria.add(Restrictions.eq("statusPencairan", HRMConstant.LOAN_UNPAID));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+
 }
+
+

@@ -19,6 +19,8 @@ public interface LoanService extends IService<Loan>, BaseApprovalService {
     public List<Loan> getByParam(LoanSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception;
 
     public List<Loan> getByParamByStatusPencairan(LoanSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception;
+
+    public Long getTotalByParamByStatusPencairan(LoanSearchParameter parameter) throws Exception;
     
     public Long getTotalByParam(LoanSearchParameter parameter) throws Exception;
 

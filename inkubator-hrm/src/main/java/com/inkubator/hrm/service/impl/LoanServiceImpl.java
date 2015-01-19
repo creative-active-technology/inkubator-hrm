@@ -533,4 +533,10 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
         return loanDao.getByParamByStatusPencairan(parameter, firstResult, maxResults, orderable);
     }
 
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public Long getTotalByParamByStatusPencairan(LoanSearchParameter parameter) throws Exception {
+        return loanDao.getTotalByParamByStatusPencairan(parameter);
+    }
+
 }
