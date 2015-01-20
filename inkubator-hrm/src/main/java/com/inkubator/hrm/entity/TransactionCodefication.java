@@ -17,7 +17,8 @@ import javax.persistence.Version;
 @Entity
 @Table(name = "transaction_codefication", catalog = "hrm", uniqueConstraints = {
     @UniqueConstraint(columnNames = "code"),
-    @UniqueConstraint(columnNames = "name")}
+    @UniqueConstraint(columnNames = "name"),
+    @UniqueConstraint(columnNames = "module_init")}
 )
 public class TransactionCodefication implements java.io.Serializable {
 
@@ -30,6 +31,7 @@ public class TransactionCodefication implements java.io.Serializable {
     private String code;
     private String name;
     private String description;
+    private String moduleCode;
 
     public TransactionCodefication() {
     }
@@ -107,8 +109,7 @@ public class TransactionCodefication implements java.io.Serializable {
         this.updatedOn = updatedOn;
     }
 
-    
-    @Column(name="code", unique=true, length=60)
+    @Column(name = "code", unique = true, length = 60)
     public String getCode() {
         return this.code;
     }
@@ -126,14 +127,22 @@ public class TransactionCodefication implements java.io.Serializable {
         this.name = name;
     }
 
-    
-    @Column(name="description", length=65535, columnDefinition="Text")
+    @Column(name = "description", length = 65535, columnDefinition = "Text")
     public String getDescription() {
         return this.description;
     }
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Column(name = "module_init", unique = true, length = 45)
+    public String getModuleCode() {
+        return moduleCode;
+    }
+
+    public void setModuleCode(String moduleCode) {
+        this.moduleCode = moduleCode;
     }
 
 }
