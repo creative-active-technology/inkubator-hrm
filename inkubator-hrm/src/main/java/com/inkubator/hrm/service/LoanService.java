@@ -8,6 +8,7 @@ import org.hibernate.criterion.Order;
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.Loan;
 import com.inkubator.hrm.entity.LoanPaymentDetail;
+import com.inkubator.hrm.web.model.LoanCanceledModel;
 import com.inkubator.hrm.web.search.LoanSearchParameter;
 
 /**
@@ -33,5 +34,7 @@ public interface LoanService extends IService<Loan>, BaseApprovalService {
     public List<LoanPaymentDetail> getAllDataLoanPaymentDetails(Double interestRate, Integer termin, Date loanPaymentDate, Double nominalPrincipal, Integer typeOfInterest) throws Exception;
 
     public Loan getEntityByApprovalActivityNumberWithDetail(String approvalActivityNumber) throws Exception;
+    
+    public void UpdateLoanAndsaveLoanCanceled(LoanCanceledModel loanCanceledModel) throws Exception;
 
 }

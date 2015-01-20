@@ -1,0 +1,135 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
+                <h:form id="formId" >
+                    <div id="box_bg" style="margin: 10px">
+                        <!--<p:panel style="margin: 10px">-->
+                        <h:panelGrid style="margin-bottom: 5px" columns="2">
+                            <p:graphicImage library="images" name="skema_penggantian.png" height="36" width="36" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="Loan Canceled Form" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['reimbursmentschema.reimbursment_header']}" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator/>
+
+
+
+                        <p:panelGrid style="width: 100%;margin-bottom: 20px;margin-top: 20px" styleClass="grid_border3" >
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="No Pinjaman"  styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:outputLabel value="#{loanCanceledFormController.loanCanceledModel.nomor}">
+                                    </p:outputLabel>
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Tanggal Pengajuan"  styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:outputLabel value="#{loanCanceledFormController.loanCanceledModel.loanDate}">
+                                        <f:convertDateTime pattern="dd MMMM yyyy" />
+                                    </p:outputLabel>
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Skema Pinjaman" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:outputLabel value="#{loanCanceledFormController.loanCanceledModel.loanName}">
+                                    </p:outputLabel>
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Nominal Pokok"  styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:outputLabel value="#{loanCanceledFormController.loanCanceledModel.nominalPrincipal}">
+                                        <f:convertNumber rendered="###,###" />
+                                    </p:outputLabel>
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Durasi Termin"  styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:outputLabel value="#{loanCanceledFormController.loanCanceledModel.termin}">
+                                    </p:outputLabel>
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Tanggal Disetujui"  styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:outputLabel value="#{loanCanceledFormController.loanCanceledModel.approvalTime}">
+                                        <f:convertDateTime pattern="dd MMMM yyyy" />
+                                    </p:outputLabel>
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Keterangan"  styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:inputTextarea id="description" rows="5" cols="37" counter="counter" maxlength="500" value="#{loanCanceledFormController.loanCanceledModel.keterangan}" 
+                                                     style="height: 80px;" counterTemplate="#{appmsg['global.remaining']}"   autoResize="true" required="false"
+                                                     label="#{appmsg['role_view.role_description']}" title="#{appmsg['role_view.role_description']}" />
+                                    <br />
+                                        <h:outputText id="counter" />
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                        <p:focus context="formId" />
+
+                        <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
+                        <div style="margin-bottom: 5px">
+                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" action="#{loanCanceledFormController.doSave()}"
+                                             styleClass="isitext_hrm" 
+                                             style="margin-right: 5px" label="#{appmsg['global.save']}" update="formId"
+                                             icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formId" action="#{reimbursmentSchemaFormController.doReset()}"
+                                             icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px" >  
+                                <p:resetInput target="formId" />  
+                            </p:commandButton>
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}"  immediate="true" action="#{reimbursmentSchemaFormController.doBack()}"
+                                             styleClass="label_button"/>
+                        </div>
+                    </div>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

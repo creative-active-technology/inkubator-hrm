@@ -71,26 +71,18 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>   
-                            <p:column sortBy="empData.nik"  style="width: 35%">
+                            <p:column sortBy="empData.nik"  style="width: 20%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.employee']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{loanData.empData.nik} #{loanData.empData.bioData.fullName}"/>
                             </p:column> 
-                            <p:column sortBy="loanSchema.name"  style="width: 20%">
+                            <p:column sortBy="loanSchema.name"  style="width: 17%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['loanschema.loan']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{loanData.loanSchema.name}"/>
                             </p:column>  
-                            <p:column sortBy="nominalPrincipal"  style="width: 15%">
-                                <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['loan.nominal_principal']}"/>
-                                </f:facet>
-                                <h:outputLabel value= "#{loanData.nominalPrincipal}">
-                                	<f:convertNumber pattern="###,###" type="currency"/>
-                                </h:outputLabel>
-                            </p:column> 
                             <p:column sortBy="loanDate"  style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['loan.loan_date']}"/>
@@ -99,27 +91,34 @@
                                 	<f:convertDateTime pattern="dd-MMMM-yyyy" />
                                 </h:outputLabel>
                             </p:column>
+                            <p:column sortBy="nominalPrincipal"  style="width: 15%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['loan.nominal_principal']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{loanData.nominalPrincipal}">
+                                	<f:convertNumber pattern="###,###" type="currency"/>
+                                </h:outputLabel>
+                            </p:column>
+                            
+                            <p:column sortBy="nominalPrincipal"  style="width: 15%">
+                                <f:facet name="header">  
+                                    <h:outputText value="Proses Pencairan"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{loanData.approvalTime}">
+                                    <f:convertDateTime pattern="dd-MMMM-yyyy" />
+                                </h:outputLabel>
+                            </p:column>
+                            
                             
                             <p:column headerText="#{appmsg['global.action']}" style="width: 12%;text-align: center" exportable="false">
-                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
-                                				 style="font-size: 10px!important" action="#{loanViewController.doDetail()}">                        
-                                    <f:setPropertyActionListener value="#{loanData}" target="#{loanViewController.selectedLoan}" />
-                                </p:commandButton>
-                                - 
-                                <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
-                                				 style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                				 action="#{loanViewController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmLoan.show()">
-                                    <f:setPropertyActionListener value="#{loanData}" target="#{loanViewController.selectedLoan}" />
-                                </p:commandButton>
-                                -
-                                <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
-                                                 action="#{loanViewController.doUpdate()}" >
-                                    <f:setPropertyActionListener value="#{loanData}" target="#{loanViewController.selectedLoan}" />
+                                <p:commandButton  icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
+                                                  action="#{loanCanceledProcessViewController.doCanceled()}" style="font-size: 10px!important" >                        
+                                    <f:setPropertyActionListener value="#{loanData}" target="#{loanCanceledProcessViewController.selectedLoan}" />
                                 </p:commandButton>
                             </p:column>                        
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>
-                                <p:outputLabel value="#{loanViewController.lazyDataLoan.rowCount}"/>
+                                <p:outputLabel value="#{loanCanceledProcessViewController.lazyDataLoan.rowCount}"/>
                                 <p:outputLabel value="Data" style="margin-left: 3px"/>
                             </f:facet>  
                         </p:dataTable>
