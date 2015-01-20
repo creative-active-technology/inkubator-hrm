@@ -330,6 +330,7 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
         LoanSchema loanSchema = loanSchemaDao.getEntiyByPK(entity.getLoanSchema().getId());
         entity.setEmpData(empData);
         entity.setLoanSchema(loanSchema);
+        entity.setStatusPencairan(HRMConstant.LOAN_UNPAID);
 
         String createdBy = StringUtils.isEmpty(entity.getCreatedBy()) ? UserInfoUtil.getUserName() : entity.getCreatedBy();
         Date createdOn = entity.getCreatedOn() == null ? new Date() : entity.getCreatedOn();

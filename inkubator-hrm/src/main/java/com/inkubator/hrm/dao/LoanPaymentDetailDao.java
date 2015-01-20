@@ -26,7 +26,7 @@ public interface LoanPaymentDetailDao extends IDAO<LoanPaymentDetail> {
 
     public List<LoanPaymentDetail> getByWtPeriodeWhereComponentPayrollIsActive(LoanPaymentDetailModel loanPaymentDetailModel);
 
-    public Long getTotalResourceTypeByParam(String parameter, LoanPaymentDetailModel loanPaymentDetailModel);
+    public Long getTotalByParam(String parameter, LoanPaymentDetailModel loanPaymentDetailModel);
     
     public Long getTotalUnPaidLoanByLoanId(Long loanId, Date periodEndDate);
 
