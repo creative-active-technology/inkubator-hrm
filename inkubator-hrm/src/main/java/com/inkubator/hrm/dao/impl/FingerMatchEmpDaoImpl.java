@@ -1,5 +1,9 @@
 package com.inkubator.hrm.dao.impl;
 
+import java.util.List;
+
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -19,6 +23,13 @@ public class FingerMatchEmpDaoImpl extends IDAOImpl<FingerMatchEmp> implements F
 	public Class<FingerMatchEmp> getEntityClass() {
 		return FingerMatchEmp.class;
 		
+	}
+
+	@Override
+	public List<FingerMatchEmp> getAllDataByNik(String nik) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("nik", nik));
+		return criteria.list();
 	}
 
 	

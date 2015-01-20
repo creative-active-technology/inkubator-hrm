@@ -127,4 +127,12 @@ public class TempJadwalKaryawanDaoImpl extends IDAOImpl<TempJadwalKaryawan> impl
         return (TempJadwalKaryawan) criteria.uniqueResult();
     }
 
+    @Override
+    public List<TempJadwalKaryawan> getAllDataByEmpIdAndPeriodDate(Long empDataId, Date startDate, Date endDate){
+    	Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+    	criteria.add(Restrictions.eq("empData.id", empDataId));
+    	criteria.add(Restrictions.ge("tanggalWaktuKerja", startDate));
+    	criteria.add(Restrictions.le("tanggalWaktuKerja", endDate));
+    	return criteria.list();
+    }
 }

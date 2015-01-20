@@ -12,6 +12,7 @@ import org.primefaces.model.SortOrder;
 
 import com.inkubator.hrm.service.TempProcessReadFingerService;
 import com.inkubator.hrm.web.model.DataFingerRealizationModel;
+import com.inkubator.hrm.web.search.DataFingerRealizationSearchParameter;
 
 
 /**
@@ -21,12 +22,12 @@ import com.inkubator.hrm.web.model.DataFingerRealizationModel;
 public class DataFingerRealizationLazyDataModel extends LazyDataModel<DataFingerRealizationModel> implements Serializable {
 
 	private static final Logger LOGGER = Logger.getLogger(DataFingerRealizationLazyDataModel.class);
-    private final Long parameter;
+    private final DataFingerRealizationSearchParameter parameter;
     private final TempProcessReadFingerService tempProcessReadFingerService;
     private List<DataFingerRealizationModel> listModel = new ArrayList<>();
     private Integer total;
 
-    public DataFingerRealizationLazyDataModel(Long parameter, TempProcessReadFingerService tempProcessReadFingerService) {
+    public DataFingerRealizationLazyDataModel(DataFingerRealizationSearchParameter parameter, TempProcessReadFingerService tempProcessReadFingerService) {
         this.parameter = parameter;
         this.tempProcessReadFingerService = tempProcessReadFingerService;
     }

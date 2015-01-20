@@ -21,7 +21,6 @@ public class TempProcessReadFinger implements Serializable {
     private Long id;
     private Integer version;
     
-    private MecineFinger mecineFinger;
     private EmpData empData;
     private Date scheduleDate;
     private Date scheduleIn;
@@ -32,8 +31,8 @@ public class TempProcessReadFinger implements Serializable {
     private Date webCheckOut;
     private Boolean isCorrectionIn;
     private Boolean isCorrectionOut;
-    private Double marginIn;
-    private Double marginOut;
+    private Integer marginIn;
+    private Integer marginOut;
     
     
     private String createdBy;
@@ -68,16 +67,6 @@ public class TempProcessReadFinger implements Serializable {
     public void setVersion(Integer version) {
         this.version = version;
     }
-
-	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "mecine_finger_id", nullable = false)
-	public MecineFinger getMecineFinger() {
-		return mecineFinger;
-	}
-
-	public void setMecineFinger(MecineFinger mecineFinger) {
-		this.mecineFinger = mecineFinger;
-	}
 	
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "emp_data_id", nullable = false)
@@ -178,20 +167,20 @@ public class TempProcessReadFinger implements Serializable {
 	}
 
 	@Column(name = "margin_in")
-	public Double getMarginIn() {
+	public Integer getMarginIn() {
 		return marginIn;
 	}
 	
-	public void setMarginIn(Double marginIn) {
+	public void setMarginIn(Integer marginIn) {
 		this.marginIn = marginIn;
 	}
 
 	@Column(name = "margin_out")
-	public Double getMarginOut() {
+	public Integer getMarginOut() {
 		return marginOut;
 	}
 
-	public void setMarginOut(Double marginOut) {
+	public void setMarginOut(Integer marginOut) {
 		this.marginOut = marginOut;
 	}
 

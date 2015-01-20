@@ -11,10 +11,10 @@ public class DataFingerRealizationModel implements Serializable {
 	public String nik;
 	public String employeeName;
 	public String workingGroupName;
-	public Double fingerIn;
-	public Double fingerOut;
-	public Double webCheckIn;
-	public Double webCheckOut;
+	public Long fingerIn;
+	public Long fingerOut;
+	public Long webCheckIn;
+	public Long webCheckOut;
 	
 	public String getNik() {
 		return nik;
@@ -34,29 +34,30 @@ public class DataFingerRealizationModel implements Serializable {
 	public void setWorkingGroupName(String workingGroupName) {
 		this.workingGroupName = workingGroupName;
 	}
-	public Double getFingerIn() {
+	public Long getFingerIn() {
 		return fingerIn;
 	}
-	public void setFingerIn(Double fingerIn) {
+	public void setFingerIn(Long fingerIn) {
 		this.fingerIn = fingerIn;
 	}
-	public Double getFingerOut() {
+	public Long getFingerOut() {
 		return fingerOut;
 	}
-	public void setFingerOut(Double fingerOut) {
+	public void setFingerOut(Long fingerOut) {
 		this.fingerOut = fingerOut;
 	}
-	public Double getWebCheckIn() {
+	public Long getWebCheckIn() {
 		return webCheckIn;
 	}
-	public void setWebCheckIn(Double webCheckIn) {
+	public void setWebCheckIn(Long webCheckIn) {
 		this.webCheckIn = webCheckIn;
 	}
-	public Double getWebCheckOut() {
+	public Long getWebCheckOut() {
 		return webCheckOut;
 	}
-	public void setWebCheckOut(Double webCheckOut) {
+	public void setWebCheckOut(Long webCheckOut) {
 		this.webCheckOut = webCheckOut;
 	}
+	
 	
 }

@@ -7,6 +7,7 @@ import org.hibernate.criterion.Order;
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.TempProcessReadFinger;
 import com.inkubator.hrm.web.model.DataFingerRealizationModel;
+import com.inkubator.hrm.web.search.DataFingerRealizationSearchParameter;
 
 /**
  *
@@ -18,8 +19,10 @@ public interface TempProcessReadFingerService extends IService<TempProcessReadFi
 
 	public Long getTotalByParam(Long empDataId, Long periodeId) throws Exception;
 	
-	public List<DataFingerRealizationModel> getDataFingerRealizationByParam(Long periodeId, int firstResult, int maxResults, Order orderable) throws Exception;
+	public List<DataFingerRealizationModel> getDataFingerRealizationByParam(DataFingerRealizationSearchParameter searchParameter, int firstResult, int maxResults, Order orderable) throws Exception;
 
-	public Long getTotalDataFingerRealizationByParam(Long periodeId) throws Exception;
+	public Long getTotalDataFingerRealizationByParam(DataFingerRealizationSearchParameter searchParameter) throws Exception;
+	
+	public void synchDataFingerRealization() throws Exception;
 	
 }
