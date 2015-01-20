@@ -28,8 +28,10 @@ public class TempProcessReadFinger implements Serializable {
     private Date scheduleOut;
     private Date fingerIn;
     private Date fingerOut;
-    private Boolean correctionIn;
-    private Boolean correctionOut;
+    private Date webCheckIn;
+    private Date webCheckOut;
+    private Boolean isCorrectionIn;
+    private Boolean isCorrectionOut;
     private Double marginIn;
     private Double marginOut;
     
@@ -118,7 +120,7 @@ public class TempProcessReadFinger implements Serializable {
 	}
 
 	@Temporal(TemporalType.TIME)
-    @Column(name = "finger_in", length = 8, nullable = false)
+    @Column(name = "finger_in", length = 8)
 	public Date getFingerIn() {
 		return fingerIn;
 	}
@@ -128,7 +130,7 @@ public class TempProcessReadFinger implements Serializable {
 	}
 
 	@Temporal(TemporalType.TIME)
-    @Column(name = "finger_out", length = 8, nullable = false)
+    @Column(name = "finger_out", length = 8)
 	public Date getFingerOut() {
 		return fingerOut;
 	}
@@ -136,23 +138,43 @@ public class TempProcessReadFinger implements Serializable {
 	public void setFingerOut(Date fingerOut) {
 		this.fingerOut = fingerOut;
 	}
-
-	@Column(name = "correction_in")
-	public Boolean getCorrectionIn() {
-		return correctionIn;
-	}
-	
-	public void setCorrectionIn(Boolean correctionIn) {
-		this.correctionIn = correctionIn;
+		
+	@Temporal(TemporalType.TIME)
+    @Column(name = "web_check_in", length = 8)
+	public Date getWebCheckIn() {
+		return webCheckIn;
 	}
 
-	@Column(name = "correction_out")
-	public Boolean getCorrectionOut() {
-		return correctionOut;
+	public void setWebCheckIn(Date webCheckIn) {
+		this.webCheckIn = webCheckIn;
 	}
 
-	public void setCorrectionOut(Boolean correctionOut) {
-		this.correctionOut = correctionOut;
+	@Temporal(TemporalType.TIME)
+    @Column(name = "web_check_out", length = 8)
+	public Date getWebCheckOut() {
+		return webCheckOut;
+	}
+
+	public void setWebCheckOut(Date webCheckOut) {
+		this.webCheckOut = webCheckOut;
+	}
+
+	@Column(name = "is_correction_in")
+	public Boolean getIsCorrectionIn() {
+		return isCorrectionIn;
+	}
+
+	public void setIsCorrectionIn(Boolean isCorrectionIn) {
+		this.isCorrectionIn = isCorrectionIn;
+	}
+
+	@Column(name = "is_correction_out")
+	public Boolean getIsCorrectionOut() {
+		return isCorrectionOut;
+	}
+
+	public void setIsCorrectionOut(Boolean isCorrectionOut) {
+		this.isCorrectionOut = isCorrectionOut;
 	}
 
 	@Column(name = "margin_in")
