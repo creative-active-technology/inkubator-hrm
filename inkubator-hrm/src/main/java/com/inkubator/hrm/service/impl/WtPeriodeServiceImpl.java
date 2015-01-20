@@ -57,8 +57,10 @@ public class WtPeriodeServiceImpl extends IServiceImpl implements WtPeriodeServi
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void saveOrUpdate(WtPeriode enntity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        wtPeriodeDao.saveOrUpdate(enntity);
     }
 
     @Override

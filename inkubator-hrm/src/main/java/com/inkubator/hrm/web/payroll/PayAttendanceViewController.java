@@ -1,19 +1,17 @@
 package com.inkubator.hrm.web.payroll;
 
+import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.hrm.entity.PayTempAttendanceStatus;
-import com.inkubator.hrm.entity.Reimbursment;
 import com.inkubator.hrm.entity.WtPeriode;
-import com.inkubator.hrm.service.InclusionReimbursmentService;
 import com.inkubator.hrm.service.PayTempAttendanceStatusService;
 import com.inkubator.hrm.service.WtPeriodeService;
-import com.inkubator.hrm.web.lazymodel.InclusionReimbursmentLazyDataModel;
 import com.inkubator.hrm.web.lazymodel.PayTempAttendanceStatusLazyDataModel;
-import com.inkubator.hrm.web.model.InclusionReimbursmentModel;
 import com.inkubator.hrm.web.model.PayTempAttendanceStatusModel;
+import com.inkubator.hrm.web.search.PayTempAttendanceSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
+import java.util.Calendar;
+import java.util.Date;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,31 +39,33 @@ public class PayAttendanceViewController extends BaseController{
     private PayTempAttendanceStatusService payTempAttendanceStatusService;
     @ManagedProperty(value = "#{wtPeriodeService}")
     private WtPeriodeService wtPeriodeService;
-    private String parameter;
+    private PayTempAttendanceSearchParameter payTempAttendanceSearchParameter;
     private LazyDataModel<PayTempAttendanceStatus> lazy;
     private PayTempAttendanceStatus selected;
     private PayTempAttendanceStatusModel payTempAttendanceStatusModel;
-    private Integer jumlahKaryawan;
+    private String jumlahKaryawan;
     private Integer jumlahHariKerja;
-    //private BigDecimal jmlNominalReimbursment;
     
     @PostConstruct
     @Override
     public void initialization() {
         try {
             super.initialization();
+            payTempAttendanceSearchParameter = new PayTempAttendanceSearchParameter();
             payTempAttendanceStatusModel = new PayTempAttendanceStatusModel();
             WtPeriode wtPeriode = wtPeriodeService.getEntityByPayrollTypeActive();
             if(wtPeriode != null){
             	payTempAttendanceStatusModel.setStartDate(wtPeriode.getFromPeriode());
             	payTempAttendanceStatusModel.setEndDate(wtPeriode.getUntilPeriode());
-            }
-            List<PayTempAttendanceStatus> listPayTempAttendanceStatus = payTempAttendanceStatusService.getByWtPeriodeWhereComponentPayrollIsActive(payTempAttendanceStatusModel);
-            jumlahKaryawan = listPayTempAttendanceStatus.size();
-            /*jmlNominalReimbursment = new BigDecimal(0);
-            for (Reimbursment listReimbursement : listReimbursment) {
-                jmlNominalReimbursment = jmlNominalReimbursment.add(listReimbursement.getNominal());
-            }*/
+                if(null != wtPeriode.getWorkingDays()){
+                    jumlahHariKerja = wtPeriode.getWorkingDays();
+                }else{
+                    jumlahHariKerja = 0;
+                }                               
+            }else{
+                jumlahHariKerja = 0;
+            }           
+            jumlahKaryawan = String.valueOf(payTempAttendanceStatusService.getTotalResourceTypeByParam(payTempAttendanceSearchParameter, payTempAttendanceStatusModel));           
         } catch (Exception ex) {
             Logger.getLogger(PayAttendanceViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -75,7 +75,7 @@ public class PayAttendanceViewController extends BaseController{
     private void cleanAndExit() {
         jumlahKaryawan = null;
         lazy = null;
-        parameter = null;
+        payTempAttendanceSearchParameter = null;
         payTempAttendanceStatusService = null;
         wtPeriodeService = null;
         selected = null;
@@ -85,10 +85,34 @@ public class PayAttendanceViewController extends BaseController{
     
     @Override
     public void onDialogReturn(SelectEvent event) {
-        //model = this.getModelFromEntity(selectedPaySalaryComponent);
-        super.onDialogReturn(event);
+        try {
+            lazy = null;
+            jumlahKaryawan = String.valueOf(payTempAttendanceStatusService.getTotalResourceTypeByParam(payTempAttendanceSearchParameter, payTempAttendanceStatusModel));            
+        } catch (Exception ex) {
+            Logger.getLogger(PayAttendanceViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
+    
+   
+    public void onDialogTaReturn(SelectEvent event) {
+        try {
+           jumlahHariKerja = (Integer)event.getObject();
+        } catch (Exception ex) {
+            Logger.getLogger(PayAttendanceViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void doEditTotalAttendance(){
         
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", false);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 450);
+        options.put("contentHeight", 150);
+
+        RequestContext.getCurrentInstance().openDialog("total_attendance_edit", options, null);
+    }
     public void doSearch() {
         lazy = null;
     }
@@ -99,13 +123,43 @@ public class PayAttendanceViewController extends BaseController{
     }
 
     private void showDialogUpload(Map<String, List<String>> params) {
-        Map<String, Object> options = new HashMap<>();
+        Map<String, Object> options = new HashMap<>(); 
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 600);
         options.put("contentHeight", 360);
         RequestContext.getCurrentInstance().openDialog("pay_attendance_upload", options, params);
+    }
+    
+    public int getWorkingDaysBetweenTwoDates(Date startDate, Date endDate) {
+        Calendar startCal = Calendar.getInstance();
+        startCal.setTime(startDate);
+
+        Calendar endCal = Calendar.getInstance();
+        endCal.setTime(endDate);
+
+        int workDays = 0;
+
+        //Return 0 if start and end are the same
+        if (startCal.getTimeInMillis() == endCal.getTimeInMillis()) {
+            return 0;
+        }
+
+        if (startCal.getTimeInMillis() > endCal.getTimeInMillis()) {
+            startCal.setTime(endDate);
+            endCal.setTime(startDate);
+        }
+
+        do {
+            //excluding start date
+            startCal.add(Calendar.DAY_OF_MONTH, 1);
+            if (startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY && startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
+                ++workDays;
+            }
+        } while (startCal.getTimeInMillis() < endCal.getTimeInMillis()); //excluding end date
+
+        return workDays;
     }
     
     public PayTempAttendanceStatusService getPayTempAttendanceStatusService() {
@@ -137,7 +191,7 @@ public class PayAttendanceViewController extends BaseController{
 
 	public LazyDataModel<PayTempAttendanceStatus> getLazy() {
         if(lazy == null){
-            lazy = new PayTempAttendanceStatusLazyDataModel(payTempAttendanceStatusService, payTempAttendanceStatusModel, parameter);
+            lazy = new PayTempAttendanceStatusLazyDataModel(payTempAttendanceStatusService, payTempAttendanceStatusModel, payTempAttendanceSearchParameter);
         }
         return lazy;
     }
@@ -154,31 +208,28 @@ public class PayAttendanceViewController extends BaseController{
         this.selected = selected;
     }
 
-    public Integer getJumlahKaryawan() {
+    public String getJumlahKaryawan() {
         return jumlahKaryawan;
     }
 
-    public void setJumlahKaryawan(Integer jumlahKaryawan) {
+    public void setJumlahKaryawan(String jumlahKaryawan) {
         this.jumlahKaryawan = jumlahKaryawan;
     }
-
-   
 
     public Integer getJumlahHariKerja() {
 		return jumlahHariKerja;
 	}
 
-	public void setJumlahHariKerja(Integer jumlahHariKerja) {
+    public void setJumlahHariKerja(Integer jumlahHariKerja) {
 		this.jumlahHariKerja = jumlahHariKerja;
 	}
 
-	public String getParameter() {
-        return parameter;
+    public PayTempAttendanceSearchParameter getPayTempAttendanceSearchParameter() {
+        return payTempAttendanceSearchParameter;
     }
 
-    public void setParameter(String parameter) {
-        this.parameter = parameter;
+    public void setPayTempAttendanceSearchParameter(PayTempAttendanceSearchParameter payTempAttendanceSearchParameter) {
+        this.payTempAttendanceSearchParameter = payTempAttendanceSearchParameter;
     }
-    
-    
+
 }
