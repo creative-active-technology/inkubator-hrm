@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.time.DateUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Isolation;
@@ -27,6 +28,7 @@ import com.inkubator.hrm.service.TempJadwalKaryawanService;
  */
 public class ApprovalActivityCronServiceImpl implements ApprovalActivityCronService {
 
+	protected transient Logger LOGGER = Logger.getLogger(getClass());
 	@Autowired
 	private ApprovalActivityDao approvalActivityDao;
 	@Autowired
@@ -59,55 +61,59 @@ public class ApprovalActivityCronServiceImpl implements ApprovalActivityCronServ
 		
 		//do autoApproval process
 		for(ApprovalActivity approvalActivity : autoApprovals){
-			if(approvalActivity.getApprovalDefinition().getAutoApproveOnDelay()) {
-				//do Approved
-				switch (approvalActivity.getApprovalDefinition().getName()) {
-					case HRMConstant.BUSINESS_TRAVEL:
-						businessTravelService.approved(approvalActivity.getId(), null, null);
-						break;
-					case HRMConstant.LOAN:
-						loanService.approved(approvalActivity.getId(), null, null);
-						break;
-					case HRMConstant.REIMBURSEMENT:
-						reimbursmentService.approved(approvalActivity.getId(), null, null);
-						break;
-					case HRMConstant.SHIFT_SCHEDULE:
-						tempJadwalKaryawanService.approved(approvalActivity.getId(), null, null);
-						break;
-					case HRMConstant.LEAVE:
-						leaveImplementationService.approved(approvalActivity.getId(), null, null);
-						break;
-					case HRMConstant.LEAVE_CANCELLATION:
-						leaveImplementationService.approved(approvalActivity.getId(), null, null);
-						break;
-					default:
-						break;
-				}
-			} else if(approvalActivity.getApprovalDefinition().getEscalateOnDelay()){
-				//do Diverted
-				switch (approvalActivity.getApprovalDefinition().getName()) {
-					case HRMConstant.BUSINESS_TRAVEL:
-						businessTravelService.diverted(approvalActivity.getId());
-						break;
-					case HRMConstant.LOAN:
-						loanService.diverted(approvalActivity.getId());
-						break;
-					case HRMConstant.REIMBURSEMENT:
-						reimbursmentService.diverted(approvalActivity.getId());
-						break;
-					case HRMConstant.SHIFT_SCHEDULE:
-						tempJadwalKaryawanService.diverted(approvalActivity.getId());
-						break;
-					case HRMConstant.LEAVE:
-						leaveImplementationService.diverted(approvalActivity.getId());
-						break;
-					case HRMConstant.LEAVE_CANCELLATION:
-						leaveImplementationService.diverted(approvalActivity.getId());
-						break;
-					default:
-						break;
-				}				
-			}			
+			try {
+				if(approvalActivity.getApprovalDefinition().getAutoApproveOnDelay()) {
+					//do Approved
+					switch (approvalActivity.getApprovalDefinition().getName()) {
+						case HRMConstant.BUSINESS_TRAVEL:
+							businessTravelService.approved(approvalActivity.getId(), null, null);
+							break;
+						case HRMConstant.LOAN:
+							loanService.approved(approvalActivity.getId(), null, null);
+							break;
+						case HRMConstant.REIMBURSEMENT:
+							reimbursmentService.approved(approvalActivity.getId(), null, null);
+							break;
+						case HRMConstant.SHIFT_SCHEDULE:
+							tempJadwalKaryawanService.approved(approvalActivity.getId(), null, null);
+							break;
+						case HRMConstant.LEAVE:
+							leaveImplementationService.approved(approvalActivity.getId(), null, null);
+							break;
+						case HRMConstant.LEAVE_CANCELLATION:
+							leaveImplementationService.approved(approvalActivity.getId(), null, null);
+							break;
+						default:
+							break;
+					}
+				} else if(approvalActivity.getApprovalDefinition().getEscalateOnDelay()){
+					//do Diverted
+					switch (approvalActivity.getApprovalDefinition().getName()) {
+						case HRMConstant.BUSINESS_TRAVEL:
+							businessTravelService.diverted(approvalActivity.getId());
+							break;
+						case HRMConstant.LOAN:
+							loanService.diverted(approvalActivity.getId());
+							break;
+						case HRMConstant.REIMBURSEMENT:
+							reimbursmentService.diverted(approvalActivity.getId());
+							break;
+						case HRMConstant.SHIFT_SCHEDULE:
+							tempJadwalKaryawanService.diverted(approvalActivity.getId());
+							break;
+						case HRMConstant.LEAVE:
+							leaveImplementationService.diverted(approvalActivity.getId());
+							break;
+						case HRMConstant.LEAVE_CANCELLATION:
+							leaveImplementationService.diverted(approvalActivity.getId());
+							break;
+						default:
+							break;
+					}				
+				}	
+			} catch (Exception ex) {
+	            LOGGER.error("Error on approvalActivity with ID : " + approvalActivity.getId(), ex);
+	        }
 		}		
 	}
 }

@@ -25,10 +25,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.gson.Gson;
+import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.ApprovalActivityDao;
 import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.HrmUserDao;
+import com.inkubator.hrm.dao.LoanCanceledDao;
 import com.inkubator.hrm.dao.LoanDao;
 import com.inkubator.hrm.dao.LoanPaymentDetailDao;
 import com.inkubator.hrm.dao.LoanSchemaDao;
@@ -36,6 +38,7 @@ import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.Loan;
+import com.inkubator.hrm.entity.LoanCanceled;
 import com.inkubator.hrm.entity.LoanPaymentDetail;
 import com.inkubator.hrm.entity.LoanSchema;
 import com.inkubator.hrm.json.util.JsonUtil;
@@ -43,6 +46,7 @@ import com.inkubator.hrm.service.LoanService;
 import com.inkubator.hrm.util.HRMFinanceLib;
 import com.inkubator.hrm.util.JadwalPembayaran;
 import com.inkubator.hrm.util.LoanPayment;
+import com.inkubator.hrm.web.model.LoanCanceledModel;
 import com.inkubator.hrm.web.search.LoanSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 
@@ -66,6 +70,8 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
     private HrmUserDao hrmUserDao;
     @Autowired
     private ApprovalActivityDao approvalActivityDao;
+    @Autowired
+    private LoanCanceledDao loanCanceledDao;
 
     @Override
     public Loan getEntiyByPK(String id) throws Exception {
@@ -324,6 +330,7 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
         LoanSchema loanSchema = loanSchemaDao.getEntiyByPK(entity.getLoanSchema().getId());
         entity.setEmpData(empData);
         entity.setLoanSchema(loanSchema);
+        entity.setStatusPencairan(HRMConstant.LOAN_UNPAID);
 
         String createdBy = StringUtils.isEmpty(entity.getCreatedBy()) ? UserInfoUtil.getUserName() : entity.getCreatedBy();
         Date createdOn = entity.getCreatedOn() == null ? new Date() : entity.getCreatedOn();
@@ -530,13 +537,46 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<Loan> getByParamByStatusPencairan(LoanSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception {
-        return loanDao.getByParamByStatusPencairan(parameter, firstResult, maxResults, orderable);
+        List<Loan> listLoan = loanDao.getByParamByStatusPencairan(parameter, firstResult, maxResults, orderable);
+        ApprovalActivity approvalTime;
+        List<Loan> listLoans = new ArrayList<Loan>();
+        for (Loan loan : listLoan) {
+             approvalTime = approvalActivityDao.getApprovalTimeByApprovalActivityNumber(loan.getApprovalActivityNumber());
+             loan.setApprovalTime(approvalTime.getApprovalTime());
+//             System.out.println(approvalTime.get(0)+"hoho");
+        }
+        return listLoan;
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public Long getTotalByParamByStatusPencairan(LoanSearchParameter parameter) throws Exception {
         return loanDao.getTotalByParamByStatusPencairan(parameter);
+    }
+
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void UpdateLoanAndsaveLoanCanceled(LoanCanceledModel loanCanceledModel) throws Exception {
+        //change status pencairan ke cancel atau = 2
+        Loan loanUpdate = loanDao.getEntiyByPK(loanCanceledModel.getId());
+        loanUpdate.setStatusPencairan(HRMConstant.LOAN_CANCELED);
+        loanDao.update(loanUpdate);
+        //save data to loan_canceled table
+        LoanCanceled loanCanceled = new LoanCanceled();
+        loanCanceled.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+        loanCanceled.setApprovalActivityNumber(loanCanceledModel.getApprovalActivityNumber());
+        loanCanceled.setCreatedBy(UserInfoUtil.getUserName());
+        loanCanceled.setCreatedOn(new Date());
+        loanCanceled.setInterestRate(loanCanceledModel.getInterestRate());
+        loanCanceled.setLoanDate(loanCanceledModel.getLoanDate());
+        loanCanceled.setNominalPrincipal(loanCanceledModel.getNominalPrincipal());
+        loanCanceled.setTermin(loanCanceledModel.getTermin());
+        loanCanceled.setTypeOfInterest(loanCanceledModel.getTypeOfInterest());
+        loanCanceled.setEmpData(empDataDao.getEntiyByPK(loanCanceledModel.getEmpData()));
+        loanCanceled.setLoanSchema(loanSchemaDao.getEntiyByPK(loanCanceledModel.getLoanSchema()));
+        loanCanceled.setDescription(loanCanceledModel.getKeterangan());
+        loanCanceled.setCancelationDate(new Date());
+        loanCanceledDao.save(loanCanceled);
     }
 
 }

@@ -9,6 +9,7 @@ import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.PayTempAttendanceStatus;
 import com.inkubator.hrm.web.model.PaySalaryUploadFileModel;
 import com.inkubator.hrm.web.model.PayTempAttendanceStatusModel;
+import com.inkubator.hrm.web.search.PayTempAttendanceSearchParameter;
 
 import java.util.List;
 
@@ -21,11 +22,11 @@ import org.primefaces.model.UploadedFile;
  */
 public interface PayTempAttendanceStatusService extends IService<PayTempAttendanceStatus>{
     
-    public List<PayTempAttendanceStatus> getByParam(String parameter, PayTempAttendanceStatusModel payTempAttendanceStatusModel, int firstResult, int maxResults, Order order) throws Exception;
+    public List<PayTempAttendanceStatus> getByParam(PayTempAttendanceSearchParameter parameter, PayTempAttendanceStatusModel payTempAttendanceStatusModel, int firstResult, int maxResults, Order order) throws Exception;
 
     public List<PayTempAttendanceStatus> getByWtPeriodeWhereComponentPayrollIsActive(PayTempAttendanceStatusModel payTempAttendanceStatusModel) throws Exception;
     
-    public Long getTotalResourceTypeByParam(String parameter, PayTempAttendanceStatusModel payTempAttendanceStatusModel) throws Exception;
+    public Long getTotalResourceTypeByParam(PayTempAttendanceSearchParameter parameter, PayTempAttendanceStatusModel payTempAttendanceStatusModel) throws Exception;
     
     public void executeBatchFileUpload(PayTempAttendanceStatusModel report) throws Exception;
 

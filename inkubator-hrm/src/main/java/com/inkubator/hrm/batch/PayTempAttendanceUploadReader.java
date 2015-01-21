@@ -15,7 +15,6 @@ import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 
-import com.inkubator.hrm.web.model.PaySalaryUploadFileModel;
 import com.inkubator.hrm.web.model.PayTempAttendanceStatusModel;
 
 /**
@@ -30,8 +29,7 @@ public class PayTempAttendanceUploadReader implements ItemReader<PayTempAttendan
 	private FlatFileItemReader<PayTempAttendanceStatusModel> csvFileReader;
 	private PoiItemReader<PayTempAttendanceStatusModel> excelFileReader;
 	
-	public PayTempAttendanceUploadReader(String filePath){
-            System.out.println(filePath+"teuing ti mana");
+	public PayTempAttendanceUploadReader(String filePath){           
 		this.extension = StringUtils.substringAfterLast(filePath, ".");
 		this.pathUpload = filePath;
 		if(StringUtils.equals(this.extension, "csv")){
@@ -48,7 +46,7 @@ public class PayTempAttendanceUploadReader implements ItemReader<PayTempAttendan
 		
 		//split by separated coma
 		DelimitedLineTokenizer lineTokenizer = new DelimitedLineTokenizer(DelimitedLineTokenizer.DELIMITER_COMMA);
-		lineTokenizer.setNames(new String[]{"Nik","WorkingDays"});
+		lineTokenizer.setNames(new String[]{"Nik","TotalAttendance"});
 		
 		//mapped to an object
 		BeanWrapperFieldSetMapper<PayTempAttendanceStatusModel> beanWrapperFieldSetMapper = new BeanWrapperFieldSetMapper<>();
@@ -66,8 +64,7 @@ public class PayTempAttendanceUploadReader implements ItemReader<PayTempAttendan
 		csvFileReader.open(new ExecutionContext());
 	}
 	
-	private void initializationExcelReader(String filePath){
-            System.out.println("masuk excel");
+	private void initializationExcelReader(String filePath){         
 		//read a Excel file
 		Resource resource = new FileSystemResource(filePath);
 		
@@ -75,13 +72,13 @@ public class PayTempAttendanceUploadReader implements ItemReader<PayTempAttendan
 			//mapped to an object
 			BeanPropertyRowMapper<PayTempAttendanceStatusModel> rowMapper = new BeanPropertyRowMapper<>();
 			rowMapper.setTargetType(PayTempAttendanceStatusModel.class);		
-			rowMapper.afterPropertiesSet();		
-		
+			rowMapper.afterPropertiesSet();	
+                       
 			//initial poiItemReader
 			excelFileReader = new PoiItemReader<>();
 			excelFileReader.setResource(resource);
 			excelFileReader.setLinesToSkip(1);
-			excelFileReader.setRowMapper(rowMapper);
+			excelFileReader.setRowMapper(rowMapper);                                        
 			excelFileReader.afterPropertiesSet();
 			excelFileReader.open(new ExecutionContext());
 			

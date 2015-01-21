@@ -12,6 +12,7 @@ import com.inkubator.hrm.entity.PayTempUploadData;
 import com.inkubator.hrm.service.PayTempAttendanceStatusService;
 import com.inkubator.hrm.web.model.PaySalaryUploadFileModel;
 import com.inkubator.hrm.web.model.PayTempAttendanceStatusModel;
+import com.inkubator.hrm.web.search.PayTempAttendanceSearchParameter;
 import com.inkubator.webcore.util.FacesIO;
 import java.io.File;
 import java.nio.file.Files;
@@ -229,13 +230,15 @@ public class PayTempAttendanceStatusServiceImpl extends IServiceImpl implements
     }
 
     @Override
-    public List<PayTempAttendanceStatus> getByParam(String parameter,
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<PayTempAttendanceStatus> getByParam(PayTempAttendanceSearchParameter parameter,
             PayTempAttendanceStatusModel payTempAttendanceStatusModel,
             int firstResult, int maxResults, Order order) throws Exception {
-        return new ArrayList<PayTempAttendanceStatus>();
+        return payTempAttendanceStatusDao.getByParam(parameter, payTempAttendanceStatusModel, firstResult, maxResults, order);
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
     public List<PayTempAttendanceStatus> getByWtPeriodeWhereComponentPayrollIsActive(
             PayTempAttendanceStatusModel payTempAttendanceStatusModel)
             throws Exception {
@@ -243,11 +246,11 @@ public class PayTempAttendanceStatusServiceImpl extends IServiceImpl implements
     }
 
     @Override
-    public Long getTotalResourceTypeByParam(String parameter,
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalResourceTypeByParam(PayTempAttendanceSearchParameter parameter,
             PayTempAttendanceStatusModel payTempAttendanceStatusModel)
             throws Exception {
-        // TODO Auto-generated method stub
-        return 0l;
+       return payTempAttendanceStatusDao.getTotalResourceTypeByParam(parameter, payTempAttendanceStatusModel);
     }
     
      @Override
@@ -262,10 +265,10 @@ public class PayTempAttendanceStatusServiceImpl extends IServiceImpl implements
                 PayTempAttendanceStatus entity = new PayTempAttendanceStatus();
                 entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));                
                 entity.setEmpData(empData);
-                entity.setTotalAttendance(Integer.parseInt(model.getTotalAttendance()));                
+                entity.setTotalAttendance(Integer.valueOf(StringUtils.substringBeforeLast(model.getTotalAttendance().trim(), ".")));                
                 entity.setCreatedBy(model.getCreatedBy());
                 entity.setCreatedOn(new Date());
-                this.payTempAttendanceStatusDao.save(entity);
+                this.payTempAttendanceStatusDao.save(entity);                
             }
         }
 
@@ -274,9 +277,7 @@ public class PayTempAttendanceStatusServiceImpl extends IServiceImpl implements
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public String updateFileAndDeleteData(UploadedFile documentFile) throws Exception {
-        String uploadPath = this.getUploadPath(documentFile);
-        System.out.println("Path Upload : " + uploadPath);
-        LOGGER.info("Path Uploaded file : " + uploadPath);
+        String uploadPath = this.getUploadPath(documentFile);        
         if (documentFile != null) {
             //remove old file
             Files.deleteIfExists(Paths.get(uploadPath));
@@ -286,7 +287,6 @@ public class PayTempAttendanceStatusServiceImpl extends IServiceImpl implements
             file.renameTo(new File(uploadPath));
         }
 
-        //payTempUploadDataDao.deleteByPaySalaryComponentId(paySalaryComponentId);
         return uploadPath;
     }
     

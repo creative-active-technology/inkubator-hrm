@@ -12,11 +12,13 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
 import com.inkubator.datacore.dao.impl.IDAOImpl;
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.LoanPaymentDetailDao;
 import com.inkubator.hrm.entity.Loan;
 import com.inkubator.hrm.entity.LoanPaymentDetail;
 import com.inkubator.hrm.web.model.LoanPaymentDetailModel;
 import com.inkubator.securitycore.util.UserInfoUtil;
+
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
@@ -95,7 +97,7 @@ public class LoanPaymentDetailDaoImpl extends IDAOImpl<LoanPaymentDetail> implem
     }
 
     @Override
-    public Long getTotalResourceTypeByParam(String parameter, LoanPaymentDetailModel loanPaymentDetailModel) {
+    public Long getTotalByParam(String parameter, LoanPaymentDetailModel loanPaymentDetailModel) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchByParam(parameter, criteria, loanPaymentDetailModel);
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
@@ -142,6 +144,7 @@ public class LoanPaymentDetailDaoImpl extends IDAOImpl<LoanPaymentDetail> implem
         criteria.add(Restrictions.eq("loanSchema.id", loanSchemaId));
         criteria.add(Restrictions.ge("dueDate", fromPeriode));
         criteria.add(Restrictions.le("dueDate", untilPeriode));
+        criteria.add(Restrictions.eq("loan.statusPencairan", HRMConstant.LOAN_PAID));
         return criteria.list();
 	}
 }

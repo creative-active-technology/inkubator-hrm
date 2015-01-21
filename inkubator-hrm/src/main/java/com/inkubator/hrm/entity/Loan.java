@@ -36,6 +36,7 @@ public class Loan implements java.io.Serializable {
 
     private Long id;
     private Integer version;
+    private String nomor;
     private EmpData empData;
     private LoanSchema loanSchema;
     private Double nominalPrincipal;
@@ -50,6 +51,7 @@ public class Loan implements java.io.Serializable {
     private String updatedBy;
     private Date updatedOn;
     private Integer statusPencairan;
+    private Date approvalTime;
     private Set<LoanPaymentDetail> loanPaymentDetails = new HashSet<LoanPaymentDetail>(0);
 
     public Loan() {
@@ -71,6 +73,15 @@ public class Loan implements java.io.Serializable {
         this.id = id;
     }
 
+    @Column(name="nomor", unique=true, length = 45)
+    public String getNomor() {
+        return nomor;
+    }
+
+    public void setNomor(String nomor) {
+        this.nomor = nomor;
+    }
+    
     @Version
     @Column(name = "version")
     public Integer getVersion() {
@@ -227,4 +238,14 @@ public class Loan implements java.io.Serializable {
         this.statusPencairan = statusPencairan;
     }
 
+    @Transient
+    public Date getApprovalTime() {
+        return approvalTime;
+    }
+
+    public void setApprovalTime(Date approvalTime) {
+        this.approvalTime = approvalTime;
+    }
+
+    
 }

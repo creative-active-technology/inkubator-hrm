@@ -11,9 +11,12 @@ import com.inkubator.hrm.service.InclusionReimbursmentService;
 import com.inkubator.hrm.service.PayTempAttendanceStatusService;
 import com.inkubator.hrm.web.model.InclusionReimbursmentModel;
 import com.inkubator.hrm.web.model.PayTempAttendanceStatusModel;
+import com.inkubator.hrm.web.search.PayTempAttendanceSearchParameter;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -32,10 +35,10 @@ public class PayTempAttendanceStatusLazyDataModel extends LazyDataModel<PayTempA
     private final PayTempAttendanceStatusService service;
     private PayTempAttendanceStatusModel payTempAttendanceStatusModel;
     private List<PayTempAttendanceStatus> payTempAttendanceStatusList = new ArrayList<>();
-    private final String parameter;
+    private final PayTempAttendanceSearchParameter parameter;
     private Integer jumlahData;
 
-    public PayTempAttendanceStatusLazyDataModel(PayTempAttendanceStatusService service, PayTempAttendanceStatusModel payTempAttendanceStatusModel, String parameter) {
+    public PayTempAttendanceStatusLazyDataModel(PayTempAttendanceStatusService service, PayTempAttendanceStatusModel payTempAttendanceStatusModel, PayTempAttendanceSearchParameter parameter) {
         this.service = service;
         this.payTempAttendanceStatusModel = payTempAttendanceStatusModel;
         this.parameter = parameter;
@@ -52,13 +55,10 @@ public class PayTempAttendanceStatusLazyDataModel extends LazyDataModel<PayTempA
                 if(sortField != null){
                     order = (sortOrder == SortOrder.ASCENDING) ? Order.asc(sortField) : Order.desc(sortField);
                 }else{
-                    order = Order.desc("code");
+                    order = Order.asc("empData");
                 }
-                //payTempAttendanceStatusList = service.getByParam(parameter, payTempAttendanceStatusModel, first, pageSize, order);
-                //jumlahData = Integer.parseInt(String.valueOf(service.getTotalResourceTypeByParam(parameter, payTempAttendanceStatusModel)));
-                
-                payTempAttendanceStatusList = new ArrayList<PayTempAttendanceStatus>();
-                jumlahData = 0;
+                payTempAttendanceStatusList = service.getByParam(parameter, payTempAttendanceStatusModel, first, pageSize, order);
+                jumlahData = Integer.parseInt(String.valueOf(service.getTotalResourceTypeByParam(parameter, payTempAttendanceStatusModel)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
             }
@@ -68,6 +68,8 @@ public class PayTempAttendanceStatusLazyDataModel extends LazyDataModel<PayTempA
         setRowCount(jumlahData);
         return payTempAttendanceStatusList;
     }
+    
+    
     
     @Override
     public Object getRowKey(PayTempAttendanceStatus payTempAttendanceStatus) {
