@@ -9,6 +9,8 @@ import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.PayTempAttendanceStatus;
 import com.inkubator.hrm.entity.Reimbursment;
 import com.inkubator.hrm.web.model.InclusionReimbursmentModel;
+import com.inkubator.hrm.web.model.PayTempAttendanceStatusModel;
+import com.inkubator.hrm.web.search.PayTempAttendanceSearchParameter;
 
 import java.util.List;
 
@@ -19,11 +21,9 @@ import org.hibernate.criterion.Order;
  * @author Ahmad Mudzakkir Amal
  */
 public interface PayTempAttendanceStatusDao extends IDAO<PayTempAttendanceStatus> {
-    /*public List<PayTempAttendanceStatus> getByParam(String parameter, InclusionReimbursmentModel inclusionReimbursmentModel, int firstResult, int maxResults, Order order);
+    public List<PayTempAttendanceStatus> getByParam(PayTempAttendanceSearchParameter parameter, PayTempAttendanceStatusModel model, int firstResult, int maxResults, Order order);
     
-    public List<PayTempAttendanceStatus> getByWtPeriodeWhereComponentPayrollIsActive(InclusionReimbursmentModel inclusionReimbursmentModel);
-    
-    public Long getTotalResourceTypeByParam(String parameter, InclusionReimbursmentModel inclusionReimbursmentModel);*/
+    public Long getTotalResourceTypeByParam(PayTempAttendanceSearchParameter parameter, PayTempAttendanceStatusModel model);
     
     public List<PayTempAttendanceStatus> getAllByNik(String nik);
 }

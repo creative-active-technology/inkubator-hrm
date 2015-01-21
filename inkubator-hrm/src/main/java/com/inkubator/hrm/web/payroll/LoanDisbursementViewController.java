@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.inkubator.hrm.web.employee;
+package com.inkubator.hrm.web.payroll;
 
+import com.inkubator.hrm.web.employee.*;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.service.EmpDataService;
@@ -35,7 +36,7 @@ import org.springframework.dao.DataIntegrityViolationException;
  */
 @ManagedBean(name = "empDataViewController")
 @ViewScoped
-public class EmpDataViewController extends BaseController {
+public class LoanDisbursementViewController extends BaseController {
 
     private EmpDataSearchParameter empDataSearchParameter;
     private LazyDataModel<EmpData> empDataLazyDataModel;

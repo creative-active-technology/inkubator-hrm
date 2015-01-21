@@ -30,6 +30,7 @@ public class WtPeriode implements java.io.Serializable {
     private Date fromPeriode;
     private Date untilPeriode;
     private String absen;
+    private Integer workingDays;
     private String payrollType;
     private String createdBy;
     private Date createdOn;
@@ -130,6 +131,15 @@ public class WtPeriode implements java.io.Serializable {
 
     public void setAbsen(String absen) {
         this.absen = absen;
+    }
+    
+    @Column(name = "working_days", length = 4)
+    public Integer getWorkingDays() {
+        return this.workingDays;
+    }
+
+    public void setWorkingDays(Integer workingDays) {
+        this.workingDays = workingDays;
     }
 
     @Column(name = "payroll_type", length = 20)
