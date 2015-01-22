@@ -54,22 +54,21 @@ public class LoanUploadController extends BaseController {
     private JobLauncher jobLauncher;
     @ManagedProperty(value = "#{jobLoanUpload}")
     private Job jobLoanUpload;
-    private List<LoanSchema> loanSchemeList;
-    private LoanSchema selected;
-    private Map<String, String> loanSchemeDropDown = new HashMap<String, String>();
+    private Long loanSchemaId;    
+    private Map<String, Long> mapLoanSchema = new HashMap<String, Long>();
 
     @PostConstruct
     @Override
     public void initialization() {
         try {
             super.initialization();
-            loanSchemeList = loanSchemaService.getAllData();
-            selected = new LoanSchema();
-            System.out.println("loanSchemeList size : " + loanSchemeList.size());
+            List<LoanSchema> loanSchemeList = loanSchemaService.getAllData();
             for(LoanSchema loanSchema : loanSchemeList){
-                loanSchemeDropDown.put(loanSchema.getCode(), loanSchema.getName());
+                mapLoanSchema.put(loanSchema.getName(), loanSchema.getId());
             }
-            System.out.println("loanSchemeDropDown size : " + loanSchemeDropDown.size());
+            
+            System.out.println("loanSchemeList size : " + loanSchemeList.size());            
+            System.out.println("loanSchemeDropDown size : " + mapLoanSchema.size());
         } catch (Exception ex) {
             Logger.getLogger(LoanUploadController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -77,41 +76,22 @@ public class LoanUploadController extends BaseController {
 
     @PreDestroy
     public void cleanAndExit() {       
-        loanSchemaService = null;
-        selected = null;
+        loanSchemaService = null;       
         file = null;
         uploadFilesUtil = null;
         fileName = null;
         jobLauncher = null;
         jobLoanUpload = null;
-        loanSchemeList = null;
+        //loanSchemeList = null;
     }
 
     public UploadedFile getFile() {
         return file;
     }
-
-    public Map<String, String> getLoanSchemeDropDown() {
-        return loanSchemeDropDown;
-    }
-
-    public void setLoanSchemeDropDown(Map<String, String> loanSchemeDropDown) {
-        this.loanSchemeDropDown = loanSchemeDropDown;
-    }
-    
     
     public void setFile(UploadedFile file) {
         this.file = file;
-    }
-
-    public LoanSchema getSelected() {
-        return selected;
-    }
-
-    public void setSelected(LoanSchema selected) {
-        this.selected = selected;
-    }
-    
+    }   
 
     public UploadFilesUtil getUploadFilesUtil() {
         return uploadFilesUtil;
@@ -161,26 +141,36 @@ public class LoanUploadController extends BaseController {
         this.loanSchemaService = loanSchemaService;
     }
 
-    public List<LoanSchema> getLoanSchemeList() {
-        return loanSchemeList;
+    public Long getLoanSchemaId() {
+        return loanSchemaId;
     }
 
-    public void setLoanSchemeList(List<LoanSchema> loanSchemeList) {
-        this.loanSchemeList = loanSchemeList;
+    public void setLoanSchemaId(Long loanSchemaId) {
+        this.loanSchemaId = loanSchemaId;
     }
 
+    public Map<String, Long> getMapLoanSchema() {
+        return mapLoanSchema;
+    }
+
+    public void setMapLoanSchema(Map<String, Long> mapLoanSchema) {
+        this.mapLoanSchema = mapLoanSchema;
+    }
+
+    
+    
    
 
     public void doSave() {
         try {
         	//save upload file to disk and delete all data before running jobs
         	String pathUpload = this.loanService.updateFileAndDeleteData(file);
-        	System.out.println("selected loanScheme : " + selected.getName());                
+        	System.out.println("selected loanSchemaId : " + loanSchemaId);                
         	//running jobs batch to execute file upload
         	JobParameters jobParameters = new JobParametersBuilder()
 		        	.addString("input.file.path", pathUpload)
 		        	.addString("createdBy", UserInfoUtil.getUserName())
-                                .addLong("loanSchemeId", selected.getId())
+                                .addLong("loanSchemeId", loanSchemaId)
 		        	.addString("timeInMilis", String.valueOf(System.currentTimeMillis())).toJobParameters();
         	JobExecution jobExecution = jobLauncher.run(jobLoanUpload, jobParameters);
         	System.out.println("Exit Status : " + jobExecution.getStatus());

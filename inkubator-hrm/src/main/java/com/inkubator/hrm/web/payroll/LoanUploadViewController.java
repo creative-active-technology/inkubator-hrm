@@ -1,6 +1,7 @@
 package com.inkubator.hrm.web.payroll;
 
 import com.inkubator.common.util.DateTimeUtil;
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.Loan;
 import com.inkubator.hrm.entity.PayTempAttendanceStatus;
 import com.inkubator.hrm.entity.WtPeriode;
@@ -14,6 +15,8 @@ import com.inkubator.hrm.web.model.PayTempAttendanceStatusModel;
 import com.inkubator.hrm.web.search.LoanSearchParameter;
 import com.inkubator.hrm.web.search.PayTempAttendanceSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
+import com.inkubator.webcore.util.FacesUtil;
+import com.inkubator.webcore.util.MessagesResourceUtil;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -25,13 +28,16 @@ import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import org.hibernate.exception.ConstraintViolationException;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 
 import org.primefaces.model.LazyDataModel;
+import org.springframework.dao.DataIntegrityViolationException;
 
 /**
  *
@@ -95,6 +101,30 @@ public class LoanUploadViewController extends BaseController{
     }
     public void doSearch() {
         lazy = null;
+    }
+    
+    public void doSelectEntity() {
+        try {
+            selected = this.loanService.getEntiyByPK(selected.getId());
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
+        }
+    }
+    
+     public String doDetail() {
+        return "/protected/payroll/loan_upload_detail.htm?faces-redirect=true&execution=e" + selected.getId();
+    }
+     
+     public void doDelete() {
+        try {
+            loanService.delete(selected);
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            LOGGER.error("Error when doDelete BusinessTravel", ex);
+        } catch (Exception ex) {
+            LOGGER.error("Error when doDelete BusinessTravel", ex);
+        }
     }
 
     public void doUpload() {

@@ -58,7 +58,7 @@ public class LoanUploadReader implements ItemReader<LoanModel> {
 		
 		//split by separated coma
 		DelimitedLineTokenizer lineTokenizer = new DelimitedLineTokenizer(DelimitedLineTokenizer.DELIMITER_COMMA);
-		lineTokenizer.setNames(new String[]{"Nik","NominalPrincipal","Termin"});
+		lineTokenizer.setNames(new String[]{"Nik","NominalPrincipal","Termins"});
 		
 		//mapped to an object
 		BeanWrapperFieldSetMapper<LoanModel> beanWrapperFieldSetMapper = new BeanWrapperFieldSetMapper<>();
@@ -83,7 +83,8 @@ public class LoanUploadReader implements ItemReader<LoanModel> {
 		try {
 			//mapped to an object
 			BeanPropertyRowMapper<LoanModel> rowMapper = new BeanPropertyRowMapper<>();
-			rowMapper.setTargetType(LoanModel.class);		
+			rowMapper.setTargetType(LoanModel.class);	
+                       
 			rowMapper.afterPropertiesSet();	
                        
 			//initial poiItemReader

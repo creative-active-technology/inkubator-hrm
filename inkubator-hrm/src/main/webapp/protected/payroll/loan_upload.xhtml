@@ -39,10 +39,10 @@
                                 <h:outputLabel  value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 70%">
-                                <p:selectOneMenu id="loanSchemeSelectId" value="#{loanUploadController.selected}"
+                                <p:selectOneMenu id="loanSchemeSelectId" value="#{loanUploadController.loanSchemaId}" filter="true" required="false"
                                                      style="width: 100%;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItems value="#{loanUploadController.loanSchemeList}" var="ls" itemLabel="#{ls.name}" itemValue="#{ls}" />                                                                                
+                                        <f:selectItems value="#{loanUploadController.mapLoanSchema}"  />                                                                                
                                 </p:selectOneMenu>
                             </p:column>
                         </p:row>
