@@ -82,7 +82,7 @@ public class LoanCanceledFormController extends BaseController {
         return model;
     }
 
-    public void doSave() {
+    public String doSave() {
         System.out.println("masuk dosave");
         try {
             loanService.UpdateLoanAndsaveLoanCanceled(loanCanceledModel);
@@ -90,13 +90,19 @@ public class LoanCanceledFormController extends BaseController {
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 
             cleanAndExit();
+            return "/protected/personalia/loan_canceled_view.htm?faces-redirect=true";
         } catch (BussinessException ex) {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
+        return null;
     }
 
+    public String doBack(){
+        return "/protected/personalia/loan_canceled_process_view.htm?faces-redirect=true";
+    }
+    
     public LoanService getLoanService() {
         return loanService;
     }

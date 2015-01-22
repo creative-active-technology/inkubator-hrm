@@ -88,7 +88,7 @@ public class JabatanSpesifikasiDetailController extends BaseController{
             listJabatanSpesifikasi = jabatanSpecService.getAllDataByJabatanId(selectedJabatan.getId());
             
             //source
-            source = educationLevelService.getAllData();
+            source = educationLevelService.getAllDataOrderByLevel();
             occupationSource = occupationTypeService.getAllData();
             majorSource = majorService.getAllData();
             facultySource = facultyService.getAllData();
