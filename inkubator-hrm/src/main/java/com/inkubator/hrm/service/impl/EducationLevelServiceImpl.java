@@ -285,4 +285,10 @@ public class EducationLevelServiceImpl extends IServiceImpl implements Education
         return educationLevel;
     }
 
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ,propagation = Propagation.SUPPORTS, timeout = 30)
+    public List<EducationLevel> getAllDataOrderByLevel() throws Exception {
+        return educationLevelDao.getAllDataOrderByLevel();
+    }
+
 }

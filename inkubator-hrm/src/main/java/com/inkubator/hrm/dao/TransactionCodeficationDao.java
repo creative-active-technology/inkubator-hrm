@@ -13,9 +13,11 @@ import com.inkubator.hrm.web.search.TransactionCodeficationSearchParameter;
 * @author Taufik hidayat
 */
 public interface TransactionCodeficationDao extends IDAO<TransactionCodefication> {
-
+        
 	public List<TransactionCodefication> getByParam(TransactionCodeficationSearchParameter parameter, int firstResult, int maxResults, Order orderable);
 
 	public Long getTotalTransactionCodeficationByParam(TransactionCodeficationSearchParameter parameter);
+        
+        public TransactionCodefication getEntityByModulCode(String modulCode);
 
 }

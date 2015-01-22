@@ -36,6 +36,13 @@ public class TransactionCodeficationDaoImpl extends IDAOImpl<TransactionCodefica
         criteria.setMaxResults(maxResults);
         return criteria.list();
     }
+    
+    @Override
+    public TransactionCodefication getEntityByModulCode(String modulCode) {
+         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+         criteria.add(Restrictions.eq("moduleCode", modulCode));
+         return (TransactionCodefication) criteria.uniqueResult();
+    }
 
     @Override
     public Long getTotalTransactionCodeficationByParam(TransactionCodeficationSearchParameter parameter) {
@@ -54,5 +61,7 @@ public class TransactionCodeficationDaoImpl extends IDAOImpl<TransactionCodefica
         }
         criteria.add(Restrictions.isNotNull("id"));
     }
+
+    
 
 }

@@ -34,6 +34,7 @@ import com.inkubator.hrm.dao.LoanCanceledDao;
 import com.inkubator.hrm.dao.LoanDao;
 import com.inkubator.hrm.dao.LoanPaymentDetailDao;
 import com.inkubator.hrm.dao.LoanSchemaDao;
+import com.inkubator.hrm.dao.TransactionCodeficationDao;
 import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.HrmUser;
@@ -41,14 +42,24 @@ import com.inkubator.hrm.entity.Loan;
 import com.inkubator.hrm.entity.LoanCanceled;
 import com.inkubator.hrm.entity.LoanPaymentDetail;
 import com.inkubator.hrm.entity.LoanSchema;
+import com.inkubator.hrm.entity.PayTempAttendanceStatus;
+import com.inkubator.hrm.entity.TransactionCodefication;
 import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.LoanService;
 import com.inkubator.hrm.util.HRMFinanceLib;
 import com.inkubator.hrm.util.JadwalPembayaran;
+import com.inkubator.hrm.util.KodefikasiUtil;
 import com.inkubator.hrm.util.LoanPayment;
 import com.inkubator.hrm.web.model.LoanCanceledModel;
+import com.inkubator.hrm.web.model.LoanModel;
+import com.inkubator.hrm.web.model.PayTempAttendanceStatusModel;
 import com.inkubator.hrm.web.search.LoanSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+import com.inkubator.webcore.util.FacesIO;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import org.primefaces.model.UploadedFile;
 
 /**
  *
@@ -72,7 +83,11 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
     private ApprovalActivityDao approvalActivityDao;
     @Autowired
     private LoanCanceledDao loanCanceledDao;
-
+    @Autowired
+    private TransactionCodeficationDao transactionCodeficationDao;
+     @Autowired
+    private FacesIO facesIO;
+     
     @Override
     public Loan getEntiyByPK(String id) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
@@ -346,7 +361,6 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
                 lpd.setLoan(entity);
                 lpd.setCreatedBy(createdBy);
                 lpd.setCreatedOn(createdOn);
-
             }
             entity.setLoanPaymentDetails(ImmutableSet.copyOf(loanPaymentDetails));
             loanDao.save(entity);
@@ -577,6 +591,65 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
         loanCanceled.setDescription(loanCanceledModel.getKeterangan());
         loanCanceled.setCancelationDate(new Date());
         loanCanceledDao.save(loanCanceled);
+    }
+    
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void executeBatchFileUpload(LoanModel model) throws Exception {  
+        System.out.println("Masuk executeBatch Loan");
+        LoanSchema loanSchema = loanSchemaDao.getEntiyByPK(model.getLoanSchemaId()); 
+        EmpData empData = empDataDao.getEntityByNik(model.getNik());
+        
+        model.setInterestRate(loanSchema.getInterestRate());
+        model.setTypeOfInterest(loanSchema.getTypeOfInterest());  
+        model.setLoanPaymentDate(new Date());
+        
+        List<LoanPaymentDetail> listLoanPaymentDetails = this.getAllDataLoanPaymentDetails(model.getInterestRate(), model.getTermin(), model.getLoanPaymentDate(), model.getNominalPrincipal(), model.getTypeOfInterest());
+        model.setLoanPaymentDetails(listLoanPaymentDetails);        
+               
+        if (empData != null) {         
+            
+            TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.LOAN_KODE);
+            Integer currentMaxLoadId = loanDao.getCurrentMaxId();
+        
+            Loan loan = new Loan();
+            loan.setId(model.getId());
+            loan.setEmpData(new EmpData(model.getEmpData().getId()));
+            loan.setLoanSchema(loanSchema);
+            loan.setNominalPrincipal(model.getNominalPrincipal());
+            loan.setLoanPaymentDate(model.getLoanPaymentDate());
+            loan.setLoanDate(model.getLoanDate());
+            loan.setInterestRate(loanSchema.getInterestRate());
+            loan.setTypeOfInterest(loanSchema.getTypeOfInterest());
+            loan.setTermin(Integer.valueOf(org.apache.commons.lang3.StringUtils.substringBeforeLast(String.valueOf(model.getTermin()).trim(), ".")));
+            loan.setStatusPencairan(HRMConstant.LOAN_UNPAID);
+            loan.setNomor(KodefikasiUtil.getKodefikasi(currentMaxLoadId, transactionCodefication.getCode()));           
+            loan.setCreatedBy(model.getCreatedBy());
+            loan.setCreatedOn(new Date());
+            //loanDao.save(loan);
+        }
+    }
+
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public String updateFileAndDeleteData(UploadedFile documentFile) throws Exception {
+        String uploadPath = this.getUploadPath(documentFile);        
+        if (documentFile != null) {
+            //remove old file
+            Files.deleteIfExists(Paths.get(uploadPath));
+            //added new file            
+            facesIO.transferFile(documentFile);
+            File file = new File(facesIO.getPathUpload() + documentFile.getFileName());
+            file.renameTo(new File(uploadPath));
+        }
+
+        return uploadPath;
+    }
+    
+    private String getUploadPath( UploadedFile documentFile) {
+        String extension = org.apache.commons.lang3.StringUtils.substringAfterLast(documentFile.getFileName(), ".");
+        String uploadPath = facesIO.getPathUpload() + "loanupload." + extension;
+        return uploadPath;
     }
 
 }
