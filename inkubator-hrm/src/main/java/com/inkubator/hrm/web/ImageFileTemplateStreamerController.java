@@ -81,7 +81,7 @@ public class ImageFileTemplateStreamerController extends BaseController {
             try {
             	String fileName = StringUtils.EMPTY;
                 StringBuffer path = new StringBuffer();
-                path.append(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/resources/file_template/"));
+                path.append(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/resources/file_template/pay_attendance"));
                 //path.append("\\");
                 switch (extension) {
 					case "csv":
@@ -122,7 +122,7 @@ public class ImageFileTemplateStreamerController extends BaseController {
             try {
             	String fileName = StringUtils.EMPTY;
                 StringBuffer path = new StringBuffer();
-                path.append(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/resources/file_template/"));
+                path.append(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/resources/file_template/loan"));
                 //path.append("\\");
                 switch (extension) {
 					case "csv":

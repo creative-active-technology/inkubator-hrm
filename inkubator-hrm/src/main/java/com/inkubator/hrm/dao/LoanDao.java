@@ -28,5 +28,5 @@ public interface LoanDao extends IDAO<Loan> {
 
     public List<Loan> getAllDataByEmpDataId(Long empDataId);
     
-    public Integer getCurrentMaxId();
+    public Long getCurrentMaxId();
 }

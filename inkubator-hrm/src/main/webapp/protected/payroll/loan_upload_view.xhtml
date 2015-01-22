@@ -16,6 +16,7 @@
             </ui:define>
             <ui:define name="center">
                 <div id="box_bg" style="margin: 10px">
+                     <p:growl id="growlLoanViewlId" globalOnly="true" showDetail="true" />
                     <h:form id="formId">
                         <h:panelGrid style="margin-bottom: 5px" columns="2">
                             <p:graphicImage library="images" name="loan.png" height="36" width="36" />
@@ -62,7 +63,7 @@
                                       id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="#{appmsg['payTempAttendanceStatus.payTempAttendanceStatus_list']}"/>
+                                <h:outputText value="#{appmsg['loan.list_of_loan']}"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
@@ -84,13 +85,13 @@
                                 </f:facet>
                                 <h:outputLabel value="#{data.empData.nik} #{data.empData.bioData.firstName} #{data.empData.bioData.lastName}" />
                             </p:column>
-                            <p:column sortBy="loanSchema.name" style="width: 15%">
+                            <p:column sortBy="loanSchema.name" style="width: 20%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['loanschema.loan']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.loanSchema.name}" />
                             </p:column>
-                            <p:column sortBy="nominalPrincipal" style="width: 15%" >
+                            <p:column sortBy="nominalPrincipal" style="width: 15%;" >
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['loan.nominal_principal']}"/>
                                 </f:facet>
@@ -100,7 +101,7 @@
                                 </h:outputLabel>
                                 
                             </p:column>                            
-                            <p:column sortBy="termin" style="width: 15%" >
+                            <p:column sortBy="termin" style="width: 10%;text-align: center" >
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['loan.termin']}"/>
                                 </f:facet>
@@ -110,18 +111,19 @@
                            <p:column headerText="#{appmsg['global.action']}" style="width: 20%;text-align: center" exportable="false">
                                 <p:commandButton  icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
                                                   action="#{loanUploadViewController.doDetail()}" style="font-size: 10px!important" >                        
-                                    <f:setPropertyActionListener value="#{empViewData}" target="#{loanUploadViewController.selected}" />
+                                    <f:setPropertyActionListener value="#{data}" target="#{loanUploadViewController.selected}" />
                                 </p:commandButton>
                                 - 
-                                <p:commandButton  icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  style="font-size: 10px!important" update=":deleteDialogLoanId"
-                                                  onclick="statusDialog.show()"  oncomplete="confirmDialogEmpData.show()" action="#{loanUploadViewController.onDelete()}" >
-                                    <f:setPropertyActionListener value="#{empViewData}" target="#{loanUploadViewController.selectedEmpData}" />
-                                </p:commandButton>                                
+                                <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+                                				 style="font-size: 10px!important" update=":panelDialogConfirmId" 
+                                				 action="#{loanUploadViewController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmLoan.show()">
+                                    <f:setPropertyActionListener value="#{data}" target="#{loanUploadViewController.selected}" />
+                                </p:commandButton>
                             </p:column>    
                             
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>
-                                <p:outputLabel value="#{payAttendanceViewController.lazy.rowCount}"/>
+                                <p:outputLabel value="#{loanUploadViewController.lazy.rowCount}"/>
                                 <p:outputLabel value="Data" style="margin-left: 3px"/>
                             </f:facet>  
                         </p:dataTable>
@@ -134,32 +136,29 @@
                         </p:blockUI>
                     </h:form>
                 </div>
-                <p:dialog widgetVar="confirmDialogLoanData" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
-                          appendTo="@(body)" resizable="false" id="confirmDialogLoanId" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
-                    <h:form id="deleteDialogLoanId">
+                <p:dialog widgetVar="dialogConfirmLoan" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                          appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
+                    <div align="center">
                         <div align="center">
-                            <div align="center">
-                                <h:panelGrid columns="2" style="text-align: justify">
-                                    <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
-                                    <h:panelGroup>
-                                        <h:panelGrid style="text-align: center">
-                                            <p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
-                                        </h:panelGrid>
-                                    </h:panelGroup>
-                                </h:panelGrid>
-                            </div>
-                            <h:panelGrid  columns="3">
-                                <p:outputLabel value="#{appmsg['global.name']}" styleClass="label_hrm"/>
-                                <p:outputLabel value=":"  styleClass="label_hrm" />
-                                <p:outputLabel value="#{loanUploadViewController.selectedEmpData.bioData.firstName} #{loanUploadViewController.selectedEmpData.bioData.lastName}" styleClass="isitext_hrm"/>
+                            <h:panelGrid columns="2" style="text-align: justify">
+                                <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
+                                <h:panelGroup>
+                                    <h:panelGrid style="text-align: center">
+                                        <p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
+                                    </h:panelGrid>
+                                </h:panelGroup>
                             </h:panelGrid>
-                            <p:separator/>
-                            <p:commandButton value="#{appmsg['global.yes']}" action="#{loanUploadViewController.doDelete()}" update=":userViewId,:empDataGrowlId" id="yesId" title="#{appmsg['global.yes']}" styleClass="isitext_hrm"
-                                             oncomplete="confirmDialogEmpData.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                            <p:commandButton value="#{appmsg['global.no']}" oncomplete="confirmDialogEmpData.hide()" icon="ui-icon-close" title="#{appmsg['global.no']}"  styleClass="isitext_hrm"/>
-
                         </div>
-                    </h:form>
+                        <h:panelGrid id="panelDialogConfirmId"  columns="3">
+                            <p:outputLabel value="#{appmsg['loan.loan']}"  style="font-weight: bold"/>
+                            <p:outputLabel value=":"  style="font-weight: bold"/>
+                            <p:outputLabel value="#{loanUploadViewController.selected.empData.nikWithFullName}" styleClass="label_hrm"/>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:commandButton value="#{appmsg['global.yes']}" action="#{loanUploadViewController.doDelete()}" update="formId,:growlLoanViewlId"
+                                         oncomplete="dialogConfirmLoan.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmLoan.hide()" icon="ui-icon-close" />                     	
+                    </div>
                 </p:dialog>
                 <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
                     <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>

@@ -22,6 +22,7 @@ public class LoanModel implements Serializable {
 	private Double nominalPrincipal;
 	private Double maxNominalPrincipal;
 	private Integer termin;
+        private String termins;
 	private Integer maxTermin;
 	private Double interestRate;
 	private Date loanPaymentDate;
@@ -140,6 +141,14 @@ public class LoanModel implements Serializable {
 
     public void setNik(String nik) {
         this.nik = nik;
+    }
+
+    public String getTermins() {
+        return termins;
+    }
+
+    public void setTermins(String termins) {
+        this.termins = termins;
     }
         
         

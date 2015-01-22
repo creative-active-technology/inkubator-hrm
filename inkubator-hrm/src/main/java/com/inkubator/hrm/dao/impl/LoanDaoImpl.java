@@ -124,9 +124,9 @@ public class LoanDaoImpl extends IDAOImpl<Loan> implements LoanDao {
     }
 
     @Override
-    public Integer getCurrentMaxId() {
+    public Long getCurrentMaxId() {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());        
-        return (Integer) criteria.setProjection(Projections.max("id")).uniqueResult();
+        return (Long) criteria.setProjection(Projections.max("id")).uniqueResult();
     }
 
 }

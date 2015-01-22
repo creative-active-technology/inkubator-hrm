@@ -25,6 +25,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.gson.Gson;
+import com.inkubator.common.CommonUtilConstant;
+import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.ApprovalActivityDao;
@@ -59,6 +61,7 @@ import com.inkubator.webcore.util.FacesIO;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Calendar;
 import org.primefaces.model.UploadedFile;
 
 /**
@@ -596,37 +599,43 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
     @Override
     @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void executeBatchFileUpload(LoanModel model) throws Exception {  
-        System.out.println("Masuk executeBatch Loan");
+        
         LoanSchema loanSchema = loanSchemaDao.getEntiyByPK(model.getLoanSchemaId()); 
         EmpData empData = empDataDao.getEntityByNik(model.getNik());
         
         model.setInterestRate(loanSchema.getInterestRate());
-        model.setTypeOfInterest(loanSchema.getTypeOfInterest());  
-        model.setLoanPaymentDate(new Date());
+        model.setTypeOfInterest(loanSchema.getTypeOfInterest());          
         
-        List<LoanPaymentDetail> listLoanPaymentDetails = this.getAllDataLoanPaymentDetails(model.getInterestRate(), model.getTermin(), model.getLoanPaymentDate(), model.getNominalPrincipal(), model.getTypeOfInterest());
-        model.setLoanPaymentDetails(listLoanPaymentDetails);        
-               
         if (empData != null) {         
             
             TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.LOAN_KODE);
-            Integer currentMaxLoadId = loanDao.getCurrentMaxId();
-        
+            Long currentMaxLoadId = loanDao.getCurrentMaxId();           
+            Date now = new Date();
+            
             Loan loan = new Loan();
             loan.setId(model.getId());
-            loan.setEmpData(new EmpData(model.getEmpData().getId()));
+            loan.setEmpData(empData);
             loan.setLoanSchema(loanSchema);
-            loan.setNominalPrincipal(model.getNominalPrincipal());
-            loan.setLoanPaymentDate(model.getLoanPaymentDate());
-            loan.setLoanDate(model.getLoanDate());
+            loan.setNominalPrincipal(model.getNominalPrincipal());            
+            loan.setLoanDate(now);
+            loan.setLoanPaymentDate(DateTimeUtil.getDateFrom(now, 1, CommonUtilConstant.DATE_FORMAT_MONTH));
             loan.setInterestRate(loanSchema.getInterestRate());
             loan.setTypeOfInterest(loanSchema.getTypeOfInterest());
-            loan.setTermin(Integer.valueOf(org.apache.commons.lang3.StringUtils.substringBeforeLast(String.valueOf(model.getTermin()).trim(), ".")));
+            loan.setTermin(Integer.valueOf(org.apache.commons.lang3.StringUtils.substringBeforeLast(model.getTermins().trim(), ".")));
             loan.setStatusPencairan(HRMConstant.LOAN_UNPAID);
-            loan.setNomor(KodefikasiUtil.getKodefikasi(currentMaxLoadId, transactionCodefication.getCode()));           
+            loan.setNomor(KodefikasiUtil.getKodefikasi(((int)currentMaxLoadId.longValue()), transactionCodefication.getCode()));           
             loan.setCreatedBy(model.getCreatedBy());
-            loan.setCreatedOn(new Date());
-            //loanDao.save(loan);
+            loan.setCreatedOn(now);
+            
+            List<LoanPaymentDetail> loanPaymentDetails = calculateLoanPaymentDetails(loan.getInterestRate(), loan.getTermin(),
+                    loan.getLoanPaymentDate(), loan.getNominalPrincipal(), loan.getTypeOfInterest());
+            for (LoanPaymentDetail lpd : loanPaymentDetails) {
+                lpd.setLoan(loan);
+                lpd.setCreatedBy(model.getCreatedBy());
+                lpd.setCreatedOn(now);
+            }
+            loan.setLoanPaymentDetails(ImmutableSet.copyOf(loanPaymentDetails));            
+            loanDao.save(loan);
         }
     }
 
