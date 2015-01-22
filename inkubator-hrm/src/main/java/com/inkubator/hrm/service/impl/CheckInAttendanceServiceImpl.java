@@ -4,12 +4,15 @@
  */
 package com.inkubator.hrm.service.impl;
 
+import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.CheckInAttendanceDao;
 import com.inkubator.hrm.dao.EmpDataDao;
+import com.inkubator.hrm.dao.TempJadwalKaryawanDao;
 import com.inkubator.hrm.entity.CheckInAttendance;
+import com.inkubator.hrm.entity.TempJadwalKaryawan;
 import com.inkubator.hrm.service.CheckInAttendanceService;
 import com.inkubator.hrm.web.search.CheckInAttendanceSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
@@ -21,6 +24,8 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import javax.faces.application.FacesMessage;
 import org.hibernate.criterion.Order;
+import org.joda.time.DateMidnight;
+import org.joda.time.Hours;
 import org.primefaces.push.PushContext;
 import org.primefaces.push.PushContextFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,8 +47,11 @@ public class CheckInAttendanceServiceImpl extends IServiceImpl implements CheckI
     private CheckInAttendanceDao checkInAttendanceDao;
     @Autowired
     private EmpDataDao empDataDao;
+    @Autowired
+    private TempJadwalKaryawanDao tempJadwalKaryawanDao;
 
     @Override
+
     public CheckInAttendance getEntiyByPK(String id) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -243,5 +251,21 @@ public class CheckInAttendanceServiceImpl extends IServiceImpl implements CheckI
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public CheckInAttendance getByEmpIdAndCheckIn(long id, Date checkInDate) throws Exception {
         return this.checkInAttendanceDao.getByEmpIdAndCheckIn(id, checkInDate);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public CheckInAttendance getAttendancWithMaxCreatedDate(long id) throws Exception {
+        CheckInAttendance attendance = this.checkInAttendanceDao.getAttendancWithMaxCreatedDate(id);
+        TempJadwalKaryawan tempJadwalKaryawan = this.tempJadwalKaryawanDao.getByEmpId(id, attendance.getCheckDate());
+        System.out.println(" hahahah");
+        Date jamPulang = tempJadwalKaryawan.getWtWorkingHour().getWorkingHourEnd();
+        Date jamMasuk = tempJadwalKaryawan.getWtWorkingHour().getWorkingHourBegin();
+        System.out.println(" Jam Masuk " + jamMasuk);
+        System.out.println(" Jam Masuk " + jamPulang);
+        System.out.println(" selisihnya " + DateTimeUtil.getTotalHoursDifference(jamPulang, jamMasuk));
+         System.out.println("hshfsdhfhdsfhd "+Hours.hoursBetween(new DateMidnight(jamMasuk), new DateMidnight(jamPulang)).getHours());
+        System.out.println(" nilinya " + attendance.getCheckDate());
+        return attendance;
     }
 }

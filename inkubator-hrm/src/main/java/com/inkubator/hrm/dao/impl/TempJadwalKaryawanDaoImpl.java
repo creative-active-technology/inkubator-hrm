@@ -93,7 +93,7 @@ public class TempJadwalKaryawanDaoImpl extends IDAOImpl<TempJadwalKaryawan> impl
 
         int counter = 0;
         for (TempJadwalKaryawan jadwalKaryawan : jadwalKaryawans) {
-            getCurrentSession().save(jadwalKaryawan);
+            getCurrentSession().saveOrUpdate(jadwalKaryawan);
             counter++;
             if (counter % 20 == 0) {
                 getCurrentSession().flush();
