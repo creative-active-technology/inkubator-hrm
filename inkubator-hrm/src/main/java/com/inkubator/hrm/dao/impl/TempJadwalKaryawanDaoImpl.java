@@ -127,4 +127,10 @@ public class TempJadwalKaryawanDaoImpl extends IDAOImpl<TempJadwalKaryawan> impl
         return (TempJadwalKaryawan) criteria.uniqueResult();
     }
 
+    @Override
+    public void saveOrUpdateAndMerge(TempJadwalKaryawan jadwalKaryawan) {
+        getCurrentSession().saveOrUpdate(jadwalKaryawan);
+        getCurrentSession().flush();
+    }
+
 }

@@ -29,4 +29,6 @@ public interface TempJadwalKaryawanDao extends IDAO<TempJadwalKaryawan> {
     public List<TempJadwalKaryawan>getAllByMaxEndDate(Date date);
     
     public TempJadwalKaryawan getByEmpId(Long id, Date implementationDate);
+    
+    public void saveOrUpdateAndMerge(TempJadwalKaryawan jadwalKaryawan);
 }

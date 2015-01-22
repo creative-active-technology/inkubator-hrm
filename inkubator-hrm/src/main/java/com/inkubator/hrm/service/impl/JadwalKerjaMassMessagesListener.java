@@ -92,7 +92,7 @@ public class JadwalKerjaMassMessagesListener extends IServiceImpl implements Mes
             }
             List<TempJadwalKaryawan> dataToSave = new ArrayList<>();
             for (Long id : dataEmpId) {
-                dataToDelete.addAll(tempJadwalKaryawanDao.getAllByEmpId(id));
+//                dataToDelete.addAll(tempJadwalKaryawanDao.getAllByEmpId(id)); for bussiner process Sake so must be close
                 List<WtScheduleShift> dataScheduleShift = new ArrayList<>(groupWorking.getWtScheduleShifts());
 //                Collections.sort(dataScheduleShift, shortByDate1);
                 List<WtScheduleShift> sortedDataScheduleShift = Lambda.sort(dataScheduleShift, Lambda.on(WtScheduleShift.class).getScheduleDate());
@@ -123,7 +123,7 @@ public class JadwalKerjaMassMessagesListener extends IServiceImpl implements Mes
                 }
 
             }
-            tempJadwalKaryawanDao.deleteBacth(dataToDelete);
+//            tempJadwalKaryawanDao.deleteBacth(dataToDelete);
             tempJadwalKaryawanDao.saveBatch(dataToSave);
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
