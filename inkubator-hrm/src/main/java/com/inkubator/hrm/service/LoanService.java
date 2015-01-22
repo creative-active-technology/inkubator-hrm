@@ -9,7 +9,10 @@ import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.Loan;
 import com.inkubator.hrm.entity.LoanPaymentDetail;
 import com.inkubator.hrm.web.model.LoanCanceledModel;
+import com.inkubator.hrm.web.model.LoanModel;
+import com.inkubator.hrm.web.model.PayTempAttendanceStatusModel;
 import com.inkubator.hrm.web.search.LoanSearchParameter;
+import org.primefaces.model.UploadedFile;
 
 /**
  *
@@ -36,5 +39,9 @@ public interface LoanService extends IService<Loan>, BaseApprovalService {
     public Loan getEntityByApprovalActivityNumberWithDetail(String approvalActivityNumber) throws Exception;
     
     public void UpdateLoanAndsaveLoanCanceled(LoanCanceledModel loanCanceledModel) throws Exception;
+    
+    public void executeBatchFileUpload(LoanModel report) throws Exception;
+
+    public String updateFileAndDeleteData(UploadedFile file) throws Exception;
 
 }
