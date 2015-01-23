@@ -3,7 +3,10 @@ package com.inkubator.hrm.entity;
 
 
 import java.util.Date;
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -24,28 +27,31 @@ import javax.persistence.Version;
 public class JabatanSpesifikasi  implements java.io.Serializable {
 
 
-     private long id;
+     private JabatanSpesifikasiId id;
      private Integer version;
-     private SpecificationAbility specificationAbility;
      private Jabatan jabatan;
+     private SpecificationAbility specificationAbility;
      private String value;
-     private String optionAbility;
      private String createdBy;
      private Date createdOn;
      private String updatedBy;
      private Date updatedOn;
+     private String optionAbility;
 
     public JabatanSpesifikasi() {
     }
 
 	
-    public JabatanSpesifikasi(long id) {
+    public JabatanSpesifikasi(JabatanSpesifikasiId id, Jabatan jabatan, SpecificationAbility specificationAbility, String optionAbility) {
         this.id = id;
+        this.jabatan = jabatan;
+        this.specificationAbility = specificationAbility;
+        this.optionAbility = optionAbility;
     }
-    public JabatanSpesifikasi(long id, SpecificationAbility specificationAbility, Jabatan jabatan, String value, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String optionAbility) {
+    public JabatanSpesifikasi(JabatanSpesifikasiId id, Jabatan jabatan, SpecificationAbility specificationAbility, String value, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String optionAbility) {
        this.id = id;
-       this.specificationAbility = specificationAbility;
        this.jabatan = jabatan;
+       this.specificationAbility = specificationAbility;
        this.value = value;
        this.createdBy = createdBy;
        this.createdOn = createdOn;
@@ -54,15 +60,17 @@ public class JabatanSpesifikasi  implements java.io.Serializable {
        this.optionAbility = optionAbility;
     }
    
-     @Id 
+     @EmbeddedId
 
     
-    @Column(name="id", unique=true, nullable=false)
-    public long getId() {
+    @AttributeOverrides( {
+        @AttributeOverride(name="jabatanId", column=@Column(name="jabatan_id", nullable=false) ), 
+        @AttributeOverride(name="specificationId", column=@Column(name="specification_id", nullable=false) ) } )
+    public JabatanSpesifikasiId getId() {
         return this.id;
     }
     
-    public void setId(long id) {
+    public void setId(JabatanSpesifikasiId id) {
         this.id = id;
     }
 
@@ -77,23 +85,23 @@ public class JabatanSpesifikasi  implements java.io.Serializable {
     }
 
 @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="specification_id")
-    public SpecificationAbility getSpecificationAbility() {
-        return this.specificationAbility;
-    }
-    
-    public void setSpecificationAbility(SpecificationAbility specificationAbility) {
-        this.specificationAbility = specificationAbility;
-    }
-
-@ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="jabatan_id")
+    @JoinColumn(name="jabatan_id", nullable=false, insertable=false, updatable=false)
     public Jabatan getJabatan() {
         return this.jabatan;
     }
     
     public void setJabatan(Jabatan jabatan) {
         this.jabatan = jabatan;
+    }
+
+@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="specification_id", nullable=false, insertable=false, updatable=false)
+    public SpecificationAbility getSpecificationAbility() {
+        return this.specificationAbility;
+    }
+    
+    public void setSpecificationAbility(SpecificationAbility specificationAbility) {
+        this.specificationAbility = specificationAbility;
     }
 
     
@@ -106,14 +114,6 @@ public class JabatanSpesifikasi  implements java.io.Serializable {
         this.value = value;
     }
 
-    @Column(name = "option_ability", nullable = false)
-    public String getOptionAbility() {
-        return optionAbility;
-    }
-
-    public void setOptionAbility(String optionAbility) {
-        this.optionAbility = optionAbility;
-    }
     
     @Column(name="created_by", length=45)
     public String getCreatedBy() {
@@ -152,6 +152,16 @@ public class JabatanSpesifikasi  implements java.io.Serializable {
     
     public void setUpdatedOn(Date updatedOn) {
         this.updatedOn = updatedOn;
+    }
+
+    
+    @Column(name="option_ability", nullable=false)
+    public String getOptionAbility() {
+        return this.optionAbility;
+    }
+    
+    public void setOptionAbility(String optionAbility) {
+        this.optionAbility = optionAbility;
     }
 
 

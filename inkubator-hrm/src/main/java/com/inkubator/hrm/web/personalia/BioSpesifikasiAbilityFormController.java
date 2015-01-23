@@ -8,6 +8,7 @@ import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.BioData;
 import com.inkubator.hrm.entity.BioSpesifikasiAbility;
+import com.inkubator.hrm.entity.BioSpesifikasiAbilityId;
 import com.inkubator.hrm.entity.SpecificationAbility;
 import com.inkubator.hrm.service.BioDataService;
 import com.inkubator.hrm.service.BioSpesifikasiAbilityService;
@@ -84,11 +85,11 @@ public class BioSpesifikasiAbilityFormController extends BaseController{
             
             String bioSpecAbiId = FacesUtil.getRequestParameter("bioSpecAbiId");
             if (StringUtils.isNotEmpty(bioSpecAbiId)) {
-                BioSpesifikasiAbility bioSpesifikasiAbility = bioSpesifikasiAbilityService.getAllDataByPK(Long.parseLong(bioSpecAbiId));
+                BioSpesifikasiAbility bioSpesifikasiAbility = bioSpesifikasiAbilityService.getEntityByBioSpesifikasiAbilityId(new BioSpesifikasiAbilityId(bioDataId, Long.valueOf(bioSpecAbiId)));
                 if (bioSpesifikasiAbility != null) {
                     model = getModelFromEntity(bioSpesifikasiAbility);
                     isEdit = Boolean.TRUE;
-                    bioDataId = bioSpesifikasiAbility.getBiodata().getId();
+                    bioDataId = bioSpesifikasiAbility.getBioData().getId();
                     doChangeValue();
                 }
             }
@@ -108,11 +109,11 @@ public class BioSpesifikasiAbilityFormController extends BaseController{
     
     private BioSpesifikasiAbilityModel getModelFromEntity(BioSpesifikasiAbility entity) {
         BioSpesifikasiAbilityModel model = new BioSpesifikasiAbilityModel();
-        model.setId(entity.getId());
-        model.setBioDataId(entity.getBiodata().getId());
+        model.setBioDataId(entity.getBioData().getId());
+        model.setOldId(entity.getSpecificationAbility().getId());
         model.setOptionAbility(entity.getOptionAbility());
         model.setSpecId(entity.getSpecificationAbility().getId());
-        model.setScore(entity.getScore());
+        model.setScore(entity.getValue());
         return model;
     }
     
@@ -131,10 +132,10 @@ public class BioSpesifikasiAbilityFormController extends BaseController{
         BioSpesifikasiAbility bioSpesifikasiAbility = new BioSpesifikasiAbility();
         String optionAbility = "";
         if (model.getId() != null) {
-            bioSpesifikasiAbility.setId(model.getId());
+//            bioSpesifikasiAbility.setId(model.getId());
         }
-        bioSpesifikasiAbility.setBiodata(new BioData(bioDataId));
-        bioSpesifikasiAbility.setScore(model.getScore());
+        bioSpesifikasiAbility.setBioData(new BioData(bioDataId));
+        bioSpesifikasiAbility.setValue(model.getScore());
         bioSpesifikasiAbility.setSpecificationAbility(new SpecificationAbility(model.getSpecId()));
         for (Iterator it = listValue.entrySet().iterator(); it.hasNext(); ) {  
             Map.Entry e = (Map.Entry) it.next();   
@@ -152,7 +153,7 @@ public class BioSpesifikasiAbilityFormController extends BaseController{
         BioSpesifikasiAbility bioSpesifikasiAbility = getEntityFromViewModel(model);
         try {
             if (isEdit) {
-                bioSpesifikasiAbilityService.update(bioSpesifikasiAbility);
+                bioSpesifikasiAbilityService.updateBioSpecAbility(bioSpesifikasiAbility, model.getOldId());
                 RequestContext.getCurrentInstance().closeDialog(HRMConstant.UPDATE_CONDITION);
             } else {
                 bioSpesifikasiAbilityService.save(bioSpesifikasiAbility);

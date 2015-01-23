@@ -13,6 +13,7 @@ import java.io.Serializable;
  */
 public class JabatanSpesifikasiModel implements Serializable{
     private Long id;
+    private Long oldId;
     private Long specId;
     private Long jabatanId;
     private String specAbility;
@@ -84,6 +85,14 @@ public class JabatanSpesifikasiModel implements Serializable{
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public Long getOldId() {
+        return oldId;
+    }
+
+    public void setOldId(Long oldId) {
+        this.oldId = oldId;
     }
     
     

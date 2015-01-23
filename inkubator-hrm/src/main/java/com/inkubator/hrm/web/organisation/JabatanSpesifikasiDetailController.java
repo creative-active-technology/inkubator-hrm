@@ -10,6 +10,7 @@ import com.inkubator.hrm.entity.Faculty;
 import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.entity.JabatanEdukasi;
 import com.inkubator.hrm.entity.JabatanSpesifikasi;
+import com.inkubator.hrm.entity.JabatanSpesifikasiId;
 import com.inkubator.hrm.entity.Major;
 import com.inkubator.hrm.entity.OccupationType;
 import com.inkubator.hrm.service.EducationLevelService;
@@ -240,8 +241,11 @@ public class JabatanSpesifikasiDetailController extends BaseController{
         options.put("contentHeight", 250);
         Map<String, List<String>> dataToSend = new HashMap<>();
         List<String> dataIsi = new ArrayList<>();
-        dataIsi.add("e" + String.valueOf(selectedJobSpec.getId()));
+        List<String> jabatanId = new ArrayList<>();
+        dataIsi.add("e" + String.valueOf(selectedJobSpec.getSpecificationAbility().getId()));
+        jabatanId.add("e"+selectedJabatan.getId());
         dataToSend.put("param", dataIsi);
+        dataToSend.put("jabatanId", jabatanId);
         RequestContext.getCurrentInstance().openDialog("job_spesifikasi_form", options, dataToSend);
     }
     
@@ -263,7 +267,8 @@ public class JabatanSpesifikasiDetailController extends BaseController{
     
     public void onDelete() {
         try {
-            selectedJobSpec = this.jabatanSpecService.getEntiyByPK(selectedJobSpec.getId());
+            selectedJobSpec = this.jabatanSpecService.getEntityByBioJabatanSpesifikasiId(new JabatanSpesifikasiId(selectedJobSpec.getJabatan().getId(), selectedJobSpec.getSpecificationAbility().getId()));
+        
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -299,7 +304,7 @@ public class JabatanSpesifikasiDetailController extends BaseController{
     
     public void doDetail() {
         try {
-            selectedJobSpec = this.jabatanSpecService.getDataByPK(selectedJobSpec.getId());
+            selectedJobSpec = this.jabatanSpecService.getEntityByBioJabatanSpesifikasiId(new JabatanSpesifikasiId(selectedJobSpec.getJabatan().getId(), selectedJobSpec.getSpecificationAbility().getId()));
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
