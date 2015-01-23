@@ -66,7 +66,7 @@
                                     <p:outputLabel value="   " />
                                     <p:commandButton id="btnEditId" value="#{appmsg['global.edit']}" title="#{appmsg['global.edit']}" 
                                                      action="#{payAttendanceViewController.doEditTotalAttendance()}" update="labelJmlHariKerja"  
-                                                     styleClass="label_button" icon="ui-icon-search" ajax="true" immediate="true">
+                                                     styleClass="label_button" icon="ui-icon-folder-open" ajax="true" immediate="true">
                                         <p:ajax event="dialogReturn"  listener="#{payAttendanceViewController.onDialogTaReturn}"  update="labelJmlHariKerja"/>
                                     </p:commandButton>
                                     </h:panelGroup>

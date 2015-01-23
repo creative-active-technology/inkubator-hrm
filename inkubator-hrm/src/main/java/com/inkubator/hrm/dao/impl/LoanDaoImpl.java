@@ -123,6 +123,12 @@ public class LoanDaoImpl extends IDAOImpl<Loan> implements LoanDao {
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
+    @Override
+    public Long getCurrentMaxId() {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());        
+        return (Long) criteria.setProjection(Projections.max("id")).uniqueResult();
+    }
+
 }
 
 

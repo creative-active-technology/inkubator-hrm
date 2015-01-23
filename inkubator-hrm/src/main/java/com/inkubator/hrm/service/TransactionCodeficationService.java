@@ -17,5 +17,7 @@ public interface TransactionCodeficationService extends IService<TransactionCode
 	public List<TransactionCodefication> getByParam(TransactionCodeficationSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception;
 
 	public Long getTotalByParam(TransactionCodeficationSearchParameter parameter) throws Exception;
+        
+        public TransactionCodefication getEntityByModulCode(String modulCode);
 
 }

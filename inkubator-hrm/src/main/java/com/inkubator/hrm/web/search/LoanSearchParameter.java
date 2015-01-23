@@ -10,7 +10,7 @@ import com.inkubator.webcore.util.SearchParameter;
  */
 public class LoanSearchParameter extends SearchParameter {
 
-	private String employee;
+    private String employee;
     private String loanSchema;
     
 	public String getEmployee() {

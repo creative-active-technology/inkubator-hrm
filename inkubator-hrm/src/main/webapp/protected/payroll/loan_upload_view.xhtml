@@ -16,102 +16,54 @@
             </ui:define>
             <ui:define name="center">
                 <div id="box_bg" style="margin: 10px">
+                     <p:growl id="growlLoanViewlId" globalOnly="true" showDetail="true" />
                     <h:form id="formId">
                         <h:panelGrid style="margin-bottom: 5px" columns="2">
-                            <p:graphicImage library="images" name="penyertaan_penggantian.png" height="36" width="36" />
+                            <p:graphicImage library="images" name="loan.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="#{appmsg['payTempAttendanceStatus.payTempAttendanceStatus']}" styleClass="header_big" />
-                                    <p:outputLabel value="#{appmsg['payTempAttendanceStatus.payTempAttendanceStatus']}" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['loan.loanUpload']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['loan.loanUpload']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
                         <p:separator/>
-                        <p:growl id="growlId" globalOnly="true" showDetail="true" />
-                       
-                        <p:panelGrid style="width: 100%;margin-bottom: 10px;margin-top: 10px" styleClass="grid_border3" >
-                            <p:row>
-                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="#{appmsg['menu.period']}" styleClass="label_hrm" />
-                                </p:column>
-                                <p:column style="width: 80%">
-                                    <p:outputLabel value="#{payAttendanceViewController.payTempAttendanceStatusModel.startDate}" >
-                                        <f:convertDateTime pattern="dd MMMM yyyy" />
-                                    </p:outputLabel>
-                                    <p:outputLabel value=" - " />
-                                    <p:outputLabel value="#{payAttendanceViewController.payTempAttendanceStatusModel.endDate}" >
-                                        <f:convertDateTime pattern="dd MMMM yyyy" />
-                                    </p:outputLabel>
-                                </p:column>
-                            </p:row>
-                            <p:row>
-                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel   value="#{appmsg['inclusionReimbursment.total_employee_reimbursment']}" styleClass="label_hrm" />
-                                </p:column>
-                                <p:column style="width: 80%">
-                                    <p:outputLabel id="labelTotalEmployee" value="#{payAttendanceViewController.jumlahKaryawan}" />
-                                    <p:outputLabel value=" #{appmsg['global.people']}" />
-                                </p:column>
-                                
-                            </p:row>
-                            <p:row>
-                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="#{appmsg['leave.attendance']}" styleClass="label_hrm" />
-                                </p:column>
-                                <p:column style="width: 80%" >
-                                    <h:panelGroup style="padding: auto" layout="block">
-                                    <p:outputLabel id="labelJmlHariKerja"  value="#{payAttendanceViewController.jumlahHariKerja}" />
-                                    <p:outputLabel value="   " />
-                                    <p:outputLabel value=" #{appmsg['permitClassification.day']}" />
-                                    <p:outputLabel value="   " />
-                                    <p:commandButton id="btnEditId" value="#{appmsg['global.edit']}" title="#{appmsg['global.edit']}" 
-                                                     action="#{payAttendanceViewController.doEditTotalAttendance()}" update="labelJmlHariKerja"  
-                                                     styleClass="label_button" icon="ui-icon-search" ajax="true" immediate="true">
-                                        <p:ajax event="dialogReturn"  listener="#{payAttendanceViewController.onDialogTaReturn}"  update="labelJmlHariKerja"/>
-                                    </p:commandButton>
-                                    </h:panelGroup>
-                                </p:column>                   
-                                
-                            </p:row>                               
-                            
-
-                        </p:panelGrid>
+                        <p:growl id="growlId" globalOnly="true" showDetail="true" />                       
                          <p:toolbar  style="margin-top: 10px">
                              <p:toolbarGroup align="left">
                                 <h:panelGrid columns="5" >
                                      <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm"/>
                                     <p:outputLabel value=":" styleClass="label_hrm" />
-                                    <p:selectOneMenu id="pencarianSelectId" value="#{payAttendanceViewController.payTempAttendanceSearchParameter.keyParam}"
+                                    <p:selectOneMenu id="pencarianSelectId" value="#{loanUploadViewController.loanSearchParameter.keyParam}"
                                                      style="width: 150px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemLabel="#{appmsg['placement.nik']}" itemValue="NIK"/>
-                                        <f:selectItem itemLabel="#{appmsg['global.name']}" itemValue="name" />
-                                        <f:selectItem itemLabel="#{appmsg['menu.workgroup']}" itemValue="workGroup" />                                        
+                                        <f:selectItem itemLabel="#{appmsg['loanschema.loan']}" itemValue="loanScheme"/>
+                                        <f:selectItem itemLabel="#{appmsg['global.name']}" itemValue="employee" />                                                                                
                                     </p:selectOneMenu>
-                                    <p:inputText id="searchId" value="#{payAttendanceViewController.payTempAttendanceSearchParameter.parameter}" style="width: 180px" styleClass="label_button"/>
-                                     <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{payAttendanceViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
+                                    <p:inputText id="searchId" value="#{loanUploadViewController.loanSearchParameter.parameter}" style="width: 180px" styleClass="label_button"/>
+                                     <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{loanUploadViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3" >
-                                    <p:commandButton value="#{appmsg['global.upload']}" actionListener="#{payAttendanceViewController.doUpload()}" title="#{appmsg['global.upload']}" label="#{appmsg['global.upload']}" styleClass="label_button" ajax="true">
-                                        <p:ajax event="dialogReturn"  listener="#{payAttendanceViewController.onDialogReturn}"  update="tableId,labelTotalEmployee"/>
+                                    <p:commandButton value="#{appmsg['global.upload']}" actionListener="#{loanUploadViewController.doUpload()}" title="#{appmsg['global.upload']}" label="#{appmsg['global.upload']}" styleClass="label_button" ajax="true">
+                                        <p:ajax event="dialogReturn"  listener="#{loanUploadViewController.onDialogReturn}"  update="tableId"/>
                                     </p:commandButton>
                                     <p:commandButton value="Export to XLS" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
-                                        <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Attendance_Status"/>
+                                        <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Data_Loan"/>
                                     </p:commandButton>
-                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{payAttendanceViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{loanUploadViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
                                     
                                 </h:panelGrid>
                             </p:toolbarGroup>
                         </p:toolbar>
                         <p:defaultCommand target="btnSearchId" />
-                        <p:dataTable  var="data"  value="#{payAttendanceViewController.lazy}" lazy="true" paginator="true" pageLinks="7"
+                        <p:dataTable  var="data"  value="#{loanUploadViewController.lazy}" lazy="true" paginator="true" pageLinks="7"
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
                                       id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="#{appmsg['payTempAttendanceStatus.payTempAttendanceStatus_list']}"/>
+                                <h:outputText value="#{appmsg['loan.list_of_loan']}"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
@@ -119,36 +71,59 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="empData.nik" style="width: 12%">
+                            <p:column sortBy="createdOn" style="width: 12%">
                                 <f:facet name="header">
-                                    <h:outputText value="#{appmsg['global.nik']}"/>
+                                    <h:outputText value="#{appmsg['global.upload_date']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.empData.nik}" />
+                                <h:outputLabel value= "#{data.createdOn}" >
+                                    <f:convertDateTime pattern="dd MMMM yyyy" />
+                                </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="bioData.firstName" style="width: 25%">
+                            <p:column sortBy="bioData.firstName" style="width: 20%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.empData.bioData.firstName} #{data.empData.bioData.lastName}" />
+                                <h:outputLabel value="#{data.empData.nik} #{data.empData.bioData.firstName} #{data.empData.bioData.lastName}" />
                             </p:column>
-                            <p:column sortBy="wtGroupWorking.name" style="width: 20%">
+                            <p:column sortBy="loanSchema.name" style="width: 20%">
                                 <f:facet name="header">
-                                    <h:outputText value="#{appmsg['menu.workgroup']}"/>
+                                    <h:outputText value="#{appmsg['loanschema.loan']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.empData.wtGroupWorking.name}" />
+                                <h:outputLabel value= "#{data.loanSchema.name}" />
                             </p:column>
-                            <p:column sortBy="totalAttendance" style="width: 20%" >
+                            <p:column sortBy="nominalPrincipal" style="width: 15%;" >
                                 <f:facet name="header">
-                                    <h:outputText value="#{appmsg['workingTime.attendance']}"/>
+                                    <h:outputText value="#{appmsg['loan.nominal_principal']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.totalAttendance}" />
+                                 <h:outputText value="Rp. "/>
+                                <h:outputLabel value= "#{data.nominalPrincipal}" >
+                                    <f:convertNumber pattern="###,###" type="currency"/>
+                                </h:outputLabel>
+                                
+                            </p:column>                            
+                            <p:column sortBy="termin" style="width: 10%;text-align: center" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['loan.termin']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.termin}" />
                                 
                             </p:column>
-                           
+                           <p:column headerText="#{appmsg['global.action']}" style="width: 20%;text-align: center" exportable="false">
+                                <p:commandButton  icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
+                                                  action="#{loanUploadViewController.doDetail()}" style="font-size: 10px!important" >                        
+                                    <f:setPropertyActionListener value="#{data}" target="#{loanUploadViewController.selected}" />
+                                </p:commandButton>
+                                - 
+                                <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+                                				 style="font-size: 10px!important" update=":panelDialogConfirmId" 
+                                				 action="#{loanUploadViewController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmLoan.show()">
+                                    <f:setPropertyActionListener value="#{data}" target="#{loanUploadViewController.selected}" />
+                                </p:commandButton>
+                            </p:column>    
                             
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>
-                                <p:outputLabel value="#{payAttendanceViewController.lazy.rowCount}"/>
+                                <p:outputLabel value="#{loanUploadViewController.lazy.rowCount}"/>
                                 <p:outputLabel value="Data" style="margin-left: 3px"/>
                             </f:facet>  
                         </p:dataTable>
@@ -161,6 +136,30 @@
                         </p:blockUI>
                     </h:form>
                 </div>
+                <p:dialog widgetVar="dialogConfirmLoan" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                          appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
+                    <div align="center">
+                        <div align="center">
+                            <h:panelGrid columns="2" style="text-align: justify">
+                                <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
+                                <h:panelGroup>
+                                    <h:panelGrid style="text-align: center">
+                                        <p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
+                                    </h:panelGrid>
+                                </h:panelGroup>
+                            </h:panelGrid>
+                        </div>
+                        <h:panelGrid id="panelDialogConfirmId"  columns="3">
+                            <p:outputLabel value="#{appmsg['loan.loan']}"  style="font-weight: bold"/>
+                            <p:outputLabel value=":"  style="font-weight: bold"/>
+                            <p:outputLabel value="#{loanUploadViewController.selected.empData.nikWithFullName}" styleClass="label_hrm"/>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:commandButton value="#{appmsg['global.yes']}" action="#{loanUploadViewController.doDelete()}" update="formId,:growlLoanViewlId"
+                                         oncomplete="dialogConfirmLoan.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmLoan.hide()" icon="ui-icon-close" />                     	
+                    </div>
+                </p:dialog>
                 <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
                     <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
                 </p:dialog>

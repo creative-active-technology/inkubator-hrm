@@ -22,6 +22,7 @@ public class LoanModel implements Serializable {
 	private Double nominalPrincipal;
 	private Double maxNominalPrincipal;
 	private Integer termin;
+        private String termins;
 	private Integer maxTermin;
 	private Double interestRate;
 	private Date loanPaymentDate;
@@ -29,6 +30,9 @@ public class LoanModel implements Serializable {
 	private Date loanDate;
 	private Integer typeOfInterest;
 	private List<LoanPaymentDetail> loanPaymentDetails;
+        private String pathUpload;
+        private String createdBy;
+        private String nik;
 	
 	public LoanModel(){
 		loanPaymentDetails = new ArrayList<LoanPaymentDetail>();
@@ -114,4 +118,40 @@ public class LoanModel implements Serializable {
 	public Boolean getIsPaginator(){
 		return loanPaymentDetails.size() > 11;
 	}
+
+        public String getPathUpload() {
+            return pathUpload;
+        }
+
+        public void setPathUpload(String pathUpload) {
+            this.pathUpload = pathUpload;
+        }
+
+        public String getCreatedBy() {
+            return createdBy;
+        }
+
+        public void setCreatedBy(String createdBy) {
+            this.createdBy = createdBy;
+        }
+
+    public String getNik() {
+        return nik;
+    }
+
+    public void setNik(String nik) {
+        this.nik = nik;
+    }
+
+    public String getTermins() {
+        return termins;
+    }
+
+    public void setTermins(String termins) {
+        this.termins = termins;
+    }
+        
+        
+        
+        
 }

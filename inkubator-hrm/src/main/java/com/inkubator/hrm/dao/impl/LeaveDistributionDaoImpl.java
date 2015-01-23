@@ -9,7 +9,6 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.LeaveDistributionDao;
 import com.inkubator.hrm.entity.LeaveDistribution;
 import com.inkubator.hrm.web.search.LeaveDistributionSearchParameter;
-
 import java.util.Date;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
@@ -71,8 +70,9 @@ public class LeaveDistributionDaoImpl extends IDAOImpl<LeaveDistribution> implem
             criteria.add(Restrictions.like("l.name", searchParameter.getLeave(), MatchMode.START));
         }
         if (searchParameter.getNik() != null) {
-            criteria.createAlias("empData", "ed", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("ed.nik", searchParameter.getNik(), MatchMode.START));
+//            criteria.createAlias("empData", "ed", JoinType.INNER_JOIN);
+            System.out.println(" disiisiisisisi");
+            criteria.add(Restrictions.like("ed.nik", searchParameter.getNik(), MatchMode.ANYWHERE));
         }
         criteria.add(Restrictions.isNotNull("id"));
     }

@@ -32,9 +32,9 @@ import org.springframework.dao.DataIntegrityViolationException;
 
 /**
  *
- * @author Deni Husni FR
+ * @author Ahmad Mudzakkir Amal
  */
-@ManagedBean(name = "empDataViewController")
+@ManagedBean(name = "loanDisbursementViewController")
 @ViewScoped
 public class LoanDisbursementViewController extends BaseController {
 
