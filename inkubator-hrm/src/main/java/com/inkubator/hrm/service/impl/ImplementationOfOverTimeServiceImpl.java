@@ -111,7 +111,7 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
         if (totalDuplicates > 0) {
             throw new BussinessException("implementOt.implementation_ot_error_duplicate_code");
         }
-        TempJadwalKaryawan jadwalKaryawan = tempJadwalKaryawanService.getByEmpId(entity.getEmpData().getId(), entity.getImplementationDate());
+        TempJadwalKaryawan jadwalKaryawan = tempJadwalKaryawanService.getEntityByEmpDataIdAndTanggalWaktuKerja(entity.getEmpData().getId(), entity.getImplementationDate());
         if(jadwalKaryawan != null){
             if(entity.getStartTime().after(jadwalKaryawan.getWtWorkingHour().getWorkingHourBegin()) && entity.getEndTime().before(jadwalKaryawan.getWtWorkingHour().getWorkingHourEnd())){
                 System.out.println("diantara jadwal");
@@ -410,7 +410,7 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
         }
         
         
-        TempJadwalKaryawan jadwalKaryawan = tempJadwalKaryawanService.getByEmpId(entity.getEmpData().getId(), entity.getImplementationDate());
+        TempJadwalKaryawan jadwalKaryawan = tempJadwalKaryawanService.getEntityByEmpDataIdAndTanggalWaktuKerja(entity.getEmpData().getId(), entity.getImplementationDate());
         // check apakah terdapat temporary jadwal karyawan atau tidak
         if(jadwalKaryawan != null){
             // check jika request start time dan end timenya terdapat dalam waktu kerjanya

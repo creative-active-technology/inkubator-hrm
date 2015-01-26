@@ -23,7 +23,7 @@ public class FingerMatchEmp implements Serializable {
 
     private Long id;
     private Integer version;
-    private Integer fingerIndexId;
+    private String fingerIndexId;
     private EmpData empData;    
     private MecineFinger mecineFinger;
     private String nik;
@@ -63,11 +63,11 @@ public class FingerMatchEmp implements Serializable {
     }	
     
     @Column(name = "finger_index_id", nullable = false)
-	public Integer getFingerIndexId() {
+	public String getFingerIndexId() {
 		return fingerIndexId;
 	}
 
-	public void setFingerIndexId(Integer fingerIndexId) {
+	public void setFingerIndexId(String fingerIndexId) {
 		this.fingerIndexId = fingerIndexId;
 	}
 

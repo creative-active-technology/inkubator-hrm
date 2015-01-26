@@ -66,7 +66,7 @@ public class CheckInCheckOutController extends BaseController {
             } else {
                 String stringDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
                 Date date = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(stringDate + " 00:00:00");
-                TempJadwalKaryawan jadwalKaryawan = tempJadwalKaryawanService.getByEmpId(hrmUser.getEmpData().getId(), date);
+                TempJadwalKaryawan jadwalKaryawan = tempJadwalKaryawanService.getEntityByEmpDataIdAndTanggalWaktuKerja(hrmUser.getEmpData().getId(), date);
 
                 if (isValid) {
 //                    CheckInAttendance attendance = checkInAttendanceService.getByEmpIdAndCheckIn(hrmUser.getEmpData().getId(), date);

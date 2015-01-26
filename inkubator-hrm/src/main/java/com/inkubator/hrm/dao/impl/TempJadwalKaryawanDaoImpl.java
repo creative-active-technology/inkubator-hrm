@@ -118,7 +118,7 @@ public class TempJadwalKaryawanDaoImpl extends IDAOImpl<TempJadwalKaryawan> impl
     }
 
     @Override
-    public TempJadwalKaryawan getByEmpId(Long id, Date implementationDate) {
+    public TempJadwalKaryawan getEntityByEmpDataIdAndTanggalWaktuKerja(Long id, Date implementationDate) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
         criteria.add(Restrictions.eq("empData.id", id));
@@ -133,4 +133,11 @@ public class TempJadwalKaryawanDaoImpl extends IDAOImpl<TempJadwalKaryawan> impl
         getCurrentSession().flush();
     }
 
+    public List<TempJadwalKaryawan> getAllDataByEmpIdAndPeriodDate(Long empDataId, Date startDate, Date endDate){
+    	Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+    	criteria.add(Restrictions.eq("empData.id", empDataId));
+    	criteria.add(Restrictions.ge("tanggalWaktuKerja", startDate));
+    	criteria.add(Restrictions.le("tanggalWaktuKerja", endDate));
+    	return criteria.list();
+    }
 }

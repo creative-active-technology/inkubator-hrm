@@ -89,4 +89,12 @@ public class CheckInAttendanceDaoImpl extends IDAOImpl<CheckInAttendance> implem
         return (CheckInAttendance) criteria.uniqueResult();
     }
 
+	@Override
+	public CheckInAttendance getEntityByEmpDataIdAndCheckDate(Long empDataId, Date checkDate) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("empData.id", empDataId));
+		criteria.add(Restrictions.eq("checkDate", checkDate));
+		return (CheckInAttendance) criteria.uniqueResult();
+	}
+
 }
