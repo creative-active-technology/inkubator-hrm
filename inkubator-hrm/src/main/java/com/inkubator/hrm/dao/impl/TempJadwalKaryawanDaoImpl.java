@@ -118,7 +118,7 @@ public class TempJadwalKaryawanDaoImpl extends IDAOImpl<TempJadwalKaryawan> impl
     }
 
     @Override
-    public TempJadwalKaryawan getByEmpId(Long id, Date implementationDate) {
+    public TempJadwalKaryawan getEntityByEmpDataIdAndTanggalWaktuKerja(Long id, Date implementationDate) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
         criteria.add(Restrictions.eq("empData.id", id));

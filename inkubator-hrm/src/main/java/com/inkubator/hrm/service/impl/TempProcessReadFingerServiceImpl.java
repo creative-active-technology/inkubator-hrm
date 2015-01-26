@@ -73,8 +73,9 @@ public class TempProcessReadFingerServiceImpl extends IServiceImpl implements Te
 	}
 
 	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
 	public TempProcessReadFinger getEntiyByPK(Long id) throws Exception {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+		return tempProcessReadFingerDao.getEntiyByPK(id);
 
 	}
 
@@ -276,16 +277,14 @@ public class TempProcessReadFingerServiceImpl extends IServiceImpl implements Te
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<TempProcessReadFinger> getByParam(Long empDataId, Long periodeId, int firstResult, int maxResults, Order orderable) throws Exception {
-		WtPeriode wtPeriode = wtPeriodeDao.getEntiyByPK(periodeId);
-		return tempProcessReadFingerDao.getByParam(empDataId, wtPeriode.getFromPeriode(), wtPeriode.getUntilPeriode(), firstResult, maxResults, orderable);
+	public List<TempProcessReadFinger> getByParam(Long empDataId, int firstResult, int maxResults, Order orderable) throws Exception {
+		return tempProcessReadFingerDao.getByParam(empDataId, firstResult, maxResults, orderable);
 	}
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public Long getTotalByParam(Long empDataId, Long periodeId) throws Exception {
-		WtPeriode wtPeriode = wtPeriodeDao.getEntiyByPK(periodeId);
-		return tempProcessReadFingerDao.getTotalByParam(empDataId, wtPeriode.getFromPeriode(), wtPeriode.getUntilPeriode());
+	public Long getTotalByParam(Long empDataId) throws Exception {
+		return tempProcessReadFingerDao.getTotalByParam(empDataId);
 	}
 
 	@Override
@@ -311,10 +310,9 @@ public class TempProcessReadFingerServiceImpl extends IServiceImpl implements Te
 		/** delete all record in that period*/
 		tempProcessReadFingerDao.deleteByScheduleDate(periode.getFromPeriode(), periode.getUntilPeriode());
 		
-		/** sync all record in that period, only saved the record that is working day(exclude OFF day)*/
+		/** sync all record in that period, only saved the record that is working day schedule(exclude OFF day)*/
 		for(EmpData empData : empDatas){
-			List<FingerMatchEmp> listFingerMatchEmp = fingerMatchEmpDao.getAllDataByNik(empData.getNik());
-			List<String> listFingerIndexId = Lambda.extract(listFingerMatchEmp, Lambda.on(FingerMatchEmp.class).getFingerIndexId());
+			List<String> listFingerIndexId = this.getFingerIndexIds(empData.getNik());
 			List<TempJadwalKaryawan> listJadwalKaryawan = tempJadwalKaryawanDao.getAllDataByEmpIdAndPeriodDate(empData.getId(), periode.getFromPeriode(), periode.getUntilPeriode());
 			
 			for(TempJadwalKaryawan jadwalKaryawan: listJadwalKaryawan){
@@ -324,38 +322,28 @@ public class TempProcessReadFingerServiceImpl extends IServiceImpl implements Te
 				}
 			}
 		}
-		
-		System.out.println("Selesai Sync " +  new Date());
 	}
 	
 	private void savingEntity(EmpData empData, TempJadwalKaryawan jadwalKaryawan, CheckInAttendance checkInAttendance, List<String> listFingerIndexId){		
 		/** initialization working schedule limit */
-		DateTime dtWorkBegin = new DateTime(jadwalKaryawan.getWtWorkingHour().getWorkingHourBegin());
-		DateTime dtWorkEnd   = new DateTime(jadwalKaryawan.getWtWorkingHour().getWorkingHourEnd());
-		DateTime workingHourBegin = new DateTime(jadwalKaryawan.getTanggalWaktuKerja()).
-				plusHours(dtWorkBegin.getHourOfDay()).
-				plusMinutes(dtWorkBegin.getMinuteOfHour()).
-				plusSeconds(dtWorkBegin.getSecondOfMinute());;
-		DateTime workingHourEnd = new DateTime(jadwalKaryawan.getTanggalWaktuKerja()).
-				plusHours(dtWorkEnd.getHourOfDay()).
-				plusMinutes(dtWorkEnd.getMinuteOfHour()).
-				plusSeconds(dtWorkEnd.getSecondOfMinute());
+		DateTime workingHourBegin = this.getExactWorkingSchedule(jadwalKaryawan.getTanggalWaktuKerja(), jadwalKaryawan.getWtWorkingHour().getWorkingHourBegin());
+		DateTime workingHourEnd = this.getExactWorkingSchedule(jadwalKaryawan.getTanggalWaktuKerja(), jadwalKaryawan.getWtWorkingHour().getWorkingHourEnd());		
 		Date arriveLimitBegin = workingHourBegin.minusMinutes(jadwalKaryawan.getWtWorkingHour().getArriveLimitBegin()).toDate();
 		Date arriveLimitEnd   = workingHourBegin.plusMinutes(jadwalKaryawan.getWtWorkingHour().getArriveLimitEnd()).toDate();
 		Date goHomeLimitBegin = workingHourEnd.minusMinutes(jadwalKaryawan.getWtWorkingHour().getGoHomeLimitBegin()).toDate();
 		Date goHomeLimitEnd   = workingHourEnd.plusMinutes(jadwalKaryawan.getWtWorkingHour().getGoHomeLimitEnd()).toDate();
+			
+		/** get finger swap captured from (several) data in (several) machine */
+		FingerSwapCaptured fingerInCaptured = this.getFingerInCaptured(listFingerIndexId, arriveLimitBegin, arriveLimitEnd);
+		FingerSwapCaptured fingerOutCaptured = this.getFingerOutCaptured(listFingerIndexId, goHomeLimitBegin, goHomeLimitEnd);
 		
-		/** get FingerInCaptured, if employee checkIn several times, then pick the first one(select min) */
-		List<FingerSwapCaptured> listFingerInCaptured = fingerSwapCapturedDao.getAllDataByFingerIndexIdAndSwapDatetimeLogBetween(listFingerIndexId, arriveLimitBegin, arriveLimitEnd, Order.desc("swapDatetimeLog"));		
-		FingerSwapCaptured fingerInCaptured = Lambda.selectMin(listFingerInCaptured, Lambda.on(FingerSwapCaptured.class).getSwapDatetimeLog());		
-		
-		/** get FingerOutCaptured, if employee checkOut several times, then pick the last one(select max) */
-		List<FingerSwapCaptured> listFingerOutCaptured = fingerSwapCapturedDao.getAllDataByFingerIndexIdAndSwapDatetimeLogBetween(listFingerIndexId, goHomeLimitBegin, goHomeLimitEnd, Order.desc("swapDatetimeLog"));
-		FingerSwapCaptured fingerOutCaptured = Lambda.selectMax(listFingerOutCaptured, Lambda.on(FingerSwapCaptured.class).getSwapDatetimeLog());
-		
+		/** Start saving tempProcessReadFinger entity.
+		 *  webCheckIn or fingerCheckIn can be null
+		 *  (yang berarti ada kemungkinan employee tidak masuk atau mereka checkIn nya di luar limit waktu workingHour)*/
 		TempProcessReadFinger tempProcessReadFinger = new TempProcessReadFinger();
 		tempProcessReadFinger.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
 		tempProcessReadFinger.setEmpData(empData);
+		tempProcessReadFinger.setWorkingHourName(jadwalKaryawan.getWtWorkingHour().getName());
 		tempProcessReadFinger.setScheduleDate(jadwalKaryawan.getTanggalWaktuKerja());
 		tempProcessReadFinger.setScheduleIn(jadwalKaryawan.getWtWorkingHour().getWorkingHourBegin());
 		tempProcessReadFinger.setScheduleOut(jadwalKaryawan.getWtWorkingHour().getWorkingHourEnd());
@@ -381,6 +369,117 @@ public class TempProcessReadFingerServiceImpl extends IServiceImpl implements Te
 		tempProcessReadFinger.setCreatedOn(new Date());
 		
 		tempProcessReadFingerDao.save(tempProcessReadFinger);
+	}
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void doCorrectionIn(Long id, Boolean isCorrection) throws Exception {
+		TempProcessReadFinger tempProcessReadFinger = tempProcessReadFingerDao.getEntiyByPK(id);
+		tempProcessReadFinger.setIsCorrectionIn(isCorrection);
+		if(isCorrection){
+			DateTime scheduleDate = new DateTime(tempProcessReadFinger.getScheduleDate());
+			DateTime scheduleIn =  new DateTime(tempProcessReadFinger.getScheduleIn());
+			scheduleDate = scheduleDate.plusHours(scheduleIn.getHourOfDay()).plusMinutes(scheduleIn.getMinuteOfHour()).plusSeconds(scheduleIn.getSecondOfMinute());
+			
+			tempProcessReadFinger.setFingerIn(scheduleDate.toDate());
+			tempProcessReadFinger.setMarginIn(0);
+			
+		} else {			
+			TempJadwalKaryawan jadwalKaryawan =  tempJadwalKaryawanDao.getEntityByEmpDataIdAndTanggalWaktuKerja(tempProcessReadFinger.getEmpData().getId(), tempProcessReadFinger.getScheduleDate());						
+			DateTime workingHourBegin = this.getExactWorkingSchedule(jadwalKaryawan.getTanggalWaktuKerja(), jadwalKaryawan.getWtWorkingHour().getWorkingHourBegin());			
+			Date arriveLimitBegin = workingHourBegin.minusMinutes(jadwalKaryawan.getWtWorkingHour().getArriveLimitBegin()).toDate();
+			Date arriveLimitEnd   = workingHourBegin.plusMinutes(jadwalKaryawan.getWtWorkingHour().getArriveLimitEnd()).toDate();
+			
+			List<String> listFingerIndexId = this.getFingerIndexIds(tempProcessReadFinger.getEmpData().getNik());
+			FingerSwapCaptured fingerInCaptured = this.getFingerInCaptured(listFingerIndexId, arriveLimitBegin, arriveLimitEnd);
+			
+			if(fingerInCaptured != null){
+				tempProcessReadFinger.setFingerIn(fingerInCaptured.getSwapDatetimeLog());
+				tempProcessReadFinger.setMarginIn(DateTimeUtil.getTotalMinutesDifference(fingerInCaptured.getSwapDatetimeLog(), workingHourBegin.toDate()));
+			} else {
+				tempProcessReadFinger.setFingerIn(null);
+				tempProcessReadFinger.setMarginIn(null);
+			}
+		}
+		
+		tempProcessReadFinger.setUpdatedBy(UserInfoUtil.getUserName());
+		tempProcessReadFinger.setUpdatedOn(new Date());
+		
+		tempProcessReadFingerDao.update(tempProcessReadFinger);
+	}
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void doCorrectionOut(Long id, Boolean isCorrection) throws Exception {
+		TempProcessReadFinger tempProcessReadFinger = tempProcessReadFingerDao.getEntiyByPK(id);
+		tempProcessReadFinger.setIsCorrectionOut(isCorrection);
+		if(isCorrection){
+			DateTime scheduleDate = new DateTime(tempProcessReadFinger.getScheduleDate());
+			DateTime scheduleOut =  new DateTime(tempProcessReadFinger.getScheduleOut());
+			scheduleDate = scheduleDate.plusHours(scheduleOut.getHourOfDay()).plusMinutes(scheduleOut.getMinuteOfHour()).plusSeconds(scheduleOut.getSecondOfMinute());
+			
+			tempProcessReadFinger.setFingerOut(scheduleDate.toDate());
+			tempProcessReadFinger.setMarginOut(0);
+			
+		} else {
+			TempJadwalKaryawan jadwalKaryawan =  tempJadwalKaryawanDao.getEntityByEmpDataIdAndTanggalWaktuKerja(tempProcessReadFinger.getEmpData().getId(), tempProcessReadFinger.getScheduleDate());					
+			DateTime workingHourEnd = this.getExactWorkingSchedule(jadwalKaryawan.getTanggalWaktuKerja(), jadwalKaryawan.getWtWorkingHour().getWorkingHourEnd());			
+			Date goHomeLimitBegin = workingHourEnd.minusMinutes(jadwalKaryawan.getWtWorkingHour().getGoHomeLimitBegin()).toDate();
+			Date goHomeLimitEnd   = workingHourEnd.plusMinutes(jadwalKaryawan.getWtWorkingHour().getGoHomeLimitEnd()).toDate();
+			
+			List<String> listFingerIndexId = this.getFingerIndexIds(tempProcessReadFinger.getEmpData().getNik());
+			FingerSwapCaptured fingerOutCaptured = this.getFingerOutCaptured(listFingerIndexId, goHomeLimitBegin, goHomeLimitEnd);
+			
+			if(fingerOutCaptured != null) {
+				tempProcessReadFinger.setFingerOut(fingerOutCaptured.getSwapDatetimeLog());
+				tempProcessReadFinger.setMarginOut(DateTimeUtil.getTotalMinutesDifference(fingerOutCaptured.getSwapDatetimeLog(), workingHourEnd.toDate()));
+			} else {
+				tempProcessReadFinger.setFingerOut(null);
+				tempProcessReadFinger.setMarginOut(null);
+			}
+		}
+		
+		tempProcessReadFinger.setUpdatedBy(UserInfoUtil.getUserName());
+		tempProcessReadFinger.setUpdatedOn(new Date());
+		
+		tempProcessReadFingerDao.update(tempProcessReadFinger);
+	}
+	
+	private DateTime getExactWorkingSchedule(Date scheduleDate, Date workingHour){		
+		DateTime dtWorkingHour   = new DateTime(workingHour);		
+		DateTime dtWorkingSchedule = new DateTime(scheduleDate).
+				plusHours(dtWorkingHour.getHourOfDay()).
+				plusMinutes(dtWorkingHour.getMinuteOfHour()).
+				plusSeconds(dtWorkingHour.getSecondOfMinute());
+		
+		return dtWorkingSchedule;
+	}
+	
+	private List<String> getFingerIndexIds(String nik){
+		List<FingerMatchEmp> listFingerMatchEmp = fingerMatchEmpDao.getAllDataByNik(nik);
+		return Lambda.extract(listFingerMatchEmp, Lambda.on(FingerMatchEmp.class).getFingerIndexId());
+	}
+	
+	private FingerSwapCaptured getFingerInCaptured(List<String> listFingerIndexId, Date arriveLimitBegin, Date arriveLimitEnd){
+		return this.getFingerSwapCaptured(listFingerIndexId, arriveLimitBegin, arriveLimitEnd, true);
+	}
+	
+	private FingerSwapCaptured getFingerOutCaptured(List<String> listFingerIndexId, Date goHomeLimitBegin, Date goHomeLimitEnd){
+		return this.getFingerSwapCaptured(listFingerIndexId, goHomeLimitBegin, goHomeLimitEnd, false);
+	}
+			
+	private FingerSwapCaptured getFingerSwapCaptured(List<String> listFingerIndexId, Date limitBegin, Date limitEnd, Boolean isFingerInCaptured){
+		FingerSwapCaptured fingerCaptured = null;
+		List<FingerSwapCaptured> listFingerCaptured = fingerSwapCapturedDao.getAllDataByFingerIndexIdAndSwapDatetimeLogBetween(listFingerIndexId, limitBegin, limitEnd, Order.desc("swapDatetimeLog"));		
+		if(isFingerInCaptured) {
+			/** get FingerInCaptured, if employee checkIn several times, then pick the first one(select min) */
+			fingerCaptured = Lambda.selectMin(listFingerCaptured, Lambda.on(FingerSwapCaptured.class).getSwapDatetimeLog());
+		} else {
+			/** get FingerOutCaptured, if employee checkOut several times, then pick the last one(select max) */
+			fingerCaptured = Lambda.selectMax(listFingerCaptured, Lambda.on(FingerSwapCaptured.class).getSwapDatetimeLog());
+		}
+		
+		return fingerCaptured;
 	}
 
 }

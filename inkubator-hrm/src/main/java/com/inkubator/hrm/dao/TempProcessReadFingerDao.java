@@ -16,9 +16,9 @@ import com.inkubator.hrm.web.search.DataFingerRealizationSearchParameter;
  */
 public interface TempProcessReadFingerDao extends IDAO<TempProcessReadFinger> {
 
-	public List<TempProcessReadFinger> getByParam(Long empDataId, Date startDate, Date endDate, int firstResult, int maxResults, Order orderable) throws Exception;
+	public List<TempProcessReadFinger> getByParam(Long empDataId, int firstResult, int maxResults, Order orderable) throws Exception;
 
-	public Long getTotalByParam(Long empDataId, Date startDate, Date endDate) throws Exception;
+	public Long getTotalByParam(Long empDataId) throws Exception;
 
 	public List<DataFingerRealizationModel> getDataFingerRealizationByParam(DataFingerRealizationSearchParameter searchParameter, int firstResult, int maxResults, Order orderable);
 

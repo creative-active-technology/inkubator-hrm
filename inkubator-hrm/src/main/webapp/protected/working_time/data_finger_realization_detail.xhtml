@@ -1,0 +1,202 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg" style="margin: 10px">    
+                    <!--<p:panel style="margin: 10px" >-->                    
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="permit.png" height="36" width="36" cache="true"/>
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['dataFinger.data_finger_employee']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['dataFinger.data_finger_employee_from_working_time']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+
+                    <p:separator/>
+                    <p:growl id="growlId" globalOnly="true" showDetail="true" />
+                    
+                    <p:panelGrid style="width: 100%;margin-bottom: 10px;margin-top: 10px" styleClass="grid_border3">
+                    	<p:row>
+                        	<p:column style="width: 20%;background-color: #e1f0f0!important" >
+                            	<p:outputLabel  value="#{appmsg['employee.employee_name']}" styleClass="label_hrm" />
+                            </p:column>
+                            <p:column style="width: 80%">
+                            	<p:outputLabel  value="#{dataFingerRealizationDetailController.empData.nikWithFullName}" styleClass="label_hrm" />
+                            </p:column>
+                       	</p:row>
+                       	<p:row>
+                        	<p:column style="width: 20%;background-color: #e1f0f0!important" >
+                            	<p:outputLabel  value="#{appmsg['jabatan.jabatan']}" styleClass="label_hrm" />
+                            </p:column>
+                            <p:column style="width: 80%">
+                            	<p:outputLabel  value="#{dataFingerRealizationDetailController.empData.jabatanByJabatanId.name}" styleClass="label_hrm" />
+                            </p:column>
+                       	</p:row>
+                       	<p:row>
+                        	<p:column style="width: 20%;background-color: #e1f0f0!important" >
+                            	<p:outputLabel  value="#{appmsg['global.group']}" styleClass="label_hrm" />
+                            </p:column>
+                            <p:column style="width: 80%">
+                            	<p:outputLabel  value="#{dataFingerRealizationDetailController.empData.wtGroupWorking.name}" styleClass="label_hrm" />
+                            </p:column>
+                       	</p:row>
+                       	<p:row>
+                        	<p:column style="width: 20%;background-color: #e1f0f0!important" >
+                            	<p:outputLabel  value="#{appmsg['unregSalary.periode']}" styleClass="label_hrm" />
+                            </p:column>
+                            <p:column style="width: 80%" colspan="3">
+                            	<p:outputLabel  value="#{dataFingerRealizationDetailController.periode.fromPeriode}" styleClass="label_hrm">
+                            		<f:convertDateTime pattern="dd MMMM yyyy" />
+                            	</p:outputLabel>
+                            	<p:outputLabel  value=" #{appmsg['global.to']} " styleClass="label_hrm"/>
+                            	<p:outputLabel  value="#{dataFingerRealizationDetailController.periode.untilPeriode}" styleClass="label_hrm">
+                            		<f:convertDateTime pattern="dd MMMM yyyy" />
+                            	</p:outputLabel>                            	
+                            </p:column>
+                       	</p:row>
+                    </p:panelGrid>
+
+                    <h:form id="formViewId">
+                        <p:dataTable  id="tableId" var="data"  value="#{dataFingerRealizationDetailController.lazyData}" lazy="true" paginator="true" pageLinks="7"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['dataFinger.list_of_data_finger']}"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 3%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column style="text-align: center;width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.day']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.scheduleDate}">
+                                	<f:converter converterId="dayAsStringConverter" />
+                                </h:outputLabel>
+                            </p:column>  
+                            <p:column sortBy="scheduleDate"  style="text-align: center;width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.date']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.scheduleDate}">
+                                	<f:convertDateTime pattern="dd MMMM yyyy" />
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column sortBy="workingHourName"  style="text-align: center;width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['workinghour.working_hour']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.workingHourName}"/>
+                            </p:column>
+                            <p:column sortBy="scheduleIn" style="text-align: center;width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.schedule']} #{appmsg['global.in']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{data.scheduleIn}">
+                                	<f:convertDateTime pattern="hh:mm" />
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column sortBy="scheduleOut" style="text-align: center;width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.schedule']} #{appmsg['global.out']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{data.scheduleOut}">
+                                	<f:convertDateTime pattern="hh:mm" />
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column sortBy="fingerIn" style="text-align: center;width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['dataFinger.swap_finger']} #{appmsg['global.in']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{data.fingerIn}">
+                                	<f:convertDateTime pattern="hh:mm" />
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column sortBy="fingerOut" style="text-align: center;width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['dataFinger.swap_finger']} #{appmsg['global.out']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{data.fingerOut}">
+                                	<f:convertDateTime pattern="hh:mm" />
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column sortBy="webCheckIn" style="text-align: center;width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['dataFinger.check_web']} #{appmsg['global.in']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.webCheckIn}">
+                                	<f:convertDateTime pattern="hh:mm" />
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column sortBy="webCheckOut" style="text-align: center;width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['dataFinger.check_web']} #{appmsg['global.out']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.webCheckOut}">
+                                	<f:convertDateTime pattern="hh:mm" />
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column style="text-align: center;width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['dataFinger.correction']} #{appmsg['global.in']}"/>
+                                </f:facet>
+                                <p:selectBooleanButton value="#{data.isCorrectionIn}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
+                                                       offIcon="ui-icon-close" styleClass="label_button">
+                                	<p:ajax listener="#{dataFingerRealizationDetailController.doCorrectionIn(data.id)}" update="tableId" />                       
+                                </p:selectBooleanButton>
+                            </p:column>
+                            <p:column style="text-align: center;width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['dataFinger.correction']} #{appmsg['global.out']}"/>
+                                </f:facet>
+                                <p:selectBooleanButton value="#{data.isCorrectionOut}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
+                                                       offIcon="ui-icon-close" styleClass="label_button">
+                                	<p:ajax listener="#{dataFingerRealizationDetailController.doCorrectionOut(data.id)}" update="tableId" />
+                                </p:selectBooleanButton>
+                            </p:column>                        
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : "/>
+                                <p:outputLabel value="#{dataFingerRealizationDetailController.lazyData.rowCount}"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px"/>
+                            </f:facet>  
+                        </p:dataTable>
+                        <p:blockUI block="formViewId" trigger="tableId" >
+                            <h:panelGrid columns="2" styleClass="grid_no_border">
+                                <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
+                                <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
+                            </h:panelGrid>
+                        </p:blockUI>
+                    </h:form>
+                    
+                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+                    <div style="margin-bottom: 5px">
+	                	<p:commandButton value="#{appmsg['global.back']}" icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{dataFingerRealizationDetailController.doBack()}" immediate="true"
+	                                     styleClass="label_button"/>
+	                </div>
+                </div>
+            </ui:define>
+        </ui:composition>
+
+    </h:body>
+</html>
+

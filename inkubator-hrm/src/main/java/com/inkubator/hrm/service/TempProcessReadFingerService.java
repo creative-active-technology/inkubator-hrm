@@ -15,14 +15,18 @@ import com.inkubator.hrm.web.search.DataFingerRealizationSearchParameter;
  */
 public interface TempProcessReadFingerService extends IService<TempProcessReadFinger> {
 	
-	public List<TempProcessReadFinger> getByParam(Long empDataId, Long periodeId, int firstResult, int maxResults, Order orderable) throws Exception;
+	public List<TempProcessReadFinger> getByParam(Long empDataId, int firstResult, int maxResults, Order orderable) throws Exception;
 
-	public Long getTotalByParam(Long empDataId, Long periodeId) throws Exception;
+	public Long getTotalByParam(Long empDataId) throws Exception;
 	
 	public List<DataFingerRealizationModel> getDataFingerRealizationByParam(DataFingerRealizationSearchParameter searchParameter, int firstResult, int maxResults, Order orderable) throws Exception;
 
 	public Long getTotalDataFingerRealizationByParam(DataFingerRealizationSearchParameter searchParameter) throws Exception;
 	
 	public void synchDataFingerRealization() throws Exception;
+
+	public void doCorrectionIn(Long id, Boolean isCorrection) throws Exception;
+	
+	public void doCorrectionOut(Long id, Boolean isCorrection) throws Exception;
 	
 }

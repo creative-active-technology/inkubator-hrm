@@ -456,8 +456,8 @@ public class TempJadwalKaryawanServiceImpl extends BaseApprovalServiceImpl imple
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED,propagation = Propagation.SUPPORTS, timeout = 30)
-    public TempJadwalKaryawan getByEmpId(Long id, Date implementationDate) throws Exception {
-        return tempJadwalKaryawanDao.getByEmpId(id, implementationDate);
+    public TempJadwalKaryawan getEntityByEmpDataIdAndTanggalWaktuKerja(Long id, Date implementationDate) throws Exception {
+        return tempJadwalKaryawanDao.getEntityByEmpDataIdAndTanggalWaktuKerja(id, implementationDate);
     }
 
 }

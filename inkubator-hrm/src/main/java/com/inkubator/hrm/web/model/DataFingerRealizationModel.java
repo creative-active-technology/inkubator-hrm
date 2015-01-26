@@ -8,6 +8,7 @@ import java.io.Serializable;
  */
 public class DataFingerRealizationModel implements Serializable {
 
+	public Long empDataId;
 	public String nik;
 	public String employeeName;
 	public String workingGroupName;
@@ -15,7 +16,13 @@ public class DataFingerRealizationModel implements Serializable {
 	public Long fingerOut;
 	public Long webCheckIn;
 	public Long webCheckOut;
-	
+		
+	public Long getEmpDataId() {
+		return empDataId;
+	}
+	public void setEmpDataId(Long empDataId) {
+		this.empDataId = empDataId;
+	}
 	public String getNik() {
 		return nik;
 	}

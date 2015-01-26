@@ -8,9 +8,7 @@ import javax.faces.bean.ViewScoped;
 
 import org.primefaces.model.LazyDataModel;
 
-import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.TempProcessReadFingerService;
-import com.inkubator.hrm.service.WtPeriodeService;
 import com.inkubator.hrm.web.lazymodel.DataFingerRealizationLazyDataModel;
 import com.inkubator.hrm.web.model.DataFingerRealizationModel;
 import com.inkubator.hrm.web.search.DataFingerRealizationSearchParameter;
@@ -99,7 +97,7 @@ public class DataFingerRealizationViewController extends BaseController {
 	}
 
     public String doDetail() {
-        return "/protected/working_time/data_finger_realization_detail.htm?faces-redirect=true&execution=e" + selectedModel.getNik();
+        return "/protected/working_time/data_finger_realization_detail.htm?faces-redirect=true&execution=e" + selectedModel.getEmpDataId();
     }
     
 }

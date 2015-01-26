@@ -1,6 +1,5 @@
 package com.inkubator.hrm.dao.impl;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -9,6 +8,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
@@ -17,9 +17,7 @@ import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.TempProcessReadFingerDao;
 import com.inkubator.hrm.entity.TempProcessReadFinger;
 import com.inkubator.hrm.web.model.DataFingerRealizationModel;
-import com.inkubator.hrm.web.model.LogMonthEndPayrollViewModel;
 import com.inkubator.hrm.web.search.DataFingerRealizationSearchParameter;
-import com.inkubator.hrm.web.search.LogMonthEndPayrollSearchParameter;
 
 /**
  *
@@ -35,23 +33,27 @@ public class TempProcessReadFingerDaoImpl extends IDAOImpl<TempProcessReadFinger
 	}
 
 	@Override
-	public List<TempProcessReadFinger> getByParam(Long empDataId, Date startDate, Date endDate, int firstResult, int maxResults, Order orderable) throws Exception {
+	public List<TempProcessReadFinger> getByParam(Long empDataId, int firstResult, int maxResults, Order orderable) throws Exception {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		
+		criteria.add(Restrictions.eq("empData.id", empDataId));
+		criteria.addOrder(orderable);
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResults);
 		return criteria.list();
 	}
 
 	@Override
-	public Long getTotalByParam(Long empDataId, Date startDate, Date endDate) throws Exception {
+	public Long getTotalByParam(Long empDataId) throws Exception {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		
+		criteria.add(Restrictions.eq("empData.id", empDataId));
 		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
 	}
 
 	@Override
 	public List<DataFingerRealizationModel> getDataFingerRealizationByParam(DataFingerRealizationSearchParameter searchParameter, int firstResult, int maxResults, Order orderable) {
 		StringBuffer selectQuery = new StringBuffer(
-				"SELECT empData.nik as nik, "
+				"SELECT empData.id as empDataId, "
+				+ "empData.nik as nik, "
 				+ "CONCAT(empData.bioData.firstName,' ',empData.bioData.lastName) as employeeName, "
 				+ "empData.wtGroupWorking.name as workingGroupName, "
 				+ "(SUM(CASE WHEN fingerIn IS NULL THEN 0 else 1 END)/count(*))*100 as fingerIn, "

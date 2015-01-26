@@ -22,6 +22,7 @@ public class TempProcessReadFinger implements Serializable {
     private Integer version;
     
     private EmpData empData;
+    private String workingHourName;
     private Date scheduleDate;
     private Date scheduleIn;
     private Date scheduleOut;
@@ -33,7 +34,6 @@ public class TempProcessReadFinger implements Serializable {
     private Boolean isCorrectionOut;
     private Integer marginIn;
     private Integer marginOut;
-    
     
     private String createdBy;
     private String updatedBy;
@@ -76,6 +76,15 @@ public class TempProcessReadFinger implements Serializable {
 
 	public void setEmpData(EmpData empData) {
 		this.empData = empData;
+	}
+
+	@Column(name = "working_hour_name", nullable = false)
+	public String getWorkingHourName() {
+		return workingHourName;
+	}
+
+	public void setWorkingHourName(String workingHourName) {
+		this.workingHourName = workingHourName;
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)
