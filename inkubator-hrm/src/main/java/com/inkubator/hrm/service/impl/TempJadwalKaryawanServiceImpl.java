@@ -285,7 +285,7 @@ public class TempJadwalKaryawanServiceImpl extends BaseApprovalServiceImpl imple
         for (WtScheduleShift list1 : list) {
             String onlyDate = new SimpleDateFormat("yyyy-MM-dd").format(DateTimeUtil.getDateFrom(beginScheduleDate, i, CommonUtilConstant.DATE_FORMAT_DAY));
             Date olnyDate = new SimpleDateFormat("yyyy-MM-dd").parse(onlyDate);
-            jadwalKaryawan = tempJadwalKaryawanDao.getByEmpId(empData.getId(), olnyDate);
+            jadwalKaryawan = tempJadwalKaryawanDao.getEntityByEmpDataIdAndTanggalWaktuKerja(empData.getId(), olnyDate);
             if (jadwalKaryawan != null) {
                 jadwalKaryawan.setUpdatedBy(UserInfoUtil.getUserName());
                 jadwalKaryawan.setUpdatedOn(new Date());

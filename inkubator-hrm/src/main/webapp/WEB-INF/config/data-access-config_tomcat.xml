@@ -56,7 +56,7 @@
          
     </bean>
     <bean id="c3p0DataSource-1" parent="c3p0DataSourceAbstract" lazy-init="true">
-        <property name="driverClass" value="com.p6spy.engine.spy.P6SpyDriver"/>
+        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
         <property name="jdbcUrl" value="${jdbc.url}"/>
         <property name="user" value="${jdbc.userName}"/>
         <property name="password" value="${jdbc.password}"/>

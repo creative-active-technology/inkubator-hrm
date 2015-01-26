@@ -101,7 +101,7 @@ public class JadwalKerjaMassMessagesListener extends IServiceImpl implements Mes
                 for (WtScheduleShift wtScheduleShift : sortedDataScheduleShift) {
                     String onlyDate = new SimpleDateFormat("yyyy-MM-dd").format(DateTimeUtil.getDateFrom(beginScheduleDate, i, CommonUtilConstant.DATE_FORMAT_DAY));
                     Date olnyDate = new SimpleDateFormat("yyyy-MM-dd").parse(onlyDate);
-                    jadwalKaryawan = tempJadwalKaryawanDao.getByEmpId(id, olnyDate);
+                    jadwalKaryawan = tempJadwalKaryawanDao.getEntityByEmpDataIdAndTanggalWaktuKerja(id, olnyDate);
                     if (jadwalKaryawan != null) {
                         jadwalKaryawan.setUpdatedBy(createBy);
                         jadwalKaryawan.setUpdatedOn(new Date());
