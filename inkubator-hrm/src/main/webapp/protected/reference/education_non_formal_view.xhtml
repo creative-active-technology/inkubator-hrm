@@ -33,10 +33,15 @@
                     <h:form id="formEducationNonFormalViewId">
                         <p:toolbar  style="margin-top: 10px">
                             <p:toolbarGroup align="left">
-                                <h:panelGrid columns="4">
-                                    <p:outputLabel value="#{appmsg['global.searching']} #{appmsg['educationnonformal.name']}" styleClass="label_hrm" />
+                                <h:panelGrid columns="5">
+                                    <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm" />
                                     <p:outputLabel value=":" />
-                                    <p:inputText id="searchId" value="#{educationNonFormalViewController.parameter}" style="width: 250px" styleClass="isitext_hrm"/>
+                                    <p:selectOneMenu value="#{educationNonFormalViewController.parameter.keyParam}">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItem itemLabel="#{appmsg['global.code']}" itemValue="code"/>
+                                        <f:selectItem itemLabel="#{appmsg['global.name']}" itemValue="name"/>
+                                    </p:selectOneMenu>
+                                    <p:inputText id="searchId" value="#{educationNonFormalViewController.parameter.parameter}" style="width: 250px" styleClass="isitext_hrm"/>
                                     <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{educationNonFormalViewController.doSearch()}" update="tableEducationNonFormalId"  styleClass="label_button" icon="ui-icon-search"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
