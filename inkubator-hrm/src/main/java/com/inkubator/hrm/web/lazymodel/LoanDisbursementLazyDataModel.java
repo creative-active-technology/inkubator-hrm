@@ -17,17 +17,17 @@ import com.inkubator.hrm.web.search.LoanSearchParameter;
 
 /**
 *
-* @author rizkykojek
+* @author Ahmad Mudzakkir Amal
 */
-public class LoanLazyDataModel extends LazyDataModel<Loan> implements Serializable {
+public class LoanDisbursementLazyDataModel extends LazyDataModel<Loan> implements Serializable {
 
-    private static final Logger LOGGER = Logger.getLogger(LoanLazyDataModel.class);
+    private static final Logger LOGGER = Logger.getLogger(LoanDisbursementLazyDataModel.class);
     private final LoanSearchParameter parameter;
     private final LoanService loanService;
     private List<Loan> loans = new ArrayList<>();
     private Integer total;
 
-    public LoanLazyDataModel(LoanSearchParameter parameter, LoanService loanService) {
+    public LoanDisbursementLazyDataModel(LoanSearchParameter parameter, LoanService loanService) {
         this.parameter = parameter;
         this.loanService = loanService;
     }
@@ -43,15 +43,14 @@ public class LoanLazyDataModel extends LazyDataModel<Loan> implements Serializab
 	        	orderable = Order.asc("id");
 	        }
 	        
-	        loans = loanService.getByParam(parameter, first, pageSize, orderable);
-            total = Integer.parseInt(String.valueOf(loanService.getTotalByParam(parameter)));            
+	        loans = loanService.getByParamByStatusUnpaid(parameter, first, pageSize, orderable);
+                total = Integer.parseInt(String.valueOf(loanService.getTotalByParamByStatusUnpaid(parameter)));                            
         	LOGGER.info("Success Load Lazy data Model");
         	
         } catch (Exception ex) {
             LOGGER.error("Failed Load Lazy data Model");
             LOGGER.error("Error = ", ex);
-        }
-
+        }        
         setPageSize(pageSize);
         setRowCount(total);
         return loans;

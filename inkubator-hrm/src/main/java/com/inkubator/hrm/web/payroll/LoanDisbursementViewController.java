@@ -8,16 +8,27 @@ package com.inkubator.hrm.web.payroll;
 import com.inkubator.hrm.web.employee.*;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.Loan;
 import com.inkubator.hrm.service.EmpDataService;
+import com.inkubator.hrm.service.LoanService;
 import com.inkubator.hrm.web.lazymodel.EmpDataLazyDataModel;
+import com.inkubator.hrm.web.lazymodel.LoanCanceledProcessLazyDataModel;
+import com.inkubator.hrm.web.lazymodel.LoanLazyDataModel;
+import com.inkubator.hrm.web.lazymodel.LoanDisbursementLazyDataModel;
+import com.inkubator.hrm.web.model.LoanModel;
 import com.inkubator.hrm.web.search.EmpDataSearchParameter;
+import com.inkubator.hrm.web.search.LoanSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
@@ -38,136 +49,109 @@ import org.springframework.dao.DataIntegrityViolationException;
 @ViewScoped
 public class LoanDisbursementViewController extends BaseController {
 
-    private EmpDataSearchParameter empDataSearchParameter;
-    private LazyDataModel<EmpData> empDataLazyDataModel;
-    @ManagedProperty(value = "#{empDataService}")
-    private EmpDataService empDataService;
-    private EmpData selectedEmpData;
-
+    @ManagedProperty(value = "#{loanService}")
+    private LoanService loanService;   
+    private LoanSearchParameter loanSearchParameter;
+    private LazyDataModel<Loan> lazy;
+    private Loan selected;
+    private LoanModel loanModel;     
+    
     @PostConstruct
     @Override
     public void initialization() {
-        super.initialization();
-        empDataSearchParameter = new EmpDataSearchParameter();
-
-    }
-
-    public String doAdd() {
-        return "/protected/employee/employee_palcement_form.htm?faces-redirect=true";
-    }
-
-    public EmpDataSearchParameter getEmpDataSearchParameter() {
-        return empDataSearchParameter;
-    }
-
-    public void setEmpDataSearchParameter(EmpDataSearchParameter empDataSearchParameter) {
-        this.empDataSearchParameter = empDataSearchParameter;
-    }
-
-    public void setEmpDataService(EmpDataService empDataService) {
-        this.empDataService = empDataService;
-    }
-
-    public LazyDataModel<EmpData> getEmpDataLazyDataModel() {
-        if (empDataLazyDataModel == null) {
-            empDataLazyDataModel = new EmpDataLazyDataModel(empDataSearchParameter, empDataService);
-        }
-        return empDataLazyDataModel;
-    }
-
-    public void setEmpDataLazyDataModel(LazyDataModel<EmpData> empDataLazyDataModel) {
-        this.empDataLazyDataModel = empDataLazyDataModel;
-    }
-
-    public void doSearch() {
-        
-    }
-
-    public void onDelete() {
         try {
-            selectedEmpData = this.empDataService.getEntiyByPK(selectedEmpData.getId());
+            super.initialization();
+            loanSearchParameter = new LoanSearchParameter();
+            loanModel = new LoanModel();                     
+            
         } catch (Exception ex) {
-            LOGGER.error("Error", ex);
+            Logger.getLogger(LoanDisbursementViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
-    public EmpData getSelectedEmpData() {
-        return selectedEmpData;
-    }
-
-    public void setSelectedEmpData(EmpData selectedEmpData) {
-        this.selectedEmpData = selectedEmpData;
-    }
-
-    public void doDelete() {
-
-        try {
-            this.empDataService.delete(selectedEmpData);
-            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully",
-                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-
-        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
-            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint",
-                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-//            LOGGER.error("Error", ex);
-        } catch (Exception ex) {
-            LOGGER.error("Error", ex);
-        }
-
-    }
-
-    public String doDetail() {
-        return "/protected/employee/employee_placement_detail.htm?faces-redirect=true&execution=e" + selectedEmpData.getId();
-    }
-
-    public String doDetailRenumeration() {
-        return "/protected/payroll/basic_renumeration_detail.htm?faces-redirect=true&execution=e" + selectedEmpData.getId();
-    }
-
-    public String doEdit() {
-        return "/protected/employee/employee_palcement_form.htm?faces-redirect=true&execution=e" + selectedEmpData.getId();
-    }
-
-    public String doRotasi() {
-
-        return "/protected/employee/employee_rotasi_form.htm?faces-redirect=true&execution=r" + selectedEmpData.getId();
-    }
-
-    public String doPlacementOfEmployee() {
-         return "/protected/employee/work_schedule_form.htm?faces-redirect=true";
     }
     
-    public void doEmployeeTimeSchedule() {
-        List<String> values = new ArrayList<>();
-        values.add(String.valueOf(selectedEmpData.getId()));
+    @PreDestroy
+    private void cleanAndExit() {       
+        lazy = null;
+        loanSearchParameter = null;
+        loanService = null;        
+        selected = null;
+        loanModel = null;
+        
+    }
+    
+    @Override
+    public void onDialogReturn(SelectEvent event) {
+        try {
+            lazy = null;  
+             super.onDialogReturn(event);
+        } catch (Exception ex) {
+            Logger.getLogger(LoanDisbursementViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void doSearch() {
+        lazy = null;
+    }    
+   
+    
+    public void doDetail() {
+        
         Map<String, List<String>> dataToSend = new HashMap<>();
-        dataToSend.put("empId", values);
+        List<String> dataIsi = new ArrayList<>();
+        dataIsi.add(String.valueOf(selected.getId()));
+        dataToSend.put("param", dataIsi);        
+        
         Map<String, Object> options = new HashMap<>();
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 450);
-        options.put("contentHeight", 270);
-        RequestContext.getCurrentInstance().openDialog("employee_schedule_form", options, dataToSend);
-
+        options.put("contentHeight",420);       
+         
+        RequestContext.getCurrentInstance().openDialog("loan_disbursement_form", options, dataToSend);       
+    }    
+    
+    
+    public LoanService getLoanService() {
+        return loanService;
     }
 
-    @PreDestroy
-    public void cleanAndExit() {
-        empDataSearchParameter = null;
-        empDataLazyDataModel = null;
-        empDataService = null;
-        selectedEmpData = null;
-
+    public void setLoanService(LoanService loanService) {
+        this.loanService = loanService;
     }
 
-    @Override
-    public void onDialogReturn(SelectEvent event) {
-        System.out.println(" hahahahah");
-        super.onDialogReturn(event);
+    public LoanSearchParameter getLoanSearchParameter() {
+        return loanSearchParameter;
     }
 
-    public String doDetailShedule() {
-        return "/protected/employee/employee_shcedule_detail.htm?faces-redirect=true&execution=r" + selectedEmpData.getId();
+    public void setLoanSearchParameter(LoanSearchParameter loanSearchParameter) {
+        this.loanSearchParameter = loanSearchParameter;
+    }
+
+    public Loan getSelected() {
+        return selected;
+    }
+
+    public void setSelected(Loan selected) {
+        this.selected = selected;
+    }
+
+    public LoanModel getLoanModel() {
+        return loanModel;
+    }
+
+    public void setLoanModel(LoanModel loanModel) {
+        this.loanModel = loanModel;
+    }
+    
+    public LazyDataModel<Loan> getLazy() {
+        if (lazy == null) {
+            lazy = new LoanDisbursementLazyDataModel(loanSearchParameter, loanService);
+        }
+        return lazy;
+    }
+
+    public void setLazy(LazyDataModel<Loan> lazy) {
+        this.lazy = lazy;
     }
 }

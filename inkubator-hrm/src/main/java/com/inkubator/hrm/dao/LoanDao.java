@@ -29,4 +29,9 @@ public interface LoanDao extends IDAO<Loan> {
     public List<Loan> getAllDataByEmpDataId(Long empDataId);
     
     public Long getCurrentMaxId();
+    
+    public List<Loan> getByParamByStatusUnpaid(LoanSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception;
+    
+    public Long getTotalByParamByStatusUnpaid(LoanSearchParameter parameter) throws Exception;
+   
 }

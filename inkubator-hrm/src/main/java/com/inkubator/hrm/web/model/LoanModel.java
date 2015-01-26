@@ -33,6 +33,7 @@ public class LoanModel implements Serializable {
         private String pathUpload;
         private String createdBy;
         private String nik;
+       
 	
 	public LoanModel(){
 		loanPaymentDetails = new ArrayList<LoanPaymentDetail>();
@@ -150,8 +151,5 @@ public class LoanModel implements Serializable {
     public void setTermins(String termins) {
         this.termins = termins;
     }
-        
-        
-        
-        
+
 }

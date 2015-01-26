@@ -85,20 +85,6 @@ public class LoanUploadViewController extends BaseController{
         }
     }
     
-   
-   
-    
-    public void doEditTotalAttendance(){
-        
-        Map<String, Object> options = new HashMap<>();
-        options.put("modal", false);
-        options.put("draggable", true);
-        options.put("resizable", false);
-        options.put("contentWidth", 450);
-        options.put("contentHeight", 150);
-
-        RequestContext.getCurrentInstance().openDialog("total_attendance_edit", options, null);
-    }
     public void doSearch() {
         lazy = null;
     }
