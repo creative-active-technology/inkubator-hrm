@@ -19,6 +19,7 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.LoanDao;
 import com.inkubator.hrm.entity.Loan;
 import com.inkubator.hrm.web.search.LoanSearchParameter;
+import org.hibernate.Session;
 
 /**
  *
@@ -55,13 +56,14 @@ public class LoanDaoImpl extends IDAOImpl<Loan> implements LoanDao {
     }
 
     private void doSearchByParam(LoanSearchParameter parameter, Criteria criteria) {
-        criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
-        criteria.createAlias("loanSchema", "loanSchema", JoinType.INNER_JOIN);
+        
 
-        if (StringUtils.isNotEmpty(parameter.getLoanSchema())) {
+        if (StringUtils.isNotEmpty(parameter.getLoanSchema())) {        
+            criteria.createAlias("loanSchema", "loanSchema", JoinType.INNER_JOIN);
             criteria.add(Restrictions.like("loanSchema.name", parameter.getLoanSchema(), MatchMode.ANYWHERE));
         }
         if (StringUtils.isNotEmpty(parameter.getEmployee())) {
+            criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
             criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
 
             Disjunction disjunction = Restrictions.disjunction();
@@ -121,6 +123,35 @@ public class LoanDaoImpl extends IDAOImpl<Loan> implements LoanDao {
         criteria.add(Restrictions.eq("statusPencairan", HRMConstant.LOAN_UNPAID));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
+
+    @Override
+    public Long getCurrentMaxId() {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());        
+        return (Long) criteria.setProjection(Projections.max("id")).uniqueResult();
+    }
+
+    @Override
+    public List<Loan> getByParamByStatusUnpaid(LoanSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        doSearchByParam(parameter, criteria);
+        criteria.setFetchMode("empData", FetchMode.JOIN);
+        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+        criteria.setFetchMode("loanSchema", FetchMode.JOIN);
+        criteria.add(Restrictions.eq("statusPencairan", HRMConstant.LOAN_UNPAID));       
+        criteria.addOrder(orderable);
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResults);
+        return criteria.list();
+    }
+
+    @Override
+    public Long getTotalByParamByStatusUnpaid(LoanSearchParameter parameter) throws Exception {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        doSearchByParam(parameter, criteria);
+        criteria.add(Restrictions.eq("statusPencairan", HRMConstant.LOAN_UNPAID));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+    
 
 }
 

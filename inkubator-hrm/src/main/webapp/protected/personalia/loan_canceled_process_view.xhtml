@@ -37,13 +37,13 @@
                                 <h:panelGrid columns="5">
                                     <p:outputLabel value="#{appmsg['global.searching']}" title="#{appmsg['global.searching']}" styleClass="label_hrm" />
                                     <p:outputLabel value=":" />
-                                    <p:selectOneMenu value="#{loanViewController.searchParameter.keyParam}" style="margin-right: 3px" >
+                                    <p:selectOneMenu value="#{loanCanceledProcessViewController.searchParameter.keyParam}" style="margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItem itemLabel="#{appmsg['global.employee']}" itemValue="employee"/>
                                         <f:selectItem itemLabel="#{appmsg['loanschema.loan']}" itemValue="loanSchema"/>
                                     </p:selectOneMenu>
-                                    <p:inputText id="searchId" value="#{loanViewController.searchParameter.parameter}" style="width: 250px" styleClass="isitext_hrm"/>
-                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{loanViewController.doSearch()}" update="tableLoanId"  styleClass="label_button" icon="ui-icon-search"/>
+                                    <p:inputText id="searchId" value="#{loanCanceledProcessViewController.searchParameter.parameter}" style="width: 250px" styleClass="isitext_hrm"/>
+                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{loanCanceledProcessViewController.doSearch()}" update="tableLoanId"  styleClass="label_button" icon="ui-icon-search"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
@@ -52,7 +52,7 @@
                                         <pe:exporter target="tableLoanId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Loan"/>
                                     </p:commandButton>
                                     <!--<p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']}" action="#{loanViewController.doAdd()}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true"/>-->
-                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{loanViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{loanCanceledProcessViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
                         </p:toolbar>
@@ -71,13 +71,13 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>   
-                            <p:column sortBy="empData.nik"  style="width: 20%">
+                            <p:column sortBy="empData"  style="width: 20%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.employee']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{loanData.empData.nik} #{loanData.empData.bioData.fullName}"/>
                             </p:column> 
-                            <p:column sortBy="loanSchema.name"  style="width: 17%">
+                            <p:column sortBy="loanSchema"  style="width: 17%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['loanschema.loan']}"/>
                                 </f:facet>
@@ -100,12 +100,12 @@
                                 </h:outputLabel>
                             </p:column>
                             
-                            <p:column sortBy="nominalPrincipal"  style="width: 15%">
+                            <p:column sortBy="approvalTime"  style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="Proses Pencairan"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{loanData.approvalTime}">
-                                    <f:convertDateTime pattern="dd-MMMM-yyyy" />
+                                    <f:convertDateTime pattern="dd MMMM yyyy" />
                                 </h:outputLabel>
                             </p:column>
                             
@@ -130,30 +130,6 @@
                         </p:blockUI>
                     </h:form>
                 </div>
-                <p:dialog widgetVar="dialogConfirmLoan" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
-                          appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
-                    <div align="center">
-                        <div align="center">
-                            <h:panelGrid columns="2" style="text-align: justify">
-                                <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
-                                <h:panelGroup>
-                                    <h:panelGrid style="text-align: center">
-                                        <p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
-                                    </h:panelGrid>
-                                </h:panelGroup>
-                            </h:panelGrid>
-                        </div>
-                        <h:panelGrid id="panelDialogConfirmId"  columns="3">
-                            <p:outputLabel value="#{appmsg['loan.loan']}"  style="font-weight: bold"/>
-                            <p:outputLabel value=":"  style="font-weight: bold"/>
-                            <p:outputLabel value="#{loanViewController.selectedLoan.empData.nikWithFullName}" styleClass="label_hrm"/>
-                        </h:panelGrid>
-                        <p:separator/>
-                        <p:commandButton value="#{appmsg['global.yes']}" action="#{loanViewController.doDelete()}" update="formLoanViewId,:growlLoanViewlId"
-                                         oncomplete="dialogConfirmLoan.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmLoan.hide()" icon="ui-icon-close" />                     	
-                    </div>
-                </p:dialog>
             </ui:define>
         </ui:composition>
 

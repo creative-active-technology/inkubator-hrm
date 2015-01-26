@@ -81,7 +81,7 @@ public class ImageFileTemplateStreamerController extends BaseController {
             try {
             	String fileName = StringUtils.EMPTY;
                 StringBuffer path = new StringBuffer();
-                path.append(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/resources/file_template/"));
+                path.append(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/resources/file_template/pay_attendance"));
                 //path.append("\\");
                 switch (extension) {
 					case "csv":
@@ -97,8 +97,49 @@ public class ImageFileTemplateStreamerController extends BaseController {
 						fileName = "pay_temp_attendance_upload_template.xlsx";
 						break;
 					default:
-						path.append("pay_salary_upload.csv");
-						fileName = "pay_salary_upload_template.csv";
+						path.append("pay_temp_attendance_upload.csv");
+						fileName = "pay_temp_attendance_upload_template.csv";
+						break;
+				}
+                
+                InputStream is = facesIO.getInputStreamFromURL(path.toString());
+                streamedContent = new DefaultStreamedContent(is, null, fileName);
+
+            } catch (Exception ex) {
+                LOGGER.error(ex, ex);
+            }
+        }
+        
+        return streamedContent;
+    } 
+    
+    public StreamedContent getLoanUploadFile() throws IOException {
+        FacesContext context = FacesUtil.getFacesContext();
+        String extension = context.getExternalContext().getRequestParameterMap().get("extension");
+        StreamedContent streamedContent = new DefaultStreamedContent();
+        
+        if (!context.getRenderResponse() && extension != null) {
+            try {
+            	String fileName = StringUtils.EMPTY;
+                StringBuffer path = new StringBuffer();
+                path.append(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/resources/file_template/loan"));
+                //path.append("\\");
+                switch (extension) {
+					case "csv":
+						path.append("loan_upload.csv");
+						fileName = "loan_upload_template.csv";
+						break;
+					case "xls":
+						path.append("loan_upload.xls");
+						fileName = "loan_upload_template.xls";
+						break;
+					case "xlsx":
+						path.append("loan_upload.xlsx");
+						fileName = "loan_upload_template.xlsx";
+						break;
+					default:
+						path.append("loan_upload.csv");
+						fileName = "loan_upload_template.csv";
 						break;
 				}
                 

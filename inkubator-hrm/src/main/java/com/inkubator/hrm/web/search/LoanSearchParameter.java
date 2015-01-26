@@ -9,8 +9,8 @@ import com.inkubator.webcore.util.SearchParameter;
  * @author rizkykojek
  */
 public class LoanSearchParameter extends SearchParameter {
-
-	private String employee;
+    private String nik;
+    private String employee;
     private String loanSchema;
     
 	public String getEmployee() {
@@ -35,4 +35,19 @@ public class LoanSearchParameter extends SearchParameter {
 	public void setLoanSchema(String loanSchema) {
 		this.loanSchema = loanSchema;
 	}    
+
+    public String getNik() {
+        if (StringUtils.equalsIgnoreCase(getKeyParam(), "nik")) {
+			nik = getParameter();
+        } else {
+        	nik = null;
+        }
+		return nik;
+    }
+
+    public void setNik(String nik) {
+        this.nik = nik;
+    }
+        
+        
 }

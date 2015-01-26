@@ -6,12 +6,18 @@
 package com.inkubator.hrm.service.impl;
 
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.hrm.dao.LoanCanceledDao;
 import com.inkubator.hrm.entity.LoanCanceled;
 import com.inkubator.hrm.service.LoanCanceledService;
+import com.inkubator.hrm.web.search.LoanCanceledSearchParameter;
 import java.util.List;
 import org.hibernate.criterion.Order;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -21,6 +27,9 @@ import org.springframework.stereotype.Service;
 @Lazy
 public class LoanCanceledServiceImpl extends IServiceImpl implements LoanCanceledService{
 
+    @Autowired
+    private LoanCanceledDao loanCanceledDao;
+    
     @Override
     public LoanCanceled getEntiyByPK(String id) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -179,6 +188,24 @@ public class LoanCanceledServiceImpl extends IServiceImpl implements LoanCancele
     @Override
     public List<LoanCanceled> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<LoanCanceled> getByParam(LoanCanceledSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
+        return loanCanceledDao.getByParam(searchParameter, firstResult, maxResults, order);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalByParam(LoanCanceledSearchParameter searchParameter) throws Exception {
+        return loanCanceledDao.getTotalByParam(searchParameter);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public LoanCanceled getEntityByPkWithDetail(Long id) throws Exception {
+        return loanCanceledDao.getEntityByPkWithDetail(id);
     }
     
 }
