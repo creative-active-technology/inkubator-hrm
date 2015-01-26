@@ -2,17 +2,21 @@ package com.inkubator.hrm.web.workingtime;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
 import org.primefaces.model.LazyDataModel;
 
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.service.TempProcessReadFingerService;
 import com.inkubator.hrm.web.lazymodel.DataFingerRealizationLazyDataModel;
 import com.inkubator.hrm.web.model.DataFingerRealizationModel;
 import com.inkubator.hrm.web.search.DataFingerRealizationSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
+import com.inkubator.webcore.util.FacesUtil;
+import com.inkubator.webcore.util.MessagesResourceUtil;
 
 /**
  *
@@ -91,7 +95,10 @@ public class DataFingerRealizationViewController extends BaseController {
 	public void doSync(){
 		try {
 			tempProcessReadFingerService.synchDataFingerRealization();
+			MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "dataFinger.sync_data_finger_succesfully",
+                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 		} catch (Exception e) {
+			MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "dataFinger.sync_data_finger_failed", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 			LOGGER.error("Error ", e);
 		}
 	}

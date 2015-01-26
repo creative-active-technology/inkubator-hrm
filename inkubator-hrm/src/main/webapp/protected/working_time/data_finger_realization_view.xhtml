@@ -49,7 +49,8 @@
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3" >
-                                	<p:commandButton value="#{appmsg['global.synchronization']}" title="#{appmsg['global.synchronization']}" action="#{dataFingerRealizationViewController.doSync()}" label="#{appmsg['global.synchronization']}" styleClass="label_button" icon="ui-icon-refresh" ajax="true"/>
+                                	<p:commandButton value="#{appmsg['global.synchronization']}" title="#{appmsg['global.synchronization']}" action="#{dataFingerRealizationViewController.doSync()}" label="#{appmsg['global.synchronization']}" 
+                                					 onclick="statusDialog.show()" oncomplete="statusDialog.hide()" styleClass="label_button" icon="ui-icon-refresh" ajax="true" update="tableId,:growlId"/>
                                     <p:commandButton value="Export to XLS" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
                                         <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Data_Finger_Realization"/>
                                     </p:commandButton>                                    
