@@ -108,7 +108,7 @@ public class TempJadwalKaryawan  implements java.io.Serializable {
         this.wtWorkingHour = wtWorkingHour;
     }
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     @Column(name="tanggal_waktu_kerja", length=19)
     public Date getTanggalWaktuKerja() {
         return this.tanggalWaktuKerja;

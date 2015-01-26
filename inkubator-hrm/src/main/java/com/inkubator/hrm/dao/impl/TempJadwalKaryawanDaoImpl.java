@@ -93,7 +93,7 @@ public class TempJadwalKaryawanDaoImpl extends IDAOImpl<TempJadwalKaryawan> impl
 
         int counter = 0;
         for (TempJadwalKaryawan jadwalKaryawan : jadwalKaryawans) {
-            getCurrentSession().save(jadwalKaryawan);
+            getCurrentSession().saveOrUpdate(jadwalKaryawan);
             counter++;
             if (counter % 20 == 0) {
                 getCurrentSession().flush();
@@ -125,6 +125,12 @@ public class TempJadwalKaryawanDaoImpl extends IDAOImpl<TempJadwalKaryawan> impl
         criteria.add(Restrictions.eq("tanggalWaktuKerja", implementationDate));
         criteria.setFetchMode("wtWorkingHour", FetchMode.JOIN);
         return (TempJadwalKaryawan) criteria.uniqueResult();
+    }
+
+    @Override
+    public void saveOrUpdateAndMerge(TempJadwalKaryawan jadwalKaryawan) {
+        getCurrentSession().saveOrUpdate(jadwalKaryawan);
+        getCurrentSession().flush();
     }
 
 }

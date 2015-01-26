@@ -134,7 +134,7 @@ public class SpecificationAbility implements Serializable {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "specificationAbility")
     public Set<BioSpesifikasiAbility> getBioSpesifikasiAbilitys() {
-        return bioSpesifikasiAbilitys;
+        return this.bioSpesifikasiAbilitys;
     }
 
     public void setBioSpesifikasiAbilitys(Set<BioSpesifikasiAbility> bioSpesifikasiAbilitys) {

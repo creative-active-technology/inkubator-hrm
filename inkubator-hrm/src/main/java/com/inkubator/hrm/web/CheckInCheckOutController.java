@@ -69,7 +69,8 @@ public class CheckInCheckOutController extends BaseController {
                 TempJadwalKaryawan jadwalKaryawan = tempJadwalKaryawanService.getByEmpId(hrmUser.getEmpData().getId(), date);
 
                 if (isValid) {
-                    CheckInAttendance attendance = checkInAttendanceService.getByEmpIdAndCheckIn(hrmUser.getEmpData().getId(), date);
+//                    CheckInAttendance attendance = checkInAttendanceService.getByEmpIdAndCheckIn(hrmUser.getEmpData().getId(), date);
+                    CheckInAttendance attendance = checkInAttendanceService.getAttendancWithMaxCreatedDate(hrmUser.getEmpData().getId());
                     if (attendance == null) {
                         checkInOutModel.setEmpId(hrmUser.getEmpData().getId());
                         checkInOutModel.setUserName(hrmUser.getRealName());

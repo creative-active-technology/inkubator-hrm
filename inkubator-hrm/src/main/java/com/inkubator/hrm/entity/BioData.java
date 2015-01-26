@@ -499,7 +499,7 @@ public class BioData implements java.io.Serializable {
         this.bioKeahlians = bioKeahlians;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "biodata")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "bioData")
     public Set<BioSpesifikasiAbility> getBioSpesifikasiAbilitys() {
         return bioSpesifikasiAbilitys;
     }

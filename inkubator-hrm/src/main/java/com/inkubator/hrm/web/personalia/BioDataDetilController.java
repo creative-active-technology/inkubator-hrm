@@ -20,6 +20,7 @@ import com.inkubator.hrm.entity.BioMedicalHistory;
 import com.inkubator.hrm.entity.BioPeopleInterest;
 import com.inkubator.hrm.entity.BioProject;
 import com.inkubator.hrm.entity.BioSpesifikasiAbility;
+import com.inkubator.hrm.entity.BioSpesifikasiAbilityId;
 import com.inkubator.hrm.service.BioAddressService;
 import com.inkubator.hrm.service.BioBankAccountService;
 import com.inkubator.hrm.service.BioDataService;
@@ -1503,7 +1504,7 @@ public class BioDataDetilController extends BaseController {
      */
     public void doSelectBioSpesifikasiAbility() {
         try {
-            selectedBioKeahlian = bioKeahlianService.getAllDataByPK(selectedBioKeahlian.getId());
+            selectedDioSpesifikasiAbility = bioSpesifikasiAbilityService.getEntityByBioSpesifikasiAbilityId(new BioSpesifikasiAbilityId(selectedDioSpesifikasiAbility.getBioData().getId(), selectedDioSpesifikasiAbility.getSpecificationAbility().getId()));
         } catch (Exception e) {
             LOGGER.error("Error", e);
         }
@@ -1512,7 +1513,7 @@ public class BioDataDetilController extends BaseController {
     public void doUpdateBioSpesifikasiAbility() {
 
         List<String> bioSpecAbi = new ArrayList<>();
-        bioSpecAbi.add(String.valueOf(selectedDioSpesifikasiAbility.getId()));
+        bioSpecAbi.add(String.valueOf(selectedDioSpesifikasiAbility.getSpecificationAbility().getId()));
 
         List<String> bioDataId = new ArrayList<>();
         bioDataId.add(String.valueOf(selectedBioData.getId()));
@@ -1536,7 +1537,7 @@ public class BioDataDetilController extends BaseController {
     public void doDeleteBioSpesifikasiAbility() {
         try {
             bioSpesifikasiAbilityService.delete(selectedDioSpesifikasiAbility);
-            spesifikasiAbilitys = bioSpesifikasiAbilityService.getAllDataByBiodataId(selectedDioSpesifikasiAbility.getBiodata().getId());
+            spesifikasiAbilitys = bioSpesifikasiAbilityService.getAllDataByBiodataId(selectedDioSpesifikasiAbility.getBioData().getId());
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 
         } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
