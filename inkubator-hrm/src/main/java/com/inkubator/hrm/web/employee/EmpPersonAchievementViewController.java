@@ -119,7 +119,7 @@ public class EmpPersonAchievementViewController extends BaseController{
         options.put("resizable", false);
         options.put("contentWidth", 500);
         options.put("contentHeight", 430);
-        RequestContext.getCurrentInstance().openDialog("emp_person_achievement_form", options, params);
+        RequestContext.getCurrentInstance().openDialog("emp_achievement_form", options, params);
     }
 
     public EmpPersonAchievementService getService() {

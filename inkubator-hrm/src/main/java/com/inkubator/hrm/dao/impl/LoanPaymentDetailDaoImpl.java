@@ -23,6 +23,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projection;
 
 /**
  *
@@ -147,4 +148,18 @@ public class LoanPaymentDetailDaoImpl extends IDAOImpl<LoanPaymentDetail> implem
         criteria.add(Restrictions.eq("loan.statusPencairan", HRMConstant.LOAN_PAID));
         return criteria.list();
 	}
+        
+        @Override
+        public Double getInstallmentByLoanId(Long loanId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("loan", "loan", JoinType.INNER_JOIN);        
+        criteria.add(Restrictions.eq("loan.id", loanId)); 
+        if(criteria.list().isEmpty()){
+            return null;
+        }else{
+            LoanPaymentDetail lpd = (LoanPaymentDetail) criteria.list().get(0);
+            return lpd.getTotalPayment();
+        }
+       
+    }
 }

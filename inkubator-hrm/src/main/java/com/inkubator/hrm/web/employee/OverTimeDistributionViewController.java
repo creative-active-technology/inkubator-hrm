@@ -85,7 +85,7 @@ public class OverTimeDistributionViewController extends BaseController{
     }
     
     public String doAdd() {
-        return "/protected/employee/over_time_distribution_form.htm?faces-redirect=true";
+        return "/protected/employee/ot_distribution_form.htm?faces-redirect=true";
     }
     
     public void doUpdate() {
@@ -106,7 +106,7 @@ public class OverTimeDistributionViewController extends BaseController{
         options.put("resizable", false);
         options.put("contentWidth", 400);
         options.put("contentHeight", 300);
-        RequestContext.getCurrentInstance().openDialog("over_time_distribution_edit_form", options, params);
+        RequestContext.getCurrentInstance().openDialog("ot_distribution_edit_form", options, params);
     }
     
     @Override

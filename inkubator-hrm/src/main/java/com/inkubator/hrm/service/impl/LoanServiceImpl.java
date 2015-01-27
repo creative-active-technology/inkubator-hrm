@@ -660,5 +660,28 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
         String uploadPath = facesIO.getPathUpload() + "loanupload." + extension;
         return uploadPath;
     }
+    
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<Loan> getByParamByStatusUnpaid(LoanSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception {
+        List<Loan> listLoan = loanDao.getByParamByStatusUnpaid(parameter, firstResult, maxResults, orderable);       
+        return listLoan;
+    }
+    
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalByParamByStatusUnpaid(LoanSearchParameter parameter) throws Exception {
+        return loanDao.getTotalByParamByStatusUnpaid(parameter);
 
+    }
+
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void updateStatusAndDateDisbursementPaid(Long loanId,  Date dateDisbursement) throws Exception {
+        Loan loan = loanDao.getEntiyByPK(loanId);               
+        loan.setStatusPencairan(HRMConstant.LOAN_PAID);       
+        loan.setUpdatedBy(UserInfoUtil.getUserName());
+        loan.setUpdatedOn(new Date());       
+        loanDao.update(loan);
+    }
 }

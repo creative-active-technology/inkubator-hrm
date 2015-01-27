@@ -281,4 +281,10 @@ public class LoanPaymentDetailServiceImpl extends IServiceImpl implements
         return loanPaymentDetailDao.getTotalByParam(parameter, loanPaymentDetailModel);
     }
 
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Double getInstallmentByLoanId(Long loanId) throws Exception {
+        return loanPaymentDetailDao.getInstallmentByLoanId(loanId);
+    }
+
 }

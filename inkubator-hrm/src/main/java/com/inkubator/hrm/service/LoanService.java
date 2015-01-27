@@ -43,5 +43,10 @@ public interface LoanService extends IService<Loan>, BaseApprovalService {
     public void executeBatchFileUpload(LoanModel report) throws Exception;
 
     public String updateFileAndDeleteData(UploadedFile file) throws Exception;
-
+    
+    public List<Loan> getByParamByStatusUnpaid(LoanSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception;
+    
+    public Long getTotalByParamByStatusUnpaid(LoanSearchParameter parameter) throws Exception;
+    
+    public void updateStatusAndDateDisbursementPaid(Long loanId, Date dateDisbursement) throws Exception;
 }

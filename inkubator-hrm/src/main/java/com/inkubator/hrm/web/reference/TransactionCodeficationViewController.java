@@ -130,7 +130,7 @@ public class TransactionCodeficationViewController extends BaseController {
         options.put("resizable", false);
         options.put("contentWidth", 450);
         options.put("contentHeight", 390);
-        RequestContext.getCurrentInstance().openDialog("transaction_codefication_form", options, params);
+        RequestContext.getCurrentInstance().openDialog("codefication_form", options, params);
     }
 
     @Override

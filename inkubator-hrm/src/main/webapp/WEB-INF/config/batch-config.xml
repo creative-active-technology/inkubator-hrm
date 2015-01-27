@@ -172,7 +172,7 @@
         <property name="targetMethod" value="executeBatchFileUpload" />
     </bean>
     
-        <!-- reader and writer for pay_temp_upload-->	
+        <!-- reader and writer for pay_temp_overtime_upload-->	
     <bean id="customPayTempOvertimeUploadItemReader" class="com.inkubator.hrm.batch.PayTempOvertimeUploadReader" scope="step" destroy-method="destroy" lazy-init="true">
         <constructor-arg name="filePath"  value="#{jobParameters['input.file.path']}"></constructor-arg>
         <property name="createdBy" value="#{jobParameters['createdBy']}"/>

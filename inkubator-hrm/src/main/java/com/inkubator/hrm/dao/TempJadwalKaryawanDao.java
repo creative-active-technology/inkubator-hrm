@@ -7,6 +7,7 @@ package com.inkubator.hrm.dao;
 
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.TempJadwalKaryawan;
+
 import java.util.Date;
 import java.util.List;
 
@@ -27,8 +28,11 @@ public interface TempJadwalKaryawanDao extends IDAO<TempJadwalKaryawan> {
     public void saveBatch(List<TempJadwalKaryawan> jadwalKaryawans);
     
     public List<TempJadwalKaryawan>getAllByMaxEndDate(Date date);
-    
-    public TempJadwalKaryawan getByEmpId(Long id, Date implementationDate);
-    
+        
     public void saveOrUpdateAndMerge(TempJadwalKaryawan jadwalKaryawan);
+
+    public TempJadwalKaryawan getEntityByEmpDataIdAndTanggalWaktuKerja(Long id, Date implementationDate);
+
+	public List<TempJadwalKaryawan> getAllDataByEmpIdAndPeriodDate(Long empDataId, Date startDate, Date endDate);
+	
 }

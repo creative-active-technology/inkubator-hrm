@@ -21,7 +21,7 @@ import com.inkubator.hrm.web.search.LoanSearchParameter;
 */
 public class LoanLazyDataModel extends LazyDataModel<Loan> implements Serializable {
 
-	private static final Logger LOGGER = Logger.getLogger(LoanLazyDataModel.class);
+    private static final Logger LOGGER = Logger.getLogger(LoanLazyDataModel.class);
     private final LoanSearchParameter parameter;
     private final LoanService loanService;
     private List<Loan> loans = new ArrayList<>();

@@ -285,7 +285,7 @@ public class TempJadwalKaryawanServiceImpl extends BaseApprovalServiceImpl imple
         for (WtScheduleShift list1 : list) {
             String onlyDate = new SimpleDateFormat("yyyy-MM-dd").format(DateTimeUtil.getDateFrom(beginScheduleDate, i, CommonUtilConstant.DATE_FORMAT_DAY));
             Date olnyDate = new SimpleDateFormat("yyyy-MM-dd").parse(onlyDate);
-            jadwalKaryawan = tempJadwalKaryawanDao.getByEmpId(empData.getId(), olnyDate);
+            jadwalKaryawan = tempJadwalKaryawanDao.getEntityByEmpDataIdAndTanggalWaktuKerja(empData.getId(), olnyDate);
             if (jadwalKaryawan != null) {
                 jadwalKaryawan.setUpdatedBy(UserInfoUtil.getUserName());
                 jadwalKaryawan.setUpdatedOn(new Date());
@@ -470,11 +470,10 @@ public class TempJadwalKaryawanServiceImpl extends BaseApprovalServiceImpl imple
             }
         });
     }
-
-    @Override
-    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public TempJadwalKaryawan getByEmpId(Long id, Date implementationDate) throws Exception {
-        return tempJadwalKaryawanDao.getByEmpId(id, implementationDate);
+        
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED,propagation = Propagation.SUPPORTS, timeout = 30)
+    public TempJadwalKaryawan getEntityByEmpDataIdAndTanggalWaktuKerja(Long id, Date implementationDate) throws Exception {
+        return tempJadwalKaryawanDao.getEntityByEmpDataIdAndTanggalWaktuKerja(id, implementationDate);
     }
 
 }
