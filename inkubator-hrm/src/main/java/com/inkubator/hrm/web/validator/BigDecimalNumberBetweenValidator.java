@@ -22,8 +22,8 @@ public class BigDecimalNumberBetweenValidator implements Validator{
 
     @Override
     public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
-        BigDecimal beginNumber = new BigDecimal((double) value);
-
+        BigDecimal beginNumber = null;
+        beginNumber = beginNumber.valueOf(Double.valueOf(String.valueOf(value)));
         // Obtain the component and submitted value of the end number component.
         UIInput endTimeComponent = (UIInput) component.getAttributes().get("endNumberInteger");
         String data = (String) endTimeComponent.getSubmittedValue();
