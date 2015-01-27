@@ -76,11 +76,11 @@ public class EmpRotasiViewController extends BaseController {
     }
 
     public String doDetail() {
-        return "/protected/employee/employee_placement_detail.htm?faces-redirect=true&execution=e" + selectedEmpRotasi.getId();
+        return "/protected/employee/emp_placement_detail.htm?faces-redirect=true&execution=e" + selectedEmpRotasi.getId();
     }
 
     public String doEdit() {
-        return "/protected/employee/employee_palcement_form.htm?faces-redirect=true&execution=e" + selectedEmpRotasi.getId();
+        return "/protected/employee/emp_placement_form.htm?faces-redirect=true&execution=e" + selectedEmpRotasi.getId();
     }
 
     public LazyDataModel<EmpRotasi> getEmpRotasiLazyDataModel() {

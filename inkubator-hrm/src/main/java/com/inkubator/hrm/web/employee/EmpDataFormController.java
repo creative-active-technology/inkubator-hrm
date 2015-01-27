@@ -68,6 +68,7 @@ public class EmpDataFormController extends BaseController {
     private EmpDataService empDataService;
     @ManagedProperty(value = "#{golonganJabatanService}")
     private GolonganJabatanService golonganJabatanService;
+    private String formData;
 //
 //    public void setHrmUserService(HrmUserService hrmUserService) {
 //        this.hrmUserService = hrmUserService;
@@ -83,6 +84,7 @@ public class EmpDataFormController extends BaseController {
             empDataModel = new EmpDataModel();
             String empId = FacesUtil.getRequestParameter("execution");
             List<GolonganJabatan> golJabatans = golonganJabatanService.getAllWithDetail();
+            formData = FacesUtil.getRequestParameter("from");
             for (GolonganJabatan golonganJabatan : golJabatans) {
                 mapGolonganJabatan.put(golonganJabatan.getCode() + "-" + golonganJabatan.getPangkat().getPangkatName(), golonganJabatan.getId());
             }
@@ -147,7 +149,7 @@ public class EmpDataFormController extends BaseController {
     }
 
     public String doAdd() {
-        return "/protected/employee/employee_palcement_form.htm?faces-redirect=true";
+        return "/protected/employee/emp_placement_form.htm?faces-redirect=true";
     }
 
     public EmpDataModel getEmpDataModel() {
@@ -221,11 +223,11 @@ public class EmpDataFormController extends BaseController {
 
     public String doSave() {
         EmpData empData = getEntityFromViewModel(empDataModel);
-       
+
         if (isEdit) {
             try {
                 empDataService.update(empData);
-                return "/protected/employee/employee_placement_detail.htm?faces-redirect=true&execution=e" + empData.getId();
+                return "/protected/employee/emp_placement_detail.htm?faces-redirect=true&execution=e" + empData.getId();
             } catch (BussinessException ex) {
                 MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 
@@ -236,7 +238,7 @@ public class EmpDataFormController extends BaseController {
         } else {
             try {
                 empDataService.save(empData);
-                return "/protected/employee/employee_placement_detail.htm?faces-redirect=true&execution=e" + empData.getId();
+                return "/protected/employee/emp_placement_detail.htm?faces-redirect=true&execution=e" + empData.getId();
             } catch (BussinessException ex) {
                 MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 
@@ -249,11 +251,14 @@ public class EmpDataFormController extends BaseController {
     }
 
     public String doBack() {
+        if (formData != null) {
+            return "/protected/employee/emp_rotasi_view.htm?faces-redirect=true";
+        }
         return "/protected/employee/employee_palcement_view.htm?faces-redirect=true";
     }
 
     public void doSearch() {
-      
+
         Map<String, Object> options = new HashMap<>();
         options.put("modal", false);
         options.put("draggable", true);
@@ -309,7 +314,6 @@ public class EmpDataFormController extends BaseController {
             empData.setNoSk(empDataModel.getNoSk());
         }
 
-      
 //        empData.setWtGroupWorking(new WtGroupWorking());
         return empData;
     }
@@ -344,7 +348,7 @@ public class EmpDataFormController extends BaseController {
         EmpData empData = getEntityFromViewModel(empDataModel);
         try {
             this.empDataService.doSaveRotasi(empData);
-            return "/protected/employee/employee_placement_detail.htm?faces-redirect=true&execution=e" + empData.getId();
+            return "/protected/employee/emp_placement_detail.htm?faces-redirect=true&execution=e" + empData.getId() + "&from=rotasi";
         } catch (BussinessException ex) {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 
@@ -362,13 +366,13 @@ public class EmpDataFormController extends BaseController {
         mapJabatans = null;
         mapStatusKaryawan = null;
         mapPaySalary = null;
-        mapGolonganJabatan=null;
-        departmentService=null;
-        jabatanService=null;
-        employeeTypeService=null;
-        paySalaryGradeService=null;
-        empDataService=null;
-        golonganJabatanService=null;
+        mapGolonganJabatan = null;
+        departmentService = null;
+        jabatanService = null;
+        employeeTypeService = null;
+        paySalaryGradeService = null;
+        empDataService = null;
+        golonganJabatanService = null;
 
     }
 }
