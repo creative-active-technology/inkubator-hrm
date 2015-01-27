@@ -71,7 +71,7 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="name" style="text-align: center;width: 40%">
+                            <p:column sortBy="name" style="width: 30%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['organization.organization_name']}"/>
                                 </f:facet>
@@ -81,9 +81,18 @@
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.level']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{organizationData.level}"/>
+                                <h:outputLabel value= "#{organizationData.level}">
+                                    <f:converter converterId="companyConverter"/>
+                                </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="country.name" style="text-align: center;width: 20%">
+                            <p:column sortBy="level" style="text-align: center;width: 15%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.location']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{organizationData.city.cityName}">
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column sortBy="country.name" style="text-align: center;width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['country.country']}"/>
                                 </f:facet>
