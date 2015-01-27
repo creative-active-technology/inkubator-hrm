@@ -68,6 +68,7 @@ public class EmpDataFormController extends BaseController {
     private EmpDataService empDataService;
     @ManagedProperty(value = "#{golonganJabatanService}")
     private GolonganJabatanService golonganJabatanService;
+    private String formData;
 //
 //    public void setHrmUserService(HrmUserService hrmUserService) {
 //        this.hrmUserService = hrmUserService;
@@ -83,6 +84,7 @@ public class EmpDataFormController extends BaseController {
             empDataModel = new EmpDataModel();
             String empId = FacesUtil.getRequestParameter("execution");
             List<GolonganJabatan> golJabatans = golonganJabatanService.getAllWithDetail();
+            formData = FacesUtil.getRequestParameter("from");
             for (GolonganJabatan golonganJabatan : golJabatans) {
                 mapGolonganJabatan.put(golonganJabatan.getCode() + "-" + golonganJabatan.getPangkat().getPangkatName(), golonganJabatan.getId());
             }
@@ -221,7 +223,7 @@ public class EmpDataFormController extends BaseController {
 
     public String doSave() {
         EmpData empData = getEntityFromViewModel(empDataModel);
-       
+
         if (isEdit) {
             try {
                 empDataService.update(empData);
@@ -253,7 +255,7 @@ public class EmpDataFormController extends BaseController {
     }
 
     public void doSearch() {
-      
+
         Map<String, Object> options = new HashMap<>();
         options.put("modal", false);
         options.put("draggable", true);
@@ -309,7 +311,6 @@ public class EmpDataFormController extends BaseController {
             empData.setNoSk(empDataModel.getNoSk());
         }
 
-      
 //        empData.setWtGroupWorking(new WtGroupWorking());
         return empData;
     }
@@ -362,13 +363,13 @@ public class EmpDataFormController extends BaseController {
         mapJabatans = null;
         mapStatusKaryawan = null;
         mapPaySalary = null;
-        mapGolonganJabatan=null;
-        departmentService=null;
-        jabatanService=null;
-        employeeTypeService=null;
-        paySalaryGradeService=null;
-        empDataService=null;
-        golonganJabatanService=null;
+        mapGolonganJabatan = null;
+        departmentService = null;
+        jabatanService = null;
+        employeeTypeService = null;
+        paySalaryGradeService = null;
+        empDataService = null;
+        golonganJabatanService = null;
 
     }
 }

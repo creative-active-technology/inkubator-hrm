@@ -79,7 +79,7 @@ public class EmpDataViewController extends BaseController {
     }
 
     public void doSearch() {
-        
+
     }
 
     public void onDelete() {
@@ -128,14 +128,14 @@ public class EmpDataViewController extends BaseController {
     }
 
     public String doRotasi() {
+        return "/protected/employee/emp_rotasi_form.htm?faces-redirect=true&execution=r" + selectedEmpData.getId() + "&from=rotasi";
 
-        return "/protected/employee/emp_rotasi_form.htm?faces-redirect=true&execution=r" + selectedEmpData.getId();
     }
 
     public String doPlacementOfEmployee() {
-         return "/protected/employee/work_schedule_form.htm?faces-redirect=true";
+        return "/protected/employee/work_schedule_form.htm?faces-redirect=true";
     }
-    
+
     public void doEmployeeTimeSchedule() {
         List<String> values = new ArrayList<>();
         values.add(String.valueOf(selectedEmpData.getId()));
