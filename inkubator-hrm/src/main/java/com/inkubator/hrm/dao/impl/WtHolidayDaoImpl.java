@@ -5,6 +5,8 @@
  */
 package com.inkubator.hrm.dao.impl;
 
+import com.inkubator.common.CommonUtilConstant;
+import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.WtHolidayDao;
 import com.inkubator.hrm.entity.WtHoliday;
@@ -91,6 +93,24 @@ public class WtHolidayDaoImpl extends IDAOImpl<WtHoliday> implements WtHolidayDa
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("holidayDate", date));
         return (WtHoliday) criteria.uniqueResult();
+    }
+
+    @Override
+    public List<WtHoliday> getByYearDif(int value) {
+        Date now = new Date();
+        Date parameter = DateTimeUtil.getDateFrom(now, -value, CommonUtilConstant.DATE_FORMAT_YEAR);
+        System.out.println(" Tahun param " + parameter);
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.lt("holidayDate", parameter));
+        criteria.add(Restrictions.eq("isEveryYear", 1));
+        return criteria.list();
+    }
+
+    @Override
+    public String getWtHolidayNameByName(String name) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("holidayName", name));
+        return (String) criteria.setProjection(Projections.property("holidayName")).uniqueResult();
     }
 
 }
