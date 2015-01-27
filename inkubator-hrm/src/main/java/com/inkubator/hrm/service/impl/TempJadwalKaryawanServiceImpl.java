@@ -38,6 +38,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
@@ -319,28 +320,28 @@ public class TempJadwalKaryawanServiceImpl extends BaseApprovalServiceImpl imple
         List<Long> listIdEmp = Lambda.extract(data, Lambda.on(EmpData.class).getId());
         HrmUser requestUser = hrmUserDao.getByUserId(UserInfoUtil.getUserName());
         ApprovalActivity approvalActivity = super.checkApprovalProcess(HRMConstant.SHIFT_SCHEDULE, requestUser.getUserId());
-//        if (approvalActivity == null) {
-        System.out.println(" hehhehererhehr");
-        this.saveMassPenempatanJadwal(listIdEmp, groupWorkingId, new Date(), UserInfoUtil.getUserName());
-        message = "success_without_approval";
+        if (approvalActivity == null) {
+            System.out.println(" hehhehererhehr");
+            this.saveMassPenempatanJadwal(listIdEmp, groupWorkingId, new Date(), UserInfoUtil.getUserName());
+            message = "success_without_approval";
 
-//        } else {
-//            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm");
-//            String dataToJson = jsonConverter.getJson(listIdEmp.toArray(new Long[listIdEmp.size()]));
-//            JsonObject jsonObject = new JsonObject();
-//            jsonObject.addProperty("listEmpId", dataToJson);
-//            jsonObject.addProperty("groupWorkingId", groupWorkingId);
-//            jsonObject.addProperty("createDate", dateFormat.format(new Date()));
-//            jsonObject.addProperty("createBy", UserInfoUtil.getUserName());
-//
-//            approvalActivity.setPendingData(jsonObject.toString());
-//            approvalActivityDao.save(approvalActivity);
-//
-//            message = "success_need_approval";
-//
-//            //sending email notification
-//            this.sendingEmailApprovalNotif(approvalActivity);
-//        }
+        } else {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm");
+            String dataToJson = jsonConverter.getJson(listIdEmp.toArray(new Long[listIdEmp.size()]));
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("listEmpId", dataToJson);
+            jsonObject.addProperty("groupWorkingId", groupWorkingId);
+            jsonObject.addProperty("createDate", dateFormat.format(new Date()));
+            jsonObject.addProperty("createBy", UserInfoUtil.getUserName());
+
+            approvalActivity.setPendingData(jsonObject.toString());
+            approvalActivityDao.save(approvalActivity);
+
+            message = "success_need_approval";
+
+            //sending email notification
+            this.sendingEmailApprovalNotif(approvalActivity);
+        }
         return message;
     }
 
@@ -446,8 +447,8 @@ public class TempJadwalKaryawanServiceImpl extends BaseApprovalServiceImpl imple
         Date createdOn = jsonDateFormat.parse(jsonObject.get("createDate").getAsString());
 
         //get all sendCC email address on status approve OR reject
-        List<String> ccEmailAddresses = new ArrayList<String>();
-        if ((appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_APPROVED) || (appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_REJECTED)) {
+        List<String> ccEmailAddresses = new ArrayList<>();
+        if ((Objects.equals(appActivity.getApprovalStatus(), HRMConstant.APPROVAL_STATUS_APPROVED)) || (appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_REJECTED)) {
             ccEmailAddresses = super.getCcEmailAddressesOnApproveOrReject(appActivity);
         }
 
@@ -470,10 +471,16 @@ public class TempJadwalKaryawanServiceImpl extends BaseApprovalServiceImpl imple
             }
         });
     }
-        
-    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED,propagation = Propagation.SUPPORTS, timeout = 30)
+
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    @Override
     public TempJadwalKaryawan getEntityByEmpDataIdAndTanggalWaktuKerja(Long id, Date implementationDate) throws Exception {
         return tempJadwalKaryawanDao.getEntityByEmpDataIdAndTanggalWaktuKerja(id, implementationDate);
     }
 
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public TempJadwalKaryawan getByEmpId(Long id, Date implementationDate) throws Exception {
+        return tempJadwalKaryawanDao.getByEmpId(id, implementationDate);
+    }
 }

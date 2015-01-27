@@ -799,4 +799,13 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         return (EmpData) criteria.uniqueResult();
     }
 
+    @Override
+    public EmpData getByEmpDataByBioDataId(long bioDataid) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());       
+        criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);        
+        criteria.setFetchMode("bioData", FetchMode.JOIN);
+        criteria.add(Restrictions.eq("bioData.id", bioDataid));
+        return (EmpData) criteria.uniqueResult();
+    }
+
 }

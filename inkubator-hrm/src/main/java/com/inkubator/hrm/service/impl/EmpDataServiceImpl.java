@@ -725,4 +725,10 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         EmpData data = this.empDataDao.getByPKBankTransfer(id);
         return data;
     }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public EmpData getByEmpDataByBioDataId(long bioDataid) {
+        return this.empDataDao.getByEmpDataByBioDataId(bioDataid);
+    }
 }
