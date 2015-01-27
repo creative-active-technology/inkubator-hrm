@@ -19,6 +19,7 @@ import com.inkubator.hrm.dao.EducationNonFormalDao;
 import com.inkubator.hrm.entity.City;
 import com.inkubator.hrm.entity.EducationNonFormal;
 import com.inkubator.hrm.service.EducationNonFormalService;
+import com.inkubator.hrm.web.search.EducationNonFormalSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 
 /**
@@ -290,7 +291,7 @@ public class EducationNonFormalServiceImpl extends IServiceImpl implements
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<EducationNonFormal> getByParam(String parameter,
+	public List<EducationNonFormal> getByParam(EducationNonFormalSearchParameter parameter,
 			int firstResult, int maxResults, Order orderable) throws Exception {
 		return educationNonFormalDao.getByParam(parameter, firstResult, maxResults, orderable);
 
@@ -298,7 +299,7 @@ public class EducationNonFormalServiceImpl extends IServiceImpl implements
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-	public Long getTotalByParam(String parameter) throws Exception {
+	public Long getTotalByParam(EducationNonFormalSearchParameter parameter) throws Exception {
 		return educationNonFormalDao.getTotalByParam(parameter);
 
 	}

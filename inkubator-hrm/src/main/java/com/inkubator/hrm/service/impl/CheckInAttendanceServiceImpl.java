@@ -257,7 +257,7 @@ public class CheckInAttendanceServiceImpl extends IServiceImpl implements CheckI
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public CheckInAttendance getAttendancWithMaxCreatedDate(long id) throws Exception {
         CheckInAttendance attendance = this.checkInAttendanceDao.getAttendancWithMaxCreatedDate(id);
-        TempJadwalKaryawan tempJadwalKaryawan = this.tempJadwalKaryawanDao.getByEmpId(id, attendance.getCheckDate());
+        TempJadwalKaryawan tempJadwalKaryawan = this.tempJadwalKaryawanDao.getEntityByEmpDataIdAndTanggalWaktuKerja(id, attendance.getCheckDate());
         System.out.println(" hahahah");
         Date jamPulang = tempJadwalKaryawan.getWtWorkingHour().getWorkingHourEnd();
         Date jamMasuk = tempJadwalKaryawan.getWtWorkingHour().getWorkingHourBegin();
