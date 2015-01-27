@@ -28,8 +28,10 @@ import com.inkubator.hrm.entity.WtScheduleShift;
 import com.inkubator.hrm.service.ScheduleService;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Isolation;
@@ -69,6 +71,46 @@ public class ScheduleServiceImpl extends IServiceImpl implements ScheduleService
         LOGGER.info("Finish Running Dellete Riwayar Akses");
     }
 
+    @Scheduled(cron = "${cron.update.wt.holiday.date.where.is.every.year.equal.one}")
+    @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Override
+    public void updateWtHolidayDateWhereIsEveryYearIsOne() throws Exception {
+        LOGGER.info("Begin Running Update WtHoliday");
+        //ambil bulan dan taun januari sekarang
+        DateTime monthAndYearNow = new DateTime();
+        List<WtHoliday> dataToUpdate = wtHolidayDao.getByYearDif(difWeekToDelete);
+        LOGGER.info("Ukuran Data to Update " + dataToUpdate.size());
+        Date date = new Date();
+        WtHoliday newData;
+        Long totalDuplicat;
+        for (WtHoliday wtHoliday : dataToUpdate) {
+            //ambil bulan dan tahun yang akan di update
+            DateTime monthAndYearBefore = new DateTime(wtHoliday.getHolidayDate());
+            //jika tahun di database lebih kecil tahun sekarang
+            if(monthAndYearBefore.getYear() < monthAndYearNow.getYear() && monthAndYearBefore.getMonthOfYear() >= monthAndYearNow.getMonthOfYear()){
+//                System.out.println("asup");
+                //cari nama + tahun, jika sudah ada skip, karena unik
+                totalDuplicat = wtHolidayDao.getTotalWtHolidayByHolidayName(wtHoliday.getHolidayName() + " " + monthAndYearNow.getYear());
+                if(totalDuplicat == 0){
+                    Date updateHolidayDate = DateTimeUtil.getDateFrom(wtHoliday.getHolidayDate(), 1, CommonUtilConstant.DATE_FORMAT_YEAR);
+                    newData = new WtHoliday();
+                    newData.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+                    newData.setHolidayName(wtHoliday.getHolidayName() + " " + monthAndYearNow.getYear());
+                    newData.setIsColectiveLeave(wtHoliday.getIsColectiveLeave());
+                    newData.setIsEveryYear(wtHoliday.getIsEveryYear());
+                    if(wtHoliday.getReligion() != null){
+                        newData.setReligion(wtHoliday.getReligion());
+                    }
+                    newData.setCreatedBy(HRMConstant.INKUBA_SYSTEM);
+                    newData.setCreatedOn(new Date());
+                    newData.setHolidayDate(updateHolidayDate);
+                    wtHolidayDao.save(newData);
+                }
+            }
+        }
+        LOGGER.info("Finish Running Update Wt Holiday");
+    }
+
     @Scheduled(cron = "${cron.delete.login.history}")
     @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
@@ -79,7 +121,7 @@ public class ScheduleServiceImpl extends IServiceImpl implements ScheduleService
         loginHistoryDao.deleteBatch(dataToDelete);
         LOGGER.info("Finish Running Dellete Riwayar Akses");
     }
-    
+
     public void setDifWeekToDelete(int difWeekToDelete) {
         this.difWeekToDelete = difWeekToDelete;
     }
@@ -159,5 +201,4 @@ public class ScheduleServiceImpl extends IServiceImpl implements ScheduleService
 //            return o1.getScheduleDate().compareTo(o2.getScheduleDate());
 //        }
 //    };
-
 }

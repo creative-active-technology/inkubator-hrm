@@ -191,7 +191,7 @@ public class ImplementationOfOverTimeFormController extends BaseController {
     }
     
     public void dateChange() throws Exception{
-        TempJadwalKaryawan jadwalKaryawan = tempJadwalKaryawanService.getByEmpId(empId, model.getImplementationDate());
+        TempJadwalKaryawan jadwalKaryawan = tempJadwalKaryawanService.getEntityByEmpDataIdAndTanggalWaktuKerja(empId, model.getImplementationDate());
             System.out.println(jadwalKaryawan);
             if(jadwalKaryawan != null){
                 if(jadwalKaryawan.getWtWorkingHour().getIsManageOvertime()){

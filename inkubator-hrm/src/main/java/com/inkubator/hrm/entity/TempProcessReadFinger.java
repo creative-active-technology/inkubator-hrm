@@ -21,18 +21,19 @@ public class TempProcessReadFinger implements Serializable {
     private Long id;
     private Integer version;
     
-    private MecineFinger mecineFinger;
     private EmpData empData;
+    private String workingHourName;
     private Date scheduleDate;
     private Date scheduleIn;
     private Date scheduleOut;
     private Date fingerIn;
     private Date fingerOut;
-    private Boolean correctionIn;
-    private Boolean correctionOut;
-    private Double marginIn;
-    private Double marginOut;
-    
+    private Date webCheckIn;
+    private Date webCheckOut;
+    private Boolean isCorrectionIn;
+    private Boolean isCorrectionOut;
+    private Integer marginIn;
+    private Integer marginOut;
     
     private String createdBy;
     private String updatedBy;
@@ -66,16 +67,6 @@ public class TempProcessReadFinger implements Serializable {
     public void setVersion(Integer version) {
         this.version = version;
     }
-
-	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "mecine_finger_id", nullable = false)
-	public MecineFinger getMecineFinger() {
-		return mecineFinger;
-	}
-
-	public void setMecineFinger(MecineFinger mecineFinger) {
-		this.mecineFinger = mecineFinger;
-	}
 	
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "emp_data_id", nullable = false)
@@ -85,6 +76,15 @@ public class TempProcessReadFinger implements Serializable {
 
 	public void setEmpData(EmpData empData) {
 		this.empData = empData;
+	}
+
+	@Column(name = "working_hour_name", nullable = false)
+	public String getWorkingHourName() {
+		return workingHourName;
+	}
+
+	public void setWorkingHourName(String workingHourName) {
+		this.workingHourName = workingHourName;
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)
@@ -118,7 +118,7 @@ public class TempProcessReadFinger implements Serializable {
 	}
 
 	@Temporal(TemporalType.TIME)
-    @Column(name = "finger_in", length = 8, nullable = false)
+    @Column(name = "finger_in", length = 8)
 	public Date getFingerIn() {
 		return fingerIn;
 	}
@@ -128,7 +128,7 @@ public class TempProcessReadFinger implements Serializable {
 	}
 
 	@Temporal(TemporalType.TIME)
-    @Column(name = "finger_out", length = 8, nullable = false)
+    @Column(name = "finger_out", length = 8)
 	public Date getFingerOut() {
 		return fingerOut;
 	}
@@ -136,40 +136,60 @@ public class TempProcessReadFinger implements Serializable {
 	public void setFingerOut(Date fingerOut) {
 		this.fingerOut = fingerOut;
 	}
-
-	@Column(name = "correction_in")
-	public Boolean getCorrectionIn() {
-		return correctionIn;
-	}
-	
-	public void setCorrectionIn(Boolean correctionIn) {
-		this.correctionIn = correctionIn;
+		
+	@Temporal(TemporalType.TIME)
+    @Column(name = "web_check_in", length = 8)
+	public Date getWebCheckIn() {
+		return webCheckIn;
 	}
 
-	@Column(name = "correction_out")
-	public Boolean getCorrectionOut() {
-		return correctionOut;
+	public void setWebCheckIn(Date webCheckIn) {
+		this.webCheckIn = webCheckIn;
 	}
 
-	public void setCorrectionOut(Boolean correctionOut) {
-		this.correctionOut = correctionOut;
+	@Temporal(TemporalType.TIME)
+    @Column(name = "web_check_out", length = 8)
+	public Date getWebCheckOut() {
+		return webCheckOut;
+	}
+
+	public void setWebCheckOut(Date webCheckOut) {
+		this.webCheckOut = webCheckOut;
+	}
+
+	@Column(name = "is_correction_in")
+	public Boolean getIsCorrectionIn() {
+		return isCorrectionIn;
+	}
+
+	public void setIsCorrectionIn(Boolean isCorrectionIn) {
+		this.isCorrectionIn = isCorrectionIn;
+	}
+
+	@Column(name = "is_correction_out")
+	public Boolean getIsCorrectionOut() {
+		return isCorrectionOut;
+	}
+
+	public void setIsCorrectionOut(Boolean isCorrectionOut) {
+		this.isCorrectionOut = isCorrectionOut;
 	}
 
 	@Column(name = "margin_in")
-	public Double getMarginIn() {
+	public Integer getMarginIn() {
 		return marginIn;
 	}
 	
-	public void setMarginIn(Double marginIn) {
+	public void setMarginIn(Integer marginIn) {
 		this.marginIn = marginIn;
 	}
 
 	@Column(name = "margin_out")
-	public Double getMarginOut() {
+	public Integer getMarginOut() {
 		return marginOut;
 	}
 
-	public void setMarginOut(Double marginOut) {
+	public void setMarginOut(Integer marginOut) {
 		this.marginOut = marginOut;
 	}
 
