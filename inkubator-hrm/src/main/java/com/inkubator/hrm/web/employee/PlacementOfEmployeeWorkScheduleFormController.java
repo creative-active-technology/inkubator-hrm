@@ -187,7 +187,7 @@ public class PlacementOfEmployeeWorkScheduleFormController extends BaseControlle
             tempJadwalKaryawanService.saveMassPenempatanJadwal(dataToSave, model.getWorkingGroupId());
             MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-            return "/protected/employee/employee_schedule_view.htm?faces-redirect=true";
+            return "/protected/employee/emp_schedule_view.htm?faces-redirect=true";
 
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
@@ -205,7 +205,7 @@ public class PlacementOfEmployeeWorkScheduleFormController extends BaseControlle
     }
 
     public String doBack() {
-        return "/protected/employee/employee_schedule_view.htm?faces-redirect=true";
+        return "/protected/employee/emp_schedule_view.htm?faces-redirect=true";
     }
 
 }

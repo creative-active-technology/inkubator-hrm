@@ -89,15 +89,15 @@ public class EmpDataDetilScheduleController extends BaseController {
     }
 
     public String doEdit() {
-        return "/protected/employee/employee_palcement_form.htm?faces-redirect=true&execution=e" + selectedEmpData.getId();
+        return "/protected/employee/emp_placement_form.htm?faces-redirect=true&execution=e" + selectedEmpData.getId();
     }
 
     public String doBack() {
-        return "/protected/employee/employee_palcement_view.htm?faces-redirect=true";
+        return "/protected/employee/emp_placement_view.htm?faces-redirect=true";
     }
 
      public String doBackSchedule() {
-        return "/protected/employee/employee_schedule_view.htm?faces-redirect=true";
+        return "/protected/employee/emp_schedule_view.htm?faces-redirect=true";
     }
 //    public List<JabatanSpesifikasi> getListJabatanSpesifikasi() {
 //        return listJabatanSpesifikasi;
