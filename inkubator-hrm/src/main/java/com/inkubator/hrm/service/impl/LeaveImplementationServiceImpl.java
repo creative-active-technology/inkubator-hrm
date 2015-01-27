@@ -818,4 +818,10 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
     public List<LeaveImplementation> getReportHistoryByParam(LeaveImplementationReportSearchParameter parameter, List<String> activityNumbers , Long empDataId) throws Exception {
         return leaveImplementationDao.getReportHistoryByParam(parameter, activityNumbers, empDataId);
     }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public List<LeaveImplementation> getAllDataByEmpDataId(Long empDataId) throws Exception {
+        return leaveImplementationDao.getAllDataByEmpDataId(empDataId);
+    }
 }
