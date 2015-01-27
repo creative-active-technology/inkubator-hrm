@@ -251,7 +251,10 @@ public class EmpDataFormController extends BaseController {
     }
 
     public String doBack() {
-        return "/protected/employee/emp_placement_view.htm?faces-redirect=true";
+        if (formData != null) {
+            return "/protected/employee/emp_rotasi_view.htm?faces-redirect=true";
+        }
+        return "/protected/employee/employee_palcement_view.htm?faces-redirect=true";
     }
 
     public void doSearch() {
@@ -345,7 +348,7 @@ public class EmpDataFormController extends BaseController {
         EmpData empData = getEntityFromViewModel(empDataModel);
         try {
             this.empDataService.doSaveRotasi(empData);
-            return "/protected/employee/emp_placement_detail.htm?faces-redirect=true&execution=e" + empData.getId();
+            return "/protected/employee/emp_placement_detail.htm?faces-redirect=true&execution=e" + empData.getId() + "&from=rotasi";
         } catch (BussinessException ex) {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 
