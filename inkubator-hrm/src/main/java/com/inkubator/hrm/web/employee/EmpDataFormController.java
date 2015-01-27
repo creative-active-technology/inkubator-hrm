@@ -147,7 +147,7 @@ public class EmpDataFormController extends BaseController {
     }
 
     public String doAdd() {
-        return "/protected/employee/employee_palcement_form.htm?faces-redirect=true";
+        return "/protected/employee/emp_placement_form.htm?faces-redirect=true";
     }
 
     public EmpDataModel getEmpDataModel() {
@@ -225,7 +225,7 @@ public class EmpDataFormController extends BaseController {
         if (isEdit) {
             try {
                 empDataService.update(empData);
-                return "/protected/employee/employee_placement_detail.htm?faces-redirect=true&execution=e" + empData.getId();
+                return "/protected/employee/emp_placement_detail.htm?faces-redirect=true&execution=e" + empData.getId();
             } catch (BussinessException ex) {
                 MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 
@@ -236,7 +236,7 @@ public class EmpDataFormController extends BaseController {
         } else {
             try {
                 empDataService.save(empData);
-                return "/protected/employee/employee_placement_detail.htm?faces-redirect=true&execution=e" + empData.getId();
+                return "/protected/employee/emp_placement_detail.htm?faces-redirect=true&execution=e" + empData.getId();
             } catch (BussinessException ex) {
                 MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 
@@ -249,7 +249,7 @@ public class EmpDataFormController extends BaseController {
     }
 
     public String doBack() {
-        return "/protected/employee/employee_palcement_view.htm?faces-redirect=true";
+        return "/protected/employee/emp_placement_view.htm?faces-redirect=true";
     }
 
     public void doSearch() {
@@ -344,7 +344,7 @@ public class EmpDataFormController extends BaseController {
         EmpData empData = getEntityFromViewModel(empDataModel);
         try {
             this.empDataService.doSaveRotasi(empData);
-            return "/protected/employee/employee_placement_detail.htm?faces-redirect=true&execution=e" + empData.getId();
+            return "/protected/employee/emp_placement_detail.htm?faces-redirect=true&execution=e" + empData.getId();
         } catch (BussinessException ex) {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 
