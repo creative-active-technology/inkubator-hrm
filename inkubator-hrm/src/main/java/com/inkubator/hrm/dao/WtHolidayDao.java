@@ -29,4 +29,8 @@ public interface WtHolidayDao extends IDAO<WtHoliday> {
     public List<WtHoliday> getBetweenDate(Date start, Date end);
     
     public WtHoliday getWtHolidayByDate(Date date);
+    
+    public List<WtHoliday> getByYearDif(int value);
+    
+    public String getWtHolidayNameByName(String name);
 }
