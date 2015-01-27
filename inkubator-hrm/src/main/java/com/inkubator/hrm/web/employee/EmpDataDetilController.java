@@ -29,8 +29,6 @@ import javax.faces.bean.ViewScoped;
  *
  * @author Deni Husni FR
  */
-
-
 @ManagedBean(name = "empDataDetilController")
 @ViewScoped
 public class EmpDataDetilController extends BaseController {
@@ -54,6 +52,7 @@ public class EmpDataDetilController extends BaseController {
     @ManagedProperty(value = "#{empPersonAchievementService}")
     private EmpPersonAchievementService empPersonAchievementService;
     private List<EmpPersonAchievement> listPersonAchievement;
+    private String formData;
 
     @PostConstruct
     @Override
@@ -61,6 +60,7 @@ public class EmpDataDetilController extends BaseController {
         try {
             super.initialization();
             String empId = FacesUtil.getRequestParameter("execution");
+            formData = FacesUtil.getRequestParameter("from");
             selectedEmpData = empDataService.getByEmpIdWithDetail(Long.parseLong(empId.substring(1)));
             jabatanDeskripsis = new ArrayList<>(selectedEmpData.getJabatanByJabatanId().getJabatanDeskripsis());
             listJabatanSpesifikasi = new ArrayList<>(selectedEmpData.getJabatanByJabatanId().getJabatanSpesifikasis());
@@ -95,10 +95,16 @@ public class EmpDataDetilController extends BaseController {
     }
 
     public String doEdit() {
+        if (formData != null) {
+            return "/protected/employee/emp_rotasi_form.htm?faces-redirect=true&execution=r" + selectedEmpData.getId() + "&from=rotasi";
+        }
         return "/protected/employee/emp_placement_form.htm?faces-redirect=true&execution=e" + selectedEmpData.getId();
     }
 
     public String doBack() {
+        if (formData != null) {
+            return "/protected/employee/emp_rotasi_view.htm?faces-redirect=true";
+        }
         return "/protected/employee/emp_placement_view.htm?faces-redirect=true";
     }
 
@@ -126,8 +132,6 @@ public class EmpDataDetilController extends BaseController {
         }
     }
 
-    
-
     public void setEmpCareerHistoryService(EmpCareerHistoryService empCareerHistoryService) {
         this.empCareerHistoryService = empCareerHistoryService;
     }
@@ -140,7 +144,6 @@ public class EmpDataDetilController extends BaseController {
         this.listCareerHistory = listCareerHistory;
     }
 
-    
     public PersonalDisciplineService getPersonalDisciplineService() {
         return personalDisciplineService;
     }
@@ -173,21 +176,20 @@ public class EmpDataDetilController extends BaseController {
         this.listPersonAchievement = listPersonAchievement;
     }
 
-     @PreDestroy
+    @PreDestroy
     public void cleanAndExit() {
-        empDataService=null;
-        selectedEmpData=null;
-        listJabatanSpesifikasi=null;
-        jabatanDeskripsis=null;
-        listCareerHistory=null;
-        id=null;
-        empCareerHistoryService=null;
-        personalDisciplineService=null;
-        listPersonalDiscipline=null;
-        empPersonAchievementService=null;
-        listPersonAchievement=null;
-        
+        empDataService = null;
+        selectedEmpData = null;
+        listJabatanSpesifikasi = null;
+        jabatanDeskripsis = null;
+        listCareerHistory = null;
+        id = null;
+        empCareerHistoryService = null;
+        personalDisciplineService = null;
+        listPersonalDiscipline = null;
+        empPersonAchievementService = null;
+        listPersonAchievement = null;
+
     }
-    
 
 }
