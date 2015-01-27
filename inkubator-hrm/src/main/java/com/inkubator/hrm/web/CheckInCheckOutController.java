@@ -182,7 +182,8 @@ public class CheckInCheckOutController extends BaseController {
                 return "/protected/home.htm?faces-redirect=true";
             } else {
                 Date date1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(stringDate + " " + checkInOutModel.getEndHour());
-                Date canGoHome = DateTimeUtil.getDateFrom(date1, bufferCheckOut, CommonUtilConstant.DATE_FORMAT_MINUTES);
+                Date canGoHome = DateTimeUtil.getDateFrom(checkInOutModel.getJadwalKerja(), bufferCheckOut, CommonUtilConstant.DATE_FORMAT_MINUTES);
+                System.out.println(" bisa pulang jam " + canGoHome);
                 if (canGoHome.after(new Date())) {
                     MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.error", "ceckinout.checkin_error_out",
                             FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
