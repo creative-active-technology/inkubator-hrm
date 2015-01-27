@@ -19,6 +19,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 
 /**
@@ -45,6 +46,7 @@ public class BusinessTravel implements Serializable {
     private Date createdOn;
     private String updatedBy;
     private Date updatedOn;
+    private Double totalAmount;
     private Set<BusinessTravelComponent> businessTravelComponents = new HashSet<BusinessTravelComponent>(0);
 
     public BusinessTravel() {
@@ -219,4 +221,15 @@ public class BusinessTravel implements Serializable {
     public void setBusinessTravelComponents(Set<BusinessTravelComponent> businessTravelComponents) {
         this.businessTravelComponents = businessTravelComponents;
     }
+    
+    @Transient
+    public Double getTotalAmount() {
+        return totalAmount;
+    }
+ 
+    public void setTotalAmount(Double totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+    
+    
 }

@@ -27,5 +27,7 @@ public interface BusinessTravelDao extends IDAO<BusinessTravel> {
 	public Long getTotalByBusinessTravelNoAndNotId(String businessTravelNo, Long id);
 
 	public BusinessTravel getEntityByApprovalActivityNumberWithDetail(String approvalActivityNumber);
+        
+        public List<BusinessTravel> getAllDataByEmpDataId(Long empDataId) throws Exception;
 
 }

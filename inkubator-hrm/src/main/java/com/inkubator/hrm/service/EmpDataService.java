@@ -101,5 +101,7 @@ public interface EmpDataService extends IService<EmpData> {
     public Long getTotalSalaryConfirmationByParam(SalaryConfirmationParameter parameter) throws Exception;
     
     public EmpData getByPKBankTransfer(long  id) throws Exception;
+    
+     public EmpData getByEmpDataByBioDataId(long bioDataid);
 
 }
