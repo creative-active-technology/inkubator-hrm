@@ -36,5 +36,7 @@ public interface LeaveImplementationDao extends IDAO<LeaveImplementation> {
 	public Long getReportTotalByParam(LeaveImplementationReportSearchParameter parameter, List<String> activityNumbers, Long empDataId );
         
         public List<LeaveImplementation> getReportHistoryByParam(LeaveImplementationReportSearchParameter parameter, List<String> activityNumbers, Long empDataId);
+        
+        public List<LeaveImplementation> getAllDataByEmpDataId(Long empDataId) throws Exception;
 	
 }

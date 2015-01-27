@@ -180,4 +180,15 @@ public class LeaveImplementationDaoImpl extends IDAOImpl<LeaveImplementation> im
         criteria.setFetchMode("leave", FetchMode.JOIN);
         return criteria.list();
     }
+
+    @Override
+    public List<LeaveImplementation> getAllDataByEmpDataId(Long empDataId) throws Exception {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());       
+        criteria.setFetchMode("empData", FetchMode.JOIN);        
+        criteria.setFetchMode("temporaryActing", FetchMode.JOIN);
+        criteria.setFetchMode("temporaryActing.bioData", FetchMode.JOIN);
+        criteria.setFetchMode("leave", FetchMode.JOIN);
+        criteria.add(Restrictions.eq("empData.id", empDataId));       
+        return criteria.list();
+    }
 }

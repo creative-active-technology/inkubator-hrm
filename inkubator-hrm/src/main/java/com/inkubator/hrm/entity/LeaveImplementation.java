@@ -17,6 +17,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 
 @Entity
@@ -43,6 +44,7 @@ public class LeaveImplementation implements java.io.Serializable {
     private String updatedBy;
     private Date updatedOn;
     private Set<LeaveImplementationDate> leaveImplementationDates = new HashSet<LeaveImplementationDate>(0);
+    private String approvedBy;
 
     public LeaveImplementation() {
     	
@@ -235,5 +237,16 @@ public class LeaveImplementation implements java.io.Serializable {
 			Set<LeaveImplementationDate> leaveImplementationDates) {
 		this.leaveImplementationDates = leaveImplementationDates;
 	}
+    
+    @Transient
+    public String getApprovedBy() {
+        return approvedBy;
+    }
+
+    public void setApprovedBy(String approvedBy) {
+        this.approvedBy = approvedBy;
+    }
+        
+        
 	
 }
