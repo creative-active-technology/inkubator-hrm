@@ -116,19 +116,19 @@
                             <f:facet name="header">  
                                 <h:outputText value="#{appmsg['jabatan.list_of_position_description']}" style="text-align: left" styleClass="label_hrm"/> 
                             </f:facet>
-                            <p:column style="text-align: center;width: 25px;max-width: 25px">
+                            <p:column style="text-align: center;width: 3%;max-width: 3%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.number']}" />
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column > 
+                            <p:column style="text-align: left;width: 45%;max-width: 45%" > 
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.description']}" />
                                 </f:facet>
                                 <h:outputLabel value=" #{listJobDeskrpsi.description}" />
                             </p:column> 
-                            <p:column style="width: 80px;text-align: center"> 
+                            <p:column style="width: 20%;text-align: left"> 
                                 <f:facet name="header" >  
                                     <h:outputText value="#{appmsg['jabatan.category_task']}" />
                                 </f:facet>
@@ -136,7 +136,7 @@
                                     <f:converter converterId="jobCategoryConverter" />
                                 </p:outputLabel>
                             </p:column>
-                            <p:column style="width: 80px;text-align: center"> 
+                            <p:column style="width: 20%;text-align: left"> 
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['jabatan.type_time']}" />
                                 </f:facet>
@@ -144,7 +144,7 @@
                                     <f:converter converterId="jobTypeTimeConverter" />
                                 </p:outputLabel>
                             </p:column>
-                            <p:column headerText="#{appmsg['global.action']}" style="width: 130px;text-align: center" exportable="false">
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 12%;text-align: center" exportable="false">
 
                                 <p:commandButton  icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  style="font-size: 10px!important" update=":deleteDialogJobDeskripsiId"
                                                   onclick="statusDialog.show()"  oncomplete="confirmDialogJobDeskripsi.show()" action="#{jabatanDeskripsInputController.onDelete()}" >
