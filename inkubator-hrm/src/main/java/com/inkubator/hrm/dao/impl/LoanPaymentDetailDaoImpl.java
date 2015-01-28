@@ -20,6 +20,7 @@ import com.inkubator.hrm.web.model.LoanPaymentDetailModel;
 import com.inkubator.securitycore.util.UserInfoUtil;
 
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
@@ -136,9 +137,9 @@ public class LoanPaymentDetailDaoImpl extends IDAOImpl<LoanPaymentDetail> implem
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
-	@Override
-	public List<LoanPaymentDetail> getAllDataByEmpDataIdAndLoanSchemaIdAndPeriodTime(Long empDataid, Long loanSchemaId, Date fromPeriode, Date untilPeriode) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+    @Override
+    public List<LoanPaymentDetail> getAllDataByEmpDataIdAndLoanSchemaIdAndPeriodTime(Long empDataid, Long loanSchemaId, Date fromPeriode, Date untilPeriode) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.createAlias("loan", "loan", JoinType.INNER_JOIN);
         criteria.createAlias("loan.loanSchema", "loanSchema", JoinType.INNER_JOIN);
         criteria.add(Restrictions.eq("loan.empData.id", empDataid));
@@ -147,19 +148,57 @@ public class LoanPaymentDetailDaoImpl extends IDAOImpl<LoanPaymentDetail> implem
         criteria.add(Restrictions.le("dueDate", untilPeriode));
         criteria.add(Restrictions.eq("loan.statusPencairan", HRMConstant.LOAN_PAID));
         return criteria.list();
-	}
-        
-        @Override
-        public Double getInstallmentByLoanId(Long loanId) {
+    }
+
+    @Override
+    public Double getInstallmentByLoanId(Long loanId) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.createAlias("loan", "loan", JoinType.INNER_JOIN);        
-        criteria.add(Restrictions.eq("loan.id", loanId)); 
-        if(criteria.list().isEmpty()){
+        criteria.createAlias("loan", "loan", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("loan.id", loanId));
+        if (criteria.list().isEmpty()) {
             return null;
-        }else{
+        } else {
             LoanPaymentDetail lpd = (LoanPaymentDetail) criteria.list().get(0);
             return lpd.getTotalPayment();
         }
-       
+
+    }
+
+    @Override
+    public LoanPaymentDetail getEntityByPkWithDetail(Long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("id", id));
+        criteria.setFetchMode("loan", FetchMode.JOIN);
+        criteria.setFetchMode("loan.empData", FetchMode.JOIN);
+        criteria.setFetchMode("loan.empData.jabatanByJabatanId", FetchMode.JOIN);
+        criteria.setFetchMode("loan.empData.bioData", FetchMode.JOIN);
+        criteria.setFetchMode("loan.empData.loanSchema", FetchMode.JOIN);
+        return (LoanPaymentDetail) criteria.uniqueResult();
+
+    }
+
+    @Override
+    public List<LoanPaymentDetail> getAllDataPaymentWithEmpIdAndLoanId(Long empDataId, Long loanId, Date endDatePeriod, int firstResult, int maxResults, Order order) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("loan", "loan", JoinType.INNER_JOIN);
+        criteria.createAlias("loan.empData", "empData", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("loan.id", loanId));
+        criteria.add(Restrictions.eq("empData.id", empDataId));
+        criteria.add(Restrictions.lt("dueDate", endDatePeriod));
+        criteria.addOrder(order);
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResults);
+        return criteria.list();
+    }
+
+    @Override
+    public Long getTotalDataPaymentWithEmpIdAndLoanId(Long empDataId, Long loanId, Date endDatePeriod) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("loan", "loan", JoinType.INNER_JOIN);
+        criteria.createAlias("loan.empData", "empData", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("loan.id", loanId));
+        criteria.add(Restrictions.eq("empData.id", empDataId));
+        criteria.add(Restrictions.lt("dueDate", endDatePeriod));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 }

@@ -29,7 +29,8 @@ import org.primefaces.model.LazyDataModel;
  */
 @ManagedBean(name = "loanDiscountViewController")
 @ViewScoped
-public class LoanDiscountViewController extends BaseController{
+public class LoanDiscountViewController extends BaseController {
+
     @ManagedProperty(value = "#{loanPaymentDetailService}")
     private LoanPaymentDetailService loanPaymentDetailService;
     @ManagedProperty(value = "#{wtPeriodeService}")
@@ -41,22 +42,22 @@ public class LoanDiscountViewController extends BaseController{
     private Integer jumlahKaryawan;
     private BigDecimal jmlNominalReimbursment;
     private Double jmlNominalLoan;
-    
+
     @PostConstruct
     @Override
     public void initialization() {
-            super.initialization();
-            
+        super.initialization();
+
         try {
             loanPaymentDetailModel = new LoanPaymentDetailModel();
             WtPeriode wtPeriode;
             wtPeriode = wtPeriodeService.getEntityByPayrollTypeActive();
-            if(wtPeriode != null){
+            if (wtPeriode != null) {
                 loanPaymentDetailModel.setEndDataPeriod(wtPeriode.getUntilPeriode());
                 loanPaymentDetailModel.setStartDatePeriod(wtPeriode.getFromPeriode());
             }
             wtPeriode = wtPeriodeService.getEntityByAbsentTypeActive();
-            if(wtPeriode != null ){
+            if (wtPeriode != null) {
                 loanPaymentDetailModel.setStartDateAbsen(wtPeriode.getFromPeriode());
                 loanPaymentDetailModel.setEndDateAbsen(wtPeriode.getUntilPeriode());
             }
@@ -70,7 +71,7 @@ public class LoanDiscountViewController extends BaseController{
             java.util.logging.Logger.getLogger(LoanDiscountViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     @PreDestroy
     private void cleanAndExit() {
         jumlahKaryawan = null;
@@ -83,7 +84,11 @@ public class LoanDiscountViewController extends BaseController{
         jmlNominalReimbursment = null;
         jmlNominalLoan = null;
     }
-    
+
+    public String doDetail() {
+        return "/protected/payroll/loan_discount_detail.htm?faces-redirect=true&execution=e" + selected.getId();
+    }
+
     public void doSearch() {
         lazyDataModel = null;
     }
@@ -113,7 +118,7 @@ public class LoanDiscountViewController extends BaseController{
     }
 
     public LazyDataModel<LoanPaymentDetail> getLazyDataModel() {
-        if(lazyDataModel == null){
+        if (lazyDataModel == null) {
             lazyDataModel = new LoanDiscountLazyDataModel(loanPaymentDetailService, loanPaymentDetailModel, parameter);
         }
         return lazyDataModel;
@@ -162,6 +167,5 @@ public class LoanDiscountViewController extends BaseController{
     public void setJmlNominalLoan(Double jmlNominalLoan) {
         this.jmlNominalLoan = jmlNominalLoan;
     }
-    
-    
+
 }
