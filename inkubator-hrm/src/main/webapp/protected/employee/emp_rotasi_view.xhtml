@@ -78,19 +78,19 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="nik" style="width: 10%;">
+                            <p:column sortBy="nik" style="text-align: left;width: 10%;">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['placement.nik']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{empViewData.nik}"/>
                             </p:column>
-                            <p:column sortBy="bioData" style="width: 30%;">
+                            <p:column sortBy="bioData" style="text-align: left;width: 25%;">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{empViewData.bioData.firstName} #{empViewData.bioData.lastName}"/>
                             </p:column>
-                            <p:column sortBy="joinDate" style="width: 10%;" >
+                            <p:column sortBy="joinDate" style="text-align: left;width: 15%;" >
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['placement.join_data']}"/>
                                 </f:facet>
@@ -98,13 +98,13 @@
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
                                 </p:outputLabel>
                             </p:column>
-                            <p:column sortBy="jabatanByJabatanId" style="width: 10%;" >
+                            <p:column sortBy="jabatanByJabatanId" style="text-align: left;width: 10%;" >
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['placement.jabatan_code']}"/>
                                 </f:facet>
                                 <p:outputLabel value= "#{empViewData.jabatanByJabatanId.code}"/>
                             </p:column>
-                            <p:column sortBy="jabatanByJabatanId" style="width: 25%;">
+                            <p:column sortBy="jabatanByJabatanId" style="text-align: left;width: 25%;">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['placement.jabatan_name']}"/>
                                 </f:facet>

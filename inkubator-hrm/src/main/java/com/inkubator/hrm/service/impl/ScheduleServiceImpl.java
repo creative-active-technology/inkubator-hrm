@@ -45,6 +45,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ScheduleServiceImpl extends IServiceImpl implements ScheduleService {
 
     private int difWeekToDelete;
+    private int difNumberOfMonthTempEmployeeScheduleToDelete;
     @Autowired
     private RiwayatAksesDao riwayatAksesDao;
     @Autowired
@@ -58,7 +59,8 @@ public class ScheduleServiceImpl extends IServiceImpl implements ScheduleService
     @Autowired
     private AttendanceStatusDao attendanceStatusDao;
     @Autowired
-    private WtWorkingHourDao wtWorkingHourDao;
+    private WtWorkingHourDao wtWorkingHourDao;    
+    
 
     @Scheduled(cron = "${cron.delete.riwayat.akses.history}")
     @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -194,11 +196,29 @@ public class ScheduleServiceImpl extends IServiceImpl implements ScheduleService
         LOGGER.info("Finish Running Kalkulasi Jadwal Kerja");
 
     }
-
+    
+    
+    @Scheduled(cron = "${cron.delete.temp.employee.schedule.history}")
+    @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Override
+    public void deleteTempEmployeeSchedule() throws Exception {
+        LOGGER.info("Begin Running Delete Temporary Employee Schedule");
+        List<TempJadwalKaryawan> dataToDelete = tempJadwalKaryawanDao.getByMonthDif(difNumberOfMonthTempEmployeeScheduleToDelete);
+        LOGGER.info("Size of Data to Delete " + dataToDelete.size());
+        tempJadwalKaryawanDao.deleteBacth(dataToDelete);
+        LOGGER.info("Finish Running Delete Temporary Employee Schedule");
+    }
+    
+    
+    
 //    private final Comparator<WtScheduleShift> shortByDate1 = new Comparator<WtScheduleShift>() {
 //        @Override
 //        public int compare(WtScheduleShift o1, WtScheduleShift o2) {
 //            return o1.getScheduleDate().compareTo(o2.getScheduleDate());
 //        }
 //    };
+
+    public void setDifNumberOfMonthTempEmployeeScheduleToDelete(int difNumberOfMonthTempEmployeeScheduleToDelete) {
+        this.difNumberOfMonthTempEmployeeScheduleToDelete = difNumberOfMonthTempEmployeeScheduleToDelete;
+    }
 }
