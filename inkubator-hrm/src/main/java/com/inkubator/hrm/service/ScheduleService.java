@@ -19,4 +19,5 @@ public interface ScheduleService {
     
     public void updateWtHolidayDateWhereIsEveryYearIsOne() throws Exception;
 //    public void checkPasswordHistoryEmailNotSend() throws Exception;
+    public void deleteTempEmployeeSchedule() throws Exception;
 }
