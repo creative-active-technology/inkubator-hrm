@@ -47,11 +47,11 @@
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3" >
-                                    <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']}" actionListener="#{pangkatViewController.doAdd()}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
-                                        <p:ajax event="dialogReturn" listener="#{pangkatViewController.onDialogReturn}"  update="tablePositionId,:growlPositionViewlId"/>
-                                    </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.export']}" style="margin-right: 5px" icon="ui-icon-calculator" title="#{appmsg['global.export_excel']}" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
                                         <pe:exporter target="tablePositionId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Position"/>
+                                    </p:commandButton>
+                                    <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']}" actionListener="#{pangkatViewController.doAdd()}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
+                                        <p:ajax event="dialogReturn" listener="#{pangkatViewController.onDialogReturn}"  update="tablePositionId,:growlPositionViewlId"/>
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{pangkatViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
                                 </h:panelGrid>

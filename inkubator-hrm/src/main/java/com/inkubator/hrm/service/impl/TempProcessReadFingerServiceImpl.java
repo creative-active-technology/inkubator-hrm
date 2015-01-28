@@ -307,18 +307,20 @@ public class TempProcessReadFingerServiceImpl extends IServiceImpl implements Te
 		List<EmpData> empDatas =  empDataDao.getAllDataNotTerminate();
 		WtPeriode periode = wtPeriodeDao.getEntityByAbsentTypeActive();
 
-		/** delete all record in that period*/
-		tempProcessReadFingerDao.deleteByScheduleDate(periode.getFromPeriode(), periode.getUntilPeriode());
+		/** delete all record in that period, kecuali yang sudah di correction(baik yg in atau out)*/
+		tempProcessReadFingerDao.deleteByScheduleDateAndIsNotCorrection(periode.getFromPeriode(), periode.getUntilPeriode());
 		
 		/** sync all record in that period, only saved the record that is working day schedule(exclude OFF day)*/
 		for(EmpData empData : empDatas){
-			List<String> listFingerIndexId = this.getFingerIndexIds(empData.getNik());
-			List<TempJadwalKaryawan> listJadwalKaryawan = tempJadwalKaryawanDao.getAllDataByEmpIdAndPeriodDate(empData.getId(), periode.getFromPeriode(), periode.getUntilPeriode());
+			List<String> listFingerIndexId = this.getFingerIndexIds(empData.getNik());			
+			List<TempJadwalKaryawan> listJadwalKaryawan = tempJadwalKaryawanDao.getAllDataByEmpIdAndPeriodDateAndNotOffDay(empData.getId(), periode.getFromPeriode(), periode.getUntilPeriode());
 			
 			for(TempJadwalKaryawan jadwalKaryawan: listJadwalKaryawan){
-				if(!StringUtils.equals(jadwalKaryawan.getWtWorkingHour().getCode(), "OFF")){					
+				/** hanya di proses insert/save yg datanya masih null(artinya belum di correction, baik yg in atau out). Lihat di view detailnya.*/
+				if(null == tempProcessReadFingerDao.getEntityByEmpDataIdAndScheduleDateAndScheduleInAndScheduleOut(empData.getId(), 
+						jadwalKaryawan.getTanggalWaktuKerja(), jadwalKaryawan.getWtWorkingHour().getWorkingHourBegin(), jadwalKaryawan.getWtWorkingHour().getWorkingHourEnd())) {
 					CheckInAttendance checkInAttendance = checkInAttendanceDao.getEntityByEmpDataIdAndCheckDate(empData.getId(), jadwalKaryawan.getTanggalWaktuKerja());					
-					this.savingEntity(empData, jadwalKaryawan, checkInAttendance, listFingerIndexId);
+					this.savingEntity(empData, jadwalKaryawan, checkInAttendance, listFingerIndexId);	
 				}
 			}
 		}
