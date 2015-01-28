@@ -135,16 +135,16 @@
                         <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmTaxComponent.hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
-                <p:dialog widgetVar="dialogDetailTaxComponent" header="#{appmsg['taxComponent.detail_dialog']}" styleClass="header_small_no_bold" width="450" modal="true" resizable="false" hideEffect="puff" 
+                <p:dialog widgetVar="dialogDetailTaxComponent" header="#{appmsg['taxComponent.detail_dialog']}" styleClass="header_small_no_bold" width="700" modal="true" resizable="false" hideEffect="puff" 
                           showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogDetailId" style="width:100%;margin:5px;">
                         <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['taxComponent.taxComponent_name']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;"><p:outputLabel value="#{taxComponentViewController.selectedTaxComponent.name}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:25%"><p:outputLabel value="#{appmsg['taxComponent.taxComponent_name']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:75%;"><p:outputLabel value="#{taxComponentViewController.selectedTaxComponent.name}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;"><p:outputLabel value="#{taxComponentViewController.selectedTaxComponent.description}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:25%"><p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:75%;"><p:outputLabel value="#{taxComponentViewController.selectedTaxComponent.description}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <f:facet name="footer">
                             <p:row>
