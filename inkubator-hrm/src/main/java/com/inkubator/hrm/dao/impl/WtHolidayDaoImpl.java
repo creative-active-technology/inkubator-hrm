@@ -11,8 +11,10 @@ import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.WtHolidayDao;
 import com.inkubator.hrm.entity.WtHoliday;
 import com.inkubator.hrm.web.search.HolidaySearchParameter;
+
 import java.util.Date;
 import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.MatchMode;
@@ -87,6 +89,13 @@ public class WtHolidayDaoImpl extends IDAOImpl<WtHoliday> implements WtHolidayDa
         return criteria.list();
 
     }
+    
+    @Override
+	public Long getTotalBetweenDate(Date start, Date end) {
+    	Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.between("holidayDate", start, end));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
 
     @Override
     public WtHoliday getWtHolidayByDate(Date date) {

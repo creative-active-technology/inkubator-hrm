@@ -79,7 +79,6 @@
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                                <pe:timePicker id="maxHourId" required="true" requiredMessage="#{appmsg['workinghour.error_empty_max_hour']}" value="#{workingHourFormController.model.maxHour}" mode="spinner" styleClass="isitext_hrm"/>	                               
-	                                <p:outputLabel value="&nbsp;&nbsp; ( #{appmsg['global.hour']} )" styleClass="label_hrm"/>
 	                                <p:message for="maxHourId"/>	                                
 	                            </p:column>
 	                        </p:row>
@@ -88,10 +87,10 @@
 	                                <p:outputLabel for="arriveLimitBeginId" value="#{appmsg['workinghour.arrival_time_limit']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                                <p:spinner id="arriveLimitBeginId" value="#{workingHourFormController.model.arriveLimitBegin}" stepFactor="10" size="4" styleClass="isitext_hrm" required="true" requiredMessage="#{appmsg['workinghour.error_empty_arrivelimit_begin']}"/>
-	                                <p:outputLabel value="&nbsp;&nbsp; #{appmsg['global.to']} &nbsp;&nbsp;" styleClass="label_hrm"/>
-	                                <p:spinner id="arriveLimitEndId" value="#{workingHourFormController.model.arriveLimitEnd}" stepFactor="10" size="4" styleClass="isitext_hrm" required="true" requiredMessage="#{appmsg['workinghour.error_empty_arrivelimit_end']}"/>
-	                                <p:outputLabel value="&nbsp;&nbsp; ( #{appmsg['global.minute']} )" styleClass="label_hrm"/>
+	                                <p:spinner id="arriveLimitBeginId" value="#{workingHourFormController.model.arriveLimitBegin}" stepFactor="10" size="4" min="0" styleClass="isitext_hrm" required="true" requiredMessage="#{appmsg['workinghour.error_empty_arrivelimit_begin']}"/>
+	                                <p:outputLabel value="&nbsp;&nbsp; #{appmsg['workinghour.minute_before']}" styleClass="label_hrm"/>
+	                                <p:spinner id="arriveLimitEndId" value="#{workingHourFormController.model.arriveLimitEnd}" stepFactor="10" size="4" min="0" styleClass="isitext_hrm" style="margin-left:40px;" required="true" requiredMessage="#{appmsg['workinghour.error_empty_arrivelimit_end']}"/>
+	                                <p:outputLabel value="&nbsp;&nbsp; #{appmsg['workinghour.minute_after']} " styleClass="label_hrm"/>
 	                                <p:message for="arriveLimitBeginId"/>	
 	                                <p:message for="arriveLimitEndId"/>	                                
 	                            </p:column>
@@ -101,10 +100,10 @@
 	                                <p:outputLabel for="goHomeLimitBeginId" value="#{appmsg['workinghour.go_home_time_limit']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                                <p:spinner id="goHomeLimitBeginId" value="#{workingHourFormController.model.goHomeLimitBegin}" stepFactor="10" size="4" required="true" styleClass="isitext_hrm" requiredMessage="#{appmsg['workinghour.error_empty_gohome_begin']}"/>
-	                                <p:outputLabel value="&nbsp;&nbsp; #{appmsg['global.to']} &nbsp;&nbsp;" styleClass="label_hrm"/>
-	                                <p:spinner id="goHomeLimitEndId" value="#{workingHourFormController.model.goHomeLimitEnd}" stepFactor="10" size="4" required="true" styleClass="isitext_hrm" requiredMessage="#{appmsg['workinghour.error_empty_gohome_end']}"/>
-	                                <p:outputLabel value="&nbsp;&nbsp; ( #{appmsg['global.minute']} )" styleClass="label_hrm"/>
+	                                <p:spinner id="goHomeLimitBeginId" value="#{workingHourFormController.model.goHomeLimitBegin}" stepFactor="10" size="4" min="0" required="true" styleClass="isitext_hrm" requiredMessage="#{appmsg['workinghour.error_empty_gohome_begin']}"/>
+	                                <p:outputLabel value="&nbsp;&nbsp; #{appmsg['workinghour.minute_before']}" styleClass="label_hrm"/>
+	                                <p:spinner id="goHomeLimitEndId" value="#{workingHourFormController.model.goHomeLimitEnd}" stepFactor="10" size="4" min="0" required="true" styleClass="isitext_hrm" style="margin-left:40px;" requiredMessage="#{appmsg['workinghour.error_empty_gohome_end']}"/>
+	                                <p:outputLabel value="&nbsp;&nbsp; #{appmsg['workinghour.minute_after']} " styleClass="label_hrm"/>
 	                                <p:message for="goHomeLimitBeginId"/>	
 	                                <p:message for="goHomeLimitEndId"/>                             
 	                            </p:column>
@@ -179,12 +178,12 @@
 	                                <p:outputLabel for="breakStartLimitBeginId" value="#{appmsg['workinghour.limit_start']}" styleClass="label_hrm" style="margin-left:30px;"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                                <p:spinner id="breakStartLimitBeginId" value="#{workingHourFormController.model.breakStartLimitBegin}" stepFactor="10" size="4" styleClass="isitext_hrm" 
+	                                <p:spinner id="breakStartLimitBeginId" value="#{workingHourFormController.model.breakStartLimitBegin}" stepFactor="10" size="4" min="0" styleClass="isitext_hrm" 
 	                                		   disabled="#{workingHourFormController.isDisabledBreakConf}" required="#{not workingHourFormController.isDisabledBreakConf}" requiredMessage="#{appmsg['workinghour.error_empty_breakstart_limit_begin']}"/>
-	                                <p:outputLabel value="&nbsp;&nbsp; #{appmsg['global.to']} &nbsp;&nbsp;" styleClass="label_hrm"/>
-	                                <p:spinner id="breakStartLimitEndId" value="#{workingHourFormController.model.breakStartLimitEnd}" stepFactor="10" size="4" styleClass="isitext_hrm" 
+	                                <p:outputLabel value="&nbsp;&nbsp; #{appmsg['workinghour.minute_before']}" styleClass="label_hrm"/>
+	                                <p:spinner id="breakStartLimitEndId" value="#{workingHourFormController.model.breakStartLimitEnd}" stepFactor="10" size="4" min="0" styleClass="isitext_hrm" style="margin-left:40px;" 
 	                                		   disabled="#{workingHourFormController.isDisabledBreakConf}" required="#{not workingHourFormController.isDisabledBreakConf}" requiredMessage="#{appmsg['workinghour.error_empty_breakstart_limit_end']}"/>
-	                                <p:outputLabel value="&nbsp;&nbsp; ( #{appmsg['global.minute']} )" styleClass="label_hrm"/>
+	                                <p:outputLabel value="&nbsp;&nbsp; #{appmsg['workinghour.minute_after']} " styleClass="label_hrm"/>
 	                                <p:message id="breakStartLimitBeginMessageId" for="breakStartLimitBeginId"/>	
 	                                <p:message id="breakStartLimitEndMessageId" for="breakStartLimitEndId"/>	                                
 	                            </p:column>
@@ -194,12 +193,12 @@
 	                                <p:outputLabel for="breakFinishLimitBeginId" value="#{appmsg['workinghour.limit_finish']}" styleClass="label_hrm" style="margin-left:30px;"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                                <p:spinner id="breakFinishLimitBeginId" value="#{workingHourFormController.model.breakFinishLimitBegin}" stepFactor="10" size="4" styleClass="isitext_hrm" 
+	                                <p:spinner id="breakFinishLimitBeginId" value="#{workingHourFormController.model.breakFinishLimitBegin}" stepFactor="10" size="4" min="0" styleClass="isitext_hrm" 
 	                                		   disabled="#{workingHourFormController.isDisabledBreakConf}" required="#{not workingHourFormController.isDisabledBreakConf}" requiredMessage="#{appmsg['workinghour.error_empty_breakfinish_limit_begin']}"/>
-	                                <p:outputLabel value="&nbsp;&nbsp; #{appmsg['global.to']} &nbsp;&nbsp;" styleClass="label_hrm"/>
-	                                <p:spinner id="breakFinishLimitEndId" value="#{workingHourFormController.model.breakFinishLimitEnd}" stepFactor="10" size="4" styleClass="isitext_hrm" 
+	                                <p:outputLabel value="&nbsp;&nbsp; #{appmsg['workinghour.minute_before']}" styleClass="label_hrm"/>
+	                                <p:spinner id="breakFinishLimitEndId" value="#{workingHourFormController.model.breakFinishLimitEnd}" stepFactor="10" size="4" min="0" styleClass="isitext_hrm" style="margin-left:40px;"
 	                                		   disabled="#{workingHourFormController.isDisabledBreakConf}" required="#{not workingHourFormController.isDisabledBreakConf}" requiredMessage="#{appmsg['workinghour.error_empty_breakfinish_limit_end']}"/>
-	                                <p:outputLabel value="&nbsp;&nbsp; ( #{appmsg['global.minute']} )" styleClass="label_hrm"/>
+	                                <p:outputLabel value="&nbsp;&nbsp; #{appmsg['workinghour.minute_after']} " styleClass="label_hrm"/>
 	                                <p:message id="breakFinishLimitBeginMesssageId" for="breakFinishLimitBeginId"/>	
 	                                <p:message id="breakFinishLimitEndMessageId" for="breakFinishLimitEndId"/>                             
 	                            </p:column>

@@ -35,7 +35,7 @@
                                         <pe:exporter target="tabletoExportId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Inclusion_Reimbursment"/>
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{savingTypeViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
-                                    
+
                                 </h:panelGrid>
                             </p:toolbarGroup>
                         </p:toolbar>
@@ -62,7 +62,7 @@
                                     <p:outputLabel value="#{loanDiscountViewController.jumlahKaryawan}" />
                                     <p:outputLabel value=" #{appmsg['global.people']}" />
                                 </p:column>
-                                
+
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
@@ -75,7 +75,7 @@
                                     </p:outputLabel>
                                 </p:column>
                             </p:row>
-                            
+
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="#{appmsg['inclusionReimbursment.salary_component']}" styleClass="label_hrm" />
@@ -94,7 +94,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    
+
                                 </p:column>
                                 <p:column>
                                     <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{loanDiscountViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
@@ -157,7 +157,13 @@
                                     <f:convertNumber pattern="###,###" type="currency"/>
                                 </h:outputLabel>
                             </p:column>
-                            
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 12%;text-align: center" exportable="false">
+                                <p:commandButton  icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" style="font-size: 10px!important" 
+                                                  action="#{loanDiscountViewController.doDetail()}" >
+                                    <f:setPropertyActionListener value="#{data}" target="#{loanDiscountViewController.selected}" />
+
+                                </p:commandButton>  
+                            </p:column>
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>
                                 <p:outputLabel value="#{loanDiscountViewController.lazyDataModel.rowCount}"/>
@@ -165,7 +171,7 @@
                             </f:facet>  
                         </p:dataTable>
                         <!-- 
-                        	hide datatable, used for reporting expand 
+                                hide datatable, used for reporting expand 
                         -->
                         <p:dataTable  var="data" rendered="false" value="#{loanDiscountViewController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7"
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
@@ -218,7 +224,8 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{data.totalPayment}" />
                             </p:column>
-                            
+
+
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>
                                 <p:outputLabel value="#{loanDiscountViewController.lazyDataModel.rowCount}"/>
