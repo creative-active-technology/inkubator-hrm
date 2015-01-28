@@ -273,6 +273,7 @@ public class CheckInAttendanceServiceImpl extends IServiceImpl implements CheckI
             int waitingTime = DateTimeUtil.getTotalHoursDifference(jamDanTanggalHarus, new Date());
             if (waitingTime > selisih + 4) {
                 attendance = null;
+                System.out.println(" sellu ke sini");
             }
         }
 
