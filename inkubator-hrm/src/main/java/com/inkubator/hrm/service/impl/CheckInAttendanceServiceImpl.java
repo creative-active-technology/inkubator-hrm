@@ -24,8 +24,6 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import javax.faces.application.FacesMessage;
 import org.hibernate.criterion.Order;
-import org.joda.time.DateMidnight;
-import org.joda.time.Hours;
 import org.primefaces.push.PushContext;
 import org.primefaces.push.PushContextFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,6 +72,7 @@ public class CheckInAttendanceServiceImpl extends IServiceImpl implements CheckI
         entity.setEmpData(empDataDao.getEntiyByPK(entity.getEmpData().getId()));
         entity.setCreatedBy(UserInfoUtil.getUserName());
         entity.setCreatedOn(new Date());
+        entity.setCheckInDateTime(new Date());
         this.checkInAttendanceDao.save(entity);
         ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
         String waktuCheckIn = new SimpleDateFormat("EEEE, dd-MMMM-yyyy hh:mm:ss").format(entity.getCheckInTime());
@@ -257,15 +256,27 @@ public class CheckInAttendanceServiceImpl extends IServiceImpl implements CheckI
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public CheckInAttendance getAttendancWithMaxCreatedDate(long id) throws Exception {
         CheckInAttendance attendance = this.checkInAttendanceDao.getAttendancWithMaxCreatedDate(id);
-        TempJadwalKaryawan tempJadwalKaryawan = this.tempJadwalKaryawanDao.getEntityByEmpDataIdAndTanggalWaktuKerja(id, attendance.getCheckDate());
-        System.out.println(" hahahah");
-        Date jamPulang = tempJadwalKaryawan.getWtWorkingHour().getWorkingHourEnd();
-        Date jamMasuk = tempJadwalKaryawan.getWtWorkingHour().getWorkingHourBegin();
-        System.out.println(" Jam Masuk " + jamMasuk);
-        System.out.println(" Jam Masuk " + jamPulang);
-        System.out.println(" selisihnya " + DateTimeUtil.getTotalHoursDifference(jamPulang, jamMasuk));
-         System.out.println("hshfsdhfhdsfhd "+Hours.hoursBetween(new DateMidnight(jamMasuk), new DateMidnight(jamPulang)).getHours());
-        System.out.println(" nilinya " + attendance.getCheckDate());
+//        System.out.println(" nilai nya " + attendance);
+        if (attendance != null) {
+            TempJadwalKaryawan tempJadwalKaryawan = this.tempJadwalKaryawanDao.getByEmpId(id, attendance.getCheckDate());
+            System.out.println(" hahahah");
+            Date jamPulang = tempJadwalKaryawan.getWtWorkingHour().getWorkingHourEnd();
+            Date jamMasuk = tempJadwalKaryawan.getWtWorkingHour().getWorkingHourBegin();
+            int selisih = DateTimeUtil.getTotalHoursDifference(jamMasuk, jamPulang);
+            if (selisih < 0) {
+                selisih = selisih + 24;
+            }
+//            Date checkTimeDate = attendance.getCheckInDateTime();
+            String jamMasukSeharusnya = new SimpleDateFormat("yyyy-MM-dd").format(tempJadwalKaryawan.getTanggalWaktuKerja());
+            System.out.println(" jsdfjdshfdsjf "+jamMasukSeharusnya);
+            Date jamDanTanggalHarus = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(jamMasukSeharusnya +" "+ jamMasuk);
+            int waitingTime = DateTimeUtil.getTotalHoursDifference(jamDanTanggalHarus, new Date());
+            if (waitingTime > selisih + 4) {
+                attendance = null;
+                System.out.println(" sellu ke sini");
+            }
+        }
+
         return attendance;
     }
 }

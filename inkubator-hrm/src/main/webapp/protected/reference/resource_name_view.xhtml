@@ -70,7 +70,7 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="code" style="width: 15%">
+                            <p:column sortBy="code" style="width: 13%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.code']}"/>
                                 </f:facet>
@@ -82,7 +82,7 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{data.name}" />
                             </p:column>
-                            <p:column sortBy="dateOfOwnership" style="width: 23%">
+                            <p:column sortBy="dateOfOwnership" style="width: 18%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['resourceName.date_ownership']}"/>
                                 </f:facet>
@@ -90,12 +90,19 @@
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="resourceType.resourceType" style="width: 23%">
+                            <p:column sortBy="resourceType.resourceType" style="width: 18%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['resourceType.resourceType']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.resourceType.resourceType}" />
-                                    
+                            </p:column>
+                            <p:column sortBy="resourceType.isActive" style="text-align: center;width: 12%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['global.status']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.isActive}">
+                                    <f:converter converterId="activeStatusMessageConverter"/>
+                                </h:outputLabel>
                             </p:column>
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
