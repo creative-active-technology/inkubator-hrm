@@ -124,7 +124,7 @@ public class TaxComponentViewController extends BaseController {
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", false);
-        options.put("contentWidth", 400);
+        options.put("contentWidth", 650);
         options.put("contentHeight", 325);
         RequestContext.getCurrentInstance().openDialog("tax_component_form", options, params);
     }
