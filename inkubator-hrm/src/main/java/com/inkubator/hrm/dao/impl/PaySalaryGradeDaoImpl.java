@@ -57,13 +57,13 @@ public class PaySalaryGradeDaoImpl extends IDAOImpl<PaySalaryGrade> implements P
         int resMinSalary = 0;
         int resMedSalary = 0;
         int resMaxSalary = 0;
-        if(searchParameter.getMinSalary()!= null){
+        if(searchParameter.getMinSalary()!= null && !String.valueOf(searchParameter.getMinSalary()).equals("")){
             resMinSalary = searchParameter.getMinSalary().compareTo(bg);
         }
-        if(searchParameter.getMedSalary()!= null){
+        if(searchParameter.getMedSalary()!= null && !String.valueOf(searchParameter.getMedSalary()).equals("")){
             resMedSalary = searchParameter.getMedSalary().compareTo(bg);
         }
-        if(searchParameter.getMaxSalary()!= null){
+        if(searchParameter.getMaxSalary()!= null&&!String.valueOf(searchParameter.getMaxSalary()).equals("")){
             resMaxSalary = searchParameter.getMaxSalary().compareTo(bg);
         }
         

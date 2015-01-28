@@ -30,18 +30,24 @@
                         <p:growl id="growlId" globalOnly="true" showDetail="true" />
                         <p:toolbar  style="margin-top: 10px">
                             <p:toolbarGroup align="left">
-                                <h:panelGrid columns="5">
+                                <h:panelGrid columns="6">
                                     <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm" />
                                     <p:outputLabel value=":" />
                                     <p:selectOneMenu value="#{paySalaryGradeController.searchParameter.keyParam}" style="width: 150px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemLabel="#{appmsg['paysalarygrade.grade']}" itemValue="gradeSalary"/>
+                                        <!--<f:selectItem itemLabel="#{appmsg['paysalarygrade.grade']}" itemValue="gradeSalary"/>-->
                                         <f:selectItem itemLabel="#{appmsg['paysalarygrade.min_salary']}" itemValue="minSalary"/>
                                         <f:selectItem itemLabel="#{appmsg['paysalarygrade.medium_salary']}" itemValue="mediumSalary"/>
                                         <f:selectItem itemLabel="#{appmsg['paysalarygrade.max_salary']}" itemValue="maxSalary"/>
                                         <f:selectItem itemLabel="#{appmsg['currency.currency']}" itemValue="currency"/>
+                                        <p:ajax update="inputText,inputNumber" process="@this" listener="#{paySalaryGradeController.doChangeInputNumberOrText()}"/>
                                     </p:selectOneMenu>
-                                    <p:inputText id="searchId" value="#{paySalaryGradeController.searchParameter.parameter}" style="width: 250px" styleClass="label_button"/>
+                                    <h:panelGroup id="inputText">
+                                        <p:inputText id="searchId" value="#{paySalaryGradeController.searchParameter.parameter}" rendered="#{paySalaryGradeController.isRenderedTextField}" style="width: 250px" styleClass="label_button"/>
+                                    </h:panelGroup>
+                                    <h:panelGroup id="inputNumber">
+                                        <pe:inputNumber id="searchNumber" value="#{paySalaryGradeController.searchParameter.parameter}" rendered="#{paySalaryGradeController.isRenderedNumberField}" style="width: 250px" styleClass="label_button"/>
+                                    </h:panelGroup>
                                     <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{paySalaryGradeController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
@@ -130,7 +136,7 @@
                                 <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" ajax="true"
                                                   action="#{paySalaryGradeController.doEdit()}" >
                                     <f:setPropertyActionListener value="#{data}" target="#{paySalaryGradeController.selected}" />
-                                    <p:ajax event="dialogReturn" listener="#{paySalaryGradeController.onDialogReturn}" update="tableId" />
+                                    <p:ajax event="dialogReturn" listener="#{paySalaryGradeController.onDialogReturn}" update="tableId, :formId:growlId" />
                                 </p:commandButton> 
                             </p:column> 
                             <f:facet name="footer">
