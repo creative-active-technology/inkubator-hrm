@@ -40,12 +40,18 @@ public class PaySalaryGradeViewController extends BaseController{
     private PaySalaryGradeSearchParameter searchParameter;
     private LazyDataModel<PaySalaryGrade> lazy;
     private PaySalaryGrade selected;
+    private Boolean isRendered;
+    private Boolean isRenderedTextField;
+    private Boolean isRenderedNumberField;
 
     @PostConstruct
     @Override
     public void initialization() {
         super.initialization();
         searchParameter = new PaySalaryGradeSearchParameter();
+        isRendered = Boolean.FALSE;
+        isRenderedTextField = Boolean.TRUE;
+        isRenderedNumberField = Boolean.FALSE;
     }
     
     @PreDestroy
@@ -54,10 +60,26 @@ public class PaySalaryGradeViewController extends BaseController{
         lazy=null;
         service=null;
         selected=null;
+        isRendered=null;
+        isRenderedNumberField = null;
+        isRenderedTextField = null;
     }
     
     public void doSearch() {
         lazy = null;
+    }
+    
+    public void doChangeInputNumberOrText(){
+        searchParameter.setParameter(null);
+        if(searchParameter.getKeyParam().equals("minSalary") || searchParameter.getKeyParam().equals("mediumSalary") || searchParameter.getKeyParam().equals("maxSalary")){
+            isRenderedNumberField = Boolean.TRUE;
+            isRenderedTextField = Boolean.FALSE;
+            System.out.println(isRenderedNumberField + " " + isRenderedTextField);
+        }else{
+            isRenderedNumberField = Boolean.FALSE;
+            isRenderedTextField = Boolean.TRUE;
+            System.out.println(isRenderedNumberField + " " + isRenderedTextField);
+        }
     }
     
     public void doDelete() {
@@ -148,6 +170,30 @@ public class PaySalaryGradeViewController extends BaseController{
 
     public void setSelected(PaySalaryGrade selected) {
         this.selected = selected;
+    }
+
+    public Boolean getIsRendered() {
+        return isRendered;
+    }
+
+    public void setIsRendered(Boolean isRendered) {
+        this.isRendered = isRendered;
+    }
+
+    public Boolean getIsRenderedTextField() {
+        return isRenderedTextField;
+    }
+
+    public void setIsRenderedTextField(Boolean isRenderedTextField) {
+        this.isRenderedTextField = isRenderedTextField;
+    }
+
+    public Boolean getIsRenderedNumberField() {
+        return isRenderedNumberField;
+    }
+
+    public void setIsRenderedNumberField(Boolean isRenderedNumberField) {
+        this.isRenderedNumberField = isRenderedNumberField;
     }
     
     
