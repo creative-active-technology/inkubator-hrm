@@ -24,6 +24,8 @@ public interface TempProcessReadFingerDao extends IDAO<TempProcessReadFinger> {
 
 	public Long getTotalDataFingerRealizationByParam(DataFingerRealizationSearchParameter searchParameter);
 
-	public void deleteByScheduleDate(Date fromPeriode, Date untilPeriode);
+	public void deleteByScheduleDateAndIsNotCorrection(Date fromPeriode, Date untilPeriode);
+	
+	public TempProcessReadFinger getEntityByEmpDataIdAndScheduleDateAndScheduleInAndScheduleOut(Long empDataId, Date scheduleDate, Date scheduleIn, Date scheduleOut);
 	
 }

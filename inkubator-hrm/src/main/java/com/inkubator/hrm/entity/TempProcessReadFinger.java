@@ -12,10 +12,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 
 @Entity
-@Table(name = "temp_process_read_finger", catalog = "hrm")
+@Table(name = "temp_process_read_finger", catalog = "hrm", uniqueConstraints = @UniqueConstraint(columnNames= {"emp_data_id", "schedule_date", "schedule_in", "schedule_out"}))
 public class TempProcessReadFinger implements Serializable {
 
     private Long id;
