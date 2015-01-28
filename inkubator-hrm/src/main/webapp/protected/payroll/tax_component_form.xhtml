@@ -34,16 +34,16 @@
                     </h:panelGrid> 
                     <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
                         <p:row>
-                            <p:column style="width: 29%">
+                            <p:column style="width: 49%">
                                 <p:outputLabel for="nameId" value="#{appmsg['taxComponent.taxComponent_name']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="nameId" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 70%">
+                            <p:column  style="width: 50%">
                                 <p:focus for ="nameId">
                                     <p:inputText id="nameId" title="#{appmsg['taxComponent.taxComponent_name']}" value="#{taxComponentFormController.taxComponentModel.name}" 
-                                    			 required="true" requiredMessage="#{appmsg['taxComponent.taxComponent_name_should_not_be_empty']}" maxlength="60" styleClass="isitext_hrm" style="width:250px;" />
+                                    			 required="true" requiredMessage="#{appmsg['taxComponent.taxComponent_name_should_not_be_empty']}" maxlength="60" styleClass="isitext_hrm"  />
                                 </p:focus>
                             </p:column>
                         </p:row>

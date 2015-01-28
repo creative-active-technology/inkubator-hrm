@@ -42,11 +42,11 @@
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3" >
-                                    <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']}" actionListener="#{organizationLetterViewController.doAdd()}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
-                                        <p:ajax event="dialogReturn" listener="#{organizationLetterViewController.onDialogReturn}"  update="tableOrganizationLetterId,:growlOrganizationLetterViewlId"/>
-                                    </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.export']}" style="margin-right: 5px" icon="ui-icon-calculator" title="#{appmsg['global.export_excel']}" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
                                         <pe:exporter target="tableOrganizationLetterId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Organization_Letter"/>
+                                    </p:commandButton>
+                                    <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']}" actionListener="#{organizationLetterViewController.doAdd()}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
+                                        <p:ajax event="dialogReturn" listener="#{organizationLetterViewController.onDialogReturn}"  update="tableOrganizationLetterId,:growlOrganizationLetterViewlId"/>
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{organizationLetterViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
                                 </h:panelGrid>

@@ -68,25 +68,25 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="ed.nik" style="width: 10%">
+                            <p:column sortBy="ed.nik" style="text-align: left;width: 10%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.nik']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.empData.nik}" />
                             </p:column>
-                            <p:column sortBy="bio.firstName" style="width: 25%">
+                            <p:column sortBy="bio.firstName" style="text-align: left;width: 25%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['personachievement.employee_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.empData.bioData.firstName} #{data.empData.bioData.lastName}" />
                             </p:column>
-                            <p:column sortBy="l.name" style="width: 20%">
+                            <p:column sortBy="l.name" style="text-align: left;width: 15%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['leavedistribution.leave_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.leave.name}" />
                             </p:column>
-                            <p:column sortBy="startDate" style="width: 10%">
+                            <p:column sortBy="startDate" style="text-align: left;width: 12%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.start_date']}"/>
                                 </f:facet>
@@ -94,7 +94,7 @@
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
                                 </p:outputLabel>
                             </p:column>
-                            <p:column sortBy="endDate" style="width: 10%">
+                            <p:column sortBy="endDate" style="text-align: left;width: 13%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.end_date']}"/>
                                 </f:facet>
@@ -102,7 +102,7 @@
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
                                 </p:outputLabel>
                             </p:column>
-                            <p:column sortBy="balance" style="width: 10%">
+                            <p:column sortBy="balance" style="text-align: left;width: 10%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['costcenter.balance']}"/>
                                 </f:facet>

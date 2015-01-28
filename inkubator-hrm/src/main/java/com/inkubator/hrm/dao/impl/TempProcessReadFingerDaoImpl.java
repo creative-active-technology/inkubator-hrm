@@ -128,12 +128,23 @@ public class TempProcessReadFingerDaoImpl extends IDAOImpl<TempProcessReadFinger
     }
 
 	@Override
-	public void deleteByScheduleDate(Date fromPeriode, Date untilPeriode) {
-		Query query = getCurrentSession().createQuery("delete from TempProcessReadFinger temp where temp.scheduleDate >= :fromPeriode and temp.scheduleDate <= :untilPeriode")
+	public void deleteByScheduleDateAndIsNotCorrection(Date fromPeriode, Date untilPeriode) {
+		Query query = getCurrentSession().createQuery("delete from TempProcessReadFinger temp where temp.scheduleDate >= :fromPeriode and temp.scheduleDate <= :untilPeriode and not(isCorrectionIn = 1 or isCorrectionOut = 1)")
 				.setDate("fromPeriode", fromPeriode)
 				.setDate("untilPeriode", untilPeriode);
         query.executeUpdate();
 		
+	}
+
+	@Override
+	public TempProcessReadFinger getEntityByEmpDataIdAndScheduleDateAndScheduleInAndScheduleOut(
+			Long empDataId, Date scheduleDate, Date scheduleIn, Date scheduleOut) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("empData.id", empDataId));
+		criteria.add(Restrictions.eq("scheduleDate", scheduleDate));
+		criteria.add(Restrictions.eq("scheduleIn", scheduleIn));
+		criteria.add(Restrictions.eq("scheduleOut", scheduleOut));
+		return (TempProcessReadFinger) criteria.uniqueResult();
 	}
 
 }
