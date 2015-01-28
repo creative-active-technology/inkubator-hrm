@@ -203,7 +203,7 @@ public class OverTimeDistributionFormController extends BaseController {
             overTimeDistributionService.savePenempatanOt(dataToSave, ovetTimeModel.getOverTimeId());
             MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-            return "/protected/employee/over_time_distribution_view.htm?faces-redirect=true";
+            return "/protected/employee/ot_distribution_view.htm?faces-redirect=true";
         } catch (BussinessException ex) { 
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex) {
@@ -234,7 +234,7 @@ public class OverTimeDistributionFormController extends BaseController {
 //        this.selecedLeave = selecedLeave;
 //    }
     public String doBack() {
-        return "/protected/employee/over_time_distribution_view.htm?faces-redirect=true";
+        return "/protected/employee/ot_distribution_view.htm?faces-redirect=true";
     }
 
     public List<WtOverTime> getListWtOverTime() {
