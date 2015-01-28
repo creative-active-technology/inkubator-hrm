@@ -1,24 +1,8 @@
 package com.inkubator.hrm.web.report;
 
 import com.inkubator.hrm.entity.ApprovalActivity;
-import com.inkubator.hrm.entity.ApprovalDefinitionLeave;
-import java.util.List;
-
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
-
-import org.primefaces.model.LazyDataModel;
-
-import com.inkubator.hrm.entity.Department;
-import com.inkubator.hrm.entity.EmpData;
-import com.inkubator.hrm.entity.Leave;
 import com.inkubator.hrm.entity.LeaveImplementation;
 import com.inkubator.hrm.service.ApprovalActivityService;
-import com.inkubator.hrm.service.ApprovalDefinitionLeaveService;
-import com.inkubator.hrm.service.DepartmentService;
 import com.inkubator.hrm.service.LeaveImplementationService;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.web.lazymodel.LeaveImplementationReportSearchLazyDataModel;
@@ -27,10 +11,16 @@ import com.inkubator.hrm.web.search.LeaveImplementationReportSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.controller.BaseController;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
 import org.apache.commons.lang3.StringUtils;
-import org.hibernate.validator.constraints.Email;
+import org.primefaces.model.LazyDataModel;
 
 /**
  *

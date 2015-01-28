@@ -94,7 +94,7 @@ public class ImplementationOfOverTimeDetailController extends BaseController{
     }
     
     public String doBack() {
-        return "/protected/employee/overtime_implementation_view.htm?faces-redirect=true";
+        return "/protected/employee/ot_implementation_view.htm?faces-redirect=true";
     }
 
     public String doUpdate() {
