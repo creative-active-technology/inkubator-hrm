@@ -167,6 +167,10 @@ public class UnregSalaryEmpSettingFormController extends BaseController {
                 FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
     }
 
+    public String doBack() {
+        return "/protected/payroll/unreg_salary_view.htm?faces-redirect=true";
+    }
+        
     @Override
     public void onDialogReturn(SelectEvent event) {
         super.onDialogReturn(event);
