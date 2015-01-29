@@ -76,7 +76,7 @@ public class ReimbursmentApprovalFormController extends BaseController {
             JsonElement elReimbursmentFile = jsonObject.get("reimbursmentFileName");
             reimbursmentFileName = elReimbursmentFile.isJsonNull() ? StringUtils.EMPTY : elReimbursmentFile.getAsString();
             if (reimbursmentFileName.equals(StringUtils.EMPTY)) {
-                System.out.println("masukk===");
+                
                 isDownload = Boolean.FALSE;
             }
             EmpData empData = empDataService.getByIdWithDetail(reimbursment.getEmpData().getId());

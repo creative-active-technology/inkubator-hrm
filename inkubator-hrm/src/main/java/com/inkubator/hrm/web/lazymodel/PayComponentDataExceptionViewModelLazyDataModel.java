@@ -46,7 +46,7 @@ public class PayComponentDataExceptionViewModelLazyDataModel extends LazyDataMod
                 order = Order.desc("name");
             }
             payComponentDataExceptionList = service.getByParamWithDetailForDataException(parameter, first, pageSize, order);
-//            System.out.println(parameter.getName()+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+
             jumlahData = Integer.parseInt(String.valueOf(service.getTotalByParamDataException(parameter)));
         } catch (Exception ex) {
             LOGGER.error("Error", ex);

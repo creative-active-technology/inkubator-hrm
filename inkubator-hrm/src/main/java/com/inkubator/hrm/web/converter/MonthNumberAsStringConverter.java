@@ -31,7 +31,7 @@ public class MonthNumberAsStringConverter implements Converter {
         String data = value.toString();
         Integer month = Integer.valueOf(data);
         DateFormatSymbols dfs = new DateFormatSymbols(new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
-        System.out.println("hahahha");
+        
         return dfs.getMonths()[month - 1];
     }
     

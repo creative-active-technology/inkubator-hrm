@@ -58,7 +58,7 @@ public class WtFingerExceptionViewController extends BaseController {
     }
     
     public String doAdd() {
-        return "/protected/working_time/wt_finger_exception_form.htm?faces-redirect=true";
+        return "/protected/working_time/wt_finger_ex_form.htm?faces-redirect=true";
     }
     
      public void doUpdate() {
@@ -76,7 +76,7 @@ public class WtFingerExceptionViewController extends BaseController {
         options.put("resizable", false);
         options.put("contentWidth", 420);
         options.put("contentHeight", 300);
-        RequestContext.getCurrentInstance().openDialog("wt_finger_exception_edit", options, params);
+        RequestContext.getCurrentInstance().openDialog("wt_finger_ex_edit", options, params);
     }
     
     @Override

@@ -82,7 +82,7 @@ public class ResourceTypeFormController extends BaseController{
     }
     
     public void doSave() {
-        System.out.println("masuk dosave");
+        
         ResourceType resourceType = getEntityFromViewModel(model);
         try {
             if (isUpdate) {

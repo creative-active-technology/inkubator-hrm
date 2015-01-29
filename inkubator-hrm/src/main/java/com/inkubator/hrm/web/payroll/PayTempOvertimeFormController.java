@@ -79,11 +79,11 @@ public class PayTempOvertimeFormController extends BaseController {
             MessagesResourceUtil.setMessagesFromException(FacesMessage.SEVERITY_ERROR, "global.error", errorMsg, FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         }
 
-        System.out.println(fileName);
+        
     }
 
     public void doSave() throws IOException {
-        System.out.println("masuk do save");
+        
         String pathUpload = facesIO.getPathUpload() + fileName;
         if (file != null) {
             facesIO.transferFile(file);
@@ -96,7 +96,7 @@ public class PayTempOvertimeFormController extends BaseController {
                     .addString("createdBy", UserInfoUtil.getUserName())
                     .addString("timeInMilis", String.valueOf(System.currentTimeMillis())).toJobParameters();
             JobExecution jobExecution = jobLauncher.run(jobPayTempOvertimeUpload, jobParameters);
-            System.out.println("Exit Status : " + jobExecution.getStatus());
+            
 
             //remove file upload
             //remove physical file

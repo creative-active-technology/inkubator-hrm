@@ -141,18 +141,18 @@ public class LeaveImplementationFormController extends BaseController {
         	
             if (isUpdate) {
                 leaveImplementationService.update(leaveImplementation);
-                path = "/protected/working_time/leave_implementation_detail.htm?faces-redirect=true&execution=e" + leaveImplementation.getId();
+                path = "/protected/working_time/leave_impl_detail.htm?faces-redirect=true&execution=e" + leaveImplementation.getId();
                 MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 
             } else {
             	String message = leaveImplementationService.save(leaveImplementation, false);
             	if(StringUtils.equals(message, "success_need_approval")){
-            		path = "/protected/working_time/leave_implementation_view.htm?faces-redirect=true";
+            		path = "/protected/working_time/leave_impl_view.htm?faces-redirect=true";
             		MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully_and_requires_approval",
             				FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             	} else {
-            		path = "/protected/working_time/leave_implementation_detail.htm?faces-redirect=true&execution=e" + leaveImplementation.getId();
+            		path = "/protected/working_time/leave_impl_detail.htm?faces-redirect=true&execution=e" + leaveImplementation.getId();
             		MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
             				FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             	}
@@ -210,7 +210,7 @@ public class LeaveImplementationFormController extends BaseController {
     }
 
     public String doBack() {
-        return "/protected/working_time/leave_implementation_view.htm?faces-redirect=true";
+        return "/protected/working_time/leave_impl_view.htm?faces-redirect=true";
     }
 
     public List<EmpData> doAutoCompleteEmployee(String param){

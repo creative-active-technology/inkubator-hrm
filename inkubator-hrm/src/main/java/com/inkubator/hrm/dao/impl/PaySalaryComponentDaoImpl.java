@@ -211,7 +211,7 @@ public class PaySalaryComponentDaoImpl extends IDAOImpl<PaySalaryComponent> impl
         } else {
             query.append(" order by B." + order);
         }
-        System.out.println(searchParameter.getName() + " atuh lah " + searchParameter.getCode());
+        
         query.append(" LIMIT " + firstResult + ", " + maxResults);
 
         return getCurrentSession().createSQLQuery(query.toString())
@@ -231,7 +231,7 @@ public class PaySalaryComponentDaoImpl extends IDAOImpl<PaySalaryComponent> impl
             query.append(" WHERE B.name like '%" + searchParameter.getName() + "%'");
         }
         query.append(" GROUP BY B.name) as totalData");
-        System.out.println(query.toString());
+        
         Query hbm = getCurrentSession().createSQLQuery(query.toString());
         return Long.valueOf(hbm.uniqueResult().toString());
 

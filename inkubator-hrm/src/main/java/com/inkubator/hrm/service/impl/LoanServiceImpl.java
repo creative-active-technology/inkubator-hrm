@@ -560,7 +560,6 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
         for (Loan loan : listLoan) {
              approvalTime = approvalActivityDao.getApprovalTimeByApprovalActivityNumber(loan.getApprovalActivityNumber());
              loan.setApprovalTime(approvalTime.getApprovalTime());
-//             System.out.println(approvalTime.get(0)+"hoho");
         }
         return listLoan;
     }

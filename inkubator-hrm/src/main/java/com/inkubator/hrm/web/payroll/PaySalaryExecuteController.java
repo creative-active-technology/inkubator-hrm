@@ -130,7 +130,7 @@ public class PaySalaryExecuteController extends BaseController {
     	 *  please see onComplete method that will set jobExecution == null */
     	if(jobExecution == null){ 
 	        try {
-	        	System.out.println("=============================================START doCalculatePayroll " + new Date());
+	        	
 	        	payTempKalkulasiService.deleteAllData();
 	        	payTempKalkulasiEmpPajakService.deleteAllData();
 	            long sleepVariable = empDataService.getTotalEmpDataNotTerminate() * 3;
@@ -155,7 +155,7 @@ public class PaySalaryExecuteController extends BaseController {
 	            		break;
 	            	}
 	            }
-	            System.out.println("=============================================END doCalculatePayroll " + new Date());
+	            
 	        } catch (Exception ex) {
 	            LOGGER.error("Error ", ex);
 	        }

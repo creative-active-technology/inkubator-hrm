@@ -124,7 +124,7 @@ public class UnregSalaryEmpSettingFormController extends BaseController {
                 empTypeSource.removeAll(employeeTypes);
                 empTypeDualListModel = new DualListModel<>(empTypeSource, employeeTypes);
             }
-            System.out.println(unregSalaryId + "hohoho");
+            
         } catch (Exception e) {
             LOGGER.error("Error", e);
         }
@@ -157,7 +157,7 @@ public class UnregSalaryEmpSettingFormController extends BaseController {
     }
 
     public void doSave() throws Exception {
-        System.out.println("hohohaosdf");
+        
         List<GolonganJabatan> listGolonganJabatan = goljabDualListModel.getTarget();
         List<Department> listDepartement = departmentDualListModel.getTarget();
         List<Religion> listReligion = religionDualListModel.getTarget();

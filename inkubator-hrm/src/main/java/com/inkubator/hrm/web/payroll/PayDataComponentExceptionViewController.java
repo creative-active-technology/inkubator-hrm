@@ -52,7 +52,7 @@ public class PayDataComponentExceptionViewController extends BaseController {
     }
 
     public String doDetailForDataException() {
-        return "/protected/payroll/pay_component_exception_detail.htm?faces-redirect=true&execution=e" + selected.getPaySalaryComponentId();
+        return "/protected/payroll/pay_comp_ex_detail.htm?faces-redirect=true&execution=e" + selected.getPaySalaryComponentId();
     }
     
     public PaySalaryComponentService getService() {

@@ -106,7 +106,7 @@ public class OverTimeDistributionViewController extends BaseController{
         options.put("resizable", false);
         options.put("contentWidth", 400);
         options.put("contentHeight", 300);
-        RequestContext.getCurrentInstance().openDialog("ot_distribution_edit_form", options, params);
+        RequestContext.getCurrentInstance().openDialog("ot_distribution_edit", options, params);
     }
     
     @Override

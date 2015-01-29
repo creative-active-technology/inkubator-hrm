@@ -198,7 +198,7 @@ public class CompanyDetailController extends BaseController {
         options.put("resizable", false);
         options.put("contentWidth", 550);
         options.put("contentHeight", 350);
-        RequestContext.getCurrentInstance().openDialog("company_bank_account_form", options, params);
+        RequestContext.getCurrentInstance().openDialog("company_bank_account", options, params);
     }
 
     public void onDialogReturnCompanyBankAccount(SelectEvent event) {
@@ -269,7 +269,7 @@ public class CompanyDetailController extends BaseController {
         options.put("resizable", false);
         options.put("contentWidth", 500);
         options.put("contentHeight", 350);
-        RequestContext.getCurrentInstance().openDialog("company_financial_partner_form", options, params);
+        RequestContext.getCurrentInstance().openDialog("company_financial_partner", options, params);
     }
 
     public void onDialogReturnFinancialPartner(SelectEvent event) {

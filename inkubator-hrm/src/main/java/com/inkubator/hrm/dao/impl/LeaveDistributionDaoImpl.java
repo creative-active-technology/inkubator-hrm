@@ -71,7 +71,7 @@ public class LeaveDistributionDaoImpl extends IDAOImpl<LeaveDistribution> implem
         }
         if (searchParameter.getNik() != null) {
 //            criteria.createAlias("empData", "ed", JoinType.INNER_JOIN);
-            System.out.println(" disiisiisisisi");
+            
             criteria.add(Restrictions.like("ed.nik", searchParameter.getNik(), MatchMode.ANYWHERE));
         }
         criteria.add(Restrictions.isNotNull("id"));

@@ -67,7 +67,7 @@ public class EmpPtkpViewController extends BaseController {
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", false);
-        options.put("contentWidth", 400);
+        options.put("contentWidth", 520);
         options.put("contentHeight", 280);
         RequestContext.getCurrentInstance().openDialog("emp_ptkp_form", options, params);
     }

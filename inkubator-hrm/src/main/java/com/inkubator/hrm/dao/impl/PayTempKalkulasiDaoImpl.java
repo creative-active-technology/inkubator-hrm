@@ -91,7 +91,7 @@ public class PayTempKalkulasiDaoImpl extends IDAOImpl<PayTempKalkulasi> implemen
             query.append(" AND B.name like :name ");
         }
         query.append(" GROUP BY B.name) AS jumlahRow");
-//        System.out.println(query.toString());
+
         if (searchParameter != null) {
             Query hbm = getCurrentSession().createSQLQuery(query.toString()).setParameter("name", '%' + searchParameter + '%');
             return Long.valueOf(hbm.uniqueResult().toString());
@@ -238,7 +238,7 @@ public class PayTempKalkulasiDaoImpl extends IDAOImpl<PayTempKalkulasi> implemen
         } else {
             query.append(" order by B." + order);
         }
-        System.out.println();
+        
         if (searchParameter != null) {
             return getCurrentSession().createQuery(query.toString())
                     .setParameter("name", '%' + searchParameter + '%')

@@ -108,7 +108,7 @@ public class PaySalaryGradePositionViewController extends BaseController{
         List<String> dataIsi = new ArrayList<>();
         dataIsi.add(String.valueOf(selectedJabatan.getId()));
         dataToSend.put("param", dataIsi);
-        RequestContext.getCurrentInstance().openDialog("pay_salary_grade_position_form", options, dataToSend);
+        RequestContext.getCurrentInstance().openDialog("pay_salary_grade_pos_form", options, dataToSend);
     }
     
     public void doDetail() throws Exception{

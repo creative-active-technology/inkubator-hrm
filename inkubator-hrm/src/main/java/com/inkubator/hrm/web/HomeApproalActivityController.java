@@ -108,16 +108,16 @@ public class HomeApproalActivityController extends BaseController {
                     break;
                 case HRMConstant.LEAVE:
                 	if(ObjectUtils.equals(HRMConstant.APPROVAL_STATUS_REJECTED, selectedApprovalActivity.getApprovalStatus())){
-                		redirect = "/protected/working_time/leave_implementation_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
+                		redirect = "/protected/working_time/leave_impl_appr_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
                 	} else {
-                		redirect = "/protected/working_time/leave_implementation_detail.htm?faces-redirect=true&execution=a" + selectedApprovalActivity.getActivityNumber();
+                		redirect = "/protected/working_time/leave_impl_detail.htm?faces-redirect=true&execution=a" + selectedApprovalActivity.getActivityNumber();
                 	}                    
                     break;
                 case HRMConstant.LEAVE_CANCELLATION:
-                	redirect = "/protected/working_time/leave_implementation_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
+                	redirect = "/protected/working_time/leave_impl_appr_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
                     break;
                 case HRMConstant.OVERTIME:
-                    redirect = "/protected/employee/overtime_implementation_detail.htm?faces-redirect=true&execution=a" + selectedApprovalActivity.getActivityNumber();
+                    redirect = "/protected/employee/ot_impl_detail.htm?faces-redirect=true&execution=a" + selectedApprovalActivity.getActivityNumber();
                     break;
                 default:
                     break;
@@ -136,7 +136,7 @@ public class HomeApproalActivityController extends BaseController {
             selectedApprovalActivity = approvalActivityService.getEntityByPkWithDetail(selectedApprovalActivity.getId());
             switch (selectedApprovalActivity.getApprovalDefinition().getName()) {
                 case HRMConstant.BUSINESS_TRAVEL:
-                    redirect = "/protected/personalia/business_travel_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
+                    redirect = "/protected/personalia/business_travel_appr_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
                     break;
                 case HRMConstant.REIMBURSEMENT:
                     redirect = "/protected/personalia/reimbursment_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
@@ -148,13 +148,13 @@ public class HomeApproalActivityController extends BaseController {
                     redirect = "/protected/personalia/schedule_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
                     break;
                 case HRMConstant.LEAVE:
-                    redirect = "/protected/working_time/leave_implementation_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
+                    redirect = "/protected/working_time/leave_impl_appr_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
                     break;
                 case HRMConstant.LEAVE_CANCELLATION:
-                    redirect = "/protected/working_time/leave_implementation_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
+                    redirect = "/protected/working_time/leave_impl_appr_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
                     break;
                 case HRMConstant.OVERTIME:
-                    redirect = "/protected/employee/overtime_implementation_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
+                    redirect = "/protected/employee/ot_impl_approval.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
                     break;
                 default:
                     break;
@@ -180,6 +180,6 @@ public class HomeApproalActivityController extends BaseController {
         options.put("resizable", true);
         options.put("contentWidth", 1000);
         options.put("contentHeight", 300);
-        RequestContext.getCurrentInstance().openDialog("approval_activity_pending_request_view", options, dataToSend);
+        RequestContext.getCurrentInstance().openDialog("appr_act_pending_req_view", options, dataToSend);
     }
 }

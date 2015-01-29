@@ -278,7 +278,7 @@ public class CityFormController extends BaseController {
     }
 
     public void onPointSelect(PointSelectEvent event) {
-//        System.out.println("Map Clicked");
+
         emptyModel.getMarkers().clear();
         LatLng location = event.getLatLng();
 
@@ -299,8 +299,7 @@ public class CityFormController extends BaseController {
             defaultLng = Double.parseDouble(country.getLongitude());
 
             List<Province> listProvinces = provinceService.getByCountryIdWithDetail(Long.parseLong(String.valueOf(event.getNewValue())));
-            System.out.println("list province " + listProvinces);
-            System.out.println("ukuran " + listProvinces.size());
+            
             if (listProvinces.isEmpty() || listProvinces == null) {
                 disabled = Boolean.TRUE;
                 

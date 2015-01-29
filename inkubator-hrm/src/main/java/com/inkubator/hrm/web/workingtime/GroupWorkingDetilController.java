@@ -100,7 +100,7 @@ public class GroupWorkingDetilController extends BaseController {
 
     @PreDestroy
     private void cleanAndExit() {
-        System.out.println(" di eksekuskiiii");
+        
         wtGroupWorkingService = null;
         wtScheduleShiftService = null;
         selectedWtGroupWorking = null;
@@ -108,7 +108,7 @@ public class GroupWorkingDetilController extends BaseController {
     }
 
     public void doD() {
-        System.out.println(" hddfsjkgdsfkdsfj asdasssssssssssssssss");
+        
     }
 
     private int number = 1;
@@ -118,7 +118,7 @@ public class GroupWorkingDetilController extends BaseController {
     }
 
     public void increment() {
-        System.out.println(" hsfsdjfdsjfhdsjfh");
+        
         number++;
     }
 }

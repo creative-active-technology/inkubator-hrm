@@ -162,7 +162,7 @@ public class EmpDataViewController extends BaseController {
 
     @Override
     public void onDialogReturn(SelectEvent event) {
-        System.out.println(" hahahahah");
+        
         super.onDialogReturn(event);
     }
 

@@ -82,7 +82,7 @@ public class TravelComponentCostRateDaoImpl extends IDAOImpl<TravelComponentCost
             criteria.add(Restrictions.like("tc.name", searchParameter.getTravelComponent(), MatchMode.START));
         }
         if (StringUtils.isNotEmpty(searchParameter.getTravelZone())) {
-            System.out.println("asup");
+           
             criteria.createAlias("travelZone", "tz", JoinType.INNER_JOIN);
             criteria.add(Restrictions.like("tz.name", searchParameter.getTravelZone(), MatchMode.START));
         }

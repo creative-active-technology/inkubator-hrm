@@ -94,7 +94,7 @@ public class ReimbursmentSchemaFormController extends BaseController{
                         isRatioSalary = Boolean.FALSE;
                     }
                 }
-                System.out.println(reimbursmentSchema.getMeasurement()+"--------------------"+HRMConstant.REIMBURSMENT_UNIT);
+                
                 if(reimbursmentSchema.getMeasurement() == HRMConstant.REIMBURSMENT_UNIT){
                     isUnit = Boolean.FALSE;
                     isNominal = Boolean.TRUE;

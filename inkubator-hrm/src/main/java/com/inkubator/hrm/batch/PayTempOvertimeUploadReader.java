@@ -36,7 +36,7 @@ public class PayTempOvertimeUploadReader implements ItemReader<PayTempOvertimeFi
     private PoiItemReader<PayTempOvertimeFileModel> excelFileReader;
 
     public PayTempOvertimeUploadReader(String filePath) {
-        System.out.println("masuk upload reader");
+        
         this.extension = StringUtils.substringAfterLast(filePath, ".");
         this.pathUpload = filePath;
 
@@ -48,7 +48,7 @@ public class PayTempOvertimeUploadReader implements ItemReader<PayTempOvertimeFi
     }
 
     private void initializationCsvReader(String filePath) {
-        System.out.println("masuk ke csv");
+        
         //read a CSV file
         Resource resource = new FileSystemResource(filePath);
 
@@ -73,7 +73,7 @@ public class PayTempOvertimeUploadReader implements ItemReader<PayTempOvertimeFi
     }
 
     private void initializationExcelReader(String filePath) {
-        System.out.println("masuk excel");
+        
         //read a Excel file
         Resource resource = new FileSystemResource(filePath);
 

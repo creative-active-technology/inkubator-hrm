@@ -284,7 +284,7 @@ public class HospitalFormController extends BaseController {
 
     public void provinceChanged(ValueChangeEvent event) {
         try {
-            System.out.println("Province Id  " + hospitalModel.getProvinceId());
+            
 
             Province province = provinceService.getEntiyByPK(Long.parseLong(String.valueOf(event.getNewValue())));
 

@@ -89,7 +89,7 @@ public class LeaveImplementationViewController extends BaseController {
     }
 
     public String doDetail() {
-        return "/protected/working_time/leave_implementation_detail.htm?faces-redirect=true&execution=e" + selectedLeaveImplementation.getId();
+        return "/protected/working_time/leave_impl_detail.htm?faces-redirect=true&execution=e" + selectedLeaveImplementation.getId();
     }
 
     public void doSelectEntity() {
@@ -114,14 +114,14 @@ public class LeaveImplementationViewController extends BaseController {
     }
     
     public String doCancellation() {
-    	return "/protected/working_time/leave_implementation_cancel.htm?faces-redirect=true&execution=e" + selectedLeaveImplementation.getId();
+    	return "/protected/working_time/leave_impl_cancel.htm?faces-redirect=true&execution=e" + selectedLeaveImplementation.getId();
     }
 
     public String doAdd() {
-        return "/protected/working_time/leave_implementation_form.htm?faces-redirect=true";
+        return "/protected/working_time/leave_impl_form.htm?faces-redirect=true";
     }
 
     public String doUpdate() {
-        return "/protected/working_time/leave_implementation_form.htm?faces-redirect=true&execution=e" + selectedLeaveImplementation.getId();
+        return "/protected/working_time/leave_impl_form.htm?faces-redirect=true&execution=e" + selectedLeaveImplementation.getId();
     }
 }
