@@ -162,7 +162,7 @@ public class TempJadwalKaryawanDaoImpl extends IDAOImpl<TempJadwalKaryawan> impl
         Date dateFrom = DateTimeUtil.getDateFrom(dateUntil, -value, CommonUtilConstant.DATE_FORMAT_MONTH);
         System.out.println(" Tanggal Awal : " + dateFrom);        
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());         
-        criteria.add(Restrictions.lt("createdOn", dateFrom));       
+        criteria.add(Restrictions.lt("tanggalWaktuKerja", dateFrom));       
         return criteria.list();
     }
 
