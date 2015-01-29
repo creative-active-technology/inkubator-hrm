@@ -47,7 +47,7 @@ public class EducationNonFormalDaoImpl extends IDAOImpl<EducationNonFormal> impl
     }
 
     private void doSearchByParam(EducationNonFormalSearchParameter parameter, Criteria criteria) {
-        System.out.println(parameter.getName());
+        
         if (parameter.getName() != null) {
             criteria.add(Restrictions.like("name", parameter.getName(), MatchMode.ANYWHERE));
         }

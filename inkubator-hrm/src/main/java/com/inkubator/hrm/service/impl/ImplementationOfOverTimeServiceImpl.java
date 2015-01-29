@@ -114,7 +114,7 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
         TempJadwalKaryawan jadwalKaryawan = tempJadwalKaryawanService.getEntityByEmpDataIdAndTanggalWaktuKerja(entity.getEmpData().getId(), entity.getImplementationDate());
         if(jadwalKaryawan != null){
             if(entity.getStartTime().after(jadwalKaryawan.getWtWorkingHour().getWorkingHourBegin()) && entity.getEndTime().before(jadwalKaryawan.getWtWorkingHour().getWorkingHourEnd())){
-                System.out.println("diantara jadwal");
+                
                 throw new BussinessException("implementationovertime.time_is_in_your_working_hours");
             }
         }else{
@@ -360,21 +360,20 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
 // cara manual        
 //        JsonObject jsonObject = (JsonObject) jsonConverter.getClassFromJson(appActivity.getPendingData(), JsonObject.class);
 //        String locale = jsonObject.get("locale").getAsString();
-//        System.out.println(jsonObject.toString());
+
 //        String empData = jsonObject.get("empData").getAsString();
 //        TypeToken<List<Long>> token = new TypeToken<List<Long>>(){};
 //        
 //        List<EmpData> listEmpData = gson.fromJson(empData, token.getType());
-//        System.out.println(listEmpData);
+
         
         //parsing object data to json, for email purpose
         ImplementationOfOverTime implementationOfOverTime =  gson.fromJson(appActivity.getPendingData(), ImplementationOfOverTime.class);		
         final JSONObject jsonObj = new JSONObject();
         
-//        System.out.println(jsonObject.getAsString());
-        System.out.println(implementationOfOverTime.getOverTimeName()+"wkwkwkkwk");
+
         try {        
-            System.out.println("asup email approval");
+
             jsonObj.put("approvalActivityId", appActivity.getId());
             jsonObj.put("ccEmailAddresses", ccEmailAddresses);
             jsonObj.put("locale", appActivity.getLocale());
@@ -415,7 +414,7 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
         if(jadwalKaryawan != null){
             // check jika request start time dan end timenya terdapat dalam waktu kerjanya
             if(entity.getStartTime().after(jadwalKaryawan.getWtWorkingHour().getWorkingHourBegin()) && entity.getEndTime().before(jadwalKaryawan.getWtWorkingHour().getWorkingHourEnd())){
-                System.out.println("diantara jadwal");
+               
                 throw new BussinessException("implementationovertime.time_is_in_your_working_hours");
             }
         }else{
@@ -427,7 +426,7 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
         String createdBy = org.apache.commons.lang.StringUtils.isEmpty(wtOverTime.getCreatedBy()) ? UserInfoUtil.getUserName() : wtOverTime.getCreatedBy();
         Date createdOn = wtOverTime.getCreatedOn() == null ? new Date() : wtOverTime.getCreatedOn();
           
-        System.out.println(wtOverTime.getName() + "hahaha");
+        
         String overTimeName = wtOverTime.getName();
         entity.setEmpData(empData);
         entity.setWtOverTime(wtOverTime);
@@ -451,7 +450,7 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
             implementationOfOverTimeDao.save(entity);			
             message = "success_without_approval";
         } else {
-            System.out.println("belum masuk");
+           
         //parsing object to json and save to approval activity 
         Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
         approvalActivity.setPendingData( gson.toJson(entity));

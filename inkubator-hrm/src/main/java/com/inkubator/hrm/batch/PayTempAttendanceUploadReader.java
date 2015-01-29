@@ -86,7 +86,7 @@ public class PayTempAttendanceUploadReader implements ItemReader<PayTempAttendan
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-                System.out.println("selesai excel");
+                
 	}
 	
 	@Override

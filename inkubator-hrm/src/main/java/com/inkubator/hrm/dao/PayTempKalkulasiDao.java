@@ -48,10 +48,10 @@ public interface PayTempKalkulasiDao extends IDAO<PayTempKalkulasi> {
     
     public Long getTotalPayTempKalkulasiForSalaryJournal(String searchParameter);
     
-    public List<SalaryJournalModel> getByParamForSalaryJournalDebet();
+    public List<SalaryJournalModel> getByParamForSalaryJournalDebet(String searchParameter);
     
-    public List<SalaryJournalModel> getByParamForSalaryJournalKredit();
+    public List<SalaryJournalModel> getByParamForSalaryJournalKredit(String searchParameter);
     
-    public Long getTotalPayTempKalkulasiForSalaryJournalDebetAndKredit();
+    public Long getTotalPayTempKalkulasiForSalaryJournalDebetAndKredit(String searchParameter);
 
 }

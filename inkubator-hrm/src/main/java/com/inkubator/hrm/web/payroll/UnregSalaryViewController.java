@@ -130,7 +130,7 @@ public class UnregSalaryViewController extends BaseController {
     }
     
     public String doComponentSetting(){
-        return "/protected/payroll/unreg_component_setting.htm?faces-redirect=true&execution=e" + selectedViewModel.getUnregSalaryId();
+        return "/protected/payroll/unreg_comp_setting.htm?faces-redirect=true&execution=e" + selectedViewModel.getUnregSalaryId();
     }
     public UnregSalaryService getUnregSalaryService() {
         return unregSalaryService;

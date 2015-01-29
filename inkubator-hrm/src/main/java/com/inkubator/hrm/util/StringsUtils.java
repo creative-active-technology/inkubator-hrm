@@ -45,8 +45,7 @@ public class StringsUtils extends StringUtils {
             Matcher m = Pattern.compile("[\\W]").matcher(toCheck);
             while (m.find()) {
                 isContainsSC = true;
-//                System.out.println(m.start());
-//                System.out.println(m.group());
+
             }
         }
         return isContainsSC;

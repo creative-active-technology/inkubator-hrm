@@ -228,7 +228,7 @@ public class CountryFormController extends BaseController {
     public void handleFileUpload(FileUploadEvent event) {
         file = event.getFile();
         tipeImage = file.getContentType().split("/")[1];
-        System.out.println(" File " + file);
+        
         InputStream inputStream = null;
         try {
             inputStream = file.getInputstream();
@@ -236,7 +236,7 @@ public class CountryFormController extends BaseController {
             int type = sourceImage.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : sourceImage.getType();
             BufferedImage scaledImg = resizeImage(sourceImage, type);
             buffer = bufferToByteArray(scaledImg);
-            System.out.println("Buffernya : " + buffer);
+            
             if (buffer != null) {
                 FacesContext.getCurrentInstance().addMessage("formCountryFormId:flagUploadId", new FacesMessage(FacesMessage.SEVERITY_INFO, messages.getString("country.upload_info"), messages.getString("country.upload_successfully")));
             } else {
@@ -255,7 +255,7 @@ public class CountryFormController extends BaseController {
     }
 
     public void onPointSelect(PointSelectEvent event) {
-//        System.out.println("Map Clicked");
+
         emptyModel.getMarkers().clear();
         LatLng location = event.getLatLng();
 
@@ -281,7 +281,7 @@ public class CountryFormController extends BaseController {
 
     public byte[] bufferToByteArray(BufferedImage originalImage) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        System.out.println("TIpe File " + tipeImage);
+        
         ImageIO.write(originalImage, tipeImage, baos);
         baos.flush();
         byte[] imageInByte = baos.toByteArray();

@@ -98,7 +98,7 @@ public class LoanUploadReader implements ItemReader<LoanModel> {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-                System.out.println("selesai excel");
+
 	}
 	
 	@Override

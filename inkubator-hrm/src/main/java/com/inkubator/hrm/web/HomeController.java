@@ -43,7 +43,7 @@ public class HomeController extends BaseController {
         /**
          * saving process of User Access History
          */
-//        System.out.println(" ip user "+HrmUserInfoUtil.isValidRemoteAddress());
+
         StringBuffer urlPath = FacesUtil.getRequest().getRequestURL();
         RiwayatAkses akses = new RiwayatAkses();
         akses.setDateAccess(new Date());

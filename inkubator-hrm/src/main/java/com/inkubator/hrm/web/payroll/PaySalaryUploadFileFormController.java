@@ -164,7 +164,7 @@ public class PaySalaryUploadFileFormController extends BaseController {
 		        	.addString("paySalaryComponentId", String.valueOf(selectedPaySalaryComponent.getId()))
 		        	.addString("timeInMilis", String.valueOf(System.currentTimeMillis())).toJobParameters();
         	JobExecution jobExecution = jobLauncher.run(jobPaySalaryUpload, jobParameters);
-        	System.out.println("Exit Status : " + jobExecution.getStatus());
+        	
         	
         	//encrypt file that already upload/save to disk
         	CryptoUtils.encrypt(HRMConstant.AES_ALGO, HRMConstant.KEYVALUE, pathUpload, pathUpload);        	

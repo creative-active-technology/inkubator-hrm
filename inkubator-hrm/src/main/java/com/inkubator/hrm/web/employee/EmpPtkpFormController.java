@@ -88,7 +88,7 @@ public class EmpPtkpFormController extends BaseController {
     }
     
     public void doSave() {
-        System.out.println("masuk dosave");
+        
         EmpData empData = getEntityFromViewModel(empDataModel);
         try {
                 empDataService.saveForPtkp(empData);

@@ -60,7 +60,7 @@ public class PayTempKalkulasiEmpPajakDaoImpl extends IDAOImpl<PayTempKalkulasiEm
     public Long getTotalPayTempKalkulasiEmpPajakByParam() {
         final StringBuilder query = new StringBuilder("SELECT count(*) FROM (SELECT count(B.name) FROM hrm.pay_temp_kalkulasi_emp_pajak A INNER JOIN hrm.tax_component B WHERE A.tax_component_id = B.id");
         query.append(" GROUP BY B.name) AS jumlahRow");
-        System.out.println(query.toString());
+      
         Query hbm = getCurrentSession().createSQLQuery(query.toString());
         return Long.valueOf(hbm.uniqueResult().toString());
 

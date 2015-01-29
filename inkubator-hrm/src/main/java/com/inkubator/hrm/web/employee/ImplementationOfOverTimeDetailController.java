@@ -94,11 +94,11 @@ public class ImplementationOfOverTimeDetailController extends BaseController{
     }
     
     public String doBack() {
-        return "/protected/employee/ot_implementation_view.htm?faces-redirect=true";
+        return "/protected/employee/ot_impl_view.htm?faces-redirect=true";
     }
 
     public String doUpdate() {
-        return "/protected/employee/overtime_implementation_form.htm?faces-redirect=true&execution=e" + selectedImplementationOfOverTime.getId();
+        return "/protected/employee/ot_impl_form.htm?faces-redirect=true&execution=e" + selectedImplementationOfOverTime.getId();
     }
     
     public Boolean getIsHaveApprovalActivity(){

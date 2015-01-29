@@ -144,7 +144,7 @@ public class DataFingerRealizationDetailController extends BaseController {
 	}
 
     public String doBack() {
-        return "/protected/working_time/data_finger_realization_view.htm?faces-redirect=true";
+        return "/protected/working_time/data_finger_real_view.htm?faces-redirect=true";
     }
     
 }

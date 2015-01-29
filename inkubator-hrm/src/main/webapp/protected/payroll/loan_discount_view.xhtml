@@ -32,7 +32,7 @@
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3" >
                                     <p:commandButton value="Export to XLS" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
-                                        <pe:exporter target="tabletoExportId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Inclusion_Reimbursment"/>
+                                        <pe:exporter target="tabletoExportId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Loan_Discount"/>
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{savingTypeViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
 
@@ -130,19 +130,19 @@
                             </p:column>
                             <p:column sortBy="loanSchema.name" style="width: 20%">
                                 <f:facet name="header">
-                                    <h:outputText value="Nama Pinjaman"/>
+                                    <h:outputText value="#{appmsg['loanDiscount.loan_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.loan.loanSchema.name}" />
                             </p:column>
-                            <p:column sortBy="loan.termin" style="width: 10%">
+                            <p:column sortBy="loan.termin" style="width: 13%">
                                 <f:facet name="header">
-                                    <h:outputText value="Termin Ke"/>
+                                    <h:outputText value="#{appmsg['loanDiscount.installment_no']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.bayarKe} / #{data.loan.termin}"  />
                             </p:column>
-                            <p:column sortBy="dueDate" style="width: 20%">
+                            <p:column sortBy="dueDate" style="width: 17%">
                                 <f:facet name="header">
-                                    <h:outputText value="Tanggal Jatuh Tempo"/>
+                                    <h:outputText value="#{appmsg['loan.due_date']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.dueDate}" >
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
@@ -150,7 +150,7 @@
                             </p:column>
                             <p:column sortBy="totalPayment" style="width: 30%">
                                 <f:facet name="header">
-                                    <h:outputText value="Nominal"/>
+                                    <h:outputText value="#{appmsg['reimbursement.nominal']}"/>
                                 </f:facet>
                                 <h:outputText value="Rp. "/>
                                 <h:outputLabel value= "#{data.totalPayment}" >

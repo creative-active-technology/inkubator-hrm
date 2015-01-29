@@ -337,7 +337,7 @@ public class WtGroupWorkingServiceImpl extends IServiceImpl implements WtGroupWo
         groupWorking.setTypeSequeace(model.getKondisiSchedule());
         this.wtGroupWorkingDao.saveAndMerge(groupWorking);
         List<ScheduleShiftModel> dataShiftModels = model.getDataShiftModels();
-        System.out.println(" ukuran " + dataShiftModels.size());
+        
 //        List<WtScheduleShift> dataTosave = new ArrayList<>();
         int genap = 0;
         int loop = 0;

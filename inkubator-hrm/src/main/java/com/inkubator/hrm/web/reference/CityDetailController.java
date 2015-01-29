@@ -79,7 +79,7 @@ public class CityDetailController extends BaseController {
             emptyModel = new DefaultMapModel();
             super.initialization();
             String userId = FacesUtil.getRequestParameter("execution");
-            System.out.println("city id nya : " + userId);
+            
             selectedCity = cityService.getCityByIdWithDetail(Long.parseLong(userId.substring(1)));
 
             LatLng coord = new LatLng(Double.parseDouble(selectedCity.getLatitude()), Double.parseDouble(selectedCity.getLongitude()));

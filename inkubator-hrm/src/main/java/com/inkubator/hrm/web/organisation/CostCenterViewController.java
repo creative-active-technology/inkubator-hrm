@@ -99,7 +99,7 @@ public class CostCenterViewController extends BaseController{
         List<String> dataIsi = new ArrayList<>();
         dataIsi.add(String.valueOf(selectedCostCenter.getId()));
         dataToSend.put("execution", dataIsi);
-        RequestContext.getCurrentInstance().openDialog("cost_center_detail", options, dataToSend);
+        RequestContext.getCurrentInstance().openDialog("cc_detail", options, dataToSend);
     }
     
     public void doDelete() {
@@ -127,7 +127,7 @@ public class CostCenterViewController extends BaseController{
         //options.put("closable", false);
         //options.put("height", "auto");
         //options.put("contentHeight", 340);
-        RequestContext.getCurrentInstance().openDialog("cost_center_form", options, null);
+        RequestContext.getCurrentInstance().openDialog("cc_form", options, null);
     }
         
     public void doEdit() {
@@ -141,7 +141,7 @@ public class CostCenterViewController extends BaseController{
         List<String> dataIsi = new ArrayList<>();
         dataIsi.add(String.valueOf(selectedCostCenter.getId()));
         dataToSend.put("param", dataIsi);
-        RequestContext.getCurrentInstance().openDialog("cost_center_form", options, dataToSend);
+        RequestContext.getCurrentInstance().openDialog("cc_form", options, dataToSend);
     }
     
     @Override

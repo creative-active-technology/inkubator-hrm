@@ -464,7 +464,7 @@ public class PaySalaryComponentFormulaController extends BaseController {
             outPut = (Double) jsEngine.eval(formulaOne);
 //            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.ok", "formula_ok", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (ScriptException ex) {
-            System.out.println(" nilai " + ex.getMessage());
+            
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "formula_error", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         }
     }

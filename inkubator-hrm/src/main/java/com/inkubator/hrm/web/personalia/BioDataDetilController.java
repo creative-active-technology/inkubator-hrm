@@ -762,7 +762,7 @@ public class BioDataDetilController extends BaseController {
     }
 
     public String doGenerateCV() {
-        return "/protected/personalia/bio_generate_cv_view.htm?faces-redirect=true&execution=e" + selectedBioData.getId();
+        return "/protected/personalia/bio_gen_cv_view.htm?faces-redirect=true&execution=e" + selectedBioData.getId();
     }
 
     /**
@@ -904,7 +904,7 @@ public class BioDataDetilController extends BaseController {
         options.put("resizable", false);
         options.put("contentWidth", 600);
         options.put("contentHeight", 420);
-        RequestContext.getCurrentInstance().openDialog("bio_document_form", options, params);
+        RequestContext.getCurrentInstance().openDialog("bio_doc_form", options, params);
     }
 
     public void onDialogReturnBioDocument(SelectEvent event) {
@@ -949,7 +949,7 @@ public class BioDataDetilController extends BaseController {
         List<String> dataIsi = new ArrayList<>();
         dataIsi.add("e" + String.valueOf(selectedBioEducationHistoryViewController.getId()));
         dataToSend.put("param", dataIsi);
-        RequestContext.getCurrentInstance().openDialog("bio_education_history_form", options, dataToSend);
+        RequestContext.getCurrentInstance().openDialog("bio_edu_hist_form", options, dataToSend);
     }
 
     public void doAddBioEduHistory() {
@@ -963,7 +963,7 @@ public class BioDataDetilController extends BaseController {
         List<String> dataIsi = new ArrayList<>();
         dataIsi.add("i" + String.valueOf(selectedBioData.getId()));
         dataToSend.put("param", dataIsi);
-        RequestContext.getCurrentInstance().openDialog("bio_education_history_form", options, dataToSend);
+        RequestContext.getCurrentInstance().openDialog("bio_edu_hist_form", options, dataToSend);
     }
 
     public void doDeleteBioEduHistory() {
@@ -1074,7 +1074,7 @@ public class BioDataDetilController extends BaseController {
         List<String> dataIsi = new ArrayList<>();
         dataIsi.add("i" + String.valueOf(selectedBioData.getId()));
         dataToSend.put("param", dataIsi);
-        RequestContext.getCurrentInstance().openDialog("bio_emergency_contact_form", options, dataToSend);
+        RequestContext.getCurrentInstance().openDialog("bio_emerg_cont_form", options, dataToSend);
     }
 
     public void doUpdateBioContact() {
@@ -1088,7 +1088,7 @@ public class BioDataDetilController extends BaseController {
         List<String> dataIsi = new ArrayList<>();
         dataIsi.add("e" + String.valueOf(seleBioEmergencyContact.getId()));
         dataToSend.put("param", dataIsi);
-        RequestContext.getCurrentInstance().openDialog("bio_emergency_contact_form", options, dataToSend);
+        RequestContext.getCurrentInstance().openDialog("bio_emerg_cont_form", options, dataToSend);
     }
 
     public void onDialogReturnContact(SelectEvent event) {
@@ -1301,7 +1301,7 @@ public class BioDataDetilController extends BaseController {
         options.put("resizable", false);
         options.put("contentWidth", 450);
         options.put("contentHeight", 420);
-        RequestContext.getCurrentInstance().openDialog("bio_medical_history_form", options, params);
+        RequestContext.getCurrentInstance().openDialog("bio_medic_hist_form", options, params);
     }
 
     public void onDialogReturnBioMedicalHistory(SelectEvent event) {
@@ -1371,7 +1371,7 @@ public class BioDataDetilController extends BaseController {
         options.put("resizable", false);
         options.put("contentWidth", 550);
         options.put("contentHeight", 450);
-        RequestContext.getCurrentInstance().openDialog("bio_employment_history_form", options, params);
+        RequestContext.getCurrentInstance().openDialog("bio_emp_hist_form", options, params);
     }
 
     public void onDialogReturnBioEmploymentHistory(SelectEvent event) {
@@ -1441,7 +1441,7 @@ public class BioDataDetilController extends BaseController {
         options.put("resizable", false);
         options.put("contentWidth", 500);
         options.put("contentHeight", 460);
-        RequestContext.getCurrentInstance().openDialog("bio_family_relationship_form", options, params);
+        RequestContext.getCurrentInstance().openDialog("bio_fam_rel_form", options, params);
     }
 
     public void onDialogReturnBioFamilyRelationship(SelectEvent event) {
@@ -1511,7 +1511,7 @@ public class BioDataDetilController extends BaseController {
         options.put("resizable", false);
         options.put("contentWidth", 500);
         options.put("contentHeight", 500);
-        RequestContext.getCurrentInstance().openDialog("bio_bank_account_form", options, params);
+        RequestContext.getCurrentInstance().openDialog("bio_bank_acc_form", options, params);
     }
 
     public void onDialogReturnBioBankAccount(SelectEvent event) {
@@ -1721,7 +1721,7 @@ public class BioDataDetilController extends BaseController {
         options.put("resizable", false);
         options.put("contentWidth", 500);
         options.put("contentHeight", 250);
-        RequestContext.getCurrentInstance().openDialog("bio_spesifikasi_ability_form", options, params);
+        RequestContext.getCurrentInstance().openDialog("bio_spec_ability_form", options, params);
     }
 
     public void onDialogReturnBioSpesifikasiAbility(SelectEvent event) {

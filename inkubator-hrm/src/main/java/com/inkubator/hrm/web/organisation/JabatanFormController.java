@@ -87,7 +87,7 @@ public class JabatanFormController extends BaseController {
                 source.removeAll(target);
                 dualListModel = new DualListModel<>(source, target);
 //                sourceSpiRole.removeAll(targetRole);
-//                System.out.println(sourceSpiRole.size());
+
 //                dualListModel = new DualListModel<>(sourceSpiRole, targetRole);
             } else {
                 jabatanModel = new JabatanModel();

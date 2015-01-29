@@ -82,7 +82,7 @@ public class WtFingerExceptionDaoImpl extends IDAOImpl<WtFingerException> implem
         int counter = 0;
         for (WtFingerException wtFingerException : data) {
             getCurrentSession().save(wtFingerException);
-            System.out.println("save : " + counter);
+           
             counter++;
             if (counter % 20 == 0) {
                 getCurrentSession().flush();

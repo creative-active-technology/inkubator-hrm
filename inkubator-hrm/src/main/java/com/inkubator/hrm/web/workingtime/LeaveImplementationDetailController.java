@@ -115,11 +115,11 @@ public class LeaveImplementationDetailController extends BaseController {
 	}
 
 	public String doBack() {
-        return "/protected/working_time/leave_implementation_view.htm?faces-redirect=true";
+        return "/protected/working_time/leave_impl_view.htm?faces-redirect=true";
     }
 
     public String doUpdate() {
-        return "/protected/working_time/leave_implementation_form.htm?faces-redirect=true&execution=e" + selectedLeaveImplementation.getId();
+        return "/protected/working_time/leave_impl_form.htm?faces-redirect=true&execution=e" + selectedLeaveImplementation.getId();
     }
     
     public Boolean getIsHaveApprovalActivity(){

@@ -84,7 +84,7 @@ public class LoanDisbursementFormController extends BaseController{
             if(agree){
                 loanService.updateStatusAndDateDisbursementPaid(selectedLoan.getId(), dateDisbursed);       
             }
-            System.out.println("agree : " + agree);          
+                    
             RequestContext.getCurrentInstance().closeDialog(HRMConstant.UPDATE_CONDITION);           
             cleanAndExit();
         } catch (BussinessException ex) { 

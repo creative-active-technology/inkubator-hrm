@@ -55,7 +55,7 @@ public class OverTimeDistributionEditFormController extends BaseController{
         super.initialization();
         String empDataId = FacesUtil.getRequestParameter("empDataId");
         String overTimeId = FacesUtil.getRequestParameter("overTimeId");
-        System.out.println(empDataId+"------------------------------"+overTimeId);
+        
         model = new OverTimeDistributionModel();
         try {
             wtOverTimeList = wtOverTimeService.getAllData();

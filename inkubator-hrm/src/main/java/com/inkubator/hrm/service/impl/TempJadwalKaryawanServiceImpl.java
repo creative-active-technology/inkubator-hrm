@@ -355,7 +355,7 @@ public class TempJadwalKaryawanServiceImpl extends BaseApprovalServiceImpl imple
             empData.setWtGroupWorking(wtGroupWorkingDao.getEntiyByPK(groupWorkingId));
             this.empDataDao.update(empData);
         }
-        System.out.println(" masuk sini jugaaaa");
+        
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm");
         String dataToJson = jsonConverter.getJson(data.toArray(new Long[data.size()]));
         final JsonObject jsonObject = new JsonObject();

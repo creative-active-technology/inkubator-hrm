@@ -415,7 +415,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.createAlias("bioData", "bio", JoinType.INNER_JOIN);
 //        criteria.createAlias("golonganJabatan", "goljab", JoinType.INNER_JOIN);
         if (model.getOverTimeId() != 0 || model.getOverTimeId() != null) {
-            System.out.println(" nilai id " + model.getOverTimeId());
+            
             Criterion andCondition = Restrictions.conjunction()
                     .add(Restrictions.isNotNull("ot.empData"))
                     .add(Restrictions.not(Restrictions.eq("wt.id", model.getOverTimeId())));
@@ -637,15 +637,13 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 
     private Criteria doSearchReportEmpDepartmentJabatanByParam(ReportEmpDepartmentJabatanParameter param, Criteria criteria) {
 
-        System.out.println("goljabs " + param.getGolonganJabatanId());
-        System.out.println("departement " + param.getDepartmentId());
+        
 
         if (param.getDepartmentId() != null && param.getDepartmentId() != 0) {
             criteria.add(Restrictions.eq("jabatanByJabatanId.department.id", param.getDepartmentId()));
         }
 
         if (param.getGolonganJabatanId() != null) {
-            System.out.println("goljabs " + param.getGolonganJabatanId().get(0));
             criteria.add(Restrictions.in("golonganJabatan.id", param.getGolonganJabatanId()));
 
         }

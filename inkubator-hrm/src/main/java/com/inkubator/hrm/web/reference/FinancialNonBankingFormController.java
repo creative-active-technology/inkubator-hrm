@@ -118,7 +118,7 @@ public class FinancialNonBankingFormController extends BaseController{
     }
     
     public void doSave() {
-        System.out.println("masuk dosave");
+        
         FinancialNonBanking financialNonBanking = getEntityFromViewModel(model);
         try {
             if (isUpdate) {

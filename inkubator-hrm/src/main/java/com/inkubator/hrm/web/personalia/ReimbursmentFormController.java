@@ -83,16 +83,16 @@ public class ReimbursmentFormController extends BaseController {
                     model = getModelFromEntity(reimbursment);
                     isUpdate = Boolean.TRUE;
                     ReimbursmentSchema reimbursmentSchema = reimbursmentSchemaService.getEntiyByPK(reimbursment.getReimbursmentSchema().getId());
-                    if(reimbursmentSchema.getMeasurement() == HRMConstant.REIMBURSMENT_UNIT){
+                    if (reimbursmentSchema.getMeasurement() == HRMConstant.REIMBURSMENT_UNIT) {
                         isQuantity = Boolean.FALSE;
                         isNominal = Boolean.TRUE;
-                    }else{
+                    } else {
                         isQuantity = Boolean.TRUE;
                         isNominal = Boolean.FALSE;
                     }
-                    if(reimbursment.getReimbursmentSchema().getIsAttachDocument() == Boolean.TRUE){
+                    if (reimbursment.getReimbursmentSchema().getIsAttachDocument() == Boolean.TRUE) {
                         isUpload = Boolean.FALSE;
-                    }else{
+                    } else {
                         isUpload = Boolean.TRUE;
                     }
                 }
@@ -152,21 +152,27 @@ public class ReimbursmentFormController extends BaseController {
                 MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             } else {
-                reimbursmentService.save(reimbursment, fotoFile, false);
-                MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
-                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+                String message = reimbursmentService.save(reimbursment, fotoFile, false);
+                if (StringUtils.equals(message, "success_need_approval")) {
+                    MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully_and_requires_approval",
+                            FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+                } else {
+
+                    MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
+                            FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+                }
             }
-            
-        cleanAndExit();
+
+            cleanAndExit();
             return "/protected/personalia/reimbursment_view.htm?faces-redirect=true";
-        } catch (BussinessException ex) { 
+        } catch (BussinessException ex) {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
         return null;
     }
-    
+
     public void doSave() throws Exception {
         Reimbursment reimbursment = getEntityFromViewModel(model);
         try {
@@ -178,7 +184,7 @@ public class ReimbursmentFormController extends BaseController {
                 RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
             }
             cleanAndExit();
-        } catch (BussinessException ex) { 
+        } catch (BussinessException ex) {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
@@ -196,7 +202,7 @@ public class ReimbursmentFormController extends BaseController {
         reimbursment.setNominal(model.getNominal());
         reimbursment.setQuantity(model.getQuantity());
         reimbursment.setReimbursmentSchema(new ReimbursmentSchema(model.getReimbursmentSchemaId()));
-        if(buffer != null){
+        if (buffer != null) {
             reimbursment.setReimbursmentDocument(buffer);
         }
         return reimbursment;
@@ -204,7 +210,7 @@ public class ReimbursmentFormController extends BaseController {
 
     public void handleFileUpload(FileUploadEvent event) {
         fotoFile = event.getFile();
-        System.out.println(" Nilai " + file);
+        
 //        InputStream inputStream = null;
 //        try {
 //            inputStream = fotoFile.getInputstream();
@@ -220,7 +226,7 @@ public class ReimbursmentFormController extends BaseController {
 //        }
         model.setReimbursmentFileName(fotoFile.getFileName());
     }
-    
+
     public List<EmpData> doAutoCompletEmployee(String param) {
         List<EmpData> empDatas = new ArrayList<EmpData>();
         try {
@@ -231,31 +237,31 @@ public class ReimbursmentFormController extends BaseController {
         return empDatas;
     }
 
-    public ReimbursmentSchema getReimbursmentSchema() throws Exception{
+    public ReimbursmentSchema getReimbursmentSchema() throws Exception {
         ReimbursmentSchema reimbursmentSchema = reimbursmentSchemaService.getEntiyByPK(model.getReimbursmentSchemaId());
         return reimbursmentSchema;
     }
-    
-    public void doChangeUploadForm() throws Exception{
+
+    public void doChangeUploadForm() throws Exception {
         ReimbursmentSchema reimbursmentSchema = getReimbursmentSchema();
-        if(reimbursmentSchema.getIsAttachDocument() == Boolean.TRUE){
+        if (reimbursmentSchema.getIsAttachDocument() == Boolean.TRUE) {
             isUpload = Boolean.FALSE;
-        }else{
+        } else {
             isUpload = Boolean.TRUE;
         }
     }
-    
-    public void doChangeQuantityOrNominal() throws Exception{
+
+    public void doChangeQuantityOrNominal() throws Exception {
         ReimbursmentSchema reimbursmentSchema = getReimbursmentSchema();
-        if(reimbursmentSchema.getMeasurement() == HRMConstant.REIMBURSMENT_UNIT){
+        if (reimbursmentSchema.getMeasurement() == HRMConstant.REIMBURSMENT_UNIT) {
             isQuantity = Boolean.FALSE;
             isNominal = Boolean.TRUE;
-        }else{
+        } else {
             isQuantity = Boolean.TRUE;
             isNominal = Boolean.FALSE;
         }
     }
-    
+
     public ReimbursmentModel getModel() {
         return model;
     }
@@ -375,13 +381,13 @@ public class ReimbursmentFormController extends BaseController {
     public void setIsNominal(Boolean isNominal) {
         this.isNominal = isNominal;
     }
-    
+
     public void doReset() {
         cleanAndExit();
     }
-    
-    public String doBack(){
-         return "/protected/personalia/reimbursment_view.htm?faces-redirect=true";
+
+    public String doBack() {
+        return "/protected/personalia/reimbursment_view.htm?faces-redirect=true";
     }
-    
+
 }

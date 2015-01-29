@@ -82,7 +82,7 @@ public class BenefitGroupDetailController extends BaseController {
         try {
             super.initialization();
             String userId = FacesUtil.getRequestParameter("execution");
-            System.out.println("benefitGroup id nya : " + userId);
+            
             selectedBenefitGroup = benefitGroupService.getEntiyByPK(Long.parseLong(userId.substring(1)));
             benefitGroupRates = benefitGroupRateService.getAllDataByBenefitGroupId(selectedBenefitGroup.getId());
         } catch (Exception ex) {
@@ -147,7 +147,7 @@ public class BenefitGroupDetailController extends BaseController {
         options.put("resizable", false);
         options.put("contentWidth", 550);
         options.put("contentHeight", 450);
-        RequestContext.getCurrentInstance().openDialog("benefit_group_rate_form", options, params);
+        RequestContext.getCurrentInstance().openDialog("benefit_group_rate", options, params);
     }
 
     public void onDialogReturnBenefitGroupRate(SelectEvent event) {

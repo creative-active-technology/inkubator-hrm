@@ -86,7 +86,7 @@ public class LeaveDistributionViewController extends BaseController {
     }
     
     public String doAdd() {
-        return "/protected/employee/distribution_leave_scheme.htm?faces-redirect=true";
+        return "/protected/employee/distribution_leave.htm?faces-redirect=true";
     }
     
     public void doUpdate() {
@@ -104,7 +104,7 @@ public class LeaveDistributionViewController extends BaseController {
         options.put("resizable", false);
         options.put("contentWidth", 400);
         options.put("contentHeight", 300);
-        RequestContext.getCurrentInstance().openDialog("distribution_leave_scheme_edit", options, params);
+        RequestContext.getCurrentInstance().openDialog("distribution_leave_edit", options, params);
     }
     
     @Override

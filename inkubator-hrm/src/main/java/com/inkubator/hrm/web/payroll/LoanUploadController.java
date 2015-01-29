@@ -67,8 +67,7 @@ public class LoanUploadController extends BaseController {
                 mapLoanSchema.put(loanSchema.getName(), loanSchema.getId());
             }
             
-            System.out.println("loanSchemeList size : " + loanSchemeList.size());            
-            System.out.println("loanSchemeDropDown size : " + mapLoanSchema.size());
+            
         } catch (Exception ex) {
             Logger.getLogger(LoanUploadController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -165,7 +164,7 @@ public class LoanUploadController extends BaseController {
         try {
         	//save upload file to disk and delete all data before running jobs
         	String pathUpload = this.loanService.updateFileAndDeleteData(file);
-        	System.out.println("selected loanSchemaId : " + loanSchemaId);                
+        	              
         	//running jobs batch to execute file upload
         	JobParameters jobParameters = new JobParametersBuilder()
 		        	.addString("input.file.path", pathUpload)
@@ -173,7 +172,7 @@ public class LoanUploadController extends BaseController {
                                 .addLong("loanSchemeId", loanSchemaId)
 		        	.addString("timeInMilis", String.valueOf(System.currentTimeMillis())).toJobParameters();
         	JobExecution jobExecution = jobLauncher.run(jobLoanUpload, jobParameters);
-        	System.out.println("Exit Status : " + jobExecution.getStatus());
+        	
         	
         	//encrypt file that already upload/save to disk
         	CryptoUtils.encrypt(HRMConstant.AES_ALGO, HRMConstant.KEYVALUE, pathUpload, pathUpload);        	

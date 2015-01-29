@@ -26,7 +26,7 @@ public class SpringSecurityContextListenerFix extends RequestContextListener {
         HttpSession sesion = request.getSession(false);
         Locale idioma;
         if (sesion != null) {
-//            System.out.println(sesion.getAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+
             if (sesion.getAttribute(HRMConstant.BAHASA_ACTIVE) != null) {
                 idioma = new Locale(sesion.getAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             } else {

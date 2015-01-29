@@ -133,7 +133,7 @@ public class PublicHolidayExceptionViewController extends BaseController {
         options.put("resizable", false);
         options.put("contentWidth", 400);
         options.put("contentHeight", 390);
-        RequestContext.getCurrentInstance().openDialog("public_holiday_exception_form", options, params);
+        RequestContext.getCurrentInstance().openDialog("public_holiday_ex_form", options, params);
     }
 
     @Override

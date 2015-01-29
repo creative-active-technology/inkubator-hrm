@@ -361,7 +361,7 @@ public class ApprovalDefinitionFormController extends BaseController {
     }
 
     public void onDialogReturnHrmUser(SelectEvent event) {
-        System.out.println(" hahaahw waduddu");
+        
         HrmUser hrmUser = (HrmUser) event.getObject();
         approvalDefinitionModel.setHrmUserByApproverIndividualId(hrmUser.getId());
         approvalDefinitionModel.setHrmUserByApproverIndividualName(hrmUser.getRealName());
@@ -376,7 +376,7 @@ public class ApprovalDefinitionFormController extends BaseController {
     }
 
     public void onDialogReturnHrmUserBehalf(SelectEvent event) {
-        System.out.println(" hahaahw waduddu");
+        
         HrmUser hrmUser = (HrmUser) event.getObject();
         approvalDefinitionModel.setHrmUserByOnBehalfIndividualId(hrmUser.getId());
         approvalDefinitionModel.setHrmUserByOnBehalfIndividualName(hrmUser.getRealName());

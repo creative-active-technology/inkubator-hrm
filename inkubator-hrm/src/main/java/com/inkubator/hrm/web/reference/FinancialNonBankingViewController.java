@@ -100,7 +100,7 @@ public class FinancialNonBankingViewController extends BaseController {
         options.put("resizable", false);
         options.put("contentWidth", 400);
         options.put("contentHeight", 400);
-        RequestContext.getCurrentInstance().openDialog("finance_non_banking_form", options, params);
+        RequestContext.getCurrentInstance().openDialog("fin_non_bank_form", options, params);
     }
     
     public void doAdd() {

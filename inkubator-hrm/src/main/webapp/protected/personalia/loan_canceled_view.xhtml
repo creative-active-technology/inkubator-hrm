@@ -124,19 +124,19 @@
                           showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)" dynamic="true">
                     <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Nik" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['global.nik']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{loanCanceledViewController.selectedLoan.empData.nik}"/> </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Nama Karaywan" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['employee.employee_name']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{loanCanceledViewController.selectedLoan.empData.bioData.fullName}"/> </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Loan Schema" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['loanschema.loan']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{loanCanceledViewController.selectedLoan.loanSchema.name}"/> </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Tanggal Pinjaman" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['loan.loan_date']}" styleClass="label_hrm"/></p:column>
                             <p:column>
                                 <p:outputLabel value="#{loanCanceledViewController.selectedLoan.loanDate}"> 
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
@@ -144,11 +144,11 @@
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Pokok Nominal" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['loan.nominal_principal']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{loanCanceledViewController.selectedLoan.nominalPrincipal}"/> </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Tanggal Pembatalan" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['loanDiscount.cancellation_date']}" styleClass="label_hrm"/></p:column>
                             <p:column>
                                 <p:outputLabel value="#{loanCanceledViewController.selectedLoan.cancelationDate}"> 
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
@@ -156,7 +156,7 @@
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="Keterangan" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{loanCanceledViewController.selectedLoan.description}"/> </p:column>
                         </p:row>
                         <f:facet name="footer">

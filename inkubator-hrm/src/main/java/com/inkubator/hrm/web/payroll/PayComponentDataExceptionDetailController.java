@@ -117,7 +117,7 @@ public class PayComponentDataExceptionDetailController extends BaseController {
     }
 
     public String doBack() {
-        return "/protected/payroll/pay_component_exception_view.htm?faces-redirect=true";
+        return "/protected/payroll/pay_comp_ex_view.htm?faces-redirect=true";
     }
 
     @Override
@@ -186,7 +186,7 @@ public class PayComponentDataExceptionDetailController extends BaseController {
         options.put("resizable", false);
         options.put("contentWidth", 420);
         options.put("contentHeight", 300);
-        RequestContext.getCurrentInstance().openDialog("pay_component_exception_form", options, params);
+        RequestContext.getCurrentInstance().openDialog("pay_comp_ex_form", options, params);
     }
 
     public PayComponentDataExceptionService getPayComponentDataExceptionService() {

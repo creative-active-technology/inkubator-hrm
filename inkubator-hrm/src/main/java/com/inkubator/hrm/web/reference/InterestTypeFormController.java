@@ -45,7 +45,7 @@ public class InterestTypeFormController extends BaseController {
     @PostConstruct
     @Override
     public void initialization() {
-        System.out.println("init");
+        
         super.initialization();
         String param = FacesUtil.getRequestParameter("param");
         model = new InterestTypeModel();
@@ -66,7 +66,7 @@ public class InterestTypeFormController extends BaseController {
     }
     
     public void doSave() {
-        System.out.println("masuk dosave");
+        
         InterestType interestType = getEntityFromViewModel(model);
         try {
             if (isEdit) {

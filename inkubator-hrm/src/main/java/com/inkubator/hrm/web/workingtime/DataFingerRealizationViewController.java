@@ -104,7 +104,7 @@ public class DataFingerRealizationViewController extends BaseController {
 	}
 
     public String doDetail() {
-        return "/protected/working_time/data_finger_realization_detail.htm?faces-redirect=true&execution=e" + selectedModel.getEmpDataId();
+        return "/protected/working_time/data_finger_real_detail.htm?faces-redirect=true&execution=e" + selectedModel.getEmpDataId();
     }
     
 }
