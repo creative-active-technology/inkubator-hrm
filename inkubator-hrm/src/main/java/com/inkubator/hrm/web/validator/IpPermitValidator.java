@@ -33,7 +33,7 @@ public class IpPermitValidator implements Validator{
         UIInput untilIpComponent = (UIInput) component.getAttributes().get("untilAdress2");
         String untilIp = (String) untilIpComponent.getSubmittedValue();
         
-        System.out.println(fromIp + "data yeuhhh0" + untilIp);
+        
         if(ipAddressFrom == null || fromIp == null || untilIp == null){
             return;
         }
@@ -43,19 +43,19 @@ public class IpPermitValidator implements Validator{
         
         //validate if ipAddress greater than 255.255.255
         if(ipAddress > 255255255){
-            System.out.println("masuk 255255255");
+            
             String validatorMessage = (String) component.getAttributes().get("validatorMessage");
                 throw new ValidatorException(new FacesMessage(validatorMessage));
         }
         //validate if from ip greater than 255
         if(ipFrom > 255){
-            System.out.println("masuk 255 kesatu");
+            
             String validatorMessage = (String) component.getAttributes().get("validatorMessage");
                 throw new ValidatorException(new FacesMessage(validatorMessage));
         }
         //validate if until ip greater than 255
         if(ipUntil > 255){
-            System.out.println("masuk 255 kedua");
+            
             String validatorMessage = (String) component.getAttributes().get("validatorMessage");
                 throw new ValidatorException(new FacesMessage(validatorMessage));
         }

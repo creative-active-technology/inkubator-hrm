@@ -172,7 +172,7 @@ public class PaySalaryUploadDetailController extends BaseController {
         options.put("resizable", false);
         options.put("contentWidth", 600);
         options.put("contentHeight", 360);
-        RequestContext.getCurrentInstance().openDialog("pay_salary_upload_file_form", options, params);
+        RequestContext.getCurrentInstance().openDialog("pay_salary_upload_file", options, params);
     }
 	
 	public void doReuse(){
@@ -208,7 +208,7 @@ public class PaySalaryUploadDetailController extends BaseController {
         options.put("resizable", false);
         options.put("contentWidth", 400);
         options.put("contentHeight", 320);
-        RequestContext.getCurrentInstance().openDialog("pay_temp_upload_data_form", options, params);
+        RequestContext.getCurrentInstance().openDialog("pay_temp_upload_data", options, params);
     }
 	
 	public void doDeleteData(){

@@ -89,7 +89,7 @@ public class ScheduleApprovalFormController extends BaseController {
             Gson gson = new GsonBuilder().create();
             List<Long> dataEmpId = gson.fromJson(listEmp, token.getType());
             dataToshow = empDataService.getEmpDataByListId(dataEmpId);
-            System.out.println(" Jumalh employenya " + dataToshow.size());
+            
             Date createDate = new SimpleDateFormat("dd-MM-yyyy").parse(jSONObject.getString("createDate"));
             selectedWtGroupWorking = wtGroupWorkingService.getEntiyByPK(workingGroupId);
             Date startDate = selectedWtGroupWorking.getBeginTime();

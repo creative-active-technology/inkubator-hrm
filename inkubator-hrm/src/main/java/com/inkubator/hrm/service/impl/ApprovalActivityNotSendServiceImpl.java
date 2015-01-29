@@ -112,7 +112,7 @@ public class ApprovalActivityNotSendServiceImpl implements ApprovalActivityNotSe
 
             } else {
                 if (Objects.equals(appActivity.getApprovalStatus(), HRMConstant.APPROVAL_STATUS_WAITING)) {
-                    System.out.println(appActivity.getApprovalDefinition().getName() + "===============");
+                    
                     switch (appActivity.getApprovalDefinition().getName()) {
                         case HRMConstant.BUSINESS_TRAVEL:
                             double totalAmount = 0;

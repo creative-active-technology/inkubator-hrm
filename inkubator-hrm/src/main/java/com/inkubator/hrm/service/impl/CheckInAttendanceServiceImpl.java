@@ -256,10 +256,10 @@ public class CheckInAttendanceServiceImpl extends IServiceImpl implements CheckI
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public CheckInAttendance getAttendancWithMaxCreatedDate(long id) throws Exception {
         CheckInAttendance attendance = this.checkInAttendanceDao.getAttendancWithMaxCreatedDate(id);
-//        System.out.println(" nilai nya " + attendance);
+
         if (attendance != null) {
             TempJadwalKaryawan tempJadwalKaryawan = this.tempJadwalKaryawanDao.getByEmpId(id, attendance.getCheckDate());
-            System.out.println(" hahahah");
+           
             Date jamPulang = tempJadwalKaryawan.getWtWorkingHour().getWorkingHourEnd();
             Date jamMasuk = tempJadwalKaryawan.getWtWorkingHour().getWorkingHourBegin();
             int selisih = DateTimeUtil.getTotalHoursDifference(jamMasuk, jamPulang);
@@ -268,12 +268,12 @@ public class CheckInAttendanceServiceImpl extends IServiceImpl implements CheckI
             }
 //            Date checkTimeDate = attendance.getCheckInDateTime();
             String jamMasukSeharusnya = new SimpleDateFormat("yyyy-MM-dd").format(tempJadwalKaryawan.getTanggalWaktuKerja());
-            System.out.println(" jsdfjdshfdsjf "+jamMasukSeharusnya);
+            
             Date jamDanTanggalHarus = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(jamMasukSeharusnya +" "+ jamMasuk);
             int waitingTime = DateTimeUtil.getTotalHoursDifference(jamDanTanggalHarus, new Date());
             if (waitingTime > selisih + 4) {
                 attendance = null;
-                System.out.println(" sellu ke sini");
+                
             }
         }
 

@@ -143,7 +143,7 @@ public class DepartmentFormController extends BaseController {
         department.setDepartmentName(departmentModel.getName());
         department.setCostCenterDept(new CostCenterDept(departmentModel.getCostCenterDeptId()));
         department.setDescription(departmentModel.getDescription());
-//        System.out.println(departmentModel.getDescription());
+
         return department;
     }
     

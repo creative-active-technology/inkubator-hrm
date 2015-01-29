@@ -65,8 +65,7 @@ public class IpPermitViewController extends BaseController{
         try {
             selected = this.service.getEntiyByPK(selected.getId());
             Long ip = Long.valueOf(String.valueOf(selected.getFromAddress1()+""+selected.getUntilAddress1()));
-            System.out.println(ip+"---");
-            System.out.println(IpUtil.longToIpV4(ip) + " haha hihi huhu hehe hoho");
+            
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }

@@ -134,7 +134,7 @@ public class LoanSchemaServiceImpl extends IServiceImpl implements LoanSchemaSer
         this.loanSchemaDao.saveAndMerge(update);
         Set<LoanSchemaEmployeeType> dataToSave = entity.getLoanSchemaEmployeeTypes();
         for (LoanSchemaEmployeeType loanSchemaEmployeeType : dataToSave) {
-            System.out.println("eksekusi");
+            
             loanSchemaEmployeeType.setLoanSchema(update);
             this.loanSchemaEmployeeTypeDao.save(loanSchemaEmployeeType);
         }

@@ -76,7 +76,7 @@ public class UnregPayComponentViewController extends BaseController {
         options.put("resizable", false);
         options.put("contentWidth", 500);
         options.put("contentHeight", 260);
-        RequestContext.getCurrentInstance().openDialog("unreg_component_setting_form", options, params);
+        RequestContext.getCurrentInstance().openDialog("unreg_comp_setting_form", options, params);
     }
 
     public void doAdd() {

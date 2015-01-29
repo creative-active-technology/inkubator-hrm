@@ -76,7 +76,7 @@ public class LeaveDistributionSchemeFormController extends BaseController {
             int i = 0;
             for (GolonganJabatan golonganJabatan : golonganJabatanList) {
                 golonganJabatanDropDown.put(golonganJabatan.getCode() + " - " + golonganJabatan.getPangkat().getPangkatName(), golonganJabatan.getId());
-                System.out.println(golonganJabatanList.get(i).getCode());
+                
                 i++;
             }
             MapUtil.sortByValue(golonganJabatanDropDown);

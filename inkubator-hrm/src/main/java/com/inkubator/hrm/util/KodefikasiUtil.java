@@ -22,12 +22,12 @@ public class KodefikasiUtil {
         String removeParenties2 = StringsUtils.remove(removeParenties1, "]");
         int numberOfYear = StringsUtils.countMatches(removeParenties2, "Y");
         int numberofN = StringsUtils.countMatches(removeParenties2, "N");
-        System.out.println(" Jumlah N nya " + numberofN);
+        
         int currentNumber = maxNumerData + 1;
         int numberofNEx = String.valueOf(currentNumber).length();
-        System.out.println(" Panjanngngna " + numberofNEx);
+        
         int selisih = numberofN - numberofNEx;
-        System.out.println("Seleisiisnys " + selisih);
+        
         String montInString = null;
         String yearInString = null;
         String dayInString = null;

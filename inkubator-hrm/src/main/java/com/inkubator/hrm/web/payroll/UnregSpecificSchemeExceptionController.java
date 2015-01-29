@@ -118,7 +118,7 @@ public class UnregSpecificSchemeExceptionController extends BaseController {
         options.put("resizable", false);
         options.put("contentWidth", 400);
         options.put("contentHeight", 250);
-        RequestContext.getCurrentInstance().openDialog("unreg_specific_scheme_exception_form", options, params);
+        RequestContext.getCurrentInstance().openDialog("unreg_specific_scheme_ex_form", options, params);
     }
     
     @Override
@@ -132,7 +132,7 @@ public class UnregSpecificSchemeExceptionController extends BaseController {
         try {
         	UnregPayComponentsExceptionId id = new UnregPayComponentsExceptionId(selected.getUnregPayComponents().getId(), selected.getEmpData().getId());
         	selected = this.unregPayComponentsExceptionService.getEntityByPK(id);
-        	System.out.println("s");
+        	
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }

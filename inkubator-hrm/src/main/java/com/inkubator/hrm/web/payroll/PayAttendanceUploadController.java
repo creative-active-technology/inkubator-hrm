@@ -138,7 +138,7 @@ public class PayAttendanceUploadController extends BaseController {
 		        	.addString("createdBy", UserInfoUtil.getUserName())        			
 		        	.addString("timeInMilis", String.valueOf(System.currentTimeMillis())).toJobParameters();
         	JobExecution jobExecution = jobLauncher.run(jobPayAttendanceUpload, jobParameters);
-        	System.out.println("Exit Status : " + jobExecution.getStatus());
+        	
         	
         	//encrypt file that already upload/save to disk
         	CryptoUtils.encrypt(HRMConstant.AES_ALGO, HRMConstant.KEYVALUE, pathUpload, pathUpload);        	

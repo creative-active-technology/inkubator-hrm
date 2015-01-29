@@ -84,7 +84,7 @@ public class BusinessTypeFormController extends BaseController{
     }
     
     public void doSave() {
-        System.out.println("masuk dosave");
+        
         BusinessType businessType = getEntityFromViewModel(model);
         try {
             if (isUpdate) {

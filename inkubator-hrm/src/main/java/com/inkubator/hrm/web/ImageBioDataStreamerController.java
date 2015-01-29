@@ -231,8 +231,7 @@ public class ImageBioDataStreamerController extends BaseController {
     public StreamedContent getAttachmentFile() throws IOException {
         FacesContext context = FacesUtil.getFacesContext();
         String id = context.getExternalContext().getRequestParameterMap().get("permitId");
-        System.out.println("id====" +id);
-        System.out.println("context====" +context);
+        
         if (context.getRenderResponse() || id == null) {
             return new DefaultStreamedContent();
         } else {

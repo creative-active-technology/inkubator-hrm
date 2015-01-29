@@ -108,7 +108,7 @@ public class ResourceNameFormController extends BaseController{
     }
     
     public void doSave() {
-        System.out.println("masuk dosave");
+        
         ResourceName resourceName = getEntityFromViewModel(model);
         try {
             if (isUpdate) {

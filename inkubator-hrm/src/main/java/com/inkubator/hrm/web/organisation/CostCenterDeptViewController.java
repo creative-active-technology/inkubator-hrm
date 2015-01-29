@@ -135,7 +135,7 @@ public class CostCenterDeptViewController extends BaseController {
         options.put("resizable", false);
         options.put("contentWidth", 400);
         options.put("contentHeight", 320);
-        RequestContext.getCurrentInstance().openDialog("cost_center_dept_form", options, params);
+        RequestContext.getCurrentInstance().openDialog("cc_dept_form", options, params);
     }
 
     @Override

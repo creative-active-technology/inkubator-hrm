@@ -261,8 +261,7 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
      Double overTIme = null;
      Double totalDay = null;
      Double outPut;
-     System.out.println(" Jumlah Component " + totalPayComponet.size());
-     System.out.println(" Jumlah Employye " + totalEmployee.size());
+
      int i = 1;
      for (EmpData empData : totalEmployee) {
      List<PayComponentDataException> totalPayComponentException = payComponentDataExceptionDao.getAllByEmpId(empData.getId());
@@ -280,10 +279,9 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
      this.payTempKalkulasiDao.saveBatch(dataToSave);
      int timeTmb = 0;
      timeTmb = DateTimeUtil.getTotalDay(empData.getJoinDate(), new Date());
-     System.out.println(" Total Waktu nya " + timeTmb);
+
      List<PaySalaryComponent> totalPayComponetNotExcp = paySalaryComponentDao.getAllDataByEmpTypeIdAndActiveFromTmAndModelCompNotIn(empData.getEmployeeType().getId(), timeTmb);
-     System.out.println(" Employee Name " + empData.getBioData().getFirstName());
-     System.out.println(" Ukuran Hak nya " + totalPayComponetNotExcp.size());
+ 
 
      for (PaySalaryComponent paySalaryComponent : totalPayComponetNotExcp) {
      if (paySalaryComponent.getModelComponent().getSpesific().equals(HRMConstant.MODEL_COMP_UPLOAD)) {
@@ -364,7 +362,7 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
 
      }
 
-     System.out.println("Procecss " + i);
+
      i++;
 
      }
@@ -391,7 +389,7 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public List<PayTempKalkulasi> getAllDataCalculatedPayment(Date payrollCalculationDate, String createdBy) throws Exception {
-        System.out.println("=============================================START " + new Date());
+       
 
         //initial
         WtPeriode periode = wtPeriodeDao.getEntityByPayrollTypeActive();
@@ -414,7 +412,7 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
         /*List<EmpData> totalEmployee = new ArrayList<EmpData>();
          EmpData emp = empDataDao.getEntiyByPK((long)112);
          totalEmployee.add(emp);*/
-        System.out.println(" Total Employee " + totalEmployee.size());
+       
         for (EmpData empData : totalEmployee) {
             LOGGER.info(" ============= EMPLOYEE : " + empData.getBioData().getFirstName() + " =====================");
 
@@ -621,7 +619,7 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
             datas.add(ceilKalkulasi);
         }
 
-        System.out.println("=============================================End " + new Date());
+     
         return datas;
     }
 
@@ -737,7 +735,7 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<SalaryJournalModel> getByParamForSalaryJournal(String searchParameter, int firstResult, int maxResults, Order order) throws Exception {
-        System.out.println(sisaData + " sisaData atas" + parameterLoop);
+        
         Integer jumlahRowsTambahan = Integer.valueOf(String.valueOf(payTempKalkulasiDao.getTotalPayTempKalkulasiForSalaryJournalDebetAndKredit()));
         //reset sisaData biar bisa bulak balik page akhir + 1 halaman page akhir
         Integer hitLastPage = 0;
@@ -783,8 +781,7 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
             parameterLoop = jumlahRowsTambahan;
             int temp = sisaData;
             sisaData = parameterLoop - temp;
-            System.out.println("space Kosong :" + spaceKosong);
-            System.out.println("sisa Data : " + sisaData);
+            
         } else if (isSpaceKosongCukup || totalData % maxResults == 0) {
             parameterLoop = jumlahRowsTambahan;
             sisaData = 0;
@@ -814,19 +811,19 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
                 sisaData = sisaData + 1;
             }
         }
-        System.out.println(indexDataTerakhir + "index data terakhir");
+        
         if (isLastPage) {
             sisaData = sisaData + 1;
             parameterLoop = parameterLoop + sisaDataTerakhir;
         }
-        System.out.println(sisaData + " sisaData bawah" + parameterLoop);
+        
         //reset sisaData dan hitLastPage jika terjadi pergantian maxResult
         if (previousMaxResult != currentResult) {
             sisaData = null;
             hitLastPage = 0;
         }
         previousMaxResult = currentResult;
-        System.out.println("sisa Data bawah : " + sisaData);
+        
         return listSalaryJournal;
     }
 

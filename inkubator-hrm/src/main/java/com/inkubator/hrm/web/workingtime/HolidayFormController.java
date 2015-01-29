@@ -70,7 +70,7 @@ public class HolidayFormController extends BaseController {
                 mapReligions.put(religion.getName(), religion.getId());
             }
             if (param != null) {
-                System.out.println(" nilai param" + param);
+                
                 WtHoliday wtHoliday = wtHolidayService.getEntiyByPK(Long.parseLong(param));
                 holidayModel.setId(wtHoliday.getId());
                 holidayModel.setHolidayDate(wtHoliday.getHolidayDate());

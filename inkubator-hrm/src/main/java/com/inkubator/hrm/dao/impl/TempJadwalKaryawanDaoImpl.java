@@ -83,7 +83,7 @@ public class TempJadwalKaryawanDaoImpl extends IDAOImpl<TempJadwalKaryawan> impl
         int counter = 0;
         for (TempJadwalKaryawan jadwalKaryawan : jadwalKaryawans) {
             getCurrentSession().delete(jadwalKaryawan);
-            System.out.println(" Deleting data karyawan");
+            
             counter++;
             if (counter % 20 == 0) {
                 getCurrentSession().flush();
@@ -160,7 +160,7 @@ public class TempJadwalKaryawanDaoImpl extends IDAOImpl<TempJadwalKaryawan> impl
     public List<TempJadwalKaryawan> getByMonthDif(int value) {
         Date dateUntil = new Date();
         Date dateFrom = DateTimeUtil.getDateFrom(dateUntil, -value, CommonUtilConstant.DATE_FORMAT_MONTH);
-        System.out.println(" Tanggal Awal : " + dateFrom);        
+         
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());         
         criteria.add(Restrictions.lt("tanggalWaktuKerja", dateFrom));       
         return criteria.list();

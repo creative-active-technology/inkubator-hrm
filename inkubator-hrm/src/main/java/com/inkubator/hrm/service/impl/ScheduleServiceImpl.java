@@ -90,7 +90,7 @@ public class ScheduleServiceImpl extends IServiceImpl implements ScheduleService
             DateTime monthAndYearBefore = new DateTime(wtHoliday.getHolidayDate());
             //jika tahun di database lebih kecil tahun sekarang
             if(monthAndYearBefore.getYear() < monthAndYearNow.getYear() && monthAndYearBefore.getMonthOfYear() >= monthAndYearNow.getMonthOfYear()){
-//                System.out.println("asup");
+
                 //cari nama + tahun, jika sudah ada skip, karena unik
                 totalDuplicat = wtHolidayDao.getTotalWtHolidayByHolidayName(wtHoliday.getHolidayName() + " " + monthAndYearNow.getYear());
                 if(totalDuplicat == 0){
@@ -136,7 +136,7 @@ public class ScheduleServiceImpl extends IServiceImpl implements ScheduleService
         Date now = new Date();
         Date lastDay = DateTimeUtil.getDateFrom(now, -1, CommonUtilConstant.DATE_FORMAT_DAY);
         String dayToInput = new SimpleDateFormat("dd-MM-yyyy").format(lastDay);
-        System.out.println("tanggal param " + dayToInput);
+        
         List<TempJadwalKaryawan> data = this.tempJadwalKaryawanDao.getAllByMaxEndDate(new SimpleDateFormat("dd-MM-yyyy").parse(dayToInput));
         List<EmpData> listEmpData = new ArrayList<>();
         List<TempJadwalKaryawan> dataToDelete = new ArrayList<>();

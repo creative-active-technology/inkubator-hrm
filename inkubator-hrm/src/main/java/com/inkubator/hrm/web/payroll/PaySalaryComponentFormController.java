@@ -284,7 +284,7 @@ private PaySalaryComponentModel getModelFromEntity(PaySalaryComponent entity) {
             paySalaryComponentService.update(paySalaryComponent);
             MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-            return "/protected/payroll/pay_salary_component_detail.htm?faces-redirect=true&execution=e" + paySalaryComponent.getId();
+            return "/protected/payroll/pay_salary_comp_detail.htm?faces-redirect=true&execution=e" + paySalaryComponent.getId();
 
         }catch (BussinessException ex) { 
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
@@ -303,7 +303,7 @@ private PaySalaryComponentModel getModelFromEntity(PaySalaryComponent entity) {
     }
 
     public String doBack() {
-        return "/protected/payroll/pay_salary_component_view.htm?faces-redirect=true";
+        return "/protected/payroll/pay_salary_comp_view.htm?faces-redirect=true";
     }
 
     @Override
@@ -330,7 +330,7 @@ private PaySalaryComponentModel getModelFromEntity(PaySalaryComponent entity) {
             paySalaryComponentService.saveWithEmployeeType(paySalaryComponent);
             MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-            return "/protected/payroll/pay_salary_component_detail.htm?faces-redirect=true&execution=e" + paySalaryComponent.getId();
+            return "/protected/payroll/pay_salary_comp_detail.htm?faces-redirect=true&execution=e" + paySalaryComponent.getId();
 
         }  catch (BussinessException ex) { 
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
@@ -348,7 +348,7 @@ private PaySalaryComponentModel getModelFromEntity(PaySalaryComponent entity) {
         options.put("resizable", false);
         options.put("contentWidth", 460);
         options.put("contentHeight", 450);
-        RequestContext.getCurrentInstance().openDialog("pay_salary_component_formula", options, null);
+        RequestContext.getCurrentInstance().openDialog("pay_salary_comp_formula", options, null);
     }
 
     public Boolean getDisableTax() {

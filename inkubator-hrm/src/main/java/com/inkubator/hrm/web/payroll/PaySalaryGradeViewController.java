@@ -74,11 +74,11 @@ public class PaySalaryGradeViewController extends BaseController{
         if(searchParameter.getKeyParam().equals("minSalary") || searchParameter.getKeyParam().equals("mediumSalary") || searchParameter.getKeyParam().equals("maxSalary")){
             isRenderedNumberField = Boolean.TRUE;
             isRenderedTextField = Boolean.FALSE;
-            System.out.println(isRenderedNumberField + " " + isRenderedTextField);
+            
         }else{
             isRenderedNumberField = Boolean.FALSE;
             isRenderedTextField = Boolean.TRUE;
-            System.out.println(isRenderedNumberField + " " + isRenderedTextField);
+            
         }
     }
     

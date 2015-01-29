@@ -204,7 +204,7 @@ public class ReimbursmentFormController extends BaseController {
 
     public void handleFileUpload(FileUploadEvent event) {
         fotoFile = event.getFile();
-        System.out.println(" Nilai " + file);
+        
 //        InputStream inputStream = null;
 //        try {
 //            inputStream = fotoFile.getInputstream();

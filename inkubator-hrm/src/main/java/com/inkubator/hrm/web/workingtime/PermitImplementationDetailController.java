@@ -115,11 +115,11 @@ public class PermitImplementationDetailController extends BaseController {
 //	}
 
 	public String doBack() {
-        return "/protected/working_time/permit_implementation_view.htm?faces-redirect=true";
+        return "/protected/working_time/permit_impl_view.htm?faces-redirect=true";
     }
 
     public String doUpdate() {
-        return "/protected/working_time/permit_implementation_form.htm?faces-redirect=true&execution=e" + selectedPermitImplementation.getId();
+        return "/protected/working_time/permit_impl_form.htm?faces-redirect=true&execution=e" + selectedPermitImplementation.getId();
     }
     
     public Boolean getIsHaveApprovalActivity(){

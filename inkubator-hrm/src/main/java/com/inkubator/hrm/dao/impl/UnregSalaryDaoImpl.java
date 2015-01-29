@@ -85,7 +85,7 @@ public class UnregSalaryDaoImpl extends IDAOImpl<UnregSalary> implements UnregSa
 
     @Override
     public List<UnregSalaryViewModel> getByParamWithViewModel(UnregSalarySearchParameter searchParameter, int firstResult, int maxResults, Order order) {
-        System.out.println(order + "lolololololo");
+        
         final StringBuilder query = new StringBuilder("SELECT A.id AS unregSalaryId, A.code AS code, A.name AS name, A.salary_date AS salaryDate, C.bulan AS bulan, C.tahun AS year, count(B.unreg_id) AS total");
         query.append(" FROM hrm.unreg_salary A");
         query.append(" LEFT JOIN hrm.unreg_pay_components B ON A.id = B.unreg_id");
@@ -98,7 +98,7 @@ public class UnregSalaryDaoImpl extends IDAOImpl<UnregSalary> implements UnregSa
             query.append(" order by A." + order);
         }
         query.append(" LIMIT " + firstResult + ", " + maxResults);
-        System.out.println(query.toString());
+       
         return getCurrentSession().createSQLQuery(query.toString())
                 .setResultTransformer(Transformers.aliasToBean(UnregSalaryViewModel.class))
                 .list();

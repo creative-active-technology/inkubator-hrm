@@ -75,7 +75,7 @@ public class OverTimeDistributionFormController extends BaseController {
             int i = 0;
             for (GolonganJabatan golonganJabatan : golonganJabatanList) {
                 golonganJabatanDropDown.put(golonganJabatan.getCode() + " - " + golonganJabatan.getPangkat().getPangkatName(), golonganJabatan.getId());
-                System.out.println(golonganJabatanList.get(i).getCode());
+                
                 i++;
             }
             MapUtil.sortByValue(golonganJabatanDropDown);
@@ -189,7 +189,7 @@ public class OverTimeDistributionFormController extends BaseController {
         try {
             //        selecedLeave=leaveService.getEntiyByPK(model.getLeaveSchemeId());
             source = empDataService.getEmployeeByOtSearchParameter(ovetTimeModel);
-            System.out.println(" Ukurtan eployee " + source.size());
+            
             dualListModel.setSource(source);
         } catch (Exception ex) {
             LOGGER.error("Error", ex);

@@ -51,7 +51,7 @@ public class PublicHolidayExceptionDaoImpl extends IDAOImpl<PublicHolidayExcepti
     }
 
     private void doSearchPublicHolidayExceptionByParam(PublicHolidayExceptionSearchParameter parameter, Criteria criteria) {
-        System.out.println("Parameternyah : " +  parameter.getEmpDataName());
+        
         if (parameter.getEmpDataName()!= null) {
             criteria.createAlias("empData", "e", JoinType.INNER_JOIN);
             criteria.createAlias("e.bioData", "b", JoinType.INNER_JOIN);

@@ -125,7 +125,7 @@ public class EducationNonFormalViewController extends BaseController {
         options.put("resizable", false);
         options.put("contentWidth", 550);
         options.put("contentHeight", 580);
-        RequestContext.getCurrentInstance().openDialog("education_non_formal_form", options, params);
+        RequestContext.getCurrentInstance().openDialog("edu_non_formal_form", options, params);
     }
 
     @Override

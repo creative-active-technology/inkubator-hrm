@@ -124,7 +124,7 @@ public class TransactionCodeficationFormController extends BaseController {
 
         while (matcherValidity.find()) {
             if (Arrays.asList(validCode).contains(matcherValidity.group(1))) {
-                System.out.println(matcherValidity.group(1));
+                
             } else {
                 throw new BussinessException("transactionCodefication.error_code");
             }
@@ -134,7 +134,7 @@ public class TransactionCodeficationFormController extends BaseController {
         Pattern pattern = Pattern.compile("([A-Za-z0-9-/]+)");
         Matcher matcher = pattern.matcher(code);
         if (matcher.matches()) {
-//            System.out.println("Input String matches regex - " + matcher.matches());
+
         } else {
             throw new BussinessException("transactionCodefication.error_invalid_character");
         }

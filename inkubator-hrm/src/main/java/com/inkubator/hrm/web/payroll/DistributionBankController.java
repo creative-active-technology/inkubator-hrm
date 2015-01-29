@@ -51,7 +51,7 @@ public class DistributionBankController extends BaseController {
         try {
             super.initialization();
             String empId = FacesUtil.getRequestParameter("execution");
-            System.out.println(" Hehrehehheehhe " + empId);
+            
             empData = empDataService.getByPKBankTransfer(Long.parseLong(empId.substring(1)));
             dataToCalculate = this.payReceiverBankAccountService.getAllByEmpId(empData.getId());
             totalPercent = Lambda.sum(dataToCalculate, Lambda.on(PayReceiverBankAccount.class).getPersen());
@@ -149,7 +149,7 @@ public class DistributionBankController extends BaseController {
                 }
             }
         } else {
-            System.out.println(" disisjin");
+            
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.error", "distribution.error_range_not100",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         }

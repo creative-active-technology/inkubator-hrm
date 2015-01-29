@@ -93,7 +93,7 @@ public class PayTempOvertimeViewController extends BaseController {
         options.put("resizable", false);
         options.put("contentWidth", 500);
         options.put("contentHeight", 360);
-        RequestContext.getCurrentInstance().openDialog("pay_temp_overtime_form", options, params);
+        RequestContext.getCurrentInstance().openDialog("pay_temp_ot_form", options, params);
     }
 
     public void doAdd() {

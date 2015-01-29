@@ -83,7 +83,7 @@ public class ImageStreamerController extends BaseController {
         FacesContext context = FacesUtil.getFacesContext();
         String countryId = context.getExternalContext().getRequestParameterMap().get("countryId");
         if (context.getRenderResponse() || countryId == null) {
-            System.out.println("di lakukan pemanggilan");
+            
 
             return new DefaultStreamedContent();
         } else {
