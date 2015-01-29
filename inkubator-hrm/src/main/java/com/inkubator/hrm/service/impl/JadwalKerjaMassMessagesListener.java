@@ -113,7 +113,7 @@ public class JadwalKerjaMassMessagesListener extends IServiceImpl implements Mes
                         jadwalKaryawan.setTanggalWaktuKerja(DateTimeUtil.getDateFrom(beginScheduleDate, i, CommonUtilConstant.DATE_FORMAT_DAY));
                         jadwalKaryawan.setCreatedBy(createBy);
                         jadwalKaryawan.setCreatedOn(createOn);
-                        jadwalKaryawan.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
+                       
                     }
 //                    TempJadwalKaryawan jadwalKaryawan = new TempJadwalKaryawan();
 //                    jadwalKaryawan.setEmpData(empDataDao.getEntiyByPK(id));
