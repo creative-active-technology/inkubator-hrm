@@ -4,9 +4,12 @@
  */
 package com.inkubator.hrm.entity;
 
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.webcore.util.FacesUtil;
 import java.math.BigDecimal;
-import java.sql.Blob;
 import java.util.Date;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,6 +22,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 
@@ -27,8 +31,9 @@ import javax.persistence.Version;
  * @author Deni
  */
 @Entity
-@Table(name = "reimbursment", catalog = "hrm", uniqueConstraints = @UniqueConstraint(columnNames="code") )
-public class Reimbursment implements java.io.Serializable{
+@Table(name = "reimbursment", catalog = "hrm", uniqueConstraints = @UniqueConstraint(columnNames = "code"))
+public class Reimbursment implements java.io.Serializable {
+
     private Long id;
     private Integer version;
     private ReimbursmentSchema reimbursmentSchema;
@@ -43,6 +48,7 @@ public class Reimbursment implements java.io.Serializable{
     private Date createdOn;
     private String updatedBy;
     private Date updatedOn;
+    private BigDecimal basicValueOrNominal;
 
     public Reimbursment() {
     }
@@ -50,9 +56,9 @@ public class Reimbursment implements java.io.Serializable{
     public Reimbursment(Long id) {
         this.id = id;
     }
-    
+
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO, generator = "reimbursment_seq_gen")
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "reimbursment_seq_gen")
     @Column(name = "id", unique = true, nullable = false)
     @SequenceGenerator(name = "reimbursment_seq_gen", sequenceName = "REIMBURSMENT_SEQ")
     public Long getId() {
@@ -112,7 +118,7 @@ public class Reimbursment implements java.io.Serializable{
         this.claimDate = claimDate;
     }
 
-    @Column(name="quantity")
+    @Column(name = "quantity")
     public Integer getQuantity() {
         return quantity;
     }
@@ -168,7 +174,7 @@ public class Reimbursment implements java.io.Serializable{
         this.updatedOn = updatedOn;
     }
 
-    @Column(name = "reimbursment_document",columnDefinition="blob")
+    @Column(name = "reimbursment_document", columnDefinition = "blob")
     public byte[] getReimbursmentDocument() {
         return reimbursmentDocument;
     }
@@ -177,7 +183,7 @@ public class Reimbursment implements java.io.Serializable{
         this.reimbursmentDocument = reimbursmentDocument;
     }
 
-    @Column(name="approval_activity_number", length=45, unique=true)
+    @Column(name = "approval_activity_number", length = 45, unique = true)
     public String getApprovalActivityNumber() {
         return approvalActivityNumber;
     }
@@ -185,6 +191,29 @@ public class Reimbursment implements java.io.Serializable{
     public void setApprovalActivityNumber(String approvalActivityNumber) {
         this.approvalActivityNumber = approvalActivityNumber;
     }
-    
-    
+
+    public BigDecimal getBasicValueOrNominal() {
+        if (reimbursmentSchema.getRatioSalary() != null) {
+            basicValueOrNominal = new BigDecimal(reimbursmentSchema.getRatioSalary());
+        } else {
+            basicValueOrNominal = reimbursmentSchema.getNominalUnit();
+        }
+        return basicValueOrNominal;
+    }
+
+    @Transient
+    public String getXSalary() {
+        ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+
+        String data = "";
+        if (reimbursmentSchema.getRatioSalary() != null) {
+            data = "x " + messages.getString("global.salary");
+        }
+        return data;
+    }
+
+    public void setBasicValueOrNominal(BigDecimal basicValueOrNominal) {
+        this.basicValueOrNominal = basicValueOrNominal;
+    }
+
 }
