@@ -94,7 +94,7 @@ public class UnregSalaryViewController extends BaseController {
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 500);
-        options.put("contentHeight", 360);
+        options.put("contentHeight", 320);
         RequestContext.getCurrentInstance().openDialog("unreg_salary_form", options, params);
     }
 

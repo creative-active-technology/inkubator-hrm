@@ -21,8 +21,8 @@
                             <p:graphicImage library="images" name="marital_status.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="#{appmsg['unregSalary.unregSalary']}" styleClass="header_big" />
-                                    <p:outputLabel value="#{appmsg['unregSalary.unregSalary_header']}" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['unregSalary.salaryAgenda']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['unregSalary.unregularSalaryPlanning']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -104,30 +104,30 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{data.total}" />
                             </p:column>
-                            <p:column headerText="#{appmsg['global.action']}" style="width: 12%;text-align: center" exportable="false">
-                                <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
-                                                 style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                                 action="#{unregSalaryViewController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmDelete.show()">
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 25%;text-align: center" exportable="false">
+                                <p:commandButton  icon="ui-icon-wrench" title="#{appmsg['unregSalary.parameterConfiguration']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
+                                                  action="#{unregSalaryViewController.doEmployeeSetting()}" >
                                     <f:setPropertyActionListener value="#{data}" target="#{unregSalaryViewController.selectedViewModel}" />
+
+                                </p:commandButton>  
+                                -
+                                <p:commandButton  icon="ui-icon-tag" title="#{appmsg['unregSalary.componentData']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
+                                                  action="#{unregSalaryViewController.doComponentSetting()}" >
+                                    <f:setPropertyActionListener value="#{data}" target="#{unregSalaryViewController.selectedViewModel}" />
+
                                 </p:commandButton>
                                 -
                                 <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" ajax="true"
                                                   action="#{unregSalaryViewController.doEdit()}" >
                                     <f:setPropertyActionListener value="#{data}" target="#{unregSalaryViewController.selectedViewModel}" />
                                     <p:ajax event="dialogReturn" listener="#{unregSalaryViewController.onDialogReturn}"  update="tableId, :formId:growlId"/>
-                                </p:commandButton> 
+                                </p:commandButton>
                                 -
-                                <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
-                                                  action="#{unregSalaryViewController.doEmployeeSetting()}" >
+                                <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+                                                 style="font-size: 10px!important" update=":panelDialogConfirmId" 
+                                                 action="#{unregSalaryViewController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmDelete.show()">
                                     <f:setPropertyActionListener value="#{data}" target="#{unregSalaryViewController.selectedViewModel}" />
-
-                                </p:commandButton>  
-                                -
-                                <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
-                                                  action="#{unregSalaryViewController.doComponentSetting()}" >
-                                    <f:setPropertyActionListener value="#{data}" target="#{unregSalaryViewController.selectedViewModel}" />
-
-                                </p:commandButton>  
+                                </p:commandButton>
                             </p:column> 
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>
