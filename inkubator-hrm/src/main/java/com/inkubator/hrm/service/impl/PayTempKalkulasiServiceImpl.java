@@ -746,8 +746,8 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
         Long totalData = payTempKalkulasiDao.getTotalPayTempKalkulasiForSalaryJournal(searchParameter);
         Integer totalPage = Integer.valueOf(String.valueOf(totalData)) / Integer.valueOf(String.valueOf(maxResults));
         //get list debet and credit
-        List<SalaryJournalModel> listDebet = payTempKalkulasiDao.getByParamForSalaryJournalDebet();
-        List<SalaryJournalModel> listKredit = payTempKalkulasiDao.getByParamForSalaryJournalKredit();
+        List<SalaryJournalModel> listDebet = payTempKalkulasiDao.getByParamForSalaryJournalDebet(searchParameter);
+        List<SalaryJournalModel> listKredit = payTempKalkulasiDao.getByParamForSalaryJournalKredit(searchParameter);
         List<SalaryJournalModel> listSalaryJournal = new ArrayList<>();
 
         if (totalData % maxResults != 0) {
@@ -830,7 +830,7 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
     public Long getTotalPayTempKalkulasiForSalaryJournal(String searchParameter) throws Exception {
-        Long totalData = payTempKalkulasiDao.getTotalPayTempKalkulasiForSalaryJournal(searchParameter) + payTempKalkulasiDao.getTotalPayTempKalkulasiForSalaryJournalDebetAndKredit();
+        Long totalData = payTempKalkulasiDao.getTotalPayTempKalkulasiForSalaryJournal(searchParameter) + payTempKalkulasiDao.getTotalPayTempKalkulasiForSalaryJournalDebetAndKredit(searchParameter);
         return totalData;
     }
 

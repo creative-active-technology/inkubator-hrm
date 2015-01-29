@@ -93,7 +93,10 @@
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['reimbursment.nominal_unit']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.quantity}" ></h:outputLabel>
+                                <h:outputLabel value= "#{data.basicValueOrNominal}">
+                             <f:convertNumber pattern="###,###" type="currency"/>   
+                                </h:outputLabel>
+                                <h:outputLabel value= "#{data.XSalary}"></h:outputLabel>
                             </p:column>
                             <p:column sortBy="nominal" style="width: 20%">
                                 <f:facet name="header">
