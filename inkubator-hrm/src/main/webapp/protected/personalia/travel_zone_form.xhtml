@@ -34,13 +34,13 @@
                     </h:panelGrid> 
                     <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
                         <p:row>
-                            <p:column style="width: 39%">
+                            <p:column style="width: 49%">
                                 <p:outputLabel for="codeId" value="#{appmsg['travelZone.travelZone_code']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="codeId" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 60%">
+                            <p:column  style="width: 50%">
                                 <p:focus for ="codeId">
                                     <p:inputText id="codeId" title="#{appmsg['travelZone.travelZone_code']}" value="#{travelZoneFormController.travelZoneModel.code}" 
                                                  required="true" requiredMessage="#{appmsg['travelZone.travelZone_code_should_not_be_empty']}" maxlength="8" styleClass="isitext_hrm" style="width:250px;" />
@@ -53,13 +53,13 @@
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width: 39%">
+                            <p:column style="width: 49%">
                                 <p:outputLabel for="categoryId" value="#{appmsg['travelZone.travelZone_category']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="categoryId" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 60%">
+                            <p:column  style="width: 50%">
                                 <p:selectOneRadio id="categoryId" styleClass="isitext_hrm" required="true" value="#{travelZoneFormController.travelZoneModel.category}" label="#{appmsg['travelZone.travelZone_category']}">
                                     <!--Cek HRM Constanta..-->
                                     <f:selectItem itemLabel="#{appmsg['travelZone.travelZone_category_domestics']}" itemValue="0" />
@@ -74,13 +74,13 @@
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width: 39%">
+                            <p:column style="width: 49%">
                                 <p:outputLabel for="nameId" value="#{appmsg['travelZone.travelZone_name']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="nameId" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 60%">
+                            <p:column  style="width: 50%">
                                 <p:inputText id="nameId" title="#{appmsg['travelZone.travelZone_name']}" value="#{travelZoneFormController.travelZoneModel.name}" 
                                              required="true" requiredMessage="#{appmsg['travelZone.travelZone_name_should_not_be_empty']}" maxlength="60" styleClass="isitext_hrm" style="width:250px;" />
 
@@ -92,13 +92,13 @@
                             </p:column>
                         </p:row>      
                         <p:row>
-                            <p:column style="width: 39%">
+                            <p:column style="width: 49%">
                                 <p:outputLabel for="distanceId" value="#{appmsg['travelZone.travelZone_distance']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="distanceId" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 60%">
+                            <p:column  style="width: 50%">
                                 <pe:inputNumber id="distanceId" value="#{travelZoneFormController.travelZoneModel.distance}" title="#{appmsg['travelZone.travelZone_distance']}"  symbol=" KM" symbolPosition="s"  
                                                 decimalSeparator="," thousandSeparator="." required="true" requiredMessage="#{appmsg['travelZone.travelZone_distance_should_not_be_empty']}" styleClass="isitext_hrm" style="width:250px;" />   
                             </p:column>
@@ -109,26 +109,26 @@
                             </p:column>
                         </p:row>  
                         <p:row>
-                            <p:column style="width: 39%">
+                            <p:column style="width: 49%">
                                 <p:outputLabel for="descriptionId" value="#{appmsg['global.description']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="descriptionId" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 60%">
+                            <p:column  style="width: 50%">
                                 <p:inputTextarea id="descriptionId" title="#{appmsg['global.description']}" value="#{travelZoneFormController.travelZoneModel.description}" 
                                                  required="false" maxlength="500" counter="counter" counterTemplate="#{appmsg['global.remaining']}" styleClass="isitext_hrm" style="width:250px;" />
 
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width: 39%;" >
+                            <p:column style="width: 49%;" >
                                 <p:outputLabel  for="counter" styleClass="label_hrm" />
                             </p:column>
                             <p:column style="width: 1%;" >
                                 <p:outputLabel  for="counter" styleClass="label_hrm" />
                             </p:column>
-                            <p:column style="width: 60%">
+                            <p:column style="width: 50%">
                                 <h:outputText id="counter" />
                             </p:column>
                         </p:row>

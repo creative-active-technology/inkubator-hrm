@@ -14,11 +14,13 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.LogMonthEndPayrollDao;
 import com.inkubator.hrm.dao.PayTempKalkulasiDao;
+import com.inkubator.hrm.dao.WtHolidayDao;
 import com.inkubator.hrm.dao.WtPeriodeDao;
 import com.inkubator.hrm.entity.LogMonthEndPayroll;
 import com.inkubator.hrm.entity.WtPeriode;
@@ -40,6 +42,8 @@ public class LogMonthEndPayrollServiceImpl extends IServiceImpl implements LogMo
 	private PayTempKalkulasiDao payTempKalkulasiDao;
 	@Autowired
 	private WtPeriodeDao wtPeriodeDao;
+	@Autowired
+	private WtHolidayDao wtHolidayDao;
 
 	@Override
 	public LogMonthEndPayroll getEntiyByPK(String id) throws Exception {
@@ -277,10 +281,15 @@ public class LogMonthEndPayrollServiceImpl extends IServiceImpl implements LogMo
 	@Override
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void afterMonthEndProcess() throws Exception {
+		
+		/** update payrollType status di periode yg lama menjadi VOID */
 		WtPeriode wtPeriode = wtPeriodeDao.getEntityByPayrollTypeActive();
 		wtPeriode.setPayrollType(HRMConstant.PERIODE_PAYROLL_VOID);
+		wtPeriode.setUpdatedOn(new Date());
+		wtPeriode.setUpdatedBy(HRMConstant.SYSTEM_ADMIN);
 		wtPeriodeDao.update(wtPeriode);		
 		
+		/** dapatkan range (untilPeriode dan fromPeriode) untuk periode yg baru */
 		Date untilPeriode = wtPeriode.getUntilPeriode();
 		Date fromPeriode = DateUtils.addDays(untilPeriode, 1);
 		int lastDateOfMonth = DateUtils.toCalendar(untilPeriode).getActualMaximum(Calendar.DAY_OF_MONTH);
@@ -292,6 +301,7 @@ public class LogMonthEndPayrollServiceImpl extends IServiceImpl implements LogMo
 			untilPeriode = DateUtils.addMonths(untilPeriode, 1);
 		}
 		
+		/** adding process or update the entity if already exist */
 		WtPeriode wtp = wtPeriodeDao.getEntityByFromPeriodeAndUntilPeriode(fromPeriode, untilPeriode);
 		if(wtp == null) {
 			wtp = new WtPeriode();
@@ -302,11 +312,16 @@ public class LogMonthEndPayrollServiceImpl extends IServiceImpl implements LogMo
 			wtp.setUntilPeriode(untilPeriode);
 			wtp.setAbsen(HRMConstant.PERIODE_ABSEN_NOT_ACTIVE);
 			wtp.setPayrollType(HRMConstant.PERIODE_PAYROLL_ACTIVE);
+			long totalHoliday = wtHolidayDao.getTotalBetweenDate(fromPeriode, untilPeriode);
+			int workingDays = DateTimeUtil.getTotalWorkingDay(fromPeriode, untilPeriode, (int)totalHoliday, 0);
+			wtp.setWorkingDays(workingDays);
 			wtp.setCreatedOn(new Date());
 			wtp.setCreatedBy(HRMConstant.SYSTEM_ADMIN);
 			wtPeriodeDao.save(wtp);
 		} else {
 			wtp.setPayrollType(HRMConstant.PERIODE_PAYROLL_ACTIVE);
+			wtp.setUpdatedOn(new Date());
+			wtp.setUpdatedBy(HRMConstant.SYSTEM_ADMIN);
 			wtPeriodeDao.update(wtp);
 		}		
 		

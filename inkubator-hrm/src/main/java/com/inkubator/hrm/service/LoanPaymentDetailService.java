@@ -5,6 +5,7 @@ import java.util.List;
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.LoanPaymentDetail;
 import com.inkubator.hrm.web.model.LoanPaymentDetailModel;
+import java.util.Date;
 import org.hibernate.criterion.Order;
 
 /**
@@ -23,4 +24,10 @@ public interface LoanPaymentDetailService extends IService<LoanPaymentDetail> {
     
     public Double getInstallmentByLoanId(Long loanId) throws Exception;
 
+    public LoanPaymentDetail getEntityByPkAndEndWtPeriodActiveWithDetail(Long id, Date endDatePeriod) throws Exception;
+    
+    public List<LoanPaymentDetail> getAllDataPaymentWithEmpIdAndLoanId(Long empDataId, Long loanId, Date endDatePeriod, int firstResult, int maxResults, Order order) throws Exception;
+
+    public Long getTotalDataPaymentWithEmpIdAndLoanId(Long empDataId, Long loanId, Date endDatePeriod) throws Exception;
 }
+

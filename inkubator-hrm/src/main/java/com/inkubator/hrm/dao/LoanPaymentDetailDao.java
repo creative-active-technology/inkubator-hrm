@@ -33,4 +33,10 @@ public interface LoanPaymentDetailDao extends IDAO<LoanPaymentDetail> {
     public List<LoanPaymentDetail> getAllDataByEmpDataIdAndLoanSchemaIdAndPeriodTime(Long empDataid, Long loanSchemaId, Date fromPeriode, Date untilPeriode);
     
     public Double getInstallmentByLoanId(Long loanId);
+    
+    public LoanPaymentDetail getEntityByPkWithDetail(Long id);
+    
+    public List<LoanPaymentDetail> getAllDataPaymentWithEmpIdAndLoanId(Long empDataId, Long loanId, Date endDatePeriod, int firstResult, int maxResults, Order order);
+    
+    public Long getTotalDataPaymentWithEmpIdAndLoanId(Long empDataId, Long loanId, Date endDatePeriod);
 }
