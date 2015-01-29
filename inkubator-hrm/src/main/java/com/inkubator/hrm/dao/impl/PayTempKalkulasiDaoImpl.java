@@ -211,6 +211,7 @@ public class PayTempKalkulasiDaoImpl extends IDAOImpl<PayTempKalkulasi> implemen
 
     @Override
     public List<SalaryJournalModel> getByParamForSalaryJournal(String searchParameter, int firstResult, int maxResults, Order order) {
+        System.out.println("masukkkkkkkkkkkkkkkkkkkkk");
         BigDecimal zero = new BigDecimal(0.0);
         final StringBuilder query = new StringBuilder("select D.code as costCenterCode,");
         query.append("D.name AS costCenterName,");
@@ -225,8 +226,12 @@ public class PayTempKalkulasiDaoImpl extends IDAOImpl<PayTempKalkulasi> implemen
         query.append(" INNER JOIN F.paySalaryJurnal N");
         query.append(" INNER JOIN A.empData B");
         query.append(" INNER JOIN B.jabatanByJabatanId X ");
+        query.append(" INNER JOIN B.bioData bio ");
         query.append(" INNER JOIN X.department C");
         query.append(" INNER JOIN C.costCenterDept D ");
+        if (searchParameter != null) {
+            query.append(" WHERE D.name like :name OR N.name like :name OR N.code like :name OR D.code like :name ");
+        }
         query.append(" GROUP BY D.id, F.paySalaryJurnal");
         if (order.toString().contains("costCenterCode") || order.toString().contains("costCenterName") || order.toString().contains("jurnalName") || order.toString().contains("debet2") || order.toString().contains("kredit")) {
             query.append(" order by " + order);
@@ -259,19 +264,20 @@ public class PayTempKalkulasiDaoImpl extends IDAOImpl<PayTempKalkulasi> implemen
         query.append(" INNER JOIN hrm.jabatan x ON x.id = b.jabatan_id");
         query.append(" INNER JOIN hrm.department c ON c.id = x.departement_id");
         query.append(" INNER JOIN hrm.cost_center d ON d.id = c.cost_center_id");
+        if (searchParameter != null) {
+            query.append(" WHERE d.name like '%" + searchParameter + "%'");
+            query.append(" OR d.code like '%" + searchParameter + "%'");
+            query.append(" OR n.name like '%" + searchParameter + "%'");
+            query.append(" OR n.code like '%" + searchParameter + "%'");
+        }
         query.append(" GROUP BY d.id, f.paysalary_jurnal_id) AS jumlahRows");
 
-        if (searchParameter != null) {
-            Query hbm = getCurrentSession().createSQLQuery(query.toString()).setParameter("name", '%' + searchParameter + '%');
-            return Long.valueOf(hbm.uniqueResult().toString());
-        } else {
-            Query hbm = getCurrentSession().createSQLQuery(query.toString());
-            return Long.valueOf(hbm.uniqueResult().toString());
-        }
+        Query hbm = getCurrentSession().createSQLQuery(query.toString());
+        return Long.valueOf(hbm.uniqueResult().toString());
     }
 
     @Override
-    public List<SalaryJournalModel> getByParamForSalaryJournalDebet() {
+    public List<SalaryJournalModel> getByParamForSalaryJournalDebet(String searchParameter) {
         final StringBuilder query = new StringBuilder("SELECT d.code as costCenterCodeDebet ,");
         query.append("d.name AS costCenterNameDebet ,");
         query.append("SUM(a.nominal) as jumlahDebet");
@@ -283,13 +289,17 @@ public class PayTempKalkulasiDaoImpl extends IDAOImpl<PayTempKalkulasi> implemen
         query.append(" INNER JOIN department c ON c.id = x.departement_id");
         query.append(" INNER JOIN cost_center d ON d.id = c.cost_center_id");
         query.append(" where n.type_jurnal=0");
+        if (searchParameter != null) {
+            query.append(" AND d.name like '%" + searchParameter + "%'");
+            query.append(" OR d.code like '%" + searchParameter + "%'");
+        }
         query.append(" GROUP BY d.id ORDER BY d.code");
         return getCurrentSession().createSQLQuery(query.toString())
                 .setResultTransformer(Transformers.aliasToBean(SalaryJournalModel.class)).list();
     }
 
     @Override
-    public List<SalaryJournalModel> getByParamForSalaryJournalKredit() {
+    public List<SalaryJournalModel> getByParamForSalaryJournalKredit(String searchParameter) {
         final StringBuilder query = new StringBuilder("SELECT d.code as costCenterCodeKredit ,");
         query.append("d.name AS costCenterNameKredit ,");
         query.append("SUM(a.nominal) as jumlahKredit");
@@ -301,13 +311,17 @@ public class PayTempKalkulasiDaoImpl extends IDAOImpl<PayTempKalkulasi> implemen
         query.append(" INNER JOIN department c ON c.id = x.departement_id");
         query.append(" INNER JOIN cost_center d ON d.id = c.cost_center_id");
         query.append(" where n.type_jurnal=1");
+        if (searchParameter != null) {
+            query.append(" AND d.name like '%" + searchParameter + "%'");
+            query.append(" OR d.code like '%" + searchParameter + "%'");
+        }
         query.append(" GROUP BY d.id ORDER BY d.code");
         return getCurrentSession().createSQLQuery(query.toString())
                 .setResultTransformer(Transformers.aliasToBean(SalaryJournalModel.class)).list();
     }
 
     @Override
-    public Long getTotalPayTempKalkulasiForSalaryJournalDebetAndKredit() {
+    public Long getTotalPayTempKalkulasiForSalaryJournalDebetAndKredit(String searchParameter) {
         final StringBuilder query = new StringBuilder("SELECT count(*) FROM");
         query.append(" (SELECT count(d.code)");
         query.append(" FROM pay_temp_kalkulasi a");
@@ -318,19 +332,23 @@ public class PayTempKalkulasiDaoImpl extends IDAOImpl<PayTempKalkulasi> implemen
         query.append(" INNER JOIN department c ON c.id = x.departement_id");
         query.append(" INNER JOIN cost_center d ON d.id = c.cost_center_id");
         query.append(" where n.type_jurnal=1");
+        if (searchParameter != null) {
+            query.append(" AND d.name like '%" + searchParameter + "%'");
+            query.append(" OR d.code like '%" + searchParameter + "%'");
+        }
         query.append(" GROUP BY d.id) AS jumlahRowsDebetAndKredit");
         Query hbm = getCurrentSession().createSQLQuery(query.toString());
         return Long.valueOf(hbm.uniqueResult().toString());
     }
 
-	@Override
-	public PayTempKalkulasi getEntityByEmpDataIdAndSpecificModelComponent(Long empDataId, Integer specific){
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.createAlias("paySalaryComponent", "paySalaryComponent", JoinType.INNER_JOIN);
-		criteria.createAlias("paySalaryComponent.modelComponent", "modelComponent", JoinType.INNER_JOIN);
-		criteria.add(Restrictions.eq("empData.id", empDataId));
-		criteria.add(Restrictions.eq("modelComponent.spesific", specific));
-		
-		return (PayTempKalkulasi) criteria.uniqueResult();
-	}
+    @Override
+    public PayTempKalkulasi getEntityByEmpDataIdAndSpecificModelComponent(Long empDataId, Integer specific) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("paySalaryComponent", "paySalaryComponent", JoinType.INNER_JOIN);
+        criteria.createAlias("paySalaryComponent.modelComponent", "modelComponent", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("empData.id", empDataId));
+        criteria.add(Restrictions.eq("modelComponent.spesific", specific));
+
+        return (PayTempKalkulasi) criteria.uniqueResult();
+    }
 }

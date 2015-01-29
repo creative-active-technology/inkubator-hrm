@@ -159,7 +159,7 @@
                             
                             
                         </p:panelGrid>
-                        <p:commandButton value="Simpan" actionListener="#{jabatanSpesifikasiDetailController.doSave()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true" update=":userViewGrowlId">
+                        <p:commandButton value="#{appmsg['global.save']}" actionListener="#{jabatanSpesifikasiDetailController.doSave()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true" update=":userViewGrowlId">
                                 <!--<p:ajax event="dialogReturn" listener="#{jabatanSpesifikasiDetailController.onDialogReturn}" update="tableJobSpekId, :userViewGrowlId"/>-->
                         </p:commandButton>
 
