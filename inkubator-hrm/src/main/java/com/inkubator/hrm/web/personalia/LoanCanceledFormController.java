@@ -83,7 +83,7 @@ public class LoanCanceledFormController extends BaseController {
     }
 
     public String doSave() {
-        System.out.println("masuk dosave");
+        
         try {
             loanService.UpdateLoanAndsaveLoanCanceled(loanCanceledModel);
             MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
@@ -100,7 +100,7 @@ public class LoanCanceledFormController extends BaseController {
     }
 
     public String doBack(){
-        return "/protected/personalia/loan_canceled_process_view.htm?faces-redirect=true";
+        return "/protected/personalia/loan_canceled_proc_view.htm?faces-redirect=true";
     }
     
     public LoanService getLoanService() {

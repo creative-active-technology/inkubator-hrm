@@ -31,7 +31,7 @@ public class PaySalaryUploadReader implements ItemReader<PaySalaryUploadFileMode
 	private PoiItemReader<PaySalaryUploadFileModel> excelFileReader;
 	
 	public PaySalaryUploadReader(String filePath){
-            System.out.println(filePath+"teuing ti mana");
+           
 		this.extension = StringUtils.substringAfterLast(filePath, ".");
 		this.pathUpload = filePath;
 		if(StringUtils.equals(this.extension, "csv")){
@@ -67,7 +67,7 @@ public class PaySalaryUploadReader implements ItemReader<PaySalaryUploadFileMode
 	}
 	
 	private void initializationExcelReader(String filePath){
-            System.out.println("masuk excel");
+            
 		//read a Excel file
 		Resource resource = new FileSystemResource(filePath);
 		
@@ -89,7 +89,7 @@ public class PaySalaryUploadReader implements ItemReader<PaySalaryUploadFileMode
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-                System.out.println("selesai excel");
+               
 	}
 	
 	@Override

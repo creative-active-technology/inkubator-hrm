@@ -67,7 +67,7 @@ public class PermitClassificationDetailController extends BaseController {
             super.initialization();
             hidden = Boolean.FALSE;
             String userId = FacesUtil.getRequestParameter("execution");
-            System.out.println("permitClassification id nya : " + userId);
+            
             selectedPermitClassification = permitClassificationService.getEntityByPKWithDetail(Long.parseLong(userId.substring(1)));
             selectedApprovalDefinitionPermit = approvalDefinitionPermitService.getByPermitId(Long.parseLong(userId.substring(1)));
             if(selectedPermitClassification.getAvailibility().equals(HRMConstant.AVALILIBILITY_PER_DATE)){

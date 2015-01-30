@@ -201,7 +201,7 @@ public class LogMonthEndPayrollViewController extends BaseController {
     	 *  please see onComplete method that will set jobExecution == null */
     	if(jobExecution == null){ 
 	        try {
-	        	System.out.println("=============================================START doMonthEndProcess " + new Date());
+	        	
 	            long sleepVariable = payTempKalkulasiService.getTotalData();
 	            
 	            JobParameters jobParameters = new JobParametersBuilder()
@@ -227,7 +227,7 @@ public class LogMonthEndPayrollViewController extends BaseController {
 	            		break;
 	            	}
 	            }
-	            System.out.println("=============================================END doMonthEndProcess " + new Date());
+	            
 	        } catch (Exception ex) {
 	            LOGGER.error("Error ", ex);
 	        }

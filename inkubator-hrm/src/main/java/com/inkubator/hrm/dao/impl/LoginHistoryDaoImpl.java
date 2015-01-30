@@ -78,7 +78,7 @@ public class LoginHistoryDaoImpl extends IDAOImpl<LoginHistory> implements Login
     public List<LoginHistory> getByWeekDif(int value) {
         Date now = new Date();
         Date parameter = DateTimeUtil.getDateFrom(now, -value, CommonUtilConstant.DATE_FORMAT_WEEK);
-        System.out.println(" Tanggal param "+parameter);
+        
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.lt("loginDate", parameter));
         return criteria.list();

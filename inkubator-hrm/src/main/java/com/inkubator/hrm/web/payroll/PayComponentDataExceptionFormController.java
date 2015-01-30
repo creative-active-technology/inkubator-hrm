@@ -104,7 +104,7 @@ public class PayComponentDataExceptionFormController extends BaseController{
     }
     
     public void doSave() {
-        System.out.println("masuk dosave");
+        
         PayComponentDataException payComponentDataException = getEntityFromViewModel(model);
         try {
             if (isUpdate) {

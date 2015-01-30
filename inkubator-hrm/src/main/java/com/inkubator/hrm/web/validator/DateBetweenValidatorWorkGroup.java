@@ -31,7 +31,7 @@ public class DateBetweenValidatorWorkGroup implements Validator {
         SimpleDateFormat parser = new SimpleDateFormat("dd MMMM yyyy", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
         Date endTime = null;
         String kondisi = (String) endTimeComponent1.getSubmittedValue();
-        System.out.println(" nili kondisi " + kondisi);
+        
         try {
             endTime = parser.parse((String) endTimeComponent.getSubmittedValue());
         } catch (Exception e) {

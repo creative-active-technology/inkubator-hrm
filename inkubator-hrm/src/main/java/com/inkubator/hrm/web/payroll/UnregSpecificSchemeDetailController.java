@@ -64,7 +64,7 @@ public class UnregSpecificSchemeDetailController extends BaseController {
     }
     
     public String doDetail(){
-    	return "/protected/payroll/unreg_specific_scheme_exception.htm?faces-redirect=true&execution=e" + selected.getId();
+    	return "/protected/payroll/unreg_specific_scheme_ex.htm?faces-redirect=true&execution=e" + selected.getId();
     }
     
     public String doBack(){

@@ -86,7 +86,7 @@ public class MecineFingerFormController extends BaseController{
     }
     
     public void doSave() {
-        System.out.println("masuk dosave");
+        
         MecineFinger mecineFinger = getEntityFromViewModel(model);
         try {
             if (isUpdate) {

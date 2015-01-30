@@ -67,8 +67,7 @@ public class FingerQueryFormController extends BaseController {
                 mecineFingerQueryModel.setDbUserName(mecineFinger.getDbUser());
             }
             mecineFingerQueryModel.setId(mecineFinger.getId());
-            System.out.println(mecineFinger.getId());
-            System.out.println(mecineFingerQueryModel.getId());
+            
         } catch (Exception ex) {
             LOGGER.error("Errot", ex);
         }
@@ -93,7 +92,7 @@ public class FingerQueryFormController extends BaseController {
     
     public String doSave() {
         try {
-            System.out.println(mecineFingerQueryModel.getId()+"=============================");
+            
             mecineFingerService.saveMesineQuery(mecineFingerQueryModel);
             MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());

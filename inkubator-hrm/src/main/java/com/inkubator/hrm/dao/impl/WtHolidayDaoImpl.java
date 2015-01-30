@@ -108,7 +108,7 @@ public class WtHolidayDaoImpl extends IDAOImpl<WtHoliday> implements WtHolidayDa
     public List<WtHoliday> getByYearDif(int value) {
         Date now = new Date();
         Date parameter = DateTimeUtil.getDateFrom(now, -value, CommonUtilConstant.DATE_FORMAT_YEAR);
-        System.out.println(" Tahun param " + parameter);
+      
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.lt("holidayDate", parameter));
         criteria.add(Restrictions.eq("isEveryYear", 1));

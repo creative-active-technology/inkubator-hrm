@@ -145,7 +145,7 @@ public class LeaveImplementationCancelController extends BaseController {
 	}
 
 	public String doBack() {
-        return "/protected/working_time/leave_implementation_view.htm?faces-redirect=true";
+        return "/protected/working_time/leave_impl_view.htm?faces-redirect=true";
     }
 	
 	public String doCancellation(){		
@@ -158,7 +158,7 @@ public class LeaveImplementationCancelController extends BaseController {
         		MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
         				FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         	}
-			return "/protected/working_time/leave_implementation_view.htm?faces-redirect=true";
+			return "/protected/working_time/leave_impl_view.htm?faces-redirect=true";
 		} catch (BussinessException ex) { 
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex) {

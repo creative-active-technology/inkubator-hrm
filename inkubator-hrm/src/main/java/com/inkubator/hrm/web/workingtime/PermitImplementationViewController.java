@@ -89,7 +89,7 @@ public class PermitImplementationViewController extends BaseController {
     }
 
     public String doDetail() {
-        return "/protected/working_time/permit_implementation_detail.htm?faces-redirect=true&execution=e" + selectedPermitImplementation.getId();
+        return "/protected/working_time/permit_impl_detail.htm?faces-redirect=true&execution=e" + selectedPermitImplementation.getId();
     }
 
     public void doSelectEntity() {
@@ -118,10 +118,10 @@ public class PermitImplementationViewController extends BaseController {
     }
 
     public String doAdd() {
-        return "/protected/working_time/permit_implementation_form.htm?faces-redirect=true";
+        return "/protected/working_time/permit_impl_form.htm?faces-redirect=true";
     }
 
     public String doUpdate() {
-        return "/protected/working_time/permit_implementation_form.htm?faces-redirect=true&execution=e" + selectedPermitImplementation.getId();
+        return "/protected/working_time/permit_impl_form.htm?faces-redirect=true&execution=e" + selectedPermitImplementation.getId();
     }
 }

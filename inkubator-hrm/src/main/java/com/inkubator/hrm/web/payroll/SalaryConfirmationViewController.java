@@ -58,7 +58,7 @@ public class SalaryConfirmationViewController extends BaseController {
     }
 
     public String doDetail() {
-        return "/protected/payroll/salary_confirmation_detail.htm?faces-redirect=true&execution=e" + selectedEmpData.getId();
+        return "/protected/payroll/salary_confirm_detail.htm?faces-redirect=true&execution=e" + selectedEmpData.getId();
     }
     
     public LazyDataModel<EmpData> getLazyDataModel() {

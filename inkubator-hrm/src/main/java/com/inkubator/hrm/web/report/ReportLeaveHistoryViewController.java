@@ -51,7 +51,7 @@ public class ReportLeaveHistoryViewController extends BaseController {
         searchParameter = new LeaveImplementationReportSearchParameter();
         empData = 0L;
         for (String role : UserInfoUtil.getRoles()) {
-            System.out.println("Role : " + role);
+            
             if (UserInfoUtil.hasRole("BASIC_USER")) {
                 empData = HrmUserInfoUtil.getEmpData().getId();
             }
@@ -172,7 +172,7 @@ public class ReportLeaveHistoryViewController extends BaseController {
         listReportLeaveHistoryModels.clear();
         if (StringUtils.isNotEmpty(searchParameter.getApprovalStatus())) {
             selectedApprovalActivity = approvalActivityService.getByApprovalStatus(Integer.parseInt(searchParameter.getApprovalStatus()));
-            System.out.println("app act " + selectedApprovalActivity.size());
+            
             for (ApprovalActivity a : selectedApprovalActivity) {
 
                 activityNumbers.add(a.getActivityNumber());

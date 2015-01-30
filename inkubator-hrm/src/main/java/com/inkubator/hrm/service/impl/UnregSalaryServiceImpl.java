@@ -363,7 +363,7 @@ public class UnregSalaryServiceImpl extends IServiceImpl implements UnregSalaryS
             unregEmpType.setCreatedOn(new Date());
             unregEmpTypeDao.save(unregEmpType);
         }
-        System.out.println("haha");
+        
     }
 
     @Override

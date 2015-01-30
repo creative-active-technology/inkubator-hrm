@@ -258,7 +258,7 @@ public class LogMonthEndPayrollServiceImpl extends IServiceImpl implements LogMo
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
 	public List<LogMonthEndPayrollViewModel> getByParam(LogMonthEndPayrollSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception {
-		System.out.println("S");
+		
 		List<LogMonthEndPayrollViewModel> list = logMonthEndPayrollDao.getByParam(parameter, firstResult, maxResults, orderable);
 		return list;
 

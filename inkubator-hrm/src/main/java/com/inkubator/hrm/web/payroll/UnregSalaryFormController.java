@@ -62,7 +62,7 @@ public class UnregSalaryFormController extends BaseController {
                 dropDownMonths.put(MonthAsStringUtil.getMonth(i), i);
             }
             dropDownYears = wtPeriodeService.getAllYears();
-            System.out.println(dropDownYears.size());
+            
             dropDownMonths = HashMapSortByValueUtil.sortByValues(dropDownMonths);
             if (StringUtils.isNotEmpty(unregSalaryId)) {
                 UnregSalary unregSalary = unregSalaryService.getEntiyByPK(Long.parseLong(unregSalaryId));

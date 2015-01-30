@@ -57,7 +57,7 @@ public class EmpTimeScheduleFormController extends BaseController {
                 groupWorkingCode = "DEFAULT";
             }
             dataToShow = wtGroupWorkingService.getAllData();
-            System.out.println(dataToShow.size());
+            
             for (WtGroupWorking dataToShow1 : dataToShow) {
                 workingTime.put(dataToShow1.getCode() + " - " + dataToShow1.getName(), dataToShow1.getCode());
             }

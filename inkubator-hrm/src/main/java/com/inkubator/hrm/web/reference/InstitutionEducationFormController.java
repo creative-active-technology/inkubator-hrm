@@ -257,14 +257,12 @@ public class InstitutionEducationFormController extends BaseController {
 
     public void countryChanged(ValueChangeEvent event) {
         try {
-            System.out.println("New value: " + event.getNewValue());
-            System.out.println("Country Id  " + institutionEducationModel.getCountryId());
+            
 
             Country country = countryService.getEntiyByPK(Long.parseLong(String.valueOf(event.getNewValue())));
 
             List<Province> listProvinces = provinceService.getByCountryIdWithDetail(Long.parseLong(String.valueOf(event.getNewValue())));
-            System.out.println("list province " + listProvinces);
-            System.out.println("ukuran " + listProvinces.size());
+            
             if (listProvinces.isEmpty() || listProvinces == null) {
                 disabledProvince = Boolean.TRUE;
 
@@ -287,7 +285,7 @@ public class InstitutionEducationFormController extends BaseController {
 
     public void provinceChanged(ValueChangeEvent event) {
         try {
-            System.out.println("Province Id  " + institutionEducationModel.getProvinceId());
+            
 
             Province province = provinceService.getEntiyByPK(Long.parseLong(String.valueOf(event.getNewValue())));
 

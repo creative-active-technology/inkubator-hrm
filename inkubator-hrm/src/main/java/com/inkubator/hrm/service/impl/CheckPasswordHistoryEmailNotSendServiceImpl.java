@@ -62,7 +62,7 @@ public class CheckPasswordHistoryEmailNotSendServiceImpl extends IServiceImpl im
                 PasswordHistory pass = new PasswordHistory();
                 BeanUtils.copyProperties(passwordHistory, pass);
                 pass.setPassword(passwordDecrypted);
-                System.out.println(" nilia local "+pass.getLocalId());
+               
                 List<String> toSend = new ArrayList<>();
                 List<String> toSentCC = new ArrayList<>();
                 vtm.setFrom(ownerEmail);

@@ -62,7 +62,7 @@ public class CountryDetailController extends BaseController {
             emptyModel = new DefaultMapModel();
             super.initialization();
             String userId = FacesUtil.getRequestParameter("execution");
-            System.out.println("country id nya : " + userId);
+            
             selectedCountry = countryService.getEntiyByPK(Long.parseLong(userId.substring(1)));
 
             LatLng coord = new LatLng(Double.parseDouble(selectedCountry.getLatitude()), Double.parseDouble(selectedCountry.getLongitude()));

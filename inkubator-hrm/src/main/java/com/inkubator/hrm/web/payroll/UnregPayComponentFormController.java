@@ -62,7 +62,7 @@ public class UnregPayComponentFormController extends BaseController {
         super.initialization();
         try {
             unregSalaryId = FacesUtil.getRequestParameter("unregSalaryId");
-            System.out.println("hahahah" + unregSalaryId);
+            
             model = new UnregSalaryModel();
             if (StringUtils.isNotEmpty(unregSalaryId)) {
                 UnregSalary unregSalary = unregSalaryService.getEntiyByPK(Long.parseLong(unregSalaryId));

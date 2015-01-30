@@ -82,7 +82,7 @@ public class NotificationUserMessagesListener extends IServiceImpl implements Me
                         maptoSend.put("headerInfo", "Your Password in OPTIMA HR has been reset. <br/>");
                     }
                 }
-                System.out.println(" suksesss");
+               
                 if (passwordHistory.getLocalId().equals("in")) {
                     vtm.setTemplatePath("email_user_confirmation.vm");
                     if (passwordHistory.getRequestType().equalsIgnoreCase(HRMConstant.USER_UPDATE)) {
@@ -114,7 +114,7 @@ public class NotificationUserMessagesListener extends IServiceImpl implements Me
                 passwordHistory.setEmailNotification(1);
                 passwordHistory.setPassword(HashingUtils.getHashSHA256(passwordHistory.getPassword()));
                 this.passwordHistoryDao.update(passwordHistory);
-                System.out.println(" suksesss");
+               
             }
         } catch (Exception ex) {
             LOGGER.error("Error", ex);

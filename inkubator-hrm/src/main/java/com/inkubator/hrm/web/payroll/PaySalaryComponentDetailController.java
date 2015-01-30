@@ -56,11 +56,11 @@ public class PaySalaryComponentDetailController extends BaseController{
     }
 
     public String doBack() {
-        return "/protected/payroll/pay_salary_component_view.htm?faces-redirect=true";
+        return "/protected/payroll/pay_salary_comp_view.htm?faces-redirect=true";
     }
     
     public String doEdit() {
-        return "/protected/payroll/pay_salary_component_form.htm?faces-redirect=true&execution=e" + selectedPaySalaryComponent.getId();
+        return "/protected/payroll/pay_salary_comp_form.htm?faces-redirect=true&execution=e" + selectedPaySalaryComponent.getId();
     }
     
     public PaySalaryComponent getSelectedPaySalaryComponent() {
