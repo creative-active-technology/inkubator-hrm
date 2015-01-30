@@ -28,4 +28,6 @@ public interface TempJadwalKaryawanService extends IService<TempJadwalKaryawan>,
     public TempJadwalKaryawan getEntityByEmpDataIdAndTanggalWaktuKerja(Long id, Date implementationDate) throws Exception;
 
     public TempJadwalKaryawan getByEmpId(Long id, Date implementationDate) throws Exception;
+    
+    public List<TempJadwalKaryawan> getAllByEmpIdWithDetailWithFromAndUntilPeriod(long empId) throws Exception;
 }

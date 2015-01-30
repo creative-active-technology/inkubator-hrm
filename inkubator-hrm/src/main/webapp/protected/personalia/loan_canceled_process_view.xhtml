@@ -22,7 +22,7 @@
                         <p:graphicImage library="images" name="loan.png" height="36" width="36" cache="true"/>
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Loan Canceled Process" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['loanCanceled.loanCanceled']}" styleClass="header_big" />
                                 <p:outputLabel value="#{appmsg['loan.loan_data_from_application']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
@@ -102,7 +102,7 @@
                             
                             <p:column sortBy="approvalTime"  style="width: 15%">
                                 <f:facet name="header">  
-                                    <h:outputText value="Proses Pencairan"/>
+                                    <h:outputText value="#{appmsg['loan.approvalDate']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{loanData.approvalTime}">
                                     <f:convertDateTime pattern="dd MMMM yyyy" />

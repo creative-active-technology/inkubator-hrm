@@ -177,4 +177,17 @@ public class TempJadwalKaryawanDaoImpl extends IDAOImpl<TempJadwalKaryawan> impl
 	    criteria.add(Restrictions.ne("wtWorkingHour.code", "OFF"));
 	    return criteria.list();
 	}
+
+    @Override
+    public List<TempJadwalKaryawan> getAllByEmpIdWithDetailWithFromAndUntilPeriod(long empId, Date from, Date until) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("empData", "e", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("e.id", empId));
+        criteria.add(Restrictions.gt("tanggalWaktuKerja", from));
+        criteria.add(Restrictions.lt("tanggalWaktuKerja", until));
+        criteria.setFetchMode("wtWorkingHour.attendanceStatus", FetchMode.JOIN);
+        criteria.setFetchMode("wtWorkingHour", FetchMode.JOIN);
+        criteria.addOrder(Order.asc("tanggalWaktuKerja"));
+        return criteria.list();
+    }
 }
