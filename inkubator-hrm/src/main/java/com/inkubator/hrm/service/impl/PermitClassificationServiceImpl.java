@@ -1,7 +1,6 @@
 package com.inkubator.hrm.service.impl;
 
 import com.inkubator.common.util.RandomNumberUtil;
-import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.ApprovalDefinitionDao;
 import com.inkubator.hrm.dao.ApprovalDefinitionPermitDao;
@@ -45,6 +44,7 @@ public class PermitClassificationServiceImpl extends BaseApprovalConfigurationSe
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void delete(PermitClassification permitClassification) throws Exception {
+        
         permitClassificationDao.delete(permitClassification);
     }
 

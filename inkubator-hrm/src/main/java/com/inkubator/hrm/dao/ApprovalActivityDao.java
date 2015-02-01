@@ -8,6 +8,7 @@ import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.ApprovalDefinition;
 import com.inkubator.hrm.web.search.ApprovalActivitySearchParameter;
+import java.util.Date;
 
 /**
  *
@@ -50,5 +51,6 @@ public interface ApprovalActivityDao extends IDAO<ApprovalActivity> {
     public List<ApprovalActivity> getByApprovalStatus(Integer approvalStatus);
     
     public void updateAndFlush(ApprovalActivity approvalActivity);
+    
+    public ApprovalActivity getApprovalTimeByApprovalActivityNumber(String activityNumber);
 }
- 

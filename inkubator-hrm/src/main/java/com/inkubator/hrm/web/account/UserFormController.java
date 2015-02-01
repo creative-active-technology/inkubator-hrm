@@ -69,7 +69,7 @@ public class UserFormController extends BaseController {
                 List<HrmRole> sourceSpiRole = this.hrmRoleService.getAllData();
                 List<HrmRole> targetRole = selectedHrmUser.getRoles();
                 boolean a=sourceSpiRole.removeAll(targetRole);
-                System.out.println(" iiniin mni "+a);
+                
                 dualListModel = new DualListModel<>(sourceSpiRole, targetRole);
             } else {
                 List<HrmRole> sourceSpiRole = this.hrmRoleService.getAllData();

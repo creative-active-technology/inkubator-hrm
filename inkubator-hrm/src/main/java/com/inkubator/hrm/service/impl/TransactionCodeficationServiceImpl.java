@@ -277,4 +277,12 @@ public class TransactionCodeficationServiceImpl extends IServiceImpl implements 
         return this.transactionCodeficationDao.getTotalTransactionCodeficationByParam(parameter);
     }
 
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public TransactionCodefication getEntityByModulCode(String modulCode) {
+        return transactionCodeficationDao.getEntityByModulCode(modulCode);
+    }
+    
+    
+    
 }

@@ -63,7 +63,7 @@ public class ImplementationOfOverTimeApprovalFormController extends BaseControll
             isWaitingApproval = selectedApprovalActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING;
             isApprover = StringUtils.equals(UserInfoUtil.getUserName(), selectedApprovalActivity.getApprovedBy());
             isRequester = StringUtils.equals(UserInfoUtil.getUserName(), selectedApprovalActivity.getRequestBy());
-            System.out.println(isRequester+"huahahahaha");
+            
             Gson gson = JsonUtil.getHibernateEntityGsonBuilder().registerTypeAdapter(Date.class, new DateJsonDeserializer()).create();
             selectedImplementationOfOverTime = gson.fromJson(selectedApprovalActivity.getPendingData(), ImplementationOfOverTime.class);
             EmpData empData = empDataService.getByIdWithDetail(selectedImplementationOfOverTime.getEmpData().getId());

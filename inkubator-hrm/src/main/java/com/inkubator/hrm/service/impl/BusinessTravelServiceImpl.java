@@ -526,9 +526,15 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-	public BusinessTravel getEntityByApprovalActivityNumberWithDetail(String approvalActivityNumber) {
+	public BusinessTravel getEntityByApprovalActivityNumberWithDetail(String approvalActivityNumber) throws Exception{
 		return businessTravelDao.getEntityByApprovalActivityNumberWithDetail(approvalActivityNumber);
 		
 	}
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public List<BusinessTravel> getAllDataByEmpDataId(Long empDataId) throws Exception {
+        return businessTravelDao.getAllDataByEmpDataId(empDataId);
+    }
 
 }

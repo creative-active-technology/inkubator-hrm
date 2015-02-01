@@ -2,7 +2,6 @@ package com.inkubator.hrm.dao.impl;
 
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.MatchMode;
@@ -15,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.EducationNonFormalDao;
 import com.inkubator.hrm.entity.EducationNonFormal;
+import com.inkubator.hrm.web.search.EducationNonFormalSearchParameter;
 
 /**
  *
@@ -30,7 +30,7 @@ public class EducationNonFormalDaoImpl extends IDAOImpl<EducationNonFormal> impl
     }
 
     @Override
-    public List<EducationNonFormal> getByParam(String parameter, int firstResult, int maxResults, Order orderable) {
+    public List<EducationNonFormal> getByParam(EducationNonFormalSearchParameter parameter, int firstResult, int maxResults, Order orderable) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchByParam(parameter, criteria);
         criteria.addOrder(orderable);
@@ -40,15 +40,19 @@ public class EducationNonFormalDaoImpl extends IDAOImpl<EducationNonFormal> impl
     }
     
     @Override
-    public Long getTotalByParam(String parameter) {
+    public Long getTotalByParam(EducationNonFormalSearchParameter parameter) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchByParam(parameter, criteria);
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
-    private void doSearchByParam(String parameter, Criteria criteria) {
-        if (StringUtils.isNotEmpty(parameter)) {
-            criteria.add(Restrictions.like("name", parameter, MatchMode.ANYWHERE));
+    private void doSearchByParam(EducationNonFormalSearchParameter parameter, Criteria criteria) {
+        
+        if (parameter.getName() != null) {
+            criteria.add(Restrictions.like("name", parameter.getName(), MatchMode.ANYWHERE));
+        }
+        if (parameter.getCode() != null){
+            criteria.add(Restrictions.like("code", parameter.getCode(), MatchMode.ANYWHERE));
         }
         criteria.add(Restrictions.isNotNull("id"));
     }

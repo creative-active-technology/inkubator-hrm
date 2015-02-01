@@ -66,7 +66,7 @@ public class PayComponentDataExceptionDetailController extends BaseController {
         try {
             paySalaryComponentId = FacesUtil.getRequestParameter("execution");
             PaySalaryComponent paySalaryComponent = paySalaryComponentService.getEntiyByPK(Long.parseLong(paySalaryComponentId.substring(1)));
-            WtPeriode wtPeriode = wtPeriodeService.getEntityByStatusActive();
+            WtPeriode wtPeriode = wtPeriodeService.getEntityByPayrollTypeActive();
             List<PayComponentDataException> listPayComponentDataException = payComponentDataExceptionService.getByPaySalaryComponent(Long.parseLong(paySalaryComponentId.substring(1)));
             payComponentDataExceptionModel = getModelFromEntity(paySalaryComponent, listPayComponentDataException.size(), wtPeriode);
             //hitung jumlah nominal
@@ -94,13 +94,13 @@ public class PayComponentDataExceptionDetailController extends BaseController {
         selected = null;
     }
 
-    public void hitungNominal() throws Exception{
+    public void hitungNominal() throws Exception {
         List<PayComponentDataException> listPayComponentDataException = payComponentDataExceptionService.getByPaySalaryComponent(Long.parseLong(paySalaryComponentId.substring(1)));
         for (PayComponentDataException listPayComponentNominal : listPayComponentDataException) {
             jmlNominalComponentException = jmlNominalComponentException.add(listPayComponentNominal.getNominal());
         }
     }
-    
+
     private PayComponentDataExceptionModel getModelFromEntity(PaySalaryComponent paySalaryComponent, Integer jumlahKaryawan, WtPeriode wtPeriod) {
         PayComponentDataExceptionModel model = new PayComponentDataExceptionModel();
         model.setComponentName(paySalaryComponent.getName());
@@ -114,6 +114,10 @@ public class PayComponentDataExceptionDetailController extends BaseController {
 
     public void doSearch() {
         lazyDataModel = null;
+    }
+
+    public String doBack() {
+        return "/protected/payroll/pay_comp_ex_view.htm?faces-redirect=true";
     }
 
     @Override
@@ -132,7 +136,7 @@ public class PayComponentDataExceptionDetailController extends BaseController {
         }
         super.onDialogReturn(event);
     }
-    
+
     public void doAdd() {
         Map<String, List<String>> dataToSend = new HashMap<>();
         List<String> dataIsi = new ArrayList<>();
@@ -140,7 +144,7 @@ public class PayComponentDataExceptionDetailController extends BaseController {
         dataToSend.put("paySalaryComponentId", dataIsi);
         showDialog(dataToSend);
     }
-    
+
     public void doSelectEntity() {
         try {
             selected = this.payComponentDataExceptionService.getEntiyByPK(selected.getId());
@@ -148,7 +152,7 @@ public class PayComponentDataExceptionDetailController extends BaseController {
             LOGGER.error("Error", ex);
         }
     }
-    
+
     public void doDelete() {
         try {
             this.payComponentDataExceptionService.delete(selected);
@@ -163,7 +167,7 @@ public class PayComponentDataExceptionDetailController extends BaseController {
             LOGGER.error("Error", ex);
         }
     }
-    
+
     public void doEdit() {
         Map<String, List<String>> dataToSend = new HashMap<>();
         List<String> paySalaryComponenId = new ArrayList<>();
@@ -174,15 +178,15 @@ public class PayComponentDataExceptionDetailController extends BaseController {
         dataToSend.put("payComponentExceptionId", payComponentExceptionId);
         showDialog(dataToSend);
     }
-    
-    public void showDialog(Map<String, List<String>> params){
+
+    public void showDialog(Map<String, List<String>> params) {
         Map<String, Object> options = new HashMap<>();
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", false);
-        options.put("contentWidth", 400);
+        options.put("contentWidth", 420);
         options.put("contentHeight", 300);
-        RequestContext.getCurrentInstance().openDialog("pay_component_exception_form", options, params);
+        RequestContext.getCurrentInstance().openDialog("pay_comp_ex_form", options, params);
     }
 
     public PayComponentDataExceptionService getPayComponentDataExceptionService() {
@@ -260,5 +264,4 @@ public class PayComponentDataExceptionDetailController extends BaseController {
         this.selected = selected;
     }
 
-    
 }

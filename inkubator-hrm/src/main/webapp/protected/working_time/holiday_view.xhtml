@@ -36,8 +36,8 @@
                                     <p:outputLabel value=":" />
                                     <p:selectOneMenu value="#{holidayViewController.holidaySearchParameter.keyParam}" style="margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemLabel="Nama Hari Libur" itemValue="holidayName"/>
-                                        <f:selectItem itemLabel="Libur Keagamaan" itemValue="religionName"/>
+                                        <f:selectItem itemLabel="#{appmsg['holiday.name_of_holiday']}" itemValue="holidayName"/>
+                                        <f:selectItem itemLabel="#{appmsg['holiday.religious_holiday']}" itemValue="religionName"/>
                                         <!--<f:selectItem itemLabel="#{appmsg['specificationability.scale_value']}" itemValue="scaleValue"/>-->
                                     </p:selectOneMenu>
                                     <p:inputText id="searchId" value="#{holidayViewController.holidaySearchParameter.parameter}" style="width: 250px" styleClass="isitext_hrm"/>

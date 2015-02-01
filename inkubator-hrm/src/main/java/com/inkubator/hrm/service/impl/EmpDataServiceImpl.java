@@ -37,6 +37,7 @@ import com.inkubator.hrm.dao.GolonganJabatanDao;
 import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.dao.JabatanDao;
 import com.inkubator.hrm.dao.PaySalaryGradeDao;
+import com.inkubator.hrm.dao.TaxFreeDao;
 import com.inkubator.hrm.dao.WtGroupWorkingDao;
 import com.inkubator.hrm.entity.Department;
 import com.inkubator.hrm.entity.EmpCareerHistory;
@@ -44,6 +45,7 @@ import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.entity.PaySalaryGrade;
+import com.inkubator.hrm.entity.TaxFree;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.util.MapUtil;
 import com.inkubator.hrm.util.StringsUtils;
@@ -56,7 +58,10 @@ import com.inkubator.hrm.web.search.EmpDataSearchParameter;
 import com.inkubator.hrm.web.search.ReportEmpDepartmentJabatanParameter;
 import com.inkubator.hrm.web.search.ReportEmpWorkingGroupParameter;
 import com.inkubator.hrm.web.search.ReportOfEmployeesFamilySearchParameter;
+import com.inkubator.hrm.web.search.SalaryConfirmationParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+
+import java.util.ArrayList;
 
 /**
  *
@@ -90,6 +95,8 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     private ApprovalActivityDao approvalActivityDao;
     @Autowired
     private HrmUserDao hrmUserDao;
+    @Autowired
+    private TaxFreeDao taxFreeDao;
 
     @Override
     public EmpData getEntiyByPK(String id) throws Exception {
@@ -591,14 +598,14 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<EmpData> getAllDataReportEmpWorkingGroupByParam(ReportEmpWorkingGroupParameter param, int firstResult, int maxResults, Order orderable) {
+    public List<EmpData> getAllDataReportEmpWorkingGroupByParam(ReportEmpWorkingGroupParameter param, int firstResult, int maxResults, Order orderable) throws Exception{
         return this.empDataDao.getAllDataReportEmpWorkingGroupByParam(param, firstResult, maxResults, orderable);
 
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getTotalReportEmpWorkingGroupByParam(ReportEmpWorkingGroupParameter param) {
+    public Long getTotalReportEmpWorkingGroupByParam(ReportEmpWorkingGroupParameter param) throws Exception{
         return this.empDataDao.getTotalReportEmpWorkingGroupByParam(param);
 
     }
@@ -623,14 +630,14 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<EmpData> getAllDataReportEmpDepartmentJabatanByParam(ReportEmpDepartmentJabatanParameter param, int firstResult, int maxResults, Order orderable) {
+    public List<EmpData> getAllDataReportEmpDepartmentJabatanByParam(ReportEmpDepartmentJabatanParameter param, int firstResult, int maxResults, Order orderable) throws Exception{
         return this.empDataDao.getAllDataReportEmpDepartmentJabatanByParam(param, firstResult, maxResults, orderable);
 
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getTotalReportEmpDepartmentJabatanByParam(ReportEmpDepartmentJabatanParameter param) {
+    public Long getTotalReportEmpDepartmentJabatanByParam(ReportEmpDepartmentJabatanParameter param) throws Exception{
         return this.empDataDao.getTotalReportEmpDepartmentJabatanByParam(param);
 
     }
@@ -644,9 +651,25 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void saveForPtkp(EmpData empData) throws Exception {
-        EmpData update = empDataDao.getEntiyByPK(empData.getId());
+        EmpData update = empDataDao.getEmpDataWithBiodata(empData.getId());
         update.setPtkpNumber(empData.getPtkpNumber());
         update.setPtkpStatus(empData.getPtkpStatus());
+        TaxFree taxFree = null;
+        String status = HRMConstant.TF_STATUS_TIDAK_KAWIN;
+        Integer ptkpNumber = HRMConstant.TF_INC_PERSON_ZERO;
+        /*
+         Jika gender = female, dianggap tidak punya tanggungan dan tidak menikah
+         Jika tanggungan lebih besar dari 3,  tanggungan max tetap 3
+         */
+//        if(update.getBioData().getGender() == HRMConstant.GLOBAL_FEMALE){
+//            status = HRMConstant.TF_STATUS_TIDAK_KAWIN;
+//        }else{
+        status = (empData.getPtkpStatus() == Boolean.TRUE) ? "K" : "TK";
+        ptkpNumber = (empData.getPtkpNumber() > 3) ? 3 : empData.getPtkpNumber();
+//      }
+
+        taxFree = taxFreeDao.getEntityByTfStatusAndIncPerson(status, ptkpNumber);
+        update.setTaxFree(taxFree);
         this.empDataDao.update(update);
     }
 
@@ -668,4 +691,44 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         return this.empDataDao.getTotalEmpDataNotTerminate();
     }
 
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalByTaxFreeIsNull() throws Exception {
+        return this.empDataDao.getTotalByTaxFreeIsNull();
+
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<EmpData> getAllDataNotTerminateAndJoinDateLowerThan(Date payrollCalculationDate) throws Exception {
+        return this.empDataDao.getAllDataNotTerminateAndJoinDateLowerThan(payrollCalculationDate);
+
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<EmpData> getAllDataSalaryConfirmationByParam(SalaryConfirmationParameter param, int firstResult, int maxResults, Order orderable) throws Exception{
+        return this.empDataDao.getAllDataSalaryConfirmationByParam(param, firstResult, maxResults, orderable);
+
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalSalaryConfirmationByParam(SalaryConfirmationParameter param) throws Exception{
+        return this.empDataDao.getTotalSalaryConfirmationByParam(param);
+
+    }
+
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, timeout = 30)
+    public EmpData getByPKBankTransfer(long id) throws Exception {
+        EmpData data = this.empDataDao.getByPKBankTransfer(id);
+        return data;
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public EmpData getByEmpDataByBioDataId(long bioDataid) {
+        return this.empDataDao.getByEmpDataByBioDataId(bioDataid);
+    }
 }

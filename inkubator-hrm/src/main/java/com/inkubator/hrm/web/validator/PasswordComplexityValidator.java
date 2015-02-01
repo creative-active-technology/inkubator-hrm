@@ -77,7 +77,7 @@ public class PasswordComplexityValidator implements Validator {
             }
             if (complexity.getHasLowerCase()) {
                 if (!StringsUtils.isHaveLowerCase(password)) {
-                    System.out.println(" sdfdshfhdsfhdsfhdh");
+                    
                     ResourceBundle messages = ResourceBundle.getBundle("messages", loc);
                     FacesMessage msg = new FacesMessage(messages.getString("password_config.must_have_lower_case"));
                     msg.setSeverity(FacesMessage.SEVERITY_ERROR);

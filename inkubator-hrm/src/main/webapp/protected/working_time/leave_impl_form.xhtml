@@ -1,0 +1,222 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:o="http://omnifaces.org/ui"
+	  xmlns:of="http://omnifaces.org/functions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+				Home
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlLeaveImplementationFormId" globalOnly="true" showDetail="true"/>                
+                <o:form id="formLeaveImplementationFormId">
+                	<p:focus context="formLeaveImplementationFormId"/>
+                	<div id="box_bg" style="margin: 10px">
+	                    <h:panelGrid columns="2">
+	                        <p:graphicImage library="images" name="pelaksanaan_cuti.png" height="36" width="36" />
+	                        <h:panelGroup layout="block">
+	                            <h:panelGrid>
+	                                <p:outputLabel value="#{appmsg['leaveimplementation.leave_implementation']}" styleClass="header_big" />
+	                                <p:outputLabel value="#{appmsg['leaveimplementation.leave_implementation_data_from_working_time']}" styleClass="header_small_no_bold" />
+	                            </h:panelGrid>
+	                        </h:panelGroup>
+	                    </h:panelGrid>
+	                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+	                    <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px;margin-bottom:20px;">
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="fillingNumberId" value="#{appmsg['leaveimplementation.filling_number']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:inputText id="fillingNumberId" title="#{appmsg['leave.leave_code']}" value="#{leaveImplementationFormController.model.numberFilling}" 
+	                                    		 required="true" maxlength="60" onkeyup="this.value = this.value.toUpperCase();" styleClass="isitext_hrm" style="width:287px;" />
+	                                <p:message for="fillingNumberId"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="employeeId" value="#{appmsg['global.employee']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:autoComplete id="employeeId" title="#{appmsg['global.employee']}" 
+                                                value="#{leaveImplementationFormController.model.empData}"
+                                                completeMethod="#{leaveImplementationFormController.doAutoCompleteEmployee}"                                                
+                                                var="empData"
+                                                itemValue="#{empData}"
+                                                itemLabel="#{empData.nik} #{empData.bioData.firstName} #{empData.bioData.lastName}"
+                                                converter="empDataConverter"
+                                                required="true" styleClass="isitext_hrm" size="45">
+                                    	<p:ajax event="itemSelect" listener="#{leaveImplementationFormController.onChangeEmployee}" update="leaveId,totalWorkingDaysId"/>
+                                    </p:autoComplete>
+	                                <p:message for="employeeId"/>
+	                            </p:column>
+	                        </p:row>  
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="leaveId" value="#{appmsg['leave.leave']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:selectOneMenu id="leaveId" styleClass="isitext_hrm" required="true"  value="#{leaveImplementationFormController.model.leaveId}" style="width:295px;">
+	                                    <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+	                                    <f:selectItems value="#{leaveImplementationFormController.leaves}" var="leave" itemLabel="#{leave.name}" itemValue="#{leave.id}"/>
+	                                    <p:ajax listener="#{leaveImplementationFormController.onChangeLeave()}" update="latestLeaveDateId,remainingLeaveId"/>
+	                                </p:selectOneMenu>
+	                                <p:message for="leaveId"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="latestLeaveDateId" value="#{appmsg['leaveimplementation.latest_leave_date']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:inputText id="latestLeaveDateId" title="#{appmsg['leaveimplementation.latest_leave_date']}" value="#{leaveImplementationFormController.model.latestLeaveDate}" 
+	                                    		 styleClass="isitext_hrm" style="width:138px;" readonly="true">
+	                                	<f:convertDateTime pattern="dd MMMM yyyy" />
+	                                </p:inputText>
+	                                <p:message for="latestLeaveDateId"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="remainingLeaveId" value="#{appmsg['leaveimplementation.remaining_balance_of_leave']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:inputText id="remainingLeaveId" title="#{appmsg['leaveimplementation.remaining_balance_of_leave']}" value="#{leaveImplementationFormController.model.remainingLeave}" 
+	                                    		 styleClass="isitext_hrm" style="width:80px;" readonly="true"/>
+	                                <p:message for="remainingLeaveId"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="startDateId" value="#{appmsg['global.start_date']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:calendar id="startDateId" required="true" pattern="dd MMMM yyyy" value="#{leaveImplementationFormController.model.startDate}">
+	                            		<p:ajax event="dateSelect" listener="#{leaveImplementationFormController.onChangeStartOrEndDate()}" update="totalWorkingDaysId"/>
+	                            		<f:validator validatorId="dateBetweenValidator"  />
+	                                    <f:attribute name="endTime" value="#{endDateId}"/>
+	                                    <f:attribute name="dateBetweenValidatorMessage" value="#{appmsg['publicHoliday.publicHoliday_dateValidator']}"/>
+	                                    <f:validator validatorId="backDateValidator"  />	                                    
+	                            	</p:calendar>
+	                                <p:message for="startDateId"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="endDateId" value="#{appmsg['global.end_date']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:calendar id="endDateId" binding="#{endDateId}" required="true" pattern="dd MMMM yyyy" value="#{leaveImplementationFormController.model.endDate}">
+	                            		<f:validator validatorId="backDateValidator"  />
+	                            		<p:ajax event="dateSelect" listener="#{leaveImplementationFormController.onChangeStartOrEndDate()}" update="totalWorkingDaysId"/>
+	                            	</p:calendar>
+	                                <p:message for="endDateId"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="totalWorkingDaysId" value="#{appmsg['leaveimplementation.total_working_days']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:inputText id="totalWorkingDaysId" title="#{appmsg['leaveimplementation.total_working_days']}" value="#{leaveImplementationFormController.model.actualLeaveTaken}" 
+	                                    		 required="true" styleClass="isitext_hrm" style="width:80px;" readonly="true"/>
+	                                <p:message for="totalWorkingDaysId"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="fillingDateId" value="#{appmsg['leaveimplementation.filling_date']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:calendar id="fillingDateId" required="true" pattern="dd MMMM yyyy" value="#{leaveImplementationFormController.model.fillingDate}"/>
+	                                <p:message for="fillingDateId"/>
+	                            </p:column>
+	                        </p:row>	
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="addressId" value="#{appmsg['global.address']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:inputTextarea id="addressId" title="#{appmsg['global.address']}" value="#{leaveImplementationFormController.model.address}" 
+	                                    			 required="true" maxlength="1000" styleClass="isitext_hrm" style="width:290px;" />  
+	                                <p:message for="addressId"/>
+	                            </p:column>
+	                        </p:row> 
+	                        <p:row>
+	                        	<p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="mobilePhoneId" value="#{appmsg['global.phone_number']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:inputText id="mobilePhoneId" title="#{appmsg['global.phone_number']}" value="#{leaveImplementationFormController.model.mobilePhone}" 
+	                                    		 required="true" maxlength="20" styleClass="isitext_hrm" style="width:287px;" />
+	                                <p:message for="mobilePhoneId"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="materialJobsAbandonedId" value="#{appmsg['leaveimplementation.material_jobs_abandoned']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:inputTextarea id="materialJobsAbandonedId" title="#{appmsg['leaveimplementation.material_jobs_abandoned']}" value="#{leaveImplementationFormController.model.materialJobsAbandoned}" 
+	                                    			 required="true" maxlength="1000" styleClass="isitext_hrm" style="width:290px;" />  
+	                                <p:message for="materialJobsAbandonedId"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="temporaryActingId" value="#{appmsg['leaveimplementation.temporary_acting']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:autoComplete id="temporaryActingId" title="#{appmsg['leaveimplementation.temporary_acting']}" 
+                                                value="#{leaveImplementationFormController.model.temporaryActing}"
+                                                completeMethod="#{leaveImplementationFormController.doAutoCompleteEmployee}"                                                
+                                                var="empData"
+                                                itemValue="#{empData}"
+                                                itemLabel="#{empData.nik} #{empData.bioData.firstName} #{empData.bioData.lastName}"
+                                                converter="empDataConverter"
+                                                styleClass="isitext_hrm" size="45"/>
+	                                <p:message for="temporaryActingId"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="descriptionId" value="#{appmsg['global.description']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:inputTextarea id="descriptionId" title="#{appmsg['global.description']}" value="#{leaveImplementationFormController.model.description}" 
+	                                    			 maxlength="1000" styleClass="isitext_hrm" style="width:290px;" />  
+	                                <p:message for="descriptionId"/>
+	                            </p:column>
+	                        </p:row>                     
+	                 	</p:panelGrid>	                 	
+	                 	                    
+	                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+	                    <div style="margin-bottom: 5px">
+	                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formLeaveImplementationFormId,:growlLeaveImplementationFormId"
+	                                         action="#{leaveImplementationFormController.doSave()}" styleClass="isitext_hrm"
+	                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
+	                                         icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+	                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formLeaveImplementationFormId" action="#{leaveImplementationFormController.doReset()}"
+                                                 icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px">  
+	                            <p:resetInput target="formLeaveImplementationFormId" />  
+	                        </p:commandButton>
+	                        <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{leaveImplementationFormController.doBack()}" immediate="true"
+	                                      	 styleClass="label_button"/>
+	                    </div>
+                    </div>
+                </o:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

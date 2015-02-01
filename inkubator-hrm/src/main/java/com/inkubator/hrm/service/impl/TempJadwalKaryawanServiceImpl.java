@@ -21,6 +21,7 @@ import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.dao.TempJadwalKaryawanDao;
 import com.inkubator.hrm.dao.WtGroupWorkingDao;
 import com.inkubator.hrm.dao.WtHolidayDao;
+import com.inkubator.hrm.dao.WtPeriodeDao;
 import com.inkubator.hrm.dao.WtWorkingHourDao;
 import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.EmpData;
@@ -28,6 +29,7 @@ import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.TempJadwalKaryawan;
 import com.inkubator.hrm.entity.WtGroupWorking;
 import com.inkubator.hrm.entity.WtHoliday;
+import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.entity.WtScheduleShift;
 import com.inkubator.hrm.service.TempJadwalKaryawanService;
 import com.inkubator.securitycore.util.UserInfoUtil;
@@ -38,6 +40,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
@@ -80,7 +83,9 @@ public class TempJadwalKaryawanServiceImpl extends BaseApprovalServiceImpl imple
     private HrmUserDao hrmUserDao;
     @Autowired
     private ApprovalActivityDao approvalActivityDao;
-
+    @Autowired
+    private WtPeriodeDao wtPeriodeDao;
+    
     @Override
     public TempJadwalKaryawan getEntiyByPK(String id) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -246,16 +251,16 @@ public class TempJadwalKaryawanServiceImpl extends BaseApprovalServiceImpl imple
     public List<TempJadwalKaryawan> getAllByEmpIdWithDetail(long empId) throws Exception {
         return this.tempJadwalKaryawanDao.getAllByEmpIdWithDetail(empId);
     }
-    
+
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void savePenempatanJadwal(EmpData empData) throws Exception {
-        List<TempJadwalKaryawan> dataMustDelete = this.tempJadwalKaryawanDao.getAllByEmpId(empData.getId());
-        if (!dataMustDelete.isEmpty()) {
-            for (TempJadwalKaryawan dataMustDelete1 : dataMustDelete) {
-                tempJadwalKaryawanDao.delete(dataMustDelete1);
-            }
-        }
+//        List<TempJadwalKaryawan> dataMustDelete = this.tempJadwalKaryawanDao.getAllByEmpId(empData.getId());
+//        if (!dataMustDelete.isEmpty()) {
+//            for (TempJadwalKaryawan dataMustDelete1 : dataMustDelete) {
+//                tempJadwalKaryawanDao.delete(dataMustDelete1);
+//            }
+//        }
         EmpData data = empDataDao.getEntiyByPK(empData.getId());
         Date now = new Date();
         WtGroupWorking groupWorking = this.wtGroupWorkingDao.getByCode(empData.getWtGroupWorking().getCode());
@@ -281,79 +286,89 @@ public class TempJadwalKaryawanServiceImpl extends BaseApprovalServiceImpl imple
             beginScheduleDate = DateTimeUtil.getDateFrom(startDate, (hasilBagi * num), CommonUtilConstant.DATE_FORMAT_DAY);
         }
         int i = 0;
+        TempJadwalKaryawan jadwalKaryawan;
         for (WtScheduleShift list1 : list) {
-            TempJadwalKaryawan jadwalKaryawan = new TempJadwalKaryawan();
-            jadwalKaryawan.setEmpData(empData);
-            jadwalKaryawan.setTanggalWaktuKerja(DateTimeUtil.getDateFrom(beginScheduleDate, i, CommonUtilConstant.DATE_FORMAT_DAY));
-            WtHoliday holiday = wtHolidayDao.getWtHolidayByDate(jadwalKaryawan.getTanggalWaktuKerja());
+            String onlyDate = new SimpleDateFormat("yyyy-MM-dd").format(DateTimeUtil.getDateFrom(beginScheduleDate, i, CommonUtilConstant.DATE_FORMAT_DAY));
+            Date olnyDate = new SimpleDateFormat("yyyy-MM-dd").parse(onlyDate);
+            jadwalKaryawan = tempJadwalKaryawanDao.getEntityByEmpDataIdAndTanggalWaktuKerja(empData.getId(), olnyDate);
+            if (jadwalKaryawan != null) {
+                jadwalKaryawan.setUpdatedBy(UserInfoUtil.getUserName());
+                jadwalKaryawan.setUpdatedOn(new Date());
+//                jadwalKaryawan = tempJadwalKaryawanDao.getByEmpId(empData.getId(), olnyDate);
+            } else {
+                jadwalKaryawan = new TempJadwalKaryawan();
+                jadwalKaryawan.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
+                jadwalKaryawan.setEmpData(empData);
+                jadwalKaryawan.setTanggalWaktuKerja(DateTimeUtil.getDateFrom(beginScheduleDate, i, CommonUtilConstant.DATE_FORMAT_DAY));
+                jadwalKaryawan.setCreatedBy(UserInfoUtil.getUserName());
+                jadwalKaryawan.setCreatedOn(new Date());
+            }
+            WtHoliday holiday = wtHolidayDao.getWtHolidayByDate(olnyDate);
             if (holiday != null && groupWorking.getTypeSequeace().equals(HRMConstant.NORMAL_SCHEDULE)) {
                 jadwalKaryawan.setWtWorkingHour(wtWorkingHourDao.getByCode("OFF"));
             } else {
                 jadwalKaryawan.setWtWorkingHour(list1.getWtWorkingHour());
             }
             jadwalKaryawan.setIsCollectiveLeave(Boolean.FALSE);
-            jadwalKaryawan.setCreatedBy(UserInfoUtil.getUserName());
-            jadwalKaryawan.setCreatedOn(new Date());
-            jadwalKaryawan.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
-            this.tempJadwalKaryawanDao.save(jadwalKaryawan);
+
+            this.tempJadwalKaryawanDao.saveOrUpdateAndMerge(jadwalKaryawan);
             i++;
         }
     }
-    
+
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public String saveMassPenempatanJadwal(List<EmpData> data, long groupWorkingId) throws Exception {    	
-    	String message = "error";
-    	
-    	List<Long> listIdEmp = Lambda.extract(data, Lambda.on(EmpData.class).getId());    	
-    	HrmUser requestUser = hrmUserDao.getByUserId(UserInfoUtil.getUserName());	
-		ApprovalActivity approvalActivity = super.checkApprovalProcess(HRMConstant.SHIFT_SCHEDULE, requestUser.getUserId());
-		if(approvalActivity == null){
-			this.saveMassPenempatanJadwal(listIdEmp, groupWorkingId, new Date(), UserInfoUtil.getUserName());
-			message = "success_without_approval";
-			
-		} else {
-			SimpleDateFormat dateFormat=new SimpleDateFormat("dd-MM-yyyy hh:mm");
-			String dataToJson = jsonConverter.getJson(listIdEmp.toArray(new Long[listIdEmp.size()]));
-			JsonObject jsonObject = new JsonObject();
-	        jsonObject.addProperty("listEmpId", dataToJson);
-	        jsonObject.addProperty("groupWorkingId", groupWorkingId);         
-	        jsonObject.addProperty("createDate", dateFormat.format(new Date()));
-	        jsonObject.addProperty("createBy", UserInfoUtil.getUserName());
-	        
-	        approvalActivity.setPendingData(jsonObject.toString());
-    		approvalActivityDao.save(approvalActivity);
-    		
-    		message = "success_need_approval";
-    		
-    		//sending email notification
-    		this.sendingEmailApprovalNotif(approvalActivity);
-		}
-		
-		return message;
+    public String saveMassPenempatanJadwal(List<EmpData> data, long groupWorkingId) throws Exception {
+        String message = "error";
+
+        List<Long> listIdEmp = Lambda.extract(data, Lambda.on(EmpData.class).getId());
+        HrmUser requestUser = hrmUserDao.getByUserId(UserInfoUtil.getUserName());
+        ApprovalActivity approvalActivity = super.checkApprovalProcess(HRMConstant.SHIFT_SCHEDULE, requestUser.getUserId());
+//        if (approvalActivity == null) {
+            this.saveMassPenempatanJadwal(listIdEmp, groupWorkingId, new Date(), UserInfoUtil.getUserName());
+            message = "success_without_approval";
+
+//        } else {
+//            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm");
+//            String dataToJson = jsonConverter.getJson(listIdEmp.toArray(new Long[listIdEmp.size()]));
+//            JsonObject jsonObject = new JsonObject();
+//            jsonObject.addProperty("listEmpId", dataToJson);
+//            jsonObject.addProperty("groupWorkingId", groupWorkingId);
+//            jsonObject.addProperty("createDate", dateFormat.format(new Date()));
+//            jsonObject.addProperty("createBy", UserInfoUtil.getUserName());
+//
+//            approvalActivity.setPendingData(jsonObject.toString());
+//            approvalActivityDao.save(approvalActivity);
+//
+//            message = "success_need_approval";
+//
+//            //sending email notification
+//            this.sendingEmailApprovalNotif(approvalActivity);
+//        }
+        return message;
     }
-    
+
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void saveMassPenempatanJadwal(List<Long> data, long groupWorkingId, Date createdOn, String createdBy) throws Exception {
         WtGroupWorking groupWorking = wtGroupWorkingDao.getEntiyByPK(groupWorkingId);
         groupWorking.setIsActive(Boolean.TRUE);
         wtGroupWorkingDao.update(groupWorking);
-        
+
         for (Long empDataId : data) {
-        	EmpData empData = empDataDao.getEntiyByPK(empDataId);
+            EmpData empData = empDataDao.getEntiyByPK(empDataId);
             empData.setWtGroupWorking(wtGroupWorkingDao.getEntiyByPK(groupWorkingId));
             this.empDataDao.update(empData);
         }
         
-        SimpleDateFormat dateFormat=new SimpleDateFormat("dd-MM-yyyy hh:mm");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm");
         String dataToJson = jsonConverter.getJson(data.toArray(new Long[data.size()]));
         final JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("listEmpId", dataToJson);
-        jsonObject.addProperty("groupWorkingId", groupWorkingId);         
+        jsonObject.addProperty("groupWorkingId", groupWorkingId);
         jsonObject.addProperty("createDate", dateFormat.format(createdOn));
         jsonObject.addProperty("createBy", createdBy);
-        
+
         this.jmsTemplateMassJadwalKerja.send(new MessageCreator() {
             @Override
             public Message createMessage(Session session)
@@ -362,7 +377,7 @@ public class TempJadwalKaryawanServiceImpl extends BaseApprovalServiceImpl imple
             }
         });
     }
-    
+
     private final Comparator<WtScheduleShift> shortByDate1 = new Comparator<WtScheduleShift>() {
         @Override
         public int compare(WtScheduleShift o1, WtScheduleShift o2) {
@@ -370,77 +385,83 @@ public class TempJadwalKaryawanServiceImpl extends BaseApprovalServiceImpl imple
         }
     };
 
-	@Override
-	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void approved(long approvalActivityId, String pendingDataUpdate, String comment) throws Exception {
-		Map<String, Object> result = super.approvedAndCheckNextApproval(approvalActivityId, pendingDataUpdate, comment);
-		ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
-		if(StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")){
-			/** kalau status akhir sudah di approved dan tidak ada next approval, 
-			 * berarti langsung insert ke database */
-			String pendingData = appActivity.getPendingData();
-			JsonObject jsonObject = (JsonObject) jsonConverter.getClassFromJson(pendingData, JsonObject.class);
-			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm");
-			Date createdOn = dateFormat.parse(jsonObject.get("createDate").getAsString());
-			Gson gson = new GsonBuilder().create();
-			List<Long> listEmpId = new GsonBuilder().create().fromJson(jsonObject.get("listEmpId").getAsString(), new TypeToken<List<Long>>(){}.getType());
-			this.saveMassPenempatanJadwal(listEmpId , jsonObject.get("groupWorkingId").getAsLong(), createdOn, jsonObject.get("createBy").getAsString());			
-		}
-		
-		//if there is no error, then sending the email notification
-		sendingEmailApprovalNotif(appActivity);
-	}
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void approved(long approvalActivityId, String pendingDataUpdate, String comment) throws Exception {
+        Map<String, Object> result = super.approvedAndCheckNextApproval(approvalActivityId, pendingDataUpdate, comment);
+        ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
+        if (StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")) {
+            /**
+             * kalau status akhir sudah di approved dan tidak ada next approval,
+             * berarti langsung insert ke database
+             */
+            String pendingData = appActivity.getPendingData();
+            JsonObject jsonObject = (JsonObject) jsonConverter.getClassFromJson(pendingData, JsonObject.class);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm");
+            Date createdOn = dateFormat.parse(jsonObject.get("createDate").getAsString());
+            Gson gson = new GsonBuilder().create();
+            List<Long> listEmpId = new GsonBuilder().create().fromJson(jsonObject.get("listEmpId").getAsString(), new TypeToken<List<Long>>() {
+            }.getType());
+            this.saveMassPenempatanJadwal(listEmpId, jsonObject.get("groupWorkingId").getAsLong(), createdOn, jsonObject.get("createBy").getAsString());
+        }
 
-	@Override
-	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void rejected(long approvalActivityId, String comment) throws Exception {
-		Map<String, Object> result = super.rejectedAndCheckNextApproval(approvalActivityId, comment);
-		ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
-		
-		//if there is no error, then sending the email notification
-		sendingEmailApprovalNotif(appActivity);
-	}
+        //if there is no error, then sending the email notification
+        sendingEmailApprovalNotif(appActivity);
+    }
 
-	@Override
-	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void diverted(long approvalActivityId) throws Exception {
-		Map<String, Object> result = super.divertedAndCheckNextApproval(approvalActivityId);
-		ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
-		if(StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")){
-			/** kalau status akhir sudah di approved dan tidak ada next approval, 
-			 * berarti langsung insert ke database */
-			String pendingData = appActivity.getPendingData();
-			JsonObject jsonObject = (JsonObject) jsonConverter.getClassFromJson(pendingData, JsonObject.class);
-			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm");
-			Date createdOn = dateFormat.parse(jsonObject.get("createDate").getAsString());
-			List<Long> listEmpId = new GsonBuilder().create().fromJson(jsonObject.get("listEmpId").getAsString(), new TypeToken<List<Long>>(){}.getType());
-			this.saveMassPenempatanJadwal(listEmpId , jsonObject.get("groupWorkingId").getAsLong(), createdOn, jsonObject.get("createBy").getAsString());			
-		}
-		
-		//if there is no error, then sending the email notification
-		sendingEmailApprovalNotif(appActivity);
-	}
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void rejected(long approvalActivityId, String comment) throws Exception {
+        Map<String, Object> result = super.rejectedAndCheckNextApproval(approvalActivityId, comment);
+        ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
 
-	@Override
-	public void sendingEmailApprovalNotif(ApprovalActivity appActivity) throws Exception {
-		//initialization
-		SimpleDateFormat jsonDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm");
-		JsonObject jsonObject = (JsonObject) jsonConverter.getClassFromJson(appActivity.getPendingData(), JsonObject.class);
+        //if there is no error, then sending the email notification
+        sendingEmailApprovalNotif(appActivity);
+    }
+
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void diverted(long approvalActivityId) throws Exception {
+        Map<String, Object> result = super.divertedAndCheckNextApproval(approvalActivityId);
+        ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
+        if (StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")) {
+            /**
+             * kalau status akhir sudah di approved dan tidak ada next approval,
+             * berarti langsung insert ke database
+             */
+            String pendingData = appActivity.getPendingData();
+            JsonObject jsonObject = (JsonObject) jsonConverter.getClassFromJson(pendingData, JsonObject.class);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm");
+            Date createdOn = dateFormat.parse(jsonObject.get("createDate").getAsString());
+            List<Long> listEmpId = new GsonBuilder().create().fromJson(jsonObject.get("listEmpId").getAsString(), new TypeToken<List<Long>>() {
+            }.getType());
+            this.saveMassPenempatanJadwal(listEmpId, jsonObject.get("groupWorkingId").getAsLong(), createdOn, jsonObject.get("createBy").getAsString());
+        }
+
+        //if there is no error, then sending the email notification
+        sendingEmailApprovalNotif(appActivity);
+    }
+
+    @Override
+    public void sendingEmailApprovalNotif(ApprovalActivity appActivity) throws Exception {
+        //initialization
+        SimpleDateFormat jsonDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm");
+        JsonObject jsonObject = (JsonObject) jsonConverter.getClassFromJson(appActivity.getPendingData(), JsonObject.class);
         Date createdOn = jsonDateFormat.parse(jsonObject.get("createDate").getAsString());
-		
-		//get all sendCC email address on status approve OR reject
-		List<String> ccEmailAddresses =  new ArrayList<String>();
-		if((appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_APPROVED)  || (appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_REJECTED)){
-			ccEmailAddresses = super.getCcEmailAddressesOnApproveOrReject(appActivity);
-		}
-		
-		final JSONObject jsonObj = new JSONObject();
-        try {        	
+
+        //get all sendCC email address on status approve OR reject
+        List<String> ccEmailAddresses = new ArrayList<>();
+        if ((Objects.equals(appActivity.getApprovalStatus(), HRMConstant.APPROVAL_STATUS_APPROVED)) || (appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_REJECTED)) {
+            ccEmailAddresses = super.getCcEmailAddressesOnApproveOrReject(appActivity);
+        }
+
+        final JSONObject jsonObj = new JSONObject();
+        try {
             jsonObj.put("approvalActivityId", appActivity.getId());
             jsonObj.put("ccEmailAddresses", ccEmailAddresses);
             jsonObj.put("locale", appActivity.getLocale());
             jsonObj.put("proposeDate", new SimpleDateFormat("dd-MMMM-yyyy").format(createdOn));
-            
+
         } catch (JSONException e) {
             LOGGER.error("Error when create json Object ", e);
         }
@@ -452,12 +473,24 @@ public class TempJadwalKaryawanServiceImpl extends BaseApprovalServiceImpl imple
                 return session.createTextMessage(jsonObj.toString());
             }
         });
-	}
+    }
+
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    @Override
+    public TempJadwalKaryawan getEntityByEmpDataIdAndTanggalWaktuKerja(Long id, Date implementationDate) throws Exception {
+        return tempJadwalKaryawanDao.getEntityByEmpDataIdAndTanggalWaktuKerja(id, implementationDate);
+    }
 
     @Override
-    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED,propagation = Propagation.SUPPORTS, timeout = 30)
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public TempJadwalKaryawan getByEmpId(Long id, Date implementationDate) throws Exception {
         return tempJadwalKaryawanDao.getByEmpId(id, implementationDate);
     }
 
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<TempJadwalKaryawan> getAllByEmpIdWithDetailWithFromAndUntilPeriod(long empId) throws Exception {
+        WtPeriode wtPeriode = wtPeriodeDao.getEntityByAbsentTypeActive();
+        return tempJadwalKaryawanDao.getAllByEmpIdWithDetailWithFromAndUntilPeriod(empId, wtPeriode.getFromPeriode(), wtPeriode.getUntilPeriode());
+    }
 }

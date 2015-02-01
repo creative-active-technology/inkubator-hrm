@@ -11,7 +11,6 @@ import javax.jms.Message;
 import javax.jms.Session;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.hamcrest.Matchers;
 import org.hibernate.criterion.Order;
@@ -632,7 +631,7 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
             //save entity dan detail-nya
             leaveImplementationDao.save(entity);
             this.saveLeaveImplementationDate(entity, actualLeaves);
-            this.creditLeaveBalance(leave, leaveDistribution, totalActualLeaves);
+            this.creditLeaveBalance(leave, leaveDistribution, totalActualLeaves, createdBy);
 
             message = "success_without_approval";
         } else {
@@ -650,39 +649,39 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
         return message;
     }
 
-    private void creditLeaveBalance(Leave leave, LeaveDistribution leaveDistribution, double actualLeave) {
+    private void creditLeaveBalance(Leave leave, LeaveDistribution leaveDistribution, double actualLeave, String userBy) {
         //cek di definisi cuti, jika isQuotaReduction is true, maka neraca cuti berkurang
         if (leave.getIsQuotaReduction()) {
             double balance = leaveDistribution.getBalance() - actualLeave;
             leaveDistribution.setBalance(balance);
             leaveDistribution.setUpdatedOn(new Date());
-            leaveDistribution.setUpdatedBy(UserInfoUtil.getUserName());
+            leaveDistribution.setUpdatedBy(userBy);
             leaveDistributionDao.update(leaveDistribution);
 
             NeracaCuti neracaCuti = new NeracaCuti();
             neracaCuti.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
             neracaCuti.setLeaveDistribution(leaveDistribution);
             neracaCuti.setKredit(actualLeave);
-            neracaCuti.setCreatedBy(UserInfoUtil.getUserName());
+            neracaCuti.setCreatedBy(userBy);
             neracaCuti.setCreatedOn(new Date());
             neracaCutiDao.save(neracaCuti);
         }
     }
 
-    private void debetLeaveBalance(Leave leave, LeaveDistribution leaveDistribution, double actualLeave) {
+    private void debetLeaveBalance(Leave leave, LeaveDistribution leaveDistribution, double actualLeave, String userBy) {
         //cek di definisi cuti, jika isQuotaReduction is true, maka neraca cuti bertambah
         if (leave.getIsQuotaReduction()) {
             double balance = leaveDistribution.getBalance() + actualLeave;
             leaveDistribution.setBalance(balance);
             leaveDistribution.setUpdatedOn(new Date());
-            leaveDistribution.setUpdatedBy(UserInfoUtil.getUserName());
+            leaveDistribution.setUpdatedBy(userBy);
             leaveDistributionDao.update(leaveDistribution);
 
             NeracaCuti neracaCuti = new NeracaCuti();
             neracaCuti.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
             neracaCuti.setLeaveDistribution(leaveDistribution);
             neracaCuti.setDebet(actualLeave);
-            neracaCuti.setCreatedBy(UserInfoUtil.getUserName());
+            neracaCuti.setCreatedBy(userBy);
             neracaCuti.setCreatedOn(new Date());
             neracaCutiDao.save(neracaCuti);
         }
@@ -794,10 +793,10 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
         LeaveImplementation leaveImplementation = leaveImplementationDao.getEntiyByPK(leaveImplementationId);
         LeaveDistribution leaveDistribution = leaveDistributionDao.getEntityByLeaveIdAndEmpDataId(leaveImplementation.getLeave().getId(), leaveImplementation.getEmpData().getId());
         if (total > 0) {
-            this.debetLeaveBalance(leaveImplementation.getLeave(), leaveDistribution, total);
+            this.debetLeaveBalance(leaveImplementation.getLeave(), leaveDistribution, total, UserInfoUtil.getUserName());
         } else if (total < 0) {
             total = total * (-1);
-            this.creditLeaveBalance(leaveImplementation.getLeave(), leaveDistribution, total);
+            this.creditLeaveBalance(leaveImplementation.getLeave(), leaveDistribution, total, UserInfoUtil.getUserName());
         }
     }
 
@@ -817,5 +816,11 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<LeaveImplementation> getReportHistoryByParam(LeaveImplementationReportSearchParameter parameter, List<String> activityNumbers , Long empDataId) throws Exception {
         return leaveImplementationDao.getReportHistoryByParam(parameter, activityNumbers, empDataId);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public List<LeaveImplementation> getAllDataByEmpDataId(Long empDataId) throws Exception {
+        return leaveImplementationDao.getAllDataByEmpDataId(empDataId);
     }
 }

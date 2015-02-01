@@ -18,11 +18,11 @@
                 <div id="box_bg" style="margin: 10px">
                     <!--<p:panel style="margin: 10px" >-->
                     <h:panelGrid style="margin-bottom: 5px" columns="2">
-                        <p:graphicImage library="images" name="periode.png" height="36" width="36" cache="true"/>
+                        <p:graphicImage library="images" name="periode_kerja.png" height="36" width="36" cache="true"/>
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Daftar Periode" styleClass="header_big" />
-                                <p:outputLabel value="Daftar Periode dari Waktu Kerja" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['periode.listPeriod']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['periode.fromWorkTime']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -32,7 +32,7 @@
                         <p:toolbar  style="margin-top: 10px">
                             <p:toolbarGroup align="left">
                                 <h:panelGrid columns="8">
-                                    <p:outputLabel value="Tahun" styleClass="label_hrm"/>
+                                    <p:outputLabel value="#{appmsg['global.year']}" styleClass="label_hrm"/>
                                     <p:outputLabel value=":" styleClass="label_hrm" />
                                     <p:selectOneMenu id="pilihanTahun" value="#{periodeViewController.wtPeriodeSearchParameter.tahun}"
                                                      required="true" label="#{appmsg['loginform.choose_language']}"
@@ -41,7 +41,7 @@
                                         <f:selectItems value="#{periodeViewController.listTahun}" />
                                         <p:ajax listener="#{periodeViewController.doChangeYear()}" update="tablePeriodeId" />
                                     </p:selectOneMenu>
-                                    <p:outputLabel value="Bulan" styleClass="label_hrm"/>
+                                    <p:outputLabel value="#{appmsg['global.month']}" styleClass="label_hrm"/>
                                     <p:outputLabel value=":" styleClass="label_hrm" />
                                     <p:selectOneMenu id="pilihanBulan" value="#{periodeViewController.wtPeriodeSearchParameter.bulan}"
                                                      required="true" label="#{appmsg['loginform.choose_language']}"
@@ -78,27 +78,27 @@
                                       id="tablePeriodeId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="Daftar Periode" styleClass="label_hrm"/>
+                                <h:outputText value="#{appmsg['periode.listPeriod']}" styleClass="label_hrm"/>
                             </f:facet> 
-                            <p:column style="text-align: center;width: 4%">
+                            <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
                                     <h:outputText value="No." />
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="tahun" style="text-align: left;width: 15%" >
+                            <p:column sortBy="tahun" style="width: 12%" >
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.year']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{periodeViewData.tahun}"/>
                             </p:column>
-                            <p:column sortBy="bulan" style="text-align: left;width: 15%">
+                            <p:column sortBy="bulan" style="width: 15%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.month']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{periodeViewData.bulanAsLabel}"/>
                             </p:column>
-                            <p:column sortBy="fromPeriode" style="text-align: left;width: 18%">
+                            <p:column sortBy="fromPeriode" style="width: 20%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.from']}"/>
                                 </f:facet>
@@ -106,7 +106,7 @@
                                     <f:convertDateTime pattern="dd-MMMM-yyyy"/>
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="untilPeriode" style="text-align: left;width: 18%">
+                            <p:column sortBy="untilPeriode" style="width: 20%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.until']}"/>
                                 </f:facet>
@@ -114,17 +114,21 @@
                                     <f:convertDateTime pattern="dd-MMMM-yyyy"/>
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="untilPeriode" style="text-align: left; width: 15%">
+                            <p:column sortBy="untilPeriode" style="width: 15%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['periode.absen']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{periodeViewData.absen}"/>
+                                <h:outputLabel value= "#{periodeViewData.absen}">
+                                    <f:converter converterId="periodAbsenConverter"/>
+                                </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="payrollType" style="text-align: left; width: 15%">
+                            <p:column sortBy="payrollType" style="width: 15%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['periode.payroll']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{periodeViewData.payrollType}"/>
+                                <h:outputLabel value= "#{periodeViewData.payrollType}">
+                                    <f:converter converterId="periodPayrollConverter"/>
+                                </h:outputLabel>
                             </p:column>
 <!--                            <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
                                 <p:commandButton  icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" update=":detailPanel"

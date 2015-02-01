@@ -69,7 +69,7 @@ public class WtFingerExceptionFormController extends BaseController{
                 golonganJabatanList = golonganJabatanService.getAllWithDetail();
                 for (GolonganJabatan golonganJabatan : golonganJabatanList) {
                     golonganJabatanDropDown.put(golonganJabatan.getCode() + " - " + golonganJabatan.getPangkat().getPangkatName(), golonganJabatan.getId());
-                    System.out.println(golonganJabatanList.get(i).getCode());
+                    
                     i++;
                 }
                 MapUtil.sortByValue(golonganJabatanDropDown);
@@ -103,7 +103,7 @@ public class WtFingerExceptionFormController extends BaseController{
                 wtFingerExceptionService.saveMassFingerException(dataToSave, model.getStartDate(), model.getEndDate(), model.getExtendException());
                 MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-                return "/protected/working_time/wt_finger_exception_view.htm?faces-redirect=true";
+                return "/protected/working_time/wt_finger_ex_view.htm?faces-redirect=true";
 
         } catch (BussinessException ex) { 
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
@@ -152,7 +152,7 @@ public class WtFingerExceptionFormController extends BaseController{
     }
     
     public String doBack(){
-        return "/protected/working_time/wt_finger_exception_view.htm?faces-redirect=true";
+        return "/protected/working_time/wt_finger_ex_view.htm?faces-redirect=true";
     }
      
     public WtFingerExceptionService getWtFingerExceptionService() {

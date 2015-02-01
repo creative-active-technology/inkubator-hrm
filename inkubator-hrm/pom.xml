@@ -21,7 +21,7 @@
             <artifactId>lambdaj</artifactId>
             <version>2.3.3</version>
         </dependency>
-       <dependency>
+        <dependency>
             <groupId>com.inkubator</groupId>
             <artifactId>batch-core</artifactId>
             <version>1.0.0.RELEASE</version>
@@ -104,8 +104,13 @@
             <groupId>com.inkubator</groupId>
             <artifactId>messaging-core</artifactId>
             <version>1.0.0.RELEASE</version>
-        </dependency> 
-<!--         <dependency> 
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.mobile</groupId>
+            <artifactId>spring-mobile-device</artifactId>
+            <version>1.1.3.RELEASE</version>
+        </dependency>
+        <!--         <dependency> 
             <groupId>metro.ui</groupId>
             <artifactId>metroui</artifactId>
             <version>1.0.0.RELEASE</version>
@@ -118,7 +123,7 @@
     </dependencies>
     <build>
         <plugins>
-<!--            <plugin> 
+            <!-- <plugin> 
                 <groupId>org.primefaces.extensions</groupId>
                 <artifactId>resources-optimizer-maven-plugin</artifactId>
              
@@ -134,7 +139,7 @@
                 <configuration>
                     <inputDir>${basedir}/src/main/webapp/resources</inputDir>
                 </configuration>
-            </plugin>-->
+            </plugin> -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

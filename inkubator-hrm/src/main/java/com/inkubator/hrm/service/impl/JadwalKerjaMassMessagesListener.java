@@ -65,9 +65,9 @@ public class JadwalKerjaMassMessagesListener extends IServiceImpl implements Mes
             JSONObject jSONObject = new JSONObject(textMessage.getText());
             long workingGroupId = Long.parseLong(jSONObject.getString("groupWorkingId"));
             String listEmp = jSONObject.getString("listEmpId");
-            Date createOn =  new SimpleDateFormat("dd-MM-yyyy hh:mm").parse(jSONObject.getString("createDate"));
+            Date createOn = new SimpleDateFormat("dd-MM-yyyy hh:mm").parse(jSONObject.getString("createDate"));
             String createBy = jSONObject.getString("createBy");
-            
+
             Gson gson = new GsonBuilder().create();
             List<TempJadwalKaryawan> dataToDelete = new ArrayList<>();
             TypeToken<List<Long>> token = new TypeToken<List<Long>>() {
@@ -91,16 +91,33 @@ public class JadwalKerjaMassMessagesListener extends IServiceImpl implements Mes
                 beginScheduleDate = DateTimeUtil.getDateFrom(startDate, (hasilBagi * num), CommonUtilConstant.DATE_FORMAT_DAY);
             }
             List<TempJadwalKaryawan> dataToSave = new ArrayList<>();
+            TempJadwalKaryawan jadwalKaryawan;
             for (Long id : dataEmpId) {
-                dataToDelete.addAll(tempJadwalKaryawanDao.getAllByEmpId(id));
+//                dataToDelete.addAll(tempJadwalKaryawanDao.getAllByEmpId(id)); for bussiner process Sake so must be close
                 List<WtScheduleShift> dataScheduleShift = new ArrayList<>(groupWorking.getWtScheduleShifts());
 //                Collections.sort(dataScheduleShift, shortByDate1);
                 List<WtScheduleShift> sortedDataScheduleShift = Lambda.sort(dataScheduleShift, Lambda.on(WtScheduleShift.class).getScheduleDate());
                 int i = 0;
                 for (WtScheduleShift wtScheduleShift : sortedDataScheduleShift) {
-                    TempJadwalKaryawan jadwalKaryawan = new TempJadwalKaryawan();
-                    jadwalKaryawan.setEmpData(empDataDao.getEntiyByPK(id));
-                    jadwalKaryawan.setTanggalWaktuKerja(DateTimeUtil.getDateFrom(beginScheduleDate, i, CommonUtilConstant.DATE_FORMAT_DAY));
+                    String onlyDate = new SimpleDateFormat("yyyy-MM-dd").format(DateTimeUtil.getDateFrom(beginScheduleDate, i, CommonUtilConstant.DATE_FORMAT_DAY));
+                    Date olnyDate = new SimpleDateFormat("yyyy-MM-dd").parse(onlyDate);
+                    jadwalKaryawan = tempJadwalKaryawanDao.getByEmpId(id, olnyDate);
+                    if (jadwalKaryawan != null) {
+                        jadwalKaryawan.setUpdatedBy(createBy);
+                        jadwalKaryawan.setUpdatedOn(new Date());
+//                jadwalKaryawan = tempJadwalKaryawanDao.getByEmpId(empData.getId(), olnyDate);
+                    } else {
+                        jadwalKaryawan = new TempJadwalKaryawan();
+                        jadwalKaryawan.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
+                        jadwalKaryawan.setEmpData(empDataDao.getEntiyByPK(id));
+                        jadwalKaryawan.setTanggalWaktuKerja(DateTimeUtil.getDateFrom(beginScheduleDate, i, CommonUtilConstant.DATE_FORMAT_DAY));
+                        jadwalKaryawan.setCreatedBy(createBy);
+                        jadwalKaryawan.setCreatedOn(createOn);
+                       
+                    }
+//                    TempJadwalKaryawan jadwalKaryawan = new TempJadwalKaryawan();
+//                    jadwalKaryawan.setEmpData(empDataDao.getEntiyByPK(id));
+//                    jadwalKaryawan.setTanggalWaktuKerja(DateTimeUtil.getDateFrom(beginScheduleDate, i, CommonUtilConstant.DATE_FORMAT_DAY));
 //                    jadwalKaryawan.setWtWorkingHour(wtScheduleShift.getWtWorkingHour());
                     WtHoliday holiday = wtHolidayDao.getWtHolidayByDate(jadwalKaryawan.getTanggalWaktuKerja());
                     if (holiday != null && groupWorking.getTypeSequeace().equals(HRMConstant.NORMAL_SCHEDULE)) {
@@ -115,15 +132,12 @@ public class JadwalKerjaMassMessagesListener extends IServiceImpl implements Mes
 //                        jadwalKaryawan.setAttendanceStatus(attendanceStatusDao.getByCode("HD1"));
 //                    }
                     jadwalKaryawan.setIsCollectiveLeave(Boolean.FALSE);
-                    jadwalKaryawan.setCreatedBy(createBy);
-                    jadwalKaryawan.setCreatedOn(createOn);
-                    jadwalKaryawan.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
                     dataToSave.add(jadwalKaryawan);
                     i++;
                 }
 
             }
-            tempJadwalKaryawanDao.deleteBacth(dataToDelete);
+//            tempJadwalKaryawanDao.deleteBacth(dataToDelete);
             tempJadwalKaryawanDao.saveBatch(dataToSave);
         } catch (Exception ex) {
             LOGGER.error("Error", ex);

@@ -23,4 +23,9 @@ public interface CheckInAttendanceDao extends IDAO<CheckInAttendance> {
     public Long getTotalCheckInAttendanceByParam(CheckInAttendanceSearchParameter searchParameter);
 
     public CheckInAttendance getByEmpIdAndCheckIn(long id, Date checkInDate);
+
+    public CheckInAttendance getAttendancWithMaxCreatedDate(long id);
+
+	public CheckInAttendance getEntityByEmpDataIdAndCheckDate(Long empDataId, Date checkDate);
+
 }

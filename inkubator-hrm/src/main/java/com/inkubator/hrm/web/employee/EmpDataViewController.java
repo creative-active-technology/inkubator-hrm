@@ -52,7 +52,7 @@ public class EmpDataViewController extends BaseController {
     }
 
     public String doAdd() {
-        return "/protected/employee/employee_palcement_form.htm?faces-redirect=true";
+        return "/protected/employee/emp_placement_form.htm?faces-redirect=true";
     }
 
     public EmpDataSearchParameter getEmpDataSearchParameter() {
@@ -116,7 +116,7 @@ public class EmpDataViewController extends BaseController {
     }
 
     public String doDetail() {
-        return "/protected/employee/employee_placement_detail.htm?faces-redirect=true&execution=e" + selectedEmpData.getId();
+        return "/protected/employee/emp_placement_detail.htm?faces-redirect=true&execution=e" + selectedEmpData.getId();
     }
 
     public String doDetailRenumeration() {
@@ -124,18 +124,18 @@ public class EmpDataViewController extends BaseController {
     }
 
     public String doEdit() {
-        return "/protected/employee/employee_palcement_form.htm?faces-redirect=true&execution=e" + selectedEmpData.getId();
+        return "/protected/employee/emp_placement_form.htm?faces-redirect=true&execution=e" + selectedEmpData.getId();
     }
 
     public String doRotasi() {
+        return "/protected/employee/emp_rotasi_form.htm?faces-redirect=true&execution=r" + selectedEmpData.getId() + "&from=rotasi";
 
-        return "/protected/employee/employee_rotasi_form.htm?faces-redirect=true&execution=r" + selectedEmpData.getId();
     }
 
     public String doPlacementOfEmployee() {
-         return "/protected/employee/work_schedule_form.htm?faces-redirect=true";
+        return "/protected/employee/work_schedule_form.htm?faces-redirect=true";
     }
-    
+
     public void doEmployeeTimeSchedule() {
         List<String> values = new ArrayList<>();
         values.add(String.valueOf(selectedEmpData.getId()));
@@ -147,7 +147,7 @@ public class EmpDataViewController extends BaseController {
         options.put("resizable", false);
         options.put("contentWidth", 450);
         options.put("contentHeight", 270);
-        RequestContext.getCurrentInstance().openDialog("employee_schedule_form", options, dataToSend);
+        RequestContext.getCurrentInstance().openDialog("emp_schedule_form", options, dataToSend);
 
     }
 
@@ -162,11 +162,11 @@ public class EmpDataViewController extends BaseController {
 
     @Override
     public void onDialogReturn(SelectEvent event) {
-        System.out.println(" hahahahah");
+        
         super.onDialogReturn(event);
     }
 
     public String doDetailShedule() {
-        return "/protected/employee/employee_shcedule_detail.htm?faces-redirect=true&execution=r" + selectedEmpData.getId();
+        return "/protected/employee/emp_schedule_detail.htm?faces-redirect=true&execution=r" + selectedEmpData.getId();
     }
 }

@@ -4,9 +4,12 @@ import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.ReligionDao;
+import com.inkubator.hrm.dao.UnregEmpReligionDao;
 import com.inkubator.hrm.entity.Religion;
+import com.inkubator.hrm.entity.UnregEmpReligion;
 import com.inkubator.hrm.service.ReligionService;
 import com.inkubator.securitycore.util.UserInfoUtil;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.hibernate.criterion.Order;
@@ -27,6 +30,8 @@ public class ReligionServiceImpl extends IServiceImpl implements ReligionService
 
     @Autowired
     private ReligionDao religionDao;
+    @Autowired
+    private UnregEmpReligionDao unregEmpReligionDao;
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -262,6 +267,18 @@ public class ReligionServiceImpl extends IServiceImpl implements ReligionService
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
     public Long getTotalReligionByParam(String parameter) throws Exception {
         return this.religionDao.getTotalReligionByParam(parameter);
+    }
+
+    @Override
+    public Religion getEntityByUnregSalaryIdWithDetail(Long unregSalaryId) throws Exception {
+        Religion religion = new Religion();
+        List<Religion> religions = new ArrayList<>();
+        for (UnregEmpReligion unregEmpReligion : this.unregEmpReligionDao.getAllDataByUnregSalaryId(unregSalaryId)) {
+            religions.add(unregEmpReligion.getReligion());
+        }
+
+        religion.setListReligion(religions);
+        return religion;
     }
 
 }

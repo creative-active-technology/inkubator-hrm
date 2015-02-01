@@ -90,9 +90,7 @@ public class JabatanServiceImpl extends IServiceImpl implements JabatanService {
         entity.setCreatedOn(new Date());
         Set<KlasifikasiKerjaJabatan> klasifikasiKerjaJabatans = entity.getKlasifikasiKerjaJabatans();
         for (KlasifikasiKerjaJabatan klasifikasiKerjaJabatan : klasifikasiKerjaJabatans) {
-//            System.out.println(klasifikasiKerjaJabatan.getJabatan().getCode());
-//            System.out.println(klasifikasiKerjaJabatan.getKlasifikasiKerja().getName());
-//            System.out.println(klasifikasiKerjaJabatan.getId());
+
         }
         this.jabatanDao.save(entity);
     }
@@ -308,6 +306,14 @@ public class JabatanServiceImpl extends IServiceImpl implements JabatanService {
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public Jabatan getJabatanByIdForSpecDetail(Long id) throws Exception {
+        Jabatan jabatan = jabatanDao.getJabatanByIdWithDetail(id);
+        jabatan.getGolonganJabatan().getPangkat().getPangkatName();
+        return jabatan;
+    }
+    
+    @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<Jabatan> getJabatansByLevel(Integer level) throws Exception {
         return this.jabatanDao.getJabatansByLevel(level);
@@ -359,8 +365,10 @@ public class JabatanServiceImpl extends IServiceImpl implements JabatanService {
 
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
 	@Override
-	public List<Jabatan> getAllDataByCodeOrName(String param) {
+	public List<Jabatan> getAllDataByCodeOrName(String param) throws Exception{
     	return jabatanDao.getAllDataByCodeOrName(param);		
 	}
+
+
 
 }

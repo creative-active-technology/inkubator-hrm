@@ -171,6 +171,14 @@ public class PermitDistributionEditFormController extends BaseController{
     public void setPermitList(List<PermitClassification> permitList) {
         this.permitList = permitList;
     }
+
+    public PermitClassificationService getPermitService() {
+        return permitService;
+    }
+
+    public void setPermitService(PermitClassificationService permitService) {
+        this.permitService = permitService;
+    }
     
     
 }

@@ -128,7 +128,7 @@ public class OrganizationLetterViewController extends BaseController {
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 350);
-        options.put("contentHeight", 270);
+        options.put("contentHeight", 290);
         RequestContext.getCurrentInstance().openDialog("organization_letter_form", options, params);
     }
     

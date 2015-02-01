@@ -7,6 +7,8 @@ package com.inkubator.hrm.service;
 
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.PaySalaryComponent;
+import com.inkubator.hrm.web.model.PayComponentDataExceptionModelView;
+import com.inkubator.hrm.web.search.PayComponentDataExceptionSearchParameter;
 import com.inkubator.hrm.web.search.PaySalaryComponentSearchParameter;
 import java.util.List;
 import java.util.Map;
@@ -31,5 +33,9 @@ public interface PaySalaryComponentService extends IService<PaySalaryComponent> 
     public Map<String, Long> returnComponentChange(Long id) throws Exception;
     
     public void saveWithEmployeeType(PaySalaryComponent paySalaryComponent) throws Exception;
+    
+    public List<PayComponentDataExceptionModelView> getByParamWithDetailForDataException(PayComponentDataExceptionSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
+
+    public Long getTotalByParamDataException(PayComponentDataExceptionSearchParameter searchParameter) throws Exception;
     
 }

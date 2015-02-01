@@ -7,9 +7,11 @@ package com.inkubator.hrm.dao.impl;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.BioSpesifikasiAbilityDao;
 import com.inkubator.hrm.entity.BioSpesifikasiAbility;
+import com.inkubator.hrm.entity.BioSpesifikasiAbilityId;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
@@ -20,7 +22,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository(value = "bioSpesifikasiAbility")
 @Lazy
-public class BioSpesifikasiAbilityDaoImpl extends IDAOImpl<BioSpesifikasiAbility> implements BioSpesifikasiAbilityDao{
+public class BioSpesifikasiAbilityDaoImpl extends IDAOImpl<BioSpesifikasiAbility> implements BioSpesifikasiAbilityDao {
 
     @Override
     public Class<BioSpesifikasiAbility> getEntityClass() {
@@ -31,7 +33,7 @@ public class BioSpesifikasiAbilityDaoImpl extends IDAOImpl<BioSpesifikasiAbility
     public BioSpesifikasiAbility getAllDataByPK(Long id) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("id", id));
-        criteria.setFetchMode("biodata", FetchMode.JOIN);
+        criteria.setFetchMode("bioData", FetchMode.JOIN);
         criteria.setFetchMode("specificationAbility", FetchMode.JOIN);
         return (BioSpesifikasiAbility) criteria.uniqueResult();
     }
@@ -39,9 +41,24 @@ public class BioSpesifikasiAbilityDaoImpl extends IDAOImpl<BioSpesifikasiAbility
     @Override
     public List<BioSpesifikasiAbility> getAllDataByBiodataId(Long bioDataId) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.eq("biodata.id", bioDataId));
+        criteria.add(Restrictions.eq("bioData.id", bioDataId));
         criteria.setFetchMode("specificationAbility", FetchMode.JOIN);
         return criteria.list();
     }
-    
+
+    @Override
+    public BioSpesifikasiAbility getEntityByBioSpesifikasiAbilityId(BioSpesifikasiAbilityId id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("id", id));
+        criteria.setFetchMode("bioData", FetchMode.JOIN);
+        criteria.setFetchMode("specificationAbility", FetchMode.JOIN);
+        return (BioSpesifikasiAbility) criteria.uniqueResult();
+    }
+
+        @Override
+    public Long getTotalEntityByBioBioSpesifikasiAbilityId(BioSpesifikasiAbilityId id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("id", id));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
 }

@@ -24,4 +24,6 @@ public interface CheckInAttendanceService extends IService<CheckInAttendance> {
 
     public CheckInAttendance getByEmpIdAndCheckIn(long id, Date checkInDate) throws Exception;
 
+    public CheckInAttendance getAttendancWithMaxCreatedDate(long id) throws Exception;
+
 }

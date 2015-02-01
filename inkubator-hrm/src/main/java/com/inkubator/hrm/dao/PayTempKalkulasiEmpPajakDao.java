@@ -7,11 +7,28 @@ package com.inkubator.hrm.dao;
 
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.PayTempKalkulasiEmpPajak;
+import com.inkubator.hrm.web.model.PayTempKalkulasiEmpPajakModel;
+import java.util.List;
+import org.hibernate.criterion.Order;
 
 /**
  *
  * @author denifahri
  */
-public interface PayTempKalkulasiEmpPajakDao extends IDAO<PayTempKalkulasiEmpPajak>{
+public interface PayTempKalkulasiEmpPajakDao extends IDAO<PayTempKalkulasiEmpPajak> {
+
+    public void deleteAllData();
+
+    public List<PayTempKalkulasiEmpPajakModel> getByParam();
+
+    public Long getTotalPayTempKalkulasiEmpPajakByParam();
+
+    public List<PayTempKalkulasiEmpPajak> getByParamForDetail(String searchParameter, int firstResult, int maxResults, Order order, Long taxComponentId);
+
+    public Long getTotalPayTempKalkulasiEmpPajakByParamForDetail(String searchParameter, Long taxComponentId);
     
+    public PayTempKalkulasiEmpPajak getEntityByEmpDataIdAndTaxComponentId(Long empDataId, Long taxComponentId);
+
+    public List<PayTempKalkulasiEmpPajak> getAllDataByEmpDataId(Long empDataId);
+
 }

@@ -280,40 +280,40 @@ public class PayTempUploadDataServiceImpl extends IServiceImpl implements PayTem
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<PayTempUploadData> getAllDataByParam(PayTempUploadDataSearchParameter parameter, int firstResult, int maxResults, Order orderable) {
+	public List<PayTempUploadData> getAllDataByParam(PayTempUploadDataSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception{
 		return this.payTempUploadDataDao.getAllDataByParam(parameter, firstResult, maxResults, orderable);
 
 	}
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-	public Long getTotalByParam(PayTempUploadDataSearchParameter parameter) {
+	public Long getTotalByParam(PayTempUploadDataSearchParameter parameter) throws Exception{
 		return this.payTempUploadDataDao.getTotalByParam(parameter);
 
 	}
 	
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-	public Long getTotalByPaySalaryComponentId(Long paySalaryComponentId){
+	public Long getTotalByPaySalaryComponentId(Long paySalaryComponentId) throws Exception{
 		return this.payTempUploadDataDao.getTotalByPaySalaryComponentId(paySalaryComponentId);
 	}
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-	public PayTempUploadData getEntityByPkWithDetail(Long id) {
+	public PayTempUploadData getEntityByPkWithDetail(Long id) throws Exception{
 		return this.payTempUploadDataDao.getEntityByPkWithDetail(id);
 
 	}
 	
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-	public Double getTotalSalaryByPaySalaryComponentId(Long paySalaryComponentId){
+	public Double getTotalSalaryByPaySalaryComponentId(Long paySalaryComponentId) throws Exception{
 		return this.payTempUploadDataDao.getTotalSalaryByPaySalaryComponentId(paySalaryComponentId);
 	}
 
 	@Override
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor =Exception.class)
-	public void executeBatchFileUpload(PaySalaryUploadFileModel model) {
+	public void executeBatchFileUpload(PaySalaryUploadFileModel model) throws Exception{
 		Boolean isInsertable = this.payTempUploadDataDao.getAllByNikAndComponentId(model.getNik(), model.getPaySalaryComponentId()).isEmpty();
 		
 		//skip jika data sudah ada di database(tidak boleh duplikat)

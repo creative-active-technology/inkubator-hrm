@@ -4,12 +4,15 @@
  */
 package com.inkubator.hrm.service.impl;
 
+import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.CheckInAttendanceDao;
 import com.inkubator.hrm.dao.EmpDataDao;
+import com.inkubator.hrm.dao.TempJadwalKaryawanDao;
 import com.inkubator.hrm.entity.CheckInAttendance;
+import com.inkubator.hrm.entity.TempJadwalKaryawan;
 import com.inkubator.hrm.service.CheckInAttendanceService;
 import com.inkubator.hrm.web.search.CheckInAttendanceSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
@@ -42,8 +45,11 @@ public class CheckInAttendanceServiceImpl extends IServiceImpl implements CheckI
     private CheckInAttendanceDao checkInAttendanceDao;
     @Autowired
     private EmpDataDao empDataDao;
+    @Autowired
+    private TempJadwalKaryawanDao tempJadwalKaryawanDao;
 
     @Override
+
     public CheckInAttendance getEntiyByPK(String id) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -66,6 +72,7 @@ public class CheckInAttendanceServiceImpl extends IServiceImpl implements CheckI
         entity.setEmpData(empDataDao.getEntiyByPK(entity.getEmpData().getId()));
         entity.setCreatedBy(UserInfoUtil.getUserName());
         entity.setCreatedOn(new Date());
+        entity.setCheckInDateTime(new Date());
         this.checkInAttendanceDao.save(entity);
         ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
         String waktuCheckIn = new SimpleDateFormat("EEEE, dd-MMMM-yyyy hh:mm:ss").format(entity.getCheckInTime());
@@ -243,5 +250,33 @@ public class CheckInAttendanceServiceImpl extends IServiceImpl implements CheckI
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public CheckInAttendance getByEmpIdAndCheckIn(long id, Date checkInDate) throws Exception {
         return this.checkInAttendanceDao.getByEmpIdAndCheckIn(id, checkInDate);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public CheckInAttendance getAttendancWithMaxCreatedDate(long id) throws Exception {
+        CheckInAttendance attendance = this.checkInAttendanceDao.getAttendancWithMaxCreatedDate(id);
+
+        if (attendance != null) {
+            TempJadwalKaryawan tempJadwalKaryawan = this.tempJadwalKaryawanDao.getByEmpId(id, attendance.getCheckDate());
+           
+            Date jamPulang = tempJadwalKaryawan.getWtWorkingHour().getWorkingHourEnd();
+            Date jamMasuk = tempJadwalKaryawan.getWtWorkingHour().getWorkingHourBegin();
+            int selisih = DateTimeUtil.getTotalHoursDifference(jamMasuk, jamPulang);
+            if (selisih < 0) {
+                selisih = selisih + 24;
+            }
+//            Date checkTimeDate = attendance.getCheckInDateTime();
+            String jamMasukSeharusnya = new SimpleDateFormat("yyyy-MM-dd").format(tempJadwalKaryawan.getTanggalWaktuKerja());
+            
+            Date jamDanTanggalHarus = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(jamMasukSeharusnya +" "+ jamMasuk);
+            int waitingTime = DateTimeUtil.getTotalHoursDifference(jamDanTanggalHarus, new Date());
+            if (waitingTime > selisih + 4) {
+                attendance = null;
+                
+            }
+        }
+
+        return attendance;
     }
 }

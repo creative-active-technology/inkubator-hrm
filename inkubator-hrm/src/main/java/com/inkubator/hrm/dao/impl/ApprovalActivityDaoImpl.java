@@ -25,6 +25,7 @@ import com.inkubator.hrm.dao.ApprovalActivityDao;
 import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.ApprovalDefinition;
 import com.inkubator.hrm.web.search.ApprovalActivitySearchParameter;
+import java.util.Date;
 
 /**
  *
@@ -138,14 +139,14 @@ public class ApprovalActivityDaoImpl extends IDAOImpl<ApprovalActivity> implemen
 
     private void doSearchByParam(ApprovalActivitySearchParameter searchParameter, Criteria criteria) {
         if (searchParameter.getRequestBy() != null) {
-            criteria.add(Restrictions.like("requestBy", searchParameter.getRequestBy(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("requestBy", searchParameter.getRequestBy(), MatchMode.START));
         }
         if (searchParameter.getApprovedBy() != null) {
-            criteria.add(Restrictions.like("approvedBy", searchParameter.getApprovedBy(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("approvedBy", searchParameter.getApprovedBy(), MatchMode.START));
         }
         if (StringUtils.isNotEmpty(searchParameter.getName())) {
             criteria.createAlias("approvalDefinition", "ad", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("ad.name", searchParameter.getName(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("ad.name", searchParameter.getName(), MatchMode.START));
         }
 
         criteria.add(Restrictions.isNotNull("id"));
@@ -159,9 +160,9 @@ public class ApprovalActivityDaoImpl extends IDAOImpl<ApprovalActivity> implemen
         criteria.addOrder(order);
         return criteria.list();
     }
-    
+
     public List<ApprovalActivity> getAllDataByPreviousActivityNumber(String previousActivityNumber, Order order) {
-    	Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("previousActivityNumber", previousActivityNumber));
         criteria.addOrder(order);
         return criteria.list();
@@ -174,87 +175,101 @@ public class ApprovalActivityDaoImpl extends IDAOImpl<ApprovalActivity> implemen
         return criteria.list();
     }
 
-	@Override
-	public Boolean isStillHaveWaitingStatus(List<ApprovalDefinition> appDefs) {
-		//get approval definition ids
-		List<Long> ids = new ArrayList<Long>();
-		for(ApprovalDefinition appDef: appDefs){
-			if(appDef.getId() != null) {
-				ids.add(appDef.getId());
-			}
-		}
-		
-		boolean isStillHaveWaitingStatus = false;
-		if(!ids.isEmpty()) {
-			Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-			criteria.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING));		
-			criteria.add(Restrictions.in("approvalDefinition.id", ids));
-			isStillHaveWaitingStatus = criteria.list().size() > 0;
-		}
-		
-		return isStillHaveWaitingStatus;
-	}
-	
-	@Override
-	public Boolean isStillHaveWaitingStatus(List<ApprovalDefinition> appDefs, String requestBy) {
-		//get approval definition ids
-		List<Long> ids = new ArrayList<Long>();
-		for(ApprovalDefinition appDef: appDefs){
-			if(appDef.getId() != null) {
-				ids.add(appDef.getId());
-			}
-		}
-		
-		boolean isStillHaveWaitingStatus = false;
-		if(!ids.isEmpty()) {
-			Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-			criteria.add(Restrictions.eq("requestBy", requestBy));
-			criteria.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING));		
-			criteria.add(Restrictions.in("approvalDefinition.id", ids));
-			isStillHaveWaitingStatus = criteria.list().size() > 0;
-		}
-		
-		return isStillHaveWaitingStatus;		
-	}
-	
-	@Override
-	public Boolean isStillHaveWaitingStatus(Long appDefId) {		
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING));		
-		criteria.add(Restrictions.eq("approvalDefinition.id", appDefId));
-		return criteria.list().size() > 0;
-	}
-	
-	@Override
-	public Boolean isStillHaveWaitingStatus(String activityNumber) {		
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING));
-		Disjunction disjunction = Restrictions.disjunction();
+    @Override
+    public Boolean isStillHaveWaitingStatus(List<ApprovalDefinition> appDefs) {
+        //get approval definition ids
+        List<Long> ids = new ArrayList<Long>();
+        for (ApprovalDefinition appDef : appDefs) {
+            if (appDef.getId() != null) {
+                ids.add(appDef.getId());
+            }
+        }
+
+        boolean isStillHaveWaitingStatus = false;
+        if (!ids.isEmpty()) {
+            Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+            criteria.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING));
+            criteria.add(Restrictions.in("approvalDefinition.id", ids));
+            isStillHaveWaitingStatus = criteria.list().size() > 0;
+        }
+
+        return isStillHaveWaitingStatus;
+    }
+
+    @Override
+    public Boolean isStillHaveWaitingStatus(List<ApprovalDefinition> appDefs, String requestBy) {
+        //get approval definition ids
+        List<Long> ids = new ArrayList<Long>();
+        for (ApprovalDefinition appDef : appDefs) {
+            if (appDef.getId() != null) {
+                ids.add(appDef.getId());
+            }
+        }
+
+        boolean isStillHaveWaitingStatus = false;
+        if (!ids.isEmpty()) {
+            Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+            criteria.add(Restrictions.eq("requestBy", requestBy));
+            criteria.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING));
+            criteria.add(Restrictions.in("approvalDefinition.id", ids));
+            isStillHaveWaitingStatus = criteria.list().size() > 0;
+        }
+
+        return isStillHaveWaitingStatus;
+    }
+
+    @Override
+    public Boolean isStillHaveWaitingStatus(Long appDefId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING));
+        criteria.add(Restrictions.eq("approvalDefinition.id", appDefId));
+        return criteria.list().size() > 0;
+    }
+
+    @Override
+    public Boolean isStillHaveWaitingStatus(String activityNumber) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING));
+        Disjunction disjunction = Restrictions.disjunction();
         disjunction.add(Restrictions.eq("activityNumber", activityNumber));
         disjunction.add(Restrictions.eq("previousActivityNumber", activityNumber));
-		criteria.add(disjunction);
-		return criteria.list().size() > 0;
-	}
+        criteria.add(disjunction);
+        return criteria.list().size() > 0;
+    }
 
-	@Override
-	public List<ApprovalActivity> getAllDataWaitingStatusApproval() {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING));
-		return criteria.list();
-	}
+    @Override
+    public List<ApprovalActivity> getAllDataWaitingStatusApproval() {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING));
+        return criteria.list();
+    }
 
     @Override
     public List<ApprovalActivity> getByApprovalStatus(Integer approvalStatus) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.add(Restrictions.eq("approvalStatus", approvalStatus));
-		return criteria.list();
+        criteria.add(Restrictions.eq("approvalStatus", approvalStatus));
+        return criteria.list();
     }
 
-	@Override
-	public void updateAndFlush(ApprovalActivity approvalActivity) {
-		getCurrentSession().update(approvalActivity);
-		getCurrentSession().flush();
-		
-	}
+    @Override
+    public void updateAndFlush(ApprovalActivity approvalActivity) {
+        getCurrentSession().update(approvalActivity);
+        getCurrentSession().flush();
+
+    }
+
+    @Override
+    public ApprovalActivity getApprovalTimeByApprovalActivityNumber(String activityNumber) {
+        ProjectionList proList = Projections.projectionList();
+        proList.add(Property.forName("sequence").max());
+        proList.add(Projections.groupProperty("activityNumber"));
+        DetachedCriteria maxSequenceAndActivityNumber = DetachedCriteria.forClass(getEntityClass())
+                .add(Restrictions.eq("activityNumber", activityNumber))
+                .setProjection(proList);
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("activityNumber", activityNumber));
+        String[] var = {"sequence", "activityNumber"};
+        criteria.add(Subqueries.propertiesIn(var, maxSequenceAndActivityNumber));
+        return (ApprovalActivity) criteria.uniqueResult();
+    }
 }
- 

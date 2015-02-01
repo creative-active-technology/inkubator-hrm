@@ -1,0 +1,151 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Role View
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg" style="margin: 10px">
+                    <!--<p:panel style="margin: 10px" >-->
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="jabatan.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['paySalaryComponent.detail']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['paySalaryComponent.paySalaryComponent_header']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator/>
+                    <p:growl id="growlId" globalOnly="true" showDetail="true" />
+                    <h:form id="formId">
+                        <p:panelGrid style="width: 100%;margin-top: 20px;margin-bottom: 15px" styleClass="grid_border3">
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['paySalaryComponent.paySalaryComponent_code']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:outputLabel  value="#{paySalaryComponentDetailController.selectedPaySalaryComponent.code}" />
+                                </p:column>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important">
+                                    <p:outputLabel  value="#{appmsg['paySalaryComponent.paySalaryComponent_name']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:outputLabel  value="#{paySalaryComponentDetailController.selectedPaySalaryComponent.name}" />
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['paySalaryComponent.paySalaryComponent_model']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:outputLabel  value="#{paySalaryComponentDetailController.selectedPaySalaryComponent.modelComponent.name}" />
+                                </p:column>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important">
+                                    <p:outputLabel  value="#{appmsg['paySalaryComponent.model_referensi']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:outputLabel  value="#{paySalaryComponentDetailController.selectedPaySalaryComponent.modelReffernsil}" >
+                                        <f:converter converterId="modelReferensiConverter" />
+                                        <f:attribute name="paySalaryComponentId" value="#{paySalaryComponentDetailController.selectedPaySalaryComponent.id}"/>
+                                    </p:outputLabel>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['paySalaryComponent.paySalaryComponent_formula']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:outputLabel  value="#{paySalaryComponentDetailController.selectedPaySalaryComponent.formula}" />
+                                </p:column>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important">
+                                    <p:outputLabel  value="#{appmsg['paySalaryComponent.paySalaryComponent_category']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:outputLabel  value="#{paySalaryComponentDetailController.selectedPaySalaryComponent.componentCategory}" >
+                                        <f:converter converterId="paySalaryComponentConverter" />
+                                    </p:outputLabel>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['paySalaryComponent.paySalaryComponent_jurnal_gaji']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:outputLabel  value="#{paySalaryComponentDetailController.selectedPaySalaryComponent.paySalaryJurnal.name}" />
+                                </p:column>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important">
+                                    <p:outputLabel  value="#{appmsg['paySalaryComponent.paySalaryComponent_reset_upload']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:outputLabel  value="#{paySalaryComponentDetailController.selectedPaySalaryComponent.resetData}" >
+                                        <f:converter converterId="booleanMessageConverter" />
+                                    </p:outputLabel>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['paySalaryComponent.paySalaryComponent_renumerasi']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:outputLabel  value="#{paySalaryComponentDetailController.selectedPaySalaryComponent.renumeration}" >
+                                        <f:converter converterId="booleanMessageConverter" />
+                                    </p:outputLabel>
+                                </p:column>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important">
+                                    <p:outputLabel  value="#{appmsg['paySalaryComponent.paySalaryComponent_taxable']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:outputLabel  value="#{paySalaryComponentDetailController.selectedPaySalaryComponent.taxComponent.name}" />
+                                </p:column>
+                            </p:row>
+
+                        </p:panelGrid>
+                        <p:dataTable value="#{paySalaryComponentDetailController.listPaySalaryComponentEmpType}" var="listEmpType" rowIndexVar="no" style="margin-top: 20px;margin-bottom: 15px">
+                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['reimbursment.employee_type']}" style="text-align: left" styleClass="label_hrm"/> 
+                            </f:facet>
+                            <p:column style="text-align: center;width: 3%;max-width: 25px">
+                                <f:facet name="header">  
+                                    <h:outputText value="No." />
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column  style="width:97%"> 
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['reimbursment.employee_type']}" />
+                                </f:facet>
+                                <h:outputLabel value=" #{listEmpType.employeeType.name}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:separator/>
+                        <h:panelGrid columns="2" style="margin-bottom: 5px;float: left">
+                            <p:commandButton value="#{appmsg['global.edit']}"  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" action="#{paySalaryComponentDetailController.doEdit()}" styleClass="label_button"/>
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{paySalaryComponentDetailController.doBack()}" styleClass="label_button"/>
+                        </h:panelGrid>
+                        <div style="clear: both"/>
+                    </h:form>
+                </div>
+
+
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

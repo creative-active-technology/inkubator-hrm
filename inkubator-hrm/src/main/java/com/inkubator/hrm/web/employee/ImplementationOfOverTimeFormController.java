@@ -145,7 +145,7 @@ public class ImplementationOfOverTimeFormController extends BaseController {
     }
     
     public void doSave() {
-        System.out.println("masuk dosave");
+        
         ImplementationOfOverTime implementationOfOT = getEntityFromViewModel(model);
         try {
             if (isUpdate) {
@@ -176,9 +176,9 @@ public class ImplementationOfOverTimeFormController extends BaseController {
             	String message = implementationOfOverTimeService.save(implementationOfOT, false);
             	if(StringUtils.equals(message, "success_need_approval")){
             		RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
-                        System.out.println("need approval");
+                        
             	} else {
-                        System.out.println("no need approval");
+                        
             		RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
             	}
             }
@@ -191,8 +191,8 @@ public class ImplementationOfOverTimeFormController extends BaseController {
     }
     
     public void dateChange() throws Exception{
-        TempJadwalKaryawan jadwalKaryawan = tempJadwalKaryawanService.getByEmpId(empId, model.getImplementationDate());
-            System.out.println(jadwalKaryawan);
+        TempJadwalKaryawan jadwalKaryawan = tempJadwalKaryawanService.getEntityByEmpDataIdAndTanggalWaktuKerja(empId, model.getImplementationDate());
+            
             if(jadwalKaryawan != null){
                 if(jadwalKaryawan.getWtWorkingHour().getIsManageOvertime()){
                     model.setWtOverTimeId(jadwalKaryawan.getWtWorkingHour().getWtOverTime().getId());
@@ -201,7 +201,7 @@ public class ImplementationOfOverTimeFormController extends BaseController {
                     isDisableStartAndEndOverTime = Boolean.TRUE;
                 }else{
                     isDisableStartAndEndOverTime = Boolean.FALSE;
-                    System.out.println("input sendiri");
+                    
                 }
             }else{
                 isDisableStartAndEndOverTime = Boolean.FALSE;
@@ -213,12 +213,12 @@ public class ImplementationOfOverTimeFormController extends BaseController {
     }
     
     public void pickStartTime(){
-        System.out.println(model.getStartTime()+"--------------");
+        
         startTime = model.getStartTime();
     }
     
     public void pickEndTime(){
-        System.out.println(startTime+"=========");
+        
         endTime = model.getEndTime();
     }
 

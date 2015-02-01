@@ -1,0 +1,291 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Role View
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg" style="margin: 10px">
+                    <!--<p:panel style="margin: 10px" >-->
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="user.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['placement.list_of_placement']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['placement.placement_header']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator/>
+                    <p:growl id="empDataGrowlId" globalOnly="true" showDetail="true" />
+                    <h:form id="userViewId">
+                        <p:toolbar  style="margin-top: 10px">
+                            <p:toolbarGroup align="left">
+                                <h:panelGrid columns="5">
+                                    <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm"/>
+                                    <p:outputLabel value=":" styleClass="label_hrm" />
+                                    <p:selectOneMenu id="pencarianSelectId" value="#{empDataViewController.empDataSearchParameter.keyParam}"
+                                                     style="width: 150px;margin-right: 3px" >
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItem itemLabel="#{appmsg['placement.nik']}" itemValue="NIK"/>
+                                        <f:selectItem itemLabel="#{appmsg['global.name']}" itemValue="name" />
+                                        <f:selectItem itemLabel="#{appmsg['placement.jabatan_code']}" itemValue="jabatanKode" />
+                                        <f:selectItem itemLabel="#{appmsg['placement.jabatan_name']}" itemValue="jabatanName" />
+                                    </p:selectOneMenu>
+                                    <p:inputText value="#{empDataViewController.empDataSearchParameter.parameter}" style="width: 250px" id="pencarianId" styleClass="isitext_hrm" 
+                                                 label="#{appmsg['global.searching']}" title="#{appmsg['global.searching']}"/>
+                                    <p:commandButton value="#{appmsg['global.search']}" action="#{empDataViewController.doSearch()}" style="width: 75px" update="tableEmpDataId" icon="ui-icon-search"
+                                                     styleClass="label_button" title="#{appmsg['global.search']}" id="btnPencarianId" />
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                            <p:toolbarGroup align="right">
+                                <h:panelGrid columns="3">
+                                    <p:commandButton value="Export to XLS" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
+                                        <pe:exporter target="tableEmpDataIdExpand" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Employee_Placement"/>
+                                    </p:commandButton>
+                                    <p:commandButton value="#{appmsg['global.add']}" action="#{empDataViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" icon="ui-icon-document"
+                                                     styleClass="label_button" ajax="true" immediate="true">
+
+                                    </p:commandButton>
+                                    <p:commandButton value="#{appmsg['global.close']}"  styleClass="label_button" action="#{empDataViewController.doClose()}" title="#{appmsg['global.close']}" icon="ui-icon-home"
+                                                     label="#{appmsg['global.close']}" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+
+                        </p:toolbar>
+                        <p:focus for="pencarianId" />
+
+                        <p:dataTable  var="empViewData"  value="#{empDataViewController.empDataLazyDataModel}" lazy="true" paginator="true" pageLinks="7" 
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      id="tableEmpDataId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['placement.placement_header']}" styleClass="label_hrm"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 3%;">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"  />
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column sortBy="nik" style="text-align: left;width: 10%;">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['placement.nik']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{empViewData.nik}"/>
+                            </p:column>
+                            <p:column sortBy="bioData" style="text-align: left;width: 25%;">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.name']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{empViewData.bioData.firstName} #{empViewData.bioData.lastName}"/>
+                            </p:column>
+                            <p:column sortBy="joinDate" style="text-align: left;width: 15%;" >
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['placement.join_data']}"/>
+                                </f:facet>
+                                <p:outputLabel value= "#{empViewData.joinDate}">
+                                    <f:convertDateTime pattern="dd MMMM yyyy" />
+                                </p:outputLabel>
+                            </p:column>
+                            <p:column sortBy="jabatanByJabatanId" style="text-align: left;width: 10%" >
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['placement.jabatan_code']}"/>
+                                </f:facet>
+                                <p:outputLabel value= "#{empViewData.jabatanByJabatanId.code}"/>
+                            </p:column>
+                            <p:column sortBy="jabatanByJabatanId" style="text-align: left;width: 25%;">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['placement.jabatan_name']}"/>
+                                </f:facet>
+                                <p:outputLabel value= "#{empViewData.jabatanByJabatanId.name}"/>
+                            </p:column>
+
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 12%;text-align: center" exportable="false">
+                                <p:commandButton  icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
+                                                  action="#{empDataViewController.doDetail()}" style="font-size: 10px!important" >                        
+                                    <f:setPropertyActionListener value="#{empViewData}" target="#{empDataViewController.selectedEmpData}" />
+                                </p:commandButton>
+                                - 
+                                <p:commandButton  icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  style="font-size: 10px!important" update=":deleteDialogEmpDataId"
+                                                  onclick="statusDialog.show()"  oncomplete="confirmDialogEmpData.show()" action="#{empDataViewController.onDelete()}" >
+                                    <f:setPropertyActionListener value="#{empViewData}" target="#{empDataViewController.selectedEmpData}" />
+                                </p:commandButton>
+                                -
+                                <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
+                                                  action="#{empDataViewController.doEdit()}" >
+                                    <f:setPropertyActionListener value="#{empViewData}" target="#{empDataViewController.selectedEmpData}" />
+
+                                </p:commandButton> 
+                            </p:column>          
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : " styleClass="label_hrm" />
+                                <p:outputLabel value="#{empDataViewController.empDataLazyDataModel.rowCount}" styleClass="label_hrm"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px" styleClass="label_hrm"/>
+                            </f:facet>  
+                        </p:dataTable>
+                        
+                        <!-- 
+                        	hide datatable, used for reporting expand 
+                        -->
+                        <p:dataTable  var="empViewData" rendered="false"  value="#{empDataViewController.empDataLazyDataModel}" lazy="true" paginator="true" pageLinks="7" 
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      id="tableEmpDataIdExpand" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['placement.placement_header']}" styleClass="label_hrm"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 25px">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"  />
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['placement.nik']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{empViewData.nik}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.name']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{empViewData.bioData.firstName} #{empViewData.bioData.lastName}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.tempat_lahir']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{empViewData.bioData.city.cityName}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.birth_date']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{empViewData.bioData.dateOfBirth}">
+                                	<f:convertDateTime pattern="dd MMMM yyyy" />
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.gender']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{empViewData.bioData.gender}">
+                                	<f:converter converterId="genderConverter" />
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['biodata.blood_type']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{empViewData.bioData.bloodType}">
+                                	<f:converter converterId="blodTypeConverter"/>
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['biodata.email_address']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{empViewData.bioData.personalEmail}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['biodata.hp']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{empViewData.bioData.mobilePhone}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['placement.join_data']}"/>
+                                </f:facet>
+                                <p:outputLabel value= "#{empViewData.joinDate}">
+                                    <f:convertDateTime pattern="dd MMMM yyyy" />
+                                </p:outputLabel>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['placement.jabatan_code']}"/>
+                                </f:facet>
+                                <p:outputLabel value= "#{empViewData.jabatanByJabatanId.code}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['placement.jabatan_name']}"/>
+                                </f:facet>
+                                <p:outputLabel value= "#{empViewData.jabatanByJabatanId.name}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['functiongroup.function_group']}"/>
+                                </f:facet>
+                                <p:outputLabel value= "#{empViewData.golonganJabatan.code}-#{empViewData.golonganJabatan.pangkat.pangkatName}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['department.department']}"/>
+                                </f:facet>
+                                <p:outputLabel value= "#{empViewData.jabatanByJabatanId.department.departmentName}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.unit']}"/>
+                                </f:facet>
+                                <p:outputLabel value= "#{empViewData.jabatanByJabatanId.unitKerja.name}"/>
+                            </p:column>
+                        </p:dataTable>
+                        <p:blockUI block="userViewId" trigger="tableEmpDataId,btnPencarianId" >
+                            <h:panelGrid columns="2" styleClass="grid_no_border">
+                                <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
+                                <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
+                            </h:panelGrid>
+                        </p:blockUI>
+
+                    </h:form>
+                    <!--</p:panel>-->
+                </div>
+                <p:dialog widgetVar="confirmDialogEmpData" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                          appendTo="@(body)" resizable="false" id="confirmDialogHrmRoleId" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
+                    <h:form id="deleteDialogEmpDataId">
+                        <div align="center">
+                            <div align="center">
+                                <h:panelGrid columns="2" style="text-align: justify">
+                                    <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
+                                    <h:panelGroup>
+                                        <h:panelGrid style="text-align: center">
+                                            <p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
+                                        </h:panelGrid>
+                                    </h:panelGroup>
+                                </h:panelGrid>
+                            </div>
+                            <h:panelGrid  columns="3">
+                                <p:outputLabel value="#{appmsg['global.name']}" styleClass="label_hrm"/>
+                                <p:outputLabel value=":"  styleClass="label_hrm" />
+                                <p:outputLabel value="#{empDataViewController.selectedEmpData.bioData.firstName} #{empDataViewController.selectedEmpData.bioData.lastName}" styleClass="isitext_hrm"/>
+                            </h:panelGrid>
+                            <p:separator/>
+                            <p:commandButton value="#{appmsg['global.yes']}" action="#{empDataViewController.doDelete()}" update=":userViewId,:empDataGrowlId" id="yesId" title="#{appmsg['global.yes']}" styleClass="isitext_hrm"
+                                             oncomplete="confirmDialogEmpData.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                            <p:commandButton value="#{appmsg['global.no']}" oncomplete="confirmDialogEmpData.hide()" icon="ui-icon-close" title="#{appmsg['global.no']}"  styleClass="isitext_hrm"/>
+
+                        </div>
+                    </h:form>
+                </p:dialog>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

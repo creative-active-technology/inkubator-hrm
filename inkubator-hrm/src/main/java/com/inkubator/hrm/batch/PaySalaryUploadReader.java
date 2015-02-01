@@ -25,12 +25,13 @@ public class PaySalaryUploadReader implements ItemReader<PaySalaryUploadFileMode
 
 	private String createdBy;
 	private String paySalaryComponentId;
-	private String pathUpload;
-	private String extension;
+	private final String pathUpload;
+	private final String extension;
 	private FlatFileItemReader<PaySalaryUploadFileModel> csvFileReader;
 	private PoiItemReader<PaySalaryUploadFileModel> excelFileReader;
 	
 	public PaySalaryUploadReader(String filePath){
+           
 		this.extension = StringUtils.substringAfterLast(filePath, ".");
 		this.pathUpload = filePath;
 		if(StringUtils.equals(this.extension, "csv")){
@@ -50,15 +51,15 @@ public class PaySalaryUploadReader implements ItemReader<PaySalaryUploadFileMode
 		lineTokenizer.setNames(new String[]{"Nik","Nominal"});
 		
 		//mapped to an object
-		BeanWrapperFieldSetMapper<PaySalaryUploadFileModel> beanWrapperFieldSetMapper = new BeanWrapperFieldSetMapper<PaySalaryUploadFileModel>();
+		BeanWrapperFieldSetMapper<PaySalaryUploadFileModel> beanWrapperFieldSetMapper = new BeanWrapperFieldSetMapper<>();
 		beanWrapperFieldSetMapper.setTargetType(PaySalaryUploadFileModel.class);
 		
-		DefaultLineMapper<PaySalaryUploadFileModel> lineMapper =  new DefaultLineMapper<PaySalaryUploadFileModel>();
+		DefaultLineMapper<PaySalaryUploadFileModel> lineMapper =  new DefaultLineMapper<>();
 		lineMapper.setLineTokenizer(lineTokenizer);
 		lineMapper.setFieldSetMapper(beanWrapperFieldSetMapper);		
 		
 		//initial flatFileItemReader
-		csvFileReader = new FlatFileItemReader<PaySalaryUploadFileModel>();		
+		csvFileReader = new FlatFileItemReader<>();		
 		csvFileReader.setLineMapper(lineMapper);
 		csvFileReader.setResource(resource);
 		csvFileReader.setLinesToSkip(1);
@@ -66,17 +67,18 @@ public class PaySalaryUploadReader implements ItemReader<PaySalaryUploadFileMode
 	}
 	
 	private void initializationExcelReader(String filePath){
+            
 		//read a Excel file
 		Resource resource = new FileSystemResource(filePath);
 		
 		try {
 			//mapped to an object
-			BeanPropertyRowMapper<PaySalaryUploadFileModel> rowMapper = new BeanPropertyRowMapper<PaySalaryUploadFileModel>();
+			BeanPropertyRowMapper<PaySalaryUploadFileModel> rowMapper = new BeanPropertyRowMapper<>();
 			rowMapper.setTargetType(PaySalaryUploadFileModel.class);		
 			rowMapper.afterPropertiesSet();		
 		
 			//initial poiItemReader
-			excelFileReader = new PoiItemReader<PaySalaryUploadFileModel>();
+			excelFileReader = new PoiItemReader<>();
 			excelFileReader.setResource(resource);
 			excelFileReader.setLinesToSkip(1);
 			excelFileReader.setRowMapper(rowMapper);
@@ -87,6 +89,7 @@ public class PaySalaryUploadReader implements ItemReader<PaySalaryUploadFileMode
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+               
 	}
 	
 	@Override
@@ -133,4 +136,3 @@ public class PaySalaryUploadReader implements ItemReader<PaySalaryUploadFileMode
 		this.paySalaryComponentId = paySalaryComponentId;
 	}
 }
- 

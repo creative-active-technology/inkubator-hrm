@@ -15,6 +15,8 @@ import com.inkubator.securitycore.util.AuthenticationSuccessHandler;
 import com.inkubator.webcore.util.FacesUtil;
 import java.io.IOException;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +46,11 @@ public class CustomAuthenticationSuccessHandler extends AuthenticationSuccessHan
             loginHistory.setIpAddress(ipHere);
             loginHistory.setLoginDate(new Date());
             loginHistory.setHrmUser(new HrmUser(authentication.getName()));
-            this.loginHistoryService.saveAndPushMessage(loginHistory);
+            try {
+                this.loginHistoryService.saveAndPushMessage(loginHistory);
+            } catch (Exception ex) {
+                Logger.getLogger(CustomAuthenticationSuccessHandler.class.getName()).log(Level.SEVERE, null, ex);
+            }
             LOGGER.info(authentication.getName() + " Success Login");
             response.sendRedirect(request.getContextPath() + "/protected/home.htm");
         } catch (NumberFormatException | IOException ex) {

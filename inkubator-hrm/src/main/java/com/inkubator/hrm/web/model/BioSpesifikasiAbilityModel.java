@@ -14,9 +14,19 @@ public class BioSpesifikasiAbilityModel implements Serializable{
     private Long id;
     private Long specId;
     private Long bioDataId;
+    private Long oldId;
     private String score;
     private String optionAbility;
 
+    public Long getOldId() {
+        return oldId;
+    }
+
+    public void setOldId(Long oldId) {
+        this.oldId = oldId;
+    }
+
+    
     public Long getId() {
         return id;
     }

@@ -51,7 +51,7 @@ public class PaySalaryExecuteDetailController extends BaseController {
         super.initialization();
         String paySalaryComponentIdEx = FacesUtil.getRequestParameter("execution");
         try {
-            WtPeriode wtPeriode = wtPeriodeService.getEntityByStatusActive();
+            WtPeriode wtPeriode = wtPeriodeService.getEntityByPayrollTypeActive();
             if (paySalaryComponentIdEx != null) {
                 paySalaryComponentId = Long.valueOf(paySalaryComponentIdEx.substring(1));
                 PaySalaryComponent paySalaryComponent = paySalaryComponentService.getEntiyByPK(paySalaryComponentId);

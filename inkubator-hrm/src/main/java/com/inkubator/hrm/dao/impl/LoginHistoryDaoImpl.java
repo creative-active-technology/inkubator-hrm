@@ -66,10 +66,10 @@ public class LoginHistoryDaoImpl extends IDAOImpl<LoginHistory> implements Login
 
     private void doSearchLoginHistByParam(LoginHistorySearchParameter searchParameter, Criteria criteria) {
         if (searchParameter.getUserId() != null) {
-            criteria.add(Restrictions.like("hrmUser.userId", searchParameter.getUserId(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("hrmUser.userId", searchParameter.getUserId(), MatchMode.START));
         }
         if (searchParameter.getIpAddress() != null) {
-            criteria.add(Restrictions.like("ipAddress", searchParameter.getIpAddress(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("ipAddress", searchParameter.getIpAddress(), MatchMode.START));
         }
         criteria.add(Restrictions.isNotNull("id"));
     }
@@ -78,7 +78,7 @@ public class LoginHistoryDaoImpl extends IDAOImpl<LoginHistory> implements Login
     public List<LoginHistory> getByWeekDif(int value) {
         Date now = new Date();
         Date parameter = DateTimeUtil.getDateFrom(now, -value, CommonUtilConstant.DATE_FORMAT_WEEK);
-        System.out.println(" Tanggal param "+parameter);
+        
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.lt("loginDate", parameter));
         return criteria.list();

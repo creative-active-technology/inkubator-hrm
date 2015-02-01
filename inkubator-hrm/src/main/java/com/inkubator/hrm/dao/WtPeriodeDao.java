@@ -8,7 +8,10 @@ package com.inkubator.hrm.dao;
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.web.search.WtPeriodeSearchParameter;
+
+import java.util.Date;
 import java.util.List;
+
 import org.hibernate.criterion.Order;
 
 /**
@@ -20,9 +23,15 @@ public interface WtPeriodeDao extends IDAO<WtPeriode> {
     public List<WtPeriode> getByParam(WtPeriodeSearchParameter searchParameter, int firstResult, int maxResults, Order order);
 
     public Long getTotalWtPeriodeByParam(WtPeriodeSearchParameter searchParameter);
-    
-    public WtPeriode getEntityByStatusActive();
-    
-    public WtPeriode getEntityAbsenByStatusActive();
-    
+
+    public WtPeriode getEntityByPayrollTypeActive();
+
+    public WtPeriode getEntityByAbsentTypeActive();
+
+    public List<WtPeriode> getAllYears();
+
+    public WtPeriode getEntityByMonthAndYear(String month, String year);
+
+    public WtPeriode getEntityByFromPeriodeAndUntilPeriode(Date fromPeriode, Date untilPeriode);
+
 }

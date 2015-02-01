@@ -41,4 +41,6 @@ public interface LeaveImplementationService extends IService<LeaveImplementation
 	public Long getReportTotalByParam(LeaveImplementationReportSearchParameter parameter, List<String> activityNumbers, Long empDataId ) throws Exception;
 	
         public List<LeaveImplementation> getReportHistoryByParam(LeaveImplementationReportSearchParameter parameter, List<String> activityNumbers, Long empDataId) throws Exception;
+        
+        public List<LeaveImplementation> getAllDataByEmpDataId(Long empDataId) throws Exception;
 }

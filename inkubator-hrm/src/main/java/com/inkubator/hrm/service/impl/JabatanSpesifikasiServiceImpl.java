@@ -6,6 +6,7 @@ package com.inkubator.hrm.service.impl;
 
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.EducationLevelDao;
 import com.inkubator.hrm.dao.FacultyDao;
 import com.inkubator.hrm.dao.JabatanDao;
@@ -29,6 +30,7 @@ import com.inkubator.hrm.entity.JabatanMajorId;
 import com.inkubator.hrm.entity.JabatanProfesi;
 import com.inkubator.hrm.entity.JabatanProfesiId;
 import com.inkubator.hrm.entity.JabatanSpesifikasi;
+import com.inkubator.hrm.entity.JabatanSpesifikasiId;
 import com.inkubator.hrm.entity.Major;
 import com.inkubator.hrm.entity.OccupationType;
 import com.inkubator.hrm.service.JabatanSpesifikasiService;
@@ -49,8 +51,8 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service(value = "jabatanSpesifikasiService")
 @Lazy
-public class JabatanSpesifikasiServiceImpl extends IServiceImpl implements JabatanSpesifikasiService{
-    
+public class JabatanSpesifikasiServiceImpl extends IServiceImpl implements JabatanSpesifikasiService {
+
     @Autowired
     private JabatanSpesifikasiDao jabatanSpesifikasiDao;
     @Autowired
@@ -93,7 +95,12 @@ public class JabatanSpesifikasiServiceImpl extends IServiceImpl implements Jabat
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(JabatanSpesifikasi entity) throws Exception {
-        entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+        //check jika ada duplikat
+        Long totalDuplicate = jabatanSpesifikasiDao.getTotalEntityByBioJabatanSpesifikasiId(new JabatanSpesifikasiId(entity.getJabatan().getId(), entity.getSpecificationAbility().getId()));
+        if (totalDuplicate > 0) {
+            throw new BussinessException("jabatanSpesifikasi.error_duplicate");
+        }
+        entity.setId(new JabatanSpesifikasiId(entity.getJabatan().getId(), entity.getSpecificationAbility().getId()));
         entity.setJabatan(jabatanDao.getEntiyByPK(entity.getJabatan().getId()));
         entity.setSpecificationAbility(specAbilityDao.getEntiyByPK(entity.getSpecificationAbility().getId()));
         entity.setValue(entity.getValue());
@@ -106,7 +113,7 @@ public class JabatanSpesifikasiServiceImpl extends IServiceImpl implements Jabat
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(Long id, List<EducationLevel> educationLevels, List<Major> majorLevel, List<Faculty> faculties, List<OccupationType> occupation) throws Exception {
         //education level
-        for(EducationLevel educationLevel : educationLevels){
+        for (EducationLevel educationLevel : educationLevels) {
             JabatanEdukasi jabatanEdukasi = new JabatanEdukasi();
             jabatanEdukasi.setId(new JabatanEdukasiId(id, educationLevel.getId()));
             jabatanEdukasi.setEducationLevel(educationLevelDao.getEntiyByPK(educationLevel.getId()));
@@ -114,7 +121,7 @@ public class JabatanSpesifikasiServiceImpl extends IServiceImpl implements Jabat
             this.jabatanEdukasiDao.save(jabatanEdukasi);
         }
         //major
-        for(Major major : majorLevel){
+        for (Major major : majorLevel) {
             JabatanMajor jabatanMajor = new JabatanMajor();
             jabatanMajor.setId(new JabatanMajorId(id, major.getId()));
             jabatanMajor.setMajor(majorDao.getEntiyByPK(major.getId()));
@@ -122,16 +129,16 @@ public class JabatanSpesifikasiServiceImpl extends IServiceImpl implements Jabat
             this.jabatanMajorDao.save(jabatanMajor);
         }
         //faculty
-        for(Faculty faculty : faculties){
+        for (Faculty faculty : faculties) {
             JabatanFakulty jabatanFakulty = new JabatanFakulty();
             jabatanFakulty.setId(new JabatanFakultyId(id, faculty.getId()));
             jabatanFakulty.setFaculty(facultyDao.getEntiyByPK(faculty.getId()));
             jabatanFakulty.setJabatan(jabatanDao.getEntiyByPK(id));
             this.jabatanFacultyDao.save(jabatanFakulty);
         }
-        
+
         //occupation
-        for(OccupationType occupationType : occupation){
+        for (OccupationType occupationType : occupation) {
             JabatanProfesi jabatanOccupation = new JabatanProfesi();
             jabatanOccupation.setId(new JabatanProfesiId(id, occupationType.getId()));
             jabatanOccupation.setOccupationType(occupationTypeDao.getEntiyByPK(occupationType.getId()));
@@ -139,25 +146,47 @@ public class JabatanSpesifikasiServiceImpl extends IServiceImpl implements Jabat
             this.jabatanOccupationDao.save(jabatanOccupation);
         }
     }
-    
+
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(Long id, List<EducationLevel> educationLevels, List<Major> majorLevel, List<Faculty> faculty, List<OccupationType> occupation) throws Exception {
         jabatanEdukasiDao.deleteAllDataByJabatanId(id);
         this.save(id, educationLevels, majorLevel, faculty, occupation);
     }
-    
+
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(JabatanSpesifikasi entity) throws Exception {
-        JabatanSpesifikasi jobSpek=this.jabatanSpesifikasiDao.getEntiyByPK(entity.getId());
-        jobSpek.setJabatan(jabatanDao.getEntiyByPK(entity.getJabatan().getId()));
-        jobSpek.setSpecificationAbility(specAbilityDao.getEntiyByPK(entity.getSpecificationAbility().getId()));
-        jobSpek.setValue(entity.getValue());
-        jobSpek.setUpdatedBy(UserInfoUtil.getUserName());
-        jobSpek.setUpdatedOn(new Date());
-        jobSpek.setOptionAbility(entity.getOptionAbility());
-        this.jabatanSpesifikasiDao.update(jobSpek);
+        JabatanSpesifikasi jobSpek = this.jabatanSpesifikasiDao.getEntityByBioJabatanSpesifikasiId(new JabatanSpesifikasiId(entity.getJabatan().getId(), entity.getSpecificationAbility().getId()));
+        this.jabatanSpesifikasiDao.delete(jobSpek);
+        entity.setId(new JabatanSpesifikasiId(entity.getJabatan().getId(), entity.getSpecificationAbility().getId()));
+        entity.setJabatan(jabatanDao.getEntiyByPK(entity.getJabatan().getId()));
+        entity.setSpecificationAbility(specAbilityDao.getEntiyByPK(entity.getSpecificationAbility().getId()));
+        entity.setValue(entity.getValue());
+        entity.setUpdatedBy(UserInfoUtil.getUserName());
+        entity.setUpdatedOn(new Date());
+        entity.setOptionAbility(entity.getOptionAbility());
+        this.jabatanSpesifikasiDao.save(entity);
+    }
+
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void update(JabatanSpesifikasi entity, Long oldId) throws Exception {
+        //check jika ada duplikat
+        Long totalDuplicate = jabatanSpesifikasiDao.getTotalEntityByBioJabatanSpesifikasiId(new JabatanSpesifikasiId(entity.getJabatan().getId(), entity.getSpecificationAbility().getId()));
+        if(totalDuplicate > 0){
+            throw new BussinessException("jabatanSpesifikasi.error_duplicate");
+        }
+        JabatanSpesifikasi jobSpek = this.jabatanSpesifikasiDao.getEntityByBioJabatanSpesifikasiId(new JabatanSpesifikasiId(entity.getJabatan().getId(), oldId));
+        this.jabatanSpesifikasiDao.delete(jobSpek);
+        entity.setId(new JabatanSpesifikasiId(entity.getJabatan().getId(), entity.getSpecificationAbility().getId()));
+        entity.setJabatan(jabatanDao.getEntiyByPK(entity.getJabatan().getId()));
+        entity.setSpecificationAbility(specAbilityDao.getEntiyByPK(entity.getSpecificationAbility().getId()));
+        entity.setValue(entity.getValue());
+        entity.setUpdatedBy(UserInfoUtil.getUserName());
+        entity.setUpdatedOn(new Date());
+        entity.setOptionAbility(entity.getOptionAbility());
+        this.jabatanSpesifikasiDao.save(entity);
     }
 
     @Override
@@ -226,7 +255,7 @@ public class JabatanSpesifikasiServiceImpl extends IServiceImpl implements Jabat
     }
 
     @Override
-    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor =Exception.class)
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void delete(JabatanSpesifikasi entity) throws Exception {
         this.jabatanSpesifikasiDao.delete(entity);
     }
@@ -308,9 +337,10 @@ public class JabatanSpesifikasiServiceImpl extends IServiceImpl implements Jabat
         return jabatanSpesifikasiDao.getAllDataByJabatanId(jabatanId);
     }
 
-    
-
-    
-
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public JabatanSpesifikasi getEntityByBioJabatanSpesifikasiId(JabatanSpesifikasiId id) throws Exception {
+        return jabatanSpesifikasiDao.getEntityByBioJabatanSpesifikasiId(id);
+    }
 
 }

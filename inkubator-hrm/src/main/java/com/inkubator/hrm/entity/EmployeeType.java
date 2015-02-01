@@ -1,7 +1,9 @@
 package com.inkubator.hrm.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.Column;
@@ -12,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 
@@ -30,7 +33,8 @@ public class EmployeeType implements java.io.Serializable {
     private Set<ReimbursmentSchemaEmployeeType> reimbursmentSchemaEmployeeTypes = new HashSet<ReimbursmentSchemaEmployeeType>(0);
     private Set<EmpData> empDatas = new HashSet<EmpData>(0);
     private Set<PaySalaryEmpType> paySalaryEmpTypes = new HashSet<PaySalaryEmpType>(0);
-
+    private List<EmployeeType> listEmployeeTypes = new ArrayList<>(0);
+    
     public EmployeeType() {
     }
 
@@ -146,7 +150,14 @@ public class EmployeeType implements java.io.Serializable {
         this.paySalaryEmpTypes = paySalaryEmpTypes;
     }
 
-    
+    @Transient
+    public List<EmployeeType> getListEmployeeTypes() {
+        return listEmployeeTypes;
+    }
+
+    public void setListEmployeeTypes(List<EmployeeType> listEmployeeTypes) {
+        this.listEmployeeTypes = listEmployeeTypes;
+    }
     
     @Override
     public int hashCode() {

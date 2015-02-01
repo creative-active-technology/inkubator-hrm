@@ -12,9 +12,11 @@
     <h:body>
         <ui:composition template="/templates/master_layout_full.xhtml">
             <ui:define name="windowTitle">
+                <!--<h:outputStylesheet library="css" name="progress_bar.css" />-->
                 Home
             </ui:define>
             <ui:define name="center">
+                 <h:outputStylesheet library="css" name="progress_bar.css" />
                 <div id="box_bg" style="margin: 10px">
                     <h:form id="formId">
                         <h:panelGrid style="margin-bottom: 5px" columns="2">
@@ -32,7 +34,7 @@
                             <p:toolbarGroup align="left">
                                 <h:panelGrid columns="3" >
                                     <p:commandButton value="#{appmsg['salaryCalculation.calculation']}" styleClass="label_button" icon="ui-icon-document" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
-                                                     onclick="statusDialog.show()"  oncomplete="detail.show()" update=":detailPanel" action="#{paySalaryExecuteController.doPrefareCalculation()}"
+                                                     onclick="statusDialog.show()"  oncomplete="if (!args.validationFailed) {detail.show();} else {statusDialog.hide();}" update=":detailPanel,growlId" action="#{paySalaryExecuteController.doInitCalculatePayroll()}"
                                                      >                        
                                     </p:commandButton>
                                 </h:panelGrid>
@@ -42,10 +44,10 @@
                                     <p:commandButton value="Export to XLS" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
                                         <pe:exporter target="tableIdForExport" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Salary_Calculation"/>
                                     </p:commandButton>
-                                    <p:commandButton value="Pajak" actionListener="#{savingTypeViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
-                                        <p:ajax event="dialogReturn" listener="#{savingTypeViewController.onDialogReturn}"  update="tableId, growlId"/>
+                                    <p:commandButton value="#{appmsg['salaryCalculation.tax']}" action="#{paySalaryExecuteController.doTax()}" title="#{appmsg['salaryCalculation.tax']}" label="#{appmsg['salaryCalculation.tax']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
+                                        <!--<p:ajax event="dialogReturn" listener="#{savingTypeViewController.onDialogReturn}"  update="tableId, growlId"/>-->
                                     </p:commandButton>
-                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{savingTypeViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{paySalaryExecuteController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
 
                                 </h:panelGrid>
                             </p:toolbarGroup>
@@ -107,29 +109,29 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="code" style="width: 23%">
+                            <p:column sortBy="code" style="width: 10%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['salaryCalculation.code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.code}" />
                             </p:column>
-                            <p:column sortBy="name" style="width: 23%">
+                            <p:column sortBy="name" style="width: 30%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['salaryCalculation.name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.name}" />
                             </p:column>
-                            <p:column sortBy="jumlahKaryawan" style="width: 23%">
+                            <p:column sortBy="jumlahKaryawan" style="width: 25%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['salaryCalculation.jumlah_karyawan']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.jumlahKaryawan}" />
                             </p:column>
-                            <p:column sortBy="jumlahKaryawan" style="width: 23%">
+                            <p:column sortBy="jumlahKaryawan" style="width: 25%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['salaryCalculation.jumlah_nominal']}"/>
                                 </f:facet>
-                                <div style="text-align: right">
+                                <div style="text-align: left">
                                     <h:outputText value="Rp. "/>
                                     <h:outputLabel value= "#{data.nominal}" >
                                         <f:convertNumber pattern="###,###" type="currency"/>
@@ -213,58 +215,26 @@
                     <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
                 </p:dialog>
                 <p:dialog widgetVar="detail" header="#{appmsg['salaryCalculation.calculation']}" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)" dynamic="true" closable="false">
+                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)" dynamic="false" closable="false" focus="detailPanel">
 
                     <div align="center">
                         <h:form id="detailPanel">
-
                             <p:messages/>
                             <h:panelGrid columns="4"  style="margin-bottom: 10px">
                                 <p:outputLabel value="Tanggal Payroll"  styleClass="label_hrm"/>
                                 <p:outputLabel value=":"  styleClass="label_hrm"/>
                                 <p:calendar  id="tanggalKalkulasiId" pattern="dd MMMM yyyy" label="Tanggal Kalkulasi" value="#{paySalaryExecuteController.payrollCalculationDate}"
-                                             required="true" navigator="true" mindate="#{paySalaryExecuteController.wtPeriodeAbsen.fromPeriode}" maxdate="#{paySalaryExecuteController.wtPeriodeAbsen.untilPeriode}">
+                                             required="true" navigator="true">
                                 </p:calendar>
-                                <!--                        <p:outputLabel/>
-                                                        <p:outputLabel/>-->
-                                <p:commandButton value="Calculate"  onclick="PF('pbAjax').start();" widgetVar="startButton2" action="#{paySalaryExecuteController.doCalculatePayroll()}"  id="startID" icon="ui-icon-refresh" update="detailPanel"/>
+                                <p:commandButton value="Calculate"  onclick="PF('pbAjax').start();PF('closeWidget').disable();" widgetVar="startButton" action="#{paySalaryExecuteController.doCalculatePayroll()}"  id="startID" icon="ui-icon-refresh" update="detailPanel"/>
                             </h:panelGrid>
 
                             <p:progressBar widgetVar="pbAjax" ajax="true" value="#{paySalaryExecuteController.progress}" labelTemplate="{value}%" styleClass="animated" global="false" style="margin-bottom: 20px">
-                                <p:ajax event="complete" listener="#{paySalaryExecuteController.onComplete}" update=":formId:growlId" oncomplete="detail.hide()" />
+                                <p:ajax event="complete" listener="#{paySalaryExecuteController.onCompleteCalculatePayroll}" update=":formId:growlId,:formId:tableId" oncomplete="if (!args.validationFailed) {detail.hide();}"/>
                             </p:progressBar>
-                            <p:focus for="startID"/>
-                            <p:defaultCommand target="startID" />
+                            <p:commandButton value="#{appmsg['global.close']}" id="closeId" widgetVar="closeWidget" onclick="detail.hide();" immediate="true"/>                            
                         </h:form>
                     </div>
-                    <!--                    <p:panelGrid id="detailPanel" style="width:100%;margin:5px;" styleClass="grid_no_border">
-                                            <p:row>
-                                                <p:column><p:outputLabel value="Tanggal Payroll" /></p:column>
-                                                <p:column style="text-align: center">
-                                                    <p:calendar  id="tanggalKalkulasiId" pattern="dd MMMM yyyy" label="Tanggal Kalkulasi" value="#{empPersonAchievementFormController.model.dateAchievement}"
-                                                                 required="true" navigator="true">
-                                                    </p:calendar>
-                                                </p:column>
-                                            </p:row>
-                                            <p:row>
-                                                <p:column style="text-align: center" colspan="2">
-                                                    <p:progressBar widgetVar="pbAjax" ajax="true" value="#{paySalaryExecuteController.progress}" labelTemplate="{value}%" styleClass="animated" global="false">
-                                                        <p:ajax event="complete" listener="#{paySalaryExecuteController.onComplete}" />
-                                                    </p:progressBar>
-                                                </p:column>
-                                            </p:row>
-                                            <p:row>
-                                                <p:column style="text-align: center;">
-                                                    <p:commandButton value="Start"  onclick="PF('pbAjax').start();" widgetVar="startButton2" action="#{paySalaryExecuteController.startProgress()}" />
-                                                </p:column>
-                                            </p:row>
-                    
-                                            <f:facet name="footer">
-                                                <p:row>
-                                                    <p:column colspan="2"><p:outputLabel value="#{appmsg['savingType.savingType_header']}" styleClass="label_hrm" style="margin-left: 5px " /></p:column>
-                                                </p:row>
-                                            </f:facet>
-                                        </p:panelGrid>-->
                 </p:dialog>
 
             </ui:define>

@@ -67,23 +67,24 @@ public class TravelComponentCostRateDaoImpl extends IDAOImpl<TravelComponentCost
     
     private void doSearchTravelComponentCostRateByParam(TravelComponentCostRateSearchParameter searchParameter, Criteria criteria) {
         if (searchParameter.getCode()!= null) {
-        	criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.ANYWHERE));
+        	criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.START));
         } 
         if (StringUtils.isNotEmpty(searchParameter.getCostCenter())) {
             criteria.createAlias("costCenter", "cc", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("cc.name", searchParameter.getCostCenter(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("cc.name", searchParameter.getCostCenter(), MatchMode.START));
         }
         if (StringUtils.isNotEmpty(searchParameter.getGolonganJabatan())) {
             criteria.createAlias("golonganJabatan", "gj", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("gj.code", searchParameter.getGolonganJabatan(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("gj.code", searchParameter.getGolonganJabatan(), MatchMode.START));
         }
         if (StringUtils.isNotEmpty(searchParameter.getTravelComponent())) {
             criteria.createAlias("travelComponent", "tc", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("tc.name", searchParameter.getTravelComponent(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("tc.name", searchParameter.getTravelComponent(), MatchMode.START));
         }
         if (StringUtils.isNotEmpty(searchParameter.getTravelZone())) {
+           
             criteria.createAlias("travelZone", "tz", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("tc.name", searchParameter.getTravelZone(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("tz.name", searchParameter.getTravelZone(), MatchMode.START));
         }
         criteria.add(Restrictions.isNotNull("id"));
     }

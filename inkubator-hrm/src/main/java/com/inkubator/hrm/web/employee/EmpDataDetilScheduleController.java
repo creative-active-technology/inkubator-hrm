@@ -55,7 +55,7 @@ public class EmpDataDetilScheduleController extends BaseController {
             super.initialization();
             String empId = FacesUtil.getRequestParameter("execution");
             selectedEmpData = empDataService.getByEmpIdWithDetail(Long.parseLong(empId.substring(1)));
-            dataToShow=tempJadwalKaryawanService.getAllByEmpIdWithDetail(selectedEmpData.getId());
+            dataToShow=tempJadwalKaryawanService.getAllByEmpIdWithDetailWithFromAndUntilPeriod(selectedEmpData.getId());
 //            jabatanDeskripsis = new ArrayList<>(selectedEmpData.getJabatanByJabatanId().getJabatanDeskripsis());
 //            listJabatanSpesifikasi = new ArrayList<>(selectedEmpData.getJabatanByJabatanId().getJabatanSpesifikasis());
 //            listCareerHistory = empCareerHistoryService.getEmployeeCareerByBioId(selectedEmpData.getBioData().getId());
@@ -89,15 +89,15 @@ public class EmpDataDetilScheduleController extends BaseController {
     }
 
     public String doEdit() {
-        return "/protected/employee/employee_palcement_form.htm?faces-redirect=true&execution=e" + selectedEmpData.getId();
+        return "/protected/employee/emp_placement_form.htm?faces-redirect=true&execution=e" + selectedEmpData.getId();
     }
 
     public String doBack() {
-        return "/protected/employee/employee_palcement_view.htm?faces-redirect=true";
+        return "/protected/employee/emp_placement_view.htm?faces-redirect=true";
     }
 
      public String doBackSchedule() {
-        return "/protected/employee/employee_schedule_view.htm?faces-redirect=true";
+        return "/protected/employee/emp_schedule_view.htm?faces-redirect=true";
     }
 //    public List<JabatanSpesifikasi> getListJabatanSpesifikasi() {
 //        return listJabatanSpesifikasi;

@@ -28,5 +28,7 @@ public interface ReimbursmentSchemaDao extends IDAO<ReimbursmentSchema> {
 
     public void saveAndMerge(ReimbursmentSchema reimbursmentSchema);
 
-    public List<ReimbursmentSchema> isPayrollComponent();
+    public List<ReimbursmentSchema> isPayrollComponent(Long id);
+    
+    public String getReimbursmentSchemaNameByPk(Long id) throws Exception;
 }

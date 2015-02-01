@@ -52,11 +52,11 @@ public class WtOverTimeDaoImpl extends IDAOImpl<WtOverTime> implements WtOverTim
 
     private void doSearchWtOverTimeByParam(WtOverTimeSearchParameter searchParameter, Criteria criteria) {
         if (searchParameter.getOverTimecode() != null && !searchParameter.getOverTimecode().isEmpty()) {
-            criteria.add(Restrictions.like("code", searchParameter.getOverTimecode(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("code", searchParameter.getOverTimecode(), MatchMode.START));
         }
 
         if (searchParameter.getOverTimeName() != null && !searchParameter.getOverTimeName().isEmpty()) {
-            criteria.add(Restrictions.like("name", searchParameter.getOverTimeName(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("name", searchParameter.getOverTimeName(), MatchMode.START));
         }
 
         if (searchParameter.getMinTime() != null && searchParameter.getMinTime() != 0) {

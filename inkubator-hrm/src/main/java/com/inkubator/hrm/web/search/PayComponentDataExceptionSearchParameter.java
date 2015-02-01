@@ -16,6 +16,8 @@ public class PayComponentDataExceptionSearchParameter extends SearchParameter{
     private String empData;
     private String paySalaryComponent;
     private String nominal;
+    private String name;
+    private String code;
 
     public String getEmpData() {
         if (StringUtils.equalsIgnoreCase(getKeyParam(), "empData")) {
@@ -54,6 +56,32 @@ public class PayComponentDataExceptionSearchParameter extends SearchParameter{
 
     public void setNominal(String nominal) {
         this.nominal = nominal;
+    }
+
+    public String getName() {
+        if (StringUtils.equalsIgnoreCase(getKeyParam(), "name")) {
+            name = getParameter();
+        } else {
+            name = null;
+        }
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCode() {
+        if (StringUtils.equalsIgnoreCase(getKeyParam(), "code")) {
+            code = getParameter();
+        } else {
+            code = null;
+        }
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
     
     

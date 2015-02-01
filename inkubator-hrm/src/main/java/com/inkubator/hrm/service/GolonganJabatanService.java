@@ -25,5 +25,5 @@ public interface GolonganJabatanService extends IService<GolonganJabatan> {
 
     public List<GolonganJabatan> getAllWithDetail() throws Exception;
     
-   
+    public GolonganJabatan getEntityByUnregSalaryIdWithDetail(Long unregSalaryId) throws Exception;   
 }

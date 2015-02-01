@@ -22,6 +22,7 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.EducationNonFormal;
 import com.inkubator.hrm.service.EducationNonFormalService;
 import com.inkubator.hrm.web.lazymodel.EducationNonFormalLazyDataModel;
+import com.inkubator.hrm.web.search.EducationNonFormalSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
@@ -34,7 +35,7 @@ import com.inkubator.webcore.util.MessagesResourceUtil;
 @ViewScoped
 public class EducationNonFormalViewController extends BaseController {
 
-    private String parameter;
+    private EducationNonFormalSearchParameter parameter;
     private LazyDataModel<EducationNonFormal> lazyDataModel;
     private EducationNonFormal selectedEducationNonFormal;
     @ManagedProperty(value = "#{educationNonFormalService}")
@@ -44,6 +45,7 @@ public class EducationNonFormalViewController extends BaseController {
     @Override
     public void initialization() {
         super.initialization();
+        parameter = new EducationNonFormalSearchParameter();
     }
 
     @PreDestroy
@@ -78,14 +80,6 @@ public class EducationNonFormalViewController extends BaseController {
 			EducationNonFormalService educationNonFormalService) {
 		this.educationNonFormalService = educationNonFormalService;
 	}
-
-	public String getParameter() {
-        return parameter;
-    }
-
-    public void setParameter(String parameter) {
-        this.parameter = parameter;
-    }
 
     public void doSearch() {
         lazyDataModel = null;
@@ -131,7 +125,7 @@ public class EducationNonFormalViewController extends BaseController {
         options.put("resizable", false);
         options.put("contentWidth", 550);
         options.put("contentHeight", 580);
-        RequestContext.getCurrentInstance().openDialog("education_non_formal_form", options, params);
+        RequestContext.getCurrentInstance().openDialog("edu_non_formal_form", options, params);
     }
 
     @Override
@@ -139,5 +133,13 @@ public class EducationNonFormalViewController extends BaseController {
         //re-calculate searching
         doSearch();
         super.onDialogReturn(event);
+    }
+
+    public EducationNonFormalSearchParameter getParameter() {
+        return parameter;
+    }
+
+    public void setParameter(EducationNonFormalSearchParameter parameter) {
+        this.parameter = parameter;
     }
 }

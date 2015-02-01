@@ -8,14 +8,18 @@ import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.LoanSchemaDao;
 import com.inkubator.hrm.entity.LoanSchema;
+import com.inkubator.hrm.entity.PaySalaryComponent;
 import com.inkubator.hrm.web.search.LoanSchemaSearchParameter;
 import java.math.BigDecimal;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
@@ -82,10 +86,10 @@ public class LoanSchemaDaoImpl extends IDAOImpl<LoanSchema> implements LoanSchem
             resMaxNominal = searchParameter.getMaxNominal().compareTo(bg);
         }
         if (searchParameter.getName() != null) {
-            criteria.add(Restrictions.like("name", searchParameter.getName(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("name", searchParameter.getName(), MatchMode.START));
         }
         if (searchParameter.getCode() != null) {
-            criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.START));
         }
         if (searchParameter.getMaxNominal() != null && resMaxNominal != 0) {
             criteria.add(Restrictions.eq("maxNominal", searchParameter.getMaxNominal()));
@@ -103,9 +107,23 @@ public class LoanSchemaDaoImpl extends IDAOImpl<LoanSchema> implements LoanSchem
     }
 
     @Override
-    public List<LoanSchema> getEntityIsPayRollComponent() {
+    public List<LoanSchema> getEntityIsPayRollComponent(Long id) {
+        ProjectionList proList = Projections.projectionList();
+        proList.add(Projections.groupProperty("modelReffernsil"));
+        DetachedCriteria subQuery = DetachedCriteria.forClass(PaySalaryComponent.class);
+        subQuery.createAlias("modelComponent", "mc").add(Restrictions.eq("mc.id", id));
+        subQuery.setProjection(proList);
+        
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("payrollComponent", HRMConstant.PAYROLL_COMPONENT_YES));
+        criteria.add(Property.forName("id").notIn(subQuery));
         return criteria.list();
+    }
+
+    @Override
+    public String getLoanSchemaNameByPk(Long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("id", id));
+        return (String) criteria.setProjection(Projections.property("name")).uniqueResult();
     }
 }

@@ -26,6 +26,8 @@ public interface JabatanService extends IService<Jabatan> {
     public List<Jabatan> getJabatanByParentCode(String parentCode) throws Exception;
 
     public Jabatan getJabatanByIdWithDetail(Long id) throws Exception;
+    
+    public Jabatan getJabatanByIdForSpecDetail(Long id) throws Exception;
 
     public List<Jabatan> getJabatansByLevel(Integer level) throws Exception;
 
@@ -41,6 +43,6 @@ public interface JabatanService extends IService<Jabatan> {
     
     public List<Jabatan>getByName(String name)throws Exception;
 
-	public List<Jabatan> getAllDataByCodeOrName(String param);
+	public List<Jabatan> getAllDataByCodeOrName(String param) throws Exception;
 
 }

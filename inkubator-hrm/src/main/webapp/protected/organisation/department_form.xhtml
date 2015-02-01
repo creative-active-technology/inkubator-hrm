@@ -85,6 +85,30 @@
                                 <p:message for="costCenterId"/>
                             </p:column>
                         </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="descriptionId" value="#{appmsg['global.description']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="descriptionId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                                <p:inputTextarea id="descriptionId" title="#{appmsg['global.description']}" value="#{departmentFormController.departmentModel.description}" 
+                                                 required="false" counter="counter" maxlength="500" styleClass="isitext_hrm" style="width:210px;" />
+
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 180%;" >
+                                <p:outputLabel  for="descriptionId" styleClass="label_hrm" />
+                            </p:column>
+                            <p:column style="width: 180%;" >
+                                <p:outputLabel  for="descriptionId" styleClass="label_hrm" />
+                            </p:column>
+                            <p:column style="width: 80%">
+                                <h:outputText id="counter" />
+                            </p:column>
+                        </p:row>
                     </p:panelGrid>
                     <p:focus context="formDepartmentId" />
                     <p:separator style="margin-top: 20px;margin-bottom: 10px"/>

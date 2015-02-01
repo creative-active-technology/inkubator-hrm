@@ -7,6 +7,8 @@ package com.inkubator.hrm.dao;
 
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.PaySalaryComponent;
+import com.inkubator.hrm.web.model.PayComponentDataExceptionModelView;
+import com.inkubator.hrm.web.search.PayComponentDataExceptionSearchParameter;
 import com.inkubator.hrm.web.search.PaySalaryComponentSearchParameter;
 
 import java.util.Date;
@@ -35,4 +37,16 @@ public interface PaySalaryComponentDao extends IDAO<PaySalaryComponent> {
     public PaySalaryComponent getByEployeeTypeIdComponentIdAndJoinDate(Long typeId, Long componentId, Date joinDate);
 
     public List<PaySalaryComponent> getAllDataByEmpTypeIdAndActiveFromTmAndIdNotIn(Long empTypeId, int fromTbm, List<Long> componentIds);
+
+    public Long getTotalByModelComponentAndModelReferensi(Long modelComponentId, Integer modelReferensi);
+
+    public Long getTotalByModelComponentAndModelReferensiAndNotId(Long modelComponentId, Integer modelReferensi, Long id);
+
+    public PaySalaryComponent getEntityBySpecificModelComponent(Integer specific);
+
+    public List<PayComponentDataExceptionModelView> getByParamWithDetailForDataException(PayComponentDataExceptionSearchParameter searchParameter, int firstResult, int maxResults, Order order);
+
+    public Long getTotalByParamDataException(PayComponentDataExceptionSearchParameter searchParameter);
+    
+    public List<Integer> getAllModelReferensiId();
 }

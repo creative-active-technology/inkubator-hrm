@@ -84,16 +84,16 @@ public class NeracaCutiDaoImpl extends IDAOImpl<NeracaCuti> implements NeracaCut
         if (searchParameter.getEmpData()!= null) {
 
             Disjunction disjunction = Restrictions.disjunction();
-            disjunction.add(Restrictions.like("bio.firstName", searchParameter.getEmpData(), MatchMode.ANYWHERE));
-            disjunction.add(Restrictions.like("bio.lastName", searchParameter.getEmpData(), MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.like("bio.firstName", searchParameter.getEmpData(), MatchMode.START));
+            disjunction.add(Restrictions.like("bio.lastName", searchParameter.getEmpData(), MatchMode.START));
             criteria.add(disjunction);
         }
         if (StringUtils.isNotEmpty(searchParameter.getLeave())) {
             
-            criteria.add(Restrictions.like("l.name", searchParameter.getLeave(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("l.name", searchParameter.getLeave(), MatchMode.START));
         }
         if (searchParameter.getNik()!= null) {
-            criteria.add(Restrictions.like("ed.nik", searchParameter.getNik(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("ed.nik", searchParameter.getNik(), MatchMode.START));
         }
         criteria.add(Restrictions.isNotNull("id"));
     }

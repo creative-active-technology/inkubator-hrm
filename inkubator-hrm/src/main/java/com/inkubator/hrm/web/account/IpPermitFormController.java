@@ -65,7 +65,7 @@ public class IpPermitFormController extends BaseController {
     }
 
     public void doSave() {
-        System.out.println("masuk dosave");
+       
         IpPermit ipPermit = getEntityFromViewModel(model);
         try {
             if (isUpdate) {

@@ -283,7 +283,7 @@ public class PangkatServiceImpl extends IServiceImpl implements PangkatService {
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public Map<Long, String> getAllDataMaps() {
+	public Map<Long, String> getAllDataMaps() throws Exception{
 		List<Pangkat> pangkats = pangkatDao.getAllData();
 		Map<Long, String> maps = new LinkedHashMap<Long, String>();
 		for(Pangkat pangkat: pangkats){

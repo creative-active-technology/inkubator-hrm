@@ -18,6 +18,7 @@ import com.inkubator.hrm.entity.LoanPaymentDetail;
 import com.inkubator.hrm.service.LoanPaymentDetailService;
 import com.inkubator.hrm.web.model.LoanPaymentDetailModel;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  *
@@ -32,7 +33,7 @@ public class LoanPaymentDetailServiceImpl extends IServiceImpl implements
     private LoanPaymentDetailDao loanPaymentDetailDao;
     @Autowired
     private LoanDao loanDao;
-    
+
     @Override
     public LoanPaymentDetail getEntiyByPK(String id) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
@@ -245,7 +246,7 @@ public class LoanPaymentDetailServiceImpl extends IServiceImpl implements
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<LoanPaymentDetail> getAllDataByLoanId(Long loanId) {
+    public List<LoanPaymentDetail> getAllDataByLoanId(Long loanId) throws Exception {
         return loanPaymentDetailDao.getAllDataByLoanId(loanId);
     }
 
@@ -256,9 +257,9 @@ public class LoanPaymentDetailServiceImpl extends IServiceImpl implements
         List<LoanPaymentDetail> loanPaymentDetailLazy = new ArrayList<>();
         Long bayarKe;
         for (LoanPaymentDetail loanPaymentDetail : loanPaymentDetails) {
-            Long sisaBayar = loanPaymentDetailDao.getTotalUnPaidLoanByLoanId(loanPaymentDetail.getLoan().getId(), loanPaymentDetailModel);
+            Long sisaBayar = loanPaymentDetailDao.getTotalUnPaidLoanByLoanId(loanPaymentDetail.getLoan().getId(), loanPaymentDetailModel.getEndDataPeriod());
             bayarKe = loanPaymentDetail.getLoan().getTermin() - sisaBayar;
-            bayarKe = bayarKe + 1;
+//            bayarKe = bayarKe + 1;
             loanPaymentDetail.setBayarKe(bayarKe);
             loanPaymentDetailLazy.add(loanPaymentDetail);
         }
@@ -273,12 +274,40 @@ public class LoanPaymentDetailServiceImpl extends IServiceImpl implements
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getTotalResourceTypeByParam(String parameter, LoanPaymentDetailModel loanPaymentDetailModel) throws Exception {
+    public Long getTotalByParam(String parameter, LoanPaymentDetailModel loanPaymentDetailModel) throws Exception {
         List<Loan> listLoan = loanDao.getAllData();
         for (Loan listLoans : listLoan) {
 //            Long 
         }
-        return loanPaymentDetailDao.getTotalResourceTypeByParam(parameter, loanPaymentDetailModel);
+        return loanPaymentDetailDao.getTotalByParam(parameter, loanPaymentDetailModel);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Double getInstallmentByLoanId(Long loanId) throws Exception {
+        return loanPaymentDetailDao.getInstallmentByLoanId(loanId);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public LoanPaymentDetail getEntityByPkAndEndWtPeriodActiveWithDetail(Long id, Date endDatePeriod) throws Exception {
+        LoanPaymentDetail loanPaymentDetail = loanPaymentDetailDao.getEntityByPkWithDetail(id);
+        Long sisaBayar = loanPaymentDetailDao.getTotalUnPaidLoanByLoanId(loanPaymentDetail.getLoan().getId(), endDatePeriod);
+        Long bayarKe = loanPaymentDetail.getLoan().getTermin() - sisaBayar;
+        loanPaymentDetail.setBayarKe(bayarKe);
+        return loanPaymentDetail;
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<LoanPaymentDetail> getAllDataPaymentWithEmpIdAndLoanId(Long empDataId, Long loanId, Date endDatePeriod, int firstResult, int maxResults, Order order) throws Exception {
+        return loanPaymentDetailDao.getAllDataPaymentWithEmpIdAndLoanId(empDataId, loanId, endDatePeriod, firstResult, maxResults, order);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public Long getTotalDataPaymentWithEmpIdAndLoanId(Long empDataId, Long loanId, Date endDatePeriod) throws Exception {
+        return loanPaymentDetailDao.getTotalDataPaymentWithEmpIdAndLoanId(empDataId, loanId, endDatePeriod);
     }
 
 }

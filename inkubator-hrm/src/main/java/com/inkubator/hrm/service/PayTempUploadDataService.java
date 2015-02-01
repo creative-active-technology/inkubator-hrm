@@ -20,17 +20,17 @@ import com.inkubator.hrm.web.search.PayTempUploadDataSearchParameter;
  */
 public interface PayTempUploadDataService extends IService<PayTempUploadData> {
 	
-	public List<PayTempUploadData> getAllDataByParam(PayTempUploadDataSearchParameter parameter, int firstResult, int maxResults, Order orderable);
+	public List<PayTempUploadData> getAllDataByParam(PayTempUploadDataSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception;
 	
-	public Long getTotalByParam(PayTempUploadDataSearchParameter parameter);
+	public Long getTotalByParam(PayTempUploadDataSearchParameter parameter) throws Exception;
 	
-	public PayTempUploadData getEntityByPkWithDetail(Long id);
+	public PayTempUploadData getEntityByPkWithDetail(Long id) throws Exception;
 
-	public Long getTotalByPaySalaryComponentId(Long paySalaryComponentId);
+	public Long getTotalByPaySalaryComponentId(Long paySalaryComponentId) throws Exception;
 
-	public Double getTotalSalaryByPaySalaryComponentId(Long paySalaryComponentId);
+	public Double getTotalSalaryByPaySalaryComponentId(Long paySalaryComponentId) throws Exception;
 	
-	public void executeBatchFileUpload(PaySalaryUploadFileModel report);
+	public void executeBatchFileUpload(PaySalaryUploadFileModel report) throws Exception;
 
 	public String updateFileAndDeleteData(long id, UploadedFile file) throws Exception;
 }

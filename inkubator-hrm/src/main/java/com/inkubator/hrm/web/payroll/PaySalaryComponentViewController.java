@@ -58,7 +58,7 @@ public class PaySalaryComponentViewController extends BaseController{
     
     public void doSelectEntityWithDetail() {
         try {
-            selected = this.service.getEntityByPkWithDetail(selected.getId());
+            selected = this.service.getEntiyByPK(selected.getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -88,19 +88,19 @@ public class PaySalaryComponentViewController extends BaseController{
     }
 
     public String doAdd() {
-        return "/protected/payroll/pay_salary_component_form.htm?faces-redirect=true";
+        return "/protected/payroll/pay_salary_comp_form.htm?faces-redirect=true";
     }
     
     public String doEdit() {
-        return "/protected/payroll/pay_salary_component_form.htm?faces-redirect=true&execution=e" + selected.getId();
+        return "/protected/payroll/pay_salary_comp_form.htm?faces-redirect=true&execution=e" + selected.getId();
     }
     
     public String doDetail() {
-        return "/protected/payroll/pay_salary_component_detail.htm?faces-redirect=true&execution=e" + selected.getId();
+        return "/protected/payroll/pay_salary_comp_detail.htm?faces-redirect=true&execution=e" + selected.getId();
     }
     
     public String doDetailForDataException() {
-        return "/protected/payroll/pay_component_exception_detail.htm?faces-redirect=true&execution=e" + selected.getId();
+        return "/protected/payroll/pay_comp_ex_detail.htm?faces-redirect=true&execution=e" + selected.getId();
     }
     
     public PaySalaryComponentService getService() {

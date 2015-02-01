@@ -35,9 +35,9 @@
                                     <p:outputLabel value=":" />
                                     <p:selectOneMenu value="#{approvalActivityViewController.searchParameter.keyParam}" style="width: 150px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemLabel="Request Name" itemValue="name"/>
-                                        <f:selectItem itemLabel="Request By" itemValue="requestBy"/>
-                                        <f:selectItem itemLabel="Approved By" itemValue="approvedBy"/>
+                                        <f:selectItem itemLabel="#{appmsg['approvalActivity.requestName']}" itemValue="name"/>
+                                        <f:selectItem itemLabel="#{appmsg['approvalActiviy.requestBy']}" itemValue="requestBy"/>
+                                        <f:selectItem itemLabel="#{appmsg['approvalactivity.approved_by']}" itemValue="approvedBy"/>
                                     </p:selectOneMenu>
                                     <p:inputText id="searchId" value="#{approvalActivityViewController.searchParameter.parameter}" style="width: 250px" styleClass="label_button"/>
                                     <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{approvalActivityViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
@@ -59,7 +59,7 @@
                                       id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="List of Approval Activity"/>
+                                <h:outputText value="#{appmsg['approvalactivity.list_of_approval_activity']}"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
@@ -69,37 +69,37 @@
                             </p:column>
                             <p:column sortBy="requestBy" style="width: 16%">
                                 <f:facet name="header">
-                                    <h:outputText value="Request By"/>
+                                    <h:outputText value="#{appmsg['approvalActiviy.requestBy']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.requestBy}" />
                             </p:column>
                             <p:column sortBy="approvalDefinition.name" style="width: 14%">
                                 <f:facet name="header">
-                                    <h:outputText value="Request Name"/>
+                                    <h:outputText value="#{appmsg['approvalActivity.requestName']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.approvalDefinition.name}" />
                             </p:column>
                             <p:column sortBy="requestTime" style="width: 14%">
                                 <f:facet name="header">
-                                    <h:outputText value="Request Time"/>
+                                    <h:outputText value="#{appmsg['approvalActivity.requestTime']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.requestTime}" />
                             </p:column>
                             <p:column sortBy="activityNumber" style="width: 14%">
                                 <f:facet name="header">
-                                    <h:outputText value="Request Number"/>
+                                    <h:outputText value="#{appmsg['approvalActivity.requestNumber']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.activityNumber}" />
                             </p:column>
                             <p:column sortBy="approvedBy" style="width: 14%">
                                 <f:facet name="header">
-                                    <h:outputText value="Approved By"/>
+                                    <h:outputText value="#{appmsg['approvalactivity.approved_by']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.approvedBy}" />
                             </p:column>
                             <p:column style="width: 14%">
                                 <f:facet name="header">
-                                    <h:outputText value="Approval Status"/>
+                                    <h:outputText value="#{appmsg['approvalactivity.approval_status']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.approvalStatus}">
                                 	<f:converter converterId="approvalStatusConverter"/>

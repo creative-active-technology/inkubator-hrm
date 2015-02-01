@@ -5,12 +5,16 @@
  */
 package com.inkubator.hrm.dao.impl;
 
+import com.inkubator.common.CommonUtilConstant;
+import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.WtHolidayDao;
 import com.inkubator.hrm.entity.WtHoliday;
 import com.inkubator.hrm.web.search.HolidaySearchParameter;
+
 import java.util.Date;
 import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.MatchMode;
@@ -54,11 +58,11 @@ public class WtHolidayDaoImpl extends IDAOImpl<WtHoliday> implements WtHolidayDa
     private void doSearchWtHolidayByParam(HolidaySearchParameter searchParameter, Criteria criteria) {
         if (searchParameter.getReligionName() != null && !searchParameter.getReligionName().isEmpty()) {
             criteria.createAlias("religion", "r");
-            criteria.add(Restrictions.like("r.name", searchParameter.getReligionName(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("r.name", searchParameter.getReligionName(), MatchMode.START));
         }
 
         if (searchParameter.getHolidayName() != null && !searchParameter.getHolidayName().isEmpty()) {
-            criteria.add(Restrictions.like("holidayName", searchParameter.getHolidayName(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("holidayName", searchParameter.getHolidayName(), MatchMode.START));
         }
         criteria.add(Restrictions.isNotNull("id"));
     }
@@ -85,12 +89,37 @@ public class WtHolidayDaoImpl extends IDAOImpl<WtHoliday> implements WtHolidayDa
         return criteria.list();
 
     }
+    
+    @Override
+	public Long getTotalBetweenDate(Date start, Date end) {
+    	Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.between("holidayDate", start, end));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
 
     @Override
     public WtHoliday getWtHolidayByDate(Date date) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("holidayDate", date));
         return (WtHoliday) criteria.uniqueResult();
+    }
+
+    @Override
+    public List<WtHoliday> getByYearDif(int value) {
+        Date now = new Date();
+        Date parameter = DateTimeUtil.getDateFrom(now, -value, CommonUtilConstant.DATE_FORMAT_YEAR);
+      
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.lt("holidayDate", parameter));
+        criteria.add(Restrictions.eq("isEveryYear", 1));
+        return criteria.list();
+    }
+
+    @Override
+    public String getWtHolidayNameByName(String name) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("holidayName", name));
+        return (String) criteria.setProjection(Projections.property("holidayName")).uniqueResult();
     }
 
 }

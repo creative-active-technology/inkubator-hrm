@@ -16,7 +16,8 @@ import com.inkubator.hrm.web.search.EmpDataSearchParameter;
 import com.inkubator.hrm.web.search.ReportEmpDepartmentJabatanParameter;
 import com.inkubator.hrm.web.search.ReportEmpWorkingGroupParameter;
 import com.inkubator.hrm.web.search.ReportOfEmployeesFamilySearchParameter;
-
+import com.inkubator.hrm.web.search.SalaryConfirmationParameter;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -67,9 +68,9 @@ public interface EmpDataService extends IService<EmpData> {
 
     public List<EmpData> getEmpDataByListId(List<Long> data) throws Exception;
 
-    public List<EmpData> getAllDataReportEmpWorkingGroupByParam(ReportEmpWorkingGroupParameter param, int firstResult, int maxResults, Order orderable);
+    public List<EmpData> getAllDataReportEmpWorkingGroupByParam(ReportEmpWorkingGroupParameter param, int firstResult, int maxResults, Order orderable) throws Exception;
 
-    public Long getTotalReportEmpWorkingGroupByParam(ReportEmpWorkingGroupParameter param);
+    public Long getTotalReportEmpWorkingGroupByParam(ReportEmpWorkingGroupParameter param) throws Exception;
 
     public List<EmpData> getEmployeelBySearchEmployeePermit(PermitDistributionModel model) throws Exception;
 
@@ -77,9 +78,9 @@ public interface EmpDataService extends IService<EmpData> {
 
     public Long getTotalReportOfEmployeesFamilyByParam(ReportOfEmployeesFamilySearchParameter searchParameter) throws Exception;
 
-    public List<EmpData> getAllDataReportEmpDepartmentJabatanByParam(ReportEmpDepartmentJabatanParameter param, int firstResult, int maxResults, Order orderable);
+    public List<EmpData> getAllDataReportEmpDepartmentJabatanByParam(ReportEmpDepartmentJabatanParameter param, int firstResult, int maxResults, Order orderable) throws Exception;
 
-    public Long getTotalReportEmpDepartmentJabatanByParam(ReportEmpDepartmentJabatanParameter param);
+    public Long getTotalReportEmpDepartmentJabatanByParam(ReportEmpDepartmentJabatanParameter param) throws Exception;
 
     public List<EmpData> getEmployeeBySearchEmployeeFingerException(WtFingerExceptionModel model) throws Exception;
 
@@ -88,7 +89,19 @@ public interface EmpDataService extends IService<EmpData> {
     public EmpData getEmpDataWithBiodata(Long id) throws Exception;
 
     public List<EmpData> getAllDataNotTerminate() throws Exception;
-    
+
     public Long getTotalEmpDataNotTerminate() throws Exception;
+
+    public Long getTotalByTaxFreeIsNull() throws Exception;
+
+    public List<EmpData> getAllDataNotTerminateAndJoinDateLowerThan(Date payrollCalculationDate) throws Exception;
+
+    public List<EmpData> getAllDataSalaryConfirmationByParam(SalaryConfirmationParameter parameter, int first, int pageSize, Order orderable) throws Exception;
+
+    public Long getTotalSalaryConfirmationByParam(SalaryConfirmationParameter parameter) throws Exception;
+    
+    public EmpData getByPKBankTransfer(long  id) throws Exception;
+    
+     public EmpData getByEmpDataByBioDataId(long bioDataid);
 
 }

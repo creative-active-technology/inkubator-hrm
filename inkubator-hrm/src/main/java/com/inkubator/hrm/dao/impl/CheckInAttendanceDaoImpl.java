@@ -1,5 +1,5 @@
 /*
-<<<<<<< HEAD
+ <<<<<<< HEAD
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
@@ -13,9 +13,12 @@ import java.util.Date;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
 import org.springframework.context.annotation.Lazy;
@@ -52,11 +55,11 @@ public class CheckInAttendanceDaoImpl extends IDAOImpl<CheckInAttendance> implem
         doSearchByParam(searchParameter, criteria);
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
-    
+
     private void doSearchByParam(CheckInAttendanceSearchParameter searchParameter, Criteria criteria) {
 
-        if (searchParameter.getEmpData()!= null) {
-            criteria.add(Restrictions.like("empData", searchParameter.getEmpData(), MatchMode.ANYWHERE));
+        if (searchParameter.getEmpData() != null) {
+            criteria.add(Restrictions.like("empData", searchParameter.getEmpData(), MatchMode.START));
         }
 
         criteria.add(Restrictions.isNotNull("id"));
@@ -65,10 +68,33 @@ public class CheckInAttendanceDaoImpl extends IDAOImpl<CheckInAttendance> implem
     @Override
     public CheckInAttendance getByEmpIdAndCheckIn(long id, Date checkInDate) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.createAlias("empData", "ep",JoinType.INNER_JOIN);
+        criteria.createAlias("empData", "ep", JoinType.INNER_JOIN);
         criteria.add(Restrictions.eq("ep.id", id));
         criteria.add(Restrictions.eq("checkDate", checkInDate));
         return (CheckInAttendance) criteria.uniqueResult();
     }
+
+    @Override
+    public CheckInAttendance getAttendancWithMaxCreatedDate(long id) {
+        ProjectionList proList = Projections.projectionList();
+        proList.add(Property.forName("createdOn").max());
+        DetachedCriteria maxDate = DetachedCriteria.forClass(getEntityClass())
+                .createAlias("empData", "ep")
+                .add(Restrictions.eq("ep.id", id))
+                .setProjection(proList);
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("empData", "ep", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("ep.id", id));
+        criteria.add(Property.forName("createdOn").eq(maxDate));
+        return (CheckInAttendance) criteria.uniqueResult();
+    }
+
+	@Override
+	public CheckInAttendance getEntityByEmpDataIdAndCheckDate(Long empDataId, Date checkDate) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("empData.id", empDataId));
+		criteria.add(Restrictions.eq("checkDate", checkDate));
+		return (CheckInAttendance) criteria.uniqueResult();
+	}
 
 }

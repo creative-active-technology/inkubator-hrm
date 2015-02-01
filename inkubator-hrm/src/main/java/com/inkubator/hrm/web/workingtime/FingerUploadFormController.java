@@ -67,7 +67,7 @@ public class FingerUploadFormController extends BaseController {
             dualListModel.setTarget(target);
             fingerUploadModel = new FingerUploadModel();
             fingerUploadModel.setDescription(mecineFinger.getDescription());
-//            System.out.println(mecineFinger.getMacineFingerUploads().size());
+
             if (!mecineFinger.getMacineFingerUploads().isEmpty()) {
                 List<MacineFingerUpload> dataMesinFingerUpload = new ArrayList(mecineFinger.getMacineFingerUploads());
                 List<MacineFingerUpload> sortBySequence = Lambda.sort(dataMesinFingerUpload, Lambda.on(MacineFingerUpload.class).getFieldNo());
@@ -187,14 +187,14 @@ public class FingerUploadFormController extends BaseController {
     }
 
     public void doAddData() {
-        System.out.println(" ini di ekseskkeuk");
+        
         sparasiUploadModel = new SparasiUploadModel();
         int jumlahData = fingerUploadModel.getDataToSave().size();
         sparasiUploadModel.setFieldNumber(jumlahData + 1);
     }
 
     public void doEditData() {
-        System.out.println(" nilia " + selectdMacineFingerUpload);
+        
         sparasiUploadModel = new SparasiUploadModel();
         sparasiUploadModel.setDescription(selectdMacineFingerUpload.getDescription());
         sparasiUploadModel.setFieldName(selectdMacineFingerUpload.getFieldLabel());
@@ -222,7 +222,7 @@ public class FingerUploadFormController extends BaseController {
         List<MacineFingerUpload> dataToShow = fingerUploadModel.getDataToSave();
         dataToShow.remove(selectdMacineFingerUpload);
         fingerUploadModel.setDataToSave(dataToShow);
-        System.out.println(fingerUploadModel.getDataToSave().size());
+        
     }
 
     public SparasiUploadModel getSparasiUploadModel() {
@@ -264,7 +264,7 @@ public class FingerUploadFormController extends BaseController {
                 capture.setId(new DepartementUploadCaptureId(mecineFinger.getId(), department.getId()));
                 dataToSave.add(capture);
             }
-            System.out.println(" hehehheeh");
+            
             mecineFingerService.saveByModel(fingerUploadModel, dataToSave);
             MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());

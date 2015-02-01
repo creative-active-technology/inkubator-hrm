@@ -12,15 +12,19 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
 import com.inkubator.datacore.dao.impl.IDAOImpl;
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.LoanPaymentDetailDao;
 import com.inkubator.hrm.entity.Loan;
 import com.inkubator.hrm.entity.LoanPaymentDetail;
 import com.inkubator.hrm.web.model.LoanPaymentDetailModel;
 import com.inkubator.securitycore.util.UserInfoUtil;
+
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projection;
 
 /**
  *
@@ -95,7 +99,7 @@ public class LoanPaymentDetailDaoImpl extends IDAOImpl<LoanPaymentDetail> implem
     }
 
     @Override
-    public Long getTotalResourceTypeByParam(String parameter, LoanPaymentDetailModel loanPaymentDetailModel) {
+    public Long getTotalByParam(String parameter, LoanPaymentDetailModel loanPaymentDetailModel) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchByParam(parameter, criteria, loanPaymentDetailModel);
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
@@ -123,25 +127,78 @@ public class LoanPaymentDetailDaoImpl extends IDAOImpl<LoanPaymentDetail> implem
     }
 
     @Override
-    public Long getTotalUnPaidLoanByLoanId(Long loanId, LoanPaymentDetailModel loanPaymentDetailModel) {
+    public Long getTotalUnPaidLoanByLoanId(Long loanId, Date periodEndDate) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.createAlias("loan", "loan", JoinType.INNER_JOIN);
         criteria.createAlias("loan.loanSchema", "loanSchema", JoinType.INNER_JOIN);
         criteria.add(Restrictions.eq("loan.id", loanId));
         criteria.add(Restrictions.eq("loanSchema.payrollComponent", 1));
-        criteria.add(Restrictions.gt("dueDate", loanPaymentDetailModel.getEndDataPeriod()));
+        criteria.add(Restrictions.gt("dueDate", periodEndDate));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
-	@Override
-	public List<LoanPaymentDetail> getAllDataByEmpDataIdAndLoanSchemaIdAndPeriodTime(Long empDataid, Long loanSchemaId, Date fromPeriode, Date untilPeriode) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+    @Override
+    public List<LoanPaymentDetail> getAllDataByEmpDataIdAndLoanSchemaIdAndPeriodTime(Long empDataid, Long loanSchemaId, Date fromPeriode, Date untilPeriode) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.createAlias("loan", "loan", JoinType.INNER_JOIN);
         criteria.createAlias("loan.loanSchema", "loanSchema", JoinType.INNER_JOIN);
         criteria.add(Restrictions.eq("loan.empData.id", empDataid));
         criteria.add(Restrictions.eq("loanSchema.id", loanSchemaId));
         criteria.add(Restrictions.ge("dueDate", fromPeriode));
         criteria.add(Restrictions.le("dueDate", untilPeriode));
+        criteria.add(Restrictions.eq("loan.statusPencairan", HRMConstant.LOAN_PAID));
         return criteria.list();
-	}
+    }
+
+    @Override
+    public Double getInstallmentByLoanId(Long loanId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("loan", "loan", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("loan.id", loanId));
+        if (criteria.list().isEmpty()) {
+            return null;
+        } else {
+            LoanPaymentDetail lpd = (LoanPaymentDetail) criteria.list().get(0);
+            return lpd.getTotalPayment();
+        }
+
+    }
+
+    @Override
+    public LoanPaymentDetail getEntityByPkWithDetail(Long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("id", id));
+        criteria.setFetchMode("loan", FetchMode.JOIN);
+        criteria.setFetchMode("loan.empData", FetchMode.JOIN);
+        criteria.setFetchMode("loan.empData.jabatanByJabatanId", FetchMode.JOIN);
+        criteria.setFetchMode("loan.empData.bioData", FetchMode.JOIN);
+        criteria.setFetchMode("loan.empData.loanSchema", FetchMode.JOIN);
+        return (LoanPaymentDetail) criteria.uniqueResult();
+
+    }
+
+    @Override
+    public List<LoanPaymentDetail> getAllDataPaymentWithEmpIdAndLoanId(Long empDataId, Long loanId, Date endDatePeriod, int firstResult, int maxResults, Order order) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("loan", "loan", JoinType.INNER_JOIN);
+        criteria.createAlias("loan.empData", "empData", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("loan.id", loanId));
+        criteria.add(Restrictions.eq("empData.id", empDataId));
+        criteria.add(Restrictions.lt("dueDate", endDatePeriod));
+        criteria.addOrder(order);
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResults);
+        return criteria.list();
+    }
+
+    @Override
+    public Long getTotalDataPaymentWithEmpIdAndLoanId(Long empDataId, Long loanId, Date endDatePeriod) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("loan", "loan", JoinType.INNER_JOIN);
+        criteria.createAlias("loan.empData", "empData", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("loan.id", loanId));
+        criteria.add(Restrictions.eq("empData.id", empDataId));
+        criteria.add(Restrictions.lt("dueDate", endDatePeriod));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
 }

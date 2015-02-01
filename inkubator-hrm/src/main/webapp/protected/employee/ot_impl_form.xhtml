@@ -1,0 +1,194 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/dialog_layout.xhtml">
+            <ui:define name="windowTitle">
+
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlId" globalOnly="true" showDetail="true"/>
+                <h:form id="formId">
+                    <h:panelGrid  columns="2">
+                        <p:graphicImage library="images" name="pelaksanaan_lembur.png" height="36" width="36"  cache="true"/>
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['overTimeImplementation.overTimeImplementation_form']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['overTimeImplementation.overTimeImplementation_header']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="1" style="margin-bottom: 5px;margin-left: 0px">
+                        <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                    </h:panelGrid> 
+                    <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
+                        
+                        
+                        <p:row>
+                            <p:column style="width: 40%">
+                                <p:outputLabel for="implementationNumber" value="#{appmsg['overTimeImplementation.implementation_number']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="implementationNumber" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                                <p:inputText id="implementationNumber"  value="#{implementationOfOverTimeFormController.model.implementationNumber}"
+                                             required="true" styleClass="isitext_hrm" style="width:230px;" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="implementationNumber"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                                <p:column style="width: 40%;" >
+                                    <p:outputLabel for="employeeId" value="#{appmsg['personachievement.employee_name']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column style="width: 1%">
+                                    <h:outputLabel for="overtimeName" value=":" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column style="width: 50%">
+                                    <p:autoComplete id="employeeId" 
+                                                title="#{appmsg['personachievement.employee_name']}" 
+                                                value="#{implementationOfOverTimeFormController.model.empData}"
+                                                completeMethod="#{implementationOfOverTimeFormController.doAutoCompletEmployee}"
+                                                scrollHeight="100"
+                                                required="true"
+                                                var="empData"
+                                                itemValue="#{empData}"
+                                                itemLabel="#{empData.nik} #{empData.bioData.firstName} #{empData.bioData.lastName}"
+                                                converter="empDataConverter"
+                                                requiredMessage="#{appmsg['personachievement.person_achievement_should_not_be_empty']}"
+                                                styleClass="isitext_hrm" size="32">
+                                        <!--<p:ajax update="startTime" process="@this" listener="#{implementationOfOverTimeFormController.doValidateStartAndEndTime()}"/>-->
+                                        <p:ajax event="itemSelect" listener="#{implementationOfOverTimeFormController.doSelectEmployee}" />
+                                    </p:autoComplete>
+                                    
+                                </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="employeeId"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column style="width: 40%;" >
+                                <p:outputLabel for="implementationDate" value="#{appmsg['overTimeImplementation.implementation_date']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="implementationDate" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 50%">
+                                <p:calendar  id="implementationDate" size="32" pattern="dd MMMM yyyy" label="#{appmsg['overTimeImplementation.implementation_date']}" value="#{implementationOfOverTimeFormController.model.implementationDate}"
+                                         required="true" navigator="true">
+<!--                                    <f:validator validatorId="birthDateValidator"  />
+                                    <f:attribute name="validatorMessage" value="#{appmsg['global.birthDate_validator']}"/>-->
+                                    <p:ajax event="dateSelect" listener="#{implementationOfOverTimeFormController.dateChange}" update="startTime, endTime, overtimeName"/>
+                                </p:calendar>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="implementationDate"/>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="width: 40%">
+                                <p:outputLabel for="overtimeName" value="#{appmsg['overTimeImplementation.overtime_name']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="overtimeName" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                                <p:selectOneMenu id="overtimeName" disabled="#{implementationOfOverTimeFormController.isDisableStartAndEndOverTime}" value="#{implementationOfOverTimeFormController.model.wtOverTimeId}" style="width: 150px;margin-right: 3px" >
+                                    <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                    <f:selectItems value="#{implementationOfOverTimeFormController.wtOverTimeDropDown}"/>
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="overtimeName"/>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="width: 40%;">
+                                <p:outputLabel for="startTime" value="#{appmsg['overTimeImplementation.start_overtime']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="startTime" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                                <pe:timePicker  id="startTime" locale="in" value="#{implementationOfOverTimeFormController.model.startTime}"
+                                                label="Spinner time picker" styleClass="isitext_hrm" required="true" disabled="#{implementationOfOverTimeFormController.isDisableStartAndEndOverTime}">
+                                    <f:validator validatorId="timeBetweenValidator"  />
+                                    <f:attribute name="endTime" value="#{endTime}"/>
+                                    <f:attribute name="validatorMessage" value="#{appmsg['over_time.minimum_time_is_geater']}"/>
+                                    <p:ajax event="timeSelect" listener="#{implementationOfOverTimeFormController.pickStartTime}"/>
+                                </pe:timePicker>  
+                                <p:outputLabel value="#{appmsg['global.hour']}" styleClass="label_hrm" style="margin-left: 7px;font-weight: normal!important"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="startTime"/>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="width: 40%;">
+                                <p:outputLabel for="endTime" value="#{appmsg['overTimeImplementation.end_overtime']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="endTime" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                                <pe:timePicker id="endTime" value="#{implementationOfOverTimeFormController.model.endTime}" binding="#{endTime}"
+                                               label="Spinner time picker"  styleClass="isitext_hrm"  required="true" 
+                                               disabled="#{implementationOfOverTimeFormController.isDisableStartAndEndOverTime}">
+                                    <p:ajax event="timeSelect" listener="#{implementationOfOverTimeFormController.pickEndTime}"/>
+                                </pe:timePicker>
+                                               
+                                <p:outputLabel value="#{appmsg['global.hour']}" styleClass="label_hrm" style="margin-left: 7px;font-weight: normal!important"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="endTime"/>
+                            </p:column>
+                        </p:row>
+                        
+                    </p:panelGrid>
+                    <p:focus context="formId" />
+                    <p:separator style="margin-top: 20px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="2" style="margin-bottom: -30px!important">
+                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formId,:growlId"
+                                         action="#{implementationOfOverTimeFormController.doSaved()}" styleClass="isitext_hrm"
+                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
+                                         icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                        <p:commandButton value="#{appmsg['global.clear']}" title="#{appmsg['global.clear']}" process="@this" update="formId" 
+                                         icon="ui-icon-refresh" styleClass="isitext_hrm" >  
+                            <p:resetInput target="formId" />  
+                        </p:commandButton>
+                    </h:panelGrid>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

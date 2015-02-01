@@ -103,6 +103,7 @@ public class DepartmentFormController extends BaseController {
                 departmentModel.setId(department.getId());
                 departmentModel.setCode(department.getDepartmentCode());
                 departmentModel.setName(department.getDepartmentName());
+                departmentModel.setDescription(department.getDescription());
                 if(department.getCostCenterDept() != null){
                 	departmentModel.setCostCenterDeptId(department.getCostCenterDept().getId());
                 }
@@ -141,6 +142,8 @@ public class DepartmentFormController extends BaseController {
         department.setDepartmentCode(departmentModel.getCode());
         department.setDepartmentName(departmentModel.getName());
         department.setCostCenterDept(new CostCenterDept(departmentModel.getCostCenterDeptId()));
+        department.setDescription(departmentModel.getDescription());
+
         return department;
     }
     

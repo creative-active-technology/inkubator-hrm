@@ -12,6 +12,7 @@ import org.primefaces.model.SortOrder;
 
 import com.inkubator.hrm.entity.EducationNonFormal;
 import com.inkubator.hrm.service.EducationNonFormalService;
+import com.inkubator.hrm.web.search.EducationNonFormalSearchParameter;
 
 /**
 *
@@ -20,12 +21,12 @@ import com.inkubator.hrm.service.EducationNonFormalService;
 public class EducationNonFormalLazyDataModel extends LazyDataModel<EducationNonFormal> implements Serializable {
 
 	private static final Logger LOGGER = Logger.getLogger(EducationNonFormalLazyDataModel.class);
-    private final String parameter;
+    private final EducationNonFormalSearchParameter parameter;
     private final EducationNonFormalService service;
     private List<EducationNonFormal> list = new ArrayList<>();
     private Integer total;
 
-    public EducationNonFormalLazyDataModel(String parameter, EducationNonFormalService educationNonFormalService) {
+    public EducationNonFormalLazyDataModel(EducationNonFormalSearchParameter parameter, EducationNonFormalService educationNonFormalService) {
         this.parameter = parameter;
         this.service = educationNonFormalService;
     }

@@ -39,6 +39,7 @@ import com.inkubator.hrm.web.search.EmpDataSearchParameter;
 import com.inkubator.hrm.web.search.ReportEmpDepartmentJabatanParameter;
 import com.inkubator.hrm.web.search.ReportEmpWorkingGroupParameter;
 import com.inkubator.hrm.web.search.ReportOfEmployeesFamilySearchParameter;
+import com.inkubator.hrm.web.search.SalaryConfirmationParameter;
 
 /**
  *
@@ -106,12 +107,14 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.addOrder(order);
         criteria.setFetchMode("bioData", FetchMode.JOIN);
         criteria.setFetchMode("bioData.city", FetchMode.JOIN);
+        criteria.setFetchMode("bioData.maritalStatus", FetchMode.JOIN);
         criteria.setFetchMode("jabatanByJabatanId", FetchMode.JOIN);
         criteria.setFetchMode("golonganJabatan", FetchMode.JOIN);
         criteria.setFetchMode("golonganJabatan.pangkat", FetchMode.JOIN);
         criteria.setFetchMode("jabatanByJabatanId.department", FetchMode.JOIN);
         criteria.setFetchMode("jabatanByJabatanId.unitKerja", FetchMode.JOIN);
         criteria.setFetchMode("wtGroupWorking", FetchMode.JOIN);
+        criteria.setFetchMode("taxFree", FetchMode.JOIN);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
         return criteria.list();
@@ -127,7 +130,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     private void doSearchEmpDataByParam(EmpDataSearchParameter dataSearchParameter, Criteria criteria) {
         if (dataSearchParameter.getJabatanKode() != null) {
             criteria.createAlias("jabatanByJabatanId", "jb", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("jb.code", dataSearchParameter.getJabatanKode(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("jb.code", dataSearchParameter.getJabatanKode(), MatchMode.START));
         }
 
         if (dataSearchParameter.getJabatanName() != null) {
@@ -136,14 +139,14 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         }
 
         if (dataSearchParameter.getNIK() != null) {
-            criteria.add(Restrictions.like("nik", dataSearchParameter.getNIK(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("nik", dataSearchParameter.getNIK(), MatchMode.START));
         }
-
+        criteria.createAlias("bioData", "bio", JoinType.INNER_JOIN);
         if (dataSearchParameter.getName() != null) {
-            criteria.createAlias("bioData", "bio", JoinType.INNER_JOIN);
+
             Disjunction disjunction = Restrictions.disjunction();
-            disjunction.add(Restrictions.like("bio.firstName", dataSearchParameter.getName(), MatchMode.ANYWHERE));
-            disjunction.add(Restrictions.like("bio.lastName", dataSearchParameter.getName(), MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.like("bio.firstName", dataSearchParameter.getName(), MatchMode.START));
+            disjunction.add(Restrictions.like("bio.lastName", dataSearchParameter.getName(), MatchMode.START));
             criteria.add(disjunction);
         }
         criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
@@ -412,7 +415,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.createAlias("bioData", "bio", JoinType.INNER_JOIN);
 //        criteria.createAlias("golonganJabatan", "goljab", JoinType.INNER_JOIN);
         if (model.getOverTimeId() != 0 || model.getOverTimeId() != null) {
-            System.out.println(" nilai id " + model.getOverTimeId());
+            
             Criterion andCondition = Restrictions.conjunction()
                     .add(Restrictions.isNotNull("ot.empData"))
                     .add(Restrictions.not(Restrictions.eq("wt.id", model.getOverTimeId())));
@@ -634,15 +637,13 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 
     private Criteria doSearchReportEmpDepartmentJabatanByParam(ReportEmpDepartmentJabatanParameter param, Criteria criteria) {
 
-        System.out.println("goljabs " + param.getGolonganJabatanId());
-        System.out.println("departement " + param.getDepartmentId());
+        
 
         if (param.getDepartmentId() != null && param.getDepartmentId() != 0) {
             criteria.add(Restrictions.eq("jabatanByJabatanId.department.id", param.getDepartmentId()));
         }
 
         if (param.getGolonganJabatanId() != null) {
-            System.out.println("goljabs " + param.getGolonganJabatanId().get(0));
             criteria.add(Restrictions.in("golonganJabatan.id", param.getGolonganJabatanId()));
 
         }
@@ -705,8 +706,11 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     @Override
     public EmpData getEmpDataWithBiodata(Long id) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.setFetchMode("bioData", FetchMode.JOIN);
         criteria.add(Restrictions.eq("id", id));
+        criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
+        criteria.createAlias("bioData.maritalStatus", "maritalStatus", JoinType.INNER_JOIN);
+        criteria.setFetchMode("bioData", FetchMode.JOIN);
+        criteria.setFetchMode("maritalStatus", FetchMode.JOIN);
         return (EmpData) criteria.uniqueResult();
     }
 
@@ -716,12 +720,90 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
         return criteria.list();
     }
-    
+
     @Override
     public Long getTotalEmpDataNotTerminate() {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
-         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+
+    @Override
+    public Long getTotalByTaxFreeIsNull() {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.isNull("taxFree"));
+        criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+
+    @Override
+    public List<EmpData> getAllDataNotTerminateAndJoinDateLowerThan(Date payrollCalculationDate) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
+        criteria.add(Restrictions.le("joinDate", payrollCalculationDate));
+        return criteria.list();
+    }
+
+    @Override
+    public List<EmpData> getAllDataSalaryConfirmationByParam(SalaryConfirmationParameter param, int firstResult, int maxResults, Order orderable) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
+        this.doSearchSalaryConfirmationByParam(param, criteria);
+        criteria.addOrder(orderable);
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResults);
+        return criteria.list();
+
+    }
+
+    @Override
+    public Long getTotalSalaryConfirmationByParam(SalaryConfirmationParameter param) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        this.doSearchSalaryConfirmationByParam(param, criteria);
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+
+    private Criteria doSearchSalaryConfirmationByParam(SalaryConfirmationParameter param, Criteria criteria) {
+        criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
+        criteria.createAlias("golonganJabatan", "golonganJabatan", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.isNotEmpty("payTempKalkulasis"));
+
+        if (StringUtils.isNotEmpty(param.getNik())) {
+            criteria.add(Restrictions.like("nik", param.getNik(), MatchMode.START));
+        }
+
+        if (StringUtils.isNotEmpty(param.getName())) {
+            Disjunction disjunction = Restrictions.disjunction();
+            disjunction.add(Restrictions.like("bioData.firstName", param.getName(), MatchMode.START));
+            disjunction.add(Restrictions.like("bioData.lastName", param.getName(), MatchMode.START));
+            criteria.add(disjunction);
+        }
+
+        if (param.getGolonganJabatanId() != null && param.getGolonganJabatanId() != 0) {
+            criteria.add(Restrictions.eq("golonganJabatan.id", param.getGolonganJabatanId()));
+        }
+
+        return criteria;
+    }
+
+    @Override
+    public EmpData getByPKBankTransfer(long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("id", id));
+        criteria.setFetchMode("golonganJabatan", FetchMode.JOIN);
+        criteria.setFetchMode("bioData", FetchMode.JOIN);
+        criteria.setFetchMode("bioData.bioBankAccounts", FetchMode.JOIN);
+        criteria.setFetchMode("bioData.bioBankAccounts.bank", FetchMode.JOIN);
+        return (EmpData) criteria.uniqueResult();
+    }
+
+    @Override
+    public EmpData getByEmpDataByBioDataId(long bioDataid) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());       
+        criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);        
+        criteria.setFetchMode("bioData", FetchMode.JOIN);
+        criteria.add(Restrictions.eq("bioData.id", bioDataid));
+        return (EmpData) criteria.uniqueResult();
     }
 
 }

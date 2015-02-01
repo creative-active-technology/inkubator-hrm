@@ -21,7 +21,9 @@ public interface WtPeriodeService extends IService<WtPeriode> {
 
     public Long getTotalWtPeriodeByParam(WtPeriodeSearchParameter searchParameter) throws Exception;
     
-    public WtPeriode getEntityByStatusActive() throws Exception;
+    public WtPeriode getEntityByPayrollTypeActive() throws Exception;
     
-    public WtPeriode getEntityAbsenByStatusActive() throws Exception;
+    public WtPeriode getEntityByAbsentTypeActive() throws Exception;
+    
+    public List<WtPeriode> getAllYears() throws Exception;
 }

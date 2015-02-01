@@ -265,4 +265,16 @@ public class TaxComponentServiceImpl extends IServiceImpl implements TaxComponen
         return this.taxComponentDao.getTotalTaxComponentByParam(parameter);
     }
 
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<TaxComponent> getAllDataByUseComponent() throws Exception{
+        return this.taxComponentDao.getAllDataByUseComponent();
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public String getTaxComponentNameByPk(Long id) throws Exception {
+        return taxComponentDao.getTaxComponentNameByPk(id);
+    }
+
 }

@@ -66,10 +66,11 @@ public class CheckInCheckOutController extends BaseController {
             } else {
                 String stringDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
                 Date date = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(stringDate + " 00:00:00");
-                TempJadwalKaryawan jadwalKaryawan = tempJadwalKaryawanService.getByEmpId(hrmUser.getEmpData().getId(), date);
+                TempJadwalKaryawan jadwalKaryawan = tempJadwalKaryawanService.getEntityByEmpDataIdAndTanggalWaktuKerja(hrmUser.getEmpData().getId(), date);
 
                 if (isValid) {
-                    CheckInAttendance attendance = checkInAttendanceService.getByEmpIdAndCheckIn(hrmUser.getEmpData().getId(), date);
+//                    CheckInAttendance attendance = checkInAttendanceService.getByEmpIdAndCheckIn(hrmUser.getEmpData().getId(), date);
+                    CheckInAttendance attendance = checkInAttendanceService.getAttendancWithMaxCreatedDate(hrmUser.getEmpData().getId());
                     if (attendance == null) {
                         checkInOutModel.setEmpId(hrmUser.getEmpData().getId());
                         checkInOutModel.setUserName(hrmUser.getRealName());
@@ -155,6 +156,7 @@ public class CheckInCheckOutController extends BaseController {
             String stringDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
             // harus sperti ini membading kan 2 jam... yg berbeda
             Date date = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(stringDate + " " + checkInOutModel.getBeginHour());
+            
             if (!isCheckIn) {
 
                 attendance.setCheckDate(new Date());
@@ -180,12 +182,14 @@ public class CheckInCheckOutController extends BaseController {
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
                 return "/protected/home.htm?faces-redirect=true";
             } else {
-                Date date1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(stringDate + " " + checkInOutModel.getEndHour());
+                String stringDate1 = new SimpleDateFormat("yyyy-MM-dd").format(checkInOutModel.getJadwalKerja());
+                Date date1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(stringDate1 + " " + checkInOutModel.getEndHour());
                 Date canGoHome = DateTimeUtil.getDateFrom(date1, bufferCheckOut, CommonUtilConstant.DATE_FORMAT_MINUTES);
+                
                 if (canGoHome.after(new Date())) {
                     MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.error", "ceckinout.checkin_error_out",
                             FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-                    System.out.println(" ini terjadi");
+                    
                 } else {
                     attendance.setId(checkInOutModel.getId());
                     attendance.setCheckOutTime(new Date());

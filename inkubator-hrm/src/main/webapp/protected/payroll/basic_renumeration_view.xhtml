@@ -18,7 +18,7 @@
                 <div id="box_bg" style="margin: 10px">
                     <!--<p:panel style="margin: 10px" >-->
                     <h:panelGrid style="margin-bottom: 5px" columns="2">
-                        <p:graphicImage library="images" name="user.png" height="36" width="36" />
+                        <p:graphicImage library="images" name="basic_numeration.png" height="36" width="36" />
                         <h:panelGroup layout="block">
                             <h:panelGrid>
                                 <p:outputLabel value="#{appmsg['placement.list_of_placement']}" styleClass="header_big" />
@@ -72,40 +72,46 @@
                             <f:facet name="header">  
                                 <h:outputText value="#{appmsg['placement.placement_header']}" styleClass="label_hrm"/>
                             </f:facet> 
-                            <p:column style="text-align: center;width: 25px">
+                            <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.number']}"  />
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="nik" >
+                            <p:column sortBy="nik" style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['placement.nik']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{empViewData.nik}"/>
                             </p:column>
-                            <p:column sortBy="bioData">
+                            <p:column sortBy="bioData" style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{empViewData.bioData.firstName} #{empViewData.bioData.lastName}"/>
                             </p:column>
-                            <p:column sortBy="jabatanByJabatanId" >
+                            <p:column sortBy="jabatanByJabatanId" style="width: 25%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['placement.jabatan_name']}"/>
                                 </f:facet>
                                 <p:outputLabel value= "#{empViewData.jabatanByJabatanId.name}"/>
                             </p:column>
-                            <p:column sortBy="golonganJabatan" >
+                            <p:column sortBy="jabatanByJabatanId" style="width: 15%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['jabat.jabatan_code']}"/>
+                                </f:facet>
+                                <p:outputLabel value= "#{empViewData.jabatanByJabatanId.code}"/>
+                            </p:column>
+                            <p:column sortBy="golonganJabatan" style="width: 12%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['benefitGroupRate.benefitGroupRate_golongan']}"/>
                                 </f:facet>
                                 <p:outputLabel value= "#{empViewData.golonganJabatan.code}"/>
                             </p:column>
 
-                            <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton  icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
-                                                  action="#{empDataViewController.doDetailRenumeration()}" style="font-size: 10px!important" >                        
+                                                  action="#{empDataViewController.doDetailRenumeration()}" style="width: 15%;font-size: 10px!important" >                        
                                     <f:setPropertyActionListener value="#{empViewData}" target="#{empDataViewController.selectedEmpData}" />
                                 </p:commandButton>
 

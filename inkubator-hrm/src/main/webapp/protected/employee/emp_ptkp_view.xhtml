@@ -19,7 +19,7 @@
                     <h:form id="userViewId">
                     <!--<p:panel style="margin: 10px" >-->
                     <h:panelGrid style="margin-bottom: 5px" columns="2">
-                        <p:graphicImage library="images" name="user.png" height="36" width="36" />
+                        <p:graphicImage library="images" name="ptkp.png" height="36" width="36" />
                         <h:panelGroup layout="block">
                             <h:panelGrid>
                                 <p:outputLabel value="#{appmsg['ptkp.ptkp']}" styleClass="header_big" />
@@ -40,8 +40,6 @@
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItem itemLabel="#{appmsg['placement.nik']}" itemValue="NIK"/>
                                         <f:selectItem itemLabel="#{appmsg['global.name']}" itemValue="name" />
-                                        <f:selectItem itemLabel="#{appmsg['placement.jabatan_code']}" itemValue="jabatanKode" />
-                                        <f:selectItem itemLabel="#{appmsg['placement.jabatan_name']}" itemValue="jabatanName" />
                                     </p:selectOneMenu>
                                     <p:inputText value="#{empPtkpViewController.empDataSearchParameter.parameter}" style="width: 250px" id="pencarianId" styleClass="isitext_hrm" 
                                                  label="#{appmsg['global.searching']}" title="#{appmsg['global.searching']}"/>
@@ -62,7 +60,7 @@
                         </p:toolbar>
                         <p:focus for="pencarianId" />
 
-                        <p:dataTable  var="empViewData"  value="#{empPtkpViewController.empDataLazyDataModel}" lazy="true" paginator="true" pageLinks="7" 
+                        <p:dataTable  var="ptkpView"  value="#{empPtkpViewController.empDataLazyDataModel}" lazy="true" paginator="true" pageLinks="7" 
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
                                       id="tableEmpDataId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
@@ -75,43 +73,57 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="nik" style="width: 15%;">
+                            <p:column sortBy="nik" style="width: 14%;">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['placement.nik']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{empViewData.nik}"/>
+                                <h:outputLabel value= "#{ptkpView.nik}"/>
                             </p:column>
-                            <p:column sortBy="bioData" style="width: 28%;">
+                           <p:column sortBy="bio.firstName" style="width: 18%;">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{empViewData.bioData.firstName} #{empViewData.bioData.lastName}"/>
+                                <h:outputLabel value= "#{ptkpView.bioData.firstName} #{ptkpView.bioData.lastName}"/>
                             </p:column>
-                            <p:column sortBy="joinDate" style="width: 13%;" >
+                            <p:column sortBy="bio.gender" style="width: 11%;">
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['placement.join_data']}"/>
+                                    <h:outputText value="#{appmsg['global.gender']}"/>
                                 </f:facet>
-                                <p:outputLabel value= "#{empViewData.joinDate}">
-                                    <f:convertDateTime pattern="dd MMMM yyyy" />
-                                </p:outputLabel>
+                               <h:outputLabel value= "#{ptkpView.bioData.gender}">
+                                    <f:converter converterId="genderConverter" />
+                                </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="jabatanByJabatanId" style="width: 10%" >
+                             <p:column sortBy="ptkpStatus" style="width: 12%;">
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['placement.jabatan_code']}"/>
+                                    <h:outputText value="#{appmsg['global.status']}"/>
                                 </f:facet>
-                                <p:outputLabel value= "#{empViewData.jabatanByJabatanId.code}"/>
+                                 <h:outputLabel value= "#{ptkpView.ptkpStatus}">
+                                     <f:converter converterId="mariedMessageConverter" />
+                                </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="jabatanByJabatanId" style="width: 25%;">
+                             <p:column sortBy="ptkpNumber" style="width: 14;">
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['placement.jabatan_name']}"/>
+                                    <h:outputText value="#{appmsg['reportFamilyEmployee.reportFamilyEmployee_dependents']}"/>
                                 </f:facet>
-                                <p:outputLabel value= "#{empViewData.jabatanByJabatanId.name}"/>
+                                 <h:outputLabel value= "#{ptkpView.ptkpNumber}" />
+                                 <h:outputLabel value= " #{appmsg['global.people']}" />
                             </p:column>
+                            <p:column style="width: 15%;">
+                                <f:facet name="header">  
+                                    <h:outputText value="Nominal"/>
+                                </f:facet>
+                                <div style="text-align: left">
+                                    <h:outputLabel value= "#{ptkpView.taxFree.freeNominal}">
+                                        <f:convertNumber pattern="###,###" type="currency"/>
+                                    </h:outputLabel>
+                                </div>
+                            </p:column>
+                            
 
                             <p:column headerText="#{appmsg['global.action']}" style="width: 3%;text-align: center" exportable="false">
                                 <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
                                                   action="#{empPtkpViewController.doEdit()}" >
-                                    <f:setPropertyActionListener value="#{empViewData}" target="#{empPtkpViewController.selectedEmpData}" />
+                                    <f:setPropertyActionListener value="#{ptkpView}" target="#{empPtkpViewController.selectedEmpData}" />
                                     <p:ajax event="dialogReturn" listener="#{empPtkpViewController.onDialogReturn}"  update="tableEmpDataId, :userViewId:empDataGrowlId"/>
                                 </p:commandButton> 
                             </p:column>          

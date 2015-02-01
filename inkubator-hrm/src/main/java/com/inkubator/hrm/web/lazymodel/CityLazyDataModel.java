@@ -45,8 +45,8 @@ public class CityLazyDataModel extends LazyDataModel<City> implements Serializab
                 }
             } else {
                 try {
-                	citys = cityService.getByParam(citySearchParameter, first, pageSize, Order.desc(sortField));
-                	total = Integer.parseInt(String.valueOf(cityService.getTotalByParam(citySearchParameter)));
+                    citys = cityService.getByParam(citySearchParameter, first, pageSize, Order.desc(sortField));
+                    total = Integer.parseInt(String.valueOf(cityService.getTotalByParam(citySearchParameter)));
                 } catch (Exception ex) {
                     LOGGER.error("Error", ex);
                 }

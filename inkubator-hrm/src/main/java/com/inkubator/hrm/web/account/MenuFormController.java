@@ -9,6 +9,9 @@ import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
@@ -16,6 +19,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import org.apache.commons.lang3.StringUtils;
+
 
 /**
  *
@@ -133,18 +137,22 @@ public class MenuFormController extends BaseController {
     }
 
     private void getModelFromEntity(HrmMenu menu) {
-        model.setId(menu.getId());
-        model.setName(menu.getName());
-        model.setIconName(menu.getIconName());
-        model.setUrlName(menu.getUrlName());
-        model.setMenuLevel(menu.getMenuLevel());
-        model.setMenuStyle(menu.getMenuStyle());
-        model.setMenuStyleClass(menu.getMenuStyleClass());
-        if(menu.getMenuLevel() > 1){
-        	model.setParentMenuId(menu.getHrmMenu().getId());
-        	List<HrmMenu> listParentMenu = menuService.getAllDataByLevelAndNotId(model.getMenuLevel() - 1, model.getId());
-    		model.setListParentMenu(listParentMenu);
-        	isDisableParent = Boolean.FALSE;
+    	try {
+	    	model.setId(menu.getId());
+	        model.setName(menu.getName());
+	        model.setIconName(menu.getIconName());
+	        model.setUrlName(menu.getUrlName());
+	        model.setMenuLevel(menu.getMenuLevel());
+	        model.setMenuStyle(menu.getMenuStyle());
+	        model.setMenuStyleClass(menu.getMenuStyleClass());
+	        if(menu.getMenuLevel() > 1){
+	        	model.setParentMenuId(menu.getHrmMenu().getId());
+	        	List<HrmMenu> listParentMenu = menuService.getAllDataByLevelAndNotId(model.getMenuLevel() - 1, model.getId());
+                model.setListParentMenu(listParentMenu);
+                isDisableParent = Boolean.FALSE;
+	        }
+    	} catch (Exception ex) {
+            LOGGER.error("Error", ex);
         }
     }
 
@@ -171,8 +179,13 @@ public class MenuFormController extends BaseController {
     public void doChangeLevel(){
     	if(model.getMenuLevel() > 1){
     		isDisableParent = Boolean.FALSE;
-    		List<HrmMenu> listParentMenu = menuService.getAllDataByLevelAndNotId(model.getMenuLevel() - 1, model.getId());
-    		model.setListParentMenu(listParentMenu);
+    		List<HrmMenu> listParentMenu;
+                try {
+                    listParentMenu = menuService.getAllDataByLevelAndNotId(model.getMenuLevel() - 1, model.getId());
+                    model.setListParentMenu(listParentMenu);
+                } catch (Exception ex) {
+                    Logger.getLogger(MenuFormController.class.getName()).log(Level.SEVERE, null, ex);
+                }
     	} else {
     		isDisableParent = Boolean.TRUE;
 			model.getListParentMenu().clear();

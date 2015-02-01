@@ -319,7 +319,7 @@ public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements 
         }
 
         //validate basic value
-        System.out.println(empData.getBasicSalaryDecrypted());
+        
         List<Reimbursment> totalNominalSalary = reimbursmentDao.getAllDataWithEmpIdAndReimbursmentSchemaId(empData.getId(), reimbursmentSchema.getId());
         //hitung jumlah rembesan yg sudah tersimpan didatabase
         for (Reimbursment jmhSalary : totalNominalSalary) {
@@ -335,7 +335,7 @@ public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements 
             jmlNominalReimbursment = jmlNominalReimbursment.add(reimbursment.getNominal());
         }
         String decryptSalary = empData.getBasicSalaryDecrypted();
-        System.out.println(decryptSalary+"============================================");
+        
         //replace "." dan convert ke decimal
         BigDecimal salary = new BigDecimal(decryptSalary);
         if (reimbursmentSchema.getBasicValue() != null) {
@@ -381,7 +381,7 @@ public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements 
             reimbursment.setEmpData(empData);
             reimbursment.setReimbursmentSchema(reimbursmentSchema);
             
-            System.out.println(createdOn+"--------------------------------------------------");
+            
             reimbursment.setCreatedBy(createdBy);
             reimbursment.setCreatedOn(createdOn);
             if (reimbursmentFile != null) {
@@ -433,7 +433,7 @@ public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements 
     }
 
     public void sendingEmailApprovalNotif(ApprovalActivity appActivity) throws Exception {
-        System.out.println("masuk send email approval");
+        
         //initialization
         Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMMM-yyyy");
@@ -450,7 +450,7 @@ public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements 
 //		Reimbursment reimbursment = gson.fromJson(appActivity.getPendingData(), Reimbursment.class);   	
         /*ReimbursmentModelJsonParsing reimbursment = (ReimbursmentModelJsonParsing) JsonConverter.getClassFromJson(appActivity.getPendingData(), ReimbursmentModelJsonParsing.class, "dd-MM-yyyy");
          ReimbursmentSchema reimbursmentSchema = reimbursmentSchemaDao.getEntiyByPK(reimbursment.getReimbursmentSchemaId());
-         System.out.println(reimbursment.getClaimDate());*/
+        */
         Reimbursment reimbursment = gson.fromJson(appActivity.getPendingData(), Reimbursment.class);
         ReimbursmentSchema reimbursmentSchema = reimbursmentSchemaDao.getEntiyByPK(reimbursment.getReimbursmentSchema().getId());
         final JSONObject jsonObj = new JSONObject();
@@ -556,7 +556,7 @@ public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements 
      HrmUser requestUser = hrmUserDao.getByEmpDataId(empData.getId());
      ApprovalActivity approvalActivity = isBypassApprovalChecking ? null : super.checkApprovalProcess(HRMConstant.BUSINESS_TRAVEL, requestUser.getUserId());
      if (approvalActivity == null) {
-     System.out.println("masuk approval activity null");
+     
      reimbursment.setEmpData(empData);
      reimbursment.setReimbursmentSchema(reimbursmentSchema);
      reimbursment.setCreatedBy(UserInfoUtil.getUserName());
@@ -572,7 +572,7 @@ public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements 
      }
      reimbursmentDao.save(reimbursment);
      } else {
-     System.out.println("masuk approval activity gk null");
+     
      //convert reimbursmentModelJson ke json
      String json = JsonConverter.getJson(reimbursmentModelJsonParsing, "dd-MM-yyyy");
      //save to approval activity

@@ -25,9 +25,11 @@ import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
 
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.PayTempKalkulasi;
 import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.EmpDataService;
+import com.inkubator.hrm.service.PayTempKalkulasiEmpPajakService;
 import com.inkubator.hrm.service.PayTempKalkulasiService;
 import com.inkubator.hrm.service.WtPeriodeService;
 import com.inkubator.hrm.web.lazymodel.PaySalaryExecuteLazyDataModel;
@@ -35,6 +37,8 @@ import com.inkubator.hrm.web.model.PayTempKalkulasiModel;
 import com.inkubator.hrm.web.search.PayTempKalkulasiSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.controller.BaseController;
+import com.inkubator.webcore.util.FacesUtil;
+import com.inkubator.webcore.util.MessagesResourceUtil;
 
 /**
  *
@@ -48,6 +52,8 @@ public class PaySalaryExecuteController extends BaseController {
     private EmpDataService empDataService;
     @ManagedProperty(value = "#{payTempKalkulasiService}")
     private PayTempKalkulasiService payTempKalkulasiService;
+    @ManagedProperty(value = "#{payTempKalkulasiEmpPajakService}")
+    private PayTempKalkulasiEmpPajakService payTempKalkulasiEmpPajakService;
     private PayTempKalkulasiSearchParameter searchParameter;
     private LazyDataModel<PayTempKalkulasiModel> lazyDataModel;
     private PayTempKalkulasi selected;
@@ -74,12 +80,11 @@ public class PaySalaryExecuteController extends BaseController {
         super.initialization();
         searchParameter = new PayTempKalkulasiSearchParameter();
         payTempKalkulasiModel = new PayTempKalkulasiModel();
-        progress = null;
-        payrollCalculationDate =  new Date();
+        progress = null;        
        
         try {
-            wtPeriodePayroll = wtPeriodeService.getEntityByStatusActive();
-            wtPeriodeAbsen = wtPeriodeService.getEntityAbsenByStatusActive();
+            wtPeriodePayroll = wtPeriodeService.getEntityByPayrollTypeActive();
+            wtPeriodeAbsen = wtPeriodeService.getEntityByAbsentTypeActive();
             getTotalKaryawan = empDataService.getTotalEmpDataNotTerminate();
             if (wtPeriodePayroll != null) {
                 payTempKalkulasiModel.setStartDate(wtPeriodePayroll.getFromPeriode());
@@ -105,6 +110,7 @@ public class PaySalaryExecuteController extends BaseController {
         jobExecution = null;
         wtPeriodePayroll = null;
         wtPeriodeAbsen = null;
+        payTempKalkulasiEmpPajakService = null;
     }
 
     public void doSearch() {
@@ -120,53 +126,76 @@ public class PaySalaryExecuteController extends BaseController {
     }
 
     public void doCalculatePayroll() {
-        try {
-        	System.out.println("=============================================START doCalculatePayroll " + new Date());
-        	payTempKalkulasiService.deleteAllData();
-            long sleepVariable = empDataService.getTotalEmpDataNotTerminate() * 3;
-            
-            JobParameters jobParameters = new JobParametersBuilder()
-                    .addString("timeInMilis", String.valueOf(System.currentTimeMillis()))
-                    .addDate("payrollCalculationDate", payrollCalculationDate)
-	                .addString("createdBy", UserInfoUtil.getUserName()).toJobParameters();
-            jobExecution = jobLauncherAsync.run(jobPayEmployeeCalculation, jobParameters);
-            
-            int i = 0;
-            while(true){
-            	if(jobExecution.getStatus() == BatchStatus.STARTED || jobExecution.getStatus() == BatchStatus.STARTING) {
-	            	if(i <= 85){
-	            		setProgress(i++);
+    	/** to cater prevent multiple click, that will make batch execute multiple time. 
+    	 *  please see onComplete method that will set jobExecution == null */
+    	if(jobExecution == null){ 
+	        try {
+	        	
+	        	payTempKalkulasiService.deleteAllData();
+	        	payTempKalkulasiEmpPajakService.deleteAllData();
+	            long sleepVariable = empDataService.getTotalEmpDataNotTerminate() * 3;
+	            
+	            JobParameters jobParameters = new JobParametersBuilder()
+	                    .addString("timeInMilis", String.valueOf(System.currentTimeMillis()))
+	                    .addDate("payrollCalculationDate", payrollCalculationDate)
+		                .addString("createdBy", UserInfoUtil.getUserName()).toJobParameters();
+	            jobExecution = jobLauncherAsync.run(jobPayEmployeeCalculation, jobParameters);
+	            
+	            int i = 0;
+	            while(true){
+	            	if(jobExecution.getStatus() == BatchStatus.STARTED || jobExecution.getStatus() == BatchStatus.STARTING) {
+		            	if(i <= 85){
+		            		setProgress(i++);
+		            	}
+		                try {
+		                    Thread.sleep(sleepVariable);
+		                } catch (InterruptedException e) {}	
+	            	} else {
+	            		setProgress(100);
+	            		break;
 	            	}
-	                try {
-	                    Thread.sleep(sleepVariable);
-	                } catch (InterruptedException e) {}	
-            	} else {
-            		setProgress(100);
-            		break;
-            	}
-            }
-            System.out.println("=============================================END doCalculatePayroll " + new Date());
-        } catch (Exception ex) {
-            LOGGER.error(ex, ex);
-        }
-    }
-    
-    public void onComplete() {
-    	if(jobExecution.getStatus() == BatchStatus.COMPLETED){
-    		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Informasi","Kalkulasi Penggajian sukses dilakukan"));
-    	} else {
-    		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Informasi","Kalkulasi Penggajian gagal dilakukan"));
+	            }
+	            
+	        } catch (Exception ex) {
+	            LOGGER.error("Error ", ex);
+	        }
     	}
     }
     
-    public void doPrefareCalculation(){
-        progress=0;
+    public void onCompleteCalculatePayroll() {
+    	if(jobExecution != null) {
+	    	setProgress(0);
+	    	if(jobExecution.getStatus() == BatchStatus.COMPLETED){
+	    		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Informasi","Kalkulasi Penggajian sukses dilakukan"));
+	    	} else {
+	    		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Informasi","Kalkulasi Penggajian gagal dilakukan"));
+	    		FacesContext.getCurrentInstance().validationFailed();
+	    	}
+	    	jobExecution = null;
+    	}
+    }
+    
+    public void doInitCalculatePayroll(){
+    	try {
+			if(empDataService.getTotalByTaxFreeIsNull()>0) {
+				MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_ERROR, "global.error", "salaryCalculation.error_employee_does_not_have_ptkp",
+			        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+				FacesContext.getCurrentInstance().validationFailed();
+			}
+			progress=0;
+		} catch (Exception e) {
+			LOGGER.error("Error ", e);
+		}
     }
 
     public String doDetail() {
         return "/protected/payroll/salary_execution_detail.htm?faces-redirect=true&execution=e" + payTempKalkulasiModel.getPaySalaryComponentId();
     }
 
+    public String doTax(){
+        return "/protected/payroll/tax_view.htm?faces-redirect=true";
+    }
+    
     public void setEmpDataService(EmpDataService empDataService) {
         this.empDataService = empDataService;
     }
@@ -305,6 +334,12 @@ public class PaySalaryExecuteController extends BaseController {
 	public void setWtPeriodeAbsen(WtPeriode wtPeriodeAbsen) {
 		this.wtPeriodeAbsen = wtPeriodeAbsen;
 	}
+
+	public void setPayTempKalkulasiEmpPajakService(
+			PayTempKalkulasiEmpPajakService payTempKalkulasiEmpPajakService) {
+		this.payTempKalkulasiEmpPajakService = payTempKalkulasiEmpPajakService;
+	}
     
+	
     
 }

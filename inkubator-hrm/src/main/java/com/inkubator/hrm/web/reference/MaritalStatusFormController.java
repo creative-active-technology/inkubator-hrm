@@ -68,7 +68,7 @@ public class MaritalStatusFormController extends BaseController{
     @PostConstruct
     @Override
     public void initialization() {
-        System.out.println("init");
+        
         super.initialization();
         String param = FacesUtil.getRequestParameter("param");
         model = new MaritalStatusModel();
@@ -90,7 +90,7 @@ public class MaritalStatusFormController extends BaseController{
     }
     
     public void doSave() {
-        System.out.println("masuk dosave");
+        
         MaritalStatus maritalStatus = getEntityFromViewModel(model);
         try {
             if (isEdit) {

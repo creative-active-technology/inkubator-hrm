@@ -41,8 +41,9 @@ public class WtPeriodeServiceImpl extends IServiceImpl implements WtPeriodeServi
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public WtPeriode getEntiyByPK(Long id) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return wtPeriodeDao.getEntiyByPK(id);
     }
 
     @Override
@@ -56,8 +57,10 @@ public class WtPeriodeServiceImpl extends IServiceImpl implements WtPeriodeServi
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void saveOrUpdate(WtPeriode enntity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        wtPeriodeDao.saveOrUpdate(enntity);
     }
 
     @Override
@@ -151,8 +154,9 @@ public class WtPeriodeServiceImpl extends IServiceImpl implements WtPeriodeServi
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public List<WtPeriode> getAllData() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return wtPeriodeDao.getAllData();
     }
 
     @Override
@@ -204,14 +208,20 @@ public class WtPeriodeServiceImpl extends IServiceImpl implements WtPeriodeServi
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public WtPeriode getEntityByStatusActive() throws Exception {
-        return wtPeriodeDao.getEntityByStatusActive();
+    public WtPeriode getEntityByPayrollTypeActive() throws Exception {
+        return wtPeriodeDao.getEntityByPayrollTypeActive();
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public WtPeriode getEntityAbsenByStatusActive() throws Exception {
-        return wtPeriodeDao.getEntityAbsenByStatusActive();
+    public WtPeriode getEntityByAbsentTypeActive() throws Exception {
+        return wtPeriodeDao.getEntityByAbsentTypeActive();
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public List<WtPeriode> getAllYears() throws Exception {
+        return wtPeriodeDao.getAllYears();
     }
 
 }

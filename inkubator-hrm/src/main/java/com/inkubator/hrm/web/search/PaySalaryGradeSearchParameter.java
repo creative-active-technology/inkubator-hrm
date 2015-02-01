@@ -46,10 +46,14 @@ public class PaySalaryGradeSearchParameter extends SearchParameter{
     }
 
     public BigDecimal getMinSalary() {
-        if (getKeyParam() != null) {
-            if (getKeyParam().equalsIgnoreCase("minSalary")&& getParameter()!=null) {
+        if(StringUtils.equalsIgnoreCase(getKeyParam(), "minSalary")){
+            if(getParameter() != null && !getParameter().equals("")){
                 minSalary = new BigDecimal(getParameter());
+            }else{
+                minSalary = null;
             }
+        } else {
+            minSalary = null;
         }
         return minSalary;
     }
@@ -59,10 +63,14 @@ public class PaySalaryGradeSearchParameter extends SearchParameter{
     }
 
     public BigDecimal getMedSalary() {
-        if (getKeyParam() != null) {
-            if (getKeyParam().equalsIgnoreCase("mediumSalary")&& getParameter()!=null) {
+        if(StringUtils.equalsIgnoreCase(getKeyParam(), "mediumSalary")){
+            if(getParameter() != null && !getParameter().equals("")){
                 medSalary = new BigDecimal(getParameter());
+            }else{
+                medSalary = null;
             }
+        } else {
+            medSalary = null;
         }
         return medSalary;
     }
@@ -72,10 +80,14 @@ public class PaySalaryGradeSearchParameter extends SearchParameter{
     }
 
     public BigDecimal getMaxSalary() {
-        if (getKeyParam() != null) {
-            if (getKeyParam().equalsIgnoreCase("maxSalary")&& getParameter()!=null) {
+        if(StringUtils.equalsIgnoreCase(getKeyParam(), "maxSalary")){
+            if(getParameter() != null && !getParameter().equals("")){
                 maxSalary = new BigDecimal(getParameter());
+            }else{
+                maxSalary = null;
             }
+        } else {
+            maxSalary = null;
         }
         return maxSalary;
     }

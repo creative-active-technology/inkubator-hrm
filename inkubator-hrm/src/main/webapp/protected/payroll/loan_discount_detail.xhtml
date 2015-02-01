@@ -1,0 +1,132 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">              
+                <h:form id="formId">
+                    <div id="box_bg" style="margin: 10px">
+                        <h:panelGrid  columns="2">
+                            <p:graphicImage library="images" name="reimbursement.png" height="36" width="36" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="Loan Discount Detail" styleClass="header_big" />
+                                    <p:outputLabel value="Loan Discount Detail dari Penggajian" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+                        <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px">
+                            <p:row>
+                                <p:column style="width: 10%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="NIK / Nama Karyawan" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 30%">
+                                    <p:outputLabel value="#{loanDiscountDetailController.selectedLoanPaymentDetail.loan.empData.nik} #{loanDiscountDetailController.selectedLoanPaymentDetail.loan.empData.bioData.fullName}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 10%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="Jabatan" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 30%">
+                                    <p:outputLabel value="#{loanDiscountDetailController.selectedLoanPaymentDetail.loan.empData.jabatanByJabatanId.name}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width:10%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="Potongan" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 30%">
+                                    <p:outputLabel value="#{loanDiscountDetailController.selectedLoanPaymentDetail.totalPayment}">
+                                        <f:convertNumber pattern="###,###" type="currency" />
+                                    </p:outputLabel>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width:10%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="Durasi" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 30%">
+                                    <p:outputLabel value="#{loanDiscountDetailController.selectedLoanPaymentDetail.bayarKe} / #{loanDiscountDetailController.selectedLoanPaymentDetail.loan.termin}"/>
+                                </p:column>
+                            </p:row>
+
+
+                        </p:panelGrid>
+                        
+                        <p:dataTable  var="data"  value="#{loanDiscountDetailController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['inclusionReimbursment.list_loan_discount']}"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 3%">
+                                <f:facet name="header">  
+                                    <h:outputText value="Angsuran Ke"/>
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column sortBy="dueDate" style="width: 10%">
+                                <f:facet name="header">
+                                    <h:outputText value="Tanggal Pembayaran"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.dueDate}" >
+                                    <f:convertDateTime pattern="dd MMMM yyyy" />
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column sortBy="totalPayment" style="width: 10%">
+                                <f:facet name="header">
+                                    <h:outputText value="Angsuran"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.totalPayment}" >
+                                    <f:convertNumber pattern="###,###" type="currency" />
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column sortBy="remainingPrincipal" style="width: 10%">
+                                <f:facet name="header">
+                                    <h:outputText value="Sisa Hutang"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.remainingPrincipal}" >
+                                    <f:convertNumber pattern="###,###" type="currency" />
+                                </h:outputLabel>
+                            </p:column>
+                            
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : "/>
+                                <p:outputLabel value="#{loanDiscountDetailController.lazyDataModel.rowCount}"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px"/>
+                            </f:facet>  
+                        </p:dataTable>
+
+                        <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+                        <div style="margin-bottom: 5px">
+                            <p:commandButton value="#{appmsg['global.close']}" icon="ui-icon-contact"  title="#{appmsg['global.close']}" action="#{loanDiscountDetailController.doBack()}" immediate="true"
+                                             styleClass="label_button"/>
+                        </div>
+                    </div>
+                    <p:blockUI block="formId" trigger="tableId" >
+                            <h:panelGrid columns="2" styleClass="grid_no_border">
+                                <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
+                                <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
+                            </h:panelGrid>
+                        </p:blockUI>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

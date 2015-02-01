@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.BusinessTravelDao;
+import com.inkubator.hrm.entity.BioProject;
 import com.inkubator.hrm.entity.BusinessTravel;
 import com.inkubator.hrm.entity.Leave;
 import com.inkubator.hrm.web.search.BusinessTravelSearchParameter;
@@ -123,5 +124,14 @@ public class BusinessTravelDaoImpl extends IDAOImpl<BusinessTravel> implements B
 		criteria.setFetchMode("travelType", FetchMode.JOIN);
 		return (BusinessTravel) criteria.uniqueResult();
 	}
-
+        
+        @Override
+        public List<BusinessTravel> getAllDataByEmpDataId(Long empDataId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());       
+        criteria.setFetchMode("empData", FetchMode.JOIN);
+         criteria.add(Restrictions.eq("empData.id", empDataId));
+        criteria.setFetchMode("travelZone", FetchMode.JOIN);
+	criteria.setFetchMode("travelType", FetchMode.JOIN);
+        return criteria.list();
+    }
 }

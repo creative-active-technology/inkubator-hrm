@@ -50,7 +50,7 @@ public class PublicHolidayDaoImpl extends IDAOImpl<PublicHoliday> implements Pub
     private void doSearchPublicHolidayByParam(String parameter, Criteria criteria) {
         if (StringUtils.isNotEmpty(parameter)) {
             criteria.createAlias("leaveScheme", "l", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("l.name", parameter, MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("l.name", parameter, MatchMode.START));
         }
         criteria.add(Restrictions.isNotNull("id"));
     }

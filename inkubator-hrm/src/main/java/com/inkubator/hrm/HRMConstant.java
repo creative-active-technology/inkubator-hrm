@@ -9,8 +9,7 @@ package com.inkubator.hrm;
  *
  * @author Deni Husni FR
  */
-public class HRMConstant { 
-    
+public class HRMConstant {
 
     public static final String ADMINISTRATOR_ROLE = "ADMINISTRATOR_ROLE";
     public static final String SYSTEM_ADMIN = "SYSTEM_ADMIN";
@@ -322,11 +321,45 @@ public class HRMConstant {
     public static final Integer PAY_SALARY_COMPONENT_TUNJANGAN = 0;
     public static final Integer PAY_SALARY_COMPONENT_POTONGAN = 1;
     public static final Integer PAY_SALARY_COMPONENT_SUBSIDI = 2;
-    
+
     /* Benefit Group */
     public static final Integer BENEFIT_GROUP_MEASUREMENT_HOUR = 0;
     public static final Integer BENEFIT_GROUP_MEASUREMENT_DAY = 1;
     public static final Integer BENEFIT_GROUP_MEASUREMENT_PERIOD = 2;
     public static final Integer BENEFIT_GROUP_MEASUREMENT_HOUR_MULTIPLIER = 173;
     public static final Integer BENEFIT_GROUP_MEASUREMENT_DAY_MULTIPLIER = 22;
+
+    /* Tax Free */
+    public static final String TF_STATUS_TIDAK_KAWIN = "TK";
+    public static final String TF_STATUS_KAWIN = "K";
+    public static final Integer TF_INC_PERSON_ZERO = 0;
+    public static final Integer TF_INC_PERSON_ONE = 1;
+    public static final Integer TF_INC_PERSON_TWO = 2;
+    public static final Integer TF_INC_PERSON_THREE = 0;
+
+    public static final Integer GLOBAL_MARRIED = 1;
+    public static final Integer GLOBAL_NO_MARRIED = 0;
+
+    /* Periode */
+    public static final String PERIODE_ABSEN_VOID = "Void";
+    public static final String PERIODE_ABSEN_ACTIVE = "Active";
+    public static final String PERIODE_ABSEN_NOT_ACTIVE = "Not Active";
+    public static final String PERIODE_PAYROLL_VOID = "Void";
+    public static final String PERIODE_PAYROLL_ACTIVE = "Active";
+    public static final String PERIODE_PAYROLL_NOT_ACTIVE = "Not Active";
+
+    /* Loan */
+    public static final Integer LOAN_UNPAID = 0;
+    public static final Integer LOAN_PAID = 1;
+    public static final Integer LOAN_CANCELED = 2;
+
+//    KODEFIKAISIPROSES
+    public static final String LOAN_KODE = "LOAN";
+    public static final String REIMBERS_KODE = "REIM";
+    public static final String ACHIEFMENT_KODE = "ACHI";
+    public static final String TATIB_KODE = "DEML";
+    public static final String TRAVEL_KODE = "TRAV";
+    public static final String TERMINASI_KODE = "TERM";
+    public static final String OVERTIME_KODE = "OTIM";
+
 }

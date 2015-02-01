@@ -8,6 +8,7 @@ package com.inkubator.hrm.dao;
 
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.JabatanSpesifikasi;
+import com.inkubator.hrm.entity.JabatanSpesifikasiId;
 import java.util.List;
 
 /**
@@ -19,4 +20,8 @@ public interface JabatanSpesifikasiDao extends IDAO<JabatanSpesifikasi>{
     public JabatanSpesifikasi getDataByPK(Long id);
     
     public List<JabatanSpesifikasi> getAllDataByJabatanId(Long jabatanId);
+    
+    public JabatanSpesifikasi getEntityByBioJabatanSpesifikasiId(JabatanSpesifikasiId id);
+    
+    public Long getTotalEntityByBioJabatanSpesifikasiId(JabatanSpesifikasiId id);
 }

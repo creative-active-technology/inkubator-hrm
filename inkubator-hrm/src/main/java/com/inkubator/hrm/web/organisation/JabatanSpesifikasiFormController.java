@@ -8,6 +8,7 @@ import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.entity.JabatanSpesifikasi;
+import com.inkubator.hrm.entity.JabatanSpesifikasiId;
 import com.inkubator.hrm.entity.SpecificationAbility;
 import com.inkubator.hrm.service.JabatanService;
 import com.inkubator.hrm.service.JabatanSpesifikasiService;
@@ -147,13 +148,15 @@ public class JabatanSpesifikasiFormController extends BaseController{
                 isEdit = Boolean.FALSE;
             }
             if(param.contains("e")){
+                String jabatanIdParam = FacesUtil.getRequestParameter("jabatanId");
                 isEdit = Boolean.TRUE;
                 long jobSpekId = Long.parseLong(param.substring(1));
-                JabatanSpesifikasi jabatanSpesifikasi = service.getEntiyByPK(jobSpekId);
-                model.setId(jabatanSpesifikasi.getId());
+                JabatanSpesifikasi jabatanSpesifikasi = service.getEntityByBioJabatanSpesifikasiId(new JabatanSpesifikasiId(Long.parseLong(jabatanIdParam.substring(1)), Long.parseLong(param.substring(1))));
+//                model.setId(jabatanSpesifikasi.getId());
                 model.setOptionAbility(jabatanSpesifikasi.getOptionAbility());
                 model.setValue(jabatanSpesifikasi.getValue());
                 model.setSpecId(jabatanSpesifikasi.getSpecificationAbility().getId());
+                model.setOldId(Long.parseLong(param.substring(1)));
                 jabatanId = jabatanSpesifikasi.getJabatan().getId();
                 //select one menu dropdown
                 doChangeValue();
@@ -198,7 +201,7 @@ public class JabatanSpesifikasiFormController extends BaseController{
         JabatanSpesifikasi jabatanSpesifikasi = getEntityFromViewModel(model);
         try {
             if (isEdit) {
-                service.update(jabatanSpesifikasi);
+                service.update(jabatanSpesifikasi, model.getOldId());
                 RequestContext.getCurrentInstance().closeDialog(HRMConstant.UPDATE_CONDITION);
             } else {
                 service.save(jabatanSpesifikasi);
@@ -217,7 +220,7 @@ public class JabatanSpesifikasiFormController extends BaseController{
         String optionAbility = "";
         JabatanSpesifikasi jabatanSpesifikasi = new JabatanSpesifikasi();
         if (model.getId() != null) {
-            jabatanSpesifikasi.setId(model.getId());
+//            jabatanSpesifikasi.setId(model.getId());
         }
         jabatanSpesifikasi.setJabatan(new Jabatan(jabatanId));
         jabatanSpesifikasi.setSpecificationAbility(new SpecificationAbility(model.getSpecId()));

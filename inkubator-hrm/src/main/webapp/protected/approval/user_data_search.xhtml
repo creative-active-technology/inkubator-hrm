@@ -19,7 +19,7 @@
                 <h:form id="empDataFormId" >
                     <div id="box_bg" style="margin: 10px">
                         <h:panelGrid columns="4">
-                            <p:outputLabel value="Nama" styleClass="header_big" />
+                            <p:outputLabel value="#{appmsg['global.name']}" styleClass="header_big" />
                             <p:outputLabel value=":" styleClass="header_big" />
                             <p:inputText style="width: 450px" value="#{userSearchController.userName}"/>
                             <p:commandButton value="Cari" icon="ui-icon-search" action="#{userSearchController.doSearch()}" update="listBioId"  id="cariId"/>
@@ -38,25 +38,25 @@
 
                             <p:column> 
                                 <f:facet name="header">  
-                                    <h:outputText value="User Name" />
+                                    <h:outputText value="#{appmsg['global.username']}" />
                                 </f:facet>
                                 <p:outputLabel value=" #{userList.userId}" />
                             </p:column> 
                             <p:column > 
                                 <f:facet name="header">  
-                                    <h:outputText value="Real Name" />
+                                    <h:outputText value="#{appmsg['global.realname']}" />
                                 </f:facet>
                                 <p:outputLabel value="#{userList.realName}" />
                             </p:column>
                             <p:column  > 
                                 <f:facet name="header">  
-                                    <h:outputText value="Email Address" />
+                                    <h:outputText value="#{appmsg['biodata.email_address']}" />
                                 </f:facet>
                                 <h:outputLabel value=" #{userList.emailAddress}" />
                             </p:column>
                             <p:column style="text-align: center" > 
                                 <f:facet name="header">  
-                                    <h:outputText value="Aksi" />
+                                    <h:outputText value="#{appmsg['global.action']}" />
                                 </f:facet>
                                 <p:commandButton value="Select"  style="font-size: 11px!important" action="#{userSearchController.doSelect(userList)}"/>
                             </p:column>

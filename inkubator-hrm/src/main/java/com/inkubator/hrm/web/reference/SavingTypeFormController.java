@@ -84,7 +84,7 @@ public class SavingTypeFormController extends BaseController{
     }
     
     public void doSave() {
-        System.out.println("masuk dosave");
+        
         SavingType savingType = getEntityFromViewModel(model);
         try {
             if (isUpdate) {

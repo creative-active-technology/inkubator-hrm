@@ -3,13 +3,16 @@ package com.inkubator.hrm.dao.impl;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.BenefitGroupDao;
 import com.inkubator.hrm.entity.BenefitGroup;
+import com.inkubator.hrm.entity.PaySalaryComponent;
 import com.inkubator.hrm.web.search.BenefitGroupSearchParameter;
 import java.util.List;
-import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
@@ -53,6 +56,26 @@ public class BenefitGroupDaoImpl extends IDAOImpl<BenefitGroup> implements Benef
             criteria.add(Restrictions.like("name", parameter.getName(), MatchMode.ANYWHERE));
         }
         criteria.add(Restrictions.isNotNull("id"));
+    }
+
+    @Override
+    public String getBenefitGroupNameByPk(Long id) throws Exception {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("id", id));
+        return (String) criteria.setProjection(Projections.property("name")).uniqueResult();
+    }
+
+    @Override
+    public List<BenefitGroup> getBenefitGroupData(Long id) {
+        ProjectionList proList = Projections.projectionList();
+        proList.add(Projections.groupProperty("modelReffernsil"));
+        DetachedCriteria subQuery = DetachedCriteria.forClass(PaySalaryComponent.class);
+        subQuery.createAlias("modelComponent", "mc").add(Restrictions.eq("mc.id", id));
+        subQuery.setProjection(proList);
+        
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Property.forName("id").notIn(subQuery));
+        return criteria.list();
     }
 
 }

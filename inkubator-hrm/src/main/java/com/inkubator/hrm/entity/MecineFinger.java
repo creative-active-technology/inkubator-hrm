@@ -57,7 +57,6 @@ public class MecineFinger implements java.io.Serializable {
     private Set<DepartementUploadCapture> departementUploadCaptures = new HashSet<DepartementUploadCapture>(0);
     private List<Department> departments = new ArrayList<>(0);
     private List<FingerSwapCaptured> fingerSwapCaptureds = new ArrayList<FingerSwapCaptured>(0);
-    private List<TempProcessReadFinger> tempProcessReadFingers = new ArrayList<TempProcessReadFinger>(0);
     private List<FingerMatchEmp> fingerMatchEmps = new ArrayList<FingerMatchEmp>(0);
 
     public MecineFinger() {
@@ -343,16 +342,6 @@ public class MecineFinger implements java.io.Serializable {
 
 	public void setFingerSwapCaptureds(List<FingerSwapCaptured> fingerSwapCaptureds) {
 		this.fingerSwapCaptureds = fingerSwapCaptureds;
-	}
-		
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "mecineFinger")
-	public List<TempProcessReadFinger> getTempProcessReadFingers() {
-		return tempProcessReadFingers;
-	}
-
-	public void setTempProcessReadFingers(
-			List<TempProcessReadFinger> tempProcessReadFingers) {
-		this.tempProcessReadFingers = tempProcessReadFingers;
 	}
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "mecineFinger")

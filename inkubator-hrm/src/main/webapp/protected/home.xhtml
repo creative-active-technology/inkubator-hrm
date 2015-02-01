@@ -33,7 +33,7 @@
                                         </h:panelGroup>
                                         <h:panelGroup layout="block">
                                             <h:panelGrid columns="1" style="text-align: center">
-                                                <h:outputLink id="createUserId3" value="${request.contextPath}/protected/employee/employee_palcement_view.htm">
+                                                <h:outputLink id="createUserId3" value="${request.contextPath}/protected/employee/emp_placement_view.htm">
                                                     <p:graphicImage library="images" name="user.png" style="width: 60px;height: 60px;" cache="true" /> 
                                                 </h:outputLink>
                                                 <h:outputLabel value="Karyawan" styleClass="label_quick"/>
@@ -65,7 +65,7 @@
                                                                                 </h:panelGroup>-->
                                         <h:panelGroup layout="block">
                                             <h:panelGrid columns="1" style="text-align: center">
-                                                <h:outputLink id="payrollId" value="${request.contextPath}/protected/payroll/pay_salary_execute.htm">
+                                                <h:outputLink id="payrollId" value="${request.contextPath}/protected/payroll/salary_execution_view.htm">
                                                     <p:graphicImage library="images" name="payroll.png" style="width: 60px;height: 60px;" cache="true" /> 
                                                 </h:outputLink>
                                                 <h:outputLabel value="Payroll" styleClass="label_quick"/>
@@ -73,10 +73,18 @@
                                         </h:panelGroup>
                                         <h:panelGroup layout="block">
                                             <h:panelGrid columns="1" style="text-align: center">
-                                                <h:outputLink id="jadwalKerjaId" value="#">
-                                                    <p:graphicImage library="images" name="task.png" style="opacity: 0.3;width: 60px;height: 60px;" cache="true" /> 
+                                                <h:outputLink id="jadwalKerjaId" value="${request.contextPath}/protected/employee/emp_schedule_view.htm">
+                                                    <p:graphicImage library="images" name="task.png" style="width: 60px;height: 60px;" cache="true" /> 
                                                 </h:outputLink>
                                                 <h:outputLabel value="Jadwal Kerja" styleClass="label_quick"/>
+                                            </h:panelGrid>
+                                        </h:panelGroup>
+                                        <h:panelGroup layout="block">
+                                            <h:panelGrid columns="1" style="text-align: center">
+                                                <h:outputLink id="cutiId" value="${request.contextPath}/protected/working_time/leave_impl_form.htm">
+                                                    <p:graphicImage library="images" name="permit.png" style="width: 60px;height: 60px;" cache="true" /> 
+                                                </h:outputLink>
+                                                <h:outputLabel value="Cuti" styleClass="label_quick"/>
                                             </h:panelGrid>
                                         </h:panelGroup>
                                         <h:panelGroup layout="block">
@@ -93,14 +101,6 @@
                                                     <p:graphicImage library="images" name="broadcast.png" style="opacity: 0.3;width: 60px;height: 60px;" cache="true" /> 
                                                 </h:outputLink>
                                                 <h:outputLabel value="Broadcast Info" styleClass="label_quick"/>
-                                            </h:panelGrid>
-                                        </h:panelGroup>
-                                        <h:panelGroup layout="block">
-                                            <h:panelGrid columns="1" style="text-align: center">
-                                                <h:outputLink id="cutiId" value="#">
-                                                    <p:graphicImage library="images" name="permit.png" style="opacity: 0.3;width: 60px;height: 60px;" cache="true" /> 
-                                                </h:outputLink>
-                                                <h:outputLabel value="Cuti" styleClass="label_quick"/>
                                             </h:panelGrid>
                                         </h:panelGroup>
                                         <h:panelGroup layout="block">
@@ -609,7 +609,7 @@
                             hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>
                 <pe:tooltip for="jadwalKerjaId" value="Click to Create Jadwal Kerja" showEffect="slideToggle"
                             hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>
-                <pe:tooltip for="payrollId" value="Available on version 1.2" showEffect="slideToggle"
+                <pe:tooltip for="payrollId" value="Pay Calculation View" showEffect="slideToggle"
                             hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>
                 <pe:tooltip for="lemburId" value="Available on version 1.2" showEffect="slideToggle"
                             hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>

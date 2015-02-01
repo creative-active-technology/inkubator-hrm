@@ -134,7 +134,7 @@ public class LoanSchemaServiceImpl extends IServiceImpl implements LoanSchemaSer
         this.loanSchemaDao.saveAndMerge(update);
         Set<LoanSchemaEmployeeType> dataToSave = entity.getLoanSchemaEmployeeTypes();
         for (LoanSchemaEmployeeType loanSchemaEmployeeType : dataToSave) {
-            System.out.println("eksekusi");
+            
             loanSchemaEmployeeType.setLoanSchema(update);
             this.loanSchemaEmployeeTypeDao.save(loanSchemaEmployeeType);
         }
@@ -237,8 +237,9 @@ public class LoanSchemaServiceImpl extends IServiceImpl implements LoanSchemaSer
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<LoanSchema> getAllData() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return loanSchemaDao.getAllData();
     }
 
     @Override
@@ -281,5 +282,11 @@ public class LoanSchemaServiceImpl extends IServiceImpl implements LoanSchemaSer
 	public List<LoanSchema> getAllDataByEmployeeTypeId(Long employeeTypeId) throws Exception {
 		return loanSchemaDao.getAllDataByEmployeeTypeId(employeeTypeId);
 	}
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ,propagation = Propagation.SUPPORTS, timeout = 50)
+    public String getLoanSchemaNameByPk(Long id) throws Exception {
+        return loanSchemaDao.getLoanSchemaNameByPk(id);
+    }
     
 }

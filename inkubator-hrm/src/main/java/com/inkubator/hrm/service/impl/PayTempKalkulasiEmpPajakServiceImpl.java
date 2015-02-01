@@ -9,11 +9,17 @@ import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.dao.PayTempKalkulasiEmpPajakDao;
 import com.inkubator.hrm.entity.PayTempKalkulasiEmpPajak;
 import com.inkubator.hrm.service.PayTempKalkulasiEmpPajakService;
+import com.inkubator.hrm.web.model.PayTempKalkulasiEmpPajakModel;
+
 import java.util.List;
+
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -184,6 +190,43 @@ public class PayTempKalkulasiEmpPajakServiceImpl extends IServiceImpl implements
     @Override
     public List<PayTempKalkulasiEmpPajak> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void deleteAllData() throws Exception {
+        payTempKalkulasiEmpPajakDao.deleteAllData();
+
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<PayTempKalkulasiEmpPajakModel> getByParam() throws Exception {
+        return payTempKalkulasiEmpPajakDao.getByParam();
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalPayTempKalkulasiEmpPajakByParam() throws Exception {
+        return payTempKalkulasiEmpPajakDao.getTotalPayTempKalkulasiEmpPajakByParam();
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<PayTempKalkulasiEmpPajak> getByParamForDetail(String searchParameter, int firstResult, int maxResults, Order order, Long taxComponentId) throws Exception {
+        return payTempKalkulasiEmpPajakDao.getByParamForDetail(searchParameter, firstResult, maxResults, order, taxComponentId);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalPayTempKalkulasiEmpPajakByParamForDetail(String searchParameter, Long taxComponentId) throws Exception {
+        return payTempKalkulasiEmpPajakDao.getTotalPayTempKalkulasiEmpPajakByParamForDetail(searchParameter, taxComponentId);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public List<PayTempKalkulasiEmpPajak> getAllDataByEmpDataId(Long empDataId) throws Exception {
+        return payTempKalkulasiEmpPajakDao.getAllDataByEmpDataId(empDataId);
     }
 
 }

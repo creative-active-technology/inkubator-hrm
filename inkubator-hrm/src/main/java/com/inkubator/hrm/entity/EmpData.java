@@ -43,6 +43,7 @@ public class EmpData implements java.io.Serializable {
     private Jabatan jabatanByJabatanId;
     private GolonganJabatan golonganJabatan;
     private Jabatan jabatanByJabatanGajiId;
+    private TaxFree taxFree;
     private String nik;
     private Date joinDate;
     private String ppmp;
@@ -81,9 +82,9 @@ public class EmpData implements java.io.Serializable {
     private Set<PermitDistribution> permitDistributions = new HashSet<>(0);
     private Set<PayTempUploadData> payTempUploadDatas = new HashSet<PayTempUploadData>(0);
     private Set<PayComponentDataException> payComponentDataExceptions = new HashSet<PayComponentDataException>(0);
-    private Set<MedicalCare> medicalCares = new HashSet<>(0);
-    private Set<MedicalCare> medicalCareTemporaryActings = new HashSet<>(0);
-    
+    private Set<PayTempKalkulasi> payTempKalkulasis = new HashSet<PayTempKalkulasi>(0);
+    private Set<PayTempOvertime> payTempOvertimes = new HashSet<PayTempOvertime>(0);
+
     public EmpData() {
     }
 
@@ -208,6 +209,16 @@ public class EmpData implements java.io.Serializable {
 
     public void setJabatanByJabatanGajiId(Jabatan jabatanByJabatanGajiId) {
         this.jabatanByJabatanGajiId = jabatanByJabatanGajiId;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "tax_free_id")
+    public TaxFree getTaxFree() {
+        return taxFree;
+    }
+
+    public void setTaxFree(TaxFree taxFree) {
+        this.taxFree = taxFree;
     }
 
     @Column(name = "NIK", unique = true, length = 45)
@@ -573,24 +584,20 @@ public class EmpData implements java.io.Serializable {
     }
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "empData")
-    public Set<MedicalCare> getMedicalCares() {
-        return medicalCares;
+    public Set<PayTempKalkulasi> getPayTempKalkulasis() {
+        return payTempKalkulasis;
     }
 
-    public void setMedicalCares(Set<MedicalCare> medicalCares) {
-        this.medicalCares = medicalCares;
-    }
-    
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "temporaryActing")
-    public Set<MedicalCare> getMedicalCareTemporaryActings() {
-        return medicalCareTemporaryActings;
+    public void setPayTempKalkulasis(Set<PayTempKalkulasi> payTempKalkulasis) {
+        this.payTempKalkulasis = payTempKalkulasis;
     }
 
-    public void setMedicalCareTemporaryActings(Set<MedicalCare> medicalCareTemporaryActings) {
-        this.medicalCareTemporaryActings = medicalCareTemporaryActings;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "empData")
+    public Set<PayTempOvertime> getPayTempOvertimes() {
+        return this.payTempOvertimes;
     }
-    
-    
-    
 
+    public void setPayTempOvertimes(Set<PayTempOvertime> payTempOvertimes) {
+        this.payTempOvertimes = payTempOvertimes;
+    }
 }

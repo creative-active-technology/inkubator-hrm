@@ -345,7 +345,7 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
             mSSend.setFrom(HRMConstant.SYSTEM_ADMIN);
             mSSend.setDestination(hrmUser.getPhoneNumber());
             mSSend.setContent("Dear " + passwordHistory.getRealName() + " You has registered in HR Application with User Name :" + hrmUser.getUserId() + " and Password :" + pass);
-            System.out.println("step 2");
+           
             // Send notificatin SMS
             this.jmsTemplateSMS.send(new MessageCreator() {
                 @Override
@@ -366,7 +366,7 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void resetPassword(HrmUser u) throws Exception {
-        System.out.println(" Step 1");
+        
         HrmUser user = this.hrmUserDao.getEntiyByPK(u.getId());
         user.setPassword(HashingUtils.getHashSHA256(u.getPassword()));
         user.setUpdatedBy(HRMConstant.INKUBA_SYSTEM);
@@ -407,7 +407,7 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
             mSSend.setFrom(HRMConstant.SYSTEM_ADMIN);
             mSSend.setDestination(user.getPhoneNumber());
             mSSend.setContent("Dear " + passwordHistory.getRealName() + " your password in HR Application has been reset with :" + u.getPassword());
-            System.out.println("step 2");
+           
             // Send notificatin SMS
             this.jmsTemplateSMS.send(new MessageCreator() {
                 @Override
@@ -473,7 +473,7 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
             mSSend.setFrom(HRMConstant.SYSTEM_ADMIN);
             mSSend.setDestination(user.getPhoneNumber());
             mSSend.setContent("Dear " + passwordHistory.getRealName() + " your password in HR Application has been update with :" + newPassword);
-            System.out.println("step 2");
+            
             // Send notificatin SMS
             this.jmsTemplateSMS.send(new MessageCreator() {
                 @Override

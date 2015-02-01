@@ -4,12 +4,13 @@
  */
 package com.inkubator.hrm.service.impl;
 
-import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.BioDataDao;
 import com.inkubator.hrm.dao.BioSpesifikasiAbilityDao;
 import com.inkubator.hrm.dao.SpecificationAbilityDao;
 import com.inkubator.hrm.entity.BioSpesifikasiAbility;
+import com.inkubator.hrm.entity.BioSpesifikasiAbilityId;
 import com.inkubator.hrm.service.BioSpesifikasiAbilityService;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import java.util.Date;
@@ -68,8 +69,13 @@ public class BioSpesifikasiAbilityServiceImpl extends IServiceImpl implements Bi
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(BioSpesifikasiAbility entity) throws Exception {
-        entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
-        entity.setBiodata(bioDataDao.getEntiyByPK(entity.getBiodata().getId()));
+        //check jika ada duplikat
+        Long totalDuplicate = bioSpesifikasiAbilityDao.getTotalEntityByBioBioSpesifikasiAbilityId(new BioSpesifikasiAbilityId(entity.getBioData().getId(), entity.getSpecificationAbility().getId()));
+        if(totalDuplicate > 0){
+            throw new BussinessException("jabatanSpesifikasi.error_duplicate");
+        }
+        entity.setId(new BioSpesifikasiAbilityId(entity.getBioData().getId(), entity.getSpecificationAbility().getId()));
+        entity.setBioData(bioDataDao.getEntiyByPK(entity.getBioData().getId()));
         entity.setSpecificationAbility(specificationAbilityDao.getEntiyByPK(entity.getSpecificationAbility().getId()));
         entity.setCreatedBy(UserInfoUtil.getUserName());
         entity.setCreatedOn(new Date());
@@ -80,16 +86,37 @@ public class BioSpesifikasiAbilityServiceImpl extends IServiceImpl implements Bi
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(BioSpesifikasiAbility entity) throws Exception {
-        BioSpesifikasiAbility update = this.bioSpesifikasiAbilityDao.getEntiyByPK(entity.getId());
-        update.setBiodata(bioDataDao.getEntiyByPK(entity.getBiodata().getId()));
+        
+        BioSpesifikasiAbility update = this.bioSpesifikasiAbilityDao.getEntityByBioSpesifikasiAbilityId(new BioSpesifikasiAbilityId(entity.getBioData().getId(), entity.getSpecificationAbility().getId()));
+        update.setBioData(bioDataDao.getEntiyByPK(entity.getBioData().getId()));
         update.setSpecificationAbility(specificationAbilityDao.getEntiyByPK(entity.getSpecificationAbility().getId()));
         update.setOptionAbility(entity.getOptionAbility());
-        update.setScore(entity.getScore());
+        update.setValue(entity.getValue());
         update.setUpdatedBy(UserInfoUtil.getUserName());
         update.setUpdatedOn(new Date());
         this.bioSpesifikasiAbilityDao.update(update);
     }
 
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void updateBioSpecAbility(BioSpesifikasiAbility entity, Long oldId) throws Exception {
+        //check jika ada duplikat
+        Long totalDuplicate = bioSpesifikasiAbilityDao.getTotalEntityByBioBioSpesifikasiAbilityId(new BioSpesifikasiAbilityId(entity.getBioData().getId(), entity.getSpecificationAbility().getId()));
+        if(totalDuplicate > 0){
+            throw new BussinessException("jabatanSpesifikasi.error_duplicate");
+        }
+        BioSpesifikasiAbility update = this.bioSpesifikasiAbilityDao.getEntityByBioSpesifikasiAbilityId(new BioSpesifikasiAbilityId(entity.getBioData().getId(), oldId));
+        this.bioSpesifikasiAbilityDao.delete(update);
+        entity.setId(new BioSpesifikasiAbilityId(entity.getBioData().getId(), entity.getSpecificationAbility().getId()));
+        entity.setBioData(bioDataDao.getEntiyByPK(entity.getBioData().getId()));
+        entity.setSpecificationAbility(specificationAbilityDao.getEntiyByPK(entity.getSpecificationAbility().getId()));
+        entity.setOptionAbility(entity.getOptionAbility());
+        entity.setValue(entity.getValue());
+        entity.setUpdatedBy(UserInfoUtil.getUserName());
+        entity.setUpdatedOn(new Date());
+        this.bioSpesifikasiAbilityDao.save(entity);    
+    }
+    
     @Override
     public void saveOrUpdate(BioSpesifikasiAbility enntity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -158,7 +185,8 @@ public class BioSpesifikasiAbilityServiceImpl extends IServiceImpl implements Bi
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor =Exception.class)
     public void delete(BioSpesifikasiAbility entity) throws Exception {
-        this.bioSpesifikasiAbilityDao.delete(entity);
+        BioSpesifikasiAbility delete = this.getEntityByBioSpesifikasiAbilityId(new BioSpesifikasiAbilityId(entity.getBioData().getId(), entity.getSpecificationAbility().getId()));
+        this.bioSpesifikasiAbilityDao.delete(delete);
     }
 
     @Override
@@ -224,6 +252,12 @@ public class BioSpesifikasiAbilityServiceImpl extends IServiceImpl implements Bi
     @Override
     public List<BioSpesifikasiAbility> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public BioSpesifikasiAbility getEntityByBioSpesifikasiAbilityId(BioSpesifikasiAbilityId id) throws Exception {
+        return bioSpesifikasiAbilityDao.getEntityByBioSpesifikasiAbilityId(id);
     }
     
 }

@@ -1,0 +1,122 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>TODO supply a title</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg">
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="user_account.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['bankTransferDistribution.bankTransferDistribution']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['bankTransferDistribution.fromPayroll']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator />
+                    <p:growl id="growBankTransferId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
+                    <h:form id="bankTransferFormId" >
+                        <p:panelGrid style="width: 100%;margin-top: 20px;" styleClass="grid_border3">
+                            <p:row>
+                                <p:column style="width: 15%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['employee.employee_name']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 85%">
+                                    <p:outputLabel  value="#{distributionBankController.empData.nik}  - #{distributionBankController.empData.bioData.firstName} #{distributionBankController.empData.bioData.lastName}" />
+                                </p:column>
+
+
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 15%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['benefitGroupRate.benefitGroupRate_golongan']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 85%">
+                                    <p:outputLabel  value="#{distributionBankController.empData.golonganJabatan.code}" />
+                                </p:column>
+
+
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 15%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg[distributionBankTransfer.workDate]}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 85%" >
+                                    <p:outputLabel value="#{distributionBankController.empData.joinDate}" >
+                                        <f:convertDateTime pattern="dd MMMM yyyy" />
+                                    </p:outputLabel>
+                                </p:column>
+
+                            </p:row>
+
+                        </p:panelGrid>
+                        <p:dataTable value="#{distributionBankController.dataToCalculate}" var="listPayReceipt" rowIndexVar="no" style="margin-top: 20px;margin-bottom: 5px" id="tableDistribusiId">
+                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['bankTransferDistribution.employeePayrollDistribution']}" style="text-align: left" styleClass="label_hrm"/> 
+                            </f:facet>
+                            <p:column style="text-align: center;width: 25px;max-width: 25px">
+                                <f:facet name="header">  
+                                    <h:outputText value="No." />
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column  > 
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['bankTransferDistribution.accountName']}" />
+                                </f:facet>
+                                <h:outputLabel value=" #{listPayReceipt.bioBankAccount.ownerName}" />
+                            </p:column> 
+                            <p:column  > 
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['bankTransferDistribution.accountNumber']}" />
+                                </f:facet>
+                                <h:outputLabel value=" #{listPayReceipt.bioBankAccount.accountNumber}" />
+                            </p:column>
+                            <p:column  > 
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['bankTransferDistribution.bankName']}" />
+                                </f:facet>
+                                <h:outputLabel value=" #{listPayReceipt.bioBankAccount.bank.bankName}" />
+                            </p:column>
+                            <p:column  style="width: 250px"> 
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['bankTransferDistribution.percent']}" />
+                                </f:facet>
+                                <div align="right">
+                                    <p:spinner min="0" max="100" value="#{listPayReceipt.persen}" size="4"  suffix=" %"  stepFactor="1"   >
+                                        <p:ajax update=":bankTransferFormId,:growBankTransferId" process="@this" listener="#{distributionBankController.doChange()}" partialSubmit="true"/>
+                                    </p:spinner>
+
+                                </div>
+                            </p:column>
+                        </p:dataTable>
+                        <div align="right">
+                            <p:outputLabel value="Total : #{distributionBankController.totalPercent} %" id="totalId"  styleClass="label_hrm" style="margin-right: 10px" />
+                        </div>
+                        <!--<p:messages showDetail="true" showSummary="false"/>-->
+                        <p:separator/>
+                        <h:panelGrid columns="2" style="margin-bottom: 5px;float: left">
+                            <p:commandButton value="#{appmsg['global.save']}"  icon="ui-icon-folder-open" title="#{appmsg['global.save']}" action="#{distributionBankController.doSave()}" styleClass="label_button" update=":growBankTransferId"/>
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{distributionBankController.doBack()}" styleClass="label_button"/>
+                        </h:panelGrid>
+                        <div style="clear: both"/>
+                    </h:form>
+                </div>
+
+            </ui:define>
+
+        </ui:composition>
+    </h:body>
+</html>

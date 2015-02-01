@@ -1,0 +1,190 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg" style="margin: 10px">                    
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="institutionEducation.png" height="36" width="36" cache="true"/>
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['institutionEducation.institutionEducation']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['institutionEducation.institutionEducation_data_from_reference']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+
+                    <p:separator/>
+                    <p:growl id="growlInstitutionEducationViewlId" globalOnly="true" showDetail="true" />
+
+                    <h:form id="formInstitutionEducationViewId">
+                        <p:toolbar  style="margin-top: 10px">
+                            <p:toolbarGroup align="left">
+                                <h:panelGrid columns="5">
+                                    <p:outputLabel value="#{appmsg['global.searching']}" title="#{appmsg['global.searching']}" styleClass="label_hrm" />
+                                    <p:outputLabel value=":" />
+                                    <p:selectOneMenu value="#{institutionEducationViewController.searchParameter.keyParam}" style="margin-right: 3px" >
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItem itemLabel="#{appmsg['institutionEducation.institutionEducation_code']}" itemValue="institutionEducationCode"/>
+                                        <f:selectItem itemLabel="#{appmsg['institutionEducation.institutionEducation_name']}" itemValue="institutionEducationName"/>
+                                        <f:selectItem itemLabel="#{appmsg['institutionEducation.city_name']}" itemValue="cityName"/>
+                                    </p:selectOneMenu>
+                                    <p:inputText id="searchId" value="#{institutionEducationViewController.searchParameter.parameter}" style="width: 250px" styleClass="isitext_hrm"/>
+                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{institutionEducationViewController.doSearch()}" update="tableInstitutionEducationId"  styleClass="label_button" icon="ui-icon-search"/>
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                            <p:toolbarGroup align="right">
+                                <h:panelGrid columns="3" >
+                                    <p:commandButton value="#{appmsg['global.export']}" style="margin-right: 5px" icon="ui-icon-calculator" title="#{appmsg['global.export_excel']}" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
+                                        <pe:exporter target="tableInstitutionEducationId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_InstitutionEducation"/>
+                                    </p:commandButton>
+                                    <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']}" actionListener="#{institutionEducationViewController.doAdd()}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
+                                        <p:ajax event="dialogReturn" listener="#{institutionEducationViewController.onDialogReturn}"  update="tableInstitutionEducationId,:growlInstitutionEducationViewlId"/>
+                                    </p:commandButton>
+                                    
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{institutionEducationViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                        </p:toolbar>
+                        <p:focus for="searchId" />
+
+                        <p:dataTable  id="tableInstitutionEducationId" var="institutionEducationData"  value="#{institutionEducationViewController.lazyDataInstitutionEducation}" lazy="true" paginator="true" pageLinks="7"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['institutionEducation.list_of_institutionEducation']}"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 3%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>                            
+                            <p:column sortBy="institutionEducationCode"  style="width: 22%;">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.code']}" style="text-align: center;"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{institutionEducationData.institutionEducationCode}"/>
+                            </p:column>  
+                            <p:column sortBy="institutionEducationName"  style="width: 65%; ">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.name']}" style=""/>
+                                </f:facet>
+                                <h:outputLabel value= "#{institutionEducationData.institutionEducationName}"/>
+                            </p:column>
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
+                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
+                                                 style="font-size: 10px!important" update=":panelDialogDetailId" 
+                                                 action="#{institutionEducationViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogDetailInstitutionEducation.show()">                        
+                                    <f:setPropertyActionListener value="#{institutionEducationData}" target="#{institutionEducationViewController.selectedInstitutionEducation}" />
+                                </p:commandButton>
+                                - 
+                                <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+                                                 style="font-size: 10px!important" update=":panelDialogConfirmId" 
+                                                 action="#{institutionEducationViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmInstitutionEducation.show()">
+                                    <f:setPropertyActionListener value="#{institutionEducationData}" target="#{institutionEducationViewController.selectedInstitutionEducation}" />
+                                </p:commandButton>
+                                -
+                                <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
+                                                 action="#{institutionEducationViewController.doUpdate()}" >
+                                    <f:setPropertyActionListener value="#{institutionEducationData}" target="#{institutionEducationViewController.selectedInstitutionEducation}" />
+                                    <p:ajax event="dialogReturn" listener="#{institutionEducationViewController.onDialogReturn}"  update="tableInstitutionEducationId,:growlInstitutionEducationViewlId"/>
+                                </p:commandButton>
+                            </p:column>                        
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : "/>
+                                <p:outputLabel value="#{institutionEducationViewController.lazyDataInstitutionEducation.rowCount}"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px"/>
+                            </f:facet>  
+                        </p:dataTable>
+                        <p:blockUI block="formInstitutionEducationViewId" trigger="tableInstitutionEducationId,btnSearchId" >
+                            <h:panelGrid columns="2" styleClass="grid_no_border">
+                                <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
+                                <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
+                            </h:panelGrid>
+                        </p:blockUI>
+                        <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
+                            <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
+                        </p:dialog>
+                    </h:form>
+                </div>
+
+                <p:dialog widgetVar="dialogConfirmInstitutionEducation" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                          appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
+                    <div align="center">
+                        <div align="center">
+                            <h:panelGrid columns="2" style="text-align: justify">
+                                <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
+                                <h:panelGroup>
+                                    <h:panelGrid style="text-align: center">
+                                        <p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
+                                    </h:panelGrid>
+                                </h:panelGroup>
+                            </h:panelGrid>
+                        </div>
+                        <h:panelGrid id="panelDialogConfirmId"  columns="3">
+                            <p:outputLabel value="#{appmsg['institutionEducation.institutionEducation']}"  style="font-weight: bold"/>
+                            <p:outputLabel value=":"  style="font-weight: bold"/>
+                            <p:outputLabel value="#{institutionEducationViewController.selectedInstitutionEducation.institutionEducationName}" styleClass="label_hrm"/>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:commandButton value="#{appmsg['global.yes']}" action="#{institutionEducationViewController.doDelete()}" update="formInstitutionEducationViewId,:growlInstitutionEducationViewlId"
+                                         oncomplete="dialogConfirmInstitutionEducation.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmInstitutionEducation.hide()" icon="ui-icon-close" />                     	
+                    </div>
+                </p:dialog>
+                <p:dialog widgetVar="dialogDetailInstitutionEducation" header="#{appmsg['institutionEducation.detail_dialog']}" styleClass="header_small_no_bold" width="450" modal="true" resizable="false" hideEffect="puff" 
+                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                    <p:panelGrid id="panelDialogDetailId" style="width:100%;margin:5px;">
+                        
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['institutionEducation.institutionEducation_code']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{institutionEducationViewController.selectedInstitutionEducation.institutionEducationCode}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['institutionEducation.institutionEducation_name']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{institutionEducationViewController.selectedInstitutionEducation.institutionEducationName}" styleClass="label_hrm"/></p:column>
+                        </p:row>  
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['educationhistory.education_level']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{institutionEducationViewController.selectedInstitutionEducation.educationLevel.name}" styleClass="label_hrm"/></p:column>
+                        </p:row>  
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['institutionEducation.address']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{institutionEducationViewController.selectedInstitutionEducation.address}" styleClass="label_hrm"/></p:column>
+                        </p:row>  
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['institutionEducation.city_name']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{institutionEducationViewController.selectedInstitutionEducation.city.cityName}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['institutionEducation.postal_code']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{institutionEducationViewController.selectedInstitutionEducation.postalCode}" styleClass="label_hrm"/></p:column>
+                        </p:row>  
+                        <f:facet name="footer">
+                            <p:row>
+                                <p:column colspan="2"><p:outputLabel value="#{appmsg['menu.data_reference']} - #{appmsg['institutionEducation.institutionEducation']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
+                            </p:row>
+                        </f:facet>
+                    </p:panelGrid>
+                </p:dialog>
+            </ui:define>
+        </ui:composition>
+
+    </h:body>
+</html>
+

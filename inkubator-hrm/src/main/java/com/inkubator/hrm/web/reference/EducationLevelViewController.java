@@ -126,7 +126,7 @@ public class EducationLevelViewController extends BaseController {
         options.put("resizable", false);
         options.put("contentWidth", 400);
         options.put("contentHeight", 280);
-        RequestContext.getCurrentInstance().openDialog("education_level_form", options, params);
+        RequestContext.getCurrentInstance().openDialog("edu_level_form", options, params);
     }
 
     @Override
