@@ -9,7 +9,8 @@ package com.inkubator.hrm;
  *
  * @author Deni Husni FR
  */
-public class HRMConstant {
+public class HRMConstant { 
+    
 
     public static final String ADMINISTRATOR_ROLE = "ADMINISTRATOR_ROLE";
     public static final String SYSTEM_ADMIN = "SYSTEM_ADMIN";
