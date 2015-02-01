@@ -104,7 +104,7 @@
             <groupId>com.inkubator</groupId>
             <artifactId>messaging-core</artifactId>
             <version>1.0.0.RELEASE</version>
-        </dependency>
+        </dependency> 
 <!--         <dependency> 
             <groupId>metro.ui</groupId>
             <artifactId>metroui</artifactId>
