@@ -51,3 +51,4 @@ public interface ApprovalActivityDao extends IDAO<ApprovalActivity> {
     
     public void updateAndFlush(ApprovalActivity approvalActivity);
 }
+ 
