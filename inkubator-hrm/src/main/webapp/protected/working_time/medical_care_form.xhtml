@@ -26,8 +26,8 @@
                             <p:graphicImage library="images" name="task_ico.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="#{appmsg['medicalcare.permit_implementation']}" styleClass="header_big" />
-                                    <p:outputLabel value="#{appmsg['medicalcare.permit_implementation_data_from_working_time']}" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['medicalcare.medical_care']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['medicalcare.medical_care_data_from_working_time']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -53,17 +53,17 @@
                             </p:row>  
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="jabatanId" value="#{appmsg['medicalcare.jabatan']}" styleClass="label_hrm"/>
+                                    <p:outputLabel for="jabatanId" value="#{appmsg['jabatan.jabatan']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:inputText id="jabatanId" title="#{appmsg['medicalcare.jabatan']}" value="#{medicalCareFormController.model.jabatan}" 
+                                    <p:inputText id="jabatanId" title="#{appmsg['jabatan.jabatan']}" value="#{medicalCareFormController.model.jabatan}" 
                                                  maxlength="60" styleClass="isitext_hrm" style="width:287px;" readonly="true"/>
                                     <p:message for="jabatanId"/>
                                 </p:column>
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="requestDateId" value="#{appmsg['medicalcare.request_date']}" styleClass="label_hrm"/>
+                                    <p:outputLabel for="requestDateId" value="#{appmsg['medicalcare.filling_date']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:calendar id="requestDateId" required="true" pattern="dd MMMM yyyy" value="#{medicalCareFormController.model.requestDate}"/>
@@ -116,17 +116,17 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="totalDaysId" value="#{appmsg['medicalcare.total_days']}" styleClass="label_hrm"/>
+                                    <p:outputLabel for="totalDaysId" value="#{appmsg['medicalcare.total_working_days']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:inputText id="totalDaysId" title="#{appmsg['medicalcare.total_days']}" value="#{medicalCareFormController.model.totalDays}" 
+                                    <p:inputText id="totalDaysId" title="#{appmsg['medicalcare.total_working_days']}" value="#{medicalCareFormController.model.totalDays}" 
                                                  required="true" styleClass="isitext_hrm" style="width:80px;" readonly="true"/>
                                     <p:message for="totalDaysId"/>
                                 </p:column>
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="hospitalId" value="#{appmsg['medicalcare.hospital']}" styleClass="label_hrm" />
+                                    <p:outputLabel for="hospitalId" value="#{appmsg['hospital.hospital']}" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:selectBooleanButton value="#{medicalCareFormController.disabledHospital}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
@@ -161,10 +161,10 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="diseaseId" value="#{appmsg['medicalcare.disease']}" styleClass="label_hrm" />
+                                    <p:outputLabel for="diseaseId" value="#{appmsg['disease.disease']}" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column  style="width: 80%">                                    
-                                    <p:autoComplete id="diseaseId" title="#{appmsg['medicalcare.disease']}" 
+                                    <p:autoComplete id="diseaseId" title="#{appmsg['disease.disease']}" 
                                                     value="#{medicalCareFormController.model.diseaseId}"
                                                     completeMethod="#{medicalCareFormController.doAutoCompleteDisease}"                                                
                                                     var="disease"
@@ -178,30 +178,30 @@
                             </p:row> 
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="notesId" value="#{appmsg['medicalcare.notes']}" styleClass="label_hrm"/>
+                                    <p:outputLabel for="notesId" value="#{appmsg['global.notes']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:inputTextarea id="notesId" title="#{appmsg['medicalcare.notes']}" value="#{medicalCareFormController.model.medicalNotes}" 
+                                    <p:inputTextarea id="notesId" title="#{appmsg['global.notes']}" value="#{medicalCareFormController.model.medicalNotes}" 
                                                      maxlength="1000" styleClass="isitext_hrm" style="width:290px;" />  
                                     <p:message for="notesId"/>
                                 </p:column>
                             </p:row>   
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="materialId" value="#{appmsg['medicalcare.material']}" styleClass="label_hrm"/>
+                                    <p:outputLabel for="materialId" value="#{appmsg['medicalcare.material_jobs_abandoned']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:inputTextarea id="materialId" title="#{appmsg['medicalcare.material']}" value="#{medicalCareFormController.model.materialJobsAbandoned}" 
+                                    <p:inputTextarea id="materialId" title="#{appmsg['medicalcare.material_jobs_abandoned']}" value="#{medicalCareFormController.model.materialJobsAbandoned}" 
                                                      maxlength="1000" styleClass="isitext_hrm" style="width:290px;" />  
                                     <p:message for="materialId"/>
                                 </p:column>
                             </p:row>   
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="temporaryActingId" value="#{appmsg['medicalcare.temporary']}" styleClass="label_hrm"/>
+                                    <p:outputLabel for="temporaryActingId" value="#{appmsg['medicalcare.temporary_acting']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:autoComplete id="temporaryActingId" title="#{appmsg['medicalcare.temporary']}" 
+                                    <p:autoComplete id="temporaryActingId" title="#{appmsg['medicalcare.temporary_acting']}" 
                                                     value="#{medicalCareFormController.model.empDataByTemporaryActingId}"
                                                     completeMethod="#{medicalCareFormController.doAutoCompleteEmployee}"                                                
                                                     var="empDataByTemporaryActingId"

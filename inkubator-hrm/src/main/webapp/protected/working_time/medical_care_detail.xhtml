@@ -39,7 +39,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel value="#{appmsg['medicalcare.jabatan']}" styleClass="label_hrm"/>
+                                    <p:outputLabel value="#{appmsg['jabatan.jabatan']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:outputLabel value="#{medicalCareDetailController.selectedMedicalCare.empData.jabatanByJabatanId.name}"/>
@@ -47,7 +47,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel value="#{appmsg['medicalcare.request_date']}" styleClass="label_hrm"/>
+                                    <p:outputLabel value="#{appmsg['medicalcare.filling_date']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:outputLabel value="#{medicalCareDetailController.selectedMedicalCare.requestDate}">
@@ -74,7 +74,7 @@
                                         <f:convertDateTime pattern="dd MMMM yyyy" />
                                     </p:outputLabel>
                                 </p:column>
-                            </p:row>
+                            </p:row>                            
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
                                     <p:outputLabel value="#{appmsg['medicalcare.doctor']}" styleClass="label_hrm"/>
@@ -85,15 +85,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel value="#{appmsg['medicalcare.doctor']}" styleClass="label_hrm"/>
-                                </p:column>
-                                <p:column  style="width: 80%">
-                                    <p:outputLabel value="#{medicalCareDetailController.selectedMedicalCare.docterName}"/>
-                                </p:column>
-                            </p:row>
-                            <p:row>
-                                <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel value="#{appmsg['medicalcare.total_days']}" styleClass="label_hrm"/>
+                                    <p:outputLabel value="#{appmsg['medicalcare.total_working_days']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:outputLabel value="#{medicalCareDetailController.selectedMedicalCare.totalDays}"/>
@@ -101,7 +93,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel value="#{appmsg['medicalcare.hospital']}" styleClass="label_hrm"/>
+                                    <p:outputLabel value="#{appmsg['hospital.hospital']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:outputLabel value="#{medicalCareDetailController.selectedMedicalCare.hospital.name}"/>
@@ -120,7 +112,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel value="#{appmsg['medicalcare.disease']}" styleClass="label_hrm"/>
+                                    <p:outputLabel value="#{appmsg['disease.disease']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:outputLabel value="#{medicalCareDetailController.selectedMedicalCare.disease.name}"/>
@@ -129,7 +121,7 @@
 
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel value="#{appmsg['medicalcare.notes']}" styleClass="label_hrm"/>
+                                    <p:outputLabel value="#{appmsg['global.notes']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:outputLabel value="#{medicalCareDetailController.selectedMedicalCare.medicalNotes}"/>
@@ -137,7 +129,7 @@
                             </p:row>
                              <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel value="#{appmsg['medicalcare.material']}" styleClass="label_hrm"/>
+                                    <p:outputLabel value="#{appmsg['medicalcare.material_jobs_abandoned']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:outputLabel value="#{medicalCareDetailController.selectedMedicalCare.materialJobsAbandoned}"/>
@@ -145,7 +137,7 @@
                             </p:row>
                              <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel value="#{appmsg['medicalcare.temporary']}" styleClass="label_hrm"/>
+                                    <p:outputLabel value="#{appmsg['medicalcare.temporary_acting']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:outputLabel value="#{medicalCareDetailController.selectedMedicalCare.temporaryActing.nikWithFullName}"/>

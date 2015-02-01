@@ -68,7 +68,7 @@
                             </p:column>
                             <p:column sortBy="requestDate"  style="width: 15%">
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['medicalcare.requestDate']}"/>
+                                    <h:outputText value="#{appmsg['medicalcare.filling_date']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{medicalCareData.requestDate}"/>
                             </p:column> 
@@ -80,7 +80,7 @@
                             </p:column>
                             <p:column sortBy="empDataByEmpDataId.jabatanByJabatanId.name"  style="width: 20%">
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['medicalcare.jabatan']}"/>
+                                    <h:outputText value="#{appmsg['jabatan.jabatan']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{medicalCareData.empData.jabatanByJabatanId.name}"/>
                                 
@@ -148,7 +148,7 @@
                         <h:panelGrid id="panelDialogConfirmId"  columns="3">
                             <p:outputLabel value="#{appmsg['medicalcare.medical_care']}"  style="font-weight: bold"/>
                             <p:outputLabel value=":"  style="font-weight: bold"/>
-                            <p:outputLabel value="#{medicalCareViewController.selectedMedicalCare.empDataByEmpDataId.nikWithFullName}" styleClass="label_hrm"/>
+                            <p:outputLabel value="#{medicalCareViewController.selectedMedicalCare.empData.nikWithFullName}" styleClass="label_hrm"/>
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{medicalCareViewController.doDelete()}" update="formMedicalCareViewId,:growlMedicalCareViewId"
