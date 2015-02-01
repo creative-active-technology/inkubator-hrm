@@ -52,7 +52,7 @@ public class MedicalCareLazyDataModel extends LazyDataModel<MedicalCare> impleme
             }
         } else {
             try {
-            	medicalCares = medicalCareService.getByParam(medicalCareSearchParameter, first, pageSize, Order.asc("name"));
+            	medicalCares = medicalCareService.getByParam(medicalCareSearchParameter, first, pageSize, Order.asc("createdOn"));
                 total = Integer.parseInt(String.valueOf(medicalCareService.getTotalByParam(medicalCareSearchParameter)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);

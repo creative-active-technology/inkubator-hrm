@@ -1,0 +1,238 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:o="http://omnifaces.org/ui"
+      xmlns:of="http://omnifaces.org/functions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlMedicalCareFormId" globalOnly="true" showDetail="true"/>                
+                <o:form id="formMedicalCareFormId">
+                    <p:focus context="formMedicalCareFormId"/>
+                    <div id="box_bg" style="margin: 10px">
+                        <h:panelGrid columns="2">
+                            <p:graphicImage library="images" name="task_ico.png" height="36" width="36" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="#{appmsg['medicalcare.permit_implementation']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['medicalcare.permit_implementation_data_from_working_time']}" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+                        <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px;margin-bottom:20px;">
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="employeeId" value="#{appmsg['global.employee']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:autoComplete id="employeeId" title="#{appmsg['global.employee']}" 
+                                                    value="#{medicalCareFormController.model.empDataByEmpDataId}"
+                                                    completeMethod="#{medicalCareFormController.doAutoCompleteEmployee}"                                                
+                                                    var="empDataByEmpDataId"
+                                                    itemValue="#{empDataByEmpDataId}"
+                                                    itemLabel="#{empDataByEmpDataId.nik} #{empDataByEmpDataId.bioData.firstName} #{empDataByEmpDataId.bioData.lastName}"
+                                                    converter="empDataConverter"
+                                                    required="true" styleClass="isitext_hrm" size="45">
+                                        <p:ajax event="itemSelect" listener="#{medicalCareFormController.onChangeEmployee}" update="jabatanId"/>
+                                    </p:autoComplete>
+                                    <p:message for="employeeId"/>
+                                </p:column>
+                            </p:row>  
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="jabatanId" value="#{appmsg['medicalcare.jabatan']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:inputText id="jabatanId" title="#{appmsg['medicalcare.jabatan']}" value="#{medicalCareFormController.model.jabatan}" 
+                                                 maxlength="60" styleClass="isitext_hrm" style="width:287px;" readonly="true"/>
+                                    <p:message for="jabatanId"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="requestDateId" value="#{appmsg['medicalcare.request_date']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:calendar id="requestDateId" required="true" pattern="dd MMMM yyyy" value="#{medicalCareFormController.model.requestDate}"/>
+                                    <p:message for="requestDateId"/>
+                                </p:column>
+                            </p:row>  
+                            <p:row>
+                                <p:column style="width: 100%;background-color: #e1f0f0!important" colspan="2">
+                                    <p:outputLabel value="#{appmsg['medicalcare.notice']}" styleClass="label_hrm"/>
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="startDateId" value="#{appmsg['global.start_date']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:calendar id="startDateId" required="true" pattern="dd MMMM yyyy" value="#{medicalCareFormController.model.startDate}">
+                                        <p:ajax event="dateSelect" listener="#{medicalCareFormController.onChangeStartOrEndDate()}" update="totalDaysId,startDateId"/>
+                                        <f:validator validatorId="dateBetweenValidator"  />
+                                        <f:attribute name="endTime" value="#{endDateId}"/>
+                                        <f:attribute name="dateBetweenValidatorMessage" value="#{appmsg['publicHoliday.publicHoliday_dateValidator']}"/>
+                                        <f:validator validatorId="backDateValidator"  />	                                    
+                                    </p:calendar>
+                                    <p:message for="startDateId"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="endDateId" value="#{appmsg['global.end_date']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:calendar id="endDateId" binding="#{endDateId}" required="true" pattern="dd MMMM yyyy" value="#{medicalCareFormController.model.endDate}">
+                                        <f:validator validatorId="backDateValidator"  />
+                                        <p:ajax event="dateSelect" listener="#{medicalCareFormController.onChangeStartOrEndDate()}" update="totalDaysId"/>
+                                        
+                                    </p:calendar>
+                                    <p:message for="endDateId"/>
+                                </p:column>
+                            </p:row>       
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="doctorId" value="#{appmsg['medicalcare.doctor']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:inputText id="doctorId" title="#{appmsg['medicalcare.doctor']}" value="#{medicalCareFormController.model.docterName}" 
+                                                 maxlength="60" styleClass="isitext_hrm" style="width:287px;" required="true"/>
+                                    <p:message for="doctorId"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="totalDaysId" value="#{appmsg['medicalcare.total_days']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:inputText id="totalDaysId" title="#{appmsg['medicalcare.total_days']}" value="#{medicalCareFormController.model.totalDays}" 
+                                                 required="true" styleClass="isitext_hrm" style="width:80px;" readonly="true"/>
+                                    <p:message for="totalDaysId"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="hospitalId" value="#{appmsg['medicalcare.hospital']}" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:selectBooleanButton value="#{medicalCareFormController.disabledHospital}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
+                                                           offIcon="ui-icon-close" styleClass="label_button" >
+                                        <p:ajax update="hospitalId" listener="#{medicalCareFormController.onChangeHospitalCheckbox()}" />
+                                    </p:selectBooleanButton>
+                                    <p:autoComplete id="hospitalId" title="#{appmsg['global.employee']}" disabled="#{!medicalCareFormController.disabledHospital}"
+                                                    value="#{medicalCareFormController.model.hospitalId}"
+                                                    completeMethod="#{medicalCareFormController.doAutoCompleteHospital}"                                                
+                                                    var="hospital"
+                                                    itemValue="#{hospital}"
+                                                    itemLabel="#{hospital.name}"
+                                                    converter="hospitalConverter"
+                                                    required="true" styleClass="isitext_hrm" size="45">
+                                    </p:autoComplete>
+                                    <p:message for="hospitalId"/>
+                                </p:column>
+                            </p:row> 
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="attachmentId" value="#{appmsg['global.file_name']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:fileUpload required="true" sizeLimit="1000000000" label="#{appmsg['global.choose_file']}" fileUploadListener="#{medicalCareFormController.handingFileUpload}"
+                                                  mode="advanced"  id="attachmentId"  style="margin-top:10px;margin-bottom:10px;width: 100%;text-align: left!important"
+                                                  dragDropSupport="true" multiple="false" update="fileNameId,:growlMedicalCareFormId"
+                                                  allowTypes="/(\.|\/)(jpe?g|png|mp4|flv|doc|docx|xls|xlsx|pdf|ppt|pptx|pps|ppsx)$/"/> 
+                                    <p:outputLabel value="#{appmsg['global.file_name']}"/>
+                                    <p:outputLabel value="#{medicalCareFormController.model.uploadPath}" id="fileNameId"/>  
+                                    <p:message for="attachmentId"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="diseaseId" value="#{appmsg['medicalcare.disease']}" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column  style="width: 80%">                                    
+                                    <p:autoComplete id="diseaseId" title="#{appmsg['medicalcare.disease']}" 
+                                                    value="#{medicalCareFormController.model.diseaseId}"
+                                                    completeMethod="#{medicalCareFormController.doAutoCompleteDisease}"                                                
+                                                    var="disease"
+                                                    itemValue="#{disease}"
+                                                    itemLabel="#{disease.name}"
+                                                    converter="diseaseConverter"
+                                                    required="true" styleClass="isitext_hrm" size="45">
+                                    </p:autoComplete>
+                                    <p:message for="diseaseId"/>
+                                </p:column>
+                            </p:row> 
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="notesId" value="#{appmsg['medicalcare.notes']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:inputTextarea id="notesId" title="#{appmsg['medicalcare.notes']}" value="#{medicalCareFormController.model.medicalNotes}" 
+                                                     maxlength="1000" styleClass="isitext_hrm" style="width:290px;" />  
+                                    <p:message for="notesId"/>
+                                </p:column>
+                            </p:row>   
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="materialId" value="#{appmsg['medicalcare.material']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:inputTextarea id="materialId" title="#{appmsg['medicalcare.material']}" value="#{medicalCareFormController.model.materialJobsAbandoned}" 
+                                                     maxlength="1000" styleClass="isitext_hrm" style="width:290px;" />  
+                                    <p:message for="materialId"/>
+                                </p:column>
+                            </p:row>   
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="temporaryActingId" value="#{appmsg['medicalcare.temporary']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:autoComplete id="temporaryActingId" title="#{appmsg['medicalcare.temporary']}" 
+                                                    value="#{medicalCareFormController.model.empDataByTemporaryActingId}"
+                                                    completeMethod="#{medicalCareFormController.doAutoCompleteEmployee}"                                                
+                                                    var="empDataByTemporaryActingId"
+                                                    itemValue="#{empDataByTemporaryActingId}"
+                                                    itemLabel="#{empDataByTemporaryActingId.nik} #{empDataByTemporaryActingId.bioData.firstName} #{empDataByTemporaryActingId.bioData.lastName}"
+                                                    converter="empDataConverter"
+                                                    required="true" styleClass="isitext_hrm" size="45">
+                                    </p:autoComplete>
+                                    <p:message for="temporaryActingId"/>
+                                </p:column>
+                            </p:row>  
+
+                        </p:panelGrid>	                 	
+
+                        <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+                        <div style="margin-bottom: 5px">
+                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formMedicalCareFormId,:growlMedicalCareFormId"
+                                             action="#{medicalCareFormController.doSave()}" styleClass="isitext_hrm"
+                                             style="margin-right: 5px" label="#{appmsg['global.save']}"
+                                             icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formMedicalCareFormId" action="#{medicalCareFormController.doReset()}"
+                                             icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px">  
+                                <p:resetInput target="formMedicalCareFormId" />  
+                            </p:commandButton>
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{medicalCareFormController.doBack()}" immediate="true"
+                                             styleClass="label_button"/>
+                        </div>
+                    </div>
+                </o:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

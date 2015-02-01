@@ -1,5 +1,8 @@
 package com.inkubator.hrm.web.model;
 
+import com.inkubator.hrm.entity.Disease;
+import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.Hospital;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -10,10 +13,10 @@ import java.util.Date;
 public class MedicalCareModel implements Serializable {
 
     private Long id;
-    private Long empDataByTemporaryActingId;
-    private Long empDataByEmpDataId;
-    private Long diseaseId;
-    private Long hospitalId;
+    private EmpData empDataByTemporaryActingId;
+    private EmpData empDataByEmpDataId;
+    private Disease diseaseId;
+    private Hospital hospitalId;
     private Date requestDate;
     private Date endDate;
     private String materialJobsAbandoned;
@@ -32,37 +35,41 @@ public class MedicalCareModel implements Serializable {
         this.id = id;
     }
 
-    public Long getEmpDataByTemporaryActingId() {
+    public EmpData getEmpDataByTemporaryActingId() {
         return empDataByTemporaryActingId;
     }
 
-    public void setEmpDataByTemporaryActingId(Long empDataByTemporaryActingId) {
+    public void setEmpDataByTemporaryActingId(EmpData empDataByTemporaryActingId) {
         this.empDataByTemporaryActingId = empDataByTemporaryActingId;
     }
 
-    public Long getEmpDataByEmpDataId() {
+    public EmpData getEmpDataByEmpDataId() {
         return empDataByEmpDataId;
     }
 
-    public void setEmpDataByEmpDataId(Long empDataByEmpDataId) {
+    public void setEmpDataByEmpDataId(EmpData empDataByEmpDataId) {
         this.empDataByEmpDataId = empDataByEmpDataId;
     }
 
-    public Long getDiseaseId() {
+    public Disease getDiseaseId() {
         return diseaseId;
     }
 
-    public void setDiseaseId(Long diseaseId) {
+    public void setDiseaseId(Disease diseaseId) {
         this.diseaseId = diseaseId;
     }
 
-    public Long getHospitalId() {
+    public Hospital getHospitalId() {
         return hospitalId;
     }
 
-    public void setHospitalId(Long hospitalId) {
+    public void setHospitalId(Hospital hospitalId) {
         this.hospitalId = hospitalId;
     }
+
+    
+
+    
 
     public Date getRequestDate() {
         return requestDate;
