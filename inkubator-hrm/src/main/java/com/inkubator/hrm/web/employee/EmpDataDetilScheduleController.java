@@ -55,7 +55,7 @@ public class EmpDataDetilScheduleController extends BaseController {
             super.initialization();
             String empId = FacesUtil.getRequestParameter("execution");
             selectedEmpData = empDataService.getByEmpIdWithDetail(Long.parseLong(empId.substring(1)));
-            dataToShow=tempJadwalKaryawanService.getAllByEmpIdWithDetail(selectedEmpData.getId());
+            dataToShow=tempJadwalKaryawanService.getAllByEmpIdWithDetailWithFromAndUntilPeriod(selectedEmpData.getId());
 //            jabatanDeskripsis = new ArrayList<>(selectedEmpData.getJabatanByJabatanId().getJabatanDeskripsis());
 //            listJabatanSpesifikasi = new ArrayList<>(selectedEmpData.getJabatanByJabatanId().getJabatanSpesifikasis());
 //            listCareerHistory = empCareerHistoryService.getEmployeeCareerByBioId(selectedEmpData.getBioData().getId());

@@ -166,9 +166,11 @@ public class PaySalaryExecuteController extends BaseController {
     	if(jobExecution != null) {
 	    	setProgress(0);
 	    	if(jobExecution.getStatus() == BatchStatus.COMPLETED){
-	    		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Informasi","Kalkulasi Penggajian sukses dilakukan"));
+	    		MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.information", "salaryCalculation.calculation_process_succesfully",
+                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 	    	} else {
-	    		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Informasi","Kalkulasi Penggajian gagal dilakukan"));
+	    		MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_ERROR, "global.error", "salaryCalculation.calculation_process_failed",
+                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 	    		FacesContext.getCurrentInstance().validationFailed();
 	    	}
 	    	jobExecution = null;

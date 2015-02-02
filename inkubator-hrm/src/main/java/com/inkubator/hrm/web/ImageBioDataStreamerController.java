@@ -6,11 +6,13 @@
 package com.inkubator.hrm.web;
 
 import com.inkubator.hrm.entity.BioDocument;
+import com.inkubator.hrm.entity.MedicalCare;
 import com.inkubator.hrm.entity.PermitImplementation;
 import com.inkubator.hrm.entity.Reimbursment;
 import com.inkubator.hrm.service.BioDataService;
 import com.inkubator.hrm.service.BioDocumentService;
 import com.inkubator.hrm.service.BioEducationHistoryService;
+import com.inkubator.hrm.service.MedicalCareService;
 import com.inkubator.hrm.service.PermitImplementationService;
 import com.inkubator.hrm.service.ReimbursmentService;
 import com.inkubator.webcore.controller.BaseController;
@@ -47,6 +49,8 @@ public class ImageBioDataStreamerController extends BaseController {
     private ReimbursmentService reimbursmentService;
     @ManagedProperty(value = "#{permitImplementationService}")
     private PermitImplementationService permitImplementationService;
+    @ManagedProperty(value = "#{medicalCareService}")
+    private MedicalCareService medicalCareService;
     private StreamedContent ijazahFile;
 
     public void setBioDataService(BioDataService bioDataService) {
@@ -73,6 +77,16 @@ public class ImageBioDataStreamerController extends BaseController {
         this.permitImplementationService = permitImplementationService;
     }
 
+    public MedicalCareService getMedicalCareService() {
+        return medicalCareService;
+    }
+
+    public void setMedicalCareService(MedicalCareService medicalCareService) {
+        this.medicalCareService = medicalCareService;
+    }
+
+    
+    
     
     
     
@@ -231,7 +245,8 @@ public class ImageBioDataStreamerController extends BaseController {
     public StreamedContent getAttachmentFile() throws IOException {
         FacesContext context = FacesUtil.getFacesContext();
         String id = context.getExternalContext().getRequestParameterMap().get("permitId");
-        
+        System.out.println("id====" +id);
+        System.out.println("context====" +context);
         if (context.getRenderResponse() || id == null) {
             return new DefaultStreamedContent();
         } else {
@@ -239,6 +254,32 @@ public class ImageBioDataStreamerController extends BaseController {
             try {
                 PermitImplementation permitImplementation = permitImplementationService.getEntiyByPK(Long.parseLong(id));
                 String path = permitImplementation.getUploadPath();
+                if (StringUtils.isEmpty(path)) {
+                    path = facesIO.getPathUpload() + "no_image.png";
+                }
+                is = facesIO.getInputStreamFromURL(path);
+
+                return new DefaultStreamedContent(is, null, StringUtils.substringAfterLast(path, "/"));
+
+            } catch (Exception ex) {
+                LOGGER.error(ex, ex);
+                return new DefaultStreamedContent();
+            }
+        }
+    }
+    
+    public StreamedContent getMedicalFile() throws IOException {
+        FacesContext context = FacesUtil.getFacesContext();
+        String id = context.getExternalContext().getRequestParameterMap().get("permitId");
+        System.out.println("id====" +id);
+        System.out.println("context====" +context);
+        if (context.getRenderResponse() || id == null) {
+            return new DefaultStreamedContent();
+        } else {
+            InputStream is = null;
+            try {
+                MedicalCare medicalCare = medicalCareService.getEntiyByPK(Long.parseLong(id));
+                String path = medicalCare.getUploadPath();
                 if (StringUtils.isEmpty(path)) {
                     path = facesIO.getPathUpload() + "no_image.png";
                 }

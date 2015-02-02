@@ -5,9 +5,6 @@
 package com.inkubator.hrm.web.converter;
 
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ApplicationScoped;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -17,21 +14,24 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.inkubator.hrm.entity.Hospital;
 import com.inkubator.hrm.service.HospitalService;
+import com.inkubator.webcore.util.ServiceWebUtil;
+import javax.faces.convert.FacesConverter;
 
 /**
  *
  * @author Taufik Hidayat
  */
-@ManagedBean(name = "hospitalConverter")
-@ApplicationScoped
+//@ManagedBean(name = "hospitalConverter")
+//@ApplicationScoped
+@FacesConverter(value = "hospitalConverter")
 public class HospitalConverter implements Converter {
 
-    @ManagedProperty(value = "#{hospitalService}")
-    private HospitalService hospitalService;
-
-    public void setHospitalService(HospitalService hospitalService) {
-        this.hospitalService = hospitalService;
-    }
+//    @ManagedProperty(value = "#{hospitalService}")
+//    private HospitalService hospitalService;
+//
+//    public void setHospitalService(HospitalService hospitalService) {
+//        this.hospitalService = hospitalService;
+//    }
 
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
@@ -40,6 +40,7 @@ public class HospitalConverter implements Converter {
         }
         try {
             Long id = Long.parseLong(value);
+            HospitalService hospitalService = (HospitalService) ServiceWebUtil.getService("hospitalService");
             Hospital hospital = hospitalService.getEntiyByPK(id);
             return hospital;
         } catch (Exception e) {
