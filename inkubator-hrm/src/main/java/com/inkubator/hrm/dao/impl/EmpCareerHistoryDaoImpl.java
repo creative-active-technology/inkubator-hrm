@@ -79,7 +79,10 @@ public class EmpCareerHistoryDaoImpl extends IDAOImpl<EmpCareerHistory> implemen
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.setFetchMode("bioData", FetchMode.JOIN);
         criteria.setFetchMode("jabatan", FetchMode.JOIN);       
+        criteria.setProjection(Projections.max("tglPenganngkatan"));
+        criteria.setProjection(Projections.groupProperty("nik"));
         doSearchEmpRotasiByParamReport(searchParameter, criteria);
+   
         return criteria.list();
     }
 
