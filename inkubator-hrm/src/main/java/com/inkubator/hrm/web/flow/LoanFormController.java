@@ -113,6 +113,7 @@ public class LoanFormController implements Serializable{
 		loan.setInterestRate(model.getInterestRate());
 		loan.setTypeOfInterest(model.getTypeOfInterest());
 		loan.setTermin(model.getTermin());
+		loan.setStatusPencairan(HRMConstant.LOAN_UNDISBURSED);
 		
 		try {
 			if(loan.getId() == null) {
