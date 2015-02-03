@@ -16,11 +16,7 @@ public interface LoanDao extends IDAO<Loan> {
 
     public List<Loan> getByParam(LoanSearchParameter parameter, int firstResult, int maxResults, Order orderable);
 
-    public List<Loan> getByParamByStatusPencairan(LoanSearchParameter parameter, int firstResult, int maxResults, Order orderable);
-
     public Long getTotalByParam(LoanSearchParameter parameter);
-
-    public Long getTotalByParamByStatusPencairan(LoanSearchParameter parameter);
 
     public Loan getEntityByPkWithDetail(Long id);
 
@@ -30,8 +26,8 @@ public interface LoanDao extends IDAO<Loan> {
     
     public Long getCurrentMaxId();
     
-    public List<Loan> getByParamByStatusUnpaid(LoanSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception;
+    public List<Loan> getByParamByStatusUndisbursed(LoanSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception;
     
-    public Long getTotalByParamByStatusUnpaid(LoanSearchParameter parameter) throws Exception;
+    public Long getTotalByParamByStatusUndisbursed(LoanSearchParameter parameter) throws Exception;
    
 }

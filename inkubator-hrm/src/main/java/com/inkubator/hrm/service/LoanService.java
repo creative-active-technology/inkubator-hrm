@@ -21,10 +21,6 @@ import org.primefaces.model.UploadedFile;
 public interface LoanService extends IService<Loan>, BaseApprovalService {
 
     public List<Loan> getByParam(LoanSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception;
-
-    public List<Loan> getByParamByStatusPencairan(LoanSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception;
-
-    public Long getTotalByParamByStatusPencairan(LoanSearchParameter parameter) throws Exception;
     
     public Long getTotalByParam(LoanSearchParameter parameter) throws Exception;
 
@@ -44,9 +40,9 @@ public interface LoanService extends IService<Loan>, BaseApprovalService {
 
     public String updateFileAndDeleteData(UploadedFile file) throws Exception;
     
-    public List<Loan> getByParamByStatusUnpaid(LoanSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception;
+    public List<Loan> getByParamByStatusUndisbursed(LoanSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception;
     
-    public Long getTotalByParamByStatusUnpaid(LoanSearchParameter parameter) throws Exception;
+    public Long getTotalByParamByStatusUndisbursed(LoanSearchParameter parameter) throws Exception;
     
     public void updateStatusAndDateDisbursementPaid(Long loanId, Date dateDisbursement) throws Exception;
 }
