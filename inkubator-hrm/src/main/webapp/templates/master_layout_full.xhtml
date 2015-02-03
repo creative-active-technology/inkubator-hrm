@@ -501,13 +501,14 @@
                                         </p:submenu> 
                                         -->
                                         <p:submenu label="#{appmsg['report.report']}"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-reporting">
-                                            <p:submenu label="Laporan Personalia" styleClass="menu_child" icon="img-reporting">
+                                            <p:submenu label="#{appmsg['report.personalia_report']}" styleClass="menu_child" icon="img-reporting">
                                                 <p:menuitem value="#{appmsg['report.employee_data']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.employee_data']}" url="#" />
                                                 <p:menuitem value="#{appmsg['report.mutation_data']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.mutation_data']}" url="#" />
                                                 <p:menuitem value="#{appmsg['report.pension_preparation']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.pension_preparation']}" url="#" />
                                                 <p:menuitem value="#{appmsg['report.employee_family_data']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.employee_family_data']}" url="#" />
+                                                <p:menuitem value="#{appmsg['report.employment_matriculation']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.employment_matriculation']}" url="#" />
                                             </p:submenu>
-                                            <p:submenu label="Laporan Penggajian" styleClass="menu_child" icon="img-reporting">
+                                            <p:submenu label="#{appmsg['report.payroll_report']}" styleClass="menu_child" icon="img-reporting">
                                                 <p:menuitem value="#{appmsg['report.payroll_history']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.payroll_history']}" url="#" />
                                                 <p:menuitem value="#{appmsg['report.salary_note']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.salary_note']}" url="#" />
                                                 <p:menuitem value="#{appmsg['report.bank_transfer_data']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.bank_transfer_data']}" url="#" />
@@ -515,7 +516,7 @@
                                                 <p:menuitem value="#{appmsg['report.salary_journal']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.salary_journal']}" url="#" />
                                                 <p:menuitem value="#{appmsg['report.income_taxes_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.income_taxes_report']}" url="#" />
                                             </p:submenu>
-                                            <p:submenu label="Laporan Waktu Kerja" styleClass="menu_child" icon="img-reporting">
+                                            <p:submenu label="#{appmsg['report.working_time_report']}" styleClass="menu_child" icon="img-reporting">
                                                 <p:menuitem value="#{appmsg['report.attendance_data']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.attendance_data']}" url="#" />
                                                 <p:menuitem value="#{appmsg['report.leave_data']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.leave_data']}" url="#" />
                                                 <p:menuitem value="#{appmsg['report.permit_data']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.permit_data']}" url="#" />
@@ -523,8 +524,6 @@
                                                 <p:menuitem value="#{appmsg['report.working_time_balance_data']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.working_time_balance_data']}" url="#" />
                                                 <p:menuitem value="#{appmsg['report.late_data']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.late_data']}" url="#" />
                                             </p:submenu>
-                                            
-                                            
                                         </p:submenu>
                                         <p:menuitem value="Logout" icon="ui-icon-power" styleClass="menu" style="color: #ff9933 !important;font-size: 14px!important" title="Logout and Exit" url="/logout.htm" />  
                                     </p:menubar>  
