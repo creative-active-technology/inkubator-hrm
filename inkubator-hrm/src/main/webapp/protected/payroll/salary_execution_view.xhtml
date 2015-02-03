@@ -41,7 +41,7 @@
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3" >
-                                    <p:commandButton value="Export to XLS" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
+                                    <p:commandButton value="#{appmsg['global.export']}" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
                                         <pe:exporter target="tableIdForExport" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Salary_Calculation"/>
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['salaryCalculation.tax']}" action="#{paySalaryExecuteController.doTax()}" title="#{appmsg['salaryCalculation.tax']}" label="#{appmsg['salaryCalculation.tax']}" styleClass="label_button" icon="ui-icon-document" ajax="true">

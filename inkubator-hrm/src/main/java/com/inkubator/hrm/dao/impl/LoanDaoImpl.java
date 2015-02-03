@@ -109,7 +109,7 @@ public class LoanDaoImpl extends IDAOImpl<Loan> implements LoanDao {
         criteria.setFetchMode("empData", FetchMode.JOIN);
         criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
         criteria.setFetchMode("loanSchema", FetchMode.JOIN);
-        criteria.add(Restrictions.eq("statusPencairan", HRMConstant.LOAN_UNPAID));
+        criteria.add(Restrictions.eq("statusPencairan", HRMConstant.LOAN_UNDISBURSED));
         criteria.addOrder(orderable);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
@@ -120,7 +120,7 @@ public class LoanDaoImpl extends IDAOImpl<Loan> implements LoanDao {
     public Long getTotalByParamByStatusPencairan(LoanSearchParameter parameter) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchByParam(parameter, criteria);
-        criteria.add(Restrictions.eq("statusPencairan", HRMConstant.LOAN_UNPAID));
+        criteria.add(Restrictions.eq("statusPencairan", HRMConstant.LOAN_UNDISBURSED));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
@@ -137,7 +137,7 @@ public class LoanDaoImpl extends IDAOImpl<Loan> implements LoanDao {
         criteria.setFetchMode("empData", FetchMode.JOIN);
         criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
         criteria.setFetchMode("loanSchema", FetchMode.JOIN);
-        criteria.add(Restrictions.eq("statusPencairan", HRMConstant.LOAN_UNPAID));       
+        criteria.add(Restrictions.eq("statusPencairan", HRMConstant.LOAN_UNDISBURSED));       
         criteria.addOrder(orderable);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
@@ -148,7 +148,7 @@ public class LoanDaoImpl extends IDAOImpl<Loan> implements LoanDao {
     public Long getTotalByParamByStatusUnpaid(LoanSearchParameter parameter) throws Exception {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchByParam(parameter, criteria);
-        criteria.add(Restrictions.eq("statusPencairan", HRMConstant.LOAN_UNPAID));
+        criteria.add(Restrictions.eq("statusPencairan", HRMConstant.LOAN_UNDISBURSED));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
     

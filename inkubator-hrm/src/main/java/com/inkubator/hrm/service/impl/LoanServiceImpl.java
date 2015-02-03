@@ -348,7 +348,7 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
         LoanSchema loanSchema = loanSchemaDao.getEntiyByPK(entity.getLoanSchema().getId());
         entity.setEmpData(empData);
         entity.setLoanSchema(loanSchema);
-        entity.setStatusPencairan(HRMConstant.LOAN_UNPAID);
+        entity.setStatusPencairan(HRMConstant.LOAN_UNDISBURSED);
 
         String createdBy = StringUtils.isEmpty(entity.getCreatedBy()) ? UserInfoUtil.getUserName() : entity.getCreatedBy();
         Date createdOn = entity.getCreatedOn() == null ? new Date() : entity.getCreatedOn();
@@ -358,6 +358,11 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
         HrmUser requestUser = hrmUserDao.getByEmpDataId(empData.getId());
         ApprovalActivity approvalActivity = isBypassApprovalChecking ? null : super.checkApprovalProcess(HRMConstant.LOAN, requestUser.getUserId());
         if (approvalActivity == null) {
+            //Set Kodefikasi
+            TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.LOAN_KODE);
+            Long currentMaxLoadId = loanDao.getCurrentMaxId();   
+            entity.setNomor(KodefikasiUtil.getKodefikasi(((int)currentMaxLoadId.longValue()), transactionCodefication.getCode()));
+            
             List<LoanPaymentDetail> loanPaymentDetails = calculateLoanPaymentDetails(entity.getInterestRate(), entity.getTermin(),
                     entity.getLoanPaymentDate(), entity.getNominalPrincipal(), entity.getTypeOfInterest());
             for (LoanPaymentDetail lpd : loanPaymentDetails) {
@@ -621,7 +626,7 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
             loan.setInterestRate(loanSchema.getInterestRate());
             loan.setTypeOfInterest(loanSchema.getTypeOfInterest());
             loan.setTermin(Integer.valueOf(org.apache.commons.lang3.StringUtils.substringBeforeLast(model.getTermins().trim(), ".")));
-            loan.setStatusPencairan(HRMConstant.LOAN_UNPAID);
+            loan.setStatusPencairan(HRMConstant.LOAN_UNDISBURSED);
             loan.setNomor(KodefikasiUtil.getKodefikasi(((int)currentMaxLoadId.longValue()), transactionCodefication.getCode()));           
             loan.setCreatedBy(model.getCreatedBy());
             loan.setCreatedOn(now);
@@ -678,7 +683,7 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void updateStatusAndDateDisbursementPaid(Long loanId,  Date dateDisbursement) throws Exception {
         Loan loan = loanDao.getEntiyByPK(loanId);               
-        loan.setStatusPencairan(HRMConstant.LOAN_PAID);       
+        loan.setStatusPencairan(HRMConstant.LOAN_DISBURSED);       
         loan.setUpdatedBy(UserInfoUtil.getUserName());
         loan.setUpdatedOn(new Date());       
         loanDao.update(loan);
