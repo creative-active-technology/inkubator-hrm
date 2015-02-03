@@ -346,9 +346,14 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
 
         EmpData empData = empDataDao.getEntiyByPK(entity.getEmpData().getId());
         LoanSchema loanSchema = loanSchemaDao.getEntiyByPK(entity.getLoanSchema().getId());
+        
+        //Set Kodefikasi pada nomor
+        TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.LOAN_KODE);
+        Long currentMaxLoanId = loanDao.getCurrentMaxId();
+        entity.setNomor(KodefikasiUtil.getKodefikasi(((int)currentMaxLoanId.longValue()), transactionCodefication.getCode()));
+            
         entity.setEmpData(empData);
-        entity.setLoanSchema(loanSchema);
-        entity.setStatusPencairan(HRMConstant.LOAN_UNDISBURSED);
+        entity.setLoanSchema(loanSchema);        
 
         String createdBy = StringUtils.isEmpty(entity.getCreatedBy()) ? UserInfoUtil.getUserName() : entity.getCreatedBy();
         Date createdOn = entity.getCreatedOn() == null ? new Date() : entity.getCreatedOn();
@@ -459,6 +464,7 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
             Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
             String pendingData = appActivity.getPendingData();
             Loan loan = gson.fromJson(pendingData, Loan.class);
+            loan.setStatusPencairan(HRMConstant.LOAN_REJECTED);
             loan.setApprovalActivityNumber(appActivity.getActivityNumber());  //set approval activity number, for history approval purpose
 
             this.save(loan, true);
@@ -552,25 +558,6 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
     }
 
     @Override
-    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<Loan> getByParamByStatusPencairan(LoanSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception {
-        List<Loan> listLoan = loanDao.getByParamByStatusPencairan(parameter, firstResult, maxResults, orderable);
-        ApprovalActivity approvalTime;
-        List<Loan> listLoans = new ArrayList<Loan>();
-        for (Loan loan : listLoan) {
-             approvalTime = approvalActivityDao.getApprovalTimeByApprovalActivityNumber(loan.getApprovalActivityNumber());
-             loan.setApprovalTime(approvalTime.getApprovalTime());
-        }
-        return listLoan;
-    }
-
-    @Override
-    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public Long getTotalByParamByStatusPencairan(LoanSearchParameter parameter) throws Exception {
-        return loanDao.getTotalByParamByStatusPencairan(parameter);
-    }
-
-    @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void UpdateLoanAndsaveLoanCanceled(LoanCanceledModel loanCanceledModel) throws Exception {
         //change status pencairan ke cancel atau = 2
@@ -608,7 +595,7 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
         if (empData != null) {         
             
             TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.LOAN_KODE);
-            Long currentMaxLoadId = loanDao.getCurrentMaxId();           
+            Long currentMaxLoanId = loanDao.getCurrentMaxId();           
             Date now = new Date();
             
             Loan loan = new Loan();
@@ -622,7 +609,7 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
             loan.setTypeOfInterest(loanSchema.getTypeOfInterest());
             loan.setTermin(Integer.valueOf(org.apache.commons.lang3.StringUtils.substringBeforeLast(model.getTermins().trim(), ".")));
             loan.setStatusPencairan(HRMConstant.LOAN_UNDISBURSED);
-            loan.setNomor(KodefikasiUtil.getKodefikasi(((int)currentMaxLoadId.longValue()), transactionCodefication.getCode()));           
+            loan.setNomor(KodefikasiUtil.getKodefikasi(((int)currentMaxLoanId.longValue()), transactionCodefication.getCode()));           
             loan.setCreatedBy(model.getCreatedBy());
             loan.setCreatedOn(now);
             
@@ -662,15 +649,15 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
     
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<Loan> getByParamByStatusUnpaid(LoanSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception {
-        List<Loan> listLoan = loanDao.getByParamByStatusUnpaid(parameter, firstResult, maxResults, orderable);       
+    public List<Loan> getByParamByStatusUndisbursed(LoanSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception {
+        List<Loan> listLoan = loanDao.getByParamByStatusUndisbursed(parameter, firstResult, maxResults, orderable);       
         return listLoan;
     }
     
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getTotalByParamByStatusUnpaid(LoanSearchParameter parameter) throws Exception {
-        return loanDao.getTotalByParamByStatusUnpaid(parameter);
+    public Long getTotalByParamByStatusUndisbursed(LoanSearchParameter parameter) throws Exception {
+        return loanDao.getTotalByParamByStatusUndisbursed(parameter);
 
     }
 

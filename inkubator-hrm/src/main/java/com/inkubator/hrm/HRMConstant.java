@@ -352,6 +352,7 @@ public class HRMConstant {
     public static final Integer LOAN_UNDISBURSED = 0;
     public static final Integer LOAN_DISBURSED = 1;
     public static final Integer LOAN_CANCELED = 2;
+    public static final Integer LOAN_REJECTED = 3;
 
 //    KODEFIKAISIPROSES
     public static final String LOAN_KODE = "LOAN";
