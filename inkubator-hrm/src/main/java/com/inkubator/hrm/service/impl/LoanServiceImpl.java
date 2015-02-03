@@ -346,6 +346,12 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
 
         EmpData empData = empDataDao.getEntiyByPK(entity.getEmpData().getId());
         LoanSchema loanSchema = loanSchemaDao.getEntiyByPK(entity.getLoanSchema().getId());
+        
+        //Set Kodefikasi pada nomor
+        TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.LOAN_KODE);
+        Long currentMaxLoanId = loanDao.getCurrentMaxId();
+        entity.setNomor(KodefikasiUtil.getKodefikasi(((int)currentMaxLoanId.longValue()), transactionCodefication.getCode()));
+            
         entity.setEmpData(empData);
         entity.setLoanSchema(loanSchema);        
 
@@ -589,7 +595,7 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
         if (empData != null) {         
             
             TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.LOAN_KODE);
-            Long currentMaxLoadId = loanDao.getCurrentMaxId();           
+            Long currentMaxLoanId = loanDao.getCurrentMaxId();           
             Date now = new Date();
             
             Loan loan = new Loan();
@@ -603,7 +609,7 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
             loan.setTypeOfInterest(loanSchema.getTypeOfInterest());
             loan.setTermin(Integer.valueOf(org.apache.commons.lang3.StringUtils.substringBeforeLast(model.getTermins().trim(), ".")));
             loan.setStatusPencairan(HRMConstant.LOAN_UNDISBURSED);
-            loan.setNomor(KodefikasiUtil.getKodefikasi(((int)currentMaxLoadId.longValue()), transactionCodefication.getCode()));           
+            loan.setNomor(KodefikasiUtil.getKodefikasi(((int)currentMaxLoanId.longValue()), transactionCodefication.getCode()));           
             loan.setCreatedBy(model.getCreatedBy());
             loan.setCreatedOn(now);
             
