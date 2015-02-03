@@ -27,10 +27,10 @@
     <task:scheduler id="myScheduler" pool-size="10"/>
     
     <bean id="approvalActivityCronService" class="com.inkubator.hrm.service.impl.ApprovalActivityCronServiceImpl"/>
-    <bean id="scheduleService" class="com.inkubator.hrm.service.impl.ScheduleServiceImpl">
+<!--    <bean id="scheduleService" class="com.inkubator.hrm.service.impl.ScheduleServiceImpl">
         <property name="difNumberOfMonthTempEmployeeScheduleToDelete" value="${dif.number.month.temp.employee.schedule.to.delete}"/> 
         <property name="difWeekToDelete" value="${dif.number.week.to.delete}"/>          
-    </bean>
+    </bean>-->
     
 <!--	<bean id="leaveCronService" class="com.inkubator.hrm.service.impl.LeaveCronServiceImpl"/>
 	<bean id="companyPolicyCronService" class="com.inkubator.hrm.service.impl.CompanyPolicyCronServiceImpl" />
