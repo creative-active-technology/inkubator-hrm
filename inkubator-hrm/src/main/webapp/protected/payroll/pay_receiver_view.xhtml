@@ -46,7 +46,7 @@
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3" >
-                                    <p:commandButton ajax="false" value="Export to XLS" title="Export to XLS" style="font-size: 12px!important" onclick="PrimeFaces.monitorDownload(start, stop);">
+                                    <p:commandButton ajax="false" value="#{appmsg['global.export']}" title="Export to XLS" style="font-size: 12px!important" onclick="PrimeFaces.monitorDownload(start, stop);">
                                     	<p:fileDownload value="#{excelExportStreamerController.payReceiverAccountList}" />
                                 	</p:commandButton>
 

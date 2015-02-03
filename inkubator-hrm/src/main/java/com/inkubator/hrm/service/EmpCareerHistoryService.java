@@ -7,7 +7,9 @@ package com.inkubator.hrm.service;
 
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.EmpCareerHistory;
+import com.inkubator.hrm.web.search.ReportEmpMutationParameter;
 import java.util.List;
+import org.hibernate.criterion.Order;
 
 /**
  *
@@ -16,4 +18,8 @@ import java.util.List;
 public interface EmpCareerHistoryService extends IService<EmpCareerHistory> {
 
     public List<EmpCareerHistory> getEmployeeCareerByBioId(long id) throws Exception;
+    
+    public List<EmpCareerHistory> getByParamReport(ReportEmpMutationParameter searchParameter, int firstResult, int maxResults, Order order);
+
+    public Long getTotalEmpCareerHistoryDataByParamReport(ReportEmpMutationParameter searchParameter);
 }

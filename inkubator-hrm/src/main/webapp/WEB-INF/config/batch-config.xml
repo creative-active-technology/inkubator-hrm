@@ -109,6 +109,7 @@
     <batch:job id="jobLoanUpload">
         <batch:step id="stepJobLoanUpload_1">
             <batch:tasklet>
+                 <!-- Commit interval di set 1 untuk memastikan kalau id loan yang di dapat pada proses kodefikasi adalah id terakhir.  -->	
                 <batch:chunk reader="customLoanUploadItemReader" writer="customLoanUploadItemWriter"
                              commit-interval="1">
                 </batch:chunk>

@@ -49,7 +49,7 @@
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3" >
-                                    <p:commandButton value="Export to XLS" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
+                                    <p:commandButton value="#{appmsg['global.export']}" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
                                         <pe:exporter target="tableSpecAbilityId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Spec_Ability"/>
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']}" action="#{specAbilityViewController.doAdd()}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true"/>
