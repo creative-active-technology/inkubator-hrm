@@ -15,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.Matchers;
 
 import ch.lambdaj.Lambda;
+import com.inkubator.common.util.DateTimeUtil;
 
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
@@ -64,6 +65,30 @@ public class MedicalCareFormController extends BaseController {
     private UploadFilesUtil uploadFilesUtil;
     private Boolean disabledHospital;
 
+    public EmpDataService getEmpDataService() {
+        return empDataService;
+    }
+
+    public void setEmpDataService(EmpDataService empDataService) {
+        this.empDataService = empDataService;
+    }
+
+    public DiseaseService getDiseaseService() {
+        return diseaseService;
+    }
+
+    public void setDiseaseService(DiseaseService diseaseService) {
+        this.diseaseService = diseaseService;
+    }
+
+    public HospitalService getHospitalService() {
+        return hospitalService;
+    }
+
+    public void setHospitalService(HospitalService hospitalService) {
+        this.hospitalService = hospitalService;
+    }
+
     @PostConstruct
     @Override
     public void initialization() {
@@ -72,7 +97,7 @@ public class MedicalCareFormController extends BaseController {
             isUpdate = Boolean.FALSE;
             model = new MedicalCareModel();
             disabledHospital = Boolean.FALSE;
-            
+
             String param = FacesUtil.getRequestParameter("execution");
             if (StringUtils.isNotEmpty(param)) {
                 MedicalCare medicalCare = medicalCareService.getEntityWithDetail(Long.parseLong(param.substring(1)));
@@ -81,7 +106,6 @@ public class MedicalCareFormController extends BaseController {
 
                     isUpdate = Boolean.TRUE;
 
-                    
                 }
             }
         } catch (Exception e) {
@@ -96,7 +120,7 @@ public class MedicalCareFormController extends BaseController {
         permits = null;
         medicalCareService = null;
         documentFile = null;
-        disabledHospital = null;
+        disabledHospital = Boolean.FALSE;
     }
 
     public MedicalCareModel getModel() {
@@ -114,8 +138,6 @@ public class MedicalCareFormController extends BaseController {
     public void setDisabledHospital(Boolean disabledHospital) {
         this.disabledHospital = disabledHospital;
     }
-
-    
 
     public Boolean getIsUpdate() {
         return isUpdate;
@@ -208,10 +230,10 @@ public class MedicalCareFormController extends BaseController {
         if (model.getId() != null) {
             medicalCare.setId(model.getId());
         }
-        medicalCare.setDisease(new Disease(model.getDiseaseId()));
-        medicalCare.setEmpDataByEmpDataId(new EmpData(model.getEmpDataByEmpDataId()));
-        medicalCare.setEmpDataByTemporaryActingId(new EmpData(model.getEmpDataByTemporaryActingId()));
-        medicalCare.setHospital(new Hospital(model.getHospitalId()));
+        medicalCare.setDisease(model.getDiseaseId());
+        medicalCare.setEmpData(model.getEmpDataByEmpDataId());
+        medicalCare.setTemporaryActing(model.getEmpDataByTemporaryActingId());
+        medicalCare.setHospital(model.getHospitalId());
         medicalCare.setDocterName(model.getDocterName());
         medicalCare.setStartDate(model.getStartDate());
         medicalCare.setEndDate(model.getEndDate());
@@ -224,17 +246,21 @@ public class MedicalCareFormController extends BaseController {
 
     private void getModelFromEntity(MedicalCare medicalCare) throws Exception {
         model.setId(medicalCare.getId());
-        model.setDiseaseId(medicalCare.getDisease().getId());
+        model.setDiseaseId(medicalCare.getDisease());
         model.setDocterName(medicalCare.getDocterName());
-        model.setEmpDataByEmpDataId(medicalCare.getEmpDataByEmpDataId().getId());
-        model.setEmpDataByTemporaryActingId(medicalCare.getEmpDataByTemporaryActingId().getId());
+        model.setEmpDataByEmpDataId(medicalCare.getEmpData());
+        model.setEmpDataByTemporaryActingId(medicalCare.getTemporaryActing());
         model.setStartDate(medicalCare.getStartDate());
         model.setEndDate(medicalCare.getEndDate());
-        model.setHospitalId(medicalCare.getHospital().getId());
+        model.setHospitalId(medicalCare.getHospital());
         model.setMaterialJobsAbandoned(medicalCare.getMaterialJobsAbandoned());
         model.setRequestDate(medicalCare.getRequestDate());
         model.setTotalDays(medicalCare.getTotalDays());
         model.setUploadPath(medicalCare.getUploadPath());
+
+        if (StringUtils.isNotEmpty(String.valueOf(model.getHospitalId()))) {
+            disabledHospital = false;
+        }
     }
 
     public String doBack() {
@@ -250,7 +276,7 @@ public class MedicalCareFormController extends BaseController {
         }
         return empDatas;
     }
-    
+
     public List<EmpData> doAutoCompleteTemporary(String param) {
         List<EmpData> empDatas = new ArrayList<EmpData>();
         try {
@@ -260,7 +286,7 @@ public class MedicalCareFormController extends BaseController {
         }
         return empDatas;
     }
-    
+
     public List<Disease> doAutoCompleteDisease(String param) {
         List<Disease> diseases = new ArrayList<Disease>();
         try {
@@ -270,7 +296,7 @@ public class MedicalCareFormController extends BaseController {
         }
         return diseases;
     }
-    
+
     public List<Hospital> doAutoCompleteHospital(String param) {
         List<Hospital> hospitals = new ArrayList<Hospital>();
         try {
@@ -280,7 +306,6 @@ public class MedicalCareFormController extends BaseController {
         }
         return hospitals;
     }
-
 
     public void handingFileUpload(FileUploadEvent fileUploadEvent) {
         Map<String, String> results = uploadFilesUtil.checkUploadFileSizeLimit(fileUploadEvent.getFile());
@@ -293,19 +318,32 @@ public class MedicalCareFormController extends BaseController {
             MessagesResourceUtil.setMessagesFromException(FacesMessage.SEVERITY_ERROR, "global.error", errorMsg, FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         }
     }
-    
+
     public void onChangeEmployee() {
         try {
-            EmpData empData = empDataService.getByEmpIdWithDetail(model.getEmpDataByEmpDataId());
-            
+            EmpData empData = empDataService.getByEmpIdWithDetail(model.getEmpDataByEmpDataId().getId());
+
             model.setJabatan(empData.getJabatanByJabatanId().getName());
 
         } catch (Exception e) {
             LOGGER.error("Error", e);
         }
     }
-    
+
     public void onChangeHospitalCheckbox() {
-        
+
+    }
+
+    public void onChangeStartOrEndDate() {
+        System.out.println("Start Date " + model.getStartDate());
+        System.out.println("End Date " + model.getEndDate());
+        try {
+
+            if (model.getStartDate() != null && model.getEndDate() != null) {
+                model.setTotalDays(DateTimeUtil.getTotalDay(model.getStartDate(), model.getEndDate()));
+            }
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
     }
 }

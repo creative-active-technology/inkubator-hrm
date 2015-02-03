@@ -24,7 +24,18 @@
         </property>
     </bean>
 	
+	
+	
     <!-- ALL batch jobs -->
+    <batch:job id="jobSynchDataFingerRealization">
+        <batch:step id="stepSynchDataFingerRealization_1">
+            <batch:tasklet>
+                <batch:chunk reader="customSynchDataFingerRealizationItemReader" writer="customSynchDataFingerRealizationItemWriter"
+                             commit-interval="20">
+                </batch:chunk>
+            </batch:tasklet>
+        </batch:step>
+    </batch:job>
     <batch:job id="jobPaySalaryUpload">
         <batch:step id="stepPaySalaryUpload_1">
             <batch:tasklet>
@@ -106,6 +117,24 @@
         </batch:step>
     </batch:job>
     
+    
+    
+    <!-- reader and writer for synchronization_data_finger_realization -->
+    <bean id="customSynchDataFingerRealizationItemReader" class="org.springframework.batch.item.database.HibernatePagingItemReader" lazy-init="true">
+	    <property name="sessionFactory" ref="sessionFactory"/>
+	    <property name="queryString" value="from EmpData as empData 
+	    									where status != 'EMP_TERMINATION'"/>
+	    <property name="pageSize" value="10"/>
+	</bean>
+	<bean id="customSynchDataFingerRealizationItemWriter" class="com.inkubator.hrm.batch.DataFingerRealizationWriter" scope="step" lazy-init="true">
+        <property name="tempProcessReadFingerService" ref="tempProcessReadFingerService" />
+        <property name="wtPeriodeService" ref="wtPeriodeService" />
+        <property name="createdBy" value="#{jobParameters['createdBy']}"/>
+        <property name="createdOn" value="#{jobParameters['createdOn']}"/>
+    </bean>
+    
+	
+	
     <!-- reader, processor and writer for month_end_payroll -->
     <bean id="customMonthEndPayrollItemReader" class="org.springframework.batch.item.database.HibernatePagingItemReader" lazy-init="true">
 	    <property name="sessionFactory" ref="sessionFactory"/>
@@ -141,6 +170,7 @@
         </property>
     </bean>
   
+  
 
     <!-- reader and writer for pay_receiver_account -->
     <bean id="customPayReceiverAccountItemReader" class="com.inkubator.hrm.batch.PayReceiverAccountReader" scope="step" lazy-init="true">
@@ -150,6 +180,7 @@
     <bean name="customPayReceiverAccountItemWriter" class="com.inkubator.hrm.batch.PayReceiverAccountWriter" scope="step" lazy-init="true">
     	<property name="fileName" value="#{jobParameters['fileName']}"/>
     </bean>
+	
 	
 	
     <!-- reader and writer for pay_salary_upload -->	
@@ -163,6 +194,8 @@
         <property name="targetMethod" value="executeBatchFileUpload" />
     </bean>
     
+    
+    
     <!-- reader and writer for pay_temp_attendance_upload -->	
     <bean id="customPayAttendanceUploadItemReader" class="com.inkubator.hrm.batch.PayTempAttendanceUploadReader" scope="step" destroy-method="destroy" lazy-init="true">
         <constructor-arg name="filePath"  value="#{jobParameters['input.file.path']}"></constructor-arg>
@@ -173,7 +206,9 @@
         <property name="targetMethod" value="executeBatchFileUpload" />
     </bean>
     
-        <!-- reader and writer for pay_temp_overtime_upload-->	
+    
+    
+    <!-- reader and writer for pay_temp_overtime_upload-->	
     <bean id="customPayTempOvertimeUploadItemReader" class="com.inkubator.hrm.batch.PayTempOvertimeUploadReader" scope="step" destroy-method="destroy" lazy-init="true">
         <constructor-arg name="filePath"  value="#{jobParameters['input.file.path']}"></constructor-arg>
         <property name="createdBy" value="#{jobParameters['createdBy']}"/>
@@ -182,6 +217,7 @@
         <property name="targetObject" ref="payTempOvertimeService" />
         <property name="targetMethod" value="executeBatchFileUpload" />
     </bean>
+	
 	
 		
     <!-- reader, processor and writer for pay_employee_calculation -->
@@ -236,6 +272,9 @@
         <property name="targetObject" ref="payTempKalkulasiService" />
         <property name="targetMethod" value="executeBatchFinalSalaryCalculation" />
     </bean>	
+    
+    
+    
     <!-- reader and writer for loan_upload -->	
     <bean id="customLoanUploadItemReader" class="com.inkubator.hrm.batch.LoanUploadReader" scope="step" destroy-method="destroy" lazy-init="true">
         <constructor-arg name="filePath"  value="#{jobParameters['input.file.path']}"></constructor-arg>

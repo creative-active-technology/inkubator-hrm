@@ -23,8 +23,8 @@
                             <p:graphicImage library="images" name="skema_penggantian.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="Loan Canceled Form" styleClass="header_big" />
-                                    <p:outputLabel value="#{appmsg['reimbursmentschema.reimbursment_header']}" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['loanCanceled.loanCanceled_form']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['loan.loan_data_from_application']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -35,7 +35,7 @@
                         <p:panelGrid style="width: 100%;margin-bottom: 20px;margin-top: 20px" styleClass="grid_border3" >
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="No Pinjaman"  styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['loan.loan_date']}"  styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:outputLabel value="#{loanCanceledFormController.loanCanceledModel.nomor}">
@@ -45,7 +45,7 @@
 
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Tanggal Pengajuan"  styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['loan.submission_date']}"  styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:outputLabel value="#{loanCanceledFormController.loanCanceledModel.loanDate}">
@@ -56,7 +56,7 @@
 
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Skema Pinjaman" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['loanschema.loan']}" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:outputLabel value="#{loanCanceledFormController.loanCanceledModel.loanName}">
@@ -66,7 +66,7 @@
 
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Nominal Pokok"  styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['loan.nominal_principal']}"  styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:outputLabel value="#{loanCanceledFormController.loanCanceledModel.nominalPrincipal}">
@@ -77,7 +77,7 @@
 
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Durasi Termin"  styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['loan.termin']}"  styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:outputLabel value="#{loanCanceledFormController.loanCanceledModel.termin}">
@@ -87,7 +87,7 @@
 
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Tanggal Disetujui"  styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['loan.approvedDate']}"  styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:outputLabel value="#{loanCanceledFormController.loanCanceledModel.approvalTime}">
@@ -98,7 +98,7 @@
 
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Keterangan"  styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['global.description']}"  styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:inputTextarea id="description" rows="5" cols="37" counter="counter" maxlength="500" value="#{loanCanceledFormController.loanCanceledModel.keterangan}" 

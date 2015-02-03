@@ -358,11 +358,6 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
         HrmUser requestUser = hrmUserDao.getByEmpDataId(empData.getId());
         ApprovalActivity approvalActivity = isBypassApprovalChecking ? null : super.checkApprovalProcess(HRMConstant.LOAN, requestUser.getUserId());
         if (approvalActivity == null) {
-            //Set Kodefikasi
-            TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.LOAN_KODE);
-            Long currentMaxLoadId = loanDao.getCurrentMaxId();   
-            entity.setNomor(KodefikasiUtil.getKodefikasi(((int)currentMaxLoadId.longValue()), transactionCodefication.getCode()));
-            
             List<LoanPaymentDetail> loanPaymentDetails = calculateLoanPaymentDetails(entity.getInterestRate(), entity.getTermin(),
                     entity.getLoanPaymentDate(), entity.getNominalPrincipal(), entity.getTypeOfInterest());
             for (LoanPaymentDetail lpd : loanPaymentDetails) {
