@@ -19,7 +19,6 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.LoanDao;
 import com.inkubator.hrm.entity.Loan;
 import com.inkubator.hrm.web.search.LoanSearchParameter;
-import org.hibernate.Session;
 
 /**
  *
@@ -103,35 +102,13 @@ public class LoanDaoImpl extends IDAOImpl<Loan> implements LoanDao {
     }
 
     @Override
-    public List<Loan> getByParamByStatusPencairan(LoanSearchParameter parameter, int firstResult, int maxResults, Order orderable) {
-        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        doSearchByParam(parameter, criteria);
-        criteria.setFetchMode("empData", FetchMode.JOIN);
-        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
-        criteria.setFetchMode("loanSchema", FetchMode.JOIN);
-        criteria.add(Restrictions.eq("statusPencairan", HRMConstant.LOAN_UNDISBURSED));
-        criteria.addOrder(orderable);
-        criteria.setFirstResult(firstResult);
-        criteria.setMaxResults(maxResults);
-        return criteria.list();
-    }
-
-    @Override
-    public Long getTotalByParamByStatusPencairan(LoanSearchParameter parameter) {
-        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        doSearchByParam(parameter, criteria);
-        criteria.add(Restrictions.eq("statusPencairan", HRMConstant.LOAN_UNDISBURSED));
-        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
-    }
-
-    @Override
     public Long getCurrentMaxId() {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());        
         return (Long) criteria.setProjection(Projections.max("id")).uniqueResult();
     }
 
     @Override
-    public List<Loan> getByParamByStatusUnpaid(LoanSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception {
+    public List<Loan> getByParamByStatusUndisbursed(LoanSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchByParam(parameter, criteria);
         criteria.setFetchMode("empData", FetchMode.JOIN);
@@ -145,7 +122,7 @@ public class LoanDaoImpl extends IDAOImpl<Loan> implements LoanDao {
     }
 
     @Override
-    public Long getTotalByParamByStatusUnpaid(LoanSearchParameter parameter) throws Exception {
+    public Long getTotalByParamByStatusUndisbursed(LoanSearchParameter parameter) throws Exception {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchByParam(parameter, criteria);
         criteria.add(Restrictions.eq("statusPencairan", HRMConstant.LOAN_UNDISBURSED));

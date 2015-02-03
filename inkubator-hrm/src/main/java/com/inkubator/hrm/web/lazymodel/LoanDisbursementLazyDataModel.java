@@ -43,8 +43,8 @@ public class LoanDisbursementLazyDataModel extends LazyDataModel<Loan> implement
 	        	orderable = Order.asc("id");
 	        }
 	        
-	        loans = loanService.getByParamByStatusUnpaid(parameter, first, pageSize, orderable);
-                total = Integer.parseInt(String.valueOf(loanService.getTotalByParamByStatusUnpaid(parameter)));                            
+	        loans = loanService.getByParamByStatusUndisbursed(parameter, first, pageSize, orderable);
+                total = Integer.parseInt(String.valueOf(loanService.getTotalByParamByStatusUndisbursed(parameter)));                            
         	LOGGER.info("Success Load Lazy data Model");
         	
         } catch (Exception ex) {
