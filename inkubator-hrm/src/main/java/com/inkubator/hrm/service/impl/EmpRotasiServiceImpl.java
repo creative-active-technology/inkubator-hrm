@@ -10,6 +10,7 @@ import com.inkubator.hrm.dao.EmpRotasiDao;
 import com.inkubator.hrm.entity.EmpRotasi;
 import com.inkubator.hrm.service.EmpRotasiService;
 import com.inkubator.hrm.web.search.EmpRotasiSearchParameter;
+import com.inkubator.hrm.web.search.ReportEmpMutationParameter;
 import java.util.List;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -202,4 +203,5 @@ public class EmpRotasiServiceImpl extends IServiceImpl implements EmpRotasiServi
         return this.empRotasiDao.getTotalEmpRotasiDataByParam(searchParameter);
     }
 
+    
 }

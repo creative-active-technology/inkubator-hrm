@@ -83,7 +83,7 @@
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3" >
                                     <p:commandButton value="Export to XLS" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
-                                        <pe:exporter target="tableReportExportId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Report_Permit_History"/>
+                                        <pe:exporter target="tableReportId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Report_Permit_History"/>
                                     </p:commandButton>                                    
                                     <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{reportPermitHistoryViewController.doClose()}" icon="ui-icon-home"/>
                                 </h:panelGrid>

@@ -21,6 +21,7 @@ import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.dao.TempJadwalKaryawanDao;
 import com.inkubator.hrm.dao.WtGroupWorkingDao;
 import com.inkubator.hrm.dao.WtHolidayDao;
+import com.inkubator.hrm.dao.WtPeriodeDao;
 import com.inkubator.hrm.dao.WtWorkingHourDao;
 import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.EmpData;
@@ -28,6 +29,7 @@ import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.TempJadwalKaryawan;
 import com.inkubator.hrm.entity.WtGroupWorking;
 import com.inkubator.hrm.entity.WtHoliday;
+import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.entity.WtScheduleShift;
 import com.inkubator.hrm.service.TempJadwalKaryawanService;
 import com.inkubator.securitycore.util.UserInfoUtil;
@@ -81,7 +83,9 @@ public class TempJadwalKaryawanServiceImpl extends BaseApprovalServiceImpl imple
     private HrmUserDao hrmUserDao;
     @Autowired
     private ApprovalActivityDao approvalActivityDao;
-
+    @Autowired
+    private WtPeriodeDao wtPeriodeDao;
+    
     @Override
     public TempJadwalKaryawan getEntiyByPK(String id) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -480,5 +484,12 @@ public class TempJadwalKaryawanServiceImpl extends BaseApprovalServiceImpl imple
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public TempJadwalKaryawan getByEmpId(Long id, Date implementationDate) throws Exception {
         return tempJadwalKaryawanDao.getByEmpId(id, implementationDate);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<TempJadwalKaryawan> getAllByEmpIdWithDetailWithFromAndUntilPeriod(long empId) throws Exception {
+        WtPeriode wtPeriode = wtPeriodeDao.getEntityByAbsentTypeActive();
+        return tempJadwalKaryawanDao.getAllByEmpIdWithDetailWithFromAndUntilPeriod(empId, wtPeriode.getFromPeriode(), wtPeriode.getUntilPeriode());
     }
 }

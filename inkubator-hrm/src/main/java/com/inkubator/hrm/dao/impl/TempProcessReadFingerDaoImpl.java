@@ -129,7 +129,7 @@ public class TempProcessReadFingerDaoImpl extends IDAOImpl<TempProcessReadFinger
 
 	@Override
 	public void deleteByScheduleDateAndIsNotCorrection(Date fromPeriode, Date untilPeriode) {
-		Query query = getCurrentSession().createQuery("delete from TempProcessReadFinger temp where temp.scheduleDate >= :fromPeriode and temp.scheduleDate <= :untilPeriode and not(isCorrectionIn = 1 or isCorrectionOut = 1)")
+		Query query = getCurrentSession().createQuery("DELETE FROM TempProcessReadFinger temp WHERE temp.scheduleDate >= :fromPeriode AND temp.scheduleDate <= :untilPeriode AND NOT(isCorrectionIn = 1 OR isCorrectionOut = 1)")
 				.setDate("fromPeriode", fromPeriode)
 				.setDate("untilPeriode", untilPeriode);
         query.executeUpdate();

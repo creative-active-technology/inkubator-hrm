@@ -238,8 +238,9 @@ public class LogMonthEndPayrollViewController extends BaseController {
     public void onCompleteMonthEndProcess() {
     	if(jobExecution != null) {
 	    	setProgress(0);
-	    	if(jobExecution.getStatus() == BatchStatus.COMPLETED){
-	    		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Informasi","Kalkulasi Penggajian sukses dilakukan"));
+	    	if(jobExecution.getStatus() == BatchStatus.COMPLETED){	    		
+	    		MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.information", "payroll.month_end_process_succesfully",
+				        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 	    		try {
 	    			parameter = new LogMonthEndPayrollSearchParameter();
 	    			parameter.setPeriodeId(periode.getId());
@@ -250,7 +251,8 @@ public class LogMonthEndPayrollViewController extends BaseController {
 		            LOGGER.error("Error ", ex);
 		        }
 	    	} else {
-	    		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Informasi","Kalkulasi Penggajian gagal dilakukan"));
+	    		MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_ERROR, "global.error", "payroll.month_end_process_failed",
+				        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 	    		FacesContext.getCurrentInstance().validationFailed();
 	    	}
 	    	jobExecution = null;

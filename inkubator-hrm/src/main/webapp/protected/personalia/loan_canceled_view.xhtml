@@ -22,7 +22,7 @@
                         <p:graphicImage library="images" name="loan.png" height="36" width="36" cache="true"/>
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Loan Canceled" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['loanCanceled.loanCanceled']}" styleClass="header_big" />
                                 <p:outputLabel value="#{appmsg['loan.loan_data_from_application']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
@@ -48,7 +48,7 @@
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3" >
-                                    <p:commandButton value="Export to XLS" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
+                                    <p:commandButton value="#{appmsg['global.export']}" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
                                         <pe:exporter target="tableLoanId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Loan"/>
                                     </p:commandButton>
                                     <!--<p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']}" action="#{loanViewController.doAdd()}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true"/>-->
@@ -120,7 +120,7 @@
                         </p:blockUI>
                     </h:form>
                 </div>
-                <p:dialog widgetVar="detail" header="Loan Canceled Detail" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
+                <p:dialog widgetVar="detail" header="#{appmsg['loanCanceled.loanCanceled_detail']}" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
                           showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)" dynamic="true">
                     <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
                         <p:row>
@@ -161,7 +161,7 @@
                         </p:row>
                         <f:facet name="footer">
                             <p:row>
-                                <p:column colspan="2"><p:outputLabel value="#{appmsg['savingType.savingType_header']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
+                                <p:column colspan="2"><p:outputLabel value="#{appmsg['loan.loan_data_from_application']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
                             </p:row>
                         </f:facet>
                     </p:panelGrid>

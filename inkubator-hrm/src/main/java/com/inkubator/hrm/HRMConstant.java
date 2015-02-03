@@ -349,8 +349,8 @@ public class HRMConstant {
     public static final String PERIODE_PAYROLL_NOT_ACTIVE = "Not Active";
 
     /* Loan */
-    public static final Integer LOAN_UNPAID = 0;
-    public static final Integer LOAN_PAID = 1;
+    public static final Integer LOAN_UNDISBURSED = 0;
+    public static final Integer LOAN_DISBURSED = 1;
     public static final Integer LOAN_CANCELED = 2;
 
 //    KODEFIKAISIPROSES

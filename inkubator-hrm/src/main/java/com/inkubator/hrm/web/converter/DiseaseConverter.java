@@ -17,21 +17,24 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.inkubator.hrm.entity.Disease;
 import com.inkubator.hrm.service.DiseaseService;
+import com.inkubator.webcore.util.ServiceWebUtil;
+import javax.faces.convert.FacesConverter;
 
 /**
  *
  * @author Taufik Hidayat
  */
-@ManagedBean(name = "diseaseConverter")
-@ApplicationScoped
+//@ManagedBean(name = "diseaseConverter")
+//@ApplicationScoped
+@FacesConverter(value = "diseaseConverter")
 public class DiseaseConverter implements Converter {
 
-    @ManagedProperty(value = "#{diseaseService}")
-    private DiseaseService diseaseService;
-
-    public void setDiseaseService(DiseaseService diseaseService) {
-        this.diseaseService = diseaseService;
-    }
+//    @ManagedProperty(value = "#{diseaseService}")
+//    private DiseaseService diseaseService;
+//
+//    public void setDiseaseService(DiseaseService diseaseService) {
+//        this.diseaseService = diseaseService;
+//    }
 
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
@@ -40,6 +43,7 @@ public class DiseaseConverter implements Converter {
         }
         try {
             Long id = Long.parseLong(value);
+            DiseaseService diseaseService = (DiseaseService) ServiceWebUtil.getService("diseaseService");
             Disease disease = diseaseService.getEntiyByPK(id);
             return disease;
         } catch (Exception e) {
