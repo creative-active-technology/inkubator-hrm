@@ -17,7 +17,7 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name="password_complexity"
-    ,catalog="hrm"
+    ,catalog="hrm_personalia"
     , uniqueConstraints = @UniqueConstraint(columnNames="code") 
 )
 public class PasswordComplexity  implements java.io.Serializable {

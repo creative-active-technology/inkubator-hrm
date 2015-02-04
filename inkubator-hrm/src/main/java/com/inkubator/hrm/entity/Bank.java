@@ -22,7 +22,7 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name="bank"
-    ,catalog="hrm"
+    ,catalog="hrm_personalia"
     , uniqueConstraints ={ @UniqueConstraint(columnNames="bank_code") 
     , @UniqueConstraint(columnNames="swift_code") 
     , @UniqueConstraint(columnNames="bank_identification_no") }

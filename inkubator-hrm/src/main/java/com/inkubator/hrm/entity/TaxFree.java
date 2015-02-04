@@ -24,7 +24,7 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name="tax_free"
-    ,catalog="hrm"
+    ,catalog="hrm_personalia"
 )
 public class TaxFree  implements java.io.Serializable {
 

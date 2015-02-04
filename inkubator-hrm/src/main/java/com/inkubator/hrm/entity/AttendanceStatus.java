@@ -23,7 +23,7 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name="attendance_status"
-    ,catalog="hrm"
+    ,catalog="hrm_personalia"
     , uniqueConstraints = @UniqueConstraint(columnNames="code") 
 )
 public class AttendanceStatus  implements java.io.Serializable {

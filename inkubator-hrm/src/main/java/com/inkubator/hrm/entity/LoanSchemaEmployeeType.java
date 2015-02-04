@@ -24,7 +24,7 @@ import javax.persistence.Version;
  * @author Deni
  */
 @Entity
-@Table(name = "loan_schema_employee_type", catalog = "hrm"
+@Table(name = "loan_schema_employee_type", catalog = "hrm_personalia"
 )
 public class LoanSchemaEmployeeType implements java.io.Serializable {
     private Long id;

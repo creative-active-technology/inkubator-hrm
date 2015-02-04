@@ -23,7 +23,7 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name="province"
-    ,catalog="hrm"
+    ,catalog="hrm_personalia"
     , uniqueConstraints = @UniqueConstraint(columnNames="province_code") 
 )
 public class Province  implements java.io.Serializable {

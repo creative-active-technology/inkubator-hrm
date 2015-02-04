@@ -17,7 +17,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="hrm_user_role"
-    ,catalog="hrm"
+    ,catalog="hrm_personalia"
 )
 public class HrmUserRole  implements java.io.Serializable {
 

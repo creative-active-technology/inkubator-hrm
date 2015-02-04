@@ -26,7 +26,7 @@ import javax.persistence.Version;
  * @author Deni
  */
 @Entity
-@Table(name = "resource_name", catalog = "hrm", uniqueConstraints =
+@Table(name = "resource_name", catalog = "hrm_personalia", uniqueConstraints =
         @UniqueConstraint(columnNames = "code"))
 public class ResourceName implements Serializable {
     private Long id;

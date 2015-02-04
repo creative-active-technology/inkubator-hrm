@@ -24,7 +24,7 @@ import javax.persistence.Version;
  * @author Deni
  */
 @Entity
-@Table(name = "pay_component_data_exception", catalog = "hrm"
+@Table(name = "pay_component_data_exception", catalog = "hrm_personalia"
 )
 public class PayComponentDataException implements java.io.Serializable {
 

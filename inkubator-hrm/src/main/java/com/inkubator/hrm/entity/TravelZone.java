@@ -22,7 +22,7 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name="travel_zone"
-    ,catalog="hrm"
+    ,catalog="hrm_personalia"
     , uniqueConstraints = @UniqueConstraint(columnNames="code") 
 )
 public class TravelZone  implements java.io.Serializable {

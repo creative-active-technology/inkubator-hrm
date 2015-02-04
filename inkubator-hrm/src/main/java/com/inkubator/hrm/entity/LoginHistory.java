@@ -18,7 +18,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="login_history"
-    ,catalog="hrm"
+    ,catalog="hrm_personalia"
 )
 public class LoginHistory  implements java.io.Serializable {
 

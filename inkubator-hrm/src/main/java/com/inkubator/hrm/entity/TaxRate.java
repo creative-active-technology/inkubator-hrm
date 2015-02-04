@@ -11,7 +11,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Version;
 
 @Entity
-@Table(name = "tax_rate", catalog = "hrm")
+@Table(name = "tax_rate", catalog = "hrm_personalia")
 public class TaxRate implements java.io.Serializable {
 
     private Long id;

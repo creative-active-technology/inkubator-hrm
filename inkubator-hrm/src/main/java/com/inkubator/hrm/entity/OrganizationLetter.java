@@ -17,7 +17,7 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name="organization_letter"
-    ,catalog="hrm"
+    ,catalog="hrm_personalia"
     , uniqueConstraints = @UniqueConstraint(columnNames="letter_number") 
 )
 public class OrganizationLetter  implements java.io.Serializable {

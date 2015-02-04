@@ -25,7 +25,7 @@ import javax.persistence.Version;
  * @author Deni
  */
 @Entity
-@Table(name = "termination", catalog = "hrm", uniqueConstraints = @UniqueConstraint(columnNames="code") )
+@Table(name = "termination", catalog = "hrm_personalia", uniqueConstraints = @UniqueConstraint(columnNames="code") )
 public class Termination implements java.io.Serializable {
     private Long id;
     private Integer version;

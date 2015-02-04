@@ -19,7 +19,7 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name="bio_employment_history"
-    ,catalog="hrm"
+    ,catalog="hrm_personalia"
 )
 public class BioEmploymentHistory  implements java.io.Serializable {
 

@@ -17,7 +17,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="klasifikasi_kerja_jabatan"
-    ,catalog="hrm"
+    ,catalog="hrm_personalia"
 )
 public class KlasifikasiKerjaJabatan  implements java.io.Serializable {
 

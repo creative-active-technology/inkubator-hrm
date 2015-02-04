@@ -20,7 +20,7 @@ import javax.persistence.Transient;
 import javax.persistence.Version;
 
 @Entity
-@Table(name = "education_level", catalog = "hrm")
+@Table(name = "education_level", catalog = "hrm_personalia")
 public class EducationLevel implements Serializable {
 
     private Long id;

@@ -26,7 +26,7 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name="loan_canceled"
-    ,catalog="hrm"
+    ,catalog="hrm_personalia"
     , uniqueConstraints = @UniqueConstraint(columnNames="approval_activity_number") 
 )
 public class LoanCanceled  implements java.io.Serializable {

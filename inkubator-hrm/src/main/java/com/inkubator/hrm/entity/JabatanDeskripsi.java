@@ -19,7 +19,7 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name="jabatan_deskripsi"
-    ,catalog="hrm"
+    ,catalog="hrm_personalia"
 )
 public class JabatanDeskripsi  implements java.io.Serializable {
 

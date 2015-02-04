@@ -19,7 +19,7 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name="pay_receiver_bank_account"
-    ,catalog="hrm"
+    ,catalog="hrm_personalia"
 )
 public class PayReceiverBankAccount  implements java.io.Serializable {
 

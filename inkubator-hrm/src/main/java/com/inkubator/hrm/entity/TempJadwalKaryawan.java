@@ -19,7 +19,7 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name="temp_jadwal_karyawan"
-    ,catalog="hrm"
+    ,catalog="hrm_personalia"
 )
 public class TempJadwalKaryawan  implements java.io.Serializable {
 

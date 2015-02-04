@@ -25,7 +25,7 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name="faculty"
-    ,catalog="hrm"
+    ,catalog="hrm_personalia"
     , uniqueConstraints = @UniqueConstraint(columnNames="faculty_name") 
 )
 public class Faculty  implements java.io.Serializable {

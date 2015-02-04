@@ -31,7 +31,7 @@ import com.inkubator.webcore.util.FacesUtil;
  * @author rizkykojek
  */
 @Entity
-@Table(name = "leave", catalog = "hrm")
+@Table(name = "leave", catalog = "hrm_personalia")
 public class Leave implements Serializable {
 
 	private Long id;

@@ -26,7 +26,7 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name="implementation_of_overtime"
-    ,catalog="hrm"
+    ,catalog="hrm_personalia"
         , uniqueConstraints = @UniqueConstraint(columnNames="code")
 )
 public class ImplementationOfOverTime implements java.io.Serializable {

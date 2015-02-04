@@ -33,7 +33,7 @@ import javax.persistence.Version;
  * @author Deni
  */
 @Entity
-@Table(name = "loan_schema", catalog = "hrm", uniqueConstraints = @UniqueConstraint(columnNames="code") )
+@Table(name = "loan_schema", catalog = "hrm_personalia", uniqueConstraints = @UniqueConstraint(columnNames="code") )
 public class LoanSchema implements java.io.Serializable {
     private Long id;
     private Integer version;

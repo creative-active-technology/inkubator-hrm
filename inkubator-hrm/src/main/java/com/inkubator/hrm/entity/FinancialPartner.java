@@ -19,7 +19,7 @@ import javax.persistence.Version;
  * @author rizkykojek
  */
 @Entity
-@Table(name = "financial_partner", catalog = "hrm")
+@Table(name = "financial_partner", catalog = "hrm_personalia")
 public class FinancialPartner implements Serializable {
 
 	private Long id;

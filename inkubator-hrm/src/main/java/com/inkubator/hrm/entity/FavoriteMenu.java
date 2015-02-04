@@ -17,7 +17,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="favorite_menu"
-    ,catalog="hrm"
+    ,catalog="hrm_personalia"
 )
 public class FavoriteMenu  implements java.io.Serializable {
 
