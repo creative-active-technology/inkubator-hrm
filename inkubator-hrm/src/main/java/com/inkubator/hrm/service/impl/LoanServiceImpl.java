@@ -664,10 +664,30 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void updateStatusAndDateDisbursementPaid(Long loanId,  Date dateDisbursement) throws Exception {
-        Loan loan = loanDao.getEntiyByPK(loanId);               
-        loan.setStatusPencairan(HRMConstant.LOAN_DISBURSED);       
+        Loan loan = loanDao.getEntiyByPK(loanId);     
+        Date currentLoanPaymentDate = loan.getLoanPaymentDate();
+        
+        loan.setStatusPencairan(HRMConstant.LOAN_DISBURSED);         
         loan.setUpdatedBy(UserInfoUtil.getUserName());
         loan.setUpdatedOn(new Date());       
-        loanDao.update(loan);
+        loanDao.update(loan);                 
+        
+        //Jika Tgl Payment berbeda dari tanggal payment awal ketika pengajuan, maka create ulang jadwal pembayaran
+        if(!DateTimeUtil.isSameDateWithTimeIgnore(currentLoanPaymentDate, dateDisbursement)){
+            loan.setLoanPaymentDate(dateDisbursement);
+            
+            List<LoanPaymentDetail> loanPaymentDetails = calculateLoanPaymentDetails(loan.getInterestRate(), loan.getTermin(), dateDisbursement,
+            loan.getNominalPrincipal(), loan.getTypeOfInterest());
+            loanPaymentDetailDao.save(loanPaymentDetails, loan);
+        
+//            List<LoanPaymentDetail> loanPaymentDetails = calculateLoanPaymentDetails(loan.getInterestRate(), loan.getTermin(),
+//                    dateDisbursement, loan.getNominalPrincipal(), loan.getTypeOfInterest());
+//            for (LoanPaymentDetail lpd : loanPaymentDetails) {
+//                lpd.setLoan(loan);
+//                lpd.setCreatedBy(UserInfoUtil.getUserName());
+//                lpd.setCreatedOn(new Date());
+//            }
+//            loan.setLoanPaymentDetails(ImmutableSet.copyOf(loanPaymentDetails));
+        }
     }
 }

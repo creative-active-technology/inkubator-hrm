@@ -125,7 +125,7 @@
                                 <p:commandButton  icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
                                                   action="#{loanDisbursementViewController.doDetail()}" style="font-size: 10px!important" >                        
                                     <f:setPropertyActionListener value="#{data}" target="#{loanDisbursementViewController.selected}" />
-                                    <p:ajax event="dialogReturn" listener="#{loanDisbursementViewController.onDialogReturn}" update="tableId" />
+                                    <p:ajax event="dialogReturn" listener="#{loanDisbursementViewController.onDialogReturn}" update="tableId, :growlLoanViewlId" />
                                 </p:commandButton>                              
                             </p:column>    
                             

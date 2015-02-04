@@ -1,5 +1,6 @@
 package com.inkubator.hrm.web.flow;
 
+import com.inkubator.common.CommonUtilConstant;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.webflow.execution.RequestContext;
 
 import com.inkubator.common.util.AESUtil;
+import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.Loan;
@@ -74,7 +76,7 @@ public class LoanFormController implements Serializable{
 			 * set hanya jika loan payment detail size == 0, artinya jika size > 0 maka value list nya sudah terdapat di flowSession tidak perlu getList lagi
 			 * */			
 			if(model.getLoanPaymentDetails().size() == 0){				
-				List<LoanPaymentDetail> listLoanPaymentDetails = loanService.getAllDataLoanPaymentDetails(model.getInterestRate(), model.getTermin(), model.getLoanPaymentDate(), model.getNominalPrincipal(), model.getTypeOfInterest());
+				List<LoanPaymentDetail> listLoanPaymentDetails = loanService.getAllDataLoanPaymentDetails(model.getInterestRate(), model.getTermin(), DateTimeUtil.getDateFrom(model.getLoanPaymentDate(), 1, CommonUtilConstant.DATE_FORMAT_MONTH), model.getNominalPrincipal(), model.getTypeOfInterest());
 				model.setLoanPaymentDetails(listLoanPaymentDetails);
 				
 			}
