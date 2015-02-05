@@ -92,13 +92,13 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{empCareerHist.bioData.fullName}"/>
                             </p:column>
-                            <p:column sortBy="jabatanOld.code"  style="width: 10%">
+                            <p:column sortBy="jabatanOldName"  style="width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['placement.oldJabatan']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{empCareerHist.jabatanOld.code} #{empCareerHist.jabatanOld.name}"/>
+                                <h:outputLabel value= "#{empCareerHist.jabatanOldCode} #{empCareerHist.jabatanOldName}"/>
                             </p:column>
-                            <p:column sortBy="jabatan.code"  style="width: 15%">
+                            <p:column sortBy="jabatan.name"  style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['placement.currentJabatan']}"/>
                                 </f:facet>
