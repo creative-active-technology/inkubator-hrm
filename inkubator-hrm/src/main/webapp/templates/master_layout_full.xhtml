@@ -217,9 +217,9 @@
                                         <p:outputLabel value="#{realName}. " styleClass="label_welcome_header" style="color: #ffcc00 !important;font-weight: bold!important" />
                                         <p:outputLabel value="#{appmsg['master_layout.login_at']} : #{login_date}" styleClass="label_welcome_header" style="margin-right: 100px"/>
                                     </h:panelGroup>
-                                    <p:commandLink id="ceckId"  action="#{homeController.doCheckInOut()}" update=":mainGrowl">
+<!--                                    <p:commandLink id="ceckId"  action="#{homeController.doCheckInOut()}" update=":mainGrowl">
                                         <p:graphicImage library="images" name="check_in_out.png"  height="22" id="ima" cache="true" />
-                                    </p:commandLink>
+                                    </p:commandLink>-->
 <!--                                    <h:outputLink id="ceckId" value="${request.contextPath}/protected/check_in_out.htm" title="Logout and Exit" >
                                       
                                         
@@ -232,9 +232,9 @@
                                     <h:commandLink id="calculatorId" title="Calculator">
                                         <p:graphicImage library="images" name="calculator_ico.png" width="22" height="22"  cache="true"/> 
                                     </h:commandLink>
-                                    <p:commandLink id="calendarId" title="Calendar" onclick="statusDialog.show()" oncomplete="calendarDialog.show()" ajax="true" update=":caledarFormId" >
+<!--                                    <p:commandLink id="calendarId" title="Calendar" onclick="statusDialog.show()" oncomplete="calendarDialog.show()" ajax="true" update=":caledarFormId" >
                                         <p:graphicImage library="images" name="calendar_ico.png" width="22" height="22"  cache="true"/> 
-                                    </p:commandLink>
+                                    </p:commandLink>-->
                                     <h:commandLink id="helpId" title="Need Help Clik Me">
                                         <p:graphicImage library="images" name="help_ico.png" width="22" height="22"  cache="true"/> 
                                     </h:commandLink>
@@ -249,8 +249,8 @@
                                                 hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/> 
                                     <pe:tooltip for="calculatorId"  value="Need Calculation Click Me" showEffect="slideToggle"
                                                 hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/> 
-                                    <pe:tooltip for="calendarId" value="To See Calendar" showEffect="slideToggle"
-                                                hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>
+<!--                                    <pe:tooltip for="calendarId" value="To See Calendar" showEffect="slideToggle"
+                                                hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>-->
                                     <pe:tooltip for="userId" value="My User Profile" showEffect="slideToggle"
                                                 hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>
                                     <pe:tooltip for="logoutId" value="Logout and Exit" showEffect="slideToggle"
