@@ -32,6 +32,7 @@ public class WtPeriode implements java.io.Serializable {
     private String absen;
     private Integer workingDays;
     private String payrollType;
+    private Date payrollDate;
     private String createdBy;
     private Date createdOn;
     private String updatedBy;
@@ -151,7 +152,17 @@ public class WtPeriode implements java.io.Serializable {
         this.payrollType = payrollType;
     }
 
-    @Column(name = "created_by", length = 45)
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "payroll_date", length = 19)
+    public Date getPayrollDate() {
+		return payrollDate;
+	}
+
+	public void setPayrollDate(Date payrollDate) {
+		this.payrollDate = payrollDate;
+	}
+
+	@Column(name = "created_by", length = 45)
     public String getCreatedBy() {
         return this.createdBy;
     }

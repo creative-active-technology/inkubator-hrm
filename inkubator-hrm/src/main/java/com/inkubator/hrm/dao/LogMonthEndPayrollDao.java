@@ -22,4 +22,6 @@ public interface LogMonthEndPayrollDao extends IDAO<LogMonthEndPayroll> {
 
 	public BigDecimal getTotalTakeHomePayByPeriodeId(Long periodeId);
 
+	public void deleteByPeriodId(Long periodId);
+
 }

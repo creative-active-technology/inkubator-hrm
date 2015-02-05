@@ -328,4 +328,11 @@ public class LogMonthEndPayrollServiceImpl extends IServiceImpl implements LogMo
 		payTempKalkulasiDao.deleteAllData();
 		
 	}
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void deleteByPeriodId(Long periodId) throws Exception {
+		logMonthEndPayrollDao.deleteByPeriodId(periodId);
+		
+	}
 }
