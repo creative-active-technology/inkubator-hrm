@@ -71,7 +71,7 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="createdOn" style="width: 12%">
+                            <p:column sortBy="createdOn" style="width: 15%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.upload_date']}"/>
                                 </f:facet>
@@ -79,7 +79,7 @@
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="bioData.firstName" style="width: 20%">
+                            <p:column sortBy="bioData.firstName" style="width: 25%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
@@ -108,7 +108,7 @@
                                 <h:outputLabel value= "#{data.termin}" />
                                 
                             </p:column>
-                           <p:column headerText="#{appmsg['global.action']}" style="width: 20%;text-align: center" exportable="false">
+                           <p:column headerText="#{appmsg['global.action']}" style="width: 12%;text-align: center" exportable="false">
                                 <p:commandButton  icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
                                                   action="#{loanUploadViewController.doDetail()}" style="font-size: 10px!important" >                        
                                     <f:setPropertyActionListener value="#{data}" target="#{loanUploadViewController.selected}" />
