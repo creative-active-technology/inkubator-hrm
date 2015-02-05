@@ -12,6 +12,7 @@ import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.AttendanceStatusDao;
+import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.TempJadwalKaryawanDao;
 import com.inkubator.hrm.dao.WtGroupWorkingDao;
 import com.inkubator.hrm.dao.WtHolidayDao;
@@ -50,6 +51,8 @@ public class JadwalKerjaUpdateMessagesListener extends IServiceImpl implements M
     private AttendanceStatusDao attendanceStatusDao;
     @Autowired
     private WtWorkingHourDao wtWorkingHourDao;
+    @Autowired
+    private EmpDataDao empDataDao;
 
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW,
@@ -60,7 +63,9 @@ public class JadwalKerjaUpdateMessagesListener extends IServiceImpl implements M
             JSONObject jSONObject = new JSONObject(textMessage.getText());
             long workingGroupId = Long.parseLong(jSONObject.getString("id"));
             List<TempJadwalKaryawan> data = this.tempJadwalKaryawanDao.getByGroupKerjadId(workingGroupId);
-            tempJadwalKaryawanDao.deleteBacth(data);
+//            Date createOn = new SimpleDateFormat("dd-MM-yyyy hh:mm").parse(jSONObject.getString("createDate"));
+            String createBy = jSONObject.getString("createdBy");
+//            tempJadwalKaryawanDao.deleteBacth(data);
             WtGroupWorking groupWorking = this.wtGroupWorkingDao.getEntiyByPK(workingGroupId);
             Date now = new Date();
             Date startDate = groupWorking.getBeginTime();
@@ -84,12 +89,30 @@ public class JadwalKerjaUpdateMessagesListener extends IServiceImpl implements M
 //            Collections.sort(dataScheduleShift, shortByDate1);
             List<WtScheduleShift> sortedDataScheduleShift = Lambda.sort(dataScheduleShift, Lambda.on(WtScheduleShift.class).getScheduleDate());
             List<TempJadwalKaryawan> dataToSave = new ArrayList<>();
+            TempJadwalKaryawan jadwalKaryawan;
             for (EmpData data1 : datas) {
                 int i = 0;// Penting pisisi code harus di sini
                 for (WtScheduleShift dataScheduleShift1 : sortedDataScheduleShift) {
-                    TempJadwalKaryawan jadwalKaryawan = new TempJadwalKaryawan();
-                    jadwalKaryawan.setEmpData(data1);
-                    jadwalKaryawan.setTanggalWaktuKerja(DateTimeUtil.getDateFrom(beginScheduleDate, i, CommonUtilConstant.DATE_FORMAT_DAY));
+                    String onlyDate = new SimpleDateFormat("yyyy-MM-dd").format(DateTimeUtil.getDateFrom(beginScheduleDate, i, CommonUtilConstant.DATE_FORMAT_DAY));
+                    Date olnyDate = new SimpleDateFormat("yyyy-MM-dd").parse(onlyDate);
+                    jadwalKaryawan = tempJadwalKaryawanDao.getByEmpId(data1.getId(), olnyDate);
+                    if (jadwalKaryawan != null) {
+                        jadwalKaryawan.setUpdatedBy(jSONObject.getString("createdBy"));
+                        jadwalKaryawan.setUpdatedOn(new Date());
+//                jadwalKaryawan = tempJadwalKaryawanDao.getByEmpId(empData.getId(), olnyDate);
+                    } else {
+                        jadwalKaryawan = new TempJadwalKaryawan();
+                        jadwalKaryawan.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
+                        jadwalKaryawan.setEmpData(empDataDao.getEntiyByPK(data1.getId()));
+                        jadwalKaryawan.setTanggalWaktuKerja(DateTimeUtil.getDateFrom(beginScheduleDate, i, CommonUtilConstant.DATE_FORMAT_DAY));
+                        jadwalKaryawan.setCreatedBy(createBy);
+                        jadwalKaryawan.setCreatedOn(new Date());
+
+                    }
+//
+//                    jadwalKaryawan = new TempJadwalKaryawan();
+//                    jadwalKaryawan.setEmpData(data1);
+//                    jadwalKaryawan.setTanggalWaktuKerja(DateTimeUtil.getDateFrom(beginScheduleDate, i, CommonUtilConstant.DATE_FORMAT_DAY));
 //                    jadwalKaryawan.setWtWorkingHour(dataScheduleShift1.getWtWorkingHour());
                     WtHoliday holiday = wtHolidayDao.getWtHolidayByDate(jadwalKaryawan.getTanggalWaktuKerja());
                     if (holiday != null && groupWorking.getTypeSequeace().equals(HRMConstant.NORMAL_SCHEDULE)) {
@@ -98,9 +121,9 @@ public class JadwalKerjaUpdateMessagesListener extends IServiceImpl implements M
                         jadwalKaryawan.setWtWorkingHour(dataScheduleShift1.getWtWorkingHour());
                     }
                     jadwalKaryawan.setIsCollectiveLeave(Boolean.FALSE);
-                    jadwalKaryawan.setCreatedBy(jSONObject.getString("createdBy"));
-                    jadwalKaryawan.setCreatedOn(new Date());
-                    jadwalKaryawan.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
+//                    jadwalKaryawan.setCreatedBy(jSONObject.getString("createdBy"));
+//                    jadwalKaryawan.setCreatedOn(new Date());
+//                    jadwalKaryawan.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
                     dataToSave.add(jadwalKaryawan);
 //                    this.tempJadwalKaryawanDao.save(jadwalKaryawan);
                     i++;

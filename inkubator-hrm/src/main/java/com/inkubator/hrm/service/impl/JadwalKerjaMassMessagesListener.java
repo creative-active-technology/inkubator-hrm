@@ -69,7 +69,7 @@ public class JadwalKerjaMassMessagesListener extends IServiceImpl implements Mes
             String createBy = jSONObject.getString("createBy");
 
             Gson gson = new GsonBuilder().create();
-            List<TempJadwalKaryawan> dataToDelete = new ArrayList<>();
+//            List<TempJadwalKaryawan> dataToDelete = new ArrayList<>();
             TypeToken<List<Long>> token = new TypeToken<List<Long>>() {
             };
             List<Long> dataEmpId = gson.fromJson(listEmp, token.getType());
