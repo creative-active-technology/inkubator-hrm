@@ -9,8 +9,11 @@ import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.EmpRotasiDao;
 import com.inkubator.hrm.entity.EmpRotasi;
 import com.inkubator.hrm.web.search.EmpRotasiSearchParameter;
+import com.inkubator.hrm.web.search.ReportEmpMutationParameter;
 import java.util.List;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
+import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -68,5 +71,7 @@ public class EmpRotasiDaoImpl extends IDAOImpl<EmpRotasi> implements EmpRotasiDa
         }
 
         criteria.add(Restrictions.isNotNull("id"));
-    }
+    }    
+    
+     
 }

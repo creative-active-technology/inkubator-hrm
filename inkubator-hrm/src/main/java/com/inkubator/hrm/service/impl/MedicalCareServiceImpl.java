@@ -252,8 +252,8 @@ public class MedicalCareServiceImpl extends IServiceImpl implements MedicalCareS
     public void update(MedicalCare b) throws Exception {
 
         MedicalCare medicalCare = medicalCareDao.getEntiyByPK(b.getId());
-        medicalCare.setEmpDataByEmpDataId(empDataDao.getEntiyByPK(b.getEmpDataByEmpDataId().getId()));
-        medicalCare.setEmpDataByTemporaryActingId(empDataDao.getEntiyByPK(b.getEmpDataByTemporaryActingId().getId()));
+        medicalCare.setEmpData(empDataDao.getEntiyByPK(b.getEmpData().getId()));
+        medicalCare.setTemporaryActing(empDataDao.getEntiyByPK(b.getTemporaryActing().getId()));
         medicalCare.setDisease(diseaseDao.getEntiyByPK(b.getDisease().getId()));
         medicalCare.setHospital(hospitalDao.getEntiyByPK(b.getHospital().getId()));
         medicalCare.setDocterName(b.getDocterName());
@@ -340,8 +340,8 @@ public class MedicalCareServiceImpl extends IServiceImpl implements MedicalCareS
             file.renameTo(new File(uploadPath));
         }
 
-        medicalCare.setEmpDataByEmpDataId(empDataDao.getEntiyByPK(b.getEmpDataByEmpDataId().getId()));
-        medicalCare.setEmpDataByTemporaryActingId(empDataDao.getEntiyByPK(b.getEmpDataByTemporaryActingId().getId()));
+        medicalCare.setEmpData(empDataDao.getEntiyByPK(b.getEmpData().getId()));
+        medicalCare.setTemporaryActing(empDataDao.getEntiyByPK(b.getTemporaryActing().getId()));
         medicalCare.setDisease(diseaseDao.getEntiyByPK(b.getDisease().getId()));
         medicalCare.setHospital(hospitalDao.getEntiyByPK(b.getHospital().getId()));
         medicalCare.setDocterName(b.getDocterName());

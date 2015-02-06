@@ -1,11 +1,14 @@
 package com.inkubator.hrm.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
 
 import com.inkubator.datacore.service.IService;
+import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.TempProcessReadFinger;
+import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.web.model.DataFingerRealizationModel;
 import com.inkubator.hrm.web.search.DataFingerRealizationSearchParameter;
 
@@ -24,9 +27,13 @@ public interface TempProcessReadFingerService extends IService<TempProcessReadFi
 	public Long getTotalDataFingerRealizationByParam(DataFingerRealizationSearchParameter searchParameter) throws Exception;
 	
 	public void synchDataFingerRealization() throws Exception;
+	
+	public void synchDataFingerRealization(EmpData empData, WtPeriode periode, String createdBy, Date createdOn) throws Exception;
 
 	public void doCorrectionIn(Long id, Boolean isCorrection) throws Exception;
 	
 	public void doCorrectionOut(Long id, Boolean isCorrection) throws Exception;
+	
+	public void deleteByScheduleDateAndIsNotCorrection(Date fromPeriode, Date untilPeriode) throws Exception;
 	
 }

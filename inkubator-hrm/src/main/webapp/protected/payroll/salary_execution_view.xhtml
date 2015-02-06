@@ -12,11 +12,9 @@
     <h:body>
         <ui:composition template="/templates/master_layout_full.xhtml">
             <ui:define name="windowTitle">
-                <!--<h:outputStylesheet library="css" name="progress_bar.css" />-->
                 Home
             </ui:define>
-            <ui:define name="center">
-                 <h:outputStylesheet library="css" name="progress_bar.css" />
+            <ui:define name="center">                
                 <div id="box_bg" style="margin: 10px">
                     <h:form id="formId">
                         <h:panelGrid style="margin-bottom: 5px" columns="2">
@@ -41,7 +39,7 @@
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3" >
-                                    <p:commandButton value="Export to XLS" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
+                                    <p:commandButton value="#{appmsg['global.export']}" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
                                         <pe:exporter target="tableIdForExport" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Salary_Calculation"/>
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['salaryCalculation.tax']}" action="#{paySalaryExecuteController.doTax()}" title="#{appmsg['salaryCalculation.tax']}" label="#{appmsg['salaryCalculation.tax']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
@@ -211,9 +209,8 @@
                         </p:blockUI>
                     </h:form>
                 </div>
-                <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
-                    <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
-                </p:dialog>
+                
+                <h:outputStylesheet library="css" name="progress_bar.css" />
                 <p:dialog widgetVar="detail" header="#{appmsg['salaryCalculation.calculation']}" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
                           showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)" dynamic="false" closable="false" focus="detailPanel">
 

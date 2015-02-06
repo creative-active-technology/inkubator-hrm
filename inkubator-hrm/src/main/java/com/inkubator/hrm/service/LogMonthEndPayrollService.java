@@ -23,5 +23,7 @@ public interface LogMonthEndPayrollService extends IService<LogMonthEndPayroll> 
 	public BigDecimal getTotalTakeHomePayByPeriodeId(Long periodeId) throws Exception;
 	
 	public void afterMonthEndProcess() throws Exception;
+	
+	public void deleteByPeriodId(Long periodId) throws Exception;
 
 }

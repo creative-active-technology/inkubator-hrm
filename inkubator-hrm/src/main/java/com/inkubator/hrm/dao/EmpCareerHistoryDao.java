@@ -7,7 +7,10 @@ package com.inkubator.hrm.dao;
 
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.EmpCareerHistory;
+import com.inkubator.hrm.entity.EmpRotasi;
+import com.inkubator.hrm.web.search.ReportEmpMutationParameter;
 import java.util.List;
+import org.hibernate.criterion.Order;
 
 /**
  *
@@ -18,4 +21,8 @@ public interface EmpCareerHistoryDao extends IDAO<EmpCareerHistory> {
     public List<EmpCareerHistory> getEmployeeCareerByBioId(long id);
     
     public EmpCareerHistory getByBioIdandStatus(long id, String status);
+    
+    public List<EmpCareerHistory> getByParamReport(ReportEmpMutationParameter searchParameter, int firstResult, int maxResults, Order order);
+
+    public Long getTotalEmpCareerHistoryDataByParamReport(ReportEmpMutationParameter searchParameter);
 }

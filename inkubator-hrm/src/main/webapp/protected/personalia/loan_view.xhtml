@@ -48,7 +48,7 @@
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3" >
-                                    <p:commandButton value="Export to XLS" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
+                                    <p:commandButton value="#{appmsg['global.export']}" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
                                         <pe:exporter target="tableLoanId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Loan"/>
                                     </p:commandButton>
                                     <!--<p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']}" action="#{loanViewController.doAdd()}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true"/>-->
@@ -81,7 +81,7 @@
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['loanschema.loan']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{loanData.loanSchema.name}"/>
+                                <h:outputLabel value="#{loanData.loanSchema.name}"/>
                             </p:column>  
                             <p:column sortBy="nominalPrincipal"  style="width: 15%">
                                 <f:facet name="header">  

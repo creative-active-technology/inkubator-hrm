@@ -9,6 +9,7 @@ import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.dao.EmpCareerHistoryDao;
 import com.inkubator.hrm.entity.EmpCareerHistory;
 import com.inkubator.hrm.service.EmpCareerHistoryService;
+import com.inkubator.hrm.web.search.ReportEmpMutationParameter;
 import java.util.List;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -193,6 +194,18 @@ public class EmpCareerHistoryServiceImpl extends IServiceImpl implements EmpCare
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<EmpCareerHistory> getEmployeeCareerByBioId(long id) throws Exception {
         return this.empCareerHistoryDao.getEmployeeCareerByBioId(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<EmpCareerHistory> getByParamReport(ReportEmpMutationParameter searchParameter, int firstResult, int maxResults, Order order) {
+       return this.empCareerHistoryDao.getByParamReport(searchParameter, firstResult, maxResults, order);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalEmpCareerHistoryDataByParamReport(ReportEmpMutationParameter searchParameter) {
+        return this.empCareerHistoryDao.getTotalEmpCareerHistoryDataByParamReport(searchParameter);
     }
 
 }

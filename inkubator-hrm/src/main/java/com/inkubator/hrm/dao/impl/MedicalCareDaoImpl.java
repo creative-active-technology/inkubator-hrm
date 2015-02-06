@@ -33,9 +33,9 @@ public class MedicalCareDaoImpl extends IDAOImpl<MedicalCare> implements Medical
     public List<MedicalCare> getByParam(String parameter, int firstResult, int maxResults, Order orderable) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchMedicalCareByParam(parameter, criteria);
-        criteria.setFetchMode("empDataByEmpDataId", FetchMode.JOIN);
-        criteria.setFetchMode("empDataByEmpDataId.jabatanByJabatanId", FetchMode.JOIN);
-        criteria.setFetchMode("empDataByEmpDataId.bioData", FetchMode.JOIN);
+        criteria.setFetchMode("empData", FetchMode.JOIN);
+        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+        criteria.setFetchMode("empData.jabatanByJabatanId", FetchMode.JOIN);
         criteria.addOrder(orderable);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
@@ -51,8 +51,8 @@ public class MedicalCareDaoImpl extends IDAOImpl<MedicalCare> implements Medical
 
     private void doSearchMedicalCareByParam(String parameter, Criteria criteria) {
         if (StringUtils.isNotEmpty(parameter)) {
-            criteria.createAlias("empDataByEmpDataId", "ed", JoinType.INNER_JOIN);
-            criteria.createAlias("ed.bioData", "bio", JoinType.INNER_JOIN);
+            criteria.createAlias("empData", "ed", JoinType.INNER_JOIN);
+            criteria.createAlias("empData.bioData", "bio", JoinType.INNER_JOIN);
             Disjunction disjunction = Restrictions.disjunction();
             disjunction.add(Restrictions.like("bio.firstName", parameter, MatchMode.ANYWHERE));
             disjunction.add(Restrictions.like("bio.lastName", parameter, MatchMode.ANYWHERE));
@@ -66,11 +66,12 @@ public class MedicalCareDaoImpl extends IDAOImpl<MedicalCare> implements Medical
     @Override
     public MedicalCare getEntityWithDetail(Long id) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.eq("id",id));
-        criteria.setFetchMode("empDataByEmpDataId", FetchMode.JOIN);
-        criteria.setFetchMode("empDataByEmpDataId.jabatanByJabatanId", FetchMode.JOIN);
-        criteria.setFetchMode("empDataByEmpDataId.bioData", FetchMode.JOIN);
-        criteria.setFetchMode("empDataByTemporaryActingId", FetchMode.JOIN);
+        criteria.add(Restrictions.eq("id", id));
+        criteria.setFetchMode("empData", FetchMode.JOIN);
+        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+        criteria.setFetchMode("empData.jabatanByJabatanId", FetchMode.JOIN);
+        criteria.setFetchMode("temporaryActing", FetchMode.JOIN);
+        criteria.setFetchMode("temporaryActing.bioData", FetchMode.JOIN);
         criteria.setFetchMode("disease", FetchMode.JOIN);
         criteria.setFetchMode("hospital", FetchMode.JOIN);
         return (MedicalCare) criteria.uniqueResult();
@@ -79,10 +80,11 @@ public class MedicalCareDaoImpl extends IDAOImpl<MedicalCare> implements Medical
     @Override
     public List<MedicalCare> getAllDataWithDetail() {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.setFetchMode("empDataByEmpDataId", FetchMode.JOIN);
-        criteria.setFetchMode("empDataByEmpDataId.jabatanByJabatanId", FetchMode.JOIN);
-        criteria.setFetchMode("empDataByEmpDataId.bioData", FetchMode.JOIN);
-        criteria.setFetchMode("empDataByTemporaryActingId", FetchMode.JOIN);
+        criteria.setFetchMode("empData", FetchMode.JOIN);
+        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+        criteria.setFetchMode("empData.jabatanByJabatanId", FetchMode.JOIN);
+        criteria.setFetchMode("temporaryActing", FetchMode.JOIN);
+        criteria.setFetchMode("temporaryActing.bioData", FetchMode.JOIN);
         criteria.setFetchMode("disease", FetchMode.JOIN);
         criteria.setFetchMode("hospital", FetchMode.JOIN);
         return criteria.list();

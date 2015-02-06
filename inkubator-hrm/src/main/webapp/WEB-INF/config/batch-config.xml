@@ -24,7 +24,19 @@
         </property>
     </bean>
 	
+	
+	
     <!-- ALL batch jobs -->
+    <batch:job id="jobSynchDataFingerRealization">
+        <batch:step id="stepSynchDataFingerRealization_1">
+            <batch:tasklet>
+                <batch:chunk reader="customSynchDataFingerRealizationItemReader" writer="customSynchDataFingerRealizationItemWriter"
+                             commit-interval="20">
+                </batch:chunk>
+            </batch:tasklet>
+        </batch:step>
+    </batch:job>
+    
     <batch:job id="jobPaySalaryUpload">
         <batch:step id="stepPaySalaryUpload_1">
             <batch:tasklet>
@@ -34,6 +46,7 @@
             </batch:tasklet>
         </batch:step>
     </batch:job>
+    
     <batch:job id="jobPayAttendanceUpload">
         <batch:step id="stepPayAttendanceUpload_1">
             <batch:tasklet>
@@ -42,8 +55,8 @@
                 </batch:chunk>
             </batch:tasklet>
         </batch:step>
-    </batch:job>
-    
+    </batch:job>  
+      
     <batch:job id="jobPayTempOvertimeUpload">
         <batch:step id="stepJobPayTempOvertimeUpload_1">
             <batch:tasklet>
@@ -53,6 +66,7 @@
             </batch:tasklet>
         </batch:step>
     </batch:job>	
+    
     <batch:job id="jobPayEmployeeCalculation">
         <batch:step id="stepPayEmployeeCalculation_1" next="stepPayEmployeeCalculation_2">
             <batch:tasklet>
@@ -76,7 +90,12 @@
                 </batch:chunk>
             </batch:tasklet>
         </batch:step>
+        <!-- add job execution listener  -->
+        <batch:listeners>
+        	<batch:listener ref="payEmployeeCalculationJobListener"/>
+        </batch:listeners>
     </batch:job>
+    
     <batch:job id="jobPayReceiverAccount">
         <batch:step id="stepPayReceiverAccount_1">
             <batch:tasklet>
@@ -86,18 +105,32 @@
             </batch:tasklet>
         </batch:step>
     </batch:job>
+    
     <batch:job id="jobMonthEndPayroll">
-        <batch:step id="stepMonthEndPayroll_1">
+        <batch:step id="stepMonthEndPayroll_1" next="stepMonthEndPayroll_2">
             <batch:tasklet>
                 <batch:chunk reader="customMonthEndPayrollItemReader" processor="customMonthEndPayrollItemProcessor" writer="customMonthEndPayrollItemWriter"
                              commit-interval="20">
                 </batch:chunk>
             </batch:tasklet>
         </batch:step>
+        <batch:step id="stepMonthEndPayroll_2">
+            <batch:tasklet>
+                <batch:chunk reader="customMonthEndTransferLogItemReader" writer="customMonthEndTransferLogItemWriter"
+                             commit-interval="20">
+                </batch:chunk>
+            </batch:tasklet>
+        </batch:step>
+        <!-- add job execution listener  -->
+        <batch:listeners>
+        	<batch:listener ref="monthEndPayrollJobListener"/>
+        </batch:listeners>
     </batch:job>
+    
     <batch:job id="jobLoanUpload">
         <batch:step id="stepJobLoanUpload_1">
             <batch:tasklet>
+                 <!-- Commit interval di set 1 untuk memastikan kalau id loan yang di dapat pada proses kodefikasi adalah id terakhir.  -->	
                 <batch:chunk reader="customLoanUploadItemReader" writer="customLoanUploadItemWriter"
                              commit-interval="1">
                 </batch:chunk>
@@ -105,6 +138,36 @@
         </batch:step>
     </batch:job>
     
+    
+            
+    <!-- ALL batch listeners -->
+    <bean id="monthEndPayrollJobListener" class="com.inkubator.hrm.batch.MonthEndPayrollJobListener" lazy-init="true">
+		<property name="wtPeriodeService" ref="wtPeriodeService"/>
+		<property name="logMonthEndPayrollService" ref="logMonthEndPayrollService"/>
+		<property name="logListOfTransferService" ref="logListOfTransferService"/>		
+	</bean>
+	<bean id="payEmployeeCalculationJobListener" class="com.inkubator.hrm.batch.PayEmployeeCalculationJobListener" lazy-init="true">
+		<property name="wtPeriodeService" ref="wtPeriodeService"/>		
+	</bean>
+	
+	
+    
+    <!-- reader and writer for synchronization_data_finger_realization -->
+    <bean id="customSynchDataFingerRealizationItemReader" class="org.springframework.batch.item.database.HibernatePagingItemReader" lazy-init="true">
+	    <property name="sessionFactory" ref="sessionFactory"/>
+	    <property name="queryString" value="from EmpData as empData 
+	    									where status != 'EMP_TERMINATION'"/>
+	    <property name="pageSize" value="10"/>
+	</bean>
+	<bean id="customSynchDataFingerRealizationItemWriter" class="com.inkubator.hrm.batch.DataFingerRealizationWriter" scope="step" lazy-init="true">
+        <property name="tempProcessReadFingerService" ref="tempProcessReadFingerService" />
+        <property name="wtPeriodeService" ref="wtPeriodeService" />
+        <property name="createdBy" value="#{jobParameters['createdBy']}"/>
+        <property name="createdOn" value="#{jobParameters['createdOn']}"/>
+    </bean>
+    
+	
+	
     <!-- reader, processor and writer for month_end_payroll -->
     <bean id="customMonthEndPayrollItemReader" class="org.springframework.batch.item.database.HibernatePagingItemReader" lazy-init="true">
 	    <property name="sessionFactory" ref="sessionFactory"/>
@@ -115,6 +178,21 @@
 	    									inner join fetch empData.employeeType as employeeType
 	    									inner join fetch payTempKalkulasi.paySalaryComponent as paySalaryComponent
 	    									inner join fetch paySalaryComponent.modelComponent as modelComponent"/>
+	    <property name="pageSize" value="100"/>
+	</bean>
+	<bean id="customMonthEndTransferLogItemReader" class="org.springframework.batch.item.database.HibernatePagingItemReader" lazy-init="true">
+	    <property name="sessionFactory" ref="sessionFactory"/>
+	    <property name="queryString" value="from PayTempKalkulasi as payTempKalkulasi 
+	    									inner join fetch payTempKalkulasi.empData as empData
+	    									inner join fetch empData.bioData as bioData
+	    									inner join fetch payTempKalkulasi.paySalaryComponent as paySalaryComponent
+	    									inner join fetch paySalaryComponent.modelComponent as modelComponent
+	    									where modelComponent.spesific = :spesific"/>
+	   	<property name="parameterValues">
+	   		<map>
+	   			<entry key="spesific" value="100" value-type="java.lang.Integer"/>	   			
+	   		</map>
+	   	</property>
 	    <property name="pageSize" value="100"/>
 	</bean>
 	<bean id="customMonthEndPayrollItemProcessor" class="com.inkubator.hrm.batch.MonthEndPayrollProcessor" scope="step" lazy-init="true">
@@ -139,6 +217,13 @@
             <bean class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider" />
         </property>
     </bean>
+    <bean id="customMonthEndTransferLogItemWriter" class="com.inkubator.hrm.batch.MonthEndTransferLogWriter" scope="step" lazy-init="true">
+    	<property name="wtPeriodeService" ref="wtPeriodeService"/>
+    	<property name="logListOfTransferService" ref="logListOfTransferService"/>
+        <property name="createdBy" value="#{jobParameters['createdBy']}"/>
+        <property name="createdOn" value="#{jobParameters['createdOn']}"/>
+    </bean>
+  
   
 
     <!-- reader and writer for pay_receiver_account -->
@@ -149,6 +234,7 @@
     <bean name="customPayReceiverAccountItemWriter" class="com.inkubator.hrm.batch.PayReceiverAccountWriter" scope="step" lazy-init="true">
     	<property name="fileName" value="#{jobParameters['fileName']}"/>
     </bean>
+	
 	
 	
     <!-- reader and writer for pay_salary_upload -->	
@@ -162,6 +248,8 @@
         <property name="targetMethod" value="executeBatchFileUpload" />
     </bean>
     
+    
+    
     <!-- reader and writer for pay_temp_attendance_upload -->	
     <bean id="customPayAttendanceUploadItemReader" class="com.inkubator.hrm.batch.PayTempAttendanceUploadReader" scope="step" destroy-method="destroy" lazy-init="true">
         <constructor-arg name="filePath"  value="#{jobParameters['input.file.path']}"></constructor-arg>
@@ -172,7 +260,9 @@
         <property name="targetMethod" value="executeBatchFileUpload" />
     </bean>
     
-        <!-- reader and writer for pay_temp_overtime_upload-->	
+    
+    
+    <!-- reader and writer for pay_temp_overtime_upload-->	
     <bean id="customPayTempOvertimeUploadItemReader" class="com.inkubator.hrm.batch.PayTempOvertimeUploadReader" scope="step" destroy-method="destroy" lazy-init="true">
         <constructor-arg name="filePath"  value="#{jobParameters['input.file.path']}"></constructor-arg>
         <property name="createdBy" value="#{jobParameters['createdBy']}"/>
@@ -181,6 +271,7 @@
         <property name="targetObject" ref="payTempOvertimeService" />
         <property name="targetMethod" value="executeBatchFileUpload" />
     </bean>
+	
 	
 		
     <!-- reader, processor and writer for pay_employee_calculation -->
@@ -235,6 +326,9 @@
         <property name="targetObject" ref="payTempKalkulasiService" />
         <property name="targetMethod" value="executeBatchFinalSalaryCalculation" />
     </bean>	
+    
+    
+    
     <!-- reader and writer for loan_upload -->	
     <bean id="customLoanUploadItemReader" class="com.inkubator.hrm.batch.LoanUploadReader" scope="step" destroy-method="destroy" lazy-init="true">
         <constructor-arg name="filePath"  value="#{jobParameters['input.file.path']}"></constructor-arg>

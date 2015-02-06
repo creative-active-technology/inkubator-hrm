@@ -146,7 +146,7 @@ public class LoanPaymentDetailDaoImpl extends IDAOImpl<LoanPaymentDetail> implem
         criteria.add(Restrictions.eq("loanSchema.id", loanSchemaId));
         criteria.add(Restrictions.ge("dueDate", fromPeriode));
         criteria.add(Restrictions.le("dueDate", untilPeriode));
-        criteria.add(Restrictions.eq("loan.statusPencairan", HRMConstant.LOAN_PAID));
+        criteria.add(Restrictions.eq("loan.statusPencairan", HRMConstant.LOAN_DISBURSED));
         return criteria.list();
     }
 

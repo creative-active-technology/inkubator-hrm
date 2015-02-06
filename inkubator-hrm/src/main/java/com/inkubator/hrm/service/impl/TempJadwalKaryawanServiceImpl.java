@@ -324,27 +324,26 @@ public class TempJadwalKaryawanServiceImpl extends BaseApprovalServiceImpl imple
         List<Long> listIdEmp = Lambda.extract(data, Lambda.on(EmpData.class).getId());
         HrmUser requestUser = hrmUserDao.getByUserId(UserInfoUtil.getUserName());
         ApprovalActivity approvalActivity = super.checkApprovalProcess(HRMConstant.SHIFT_SCHEDULE, requestUser.getUserId());
-//        if (approvalActivity == null) {
+        if (approvalActivity == null) {
             this.saveMassPenempatanJadwal(listIdEmp, groupWorkingId, new Date(), UserInfoUtil.getUserName());
             message = "success_without_approval";
+        } else {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm");
+            String dataToJson = jsonConverter.getJson(listIdEmp.toArray(new Long[listIdEmp.size()]));
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("listEmpId", dataToJson);
+            jsonObject.addProperty("groupWorkingId", groupWorkingId);
+            jsonObject.addProperty("createDate", dateFormat.format(new Date()));
+            jsonObject.addProperty("createBy", UserInfoUtil.getUserName());
 
-//        } else {
-//            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm");
-//            String dataToJson = jsonConverter.getJson(listIdEmp.toArray(new Long[listIdEmp.size()]));
-//            JsonObject jsonObject = new JsonObject();
-//            jsonObject.addProperty("listEmpId", dataToJson);
-//            jsonObject.addProperty("groupWorkingId", groupWorkingId);
-//            jsonObject.addProperty("createDate", dateFormat.format(new Date()));
-//            jsonObject.addProperty("createBy", UserInfoUtil.getUserName());
-//
-//            approvalActivity.setPendingData(jsonObject.toString());
-//            approvalActivityDao.save(approvalActivity);
-//
-//            message = "success_need_approval";
-//
-//            //sending email notification
-//            this.sendingEmailApprovalNotif(approvalActivity);
-//        }
+            approvalActivity.setPendingData(jsonObject.toString());
+            approvalActivityDao.save(approvalActivity);
+
+            message = "success_need_approval";
+
+            //sending email notification
+            this.sendingEmailApprovalNotif(approvalActivity);
+        }
         return message;
     }
 

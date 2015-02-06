@@ -44,8 +44,8 @@ public class LoanCanceledProcessLazyDataModel extends LazyDataModel<Loan> implem
                 }else{
                     order = Order.desc("nominalPrincipal");
                 }
-                loanList = service.getByParamByStatusPencairan(searchParameter, first, pageSize, order);
-                jumlahData = Integer.parseInt(String.valueOf(service.getTotalByParamByStatusPencairan(searchParameter)));
+                loanList = service.getByParamByStatusUndisbursed(searchParameter, first, pageSize, order);
+                jumlahData = Integer.parseInt(String.valueOf(service.getTotalByParamByStatusUndisbursed(searchParameter)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
             }

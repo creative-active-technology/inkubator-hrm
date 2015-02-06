@@ -112,18 +112,7 @@
 	                                </p:inputText>	
 	                            </p:column>
 	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel for="loanPaymentDateId" value="#{appmsg['loan.loan_payment_date']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                                <p:calendar id="loanPaymentDateId" required="true" pattern="dd-MMMM-yyyy" value="#{loanModel.loanPaymentDate}">
-	                                	<p:ajax listener="#{loanFormController.doResetLoanPaymentDetailForm(flowRequestContext)}"/>
-                                    </p:calendar>
-	                                <p:message for="loanPaymentDateId"/>
-	                            </p:column>
-	                        </p:row> 
-	                        <p:row>
+                                <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
 	                                <p:outputLabel for="loanDateId" value="#{appmsg['loan.loan_date']}" styleClass="label_hrm"/>
 	                            </p:column>
@@ -132,7 +121,18 @@
                                             	value="#{loanModel.loanDate}"/>
 	                                <p:message for="loanDateId"/>
 	                            </p:column>
-	                        </p:row>                      
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="loanPaymentDateId" value="#{appmsg['loan.approvalDate']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                                <p:calendar id="loanPaymentDateId" required="true" pattern="dd-MMMM-yyyy" value="#{loanModel.loanPaymentDate}">
+	                                	<p:ajax listener="#{loanFormController.doResetLoanPaymentDetailForm(flowRequestContext)}"/>
+                                    </p:calendar>
+	                                <p:message for="loanPaymentDateId"/>
+	                            </p:column>
+	                        </p:row> 	                                              
 	                 	</p:panelGrid>	                    
 	                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
 	                    <div style="margin-bottom: 5px">

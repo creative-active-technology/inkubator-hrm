@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 
 /**
@@ -37,6 +38,8 @@ public class EmpCareerHistory implements java.io.Serializable {
     private Date updatedOn;
     private String status;
     private EmployeeType employeeType;
+     private String jabatanOldName;
+     private String jabatanOldCode;
 
     public EmpCareerHistory() {
     }
@@ -61,7 +64,6 @@ public class EmpCareerHistory implements java.io.Serializable {
     }
 
     @Id
-
     @Column(name = "id", unique = true, nullable = false)
     public long getId() {
         return this.id;
@@ -201,12 +203,30 @@ public class EmpCareerHistory implements java.io.Serializable {
 
     public void setSalary(String salary) {
         this.salary = salary;
-    }
+    }   
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "karyawan_type_id")
     public EmployeeType getEmployeeType() {
         return this.employeeType;
+    }
+    
+    @Transient
+    public String getJabatanOldName() {
+        return jabatanOldName;
+    }
+
+    public void setJabatanOldName(String jabatanOldName) {
+        this.jabatanOldName = jabatanOldName;
+    }
+    
+    @Transient
+    public String getJabatanOldCode() {
+        return jabatanOldCode;
+    }
+
+    public void setJabatanOldCode(String jabatanOldCode) {
+        this.jabatanOldCode = jabatanOldCode;
     }
 
     public void setEmployeeType(EmployeeType employeeType) {

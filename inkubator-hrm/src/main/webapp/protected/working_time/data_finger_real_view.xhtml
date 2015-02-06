@@ -15,9 +15,8 @@
             <ui:define name="windowTitle">
                 Home
             </ui:define>
-            <ui:define name="center">
-                <div id="box_bg" style="margin: 10px">    
-                    <!--<p:panel style="margin: 10px" >-->                    
+            <ui:define name="center">            	
+                <div id="box_bg" style="margin: 10px">                       
                     <h:panelGrid style="margin-bottom: 5px" columns="2">
                         <p:graphicImage library="images" name="permit.png" height="36" width="36" cache="true"/>
                         <h:panelGroup layout="block">
@@ -49,8 +48,9 @@
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3" >
-                                	<p:commandButton value="#{appmsg['global.synchronization']}" title="#{appmsg['global.synchronization']}" action="#{dataFingerRealizationViewController.doSync()}" label="#{appmsg['global.synchronization']}" 
-                                					 onclick="statusDialog.show()" oncomplete="statusDialog.hide()" styleClass="label_button" icon="ui-icon-refresh" ajax="true" update="tableId,:growlId"/>
+                                	<p:commandButton value="#{appmsg['global.synchronization']}" action="#{dataFingerRealizationViewController.doInitSyncDataFinger()}"  title="#{appmsg['global.synchronization']}" label="#{appmsg['global.synchronization']}" styleClass="label_button"
+                                					 onclick="statusDialog.show()" oncomplete="if (!args.validationFailed) {syncDataFingerWidget.show();} else {statusDialog.hide();}" update="tableId,:growlId,:syncDataFingerWidgetId">
+                                    </p:commandButton>
                                     <p:commandButton value="Export to XLS" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
                                         <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Data_Finger_Realization"/>
                                     </p:commandButton>                                    
@@ -136,6 +136,35 @@
                         </p:blockUI>
                     </h:form>
                 </div>
+                
+                <h:outputStylesheet library="css" name="progress_bar.css" />
+                <p:dialog widgetVar="syncDataFingerWidget" id="syncDataFingerWidgetId" header="#{appmsg['global.process']} #{appmsg['global.synchronization']}" width="500" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
+                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)" dynamic="false" closable="false" focus="syncDataFingerForm">
+
+                    <div align="center">
+                        <h:form id="syncDataFingerForm">
+                        <p:outputLabel value="#{appmsg['dataFinger.widget_label']} :"  styleClass="label_hrm"/>
+                            <h:panelGrid columns="3">                            	
+                            	<p:outputLabel  value="#{dataFingerRealizationViewController.periode.fromPeriode}" styleClass="label_hrm">
+                                	<f:convertDateTime pattern="dd MMMM yyyy" />
+                                </p:outputLabel>
+                                <p:outputLabel  value=" #{appmsg['global.to']} " styleClass="label_hrm" />
+                                <p:outputLabel  value="#{dataFingerRealizationViewController.periode.untilPeriode}" styleClass="label_hrm">
+                                	<f:convertDateTime pattern="dd MMMM yyyy" />
+                                </p:outputLabel>                                
+                            </h:panelGrid>
+                            <h:panelGrid columns="2" style="margin-bottom: 10px">
+								<p:commandButton value="#{appmsg['global.process']}"  onclick="PF('pbAjax').start();PF('closeWidget').disable();" action="#{dataFingerRealizationViewController.doSyncDataFinger()}" update="syncDataFingerForm" />
+	                            <p:commandButton value="#{appmsg['global.close']}" id="closeId" widgetVar="closeWidget" onclick="syncDataFingerWidget.hide();" immediate="true"/>
+                            </h:panelGrid>
+                            <p:progressBar widgetVar="pbAjax" ajax="true" value="#{dataFingerRealizationViewController.progress}" labelTemplate="{value}%" styleClass="animated" global="false" style="margin-bottom: 20px">
+                                <p:ajax event="complete" listener="#{dataFingerRealizationViewController.onCompleteSyncDataFinger}" update=":growlId,:formViewId" oncomplete="if (!args.validationFailed) {syncDataFingerWidget.hide();}"/>
+                            </p:progressBar>
+                                                        
+                        </h:form>
+                    </div>
+                </p:dialog>
+                
             </ui:define>
         </ui:composition>
 

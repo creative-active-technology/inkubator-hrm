@@ -47,7 +47,7 @@
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3" >                                    
-                                    <p:commandButton value="Export to XLS" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
+                                    <p:commandButton value="#{appmsg['global.export']}" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
                                         <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Data_Loan"/>
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" 
@@ -125,7 +125,7 @@
                                 <p:commandButton  icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
                                                   action="#{loanDisbursementViewController.doDetail()}" style="font-size: 10px!important" >                        
                                     <f:setPropertyActionListener value="#{data}" target="#{loanDisbursementViewController.selected}" />
-                                    <p:ajax event="dialogReturn" listener="#{loanDisbursementViewController.onDialogReturn}" update="tableId" />
+                                    <p:ajax event="dialogReturn" listener="#{loanDisbursementViewController.onDialogReturn}" update="tableId, :growlLoanViewlId" />
                                 </p:commandButton>                              
                             </p:column>    
                             

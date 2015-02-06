@@ -3,7 +3,6 @@ package com.inkubator.hrm.service.impl;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.hibernate.criterion.Order;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -320,13 +319,31 @@ public class TempProcessReadFingerServiceImpl extends IServiceImpl implements Te
 				if(null == tempProcessReadFingerDao.getEntityByEmpDataIdAndScheduleDateAndScheduleInAndScheduleOut(empData.getId(), 
 						jadwalKaryawan.getTanggalWaktuKerja(), jadwalKaryawan.getWtWorkingHour().getWorkingHourBegin(), jadwalKaryawan.getWtWorkingHour().getWorkingHourEnd())) {
 					CheckInAttendance checkInAttendance = checkInAttendanceDao.getEntityByEmpDataIdAndCheckDate(empData.getId(), jadwalKaryawan.getTanggalWaktuKerja());					
-					this.savingEntity(empData, jadwalKaryawan, checkInAttendance, listFingerIndexId);	
+					this.savingEntity(empData, jadwalKaryawan, checkInAttendance, listFingerIndexId, UserInfoUtil.getUserName(), new Date());	
 				}
 			}
 		}
 	}
 	
-	private void savingEntity(EmpData empData, TempJadwalKaryawan jadwalKaryawan, CheckInAttendance checkInAttendance, List<String> listFingerIndexId){		
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor =Exception.class)
+	public void synchDataFingerRealization(EmpData empData, WtPeriode periode, String createdBy, Date createdOn) throws Exception {
+		
+		/** sync all record in that period, only saved the record that is working day schedule(exclude OFF day)*/
+		List<String> listFingerIndexId = this.getFingerIndexIds(empData.getNik());			
+		List<TempJadwalKaryawan> listJadwalKaryawan = tempJadwalKaryawanDao.getAllDataByEmpIdAndPeriodDateAndNotOffDay(empData.getId(), periode.getFromPeriode(), periode.getUntilPeriode());		
+		for(TempJadwalKaryawan jadwalKaryawan: listJadwalKaryawan){
+			/** hanya di proses insert/save yg datanya masih null(artinya belum di correction, baik yg in atau out). Lihat di view detailnya.*/
+			if(null == tempProcessReadFingerDao.getEntityByEmpDataIdAndScheduleDateAndScheduleInAndScheduleOut(empData.getId(), 
+					jadwalKaryawan.getTanggalWaktuKerja(), jadwalKaryawan.getWtWorkingHour().getWorkingHourBegin(), jadwalKaryawan.getWtWorkingHour().getWorkingHourEnd())) {
+				CheckInAttendance checkInAttendance = checkInAttendanceDao.getEntityByEmpDataIdAndCheckDate(empData.getId(), jadwalKaryawan.getTanggalWaktuKerja());					
+				this.savingEntity(empData, jadwalKaryawan, checkInAttendance, listFingerIndexId, createdBy, createdOn);	
+			}
+		}
+		
+	}
+	
+	private void savingEntity(EmpData empData, TempJadwalKaryawan jadwalKaryawan, CheckInAttendance checkInAttendance, List<String> listFingerIndexId, String createdBy, Date createdOn){				
 		/** initialization working schedule limit */
 		DateTime workingHourBegin = this.getExactWorkingSchedule(jadwalKaryawan.getTanggalWaktuKerja(), jadwalKaryawan.getWtWorkingHour().getWorkingHourBegin());
 		DateTime workingHourEnd = this.getExactWorkingSchedule(jadwalKaryawan.getTanggalWaktuKerja(), jadwalKaryawan.getWtWorkingHour().getWorkingHourEnd());		
@@ -350,10 +367,10 @@ public class TempProcessReadFingerServiceImpl extends IServiceImpl implements Te
 		tempProcessReadFinger.setScheduleIn(jadwalKaryawan.getWtWorkingHour().getWorkingHourBegin());
 		tempProcessReadFinger.setScheduleOut(jadwalKaryawan.getWtWorkingHour().getWorkingHourEnd());
 		if(checkInAttendance != null){
-			if(arriveLimitBegin.after(checkInAttendance.getCheckInTime()) && arriveLimitEnd.before(checkInAttendance.getCheckOutTime())){
+			if(checkInAttendance.getCheckInTime()!= null && arriveLimitBegin.after(checkInAttendance.getCheckInTime()) && arriveLimitEnd.before(checkInAttendance.getCheckInTime())){
 				tempProcessReadFinger.setWebCheckIn(checkInAttendance.getCheckInTime());
 			}
-			if(goHomeLimitBegin.after(checkInAttendance.getCheckInTime()) && goHomeLimitEnd.before(checkInAttendance.getCheckOutTime())){
+			if(checkInAttendance.getCheckOutTime()!= null && goHomeLimitBegin.after(checkInAttendance.getCheckOutTime()) && goHomeLimitEnd.before(checkInAttendance.getCheckOutTime())){
 				tempProcessReadFinger.setWebCheckOut(checkInAttendance.getCheckOutTime());
 			}			
 		}
@@ -367,8 +384,8 @@ public class TempProcessReadFingerServiceImpl extends IServiceImpl implements Te
 		}
 		tempProcessReadFinger.setIsCorrectionIn(false);
 		tempProcessReadFinger.setIsCorrectionOut(false);
-		tempProcessReadFinger.setCreatedBy(UserInfoUtil.getUserName());
-		tempProcessReadFinger.setCreatedOn(new Date());
+		tempProcessReadFinger.setCreatedBy(createdBy);
+		tempProcessReadFinger.setCreatedOn(createdOn);
 		
 		tempProcessReadFingerDao.save(tempProcessReadFinger);
 	}
@@ -472,16 +489,25 @@ public class TempProcessReadFingerServiceImpl extends IServiceImpl implements Te
 			
 	private FingerSwapCaptured getFingerSwapCaptured(List<String> listFingerIndexId, Date limitBegin, Date limitEnd, Boolean isFingerInCaptured){
 		FingerSwapCaptured fingerCaptured = null;
-		List<FingerSwapCaptured> listFingerCaptured = fingerSwapCapturedDao.getAllDataByFingerIndexIdAndSwapDatetimeLogBetween(listFingerIndexId, limitBegin, limitEnd, Order.desc("swapDatetimeLog"));		
-		if(isFingerInCaptured) {
-			/** get FingerInCaptured, if employee checkIn several times, then pick the first one(select min) */
-			fingerCaptured = Lambda.selectMin(listFingerCaptured, Lambda.on(FingerSwapCaptured.class).getSwapDatetimeLog());
-		} else {
-			/** get FingerOutCaptured, if employee checkOut several times, then pick the last one(select max) */
-			fingerCaptured = Lambda.selectMax(listFingerCaptured, Lambda.on(FingerSwapCaptured.class).getSwapDatetimeLog());
+		if(!listFingerIndexId.isEmpty()) {
+			List<FingerSwapCaptured> listFingerCaptured = fingerSwapCapturedDao.getAllDataByFingerIndexIdAndSwapDatetimeLogBetween(listFingerIndexId, limitBegin, limitEnd, Order.desc("swapDatetimeLog"));		
+			if(isFingerInCaptured) {
+				/** get FingerInCaptured, if employee checkIn several times, then pick the first one(select min) */
+				fingerCaptured = Lambda.selectMin(listFingerCaptured, Lambda.on(FingerSwapCaptured.class).getSwapDatetimeLog());
+			} else {
+				/** get FingerOutCaptured, if employee checkOut several times, then pick the last one(select max) */
+				fingerCaptured = Lambda.selectMax(listFingerCaptured, Lambda.on(FingerSwapCaptured.class).getSwapDatetimeLog());
+			}
 		}
 		
 		return fingerCaptured;
+	}
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void deleteByScheduleDateAndIsNotCorrection(Date fromPeriode, Date untilPeriode) throws Exception {
+		tempProcessReadFingerDao.deleteByScheduleDateAndIsNotCorrection(fromPeriode, untilPeriode);
+		
 	}
 
 }

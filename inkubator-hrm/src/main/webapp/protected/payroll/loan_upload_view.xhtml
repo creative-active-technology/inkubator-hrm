@@ -49,7 +49,7 @@
                                     <p:commandButton value="#{appmsg['global.upload']}" actionListener="#{loanUploadViewController.doUpload()}" title="#{appmsg['global.upload']}" label="#{appmsg['global.upload']}" styleClass="label_button" ajax="true">
                                         <p:ajax event="dialogReturn"  listener="#{loanUploadViewController.onDialogReturn}"  update="tableId"/>
                                     </p:commandButton>
-                                    <p:commandButton value="Export to XLS" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
+                                    <p:commandButton value="#{appmsg['global.export']}" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
                                         <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Data_Loan"/>
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{loanUploadViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
@@ -71,7 +71,7 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="createdOn" style="width: 12%">
+                            <p:column sortBy="createdOn" style="width: 15%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.upload_date']}"/>
                                 </f:facet>
@@ -79,7 +79,7 @@
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="bioData.firstName" style="width: 20%">
+                            <p:column sortBy="bioData.firstName" style="width: 25%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
@@ -108,7 +108,7 @@
                                 <h:outputLabel value= "#{data.termin}" />
                                 
                             </p:column>
-                           <p:column headerText="#{appmsg['global.action']}" style="width: 20%;text-align: center" exportable="false">
+                           <p:column headerText="#{appmsg['global.action']}" style="width: 12%;text-align: center" exportable="false">
                                 <p:commandButton  icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
                                                   action="#{loanUploadViewController.doDetail()}" style="font-size: 10px!important" >                        
                                     <f:setPropertyActionListener value="#{data}" target="#{loanUploadViewController.selected}" />
