@@ -9,6 +9,7 @@ import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
 import com.inkubator.hrm.web.model.DistributionOvetTimeModel;
+import com.inkubator.hrm.web.model.EmpDataMatrixModel;
 import com.inkubator.hrm.web.model.PermitDistributionModel;
 import com.inkubator.hrm.web.model.PlacementOfEmployeeWorkScheduleModel;
 import com.inkubator.hrm.web.model.WtFingerExceptionModel;
@@ -99,9 +100,11 @@ public interface EmpDataService extends IService<EmpData> {
     public List<EmpData> getAllDataSalaryConfirmationByParam(SalaryConfirmationParameter parameter, int first, int pageSize, Order orderable) throws Exception;
 
     public Long getTotalSalaryConfirmationByParam(SalaryConfirmationParameter parameter) throws Exception;
-    
-    public EmpData getByPKBankTransfer(long  id) throws Exception;
-    
-     public EmpData getByEmpDataByBioDataId(long bioDataid);
+
+    public EmpData getByPKBankTransfer(long id) throws Exception;
+
+    public EmpData getByEmpDataByBioDataId(long bioDataid);
+
+    public List<EmpDataMatrixModel> getAllDataByAbsisAndOrdinateAndGoljab(String absis, String ordinate, long golJabId) throws Exception;
 
 }

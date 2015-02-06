@@ -117,5 +117,13 @@ public class LogMonthEndPayrollDaoImpl extends IDAOImpl<LogMonthEndPayroll> impl
     	
     	return hbm;
     }
+
+	@Override
+	public void deleteByPeriodId(Long periodId) {
+		Query query = getCurrentSession().createQuery("DELETE FROM LogMonthEndPayroll temp WHERE temp.periodeId = :periodId")
+				.setLong("periodId", periodId);
+        query.executeUpdate();
+		
+	}
     
 }

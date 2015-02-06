@@ -245,8 +245,7 @@ public class LogMonthEndPayrollViewController extends BaseController {
 	    			parameter = new LogMonthEndPayrollSearchParameter();
 	    			parameter.setPeriodeId(periode.getId());
 			    	totalEmployee = logMonthEndPayrollService.getTotalByParam(parameter);
-					totalNominal = (totalEmployee == 0 ? new BigDecimal(0) : logMonthEndPayrollService.getTotalTakeHomePayByPeriodeId(periode.getId()));
-					logMonthEndPayrollService.afterMonthEndProcess();
+					totalNominal = (totalEmployee == 0 ? new BigDecimal(0) : logMonthEndPayrollService.getTotalTakeHomePayByPeriodeId(periode.getId()));					
 		    	} catch (Exception ex) {
 		            LOGGER.error("Error ", ex);
 		        }

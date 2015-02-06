@@ -8,6 +8,7 @@ package com.inkubator.hrm.web.search;
 
 import com.inkubator.webcore.util.SearchParameter;
 import java.util.Date;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -19,6 +20,11 @@ public class ReportEmpMutationParameter extends SearchParameter{
     private Date endDate;
 
     public Date getStartDate() {
+//        if (StringUtils.equalsIgnoreCase(getKeyParam(), "startDate")) {
+//			startDate = getParameter();
+//        } else {
+//        	startDate = null;
+//        }
         return startDate;
     }
 
