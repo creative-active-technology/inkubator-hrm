@@ -88,6 +88,14 @@ public class EducationLevelDaoImpl extends IDAOImpl<EducationLevel> implements E
         return criteria.list();
     }
 
+    @Override
+    public List<EducationLevel> getAllNameOrderByLevel() {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.addOrder(Order.asc("level"));
+        return criteria.list();
+
+    }
+
     
 
 }
