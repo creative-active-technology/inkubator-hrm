@@ -51,6 +51,7 @@ import com.inkubator.hrm.util.MapUtil;
 import com.inkubator.hrm.util.StringsUtils;
 import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
 import com.inkubator.hrm.web.model.DistributionOvetTimeModel;
+import com.inkubator.hrm.web.model.EmpDataMatrixModel;
 import com.inkubator.hrm.web.model.PermitDistributionModel;
 import com.inkubator.hrm.web.model.PlacementOfEmployeeWorkScheduleModel;
 import com.inkubator.hrm.web.model.WtFingerExceptionModel;
@@ -730,5 +731,10 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public EmpData getByEmpDataByBioDataId(long bioDataid) {
         return this.empDataDao.getByEmpDataByBioDataId(bioDataid);
+    }
+
+    @Override
+    public List<EmpDataMatrixModel> getAllDataByAbsisAndOrdinateAndGoljab(String absis, String ordinate, long golJabId) throws Exception {
+        return getAllDataByAbsisAndOrdinateAndGoljab(absis, ordinate, golJabId);
     }
 }
