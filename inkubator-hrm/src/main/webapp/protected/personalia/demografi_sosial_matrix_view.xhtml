@@ -1,0 +1,154 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Role View
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg" style="margin: 10px">
+                    <!--<p:panel style="margin: 10px" >-->
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="jabatan.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="Demografi Sosial Matrix" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['reimbursmentschema.reimbursment_header']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator/>
+                    <p:growl id="growlId" globalOnly="true" showDetail="true" />
+                    <h:form id="formId">
+                        <p:panelGrid style="width: 100%;margin-bottom: 20px;margin-top: 20px" styleClass="grid_border3" >
+
+
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Data Absis"  for="absisId" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectOneMenu id="absisId" value="#{demografiSosialMatrixViewController.absis}" style="width: 150px;margin-right: 3px">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItem itemLabel="Gender" itemValue="gender"/>
+                                        <f:selectItem itemLabel="Umur" itemValue="umur"/>
+                                        <f:selectItem itemLabel="Pendidikan" itemValue="pendidikan"/>
+
+                                    </p:selectOneMenu>
+                                    <p:message for="absisId"/>
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Data Ordinate"  for="ordinateId" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectOneMenu id="ordinateId" value="#{demografiSosialMatrixViewController.ordinate}" style="width: 150px;margin-right: 3px">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItem itemLabel="Gender" itemValue="gender"/>
+                                        <f:selectItem itemLabel="Umur" itemValue="umur"/>
+                                        <f:selectItem itemLabel="Pendidikan" itemValue="pendidikan"/>
+                                    </p:selectOneMenu>
+                                    <p:message for="ordinateId"/>
+                                </p:column>
+                            </p:row>
+
+                            <!--                            <p:row>
+                                                            <div align="center">
+                                                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                                                    <p:outputLabel  value="Golongan Jabatan" style="font-weight: bold"/>
+                                                                </p:column>
+                                                                <p:column style="text-align: center;">
+                                                                    <p:pickList value="#{jabatanSpesifikasiDetailController.majorDualListModel}" var="role" itemValue="#{role}" converter="majorConverter" id="picklistMajor"
+                                                                                required="false"  style="margin-top: 15px;margin-bottom: 15px;" label="Daftar Education Level" styleClass="isitext_hrm"
+                                                                                itemLabel="#{role.majorName}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
+                                                                                removeLabel="#{appmsg['global.remove']}"/>
+                                                                    <p:message for="picklistMajor" />
+                                                                </p:column>
+                                                            </div>
+                                                        </p:row>-->
+
+                            <p:row>
+                                <div align="center">
+                                    <p:column style="width: 13%;background-color: #e1f0f0!important" >
+
+                                    </p:column>
+                                    <p:column>
+                                        <p:commandButton value="#{appmsg['global.search']}"  icon="ui-icon-folder-open" 
+                                                         title="#{appmsg['global.edit']}" 
+                                                         action="#{demografiSosialMatrixViewController.updateMatrix()}" ajax="true" update=":matrixForm" styleClass="label_button"/>
+                                    </p:column>
+                                </div>
+                            </p:row>
+                        </p:panelGrid>
+                    </h:form>
+
+
+                    <h:form id="matrixForm">
+                        <p:scrollPanel mode="native" style="width:100%;">
+                        <p:panelGrid id="matrix2" styleClass="grid_border3">
+
+                            <p:row>
+                                <c:forEach  items="#{demografiSosialMatrixViewController.dataAbsis}" var="absis" id="repeat2" varStatus="loopStatus">
+                                    <!--<p:column style="background-color: blue!important;min-width: 150px!important;">-->
+                                    <p:column styleClass="ui-state-default" style="background-color: #C3F3F7!important;min-width: 150px!important;">
+                                        #{absis}
+                                    </p:column>
+                                </c:forEach>
+                            </p:row>
+
+                        </p:panelGrid>
+
+
+                            <c:forEach  items="#{demografiSosialMatrixViewController.listDataAbsis}" var="ordinate" id="repeat" varStatus="loopStatus">
+                            <p:panelGrid styleClass="grid_border3">
+
+                                <p:row>
+                                    <c:forEach  items="#{ordinate.listGender}" var="ordinate2" id="repeat" varStatus="loopStat">
+                                        <p:column style="#{loopStat.index == 0 ? 'background-color: #C3F3F7!important;' : '' }min-width: 150px!important;">
+                                            #{ordinate2}
+                                        </p:column>
+                                    </c:forEach>
+                                </p:row>
+
+                            </p:panelGrid>
+
+                        </c:forEach>
+                            </p:scrollPanel>
+                    </h:form>
+
+                    <p:separator/>
+                    <!--                        <h:panelGrid columns="2" style="margin-bottom: 5px;float: left">
+                                                <ui:repeat value="#{demografiSosialMatrixViewController.dataAbsis}" var="divis" id="matrix">
+                                                    <h:outputText value="#{divis}" />
+                                                </ui:repeat>
+                    
+                                            </h:panelGrid>-->
+
+                    <h:panelGrid columns="2" style="margin-bottom: 5px;float: left">
+                        <p:commandButton value="#{appmsg['global.edit']}"  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" action="#{demografiSosialMatrixViewController.updateMatrix()}" styleClass="label_button"/>
+                        <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{reimbursmentSchemaDetailController.doBack()}" styleClass="label_button"/>
+                    </h:panelGrid>
+                    <div style="clear: both"/>
+                    <!--</h:form>-->
+                </div>
+
+
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

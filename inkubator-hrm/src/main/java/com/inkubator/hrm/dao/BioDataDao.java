@@ -7,6 +7,7 @@ package com.inkubator.hrm.dao;
 
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.BioData;
+import com.inkubator.hrm.web.model.EmpDataMatrixModel;
 import com.inkubator.hrm.web.search.BioDataSearchParameter;
 import java.util.List;
 import org.hibernate.criterion.Order;
@@ -24,4 +25,6 @@ public interface BioDataDao extends IDAO<BioData> {
     public List<BioData> getEntityByPKWithDetail(long id);
     
     public List<BioData> getByName(String name);
+    
+    public List<EmpDataMatrixModel> getAllAgeFromBirthDate();
 }
