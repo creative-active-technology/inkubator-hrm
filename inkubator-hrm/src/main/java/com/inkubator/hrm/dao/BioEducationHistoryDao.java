@@ -17,4 +17,8 @@ public interface BioEducationHistoryDao extends IDAO<BioEducationHistory>{
     public BioEducationHistory getAllDataByPK(Long id);
     
     public List<BioEducationHistory> getAllDataByBioDataId(Long bioDataId);
+    
+    public Long getTotalByGenderMaleAndEducationLevel(Long educationId);
+    
+    public Long getTotalByGenderFemaleAndEducationLevel(Long educationId);
 }

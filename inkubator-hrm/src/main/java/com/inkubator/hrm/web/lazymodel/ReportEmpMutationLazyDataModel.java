@@ -60,15 +60,13 @@ public class ReportEmpMutationLazyDataModel extends LazyDataModel<EmpCareerHisto
             }
         } else {
             try {
-                empCareerHistoryDataList = empCareerHistoryService.getByParamReport(parameter, first, pageSize, Order.asc("empData"));
+                empCareerHistoryDataList = empCareerHistoryService.getByParamReport(parameter, first, pageSize, Order.asc("nik"));
                 total = Integer.parseInt(String.valueOf(empCareerHistoryService.getTotalEmpCareerHistoryDataByParamReport(parameter)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
             }
-        }
-	        
-	        //empDatas = empDataService.getAllDataReportEmpWorkingGroupByParam(parameter, first, pageSize, orderable);
-           // total = Integer.parseInt(String.valueOf(empDataService.getTotalReportEmpWorkingGroupByParam(parameter)));            
+        }        
+	       
         	LOGGER.info("Success Load Lazy data Model");
         	
         } catch (Exception ex) {
