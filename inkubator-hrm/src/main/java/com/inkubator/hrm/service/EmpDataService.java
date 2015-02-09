@@ -7,6 +7,7 @@ package com.inkubator.hrm.service;
 
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.web.model.BioDataModel;
 import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
 import com.inkubator.hrm.web.model.DistributionOvetTimeModel;
 import com.inkubator.hrm.web.model.PermitDistributionModel;
@@ -103,5 +104,8 @@ public interface EmpDataService extends IService<EmpData> {
     public EmpData getByPKBankTransfer(long  id) throws Exception;
     
      public EmpData getByEmpDataByBioDataId(long bioDataid);
+     
+    public BioDataModel getEmpNameWithNearestBirthDate();
+
 
 }

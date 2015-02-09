@@ -44,6 +44,7 @@ public class BioDataModel implements Serializable {
     private String noKK;
     private String jamsostek;
     private String npwp;
+    private Date nextBirthday;
 
     public Long getId() {
         return id;
@@ -270,6 +271,14 @@ public class BioDataModel implements Serializable {
 
     public void setNpwp(String npwp) {
         this.npwp = npwp;
+    }
+
+    public Date getNextBirthday() {
+        return nextBirthday;
+    }
+
+    public void setNextBirthday(Date nextBirthday) {
+        this.nextBirthday = nextBirthday;
     }
 
 }

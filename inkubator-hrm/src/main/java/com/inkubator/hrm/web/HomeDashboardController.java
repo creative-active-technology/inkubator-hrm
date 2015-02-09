@@ -7,6 +7,7 @@ package com.inkubator.hrm.web;
 
 import com.inkubator.hrm.service.DepartmentService;
 import com.inkubator.hrm.service.EmpDataService;
+import com.inkubator.hrm.web.model.BioDataModel;
 import com.inkubator.hrm.web.model.LoginHistoryModel;
 import com.inkubator.webcore.controller.BaseController;
 import java.util.ArrayList;
@@ -35,6 +36,8 @@ public class HomeDashboardController extends BaseController {
     private Date lastUpdateEmpDistByAge;
     private Long totalMale;
     private Long totalFemale;
+    private Long totalEmp;
+    private BioDataModel nearestBirthDate;
     private PieChartModel pieModel;
     private CartesianChartModel distribusiKaryawanPerDepartment;
     private CartesianChartModel presensiModel;
@@ -287,5 +290,27 @@ public class HomeDashboardController extends BaseController {
 
     public void setDistribusiKaryawanPerDepartment(CartesianChartModel distribusiKaryawanPerDepartment) {
         this.distribusiKaryawanPerDepartment = distribusiKaryawanPerDepartment;
+    }
+
+    public EmpDataService getEmpDataService() {
+        return empDataService;
+    }
+
+    public Long getTotalEmp() throws Exception {
+        this.totalEmp = empDataService.getTotalEmpDataNotTerminate();
+        return totalEmp;
+    }
+
+    public void setTotalEmp(Long totalEmp) {
+        this.totalEmp = totalEmp;
+    }
+
+    public BioDataModel getNearestBirthDate() {
+        this.nearestBirthDate = empDataService.getEmpNameWithNearestBirthDate();
+        return nearestBirthDate;
+    }
+
+    public void setNearestBirthDate(BioDataModel nearestBirthDate) {
+        this.nearestBirthDate = nearestBirthDate;
     }
 }

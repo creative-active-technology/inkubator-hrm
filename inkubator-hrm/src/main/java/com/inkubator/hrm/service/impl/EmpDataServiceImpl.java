@@ -49,6 +49,7 @@ import com.inkubator.hrm.entity.TaxFree;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.util.MapUtil;
 import com.inkubator.hrm.util.StringsUtils;
+import com.inkubator.hrm.web.model.BioDataModel;
 import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
 import com.inkubator.hrm.web.model.DistributionOvetTimeModel;
 import com.inkubator.hrm.web.model.PermitDistributionModel;
@@ -61,7 +62,6 @@ import com.inkubator.hrm.web.search.ReportOfEmployeesFamilySearchParameter;
 import com.inkubator.hrm.web.search.SalaryConfirmationParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 
-import java.util.ArrayList;
 
 /**
  *
@@ -730,5 +730,11 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public EmpData getByEmpDataByBioDataId(long bioDataid) {
         return this.empDataDao.getByEmpDataByBioDataId(bioDataid);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public BioDataModel getEmpNameWithNearestBirthDate() {
+        return this.empDataDao.getEmpNameWithNearestBirthDate();
     }
 }

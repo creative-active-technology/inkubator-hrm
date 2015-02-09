@@ -65,24 +65,24 @@
                                                                                 </h:panelGroup>-->
                                         <h:panelGroup layout="block">
                                             <h:panelGrid columns="1" style="text-align: center">
-                                                <h:outputLink id="payrollId" value="${request.contextPath}/protected/payroll/salary_execution_view.htm">
-                                                    <p:graphicImage library="images" name="payroll.png" style="width: 60px;height: 60px;" cache="true" /> 
+                                                <h:outputLink id="payrollId" value="#">
+                                                    <p:graphicImage library="images" name="payroll.png" style="opacity: 0.3;width: 60px;height: 60px;" cache="true" /> 
                                                 </h:outputLink>
                                                 <h:outputLabel value="Payroll" styleClass="label_quick"/>
                                             </h:panelGrid>
                                         </h:panelGroup>
                                         <h:panelGroup layout="block">
                                             <h:panelGrid columns="1" style="text-align: center">
-                                                <h:outputLink id="jadwalKerjaId" value="${request.contextPath}/protected/employee/emp_schedule_view.htm">
-                                                    <p:graphicImage library="images" name="task.png" style="width: 60px;height: 60px;" cache="true" /> 
+                                                <h:outputLink id="jadwalKerjaId" value="#">
+                                                    <p:graphicImage library="images" name="task.png" style="opacity: 0.3;width: 60px;height: 60px;" cache="true" /> 
                                                 </h:outputLink>
                                                 <h:outputLabel value="Jadwal Kerja" styleClass="label_quick"/>
                                             </h:panelGrid>
                                         </h:panelGroup>
                                         <h:panelGroup layout="block">
                                             <h:panelGrid columns="1" style="text-align: center">
-                                                <h:outputLink id="cutiId" value="${request.contextPath}/protected/working_time/leave_impl_form.htm">
-                                                    <p:graphicImage library="images" name="permit.png" style="width: 60px;height: 60px;" cache="true" /> 
+                                                <h:outputLink id="cutiId" value="#">
+                                                    <p:graphicImage library="images" name="permit.png" style="opacity: 0.3;width: 60px;height: 60px;" cache="true" /> 
                                                 </h:outputLink>
                                                 <h:outputLabel value="Cuti" styleClass="label_quick"/>
                                             </h:panelGrid>
@@ -126,7 +126,7 @@
                         </p:column>
                     </p:row>
 
-                    <p:row>
+<!--                    <p:row>
                         <p:column style="width: 95%" colspan="3">
                             <p:tabView id="tabView1" dynamic="true" cache="true" styleClass="tabview_hrm" > 
                                 <p:tab id="tab31" title="Request History">  
@@ -180,7 +180,7 @@
                                                 <h:outputText value="Detail"/>
                                                 <f:setPropertyActionListener value="#{approval}" target="#{homeApproalActivityController.selectedApprovalActivity}" />   
                                             </p:commandLink>
-                                            <!--<h:outputLink value="Detail">Detail</h:outputLink>-->
+                                            <h:outputLink value="Detail">Detail</h:outputLink>
                                         </p:column>
                                     </p:dataTable>
                                 </p:tab>  
@@ -305,7 +305,7 @@
 
                             </p:tabView>
                         </p:column>
-                    </p:row>                  
+                    </p:row>                  -->
                     <p:row>
                         <p:column style="width: 25%" >
                             <p:panel  style="margin-left: 10px;margin-right: 0px;margin-top: 10px;height: 100%"> 
@@ -547,7 +547,7 @@
                                 <h:panelGrid columns="3">
                                     <p:outputLabel value="Karyawan"  styleClass="label_hrm"/>
                                     <p:outputLabel value=":" styleClass="label_hrm" />
-                                    <p:outputLabel value="120 Orang" styleClass="isitext_hrm" />
+                                    <p:outputLabel value="#{homeDashboardController.totalEmp} Orang" styleClass="isitext_hrm" />
 
                                     <p:outputLabel value="Cuti Hari Ini" styleClass="label_hrm" />
                                     <p:outputLabel value=":" styleClass="label_hrm" />
@@ -569,7 +569,7 @@
                                 <p:separator style="margin-left: 4px;margin-right: 2px;margin-top: px"/>
                                 <h:panelGrid columns="1" style="margin-bottom: 9px;margin-top: 9px">
                                     <p:outputLabel value="Karyawan Ulang Tahun Terdekat" styleClass="header_small_no_bold"/>
-                                    <p:outputLabel value="Mr. Angin Ribut"  styleClass="header_big"/>
+                                    <p:outputLabel value="#{homeDashboardController.nearestBirthDate.firstName} #{homeDashboardController.nearestBirthDate.lastName}"  styleClass="header_big"/>
                                 </h:panelGrid>
 
                             </p:panel>
@@ -607,9 +607,9 @@
                 </p:panelGrid>
                 <pe:tooltip for="userAccountId" value="Click to Create User" showEffect="slideToggle"
                             hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>
-                <pe:tooltip for="jadwalKerjaId" value="Click to Create Jadwal Kerja" showEffect="slideToggle"
+                <pe:tooltip for="jadwalKerjaId" value="Available on version 1.2" showEffect="slideToggle"
                             hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>
-                <pe:tooltip for="payrollId" value="Pay Calculation View" showEffect="slideToggle"
+                <pe:tooltip for="payrollId" value="Available on version 1.2" showEffect="slideToggle"
                             hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>
                 <pe:tooltip for="lemburId" value="Available on version 1.2" showEffect="slideToggle"
                             hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>

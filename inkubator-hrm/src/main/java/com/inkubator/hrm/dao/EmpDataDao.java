@@ -7,6 +7,7 @@ package com.inkubator.hrm.dao;
 
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.web.model.BioDataModel;
 import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
 import com.inkubator.hrm.web.model.DistributionOvetTimeModel;
 import com.inkubator.hrm.web.model.PermitDistributionModel;
@@ -108,5 +109,7 @@ public interface EmpDataDao extends IDAO<EmpData> {
     public EmpData getByPKBankTransfer(long id);
     
     public EmpData getByEmpDataByBioDataId(long bioDataid);
+    
+    public BioDataModel getEmpNameWithNearestBirthDate();
 
 }
