@@ -21,12 +21,13 @@ public class MonthEndTransferLogWriter implements ItemWriter<PayTempKalkulasi> {
 	private LogListOfTransferService logListOfTransferService;
 	private WtPeriodeService wtPeriodeService;
 	private WtPeriode periode;
+	private Long periodeId;
 	private String createdBy;
 	private Date createdOn;
 	
 	@BeforeStep
     public void beforeStep(StepExecution stepExecution) throws Exception {
-		periode = wtPeriodeService.getEntityByPayrollTypeActive();
+		periode = wtPeriodeService.getEntiyByPK(periodeId);
 	}
 	
 	@Override
@@ -76,7 +77,13 @@ public class MonthEndTransferLogWriter implements ItemWriter<PayTempKalkulasi> {
 	public void setCreatedOn(Date createdOn) {
 		this.createdOn = createdOn;
 	}
-	
-	
+
+	public Long getPeriodeId() {
+		return periodeId;
+	}
+
+	public void setPeriodeId(Long periodeId) {
+		this.periodeId = periodeId;
+	}
 
 }

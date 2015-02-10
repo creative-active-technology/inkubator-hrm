@@ -215,8 +215,10 @@ public class PayTempKalkulasiDaoImpl extends IDAOImpl<PayTempKalkulasi> implemen
         BigDecimal zero = new BigDecimal(0.0);
         final StringBuilder query = new StringBuilder("select D.code as costCenterCode,");
         query.append("D.name AS costCenterName,");
+        query.append("D.id AS costCenterId,");
         query.append("N.code AS jurnalCode,");
         query.append("N.name AS jurnalName,");
+        query.append("N.id AS jurnalId,");
 //        query.append("case when N.typeJurnal=0 then sum(A.nominal) else 0 end AS debet,");
 //        query.append("case when N.typeJurnal=0 then 0 else sum(A.nominal) end AS kredit");
         query.append("sum(case when N.typeJurnal=0 then A.nominal else 0 end) AS debet2,");

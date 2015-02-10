@@ -49,7 +49,7 @@ public interface PayTempKalkulasiService extends IService<PayTempKalkulasi> {
 
     public List<PayTempKalkulasi> getAllDataByEmpDataId(Long empDataId) throws Exception;
 
-    public List<SalaryJournalModel> getByParamForSalaryJournal(String searchParameter, int firstResult, int maxResults, Order order) throws Exception;
+    public List<SalaryJournalModel> getByParamForSalaryJournal(String searchParameter, int firstResult, int maxResults, Order order, String locale) throws Exception;
 
     public Long getTotalPayTempKalkulasiForSalaryJournal(String searchParameter) throws Exception;
 

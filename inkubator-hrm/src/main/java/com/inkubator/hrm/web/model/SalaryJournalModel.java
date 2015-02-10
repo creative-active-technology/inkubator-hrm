@@ -15,8 +15,10 @@ import java.math.BigDecimal;
 public class SalaryJournalModel implements Serializable {
 
     private Long id;
+    private Long costCenterId;
     private String costCenterName;
     private String costCenterCode;
+    private Long jurnalId;
     private String jurnalCode;
     private String jurnalName;
     private Double debet;
@@ -40,7 +42,23 @@ public class SalaryJournalModel implements Serializable {
         this.id = id;
     }
 
-    public String getCostCenterName() {
+    public Long getCostCenterId() {
+		return costCenterId;
+	}
+
+	public void setCostCenterId(Long costCenterId) {
+		this.costCenterId = costCenterId;
+	}
+
+	public Long getJurnalId() {
+		return jurnalId;
+	}
+
+	public void setJurnalId(Long jurnalId) {
+		this.jurnalId = jurnalId;
+	}
+
+	public String getCostCenterName() {
         return costCenterName;
     }
 

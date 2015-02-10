@@ -114,9 +114,16 @@
                 </batch:chunk>
             </batch:tasklet>
         </batch:step>
-        <batch:step id="stepMonthEndPayroll_2">
+        <batch:step id="stepMonthEndPayroll_2" next="stepMonthEndPayroll_3">
             <batch:tasklet>
                 <batch:chunk reader="customMonthEndTransferLogItemReader" writer="customMonthEndTransferLogItemWriter"
+                             commit-interval="20">
+                </batch:chunk>
+            </batch:tasklet>
+        </batch:step>
+        <batch:step id="stepMonthEndPayroll_3" >
+            <batch:tasklet>
+                <batch:chunk reader="customMonthEndJournalLogItemReader" processor="customMonthEndJournalLogItemProcessor" writer="customMonthEndJournalLogItemWriter"
                              commit-interval="20">
                 </batch:chunk>
             </batch:tasklet>
@@ -144,7 +151,8 @@
     <bean id="monthEndPayrollJobListener" class="com.inkubator.hrm.batch.MonthEndPayrollJobListener" lazy-init="true">
 		<property name="wtPeriodeService" ref="wtPeriodeService"/>
 		<property name="logMonthEndPayrollService" ref="logMonthEndPayrollService"/>
-		<property name="logListOfTransferService" ref="logListOfTransferService"/>		
+		<property name="logListOfTransferService" ref="logListOfTransferService"/>
+		<property name="logSalaryJournalService" ref="logSalaryJournalService"/>		
 	</bean>
 	<bean id="payEmployeeCalculationJobListener" class="com.inkubator.hrm.batch.PayEmployeeCalculationJobListener" lazy-init="true">
 		<property name="wtPeriodeService" ref="wtPeriodeService"/>		
@@ -195,10 +203,19 @@
 	   	</property>
 	    <property name="pageSize" value="100"/>
 	</bean>
+	<bean id="customMonthEndJournalLogItemReader" class="com.inkubator.hrm.batch.MonthEndJournalLogReader" scope="step" lazy-init="true">
+        <constructor-arg name="payTempKalkulasiService" ref="payTempKalkulasiService"/>
+        <constructor-arg name="locale" value="#{jobParameters['locale']}"/>
+    </bean>
 	<bean id="customMonthEndPayrollItemProcessor" class="com.inkubator.hrm.batch.MonthEndPayrollProcessor" scope="step" lazy-init="true">
         <property name="periodeId" value="#{jobParameters['periodeId']}"/>
         <property name="periodeStart" value="#{jobParameters['periodeStart']}"/>
         <property name="periodeEnd" value="#{jobParameters['periodeEnd']}"/>
+        <property name="createdBy" value="#{jobParameters['createdBy']}"/>
+        <property name="createdOn" value="#{jobParameters['createdOn']}"/>
+    </bean>
+    <bean id="customMonthEndJournalLogItemProcessor" class="com.inkubator.hrm.batch.MonthEndJournalLogProcessor" scope="step" lazy-init="true">
+        <property name="periodeId" value="#{jobParameters['periodeId']}"/>
         <property name="createdBy" value="#{jobParameters['createdBy']}"/>
         <property name="createdOn" value="#{jobParameters['createdOn']}"/>
     </bean>
@@ -217,11 +234,27 @@
             <bean class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider" />
         </property>
     </bean>
-    <bean id="customMonthEndTransferLogItemWriter" class="com.inkubator.hrm.batch.MonthEndTransferLogWriter" scope="step" lazy-init="true">
+    <bean id="customMonthEndTransferLogItemWriter" class="com.inkubator.hrm.batch.MonthEndTransferLogWriter" scope="step" lazy-init="true">    	
     	<property name="wtPeriodeService" ref="wtPeriodeService"/>
     	<property name="logListOfTransferService" ref="logListOfTransferService"/>
+    	<property name="periodeId" value="#{jobParameters['periodeId']}"/>
         <property name="createdBy" value="#{jobParameters['createdBy']}"/>
         <property name="createdOn" value="#{jobParameters['createdOn']}"/>
+    </bean>
+    <bean id="customMonthEndJournalLogItemWriter" class="org.springframework.batch.item.database.JdbcBatchItemWriter" lazy-init="true">
+        <property name="dataSource" ref="c3p0DataSource-1" />
+        <property name="sql">
+            <value>
+            <![CDATA[        
+            	INSERT INTO log_salary_journal (periode_id,cost_center_id,cost_center_code,cost_center_name,journal_id,journal_code,journal_name,debet,credit,created_by,created_on,version)
+				VALUES (:periodeId,:costCenterId,:costCenterCode,:costCenterName,:journalId,:journalCode,:journalName,:debet,:credit,:createdBy,:createdOn,0)            	
+            ]]>
+            </value>
+        </property>
+        <!-- It will take care matching between object property and sql name parameter -->
+        <property name="itemSqlParameterSourceProvider">
+            <bean class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider" />
+        </property>
     </bean>
   
   
