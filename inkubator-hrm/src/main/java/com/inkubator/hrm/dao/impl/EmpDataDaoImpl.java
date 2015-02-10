@@ -30,6 +30,7 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.HrmUser;
+import com.inkubator.hrm.web.model.BioDataModel;
 import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
 import com.inkubator.hrm.web.model.DistributionOvetTimeModel;
 import com.inkubator.hrm.web.model.PermitDistributionModel;
@@ -40,6 +41,7 @@ import com.inkubator.hrm.web.search.ReportEmpDepartmentJabatanParameter;
 import com.inkubator.hrm.web.search.ReportEmpWorkingGroupParameter;
 import com.inkubator.hrm.web.search.ReportOfEmployeesFamilySearchParameter;
 import com.inkubator.hrm.web.search.SalaryConfirmationParameter;
+import org.hibernate.transform.Transformers;
 
 /**
  *
@@ -809,6 +811,20 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         return criteria.list();
 
+    }
+
+    @Override
+    public BioDataModel getEmpNameWithNearestBirthDate() {
+        final StringBuilder query = new StringBuilder("SELECT a.first_name AS firstName, a.last_name AS lastName, a.date_of_birth AS dateOfBirth,");
+        query.append("DATE_ADD(a.date_of_birth, INTERVAL IF (DAYOFYEAR(a.date_of_birth) >= DAYOFYEAR(CURDATE()), YEAR(CURDATE())-YEAR(a.date_of_birth), YEAR(CURDATE())-YEAR(a.date_of_birth)+1) YEAR) AS nextBirthday ");
+        query.append("FROM `bio_data` a INNER JOIN emp_data b ");
+        query.append("ON a.id = b.bio_data_id ");
+        query.append("WHERE a.date_of_birth  IS NOT NULL HAVING nextBirthday ");
+        query.append("BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 30 DAY) ORDER BY nextBirthDay LIMIT 1");
+
+        return (BioDataModel) getCurrentSession().createSQLQuery(query.toString())
+                .setResultTransformer(Transformers.aliasToBean(BioDataModel.class))
+                .uniqueResult();
     }
 
 }

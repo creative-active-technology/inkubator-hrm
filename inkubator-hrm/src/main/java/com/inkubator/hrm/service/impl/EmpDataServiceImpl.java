@@ -49,6 +49,7 @@ import com.inkubator.hrm.entity.TaxFree;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.util.MapUtil;
 import com.inkubator.hrm.util.StringsUtils;
+import com.inkubator.hrm.web.model.BioDataModel;
 import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
 import com.inkubator.hrm.web.model.DistributionOvetTimeModel;
 import com.inkubator.hrm.web.model.EmpDataMatrixModel;
@@ -736,5 +737,11 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     @Override
     public List<EmpDataMatrixModel> getAllDataByAbsisAndOrdinateAndGoljab(String absis, String ordinate, long golJabId) throws Exception {
         return getAllDataByAbsisAndOrdinateAndGoljab(absis, ordinate, golJabId);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public BioDataModel getEmpNameWithNearestBirthDate() {
+        return this.empDataDao.getEmpNameWithNearestBirthDate();
     }
 }
