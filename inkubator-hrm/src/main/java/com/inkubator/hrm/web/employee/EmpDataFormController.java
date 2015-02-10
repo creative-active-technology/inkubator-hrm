@@ -254,7 +254,7 @@ public class EmpDataFormController extends BaseController {
         if (formData != null) {
             return "/protected/employee/emp_rotasi_view.htm?faces-redirect=true";
         }
-        return "/protected/employee/employee_palcement_view.htm?faces-redirect=true";
+        return "/protected/employee/emp_placement_view.htm?faces-redirect=true";
     }
 
     public void doSearch() {
