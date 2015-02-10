@@ -72,7 +72,8 @@
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="4" >
-                                	<p:commandButton value="#{appmsg['global.reuse']}" title="#{appmsg['global.reuse']}" onclick="PrimeFaces.monitorDownload(start, stop)"/>
+                                	<p:commandButton value="#{appmsg['global.reuse']}" title="#{appmsg['global.reuse']}" onclick="statusDialog.show()"  oncomplete="dialogReuse.show()"
+                                				   	 action="#{paySalaryUploadDetailController.doSelectPrevPayrollPeriode()}" update=":panelReuseId"/>
                                     <p:commandButton value="#{appmsg['global.upload']}" actionListener="#{paySalaryUploadDetailController.doUpload()}" title="#{appmsg['global.upload']}" label="#{appmsg['global.upload']}" styleClass="label_button" ajax="true">
                                         <p:ajax event="dialogReturn" listener="#{paySalaryUploadDetailController.onDialogReturn}"  update="formPaySalaryUploadDetailId,:growlPaySalaryUploadDetailId"/>
                                     </p:commandButton>
@@ -152,12 +153,13 @@
                         </p:blockUI>
                     </h:form>
                 </div>
+                
+                
                 <p:dialog widgetVar="dialogConfirmPayTempUploadData" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
                             <h:panelGrid columns="2" style="text-align: justify">
-                                <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
                                 <h:panelGroup>
                                     <h:panelGrid style="text-align: center">
                                         <p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
@@ -175,7 +177,33 @@
                                          oncomplete="dialogConfirmPayTempUploadData.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
                         <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmPayTempUploadData.hide()" icon="ui-icon-close" />                     	
                     </div>
-                </p:dialog>                
+                </p:dialog>
+                
+                
+                <p:dialog widgetVar="dialogReuse" header="#{appmsg['global.reuse']}" modal="true" width="600" dynamic="true" onShow="statusDialog.hide()"
+                          appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
+                    <div align="center">
+                        <div align="center">
+                            <h:panelGrid style="text-align: justify">
+                            	<p:outputLabel value="#{appmsg['paysalaryupload.reuse_message']}?" styleClass="label_hrm"/>   
+                            </h:panelGrid>
+                        </div>
+                        <h:panelGrid id="panelReuseId" columns="3">
+                            <p:outputLabel value="#{paySalaryUploadDetailController.prevPayrollPeriode.fromPeriode}" styleClass="label_hrm">
+	                        	<f:convertDateTime pattern="dd MMMM yyyy" />
+	                        </p:outputLabel>
+	                        <p:outputLabel value=" - " />
+							<p:outputLabel value="#{paySalaryUploadDetailController.prevPayrollPeriode.untilPeriode}" styleClass="label_hrm">
+	                        	<f:convertDateTime pattern="dd MMMM yyyy" />
+	                    	</p:outputLabel>
+	                    </h:panelGrid>
+                        <p:separator style="margin-top:20px;"/>
+                        <p:commandButton value="#{appmsg['global.yes']}" action="#{paySalaryUploadDetailController.doReuse()}" update="formPaySalaryUploadDetailId,growlPaySalaryUploadDetailId"
+                                         oncomplete="dialogReuse.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogReuse.hide()" icon="ui-icon-close" />                     	
+                    </div>
+                </p:dialog>
+                                
             </ui:define>
         </ui:composition>
     </h:body>

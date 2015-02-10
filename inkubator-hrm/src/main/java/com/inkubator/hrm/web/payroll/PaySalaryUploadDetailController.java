@@ -20,16 +20,16 @@ import org.springframework.dao.DataIntegrityViolationException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.PaySalaryComponent;
 import com.inkubator.hrm.entity.PayTempUploadData;
+import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.PaySalaryComponentService;
 import com.inkubator.hrm.service.PayTempUploadDataService;
+import com.inkubator.hrm.service.WtPeriodeService;
 import com.inkubator.hrm.web.lazymodel.PayTempUploadDataLazyDataModel;
 import com.inkubator.hrm.web.model.PaySalaryUploadModel;
 import com.inkubator.hrm.web.search.PayTempUploadDataSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -44,10 +44,13 @@ public class PaySalaryUploadDetailController extends BaseController {
 	private PayTempUploadData selectedPayTempUploadData;
 	private PaySalaryUploadModel model;
 	private PayTempUploadDataSearchParameter parameter;
+	private WtPeriode prevPayrollPeriode;
 	@ManagedProperty(value = "#{payTempUploadDataService}")
 	private PayTempUploadDataService payTempUploadDataService;
 	@ManagedProperty(value = "#{paySalaryComponentService}")
 	private PaySalaryComponentService paySalaryComponentService;
+	@ManagedProperty(value = "#{wtPeriodeService}")
+	private WtPeriodeService wtPeriodeService;
 	
 	
 	@PostConstruct
@@ -73,8 +76,26 @@ public class PaySalaryUploadDetailController extends BaseController {
 		parameter = null;
 		payTempUploadDataService = null;
 		paySalaryComponentService = null;
+		wtPeriodeService = null;
+		prevPayrollPeriode = null;
 	}
 	
+	public WtPeriode getPrevPayrollPeriode() {
+		return prevPayrollPeriode;
+	}
+
+	public void setPrevPayrollPeriode(WtPeriode prevPayrollPeriode) {
+		this.prevPayrollPeriode = prevPayrollPeriode;
+	}
+
+	public WtPeriodeService getWtPeriodeService() {
+		return wtPeriodeService;
+	}
+
+	public void setWtPeriodeService(WtPeriodeService wtPeriodeService) {
+		this.wtPeriodeService = wtPeriodeService;
+	}
+
 	public PaySalaryComponent getSelectedPaySalaryComponent() {
 		return selectedPaySalaryComponent;
 	}
@@ -175,8 +196,22 @@ public class PaySalaryUploadDetailController extends BaseController {
         RequestContext.getCurrentInstance().openDialog("pay_salary_upload_file", options, params);
     }
 	
+	public void doSelectPrevPayrollPeriode(){
+		try {
+			prevPayrollPeriode = wtPeriodeService.getEntityByPreviousPayrollTypeActive();
+		} catch (Exception ex) {
+			LOGGER.error("Error", ex);
+		}
+	}
+	
 	public void doReuse(){
-		
+		try {
+			payTempUploadDataService.reuse(selectedPaySalaryComponent.getId(), prevPayrollPeriode.getId());
+			MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
+                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+		} catch (Exception ex) {
+			LOGGER.error("Error", ex);
+		}
 	}
 	
 	public void doAddData(){
