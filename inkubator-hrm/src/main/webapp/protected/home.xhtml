@@ -547,29 +547,29 @@
                                 <h:panelGrid columns="3">
                                     <p:outputLabel value="Karyawan"  styleClass="label_hrm"/>
                                     <p:outputLabel value=":" styleClass="label_hrm" />
-                                    <p:outputLabel value="120 Orang" styleClass="isitext_hrm" />
+                                    <p:outputLabel value="#{homeDashboardController.totalEmp} Orang" styleClass="isitext_hrm" />
 
                                     <p:outputLabel value="Cuti Hari Ini" styleClass="label_hrm" />
                                     <p:outputLabel value=":" styleClass="label_hrm" />
-                                    <p:outputLabel value="6 Orang" styleClass="isitext_hrm" />
+                                    <p:outputLabel value="n/a" styleClass="isitext_hrm" />
 
                                     <p:outputLabel value="Jumlah Dinas Hari Ini" styleClass="label_hrm" />
                                     <p:outputLabel value=":" styleClass="label_hrm" />
-                                    <p:outputLabel value="2 Orang" styleClass="isitext_hrm" />
+                                    <p:outputLabel value="n/a" styleClass="isitext_hrm" />
 
                                     <p:outputLabel value="Kehadiran Kemarin" styleClass="label_hrm" />
                                     <p:outputLabel value=":" styleClass="label_hrm" />
-                                    <p:outputLabel value="97 %" styleClass="isitext_hrm" />
+                                    <p:outputLabel value="n/a" styleClass="isitext_hrm" />
 
                                     <p:outputLabel value="Perkiraan Kehadiran 10/04" styleClass="label_hrm" />
                                     <p:outputLabel value=":" styleClass="label_hrm" />
-                                    <p:outputLabel value="92 %" styleClass="isitext_hrm" />
+                                    <p:outputLabel value="n/a" styleClass="isitext_hrm" />
                                 </h:panelGrid>
 
                                 <p:separator style="margin-left: 4px;margin-right: 2px;margin-top: px"/>
                                 <h:panelGrid columns="1" style="margin-bottom: 9px;margin-top: 9px">
                                     <p:outputLabel value="Karyawan Ulang Tahun Terdekat" styleClass="header_small_no_bold"/>
-                                    <p:outputLabel value="Mr. Angin Ribut"  styleClass="header_big"/>
+                                    <p:outputLabel value="#{homeDashboardController.nearestBirthDate.firstName} #{homeDashboardController.nearestBirthDate.lastName}"  styleClass="header_big"/>
                                 </h:panelGrid>
 
                             </p:panel>
