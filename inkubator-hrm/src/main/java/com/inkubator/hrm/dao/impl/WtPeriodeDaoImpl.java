@@ -100,4 +100,12 @@ public class WtPeriodeDaoImpl extends IDAOImpl<WtPeriode> implements WtPeriodeDa
         criteria.add(Restrictions.eq("untilPeriode", untilPeriode));
         return (WtPeriode) criteria.uniqueResult();
     }
+
+	@Override
+	public WtPeriode getEntityByDateBetween(Date date) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.le("fromPeriode", date));
+        criteria.add(Restrictions.ge("untilPeriode", date));
+        return (WtPeriode) criteria.uniqueResult();
+	}
 }

@@ -24,4 +24,6 @@ public interface LogMonthEndPayrollDao extends IDAO<LogMonthEndPayroll> {
 
 	public void deleteByPeriodId(Long periodId);
 
+	public List<LogMonthEndPayroll> getAllDataByPaySalaryCompAndPeriodeId(Long paySalaryCompId, String paySalaryCompCode, String paySalaryCompName, Long periodeId);
+
 }

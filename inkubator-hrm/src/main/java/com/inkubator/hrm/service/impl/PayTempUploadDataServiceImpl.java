@@ -19,9 +19,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.dao.EmpDataDao;
+import com.inkubator.hrm.dao.LogMonthEndPayrollDao;
 import com.inkubator.hrm.dao.PaySalaryComponentDao;
 import com.inkubator.hrm.dao.PayTempUploadDataDao;
 import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.LogMonthEndPayroll;
 import com.inkubator.hrm.entity.PaySalaryComponent;
 import com.inkubator.hrm.entity.PayTempUploadData;
 import com.inkubator.hrm.service.PayTempUploadDataService;
@@ -44,7 +46,8 @@ public class PayTempUploadDataServiceImpl extends IServiceImpl implements PayTem
 	private EmpDataDao empDataDao;
 	@Autowired
 	private PaySalaryComponentDao paySalaryComponentDao;
-	
+	@Autowired
+	private LogMonthEndPayrollDao logMonthEndPayrollDao;
 	@Autowired
     private FacesIO facesIO;
 	
@@ -332,8 +335,38 @@ public class PayTempUploadDataServiceImpl extends IServiceImpl implements PayTem
 		        entity.setCreatedOn(new Date());
 		        this.payTempUploadDataDao.save(entity);
 			}
+		}		
+	}
+	
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor =Exception.class)
+	public void reuse(Long paySalaryComponentId, Long periodeId) throws Exception{
+		PaySalaryComponent paySalaryComponent = paySalaryComponentDao.getEntiyByPK(paySalaryComponentId);
+		/** cari di logmonthEnd, setelah itu di cek ke payTempUploadData, update nominal jika sudah ada atau insert baru jika belum ada data */
+		List<LogMonthEndPayroll> listMonthEnd = logMonthEndPayrollDao.getAllDataByPaySalaryCompAndPeriodeId(paySalaryComponent.getId(), paySalaryComponent.getCode(), paySalaryComponent.getName(), periodeId);
+		for(LogMonthEndPayroll logMonthEndPayroll : listMonthEnd){			 
+			List<PayTempUploadData> listPayUpload = payTempUploadDataDao.getAllByNikAndComponentId(logMonthEndPayroll.getEmpNik(), paySalaryComponent.getId());
+			if(listPayUpload.isEmpty()){
+				//Saving process
+				PayTempUploadData entity = new PayTempUploadData();
+				entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+				entity.setPaySalaryComponent(paySalaryComponent);
+				EmpData empData = empDataDao.getEntiyByPK(logMonthEndPayroll.getEmpDataId());
+				entity.setEmpData(empData);
+				entity.setNominalValue(logMonthEndPayroll.getNominal().doubleValue());
+		        entity.setCreatedBy(UserInfoUtil.getUserName());
+		        entity.setCreatedOn(new Date());
+		        this.payTempUploadDataDao.save(entity);
+			} else {
+				//Updating process
+				for(PayTempUploadData data: listPayUpload){
+					 data.setNominalValue(logMonthEndPayroll.getNominal().doubleValue());
+					 data.setUpdatedBy(UserInfoUtil.getUserName());
+					 data.setUpdatedOn(new Date());
+					 this.payTempUploadDataDao.update(data);
+				}
+			}
 		}
-		
 	}
 
 	@Override	
