@@ -207,7 +207,7 @@ public class PaySalaryUploadDetailController extends BaseController {
 	public void doReuse(){
 		try {
 			payTempUploadDataService.reuse(selectedPaySalaryComponent.getId(), prevPayrollPeriode.getId());
-			MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
+			MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "paysalaryupload.reuse_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 		} catch (Exception ex) {
 			LOGGER.error("Error", ex);

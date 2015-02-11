@@ -10,6 +10,8 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
@@ -53,9 +55,6 @@ import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.PayTempKalkulasiService;
 import com.inkubator.hrm.web.model.PayTempKalkulasiModel;
 import com.inkubator.hrm.web.model.SalaryJournalModel;
-import com.inkubator.webcore.util.FacesUtil;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
 /**
  *
@@ -448,8 +447,8 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
             List<PaySalaryComponent> totalPayComponetNotExcp = paySalaryComponentDao.getAllDataByEmpTypeIdAndActiveFromTmAndIdNotIn(empData.getEmployeeType().getId(), timeTmb, componentIds);
             for (PaySalaryComponent paySalaryComponent : totalPayComponetNotExcp) {
                 if (paySalaryComponent.getModelComponent().getSpesific().equals(HRMConstant.MODEL_COMP_UPLOAD)) {
-                    List<PayTempUploadData> payTempUploadDatas = this.payTempUploadDataDao.getAllbyEmpIdAndComponentId(empData.getId(), paySalaryComponent.getId());
-                    for (PayTempUploadData payUpload : payTempUploadDatas) {
+                	PayTempUploadData payUpload = this.payTempUploadDataDao.getEntityByEmpIdAndComponentId(empData.getId(), paySalaryComponent.getId());
+                    if(payUpload != null) {
                         PayTempKalkulasi kalkulasi = new PayTempKalkulasi();
                         kalkulasi.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
                         kalkulasi.setEmpData(empData);

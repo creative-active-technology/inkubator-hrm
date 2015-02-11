@@ -27,4 +27,14 @@ public interface BioDataDao extends IDAO<BioData> {
     public List<BioData> getByName(String name);
     
     public List<EmpDataMatrixModel> getAllAgeFromBirthDate();
+    
+    public List<EmpDataMatrixModel> getTotalByAgeAndGenderMaleFromBirthDate();
+    
+    public List<EmpDataMatrixModel> getTotalByAgeAndGenderFemaleFromBirthDate();
+    
+    public Integer getTotalAgeByGenderMaleFromBirthDate();
+    
+    public Integer getTotalAgeByGenderFemaleFromBirthDate();
+    
+    public List<EmpDataMatrixModel> getAllAgeByGenderFromBirthDate();
 }

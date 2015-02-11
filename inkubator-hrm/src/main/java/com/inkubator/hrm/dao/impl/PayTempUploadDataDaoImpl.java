@@ -101,25 +101,42 @@ public class PayTempUploadDataDaoImpl extends IDAOImpl<PayTempUploadData> implem
     }
 
     @Override
-    public List<PayTempUploadData> getAllbyEmpIdAndComponentId(Long empId, Long componentId) {
+    public PayTempUploadData getEntityByEmpIdAndComponentId(Long empId, Long componentId) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.createAlias("paySalaryComponent", "ps");
         criteria.createAlias("empData", "emp");
         criteria.add(Restrictions.eq("ps.id", componentId));
         criteria.add(Restrictions.eq("emp.id", empId));
-        return criteria.list();
+        return (PayTempUploadData) criteria.uniqueResult();
 
     }
     
     @Override
-    public List<PayTempUploadData> getAllByNikAndComponentId(String nik, Long componentId) {
+    public PayTempUploadData getEntityByNikAndComponentId(String nik, Long componentId) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.createAlias("paySalaryComponent", "ps");
         criteria.createAlias("empData", "emp");
         criteria.add(Restrictions.eq("ps.id", componentId));
         criteria.add(Restrictions.eq("emp.nik", nik));
-        return criteria.list();
+        return (PayTempUploadData) criteria.uniqueResult();
 
     }
+
+	@Override
+	public Long getTotalByPaySalaryCompIdAndEmpDataId(Long paySalaryComponentId, Long empDataId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("paySalaryComponent.id", paySalaryComponentId));
+        criteria.add(Restrictions.eq("empData.id", empDataId));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
+
+	@Override
+	public Long getTotalByPaySalaryCompIdAndEmpDataIdAndNotId(Long paySalaryComponentId, Long empDataId, Long id) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("paySalaryComponent.id", paySalaryComponentId));
+        criteria.add(Restrictions.eq("empData.id", empDataId));
+        criteria.add(Restrictions.ne("id", id));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
 
 }

@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.LogMonthEndPayrollDao;
 import com.inkubator.hrm.dao.PaySalaryComponentDao;
@@ -74,6 +75,11 @@ public class PayTempUploadDataServiceImpl extends IServiceImpl implements PayTem
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor =Exception.class)
 	public void save(PayTempUploadData entity) throws Exception {
 		
+		long totalDuplicates = payTempUploadDataDao.getTotalByPaySalaryCompIdAndEmpDataId(entity.getPaySalaryComponent().getId(), entity.getEmpData().getId());
+        if (totalDuplicates > 0) {
+            throw new BussinessException("paysalaryupload.error_duplicate_employee");
+        }
+        
 		EmpData empData = empDataDao.getEntiyByPK(entity.getEmpData().getId());
 		PaySalaryComponent paySalaryComponent = paySalaryComponentDao.getEntiyByPK(entity.getPaySalaryComponent().getId());
 		
@@ -89,6 +95,11 @@ public class PayTempUploadDataServiceImpl extends IServiceImpl implements PayTem
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor =Exception.class)
 	public void update(PayTempUploadData entity) throws Exception {
 		
+		long totalDuplicates = payTempUploadDataDao.getTotalByPaySalaryCompIdAndEmpDataIdAndNotId(entity.getPaySalaryComponent().getId(), entity.getEmpData().getId(),entity.getId());
+        if (totalDuplicates > 0) {
+            throw new BussinessException("paysalaryupload.error_duplicate_employee");
+        }
+        
 		EmpData empData = empDataDao.getEntiyByPK(entity.getEmpData().getId());
 		PayTempUploadData payTempUploadData = payTempUploadDataDao.getEntiyByPK(entity.getId());
 		payTempUploadData.setEmpData(empData);
@@ -317,7 +328,7 @@ public class PayTempUploadDataServiceImpl extends IServiceImpl implements PayTem
 	@Override
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor =Exception.class)
 	public void executeBatchFileUpload(PaySalaryUploadFileModel model) throws Exception{
-		Boolean isInsertable = this.payTempUploadDataDao.getAllByNikAndComponentId(model.getNik(), model.getPaySalaryComponentId()).isEmpty();
+		Boolean isInsertable = this.payTempUploadDataDao.getEntityByNikAndComponentId(model.getNik(), model.getPaySalaryComponentId()) == null;
 		
 		//skip jika data sudah ada di database(tidak boleh duplikat)
 		if(isInsertable) {
@@ -342,11 +353,12 @@ public class PayTempUploadDataServiceImpl extends IServiceImpl implements PayTem
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor =Exception.class)
 	public void reuse(Long paySalaryComponentId, Long periodeId) throws Exception{
 		PaySalaryComponent paySalaryComponent = paySalaryComponentDao.getEntiyByPK(paySalaryComponentId);
+		
 		/** cari di logmonthEnd, setelah itu di cek ke payTempUploadData, update nominal jika sudah ada atau insert baru jika belum ada data */
 		List<LogMonthEndPayroll> listMonthEnd = logMonthEndPayrollDao.getAllDataByPaySalaryCompAndPeriodeId(paySalaryComponent.getId(), paySalaryComponent.getCode(), paySalaryComponent.getName(), periodeId);
 		for(LogMonthEndPayroll logMonthEndPayroll : listMonthEnd){			 
-			List<PayTempUploadData> listPayUpload = payTempUploadDataDao.getAllByNikAndComponentId(logMonthEndPayroll.getEmpNik(), paySalaryComponent.getId());
-			if(listPayUpload.isEmpty()){
+			PayTempUploadData payUpload = payTempUploadDataDao.getEntityByNikAndComponentId(logMonthEndPayroll.getEmpNik(), paySalaryComponent.getId());
+			if(payUpload == null){
 				//Saving process
 				PayTempUploadData entity = new PayTempUploadData();
 				entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
@@ -359,12 +371,10 @@ public class PayTempUploadDataServiceImpl extends IServiceImpl implements PayTem
 		        this.payTempUploadDataDao.save(entity);
 			} else {
 				//Updating process
-				for(PayTempUploadData data: listPayUpload){
-					 data.setNominalValue(logMonthEndPayroll.getNominal().doubleValue());
-					 data.setUpdatedBy(UserInfoUtil.getUserName());
-					 data.setUpdatedOn(new Date());
-					 this.payTempUploadDataDao.update(data);
-				}
+				payUpload.setNominalValue(logMonthEndPayroll.getNominal().doubleValue());
+				payUpload.setUpdatedBy(UserInfoUtil.getUserName());
+				payUpload.setUpdatedOn(new Date());
+				this.payTempUploadDataDao.update(payUpload);
 			}
 		}
 	}
