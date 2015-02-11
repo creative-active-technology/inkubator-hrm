@@ -26,5 +26,7 @@ public interface EducationLevelDao extends IDAO<EducationLevel> {
 	public Long getTotalByLevel(Integer level);
         
         public List<EducationLevel> getAllDataOrderByLevel();
+        
+        public List<EducationLevel> getAllNameOrderByLevel();
 
 }

@@ -415,7 +415,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.createAlias("bioData", "bio", JoinType.INNER_JOIN);
 //        criteria.createAlias("golonganJabatan", "goljab", JoinType.INNER_JOIN);
         if (model.getOverTimeId() != 0 || model.getOverTimeId() != null) {
-            
+
             Criterion andCondition = Restrictions.conjunction()
                     .add(Restrictions.isNotNull("ot.empData"))
                     .add(Restrictions.not(Restrictions.eq("wt.id", model.getOverTimeId())));
@@ -637,8 +637,6 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 
     private Criteria doSearchReportEmpDepartmentJabatanByParam(ReportEmpDepartmentJabatanParameter param, Criteria criteria) {
 
-        
-
         if (param.getDepartmentId() != null && param.getDepartmentId() != 0) {
             criteria.add(Restrictions.eq("jabatanByJabatanId.department.id", param.getDepartmentId()));
         }
@@ -799,11 +797,18 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 
     @Override
     public EmpData getByEmpDataByBioDataId(long bioDataid) {
-        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());       
-        criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);        
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
         criteria.setFetchMode("bioData", FetchMode.JOIN);
         criteria.add(Restrictions.eq("bioData.id", bioDataid));
         return (EmpData) criteria.uniqueResult();
+    }
+
+    @Override
+    public List<EmpData> getAllDataByAbsisAndOrdinateAndGoljab(String absis, String ordinate, long golJabId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        return criteria.list();
+
     }
 
 }

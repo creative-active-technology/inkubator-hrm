@@ -6,6 +6,7 @@ import org.hibernate.criterion.Order;
 
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.EducationLevel;
+import com.inkubator.hrm.web.model.EmpDataMatrixModel;
 
 /**
 *
@@ -20,5 +21,11 @@ public interface EducationLevelService extends IService<EducationLevel> {
         public EducationLevel getEntityByPkWithDetail(Long id) throws Exception;
         
         public List<EducationLevel> getAllDataOrderByLevel() throws Exception;
+        
+        public List<String> getAllNameOrderByLevel() throws Exception;
+        
+        public List<EmpDataMatrixModel> getAllNameOrderByLevelWithModel() throws Exception;
+        
+        public List<EmpDataMatrixModel> getAllNameByGenderOrderByLevelWithModel() throws Exception;
 
 }

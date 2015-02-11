@@ -13,7 +13,7 @@
 
     
     <bean id="connectionFactoryExpose" class="org.apache.activemq.ActiveMQConnectionFactory">
-        <property name="brokerURL" value="tcp://192.168.1.130:61616" />
+        <property name="brokerURL" value="tcp://localhost:61616" />
         <property name="prefetchPolicy">
             <bean class="org.apache.activemq.ActiveMQPrefetchPolicy">
                 <property name="queuePrefetch" value="10"/>
@@ -28,7 +28,7 @@
         </property>
     </bean>
     <bean id="connectionFactoryComsume" class="org.apache.activemq.ActiveMQConnectionFactory">
-        <property name="brokerURL" value="nio://192.168.1.130:61616" />
+        <property name="brokerURL" value="nio://localhost:61616" />
         <property name="prefetchPolicy">
             <bean class="org.apache.activemq.ActiveMQPrefetchPolicy">
                 <property name="queuePrefetch" value="10"/>
@@ -42,14 +42,6 @@
             </bean>
         </property>
     </bean>
-<!--    <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate" lazy-init="true">
-        <constructor-arg name="connectionFactory" ref="connectionFactoryExpose"/>
-        <property name="sessionTransacted" value="true"/>
-        <property name="defaultDestinationName" value="loginHistoryHrm"/>
-        <property name="receiveTimeout" value="50">
-        
-    </bean>  -->
-    
     <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate" lazy-init="true">
         <constructor-arg name="connectionFactory" ref="connectionFactoryExpose"/>
         <property name="sessionTransacted" value="true"/>
@@ -73,8 +65,7 @@
         <property name="sessionTransacted" value="true"/>
         <property name="defaultDestinationName" value="notificationApprovalGrowl"/>
         
-    </bean> 
-    
+    </bean>
     <bean id="jmsTemplateJadwalKerja" class="org.springframework.jms.core.JmsTemplate" lazy-init="true">
         <constructor-arg name="connectionFactory" ref="connectionFactoryExpose"/>
         <property name="sessionTransacted" value="true"/>
@@ -99,7 +90,20 @@
         <property name="defaultDestinationName" value="notificationBroadcastPolicy"/>
         
     </bean>
+    <bean id="jmsTemplateJadwalKerjaEmail" class="org.springframework.jms.core.JmsTemplate" lazy-init="true">
+        <constructor-arg name="connectionFactory" ref="connectionFactoryExpose"/>
+        <property name="sessionTransacted" value="true"/>
+        <property name="defaultDestinationName" value="notificationJadwalKerjaEmail"/>
+        
+    </bean>
 
+    <bean id="notificationJadwalKerjaEmailMessagesListener" class="com.inkubator.hrm.service.impl.NotificationJadwalKerjaEmailMessagesListener" lazy-init="true">
+        <property name="applicationUrl" value="${email_param_application_url}"/>
+        <property name="applicationName" value="${email_param_application_name}"/>
+        <property name="ownerEmail" value="${email_param_owner_email}"/>
+        <property name="ownerCompany" value="${email_param_owner_company}"/>
+        <property name="ownerAdministrator" value="${email_param_owner_administrator}"/>
+    </bean>
     <bean id="notificationUserMessagesListener" class="com.inkubator.hrm.service.impl.NotificationUserMessagesListener" lazy-init="true">
         <property name="applicationUrl" value="${email_param_application_url}"/>
         <property name="applicationName" value="${email_param_application_name}"/>
@@ -133,6 +137,7 @@
         <jms:listener destination="notificationApprovalGrowl" ref="notificationApprovalGrowlMessagesListener" method="onMessage"  />
         <jms:listener destination="notificationJadwalKerja" ref="jadwalKerjaMessagesListener" method="onMessage"  />
         <jms:listener destination="notificationMassJadwalKerja" ref="jadwalKerjaMassMessagesListener" method="onMessage"  />
+        <jms:listener destination="notificationJadwalKerjaEmail" ref="notificationJadwalKerjaEmailMessagesListener" method="onMessage"  />
         <jms:listener destination="notificationBroadcastPolicy" ref="notificationBroadcastPolicyMessagesListener" method="onMessage"  />
     </jms:listener-container>
     

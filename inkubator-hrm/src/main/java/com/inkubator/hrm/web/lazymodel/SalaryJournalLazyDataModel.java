@@ -5,12 +5,16 @@
  */
 package com.inkubator.hrm.web.lazymodel;
 
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.service.PayTempKalkulasiService;
 import com.inkubator.hrm.web.model.SalaryJournalModel;
+import com.inkubator.webcore.util.FacesUtil;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.Order;
 import org.primefaces.model.LazyDataModel;
@@ -43,7 +47,7 @@ public class SalaryJournalLazyDataModel extends LazyDataModel<SalaryJournalModel
                 }else{
                     order = Order.desc("costCenterCode");
                 }
-                salaryJournalList = service.getByParamForSalaryJournal(searchParameter, first, pageSize, order);
+                salaryJournalList = service.getByParamForSalaryJournal(searchParameter, first, pageSize, order, FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
                 jumlahData = Integer.parseInt(String.valueOf(service.getTotalPayTempKalkulasiForSalaryJournal(searchParameter)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
