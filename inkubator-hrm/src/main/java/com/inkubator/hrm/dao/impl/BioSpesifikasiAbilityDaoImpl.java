@@ -55,10 +55,12 @@ public class BioSpesifikasiAbilityDaoImpl extends IDAOImpl<BioSpesifikasiAbility
         return (BioSpesifikasiAbility) criteria.uniqueResult();
     }
 
-        @Override
-    public Long getTotalEntityByBioBioSpesifikasiAbilityId(BioSpesifikasiAbilityId id) {
+    @Override
+    public Long getTotalEntityByBioBioSpesifikasiAbilityId(Long specId, Long bioId) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.eq("id", id));
+        criteria.add(Restrictions.eq("specificationAbility.id", specId));
+        criteria.add(Restrictions.eq("bioData.id", bioId));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
+
 }

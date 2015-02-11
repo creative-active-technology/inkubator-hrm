@@ -21,5 +21,5 @@ public interface BioSpesifikasiAbilityDao extends IDAO<BioSpesifikasiAbility>{
     
     public BioSpesifikasiAbility getEntityByBioSpesifikasiAbilityId(BioSpesifikasiAbilityId id);
     
-    public Long getTotalEntityByBioBioSpesifikasiAbilityId(BioSpesifikasiAbilityId id);
+    public Long getTotalEntityByBioBioSpesifikasiAbilityId(Long specId, Long bioId);
 }

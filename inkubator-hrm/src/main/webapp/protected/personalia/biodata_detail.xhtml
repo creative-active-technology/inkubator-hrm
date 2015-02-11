@@ -999,7 +999,7 @@
                                         </p:commandButton>
                                         -
                                         <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
-                                                         action="#{bioDataDetilController.doUpdateBioSpesifikasiAbility()}" >
+                                                         action="#{bioDataDetilController.doUpdateBioSpesifikasiAbility()}" ajax="true" immediate="true">
                                             <f:setPropertyActionListener value="#{bioSpecAbi}" target="#{bioDataDetilController.selectedDioSpesifikasiAbility}" />
                                             <p:ajax event="dialogReturn" listener="#{bioDataDetilController.onDialogReturnBioSpesifikasiAbility}"  update="tableSpecAbilityId,:growlBioDetailFormId"/>
                                         </p:commandButton>
