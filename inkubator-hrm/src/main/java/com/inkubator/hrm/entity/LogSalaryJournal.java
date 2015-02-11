@@ -5,9 +5,12 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -26,7 +29,7 @@ public class LogSalaryJournal implements Serializable {
 	private Long id;
     private Integer version;
     
-    private Long periodeId;
+    private WtPeriode wtPeriode;
     private Long journalId;
     private String journalCode;
     private String journalName;
@@ -67,15 +70,16 @@ public class LogSalaryJournal implements Serializable {
 
     public void setVersion(Integer version) {
         this.version = version;
-    }
+    }    
     
-    @Column(name = "periode_id", nullable = false)
-    public Long getPeriodeId() {
-		return periodeId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "periode_id", nullable = false)
+	public WtPeriode getWtPeriode() {
+		return wtPeriode;
 	}
 
-	public void setPeriodeId(Long periodeId) {
-		this.periodeId = periodeId;
+	public void setWtPeriode(WtPeriode wtPeriode) {
+		this.wtPeriode = wtPeriode;
 	}
 
 	@Column(name = "journal_id")
