@@ -57,7 +57,7 @@ public class RiwayatAkses implements java.io.Serializable {
         this.userId = userId;
     }
 
-    @Column(name = "path_url", length = 100)
+    @Column(name = "path_url", length = 150)
     public String getPathUrl() {
         return this.pathUrl;
     }
