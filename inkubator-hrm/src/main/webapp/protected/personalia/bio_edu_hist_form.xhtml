@@ -49,13 +49,13 @@
                                 </p:selectOneMenu>
                             </p:column>
                             
-                            <p:column style="width: 17%">
+                            <p:column style="width: 25%">
                                 <p:outputLabel for="yearOut" value="#{appmsg['educationhistory.year_out']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="yearOut" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 33%">
+                            <p:column  style="width: 25%">
                                 <p:selectOneMenu id="yearOut" value="#{educationHistoryFormController.model.yearOut}" binding="#{yearOut}" style="width: 150px;margin-right: 3px"  >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{educationHistoryFormController.listYears}"/>
