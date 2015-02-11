@@ -10,8 +10,11 @@ import com.inkubator.hrm.dao.WtPeriodeDao;
 import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.WtPeriodeService;
 import com.inkubator.hrm.web.search.WtPeriodeSearchParameter;
+
 import java.util.List;
+
 import org.hibernate.criterion.Order;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -223,5 +226,14 @@ public class WtPeriodeServiceImpl extends IServiceImpl implements WtPeriodeServi
     public List<WtPeriode> getAllYears() throws Exception {
         return wtPeriodeDao.getAllYears();
     }
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+	public WtPeriode getEntityByPreviousPayrollTypeActive() throws Exception {
+		WtPeriode periode = wtPeriodeDao.getEntityByPayrollTypeActive();
+		DateTime dt = new DateTime(periode.getFromPeriode());
+		dt = dt.minusDays(1);
+		return wtPeriodeDao.getEntityByDateBetween(dt.toDate());
+	}
 
 }

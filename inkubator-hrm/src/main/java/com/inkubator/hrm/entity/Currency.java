@@ -41,6 +41,7 @@ public class Currency implements java.io.Serializable {
     private String description;
     private Set<PaySalaryGrade> paySalaryGrades = new HashSet<PaySalaryGrade>(0);
     private Set<BioBankAccount> bioBankAccounts = new HashSet<BioBankAccount>(0);
+    private Set<LoanType> loanTypes = new HashSet<LoanType>(0);
 
     public Currency() {
     }
@@ -176,5 +177,12 @@ public class Currency implements java.io.Serializable {
         this.bioBankAccounts = bioBankAccounts;
     }
 
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="currency")
+    public Set<LoanType> getLoanTypes() {
+        return this.loanTypes;
+    }
     
+    public void setLoanTypes(Set<LoanType> loanTypes) {
+        this.loanTypes = loanTypes;
+    }
 }

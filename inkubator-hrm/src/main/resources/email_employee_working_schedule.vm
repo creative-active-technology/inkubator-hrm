@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+    <body>
+        <div style="font-family:Trebuchet MS;margin-bottom: 20px;font-weight: bold;color: black;padding: 3px 3px 3px 10px;background-image: linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -o-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -moz-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -webkit-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -ms-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -webkit-gradient(linear,left bottom,left topcolor-stop(0.68, rgb(114,185,215)));">
+            Jadwal Kerja Karyawan</div>
+        <div style="padding-left: 10px;font-family: Verdana">
+            Saudara ${userName} - ${userNik},
+            <br />
+            <br />
+            <br />
+            Bersama ini diberitahukan bahwa jadwal kerja anda tanggal ${startDate} s/d ${endDate} telah di setujui.
+            <br />
+            <br />
+            Adapun jadwal lengkap anda adalah sebagai berikut:<br />
+		  	<table  cellspacing="4" cellpadding="1" style="border: 1px solid white; width: 100%; margin-bottom: 10px;margin-top:10px;margin-left: -25px">
+		        <th style="width: 5%; background: #72b9d7; text-align: center; padding: 4px; color: white;">No.</th>
+		        <th style="width: 89%; background: #72b9d7; text-align: left; padding: 4px; color: white;">Tanggal Kerja</th>
+		      	#foreach($schedule in $listSchedule)
+		        <tr>
+		           <td style="background: #91d5f2; width: 5%; padding: 4px;text-align: center">$velocityCount</td>
+		           <td style="background: #91d5f2; width: 89%; padding: 4px;">${schedule}</td>
+		        </tr>
+		     	#end
+		 	</table>
+ 
+            Demikian pemberitahuan ini disampaikan.<br/>
+			Atas perhatiannya disampaikan terima kasih.
+			<br/>
+            <br/>
+            Salam,
+            <br/>
+            <br/>
+            On Behalf ${applicationName}<br/>
+            ${ownerAdministrator}
+        </div>
+        <div style="font-family:Trebuchet MS ;margin-top: 20px;font-weight: bold;color: black;padding: 3px 3px 3px 10px;background-image: linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -o-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -moz-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -webkit-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -ms-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -webkit-gradient(linear,left bottom,left topcolor-stop(0.68, rgb(114,185,215)));">${applicationName} @${ownerCompany}
+        </div>
+    </body>
+</html>

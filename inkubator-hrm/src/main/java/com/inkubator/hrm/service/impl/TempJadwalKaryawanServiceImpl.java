@@ -6,6 +6,7 @@
 package com.inkubator.hrm.service.impl;
 
 import ch.lambdaj.Lambda;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -33,17 +34,22 @@ import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.entity.WtScheduleShift;
 import com.inkubator.hrm.service.TempJadwalKaryawanService;
 import com.inkubator.securitycore.util.UserInfoUtil;
+import com.inkubator.webcore.util.FacesUtil;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
+
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.criterion.Order;
 import org.primefaces.json.JSONException;
@@ -367,6 +373,7 @@ public class TempJadwalKaryawanServiceImpl extends BaseApprovalServiceImpl imple
         jsonObject.addProperty("groupWorkingId", groupWorkingId);
         jsonObject.addProperty("createDate", dateFormat.format(createdOn));
         jsonObject.addProperty("createBy", createdBy);
+        jsonObject.addProperty("locale", FacesUtil.getFacesContext().getViewRoot().getLocale().toString());
 
         this.jmsTemplateMassJadwalKerja.send(new MessageCreator() {
             @Override

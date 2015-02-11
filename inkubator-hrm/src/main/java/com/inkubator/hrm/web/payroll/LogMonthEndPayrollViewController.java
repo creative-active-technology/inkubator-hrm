@@ -209,7 +209,8 @@ public class LogMonthEndPayrollViewController extends BaseController {
 				        .addDate("periodeEnd", periode.getUntilPeriode())
 				        .addLong("periodeId", periode.getId())
 				        .addString("createdBy", UserInfoUtil.getUserName())
-				        .addDate("createdOn", new Timestamp(new Date().getTime())).toJobParameters();
+				        .addDate("createdOn", new Timestamp(new Date().getTime()))
+				        .addString("locale", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()).toJobParameters();
     	
 	            jobExecution = jobLauncherAsync.run(jobMonthEndPayroll, jobParameters);
 	            

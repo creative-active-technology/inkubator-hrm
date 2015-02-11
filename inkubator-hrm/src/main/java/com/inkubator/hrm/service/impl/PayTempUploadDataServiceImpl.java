@@ -18,10 +18,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.EmpDataDao;
+import com.inkubator.hrm.dao.LogMonthEndPayrollDao;
 import com.inkubator.hrm.dao.PaySalaryComponentDao;
 import com.inkubator.hrm.dao.PayTempUploadDataDao;
 import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.LogMonthEndPayroll;
 import com.inkubator.hrm.entity.PaySalaryComponent;
 import com.inkubator.hrm.entity.PayTempUploadData;
 import com.inkubator.hrm.service.PayTempUploadDataService;
@@ -44,7 +47,8 @@ public class PayTempUploadDataServiceImpl extends IServiceImpl implements PayTem
 	private EmpDataDao empDataDao;
 	@Autowired
 	private PaySalaryComponentDao paySalaryComponentDao;
-	
+	@Autowired
+	private LogMonthEndPayrollDao logMonthEndPayrollDao;
 	@Autowired
     private FacesIO facesIO;
 	
@@ -71,6 +75,11 @@ public class PayTempUploadDataServiceImpl extends IServiceImpl implements PayTem
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor =Exception.class)
 	public void save(PayTempUploadData entity) throws Exception {
 		
+		long totalDuplicates = payTempUploadDataDao.getTotalByPaySalaryCompIdAndEmpDataId(entity.getPaySalaryComponent().getId(), entity.getEmpData().getId());
+        if (totalDuplicates > 0) {
+            throw new BussinessException("paysalaryupload.error_duplicate_employee");
+        }
+        
 		EmpData empData = empDataDao.getEntiyByPK(entity.getEmpData().getId());
 		PaySalaryComponent paySalaryComponent = paySalaryComponentDao.getEntiyByPK(entity.getPaySalaryComponent().getId());
 		
@@ -86,6 +95,11 @@ public class PayTempUploadDataServiceImpl extends IServiceImpl implements PayTem
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor =Exception.class)
 	public void update(PayTempUploadData entity) throws Exception {
 		
+		long totalDuplicates = payTempUploadDataDao.getTotalByPaySalaryCompIdAndEmpDataIdAndNotId(entity.getPaySalaryComponent().getId(), entity.getEmpData().getId(),entity.getId());
+        if (totalDuplicates > 0) {
+            throw new BussinessException("paysalaryupload.error_duplicate_employee");
+        }
+        
 		EmpData empData = empDataDao.getEntiyByPK(entity.getEmpData().getId());
 		PayTempUploadData payTempUploadData = payTempUploadDataDao.getEntiyByPK(entity.getId());
 		payTempUploadData.setEmpData(empData);
@@ -314,7 +328,7 @@ public class PayTempUploadDataServiceImpl extends IServiceImpl implements PayTem
 	@Override
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor =Exception.class)
 	public void executeBatchFileUpload(PaySalaryUploadFileModel model) throws Exception{
-		Boolean isInsertable = this.payTempUploadDataDao.getAllByNikAndComponentId(model.getNik(), model.getPaySalaryComponentId()).isEmpty();
+		Boolean isInsertable = this.payTempUploadDataDao.getEntityByNikAndComponentId(model.getNik(), model.getPaySalaryComponentId()) == null;
 		
 		//skip jika data sudah ada di database(tidak boleh duplikat)
 		if(isInsertable) {
@@ -332,8 +346,37 @@ public class PayTempUploadDataServiceImpl extends IServiceImpl implements PayTem
 		        entity.setCreatedOn(new Date());
 		        this.payTempUploadDataDao.save(entity);
 			}
-		}
+		}		
+	}
+	
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor =Exception.class)
+	public void reuse(Long paySalaryComponentId, Long periodeId) throws Exception{
+		PaySalaryComponent paySalaryComponent = paySalaryComponentDao.getEntiyByPK(paySalaryComponentId);
 		
+		/** cari di logmonthEnd, setelah itu di cek ke payTempUploadData, update nominal jika sudah ada atau insert baru jika belum ada data */
+		List<LogMonthEndPayroll> listMonthEnd = logMonthEndPayrollDao.getAllDataByPaySalaryCompAndPeriodeId(paySalaryComponent.getId(), paySalaryComponent.getCode(), paySalaryComponent.getName(), periodeId);
+		for(LogMonthEndPayroll logMonthEndPayroll : listMonthEnd){			 
+			PayTempUploadData payUpload = payTempUploadDataDao.getEntityByNikAndComponentId(logMonthEndPayroll.getEmpNik(), paySalaryComponent.getId());
+			if(payUpload == null){
+				//Saving process
+				PayTempUploadData entity = new PayTempUploadData();
+				entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+				entity.setPaySalaryComponent(paySalaryComponent);
+				EmpData empData = empDataDao.getEntiyByPK(logMonthEndPayroll.getEmpDataId());
+				entity.setEmpData(empData);
+				entity.setNominalValue(logMonthEndPayroll.getNominal().doubleValue());
+		        entity.setCreatedBy(UserInfoUtil.getUserName());
+		        entity.setCreatedOn(new Date());
+		        this.payTempUploadDataDao.save(entity);
+			} else {
+				//Updating process
+				payUpload.setNominalValue(logMonthEndPayroll.getNominal().doubleValue());
+				payUpload.setUpdatedBy(UserInfoUtil.getUserName());
+				payUpload.setUpdatedOn(new Date());
+				this.payTempUploadDataDao.update(payUpload);
+			}
+		}
 	}
 
 	@Override	

@@ -5,10 +5,34 @@
  */
 package com.inkubator.hrm.service.impl;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.MessageListener;
+import javax.jms.Session;
+import javax.jms.TextMessage;
+
+import org.apache.commons.lang3.StringUtils;
+import org.primefaces.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import ch.lambdaj.Lambda;
+import ch.lambdaj.group.Group;
+
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.inkubator.common.CommonUtilConstant;
 import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.common.util.RandomNumberUtil;
@@ -16,26 +40,17 @@ import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.AttendanceStatusDao;
 import com.inkubator.hrm.dao.EmpDataDao;
+import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.dao.TempJadwalKaryawanDao;
 import com.inkubator.hrm.dao.WtGroupWorkingDao;
 import com.inkubator.hrm.dao.WtHolidayDao;
 import com.inkubator.hrm.dao.WtWorkingHourDao;
+import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.TempJadwalKaryawan;
 import com.inkubator.hrm.entity.WtGroupWorking;
 import com.inkubator.hrm.entity.WtHoliday;
 import com.inkubator.hrm.entity.WtScheduleShift;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import javax.jms.Message;
-import javax.jms.MessageListener;
-import javax.jms.TextMessage;
-import org.primefaces.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -55,6 +70,10 @@ public class JadwalKerjaMassMessagesListener extends IServiceImpl implements Mes
     private EmpDataDao empDataDao;
     @Autowired
     private WtWorkingHourDao wtWorkingHourDao;
+    @Autowired
+    private JmsTemplate jmsTemplateJadwalKerjaEmail;
+    @Autowired
+    private HrmUserDao hrmUserDao;
 
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW,
@@ -139,10 +158,68 @@ public class JadwalKerjaMassMessagesListener extends IServiceImpl implements Mes
             }
 //            tempJadwalKaryawanDao.deleteBacth(dataToDelete);
             tempJadwalKaryawanDao.saveBatch(dataToSave);
+            
+            //sending email process
+            this.sendingEmailJadwalKaryawan(dataToSave, jSONObject.getString("locale"));
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
     }
+    
+    private void sendingEmailJadwalKaryawan(List<TempJadwalKaryawan> listAll, String locale){
+    	//initialization
+    	SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy");
+    	SimpleDateFormat fullDateFormat = new SimpleDateFormat("EEEE, dd MMMM yyyy", new Locale(locale));
+    	SimpleDateFormat timeFormat =  new SimpleDateFormat("HH:mm");
+    	
+    	//grouping by empData
+    	Group<TempJadwalKaryawan> groupByEmpData = Lambda.group(listAll, Lambda.by(Lambda.on(TempJadwalKaryawan.class).getEmpData().getId()));
+    	
+    	//looping based on empData
+    	for (String key : groupByEmpData.keySet()) {
+    		List<TempJadwalKaryawan> listJadwalEmployee = groupByEmpData.find(key);
+    		listJadwalEmployee = Lambda.sort(listJadwalEmployee, Lambda.on(TempJadwalKaryawan.class).getTanggalWaktuKerja());
+    		
+    		EmpData empData = empDataDao.getEntiyByPK(listJadwalEmployee.get(0).getEmpData().getId());
+    		HrmUser user = hrmUserDao.getByEmpDataId(empData.getId());
+    		Date startDate = listJadwalEmployee.get(0).getTanggalWaktuKerja();
+    		Date endDate = listJadwalEmployee.get(listJadwalEmployee.size()-1).getTanggalWaktuKerja();
+    		List<String> jadwals = new ArrayList<String>();
+    		for (TempJadwalKaryawan tempJK : listJadwalEmployee) {
+    			TempJadwalKaryawan jadwal = tempJadwalKaryawanDao.getEntiyByPK(tempJK.getId());
+				StringBuffer sb = new StringBuffer();
+				sb.append(fullDateFormat.format(jadwal.getTanggalWaktuKerja()));
+				sb.append(", ");
+				sb.append(timeFormat.format(jadwal.getWtWorkingHour().getWorkingHourBegin()));
+				sb.append(" - ");
+				sb.append(timeFormat.format(jadwal.getWtWorkingHour().getWorkingHourEnd()));
+				sb.append(". ");
+				jadwals.add(sb.toString());
+			}
+    		
+    		//only send the working schedule to the employee that have a valid email
+    		if(user != null && StringUtils.isNotEmpty(user.getEmailAddress())) {
+	    		final JsonObject jsonObj = new JsonObject();
+	            jsonObj.addProperty("startDate", simpleDateFormat.format(startDate));
+	            jsonObj.addProperty("endDate", simpleDateFormat.format(endDate));
+	            jsonObj.addProperty("userEmail", user.getEmailAddress());
+	            jsonObj.addProperty("locale", locale);
+	            jsonObj.addProperty("userName", empData.getBioData().getFullName());
+	            jsonObj.addProperty("userNik", empData.getNik());
+	            jsonObj.addProperty("listSchedule", new GsonBuilder().create().toJson(jadwals));
+	            
+	            //send messaging, to trigger sending email
+	            jmsTemplateJadwalKerjaEmail.send(new MessageCreator() {
+	                @Override
+	                public Message createMessage(Session session) throws JMSException {
+	                    return session.createTextMessage(jsonObj.toString());
+	                }
+	            });
+    		}
+    	}
+    }
+    
+    
 //    private final Comparator<WtScheduleShift> shortByDate1 = new Comparator<WtScheduleShift>() {
 //        @Override
 //        public int compare(WtScheduleShift o1, WtScheduleShift o2) {

@@ -10,6 +10,8 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
@@ -53,9 +55,6 @@ import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.PayTempKalkulasiService;
 import com.inkubator.hrm.web.model.PayTempKalkulasiModel;
 import com.inkubator.hrm.web.model.SalaryJournalModel;
-import com.inkubator.webcore.util.FacesUtil;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
 /**
  *
@@ -448,8 +447,8 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
             List<PaySalaryComponent> totalPayComponetNotExcp = paySalaryComponentDao.getAllDataByEmpTypeIdAndActiveFromTmAndIdNotIn(empData.getEmployeeType().getId(), timeTmb, componentIds);
             for (PaySalaryComponent paySalaryComponent : totalPayComponetNotExcp) {
                 if (paySalaryComponent.getModelComponent().getSpesific().equals(HRMConstant.MODEL_COMP_UPLOAD)) {
-                    List<PayTempUploadData> payTempUploadDatas = this.payTempUploadDataDao.getAllbyEmpIdAndComponentId(empData.getId(), paySalaryComponent.getId());
-                    for (PayTempUploadData payUpload : payTempUploadDatas) {
+                	PayTempUploadData payUpload = this.payTempUploadDataDao.getEntityByEmpIdAndComponentId(empData.getId(), paySalaryComponent.getId());
+                    if(payUpload != null) {
                         PayTempKalkulasi kalkulasi = new PayTempKalkulasi();
                         kalkulasi.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
                         kalkulasi.setEmpData(empData);
@@ -736,7 +735,7 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<SalaryJournalModel> getByParamForSalaryJournal(String searchParameter, int firstResult, int maxResults, Order order) throws Exception {
+    public List<SalaryJournalModel> getByParamForSalaryJournal(String searchParameter, int firstResult, int maxResults, Order order, String locale) throws Exception {
         System.out.println(sisaData + " sisaData atas" + parameterLoop);
         Integer jumlahRowsTambahan = Integer.valueOf(String.valueOf(payTempKalkulasiDao.getTotalPayTempKalkulasiForSalaryJournalDebetAndKredit(searchParameter)));
         //reset sisaData biar bisa bulak balik page akhir + 1 halaman page akhir
@@ -796,7 +795,7 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
             salaryJournalModel.setCostCenterCode(listKredit.get(j).getCostCenterCodeKredit());
             salaryJournalModel.setCostCenterName(listKredit.get(j).getCostCenterNameKredit());
             salaryJournalModel.setJurnalCode("000000");
-            ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+            ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(locale));
             salaryJournalModel.setJurnalName(messages.getString("salaryJournal.paySalaryEmployee"));
             //debet > kredit => hasil ditaro di kredit
             //debet < kredit => hasil ditaro di debet
@@ -804,6 +803,7 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
                 salaryJournalModel.setDebet2(new BigDecimal(0));
                 salaryJournalModel.setKredit(totalUang);
             } else {
+            	totalUang = -totalUang;
                 salaryJournalModel.setDebet2(new BigDecimal(totalUang));
                 salaryJournalModel.setKredit(0.0);
             }
