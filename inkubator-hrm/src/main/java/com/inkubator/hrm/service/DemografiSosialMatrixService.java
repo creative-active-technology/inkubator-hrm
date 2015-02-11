@@ -18,10 +18,12 @@ public interface DemografiSosialMatrixService {
     public List<EducationLevel> getAllDataOrderByLevel() throws Exception;
 
     public List<String> getAllNameByParamOrderByLevelForAbsis(String param) throws Exception;
-    
-    public List<String> getAllAgeForAbsis() throws Exception;
 
-    public List<EmpDataMatrixModel> getAllNameOrderByLevelWithModel() throws Exception;
+    public List<EmpDataMatrixModel> getAllDataPendidikanVsGender() throws Exception;
 
-    public List<EmpDataMatrixModel> getAllNameByGenderOrderByLevelWithModel() throws Exception;
+    public List<EmpDataMatrixModel> getAllDataGenderVsPendidikan() throws Exception;
+
+    public List<EmpDataMatrixModel> getAllDataUmurVsGender() throws Exception;
+
+    public List<EmpDataMatrixModel> getAllDataGenderVsUmur() throws Exception;
 }

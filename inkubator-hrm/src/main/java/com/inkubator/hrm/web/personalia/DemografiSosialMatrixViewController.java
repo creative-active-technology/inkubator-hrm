@@ -74,10 +74,15 @@ public class DemografiSosialMatrixViewController extends BaseController {
         if (!listDataAbsis.isEmpty()) {
             listDataAbsis.clear();
         }
-        if (ordinate.equals("pendidikan")) {
-            listDataAbsis = demografiSosialMatrixService.getAllNameOrderByLevelWithModel();
-        } else if (ordinate.equals("gender")) {
-            listDataAbsis = demografiSosialMatrixService.getAllNameByGenderOrderByLevelWithModel();
+        if (ordinate.equals("pendidikan") && absis.equals("gender")) {
+            listDataAbsis = demografiSosialMatrixService.getAllDataPendidikanVsGender();
+        } else if (ordinate.equals("gender") && absis.equals("pendidikan")) {
+            listDataAbsis = demografiSosialMatrixService.getAllDataGenderVsPendidikan();
+        } else if (ordinate.equals("gender") && absis.equals("umur")){
+            listDataAbsis = demografiSosialMatrixService.getAllDataUmurVsGender();
+        } else if(ordinate.equals("umur") && absis.equals("gender")){
+            listDataAbsis = demografiSosialMatrixService.getAllDataGenderVsUmur();
+        
         }
 
     }
