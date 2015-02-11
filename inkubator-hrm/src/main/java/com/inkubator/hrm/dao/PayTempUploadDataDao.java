@@ -21,13 +21,17 @@ public interface PayTempUploadDataDao extends IDAO<PayTempUploadData> {
     public PayTempUploadData getEntityByPkWithDetail(Long id);
 
     public Long getTotalByPaySalaryComponentId(Long paySalaryComponentId);
+    
+    public Long getTotalByPaySalaryCompIdAndEmpDataId(Long paySalaryComponentId, Long empDataId);
+    
+    public Long getTotalByPaySalaryCompIdAndEmpDataIdAndNotId(Long paySalaryComponentId, Long empDataId, Long id);
 
     public Double getTotalSalaryByPaySalaryComponentId(Long paySalaryComponentId);
 
     public void deleteByPaySalaryComponentId(Long paySalaryComponentId);
 
-    public List<PayTempUploadData> getAllbyEmpIdAndComponentId(Long empId, Long componentId);
+    public PayTempUploadData getEntityByEmpIdAndComponentId(Long empId, Long componentId);
 
-	public List<PayTempUploadData> getAllByNikAndComponentId(String nik, Long componentId);
+	public PayTempUploadData getEntityByNikAndComponentId(String nik, Long componentId);
 
 }

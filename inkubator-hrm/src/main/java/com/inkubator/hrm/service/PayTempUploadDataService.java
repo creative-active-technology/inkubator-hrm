@@ -33,4 +33,7 @@ public interface PayTempUploadDataService extends IService<PayTempUploadData> {
 	public void executeBatchFileUpload(PaySalaryUploadFileModel report) throws Exception;
 
 	public String updateFileAndDeleteData(long id, UploadedFile file) throws Exception;
+
+	public void reuse(Long paySalaryComponentId, Long periodeId) throws Exception;;
+	
 }

@@ -33,5 +33,7 @@ public interface WtPeriodeDao extends IDAO<WtPeriode> {
     public WtPeriode getEntityByMonthAndYear(String month, String year);
 
     public WtPeriode getEntityByFromPeriodeAndUntilPeriode(Date fromPeriode, Date untilPeriode);
+    
+    public WtPeriode getEntityByDateBetween(Date date);
 
 }

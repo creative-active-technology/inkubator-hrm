@@ -4,8 +4,10 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
@@ -124,6 +126,16 @@ public class LogMonthEndPayrollDaoImpl extends IDAOImpl<LogMonthEndPayroll> impl
 				.setLong("periodId", periodId);
         query.executeUpdate();
 		
+	}
+
+	@Override
+	public List<LogMonthEndPayroll> getAllDataByPaySalaryCompAndPeriodeId(Long paySalaryCompId, String paySalaryCompCode, String paySalaryCompName, Long periodeId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("paySalaryCompId", paySalaryCompId));
+		criteria.add(Restrictions.eq("paySalaryCompCode", paySalaryCompCode));
+		criteria.add(Restrictions.eq("paySalaryDesc", paySalaryCompName));
+		criteria.add(Restrictions.eq("periodeId", periodeId));
+		return criteria.list();
 	}
     
 }
