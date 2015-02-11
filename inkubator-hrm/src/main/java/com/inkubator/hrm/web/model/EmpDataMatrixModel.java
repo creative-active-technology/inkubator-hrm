@@ -5,6 +5,7 @@
  */
 package com.inkubator.hrm.web.model;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,10 @@ public class EmpDataMatrixModel {
     private int age;
     private Integer ages;
     private Double ages2;
+    private int banyakData;
+    private BigInteger banyakDatas;
+    private BigInteger gender;
+    private int genders;
 
     public String getMale() {
         return male;
@@ -66,6 +71,38 @@ public class EmpDataMatrixModel {
 
     public void setAges2(Double ages2) {
         this.ages2 = ages2;
+    }
+
+    public int getBanyakData() {
+        return banyakData;
+    }
+
+    public void setBanyakData(int banyakData) {
+        this.banyakData = banyakData;
+    }
+
+    public BigInteger getBanyakDatas() {
+        return banyakDatas;
+    }
+
+    public void setBanyakDatas(BigInteger banyakDatas) {
+        this.banyakDatas = banyakDatas;
+    }
+
+    public BigInteger getGender() {
+        return gender;
+    }
+
+    public void setGender(BigInteger gender) {
+        this.gender = gender;
+    }
+
+    public int getGenders() {
+        return genders;
+    }
+
+    public void setGenders(int genders) {
+        this.genders = genders;
     }
     
     
