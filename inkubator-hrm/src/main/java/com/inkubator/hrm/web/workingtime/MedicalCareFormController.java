@@ -38,6 +38,7 @@ import com.inkubator.webcore.util.MessagesResourceUtil;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.TreeMap;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
@@ -65,6 +66,11 @@ public class MedicalCareFormController extends BaseController {
     private UploadFilesUtil uploadFilesUtil;
     private Boolean disabledHospital;
 
+    private List<Hospital> hospitals = new ArrayList<Hospital>();
+    private Map<String, Long> dropDownHospital = new TreeMap<String, Long>();
+    private Map<String, Long> dropDownDisease = new TreeMap<String, Long>();
+    private List<Disease> diseases = new ArrayList<>();
+
     public EmpDataService getEmpDataService() {
         return empDataService;
     }
@@ -89,6 +95,22 @@ public class MedicalCareFormController extends BaseController {
         this.hospitalService = hospitalService;
     }
 
+    public List<Hospital> getHospitals() {
+        return hospitals;
+    }
+
+    public void setHospitals(List<Hospital> hospitals) {
+        this.hospitals = hospitals;
+    }
+
+    public Map<String, Long> getDropDownHospital() {
+        return dropDownHospital;
+    }
+
+    public void setDropDownHospital(Map<String, Long> dropDownHospital) {
+        this.dropDownHospital = dropDownHospital;
+    }
+
     @PostConstruct
     @Override
     public void initialization() {
@@ -103,11 +125,12 @@ public class MedicalCareFormController extends BaseController {
                 MedicalCare medicalCare = medicalCareService.getEntityWithDetail(Long.parseLong(param.substring(1)));
                 if (medicalCare != null) {
                     getModelFromEntity(medicalCare);
-
                     isUpdate = Boolean.TRUE;
 
                 }
             }
+
+            doSelectOneMenuHospital();
         } catch (Exception e) {
             LOGGER.error("Error", e);
         }
@@ -121,6 +144,10 @@ public class MedicalCareFormController extends BaseController {
         medicalCareService = null;
         documentFile = null;
         disabledHospital = Boolean.FALSE;
+        hospitals = null;
+        dropDownHospital = null;
+        dropDownDisease = null;
+        diseases = null;
     }
 
     public MedicalCareModel getModel() {
@@ -230,10 +257,14 @@ public class MedicalCareFormController extends BaseController {
         if (model.getId() != null) {
             medicalCare.setId(model.getId());
         }
-        medicalCare.setDisease(model.getDiseaseId());
+//        medicalCare.setDisease(model.getDiseaseId());
+        medicalCare.setDisease(new Disease(model.getDisease()));
         medicalCare.setEmpData(model.getEmpDataByEmpDataId());
         medicalCare.setTemporaryActing(model.getEmpDataByTemporaryActingId());
-        medicalCare.setHospital(model.getHospitalId());
+//        medicalCare.setHospital(model.getHospitalId());
+        if (model.getHospital() != null) {
+            medicalCare.setHospital(new Hospital(model.getHospital()));
+        }
         medicalCare.setDocterName(model.getDocterName());
         medicalCare.setStartDate(model.getStartDate());
         medicalCare.setEndDate(model.getEndDate());
@@ -245,21 +276,24 @@ public class MedicalCareFormController extends BaseController {
     }
 
     private void getModelFromEntity(MedicalCare medicalCare) throws Exception {
+        model.setJabatan(medicalCare.getEmpData().getJabatanByJabatanId().getName());
         model.setId(medicalCare.getId());
         model.setDiseaseId(medicalCare.getDisease());
+        model.setDisease(medicalCare.getDisease().getId());
         model.setDocterName(medicalCare.getDocterName());
         model.setEmpDataByEmpDataId(medicalCare.getEmpData());
         model.setEmpDataByTemporaryActingId(medicalCare.getTemporaryActing());
         model.setStartDate(medicalCare.getStartDate());
         model.setEndDate(medicalCare.getEndDate());
         model.setHospitalId(medicalCare.getHospital());
+        model.setHospital(medicalCare.getHospital().getId());
         model.setMaterialJobsAbandoned(medicalCare.getMaterialJobsAbandoned());
         model.setRequestDate(medicalCare.getRequestDate());
         model.setTotalDays(medicalCare.getTotalDays());
         model.setUploadPath(medicalCare.getUploadPath());
 
-        if (StringUtils.isNotEmpty(String.valueOf(model.getHospitalId()))) {
-            disabledHospital = false;
+        if (StringUtils.isNotEmpty(String.valueOf(model.getHospital()))) {
+            disabledHospital = Boolean.TRUE;
         }
     }
 
@@ -307,6 +341,37 @@ public class MedicalCareFormController extends BaseController {
         return hospitals;
     }
 
+    public void doSelectOneMenuHospital() throws Exception {
+        hospitals = hospitalService.getAllData();
+
+        for (Hospital hospital : hospitals) {
+            dropDownHospital.put(hospital.getName(), hospital.getId());
+        }
+
+        diseases = diseaseService.getAllData();
+
+        for (Disease disease : diseases) {
+            dropDownDisease.put(disease.getName(), disease.getId());
+        }
+
+    }
+
+    public Map<String, Long> getDropDownDisease() {
+        return dropDownDisease;
+    }
+
+    public void setDropDownDisease(Map<String, Long> dropDownDisease) {
+        this.dropDownDisease = dropDownDisease;
+    }
+
+    public List<Disease> getDiseases() {
+        return diseases;
+    }
+
+    public void setDiseases(List<Disease> diseases) {
+        this.diseases = diseases;
+    }
+
     public void handingFileUpload(FileUploadEvent fileUploadEvent) {
         Map<String, String> results = uploadFilesUtil.checkUploadFileSizeLimit(fileUploadEvent.getFile());
         if (StringUtils.equals(results.get("result"), "true")) {
@@ -335,8 +400,6 @@ public class MedicalCareFormController extends BaseController {
     }
 
     public void onChangeStartOrEndDate() {
-        System.out.println("Start Date " + model.getStartDate());
-        System.out.println("End Date " + model.getEndDate());
         try {
 
             if (model.getStartDate() != null && model.getEndDate() != null) {
