@@ -26,6 +26,8 @@ public class MedicalCareModel implements Serializable {
     private String uploadPath;
     private String medicalNotes;
     private String jabatan;
+    private Long hospital;
+    private Long disease;
 
     public Long getId() {
         return id;
@@ -65,6 +67,14 @@ public class MedicalCareModel implements Serializable {
 
     public void setHospitalId(Hospital hospitalId) {
         this.hospitalId = hospitalId;
+    }
+
+    public Long getHospital() {
+        return hospital;
+    }
+
+    public void setHospital(Long hospital) {
+        this.hospital = hospital;
     }
 
     
@@ -141,6 +151,14 @@ public class MedicalCareModel implements Serializable {
 
     public void setJabatan(String jabatan) {
         this.jabatan = jabatan;
+    }
+
+    public Long getDisease() {
+        return disease;
+    }
+
+    public void setDisease(Long disease) {
+        this.disease = disease;
     }
 
     

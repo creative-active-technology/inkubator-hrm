@@ -5,6 +5,8 @@ import java.util.Date;
 import org.springframework.batch.item.ItemProcessor;
 
 import com.inkubator.hrm.entity.LogSalaryJournal;
+import com.inkubator.hrm.entity.WtPeriode;
+import com.inkubator.hrm.service.WtPeriodeService;
 import com.inkubator.hrm.web.model.SalaryJournalModel;
 
 /**
@@ -13,14 +15,18 @@ import com.inkubator.hrm.web.model.SalaryJournalModel;
 */
 public class MonthEndJournalLogProcessor implements ItemProcessor<SalaryJournalModel, LogSalaryJournal> {
 
-	private Long periodeId;
+	private WtPeriode periode;
 	private String createdBy;
 	private Date createdOn;
+	
+	public MonthEndJournalLogProcessor(WtPeriodeService wtPeriodeService, Long periodeId) throws Exception{
+		periode = wtPeriodeService.getEntiyByPK(periodeId);
+	}
 	
 	@Override
 	public LogSalaryJournal process(SalaryJournalModel item) throws Exception {
 		LogSalaryJournal log = new LogSalaryJournal();
-		log.setPeriodeId(periodeId);
+		log.setWtPeriode(periode);
 		log.setCostCenterId(item.getCostCenterId());
 		log.setCostCenterCode(item.getCostCenterCode());
 		log.setCostCenterName(item.getCostCenterName());
@@ -32,14 +38,6 @@ public class MonthEndJournalLogProcessor implements ItemProcessor<SalaryJournalM
 		log.setCreatedBy(createdBy);
 		log.setCreatedOn(createdOn);
 		return log;
-	}
-
-	public Long getPeriodeId() {
-		return periodeId;
-	}
-
-	public void setPeriodeId(Long periodeId) {
-		this.periodeId = periodeId;
 	}
 
 	public String getCreatedBy() {
@@ -57,6 +55,5 @@ public class MonthEndJournalLogProcessor implements ItemProcessor<SalaryJournalM
 	public void setCreatedOn(Date createdOn) {
 		this.createdOn = createdOn;
 	}
-
 	
 }
