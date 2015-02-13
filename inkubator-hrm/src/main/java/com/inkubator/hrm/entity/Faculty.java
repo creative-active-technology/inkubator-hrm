@@ -26,7 +26,8 @@ import javax.persistence.Version;
 @Entity
 @Table(name="faculty"
     ,catalog="hrm"
-    , uniqueConstraints = @UniqueConstraint(columnNames="faculty_name") 
+    , uniqueConstraints = {@UniqueConstraint(columnNames="faculty_name")
+    , @UniqueConstraint(columnNames="faculty_code") } 
 )
 public class Faculty  implements java.io.Serializable {
 
@@ -38,6 +39,7 @@ public class Faculty  implements java.io.Serializable {
      private String updatedBy;
      private Date updatedOn;
      private String facultyName;
+     private String code;
      private String description;
      private Set<BioEducationHistory> educationHistorys = new HashSet<BioEducationHistory>(0);
      private List<Faculty> listFaculties = new ArrayList<>(0);
@@ -141,6 +143,15 @@ public class Faculty  implements java.io.Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
+    
+    @Column(name="faculty_code", unique=true, length=8)
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "faculty")
     public Set<BioEducationHistory> getEducationHistorys() {
@@ -162,15 +173,16 @@ public class Faculty  implements java.io.Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 71 * hash + (int) (this.id ^ (this.id >>> 32));
-        hash = 71 * hash + Objects.hashCode(this.version);
-        hash = 71 * hash + Objects.hashCode(this.createdBy);
-        hash = 71 * hash + Objects.hashCode(this.createdOn);
-        hash = 71 * hash + Objects.hashCode(this.updatedBy);
-        hash = 71 * hash + Objects.hashCode(this.updatedOn);
-        hash = 71 * hash + Objects.hashCode(this.facultyName);
-        hash = 71 * hash + Objects.hashCode(this.description);
+        int hash = 7;
+        hash = 89 * hash + (int) (this.id ^ (this.id >>> 32));
+        hash = 89 * hash + Objects.hashCode(this.version);
+        hash = 89 * hash + Objects.hashCode(this.createdBy);
+        hash = 89 * hash + Objects.hashCode(this.createdOn);
+        hash = 89 * hash + Objects.hashCode(this.updatedBy);
+        hash = 89 * hash + Objects.hashCode(this.updatedOn);
+        hash = 89 * hash + Objects.hashCode(this.facultyName);
+        hash = 89 * hash + Objects.hashCode(this.code);
+        hash = 89 * hash + Objects.hashCode(this.description);
         return hash;
     }
 
@@ -204,15 +216,14 @@ public class Faculty  implements java.io.Serializable {
         if (!Objects.equals(this.facultyName, other.facultyName)) {
             return false;
         }
+        if (!Objects.equals(this.code, other.code)) {
+            return false;
+        }
         if (!Objects.equals(this.description, other.description)) {
             return false;
         }
         return true;
     }
-
-    
-
-
 }
 
 

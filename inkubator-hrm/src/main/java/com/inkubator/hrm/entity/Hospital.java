@@ -24,7 +24,7 @@ import javax.persistence.Version;
 )
 public class Hospital implements java.io.Serializable {
 
-    private long id;
+    private Long id;
     private Integer version;
     private City city;
     private String createdBy;
@@ -39,16 +39,16 @@ public class Hospital implements java.io.Serializable {
     public Hospital() {
     }
 
-    public Hospital(long id, City city) {
+    public Hospital(Long id, City city) {
         this.id = id;
         this.city = city;
     }
     
-    public Hospital(long id) {
+    public Hospital(Long id) {
         this.id = id;
     }
 
-    public Hospital(long id, City city, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String code, String name, String address, String phone) {
+    public Hospital(Long id, City city, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String code, String name, String address, String phone) {
         this.id = id;
         this.city = city;
         this.createdBy = createdBy;
@@ -64,11 +64,11 @@ public class Hospital implements java.io.Serializable {
     @Id
 
     @Column(name = "id", unique = true, nullable = false)
-    public long getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

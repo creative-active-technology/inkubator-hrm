@@ -199,6 +199,11 @@ public class FacultyServiceImpl extends IServiceImpl implements FacultyService {
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(Faculty faculty) throws Exception {
+        // check duplicate code
+        long totalDuplicateCodes = facultyDao.getTotalByCode(faculty.getCode());
+        if (totalDuplicateCodes > 0) {
+            throw new BussinessException("faculty.error_duplicate_faculty_code");
+        }
         // check duplicate name
         long totalDuplicates = facultyDao.getTotalByName(faculty.getFacultyName());
         if (totalDuplicates > 0) {
@@ -238,6 +243,11 @@ public class FacultyServiceImpl extends IServiceImpl implements FacultyService {
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(Faculty r) throws Exception {
+        // check duplicate code
+        long totalDuplicateCodes = facultyDao.getTotalByCodeAndNotId(r.getCode(), r.getId());
+        if (totalDuplicateCodes > 0) {
+            throw new BussinessException("faculty.error_duplicate_faculty_code");
+        }
         // check duplicate name
         long totalDuplicates = facultyDao.getTotalByNameAndNotId(r.getFacultyName(), r.getId());
         if (totalDuplicates > 0) {
@@ -246,6 +256,7 @@ public class FacultyServiceImpl extends IServiceImpl implements FacultyService {
 
         Faculty faculty = facultyDao.getEntiyByPK(r.getId());
         faculty.setFacultyName(r.getFacultyName());
+        faculty.setCode(r.getCode());
         faculty.setDescription(r.getDescription());
         faculty.setUpdatedBy(UserInfoUtil.getUserName());
         faculty.setUpdatedOn(new Date());
@@ -278,7 +289,7 @@ public class FacultyServiceImpl extends IServiceImpl implements FacultyService {
         for (JabatanFakulty jabatanFakulty : this.jabatanFakultyDao.getAllDataByJabatanId(id)) {
             listFaculties.add(jabatanFakulty.getFaculty());
         }
-     
+
         faculty.setListFaculties(listFaculties);
         return faculty;
     }

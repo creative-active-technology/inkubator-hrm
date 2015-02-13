@@ -7,7 +7,7 @@
 
    
     <bean class="com.inkubator.webcore.util.FacesIO" id="facesIO" lazy-init="true" >
-        <property name="pathUpload" value="${webcore.util.path_upload}"/>
+        <property name="pathUpload" value="${webcore.util.path_upload2}"/>
         <property name="bufferSize" value="${webcore.util.buffer_size}"/>
     </bean>
     <bean class="com.inkubator.hrm.util.UploadFilesUtil" id="uploadFilesUtil" lazy-init="true" >

@@ -101,7 +101,9 @@ public class ReligionFormController extends BaseController {
         if (religionModel.getId() != null) {
             religion.setId(religionModel.getId());
         }
+        religion.setCode(religionModel.getCode());
         religion.setName(religionModel.getName());
+        religion.setDescription(religionModel.getDescription());
         return religion;
     }
 }
