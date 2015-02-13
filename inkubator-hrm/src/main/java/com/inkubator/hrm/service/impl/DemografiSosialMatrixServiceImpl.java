@@ -40,7 +40,7 @@ public class DemografiSosialMatrixServiceImpl implements DemografiSosialMatrixSe
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
+@Override
     public List<String> getAllNameByParamOrderByLevelForAbsis(String param) throws Exception {
         List<String> listAbsisToShow = new ArrayList<String>();
         List<EmpDataMatrixModel> listDataAbsis = new ArrayList<EmpDataMatrixModel>();
@@ -53,10 +53,12 @@ public class DemografiSosialMatrixServiceImpl implements DemografiSosialMatrixSe
         } else if (param.equals("gender")) {
             listAbsisToShow.add("F");
             listAbsisToShow.add("M");
-        } else if (param.equals("umur")){
+        } else if (param.equals("umur")) {
             List<EmpDataMatrixModel> listAge = bioDataDao.getAllAgeFromBirthDate();
             for (EmpDataMatrixModel empDataMatrixModel : listAge) {
-                listAbsisToShow.add(String.valueOf(empDataMatrixModel.getAges()));
+                if (empDataMatrixModel.getAges2() != null) {
+                    listAbsisToShow.add(String.valueOf(empDataMatrixModel.getAges2()));
+                }
             }
         }
         listAbsisToShow.add("Total");
@@ -93,14 +95,12 @@ public class DemografiSosialMatrixServiceImpl implements DemografiSosialMatrixSe
         EmpDataMatrixModel totalBawah = new EmpDataMatrixModel();
         List<String> listTotalBawah = new ArrayList<String>();
 
-        for (int i = 0; i < 1; i++) {
-            listTotalBawah.add("TotalBawah");
-            listTotalBawah.add(String.valueOf(tempTotalAllFemale));
-            listTotalBawah.add(String.valueOf(tempTotalAllMale));
-            listTotalBawah.add(String.valueOf(tempTotalAllFemale + tempTotalAllMale));
-            totalBawah.setListGender(listTotalBawah);
-            listDataModel.add(totalBawah);
-        }
+        listTotalBawah.add("TotalBawah");
+        listTotalBawah.add(String.valueOf(tempTotalAllFemale));
+        listTotalBawah.add(String.valueOf(tempTotalAllMale));
+        listTotalBawah.add(String.valueOf(tempTotalAllFemale + tempTotalAllMale));
+        totalBawah.setListGender(listTotalBawah);
+        listDataModel.add(totalBawah);
         return listDataModel;
     }
 
@@ -118,7 +118,6 @@ public class DemografiSosialMatrixServiceImpl implements DemografiSosialMatrixSe
         Long totalFemale = null;
         long temp;
         long tempTotalMaleAndFemale;
-        Long totalDataBerdasarkanEdukasi;
         List<EmpDataMatrixModel> listDataModel = new ArrayList<EmpDataMatrixModel>();
         int j;
         for (int i = 0; i < 2; i++) {
@@ -304,7 +303,6 @@ public class DemografiSosialMatrixServiceImpl implements DemografiSosialMatrixSe
         EmpDataMatrixModel empDataMatrixModel;
         Double totalMale;
         Double totalFemale;
-        Double totalDataBerdasarkanEdukasi;
         Double tempTotalAllMale = 0.0;
         Double tempTotalAllFemale = 0.0;
         int pembandingTerbanyak = listAge.size();
@@ -347,12 +345,6 @@ public class DemografiSosialMatrixServiceImpl implements DemografiSosialMatrixSe
             listEducationShow = new ArrayList<String>();
             empDataMatrixModel = new EmpDataMatrixModel();
             if (listAge.get(j).getAges2() != null) {
-//            totalMale = bioEducationHistoryDao.getTotalByGenderMaleAndEducationLevel(educationLevel.getId());
-//            totalFemale = bioEducationHistoryDao.getTotalByGenderFemaleAndEducationLevel(educationLevel.getId());
-//            tempTotalAllFemale = tempTotalAllFemale + totalFemale;
-//            tempTotalAllMale = tempTotalAllMale + totalMale;
-//            System.out.println(totalMale + " - total");
-
                 totalFemale = ageMapFemale.get(listAge.get(j).getAges2());
                 totalMale = ageMapMale.get(listAge.get(j).getAges2());
                 tempTotalAllFemale = tempTotalAllFemale + totalFemale;
@@ -370,14 +362,12 @@ public class DemografiSosialMatrixServiceImpl implements DemografiSosialMatrixSe
         EmpDataMatrixModel totalBawah = new EmpDataMatrixModel();
         List<String> listTotalBawah = new ArrayList<String>();
 
-        for (int i = 0; i < 1; i++) {
-            listTotalBawah.add("TotalBawah");
-            listTotalBawah.add(String.valueOf(tempTotalAllFemale));
-            listTotalBawah.add(String.valueOf(tempTotalAllMale));
-            listTotalBawah.add(String.valueOf(tempTotalAllFemale + tempTotalAllMale));
-            totalBawah.setListGender(listTotalBawah);
-            listDataModel.add(totalBawah);
-        }
+        listTotalBawah.add("TotalBawah");
+        listTotalBawah.add(String.valueOf(tempTotalAllFemale));
+        listTotalBawah.add(String.valueOf(tempTotalAllMale));
+        listTotalBawah.add(String.valueOf(tempTotalAllFemale + tempTotalAllMale));
+        totalBawah.setListGender(listTotalBawah);
+        listDataModel.add(totalBawah);
         return listDataModel;
     }
 
