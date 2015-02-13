@@ -22,6 +22,18 @@
         <property name="username" value="noreplayoptimahr@gmail.com" />
         <property name="password" value="optima@123Hris" />
     </bean>
+<!--    <bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl" >
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.smtp.auth">false</prop>
+                <prop key="mail.smtp.starttls.enable">false</prop>
+                <prop key="mail.smtp.host">10.10.30.19</prop>
+                <prop key="mail.smtp.port">25</prop>
+            </props>
+        </property>
+        <property name="username" value="noreply_hr@incubatechnology.com" />
+        <property name="password" value="optima@123Hris" />
+    </bean>-->
     <bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean" lazy-init="true">
         <property name="velocityProperties" >
             <value>

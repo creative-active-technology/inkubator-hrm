@@ -215,7 +215,8 @@
         <property name="createdOn" value="#{jobParameters['createdOn']}"/>
     </bean>
     <bean id="customMonthEndJournalLogItemProcessor" class="com.inkubator.hrm.batch.MonthEndJournalLogProcessor" scope="step" lazy-init="true">
-        <property name="periodeId" value="#{jobParameters['periodeId']}"/>
+        <constructor-arg name="wtPeriodeService" ref="wtPeriodeService"/>
+        <constructor-arg name="periodeId" value="#{jobParameters['periodeId']}"/>        
         <property name="createdBy" value="#{jobParameters['createdBy']}"/>
         <property name="createdOn" value="#{jobParameters['createdOn']}"/>
     </bean>
@@ -247,7 +248,7 @@
             <value>
             <![CDATA[        
             	INSERT INTO log_salary_journal (periode_id,cost_center_id,cost_center_code,cost_center_name,journal_id,journal_code,journal_name,debet,credit,created_by,created_on,version)
-				VALUES (:periodeId,:costCenterId,:costCenterCode,:costCenterName,:journalId,:journalCode,:journalName,:debet,:credit,:createdBy,:createdOn,0)            	
+				VALUES (:wtPeriode.Id,:costCenterId,:costCenterCode,:costCenterName,:journalId,:journalCode,:journalName,:debet,:credit,:createdBy,:createdOn,0)            	
             ]]>
             </value>
         </property>

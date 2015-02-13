@@ -304,6 +304,8 @@ public class MedicalCareServiceImpl extends IServiceImpl implements MedicalCareS
         medicalCare.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         medicalCare.setCreatedBy(UserInfoUtil.getUserName());
         medicalCare.setCreatedOn(new Date());
+        medicalCare.setDisease(diseaseDao.getEntiyByPK(medicalCare.getDisease().getId()));
+        medicalCare.setHospital(hospitalDao.getEntiyByPK(medicalCare.getHospital().getId()));
         medicalCareDao.save(medicalCare);
 
         if (documentFile != null) {
