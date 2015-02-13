@@ -18,9 +18,9 @@ import com.inkubator.hrm.service.PayTempKalkulasiService;
 public class PayEmployeeCalculationReader implements ItemReader<PayTempKalkulasi> {
 	private List<PayTempKalkulasi> listObject;
 	
-	public PayEmployeeCalculationReader(PayTempKalkulasiService payTempKalkulasiService, Date payrollCalculationDate, String createdBy) throws Exception{
+	public PayEmployeeCalculationReader(PayTempKalkulasiService payTempKalkulasiService, Date startPeriodDate, Date endPeriodDate, Date createdOn, String createdBy) throws Exception{
 		//get populated data
-		listObject = payTempKalkulasiService.getAllDataCalculatedPayment(payrollCalculationDate, createdBy);
+		listObject = payTempKalkulasiService.getAllDataCalculatedPayment(startPeriodDate, endPeriodDate, createdOn, createdBy);
 	}
 	
 	@Override

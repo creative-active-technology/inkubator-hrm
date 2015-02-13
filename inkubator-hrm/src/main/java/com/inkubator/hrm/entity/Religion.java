@@ -33,6 +33,8 @@ public class Religion implements java.io.Serializable {
     private Set<WtHoliday> wtHolidays = new HashSet<WtHoliday>(0);
     private Set<BioData> bioDatas = new HashSet<BioData>(0);
     private List<Religion> listReligion = new ArrayList<>(0);
+    private String code;
+    private String description;
 
     public Religion() {
     }
@@ -46,7 +48,7 @@ public class Religion implements java.io.Serializable {
         this.id = id;
     }
 
-    public Religion(long id, String createdBy, Date createdOn, String name, String updatedBy, Date updatedOn, Set<WtHoliday> wtHolidays) {
+    public Religion(long id, String createdBy, Date createdOn, String name, String updatedBy, Date updatedOn, Set<WtHoliday> wtHolidays, String code, String description) {
         this.id = id;
         this.createdBy = createdBy;
         this.createdOn = createdOn;
@@ -54,6 +56,8 @@ public class Religion implements java.io.Serializable {
         this.updatedBy = updatedBy;
         this.updatedOn = updatedOn;
         this.wtHolidays = wtHolidays;
+        this.code = code;
+        this.description = description;
     }
 
     @Id
@@ -150,6 +154,24 @@ public class Religion implements java.io.Serializable {
         this.listReligion = listReligion;
     }
     
+    @Column(name = "code", unique = true, nullable = false)
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    @Column(name = "description", length = 225)
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 7;
@@ -160,6 +182,8 @@ public class Religion implements java.io.Serializable {
         hash = 41 * hash + Objects.hashCode(this.name);
         hash = 41 * hash + Objects.hashCode(this.updatedBy);
         hash = 41 * hash + Objects.hashCode(this.updatedOn);
+        hash = 41 * hash + Objects.hashCode(this.code);
+        hash = 41 * hash + Objects.hashCode(this.description);
         return hash;
     }
 
@@ -193,8 +217,13 @@ public class Religion implements java.io.Serializable {
         if (!Objects.equals(this.updatedOn, other.updatedOn)) {
             return false;
         }
+        if (!Objects.equals(this.updatedOn, other.code)) {
+            return false;
+        }
+        if (!Objects.equals(this.updatedOn, other.description)) {
+            return false;
+        }
         return true;
     }
-    
-    
+
 }

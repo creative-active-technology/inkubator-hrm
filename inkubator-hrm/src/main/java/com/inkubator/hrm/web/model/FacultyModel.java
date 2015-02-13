@@ -10,6 +10,7 @@ public class FacultyModel implements Serializable {
 
 	private Long id;
 	private String facultyName;
+        private String facultyCode;
         private String description;
 	
 	public Long getId() {
@@ -33,6 +34,14 @@ public class FacultyModel implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getFacultyCode() {
+        return facultyCode;
+    }
+
+    public void setFacultyCode(String facultyCode) {
+        this.facultyCode = facultyCode;
     }
 	
 	

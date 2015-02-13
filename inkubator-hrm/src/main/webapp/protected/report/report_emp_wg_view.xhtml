@@ -51,9 +51,9 @@
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:selectOneMenu value="#{reportEmpWorkingGroupViewController.searchParameter.departmentId}" filter="true" style="margin-right: 3px" >
-		                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-			                <f:selectItems value="#{reportEmpWorkingGroupViewController.listDepartment}" var="department" itemValue="#{department.id}" itemLabel="#{department.departmentName}"/>
-		                    </p:selectOneMenu>
+				                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+					                	<f:selectItems value="#{reportEmpWorkingGroupViewController.listDepartment}" var="department" itemValue="#{department.id}" itemLabel="#{department.departmentName}"/>
+		                    		</p:selectOneMenu>
                                 </p:column>
                             </p:row>
                             <p:row>

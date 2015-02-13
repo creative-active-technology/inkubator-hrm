@@ -18,9 +18,9 @@ import com.inkubator.hrm.service.EmpDataService;
 public class FinalEmployeeCalculationReader implements ItemReader<EmpData> {
 	private List<EmpData> listEmployee;
 	
-	public FinalEmployeeCalculationReader(EmpDataService empDataService, Date payrollCalculationDate) throws Exception{
+	public FinalEmployeeCalculationReader(EmpDataService empDataService, Date endPeriodDate) throws Exception{
 		//get populated data
-		listEmployee = empDataService.getAllDataNotTerminateAndJoinDateLowerThan(payrollCalculationDate);
+		listEmployee = empDataService.getAllDataNotTerminateAndJoinDateLowerThan(endPeriodDate);
 	}
 
 	@Override
