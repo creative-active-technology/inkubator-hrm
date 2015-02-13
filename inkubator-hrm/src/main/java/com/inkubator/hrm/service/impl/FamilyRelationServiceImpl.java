@@ -11,6 +11,7 @@ import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.FamilyRelationDao;
 import com.inkubator.hrm.entity.FamilyRelation;
 import com.inkubator.hrm.service.FamilyRelationService;
+import com.inkubator.hrm.web.search.FamilyRelationSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import java.util.Date;
 import java.util.List;
@@ -72,6 +73,8 @@ public class FamilyRelationServiceImpl extends IServiceImpl implements FamilyRel
         }
         FamilyRelation familyRelation = familyRelationDao.getEntiyByPK(entity.getId());
         familyRelation.setRelasiName(entity.getRelasiName());
+        familyRelation.setCode(entity.getCode());
+        familyRelation.setDescription(entity.getDescription());
         familyRelation.setUpdatedBy(UserInfoUtil.getUserName());
         familyRelation.setUpdatedOn(new Date());
         familyRelationDao.update(familyRelation);
@@ -216,13 +219,13 @@ public class FamilyRelationServiceImpl extends IServiceImpl implements FamilyRel
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<FamilyRelation> getByParam(String parameter, int firstResult, int maxResults, Order ordertable) throws Exception {
+    public List<FamilyRelation> getByParam(FamilyRelationSearchParameter parameter, int firstResult, int maxResults, Order ordertable) throws Exception {
         return this.familyRelationDao.getByParam(parameter, firstResult, maxResults, ordertable);
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getTotalFamilyRelationByParam(String parameter) throws Exception {
+    public Long getTotalFamilyRelationByParam(FamilyRelationSearchParameter parameter) throws Exception {
         return this.familyRelationDao.getTotalFamilyRelationByParam(parameter);
     }
 

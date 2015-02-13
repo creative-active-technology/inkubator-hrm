@@ -7,6 +7,7 @@ package com.inkubator.hrm.dao;
 
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.FamilyRelation;
+import com.inkubator.hrm.web.search.FamilyRelationSearchParameter;
 import java.util.List;
 import org.hibernate.criterion.Order;
 
@@ -16,9 +17,9 @@ import org.hibernate.criterion.Order;
  */
 public interface FamilyRelationDao extends IDAO<FamilyRelation> {
 
-    public List<FamilyRelation> getByParam(String parameter, int firstResult, int maxResults, Order ordertable);
+    public List<FamilyRelation> getByParam(FamilyRelationSearchParameter parameter, int firstResult, int maxResults, Order ordertable);
 
-    public Long getTotalFamilyRelationByParam(String parameter);
+    public Long getTotalFamilyRelationByParam(FamilyRelationSearchParameter parameter);
 
     public Long getTotalByName(String name);
 
