@@ -8,6 +8,7 @@ import com.inkubator.hrm.dao.UnregEmpReligionDao;
 import com.inkubator.hrm.entity.Religion;
 import com.inkubator.hrm.entity.UnregEmpReligion;
 import com.inkubator.hrm.service.ReligionService;
+import com.inkubator.hrm.web.search.ReligionSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import java.util.ArrayList;
 import java.util.Date;
@@ -246,6 +247,8 @@ public class ReligionServiceImpl extends IServiceImpl implements ReligionService
 
         Religion religion = religionDao.getEntiyByPK(r.getId());
         religion.setName(r.getName());
+        religion.setCode(r.getCode());
+        religion.setDescription(r.getDescription());
         religion.setUpdatedBy(UserInfoUtil.getUserName());
         religion.setUpdatedOn(new Date());
         religionDao.update(religion);
@@ -259,13 +262,13 @@ public class ReligionServiceImpl extends IServiceImpl implements ReligionService
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<Religion> getByParam(String parameter, int firstResult, int maxResults, Order orderable) throws Exception {
+    public List<Religion> getByParam(ReligionSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception {
         return this.religionDao.getByParam(parameter, firstResult, maxResults, orderable);
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getTotalReligionByParam(String parameter) throws Exception {
+    public Long getTotalReligionByParam(ReligionSearchParameter parameter) throws Exception {
         return this.religionDao.getTotalReligionByParam(parameter);
     }
 
