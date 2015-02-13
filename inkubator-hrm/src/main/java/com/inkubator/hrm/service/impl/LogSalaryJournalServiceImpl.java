@@ -1,5 +1,6 @@
 package com.inkubator.hrm.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
@@ -14,6 +15,7 @@ import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.dao.LogSalaryJournalDao;
 import com.inkubator.hrm.entity.LogSalaryJournal;
 import com.inkubator.hrm.service.LogSalaryJournalService;
+import com.inkubator.hrm.web.model.ReportSalaryJounalModel;
 
 /**
 *
@@ -21,12 +23,10 @@ import com.inkubator.hrm.service.LogSalaryJournalService;
 */
 @Service(value = "logSalaryJournalService")
 @Lazy
-public class LogSalaryJournalServiceImpl extends IServiceImpl implements
-		LogSalaryJournalService {
+public class LogSalaryJournalServiceImpl extends IServiceImpl implements LogSalaryJournalService {
 	
 	@Autowired
-	private LogSalaryJournalDao logSalaryJournalDao;
-	
+	private LogSalaryJournalDao logSalaryJournalDao;	
 
 	@Override
 	public LogSalaryJournal getEntiyByPK(String id) throws Exception {
@@ -240,6 +240,33 @@ public class LogSalaryJournalServiceImpl extends IServiceImpl implements
 	public void deleteByPeriodId(Long periodeId) throws Exception {
 		logSalaryJournalDao.deleteByPeriodId(periodeId);
 
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<ReportSalaryJounalModel> getAllDataReportGroupingByPeriod(int firstResult, int maxResults, Order orderable) throws Exception {
+		return logSalaryJournalDao.getAllDataReportGroupingByPeriod(firstResult, maxResults, orderable);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<LogSalaryJournal> getAllDataReportByParam(Long periodId, int firstResult, int maxResults, Order orderable) throws Exception {
+		
+		return logSalaryJournalDao.getAllDataReportByParam(periodId, firstResult, maxResults, orderable);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public Long getTotalReportGroupingByPeriod() throws Exception {
+		
+		return logSalaryJournalDao.getTotalReportGroupingByPeriod();
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public Long getTotalReportByParam(Long periodId) throws Exception {
+		
+		return logSalaryJournalDao.getTotalReportByParam(periodId);
 	}
 
 }
