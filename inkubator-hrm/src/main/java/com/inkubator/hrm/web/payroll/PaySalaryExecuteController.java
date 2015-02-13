@@ -29,7 +29,6 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.PayTempKalkulasi;
 import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.EmpDataService;
-import com.inkubator.hrm.service.PayTempKalkulasiEmpPajakService;
 import com.inkubator.hrm.service.PayTempKalkulasiService;
 import com.inkubator.hrm.service.WtPeriodeService;
 import com.inkubator.hrm.web.lazymodel.PaySalaryExecuteLazyDataModel;
@@ -52,8 +51,6 @@ public class PaySalaryExecuteController extends BaseController {
     private EmpDataService empDataService;
     @ManagedProperty(value = "#{payTempKalkulasiService}")
     private PayTempKalkulasiService payTempKalkulasiService;
-    @ManagedProperty(value = "#{payTempKalkulasiEmpPajakService}")
-    private PayTempKalkulasiEmpPajakService payTempKalkulasiEmpPajakService;
     private PayTempKalkulasiSearchParameter searchParameter;
     private LazyDataModel<PayTempKalkulasiModel> lazyDataModel;
     private PayTempKalkulasi selected;
@@ -110,7 +107,6 @@ public class PaySalaryExecuteController extends BaseController {
         jobExecution = null;
         wtPeriodePayroll = null;
         wtPeriodeAbsen = null;
-        payTempKalkulasiEmpPajakService = null;
     }
 
     public void doSearch() {
@@ -129,16 +125,15 @@ public class PaySalaryExecuteController extends BaseController {
     	/** to cater prevent multiple click, that will make batch execute multiple time. 
     	 *  please see onComplete method that will set jobExecution == null */
     	if(jobExecution == null){ 
-	        try {
-	        	
-	        	payTempKalkulasiService.deleteAllData();
-	        	payTempKalkulasiEmpPajakService.deleteAllData();
+	        try {	        	
 	            long sleepVariable = empDataService.getTotalEmpDataNotTerminate() * 3;
 	            
-	            JobParameters jobParameters = new JobParametersBuilder()
-	                    .addString("timeInMilis", String.valueOf(System.currentTimeMillis()))
+	            JobParameters jobParameters = new JobParametersBuilder()	                    
 	                    .addDate("payrollCalculationDate", payrollCalculationDate)
-		                .addString("createdBy", UserInfoUtil.getUserName()).toJobParameters();
+	                    .addDate("startPeriodDate", wtPeriodePayroll.getFromPeriode())
+	                    .addDate("endPeriodDate", wtPeriodePayroll.getUntilPeriode())
+		                .addString("createdBy", UserInfoUtil.getUserName())
+		                .addDate("createdOn", new Date()).toJobParameters();
 	            jobExecution = jobLauncherAsync.run(jobPayEmployeeCalculation, jobParameters);
 	            
 	            int i = 0;
@@ -336,12 +331,5 @@ public class PaySalaryExecuteController extends BaseController {
 	public void setWtPeriodeAbsen(WtPeriode wtPeriodeAbsen) {
 		this.wtPeriodeAbsen = wtPeriodeAbsen;
 	}
-
-	public void setPayTempKalkulasiEmpPajakService(
-			PayTempKalkulasiEmpPajakService payTempKalkulasiEmpPajakService) {
-		this.payTempKalkulasiEmpPajakService = payTempKalkulasiEmpPajakService;
-	}
-    
-	
     
 }
