@@ -33,7 +33,7 @@ public class MonthEndJournalLogProcessor implements ItemProcessor<SalaryJournalM
 		log.setJournalId(item.getJurnalId());
 		log.setJournalCode(item.getJurnalCode());
 		log.setJournalName(item.getJurnalName());
-		log.setDebet(item.getDebet());
+		log.setDebit(item.getDebet());
 		log.setCredit(item.getKredit());
 		log.setCreatedBy(createdBy);
 		log.setCreatedOn(createdOn);

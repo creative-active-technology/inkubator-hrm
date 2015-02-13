@@ -6,6 +6,7 @@ import org.hibernate.criterion.Order;
 
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.LogSalaryJournal;
+import com.inkubator.hrm.web.model.ReportSalaryJounalModel;
 
 /**
 *
@@ -15,7 +16,7 @@ public interface LogSalaryJournalDao extends IDAO<LogSalaryJournal> {
 
 	public void deleteByPeriodId(Long periodeId);
 	
-	public List<LogSalaryJournal> getAllDataReportGroupingByPeriod(int firstResult, int maxResults, Order orderable);
+	public List<ReportSalaryJounalModel> getAllDataReportGroupingByPeriod(int firstResult, int maxResults, Order orderable);
 	
 	public List<LogSalaryJournal> getAllDataReportByParam(Long periodId, int firstResult, int maxResults, Order orderable);
 

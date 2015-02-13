@@ -95,7 +95,7 @@
                                     <h:outputText value="#{appmsg['bankTransferDistribution.percent']}" />
                                 </f:facet>
                                 <div align="right">
-                                    <p:spinner min="0" max="100" value="#{listPayReceipt.persen}" size="4"  suffix=" %"  stepFactor="1"   >
+                                    <p:spinner min="0" max="100" value="#{listPayReceipt.persen}" size="4"  stepFactor="1"   >
                                         <p:ajax update=":bankTransferFormId,:growBankTransferId" process="@this" listener="#{distributionBankController.doChange()}" partialSubmit="true"/>
                                     </p:spinner>
 

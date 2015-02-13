@@ -155,7 +155,9 @@
 		<property name="logSalaryJournalService" ref="logSalaryJournalService"/>		
 	</bean>
 	<bean id="payEmployeeCalculationJobListener" class="com.inkubator.hrm.batch.PayEmployeeCalculationJobListener" lazy-init="true">
-		<property name="wtPeriodeService" ref="wtPeriodeService"/>		
+		<property name="wtPeriodeService" ref="wtPeriodeService"/>
+		<property name="payTempKalkulasiService" ref="payTempKalkulasiService"/>
+		<property name="payTempKalkulasiEmpPajakService" ref="payTempKalkulasiEmpPajakService"/>		
 	</bean>
 	
 	
@@ -247,8 +249,8 @@
         <property name="sql">
             <value>
             <![CDATA[        
-            	INSERT INTO log_salary_journal (periode_id,cost_center_id,cost_center_code,cost_center_name,journal_id,journal_code,journal_name,debet,credit,created_by,created_on,version)
-				VALUES (:wtPeriode.Id,:costCenterId,:costCenterCode,:costCenterName,:journalId,:journalCode,:journalName,:debet,:credit,:createdBy,:createdOn,0)            	
+            	INSERT INTO log_salary_journal (periode_id,cost_center_id,cost_center_code,cost_center_name,journal_id,journal_code,journal_name,debit,credit,created_by,created_on,version)
+				VALUES (:wtPeriode.Id,:costCenterId,:costCenterCode,:costCenterName,:journalId,:journalCode,:journalName,:debit,:credit,:createdBy,:createdOn,0)            	
             ]]>
             </value>
         </property>
@@ -311,21 +313,23 @@
     <!-- reader, processor and writer for pay_employee_calculation -->
     <bean id="customPayEmployeeCalculationItemReader" class="com.inkubator.hrm.batch.PayEmployeeCalculationReader" scope="step" lazy-init="true">
         <constructor-arg name="payTempKalkulasiService" ref="payTempKalkulasiService"/>
-        <constructor-arg name="payrollCalculationDate" value="#{jobParameters['payrollCalculationDate']}"/>
+        <constructor-arg name="startPeriodDate" value="#{jobParameters['startPeriodDate']}"/>
+        <constructor-arg name="endPeriodDate" value="#{jobParameters['endPeriodDate']}"/>
+        <constructor-arg name="createdOn" value="#{jobParameters['createdOn']}"/>
         <constructor-arg name="createdBy" value="#{jobParameters['createdBy']}"/>
     </bean>	
     <bean id="customTaxEmployeeCalculationItemReader" class="com.inkubator.hrm.batch.TaxEmployeeCalculationReader" scope="step" lazy-init="true">
         <constructor-arg name="empDataService" ref="empDataService"/>
-        <constructor-arg name="payrollCalculationDate" value="#{jobParameters['payrollCalculationDate']}"/>
+        <constructor-arg name="endPeriodDate" value="#{jobParameters['endPeriodDate']}"/>
         <property name="payTempKalkulasiService" ref="payTempKalkulasiService"/>
     </bean>
     <bean id="customFinalEmployeeCalculationItemReader" class="com.inkubator.hrm.batch.FinalEmployeeCalculationReader" scope="step" lazy-init="true">
         <constructor-arg name="empDataService" ref="empDataService"/>
-        <constructor-arg name="payrollCalculationDate" value="#{jobParameters['payrollCalculationDate']}"/>
+        <constructor-arg name="endPeriodDate" value="#{jobParameters['endPeriodDate']}"/>
     </bean>
     <bean id="customTaxEmployeeCalculationItemProcessor" class="com.inkubator.hrm.batch.TaxEmployeeCalculationProcessor" scope="step" lazy-init="true">		
         <constructor-arg name="taxRateService" ref="taxRateService"/>
-        <property name="payrollCalculationDate" value="#{jobParameters['payrollCalculationDate']}"/>
+        <property name="createdOn" value="#{jobParameters['createdOn']}"/>
         <property name="createdBy" value="#{jobParameters['createdBy']}"/>
     </bean>	
     <bean id="customPayEmployeeCalculationItemWriter" class="org.springframework.batch.item.database.JdbcBatchItemWriter" lazy-init="true">

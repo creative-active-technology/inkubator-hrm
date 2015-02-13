@@ -389,11 +389,10 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public List<PayTempKalkulasi> getAllDataCalculatedPayment(Date payrollCalculationDate, String createdBy) throws Exception {
+    public List<PayTempKalkulasi> getAllDataCalculatedPayment(Date startPeriodDate, Date endPeriodDate, Date createdOn, String createdBy) throws Exception {
         System.out.println("=============================================START " + new Date());
 
         //initial
-        WtPeriode periode = wtPeriodeDao.getEntityByPayrollTypeActive();
         PaySalaryComponent totalIncomeComponent = paySalaryComponentDao.getEntityBySpecificModelComponent(HRMConstant.MODEL_COMP_TAKE_HOME_PAY);
         PaySalaryComponent taxComponent = paySalaryComponentDao.getEntityBySpecificModelComponent(HRMConstant.MODEL_COMP_TAX);
         PaySalaryComponent ceilComponent = paySalaryComponentDao.getEntityBySpecificModelComponent(HRMConstant.MODEL_COMP_CEIL);
@@ -409,7 +408,7 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
         Double outPut = null;
 
         //Start calculation
-        List<EmpData> totalEmployee = empDataDao.getAllDataNotTerminateAndJoinDateLowerThan(periode.getUntilPeriode());
+        List<EmpData> totalEmployee = empDataDao.getAllDataNotTerminateAndJoinDateLowerThan(endPeriodDate);
         /*List<EmpData> totalEmployee = new ArrayList<EmpData>();
          EmpData emp = empDataDao.getEntiyByPK((long)112);
          totalEmployee.add(emp);*/
@@ -435,14 +434,14 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
                 kalkulasi.setNominal(dataException.getNominal());
 
                 kalkulasi.setCreatedBy(createdBy);
-                kalkulasi.setCreatedOn(payrollCalculationDate);
+                kalkulasi.setCreatedOn(createdOn);
                 datas.add(kalkulasi);
 
                 totalIncome = this.calculateTotalIncome(totalIncome, kalkulasi); //calculate totalIncome temporary
                 LOGGER.info("Save By ComponentDataException - " + dataException.getPaySalaryComponent().getName() + ", nominal : " + dataException.getNominal());
             }
 
-            int timeTmb = DateTimeUtil.getTotalDay(empData.getJoinDate(), payrollCalculationDate);
+            int timeTmb = DateTimeUtil.getTotalDay(empData.getJoinDate(), createdOn);
             List<Long> componentIds = Lambda.extract(payComponentExceptions, Lambda.on(PayComponentDataException.class).getPaySalaryComponent().getId());
             List<PaySalaryComponent> totalPayComponetNotExcp = paySalaryComponentDao.getAllDataByEmpTypeIdAndActiveFromTmAndIdNotIn(empData.getEmployeeType().getId(), timeTmb, componentIds);
             for (PaySalaryComponent paySalaryComponent : totalPayComponetNotExcp) {
@@ -458,7 +457,7 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
                         kalkulasi.setNominal(nominal);
 
                         kalkulasi.setCreatedBy(createdBy);
-                        kalkulasi.setCreatedOn(payrollCalculationDate);
+                        kalkulasi.setCreatedOn(createdOn);
                         datas.add(kalkulasi);
 
                         totalIncome = this.calculateTotalIncome(totalIncome, kalkulasi); //calculate totalIncome temporary
@@ -479,7 +478,7 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
                     kalkulasi.setNominal(nominal);
 
                     kalkulasi.setCreatedBy(createdBy);
-                    kalkulasi.setCreatedOn(payrollCalculationDate);
+                    kalkulasi.setCreatedOn(createdOn);
                     datas.add(kalkulasi);
 
                     totalIncome = this.calculateTotalIncome(totalIncome, kalkulasi); //calculate totalIncome temporary
@@ -487,7 +486,7 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
 
                 } else if (paySalaryComponent.getModelComponent().getSpesific().equals(HRMConstant.MODEL_COMP_LOAN)) {
                     List<LoanPaymentDetail> loanPaymentDetails = loanPaymentDetailDao.getAllDataByEmpDataIdAndLoanSchemaIdAndPeriodTime(
-                            empData.getId(), (long) paySalaryComponent.getModelReffernsil(), periode.getFromPeriode(), periode.getUntilPeriode());
+                            empData.getId(), (long) paySalaryComponent.getModelReffernsil(), startPeriodDate, endPeriodDate);
                     for (LoanPaymentDetail payDetail : loanPaymentDetails) {
                         PayTempKalkulasi kalkulasi = new PayTempKalkulasi();
                         kalkulasi.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
@@ -500,11 +499,11 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
                         
                         //set detail loan
                         int termin = payDetail.getLoan().getTermin();
-                        long cicilanKe = termin - loanPaymentDetailDao.getTotalUnPaidLoanByLoanId(payDetail.getLoan().getId(), periode.getUntilPeriode());                        
+                        long cicilanKe = termin - loanPaymentDetailDao.getTotalUnPaidLoanByLoanId(payDetail.getLoan().getId(), endPeriodDate);                        
                         kalkulasi.setDetail(cicilanKe + "/" + termin);
 
                         kalkulasi.setCreatedBy(createdBy);
-                        kalkulasi.setCreatedOn(payrollCalculationDate);
+                        kalkulasi.setCreatedOn(createdOn);
                         datas.add(kalkulasi);
 
                         totalIncome = this.calculateTotalIncome(totalIncome, kalkulasi); //calculate totalIncome temporary
@@ -513,7 +512,7 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
 
                 } else if (paySalaryComponent.getModelComponent().getSpesific().equals(HRMConstant.MODEL_COMP_REIMBURSEMENT)) {
                     List<Reimbursment> reimbursments = reimbursmentDao.getAllDataByEmpDataIdAndReimbursmentSchemaIdAndPeriodTime(
-                            empData.getId(), (long) paySalaryComponent.getModelReffernsil(), periode.getFromPeriode(), periode.getUntilPeriode());
+                            empData.getId(), (long) paySalaryComponent.getModelReffernsil(), startPeriodDate, endPeriodDate);
                     for (Reimbursment reimbursment : reimbursments) {
                         PayTempKalkulasi kalkulasi = new PayTempKalkulasi();
                         kalkulasi.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
@@ -526,7 +525,7 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
                         kalkulasi.setDetail(reimbursment.getCode());
                         
                         kalkulasi.setCreatedBy(createdBy);
-                        kalkulasi.setCreatedOn(payrollCalculationDate);
+                        kalkulasi.setCreatedOn(createdOn);
                         datas.add(kalkulasi);
 
                         totalIncome = this.calculateTotalIncome(totalIncome, kalkulasi); //calculate totalIncome temporary
@@ -554,7 +553,7 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
                         kalkulasi.setNominal(nominal);
 
                         kalkulasi.setCreatedBy(createdBy);
-                        kalkulasi.setCreatedOn(payrollCalculationDate);
+                        kalkulasi.setCreatedOn(createdOn);
                         datas.add(kalkulasi);
 
                         totalIncome = this.calculateTotalIncome(totalIncome, kalkulasi); //calculate totalIncome temporary
@@ -577,7 +576,7 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
                         kalkulasi.setDetail(benefitGroupRate.getGolonganJabatan().getCode());
                         
                         kalkulasi.setCreatedBy(createdBy);
-                        kalkulasi.setCreatedOn(payrollCalculationDate);
+                        kalkulasi.setCreatedOn(createdOn);
                         datas.add(kalkulasi);
 
                         totalIncome = this.calculateTotalIncome(totalIncome, kalkulasi); //calculate totalIncome temporary
@@ -594,7 +593,7 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
             totalIncomeKalkulasi.setFactor(this.getFactorBasedCategory(totalIncomeComponent.getComponentCategory()));
             totalIncomeKalkulasi.setNominal(totalIncome);
             totalIncomeKalkulasi.setCreatedBy(createdBy);
-            totalIncomeKalkulasi.setCreatedOn(payrollCalculationDate);
+            totalIncomeKalkulasi.setCreatedOn(createdOn);
             datas.add(totalIncomeKalkulasi);
 
             //create initial tax Kalkulasi, set nominal 0. Akan dibutuhkan di batch proses step selanjutnya
@@ -605,7 +604,7 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
             taxKalkulasi.setFactor(this.getFactorBasedCategory(taxComponent.getComponentCategory()));
             taxKalkulasi.setNominal(new BigDecimal(0));
             taxKalkulasi.setCreatedBy(createdBy);
-            taxKalkulasi.setCreatedOn(payrollCalculationDate);
+            taxKalkulasi.setCreatedOn(createdOn);
             datas.add(taxKalkulasi);
 
             //create initial ceil Kalkulasi, set nominal 0. Akan dibutuhkan di batch proses step selanjutnya 
@@ -616,7 +615,7 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
             ceilKalkulasi.setFactor(this.getFactorBasedCategory(ceilComponent.getComponentCategory()));
             ceilKalkulasi.setNominal(new BigDecimal(0));
             ceilKalkulasi.setCreatedBy(createdBy);
-            ceilKalkulasi.setCreatedOn(payrollCalculationDate);
+            ceilKalkulasi.setCreatedOn(createdOn);
             datas.add(ceilKalkulasi);
         }
 

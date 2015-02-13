@@ -36,7 +36,7 @@ public class LogSalaryJournal implements Serializable {
     private Long costCenterId;
     private String costCenterCode;
     private String costCenterName;
-    private Double debet;
+    private Double debit;
     private Double credit;
     
     private String createdBy;
@@ -136,13 +136,13 @@ public class LogSalaryJournal implements Serializable {
 		this.costCenterName = costCenterName;
 	}
 	
-	@Column(name = "debet", nullable = false)
-	public Double getDebet() {
-		return debet;
+	@Column(name = "debit", nullable = false)
+	public Double getDebit() {
+		return debit;
 	}
 
-	public void setDebet(Double debet) {
-		this.debet = debet;
+	public void setDebit(Double debit) {
+		this.debit = debit;
 	}
 
 	@Column(name = "credit", nullable = false)
