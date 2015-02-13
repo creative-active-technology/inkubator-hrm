@@ -10,9 +10,7 @@ import com.inkubator.hrm.dao.BioEducationHistoryDao;
 import com.inkubator.hrm.dao.EducationLevelDao;
 import com.inkubator.hrm.entity.EducationLevel;
 import com.inkubator.hrm.service.DemografiSosialMatrixService;
-import com.inkubator.hrm.util.MapUtil;
 import com.inkubator.hrm.web.model.EmpDataMatrixModel;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -96,14 +94,12 @@ public class DemografiSosialMatrixServiceImpl implements DemografiSosialMatrixSe
         EmpDataMatrixModel totalBawah = new EmpDataMatrixModel();
         List<String> listTotalBawah = new ArrayList<String>();
 
-        for (int i = 0; i < 1; i++) {
-            listTotalBawah.add("TotalBawah");
-            listTotalBawah.add(String.valueOf(tempTotalAllFemale));
-            listTotalBawah.add(String.valueOf(tempTotalAllMale));
-            listTotalBawah.add(String.valueOf(tempTotalAllFemale + tempTotalAllMale));
-            totalBawah.setListGender(listTotalBawah);
-            listDataModel.add(totalBawah);
-        }
+        listTotalBawah.add("TotalBawah");
+        listTotalBawah.add(String.valueOf(tempTotalAllFemale));
+        listTotalBawah.add(String.valueOf(tempTotalAllMale));
+        listTotalBawah.add(String.valueOf(tempTotalAllFemale + tempTotalAllMale));
+        totalBawah.setListGender(listTotalBawah);
+        listDataModel.add(totalBawah);
         return listDataModel;
     }
 
@@ -121,7 +117,6 @@ public class DemografiSosialMatrixServiceImpl implements DemografiSosialMatrixSe
         Long totalFemale = null;
         long temp;
         long tempTotalMaleAndFemale;
-        Long totalDataBerdasarkanEdukasi;
         List<EmpDataMatrixModel> listDataModel = new ArrayList<EmpDataMatrixModel>();
         int j;
         for (int i = 0; i < 2; i++) {
@@ -307,7 +302,6 @@ public class DemografiSosialMatrixServiceImpl implements DemografiSosialMatrixSe
         EmpDataMatrixModel empDataMatrixModel;
         Double totalMale;
         Double totalFemale;
-        Double totalDataBerdasarkanEdukasi;
         Double tempTotalAllMale = 0.0;
         Double tempTotalAllFemale = 0.0;
         int pembandingTerbanyak = listAge.size();
@@ -350,12 +344,6 @@ public class DemografiSosialMatrixServiceImpl implements DemografiSosialMatrixSe
             listEducationShow = new ArrayList<String>();
             empDataMatrixModel = new EmpDataMatrixModel();
             if (listAge.get(j).getAges2() != null) {
-//            totalMale = bioEducationHistoryDao.getTotalByGenderMaleAndEducationLevel(educationLevel.getId());
-//            totalFemale = bioEducationHistoryDao.getTotalByGenderFemaleAndEducationLevel(educationLevel.getId());
-//            tempTotalAllFemale = tempTotalAllFemale + totalFemale;
-//            tempTotalAllMale = tempTotalAllMale + totalMale;
-//            System.out.println(totalMale + " - total");
-
                 totalFemale = ageMapFemale.get(listAge.get(j).getAges2());
                 totalMale = ageMapMale.get(listAge.get(j).getAges2());
                 tempTotalAllFemale = tempTotalAllFemale + totalFemale;
@@ -373,14 +361,12 @@ public class DemografiSosialMatrixServiceImpl implements DemografiSosialMatrixSe
         EmpDataMatrixModel totalBawah = new EmpDataMatrixModel();
         List<String> listTotalBawah = new ArrayList<String>();
 
-        for (int i = 0; i < 1; i++) {
-            listTotalBawah.add("TotalBawah");
-            listTotalBawah.add(String.valueOf(tempTotalAllFemale));
-            listTotalBawah.add(String.valueOf(tempTotalAllMale));
-            listTotalBawah.add(String.valueOf(tempTotalAllFemale + tempTotalAllMale));
-            totalBawah.setListGender(listTotalBawah);
-            listDataModel.add(totalBawah);
-        }
+        listTotalBawah.add("TotalBawah");
+        listTotalBawah.add(String.valueOf(tempTotalAllFemale));
+        listTotalBawah.add(String.valueOf(tempTotalAllMale));
+        listTotalBawah.add(String.valueOf(tempTotalAllFemale + tempTotalAllMale));
+        totalBawah.setListGender(listTotalBawah);
+        listDataModel.add(totalBawah);
         return listDataModel;
     }
 
