@@ -34,16 +34,61 @@
                     <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
                         <p:row>
                             <p:column style="width: 29%">
+                                <p:outputLabel for="code" value="#{appmsg['religion.code']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="code" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                                <p:focus for ="code">
+                                    <p:inputText id="code" title="#{appmsg['religion.code']}" value="#{religionFormController.religionModel.code}" 
+                                    			 required="true" requiredMessage="#{appmsg['religion.religion_name_should_not_be_empty']}" maxlength="30" styleClass="isitext_hrm" style="width:250px;" />
+                                </p:focus>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
                                 <p:outputLabel for="nameId" value="#{appmsg['religion.religion_name']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="nameId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 70%">
-                                <p:focus for ="nameId">
+                                <!--<p:focus for ="nameId">-->
                                     <p:inputText id="nameId" title="#{appmsg['religion.religion_name']}" value="#{religionFormController.religionModel.name}" 
                                     			 required="true" requiredMessage="#{appmsg['religion.religion_name_should_not_be_empty']}" maxlength="30" styleClass="isitext_hrm" style="width:250px;" />
-                                </p:focus>
+                                <!--</p:focus>-->
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="description" value="#{appmsg['global.description']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="description" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                                <!--<p:focus for ="description">-->
+                                    <p:inputTextarea id="description" rows="5" cols="37" counter="counter" maxlength="225" value="#{religionFormController.religionModel.description}" 
+                                                 style="width: 250px; height: 40px;" counterTemplate="#{appmsg['global.remaining']}"   autoResize="true" required="true"
+                                                 label="#{appmsg['global.description']}" title="#{appmsg['global.description']}" />
+                                <!--</p:focus>-->
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="description"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 25%">
+                                <p:outputLabel  value="" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel  value=""  styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 60%" >
+                                <h:outputText id="counter" />
                             </p:column>
                         </p:row>
                         <p:row>
@@ -52,7 +97,7 @@
                             </p:column>
                         </p:row>
                     </p:panelGrid>
-                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+                    <p:separator style="margin-top: 10px;margin-bottom: 10px"/>
                     <h:panelGrid columns="2" style="margin-bottom: -30px!important">
                         <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formReligionFormId,:growlReligionFormlId"
                                          action="#{religionFormController.doSave()}" styleClass="isitext_hrm"
