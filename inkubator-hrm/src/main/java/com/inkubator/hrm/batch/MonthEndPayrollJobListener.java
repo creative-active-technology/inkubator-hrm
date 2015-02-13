@@ -25,8 +25,7 @@ public class MonthEndPayrollJobListener implements JobExecutionListener {
 	private WtPeriodeService wtPeriodeService;
 	private LogMonthEndPayrollService logMonthEndPayrollService;
 	private LogListOfTransferService logListOfTransferService;
-	private LogSalaryJournalService logSalaryJournalService;
-	
+	private LogSalaryJournalService logSalaryJournalService;	
 	
 	@Override
 	public void beforeJob(JobExecution jobExecution) {		
@@ -48,6 +47,8 @@ public class MonthEndPayrollJobListener implements JobExecutionListener {
 	public void afterJob(JobExecution jobExecution) {
 		if (jobExecution.getAllFailureExceptions().isEmpty()) {
 			try {			
+				/** all process after month end, ex: delete temporary table or update period date or etc
+				 *  should be in one method, in case of rollback purpose */
 				logMonthEndPayrollService.afterMonthEndProcess();
 				
 			} catch (Exception e) {
