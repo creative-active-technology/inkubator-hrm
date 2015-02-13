@@ -4,6 +4,7 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.Religion;
 import com.inkubator.hrm.service.ReligionService;
 import com.inkubator.hrm.web.lazymodel.ReligionLazyDataModel;
+import com.inkubator.hrm.web.search.ReligionSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
@@ -31,7 +32,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 @ViewScoped
 public class ReligionViewController extends BaseController {
 
-    private String parameter;
+    private ReligionSearchParameter parameter;
     private LazyDataModel<Religion> lazyDataReligion;
     private Religion selectedReligion;
     @ManagedProperty(value = "#{religionService}")
@@ -41,6 +42,7 @@ public class ReligionViewController extends BaseController {
     @Override
     public void initialization() {
         super.initialization();
+        parameter = new ReligionSearchParameter();
     }
 
     @PreDestroy
@@ -55,11 +57,11 @@ public class ReligionViewController extends BaseController {
         this.religionService = religionService;
     }
 
-    public String getParameter() {
+    public ReligionSearchParameter getParameter() {
         return parameter;
     }
 
-    public void setParameter(String parameter) {
+    public void setParameter(ReligionSearchParameter parameter) {
         this.parameter = parameter;
     }
 
@@ -124,8 +126,8 @@ public class ReligionViewController extends BaseController {
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", false);
-        options.put("contentWidth", 400);
-        options.put("contentHeight", 250);
+        options.put("contentWidth", 430);
+        options.put("contentHeight", 330);
         RequestContext.getCurrentInstance().openDialog("religion_form", options, params);
     }
 
