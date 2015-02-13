@@ -4,6 +4,7 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.FamilyRelation;
 import com.inkubator.hrm.service.FamilyRelationService;
 import com.inkubator.hrm.web.lazymodel.FamilyRelationLazyDataModel;
+import com.inkubator.hrm.web.search.FamilyRelationSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
@@ -31,7 +32,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 @ViewScoped
 public class FamilyRelationViewController extends BaseController {
 
-    private String parameter;
+    private FamilyRelationSearchParameter parameter;
     private LazyDataModel<FamilyRelation> lazyDataFamilyRelation;
     private FamilyRelation selectedFamilyRelation;
     @ManagedProperty(value = "#{familyRelationService}")
@@ -41,6 +42,7 @@ public class FamilyRelationViewController extends BaseController {
     @Override
     public void initialization() {
         super.initialization();
+        parameter = new FamilyRelationSearchParameter();
     }
 
     @PreDestroy
@@ -57,11 +59,11 @@ public class FamilyRelationViewController extends BaseController {
 
     
 
-    public String getParameter() {
+    public FamilyRelationSearchParameter getParameter() {
         return parameter;
     }
 
-    public void setParameter(String parameter) {
+    public void setParameter(FamilyRelationSearchParameter parameter) {
         this.parameter = parameter;
     }
 
@@ -118,8 +120,8 @@ public class FamilyRelationViewController extends BaseController {
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", false);
-        options.put("contentWidth", 400);
-        options.put("contentHeight", 250);
+        options.put("contentWidth", 480);
+        options.put("contentHeight", 350);
         RequestContext.getCurrentInstance().openDialog("family_relation_form", options, params);
     }
 
